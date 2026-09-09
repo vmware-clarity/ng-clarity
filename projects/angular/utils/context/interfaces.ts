@@ -6,19 +6,6 @@
  */
 
 /**
- * An action currently available to the user (or to an AI agent driving the UI),
- * such as a visible button or link.
- */
-export interface ClrContextAction {
-  /** Visible or accessible label of the action. */
-  label: string;
-  kind: 'button' | 'link';
-  disabled?: boolean;
-  /** Target of the action when it is a link. */
-  href?: string;
-}
-
-/**
  * Compact, serializable description of a single piece of UI, intended to be consumed
  * by AI agents. Only information that is true at the moment the snapshot is taken
  * should ever be placed here.
@@ -36,9 +23,11 @@ export interface ClrComponentContext {
   label?: string;
   /** Current state that is relevant right now, e.g. `{ open: true }` or `{ selectedRows: 3 }`. */
   state?: Record<string, unknown>;
-  /** Actions currently available inside this piece of UI. */
-  actions?: ClrContextAction[];
-  /** Nested contexts, when a component wants to describe its relevant children. */
+  /**
+   * Nested contexts, when a component wants to describe its relevant children. A button
+   * or link found here, at any depth, is exactly as invocable as one found at the top
+   * level: there is no separate flattened list, so nesting is never discarded.
+   */
   children?: ClrComponentContext[];
 }
 
@@ -49,23 +38,10 @@ export interface ClrComponentContext {
 export interface ClrContextSnapshotOptions {
   /** Maximum length of any single text value. Longer text is truncated. Default `100`. */
   maxTextLength?: number;
-  /** Maximum number of items collected per list (rows, tabs, links, actions...). Default `25`. */
+  /** Maximum number of items collected per list (rows, tabs, links, options...). Default `25`. */
   maxItemsPerCollection?: number;
   /** Maximum number of components reported from the DOM. Default `100`. */
   maxComponents?: number;
   /** Whether to scan the rendered DOM for Clarity components. Default `true`. */
   includeDomComponents?: boolean;
-  /** Whether to collect currently available actions (buttons and links). Default `true`. */
-  includeActions?: boolean;
-  /**
-   * Whether to include the current value and the selectable options of every form
-   * control, keyed by control `name` — what a form-filling agent needs to produce a
-   * JSON answer that can be applied back. Password and file inputs are always
-   * redacted, opted in or not.
-   *
-   * Default `false`: turning this on puts user-typed data into snapshots, so it must
-   * be a deliberate application decision. Embedded frames can never turn it on through
-   * the frame bridge; only the hosting application can.
-   */
-  includeFormValues?: boolean;
 }

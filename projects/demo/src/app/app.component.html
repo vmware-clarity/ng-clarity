@@ -31,6 +31,14 @@
       </label>
     </form>
     <div class="header-actions">
+      <button
+        class="btn btn-link btn-icon nav-link"
+        cds-layout="m-t:none"
+        aria-label="Inspect Page context"
+        (click)="contextInspector.toggle()"
+      >
+        <cds-icon shape="code" inverse></cds-icon>
+      </button>
       <clr-dropdown>
         <button class="nav-icon" clrDropdownTrigger>
           <cds-icon shape="cog" inverse></cds-icon>
@@ -48,4 +56,5 @@
     </div>
   </clr-header>
   <my-app-content-container class="content-container"></my-app-content-container>
+  <app-context-inspector #contextInspector></app-context-inspector>
 </clr-main-container>

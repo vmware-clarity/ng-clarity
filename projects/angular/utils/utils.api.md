@@ -325,7 +325,6 @@ export class ClrCommonStringsService {
 
 // @public
 export interface ClrComponentContext {
-    actions?: ClrContextAction[];
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
@@ -344,20 +343,8 @@ export class ClrConditionalModule {
 }
 
 // @public
-export interface ClrContextAction {
-    // (undocumented)
-    disabled?: boolean;
-    href?: string;
-    // (undocumented)
-    kind: 'button' | 'link';
-    label: string;
-}
-
-// @public
 export interface ClrContextSnapshotOptions {
-    includeActions?: boolean;
     includeDomComponents?: boolean;
-    includeFormValues?: boolean;
     maxComponents?: number;
     maxItemsPerCollection?: number;
     maxTextLength?: number;

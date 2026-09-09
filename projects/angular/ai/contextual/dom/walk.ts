@@ -10,7 +10,7 @@ import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/uti
 import { accessibleName } from './accessible-name';
 import { ariaState } from './aria-state';
 import { mergeElementContext } from './element-context';
-import { isLeafRole, isPresentationalRole, resolveRole } from './roles';
+import { isLeafRole, isPresentationalRole, mayContainControls, resolveRole } from './roles';
 import { hasRoleSummarizer, summarizeRole } from './summarizers';
 import { accessibleText, truncate } from './text';
 
@@ -139,12 +139,22 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
     if (!isCustomElement) {
       return describeChildren(element, walk, owner);
     }
-    // An anonymous custom element is a wrapper around whatever it renders. Prefer to
-    // describe that, attributing it back to this element, and only describe the wrapper
-    // itself when it turns out to render nothing describable.
+    // An anonymous custom element is a wrapper around whatever it renders.
     const rendered = describeChildren(element, walk, element);
-    if (rendered.length) {
+
+    // A single reportable descendant effectively IS this element, so it is returned
+    // directly, attributed back to here (see the owner mechanism above) — how
+    // <div role="grid"> inside <clr-datagrid> reports itself as a grid rendered by a
+    // datagrid. More than one independently reportable descendant means this component
+    // genuinely has several parts — clr-datagrid's grid and its clr-dg-footer,
+    // clr-tabs's tablist and each active tabpanel — siblings in the DOM but one
+    // component. Flattening them apart would scatter one thing into unrelated-looking
+    // siblings, so they are wrapped instead: nesting survives exactly as it is in the DOM.
+    if (rendered.length === 1) {
       return rendered;
+    }
+    if (rendered.length > 1) {
+      return [pruneEmpty({ type: tagName, element: tagName, children: rendered })];
     }
   }
 
@@ -169,14 +179,16 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
   }
   // A collection role is described by aggregating its subtree rather than listing it,
   // which is what keeps a ten-thousand-row grid from producing ten thousand nodes.
-  const state = { ...ariaState(element, role, walk.options), ...summarizeRole(element, role, walk.options) };
+  const state = { ...ariaState(element, walk.options), ...summarizeRole(element, role, walk.options) };
   if (Object.keys(state).length) {
     node.state = state;
   }
 
-  // Descend unless the role is a single control or message, whose label already says
-  // everything, or a collection that has just been summarised.
-  const terminal = !!role && (isLeafRole(role) || hasRoleSummarizer(role));
+  // Descend unless the role is a single-widget leaf — nothing inside a button or a
+  // checkbox has independent semantics — or a collection that has just been summarised.
+  // A content leaf such as heading/alert/status still terminates for generic wrapper
+  // purposes but is not fully opaque: see mayContainControls.
+  const terminal = !!role && ((isLeafRole(role) && !mayContainControls(role)) || hasRoleSummarizer(role));
   if (!terminal) {
     const children = describeChildren(element, walk, null);
     if (children.length) {
@@ -191,7 +203,17 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
   if (owner && owner !== element) {
     described = mergeElementContext(described, owner, walk.options);
   }
-  return [pruneEmpty(mergeElementContext(described, element, walk.options))];
+  described = mergeElementContext(described, element, walk.options);
+
+  // Published context is merged over what the DOM said, so redaction is re-applied
+  // afterwards: a component publishing its own value must not be able to reinstate one
+  // the engine withheld.
+  if (described.state?.['redacted'] === true && 'value' in described.state) {
+    described = { ...described, state: { ...described.state } };
+    delete (described.state as Record<string, unknown>)['value'];
+  }
+
+  return [pruneEmpty(described)];
 }
 
 function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null): ClrComponentContext[] {
@@ -240,12 +262,6 @@ export function pruneEmpty(context: ClrComponentContext): ClrComponentContext {
   }
   if (context.state && Object.keys(context.state).length) {
     pruned.state = context.state;
-  }
-  if (context.actions?.length) {
-    const actions = context.actions.filter(action => action.label || action.href);
-    if (actions.length) {
-      pruned.actions = actions;
-    }
   }
   if (context.children?.length) {
     pruned.children = context.children.map(child => pruneEmpty(child));

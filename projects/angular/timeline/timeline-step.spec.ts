@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
@@ -48,7 +48,8 @@ export default function (): void {
       beforeEach(() => {
         step = new ClrTimelineStep(
           new TimelineIconAttributeService(new ClrCommonStringsService()),
-          new TimelineStepIdService()
+          new TimelineStepIdService(),
+          new ElementRef(document.createElement('clr-timeline-step'))
         );
       });
 

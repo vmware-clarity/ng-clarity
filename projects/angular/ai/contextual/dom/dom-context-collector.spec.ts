@@ -12,7 +12,29 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
 import { ClrComponentContext, publishElementContext } from '@clr/angular/utils';
 
-import { collectClrDomActions, collectClrDomContexts } from './dom-context-collector';
+import { collectClrDomContexts } from './dom-context-collector';
+
+/**
+ * A component that renders more than one reportable part (e.g. a datagrid's grid and its
+ * footer, tabs' tablist and its active panel) nests them under one wrapper node instead of
+ * listing them as flat siblings, so tests that look for "is there a context of type X
+ * anywhere on the page" must search the whole tree, not just its top level.
+ */
+function findContext(
+  contexts: ClrComponentContext[],
+  predicate: (context: ClrComponentContext) => boolean
+): ClrComponentContext | undefined {
+  for (const context of contexts) {
+    if (predicate(context)) {
+      return context;
+    }
+    const found = context.children && findContext(context.children, predicate);
+    if (found) {
+      return found;
+    }
+  }
+  return undefined;
+}
 
 @Component({
   template: `
@@ -92,7 +114,7 @@ describe('DOM context collector - Clarity Angular components', () => {
   let root: HTMLElement;
 
   function contextOfType(type: string): ClrComponentContext | undefined {
-    return collectClrDomContexts(root).find(context => context.type === type);
+    return findContext(collectClrDomContexts(root), context => context.type === type);
   }
 
   beforeEach(() => {
@@ -161,22 +183,23 @@ describe('DOM context collector - Clarity Angular components', () => {
     expect(select?.state?.description).toBe('Helper Subtext');
   });
 
-  it('does not report which choice is currently selected until form values are opted into', async () => {
+  it('reports which choice is currently selected', async () => {
     // ngModel applies its value asynchronously, so wait for the select to settle.
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const selectOf = (options?: { includeFormValues: boolean }) =>
-      collectClrDomContexts(root, options)
-        .find(context => context.type === 'form')
-        ?.children?.find(child => child.element === 'clr-select-container');
+    const select = collectClrDomContexts(root)
+      .find(context => context.type === 'form')
+      ?.children?.find(child => child.element === 'clr-select-container');
 
-    expect(selectOf()?.state?.value).toBeUndefined();
-    expect(selectOf({ includeFormValues: true })?.state?.value).toBe('two');
+    expect(select?.state?.value).toBe('two');
   });
 
-  it('does not report form values by default', () => {
-    expect(JSON.stringify(collectClrDomContexts(root))).not.toContain('top-secret-value');
+  it('reports what the user typed, which is part of what the page is showing', async () => {
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(JSON.stringify(collectClrDomContexts(root))).toContain('top-secret-value');
   });
 
   it('does not describe a closed modal', () => {
@@ -214,7 +237,7 @@ describe('DOM context collector - equivalence across rendering surfaces', () => 
 
   /** The claim under test is about what is described, not which element rendered it. */
   function shapeOf(root: ParentNode): unknown {
-    const grid = collectClrDomContexts(root).find(context => context.type === 'grid');
+    const grid = findContext(collectClrDomContexts(root), context => context.type === 'grid');
     return { type: grid?.type, columns: grid?.state?.columns, rowCount: grid?.state?.rowCount };
   }
 
@@ -272,11 +295,36 @@ describe('DOM context collector - equivalence across rendering surfaces', () => 
   });
 
   it('distinguishes the surfaces only by which element rendered them', () => {
-    const gridOf = (root: ParentNode) => collectClrDomContexts(root).find(context => context.type === 'grid');
+    const gridOf = (root: ParentNode) => findContext(collectClrDomContexts(root), context => context.type === 'grid');
 
     expect(gridOf(fixture.nativeElement)?.element).toBe('clr-datagrid');
     expect(gridOf(cssOnly)?.element).toBeUndefined();
     expect(gridOf(plainHtml)?.element).toBeUndefined();
+  });
+});
+
+describe('DOM context collector - controls nested inside content leaves', () => {
+  let root: HTMLElement;
+
+  beforeEach(() => {
+    root = document.createElement('div');
+    document.body.appendChild(root);
+  });
+
+  afterEach(() => root.remove());
+
+  it('reports a button nested inside a heading, the exact shape of the combobox demo page', () => {
+    // <h2>Combobox <button (click)="disabled = !disabled">Toggle Disabled</button></h2>:
+    // ordinary markup pairing a section title with an unrelated action. Before this fix,
+    // "heading" being a leaf role meant the button was invisible to every consumer, not
+    // merely folded into the heading's label.
+    root.innerHTML = '<h2>Combobox <button class="btn btn-sm btn-primary">Toggle Disabled</button></h2>';
+
+    const heading = collectClrDomContexts(root).find(c => c.type === 'heading');
+    const button = heading?.children?.find(c => c.type === 'button');
+
+    expect(heading?.label).toBe('Combobox Toggle Disabled');
+    expect(button?.label).toBe('Toggle Disabled');
   });
 });
 
@@ -311,7 +359,7 @@ describe('DOM context collector - hand-authored markup', () => {
     root.innerHTML = '<label for="h">Host</label><input id="h" aria-invalid="true" required disabled />';
     const field = collectClrDomContexts(root).find(c => c.type === 'textbox');
 
-    expect(field?.state).toEqual({ invalid: true, disabled: true, required: true });
+    expect(field?.state).toEqual({ invalid: true, disabled: true, required: true, value: '' });
   });
 
   it('attaches a validation message to the field, so an agent learns why it is invalid', () => {
@@ -326,11 +374,23 @@ describe('DOM context collector - hand-authored markup', () => {
     expect(field?.state?.description).toBe('Name is already taken');
   });
 
-  it('collects control values only on explicit opt-in', () => {
+  it('never puts a password or a marked field into a snapshot, however values were asked for', () => {
+    root.innerHTML = `
+      <label for="p">Password</label><input id="p" type="password" value="hunter2" />
+      <label for="t">API token</label><input id="t" data-clr-context-redact value="tok_live_abc123" />
+      <label for="h">Host</label><input id="h" value="esx-prod-04" />
+    `;
+    const json = JSON.stringify(collectClrDomContexts(root));
+
+    expect(json).not.toContain('hunter2');
+    expect(json).not.toContain('tok_live_abc123');
+    expect(json).toContain('esx-prod-04');
+  });
+
+  it('collects control values', () => {
     root.innerHTML = '<label for="h">Host name</label><input id="h" name="hostName" value="esx-prod-04" />';
 
-    expect(JSON.stringify(collectClrDomContexts(root))).not.toContain('esx-prod-04');
-    expect(JSON.stringify(collectClrDomContexts(root, { includeFormValues: true }))).toContain('esx-prod-04');
+    expect(JSON.stringify(collectClrDomContexts(root))).toContain('esx-prod-04');
   });
 
   it('falls back to element geometry when checkVisibility is unavailable', () => {
@@ -358,8 +418,9 @@ describe('DOM context collector - hand-authored markup', () => {
     `;
     const contexts = collectClrDomContexts(root);
 
+    // Ignored means ignored end to end: neither the dialog nor its button contributes
+    // anything, at the top level or nested inside anything else.
     expect(contexts.map(context => context.label)).toEqual(['Page grid']);
-    expect(collectClrDomActions(contexts).map(action => action.label)).not.toContain('Panel action');
   });
 
   it('applies the component budget', () => {
@@ -401,11 +462,11 @@ describe('DOM context collector - component-published context', () => {
 
   it('lets a publisher supply the options a closed popover does not render', () => {
     root.innerHTML = '<label for="f">Fruit</label><fake-combobox><input id="f" role="combobox" /></fake-combobox>';
-    publishElementContext(root.querySelector('fake-combobox') as Element, options => ({
-      state: { options: ['Apple', 'Pear'], value: options.includeFormValues ? 'Apple' : undefined },
+    publishElementContext(root.querySelector('fake-combobox') as Element, () => ({
+      state: { options: ['Apple', 'Pear'], value: 'Apple' },
     }));
 
-    const combobox = collectClrDomContexts(root, { includeFormValues: true }).find(c => c.type === 'combobox');
+    const combobox = collectClrDomContexts(root).find(c => c.type === 'combobox');
 
     expect(combobox?.label).toBe('Fruit');
     expect(combobox?.state?.options).toEqual(['Apple', 'Pear']);
@@ -421,45 +482,5 @@ describe('DOM context collector - component-published context', () => {
     expect(collectClrDomContexts(root)).toEqual([
       { type: 'clr-fake-widget', element: 'clr-fake-widget', label: 'DOM label' },
     ]);
-  });
-});
-
-describe('DOM context collector - actions', () => {
-  let root: HTMLElement;
-
-  beforeEach(() => {
-    root = document.createElement('div');
-    document.body.appendChild(root);
-  });
-
-  afterEach(() => root.remove());
-
-  function actionsOf(html: string) {
-    root.innerHTML = html;
-    return collectClrDomActions(collectClrDomContexts(root));
-  }
-
-  it('reports what a user can currently invoke, with link targets and disabled state', () => {
-    expect(actionsOf('<button>Add user</button><button disabled>Retry</button><a href="/help">Help</a>')).toEqual([
-      { label: 'Add user', kind: 'button' },
-      { label: 'Retry', kind: 'button', disabled: true },
-      { label: 'Help', kind: 'link', href: '/help' },
-    ]);
-  });
-
-  it('leaves the actions inside a dialog to the dialog, which reports them itself', () => {
-    const actions = actionsOf('<button>Page action</button><div role="dialog"><button>Dialog action</button></div>');
-
-    expect(actions.map(action => action.label)).toEqual(['Page action']);
-  });
-
-  it('leaves navigation links to the navigation', () => {
-    const actions = actionsOf('<nav><a href="/a">Dashboard</a></nav><a href="/b">Docs</a>');
-
-    expect(actions.map(action => action.label)).toEqual(['Docs']);
-  });
-
-  it('drops an action that has neither a label nor a target', () => {
-    expect(actionsOf('<button></button>')).toEqual([]);
   });
 });

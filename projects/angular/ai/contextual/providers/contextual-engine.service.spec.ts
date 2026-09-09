@@ -48,10 +48,9 @@ describe('ClrContextualEngineService', () => {
     });
 
     it('can skip DOM collection entirely', () => {
-      const snapshot = engine.getSnapshot({ includeDomComponents: false, includeActions: false });
+      const snapshot = engine.getSnapshot({ includeDomComponents: false });
 
       expect(snapshot.components).toEqual([]);
-      expect(snapshot.actions).toBeUndefined();
     });
 
     it('lets other UI libraries register their own DOM extractors', () => {
@@ -111,19 +110,23 @@ describe('ClrContextualEngineService', () => {
         form.remove();
       });
 
-      it('does not let a caller on the page turn on form values', () => {
-        // Any script on the page can call this, including a third-party tag, so whether
-        // typed values are exposed cannot be the caller's decision. Stated against an
-        // explicit host choice so the assertion holds whatever the library default is.
-        engine.enableGlobalAccess('testClrContext', { includeFormValues: false });
+      it('withholds what the user typed, because any script on the page can call it', () => {
+        // Including a third-party tag, so this cannot be the caller's decision.
+        engine.enableGlobalAccess('testClrContext');
 
-        expect(reportedValue(snapshotVia({ includeFormValues: true }))).toBeUndefined();
+        expect(reportedValue(snapshotVia({ shareFormValues: true }))).toBeUndefined();
       });
 
-      it('applies the budgets the host chose, whatever the caller asks for', () => {
-        engine.enableGlobalAccess('testClrContext', { includeFormValues: true });
+      it('still describes the field whose value it withholds', () => {
+        engine.enableGlobalAccess('testClrContext');
 
-        expect(reportedValue(snapshotVia({ includeFormValues: false }))).toBe('user-typed-secret');
+        expect(snapshotVia().components.some(component => component.type === 'textbox')).toBe(true);
+      });
+
+      it('shares what the user typed only when the application says so', () => {
+        engine.enableGlobalAccess('testClrContext', { shareFormValues: true });
+
+        expect(reportedValue(snapshotVia())).toBe('user-typed-secret');
       });
 
       it('still honours a caller budget the host left open', () => {
@@ -135,25 +138,6 @@ describe('ClrContextualEngineService', () => {
 
     it('resolves host context with null when the page is not embedded', async () => {
       expect(await engine.requestHostContext()).toBeNull();
-    });
-
-    it('applies agent form answers to the first matching form', () => {
-      const form = document.createElement('form');
-      form.id = 'engine-apply-form';
-      form.innerHTML = '<input type="text" name="city" />';
-      document.body.appendChild(form);
-
-      try {
-        const result = engine.applyFormValues({ city: 'Sofia' }, '#engine-apply-form');
-
-        expect(result.applied).toEqual(['city']);
-        expect(form.querySelector<HTMLInputElement>('[name=city]')?.value).toBe('Sofia');
-        expect(engine.applyFormValues({ city: 'Sofia' }, '#no-such-form').skipped).toEqual([
-          { name: 'city', reason: 'no form matches the selector' },
-        ]);
-      } finally {
-        form.remove();
-      }
     });
 
     it('serves snapshots to embedded frames only while the frame bridge is enabled', () => {

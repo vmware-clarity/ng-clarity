@@ -1943,7 +1943,6 @@ export class ClrCommonStringsService {
 
 // @public
 export interface ClrComponentContext {
-    actions?: ClrContextAction[];
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
@@ -1962,20 +1961,8 @@ export class ClrConditionalModule {
 }
 
 // @public
-export interface ClrContextAction {
-    // (undocumented)
-    disabled?: boolean;
-    href?: string;
-    // (undocumented)
-    kind: 'button' | 'link';
-    label: string;
-}
-
-// @public
 export interface ClrContextSnapshotOptions {
-    includeActions?: boolean;
     includeDomComponents?: boolean;
-    includeFormValues?: boolean;
     maxComponents?: number;
     maxItemsPerCollection?: number;
     maxTextLength?: number;
@@ -5914,9 +5901,9 @@ export class ClrTimelineModule {
 }
 
 // @public (undocumented)
-export class ClrTimelineStep {
+export class ClrTimelineStep implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TimelineIconAttributeService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
+    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any, hostElement: ElementRef<HTMLElement>);
     // (undocumented)
     get iconAriaLabel(): string;
     // (undocumented)
@@ -5927,6 +5914,8 @@ export class ClrTimelineStep {
     get isProcessing(): boolean;
     // (undocumented)
     ngAfterContentInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     state: ClrTimelineStepState;
     // (undocumented)

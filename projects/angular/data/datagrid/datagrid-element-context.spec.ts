@@ -14,14 +14,17 @@ import { ClrDatagridModule } from './datagrid.module';
 
 interface Node {
   name: string;
+  status: string;
 }
 
 @Component({
   template: `
     <clr-datagrid>
-      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'name'" [clrFilterValue]="nameFilter">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'status'">Status</clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.status }}</clr-dg-cell>
       </clr-dg-row>
       <clr-dg-footer>
         <clr-dg-pagination [clrDgPageSize]="2" [clrDgTotalItems]="total"></clr-dg-pagination>
@@ -32,7 +35,11 @@ interface Node {
 })
 class TestComponent {
   total = 4210;
-  items: Node[] = [{ name: 'node-1' }, { name: 'node-2' }];
+  nameFilter = '';
+  items: Node[] = [
+    { name: 'node-1', status: 'ok' },
+    { name: 'node-2', status: 'down' },
+  ];
 }
 
 describe('ClrDatagrid element context', () => {
@@ -43,8 +50,6 @@ describe('ClrDatagrid element context', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
-    includeActions: true,
-    includeFormValues: false,
   };
 
   function published(): ReturnType<ClrElementContextCallback> {
@@ -72,6 +77,22 @@ describe('ClrDatagrid element context', () => {
   it('publishes the total row count, which the rendered page cannot show', () => {
     // The DOM holds two rows; the grid holds 4210. Only the component knows the total.
     expect(published()?.state?.rowCount).toBe(4210);
+  });
+
+  it('publishes which columns are filtered, which a closed filter popover cannot show', async () => {
+    fixture.componentInstance.nameFilter = 'node-1';
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(published()?.state?.filteredColumns).toEqual(['name']);
+  });
+
+  it('publishes nothing about filters while none are applied', () => {
+    expect('filteredColumns' in (published()?.state ?? {})).toBe(false);
+  });
+
+  it('publishes nothing about hidden columns while every column is shown', () => {
+    expect('hiddenColumns' in (published()?.state ?? {})).toBe(false);
   });
 
   it('stops publishing once the datagrid is destroyed', () => {

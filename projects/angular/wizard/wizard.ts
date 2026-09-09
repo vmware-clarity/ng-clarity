@@ -23,7 +23,7 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, publishElementContext, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -155,6 +155,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   @ViewChild('pageTitle') pageTitle: ElementRef<HTMLElement>;
   @ContentChildren(ClrWizardPage) pages: QueryList<ClrWizardPage>;
+
   @ContentChildren(ClrWizardButton, { descendants: false }) wizardButtons: QueryList<ClrWizardButton>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
 
@@ -167,6 +168,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
+  private teardownElementContext?: () => void;
   private _forceForward = false;
   private _stopNext = false;
   private _stopCancel = false;
@@ -328,6 +330,30 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   ngAfterContentInit(): void {
+    // Each step's completion and error state lives in a CSS class on its stepnav item.
+    // The icon there does carry an accessible name for it, but the icon sits inside a
+    // button, and a button is described as a leaf — so nothing reaches it. The step
+    // titles are in the DOM and readable; these facts are not.
+    this.teardownElementContext = publishElementContext(this.elementRef.nativeElement, () => {
+      const pages = this.pages?.toArray() ?? [];
+      if (!pages.length) {
+        return null;
+      }
+      return {
+        state: {
+          stepCount: pages.length,
+          currentStepIndex: pages.findIndex(page => page.current),
+          steps: pages.map((page, index) => ({
+            index,
+            current: page.current,
+            complete: page.completed,
+            error: page.hasError,
+            navigable: page.enabled,
+          })),
+        },
+      };
+    });
+
     this.navService.stepnavLayout = this.stepnavLayout;
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
@@ -344,6 +370,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   ngOnDestroy(): void {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 

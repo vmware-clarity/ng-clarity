@@ -17,8 +17,6 @@ describe('summarizeRole', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
-    includeActions: true,
-    includeFormValues: false,
     ...overrides,
   });
 
@@ -106,12 +104,12 @@ describe('summarizeRole', () => {
     expect(state?.options).toEqual(['Gold', 'Silver']);
   });
 
-  it('withholds which radio is chosen until form values are opted into', () => {
+  it('reports which choice is currently selected', () => {
     const markup = `<div role="radiogroup">
          <label for="a">Gold</label><input id="a" type="radio" name="t" value="gold" checked />
        </div>`;
-    expect(summarize(markup, 'radiogroup')?.value).toBeUndefined();
-    expect(summarize(markup, 'radiogroup', { includeFormValues: true })?.value).toBe('Gold');
+
+    expect(summarize(markup, 'radiogroup')?.value).toBe('Gold');
   });
 
   it('summarises a native dropdown by the choices it offers', () => {

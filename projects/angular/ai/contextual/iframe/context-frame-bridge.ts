@@ -6,7 +6,7 @@
  */
 
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
-import { sanitizeUntrustedSnapshotOptions } from '../untrusted-options';
+import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
 
 /**
  * Identifier of the cross-frame context protocol. The protocol is plain,
@@ -69,6 +69,15 @@ export interface ClrContextFrameHostOptions {
   shareFullUrl?: boolean;
 
   /**
+   * Share what the user has typed. Off by default: the application sees its own form
+   * contents as a matter of course, but an embedded document has no claim to them.
+   *
+   * Fields are described either way — label, type, permitted values, validation state —
+   * so a frame still learns the shape of a form without learning its contents.
+   */
+  shareFormValues?: boolean;
+
+  /**
    * Shortest gap between two snapshots served to the same frame, in milliseconds.
    * Defaults to 200.
    *
@@ -100,14 +109,15 @@ export interface ClrContextFrameRequestOptions {
  * needs one. Context is computed per request and never cached or broadcast, so an
  * embedded agent always sees the page as it currently is.
  *
- * A frame is trusted less than the application that embeds it: it cannot ask for form
- * values, it does not receive the URL's query string, and it cannot ask faster than
+ * A frame is trusted less than the application that embeds it: it does not receive what
+ * the user has typed, nor the URL's query string, and it cannot ask faster than
  * {@link ClrContextFrameHostOptions.minRequestIntervalMs}.
  */
 export class ClrContextFrameHost {
   private readonly allowedOrigins: string[];
   private readonly allowAnyOrigin: boolean;
   private readonly shareFullUrl: boolean;
+  private readonly shareFormValues: boolean;
   private readonly minRequestIntervalMs: number;
   private readonly lastServedAt = new WeakMap<object, number>();
   private readonly messageListener = this.onMessage.bind(this);
@@ -123,6 +133,7 @@ export class ClrContextFrameHost {
     this.allowedOrigins = (options.allowedOrigins || [hostWindow.location.origin]).filter(origin => origin !== '*');
     this.allowAnyOrigin = options.allowAnyOrigin === true;
     this.shareFullUrl = options.shareFullUrl === true;
+    this.shareFormValues = options.shareFormValues === true;
     this.minRequestIntervalMs = options.minRequestIntervalMs ?? DEFAULT_MIN_REQUEST_INTERVAL_MS;
   }
 
@@ -192,10 +203,10 @@ export class ClrContextFrameHost {
   /** The snapshot as a frame is allowed to see it, leaving the original untouched. */
   private contextForFrame(options?: ClrContextSnapshotOptions): ClrPageContext {
     const context = this.getSnapshot(options);
+    const shared: ClrPageContext = this.shareFormValues ? { ...context } : withoutFormValues(context);
     if (this.shareFullUrl) {
-      return context;
+      return shared;
     }
-    const shared: ClrPageContext = { ...context };
     if (typeof shared.url === 'string') {
       shared.url = stripQueryAndFragment(shared.url);
     }

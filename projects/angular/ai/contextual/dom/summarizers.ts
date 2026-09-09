@@ -195,14 +195,11 @@ function summarizeRadiogroup(element: Element, options: Required<ClrContextSnaps
   const state: Record<string, unknown> = {
     options: radios.slice(0, options.maxItemsPerCollection).map(radio => nameOf(radio, options)),
   };
-  // Which option a user picked is their data, so it waits for an explicit opt-in.
-  if (options.includeFormValues) {
-    const chosen = radios.find(
-      radio => (radio as HTMLInputElement).checked || radio.getAttribute('aria-checked') === 'true'
-    );
-    if (chosen) {
-      state.value = nameOf(chosen, options);
-    }
+  const chosen = radios.find(
+    radio => (radio as HTMLInputElement).checked || radio.getAttribute('aria-checked') === 'true'
+  );
+  if (chosen) {
+    state.value = nameOf(chosen, options);
   }
   return state;
 }

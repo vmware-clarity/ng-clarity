@@ -7,34 +7,82 @@
 <app-doc-tabs>
   <app-doc-tab tab="overview">
     <p class="component-summary" id="summary">
-      The <code cds-text="code">&#64;clr/ai</code> package gives AI agents structured, always-current context about the
-      page your application is showing: the active route, the components rendered right now and their state, the actions
-      currently available, and any semantic annotations the application provides.
+      The contextual engine gives AI agents structured, always-current context about the page your application is
+      showing: the active route, what is rendered right now and what state it is in, the actions currently available,
+      and whatever the application chooses to say about itself.
     </p>
 
+    <h2 id="how-it-works" class="clr-mt-48px" cds-text="title">How it describes the page</h2>
     <p class="clr-mt-16px" cds-text="body">
-      <code cds-text="code">&#64;clr/ai</code> is a standalone package that does not depend on
-      <code cds-text="code">&#64;clr/angular</code>: Clarity components are described by reading the rendered DOM, so
-      the engine works alongside any Clarity version — and, through custom extractors and a framework-agnostic
-      <code cds-text="code">postMessage</code> protocol, with other UI libraries and with UI embedded in iframes, such
-      as chat assistants.
+      The engine reads the <strong cds-text="medium">accessibility tree</strong>, not any library's selectors. An ARIA
+      role, an accessible name and ARIA state mean the same thing on a Clarity Angular component, on
+      <code cds-text="code">&#64;clr/ui</code> CSS-only markup, in another component library and in plain semantic HTML
+      — so one implementation describes all of them, and nothing has to be taught about a component before it can be
+      described.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      That is why a component reports itself as its role rather than its tag: a datagrid is a
+      <code cds-text="code">grid</code>, a modal is a <code cds-text="code">dialog</code>. Where the role is too coarse,
+      an <code cds-text="code">element</code> field carries the tag that rendered it, so a
+      <code cds-text="code">clr-side-panel</code> and a <code cds-text="code">clr-modal</code> remain distinguishable
+      while both being dialogs.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Components add only what a role cannot express — a combobox's options while its popover is closed, a datagrid's
+      total row count while paginated.
     </p>
 
-    <h2 id="installing" class="clr-mt-48px" cds-text="title">Installing</h2>
+    <h2 id="principles" class="clr-mt-48px" cds-text="title">What it guarantees</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Pull, never push.</strong> A snapshot is computed at the moment it is requested, from
+      the live DOM. Nothing is cached, so a snapshot cannot describe UI that has been closed, destroyed or navigated
+      away from.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Bounded output.</strong> Text is truncated, collections are capped, hidden elements are
+      skipped and collection roles are summarised rather than listed, so a ten-thousand-row grid does not become ten
+      thousand nodes.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Read-only.</strong> The engine describes the page and never changes it. Applying a value
+      an agent proposes is a decision that needs a person to approve it, which belongs to a review surface rather than
+      to a context engine.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Sensitive values never leave.</strong> Passwords, file inputs and anything whose
+      <code cds-text="code">autocomplete</code> declares a credential or a payment card are reported as
+      <code cds-text="code">redacted</code> rather than by value, as is anything marked
+      <code cds-text="code">data-clr-context-redact</code>. Embedded frames and the browser-agent accessor receive no
+      form values at all unless the application deliberately shares them.
+    </p>
+
+    <h2 id="who-it-is-for" class="clr-mt-48px" cds-text="title">Who consumes it</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      An assistant inside your application injects the service and asks for a snapshot per question, or subscribes to
+      the tracker to always hold the current page. An assistant embedded in an iframe — possibly built with a different
+      stack entirely — pulls context over a framework-agnostic
+      <code cds-text="code">postMessage</code> protocol. An agent driving the browser from outside reads
+      <code cds-text="code">window.clrContext()</code>. Each of those is a different trust boundary, and each is
+      configured separately.
+    </p>
+  </app-doc-tab>
+
+  <app-doc-tab tab="code">
+    <h2 id="examples" cds-text="title" class="clr-mt-24px">Code &amp; Examples</h2>
+
+    <h3 id="installing" class="clr-mt-32px" cds-text="section">Installing</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      The engine ships with <code cds-text="code">&#64;clr/angular</code> as the
+      <code cds-text="code">&#64;clr/angular/ai</code> entry point, so there is nothing extra to install.
+    </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="installExample" language="bash"></app-code-snippet>
     </div>
-    <p class="clr-mt-16px" cds-text="body">
-      The only peer dependencies are <code cds-text="code">&#64;angular/common</code>,
-      <code cds-text="code">&#64;angular/core</code>, <code cds-text="code">&#64;angular/router</code> and
-      <code cds-text="code">rxjs</code> — already present in every Angular application.
-    </p>
 
-    <h2 id="taking-a-snapshot" class="clr-mt-48px" cds-text="title">Taking a snapshot</h2>
+    <h3 id="taking-a-snapshot" class="clr-mt-32px" cds-text="section">Taking a snapshot</h3>
     <p class="clr-mt-16px" cds-text="body">
       <code cds-text="code">ClrContextualEngineService.getSnapshot()</code> computes a snapshot on demand from the live
-      DOM and live registrations. Nothing is cached, so a snapshot can never describe UI that has been closed, destroyed
-      or navigated away from.
+      DOM and live registrations.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="snapshotExample" language="typescript"></app-code-snippet>
@@ -44,29 +92,30 @@
       <app-code-snippet [code]="snapshotShapeExample" language="typescript"></app-code-snippet>
     </div>
 
-    <h2 id="live-context" class="clr-mt-48px" cds-text="title">Keeping a live page context</h2>
+    <h3 id="live-context" class="clr-mt-32px" cds-text="section">Keeping a live page context</h3>
     <p class="clr-mt-16px" cds-text="body">
-      Consumers that always want the context of the page the user is currently on — an AI chat panel, for example —
-      subscribe to <code cds-text="code">ClrContextTrackerService</code>. It watches the DOM with a
-      <code cds-text="code">MutationObserver</code> (created outside the Angular zone, so it triggers no change
-      detection) and re-scrapes after a quiet window of <code cds-text="code">debounceMs</code> (default 300), bounded
-      by <code cds-text="code">maxWaitMs</code> (default 2000) for pages that never go quiet. An emission happens only
-      when the context actually changed, and each emission is a complete fresh snapshot.
+      Consumers that always want the context of the page the user is currently on subscribe to
+      <code cds-text="code">ClrContextTrackerService</code>. It watches the DOM with a
+      <code cds-text="code">MutationObserver</code> created outside the Angular zone, and watches
+      <code cds-text="code">input</code> and <code cds-text="code">change</code> too, because typing changes a property
+      rather than an attribute and is invisible to an observer. Both feed one quiet window of
+      <code cds-text="code">debounceMs</code> (default 300), bounded by <code cds-text="code">maxWaitMs</code> (default
+      2000), so a burst of activity results in a single scrape and an emission happens only when the context actually
+      changed.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="trackerExample" language="typescript"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
-      Mark UI that renders the context with the <code cds-text="code">data-clr-context-ignore</code> attribute (exported
-      as <code cds-text="code">CLR_CONTEXT_IGNORE_ATTRIBUTE</code>). Such regions are invisible to the engine end to
-      end: the collector never describes them and the tracker ignores their mutations, so a panel re-rendering the
-      context cannot re-trigger tracking or describe itself into the page context.
+      Mark UI that renders the context with <code cds-text="code">data-clr-context-ignore</code>. Such regions are
+      invisible to the engine end to end, so a panel re-rendering the context cannot re-trigger tracking or describe
+      itself into the page context.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="ignoreExample" language="html"></app-code-snippet>
     </div>
 
-    <h2 id="annotating" class="clr-mt-48px" cds-text="title">Annotating the application</h2>
+    <h3 id="annotating" class="clr-mt-32px" cds-text="section">Annotating the application</h3>
     <p class="clr-mt-16px" cds-text="body">
       The DOM only knows <em>what</em> is on the page. The <code cds-text="code">clrContext</code> directive lets the
       application add the <em>why</em> — knowledge only it has. Annotations register when the element appears,
@@ -80,46 +129,55 @@
       <app-code-snippet [code]="directiveModuleExample" language="typescript"></app-code-snippet>
     </div>
 
-    <h2 id="form-filling" class="clr-mt-48px" cds-text="title">Filling forms with an agent</h2>
+    <h3 id="form-context" class="clr-mt-32px" cds-text="section">Reading form context</h3>
     <p class="clr-mt-16px" cds-text="body">
-      For agents that complete forms on the user's behalf, opt into full form context with
-      <code cds-text="code">includeFormValues</code>: every control is then reported with its
-      <code cds-text="code">name</code>, current <code cds-text="code">value</code> and the
-      <code cds-text="code">options</code> it offers (select options, radio choices, datalist entries). The agent's JSON
-      answer is applied back with <code cds-text="code">applyFormValues</code>; unknown names, non-matching options and
-      password fields are reported as skipped rather than guessed at.
+      A field is described by what it is, what it permits and what it currently holds: its label and type, the
+      <code cds-text="code">options</code> it offers, its <code cds-text="code">min</code>,
+      <code cds-text="code">max</code>, <code cds-text="code">step</code>, <code cds-text="code">pattern</code> and
+      <code cds-text="code">maxLength</code>, its validation state, and the helper or error text that describes it —
+      resolved from <code cds-text="code">aria-describedby</code>, so it is attached to the field it belongs to rather
+      than floating beside it.
     </p>
     <div class="clr-mt-16px">
-      <app-code-snippet [code]="formFillingExample" language="typescript"></app-code-snippet>
+      <app-code-snippet [code]="formContextExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      Values that should never appear in a snapshot are withheld automatically, and anything else can be marked:
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="redactExample" language="html"></app-code-snippet>
     </div>
 
-    <h2 id="element-context" class="clr-mt-48px" cds-text="title">State the DOM cannot show</h2>
+    <h3 id="element-context" class="clr-mt-32px" cds-text="section">State the DOM cannot show</h3>
     <p class="clr-mt-16px" cds-text="body">
       Some state lives only inside component instances — a combobox's options render in a popover, yet the component
-      always knows them. Any component can publish that truth by assigning a callback to its own host element under the
-      <code cds-text="code">clrElementContext</code> property (helper:
-      <code cds-text="code">setClrElementContext</code>). The collector calls it while scraping and merges the result
-      over what the DOM shows. Because the contract is a plain element property, publishing requires no dependency on
-      <code cds-text="code">&#64;clr/ai</code>. <code cds-text="code">ClrCombobox</code> ships this integration built
-      in: its options and selection are reported even while the popover is closed.
+      always knows them. Any component can publish that truth with
+      <code cds-text="code">publishElementContext</code> from <code cds-text="code">&#64;clr/angular/utils</code>. The
+      collector calls it while scraping and merges the result over what the DOM showed.
+      <code cds-text="code">ClrCombobox</code> ships this built in, and so does
+      <code cds-text="code">ClrDatagrid</code> for its total row count while paginated.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="elementContextExample" language="typescript"></app-code-snippet>
     </div>
 
-    <h2 id="other-ui-libraries" class="clr-mt-48px" cds-text="title">Teaching the engine about other UI libraries</h2>
+    <h3 id="other-ui-libraries" class="clr-mt-32px" cds-text="section">Markup that carries no semantics</h3>
     <p class="clr-mt-16px" cds-text="body">
-      Components that are not Clarity components can be described by registering a DOM extractor. The returned function
-      removes it again.
+      Well-formed markup needs no help: anything with an ARIA role, an accessible name or a custom element tag is
+      described automatically, whatever library rendered it. What the engine cannot describe is markup that says nothing
+      about itself — a bare <code cds-text="code">&lt;div class="card"&gt;</code>. Register an extractor for those; the
+      returned function removes it again.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="extractorExample" language="typescript"></app-code-snippet>
     </div>
 
-    <h2 id="iframes" class="clr-mt-48px" cds-text="title">Serving context to embedded frames</h2>
+    <h3 id="iframes" class="clr-mt-32px" cds-text="section">Serving context to embedded frames</h3>
     <p class="clr-mt-16px" cds-text="body">
       UI embedded in an iframe — such as a chat assistant built with a separate UI library — can receive the hosting
-      page's context. The hosting application opts in, and by default only frames from the page's own origin are served:
+      page's context. An embedded document is trusted less than the application that embeds it: same-origin only by
+      default, no form values, no URL query string, and one snapshot per frame per
+      <code cds-text="code">minRequestIntervalMs</code> so a frame in a loop cannot keep the host's main thread busy.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="frameHostExample" language="typescript"></app-code-snippet>
@@ -127,31 +185,42 @@
     <p class="clr-mt-16px" cds-text="body">
       The protocol is two plain JSON messages over <code cds-text="code">postMessage</code> (see
       <code cds-text="code">CLR_CONTEXT_PROTOCOL</code>), so the embedded page needs neither Angular nor Clarity.
-      Requests are answered per frame and per request with a freshly computed snapshot — context is never broadcast.
+      Requests are answered per frame and per request with a freshly computed snapshot, addressed to the origin that
+      asked — context is never broadcast.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="frameClientExample" language="typescript"></app-code-snippet>
     </div>
-
-    <h2 id="browser-agents" class="clr-mt-48px" cds-text="title">Browser-driving agents</h2>
     <p class="clr-mt-16px" cds-text="body">
-      Agents that drive the browser directly and have no application API can be given a global accessor:
+      A hand-written implementation gets none of the protections
+      <code cds-text="code">requestHostContext()</code> applies, so reproduce two of them: accept a response only when
+      <code cds-text="code">event.source === parent</code>, and use an unguessable
+      <code cds-text="code">requestId</code>. Sibling frames can reach each other through
+      <code cds-text="code">parent.frames</code>, so a listener that matches on the id alone can be answered by any
+      frame on the page.
+    </p>
+
+    <h3 id="browser-agents" class="clr-mt-32px" cds-text="section">Browser-driving agents</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Agents that drive the browser directly and have no application API can be given a global accessor. Any script on
+      the page can call it, so what the user typed is withheld unless the application shares it deliberately.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="globalAccessExample" language="typescript"></app-code-snippet>
     </div>
 
-    <h2 id="privacy-and-budgets" class="clr-mt-48px" cds-text="title">Privacy and budgets</h2>
+    <h3 id="budgets" class="clr-mt-32px" cds-text="section">Keeping snapshots lean</h3>
     <p class="clr-mt-16px" cds-text="body">
-      By default, form fields are described by name, label, type and validation state —
-      <strong cds-text="medium"
-        >values are collected only with the explicit <code cds-text="code">includeFormValues</code> opt-in</strong
-      >, passwords and file inputs are redacted unconditionally, and embedded frames can never request values through
-      the frame bridge. Hidden elements and ignore-marked regions are skipped, text is truncated and lists are capped,
-      so snapshots stay small enough for an agent's context window. Every budget can be tuned per call:
+      Everything in a snapshot is bounded, and every budget can be tuned per call. Note that
+      <code cds-text="code">maxComponents</code> stops the walk when it is reached, so a low value drops whatever comes
+      last in the document rather than sampling evenly.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="budgetsExample" language="typescript"></app-code-snippet>
     </div>
+  </app-doc-tab>
+
+  <app-doc-tab tab="api">
+    <clr-api-contextual-engine-demo></clr-api-contextual-engine-demo>
   </app-doc-tab>
 </app-doc-tabs>

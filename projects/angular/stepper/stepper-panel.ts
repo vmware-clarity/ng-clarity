@@ -13,6 +13,7 @@ import {
   ContentChildren,
   ElementRef,
   HostBinding,
+  inject,
   Inject,
   OnInit,
   Optional,
@@ -22,7 +23,12 @@ import {
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
-import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
+import {
+  ClrCommonStringsService,
+  IfExpandService,
+  publishElementContext,
+  triggerAllFormControlValidation,
+} from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
 import { filter, map, pairwise, startWith, tap } from 'rxjs/operators';
 
@@ -44,9 +50,13 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
   @ContentChildren(ClrStepDescription) stepDescription: QueryList<ClrStepDescription>;
   @HostBinding('class.clr-stepper-panel-disabled') disabled = false;
+
   readonly PanelStatus = StepperPanelStatus;
   override panel: Observable<StepperPanelModel>;
 
+  private readonly hostElement = inject(ElementRef<HTMLElement>);
+  private currentStatus: StepperPanelStatus = StepperPanelStatus.Inactive;
+  private teardownElementContext?: () => void;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -94,7 +104,23 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
 
   override ngOnInit(): void {
     super.ngOnInit();
-    this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));
+
+    // The status is otherwise announced only as a transient live-region message beside
+    // the step, and only when it is complete or in error — so a step that is simply not
+    // started, or currently open, says nothing about itself.
+    //
+    // Captured through the existing pipe rather than a subscription of its own: an extra
+    // subscriber here renders the template before ngAfterContentInit, when the content
+    // children it reads do not exist yet.
+    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
+      state: { status: this.currentStatus },
+    }));
+    this.panel = this.panel.pipe(
+      tap(panel => {
+        this.currentStatus = panel.status;
+        this.triggerAllFormControlValidationIfError(panel);
+      })
+    );
     this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();
 
@@ -130,6 +156,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 

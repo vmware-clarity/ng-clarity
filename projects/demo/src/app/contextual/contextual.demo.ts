@@ -5,8 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { ClrFormLayout } from '@clr/angular';
 import { ClrContextTrackerService, ClrContextualEngineService } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
@@ -31,14 +33,7 @@ const EMBEDDED_CHAT_PAGE = `
           if (message && message.protocol === 'ui-context/v1' && message.kind === 'context-response') {
             var context = message.context;
             document.getElementById('out').textContent = JSON.stringify(
-              {
-                title: context.title,
-                route: context.route && context.route.path,
-                regions: context.regions,
-                componentsOnPage: context.components.map(function (component) {
-                  return component.type;
-                }),
-              },
+              context,
               null,
               2
             );
@@ -77,14 +72,66 @@ export class ContextualDemo implements OnInit, OnDestroy {
   snapshotCount = 0;
   embeddedPage: SafeHtml;
 
+  _isDisabled = false;
+  _isSuccess = false;
+  _isError = false;
+
+  form = new FormGroup({
+    name: new FormControl(),
+    age: new FormControl(),
+    password: new FormControl(),
+    description: new FormControl(),
+    selectedOption: new FormControl(),
+    selectedOptionCombobox: new FormControl(),
+    datalist: new FormControl(),
+    option1: new FormControl(),
+    date: new FormControl(),
+    radio: new FormControl(),
+    toggle: new FormControl(),
+    files: new FormControl(),
+    range: new FormControl(50),
+  });
+
+  @Input() clrLayout = ClrFormLayout.HORIZONTAL;
+  @Input() isFullWidth = false;
+  @Input() isReadonly = false;
+
   private trackingSubscription: Subscription | null = null;
 
   constructor(
     private contextEngine: ClrContextualEngineService,
     private contextTracker: ClrContextTrackerService,
+    private changeDetectorRef: ChangeDetectorRef,
     sanitizer: DomSanitizer
   ) {
     this.embeddedPage = sanitizer.bypassSecurityTrustHtml(EMBEDDED_CHAT_PAGE);
+  }
+
+  @Input()
+  get isDisabled() {
+    return this._isDisabled;
+  }
+  set isDisabled(value: boolean) {
+    this._isDisabled = value;
+    this.setControlsState();
+  }
+
+  @Input()
+  get isError() {
+    return this._isError;
+  }
+  set isError(value: boolean) {
+    this._isError = value;
+    this.setControlsState();
+  }
+
+  @Input()
+  get isSuccess() {
+    return this._isSuccess;
+  }
+  set isSuccess(value: boolean) {
+    this._isSuccess = value;
+    this.setControlsState();
   }
 
   ngOnInit(): void {
@@ -112,5 +159,25 @@ export class ContextualDemo implements OnInit, OnDestroy {
 
   refreshNow(): void {
     this.contextTracker.refresh();
+  }
+
+  setControlsState() {
+    this.form.enable();
+    Object.keys(this.form.controls).forEach(control => {
+      if (this._isDisabled) {
+        this.form.get(control)?.disable();
+      } else {
+        if (this._isError && !this._isSuccess) {
+          this.form.get(control).setErrors({ required: true });
+          this.form.get(control).markAsTouched();
+          this.form.get(control).markAsDirty();
+        } else if (this._isSuccess) {
+          this.form.get(control).setErrors(null);
+          this.form.get(control).markAsTouched();
+        }
+      }
+    });
+    this.form.updateValueAndValidity();
+    this.changeDetectorRef.detectChanges();
   }
 }

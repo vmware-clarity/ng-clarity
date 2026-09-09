@@ -10,7 +10,7 @@ import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@a
 import { Observable, ReplaySubject } from 'rxjs';
 
 import { ClrContextualEngineService } from './contextual-engine.service';
-import { CLR_CONTEXT_DEFAULT_OPTIONS, CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 
 export interface ClrContextTrackingOptions {
@@ -47,9 +47,8 @@ const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
  * context — the chat panel itself — neither triggers feedback loops nor describes
  * itself into the page context.
  *
- * When snapshots carry form values, `input` and `change` are watched as well, because
- * typing changes a property rather than an attribute and is invisible to a
- * `MutationObserver`.
+ * `input` and `change` are watched as well as mutations, because typing changes a
+ * property rather than an attribute and is invisible to a `MutationObserver`.
  *
  * Every emission is a freshly computed snapshot of the live DOM at that moment — the
  * tracker stores only the latest emission and never merges or accumulates, so context
@@ -111,15 +110,11 @@ export class ClrContextTrackerService implements OnDestroy {
       });
 
       // Typing changes an input's `value` property, never its attribute, so a
-      // MutationObserver never sees it. Without these listeners a subscriber tracking
-      // form values would hold whatever they were at the last unrelated DOM change.
-      // Attached only when values are actually collected, so tracking costs nothing
-      // extra otherwise.
-      if (this.tracksFormValues()) {
-        this.valueListener = event => this.onValueChange(event);
-        this.document.body.addEventListener('input', this.valueListener, true);
-        this.document.body.addEventListener('change', this.valueListener, true);
-      }
+      // MutationObserver never sees it. Without these listeners a subscriber would hold
+      // whatever the values were at the last unrelated DOM change.
+      this.valueListener = event => this.onValueChange(event);
+      this.document.body.addEventListener('input', this.valueListener, true);
+      this.document.body.addEventListener('change', this.valueListener, true);
     });
   }
 
@@ -155,11 +150,6 @@ export class ClrContextTrackerService implements OnDestroy {
       return;
     }
     this.scheduleScrape();
-  }
-
-  /** Whether snapshots will carry values, and so whether value changes matter. */
-  private tracksFormValues(): boolean {
-    return this.trackingOptions.snapshot?.includeFormValues ?? CLR_CONTEXT_DEFAULT_OPTIONS.includeFormValues;
   }
 
   /**

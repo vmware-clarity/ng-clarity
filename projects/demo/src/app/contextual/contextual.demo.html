@@ -83,3 +83,139 @@
     <button type="button" class="btn btn-primary" (click)="addHostOpen = false">Add</button>
   </div>
 </clr-modal>
+
+<form
+  clrForm
+  [formGroup]="form"
+  [clrLayout]="clrLayout"
+  [class.clr-form-full-width]="isFullWidth"
+  [class.is-readonly]="isReadonly"
+>
+  <clr-input-container>
+    <label>Text</label>
+    <input type="text" clrInput name="name" formControlName="name" [readonly]="isReadonly" />
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-input-container>
+  <clr-number-input-container>
+    <label>Number</label>
+    <input type="number" clrNumberInput name="age" formControlName="age" [readonly]="isReadonly" />
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-number-input-container>
+  <clr-password-container>
+    <label>Password</label>
+    <input type="password" clrPassword name="password" formControlName="password" [readonly]="isReadonly" />
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-password-container>
+  <clr-textarea-container>
+    <label>Textarea</label>
+    <textarea clrTextarea name="description" formControlName="description" [readonly]="isReadonly"></textarea>
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-textarea-container>
+  <clr-select-container>
+    <label>Basic select</label>
+    <select clrSelect name="options" formControlName="selectedOption">
+      <option value="one">One</option>
+      <option value="two">Two</option>
+      <option value="three">Three</option>
+    </select>
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-select-container>
+  <clr-datalist-container>
+    <label>Datalist</label>
+    <input clrDatalistInput placeholder="No label" name="datalist" formControlName="datalist" [readonly]="isReadonly" />
+    <datalist>
+      <option value="one"></option>
+      <option value="two"></option>
+      <option value="three"></option>
+    </datalist>
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-datalist-container>
+  <clr-combobox-container>
+    <label>Combobox</label>
+    <clr-combobox name="combobox" formControlName="selectedOptionCombobox" [clrMulti]="true">
+      <ng-container *clrOptionSelected="let selected">
+        <cds-icon shape="sun" size="12" role="img" aria-label="welcome home"></cds-icon>
+        {{ selected }}
+      </ng-container>
+      <clr-options>
+        <clr-option [clrValue]="'one'">One</clr-option>
+        <clr-option [clrValue]="'two'">Two</clr-option>
+        <clr-option [clrValue]="'three'">Three</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-combobox-container>
+  <clr-checkbox-container>
+    <label>Checkbox</label>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="option1" value="option1" formControlName="option1" />
+      <label>Option 1</label>
+    </clr-checkbox-wrapper>
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-checkbox-container>
+  <clr-date-container>
+    <label>Datepicker</label>
+    <input type="date" autocomplete="off" clrDate formControlName="date" name="date" [readonly]="isReadonly" />
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-date-container>
+  <clr-radio-container>
+    <label>Basic radio</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="radio" value="radio1" formControlName="radio" />
+      <label>Option 1</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="radio" value="radio2" formControlName="radio" />
+      <label>Option 2</label>
+    </clr-radio-wrapper>
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-radio-container>
+  <clr-toggle-container>
+    <label>Full toggle switch</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle value="option1" name="toggle-full" formControlName="toggle" />
+      <label>Option 1</label>
+    </clr-toggle-wrapper>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle value="option2" name="toggle-full" formControlName="toggle" />
+      <label>Option 2</label>
+    </clr-toggle-wrapper>
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-toggle-container>
+  <clr-file-input-container>
+    <label>File Input</label>
+    <input type="file" formControlName="files" multiple required clrFileInput />
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-file-input-container>
+  <clr-range-container [clrRangeHasProgress]="true">
+    <label>Range</label>
+    <input type="range" clrRange name="three" formControlName="range" />
+    <clr-control-helper>Helper Subtext</clr-control-helper>
+    <clr-control-error>State Subtext</clr-control-error>
+    <clr-control-success>State Subtext</clr-control-success>
+  </clr-range-container>
+</form>

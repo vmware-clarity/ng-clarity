@@ -47,7 +47,15 @@ describe('Context frame bridge', () => {
       queryParams: { tenant: 'acme', token: 'secret' },
     },
     regions: [],
-    components: [],
+    components: [
+      {
+        type: 'form',
+        children: [
+          { type: 'textbox', label: 'Host name', state: { value: 'esx-prod-04', required: true } },
+          { type: 'combobox', label: 'Cluster', state: { value: 'beta', options: ['Alpha', 'Beta'] } },
+        ],
+      },
+    ],
     collectedAt: '2026-01-01T00:00:00.000Z',
   };
 
@@ -96,13 +104,13 @@ describe('Context frame bridge', () => {
     });
 
     it('only forwards known snapshot options from the embedded frame', () => {
-      dispatchRequest(frameRequest('request-2', { maxComponents: 5, includeActions: false, injected: 'nope' }));
+      dispatchRequest(frameRequest('request-2', { maxComponents: 5, includeDomComponents: false, injected: 'nope' }));
 
-      expect(getSnapshot).toHaveBeenCalledWith({ maxComponents: 5, includeActions: false });
+      expect(getSnapshot).toHaveBeenCalledWith({ maxComponents: 5, includeDomComponents: false });
     });
 
-    it('never lets a frame ask for form values', () => {
-      dispatchRequest(frameRequest('request-2b', { includeFormValues: true }));
+    it('discards anything in the request that is not a budget', () => {
+      dispatchRequest(frameRequest('request-2b', { shareFormValues: true, shareFullUrl: true }));
 
       expect(getSnapshot).toHaveBeenCalledWith({});
     });
@@ -190,6 +198,32 @@ describe('Context frame bridge', () => {
         expect(route?.queryParams).toBeUndefined();
         expect(route?.url).toBe('/clusters/42');
         expect(route?.params).toEqual({ id: '42' });
+      });
+
+      it('withholds what the user typed, which the application sees but a frame has no claim to', () => {
+        dispatchRequest(frameRequest('request-values'));
+
+        const json = JSON.stringify(servedContext(frame));
+        expect(json).not.toContain('esx-prod-04');
+        expect(json).not.toContain('"value"');
+      });
+
+      it('still describes the fields and what they permit', () => {
+        dispatchRequest(frameRequest('request-fields'));
+
+        const field = servedContext(frame).components[0].children?.[1];
+        expect(field?.label).toBe('Cluster');
+        expect(field?.state?.options).toEqual(['Alpha', 'Beta']);
+      });
+
+      it('shares what the user typed when the host says so explicitly', () => {
+        host.stop();
+        host = new ClrContextFrameHost(getSnapshot, window, { shareFormValues: true, minRequestIntervalMs: 0 });
+        host.start();
+
+        dispatchRequest(frameRequest('request-shared-values'));
+
+        expect(JSON.stringify(servedContext(frame))).toContain('esx-prod-04');
       });
 
       it('shares the full URL when the host opts in', () => {
