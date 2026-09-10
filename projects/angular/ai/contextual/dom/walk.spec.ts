@@ -17,6 +17,8 @@ describe('collectContextTree', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
     ...overrides,
   });
 
@@ -214,6 +216,8 @@ describe('collectContextTree, what a summary must not hide', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
     ...overrides,
   });
 
@@ -361,5 +365,176 @@ describe('collectContextTree, what a summary must not hide', () => {
 
   it('skips an inert subtree, which a user cannot reach', () => {
     expect(collect('<div inert><button>Behind the modal</button></div>')).toEqual([]);
+  });
+});
+
+describe('collectContextTree, text and frames', () => {
+  let container: HTMLElement;
+
+  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> => ({
+    maxTextLength: 100,
+    maxItemsPerCollection: 25,
+    maxComponents: 100,
+    includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
+    ...overrides,
+  });
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => {
+    container.remove();
+  });
+
+  function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}): ClrComponentContext[] {
+    container.innerHTML = html;
+    return collectContextTree(container, budgets(overrides));
+  }
+
+  function types(nodes: ClrComponentContext[] | undefined): string[] {
+    return (nodes ?? []).map(node => node.type);
+  }
+
+  function frameWith(html: string, attributes: Record<string, string> = {}): Promise<HTMLIFrameElement> {
+    const frame = document.createElement('iframe');
+    for (const [name, value] of Object.entries(attributes)) {
+      frame.setAttribute(name, value);
+    }
+    const loaded = new Promise<HTMLIFrameElement>(resolve => frame.addEventListener('load', () => resolve(frame)));
+    frame.srcdoc = html;
+    container.appendChild(frame);
+    return loaded;
+  }
+
+  describe('text that carries no role', () => {
+    it('reports a paragraph as text, so what a page says reaches an agent', () => {
+      expect(collect('<p>Hosts are provisioned nightly.</p>')).toEqual([
+        { type: 'text', label: 'Hosts are provisioned nightly.' },
+      ]);
+    });
+
+    it('folds nested spans into one block rather than one node per element', () => {
+      const nodes = collect('<div>Status: <span>3 of <b>10</b> hosts</span> ready</div>');
+      expect(nodes).toEqual([{ type: 'text', label: 'Status: 3 of 10 hosts ready' }]);
+    });
+
+    it('keeps a control inside a sentence as the text block’s child', () => {
+      const [text] = collect('<p>Need help? <a href="/docs">Read the docs</a>.</p>');
+      expect(text.type).toBe('text');
+      expect(text.label).toBe('Need help? Read the docs.');
+      expect(types(text.children)).toEqual(['link']);
+    });
+
+    it('does not repeat text a heading or a list item already carries as its label', () => {
+      const nodes = collect('<h2>Overview <span>(beta)</span></h2><ul><li><span>one</span></li></ul>');
+      expect(types(nodes)).toEqual(['heading', 'list']);
+      expect(nodes[0].children).toBeUndefined();
+      expect(nodes[1].children).toBeUndefined();
+    });
+
+    it('does not report a label, legend or caption as text: they name something else', () => {
+      const nodes = collect(
+        `<label for="h">Host</label><input id="h" />
+         <fieldset><legend>Network</legend></fieldset>
+         <span id="dialog-name">Add host</span><div role="dialog" aria-labelledby="dialog-name"></div>`
+      );
+      expect(types(nodes)).toEqual(['textbox', 'group', 'dialog']);
+    });
+
+    it('does not report screen-reader-only text, which is guidance rather than content', () => {
+      const nodes = collect(
+        '<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Use arrow keys</span>'
+      );
+      expect(nodes).toEqual([]);
+    });
+
+    it('reports no text inside a sensitive region, whose content is not for a snapshot', () => {
+      const nodes = collect(
+        '<div data-clr-context-redact><p>Card 4111 1111 1111 1111</p><input aria-label="CVC" /></div>'
+      );
+      expect(types(nodes)).toEqual(['textbox']);
+    });
+
+    it('labels a component by the text it renders, rather than nesting a text node inside it', () => {
+      const [node] = collect('<clr-dg-footer><div>2 items</div></clr-dg-footer>');
+      expect(node).toEqual({ type: 'clr-dg-footer', element: 'clr-dg-footer', label: '2 items' });
+    });
+
+    it('can be turned off', () => {
+      expect(collect('<p>Prose</p><button>Go</button>', { includeText: false })).toEqual([
+        { type: 'button', label: 'Go' },
+      ]);
+    });
+
+    it('counts text against the budget like any other node', () => {
+      const nodes = collect('<p>one</p><p>two</p><p>three</p>', { maxComponents: 2 });
+      expect(nodes.length).toBe(2);
+    });
+  });
+
+  describe('frames', () => {
+    it('describes a same-origin frame in place, with its contents as children', async () => {
+      await frameWith('<h1>Plugin</h1><button>Run</button>', { title: 'Inventory plugin' });
+      const [frame] = collectContextTree(container, budgets());
+
+      expect(frame.type).toBe('frame');
+      expect(frame.element).toBe('iframe');
+      expect(frame.label).toBe('Inventory plugin');
+      expect(types(frame.children)).toEqual(['heading', 'button']);
+    });
+
+    it('takes the frame’s name from its document title when the frame itself has none', async () => {
+      await frameWith('<title>Billing</title><p>Invoices</p>');
+      const [frame] = collectContextTree(container, budgets());
+
+      expect(frame.label).toBe('Billing');
+    });
+
+    it('walks frames inside frames', async () => {
+      await frameWith('<iframe title="Inner" srcdoc="<button>Deep</button>"></iframe>');
+      // The inner frame loads after the outer one; give it a turn.
+      await new Promise(resolve => setTimeout(resolve, 50));
+      const [outer] = collectContextTree(container, budgets());
+
+      expect(types(outer.children)).toEqual(['frame']);
+      expect(types(outer.children?.[0].children)).toEqual(['button']);
+    });
+
+    it('reports a frame it cannot read as such, so an agent knows there is UI it does not see', async () => {
+      // A sandbox without allow-same-origin gives the frame an opaque origin.
+      await frameWith('<button>Hidden</button>', { title: 'Third-party widget', sandbox: '' });
+      const [frame] = collectContextTree(container, budgets());
+
+      expect(frame).toEqual({
+        type: 'frame',
+        element: 'iframe',
+        label: 'Third-party widget',
+        state: { crossOrigin: true },
+      });
+    });
+
+    it('shares one budget between the page and its frames', async () => {
+      await frameWith('<button>a</button><button>b</button><button>c</button>');
+      const [frame] = collectContextTree(container, budgets({ maxComponents: 3 }));
+
+      expect(frame.children?.length).toBe(2);
+    });
+
+    it('honours redaction inside a frame', async () => {
+      await frameWith('<input type="password" value="hunter2" aria-label="Password" />');
+      const [frame] = collectContextTree(container, budgets());
+
+      expect(frame.children?.[0].state?.redacted).toBe(true);
+      expect(JSON.stringify(frame)).not.toContain('hunter2');
+    });
+
+    it('can leave frames out entirely', async () => {
+      await frameWith('<button>Run</button>');
+      expect(collectContextTree(container, budgets({ includeFrames: false }))).toEqual([]);
+    });
   });
 });

@@ -50,6 +50,8 @@ describe('ClrDatagrid element context', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
   };
 
   function published(): ReturnType<ClrElementContextCallback> {

@@ -10,9 +10,9 @@ import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/uti
 import { accessibleName } from './accessible-name';
 import { ariaState, CLR_CONTEXT_REDACT_ATTRIBUTE, isRedacted } from './aria-state';
 import { mergeElementContext } from './element-context';
-import { isLeafRole, isPresentationalRole, mayContainControls, resolveRole } from './roles';
+import { isLeafRole, isNameFromContents, isPresentationalRole, mayContainControls, resolveRole } from './roles';
 import { summarizeRole } from './summarizers';
-import { accessibleText, truncate } from './text';
+import { accessibleText, isVisuallyHidden, truncate } from './text';
 
 /**
  * Elements carrying this attribute — and everything inside them — are invisible to the
@@ -76,17 +76,28 @@ const CONTROL_SELECTOR = [
   '[role="dialog"]',
 ].join(', ');
 
+/**
+ * Elements whose text is a name for something else, never content of its own: a
+ * control's label, a fieldset's legend, a table's caption. Reported through what they
+ * name, so never as text.
+ */
+const NAMING_TAGS = new Set(['label', 'legend', 'caption', 'figcaption', 'option', 'optgroup', 'datalist', 'title']);
+
 interface Walk {
   readonly options: Required<ClrContextSnapshotOptions>;
   readonly extractors: ClrContextDomExtractor[];
   /** Ids of elements that exist only to describe another element. */
-  readonly describedByIds: ReadonlySet<string>;
+  readonly describedByIds: Set<string>;
+  /** Ids of elements that name another element, and so are not free-standing text. */
+  readonly labelIds: Set<string>;
   /** Components still within budget. Shared across the whole walk. */
   remaining: number;
   /** Greater than zero while inside an element marked `data-clr-context-redact`. */
   redactedDepth: number;
   /** Greater than zero while inside a list whose items were summarised. */
   summarizedListDepth: number;
+  /** Greater than zero while inside a node whose label already carries the text below it. */
+  textDepth: number;
 }
 
 /**
@@ -107,48 +118,52 @@ export function collectContextTree(
   options: Required<ClrContextSnapshotOptions>,
   extractors: ClrContextDomExtractor[] = []
 ): ClrComponentContext[] {
-  return describeChildren(
-    root,
-    {
-      options,
-      extractors,
-      describedByIds: describedByTargets(root),
-      remaining: options.maxComponents,
-      redactedDepth: 0,
-      summarizedListDepth: 0,
-    },
-    null
-  );
+  const walk: Walk = {
+    options,
+    extractors,
+    describedByIds: new Set(),
+    labelIds: new Set(),
+    remaining: options.maxComponents,
+    redactedDepth: 0,
+    summarizedListDepth: 0,
+    textDepth: 0,
+  };
+  collectReferencedIds(root, walk);
+  return describeChildren(root, walk, null);
 }
 
 /**
- * Ids referenced by an `aria-describedby` anywhere under `root`, outside ignored regions.
+ * Records the ids referenced by `aria-describedby` and `aria-labelledby` anywhere under
+ * `root`, outside ignored regions.
  *
- * Elements referenced this way — helper text, a validation message — are supplementary
- * text belonging to the control they describe, and that control reports them as its
- * `description`. Describing them again on their own would repeat the text and leave an
- * agent to work out which field it belonged to.
+ * Elements referenced by `aria-describedby` — helper text, a validation message — are
+ * supplementary text belonging to the control they describe, and that control reports
+ * them as its `description`. Describing them again on their own would repeat the text
+ * and leave an agent to work out which field it belonged to.
+ *
+ * Elements referenced by `aria-labelledby` are usually real content, such as a heading
+ * that also names a dialog, so they are still described — but not as free-standing
+ * text, which would repeat the name they already supply.
  *
  * An ignored region is inert to the engine, so what it says about the rest of the page
  * does not count: a panel marked ignore that describes itself against the page heading
  * must not make that heading disappear.
- *
- * `aria-labelledby` targets are deliberately not collected: those are usually real
- * content, such as a heading that also names a dialog.
  */
-function describedByTargets(root: ParentNode): ReadonlySet<string> {
-  const ids = new Set<string>();
-  for (const element of Array.from(root.querySelectorAll('[aria-describedby]'))) {
-    if (element.closest(IGNORE_SELECTOR)) {
-      continue;
-    }
-    for (const id of (element.getAttribute('aria-describedby') ?? '').trim().split(/\s+/)) {
-      if (id) {
-        ids.add(id);
+function collectReferencedIds(root: ParentNode, walk: Walk): void {
+  const collect = (attribute: string, into: Set<string>) => {
+    for (const element of Array.from(root.querySelectorAll(`[${attribute}]`))) {
+      if (element.closest(IGNORE_SELECTOR)) {
+        continue;
+      }
+      for (const id of (element.getAttribute(attribute) ?? '').trim().split(/\s+/)) {
+        if (id) {
+          into.add(id);
+        }
       }
     }
-  }
-  return ids;
+  };
+  collect('aria-describedby', walk.describedByIds);
+  collect('aria-labelledby', walk.labelIds);
 }
 
 /**
@@ -166,14 +181,27 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
     return [];
   }
   const redacts = element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE);
-  if (!redacts) {
+  // A described-by target that is walked for the controls it holds still had its text
+  // reported as the description of whatever it describes.
+  const describes = !!element.id && walk.describedByIds.has(element.id);
+  if (!redacts && !describes) {
     return describeVisible(element, walk, owner);
   }
-  walk.redactedDepth++;
+  if (redacts) {
+    walk.redactedDepth++;
+  }
+  if (describes) {
+    walk.textDepth++;
+  }
   try {
     return describeVisible(element, walk, owner);
   } finally {
-    walk.redactedDepth--;
+    if (redacts) {
+      walk.redactedDepth--;
+    }
+    if (describes) {
+      walk.textDepth--;
+    }
   }
 }
 
@@ -193,18 +221,24 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     return [finish(described, element, walk)];
   }
 
+  const tagName = element.tagName.toLowerCase();
+  if (tagName === 'iframe' || tagName === 'frame') {
+    return describeFrame(element as HTMLIFrameElement, walk);
+  }
+
   const role = resolveRole(element);
   if (role && isPresentationalRole(role)) {
     return describeChildren(element, walk, owner);
   }
 
-  const tagName = element.tagName.toLowerCase();
   const isCustomElement = tagName.includes('-');
   const label = accessibleName(element, role, walk.options.maxTextLength);
 
   if (!role && !label) {
     if (!isCustomElement) {
-      return describeChildren(element, walk, owner);
+      return isTextBlock(element, walk)
+        ? describeTextBlock(element, walk, owner)
+        : describeChildren(element, walk, owner);
     }
     // An anonymous custom element is a wrapper around whatever it renders.
     const rendered = describeChildren(element, walk, element);
@@ -221,7 +255,13 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     // as it is in the DOM, the wrapper counts against the budget like any other node,
     // and it is the wrapper that carries what this element publishes.
     if (rendered.length === 1) {
-      return [finish(rendered[0], element, walk)];
+      const only = rendered[0];
+      // Text is all this element renders: it is the element's own label, the same way a
+      // `clr-dg-footer` with bare text is labelled by it, rather than a text node inside.
+      if (only.type === 'text' && !only.children && !only.state) {
+        return [finish({ type: tagName, element: tagName, label: only.label }, element, walk)];
+      }
+      return [finish(only, element, walk)];
     }
     if (rendered.length > 1) {
       walk.remaining--;
@@ -267,10 +307,19 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   const summarisedList = summarised && role === 'list';
   const terminal = !!role && ((isLeafRole(role) && !mayContainControls(role)) || (summarised && !summarisedList));
   if (!terminal) {
+    // A node named from its contents — a heading, a cell, a list item — already carries
+    // the text below it as its label, so nothing inside it is free-standing text.
+    const carriesText = !!role && isNameFromContents(role);
     if (summarisedList) {
       walk.summarizedListDepth++;
     }
+    if (carriesText) {
+      walk.textDepth++;
+    }
     const children = describeChildren(element, walk, null);
+    if (carriesText) {
+      walk.textDepth--;
+    }
     if (summarisedList) {
       walk.summarizedListDepth--;
     }
@@ -289,6 +338,109 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     return described.children ?? [];
   }
   return [described];
+}
+
+/**
+ * Whether a role-less, name-less element is a block of text in its own right: it has
+ * text of its own — not merely descendants that do — and that text is not the name of
+ * something else. Text is only reported where nothing above already carries it, never
+ * inside a sensitive region, and never when it is hidden from sight.
+ */
+function isTextBlock(element: Element, walk: Walk): boolean {
+  if (!walk.options.includeText || walk.textDepth > 0 || walk.redactedDepth > 0) {
+    return false;
+  }
+  if (NAMING_TAGS.has(element.tagName.toLowerCase()) || (element.id && walk.labelIds.has(element.id))) {
+    return false;
+  }
+  const hasOwnText = Array.from(element.childNodes).some(
+    node => node.nodeType === Node.TEXT_NODE && !!node.textContent?.trim()
+  );
+  return hasOwnText && !isVisuallyHidden(element);
+}
+
+/**
+ * A block of text, with whatever controls sit inside it — a link in a sentence — as its
+ * children. Nested text is folded into this node's label rather than repeated.
+ */
+function describeTextBlock(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
+  if (walk.remaining <= 0) {
+    return [];
+  }
+  walk.remaining--;
+  const node: ClrComponentContext = { type: 'text' };
+  if (owner) {
+    node.element = owner.tagName.toLowerCase();
+  }
+  const label = truncate(accessibleText(element), walk.options.maxTextLength);
+  if (label) {
+    node.label = label;
+  }
+  walk.textDepth++;
+  const children = describeChildren(element, walk, owner);
+  walk.textDepth--;
+  if (children.length) {
+    node.children = children;
+  }
+  return [finish(node, element, walk)];
+}
+
+/**
+ * An embedded frame. A page assembled from plugins in same-origin frames — a tab that is
+ * an iframe, a widget that is another — is one page to the user and is described as one:
+ * the frame's document is walked in place, against the same budget. A cross-origin frame
+ * cannot be read from here and is reported as a frame with no children, so an agent at
+ * least knows there is UI it does not see; the frame bridge is the way to reach it.
+ */
+function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContext[] {
+  if (!walk.options.includeFrames || walk.remaining <= 0) {
+    return [];
+  }
+  walk.remaining--;
+
+  const node: ClrComponentContext = { type: 'frame', element: frame.tagName.toLowerCase() };
+  const state: Record<string, unknown> = {};
+  const contents = frameDocument(frame);
+  const label = accessibleName(frame, null, walk.options.maxTextLength) || (contents?.title ?? '');
+  if (label) {
+    node.label = truncate(label, walk.options.maxTextLength);
+  }
+
+  const location = contents ? contents.location.href : (frame.getAttribute('src') ?? '');
+  if (location && !location.startsWith('about:')) {
+    state.url = truncate(stripQueryAndFragment(location), walk.options.maxTextLength);
+  }
+
+  if (contents === null) {
+    state.crossOrigin = true;
+  } else if (!contents.body) {
+    state.loading = true;
+  } else {
+    collectReferencedIds(contents, walk);
+    const children = describeChildren(contents.body, walk, null);
+    if (children.length) {
+      node.children = children;
+    }
+  }
+
+  if (Object.keys(state).length) {
+    node.state = state;
+  }
+  return [finish(node, frame, walk)];
+}
+
+/** A frame's document when it is same-origin and readable, `null` when it is not. */
+function frameDocument(frame: HTMLIFrameElement): Document | null {
+  try {
+    return frame.contentDocument;
+  } catch {
+    return null;
+  }
+}
+
+/** Everything up to the first `?` or `#`. */
+function stripQueryAndFragment(url: string): string {
+  return url.split(/[?#]/)[0];
 }
 
 function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null): ClrComponentContext[] {

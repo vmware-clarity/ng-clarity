@@ -16,7 +16,11 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = 
   maxItemsPerCollection: 25,
   maxComponents: 100,
   includeDomComponents: true,
+  includeText: true,
+  includeFrames: true,
 };
+
+const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames'] as const;
 
 type BudgetKey = 'maxTextLength' | 'maxItemsPerCollection' | 'maxComponents';
 
@@ -50,8 +54,11 @@ export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Req
       resolved[key] = clamp(Math.floor(value), BUDGET_RANGES[key]);
     }
   }
-  if (typeof options.includeDomComponents === 'boolean') {
-    resolved.includeDomComponents = options.includeDomComponents;
+  for (const key of SWITCH_KEYS) {
+    const value = options[key];
+    if (typeof value === 'boolean') {
+      resolved[key] = value;
+    }
   }
   return resolved;
 }
@@ -77,8 +84,11 @@ export function capSnapshotOptions(
     const asked = capped[key];
     capped[key] = typeof asked === 'number' && Number.isFinite(asked) ? Math.min(asked, limit) : limit;
   }
-  if (ceiling.includeDomComponents === false) {
-    capped.includeDomComponents = false;
+  // A switch the ceiling turned off stays off: less is always allowed, more never.
+  for (const key of SWITCH_KEYS) {
+    if (ceiling[key] === false) {
+      capped[key] = false;
+    }
   }
   return capped;
 }

@@ -19,6 +19,8 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions
   'maxItemsPerCollection',
   'maxComponents',
   'includeDomComponents',
+  'includeText',
+  'includeFrames',
 ];
 
 /**

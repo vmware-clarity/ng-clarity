@@ -15,6 +15,8 @@ describe('ariaState', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
   });
 
   let container: HTMLElement;
@@ -193,6 +195,8 @@ describe('ariaState, native values as an agent should read them', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
   });
 
   let container: HTMLElement;

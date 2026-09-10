@@ -12,7 +12,7 @@ import { provideRouter, Router } from '@angular/router';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextTrackerService } from './context-tracker.service';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
-import { ClrPageContext } from '../interfaces/context.interface';
+import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
 
 @Component({ template: '' })
 class RoutedComponent {}
@@ -313,5 +313,97 @@ describe('ClrContextTrackerService, tracking application context', () => {
     await wait(50);
 
     expect(emitted[emitted.length - 1].regions.length).toBe(0);
+  });
+});
+
+describe('ClrContextTrackerService, tracking embedded frames', () => {
+  let tracker: ClrContextTrackerService;
+  let emitted: ClrPageContext[];
+  let frame: HTMLIFrameElement;
+
+  function wait(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  function loadFrame(html: string): Promise<void> {
+    return new Promise(resolve => {
+      frame.addEventListener('load', () => resolve(), { once: true });
+      frame.srcdoc = html;
+    });
+  }
+
+  function frameBody(): HTMLElement {
+    const body = frame.contentDocument?.body;
+    if (!body) {
+      throw new Error('frame document not available');
+    }
+    return body;
+  }
+
+  function addFrameButton(label: string): void {
+    const button = frameBody().ownerDocument.createElement('button');
+    button.textContent = label;
+    frameBody().appendChild(button);
+  }
+
+  function frameButtons(context: ClrPageContext | null): string[] {
+    const inFrames = (nodes: ClrComponentContext[]): ClrComponentContext[] =>
+      nodes.flatMap(node => (node.type === 'frame' ? (node.children ?? []) : inFrames(node.children ?? [])));
+    return inFrames(context?.components ?? [])
+      .filter(node => node.type === 'button')
+      .map(node => node.label ?? '');
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    tracker = TestBed.inject(ClrContextTrackerService);
+    emitted = [];
+    tracker.context$.subscribe(context => emitted.push(context));
+    frame = document.createElement('iframe');
+    frame.title = 'Plugin';
+    document.body.appendChild(frame);
+  });
+
+  afterEach(() => {
+    tracker.stop();
+    frame.remove();
+  });
+
+  it('re-scrapes when the DOM inside a same-origin frame changes', async () => {
+    await loadFrame('<button>Run</button>');
+    tracker.start({ debounceMs: 10 });
+    expect(frameButtons(tracker.currentContext)).toEqual(['Run']);
+
+    addFrameButton('Stop');
+    await wait(60);
+
+    expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Run', 'Stop']);
+  });
+
+  it('picks a frame up once it loads, and again when it navigates', async () => {
+    tracker.start({ debounceMs: 10 });
+    await loadFrame('<button>First</button>');
+    await wait(60);
+    expect(frameButtons(emitted[emitted.length - 1])).toEqual(['First']);
+
+    await loadFrame('<button>Second</button>');
+    await wait(60);
+    expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Second']);
+
+    addFrameButton('Third');
+    await wait(60);
+    expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Second', 'Third']);
+  });
+
+  it('stops watching a frame once tracking stops', async () => {
+    await loadFrame('<button>Run</button>');
+    tracker.start({ debounceMs: 10 });
+    const before = emitted.length;
+    tracker.stop();
+
+    addFrameButton('Stop');
+    await wait(60);
+
+    expect(emitted.length).toBe(before);
   });
 });
