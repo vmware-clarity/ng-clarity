@@ -320,7 +320,10 @@ allow-popups-to-escape-sandbox allow-forms allow-downloads`) and loading a stati
   read (`crossOrigin: true`) and which pulls host context through the frame
   bridge instead (`enableFrameBridge` names that origin). With `allow-same-origin` a frame
   keeps its real origin, so it is the plugin's origin — not the sandbox — that decides
-  whether the engine can walk it.
+  whether the engine can walk it. The user's real plugins are served from the shell's own
+  origin, so the first two tabs are the real behaviour; the third only shows the boundary.
+  Frame→host publishing with host-side composition (for cross-origin plugins) was discussed
+  and deliberately not built.
 
 ## 10. Mistakes made in earlier sessions — do not repeat
 

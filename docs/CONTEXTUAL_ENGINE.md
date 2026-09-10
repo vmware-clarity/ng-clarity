@@ -136,6 +136,14 @@ too. A cross-origin frame is reported as a `frame` node with `crossOrigin: true`
 so an agent at least knows there is UI it does not see; the frame bridge below is how such a frame
 gets context in the other direction. `includeFrames: false` leaves frames out.
 
+What decides between the two is the frame document's origin — scheme, host and port — and nothing
+else. A `sandbox` attribute only ever restricts a frame: without `allow-same-origin` the browser
+gives it an opaque origin (so even a same-origin page becomes unreadable), and with it the frame
+simply keeps its real origin. No attribute grants a host access to another origin's document. A
+plugin shell whose plugins are served under its own origin, with the usual
+`sandbox="allow-same-origin allow-scripts allow-forms …"`, therefore gets every plugin described
+in place; a plugin on another host, port or subdomain has to send its context itself.
+
 Collections are summarised rather than listed: a menu reports its `options` (and any
 `disabledOptions`), a listbox its `options` and `selected` entries, a grid its columns and row
 count. A list is the one collection that is also walked, because the links inside a navigation
