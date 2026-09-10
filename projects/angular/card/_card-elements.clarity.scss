@@ -63,6 +63,6 @@
     display: block;
     color: tokens.$cds-alias-object-interaction-color;
 
-    @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+    @include mixins.min-equilateral(density.$clr-base-icon-size-m);
   }
 }

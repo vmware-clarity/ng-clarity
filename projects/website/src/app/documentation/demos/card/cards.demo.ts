@@ -8,6 +8,12 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { CardAngularBasicDemo } from './angular/card-angular-basic';
+import { CardAngularCollapsibleDemo } from './angular/card-angular-collapsible';
+import { CardAngularDividerDemo } from './angular/card-angular-divider';
+import { CardAngularFooterDemo } from './angular/card-angular-footer';
+import { CardAngularImageDemo } from './angular/card-angular-image';
+import { CardAngularMediaBlockDemo } from './angular/card-angular-media-block';
 import { CardAlertDemo } from './card-alert';
 import { CardClickableDemo } from './card-clickable';
 import { CardDropdownDemo } from './card-dropdown';
@@ -38,6 +44,12 @@ import { ClarityDocComponent } from '../clarity-doc';
     DocTabsComponent,
     DocTabComponent,
     DoDontComponent,
+    CardAngularBasicDemo,
+    CardAngularCollapsibleDemo,
+    CardAngularFooterDemo,
+    CardAngularImageDemo,
+    CardAngularDividerDemo,
+    CardAngularMediaBlockDemo,
     CardLayoutDemo,
     CardClickableDemo,
     CardImagesDemo,
