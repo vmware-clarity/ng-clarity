@@ -1,0 +1,50 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../styles/mixins';
+@use '../../styles/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+
+@include mixins.exports('stack-view.properties') {
+  @include mixins.root-or-host() {
+    // Border dimensions
+    --clr-stack-view-border-width: #{tokens.$cds-alias-object-border-width-100};
+
+    &,
+    & [clr-density] {
+      // Border dimensions
+      --clr-stack-view-border-radius: #{density.$clr-base-border-radius-s};
+    }
+
+    &,
+    & [cds-theme] {
+      // Border colors
+      --clr-stack-view-border-color: #{tokens.$cds-alias-object-border-color};
+      // top-left-border-color of changed stack view row
+      --clr-stack-block-changed-border-top-color: var(--clr-stack-view-border-color);
+
+      // Stack view title text color
+      --clr-stack-view-title-color: #{tokens.$cds-alias-typography-color-400};
+
+      // non expandable row background and text/icon colors
+      --clr-stack-view-row-color: #{tokens.$cds-alias-typography-color-400};
+      --clr-stack-view-row-bg-color: #{tokens.$cds-alias-object-container-background};
+
+      // expandable row background and text/icon colors
+      --clr-stack-view-expandable-row-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-stack-view-expandable-row-bg-color: #{tokens.$cds-alias-object-interaction-background};
+      --clr-stack-view-expandable-row-hover: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-stack-view-expandable-row-bg-hover: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-stack-view-expandable-row-active: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-stack-view-expandable-row-bg-active: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-stack-view-expanded-row-color: #{tokens.$cds-alias-object-interaction-color-selected};
+      --clr-stack-view-expanded-row-bg-color: #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-stack-view-expanded-row-bg-color-hover: #{tokens.$cds-alias-object-interaction-background-selected-hover};
+      --clr-stack-view-expanded-row-bg-color-active: #{tokens.$cds-alias-object-interaction-background-selected-active};
+    }
+  }
+}

@@ -1,0 +1,189 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../styles/mixins';
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use 'variables.collapsible-panel' as panel-variables;
+@use '../styles/variables/variables.density' as density;
+
+@mixin collapsible-panel(
+  $prefix,
+  $text-color: panel-variables.$clr-collapsible-panel-text-color,
+  $text-color-hover: panel-variables.$clr-collapsible-panel-text-color-hover,
+  $text-color-active: panel-variables.$clr-collapsible-panel-text-color-active,
+  $panel-disabled-color: panel-variables.$clr-collapsible-panel-panel-disabled-color,
+  $content-background-color: panel-variables.$clr-collapsible-panel-content-background-color,
+  $header-background-color: panel-variables.$clr-collapsible-panel-header-background-color,
+  $header-disabled-background-color: panel-variables.$clr-collapsible-panel-header-disabled-background-color,
+  $header-hover-background-color: panel-variables.$clr-collapsible-panel-header-hover-background-color,
+  $header-active-background-color: panel-variables.$clr-collapsible-panel-header-active-background-color,
+  $header-open-background-color: panel-variables.$clr-collapsible-panel-header-open-background-color,
+  $header-open-active-background-color: panel-variables.$clr-collapsible-panel-header-open-active-background-color,
+  $header-open-hover-background-color: panel-variables.$clr-collapsible-panel-header-open-hover-background-color,
+  $border-color: panel-variables.$clr-collapsible-panel-border-color,
+  $content-color: panel-variables.$clr-collapsible-panel-content-color,
+  $responsive-breakpoint: panel-variables.$clr-collapsible-panel-responsive-breakpoint
+) {
+  .#{$prefix}-panel {
+    display: block;
+  }
+
+  .#{$prefix}-header {
+    width: 100%;
+    border: tokens.$cds-alias-object-border-width-100 solid $border-color;
+    border-bottom-width: 0;
+    background: $header-background-color;
+    color: $text-color;
+    text-align: left;
+    transition: background-color tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
+
+    @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+
+    &:hover {
+      color: $text-color-hover;
+      background-color: $header-hover-background-color;
+    }
+
+    &:active {
+      color: $text-color-active;
+      background-color: $header-active-background-color;
+    }
+
+    .#{$prefix}-panel-disabled > div > & {
+      background-color: $header-background-color;
+
+      &:hover,
+      &:active {
+        background-color: $header-background-color;
+      }
+    }
+
+    .#{$prefix}-panel-disabled > .#{$prefix}-panel-open > & {
+      background-color: $header-disabled-background-color;
+
+      &:hover,
+      &:active {
+        background-color: $header-disabled-background-color;
+      }
+    }
+  }
+
+  .#{$prefix}-panel:last-child {
+    .#{$prefix}-header,
+    .#{$prefix}-content {
+      border-bottom: tokens.$cds-global-space-1 solid $border-color;
+    }
+  }
+
+  .#{$prefix}-header-button {
+    display: flex;
+    flex-flow: row wrap;
+    flex: 1 1 0;
+    width: 100%;
+    border: 0;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
+    background: transparent;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    gap: density.$clr-base-gap-s;
+
+    @media (min-width: $responsive-breakpoint) {
+      flex-flow: row;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+
+      .#{$prefix}-status,
+      .#{$prefix}-title,
+      .#{$prefix}-description {
+        color: $panel-disabled-color;
+      }
+    }
+  }
+
+  .#{$prefix}-status {
+    display: inline-flex;
+    width: density.$clr-base-layout-space-xl;
+    vertical-align: top;
+  }
+
+  .#{$prefix}-title {
+    display: inline-block;
+  }
+
+  .#{$prefix}-header-has-description {
+    .#{$prefix}-title {
+      min-width: panel-variables.$clr-collapsible-panel-title-min-width;
+      max-width: mixins.baselinePx(264);
+      width: 100%;
+    }
+  }
+
+  .#{$prefix}-description {
+    display: inline-block;
+    max-width: mixins.baselinePx(650);
+
+    @media (min-width: $responsive-breakpoint) {
+      margin-left: density.$clr-base-horizontal-offset-l;
+    }
+  }
+
+  .#{$prefix}-content {
+    display: none;
+    overflow: hidden;
+    border: tokens.$cds-global-space-1 solid $border-color;
+    border-bottom: 0;
+    background: $content-background-color;
+
+    .clr-form {
+      padding: 0;
+    }
+  }
+
+  .#{$prefix}-inner-content {
+    padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
+  }
+
+  .#{$prefix}-angle {
+    transition: all tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
+    transform: rotate(90deg);
+  }
+
+  .#{$prefix}-panel-open {
+    & > .#{$prefix}-content-region .#{$prefix}-content {
+      display: block;
+    }
+
+    & > .#{$prefix}-header {
+      border-bottom: 0 !important;
+      background: $header-open-background-color;
+
+      &:hover {
+        background-color: $header-open-hover-background-color;
+      }
+
+      &:active {
+        color: $text-color-active;
+        background-color: $header-open-active-background-color;
+      }
+
+      .#{$prefix}-angle {
+        visibility: visible;
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  .#{$prefix}-panel:not(:last-child) > div[class*='#{$prefix}-panel-'] > .#{$prefix}-header {
+    &,
+    & + .#{$prefix}-content-region > .#{$prefix}-content {
+      border-bottom: none;
+    }
+  }
+}

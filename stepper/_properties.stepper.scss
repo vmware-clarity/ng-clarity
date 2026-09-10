@@ -1,0 +1,29 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:meta';
+@use '../styles/mixins';
+@use '../styles/core/tokens/variables.tokens' as tokens;
+
+@include meta.load-css('../collapsible-panel/properties.collapsible-panel');
+@include mixins.exports('stepper.properties') {
+  @include mixins.root-or-host() {
+    &,
+    [cds-theme] {
+      --clr-stepper-error-color: #{tokens.$cds-alias-status-danger};
+      --clr-stepper-complete-color: #{tokens.$cds-alias-status-success};
+      --clr-stepper-header-left-indicator: inset #{tokens.$cds-global-space-5} 0 0
+        #{tokens.$cds-alias-status-neutral-tint};
+      --clr-stepper-header-left-current-indicator: inset #{tokens.$cds-global-space-5} 0 0
+        #{tokens.$cds-alias-object-interaction-background-highlight};
+      --clr-stepper-header-left-complete-indicator: inset #{tokens.$cds-global-space-5} 0 0
+        #{tokens.$cds-alias-status-success};
+      --clr-stepper-header-left-error-indicator: inset #{tokens.$cds-global-space-5} 0 0
+        #{tokens.$cds-alias-status-danger};
+    }
+  }
+}

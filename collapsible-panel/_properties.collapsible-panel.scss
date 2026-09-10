@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../styles/mixins';
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use '../styles/variables/variables.density' as density;
+
+@include mixins.exports('collapsible-panel.properties') {
+  @include mixins.root-or-host() {
+    &,
+    [clr-density] {
+      --clr-collapsible-panel-border-radius: #{density.$clr-base-border-radius-s};
+      --clr-collapsible-panel-title-min-width: #{density.$clr-base-layout-space-4xl};
+    }
+
+    &,
+    [cds-theme] {
+      --clr-collapsible-panel-text-color: #{tokens.$cds-alias-object-interaction-color};
+      --clr-collapsible-panel-text-color-hover: #{tokens.$cds-alias-object-interaction-color-hover};
+      --clr-collapsible-panel-text-color-active: #{tokens.$cds-alias-object-interaction-color-active};
+      --clr-collapsible-panel-panel-disabled-color: #{tokens.$cds-alias-object-interaction-color-disabled};
+      --clr-collapsible-panel-content-background-color: #{tokens.$cds-alias-object-container-background};
+      --clr-collapsible-panel-content-color: #{tokens.$cds-alias-typography-color-450};
+      --clr-collapsible-panel-header-background-color: #{tokens.$cds-alias-object-container-background};
+      --clr-collapsible-panel-header-disabled-background-color: #{tokens.$cds-alias-object-container-background};
+      --clr-collapsible-panel-header-hover-background-color: #{tokens.$cds-alias-object-interaction-background-hover};
+      --clr-collapsible-panel-header-active-background-color: #{tokens.$cds-alias-object-interaction-background-active};
+      --clr-collapsible-panel-header-open-background-color: #{tokens.$cds-alias-object-interaction-background-selected};
+      --clr-collapsible-panel-header-open-active-background-color: var(
+        --cds-alias-object-interaction-background-selected-active
+      );
+      --clr-collapsible-panel-header-open-hover-background-color: var(
+        --cds-alias-object-interaction-background-selected-hover
+      );
+      --clr-collapsible-panel-border-color: #{tokens.$cds-alias-object-border-color};
+    }
+  }
+}

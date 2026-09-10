@@ -1,0 +1,44 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../styles/mixins';
+@use 'mixins.animations' as animation-mixins;
+@use '../../styles/variables/variables.density' as density;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+
+$clr-animation-duration: #{tokens.$cds-global-animation-duration-quick};
+$clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
+
+@include mixins.exports('animations.clarity') {
+  .fade {
+    opacity: 0;
+    transition: opacity $clr-animation-duration $clr-animation-easing;
+    will-change: opacity;
+
+    &.in {
+      opacity: 1;
+    }
+  }
+
+  .fadeDown {
+    opacity: 0;
+    transform: translate(0, -25%);
+    transition:
+      opacity $clr-animation-duration $clr-animation-easing,
+      transform $clr-animation-duration $clr-animation-easing;
+    will-change: opacity, transform;
+
+    &.in {
+      opacity: 1;
+      transform: translate(0, 0);
+    }
+  }
+
+  .skeleton-loading {
+    @include animation-mixins.skeleton-loading();
+  }
+}
