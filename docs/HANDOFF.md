@@ -314,8 +314,10 @@ Found while testing the demo page and fixed alongside:
 allow-popups-to-escape-sandbox allow-forms allow-downloads`) and loading a static page from
   `projects/demo/src/assets/plugins/` — an inventory plugin with a form and table, a
   monitoring plugin that embeds a second frame, and a billing plugin loaded from a
-  different origin (the host name swapped between `localhost` and `127.0.0.1`), which the
-  host cannot read (`crossOrigin: true`) and which pulls host context through the frame
+  different origin (the first of `127.0.0.1`, `[::1]`, `localhost` that answers, probed at
+  startup — a dev server may listen on only one of them; `ng serve clr-demo --host 0.0.0.0`
+  makes all of them answer, and the tab explains this when none does), which the host cannot
+  read (`crossOrigin: true`) and which pulls host context through the frame
   bridge instead (`enableFrameBridge` names that origin). With `allow-same-origin` a frame
   keeps its real origin, so it is the plugin's origin — not the sandbox — that decides
   whether the engine can walk it.

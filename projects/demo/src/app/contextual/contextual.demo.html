@@ -63,9 +63,9 @@
         >). A plugin served from this application's own origin appears in the snapshot as a
         <code class="clr-code">frame</code> node with its own controls, text and form as children — type into the
         inventory form and watch the value change on the right. The third plugin is served from a different origin
-        (<code class="clr-code">{{ thirdPartyOrigin }}</code>), so the browser lets no script on this page read it: the
-        engine reports that a frame is there and nothing else, and the plugin can instead ask this page for context
-        through the frame bridge.
+        (<code class="clr-code">{{ thirdPartyOrigin || 'none found' }}</code>), so the browser lets no script on this
+        page read it: the engine reports that a frame is there and nothing else, and the plugin can instead ask this
+        page for context through the frame bridge.
       </p>
       <clr-tabs>
         <clr-tab>
@@ -93,12 +93,25 @@
         <clr-tab>
           <button clrTabLink>Third-party plugin (cross-origin)</button>
           <clr-tab-content *clrIfActive>
+            @if (thirdPartyPluginUrl) {
             <iframe
               class="plugin-frame"
               title="Third-party billing widget"
               [src]="thirdPartyPluginUrl"
               sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms allow-downloads"
             ></iframe>
+            } @else if (thirdPartyProbed) {
+            <clr-alert clrAlertType="warning" [clrAlertClosable]="false">
+              <clr-alert-item>
+                <span class="alert-text">
+                  No second origin answers on this machine, so the cross-origin plugin cannot be shown. Serve the demo
+                  on every interface — <code class="clr-code">ng serve clr-demo --host 0.0.0.0</code> — so that both
+                  <code class="clr-code">localhost</code> and <code class="clr-code">127.0.0.1</code> respond, then
+                  reload.
+                </span>
+              </clr-alert-item>
+            </clr-alert>
+            }
           </clr-tab-content>
         </clr-tab>
       </clr-tabs>
