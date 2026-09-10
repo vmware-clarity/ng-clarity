@@ -22,6 +22,13 @@
     display: block;
   }
 
+  // Without this, the height animation on expand/collapse has nothing to clip against, so the
+  // projected text renders at its full height immediately while only the container's height
+  // animates around it.
+  .clr-card-collapsible-content {
+    overflow: hidden;
+  }
+
   // When the footer is pulled out of the collapsible region (clrCardFooterCollapsible="false"),
   // the body ends up as the last (and only) child of .clr-card-collapsible-content. The static
   // `.card-block:last-child { border-bottom: none; }` rule then incorrectly removes the border

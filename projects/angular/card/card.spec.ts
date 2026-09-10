@@ -213,16 +213,20 @@ describe('ClrCard', () => {
       expect(region.getAttribute('aria-hidden')).toBe('true');
     });
 
-    it('collapses the footer along with the body by default', () => {
+    it('collapses the footer along with the body by default', async () => {
       fixture.componentInstance.collapsed = true;
+      fixture.detectChanges();
+      await fixture.whenStable();
       fixture.detectChanges();
 
       expect(cardElement.textContent).not.toContain('Footer text');
     });
 
-    it('keeps the footer visible while collapsed when clrCardFooterCollapsible is false', () => {
+    it('keeps the footer visible while collapsed when clrCardFooterCollapsible is false', async () => {
       fixture.componentInstance.footerCollapsible = false;
       fixture.componentInstance.collapsed = true;
+      fixture.detectChanges();
+      await fixture.whenStable();
       fixture.detectChanges();
 
       expect(cardElement.textContent).not.toContain('Body text');

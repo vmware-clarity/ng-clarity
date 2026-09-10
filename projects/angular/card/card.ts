@@ -16,7 +16,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { collapsiblePanelExpandAnimation } from '@clr/angular/collapsible-panel';
+import { collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
 import { IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
@@ -25,7 +25,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './card.html',
   host: { '[class.card]': 'true', '[class.clr-card]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: collapsiblePanelExpandAnimation,
+  animations: collapsiblePanelAnimation,
   providers: [IfExpandService],
   standalone: false,
 })

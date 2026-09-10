@@ -14,7 +14,7 @@
 <div class="clr-example nomargin">
   <div class="clr-row">
     <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
-      <clr-card clrCardCollapsible [(clrCardCollapsed)]="collapsed">
+      <clr-card class="clickable" clrCardCollapsible [(clrCardCollapsed)]="collapsed">
         <clr-card-header>Header</clr-card-header>
         <clr-card-body>
           <clr-card-body-title>Block</clr-card-body-title>
@@ -146,6 +146,107 @@
         </clr-card-body>
         <clr-card-footer>
           <button class="btn btn-sm btn-link">Action</button>
+        </clr-card-footer>
+      </clr-card>
+    </div>
+  </div>
+</div>
+
+<h4>List group in a card</h4>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <clr-card>
+        <clr-card-img><img src="assets/placeholder_350x150.png" alt="" /></clr-card-img>
+        <clr-card-body>
+          <clr-card-body-title>Title</clr-card-body-title>
+          <clr-card-body-text>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ea, aut. Nihil nemo, necessitatibus earum.
+          </clr-card-body-text>
+        </clr-card-body>
+        <ul class="list-group">
+          <li class="list-group-item">Lorem ipsum dolor.</li>
+          <li class="list-group-item">Lorem ipsum dolor sit.</li>
+          <li class="list-group-item">Lorem ipsum.</li>
+        </ul>
+        <clr-card-footer>
+          <a href="javascript://" class="btn btn-sm btn-link">Action 1</a>
+          <a href="javascript://" class="btn btn-sm btn-link">Action 2</a>
+        </clr-card-footer>
+      </clr-card>
+    </div>
+  </div>
+</div>
+
+<h4>Progress bars in cards</h4>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-4 clr-col-md-6 clr-col-12">
+      <clr-card>
+        <clr-card-body>
+          <div class="progress top">
+            <progress value="33" max="100"></progress>
+          </div>
+          <clr-card-body-title>Card title</clr-card-body-title>
+          <clr-card-body-text>Here is a progress bar at the very top of a card, above the header.</clr-card-body-text>
+        </clr-card-body>
+        <clr-card-footer>
+          <a href="javascript://" class="card-link">Click</a>
+        </clr-card-footer>
+      </clr-card>
+    </div>
+    <div class="clr-col-lg-4 clr-col-md-6 clr-col-12">
+      <clr-card>
+        <clr-card-body>
+          <clr-card-body-title>Card title</clr-card-body-title>
+          <clr-card-body-text>
+            Here is a progress bar at the top of a card's footer, above the buttons.
+          </clr-card-body-text>
+        </clr-card-body>
+        <clr-card-footer>
+          <div class="progress">
+            <progress value="77" max="100"></progress>
+          </div>
+          <a href="javascript://" class="card-link">Click</a>
+        </clr-card-footer>
+      </clr-card>
+    </div>
+  </div>
+</div>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-6 clr-col-12">
+      <clr-card>
+        <clr-card-body>
+          <clr-card-body-title>Card title</clr-card-body-title>
+          <clr-card-body-text>Here is a progress bar at the very top of a card.</clr-card-body-text>
+          <div class="progress-block">
+            <label>Label</label>
+            <div class="progress-static">
+              <div class="progress-meter" data-value="10"></div>
+            </div>
+          </div>
+          <div class="progress-block">
+            <label>Longer Label</label>
+            <div class="progress-static">
+              <div class="progress-meter" data-value="75"></div>
+            </div>
+          </div>
+          <div class="progress-block">
+            <label>Really, Really, Really Long Label</label>
+            <div class="progress success">
+              <progress value="50" max="100" data-displayval="50%"></progress>
+            </div>
+          </div>
+        </clr-card-body>
+        <clr-card-footer>
+          <div class="progress-static top">
+            <div class="progress-meter" data-value="33"></div>
+          </div>
+          <a href="javascript://" class="card-link">Click</a>
         </clr-card-footer>
       </clr-card>
     </div>
