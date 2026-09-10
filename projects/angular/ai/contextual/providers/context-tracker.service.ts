@@ -52,6 +52,11 @@ const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
  * property rather than an attribute and is invisible to a `MutationObserver`. So are
  * the application's own `clrContext` annotations, whose state lives outside the DOM.
  *
+ * Same-origin frames are watched too — an observer on the page's own document never
+ * sees inside them — so a page assembled from embedded plugins is tracked as one page,
+ * the same way the engine describes it. Frames are discovered after every scrape, and
+ * re-attached when they navigate.
+ *
  * Every emission is a freshly computed snapshot of the live DOM at that moment — the
  * tracker stores only the latest emission and never merges or accumulates, so context
  * from a page that was navigated away from can never leak into the current one.
@@ -68,6 +73,7 @@ export class ClrContextTrackerService implements OnDestroy {
   private quietTimer: ReturnType<typeof setTimeout> | null = null;
   private maxWaitTimer: ReturnType<typeof setTimeout> | null = null;
   private valueListener: ((event: Event) => void) | null = null;
+  private readonly frames = new Map<HTMLIFrameElement, TrackedFrame>();
   private registrySubscription: Subscription | null = null;
   private latest: ClrPageContext | null = null;
 
@@ -109,13 +115,8 @@ export class ClrContextTrackerService implements OnDestroy {
     // Created outside the Angular zone: zone.js patches MutationObserver, and an
     // in-zone observer would trigger change detection on every mutation batch.
     this.zone.runOutsideAngular(() => {
-      this.observer = new MutationObserver(records => this.onMutations(records));
-      this.observer.observe(this.document.body, {
-        childList: true,
-        subtree: true,
-        attributes: true,
-        characterData: true,
-      });
+      this.observer = this.observeDocument(this.document);
+      this.observeFrames();
 
       // Typing changes an input's `value` property, never its attribute, so a
       // MutationObserver never sees it. Without these listeners a subscriber would hold
@@ -139,6 +140,10 @@ export class ClrContextTrackerService implements OnDestroy {
       this.document.body.removeEventListener('change', this.valueListener, true);
       this.valueListener = null;
     }
+    for (const [frame, tracked] of this.frames) {
+      this.detachFrame(frame, tracked);
+    }
+    this.frames.clear();
     this.registrySubscription?.unsubscribe();
     this.registrySubscription = null;
     this.clearTimers();
@@ -196,6 +201,71 @@ export class ClrContextTrackerService implements OnDestroy {
         this.contextSubject.next(snapshot);
       }
     });
+    // A frame that arrived with this change is watched from now on.
+    this.zone.runOutsideAngular(() => this.observeFrames());
+  }
+
+  private observeDocument(target: Document): MutationObserver {
+    const observer = new MutationObserver(records => this.onMutations(records));
+    observer.observe(target.body, { childList: true, subtree: true, attributes: true, characterData: true });
+    return observer;
+  }
+
+  /**
+   * Watches every same-origin frame currently on the page, including frames inside
+   * frames, and drops the ones that have gone. A frame whose document is not readable
+   * yet — still loading, or cross-origin — is watched for its `load` event instead, so
+   * it is picked up once it is, and again whenever it navigates.
+   */
+  private observeFrames(): void {
+    if (!this.tracking) {
+      return;
+    }
+    const present = new Set<HTMLIFrameElement>();
+    for (const frame of allFrames(this.document)) {
+      present.add(frame);
+      const contents = readableDocument(frame);
+      const tracked = this.frames.get(frame);
+      if (tracked && tracked.document === contents) {
+        continue;
+      }
+      if (tracked) {
+        this.detachFrame(frame, tracked);
+      }
+      const onLoad = () => {
+        this.observeFrames();
+        this.scheduleScrape();
+      };
+      frame.addEventListener('load', onLoad);
+      if (!contents) {
+        this.frames.set(frame, { document: null, observer: null, valueListener: null, loadListener: onLoad });
+        continue;
+      }
+      const valueListener = (event: Event) => this.onValueChange(event);
+      contents.body.addEventListener('input', valueListener, true);
+      contents.body.addEventListener('change', valueListener, true);
+      this.frames.set(frame, {
+        document: contents,
+        observer: this.observeDocument(contents),
+        valueListener,
+        loadListener: onLoad,
+      });
+    }
+    for (const [frame, tracked] of this.frames) {
+      if (!present.has(frame)) {
+        this.detachFrame(frame, tracked);
+        this.frames.delete(frame);
+      }
+    }
+  }
+
+  private detachFrame(frame: HTMLIFrameElement, tracked: TrackedFrame): void {
+    frame.removeEventListener('load', tracked.loadListener);
+    tracked.observer?.disconnect();
+    if (tracked.document && tracked.valueListener) {
+      tracked.document.body?.removeEventListener('input', tracked.valueListener, true);
+      tracked.document.body?.removeEventListener('change', tracked.valueListener, true);
+    }
   }
 
   private clearTimers(): void {
@@ -207,6 +277,37 @@ export class ClrContextTrackerService implements OnDestroy {
       clearTimeout(this.maxWaitTimer);
       this.maxWaitTimer = null;
     }
+  }
+}
+
+interface TrackedFrame {
+  /** The frame's document while it was readable, `null` while it was not. */
+  document: Document | null;
+  observer: MutationObserver | null;
+  valueListener: ((event: Event) => void) | null;
+  loadListener: () => void;
+}
+
+/** Every frame under a document, and under every readable frame inside it. */
+function allFrames(root: Document): HTMLIFrameElement[] {
+  const frames: HTMLIFrameElement[] = [];
+  for (const frame of Array.from(root.querySelectorAll('iframe'))) {
+    frames.push(frame);
+    const contents = readableDocument(frame);
+    if (contents) {
+      frames.push(...allFrames(contents));
+    }
+  }
+  return frames;
+}
+
+/** A frame's document when it is same-origin and has finished parsing, `null` otherwise. */
+function readableDocument(frame: HTMLIFrameElement): Document | null {
+  try {
+    const contents = frame.contentDocument;
+    return contents?.body ? contents : null;
+  } catch {
+    return null;
   }
 }
 

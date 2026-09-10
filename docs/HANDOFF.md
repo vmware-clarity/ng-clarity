@@ -275,7 +275,30 @@ Still open: a VRT run for the attribute-only a11y changes, and the alert's `role
 swapped on a live element when `clrAlertType` changes (left as is; the old template had no
 role at all).
 
-## 9. Mistakes made in earlier sessions — do not repeat
+## 9. Text and frames (2026-09-10)
+
+Two capabilities added for the demo, both on by default and both switchable per snapshot:
+
+- **`text` nodes** (`includeText`): a role-less, name-less element with text of its own is
+  reported as `{ type: 'text', label }`; nested spans fold into one block, a control inside
+  the sentence is the block's child, and text already carried by a heading/list item/cell
+  label, by a `<label>`/`<legend>`/`<caption>`, by an `aria-labelledby` or
+  `aria-describedby` target, by a redacted region, or by screen-reader-only styling is not
+  reported. A custom element whose only rendered content is text keeps the earlier shape
+  (`{ type: tag, label }`). Text counts against `maxComponents`.
+- **Inline same-origin frames** (`includeFrames`): an `iframe` is a `frame` node —
+  `label` from its `title` or the frame document's `<title>`, `state.url` without query or
+  fragment — whose children are the frame document walked against the same budget,
+  recursively. A frame that cannot be read (cross-origin, sandboxed without
+  `allow-same-origin`) is `{ type: 'frame', state: { crossOrigin: true } }` with no
+  children; one still parsing is `{ loading: true }`. The tracker attaches a
+  `MutationObserver` and value listeners to every readable frame document (found after
+  each scrape, re-attached on the frame's `load`), and detaches on stop.
+
+Specs: `walk.spec.ts` ("text and frames"), `context-tracker.service.spec.ts` ("tracking
+embedded frames"), `snapshot-options.spec.ts`.
+
+## 10. Mistakes made in earlier sessions — do not repeat
 
 - Reported a browser disconnect as `3090 of 3090 SUCCESS`. Check executed count vs the real total.
 - `git restore` on the user's demo files after misreading their in-progress work as corruption.

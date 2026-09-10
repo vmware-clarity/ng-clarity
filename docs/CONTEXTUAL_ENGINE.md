@@ -117,6 +117,19 @@ with `data-clr-context-redact` (a single control or a whole region). Those are s
 password field is a `textbox` — and reported as `redacted: true`, so an agent knows a value exists
 rather than assuming the field is empty or missing.
 
+Visible text that carries no role — a paragraph, a card's body, a status line — is reported as a
+`text` node with the text as its `label`, so what a page _says_ reaches an agent along with what it
+can do. Nested spans fold into one block; a link inside a sentence is the block's child; text that
+a heading, a list item or a label already carries is not repeated. `includeText: false` turns it
+off.
+
+A page assembled from embedded plugins — a tab that is an iframe, a widget that is another — is one
+page to the user and is described as one: a same-origin frame is a `frame` node whose children are
+the frame's own content, walked against the same budget, and the tracker watches inside such frames
+too. A cross-origin frame is reported as a `frame` node with `crossOrigin: true` and no children,
+so an agent at least knows there is UI it does not see; the frame bridge below is how such a frame
+gets context in the other direction. `includeFrames: false` leaves frames out.
+
 Collections are summarised rather than listed: a menu reports its `options` (and any
 `disabledOptions`), a listbox its `options` and `selected` entries, a grid its columns and row
 count. A list is the one collection that is also walked, because the links inside a navigation
@@ -284,5 +297,7 @@ this.contextEngine.getSnapshot({
   maxItemsPerCollection: 10, // at most 10 rows/tabs/links/options per component
   maxComponents: 30, // at most 30 components overall, counted across the whole tree
   includeDomComponents: false, // skip DOM scanning entirely (regions + route only)
+  includeText: false, // controls and structure only, no prose
+  includeFrames: false, // do not look inside same-origin frames
 });
 ```

@@ -83,3 +83,16 @@ describe('snapshot options', () => {
     });
   });
 });
+
+describe('snapshot option switches', () => {
+  it('default to describing text and frames', () => {
+    expect(resolveSnapshotOptions().includeText).toBe(true);
+    expect(resolveSnapshotOptions().includeFrames).toBe(true);
+  });
+
+  it('can be turned off by the caller, and stay off when the ceiling turned them off', () => {
+    expect(resolveSnapshotOptions({ includeText: false }).includeText).toBe(false);
+    expect(capSnapshotOptions({ includeFrames: true }, { includeFrames: false }).includeFrames).toBe(false);
+    expect(capSnapshotOptions({ includeFrames: false }, { includeFrames: true }).includeFrames).toBe(false);
+  });
+});

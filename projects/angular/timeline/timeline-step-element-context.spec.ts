@@ -16,6 +16,8 @@ const BUDGETS: Required<ClrContextSnapshotOptions> = {
   maxItemsPerCollection: 25,
   maxComponents: 100,
   includeDomComponents: true,
+  includeText: true,
+  includeFrames: true,
 };
 
 function publishedOn(element: Element): Record<string, unknown> {

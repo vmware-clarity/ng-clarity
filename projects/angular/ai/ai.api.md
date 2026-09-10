@@ -145,6 +145,8 @@ export class ClrContextRegistryService {
 // @public
 export interface ClrContextSnapshotOptions {
     includeDomComponents?: boolean;
+    includeFrames?: boolean;
+    includeText?: boolean;
     maxComponents?: number;
     maxItemsPerCollection?: number;
     maxTextLength?: number;

@@ -44,4 +44,17 @@ export interface ClrContextSnapshotOptions {
   maxComponents?: number;
   /** Whether to scan the rendered DOM for Clarity components. Default `true`. */
   includeDomComponents?: boolean;
+  /**
+   * Whether to report visible text that carries no role — a paragraph, a card's body,
+   * a status line — as `text` nodes, so what a page says reaches an agent along with
+   * what it can do. Default `true`.
+   */
+  includeText?: boolean;
+  /**
+   * Whether to describe the contents of same-origin frames in place, as `frame` nodes
+   * with children, so a page assembled from embedded plugins is described as one page.
+   * A cross-origin frame is reported as a `frame` node without children either way.
+   * Default `true`.
+   */
+  includeFrames?: boolean;
 }

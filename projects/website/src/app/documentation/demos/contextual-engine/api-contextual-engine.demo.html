@@ -253,6 +253,22 @@
       <td class="left clr-hidden-xs-down">true</td>
       <td class="left">Whether to describe the rendered page at all. Turn it off for route and annotations only.</td>
     </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">includeText</b></td>
+      <td class="left clr-hidden-xs-down">true</td>
+      <td class="left">
+        Whether visible text that carries no role — a paragraph, a card's body — is reported as
+        <code cds-text="code">text</code> nodes, so what the page says reaches the agent along with what it can do.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">includeFrames</b></td>
+      <td class="left clr-hidden-xs-down">true</td>
+      <td class="left">
+        Whether same-origin frames are described in place, as <code cds-text="code">frame</code> nodes with the frame's
+        content as children. A cross-origin frame is reported as a frame without children either way.
+      </td>
+    </tr>
   </tbody>
 </table>
 

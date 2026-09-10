@@ -17,6 +17,8 @@ describe('summarizeRole', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
     ...overrides,
   });
 
@@ -161,6 +163,8 @@ describe('summarizeRole, collections the first version misread', () => {
     maxItemsPerCollection: 25,
     maxComponents: 100,
     includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
     ...overrides,
   });
 
