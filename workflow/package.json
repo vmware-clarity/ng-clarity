@@ -1,0 +1,4 @@
+{
+  "module": "../fesm2022/clr-addons-workflow.mjs",
+  "typings": "../types/clr-addons-workflow.d.ts"
+}

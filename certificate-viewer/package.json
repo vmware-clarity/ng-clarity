@@ -1,0 +1,4 @@
+{
+  "module": "../fesm2022/clr-addons-certificate-viewer.mjs",
+  "typings": "../types/clr-addons-certificate-viewer.d.ts"
+}
