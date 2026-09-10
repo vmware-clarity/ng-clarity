@@ -8,7 +8,6 @@
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { a11ykeys, ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import {
@@ -39,7 +38,7 @@ describe('AppfxCardComponent', () => {
   let zoomLevelService: ZoomLevelService;
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, ClrIcon, NoopAnimationsModule, DragDropModule, AppfxTranslateModule],
+      imports: [CommonModule, ClrIcon, DragDropModule, AppfxTranslateModule],
       declarations: [AppfxCardComponent],
       providers: [
         DragAndDropGroupService,

@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ElementRef, OnDestroy, ViewChild, ViewEncapsulation } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrModalModule } from '@clr/angular/modal';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { delay, expectActiveElementToBe } from '@clr/angular/testing';
@@ -279,7 +278,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrDropdownModule, ClrModalModule, NoopAnimationsModule],
+        imports: [ClrDropdownModule, ClrModalModule],
         declarations: [DropdownItemThatOpensModalTestComponent],
       });
 

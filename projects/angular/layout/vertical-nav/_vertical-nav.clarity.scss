@@ -98,7 +98,24 @@
       }
     }
 
+    // The children of a group expand and collapse by transitioning the single row of this grid between 0 and 1
+    // fraction of the content height.
+    .nav-group-children-wrapper {
+      display: grid;
+      grid-template-rows: 0fr;
+      visibility: hidden;
+      transition:
+        grid-template-rows tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out,
+        visibility tokens.$cds-global-animation-duration-quick;
+
+      &.is-expanded {
+        grid-template-rows: 1fr;
+        visibility: visible;
+      }
+    }
+
     .nav-group-children {
+      min-height: 0;
       overflow-y: hidden;
     }
 

@@ -8,7 +8,6 @@
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, spec, TestContext } from '@clr/angular/testing';
 
 import { RecursiveChildren } from './recursive-children';
@@ -61,7 +60,7 @@ export default function (): void {
   type Context = TestContext<ClrTree<void>, TestComponent>;
 
   describe('ClrTree Component', function () {
-    spec(ClrTree, TestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, TestComponent, ClrTreeViewModule);
 
     it('declares a TreeFeaturesService provider', function (this: Context) {
       expect(this.getClarityProvider(TreeFeaturesService, null)).not.toBeNull();
@@ -126,7 +125,7 @@ export default function (): void {
     let forTypeAheadDirectiveDEs: DebugElement[];
     let forTypeAheadDirectives: ClrTreeNode<any>[];
 
-    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule);
 
     beforeEach(function (this: Context) {
       forTypeAheadDirectiveDEs = this.fixture.debugElement.queryAll(By.directive(ClrTreeNode));

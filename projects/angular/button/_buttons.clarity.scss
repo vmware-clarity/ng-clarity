@@ -13,6 +13,26 @@
 @use '../styles/core/tokens/variables.tokens' as tokens;
 
 @include meta.load-css('properties.buttons');
+
+// Check mark of a loading button bouncing in once the operation succeeded
+@keyframes clr-loading-btn-check {
+  0% {
+    transform: scale(0, 0);
+  }
+
+  40% {
+    transform: scale(1.2, 1.2);
+  }
+
+  60% {
+    transform: scale(0.9, 0.9);
+  }
+
+  100% {
+    transform: scale(1, 1);
+  }
+}
+
 @include mixins.exports('buttons.clarity') {
   .btn {
     @include button-mixins.generateButton();
@@ -26,6 +46,23 @@
       display: flex;
       gap: buttons-variables.$clr-btn-gap;
       align-items: center;
+    }
+
+    // Transitions between the states of a loading button (see `ClrLoadingButton`)
+    .clr-loading-btn-enter {
+      animation: clr-fade-in tokens.$cds-global-animation-duration-quick 100ms ease-in backwards;
+    }
+
+    .clr-loading-btn-leave {
+      animation: clr-fade-out 100ms ease-out forwards;
+    }
+
+    .spinner.clr-loading-btn-check {
+      animation: clr-loading-btn-check 600ms;
+
+      &.clr-loading-btn-leave {
+        animation: clr-fade-out 100ms ease-out forwards;
+      }
     }
   }
 

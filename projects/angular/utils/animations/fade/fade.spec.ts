@@ -6,22 +6,22 @@
  */
 
 import {
-  AnimationAnimateMetadata,
-  AnimationMetadata,
-  AnimationStyleMetadata,
-  AnimationTransitionMetadata,
-  style,
-} from '@angular/animations';
+  animationStyle,
+  ClrAnimationAnimateMetadata,
+  ClrAnimationMetadata,
+  ClrAnimationStyleMetadata,
+  ClrAnimationTransitionMetadata,
+} from '../animation-metadata';
 
 import { fade } from './index';
 
 describe('Fade', () => {
   describe('default', () => {
-    const defaultFade: AnimationMetadata[] = fade();
-    const enterTransition: AnimationTransitionMetadata = defaultFade[0] as AnimationTransitionMetadata;
-    const exitTransition: AnimationTransitionMetadata = defaultFade[1] as AnimationTransitionMetadata;
+    const defaultFade: ClrAnimationMetadata[] = fade();
+    const enterTransition: ClrAnimationTransitionMetadata = defaultFade[0] as ClrAnimationTransitionMetadata;
+    const exitTransition: ClrAnimationTransitionMetadata = defaultFade[1] as ClrAnimationTransitionMetadata;
 
-    it('should return an array of AnimationMetadata', () => {
+    it('should return an array of ClrAnimationMetadata', () => {
       expect(defaultFade.length).toEqual(2);
     });
 
@@ -30,10 +30,10 @@ describe('Fade', () => {
     });
 
     it('should contain a transition with opacity of 0 and timing of 0.2s ease-in-out for void => *', () => {
-      const step1: AnimationStyleMetadata = (enterTransition.animation as any)[0];
-      const step2: AnimationAnimateMetadata = (enterTransition.animation as any)[1];
+      const step1: ClrAnimationStyleMetadata = (enterTransition.animation as any)[0];
+      const step2: ClrAnimationAnimateMetadata = (enterTransition.animation as any)[1];
 
-      expect(step1).toEqual(style({ opacity: 0 }));
+      expect(step1).toEqual(animationStyle({ opacity: 0 }));
       expect(step2.timings).toEqual('0.2s ease-in-out');
     });
 
@@ -42,19 +42,19 @@ describe('Fade', () => {
     });
 
     it('should contain a transition with opacity of 0 and timing of 0.2s ease-in-out for * => void', () => {
-      const step1: AnimationAnimateMetadata = (exitTransition.animation as any)[0];
+      const step1: ClrAnimationAnimateMetadata = (exitTransition.animation as any)[0];
 
-      expect(step1.styles).toEqual(style({ opacity: 0 }));
+      expect(step1.styles).toEqual(animationStyle({ opacity: 0 }));
     });
   });
 
   describe('fade with custom opacity', () => {
     const opacityValue = 0.8;
-    const customOpacityFade: AnimationMetadata[] = fade(opacityValue);
-    const enterTransition: AnimationTransitionMetadata = customOpacityFade[0] as AnimationTransitionMetadata;
-    const exitTransition: AnimationTransitionMetadata = customOpacityFade[1] as AnimationTransitionMetadata;
+    const customOpacityFade: ClrAnimationMetadata[] = fade(opacityValue);
+    const enterTransition: ClrAnimationTransitionMetadata = customOpacityFade[0] as ClrAnimationTransitionMetadata;
+    const exitTransition: ClrAnimationTransitionMetadata = customOpacityFade[1] as ClrAnimationTransitionMetadata;
 
-    it('should return an array of AnimationMetadata', () => {
+    it('should return an array of ClrAnimationMetadata', () => {
       expect(customOpacityFade.length).toEqual(2);
     });
 
@@ -63,10 +63,10 @@ describe('Fade', () => {
     });
 
     it('should contain a transition with opacity of 0 and timing of 0.2s ease-in-out for void => *', () => {
-      const step1: AnimationStyleMetadata = (enterTransition.animation as any)[0];
-      const step2: AnimationAnimateMetadata = (enterTransition.animation as any)[1];
+      const step1: ClrAnimationStyleMetadata = (enterTransition.animation as any)[0];
+      const step2: ClrAnimationAnimateMetadata = (enterTransition.animation as any)[1];
 
-      expect(step1).toEqual(style({ opacity: 0 }));
+      expect(step1).toEqual(animationStyle({ opacity: 0 }));
       expect(step2.timings).toEqual('0.2s ease-in-out');
     });
 
@@ -75,9 +75,9 @@ describe('Fade', () => {
     });
 
     it('should contain a transition with opacity of 0 and timing of 0.2s ease-in-out for * => void', () => {
-      const step1: AnimationAnimateMetadata = (exitTransition.animation as any)[0];
+      const step1: ClrAnimationAnimateMetadata = (exitTransition.animation as any)[0];
 
-      expect(step1.styles).toEqual(style({ opacity: 0 }));
+      expect(step1.styles).toEqual(animationStyle({ opacity: 0 }));
     });
   });
 });
