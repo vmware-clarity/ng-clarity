@@ -90,8 +90,9 @@ class ColumnActionsTest {
       <clr-dg-column>
         First
         <clr-dg-column-actions>
-          <button type="button" clrDropdownItem [clrDisabled]="customDisabled" class="custom-action">Custom</button>
-          <button type="button" clrDropdownItem [clrCloseMenuOnClick]="false" class="sticky-action">Sticky</button>
+          <button type="button" clrDgColumnAction [clrDisabled]="customDisabled" class="custom-action">Custom</button>
+          <button type="button" clrDgColumnAction [clrCloseMenuOnClick]="false" class="sticky-action">Sticky</button>
+          <button type="button" clrDropdownItem class="plain-action">Plain</button>
         </clr-dg-column-actions>
       </clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items">
@@ -337,7 +338,7 @@ export default function (): void {
         openMenu();
 
         const labels = menuItemLabels();
-        expect(labels.slice(-2)).toEqual(['Custom', 'Sticky']);
+        expect(labels.slice(-3)).toEqual(['Custom', 'Sticky', 'Plain']);
       });
 
       it('styles a projected action as a menu item', function () {
@@ -356,10 +357,21 @@ export default function (): void {
 
         expect(itemLabelled('Custom').getAttribute('tabindex')).toBe('-1');
         expect(itemLabelled('Custom').getAttribute('id')).toBeTruthy();
+        // A plain clrDropdownItem is projected the same way.
+        expect(itemLabelled('Plain').getAttribute('tabindex')).toBe('-1');
       });
 
-      // A projected item is a plain clrDropdownItem, so it closes the menu on click the way any
-      // dropdown item does - on a timer, after the application's own click handler has run.
+      // clrDgColumnAction is a clrDropdownItem, so it has to be its own focusable item rather than
+      // resolving the menu's focus handler through the FocusableItem token.
+      it('gives each projected action its own id', function () {
+        openMenu();
+
+        const ids = ['Custom', 'Sticky', 'Plain'].map(label => itemLabelled(label).getAttribute('id'));
+        expect(new Set(ids).size).toBe(3);
+      });
+
+      // clrDgColumnAction is a clrDropdownItem, so it closes the menu on click the way any dropdown
+      // item does - on a timer, after the application's own click handler has run.
       it('closes the menu when a projected action is picked', async () => {
         openMenu();
         expect(menuItems().length).toBeGreaterThan(0);
@@ -384,6 +396,24 @@ export default function (): void {
         context.detectChanges();
 
         expect(menuIsOpen()).toBeTrue();
+      });
+
+      // The one thing clrDgColumnAction adds over clrDropdownItem: an item that keeps the menu open
+      // is assumed to have moved the column, so the menu is re-anchored to the trigger.
+      it('re-anchors the menu after an action that keeps it open', function () {
+        const columnActions: ClrDatagridColumnActions = context.fixture.debugElement.query(
+          By.directive(ClrDatagridColumnActions)
+        ).componentInstance;
+        const repositionMenu = spyOn(columnActions, 'repositionMenu').and.callThrough();
+
+        openMenu();
+        itemLabelled('Sticky').click();
+        context.detectChanges();
+        expect(repositionMenu).toHaveBeenCalledTimes(1);
+
+        itemLabelled('Custom').click();
+        context.detectChanges();
+        expect(repositionMenu).toHaveBeenCalledTimes(1);
       });
 
       it('marks a disabled projected action and leaves the menu open', function () {

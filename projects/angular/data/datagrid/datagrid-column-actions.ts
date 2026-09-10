@@ -173,6 +173,7 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
 
   private columnSubscriptions: Subscription[] = [];
   private menuItemsSubscription: Subscription;
+  private isGone = false;
 
   constructor(
     @SkipSelf() @Optional() parent: ClrDropdown,
@@ -290,6 +291,7 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
 
   override ngOnDestroy() {
     super.ngOnDestroy();
+    this.isGone = true;
     this.columnSubscriptions.forEach(sub => sub.unsubscribe());
     this.menuItemsSubscription?.unsubscribe();
     // Hands the filter back its own toggle, in case the menu is removed while the column stays.
@@ -310,6 +312,13 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
    * follows, so measuring the trigger now would re-anchor the menu to where it already is.
    */
   repositionMenu() {
+    // An action can take the column, and this menu with it, out of the grid - the column ordering
+    // addon rebuilds the column views once a column is pinned. There is nothing left to re-anchor
+    // then, and the render hook could not be registered against a torn-down injector anyway.
+    if (this.isGone) {
+      return;
+    }
+
     afterNextRender(() => this.popoverService.updatePosition(), { injector: this.injector });
   }
 

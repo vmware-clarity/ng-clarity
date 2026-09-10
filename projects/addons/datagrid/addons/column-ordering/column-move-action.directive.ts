@@ -5,16 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostListener, Input, Optional } from '@angular/core';
-import { ClrDatagridColumnActions } from '@clr/angular/data/datagrid';
+import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 import { ColumnMoveDirection, DatagridColumnsOrderDirective } from './datagrid-columns-order.directive';
 
 /**
  * Moves this column left, right, to the start, or to the end of the reorderable columns, meant for
- * a `clrDropdownItem` inside a column's `clr-dg-column-actions` menu. The item should keep the menu
- * open with `[clrCloseMenuOnClick]="false"`, so the move can be repeated; this directive then keeps
- * the menu attached to the column it belongs to.
+ * a `clrDgColumnAction` inside a column's `clr-dg-column-actions` menu. The item should keep the
+ * menu open with `[clrCloseMenuOnClick]="false"`, so the move can be repeated - `clrDgColumnAction`
+ * then re-anchors the menu to the column in its new place on its own.
  *
  * The move itself, and whether it is even possible right now, both live on
  * `DatagridColumnsOrderDirective` - the same place the mouse and keyboard reordering already go
@@ -37,9 +36,7 @@ export class ColumnMoveActionDirective {
 
   constructor(
     private readonly columnsOrderDirective: DatagridColumnsOrderDirective,
-    private readonly elementRef: ElementRef<HTMLElement>,
-    // Resolvable because the item is projected into the menu, whose host is on its injector path.
-    @Optional() private readonly columnActions: ClrDatagridColumnActions | null
+    private readonly elementRef: ElementRef<HTMLElement>
   ) {}
 
   get disabled(): boolean {
@@ -59,14 +56,12 @@ export class ColumnMoveActionDirective {
       return;
     }
 
-    // Normally the menu survives the move, so it only has to be re-anchored to the trigger, which
+    // Normally the menu survives the move and clrDgColumnAction re-anchors it to the trigger, which
     // travelled with the column. Once a column is pinned though, applying the move rebuilds the
     // column views, and this very button is destroyed with the column it belonged to - there is no
     // menu left to re-anchor, so the one on the column in its new place is opened instead to end up
     // in the same state.
-    if (this.elementRef.nativeElement.isConnected) {
-      this.columnActions?.repositionMenu();
-    } else {
+    if (!this.elementRef.nativeElement.isConnected) {
       this.columnsOrderDirective.reopenColumnActions(column, this.direction);
     }
   }

@@ -104,9 +104,15 @@
 
 <p class="clr-mt-16px" cds-text="body">
   Anything projected into <code cds-text="code">clr-dg-column-actions</code> is appended after the built-in items. Mark
-  each one with <code cds-text="code">clrDropdownItem</code>, which gives it the styling of a menu item, a place in the
-  arrow key order, and closes the menu when it is picked. The component is itself the dropdown, so a projected item
-  resolves it from where it is declared, the way it would inside a <code cds-text="code">clr-dropdown</code>.
+  each one with <code cds-text="code">clrDgColumnAction</code>. It is a <code cds-text="code">clrDropdownItem</code> -
+  the same inputs, the styling of a menu item, a place in the arrow key order, and closing the menu when it is picked -
+  with one addition for a column: an item that keeps the menu open re-anchors it afterwards.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  A plain <code cds-text="code">clrDropdownItem</code> can be projected as well. The component is itself the dropdown,
+  so an item resolves it from where it is declared, the way it would inside a <code cds-text="code">clr-dropdown</code>;
+  it only lacks the re-anchoring.
 </p>
 
 <p class="clr-mt-16px" cds-text="body">
@@ -118,9 +124,9 @@
 
 <p class="clr-mt-16px" cds-text="body">
   Use <code cds-text="code">clrCloseMenuOnClick</code> set to <code cds-text="code">false</code> for an action that
-  should leave the menu open, such as one that moves the column the menu belongs to. The menu is anchored to a trigger
-  that travels with the column, so call <code cds-text="code">repositionMenu()</code> afterwards to re-anchor it to the
-  trigger in the column's new place. This is what the built-in Pin Column action does.
+  moves the column the menu belongs to. The menu is anchored to a trigger that travels with the column, so leaving it
+  open where the column used to be would be worse than closing it - <code cds-text="code">clrDgColumnAction</code>
+  re-anchors it to the trigger in the column's new place instead. This is what the built-in Pin Column action does.
 </p>
 
 <p class="clr-mt-16px" cds-text="body">
@@ -133,11 +139,11 @@
   <clr-dg-column [clrDgField]="'name'">
     Name
     <clr-dg-column-actions>
-      <button type="button" clrDropdownItem (click)="renameColumn()">
+      <button type="button" clrDgColumnAction (click)="renameColumn()">
         <cds-icon shape="pencil" aria-hidden="true"></cds-icon>
         Rename column
       </button>
-      <button type="button" clrDropdownItem [clrDisabled]="true">
+      <button type="button" clrDgColumnAction [clrDisabled]="true">
         <cds-icon shape="trash" aria-hidden="true"></cds-icon>
         Clear column
       </button>
@@ -168,6 +174,6 @@
   The trigger is labelled with the column it belongs to, so a screen reader announces which column's actions are being
   opened rather than repeating the same label down the header. The menu is a
   <code cds-text="code">menu</code> of <code cds-text="code">menuitem</code>s, walkable with the arrow keys, and each
-  item is activated with space or enter. Items projected with <code cds-text="code">clrDropdownItem</code> join that
+  item is activated with space or enter. Items projected with <code cds-text="code">clrDgColumnAction</code> join that
   order, so an application action is reachable the same way as a built-in one.
 </p>

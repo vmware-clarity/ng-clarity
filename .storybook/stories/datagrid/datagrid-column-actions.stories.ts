@@ -121,9 +121,9 @@ export const UnsortableColumn: StoryObj = {
   render: UnsortableTemplate,
 };
 
-// Projected items are appended after the built-in ones. They are plain clrDropdownItems: the
-// component is itself the dropdown, so an item resolves it from where it is declared, joins the
-// menu's arrow key order and closes the menu when picked.
+// Projected items are appended after the built-in ones. clrDgColumnAction is a clrDropdownItem
+// that additionally re-anchors the menu after an action that keeps it open; a plain clrDropdownItem
+// works too, since the component is itself the dropdown.
 const ProjectedActionTemplate: StoryFn = args => ({
   template: `
     <clr-datagrid>
@@ -131,8 +131,8 @@ const ProjectedActionTemplate: StoryFn = args => ({
         Name
         <clr-dg-column-actions>
           <div class="dropdown-divider" role="separator"></div>
-          <button type="button" clrDropdownItem (click)="exported = 'Name'">Export column</button>
-          <button type="button" clrDropdownItem clrDisabled>Unavailable action</button>
+          <button type="button" clrDgColumnAction (click)="exported = 'Name'">Export column</button>
+          <button type="button" clrDgColumnAction clrDisabled>Unavailable action</button>
         </clr-dg-column-actions>
       </clr-dg-column>
       <clr-dg-column clrDgField="symbol">Symbol</clr-dg-column>

@@ -375,7 +375,27 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           type: 'void',
           defaultValue: 'n/a',
           description:
-            'Method. Re-anchors the open menu to its trigger, for an action that moved the column the menu belongs to and kept the menu open with [clrCloseMenuOnClick]="false".',
+            'Method. Re-anchors the open menu to its trigger, for an action that moved the column the menu belongs to. Called for you by a clrDgColumnAction with [clrCloseMenuOnClick]="false", so an application only needs it when it moves a column by some other means.',
+        },
+      ],
+    },
+    {
+      name: 'ClrDatagridColumnAction',
+      selector: '[clrDgColumnAction]',
+      props: [
+        {
+          name: '[clrDisabled]',
+          type: 'boolean',
+          defaultValue: 'false',
+          description:
+            'Disables the item. It stays in the menu, announced as disabled and skipped by activation, rather than being hidden. Inherited from clrDropdownItem.',
+        },
+        {
+          name: '[clrCloseMenuOnClick]',
+          type: 'boolean',
+          defaultValue: 'true',
+          description:
+            'Whether activating the item closes the menu. Inherited from clrDropdownItem. Set it to false for an action that moves the column the menu belongs to: the menu is anchored to a trigger that travels with the column, so it is re-anchored to the trigger in its new place instead of being left behind. This is what the built-in Pin Column action does.',
         },
       ],
     },

@@ -119,7 +119,7 @@
 
             <button
               type="button"
-              clrDropdownItem
+              clrDgColumnAction
               [clrCloseMenuOnClick]="false"
               appfxColumnMoveAction="start"
               #moveToStart="appfxColumnMoveAction"
@@ -132,7 +132,7 @@
           -->
           <button
             type="button"
-            clrDropdownItem
+            clrDgColumnAction
             [clrCloseMenuOnClick]="false"
             appfxColumnMoveAction="left"
             #moveLeft="appfxColumnMoveAction"
@@ -144,7 +144,7 @@
           </button>
           <button
             type="button"
-            clrDropdownItem
+            clrDgColumnAction
             [clrCloseMenuOnClick]="false"
             appfxColumnMoveAction="right"
             #moveRight="appfxColumnMoveAction"
@@ -159,7 +159,7 @@
 
             <button
               type="button"
-              clrDropdownItem
+              clrDgColumnAction
               [clrCloseMenuOnClick]="false"
               appfxColumnMoveAction="end"
               #moveToEnd="appfxColumnMoveAction"
@@ -181,7 +181,7 @@
               @for (action of customColumnActions; track action.id) {
                 <button
                   type="button"
-                  clrDropdownItem
+                  clrDgColumnAction
                   [clrDisabled]="!action.enabled"
                   [attr.aria-label]="action.ariaLabel"
                   [title]="action.tooltip"

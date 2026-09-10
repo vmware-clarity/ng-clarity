@@ -54,11 +54,11 @@ const customActionsExample = `
   <clr-dg-column [clrDgField]="'name'">
     Name
     <clr-dg-column-actions>
-      <button type="button" clrDropdownItem (click)="renameColumn()">
+      <button type="button" clrDgColumnAction (click)="renameColumn()">
         <cds-icon shape="pencil" aria-hidden="true"></cds-icon>
         Rename column
       </button>
-      <button type="button" clrDropdownItem [clrDisabled]="true">
+      <button type="button" clrDgColumnAction [clrDisabled]="true">
         <cds-icon shape="trash" aria-hidden="true"></cds-icon>
         Clear column
       </button>
