@@ -361,4 +361,8 @@ export interface ClrCommonStrings {
   // Breadcrumbs
   breadcrumbsLabel: string;
   expandBreadcrumbsLabel: string;
+
+  // Card
+  expandCardAriaLabel: string;
+  collapseCardAriaLabel: string;
 }

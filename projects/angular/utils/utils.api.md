@@ -163,6 +163,8 @@ export interface ClrCommonStrings {
     clearFiles: string;
     close: string;
     collapse: string;
+    // (undocumented)
+    collapseCardAriaLabel: string;
     columnSeparatorAriaLabel: string;
     columnSeparatorDescription: string;
     // (undocumented)
@@ -229,6 +231,8 @@ export interface ClrCommonStrings {
     expand: string;
     // (undocumented)
     expandBreadcrumbsLabel: string;
+    // (undocumented)
+    expandCardAriaLabel: string;
     // (undocumented)
     fileCount: string;
     filterItems: string;

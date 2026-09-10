@@ -51,6 +51,7 @@
 //depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, list-group.clarity, buttons.clarity
 
 @forward '../layout/card.clarity';
+@forward '../card/card-elements.clarity';
 
 //Dropdowns
 //depends on variables.clarity, mixins.clarity, color.clarity, helpers.clarity, layers.clarity

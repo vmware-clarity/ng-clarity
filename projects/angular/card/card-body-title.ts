@@ -1,0 +1,17 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+
+@Component({
+  selector: 'clr-card-body-title',
+  template: `<ng-content></ng-content>`,
+  host: { '[class.card-title]': 'true', '[class.clr-card-body-title]': 'true' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+export class ClrCardBodyTitle {}

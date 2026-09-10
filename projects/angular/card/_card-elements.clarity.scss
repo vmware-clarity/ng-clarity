@@ -1,0 +1,61 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../styles/mixins';
+@use '../styles/variables/variables.density' as density;
+@use '../styles/core/tokens/variables.tokens' as tokens;
+@use '../layout/variables.card' as card-variables;
+
+@include mixins.exports('card-elements.clarity') {
+  // The static .card-header/.card-title/.card-text/.card-block/.card-img classes never set
+  // `display` themselves - they rely on their original host tag (h3/h4/div) being block-level
+  // by default. Our Angular sub-components render as custom element tags, which default to
+  // `display: inline`, so we restore block layout here explicitly.
+  .clr-card-body,
+  .clr-card-body-title,
+  .clr-card-body-text,
+  .clr-card-img {
+    display: block;
+  }
+
+  // When the footer is pulled out of the collapsible region (clrCardFooterCollapsible="false"),
+  // the body ends up as the last (and only) child of .clr-card-collapsible-content. The static
+  // `.card-block:last-child { border-bottom: none; }` rule then incorrectly removes the border
+  // that should still separate it from the now-external footer, so we restore it here.
+  .clr-card-collapsible-content-fixed-footer > .clr-card-body:last-child {
+    border-bottom: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
+  }
+
+  // The header is a flex row so the toggle button (only present when the card is
+  // collapsible) sits to the left of the projected title content.
+  .clr-card-header {
+    display: flex;
+    align-items: center;
+    gap: density.$clr-base-gap-s;
+  }
+
+  .clr-card-header-toggle {
+    flex: 0 0 auto;
+    margin: 0;
+    padding: density.$clr-base-vertical-offset-s density.$clr-base-horizontal-offset-s;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+
+    //&:focus {
+    //  @include mixins.include-outline-style-form-fields();
+    //}
+  }
+
+  .clr-card-header-icon {
+    display: block;
+    color: tokens.$cds-alias-object-interaction-color;
+
+    @include mixins.min-equilateral(density.$clr-base-icon-size-s);
+  }
+}

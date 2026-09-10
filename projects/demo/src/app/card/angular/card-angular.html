@@ -1,0 +1,153 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3>Angular component</h3>
+
+<h4>Collapsible card</h4>
+
+<p>Current state: {{ collapsed ? 'collapsed' : 'expanded' }}</p>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <clr-card clrCardCollapsible [(clrCardCollapsed)]="collapsed">
+        <clr-card-header>Header</clr-card-header>
+        <clr-card-body>
+          <clr-card-body-title>Block</clr-card-body-title>
+          <clr-card-body-text>Click the chevron in the header to collapse or expand this card.</clr-card-body-text>
+        </clr-card-body>
+        <clr-card-footer>
+          <button class="btn btn-sm btn-link">Footer Action</button>
+        </clr-card-footer>
+      </clr-card>
+    </div>
+  </div>
+</div>
+
+<h4>Collapsible card with a fixed footer</h4>
+
+<p>Current state: {{ fixedFooterCollapsed ? 'collapsed' : 'expanded' }}</p>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <clr-card clrCardCollapsible [clrCardFooterCollapsible]="false" [(clrCardCollapsed)]="fixedFooterCollapsed">
+        <clr-card-header>Header</clr-card-header>
+        <clr-card-body>
+          <clr-card-body-title>Block</clr-card-body-title>
+          <clr-card-body-text>The footer below stays visible even while this card is collapsed.</clr-card-body-text>
+        </clr-card-body>
+        <clr-card-footer>
+          <button class="btn btn-sm btn-link">Footer Action</button>
+        </clr-card-footer>
+      </clr-card>
+    </div>
+  </div>
+</div>
+
+<h4>Basic layout</h4>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <clr-card>
+        <clr-card-header>Header</clr-card-header>
+        <clr-card-body>
+          <clr-card-body-title>Block</clr-card-body-title>
+          <clr-card-body-text>
+            Card content can contain text, links, images, data visualizations, lists and more.
+          </clr-card-body-text>
+        </clr-card-body>
+        <clr-card-footer>
+          <button class="btn btn-sm btn-link">Footer Action 1</button>
+          <button class="btn btn-sm btn-link">Footer Action 2</button>
+        </clr-card-footer>
+      </clr-card>
+    </div>
+  </div>
+</div>
+
+<h4>Card with divider</h4>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <clr-card>
+        <clr-card-header>Header</clr-card-header>
+        <clr-card-body>
+          <clr-card-body-text>First section of card content.</clr-card-body-text>
+          <clr-card-divider></clr-card-divider>
+          <clr-card-body-text>Second section of card content, separated by a divider.</clr-card-body-text>
+        </clr-card-body>
+      </clr-card>
+    </div>
+  </div>
+</div>
+
+<h4>Card image</h4>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <clr-card>
+        <clr-card-img><img src="assets/placeholder_480x200.png" alt="" /></clr-card-img>
+        <clr-card-body>
+          <clr-card-body-text>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</clr-card-body-text>
+        </clr-card-body>
+      </clr-card>
+    </div>
+  </div>
+</div>
+
+<h4>Card media block</h4>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-6 clr-col-12">
+      <clr-card>
+        <clr-card-header>Header</clr-card-header>
+        <clr-card-body>
+          <clr-card-media-block>
+            <img clrCardMediaImage src="assets/placeholder_60x60.png" alt="" />
+            <clr-card-media-description>
+              <span clrCardMediaTitle>Project A</span>
+              <span clrCardMediaText>Owner: John Doe</span>
+            </clr-card-media-description>
+          </clr-card-media-block>
+          <clr-card-body-text>
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sunt excepturi labore explicabo temporibus, enim
+            voluptate saepe corrupti illum earum eveniet ab veniam vel nisi fugit accusantium perferendis quas facilis
+            quod.
+          </clr-card-body-text>
+        </clr-card-body>
+        <clr-card-footer>
+          <button class="btn btn-sm btn-link">Action</button>
+        </clr-card-footer>
+      </clr-card>
+    </div>
+    <div class="clr-col-lg-6 clr-col-12">
+      <clr-card>
+        <clr-card-header>Header</clr-card-header>
+        <clr-card-body>
+          <clr-card-media-block clrCardMediaWrap>
+            <img clrCardMediaImage src="assets/placeholder_60x60.png" alt="" />
+            <clr-card-media-description>
+              <span clrCardMediaTitle>Project B</span>
+              <span clrCardMediaText>Owner: Jane Doe</span>
+            </clr-card-media-description>
+          </clr-card-media-block>
+          <clr-card-body-text
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laborum, ipsum?</clr-card-body-text
+          >
+        </clr-card-body>
+        <clr-card-footer>
+          <button class="btn btn-sm btn-link">Action</button>
+        </clr-card-footer>
+      </clr-card>
+    </div>
+  </div>
+</div>
