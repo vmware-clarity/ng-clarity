@@ -1,0 +1,1 @@
+{"version":3,"file":"vitest.config.js","sourceRoot":"","sources":["../../../projects/angular/schematics/vitest.config.ts"],"names":[],"mappings":";AAAA;;;;;GAKG;;AAEH,0CAA6C;AAE7C,kBAAe,IAAA,qBAAY,EAAC;IAC1B,IAAI,EAAE;QACJ,IAAI,EAAE,6BAA6B;QACnC,OAAO,EAAE,CAAC,gBAAgB,CAAC;QAC3B,OAAO,EAAE,IAAI;KACd;CACF,CAAC,CAAC"}

@@ -1,0 +1,4 @@
+{
+  "module": "../fesm2022/clr-angular-forms.mjs",
+  "typings": "../types/clr-angular-forms.d.ts"
+}

@@ -1,0 +1,4 @@
+{
+  "module": "../../fesm2022/clr-angular-popover-common.mjs",
+  "typings": "../../types/clr-angular-popover-common.d.ts"
+}
