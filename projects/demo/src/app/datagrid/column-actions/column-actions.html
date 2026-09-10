@@ -63,10 +63,9 @@
 <h3>Custom column actions</h3>
 
 <p>
-  Items projected into <code class="clr-code">clr-dg-column-actions</code> are appended after the built-in ones and have
-  to carry <code class="clr-code">clrDgColumnAction</code>. That directive is what joins them to the menu's arrow key
-  order and closes the menu when one is picked. <code class="clr-code">clrDropdownItem</code> cannot be used here: it
-  resolves its dropdown from where it is declared, which is outside the menu in the component's own template.
+  Items projected into <code class="clr-code">clr-dg-column-actions</code> are appended after the built-in ones and are
+  plain <code class="clr-code">clrDropdownItem</code>s: the component is itself the dropdown, so a projected item joins
+  the menu's arrow key order and closes the menu when one is picked, the same as in any dropdown.
 </p>
 
 <p>
@@ -82,16 +81,16 @@
     User ID
     <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
       <div class="dropdown-divider" role="separator"></div>
-      <button type="button" clrDgColumnAction (click)="export('User ID')">
+      <button type="button" clrDropdownItem (click)="export('User ID')">
         <cds-icon shape="export" aria-hidden="true"></cds-icon>
         Export column
       </button>
-      <button type="button" clrDgColumnAction (click)="copyColumn('User ID', 'id')">
+      <button type="button" clrDropdownItem (click)="copyColumn('User ID', 'id')">
         <cds-icon shape="copy" aria-hidden="true"></cds-icon>
         Copy values
       </button>
       <!-- clrDisabled keeps the item in the menu but out of the arrow key order. -->
-      <button type="button" clrDgColumnAction clrDisabled>
+      <button type="button" clrDropdownItem clrDisabled>
         <cds-icon shape="trash" aria-hidden="true"></cds-icon>
         Delete column
       </button>
@@ -101,11 +100,11 @@
     Name
     <clr-dg-column-actions>
       <div class="dropdown-divider" role="separator"></div>
-      <button type="button" clrDgColumnAction (click)="export('Name')">
+      <button type="button" clrDropdownItem (click)="export('Name')">
         <cds-icon shape="export" aria-hidden="true"></cds-icon>
         Export column
       </button>
-      <button type="button" clrDgColumnAction (click)="copyColumn('Name', 'name')">
+      <button type="button" clrDropdownItem (click)="copyColumn('Name', 'name')">
         <cds-icon shape="copy" aria-hidden="true"></cds-icon>
         Copy values
       </button>

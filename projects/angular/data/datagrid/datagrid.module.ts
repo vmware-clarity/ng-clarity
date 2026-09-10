@@ -53,7 +53,6 @@ import { ClrDatagridActionBar } from './datagrid-action-bar';
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { ClrDatagridCell } from './datagrid-cell';
 import { ClrDatagridColumn } from './datagrid-column';
-import { ClrDatagridColumnAction } from './datagrid-column-action';
 import { ClrDatagridColumnActions } from './datagrid-column-actions';
 import { ClrDatagridColumnSeparator } from './datagrid-column-separator';
 import { ClrDatagridColumnToggle } from './datagrid-column-toggle';
@@ -91,7 +90,6 @@ export const CLR_DATAGRID_DIRECTIVES: Type<any>[] = [
   ClrDatagridActionOverflow,
   ClrDatagridCell,
   ClrDatagridColumn,
-  ClrDatagridColumnAction,
   ClrDatagridColumnActions,
   ClrDatagridColumnSeparator,
   ClrDatagridDetail,
@@ -159,7 +157,14 @@ const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
     CLR_DATAGRID_SHARED_DIRECTIVES,
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_INTERNAL_DIRECTIVES],
-  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES, CLR_DATAGRID_SHARED_DIRECTIVES],
+  // ClrDropdownModule is re-exported so that items projected into clr-dg-column-actions can use
+  // clrDropdownItem without a separate import.
+  exports: [
+    CLR_DATAGRID_DIRECTIVES,
+    CLR_DATAGRID_STANDALONE_DIRECTIVES,
+    CLR_DATAGRID_SHARED_DIRECTIVES,
+    ClrDropdownModule,
+  ],
 })
 export class ClrDatagridModule {
   constructor() {

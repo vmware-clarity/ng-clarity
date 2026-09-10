@@ -14,6 +14,7 @@ import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridColumn } from './datagrid-column';
+import { ClrDatagridColumnActions } from './datagrid-column-actions';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 
 const HEADER_PINNED = '.datagrid-header .datagrid-pinned-cells';
@@ -47,6 +48,11 @@ function itemLabelled(label: string): HTMLElement {
 
 function menuIsOpen(): boolean {
   return menuItems().length > 0;
+}
+
+// clrDropdownItem closes the menu from a zero delay timeout, so a test has to let that run.
+function settle(): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve));
 }
 
 @Component({
@@ -84,7 +90,8 @@ class ColumnActionsTest {
       <clr-dg-column>
         First
         <clr-dg-column-actions>
-          <button type="button" clrDgColumnAction [clrDisabled]="customDisabled" class="custom-action">Custom</button>
+          <button type="button" clrDropdownItem [clrDisabled]="customDisabled" class="custom-action">Custom</button>
+          <button type="button" clrDropdownItem [clrCloseMenuOnClick]="false" class="sticky-action">Sticky</button>
         </clr-dg-column-actions>
       </clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items">
@@ -330,8 +337,7 @@ export default function (): void {
         openMenu();
 
         const labels = menuItemLabels();
-        expect(labels).toContain('Custom');
-        expect(labels.indexOf('Custom')).toBe(labels.length - 1);
+        expect(labels.slice(-2)).toEqual(['Custom', 'Sticky']);
       });
 
       it('styles a projected action as a menu item', function () {
@@ -342,9 +348,9 @@ export default function (): void {
         expect(custom.getAttribute('role')).toBe('menuitem');
       });
 
-      // The whole point of clrDgColumnAction over a plain button: ClrDropdownMenu collects its items
-      // through @ContentChildren, which never sees projected content, so the directive has to hand
-      // itself to the dropdown's focus handler to take part in arrow key navigation.
+      // ClrDropdownMenu collects its items through @ContentChildren, which never sees projected
+      // content, so the component gathers the projected ones itself and hands them to the dropdown's
+      // focus handler to take part in arrow key navigation.
       it('joins a projected action to the arrow key order', function () {
         openMenu();
 
@@ -352,17 +358,32 @@ export default function (): void {
         expect(itemLabelled('Custom').getAttribute('id')).toBeTruthy();
       });
 
-      // clr-dropdown-menu is opened with [clrCloseMenuOnItemClick]="false", so a built-in item like
-      // Sort Ascending does not close the menu either. closeMenu() checks the same isMenuClosable flag
-      // clrDropdownItem does, so a projected action follows suit rather than closing on its own.
-      it('leaves the menu open when a projected action is picked', function () {
+      // A projected item is a plain clrDropdownItem, so it closes the menu on click the way any
+      // dropdown item does - on a timer, after the application's own click handler has run.
+      it('closes the menu when a projected action is picked', async () => {
         openMenu();
         expect(menuItems().length).toBeGreaterThan(0);
 
         itemLabelled('Custom').click();
         context.detectChanges();
+        await settle();
+        context.detectChanges();
 
-        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
+        expect(menuIsOpen()).toBeFalse();
+        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('false');
+      });
+
+      // An action that moves the column it belongs to opts out per item, the way the built-in pin
+      // action does, so the menu can be re-anchored rather than closed.
+      it('leaves the menu open for an item with clrCloseMenuOnClick false', async () => {
+        openMenu();
+
+        itemLabelled('Sticky').click();
+        context.detectChanges();
+        await settle();
+        context.detectChanges();
+
+        expect(menuIsOpen()).toBeTrue();
       });
 
       it('marks a disabled projected action and leaves the menu open', function () {
@@ -407,8 +428,9 @@ export default function (): void {
         openMenu();
         itemLabelled(label).click();
         context.detectChanges();
-        // clrDropdownItem closes the menu in a setTimeout, which a synchronous test never reaches, so
-        // the next invoke() would otherwise start from an already open menu.
+        // clrDropdownItem closes the menu in a setTimeout, which a synchronous test never reaches, and
+        // the pin and filter items keep it open on purpose, so the next invoke() would otherwise start
+        // from an already open menu.
         closeMenu();
       }
 
@@ -493,8 +515,9 @@ export default function (): void {
       // column used to be. The relocation happens on the render cycle the pin schedules, which is
       // why the hook runs after it rather than during the click.
       it('re-anchors the open menu after pinning moves the column', function () {
+        // The component is the dropdown, so the menu's popover service is its own.
         const popoverService = context.fixture.debugElement
-          .query(By.css('clr-dropdown'))
+          .query(By.directive(ClrDatagridColumnActions))
           .injector.get(ClrPopoverService);
         const updatePosition = spyOn(popoverService, 'updatePosition').and.callThrough();
 
@@ -606,9 +629,9 @@ export default function (): void {
         context.detectChanges();
         expect(filterPanel()).not.toBeNull();
 
-        // clrDropdownItem closes the menu on a timer that a synchronous test never reaches, so the
-        // menu is still open here where the user would find it closed. Closing and reopening covers
-        // the same ground: the trigger click is the outside click that dismisses the filter.
+        // The filter item keeps the menu open, since the filter popover is anchored to it. Closing
+        // and reopening covers the same ground: the trigger click is the outside click that dismisses
+        // the filter.
         closeMenu();
         openMenu();
 

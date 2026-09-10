@@ -918,7 +918,8 @@ describe('DatagridComponent', () => {
 
     // No pinned column here, which is the ordinary case and a different rendering path: nothing is
     // rebuilt, so the menu survives the move along with the column it belongs to. It used to be left
-    // anchored to where the trigger was before the move, which is what clrCanClosePopover fixes.
+    // anchored to where the trigger was before the move, which is what appfxColumnMoveAction fixes by
+    // re-anchoring it after a move whose item stays open.
     describe('column moves without pinned columns', () => {
       function toggleMenu(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number) {
         fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();

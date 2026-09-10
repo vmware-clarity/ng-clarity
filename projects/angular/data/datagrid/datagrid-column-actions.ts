@@ -6,22 +6,31 @@
  */
 
 import {
+  AfterContentInit,
   afterNextRender,
-  AfterViewInit,
   booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChildren,
   ElementRef,
+  forwardRef,
   Injector,
   Input,
   OnDestroy,
   Optional,
+  QueryList,
+  SkipSelf,
   ViewChild,
 } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { ClrDropdown, ClrDropdownMenu } from '@clr/angular/popover/dropdown';
-import { ClrCommonStringsService, FocusableItem } from '@clr/angular/utils';
+import { ClrDropdown, ClrDropdownMenu, DropdownFocusHandler, RootDropdownService } from '@clr/angular/popover/dropdown';
+import {
+  ClrCommonStringsService,
+  customFocusableItemProvider,
+  FOCUS_SERVICE_PROVIDER,
+  FocusableItem,
+} from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridColumn } from './datagrid-column';
@@ -46,89 +55,107 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
  * `clrDgKeepFilterInHeader` opts back into the toggle, and then the menu drops the filter action in
  * exchange: a column offers one way to reach its filter, never both at once.
  *
- * Projected items should carry `clrDgColumnAction`, which registers them here so they join the arrow
- * key order and follow the same close-on-click behavior as the built-in items. `clrDropdownItem`
- * cannot be used from the outside - see `ClrDatagridColumnAction` for why.
+ * The component is itself the dropdown, rather than wrapping a `clr-dropdown` in its template: it
+ * extends `ClrDropdown` and provides itself under that token. That is what lets projected items be
+ * plain `clrDropdownItem`s - they resolve the dropdown from where they are declared, and this host
+ * is on that path, where an element inside the template would not be.
  */
 @Component({
   selector: 'clr-dg-column-actions',
   template: `
-    <clr-dropdown [clrCloseMenuOnItemClick]="false">
-      <button
-        class="datagrid-column-actions-toggle"
-        type="button"
-        clrDropdownTrigger
-        [class.datagrid-column-actions-filtered]="filterActive"
-        [attr.aria-label]="triggerLabel"
-      >
-        <cds-icon shape="ellipsis-vertical" size="14" [badge]="filterActive ? 'info' : null" aria-hidden="true" />
-      </button>
+    <button
+      class="datagrid-column-actions-toggle"
+      type="button"
+      clrDropdownTrigger
+      [class.datagrid-column-actions-filtered]="filterActive"
+      [attr.aria-label]="triggerLabel"
+    >
+      <cds-icon shape="ellipsis-vertical" size="14" [badge]="filterActive ? 'info' : null" aria-hidden="true" />
+    </button>
 
-      <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+    <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
+      @if (column.sortable) {
+        <button
+          type="button"
+          clrDropdownItem
+          [class.active]="sortOrder === ClrDatagridSortOrder.ASC"
+          (click)="sort(false)"
+        >
+          <cds-icon shape="arrow" direction="up" aria-hidden="true"></cds-icon>
+          {{ commonStrings.keys.sortColumnAscending }}
+        </button>
+        <button
+          type="button"
+          clrDropdownItem
+          [class.active]="sortOrder === ClrDatagridSortOrder.DESC"
+          (click)="sort(true)"
+        >
+          <cds-icon shape="arrow" direction="down" aria-hidden="true"></cds-icon>
+          {{ commonStrings.keys.sortColumnDescending }}
+        </button>
+        @if (canClearSort) {
+          <button type="button" clrDropdownItem (click)="column.clearSort()">
+            <cds-icon shape="times" aria-hidden="true"></cds-icon>
+            {{ commonStrings.keys.clearColumnSort }}
+          </button>
+        }
+      }
+
+      @if (column.pinnable) {
         @if (column.sortable) {
-          <button
-            type="button"
-            clrDropdownItem
-            [class.active]="sortOrder === ClrDatagridSortOrder.ASC"
-            (click)="sort(false)"
-          >
-            <cds-icon shape="arrow" direction="up" aria-hidden="true"></cds-icon>
-            {{ commonStrings.keys.sortColumnAscending }}
-          </button>
-          <button
-            type="button"
-            clrDropdownItem
-            [class.active]="sortOrder === ClrDatagridSortOrder.DESC"
-            (click)="sort(true)"
-          >
-            <cds-icon shape="arrow" direction="down" aria-hidden="true"></cds-icon>
-            {{ commonStrings.keys.sortColumnDescending }}
-          </button>
-          @if (canClearSort) {
-            <button type="button" clrDropdownItem (click)="column.clearSort()">
-              <cds-icon shape="times" aria-hidden="true"></cds-icon>
-              {{ commonStrings.keys.clearColumnSort }}
-            </button>
-          }
+          <div class="dropdown-divider" role="separator"></div>
         }
+        <!-- Stays open on purpose: the action it offers next is the one that undoes the pin. -->
+        <button type="button" clrDropdownItem [clrCloseMenuOnClick]="false" (click)="togglePinned()">
+          <cds-icon
+            [shape]="column.pinned ? 'unpin' : 'pin'"
+            solid
+            size="12"
+            style="margin: 2px;"
+            aria-hidden="true"
+          ></cds-icon>
+          {{ column.pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn }}
+        </button>
+      }
 
-        @if (column.pinnable) {
-          @if (column.sortable) {
-            <div class="dropdown-divider" role="separator"></div>
-          }
-          <button type="button" clrDropdownItem (click)="togglePinned()">
-            <cds-icon
-              [shape]="column.pinned ? 'unpin' : 'pin'"
-              solid
-              size="12"
-              style="margin: 2px;"
-              aria-hidden="true"
-            ></cds-icon>
-            {{ column.pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn }}
-          </button>
+      @if (hasFilter && !keepFilterInHeader) {
+        @if (column.sortable || column.pinnable) {
+          <div class="dropdown-divider" role="separator"></div>
         }
+        <!-- Stays open because the filter popover is anchored to this very item. -->
+        <button
+          type="button"
+          #trigger
+          clrDropdownItem
+          [clrCloseMenuOnClick]="false"
+          [class.active]="filterActive"
+          (click)="openFilter($event)"
+        >
+          <cds-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></cds-icon>
+          {{ commonStrings.keys.filterColumn }}
+        </button>
+      }
 
-        @if (hasFilter && !keepFilterInHeader) {
-          @if (column.sortable || column.pinnable) {
-            <div class="dropdown-divider" role="separator"></div>
-          }
-          <button type="button" #trigger clrDropdownItem [class.active]="filterActive" (click)="openFilter($event)">
-            <cds-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></cds-icon>
-            {{ commonStrings.keys.filterColumn }}
-          </button>
-        }
-
-        <ng-content></ng-content>
-      </clr-dropdown-menu>
-    </clr-dropdown>
+      <ng-content></ng-content>
+    </clr-dropdown-menu>
   `,
   host: {
     '[class.datagrid-column-actions]': 'true',
   },
+  // What clr-dropdown provides - providers are not inherited, unlike the ClrPopoverHostDirective
+  // host directive, which is - plus this component under the ClrDropdown token so the trigger, the
+  // menu and any projected clrDropdownItem all find it. The root dropdown service is provided
+  // outright rather than shared with an enclosing dropdown: this menu is always a root of its own.
+  providers: [
+    RootDropdownService,
+    FOCUS_SERVICE_PROVIDER,
+    customFocusableItemProvider(DropdownFocusHandler),
+    { provide: ClrDropdown, useExisting: forwardRef(() => ClrDatagridColumnActions) },
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
+export class ClrDatagridColumnActions extends ClrDropdown implements AfterContentInit, OnDestroy {
   // Exposed so the template can compare against the enum.
   protected readonly ClrDatagridSortOrder = ClrDatagridSortOrder;
 
@@ -136,32 +163,56 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
 
   @ViewChild('trigger', { read: ElementRef }) private trigger: ElementRef<HTMLButtonElement>;
 
-  @ViewChild(ClrDropdown) private dropdown: ClrDropdown;
+  /**
+   * The projected items. ClrDropdownMenu only ever sees the items declared in this template, so the
+   * projected ones are gathered here and handed to the focus handler along with them.
+   */
+  @ContentChildren(FocusableItem, { descendants: true }) private projectedItems: QueryList<FocusableItem>;
 
   private menuInstance: ClrDropdownMenu;
 
-  private subscriptions: Subscription[] = [];
+  private columnSubscriptions: Subscription[] = [];
   private menuItemsSubscription: Subscription;
-  private projectedActions: FocusableItem[] = [];
-  private viewReady = false;
 
   constructor(
+    @SkipSelf() @Optional() parent: ClrDropdown,
+    popoverService: ClrPopoverService,
+    focusHandler: DropdownFocusHandler,
+    private changeDetectorRef: ChangeDetectorRef,
+    dropdownService: RootDropdownService,
     protected column: ClrDatagridColumn,
     protected commonStrings: ClrCommonStringsService,
     private columnActions: ColumnActionsService,
-    // The column's own popover service, shared with its filter. The clr-dropdown in this template
-    // brings its own, so the menu and the filter never fight over one overlay.
-    private columnPopover: ClrPopoverService,
-    private changeDetectorRef: ChangeDetectorRef,
+    // The column's own popover service, shared with its filter. This host brings its own for the
+    // menu, so the menu and the filter never fight over one overlay.
+    @SkipSelf() private columnPopover: ClrPopoverService,
     private injector: Injector,
     @Optional() private keyNavigation: KeyNavigationGridController,
     @Optional() private filters: FiltersProvider
   ) {
+    super(parent, popoverService, focusHandler, changeDetectorRef, dropdownService);
+
     // Tells the filter to drop its own toggle - from here on this menu is the only way to open it,
     // unless clrDgKeepFilterInHeader asked to keep both. Reading the backing field rather than the
     // getter covers the default: Angular only invokes the setter above when the input is actually
     // bound, and by then the field initializer has already run.
     columnActions.present.set(!this._keepFilterInHeader);
+
+    // The grid owns arrow key handling for the header, so it has to stand down while either overlay
+    // has focus - the menu, or the filter this menu opens. ClrDatagridFilter normally does the second
+    // half itself, but only when it is opened through its own input, which is no longer the path.
+    if (keyNavigation) {
+      this.columnSubscriptions.push(
+        popoverService.openChange.subscribe(() => this.updateSkipItemFocus()),
+        columnPopover.openChange.subscribe(() => this.updateSkipItemFocus())
+      );
+    }
+
+    // The trigger and the filter action show whether the column is filtered, and this component is
+    // OnPush, so it has to be told when a filter value changes.
+    if (filters) {
+      this.columnSubscriptions.push(filters.change.subscribe(() => changeDetectorRef.markForCheck()));
+    }
   }
 
   /**
@@ -233,67 +284,21 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     this.linkMenuItems();
   }
 
-  ngAfterViewInit() {
-    // The grid owns arrow key handling for the header, so it has to stand down while either overlay
-    // has focus - the menu, or the filter this menu opens. ClrDatagridFilter normally does the second
-    // half itself, but only when it is opened through its own input, which is no longer the path.
-    if (this.keyNavigation) {
-      this.subscriptions.push(
-        this.dropdown.popoverService.openChange.subscribe(() => this.updateSkipItemFocus()),
-        this.columnPopover.openChange.subscribe(() => this.updateSkipItemFocus())
-      );
-    }
-
-    // The trigger and the filter action show whether the column is filtered, and this component is
-    // OnPush, so it has to be told when a filter value changes.
-    if (this.filters) {
-      this.subscriptions.push(this.filters.change.subscribe(() => this.changeDetectorRef.markForCheck()));
-    }
-
-    // The menu is rebuilt on every open, and clrIfOpenChange is what reports that.
-    this.viewReady = true;
+  ngAfterContentInit() {
+    this.columnSubscriptions.push(this.projectedItems.changes.subscribe(() => this.linkMenuItems()));
   }
 
-  ngOnDestroy() {
-    this.subscriptions.forEach(sub => sub.unsubscribe());
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.columnSubscriptions.forEach(sub => sub.unsubscribe());
     this.menuItemsSubscription?.unsubscribe();
     // Hands the filter back its own toggle, in case the menu is removed while the column stays.
     this.columnActions.present.set(false);
-  }
-
-  /**
-   * Called by the projected `clrDgColumnAction` items, which cannot reach the dropdown themselves.
-   */
-  registerAction(item: FocusableItem) {
-    this.projectedActions.push(item);
-    this.linkMenuItems();
-  }
-
-  unregisterAction(item: FocusableItem) {
-    const index = this.projectedActions.indexOf(item);
-
-    if (index > -1) {
-      this.projectedActions.splice(index, 1);
-      this.linkMenuItems();
+    // The grid's own key handling was told to stand down while the menu was open; nothing else will
+    // tell it to resume if the menu is destroyed in that state.
+    if (this.keyNavigation) {
+      this.keyNavigation.skipItemFocus = false;
     }
-  }
-
-  /**
-   * Returns focus to the trigger before closing, the same order `clrDropdownItem` uses - moving focus
-   * first means it lands correctly even when the action opens a modal.
-   *
-   * Checks `isMenuClosable` because this is the only path a projected `clrDgColumnAction` item has to
-   * close the menu. `clrDropdownItem` checks the same flag on its own click handler, so without this
-   * check here a projected item would close the menu on click while a built-in one, with
-   * `[clrCloseMenuOnItemClick]="false"`, would not.
-   */
-  closeMenu() {
-    if (!this.dropdown.isMenuClosable) {
-      return;
-    }
-
-    this.dropdown.focusHandler.focus();
-    this.dropdown.popoverService.open = false;
   }
 
   /**
@@ -305,19 +310,7 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
    * follows, so measuring the trigger now would re-anchor the menu to where it already is.
    */
   repositionMenu() {
-    afterNextRender(() => this.dropdown.popoverService.updatePosition(), { injector: this.injector });
-  }
-
-  /**
-   * Moves focus to one of the projected actions, keeping the menu's keyboard handling in step with
-   * it.
-   *
-   * Called by `clrDgColumnAction` when the item takes focus, so that focusing an item by any means -
-   * including a plain `focus()` from outside, after an action rebuilt the menu - leaves space and
-   * enter acting on that same item rather than on whatever the menu focused when it opened.
-   */
-  focusAction(item: FocusableItem) {
-    this.dropdown?.focusHandler.moveTo(item);
+    afterNextRender(() => this.popoverService.updatePosition(), { injector: this.injector });
   }
 
   /**
@@ -344,10 +337,6 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
    * trigger this menu is anchored to travels with it - far enough that the menu would otherwise be
    * left hanging next to where the column used to be. The menu stays open on purpose, so the action
    * it now offers is the one that undoes the pin the user just applied.
-   *
-   * The columns are relocated on the render cycle the pinned state change schedules, not while this
-   * runs, so the overlay can only be re-anchored once that has happened - which `repositionMenu`
-   * takes care of.
    */
   protected togglePinned() {
     this.column.togglePinned();
@@ -374,16 +363,15 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
   }
 
   private updateSkipItemFocus() {
-    this.keyNavigation.skipItemFocus = this.dropdown.popoverService.open || this.columnPopover.open;
+    this.keyNavigation.skipItemFocus = this.popoverService.open || this.columnPopover.open;
   }
 
   private linkMenuItems() {
-    // The projected items register from their own constructor, which runs while the view is still
-    // being created, and the menu itself only exists while it is open.
-    if (!this.viewReady || !this.menuInstance) {
+    // The menu only exists while it is open.
+    if (!this.menuInstance) {
       return;
     }
 
-    this.dropdown.focusHandler.addChildren([...this.menuInstance.items.toArray(), ...this.projectedActions]);
+    this.focusHandler.addChildren([...this.menuInstance.items.toArray(), ...(this.projectedItems?.toArray() ?? [])]);
   }
 }

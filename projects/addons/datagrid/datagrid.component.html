@@ -119,8 +119,8 @@
 
             <button
               type="button"
-              clrDgColumnAction
-              [clrCanClosePopover]="false"
+              clrDropdownItem
+              [clrCloseMenuOnClick]="false"
               appfxColumnMoveAction="start"
               #moveToStart="appfxColumnMoveAction"
               [columnIndex]="index"
@@ -132,8 +132,8 @@
           -->
           <button
             type="button"
-            clrDgColumnAction
-            [clrCanClosePopover]="false"
+            clrDropdownItem
+            [clrCloseMenuOnClick]="false"
             appfxColumnMoveAction="left"
             #moveLeft="appfxColumnMoveAction"
             [columnIndex]="index"
@@ -144,8 +144,8 @@
           </button>
           <button
             type="button"
-            clrDgColumnAction
-            [clrCanClosePopover]="false"
+            clrDropdownItem
+            [clrCloseMenuOnClick]="false"
             appfxColumnMoveAction="right"
             #moveRight="appfxColumnMoveAction"
             [columnIndex]="index"
@@ -159,8 +159,8 @@
 
             <button
               type="button"
-              clrDgColumnAction
-              [clrCanClosePopover]="false"
+              clrDropdownItem
+              [clrCloseMenuOnClick]="false"
               appfxColumnMoveAction="end"
               #moveToEnd="appfxColumnMoveAction"
               [columnIndex]="index"
@@ -175,13 +175,13 @@
               <div class="dropdown-divider" role="separator"></div>
               <!--
                 Application actions come last, so the built-in ones keep the same place in every menu
-                whatever a column adds. clrCanClosePopover is left at its default, so these close the
+                whatever a column adds. clrCloseMenuOnClick is left at its default, so these close the
                 menu on click - unlike the move actions, they are not expected to be repeated.
               -->
               @for (action of customColumnActions; track action.id) {
                 <button
                   type="button"
-                  clrDgColumnAction
+                  clrDropdownItem
                   [clrDisabled]="!action.enabled"
                   [attr.aria-label]="action.ariaLabel"
                   [title]="action.tooltip"

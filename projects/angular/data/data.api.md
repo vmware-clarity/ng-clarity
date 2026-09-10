@@ -36,8 +36,8 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i40 from '@angular/common';
-import * as i48 from '@angular/forms';
+import * as i39 from '@angular/common';
+import * as i47 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
 import { Injector } from '@angular/core';
 import { IterableDiffers } from '@angular/core';
@@ -366,38 +366,16 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "ClrDropdown" needs to be exported by the entry point clr-angular-data.d.ts
+//
 // @public
-export class ClrDatagridColumnAction implements OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "FocusableItem" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(columnActions: ClrDatagridColumnActions, focusableItem: FocusableItem);
-    canClosePopover: boolean;
-    // (undocumented)
-    get disabled(): boolean;
-    set disabled(value: boolean);
-    // (undocumented)
-    static ngAcceptInputType_canClosePopover: unknown;
-    // (undocumented)
-    static ngAcceptInputType_disabled: unknown;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    protected onActivate(event: KeyboardEvent): void;
-    // (undocumented)
-    protected onClick(): void;
-    protected onFocus(): void;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "canClosePopover": { "alias": "clrCanClosePopover"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, never, false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnAction, never>;
-}
-
-// @public
-export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
+export class ClrDatagridColumnActions extends ClrDropdown implements AfterContentInit, OnDestroy {
+    // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "RootDropdownService" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "ColumnActionsService" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, keyNavigation: KeyNavigationGridController, filters: FiltersProvider);
+    constructor(parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, changeDetectorRef: ChangeDetectorRef, dropdownService: RootDropdownService, column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, injector: Injector, keyNavigation: KeyNavigationGridController, filters: FiltersProvider);
     // (undocumented)
     protected get canClearSort(): boolean;
-    closeMenu(): void;
     // (undocumented)
     protected readonly ClrDatagridSortOrder: typeof ClrDatagridSortOrder;
     // (undocumented)
@@ -405,7 +383,6 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected commonStrings: ClrCommonStringsService;
     protected get filterActive(): boolean;
-    focusAction(item: FocusableItem): void;
     // (undocumented)
     protected get hasFilter(): boolean;
     get keepFilterInHeader(): boolean;
@@ -413,11 +390,10 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // (undocumented)
     static ngAcceptInputType_keepFilterInHeader: unknown;
     // (undocumented)
-    ngAfterViewInit(): void;
+    ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     protected openFilter(event: Event): void;
-    registerAction(item: FocusableItem): void;
     repositionMenu(): void;
     protected sort(descending: boolean): void;
     // (undocumented)
@@ -425,11 +401,9 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     protected togglePinned(): void;
     protected get triggerLabel(): string;
     // (undocumented)
-    unregisterAction(item: FocusableItem): void;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, ["projectedItems"], ["*"], false, never>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, never, ["*"], false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [{ optional: true; skipSelf: true; }, null, null, null, null, null, null, null, { skipSelf: true; }, null, { optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -701,18 +675,18 @@ export class ClrDatagridModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatagridModule>;
+    // Warning: (ae-forgotten-export) The symbol "i40" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i41" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i42" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i43" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i44" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i45" needs to be exported by the entry point clr-angular-data.d.ts
     // Warning: (ae-forgotten-export) The symbol "i46" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i47" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i49" needs to be exported by the entry point clr-angular-data.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i51" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i48" needs to be exported by the entry point clr-angular-data.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i50" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i40.CommonModule, typeof i41.CdkDragModule, typeof i41.CdkTrapFocusModule, typeof i42.ClrIcon, typeof i43.ClrInputModule, typeof i44.ClrRadioModule, typeof i45.ClrCheckboxModule, typeof i46.ClrNumberInputModule, typeof i47.ClrSelectModule, typeof i48.FormsModule, typeof i41.ClrLoadingModule, typeof i41.ClrConditionalModule, typeof i41.ClrOutsideClickModule, typeof i41.ClrExpandableAnimationModule, typeof i49.ClrSpinnerModule, typeof i1_2.ClrPopoverModuleNext, typeof i51.ClrDropdownModule, typeof i41.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i41.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i41.ClrIfExpanded]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i39.CommonModule, typeof i40.CdkDragModule, typeof i40.CdkTrapFocusModule, typeof i41.ClrIcon, typeof i42.ClrInputModule, typeof i43.ClrRadioModule, typeof i44.ClrCheckboxModule, typeof i45.ClrNumberInputModule, typeof i46.ClrSelectModule, typeof i47.FormsModule, typeof i40.ClrLoadingModule, typeof i40.ClrConditionalModule, typeof i40.ClrOutsideClickModule, typeof i40.ClrExpandableAnimationModule, typeof i48.ClrSpinnerModule, typeof i1_2.ClrPopoverModuleNext, typeof i50.ClrDropdownModule, typeof i40.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i40.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i40.ClrIfExpanded, typeof i50.ClrDropdownModule]>;
 }
 
 // @public (undocumented)
@@ -1266,7 +1240,7 @@ export class ClrStackViewModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStackViewModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i40.CommonModule, typeof i48.FormsModule, typeof i42.ClrIcon, typeof i41.ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStackViewModule, [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags], [typeof i39.CommonModule, typeof i47.FormsModule, typeof i41.ClrIcon, typeof i40.ClrExpandableAnimationModule], [typeof ClrStackView, typeof ClrStackHeader, typeof ClrStackBlock, typeof ClrStackContentInput, typeof ClrStackViewLabel, typeof ClrStackViewCustomTags]>;
 }
 
 // @public (undocumented)
@@ -1380,7 +1354,7 @@ export class ClrTreeViewModule {
     // Warning: (ae-forgotten-export) The symbol "RecursiveChildren" needs to be exported by the entry point clr-angular-data.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i40.CommonModule, typeof i42.ClrIcon, typeof i41.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i39.CommonModule, typeof i41.ClrIcon, typeof i40.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
 }
 
 // @public (undocumented)
@@ -1789,7 +1763,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1172:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1173:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

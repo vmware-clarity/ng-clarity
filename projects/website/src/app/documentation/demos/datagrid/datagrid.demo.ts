@@ -375,34 +375,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           type: 'void',
           defaultValue: 'n/a',
           description:
-            'Method. Re-anchors the open menu to its trigger, for an action that moved the column the menu belongs to. Called for you by an item with [clrCanClosePopover]="false", so an application only needs it when it moves a column by some other means.',
-        },
-        {
-          name: 'focusAction(item)',
-          type: 'void',
-          defaultValue: 'n/a',
-          description:
-            'Method. Moves focus to one of the projected actions, keeping the keyboard in step with it - space and enter act on the item the menu considers current, not on whatever the browser has focused. Called for you when a clrDgColumnAction takes focus, so focusing an item by any means, including a plain focus() from outside, stays consistent.',
-        },
-      ],
-    },
-    {
-      name: 'ClrDatagridColumnAction',
-      selector: '[clrDgColumnAction]',
-      props: [
-        {
-          name: '[clrDisabled]',
-          type: 'boolean',
-          defaultValue: 'false',
-          description:
-            'Disables the item. It stays in the menu, announced as disabled and skipped by activation, rather than being hidden.',
-        },
-        {
-          name: '[clrCanClosePopover]',
-          type: 'boolean',
-          defaultValue: 'true',
-          description:
-            'Whether activating the item closes the menu. Set it to false for an action that moves the column the menu belongs to: the menu is anchored to a trigger that travels with the column, so it is re-anchored to the trigger in its new place instead of being left behind. This is what the built-in Pin Column action does.',
+            'Method. Re-anchors the open menu to its trigger, for an action that moved the column the menu belongs to and kept the menu open with [clrCloseMenuOnClick]="false".',
         },
       ],
     },

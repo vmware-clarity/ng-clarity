@@ -122,7 +122,8 @@ describe('ColumnMoveActionDirective', () => {
             @for (action of moveActions; track action.direction) {
               <button
                 type="button"
-                clrDgColumnAction
+                clrDropdownItem
+                [clrCloseMenuOnClick]="false"
                 [appfxColumnMoveAction]="action.direction"
                 #moveAction="appfxColumnMoveAction"
                 [columnIndex]="index"

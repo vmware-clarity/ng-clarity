@@ -53,11 +53,15 @@ export class FocusService {
       return;
     }
 
-    if (this.current) {
-      this.current.blur();
+    // Recorded before the focus moves: a focus listener on the item that reports back through
+    // moveTo() then finds it already current and stops, rather than moving to it a second time.
+    const previous = this._current;
+    this._current = item;
+
+    if (previous) {
+      previous.blur();
     }
     item.focus();
-    this._current = item;
   }
 
   move(direction: ArrowKeyDirection): boolean {
