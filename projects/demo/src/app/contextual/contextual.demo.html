@@ -64,8 +64,10 @@
         <code class="clr-code">frame</code> node with its own controls, text and form as children — type into the
         inventory form and watch the value change on the right. The third plugin is served from a different origin
         (<code class="clr-code">{{ thirdPartyOrigin || 'none found' }}</code>), so the browser lets no script on this
-        page read it: the engine reports that a frame is there and nothing else, and the plugin can instead ask this
-        page for context through the frame bridge.
+        page read it — the sandbox makes no difference to that: <code class="clr-code">allow-same-origin</code> only
+        lets a frame keep its real origin, it never grants the host access to another origin. The engine reports that a
+        frame is there and nothing else, and such a plugin can instead ask this page for context through the frame
+        bridge. Plugins served from the shell's own origin behave like the first two tabs.
       </p>
       <clr-tabs>
         <clr-tab>
