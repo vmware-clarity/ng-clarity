@@ -40,7 +40,11 @@ export interface ClrContextSnapshotOptions {
   maxTextLength?: number;
   /** Maximum number of items collected per list (rows, tabs, links, options...). Default `25`. */
   maxItemsPerCollection?: number;
-  /** Maximum number of components reported from the DOM. Default `100`. */
+  /**
+   * Maximum number of components reported from the DOM. Default `300`. When the budget
+   * runs out the snapshot says so (`truncated: true`), so a consumer can raise it or narrow
+   * the scope rather than mistake a cut-off tree for the whole page.
+   */
   maxComponents?: number;
   /** Whether to scan the rendered DOM for Clarity components. Default `true`. */
   includeDomComponents?: boolean;

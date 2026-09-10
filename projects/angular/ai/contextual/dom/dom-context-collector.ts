@@ -7,13 +7,13 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
-import { ClrContextDomExtractor, collectContextTree } from './walk';
+import { ClrContextDomExtractor, ClrContextTreeResult, collectContextTreeWithin } from './walk';
 import { resolveSnapshotOptions } from '../snapshot-options';
 
 export { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 export { CLR_CONTEXT_REDACT_ATTRIBUTE } from './aria-state';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE } from './walk';
-export type { ClrContextDomExtractor } from './walk';
+export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
 
 /**
  * Describes everything currently rendered, as a tree, by reading the accessibility tree.
@@ -37,5 +37,17 @@ export function collectClrDomContexts(
   options?: ClrContextSnapshotOptions,
   customExtractors: ClrContextDomExtractor[] = []
 ): ClrComponentContext[] {
-  return collectContextTree(root, resolveSnapshotOptions(options), customExtractors);
+  return collectClrDomContextTree(root, options, customExtractors).components;
+}
+
+/**
+ * {@link collectClrDomContexts}, also reporting whether the component budget ran out
+ * before the whole page was described.
+ */
+export function collectClrDomContextTree(
+  root: ParentNode,
+  options?: ClrContextSnapshotOptions,
+  customExtractors: ClrContextDomExtractor[] = []
+): ClrContextTreeResult {
+  return collectContextTreeWithin(root, resolveSnapshotOptions(options), customExtractors);
 }

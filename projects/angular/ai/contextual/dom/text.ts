@@ -89,18 +89,21 @@ export function accessibleText(element: Element, exclude?: Element): string {
       text += node.textContent ?? '';
       continue;
     }
-    if (!(node instanceof Element) || node === exclude) {
+    // Checked by node type rather than `instanceof Element`: a node inside a frame's
+    // document is an instance of that window's Element, not this one's.
+    if (node.nodeType !== Node.ELEMENT_NODE || node === exclude) {
       continue;
     }
+    const child = node as Element;
     // Nothing to contribute, and checking style for an empty element would be a layout
     // read for no reason.
-    if (!node.textContent?.trim()) {
+    if (!child.textContent?.trim()) {
       continue;
     }
-    if (isExcludedFromName(node)) {
+    if (isExcludedFromName(child)) {
       continue;
     }
-    text += accessibleText(node, exclude);
+    text += accessibleText(child, exclude);
   }
   return text;
 }

@@ -118,6 +118,21 @@ export function collectContextTree(
   options: Required<ClrContextSnapshotOptions>,
   extractors: ClrContextDomExtractor[] = []
 ): ClrComponentContext[] {
+  return collectContextTreeWithin(root, options, extractors).components;
+}
+
+/** The result of a walk, and whether it ran out of budget before it ran out of page. */
+export interface ClrContextTreeResult {
+  components: ClrComponentContext[];
+  truncated: boolean;
+}
+
+/** {@link collectContextTree}, also reporting whether the component budget ran out. */
+export function collectContextTreeWithin(
+  root: ParentNode,
+  options: Required<ClrContextSnapshotOptions>,
+  extractors: ClrContextDomExtractor[] = []
+): ClrContextTreeResult {
   const walk: Walk = {
     options,
     extractors,
@@ -129,7 +144,26 @@ export function collectContextTree(
     textDepth: 0,
   };
   collectReferencedIds(root, walk);
-  return describeChildren(root, walk, null);
+  const components = describeChildren(root, walk, null);
+  // The budget ran out if the walk had to stop while there was still something to see.
+  return { components, truncated: walk.remaining <= 0 && hasUndescribedContent(root, walk) };
+}
+
+/**
+ * Whether the walk left anything behind. Only consulted once the budget is spent — a
+ * page that fits exactly must not be reported as cut off — and answered by a second
+ * pass with a budget one larger: if that pass describes more than the budget allowed,
+ * something was left out. The probe is bounded the same way the walk is, so it costs at
+ * most one more node's worth of work than the walk itself.
+ */
+function hasUndescribedContent(root: ParentNode, walk: Walk): boolean {
+  const probe: Walk = { ...walk, remaining: walk.options.maxComponents + 1 };
+  const described = countNodes(describeChildren(root, probe, null));
+  return described > walk.options.maxComponents;
+}
+
+function countNodes(nodes: ClrComponentContext[]): number {
+  return nodes.reduce((total, node) => total + 1 + countNodes(node.children ?? []), 0);
 }
 
 /**

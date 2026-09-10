@@ -10,7 +10,7 @@ import { DOCUMENT, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { ClrContextRegistryService } from './context-registry.service';
-import { ClrContextDomExtractor, collectClrDomContexts } from '../dom/dom-context-collector';
+import { ClrContextDomExtractor, collectClrDomContextTree } from '../dom/dom-context-collector';
 import {
   ClrContextFrameHost,
   ClrContextFrameHostOptions,
@@ -88,7 +88,11 @@ export class ClrContextualEngineService implements OnDestroy {
       snapshot.route = route;
     }
     if (isPlatformBrowser(this.platformId) && options?.includeDomComponents !== false) {
-      snapshot.components = collectClrDomContexts(this.document, options, this.customExtractors);
+      const tree = collectClrDomContextTree(this.document, options, this.customExtractors);
+      snapshot.components = tree.components;
+      if (tree.truncated) {
+        snapshot.truncated = true;
+      }
     }
     return snapshot;
   }

@@ -14,7 +14,7 @@ import { ClrContextSnapshotOptions } from './interfaces/context.interface';
 export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = {
   maxTextLength: 100,
   maxItemsPerCollection: 25,
-  maxComponents: 100,
+  maxComponents: 300,
   includeDomComponents: true,
   includeText: true,
   includeFrames: true,
