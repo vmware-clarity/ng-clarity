@@ -309,9 +309,16 @@ Found while testing the demo page and fixed alongside:
 - Nodes inside a frame's document are instances of _that_ window's `Element`, so
   `instanceof Element` was false for them and text inside frames lost every nested element
   (`<strong>` vanished). The engine and tracker check `nodeType` instead.
-- The contextual demo page has a "Plugins in frames" section: three tabs, each an iframe —
-  an inventory plugin with a form and table, a monitoring plugin that embeds a second frame,
-  and a sandboxed frame standing in for a cross-origin plugin.
+- The contextual demo page has a "Plugins in frames" section: three tabs, each an iframe
+  carrying the sandbox a plugin shell grants (`allow-same-origin allow-scripts allow-popups
+allow-popups-to-escape-sandbox allow-forms allow-downloads`) and loading a static page from
+  `projects/demo/src/assets/plugins/` — an inventory plugin with a form and table, a
+  monitoring plugin that embeds a second frame, and a billing plugin loaded from a
+  different origin (the host name swapped between `localhost` and `127.0.0.1`), which the
+  host cannot read (`crossOrigin: true`) and which pulls host context through the frame
+  bridge instead (`enableFrameBridge` names that origin). With `allow-same-origin` a frame
+  keeps its real origin, so it is the plugin's origin — not the sandbox — that decides
+  whether the engine can walk it.
 
 ## 10. Mistakes made in earlier sessions — do not repeat
 

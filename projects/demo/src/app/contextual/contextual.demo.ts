@@ -7,7 +7,7 @@
 
 import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { ClrFormLayout } from '@clr/angular';
 import { ClrContextTrackerService, ClrContextualEngineService } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
@@ -50,82 +50,16 @@ const EMBEDDED_CHAT_PAGE = `
   </html>
 `;
 
-/** A plugin page as a shell would embed it: plain HTML, its own form, table and actions. */
-const INVENTORY_PLUGIN_PAGE = `
-  <html>
-    <head><title>Inventory plugin</title></head>
-    <body style="font-family: sans-serif; margin: 12px; font-size: 13px">
-      <h1 style="font-size: 16px; margin-top: 0">Inventory</h1>
-      <p>Rendered by a plugin in its own frame. The host application has no knowledge of this markup.</p>
-      <form>
-        <p>
-          <label for="vm-name">VM name</label>
-          <input id="vm-name" name="vmName" placeholder="web-01" required />
-        </p>
-        <p>
-          <label for="vm-size">Size</label>
-          <select id="vm-size" name="size">
-            <option value="s">Small (2 vCPU)</option>
-            <option value="m" selected>Medium (4 vCPU)</option>
-            <option value="l">Large (8 vCPU)</option>
-          </select>
-        </p>
-        <p>
-          <input id="vm-backup" name="backup" type="checkbox" checked />
-          <label for="vm-backup">Nightly backup</label>
-        </p>
-        <button type="button">Create VM</button>
-      </form>
-      <table style="margin-top: 12px; border-collapse: collapse" border="1" cellpadding="4">
-        <caption>Virtual machines</caption>
-        <thead><tr><th>Name</th><th>State</th><th>CPU</th></tr></thead>
-        <tbody>
-          <tr><td>web-01</td><td>Running</td><td>34%</td></tr>
-          <tr><td>db-01</td><td>Running</td><td>71%</td></tr>
-          <tr><td>batch-02</td><td>Stopped</td><td>0%</td></tr>
-        </tbody>
-      </table>
-    </body>
-  </html>
-`;
-
-const MONITORING_WIDGET_PAGE = `
-  <html>
-    <head><title>Alerts widget</title></head>
-    <body style="font-family: sans-serif; margin: 8px; font-size: 13px">
-      <div role="alert">Disk usage on db-01 above 90%</div>
-      <button type="button">Acknowledge</button>
-    </body>
-  </html>
-`;
-
-/** A plugin that itself embeds a frame: frames inside frames are walked the same way. */
-const MONITORING_PLUGIN_PAGE = `
-  <html>
-    <head><title>Monitoring plugin</title></head>
-    <body style="font-family: sans-serif; margin: 12px; font-size: 13px">
-      <h1 style="font-size: 16px; margin-top: 0">Monitoring</h1>
-      <p>Cluster health: <strong>degraded</strong>. The alerts widget below is a second frame nested inside this one.</p>
-      <iframe title="Alerts widget" style="width: 100%; height: 6rem" srcdoc="${attributeEscape(MONITORING_WIDGET_PAGE)}"></iframe>
-      <p><a href="/demo/datagrid">Open the full datagrid</a></p>
-    </body>
-  </html>
-`;
-
-/** Loaded in a sandbox without allow-same-origin, so it behaves like a cross-origin plugin. */
-const THIRD_PARTY_PLUGIN_PAGE = `
-  <html>
-    <head><title>Billing widget</title></head>
-    <body style="font-family: sans-serif; margin: 12px; font-size: 13px">
-      <h1 style="font-size: 16px; margin-top: 0">Billing (third party)</h1>
-      <p>This frame has an opaque origin. The host can see that a frame is here, but nothing inside it.</p>
-      <button type="button">Pay invoice</button>
-    </body>
-  </html>
-`;
-
-function attributeEscape(html: string): string {
-  return html.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+/**
+ * The third-party plugin is the same static asset served from a different origin: the
+ * host name is swapped between `localhost` and `127.0.0.1`, which the browser treats as
+ * two origins. Anywhere else the swap still yields a different origin, though the page
+ * may not load there — the point is that the host cannot read it either way.
+ */
+function thirdPartyPluginUrl(): URL {
+  const url = new URL('assets/plugins/billing.html', document.baseURI);
+  url.hostname = url.hostname === 'localhost' ? '127.0.0.1' : 'localhost';
+  return url;
 }
 
 @Component({
@@ -150,9 +84,8 @@ export class ContextualDemo implements OnInit, OnDestroy {
   snapshotCount = 0;
   snapshotTruncated = false;
   embeddedPage: SafeHtml;
-  inventoryPluginPage: SafeHtml;
-  monitoringPluginPage: SafeHtml;
-  thirdPartyPluginPage: SafeHtml;
+  thirdPartyPluginUrl: SafeResourceUrl;
+  thirdPartyOrigin: string;
 
   _isDisabled = false;
   _isSuccess = false;
@@ -187,9 +120,9 @@ export class ContextualDemo implements OnInit, OnDestroy {
     sanitizer: DomSanitizer
   ) {
     this.embeddedPage = sanitizer.bypassSecurityTrustHtml(EMBEDDED_CHAT_PAGE);
-    this.inventoryPluginPage = sanitizer.bypassSecurityTrustHtml(INVENTORY_PLUGIN_PAGE);
-    this.monitoringPluginPage = sanitizer.bypassSecurityTrustHtml(MONITORING_PLUGIN_PAGE);
-    this.thirdPartyPluginPage = sanitizer.bypassSecurityTrustHtml(THIRD_PARTY_PLUGIN_PAGE);
+    const thirdParty = thirdPartyPluginUrl();
+    this.thirdPartyOrigin = thirdParty.origin;
+    this.thirdPartyPluginUrl = sanitizer.bypassSecurityTrustResourceUrl(thirdParty.href);
   }
 
   @Input()
@@ -220,9 +153,10 @@ export class ContextualDemo implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Answer context requests from the embedded iframe below, and let browser-driving
-    // agents query the page through window.clrContext().
-    this.contextEngine.enableFrameBridge();
+    // Answer context requests from the embedded frames below — including the third-party
+    // plugin on its other origin, which has to be named — and let browser-driving agents
+    // query the page through window.clrContext().
+    this.contextEngine.enableFrameBridge({ allowedOrigins: [window.location.origin, this.thirdPartyOrigin] });
     this.contextEngine.enableGlobalAccess();
     // The panel on the right updates by itself: the tracker watches the DOM and emits
     // whenever the page context changes. The panel is marked data-clr-context-ignore,

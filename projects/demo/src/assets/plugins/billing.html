@@ -1,0 +1,68 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Billing widget</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 12px;
+        font-size: 13px;
+      }
+      h1 {
+        font-size: 16px;
+        margin-top: 0;
+      }
+      pre {
+        background: #f4f4f4;
+        padding: 8px;
+        white-space: pre-wrap;
+        max-height: 10rem;
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Billing (third party)</h1>
+    <p>
+      This page is served from a different origin, so the host cannot read anything inside it. What it can do is answer
+      when this page asks for context over <code>postMessage</code>:
+    </p>
+    <button id="ask" type="button">Request host page context</button>
+    <button type="button">Pay invoice</button>
+    <pre id="out"></pre>
+    <script>
+      // The host's origin, disclosed by the embedder through the referrer. The answer is
+      // accepted only from the window that was asked, and only from that origin.
+      var hostOrigin = document.referrer ? new URL(document.referrer).origin : '*';
+      var requestId = crypto.randomUUID();
+      window.addEventListener('message', function (event) {
+        var message = event.data;
+        if (event.source !== window.parent || (hostOrigin !== '*' && event.origin !== hostOrigin)) {
+          return;
+        }
+        if (
+          message &&
+          message.protocol === 'ui-context/v1' &&
+          message.kind === 'context-response' &&
+          message.requestId === requestId
+        ) {
+          document.getElementById('out').textContent = JSON.stringify(message.context, null, 2);
+        }
+      });
+      document.getElementById('ask').addEventListener('click', function () {
+        requestId = crypto.randomUUID();
+        window.parent.postMessage(
+          { protocol: 'ui-context/v1', kind: 'context-request', requestId: requestId, options: { maxComponents: 40 } },
+          hostOrigin
+        );
+      });
+    </script>
+  </body>
+</html>
