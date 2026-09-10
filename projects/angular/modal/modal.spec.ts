@@ -5,11 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationEvent } from '@angular/animations';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
@@ -72,7 +70,7 @@ describe('Modal', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrModalModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrModalModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
@@ -134,24 +132,15 @@ describe('Modal', () => {
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
   });
 
-  it('should not emit clrModalOpenChange - animation will do that for us', async () => {
-    /**
-     * Needed just to mock the event so I could enter the `if` statement.
-     */
-    const fakeAnimationEvent: AnimationEvent = {
-      fromState: '',
-      toState: 'void',
-      totalTime: 0,
-      phaseName: '',
-      element: {},
-      triggerName: '',
-      disabled: false,
-    };
-
+  it('emits clrModalOpenChange once the modal has been removed after closing', async () => {
     spyOn(modal._openChanged, 'emit');
     modal.close();
-    modal.fadeDone(fakeAnimationEvent);
-    expect(modal._openChanged.emit).toHaveBeenCalledTimes(1);
+    expect(modal._openChanged.emit).not.toHaveBeenCalled();
+
+    fixture.detectChanges();
+    await delay();
+    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+    expect(fixture.nativeElement.querySelector('.modal-dialog')).toBeNull();
   });
 
   it('should not close when already closed', async () => {

@@ -9,7 +9,6 @@ import { ChangeDetectorRef, Component, DebugElement, NgModule } from '@angular/c
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { OverrideClrStringsDirective } from '@clr/addons/a11y';
 import {
   CancelableStepValidation,
@@ -199,14 +198,7 @@ describe('Stepper', () => {
 
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
-      imports: [
-        ClrSpinnerModule,
-        ClrStepperModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        AppfxStepperTestModule,
-      ],
+      imports: [ClrSpinnerModule, ClrStepperModule, FormsModule, ReactiveFormsModule, AppfxStepperTestModule],
       declarations: [
         StepperComponent,
         StepContainer,

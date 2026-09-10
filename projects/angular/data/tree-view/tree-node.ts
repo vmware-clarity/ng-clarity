@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
@@ -55,14 +54,6 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   selector: 'clr-tree-node',
   templateUrl: './tree-node.html',
   providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }],
-  animations: [
-    trigger('toggleChildrenAnim', [
-      transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
-      transition('expanded => collapsed', [style({ height: '*' }), animate(200, style({ height: 0 }))]),
-      state('expanded', style({ height: '*', 'overflow-y': 'visible' })),
-      state('collapsed', style({ height: 0 })),
-    ]),
-  ],
   host: {
     '[class.clr-tree-node]': 'true',
     '[class.disabled]': 'this._model.disabled',

@@ -30,15 +30,14 @@
     </button>
   </div>
   <div
-    @skipInitialRender
     role="region"
     class="clr-accordion-content-region"
     [id]="getContentId(panel.templateId)"
     [attr.aria-hidden]="!panel.open"
     [attr.aria-labelledby]="getHeaderId(panel.templateId)"
   >
-    @if (panel.open) {
-    <div @toggle (@toggle.done)="collapsePanelOnAnimationDone(panel)" class="clr-accordion-content">
+    @if (panel.open || collapsing) {
+    <div #panelContent [animate.enter]="contentEnterClass" class="clr-accordion-content">
       <div class="clr-accordion-inner-content">
         <ng-content></ng-content>
       </div>

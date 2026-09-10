@@ -5,12 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationEvent, transition, trigger, useAnimation } from '@angular/animations';
-import { Component, HostBinding, HostListener, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { DomAdapter } from '../../dom-adapter/dom-adapter';
-import { defaultExpandAnimation } from '../constants';
 import { BaseExpandableAnimation } from './base-expandable-animation';
+import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
 @Component({
   selector: 'clr-expandable-animation',
@@ -22,26 +20,36 @@ import { BaseExpandableAnimation } from './base-expandable-animation';
       }
     `,
   ],
-  animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])],
+  host: {
+    '[class.clr-expandable-animation]': 'true',
+  },
   providers: [DomAdapter],
   standalone: false,
 })
-export class ClrExpandableAnimation extends BaseExpandableAnimation {
+export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
   @Input() clrExpandTrigger = false;
 
-  @HostBinding('@expandAnimation')
+  /** @deprecated The expansion is animated with native CSS; there is no Angular animation state anymore. */
   get expandAnimation() {
     return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
   }
 
-  @HostListener('@expandAnimation.start', ['$event'])
-  animationStart(event: AnimationEvent) {
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['clrExpandTrigger'] && !changes['clrExpandTrigger'].firstChange) {
+      // Defer until the content has been rendered, so that the height to animate to can be measured.
+      Promise.resolve().then(() => this.playAnimation());
+    }
+  }
+
+  /** @deprecated The expansion is animated with native CSS; there are no Angular animation callbacks anymore. */
+  animationStart(event: { fromState: string }) {
     if (event.fromState !== 'void') {
       this.initAnimationEffects();
     }
   }
-  @HostListener('@expandAnimation.done', ['$event'])
-  animationDone(event: AnimationEvent) {
+
+  /** @deprecated The expansion is animated with native CSS; there are no Angular animation callbacks anymore. */
+  animationDone(event: { fromState: string }) {
     if (event.fromState !== 'void') {
       this.cleanupAnimationEffects();
     }

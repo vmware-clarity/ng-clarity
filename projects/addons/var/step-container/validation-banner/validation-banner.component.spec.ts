@@ -8,7 +8,6 @@
 import { DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrAlertModule } from '@clr/angular/emphasis/alert';
 
 import { ValidationBannerComponent, ValidationBannerInternalComponent } from './validation-banner.component';
@@ -42,7 +41,7 @@ describe('wizard-banner.spec', () => {
   describe('wizard-banner-internal', () => {
     beforeEach(function (this: ThisTest) {
       TestBed.configureTestingModule({
-        imports: [ClrAlertModule, NoopAnimationsModule],
+        imports: [ClrAlertModule],
         declarations: [ValidationBannerInternalComponent],
       });
 
@@ -85,7 +84,7 @@ describe('wizard-banner.spec', () => {
   describe('wizard-banner', () => {
     beforeEach(function (this: ThisTest) {
       TestBed.configureTestingModule({
-        imports: [ClrAlertModule, NoopAnimationsModule],
+        imports: [ClrAlertModule],
         declarations: [ValidationBannerInternalComponent, ValidationBannerComponent],
       });
 

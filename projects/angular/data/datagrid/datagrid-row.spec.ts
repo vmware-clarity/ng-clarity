@@ -5,10 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationBuilder } from '@angular/animations';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, TestContext } from '@clr/angular/testing';
 import { LoadingListener } from '@clr/angular/utils';
 
@@ -195,7 +193,6 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrDatagridModule],
           declarations: [NgForDatagridWithTrackBy],
-          providers: [AnimationBuilder],
         });
 
         fixture = TestBed.createComponent(NgForDatagridWithTrackBy);
@@ -631,9 +628,8 @@ export default function (): void {
 
         beforeEach(function () {
           TestBed.configureTestingModule({
-            imports: [ClrDatagridModule, NoopAnimationsModule],
+            imports: [ClrDatagridModule],
             declarations: [RowSelectionWithDetailAndActionTest],
-            providers: [AnimationBuilder],
           });
 
           fixture = TestBed.createComponent(RowSelectionWithDetailAndActionTest);

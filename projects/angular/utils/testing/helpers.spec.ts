@@ -8,7 +8,6 @@
 import { CUSTOM_ELEMENTS_SCHEMA, DebugElement, InjectionToken, Type } from '@angular/core';
 import { ComponentFixture, TestBed, TestModuleMetadata } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
 // import { reportSlowSpecs } from "./slow-specs.spec";
 
@@ -135,7 +134,7 @@ export function addHelpers(): void {
       extraDirectives: Type<any>[] = []
     ) => {
       TestBed.configureTestingModule({
-        imports: [ClarityModule, NoopAnimationsModule],
+        imports: [ClarityModule],
         declarations: [testComponent, ...extraDirectives],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: providers,
@@ -165,7 +164,7 @@ export function addHelpers(): void {
       serviceOverrides: any[]
     ) => {
       TestBed.configureTestingModule({
-        imports: [ClarityModule, NoopAnimationsModule],
+        imports: [ClarityModule],
         declarations: [testComponent, ...extraDirectives],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: providers,
@@ -185,7 +184,7 @@ export function addHelpers(): void {
       serviceOverrides: any[]
     ) => {
       TestBed.configureTestingModule({
-        imports: [ClarityModule, NoopAnimationsModule],
+        imports: [ClarityModule],
         declarations: [testComponent, ...extraDirectives],
         schemas: [CUSTOM_ELEMENTS_SCHEMA],
         providers: providers,

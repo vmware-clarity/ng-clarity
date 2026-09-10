@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ContentChildren, Directive, ElementRef, QueryList, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 
 import { ColumnOrderDirective } from './column-order.directive';
@@ -23,7 +22,7 @@ describe('ColumnOrderDirective', () => {
   let service: DatagridColumnsOrderService;
   beforeEach(function (this: any) {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, CommonModule, ClrDatagridModule, DragDropModule, TestClrDatagridHostComponent],
+      imports: [CommonModule, ClrDatagridModule, DragDropModule, TestClrDatagridHostComponent],
     });
 
     this.fixture = TestBed.createComponent(TestClrDatagridHostComponent);

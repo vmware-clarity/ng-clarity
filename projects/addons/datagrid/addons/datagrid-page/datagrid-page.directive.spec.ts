@@ -10,7 +10,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   MockDatagridActionBarComponent,
   MockDatagridCellContainerComponent,
@@ -109,7 +108,6 @@ describe('datagridPage directive', () => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
-        NoopAnimationsModule,
         DatagridColumnsOrderModule,
         DragDropModule,
         OverlayModule,
