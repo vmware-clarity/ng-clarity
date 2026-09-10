@@ -52,14 +52,30 @@ const EMBEDDED_CHAT_PAGE = `
 
 /**
  * The third-party plugin is the same static asset served from a different origin: the
- * host name is swapped between `localhost` and `127.0.0.1`, which the browser treats as
- * two origins. Anywhere else the swap still yields a different origin, though the page
- * may not load there — the point is that the host cannot read it either way.
+ * host name is swapped to another name for this machine, which the browser treats as a
+ * different origin. Which alternate name actually answers depends on what the dev server
+ * listens on — `localhost` may resolve to `::1` while `127.0.0.1` refuses — so the
+ * candidates are probed and the first one that responds is used.
  */
-function thirdPartyPluginUrl(): URL {
-  const url = new URL('assets/plugins/billing.html', document.baseURI);
-  url.hostname = url.hostname === 'localhost' ? '127.0.0.1' : 'localhost';
-  return url;
+const ALTERNATE_HOSTS = ['127.0.0.1', '[::1]', 'localhost'];
+
+function alternateOrigins(): URL[] {
+  const current = new URL('assets/plugins/billing.html', document.baseURI);
+  return ALTERNATE_HOSTS.filter(host => host !== current.hostname).map(host => {
+    const url = new URL(current.href);
+    url.hostname = host;
+    return url;
+  });
+}
+
+/** Whether a server answers at all at this URL; an opaque cross-origin response is enough. */
+async function reachable(href: string): Promise<boolean> {
+  try {
+    await fetch(href, { mode: 'no-cors', cache: 'no-store' });
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 @Component({
@@ -84,8 +100,9 @@ export class ContextualDemo implements OnInit, OnDestroy {
   snapshotCount = 0;
   snapshotTruncated = false;
   embeddedPage: SafeHtml;
-  thirdPartyPluginUrl: SafeResourceUrl;
-  thirdPartyOrigin: string;
+  thirdPartyPluginUrl: SafeResourceUrl | null = null;
+  thirdPartyOrigin = '';
+  thirdPartyProbed = false;
 
   _isDisabled = false;
   _isSuccess = false;
@@ -117,12 +134,9 @@ export class ContextualDemo implements OnInit, OnDestroy {
     private contextEngine: ClrContextualEngineService,
     private contextTracker: ClrContextTrackerService,
     private changeDetectorRef: ChangeDetectorRef,
-    sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer
   ) {
     this.embeddedPage = sanitizer.bypassSecurityTrustHtml(EMBEDDED_CHAT_PAGE);
-    const thirdParty = thirdPartyPluginUrl();
-    this.thirdPartyOrigin = thirdParty.origin;
-    this.thirdPartyPluginUrl = sanitizer.bypassSecurityTrustResourceUrl(thirdParty.href);
   }
 
   @Input()
@@ -153,11 +167,12 @@ export class ContextualDemo implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Answer context requests from the embedded frames below — including the third-party
-    // plugin on its other origin, which has to be named — and let browser-driving agents
-    // query the page through window.clrContext().
-    this.contextEngine.enableFrameBridge({ allowedOrigins: [window.location.origin, this.thirdPartyOrigin] });
+    // Answer context requests from the embedded frames below, and let browser-driving
+    // agents query the page through window.clrContext(). The third-party plugin's origin
+    // is added once it is known (see resolveThirdPartyPlugin).
+    this.contextEngine.enableFrameBridge();
     this.contextEngine.enableGlobalAccess();
+    this.resolveThirdPartyPlugin();
     // The panel on the right updates by itself: the tracker watches the DOM and emits
     // whenever the page context changes. The panel is marked data-clr-context-ignore,
     // so its own re-renders neither re-trigger tracking nor appear in the context.
@@ -201,5 +216,19 @@ export class ContextualDemo implements OnInit, OnDestroy {
     });
     this.form.updateValueAndValidity();
     this.changeDetectorRef.detectChanges();
+  }
+
+  private async resolveThirdPartyPlugin(): Promise<void> {
+    for (const candidate of alternateOrigins()) {
+      if (await reachable(candidate.href)) {
+        this.thirdPartyOrigin = candidate.origin;
+        this.thirdPartyPluginUrl = this.sanitizer.bypassSecurityTrustResourceUrl(candidate.href);
+        // The bridge serves only origins it is told about: name the plugin's.
+        this.contextEngine.enableFrameBridge({ allowedOrigins: [window.location.origin, candidate.origin] });
+        break;
+      }
+    }
+    this.thirdPartyProbed = true;
+    this.changeDetectorRef.markForCheck();
   }
 }
