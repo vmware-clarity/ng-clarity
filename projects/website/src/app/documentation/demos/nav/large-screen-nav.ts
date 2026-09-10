@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
 import { ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
 
 @Component({
   selector: 'clr-layout-large-screen-nav',
   templateUrl: './large-screen-nav.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrCommonFormsModule, ClrVerticalNavModule, RouterLinkActive],
 })
 export class LargeScreenNavDemo {}

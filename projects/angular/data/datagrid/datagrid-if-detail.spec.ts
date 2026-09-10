@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrIfDetail } from './datagrid-if-detail';
@@ -92,6 +92,7 @@ export default function (): void {
 
 @Component({
   template: `<ng-template [(clrIfDetail)]="detailState">${content}</ng-template>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IfDetailTest {

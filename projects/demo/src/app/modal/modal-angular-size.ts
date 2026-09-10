@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 export enum ModalSize {
   small = 'sm',
@@ -17,6 +17,7 @@ export enum ModalSize {
 @Component({
   selector: 'clr-modal-angular-size-demo',
   templateUrl: './modal-angular-size.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ModalAngularSizeDemo {

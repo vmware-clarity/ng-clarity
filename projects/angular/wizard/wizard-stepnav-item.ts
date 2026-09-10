@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnDestroy, OnInit } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { debounceTime, startWith, Subscription, tap } from 'rxjs';
 
@@ -59,6 +59,7 @@ import { ClrWizardPage } from './wizard-page';
     '(focusin)': 'scrollIntoView()',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrWizardStepnavItem implements OnInit, OnDestroy {
   @Input('page') page: ClrWizardPage;

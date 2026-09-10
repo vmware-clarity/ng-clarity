@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, ViewChild } from '@angular/core';
 import {
   ClrPopoverHostDirective,
   ClrPopoverPosition,
@@ -89,6 +89,7 @@ import { ColumnsService } from './providers/columns.service';
   host: { '[class.column-switch-wrapper]': 'true', '[class.active]': 'openState' },
   hostDirectives: [ClrPopoverHostDirective],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridColumnToggle implements OnDestroy {
   popoverId = uniqueIdFactory();

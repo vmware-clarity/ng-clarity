@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 @Component({
@@ -22,6 +22,7 @@ import { RouterLink } from '@angular/router';
       <li><a [routerLink]="['./angular']">Angular</a></li>
       <li><a [routerLink]="['./react']">React</a></li>
     </ul>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink],
 })
 export class BreadcrumbDashboardExample {}

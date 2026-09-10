@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Type } from '@clr/angular/emphasis/common';
 
 export enum ClrBadgeColors {
@@ -29,6 +29,7 @@ export enum ClrBadgeColors {
     '[class.outlined]': 'isOutlined',
     '[class]': 'colorClass',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrBadge {
   @Input('clrColor') color: ClrBadgeColors | string = ClrBadgeColors.None;

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
@@ -26,6 +26,7 @@ import { ColumnsService } from './providers/columns.service';
     </button>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridColumnToggleButton {
   private allSelected: Subject<boolean> = new EventEmitter();

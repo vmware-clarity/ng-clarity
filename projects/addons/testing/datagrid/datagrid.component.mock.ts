@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output, TemplateRef } from '@angular/core';
 import { ClrDatagridVirtualScrollRangeInterface } from '@clr/angular/data/datagrid';
 
 @Component({
   selector: 'appfx-datagrid',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ``,
 })
 export class MockAppfxDatagridComponent {
@@ -65,6 +66,7 @@ export class MockAppfxDatagridComponent {
 @Component({
   selector: 'appfx-datagrid',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ``,
 })
 export class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent {}

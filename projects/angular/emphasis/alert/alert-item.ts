@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 
@@ -29,6 +29,7 @@ import { AlertIconAndTypesService } from './providers/icon-and-types.service';
   `,
   host: { class: 'alert-item' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrAlertItem {
   constructor(public iconService: AlertIconAndTypesService) {}

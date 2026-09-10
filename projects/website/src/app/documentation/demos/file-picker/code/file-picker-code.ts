@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { FilePickerCodeAdvancedExample } from './advanced-example/file-picker-code-advanced-example';
 import { FilePickerCodeBasicExample } from './basic-example/file-picker-code-basic-example';
@@ -17,6 +17,7 @@ import { FilePickerCodeValueAccessorExample } from './value-accessor-example/fil
 @Component({
   selector: 'app-file-picker-code',
   templateUrl: './file-picker-code.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FilePickerCodeBasicExample,
     FilePickerCodeDisabledExample,

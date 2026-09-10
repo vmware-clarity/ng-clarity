@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { bellIcon, ClarityIcons, cloudIcon, warningStandardIcon } from '@clr/angular/icon';
 
 @Component({
@@ -49,6 +49,7 @@ import { bellIcon, ClarityIcons, cloudIcon, warningStandardIcon } from '@clr/ang
       </clr-wizard-page>
     </clr-wizard>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class HeaderActionsTestComponent {

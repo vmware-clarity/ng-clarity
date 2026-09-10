@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, SimpleChange, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, SimpleChange, TemplateRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrTabsModule } from '@clr/angular';
@@ -18,6 +18,7 @@ import { TopHeadingLevel } from '../models/heading-level.model';
 @Component({
   selector: 'appfx-certificate-viewer-general',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ``,
 })
 export class CertificateViewerGeneralMockComponent {

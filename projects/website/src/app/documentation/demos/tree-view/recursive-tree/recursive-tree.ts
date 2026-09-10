@@ -6,7 +6,7 @@
  */
 
 import { JsonPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrTreeViewModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -55,6 +55,7 @@ const additionalFiles = {
   selector: 'clr-recursive-tree-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: 'recursive-tree.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule, StackblitzExampleComponent, JsonPipe],
 })
 export class RecursiveTreeDemo {

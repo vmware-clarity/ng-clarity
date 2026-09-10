@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { spec, TestContext } from '@clr/angular/testing';
 
@@ -15,6 +15,7 @@ import { ClrTooltipTrigger } from './tooltip-trigger';
 import { ClrTooltipModule } from './tooltip.module';
 @Component({
   template: `<span clrTooltipTrigger [attr.aria-label]="ariaLabel">Hello world</span>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {

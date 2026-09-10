@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Inventory } from '../inventory/inventory';
 
@@ -14,6 +14,7 @@ import { Inventory } from '../inventory/inventory';
   providers: [Inventory],
   templateUrl: './basic-on-push.html',
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridBasicOnPushDemo {}

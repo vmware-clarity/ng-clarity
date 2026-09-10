@@ -6,7 +6,7 @@
  */
 
 import { ListRange } from '@angular/cdk/collections';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ClrDatagridItemsIdentityFunction, ClrDatagridStateInterface } from '@clr/angular';
 import { Observable } from 'rxjs';
 
@@ -19,6 +19,7 @@ import { ColorFilter } from '../utils/color-filter';
   providers: [Inventory],
   templateUrl: './virtual-scroll-server-side.html',
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridVirtualScrollServerSideDemo implements OnInit {

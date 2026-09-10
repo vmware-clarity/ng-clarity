@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrTreeViewModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -40,6 +40,7 @@ export class ExampleComponent {
   selector: 'clr-tree-node-label-change-expand-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './label-change-on-expand.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule, StackblitzExampleComponent],
 })
 export class TreeNodeLabelChangeOnExpandDemo {

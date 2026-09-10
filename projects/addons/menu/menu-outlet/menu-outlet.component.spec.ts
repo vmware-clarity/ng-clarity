@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ComponentRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ComponentRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { MenuOutletComponent } from './menu-outlet.component';
@@ -61,6 +61,7 @@ describe('MenuOutletComponent', () => {
 @Component({
   selector: 'app-mock-menu',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: 'mocked menu',
 })
 class MockMenuComponent {}

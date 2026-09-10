@@ -1,6 +1,8 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "ignoreDeprecations": "6.0",
+    "skipLibCheck": true,
     "baseUrl": ".",
     "declaration": false,
     "esModuleInterop": true,

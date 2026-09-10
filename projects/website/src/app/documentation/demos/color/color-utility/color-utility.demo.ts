@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { COLOR_UTILITY } from './color-utility';
 import { ColorExampleItemComponent } from '../../../../shared/color-example-item/color-example-item.component';
@@ -13,6 +13,7 @@ import { ColorExampleItemComponent } from '../../../../shared/color-example-item
 @Component({
   selector: 'clr-color-utility',
   templateUrl: './color-utility.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ColorExampleItemComponent],
 })
 export class ColorUtilityDemo {

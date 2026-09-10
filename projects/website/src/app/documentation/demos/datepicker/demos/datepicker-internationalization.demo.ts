@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
 
 import { DatepickerENUSDemo } from './datepicker-enUS.demo';
@@ -31,6 +31,7 @@ registerLocaleData(localeFr);
 @Component({
   selector: 'clr-datepicker-internationalization-demo',
   templateUrl: './datepicker-internationalization.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrAlertModule, DatepickerENUSDemo, DatepickerFRDemo, CodeSnippetComponent],
 })
 export class DatepickerInternationalizationDemo {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { MAX_DISPLAY_ITEMS } from './breadcrumbs.constants';
@@ -21,6 +21,7 @@ import { BreadcrumbItem } from './model/breadcrumbs.model';
     '[attr.role]': '"navigation"',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrBreadcrumbs {
   isExpanded = false;

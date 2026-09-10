@@ -6,7 +6,7 @@
  */
 
 import { AsyncPipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { BreadcrumbItem, ClrBreadcrumbsModule, ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
 import { Observable } from 'rxjs';
@@ -118,6 +118,7 @@ const additionalFiles = {
     `,
   ],
   templateUrl: './breadcrumbs-full-routing-example.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     RouterLink,
     RouterLinkActive,

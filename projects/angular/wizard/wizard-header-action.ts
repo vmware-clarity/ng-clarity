@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 let wizardHeaderActionIndex = 0;
 
@@ -25,6 +25,7 @@ let wizardHeaderActionIndex = 0;
   `,
   host: { class: 'clr-wizard-header-action-wrapper' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrWizardHeaderAction {
   // title is explanatory text added to the header action

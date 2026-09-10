@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, ExportProviderService } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface, SelectionType } from '@clr/angular';
 
@@ -16,6 +16,7 @@ import { FetchResult, Inventory, VmItem } from '../inventory/inventory';
   imports: [AppfxDatagridModule, GridConfigFormComponent],
   standalone: true,
   templateUrl: 'server-driven-grid-demo.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ExportProviderService, Inventory],
 })
 export class ServerDrivenGridDemoComponent {

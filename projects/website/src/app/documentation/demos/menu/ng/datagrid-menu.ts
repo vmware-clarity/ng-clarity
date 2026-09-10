@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
 import { ClarityModule } from '@clr/angular';
 import { ClarityIcons, vmIcon } from '@clr/angular/icon';
@@ -15,6 +15,7 @@ import { ClarityIcons, vmIcon } from '@clr/angular/icon';
   selector: 'clr-datagrid-menu-demo',
   standalone: true,
   imports: [CommonModule, ClarityModule, AppfxMenuModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: 'datagrid-menu.html',
 })
 export class DatagridMenuDemoComponent {

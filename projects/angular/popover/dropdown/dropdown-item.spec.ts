@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { spec, TestContext } from '@clr/angular/testing';
 import { FocusableItem } from '@clr/angular/utils';
 
@@ -15,6 +15,7 @@ import { ROOT_DROPDOWN_PROVIDER } from './providers/dropdown.service';
 
 @Component({
   template: `<button clrDropdownItem [disabled]="disabledDeprecated" [clrDisabled]="disabled">Hello world</button>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {

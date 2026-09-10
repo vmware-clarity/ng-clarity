@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'appfx-property-view',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class MockPropertyViewComponent {
@@ -20,6 +21,7 @@ export class MockPropertyViewComponent {
 @Component({
   selector: 'appfx-property-view',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class MockPropertyViewStandaloneComponent extends MockPropertyViewComponent {}

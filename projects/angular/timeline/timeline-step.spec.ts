@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
@@ -20,6 +20,7 @@ import { ClrTimelineModule } from './timeline.module';
 
 @Component({
   template: `<clr-timeline-step [clrState]="state"><clr-timeline-step></clr-timeline-step></clr-timeline-step>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestTimelineStep {
@@ -36,6 +37,7 @@ class TestTimelineStep {
       <clr-timeline-step-description>Description Content</clr-timeline-step-description>
     </clr-timeline-step>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestTimelineStepContent {}

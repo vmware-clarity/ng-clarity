@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrSelectedState } from '@clr/angular';
 
 interface SelectedMap {
@@ -21,6 +21,7 @@ interface TreeNode {
   selector: 'clr-eager-recursive-tree-demo',
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './eager-recursive-tree.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class EagerRecursiveTreeDemo {

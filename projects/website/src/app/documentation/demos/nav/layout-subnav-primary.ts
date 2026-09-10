@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -69,6 +69,7 @@ const EXAMPLE = `
   selector: 'clr-layout-only-subnav-primary',
   templateUrl: './layout-subnav-primary.html',
   styleUrl: './layout.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrCommonFormsModule, ClrVerticalNavModule, StackblitzExampleComponent],
 })
 export class LayoutSubnavPrimaryDemo {

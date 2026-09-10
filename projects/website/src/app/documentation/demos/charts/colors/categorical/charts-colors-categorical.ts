@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { VizGeneralColorNumberPipe } from './viz-general-color-number.pipe';
 import { ColorExampleItemComponent } from '../../../../../shared/color-example-item/color-example-item.component';
@@ -14,6 +14,7 @@ import { ThemedImageComponent } from '../../../../../shared/themed-image/themed-
 @Component({
   selector: 'app-charts-colors-categorical',
   templateUrl: './charts-colors-categorical.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ColorExampleItemComponent, ThemedImageComponent, VizGeneralColorNumberPipe],
 })
 export class ChartsColorsCategorical {

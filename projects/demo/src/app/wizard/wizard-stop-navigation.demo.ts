@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ClrWizard } from '@clr/angular';
 
 @Component({
   selector: 'clr-wizard-stop-navigation',
   templateUrl: './wizard-stop-navigation.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class WizardStopNavigation {

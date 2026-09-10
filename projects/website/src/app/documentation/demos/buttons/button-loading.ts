@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -63,6 +63,7 @@ const MAIN_HTML_EXAMPLE = `
   selector: 'clr-buttons-demo-button-loading',
   templateUrl: './button-loading.html',
   styleUrl: './buttons.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrLoadingButtonModule, ClrLoadingModule, StackblitzExampleComponent],
 })
 export class ButtonLoadingDemo {

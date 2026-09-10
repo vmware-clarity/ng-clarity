@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { spec, TestContext } from '@clr/angular/testing';
 
 import { TooltipIdService } from './providers/tooltip-id.service';
@@ -21,6 +21,7 @@ import { ClrTooltipModule } from './tooltip.module';
       </clr-tooltip-content>
     </clr-tooltip>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {}

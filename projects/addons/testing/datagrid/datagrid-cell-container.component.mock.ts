@@ -6,8 +6,8 @@
  */
 
 import {
+  ChangeDetectionStrategy,
   Component,
-  ComponentFactoryResolver,
   ComponentRef,
   Input,
   OnInit,
@@ -21,6 +21,7 @@ import {
 @Component({
   selector: 'appfx-dg-cell-container',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (!column.columnRenderer) {
       {{ item?.[column.field] }}
@@ -37,12 +38,9 @@ export class MockDatagridCellContainerComponent implements OnInit {
   private componentRef: ComponentRef<any> | null;
   private instance: any;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
-
   ngOnInit(): void {
     if (this.column.columnRenderer) {
-      const factory = this.componentFactoryResolver.resolveComponentFactory(this.column.columnRenderer);
-      this.componentRef = this.container.createComponent(factory);
+      this.componentRef = this.container.createComponent(this.column.columnRenderer);
       this.instance = <any>this.componentRef?.instance;
       this.instance.item = this.item;
       this.instance.column = this.column;

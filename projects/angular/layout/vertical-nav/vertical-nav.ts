@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
@@ -24,6 +24,7 @@ import { VerticalNavService } from './providers/vertical-nav.service';
     '[class.has-icons]': 'hasIcons',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrVerticalNav implements OnDestroy {
   @Input('clrVerticalNavToggleLabel') toggleLabel: string;

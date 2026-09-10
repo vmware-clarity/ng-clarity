@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { expectActiveElementToBe } from '@clr/angular/testing';
 
@@ -14,6 +14,7 @@ import { ClrKeyFocusModule } from './key-focus.module';
 
 @Component({
   template: `<button clrKeyFocusItem>Button 1</button>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

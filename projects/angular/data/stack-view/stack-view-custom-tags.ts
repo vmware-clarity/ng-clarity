@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive, Input, OnInit } from '@angular/core';
 import { uniqueIdFactory } from '@clr/angular/utils';
 
 @Directive({
@@ -24,6 +24,7 @@ export class ClrStackViewCustomTags {
     '[attr.id]': 'id',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrStackViewLabel implements OnInit {
   private _generatedId: string = null;

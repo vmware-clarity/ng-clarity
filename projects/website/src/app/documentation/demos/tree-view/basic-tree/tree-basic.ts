@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'clr-tree-basic-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './tree-basic.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule],
 })
 export class TreeBasicDemo {}

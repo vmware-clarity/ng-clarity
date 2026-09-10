@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ClarityModule, ClrDropdown } from '@clr/angular';
 
 @Component({
@@ -13,6 +13,7 @@ import { ClarityModule, ClrDropdown } from '@clr/angular';
   standalone: true,
   imports: [ClarityModule],
   styleUrls: ['./popovers.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <h4>Dropdown Context Menu (Point-based Positioning)</h4>
     <p>Right-click anywhere in the box below to open a dropdown menu at the cursor position.</p>

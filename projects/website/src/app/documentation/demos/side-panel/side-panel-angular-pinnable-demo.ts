@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
@@ -72,6 +72,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-side-panel-angular-pinnable-demo',
   templateUrl: './side-panel-angular-pinnable-demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrModalModule, ClrSidePanelModule, ClrIcon, ClrIconModule, StackblitzExampleComponent],
 })
 export class SidePanelAngularPinnableDemo {

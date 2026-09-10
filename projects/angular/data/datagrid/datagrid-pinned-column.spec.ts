@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
 import { delay, TestContext } from '@clr/angular/testing';
 import { ClrLoading, ClrLoadingState } from '@clr/angular/utils';
 // import { ClrCommonStringsService } from '@clr/angular/utils'; // used by the disabled pin toggle suite
@@ -93,6 +101,7 @@ function columnBoxes(root: HTMLElement, ...titles: string[]) {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnableTest {
   items = [1, 2, 3];
@@ -116,6 +125,7 @@ class PinnableTest {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnableWithDetailTest {
   items = [1, 2, 3];
@@ -141,6 +151,7 @@ class PinnableWithDetailTest {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnedNotFirstWithDetailTest {
   items = [1, 2, 3];
@@ -182,6 +193,7 @@ class PinnedNotFirstWithDetailTest {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class ReorderableColumnsTest {
   items = [1, 2, 3];
@@ -208,6 +220,7 @@ class ReorderableColumnsTest {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnedWidthCapTest {
   items = [1, 2, 3];
@@ -233,6 +246,7 @@ class PinnedWidthCapTest {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnedWidthCapVirtualScrollTest {
   items = [1, 2, 3, 4, 5];
@@ -252,6 +266,7 @@ class PinnedWidthCapVirtualScrollTest {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnedWithRowControlsTest {
   items = [1, 2, 3];
@@ -282,6 +297,7 @@ class PinnedWithRowControlsTest {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class RowDetailTest {
   items = [1];
@@ -344,6 +360,7 @@ class TestFakeLoader implements OnInit {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class LoadingRowDetailTest {
   items = [1];
@@ -373,6 +390,7 @@ class LoadingRowDetailTest {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class LoadingCellsRowDetailTest {
   items = [1];

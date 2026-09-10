@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'clr-progress-bar-inline-cards-demo',
   styleUrls: ['progress-bars.demo.scss'],
   templateUrl: './progress-bar-inline-cards.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ProgressBarInlineCardsDemo implements OnInit {

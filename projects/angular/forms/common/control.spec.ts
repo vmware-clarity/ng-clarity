@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrControl } from './control';
@@ -14,12 +14,14 @@ import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../test
 
 @Component({
   template: `<input type="text" clrControl />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class StandaloneUseTest {}
 
 @Component({
   template: `<input clrControl name="model" class="test-class" [(ngModel)]="model" />`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest {
@@ -32,6 +34,7 @@ class TemplateDrivenTest {
       <input clrControl name="model" class="test-class" formControlName="model" />
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {

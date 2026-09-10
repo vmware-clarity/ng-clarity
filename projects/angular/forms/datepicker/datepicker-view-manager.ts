@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { DateIOService } from './providers/date-io.service';
@@ -26,6 +26,7 @@ import { ViewManagerService } from './providers/view-manager.service';
     role: 'dialog',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatepickerViewManager {
   constructor(

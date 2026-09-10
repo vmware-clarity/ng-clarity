@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-paints-list-demo',
@@ -15,6 +15,7 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./watercolor']">Watercolor</a></li>
       <li><a [routerLink]="['./oils']">Oils</a></li>
     </ul> `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PaintsListDemo {}

@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ClarityModule, ClrDropdown } from '@clr/angular';
 
 interface FileItem {
@@ -23,6 +23,7 @@ interface FileItem {
   standalone: true,
   imports: [ClarityModule, DatePipe],
   styleUrls: ['./popovers.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <h4>Datagrid Context Menu (Point-based Positioning)</h4>
     <p>

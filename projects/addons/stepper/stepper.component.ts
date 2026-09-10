@@ -9,6 +9,7 @@ import type { QueryList } from '@angular/core';
 import {
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -50,6 +51,7 @@ import { SummaryService } from './summary/summary.service';
   standalone: false,
   templateUrl: 'stepper.component.html',
   styleUrls: ['stepper.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [RelevanceService, StepperStateService, SummaryService, WorkflowModelManager],
 })
 export class StepperComponent implements OnDestroy, AfterViewInit, AfterContentInit {

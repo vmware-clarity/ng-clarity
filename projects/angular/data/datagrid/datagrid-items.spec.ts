@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, TrackByFunction, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrDatagridItems } from './datagrid-items';
@@ -23,6 +23,7 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
       <li *clrDgItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {
@@ -39,6 +40,7 @@ class FullTest {
       <li *clrDgItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DestroyTest {
@@ -55,6 +57,7 @@ class DestroyTest {
       <li *clrDgItems="let n of numbers; trackBy: trackBy">{{ n }}</li>
     </ul>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TrackByIndexTest {

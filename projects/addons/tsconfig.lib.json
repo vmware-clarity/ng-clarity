@@ -25,12 +25,17 @@
     "annotateForClosureCompiler": false,
     "preserveWhitespaces": true,
     "enableResourceInlining": true,
+    "extendedDiagnostics": {
+      "checks": {
+        "nullishCoalescingNotNullable": "suppress",
+        "optionalChainNotNullable": "suppress"
+      }
+    },
     "strictTemplates": true,
     "strictInjectionParameters": true,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
-    "skipMetadataEmit": false,
-    "fullTemplateTypeCheck": true
+    "skipMetadataEmit": false
   },
   "include": ["**/*.ts"],
   "exclude": ["test.ts", "**/*.spec.ts"]

@@ -5,7 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, NgZone, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  NgZone,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrCommonStringsService, DomAdapter } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
@@ -55,6 +65,7 @@ import { DatagridFilterRegistrar } from '../../utils/datagrid-filter-registrar';
     </clr-dg-filter>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridNumericFilter<T = any>
   extends DatagridFilterRegistrar<T, DatagridNumericFilterImpl<T>>

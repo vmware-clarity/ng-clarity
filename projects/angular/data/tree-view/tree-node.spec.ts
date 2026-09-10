@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, PLATFORM_ID, ViewChild } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
@@ -28,6 +28,7 @@ import { ClrTreeViewModule } from './tree-view.module';
       }
     </clr-tree-node>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -45,6 +46,7 @@ class TestComponent {
       <a href="href" class="clr-treenode-link" [class.active]="active">Hello world</a>
     </clr-tree-node>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class LinkTestComponent {

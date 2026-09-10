@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverContent, ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
@@ -25,6 +25,7 @@ import { DropdownFocusHandler } from './providers/dropdown-focus-handler.service
       }
     </clr-dropdown>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {

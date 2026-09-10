@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, AfterViewInit, Component, ElementRef, Optional, ViewChild } from '@angular/core';
+import {
+  AfterContentInit,
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Optional,
+  ViewChild,
+} from '@angular/core';
 import {
   ClrAbstractContainer,
   ControlClassService,
@@ -43,6 +51,7 @@ import { ComboboxContainerService } from './providers/combobox-container.service
   },
   providers: [NgControlService, ControlIdService, ControlClassService, ComboboxContainerService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrComboboxContainer extends ClrAbstractContainer implements AfterContentInit, AfterViewInit {
   @ViewChild('controlContainer') controlContainer: ElementRef<HTMLElement>;

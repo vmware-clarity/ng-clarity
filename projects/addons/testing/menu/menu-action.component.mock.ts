@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'appfx-menu-action',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<ng-content></ng-content>',
 })
 export class MockAppfxMenuActionComponent {
@@ -29,6 +30,7 @@ export class MockAppfxMenuActionComponent {
 @Component({
   selector: 'appfx-menu-action',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '<ng-content></ng-content>',
 })
 export class MockAppfxMenuActionStandaloneComponent extends MockAppfxMenuActionComponent {}

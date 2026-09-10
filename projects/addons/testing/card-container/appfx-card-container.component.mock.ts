@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'appfx-card-container',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class MockAppfxCardContainerComponent {
@@ -27,6 +28,7 @@ export class MockAppfxCardContainerComponent {
 @Component({
   selector: 'appfx-card-container',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class MockAppfxCardContainerStandaloneComponent extends MockAppfxCardContainerComponent {}

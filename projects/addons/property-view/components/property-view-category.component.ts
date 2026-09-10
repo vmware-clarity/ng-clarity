@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { PropertyViewSectionsExpandedStateManager } from '../property-view-sections-expanded-state.manager';
 import { PropertyViewStrings } from '../property-view-strings.service';
@@ -16,6 +16,7 @@ import { PropertyViewCategoryModel, PropertyViewModelType, PropertyViewSectionMo
   standalone: false,
   templateUrl: 'property-view-category.component.html',
   styleUrls: ['property-view-category.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class PropertyViewCategoryComponent {
   readonly PropertyViewModelType = PropertyViewModelType;

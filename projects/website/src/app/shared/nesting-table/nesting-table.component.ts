@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
 
 export interface ComponentList {
@@ -17,6 +17,7 @@ export interface ComponentList {
   selector: 'app-nesting-table',
   templateUrl: './nesting-table.component.html',
   styleUrl: './nesting-table.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrAlertModule],
 })
 export class NestingTableComponent {

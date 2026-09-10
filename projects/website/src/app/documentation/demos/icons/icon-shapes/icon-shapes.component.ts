@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import {
   ClarityIcons,
@@ -25,6 +25,7 @@ import { ICONS_STATES } from './icon-groups/icon-inventory';
   selector: 'app-icon-shapes',
   templateUrl: './icon-shapes.component.html',
   styleUrl: './icon-shapes.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ClrCommonFormsModule,

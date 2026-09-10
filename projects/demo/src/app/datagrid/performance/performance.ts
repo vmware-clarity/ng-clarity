@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Column, DynamicData, Row } from '../inventory/dynamic-data';
 
@@ -19,6 +19,7 @@ class ChangeDetectionPerfRecord {
   providers: [DynamicData],
   templateUrl: 'performance.html',
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatagridPerformanceDemo {

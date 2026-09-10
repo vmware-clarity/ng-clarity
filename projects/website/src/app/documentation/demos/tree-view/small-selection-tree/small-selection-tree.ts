@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrTreeViewModule } from '@clr/angular';
 
 import { permissions } from '../boolean-selection-tree/permissions';
@@ -14,6 +14,7 @@ import { permissions } from '../boolean-selection-tree/permissions';
   selector: 'clr-small-selection-tree-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: 'small-selection-tree.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule],
 })
 export class SmallSelectionTreeDemo {

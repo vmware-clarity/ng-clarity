@@ -6,7 +6,7 @@
  */
 
 import { JsonPipe, NgClass } from '@angular/common';
-import { Component, input, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, input, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClrIcon, ClrIconModule } from '@clr/angular';
 
@@ -22,6 +22,7 @@ import { Icon } from '../icon-groups/icon-inventory';
   selector: 'app-icon-details',
   templateUrl: 'icon-details.component.html',
   styleUrl: './icon-details.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CodeSnippetComponent,
     NgClass,

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { FontPreset, fontPresets, getPreset } from './utils/font-presets';
@@ -14,6 +14,7 @@ import { FontPreset, fontPresets, getPreset } from './utils/font-presets';
   selector: 'clr-typography-font-autopsy',
   styleUrls: ['./font-autopsy.demo.scss'],
   templateUrl: './typography-font-autopsy.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class TypographyFontAutopsyDemo {
