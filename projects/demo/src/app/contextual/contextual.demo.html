@@ -49,6 +49,42 @@
       <h3>Embedded frame (chat UI) receiving host context</h3>
       <iframe class="embedded-frame" title="Embedded chat demo" [srcdoc]="embeddedPage"></iframe>
     </section>
+
+    <section clrContext="Page assembled from plugin frames" clrContextType="section">
+      <h3>Plugins in frames, described as one page</h3>
+      <p>
+        Each tab below is an iframe, the way a plugin-based shell composes its UI. A same-origin frame appears in the
+        snapshot as a <code class="clr-code">frame</code> node with the plugin's own controls, text and form as its
+        children — type into the inventory form and watch the value change on the right. The third tab is sandboxed
+        without <code class="clr-code">allow-same-origin</code>, which is what a cross-origin plugin looks like: the
+        engine reports that a frame is there and nothing else.
+      </p>
+      <clr-tabs>
+        <clr-tab>
+          <button clrTabLink>Inventory plugin</button>
+          <clr-tab-content *clrIfActive>
+            <iframe class="plugin-frame" title="Inventory plugin" [srcdoc]="inventoryPluginPage"></iframe>
+          </clr-tab-content>
+        </clr-tab>
+        <clr-tab>
+          <button clrTabLink>Monitoring plugin (nested frame)</button>
+          <clr-tab-content *clrIfActive>
+            <iframe class="plugin-frame" title="Monitoring plugin" [srcdoc]="monitoringPluginPage"></iframe>
+          </clr-tab-content>
+        </clr-tab>
+        <clr-tab>
+          <button clrTabLink>Third-party plugin (cross-origin)</button>
+          <clr-tab-content *clrIfActive>
+            <iframe
+              class="plugin-frame"
+              title="Third-party billing widget"
+              sandbox=""
+              [srcdoc]="thirdPartyPluginPage"
+            ></iframe>
+          </clr-tab-content>
+        </clr-tab>
+      </clr-tabs>
+    </section>
   </div>
 
   <div class="clr-col-lg-5 clr-col-12">
@@ -59,6 +95,9 @@
         Live context — updates as the page changes
         <span class="label">{{ snapshotBytes }} bytes</span>
         <span class="label">update #{{ snapshotCount }}</span>
+        @if (snapshotTruncated) {
+        <span class="label label-warning">truncated — raise maxComponents</span>
+        }
       </div>
       <div class="card-block">
         <button type="button" class="btn btn-sm" (click)="refreshNow()">Refresh now</button>

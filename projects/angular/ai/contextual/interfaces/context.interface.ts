@@ -55,6 +55,12 @@ export interface ClrPageContext {
    * actions, so nesting is never discarded in favor of a flat array.
    */
   components: ClrComponentContext[];
+  /**
+   * Present and `true` when the component budget (`maxComponents`) ran out before the
+   * whole page was described, so whatever comes last in the document is missing. Raise
+   * the budget, or narrow what is asked for, rather than treat the tree as complete.
+   */
+  truncated?: boolean;
   /** ISO timestamp of the moment the snapshot was taken. */
   collectedAt: string;
 }

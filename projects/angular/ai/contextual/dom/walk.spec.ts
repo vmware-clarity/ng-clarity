@@ -7,7 +7,7 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
-import { collectContextTree } from './walk';
+import { collectContextTree, collectContextTreeWithin } from './walk';
 
 describe('collectContextTree', () => {
   let container: HTMLElement;
@@ -536,5 +536,51 @@ describe('collectContextTree, text and frames', () => {
       await frameWith('<button>Run</button>');
       expect(collectContextTree(container, budgets({ includeFrames: false }))).toEqual([]);
     });
+  });
+});
+
+describe('collectContextTreeWithin', () => {
+  let container: HTMLElement;
+
+  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> => ({
+    maxTextLength: 100,
+    maxItemsPerCollection: 25,
+    maxComponents: 100,
+    includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
+    ...overrides,
+  });
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => container.remove());
+
+  it('says when the budget ran out before the page did', () => {
+    container.innerHTML = '<button>a</button><button>b</button><button>c</button>';
+    const result = collectContextTreeWithin(container, budgets({ maxComponents: 2 }));
+    expect(result.components.length).toBe(2);
+    expect(result.truncated).toBe(true);
+  });
+
+  it('does not call a page that fits exactly truncated', () => {
+    container.innerHTML = '<button>a</button><button>b</button>';
+    const result = collectContextTreeWithin(container, budgets({ maxComponents: 2 }));
+    expect(result.components.length).toBe(2);
+    expect(result.truncated).toBe(false);
+  });
+
+  it('reads text inside a frame, whose nodes belong to another window', async () => {
+    const frame = document.createElement('iframe');
+    const loaded = new Promise<void>(resolve => frame.addEventListener('load', () => resolve()));
+    frame.srcdoc = '<p>Cluster health: <strong>degraded</strong>.</p>';
+    container.appendChild(frame);
+    await loaded;
+
+    const [node] = collectContextTree(container, budgets());
+    expect(node.children?.[0]).toEqual({ type: 'text', label: 'Cluster health: degraded.' });
   });
 });

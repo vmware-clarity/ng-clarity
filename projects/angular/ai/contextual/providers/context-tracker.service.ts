@@ -163,8 +163,8 @@ export class ClrContextTrackerService implements OnDestroy {
   }
 
   private onValueChange(event: Event): void {
-    const target = event.target;
-    if (target instanceof Node && isInsideIgnoredRegion(target)) {
+    const target = event.target as Node | null;
+    if (target && isInsideIgnoredRegion(target)) {
       return;
     }
     this.scheduleScrape();
@@ -313,7 +313,9 @@ function readableDocument(frame: HTMLIFrameElement): Document | null {
 
 /** Whether a mutated node lives inside a region the engine is told not to look at. */
 function isInsideIgnoredRegion(node: Node): boolean {
-  const element = node instanceof Element ? node : node.parentElement;
+  // By node type rather than `instanceof Element`: a node inside a frame's document is
+  // an instance of that window's Element, not this one's.
+  const element = node.nodeType === Node.ELEMENT_NODE ? (node as Element) : node.parentElement;
   return !!element?.closest(IGNORE_SELECTOR);
 }
 

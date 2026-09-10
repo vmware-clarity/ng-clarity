@@ -176,6 +176,14 @@ export interface ClrContextTrackingOptions {
 }
 
 // @public
+export interface ClrContextTreeResult {
+    // (undocumented)
+    components: ClrComponentContext[];
+    // (undocumented)
+    truncated: boolean;
+}
+
+// @public
 export class ClrContextualEngineService implements OnDestroy {
     constructor(platformId: unknown, document: Document, contextRegistry: ClrContextRegistryService, router: Router | null);
     // (undocumented)
@@ -215,6 +223,7 @@ export interface ClrPageContext {
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
     title: string;
+    truncated?: boolean;
     url?: string;
 }
 
@@ -229,6 +238,9 @@ export interface ClrRouteContext {
 
 // @public
 export function collectClrDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];
+
+// @public
+export function collectClrDomContextTree(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrContextTreeResult;
 
 // @public
 export function mergeElementContext(base: ClrComponentContext, element: Element, options: Required<ClrContextSnapshotOptions>): ClrComponentContext;

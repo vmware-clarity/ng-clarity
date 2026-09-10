@@ -298,6 +298,21 @@ Two capabilities added for the demo, both on by default and both switchable per 
 Specs: `walk.spec.ts` ("text and frames"), `context-tracker.service.spec.ts` ("tracking
 embedded frames"), `snapshot-options.spec.ts`.
 
+Found while testing the demo page and fixed alongside:
+
+- `maxComponents` now defaults to **300** (was 100, which a page with a global nav, a
+  datagrid and a long form spent before reaching the form), and a snapshot whose budget ran
+  out carries **`truncated: true`** (`ClrPageContext.truncated`; `collectClrDomContextTree`
+  returns `{ components, truncated }`). The probe that decides it is bounded to one node
+  more than the budget. The contextual demo page tracks with `maxComponents: 500` and shows
+  a "truncated" label when it still runs out.
+- Nodes inside a frame's document are instances of _that_ window's `Element`, so
+  `instanceof Element` was false for them and text inside frames lost every nested element
+  (`<strong>` vanished). The engine and tracker check `nodeType` instead.
+- The contextual demo page has a "Plugins in frames" section: three tabs, each an iframe —
+  an inventory plugin with a form and table, a monitoring plugin that embeds a second frame,
+  and a sandboxed frame standing in for a cross-origin plugin.
+
 ## 10. Mistakes made in earlier sessions — do not repeat
 
 - Reported a browser disconnect as `3090 of 3090 SUCCESS`. Check executed count vs the real total.

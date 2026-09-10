@@ -99,6 +99,12 @@ For browser-driving agents that have no application API, the engine can expose a
 this.contextEngine.enableGlobalAccess(); // window.clrContext() now returns a fresh snapshot
 ```
 
+When `maxComponents` runs out before the page does, the snapshot carries `truncated: true` and
+whatever comes last in the document is missing — a form at the bottom of a busy page, a plugin
+frame after a long navigation. A consumer should treat that as a signal to raise the budget or to
+narrow what it asks for (`includeText: false`, a smaller `maxItemsPerCollection`), never as a
+complete description.
+
 ## Reading form context
 
 What a control _permits_ is always reported: the `options` it offers (select options, radio
@@ -295,7 +301,7 @@ Everything in a snapshot is bounded. Tune the budgets per call when needed:
 this.contextEngine.getSnapshot({
   maxTextLength: 60, // truncate any text beyond 60 characters
   maxItemsPerCollection: 10, // at most 10 rows/tabs/links/options per component
-  maxComponents: 30, // at most 30 components overall, counted across the whole tree
+  maxComponents: 30, // at most 30 components overall, counted across the whole tree (default 300)
   includeDomComponents: false, // skip DOM scanning entirely (regions + route only)
   includeText: false, // controls and structure only, no prose
   includeFrames: false, // do not look inside same-origin frames

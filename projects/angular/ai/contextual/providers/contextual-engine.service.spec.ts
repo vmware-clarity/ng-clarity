@@ -286,3 +286,26 @@ describe('ClrContextualEngineService, the global accessor as a boundary', () => 
     expect(nodeCount(snapshotVia({ maxComponents: Number.NaN }))).toBe(2);
   });
 });
+
+describe('ClrContextualEngineService, saying when a snapshot is cut off', () => {
+  let engine: ClrContextualEngineService;
+  let widgets: HTMLElement;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    engine = TestBed.inject(ClrContextualEngineService);
+    widgets = document.createElement('div');
+    widgets.innerHTML = '<button>one</button><button>two</button><button>three</button>';
+    document.body.appendChild(widgets);
+  });
+
+  afterEach(() => widgets.remove());
+
+  it('flags a snapshot whose component budget ran out', () => {
+    expect(engine.getSnapshot({ maxComponents: 1 }).truncated).toBe(true);
+  });
+
+  it('carries no flag when everything fit', () => {
+    expect('truncated' in engine.getSnapshot({ maxComponents: 5000 })).toBe(false);
+  });
+});
