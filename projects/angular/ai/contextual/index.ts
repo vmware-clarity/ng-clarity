@@ -12,7 +12,12 @@ export * from './providers/context-tracker.service';
 export * from './providers/contextual-engine.service';
 export * from './dom/dom-context-collector';
 export * from './diff';
-export { CLR_CONTEXT_PRESETS, clrContextPreset } from './snapshot-options';
+export {
+  CLR_CONTEXT_CATEGORIES,
+  CLR_CONTEXT_PRESETS,
+  clrContextCategoryRoles,
+  clrContextPreset,
+} from './snapshot-options';
 export type { ClrContextPreset } from './snapshot-options';
 export * from './dom/element-context';
 export * from './iframe/context-frame-bridge';

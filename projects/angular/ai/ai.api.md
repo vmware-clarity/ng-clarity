@@ -16,6 +16,9 @@ import { Provider } from '@angular/core';
 import { Router } from '@angular/router';
 
 // @public
+export const CLR_CONTEXT_CATEGORIES: Record<ClrContextCategory, readonly string[]>;
+
+// @public
 export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions>;
 
 // @public
@@ -75,6 +78,12 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContext, never>;
 }
+
+// @public
+export type ClrContextCategory = 'chrome' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export function clrContextCategoryRoles(categories: readonly ClrContextCategory[]): string[];
 
 // @public
 export interface ClrContextChange {
@@ -180,6 +189,7 @@ export class ClrContextRegistryService {
 // @public
 export interface ClrContextSnapshotOptions {
     collectionItems?: 'all' | 'summary';
+    excludeCategories?: ClrContextCategory[];
     excludeRoles?: string[];
     excludeSelectors?: string[];
     focus?: 'page' | 'modal';

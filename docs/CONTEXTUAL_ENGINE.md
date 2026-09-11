@@ -313,7 +313,8 @@ this.contextEngine.getSnapshot({
   includeDomComponents: false, // skip DOM scanning entirely (regions + route only)
   includeText: false, // controls and structure only, no prose
   includeFrames: false, // do not look inside same-origin frames
-  excludeRoles: ['navigation', 'banner', 'contentinfo'], // drop the application chrome
+  excludeCategories: ['chrome', 'actions'], // no navigation chrome, no buttons or links
+  excludeRoles: ['heading'], // or any single ARIA role
   excludeSelectors: ['clr-header'], // drop chrome that cannot be annotated
   rootSelector: 'main', // describe only the content area
   maxDepth: 3, // no nesting deeper than three levels
@@ -328,8 +329,12 @@ Size budgets keep a snapshot small; relevance options keep it _useful_ — the d
 page described in 300 nodes and the 40 that matter to the question being asked. An agent does not
 need the 60 links of the navigation in every snapshot, nor the page behind an open dialog.
 
-- **`excludeRoles`** drops whole landmark subtrees — `['navigation', 'banner', 'contentinfo']`
-  removes the application chrome that repeats on every page.
+- **`excludeCategories`** leaves out whole kinds of content by name: `chrome` (navigation, banner,
+  footer, asides), `actions` (buttons, links, menus), `forms`, `headings`, `collections`, `dialogs`,
+  `status`, `images`, `text` and `frames`. `['chrome', 'actions']` is a page with no navigation and
+  nothing to click — right for an assistant that only explains.
+- **`excludeRoles`** is the same at the level of a single ARIA role — `['navigation', 'banner',
+'contentinfo']` is what `chrome` expands to.
 - **`excludeSelectors`** and **`rootSelector`** do the same by CSS selector, for chrome that
   cannot be annotated with `data-clr-context-ignore`, or to describe only `main`.
 - **`maxDepth`** caps nesting; wrapper chains rarely carry meaning past a few levels.

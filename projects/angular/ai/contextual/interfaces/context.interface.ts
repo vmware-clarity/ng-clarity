@@ -12,7 +12,7 @@ import { ClrComponentContext } from '@clr/angular/utils';
  * contracts live in `@clr/angular/utils` because components publish through them and must
  * not depend on this entry point — see `publishElementContext`.
  */
-export type { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
+export type { ClrComponentContext, ClrContextCategory, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 /**
  * Information about the currently active route, when the application uses the Angular router.

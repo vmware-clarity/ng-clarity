@@ -20,6 +20,7 @@ const BUDGETS: Required<ClrContextSnapshotOptions> = {
   includeDomComponents: true,
   includeText: true,
   includeFrames: true,
+  excludeCategories: [],
   excludeRoles: [],
   excludeSelectors: [],
   rootSelector: '',

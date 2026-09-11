@@ -231,9 +231,14 @@
       Size budgets keep a snapshot small; relevance options keep it <em>useful</em> — the difference between a page
       described in 300 nodes and the 40 that matter to the question being asked. An assistant does not need the sixty
       links of the navigation in every snapshot, nor the page behind an open dialog.
-      <code cds-text="code">excludeRoles</code> drops whole landmark subtrees,
-      <code cds-text="code">excludeSelectors</code> and <code cds-text="code">rootSelector</code> do the same by CSS
-      selector, <code cds-text="code">maxDepth</code> caps nesting,
+      <code cds-text="code">excludeCategories</code> leaves out whole kinds of content by name —
+      <code cds-text="code">chrome</code>, <code cds-text="code">actions</code> (buttons, links, menus),
+      <code cds-text="code">forms</code>, <code cds-text="code">headings</code>,
+      <code cds-text="code">collections</code>, <code cds-text="code">dialogs</code>,
+      <code cds-text="code">status</code>, <code cds-text="code">images</code>, <code cds-text="code">text</code>,
+      <code cds-text="code">frames</code> — and <code cds-text="code">excludeRoles</code> does the same for a single
+      ARIA role; <code cds-text="code">excludeSelectors</code> and <code cds-text="code">rootSelector</code> do it by
+      CSS selector, <code cds-text="code">maxDepth</code> caps nesting,
       <code cds-text="code">focus: 'modal'</code> describes only the open modal while one is open, and
       <code cds-text="code">collectionItems: 'summary'</code> reduces lists, options and tabs to counts and the current
       selection.

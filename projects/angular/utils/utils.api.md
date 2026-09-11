@@ -344,8 +344,12 @@ export class ClrConditionalModule {
 }
 
 // @public
+export type ClrContextCategory = 'chrome' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
 export interface ClrContextSnapshotOptions {
     collectionItems?: 'all' | 'summary';
+    excludeCategories?: ClrContextCategory[];
     excludeRoles?: string[];
     excludeSelectors?: string[];
     focus?: 'page' | 'modal';

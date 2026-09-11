@@ -32,6 +32,32 @@ export interface ClrComponentContext {
 }
 
 /**
+ * Kinds of content a snapshot can leave out wholesale, by name rather than by ARIA role:
+ *
+ * - `chrome` — navigation, banner, footer and complementary landmarks
+ * - `actions` — buttons, links, menus and menu items
+ * - `forms` — forms and every kind of form control
+ * - `headings` — headings
+ * - `collections` — grids, tables, lists, tab lists and trees
+ * - `dialogs` — dialogs and alert dialogs
+ * - `status` — alerts, status lines, progress bars and meters
+ * - `images` — images and figures
+ * - `text` — prose that carries no role (the `includeText` switch)
+ * - `frames` — same-origin frames (the `includeFrames` switch)
+ */
+export type ClrContextCategory =
+  | 'chrome'
+  | 'actions'
+  | 'forms'
+  | 'headings'
+  | 'collections'
+  | 'dialogs'
+  | 'status'
+  | 'images'
+  | 'text'
+  | 'frames';
+
+/**
  * Budgets applied while building a snapshot. The defaults are deliberately conservative
  * so a snapshot stays small enough to be pasted into an AI agent's context window.
  */
@@ -61,6 +87,13 @@ export interface ClrContextSnapshotOptions {
    * Default `true`.
    */
   includeFrames?: boolean;
+  /**
+   * Kinds of content to leave out wholesale — `['chrome', 'actions']` drops the
+   * application chrome and every button, link and menu. Each category expands to the
+   * roles it covers (see {@link ClrContextCategory}); `excludeRoles` is the finer-grained
+   * equivalent for a single role. Default none.
+   */
+  excludeCategories?: ClrContextCategory[];
   /**
    * Roles whose whole subtree is left out — `['navigation', 'banner', 'contentinfo']`
    * drops the application chrome that repeats in every snapshot. Default none.

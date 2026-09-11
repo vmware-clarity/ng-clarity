@@ -81,21 +81,7 @@
       </div>
 
       <clr-checkbox-container clrInline>
-        <label>Collect</label>
-        <clr-checkbox-wrapper>
-          <input type="checkbox" clrCheckbox name="includeText" [(ngModel)]="includeText" (ngModelChange)="edited()" />
-          <label>text (prose)</label>
-        </clr-checkbox-wrapper>
-        <clr-checkbox-wrapper>
-          <input
-            type="checkbox"
-            clrCheckbox
-            name="includeFrames"
-            [(ngModel)]="includeFrames"
-            (ngModelChange)="edited()"
-          />
-          <label>same-origin frames</label>
-        </clr-checkbox-wrapper>
+        <label>Narrow</label>
         <clr-checkbox-wrapper>
           <input
             type="checkbox"
@@ -112,21 +98,39 @@
         </clr-checkbox-wrapper>
       </clr-checkbox-container>
 
-      <clr-checkbox-container clrInline>
-        <label>Exclude roles</label>
-        @for (role of landmarkRoles; track role) {
+      <clr-checkbox-container>
+        <label>Leave out</label>
+        @for (category of categories; track category.name) {
           <clr-checkbox-wrapper>
             <input
               type="checkbox"
               clrCheckbox
-              [name]="'exclude-' + role"
-              [(ngModel)]="excludedRoles[role]"
+              [name]="'exclude-' + category.name"
+              [(ngModel)]="excluded[category.name]"
               (ngModelChange)="edited()"
             />
-            <label>{{ role }}</label>
+            <label
+              >{{ category.name }} <span class="playground-covers">— {{ category.covers }}</span></label
+            >
           </clr-checkbox-wrapper>
         }
+        <clr-control-helper>
+          Each category is a name for a set of roles (<code class="clr-code">excludeCategories</code>); anything finer
+          goes in <code class="clr-code">excludeRoles</code> below.
+        </clr-control-helper>
       </clr-checkbox-container>
+
+      <clr-input-container>
+        <label>excludeRoles</label>
+        <input
+          clrInput
+          name="excludeRoles"
+          placeholder="button, heading"
+          [(ngModel)]="excludeRoles"
+          (ngModelChange)="edited()"
+        />
+        <clr-control-helper>Comma-separated ARIA roles, left out with their subtree.</clr-control-helper>
+      </clr-input-container>
 
       <clr-input-container>
         <label>excludeSelectors</label>

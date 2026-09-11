@@ -8,6 +8,7 @@
 import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { collectContextTree, collectContextTreeWithin } from './walk';
+import { resolveSnapshotOptions } from '../snapshot-options';
 
 describe('collectContextTree', () => {
   let container: HTMLElement;
@@ -19,6 +20,7 @@ describe('collectContextTree', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeCategories: [],
     excludeRoles: [],
     excludeSelectors: [],
     rootSelector: '',
@@ -224,6 +226,7 @@ describe('collectContextTree, what a summary must not hide', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeCategories: [],
     excludeRoles: [],
     excludeSelectors: [],
     rootSelector: '',
@@ -390,6 +393,7 @@ describe('collectContextTree, text and frames', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeCategories: [],
     excludeRoles: [],
     excludeSelectors: [],
     rootSelector: '',
@@ -567,6 +571,7 @@ describe('collectContextTreeWithin', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeCategories: [],
     excludeRoles: [],
     excludeSelectors: [],
     rootSelector: '',
@@ -619,6 +624,7 @@ describe('collectContextTree, choosing what to collect', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeCategories: [],
     excludeRoles: [],
     excludeSelectors: [],
     rootSelector: '',
@@ -728,5 +734,48 @@ describe('collectContextTree, choosing what to collect', () => {
     expect(components[0].state).toEqual({ tabCount: 2, activeTab: 'Two' });
     expect(components[1].state).toEqual({ value: 'M', optionCount: 2 });
     expect(components[2].state).toEqual({ itemCount: 2 });
+  });
+});
+
+describe('collectContextTree, leaving out whole kinds of content', () => {
+  let container: HTMLElement;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => container.remove());
+
+  function collect(html: string, options: ClrContextSnapshotOptions): string[] {
+    container.innerHTML = html;
+    const flatten = (nodes: ClrComponentContext[]): string[] =>
+      nodes.flatMap(node => [node.type, ...flatten(node.children ?? [])]);
+    return flatten(collectContextTree(container, resolveSnapshotOptions(options)));
+  }
+
+  const PAGE = `
+    <h2>Hosts</h2>
+    <p>Four hosts.</p>
+    <form><input aria-label="Filter" /><button>Apply</button></form>
+    <a href="/vms">VMs</a>
+    <div role="alert">Disk full</div>
+    <ul><li><a href="/a">a</a></li></ul>`;
+
+  it('drops every button, link and menu with the actions category', () => {
+    const types = collect(PAGE, { excludeCategories: ['actions'] });
+    expect(types).not.toContain('button');
+    expect(types).not.toContain('link');
+    expect(types).toContain('textbox');
+    expect(types).toContain('heading');
+  });
+
+  it('drops forms with their controls, headings, status and collections by category', () => {
+    const types = collect(PAGE, { excludeCategories: ['forms', 'headings', 'status', 'collections'] });
+    expect(types).toEqual(['text', 'link']);
+  });
+
+  it('drops prose with the text category', () => {
+    expect(collect(PAGE, { excludeCategories: ['text'] })).not.toContain('text');
   });
 });

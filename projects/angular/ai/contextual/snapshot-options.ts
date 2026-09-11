@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrContextSnapshotOptions } from './interfaces/context.interface';
+import { ClrContextCategory, ClrContextSnapshotOptions } from './interfaces/context.interface';
 
 /**
  * Default budgets applied while building a snapshot, tuned to keep snapshots compact
@@ -19,12 +19,49 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = 
   includeDomComponents: true,
   includeText: true,
   includeFrames: true,
+  excludeCategories: [],
   excludeRoles: [],
   excludeSelectors: [],
   rootSelector: '',
   focus: 'page',
   collectionItems: 'all',
 };
+
+/**
+ * The roles each category stands for. `text` and `frames` are not roles but the
+ * `includeText` and `includeFrames` switches, and are handled where options resolve.
+ */
+export const CLR_CONTEXT_CATEGORIES: Record<ClrContextCategory, readonly string[]> = {
+  chrome: ['navigation', 'banner', 'contentinfo', 'complementary'],
+  actions: ['button', 'link', 'menu', 'menubar', 'menuitem', 'menuitemcheckbox', 'menuitemradio'],
+  forms: [
+    'form',
+    'textbox',
+    'searchbox',
+    'combobox',
+    'listbox',
+    'checkbox',
+    'radio',
+    'radiogroup',
+    'switch',
+    'slider',
+    'spinbutton',
+  ],
+  headings: ['heading'],
+  collections: ['grid', 'treegrid', 'table', 'list', 'tablist', 'tree'],
+  dialogs: ['dialog', 'alertdialog'],
+  status: ['alert', 'status', 'progressbar', 'meter'],
+  images: ['img', 'figure'],
+  text: [],
+  frames: [],
+};
+
+const CATEGORY_NAMES = Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[];
+
+/** The roles a set of categories leaves out, for the categories that are roles. */
+export function clrContextCategoryRoles(categories: readonly ClrContextCategory[]): string[] {
+  return [...new Set(categories.flatMap(category => CLR_CONTEXT_CATEGORIES[category] ?? []))];
+}
 
 /** Named bundles of options for the common ways of consuming context. */
 export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
@@ -42,12 +79,10 @@ export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
 export const CLR_CONTEXT_PRESETS: Record<ClrContextPreset, ClrContextSnapshotOptions> = {
   full: {},
   interactive: {
-    includeText: false,
-    excludeRoles: ['navigation', 'banner', 'contentinfo'],
+    excludeCategories: ['chrome', 'text'],
   },
   minimal: {
-    includeText: false,
-    excludeRoles: ['navigation', 'banner', 'contentinfo', 'complementary'],
+    excludeCategories: ['chrome', 'text'],
     collectionItems: 'summary',
     maxItemsPerCollection: 10,
     maxTextLength: 60,
@@ -116,6 +151,22 @@ export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Req
       resolved[key] = stringList(value);
     }
   }
+  if (Array.isArray(options.excludeCategories)) {
+    resolved.excludeCategories = stringList(options.excludeCategories).filter((name): name is ClrContextCategory =>
+      CATEGORY_NAMES.includes(name as ClrContextCategory)
+    );
+  }
+  // A category is a name for roles, or for a switch: both are applied here, so the walk
+  // only ever sees roles and switches.
+  resolved.excludeRoles = [
+    ...new Set([...resolved.excludeRoles, ...clrContextCategoryRoles(resolved.excludeCategories)]),
+  ];
+  if (resolved.excludeCategories.includes('text')) {
+    resolved.includeText = false;
+  }
+  if (resolved.excludeCategories.includes('frames')) {
+    resolved.includeFrames = false;
+  }
   if (typeof options.rootSelector === 'string') {
     resolved.rootSelector = options.rootSelector.trim().slice(0, MAX_ENTRY_LENGTH);
   }
@@ -167,6 +218,11 @@ export function capSnapshotOptions(
     if (Array.isArray(limit) && limit.length) {
       capped[key] = [...new Set([...stringList(capped[key] ?? []), ...stringList(limit)])];
     }
+  }
+  if (Array.isArray(ceiling.excludeCategories) && ceiling.excludeCategories.length) {
+    capped.excludeCategories = [
+      ...new Set([...(capped.excludeCategories ?? []), ...ceiling.excludeCategories]),
+    ] as ClrContextCategory[];
   }
   if (ceiling.rootSelector) {
     capped.rootSelector = ceiling.rootSelector;
