@@ -6,9 +6,10 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { DOCUMENT, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
+import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextDomExtractor, collectClrDomContextTree } from '../dom/dom-context-collector';
 import {
@@ -57,6 +58,8 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
 @Injectable({ providedIn: 'root' })
 export class ClrContextualEngineService implements OnDestroy {
   private readonly customExtractors: ClrContextDomExtractor[] = [];
+  // What the application configured once for every snapshot; see provideClrContextOptions.
+  private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
   private frameHost: ClrContextFrameHost | null = null;
   private globalProperty: string | null = null;
 
@@ -73,9 +76,11 @@ export class ClrContextualEngineService implements OnDestroy {
   }
 
   /**
-   * Takes a fresh snapshot of the page context.
+   * Takes a fresh snapshot of the page context. Options given here are applied over the
+   * application-wide ones (see `provideClrContextOptions`).
    */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
+    const effective = this.effectiveOptions(options);
     const snapshot: ClrPageContext = {
       title: this.document.title,
       url: this.currentUrl(),
@@ -87,11 +92,14 @@ export class ClrContextualEngineService implements OnDestroy {
     if (route) {
       snapshot.route = route;
     }
-    if (isPlatformBrowser(this.platformId) && options?.includeDomComponents !== false) {
-      const tree = collectClrDomContextTree(this.document, options, this.customExtractors);
+    if (isPlatformBrowser(this.platformId) && effective.includeDomComponents !== false) {
+      const tree = collectClrDomContextTree(this.document, effective, this.customExtractors);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;
+      }
+      if (tree.focus) {
+        snapshot.focus = tree.focus;
       }
     }
     return snapshot;
@@ -188,6 +196,17 @@ export class ClrContextualEngineService implements OnDestroy {
       return Promise.resolve(null);
     }
     return requestClrContextFromHost(options);
+  }
+
+  /** The call's options over the application's, ignoring keys a caller left undefined. */
+  private effectiveOptions(options?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
+    const effective: ClrContextSnapshotOptions = { ...this.applicationOptions };
+    for (const [key, value] of Object.entries(options ?? {})) {
+      if (value !== undefined) {
+        (effective as Record<string, unknown>)[key] = value;
+      }
+    }
+    return effective;
   }
 
   private browserWindow(): Window | null {

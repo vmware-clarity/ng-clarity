@@ -61,6 +61,11 @@ export interface ClrPageContext {
    * the budget, or narrow what is asked for, rather than treat the tree as complete.
    */
   truncated?: boolean;
+  /**
+   * Present when the snapshot was narrowed to what has the user's attention: `'modal'`
+   * means only the open modal dialog is described (see the `focus` snapshot option).
+   */
+  focus?: 'modal';
   /** ISO timestamp of the moment the snapshot was taken. */
   collectedAt: string;
 }

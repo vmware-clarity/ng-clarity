@@ -345,12 +345,18 @@ export class ClrConditionalModule {
 
 // @public
 export interface ClrContextSnapshotOptions {
+    collectionItems?: 'all' | 'summary';
+    excludeRoles?: string[];
+    excludeSelectors?: string[];
+    focus?: 'page' | 'modal';
     includeDomComponents?: boolean;
     includeFrames?: boolean;
     includeText?: boolean;
     maxComponents?: number;
+    maxDepth?: number;
     maxItemsPerCollection?: number;
     maxTextLength?: number;
+    rootSelector?: string;
 }
 
 // @public

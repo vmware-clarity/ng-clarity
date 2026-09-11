@@ -9,7 +9,12 @@ import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { ClrFormLayout } from '@clr/angular';
-import { ClrContextTrackerService, ClrContextualEngineService } from '@clr/angular/ai';
+import {
+  clrContextPreset,
+  ClrContextPreset,
+  ClrContextTrackerService,
+  ClrContextualEngineService,
+} from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
 interface DemoHost {
@@ -99,6 +104,8 @@ export class ContextualDemo implements OnInit, OnDestroy {
   snapshotBytes = 0;
   snapshotCount = 0;
   snapshotTruncated = false;
+  snapshotFocus: string | null = null;
+  profile: ClrContextPreset = 'full';
   embeddedPage: SafeHtml;
   thirdPartyPluginUrl: SafeResourceUrl | null = null;
   thirdPartyOrigin = '';
@@ -179,12 +186,21 @@ export class ContextualDemo implements OnInit, OnDestroy {
     this.trackingSubscription = this.contextTracker.context$.subscribe(snapshot => {
       this.snapshotCount++;
       this.snapshotTruncated = snapshot.truncated === true;
+      this.snapshotFocus = snapshot.focus ?? null;
       this.snapshotBytes = JSON.stringify(snapshot).length;
       this.snapshotJson = JSON.stringify(snapshot, null, 2);
     });
-    // This page is deliberately busy — nav, a datagrid, a long form, three plugin frames —
-    // so it needs more than the default budget; the panel says so when it still runs out.
-    this.contextTracker.start({ snapshot: { maxComponents: 500 } });
+    this.setProfile(this.profile);
+  }
+
+  /**
+   * Restarts tracking with a preset. This page is deliberately busy — nav, a datagrid, a
+   * long form, three plugin frames — so it needs more than the default budget; the panel
+   * says so when it still runs out.
+   */
+  setProfile(profile: ClrContextPreset): void {
+    this.profile = profile;
+    this.contextTracker.start({ snapshot: clrContextPreset(profile, { maxComponents: 500 }) });
   }
 
   ngOnDestroy(): void {

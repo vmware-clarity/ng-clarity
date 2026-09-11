@@ -158,7 +158,11 @@ describe('DOM context collector - Clarity Angular components', () => {
   });
 
   it('describes tabs and which one is active', () => {
-    expect(contextOfType('tablist')?.state).toEqual({ tabs: ['Details', 'Settings'], activeTab: 'Details' });
+    expect(contextOfType('tablist')?.state).toEqual({
+      tabCount: 2,
+      tabs: ['Details', 'Settings'],
+      activeTab: 'Details',
+    });
   });
 
   it('describes a form field by its label, type and validation constraints', () => {

@@ -83,9 +83,16 @@ const CONTROL_SELECTOR = [
  */
 const NAMING_TAGS = new Set(['label', 'legend', 'caption', 'figcaption', 'option', 'optgroup', 'datalist', 'title']);
 
+/** A modal dialog, explicit or implicit — what has the user's attention while it is open. */
+const MODAL_SELECTOR = '[role="dialog"][aria-modal="true"], [role="alertdialog"], dialog[open]';
+
 interface Walk {
   readonly options: Required<ClrContextSnapshotOptions>;
   readonly extractors: ClrContextDomExtractor[];
+  /** Roles whose subtrees are left out. */
+  readonly excludeRoles: ReadonlySet<string>;
+  /** Selector for elements left out with their subtrees, or `''` for none. */
+  readonly excludeSelector: string;
   /** Ids of elements that exist only to describe another element. */
   readonly describedByIds: Set<string>;
   /** Ids of elements that name another element, and so are not free-standing text. */
@@ -98,6 +105,8 @@ interface Walk {
   summarizedListDepth: number;
   /** Greater than zero while inside a node whose label already carries the text below it. */
   textDepth: number;
+  /** How many described nodes are above the current one. */
+  depth: number;
 }
 
 /**
@@ -125,6 +134,8 @@ export function collectContextTree(
 export interface ClrContextTreeResult {
   components: ClrComponentContext[];
   truncated: boolean;
+  /** Present when the walk was narrowed to the open modal dialog. */
+  focus?: 'modal';
 }
 
 /** {@link collectContextTree}, also reporting whether the component budget ran out. */
@@ -136,17 +147,70 @@ export function collectContextTreeWithin(
   const walk: Walk = {
     options,
     extractors,
+    excludeRoles: new Set(options.excludeRoles),
+    excludeSelector: usableSelector(root, options.excludeSelectors.join(', ')),
     describedByIds: new Set(),
     labelIds: new Set(),
     remaining: options.maxComponents,
     redactedDepth: 0,
     summarizedListDepth: 0,
     textDepth: 0,
+    depth: 0,
   };
   collectReferencedIds(root, walk);
-  const components = describeChildren(root, walk, null);
+  const scope = scopeOf(root, walk);
+  const components = describeScope(scope.roots, walk);
   // The budget ran out if the walk had to stop while there was still something to see.
-  return { components, truncated: walk.remaining <= 0 && hasUndescribedContent(root, walk) };
+  const result: ClrContextTreeResult = {
+    components,
+    truncated: walk.remaining <= 0 && hasUndescribedContent(scope.roots, walk),
+  };
+  if (scope.focus) {
+    result.focus = scope.focus;
+  }
+  return result;
+}
+
+/**
+ * What the walk starts from: the whole root, the elements a `rootSelector` picks out, or
+ * — with modal focus, while a modal dialog is open — the topmost open dialog alone. The
+ * dialog is what the user can act on; the page behind it is what an agent no longer
+ * needs, so it is left out entirely rather than budgeted down.
+ */
+function scopeOf(root: ParentNode, walk: Walk): { roots: ParentNode | Element[]; focus?: 'modal' } {
+  if (walk.options.focus === 'modal') {
+    const dialogs = Array.from(root.querySelectorAll(MODAL_SELECTOR)).filter(
+      dialog => !dialog.closest(IGNORE_SELECTOR) && !shouldSkipSubtree(dialog, walk)
+    );
+    if (dialogs.length) {
+      return { roots: [dialogs[dialogs.length - 1]], focus: 'modal' };
+    }
+  }
+  const selector = usableSelector(root, walk.options.rootSelector);
+  if (selector) {
+    return { roots: Array.from(root.querySelectorAll(selector)) };
+  }
+  return { roots: root };
+}
+
+function describeScope(roots: ParentNode | Element[], walk: Walk): ClrComponentContext[] {
+  if (Array.isArray(roots)) {
+    return roots.flatMap(element => (walk.remaining > 0 ? describeElement(element, walk, null) : []));
+  }
+  return describeChildren(roots, walk, null);
+}
+
+/** A selector the document accepts, or `''` for none or an invalid one. */
+function usableSelector(root: ParentNode, selector: string): string {
+  if (!selector) {
+    return '';
+  }
+  try {
+    root.querySelector(selector);
+    return selector;
+  } catch {
+    return '';
+  }
 }
 
 /**
@@ -156,9 +220,9 @@ export function collectContextTreeWithin(
  * something was left out. The probe is bounded the same way the walk is, so it costs at
  * most one more node's worth of work than the walk itself.
  */
-function hasUndescribedContent(root: ParentNode, walk: Walk): boolean {
-  const probe: Walk = { ...walk, remaining: walk.options.maxComponents + 1 };
-  const described = countNodes(describeChildren(root, probe, null));
+function hasUndescribedContent(roots: ParentNode | Element[], walk: Walk): boolean {
+  const probe: Walk = { ...walk, remaining: walk.options.maxComponents + 1, depth: 0 };
+  const described = countNodes(describeScope(roots, probe));
   return described > walk.options.maxComponents;
 }
 
@@ -261,6 +325,9 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   }
 
   const role = resolveRole(element);
+  if (role && walk.excludeRoles.has(role)) {
+    return [];
+  }
   if (role && isPresentationalRole(role)) {
     return describeChildren(element, walk, owner);
   }
@@ -350,7 +417,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     if (carriesText) {
       walk.textDepth++;
     }
-    const children = describeChildren(element, walk, null);
+    const children = describeNested(element, walk, null);
     if (carriesText) {
       walk.textDepth--;
     }
@@ -411,7 +478,7 @@ function describeTextBlock(element: Element, walk: Walk, owner: Element | null):
     node.label = label;
   }
   walk.textDepth++;
-  const children = describeChildren(element, walk, owner);
+  const children = describeNested(element, walk, owner);
   walk.textDepth--;
   if (children.length) {
     node.children = children;
@@ -451,7 +518,7 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     state.loading = true;
   } else {
     collectReferencedIds(contents, walk);
-    const children = describeChildren(contents.body, walk, null);
+    const children = describeNested(contents.body, walk, null);
     if (children.length) {
       node.children = children;
     }
@@ -475,6 +542,24 @@ function frameDocument(frame: HTMLIFrameElement): Document | null {
 /** Everything up to the first `?` or `#`. */
 function stripQueryAndFragment(url: string): string {
   return url.split(/[?#]/)[0];
+}
+
+/**
+ * The children of a described node: one level deeper, and left out altogether once the
+ * walk is as deep as `maxDepth` allows. Transparent wrappers do not count as levels —
+ * only nodes that appear in the snapshot do.
+ */
+function describeNested(parent: ParentNode, walk: Walk, owner: Element | null): ClrComponentContext[] {
+  const { maxDepth } = walk.options;
+  if (maxDepth > 0 && walk.depth + 1 >= maxDepth) {
+    return [];
+  }
+  walk.depth++;
+  try {
+    return describeChildren(parent, walk, owner);
+  } finally {
+    walk.depth--;
+  }
 }
 
 function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null): ClrComponentContext[] {
@@ -514,6 +599,9 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
     return true;
   }
   if (element.hasAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE)) {
+    return true;
+  }
+  if (walk.excludeSelector && element.matches(walk.excludeSelector)) {
     return true;
   }
   if (

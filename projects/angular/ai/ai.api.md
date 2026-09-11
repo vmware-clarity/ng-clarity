@@ -7,10 +7,12 @@
 import { DoCheck } from '@angular/core';
 import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
+import { InjectionToken } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Provider } from '@angular/core';
 import { Router } from '@angular/router';
 
 // @public
@@ -18,6 +20,12 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions>;
 
 // @public
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_OPTIONS: InjectionToken<ClrContextSnapshotOptions>;
+
+// @public
+export const CLR_CONTEXT_PRESETS: Record<ClrContextPreset, ClrContextSnapshotOptions>;
 
 // @public
 export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
@@ -41,6 +49,14 @@ export interface ClrComponentContext {
 }
 
 // @public
+export interface ClrComponentContextChange {
+    // (undocumented)
+    after: ClrComponentContext;
+    // (undocumented)
+    before: ClrComponentContext;
+}
+
+// @public
 export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvider {
     constructor(contextRegistry: ClrContextRegistryService);
     // (undocumented)
@@ -58,6 +74,19 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, { "label": { "alias": "clrContext"; "required": false; }; "type": { "alias": "clrContextType"; "required": false; }; "state": { "alias": "clrContextState"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContext, never>;
+}
+
+// @public
+export interface ClrContextChange {
+    added: ClrComponentContext[];
+    changed: ClrComponentContextChange[];
+    // (undocumented)
+    current: ClrPageContext;
+    previous: ClrPageContext | null;
+    regionsChanged: boolean;
+    removed: ClrComponentContext[];
+    routeChanged: boolean;
+    titleChanged: boolean;
 }
 
 // @public
@@ -122,6 +151,12 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
 }
 
 // @public
+export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
+
+// @public
+export function clrContextPreset(preset: ClrContextPreset, overrides?: ClrContextSnapshotOptions): ClrContextSnapshotOptions;
+
+// @public
 export interface ClrContextProvider {
     // (undocumented)
     getClrContext(): ClrComponentContext | null;
@@ -144,17 +179,24 @@ export class ClrContextRegistryService {
 
 // @public
 export interface ClrContextSnapshotOptions {
+    collectionItems?: 'all' | 'summary';
+    excludeRoles?: string[];
+    excludeSelectors?: string[];
+    focus?: 'page' | 'modal';
     includeDomComponents?: boolean;
     includeFrames?: boolean;
     includeText?: boolean;
     maxComponents?: number;
+    maxDepth?: number;
     maxItemsPerCollection?: number;
     maxTextLength?: number;
+    rootSelector?: string;
 }
 
 // @public
 export class ClrContextTrackerService implements OnDestroy {
     constructor(platformId: unknown, document: Document, contextEngine: ClrContextualEngineService, contextRegistry: ClrContextRegistryService, zone: NgZone);
+    readonly changes$: Observable<ClrContextChange>;
     readonly context$: Observable<ClrPageContext>;
     get currentContext(): ClrPageContext | null;
     // (undocumented)
@@ -179,6 +221,7 @@ export interface ClrContextTrackingOptions {
 export interface ClrContextTreeResult {
     // (undocumented)
     components: ClrComponentContext[];
+    focus?: 'modal';
     // (undocumented)
     truncated: boolean;
 }
@@ -220,6 +263,7 @@ export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOpt
 export interface ClrPageContext {
     collectedAt: string;
     components: ClrComponentContext[];
+    focus?: 'modal';
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
     title: string;
@@ -243,7 +287,16 @@ export function collectClrDomContexts(root: ParentNode, options?: ClrContextSnap
 export function collectClrDomContextTree(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrContextTreeResult;
 
 // @public
+export function diffClrContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
+
+// @public
+export function isEmptyClrContextChange(change: ClrContextChange): boolean;
+
+// @public
 export function mergeElementContext(base: ClrComponentContext, element: Element, options: Required<ClrContextSnapshotOptions>): ClrComponentContext;
+
+// @public
+export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): Provider[];
 
 // @public
 export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;

@@ -19,6 +19,12 @@ describe('summarizeRole', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
     ...overrides,
   });
 
@@ -165,6 +171,12 @@ describe('summarizeRole, collections the first version misread', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
     ...overrides,
   });
 

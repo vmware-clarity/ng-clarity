@@ -130,7 +130,20 @@
         <span class="label">update #{{ snapshotCount }}</span>
         @if (snapshotTruncated) {
         <span class="label label-warning">truncated — raise maxComponents</span>
+        } @if (snapshotFocus) {
+        <span class="label label-info">focus: {{ snapshotFocus }}</span>
         }
+      </div>
+      <div class="card-block profile-picker">
+        <clr-select-container>
+          <label>Profile</label>
+          <select clrSelect name="profile" [ngModel]="profile" (ngModelChange)="setProfile($event)">
+            <option value="full">full — everything visible, prose included</option>
+            <option value="interactive">interactive — no prose, no navigation chrome</option>
+            <option value="minimal">minimal — counts and selection only, modal focus</option>
+          </select>
+          <clr-control-helper>The same page, collected with a different preset; compare the size.</clr-control-helper>
+        </clr-select-container>
       </div>
       <div class="card-block">
         <button type="button" class="btn btn-sm" (click)="refreshNow()">Refresh now</button>

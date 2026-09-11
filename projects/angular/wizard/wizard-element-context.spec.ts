@@ -19,6 +19,12 @@ const BUDGETS: Required<ClrContextSnapshotOptions> = {
   includeDomComponents: true,
   includeText: true,
   includeFrames: true,
+  excludeRoles: [],
+  excludeSelectors: [],
+  rootSelector: '',
+  maxDepth: 0,
+  focus: 'page',
+  collectionItems: 'all',
 };
 
 function publishedOn(element: Element): Record<string, unknown> {

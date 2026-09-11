@@ -15,14 +15,56 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = 
   maxTextLength: 100,
   maxItemsPerCollection: 25,
   maxComponents: 300,
+  maxDepth: 0,
   includeDomComponents: true,
   includeText: true,
   includeFrames: true,
+  excludeRoles: [],
+  excludeSelectors: [],
+  rootSelector: '',
+  focus: 'page',
+  collectionItems: 'all',
 };
 
-const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames'] as const;
+/** Named bundles of options for the common ways of consuming context. */
+export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
 
-type BudgetKey = 'maxTextLength' | 'maxItemsPerCollection' | 'maxComponents';
+/**
+ * Presets, from most to least verbose:
+ *
+ * - `full` — the defaults: everything visible, prose included.
+ * - `interactive` — what a user can act on and read as structure: no prose, no
+ *   application chrome (navigation, banner, footer).
+ * - `minimal` — the smallest useful snapshot: no prose or chrome, collections reduced to
+ *   counts and selection, shorter text, a lower component budget, and only the open
+ *   modal while one is open.
+ */
+export const CLR_CONTEXT_PRESETS: Record<ClrContextPreset, ClrContextSnapshotOptions> = {
+  full: {},
+  interactive: {
+    includeText: false,
+    excludeRoles: ['navigation', 'banner', 'contentinfo'],
+  },
+  minimal: {
+    includeText: false,
+    excludeRoles: ['navigation', 'banner', 'contentinfo', 'complementary'],
+    collectionItems: 'summary',
+    maxItemsPerCollection: 10,
+    maxTextLength: 60,
+    maxComponents: 150,
+    focus: 'modal',
+  },
+};
+
+/** A preset's options with the caller's overrides applied over them. */
+export function clrContextPreset(
+  preset: ClrContextPreset,
+  overrides: ClrContextSnapshotOptions = {}
+): ClrContextSnapshotOptions {
+  return { ...CLR_CONTEXT_PRESETS[preset], ...overrides };
+}
+
+type BudgetKey = 'maxTextLength' | 'maxItemsPerCollection' | 'maxComponents' | 'maxDepth';
 
 /**
  * The range each budget is held to. The walk stops when a budget is exhausted, so a
@@ -34,14 +76,22 @@ const BUDGET_RANGES: Record<BudgetKey, { min: number; max: number }> = {
   maxTextLength: { min: 1, max: 10_000 },
   maxItemsPerCollection: { min: 1, max: 1_000 },
   maxComponents: { min: 0, max: 10_000 },
+  maxDepth: { min: 0, max: 100 },
 };
 
 const BUDGET_KEYS = Object.keys(BUDGET_RANGES) as BudgetKey[];
+const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames'] as const;
+const LIST_KEYS = ['excludeRoles', 'excludeSelectors'] as const;
+
+/** Most entries a selector or role list may hold, and the longest any entry may be. */
+const MAX_LIST_ENTRIES = 50;
+const MAX_ENTRY_LENGTH = 500;
 
 /**
  * The budgets a snapshot is actually built with: the caller's options over the defaults,
- * with every budget a finite integer inside its range. Anything that is not a usable
- * number falls back to the default rather than to "unbounded".
+ * with every budget a finite integer inside its range, every list a bounded list of
+ * strings, and every enumeration one of its values. Anything else falls back to the
+ * default rather than to "unbounded".
  */
 export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Required<ClrContextSnapshotOptions> {
   const resolved: Required<ClrContextSnapshotOptions> = { ...CLR_CONTEXT_DEFAULT_OPTIONS };
@@ -60,13 +110,30 @@ export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Req
       resolved[key] = value;
     }
   }
+  for (const key of LIST_KEYS) {
+    const value = options[key];
+    if (Array.isArray(value)) {
+      resolved[key] = stringList(value);
+    }
+  }
+  if (typeof options.rootSelector === 'string') {
+    resolved.rootSelector = options.rootSelector.trim().slice(0, MAX_ENTRY_LENGTH);
+  }
+  if (options.focus === 'page' || options.focus === 'modal') {
+    resolved.focus = options.focus;
+  }
+  if (options.collectionItems === 'all' || options.collectionItems === 'summary') {
+    resolved.collectionItems = options.collectionItems;
+  }
   return resolved;
 }
 
 /**
  * Budgets requested by one party, held to the ceiling set by another: whichever asked
  * for less wins. This is how a host caps what an embedded frame may ask for — a frame
- * can request a smaller snapshot than the host allows, never a larger one.
+ * can request a smaller snapshot than the host allows, never a larger one. Exclusions
+ * add up, a root the ceiling fixed stays fixed, and a narrowing the ceiling chose —
+ * modal focus, summary collections — stays chosen.
  */
 export function capSnapshotOptions(
   requested: ClrContextSnapshotOptions | undefined,
@@ -82,6 +149,11 @@ export function capSnapshotOptions(
       continue;
     }
     const asked = capped[key];
+    if (key === 'maxDepth') {
+      // Zero is "unlimited", so it is the largest value, not the smallest.
+      capped[key] = limit === 0 ? asked : typeof asked === 'number' && asked > 0 ? Math.min(asked, limit) : limit;
+      continue;
+    }
     capped[key] = typeof asked === 'number' && Number.isFinite(asked) ? Math.min(asked, limit) : limit;
   }
   // A switch the ceiling turned off stays off: less is always allowed, more never.
@@ -90,7 +162,30 @@ export function capSnapshotOptions(
       capped[key] = false;
     }
   }
+  for (const key of LIST_KEYS) {
+    const limit = ceiling[key];
+    if (Array.isArray(limit) && limit.length) {
+      capped[key] = [...new Set([...stringList(capped[key] ?? []), ...stringList(limit)])];
+    }
+  }
+  if (ceiling.rootSelector) {
+    capped.rootSelector = ceiling.rootSelector;
+  }
+  if (ceiling.focus === 'modal') {
+    capped.focus = 'modal';
+  }
+  if (ceiling.collectionItems === 'summary') {
+    capped.collectionItems = 'summary';
+  }
   return capped;
+}
+
+function stringList(value: unknown[]): string[] {
+  return value
+    .filter((entry): entry is string => typeof entry === 'string')
+    .map(entry => entry.trim().slice(0, MAX_ENTRY_LENGTH))
+    .filter(entry => entry.length > 0)
+    .slice(0, MAX_LIST_ENTRIES);
 }
 
 function clamp(value: number, range: { min: number; max: number }): number {
