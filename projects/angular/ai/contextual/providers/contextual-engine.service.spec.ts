@@ -342,7 +342,7 @@ describe('ClrContextualEngineService, configured once for the application', () =
 
   it('lets a call override the application options', () => {
     const engine = engineWith(provideClrContextOptions('interactive', { rootSelector: 'main, nav' }));
-    expect(types(engine.getSnapshot({ includeText: true, excludeRoles: [] }))).toEqual(['navigation', 'main']);
+    expect(types(engine.getSnapshot({ excludeCategories: [] }))).toEqual(['navigation', 'main']);
   });
 
   it('narrows to the open modal and says so', () => {

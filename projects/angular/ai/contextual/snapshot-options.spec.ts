@@ -148,15 +148,53 @@ describe('snapshot options, choosing what to collect', () => {
   describe('presets', () => {
     it('start from the full defaults and narrow from there', () => {
       expect(clrContextPreset('full')).toEqual({});
-      expect(clrContextPreset('interactive').includeText).toBe(false);
-      expect(clrContextPreset('interactive').excludeRoles).toContain('navigation');
+      expect(clrContextPreset('interactive').excludeCategories).toEqual(['chrome', 'text']);
+      expect(resolveSnapshotOptions(clrContextPreset('interactive')).includeText).toBe(false);
+      expect(resolveSnapshotOptions(clrContextPreset('interactive')).excludeRoles).toContain('navigation');
       expect(clrContextPreset('minimal').collectionItems).toBe('summary');
       expect(clrContextPreset('minimal').focus).toBe('modal');
     });
 
     it('apply overrides over the preset', () => {
-      expect(clrContextPreset('minimal', { maxComponents: 500 }).maxComponents).toBe(500);
-      expect(clrContextPreset('minimal', { maxComponents: 500 }).includeText).toBe(false);
+      const overridden = resolveSnapshotOptions(clrContextPreset('minimal', { maxComponents: 500 }));
+      expect(overridden.maxComponents).toBe(500);
+      expect(overridden.includeText).toBe(false);
     });
+  });
+});
+
+describe('snapshot options, categories', () => {
+  it('expands a category into the roles it stands for, on top of any roles given', () => {
+    const resolved = resolveSnapshotOptions({ excludeCategories: ['actions'], excludeRoles: ['heading'] });
+    expect(resolved.excludeRoles).toContain('button');
+    expect(resolved.excludeRoles).toContain('link');
+    expect(resolved.excludeRoles).toContain('menuitem');
+    expect(resolved.excludeRoles).toContain('heading');
+    expect(resolved.excludeCategories).toEqual(['actions']);
+  });
+
+  it('maps the text and frames categories onto their switches', () => {
+    const resolved = resolveSnapshotOptions({ excludeCategories: ['text', 'frames'] });
+    expect(resolved.includeText).toBe(false);
+    expect(resolved.includeFrames).toBe(false);
+    expect(resolved.excludeRoles).toEqual([]);
+  });
+
+  it('drops a category it does not know', () => {
+    expect(resolveSnapshotOptions({ excludeCategories: ['widgets' as never, 'chrome'] }).excludeCategories).toEqual([
+      'chrome',
+    ]);
+  });
+
+  it('adds a ceiling’s categories to the caller’s', () => {
+    expect(
+      capSnapshotOptions({ excludeCategories: ['actions'] }, { excludeCategories: ['chrome'] }).excludeCategories
+    ).toEqual(['actions', 'chrome']);
+  });
+
+  it('is what the presets are built from', () => {
+    expect(clrContextPreset('interactive').excludeCategories).toEqual(['chrome', 'text']);
+    expect(resolveSnapshotOptions(clrContextPreset('interactive')).includeText).toBe(false);
+    expect(resolveSnapshotOptions(clrContextPreset('interactive')).excludeRoles).toContain('navigation');
   });
 });

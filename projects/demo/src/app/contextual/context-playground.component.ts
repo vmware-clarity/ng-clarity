@@ -9,6 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
+  ClrContextCategory,
   ClrContextChange,
   clrContextPreset,
   ClrContextPreset,
@@ -18,8 +19,19 @@ import {
   diffClrContext,
 } from '@clr/angular/ai';
 
-/** Landmark roles an application typically wants to leave out as chrome. */
-const LANDMARK_ROLES = ['navigation', 'banner', 'contentinfo', 'complementary'] as const;
+/** Every category, with what it stands for, in the order the controls show them. */
+const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
+  { name: 'chrome', covers: 'navigation, banner, footer, asides' },
+  { name: 'actions', covers: 'buttons, links, menus' },
+  { name: 'forms', covers: 'forms and every control' },
+  { name: 'headings', covers: 'headings' },
+  { name: 'collections', covers: 'grids, tables, lists, tabs, trees' },
+  { name: 'dialogs', covers: 'dialogs' },
+  { name: 'status', covers: 'alerts, status, progress' },
+  { name: 'images', covers: 'images, figures' },
+  { name: 'text', covers: 'prose with no role' },
+  { name: 'frames', covers: 'same-origin frames' },
+];
 
 /**
  * A live playground for the snapshot options: every control maps to one option, the
@@ -39,23 +51,17 @@ export class ContextPlaygroundComponent implements OnInit {
   /** The largest component budget the controls allow, so a playground cannot flood a page. */
   @Input() maxBudget = 1000;
 
-  readonly landmarkRoles = LANDMARK_ROLES;
+  readonly categories = CATEGORIES;
 
   preset: ClrContextPreset | 'custom' = 'full';
   maxComponents = 300;
   maxItemsPerCollection = 25;
   maxTextLength = 100;
   maxDepth = 0;
-  includeText = true;
-  includeFrames = true;
   focusModal = false;
   summaryCollections = false;
-  excludedRoles: Record<string, boolean> = {
-    navigation: false,
-    banner: false,
-    contentinfo: false,
-    complementary: false,
-  };
+  excluded: Record<string, boolean> = {};
+  excludeRoles = '';
   excludeSelectors = '';
   rootSelector = '';
 
@@ -86,13 +92,19 @@ export class ContextPlaygroundComponent implements OnInit {
     this.maxItemsPerCollection = options.maxItemsPerCollection ?? 25;
     this.maxTextLength = options.maxTextLength ?? 100;
     this.maxDepth = options.maxDepth ?? 0;
-    this.includeText = options.includeText ?? true;
-    this.includeFrames = options.includeFrames ?? true;
     this.focusModal = options.focus === 'modal';
     this.summaryCollections = options.collectionItems === 'summary';
-    for (const role of LANDMARK_ROLES) {
-      this.excludedRoles[role] = (options.excludeRoles ?? []).includes(role);
+    const categories = new Set<string>(options.excludeCategories ?? []);
+    if (options.includeText === false) {
+      categories.add('text');
     }
+    if (options.includeFrames === false) {
+      categories.add('frames');
+    }
+    for (const { name } of CATEGORIES) {
+      this.excluded[name] = categories.has(name);
+    }
+    this.excludeRoles = (options.excludeRoles ?? []).join(', ');
     this.excludeSelectors = (options.excludeSelectors ?? []).join(', ');
     this.rootSelector = options.rootSelector ?? '';
     this.run();
@@ -110,8 +122,6 @@ export class ContextPlaygroundComponent implements OnInit {
       maxComponents: Math.min(this.maxComponents, this.maxBudget),
       maxItemsPerCollection: this.maxItemsPerCollection,
       maxTextLength: this.maxTextLength,
-      includeText: this.includeText,
-      includeFrames: this.includeFrames,
     };
     if (this.maxDepth > 0) {
       options.maxDepth = this.maxDepth;
@@ -122,14 +132,15 @@ export class ContextPlaygroundComponent implements OnInit {
     if (this.summaryCollections) {
       options.collectionItems = 'summary';
     }
-    const roles = LANDMARK_ROLES.filter(role => this.excludedRoles[role]);
+    const categories = CATEGORIES.map(({ name }) => name).filter(name => this.excluded[name]);
+    if (categories.length) {
+      options.excludeCategories = categories;
+    }
+    const roles = list(this.excludeRoles);
     if (roles.length) {
       options.excludeRoles = roles;
     }
-    const selectors = this.excludeSelectors
-      .split(',')
-      .map(selector => selector.trim())
-      .filter(Boolean);
+    const selectors = list(this.excludeSelectors);
     if (selectors.length) {
       options.excludeSelectors = selectors;
     }
@@ -159,6 +170,13 @@ export class ContextPlaygroundComponent implements OnInit {
       .map(node => `${node.type}${node.label ? ` "${node.label}"` : ''}`)
       .join(', ');
   }
+}
+
+function list(value: string): string[] {
+  return value
+    .split(',')
+    .map(entry => entry.trim())
+    .filter(Boolean);
 }
 
 function countNodes(node: { children?: unknown[] }): number {
