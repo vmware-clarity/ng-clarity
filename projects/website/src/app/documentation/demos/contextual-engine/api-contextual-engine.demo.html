@@ -280,6 +280,15 @@
       </td>
     </tr>
     <tr>
+      <td class="left"><b cds-text="medium">includeRoutes</b></td>
+      <td class="left clr-hidden-xs-down">false</td>
+      <td class="left">
+        Whether to list the routes the application can navigate to (<code cds-text="code">availableRoutes</code>: path
+        patterns from the router configuration, with titles where named), so an agent can propose going somewhere the
+        page does not link to. The application performs the navigation.
+      </td>
+    </tr>
+    <tr>
       <td class="left"><b cds-text="medium">excludeCategories</b></td>
       <td class="left clr-hidden-xs-down">[]</td>
       <td class="left">
@@ -364,6 +373,15 @@
       <td class="left"><b cds-text="medium">title</b></td>
       <td class="left clr-hidden-xs-down">String</td>
       <td class="left">The document title.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">availableRoutes</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrAvailableRoute[]</code></td>
+      <td class="left">
+        With <code cds-text="code">includeRoutes</code>: the routes the application can navigate to —
+        <code cds-text="code">path</code>, <code cds-text="code">title</code>, and <code cds-text="code">lazy</code> for
+        a route whose children are not loaded yet.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">url</b></td>

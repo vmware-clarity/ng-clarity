@@ -22,6 +22,7 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions
   'includeDomComponents',
   'includeText',
   'includeFrames',
+  'includeRoutes',
   'excludeCategories',
   'excludeRoles',
   'focus',

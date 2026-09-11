@@ -1973,6 +1973,7 @@ export interface ClrContextSnapshotOptions {
     focus?: 'page' | 'modal';
     includeDomComponents?: boolean;
     includeFrames?: boolean;
+    includeRoutes?: boolean;
     includeText?: boolean;
     maxComponents?: number;
     maxDepth?: number;

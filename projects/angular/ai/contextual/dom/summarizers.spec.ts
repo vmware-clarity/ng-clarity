@@ -26,6 +26,7 @@ describe('summarizeRole', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
     ...overrides,
   });
 
@@ -179,6 +180,7 @@ describe('summarizeRole, collections the first version misread', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
     ...overrides,
   });
 

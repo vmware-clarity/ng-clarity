@@ -7,7 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Route, Router } from '@angular/router';
 
 import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
@@ -18,7 +18,12 @@ import {
   ClrContextFrameRequestOptions,
   requestClrContextFromHost,
 } from '../iframe/context-frame-bridge';
-import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
+import {
+  ClrAvailableRoute,
+  ClrContextSnapshotOptions,
+  ClrPageContext,
+  ClrRouteContext,
+} from '../interfaces/context.interface';
 import { capSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
 
@@ -91,6 +96,12 @@ export class ClrContextualEngineService implements OnDestroy {
     const route = this.routeContext();
     if (route) {
       snapshot.route = route;
+    }
+    if (effective.includeRoutes && this.router?.config.length) {
+      snapshot.availableRoutes = availableRoutes(
+        this.router.config,
+        Math.max(effective.maxItemsPerCollection ?? 25, 50)
+      );
     }
     if (isPlatformBrowser(this.platformId) && effective.includeDomComponents !== false) {
       const tree = collectClrDomContextTree(this.document, effective, this.customExtractors);
@@ -256,6 +267,45 @@ export class ClrContextualEngineService implements OnDestroy {
     }
     return context;
   }
+}
+
+/**
+ * The navigable routes in a router configuration, flattened to path patterns: children
+ * under their parent, wildcards and redirects left out, lazily loaded children listed
+ * only once loaded (the router keeps them where a walk cannot see them until then).
+ */
+function availableRoutes(config: Route[], limit: number): ClrAvailableRoute[] {
+  const routes: ClrAvailableRoute[] = [];
+  const visit = (entries: Route[], prefix: string) => {
+    for (const entry of entries) {
+      if (routes.length >= limit) {
+        return;
+      }
+      const segment = entry.path ?? '';
+      if (segment === '**' || entry.redirectTo !== undefined) {
+        continue;
+      }
+      const path = [prefix, segment].filter(Boolean).join('/');
+      if (entry.component || entry.loadComponent || (!entry.children && !entry.loadChildren)) {
+        const route: ClrAvailableRoute = { path: path || '/' };
+        const title = entry.title ?? (entry.data as Record<string, unknown> | undefined)?.['title'];
+        if (typeof title === 'string' && title) {
+          route.title = title;
+        }
+        if (entry.loadChildren) {
+          route.lazy = true;
+        }
+        routes.push(route);
+      } else if (entry.loadChildren) {
+        routes.push({ path: path || '/', lazy: true });
+      }
+      if (entry.children) {
+        visit(entry.children, path);
+      }
+    }
+  };
+  visit(config, '');
+  return routes;
 }
 
 /**

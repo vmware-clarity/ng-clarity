@@ -27,6 +27,7 @@ describe('collectContextTree', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
     ...overrides,
   });
 
@@ -233,6 +234,7 @@ describe('collectContextTree, what a summary must not hide', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
     ...overrides,
   });
 
@@ -400,6 +402,7 @@ describe('collectContextTree, text and frames', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
     ...overrides,
   });
 
@@ -578,6 +581,7 @@ describe('collectContextTreeWithin', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
     ...overrides,
   });
 
@@ -631,6 +635,7 @@ describe('collectContextTree, choosing what to collect', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
     ...overrides,
   });
 

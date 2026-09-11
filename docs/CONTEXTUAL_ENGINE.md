@@ -342,6 +342,10 @@ need the 60 links of the navigation in every snapshot, nor the page behind an op
   on _is_ the dialog — and the snapshot says so with `focus: 'modal'`.
 - **`collectionItems: 'summary'`** reduces lists, options and tabs to counts and the current
   selection.
+- **`includeRoutes`** adds `availableRoutes` — the application's configured router paths with their
+  titles — so an agent can propose going somewhere the current page does not link to. Every link on
+  the page already carries its `href`; this is the map of what else exists. The engine describes
+  routes, it never navigates: an agent proposes, the application performs.
 
 Set them once for the whole application rather than at every call site:
 

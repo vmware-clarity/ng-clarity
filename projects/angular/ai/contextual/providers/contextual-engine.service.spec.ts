@@ -352,3 +352,40 @@ describe('ClrContextualEngineService, configured once for the application', () =
     expect(types(snapshot)).toEqual(['dialog']);
   });
 });
+
+describe('ClrContextualEngineService, the routes an application can navigate to', () => {
+  it('lists configured paths with their titles, leaving wildcards and redirects out', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          { path: '', redirectTo: 'hosts', pathMatch: 'full' },
+          { path: 'hosts', component: RoutedComponent, title: 'Hosts' },
+          {
+            path: 'clusters/:id',
+            component: RoutedComponent,
+            data: { title: 'Cluster' },
+            children: [{ path: 'hosts', component: RoutedComponent }],
+          },
+          { path: 'billing', loadChildren: () => Promise.resolve([]) },
+          { path: '**', component: RoutedComponent },
+        ]),
+      ],
+    });
+    const engine = TestBed.inject(ClrContextualEngineService);
+
+    const routes = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
+
+    expect(routes).toEqual([
+      { path: 'hosts', title: 'Hosts' },
+      { path: 'clusters/:id', title: 'Cluster' },
+      { path: 'clusters/:id/hosts' },
+      { path: 'billing', lazy: true },
+    ]);
+  });
+
+  it('lists nothing unless asked', () => {
+    TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
+    const engine = TestBed.inject(ClrContextualEngineService);
+    expect('availableRoutes' in engine.getSnapshot({ includeDomComponents: false })).toBe(false);
+  });
+});

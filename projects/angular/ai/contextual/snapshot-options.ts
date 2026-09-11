@@ -25,6 +25,7 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = 
   rootSelector: '',
   focus: 'page',
   collectionItems: 'all',
+  includeRoutes: false,
 };
 
 /**
@@ -115,7 +116,7 @@ const BUDGET_RANGES: Record<BudgetKey, { min: number; max: number }> = {
 };
 
 const BUDGET_KEYS = Object.keys(BUDGET_RANGES) as BudgetKey[];
-const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames'] as const;
+const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames', 'includeRoutes'] as const;
 const LIST_KEYS = ['excludeRoles', 'excludeSelectors'] as const;
 
 /** Most entries a selector or role list may hold, and the longest any entry may be. */

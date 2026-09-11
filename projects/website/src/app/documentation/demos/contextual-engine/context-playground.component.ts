@@ -60,6 +60,7 @@ export class ContextPlaygroundComponent implements OnInit {
   maxDepth = 0;
   focusModal = false;
   summaryCollections = false;
+  includeRoutes = false;
   excluded: Record<string, boolean> = {};
   excludeRoles = '';
   excludeSelectors = '';
@@ -69,6 +70,7 @@ export class ContextPlaygroundComponent implements OnInit {
   bytes = 0;
   nodes = 0;
   truncated = false;
+  routes = 0;
   focus: string | null = null;
   change: ClrContextChange | null = null;
   optionsJson = '{}';
@@ -94,6 +96,7 @@ export class ContextPlaygroundComponent implements OnInit {
     this.maxDepth = options.maxDepth ?? 0;
     this.focusModal = options.focus === 'modal';
     this.summaryCollections = options.collectionItems === 'summary';
+    this.includeRoutes = options.includeRoutes === true;
     const categories = new Set<string>(options.excludeCategories ?? []);
     if (options.includeText === false) {
       categories.add('text');
@@ -132,6 +135,9 @@ export class ContextPlaygroundComponent implements OnInit {
     if (this.summaryCollections) {
       options.collectionItems = 'summary';
     }
+    if (this.includeRoutes) {
+      options.includeRoutes = true;
+    }
     const categories = CATEGORIES.map(({ name }) => name).filter(name => this.excluded[name]);
     if (categories.length) {
       options.excludeCategories = categories;
@@ -159,6 +165,7 @@ export class ContextPlaygroundComponent implements OnInit {
     this.bytes = JSON.stringify(snapshot).length;
     this.nodes = snapshot.components.reduce((total, node) => total + countNodes(node), 0);
     this.truncated = snapshot.truncated === true;
+    this.routes = snapshot.availableRoutes?.length ?? 0;
     this.focus = snapshot.focus ?? null;
     this.change = this.previous ? diffClrContext(this.previous, snapshot) : null;
     this.previous = snapshot;
