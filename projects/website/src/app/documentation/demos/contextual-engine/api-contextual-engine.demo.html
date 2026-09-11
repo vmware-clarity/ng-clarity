@@ -292,13 +292,12 @@
       <td class="left"><b cds-text="medium">excludeCategories</b></td>
       <td class="left clr-hidden-xs-down">[]</td>
       <td class="left">
-        Kinds of content to leave out by name — <code cds-text="code">chrome</code>,
-        <code cds-text="code">actions</code>, <code cds-text="code">forms</code>, <code cds-text="code">headings</code>,
-        <code cds-text="code">collections</code>, <code cds-text="code">dialogs</code>,
-        <code cds-text="code">status</code>, <code cds-text="code">images</code>, <code cds-text="code">text</code>,
-        <code cds-text="code">frames</code>. Each expands to the roles it covers (<code cds-text="code"
-          >CLR_CONTEXT_CATEGORIES</code
-        >).
+        Kinds of content to leave out by name — <code cds-text="code">layout</code> (header, navigation, footer, side
+        panels), <code cds-text="code">actions</code>, <code cds-text="code">forms</code>,
+        <code cds-text="code">headings</code>, <code cds-text="code">collections</code>,
+        <code cds-text="code">dialogs</code>, <code cds-text="code">status</code>, <code cds-text="code">images</code>,
+        <code cds-text="code">text</code>, <code cds-text="code">frames</code>. Each expands to the roles it covers
+        (<code cds-text="code">CLR_CONTEXT_CATEGORIES</code>).
       </td>
     </tr>
     <tr>
@@ -306,7 +305,7 @@
       <td class="left clr-hidden-xs-down">[]</td>
       <td class="left">
         Roles whose whole subtree is left out — <code cds-text="code">['navigation', 'banner', 'contentinfo']</code>
-        drops the application chrome that repeats in every snapshot.
+        drops the header, navigation and footer that repeat in every snapshot.
       </td>
     </tr>
     <tr>
@@ -352,7 +351,7 @@
   starts from — the engine, the tracker, the frame bridge and the global accessor all read the
   <code cds-text="code">CLR_CONTEXT_OPTIONS</code> token — with per-call options applied over them. Presets:
   <code cds-text="code">'full'</code> (the defaults), <code cds-text="code">'interactive'</code> (no prose, no
-  navigation/banner/footer) and <code cds-text="code">'minimal'</code> (no prose or chrome, summary collections, shorter
+  navigation/banner/footer) and <code cds-text="code">'minimal'</code> (no prose or layout, summary collections, shorter
   text, a lower budget, modal focus). <code cds-text="code">clrContextPreset(name, overrides?)</code> returns a preset
   with overrides for a single call.
 </p>

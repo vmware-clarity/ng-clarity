@@ -149,7 +149,7 @@
           <label>Profile</label>
           <select clrSelect name="profile" [ngModel]="profile" (ngModelChange)="setProfile($event)">
             <option value="full">full — everything visible, prose included</option>
-            <option value="interactive">interactive — no prose, no navigation chrome</option>
+            <option value="interactive">interactive — no prose, no header/navigation/footer</option>
             <option value="minimal">minimal — counts and selection only, modal focus</option>
           </select>
           <clr-control-helper>The same page, collected with a different preset; compare the size.</clr-control-helper>

@@ -185,9 +185,9 @@ this.contextEngine.enableGlobalAccess('clrContext', { shareFormValues: true });
 
 const OPTIONS_EXAMPLE = `
 this.contextEngine.getSnapshot({
-  excludeCategories: ['chrome', 'actions'], // no navigation chrome, no buttons or links
+  excludeCategories: ['layout', 'actions'], // no header/navigation/footer, no buttons or links
   excludeRoles: ['heading'], // or any single ARIA role
-  excludeSelectors: ['clr-header'], // drop chrome that cannot be annotated
+  excludeSelectors: ['clr-header'], // drop layout that cannot be annotated
   rootSelector: 'main', // describe only the content area
   maxDepth: 3, // no nesting deeper than three levels
   focus: 'modal', // while a modal is open, describe only the modal

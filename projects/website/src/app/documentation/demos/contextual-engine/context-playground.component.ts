@@ -21,7 +21,7 @@ import {
 
 /** Every category, with what it stands for, in the order the controls show them. */
 const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
-  { name: 'chrome', covers: 'navigation, banner, footer, asides' },
+  { name: 'layout', covers: 'header, navigation, footer, side panels' },
   { name: 'actions', covers: 'buttons, links, menus' },
   { name: 'forms', covers: 'forms and every control' },
   { name: 'headings', covers: 'headings' },

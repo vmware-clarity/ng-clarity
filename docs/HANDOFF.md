@@ -330,7 +330,7 @@ allow-popups-to-escape-sandbox allow-forms allow-downloads`) and loading a stati
 Demo feedback: "more configuration on what is collected, so the LLM is not flooded with
 obsolete content". Added, all additive and off unless configured:
 
-- Options: `excludeCategories` (named role groups — `chrome`, `actions`, `forms`, `headings`,
+- Options: `excludeCategories` (named role groups — `layout`, `actions`, `forms`, `headings`,
   `collections`, `dialogs`, `status`, `images`, plus `text`/`frames` which map onto the two
   switches; `CLR_CONTEXT_CATEGORIES` in `snapshot-options.ts`, expanded into `excludeRoles`
   when options resolve), `excludeRoles`, `excludeSelectors`, `rootSelector`, `maxDepth`, `focus: 'modal'`

@@ -344,7 +344,7 @@ export class ClrConditionalModule {
 }
 
 // @public
-export type ClrContextCategory = 'chrome' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
 
 // @public
 export interface ClrContextSnapshotOptions {

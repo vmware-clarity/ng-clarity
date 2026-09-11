@@ -12,7 +12,7 @@
         <label>Preset</label>
         <select clrSelect name="preset" [ngModel]="preset" (ngModelChange)="applyPreset($event)">
           <option value="full">full — everything visible, prose included</option>
-          <option value="interactive">interactive — no prose, no navigation chrome</option>
+          <option value="interactive">interactive — no prose, no header/navigation/footer</option>
           <option value="minimal">minimal — counts and selection only, modal focus</option>
           <option value="custom">custom</option>
         </select>

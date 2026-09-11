@@ -664,14 +664,14 @@ describe('collectContextTree, choosing what to collect', () => {
     return (nodes ?? []).map(node => node.type);
   }
 
-  it('leaves out whole subtrees by role, which is how application chrome is dropped', () => {
+  it('leaves out whole subtrees by role, which is how the page layout is dropped', () => {
     const { components } = collect(PAGE, { excludeRoles: ['navigation', 'contentinfo'] });
     expect(types(components)).toEqual(['banner', 'main']);
     expect(components[0].children).toBeUndefined();
     expect(types(components[1].children)).toEqual(['heading', 'text', 'form']);
   });
 
-  it('leaves out whole subtrees by selector, for chrome that cannot be annotated', () => {
+  it('leaves out whole subtrees by selector, for layout that cannot be annotated', () => {
     const { components } = collect(PAGE, { excludeSelectors: ['header', 'footer'] });
     expect(types(components)).toEqual(['main']);
   });

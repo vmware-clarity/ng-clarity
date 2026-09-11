@@ -148,7 +148,7 @@ describe('snapshot options, choosing what to collect', () => {
   describe('presets', () => {
     it('start from the full defaults and narrow from there', () => {
       expect(clrContextPreset('full')).toEqual({});
-      expect(clrContextPreset('interactive').excludeCategories).toEqual(['chrome', 'text']);
+      expect(clrContextPreset('interactive').excludeCategories).toEqual(['layout', 'text']);
       expect(resolveSnapshotOptions(clrContextPreset('interactive')).includeText).toBe(false);
       expect(resolveSnapshotOptions(clrContextPreset('interactive')).excludeRoles).toContain('navigation');
       expect(clrContextPreset('minimal').collectionItems).toBe('summary');
@@ -181,19 +181,19 @@ describe('snapshot options, categories', () => {
   });
 
   it('drops a category it does not know', () => {
-    expect(resolveSnapshotOptions({ excludeCategories: ['widgets' as never, 'chrome'] }).excludeCategories).toEqual([
-      'chrome',
+    expect(resolveSnapshotOptions({ excludeCategories: ['widgets' as never, 'layout'] }).excludeCategories).toEqual([
+      'layout',
     ]);
   });
 
   it('adds a ceiling’s categories to the caller’s', () => {
     expect(
-      capSnapshotOptions({ excludeCategories: ['actions'] }, { excludeCategories: ['chrome'] }).excludeCategories
-    ).toEqual(['actions', 'chrome']);
+      capSnapshotOptions({ excludeCategories: ['actions'] }, { excludeCategories: ['layout'] }).excludeCategories
+    ).toEqual(['actions', 'layout']);
   });
 
   it('is what the presets are built from', () => {
-    expect(clrContextPreset('interactive').excludeCategories).toEqual(['chrome', 'text']);
+    expect(clrContextPreset('interactive').excludeCategories).toEqual(['layout', 'text']);
     expect(resolveSnapshotOptions(clrContextPreset('interactive')).includeText).toBe(false);
     expect(resolveSnapshotOptions(clrContextPreset('interactive')).excludeRoles).toContain('navigation');
   });
