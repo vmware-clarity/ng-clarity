@@ -34,7 +34,8 @@ export interface ClrComponentContext {
 /**
  * Kinds of content a snapshot can leave out wholesale, by name rather than by ARIA role:
  *
- * - `chrome` — navigation, banner, footer and complementary landmarks
+ * - `layout` — the frame around the content: header (banner), navigation, footer
+ *   (contentinfo) and side panels (complementary)
  * - `actions` — buttons, links, menus and menu items
  * - `forms` — forms and every kind of form control
  * - `headings` — headings
@@ -46,7 +47,7 @@ export interface ClrComponentContext {
  * - `frames` — same-origin frames (the `includeFrames` switch)
  */
 export type ClrContextCategory =
-  | 'chrome'
+  | 'layout'
   | 'actions'
   | 'forms'
   | 'headings'
@@ -88,19 +89,19 @@ export interface ClrContextSnapshotOptions {
    */
   includeFrames?: boolean;
   /**
-   * Kinds of content to leave out wholesale — `['chrome', 'actions']` drops the
-   * application chrome and every button, link and menu. Each category expands to the
+   * Kinds of content to leave out wholesale — `['layout', 'actions']` drops the header,
+   * navigation and footer, and every button, link and menu. Each category expands to the
    * roles it covers (see {@link ClrContextCategory}); `excludeRoles` is the finer-grained
    * equivalent for a single role. Default none.
    */
   excludeCategories?: ClrContextCategory[];
   /**
    * Roles whose whole subtree is left out — `['navigation', 'banner', 'contentinfo']`
-   * drops the application chrome that repeats in every snapshot. Default none.
+   * drops the page layout that repeats in every snapshot. Default none.
    */
   excludeRoles?: string[];
   /**
-   * CSS selectors for elements to leave out with their subtree: chrome that cannot be
+   * CSS selectors for elements to leave out with their subtree: layout that cannot be
    * annotated with `data-clr-context-ignore`, such as a header component. Default none.
    */
   excludeSelectors?: string[];

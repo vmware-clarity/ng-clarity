@@ -313,9 +313,9 @@ this.contextEngine.getSnapshot({
   includeDomComponents: false, // skip DOM scanning entirely (regions + route only)
   includeText: false, // controls and structure only, no prose
   includeFrames: false, // do not look inside same-origin frames
-  excludeCategories: ['chrome', 'actions'], // no navigation chrome, no buttons or links
+  excludeCategories: ['layout', 'actions'], // no header/navigation/footer, no buttons or links
   excludeRoles: ['heading'], // or any single ARIA role
-  excludeSelectors: ['clr-header'], // drop chrome that cannot be annotated
+  excludeSelectors: ['clr-header'], // drop layout that cannot be annotated
   rootSelector: 'main', // describe only the content area
   maxDepth: 3, // no nesting deeper than three levels
   focus: 'modal', // while a modal is open, describe only the modal
@@ -329,13 +329,13 @@ Size budgets keep a snapshot small; relevance options keep it _useful_ — the d
 page described in 300 nodes and the 40 that matter to the question being asked. An agent does not
 need the 60 links of the navigation in every snapshot, nor the page behind an open dialog.
 
-- **`excludeCategories`** leaves out whole kinds of content by name: `chrome` (navigation, banner,
-  footer, asides), `actions` (buttons, links, menus), `forms`, `headings`, `collections`, `dialogs`,
-  `status`, `images`, `text` and `frames`. `['chrome', 'actions']` is a page with no navigation and
+- **`excludeCategories`** leaves out whole kinds of content by name: `layout` (header, navigation,
+  footer, side panels), `actions` (buttons, links, menus), `forms`, `headings`, `collections`, `dialogs`,
+  `status`, `images`, `text` and `frames`. `['layout', 'actions']` is a page with no navigation and
   nothing to click — right for an assistant that only explains.
 - **`excludeRoles`** is the same at the level of a single ARIA role — `['navigation', 'banner',
-'contentinfo']` is what `chrome` expands to.
-- **`excludeSelectors`** and **`rootSelector`** do the same by CSS selector, for chrome that
+'contentinfo']` is most of what `layout` expands to.
+- **`excludeSelectors`** and **`rootSelector`** do the same by CSS selector, for layout that
   cannot be annotated with `data-clr-context-ignore`, or to describe only `main`.
 - **`maxDepth`** caps nesting; wrapper chains rarely carry meaning past a few levels.
 - **`focus: 'modal'`** describes only the open modal dialog while one is open — what the user can act
@@ -356,8 +356,8 @@ providers: [provideClrContextOptions('interactive', { excludeSelectors: ['clr-he
 
 `CLR_CONTEXT_OPTIONS` is what every snapshot starts from — the engine, the tracker, the frame bridge
 and the global accessor all read it — and options passed to an individual call are applied over it.
-Three presets bundle the common choices: `full` (the defaults), `interactive` (no prose, no chrome)
-and `minimal` (no prose or chrome, summary collections, shorter text, a lower budget, modal focus).
+Three presets bundle the common choices: `full` (the defaults), `interactive` (no prose, no layout)
+and `minimal` (no prose or layout, summary collections, shorter text, a lower budget, modal focus).
 `clrContextPreset('minimal', { maxComponents: 200 })` gives a preset with overrides for a single call.
 
 ### Sending only what changed

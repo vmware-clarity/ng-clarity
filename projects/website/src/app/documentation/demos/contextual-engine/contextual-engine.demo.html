@@ -232,24 +232,24 @@
       described in 300 nodes and the 40 that matter to the question being asked. An assistant does not need the sixty
       links of the navigation in every snapshot, nor the page behind an open dialog.
       <code cds-text="code">excludeCategories</code> leaves out whole kinds of content by name —
-      <code cds-text="code">chrome</code>, <code cds-text="code">actions</code> (buttons, links, menus),
-      <code cds-text="code">forms</code>, <code cds-text="code">headings</code>,
-      <code cds-text="code">collections</code>, <code cds-text="code">dialogs</code>,
-      <code cds-text="code">status</code>, <code cds-text="code">images</code>, <code cds-text="code">text</code>,
-      <code cds-text="code">frames</code> — and <code cds-text="code">excludeRoles</code> does the same for a single
-      ARIA role; <code cds-text="code">excludeSelectors</code> and <code cds-text="code">rootSelector</code> do it by
-      CSS selector, <code cds-text="code">maxDepth</code> caps nesting,
-      <code cds-text="code">focus: 'modal'</code> describes only the open modal while one is open, and
-      <code cds-text="code">collectionItems: 'summary'</code> reduces lists, options and tabs to counts and the current
-      selection.
+      <code cds-text="code">layout</code> (header, navigation, footer, side panels),
+      <code cds-text="code">actions</code> (buttons, links, menus), <code cds-text="code">forms</code>,
+      <code cds-text="code">headings</code>, <code cds-text="code">collections</code>,
+      <code cds-text="code">dialogs</code>, <code cds-text="code">status</code>, <code cds-text="code">images</code>,
+      <code cds-text="code">text</code>, <code cds-text="code">frames</code> — and
+      <code cds-text="code">excludeRoles</code> does the same for a single ARIA role;
+      <code cds-text="code">excludeSelectors</code> and <code cds-text="code">rootSelector</code> do it by CSS selector,
+      <code cds-text="code">maxDepth</code> caps nesting, <code cds-text="code">focus: 'modal'</code> describes only the
+      open modal while one is open, and <code cds-text="code">collectionItems: 'summary'</code> reduces lists, options
+      and tabs to counts and the current selection.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="optionsExample" language="typescript"></app-code-snippet>
     </div>
     <p class="clr-mt-16px" cds-text="body">
       Set them once for the whole application rather than at every call site. Three presets bundle the common choices:
-      <code cds-text="code">full</code> (the defaults), <code cds-text="code">interactive</code> (no prose, no chrome)
-      and <code cds-text="code">minimal</code> (no prose or chrome, summary collections, shorter text, a lower budget,
+      <code cds-text="code">full</code> (the defaults), <code cds-text="code">interactive</code> (no prose, no layout)
+      and <code cds-text="code">minimal</code> (no prose or layout, summary collections, shorter text, a lower budget,
       modal focus). Per-call options are applied over the application's.
     </p>
     <div class="clr-mt-16px">

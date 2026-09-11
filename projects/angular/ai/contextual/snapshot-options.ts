@@ -33,7 +33,7 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = 
  * `includeText` and `includeFrames` switches, and are handled where options resolve.
  */
 export const CLR_CONTEXT_CATEGORIES: Record<ClrContextCategory, readonly string[]> = {
-  chrome: ['navigation', 'banner', 'contentinfo', 'complementary'],
+  layout: ['navigation', 'banner', 'contentinfo', 'complementary'],
   actions: ['button', 'link', 'menu', 'menubar', 'menuitem', 'menuitemcheckbox', 'menuitemradio'],
   forms: [
     'form',
@@ -72,18 +72,18 @@ export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
  *
  * - `full` — the defaults: everything visible, prose included.
  * - `interactive` — what a user can act on and read as structure: no prose, no
- *   application chrome (navigation, banner, footer).
- * - `minimal` — the smallest useful snapshot: no prose or chrome, collections reduced to
+ *   page layout (header, navigation, footer, side panels).
+ * - `minimal` — the smallest useful snapshot: no prose or layout, collections reduced to
  *   counts and selection, shorter text, a lower component budget, and only the open
  *   modal while one is open.
  */
 export const CLR_CONTEXT_PRESETS: Record<ClrContextPreset, ClrContextSnapshotOptions> = {
   full: {},
   interactive: {
-    excludeCategories: ['chrome', 'text'],
+    excludeCategories: ['layout', 'text'],
   },
   minimal: {
-    excludeCategories: ['chrome', 'text'],
+    excludeCategories: ['layout', 'text'],
     collectionItems: 'summary',
     maxItemsPerCollection: 10,
     maxTextLength: 60,
