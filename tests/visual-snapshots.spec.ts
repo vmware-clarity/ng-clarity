@@ -10,15 +10,8 @@ import { StoryIndex, StoryIndexV3 } from '@storybook/types';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { browser, density, matrixKey, screenshotExpectOptions, theme } from './helpers/vrt';
 import { screenshotOptions } from './screenshot-options';
-
-const browser = process.env['CLARITY_VRT_BROWSER'];
-const theme = process.env['CLARITY_VRT_THEME'];
-const density = process.env['CLARITY_VRT_DENSITY'];
-const shard = process.env['CLARITY_VRT_SHARD'];
-// The used-screenshot-paths file only needs to be unique per CI job; shard is appended so
-// parallel shards of the same browser/theme/density combo don't write the same filename.
-const matrixKey = shard ? `${browser}-${theme}-${density}-${shard}` : `${browser}-${theme}-${density}`;
 
 const usedScreenshotPaths: string[] = [];
 const indexFilePath = path.join('.', 'dist', 'docs', 'index.json');
@@ -54,14 +47,17 @@ for (const story of stories) {
 
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
+    for (const selector of getWaitForSelectors(componentParsed, storyName)) {
+      await page.locator(selector).waitFor();
+    }
+
     const fullPage = takeFullPageScreenshot(componentParsed, storyName);
     const screenshotTarget = fullPage ? page : page.locator('body');
 
     await expect(screenshotTarget).toHaveScreenshot(screenshotPath.split(path.sep), {
       fullPage,
-      animations: 'disabled',
-      caret: 'hide',
-      threshold: 0.01,
+      ...screenshotExpectOptions,
+      mask: getMaskSelectors(componentParsed, storyName).map(selector => page.locator(selector)),
     });
   });
 }
@@ -76,6 +72,14 @@ function takeFullPageScreenshot(component: string, storyName: string) {
 
 function getPageViewPort(component: string, storyName: string) {
   return screenshotOptions[component]?.viewport || screenshotOptions[storyName]?.viewport;
+}
+
+function getWaitForSelectors(component: string, storyName: string) {
+  return screenshotOptions[component]?.waitForSelectors || screenshotOptions[storyName]?.waitForSelectors || [];
+}
+
+function getMaskSelectors(component: string, storyName: string) {
+  return screenshotOptions[component]?.maskSelectors || screenshotOptions[storyName]?.maskSelectors || [];
 }
 
 function convertToIndexV3(index: StoryIndex): StoryIndexV3 {
