@@ -193,7 +193,7 @@
 <h2>Stepper with a nested Stepper inside it</h2>
 
 <button class="btn btn-sm btn-outline" (click)="showOuterStepperDescriptions = !showOuterStepperDescriptions;">
-  Toggle Step 2 description: {{ showOuterStepperDescriptions ? 'ON' : 'OFF' }}
+  Toggle outer step descriptions: {{ showOuterStepperDescriptions ? 'ON' : 'OFF' }}
 </button>
 <form clrStepper [formGroup]="nestedStepperForm" (ngSubmit)="submit()">
   <clr-stepper-panel formGroupName="outer1">
