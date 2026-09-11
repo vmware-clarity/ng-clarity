@@ -6,6 +6,29 @@
   -->
 
 <h1>Stepper</h1>
+<button class="btn btn-sm btn-outline" (click)="showStep2Description = !showStep2Description;">
+  Toggle Step 2 description: {{ showStep2Description ? 'ON' : 'OFF' }}
+</button>
+
+<form clrStepper [formGroup]="hasStepDescriptionForm">
+  <clr-stepper-panel formGroupName="step1">
+    <clr-step-title>Step 1 Looooong Loooong Name (no description)</clr-step-title>
+    <clr-step-content *clrIfExpanded>
+      <button clrStepButton="next">next</button>
+    </clr-step-content>
+  </clr-stepper-panel>
+
+  <clr-stepper-panel formGroupName="step2">
+    <clr-step-title>Step 2</clr-step-title>
+    @if (showStep2Description) {
+    <clr-step-description>This description was toggled on.</clr-step-description>
+    }
+    <clr-step-content *clrIfExpanded>
+      <button clrStepButton="previous">previous</button>
+      <button clrStepButton="submit">submit</button>
+    </clr-step-content>
+  </clr-stepper-panel>
+</form>
 
 <!-- ─── CDE-3088 regression demo ─────────────────────────────────────────────
      Bug: typing in one touched control triggered validation for ALL controls.
@@ -448,12 +471,7 @@
 @if (!loading) {
 <form clrStepper [formGroup]="form" (ngSubmit)="submit()" [clrInitialStep]="initialStep">
   <clr-stepper-panel formGroupName="name">
-    <clr-step-title>Legal Name</clr-step-title>
-    <clr-step-description>
-      @if (!stepsExpandedState.name) {
-      <span>Closed</span>
-      } @else { Opened }
-    </clr-step-description>
+    <clr-step-title>Legal Name First Name Looong Loooooong Name</clr-step-title>
     <clr-step-content [(clrIfExpanded)]="stepsExpandedState.name">
       <clr-input-container>
         <label>First Name</label>
