@@ -39,6 +39,7 @@ import { ClrDatagridAriaSortOrder, ClrDatagridSortOrder } from './enums/sort-ord
 import { ColumnState } from './interfaces/column-state.interface';
 import { ClrDatagridComparatorInterface } from './interfaces/comparator.interface';
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
+import { ColumnActionsService } from './providers/column-actions.service';
 import { COLUMN_STATE } from './providers/column-state.provider';
 import { ColumnsService } from './providers/columns.service';
 import { CustomFilter } from './providers/custom-filter';
@@ -53,23 +54,6 @@ import { WrappedColumn } from './wrapped-column';
   selector: 'clr-dg-column',
   template: `
     <div class="datagrid-column-flex">
-      <!--
-        clrDgPinnable is disabled for now. Restoring it means uncommenting this block together with
-        the pinnable input, the clrDgPinnedChange output and togglePinned() below, the
-        .datagrid-column-pin styles, the pin/unpin icons in ClrDatagridModule and the
-        pinColumn/unpinColumn common strings.
-
-        @if (pinnable) {
-          <button
-            class="datagrid-column-pin"
-            type="button"
-            [attr.aria-label]="pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn"
-            (click)="togglePinned($event)"
-          >
-            <cds-icon [size]="'12'" [shape]="pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></cds-icon>
-          </button>
-        }
-      -->
       @if (sortable) {
         <button class="datagrid-column-title" (click)="sort()" type="button" #titleContainer>
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
@@ -109,12 +93,22 @@ import { WrappedColumn } from './wrapped-column';
           <ng-container *ngTemplateOutlet="columnTitle"></ng-container>
         </span>
       }
+
+      <!--
+        The actions menu needs its own slot: the default ng-content lives inside the #columnTitle
+        template, which is rendered inside the sort button, so an unselected clr-dg-column-actions
+        would end up as a button within a button.
+      -->
+      <ng-content select="clr-dg-column-actions"></ng-content>
+
       @if (showSeparator) {
         <clr-dg-column-separator></clr-dg-column-separator>
       }
     </div>
   `,
   hostDirectives: [ClrPopoverHostDirective],
+  // Shared by clr-dg-column-actions and this column's filter, whichever order they are created in.
+  providers: [ColumnActionsService],
   host: {
     '[class.datagrid-column]': 'true',
     '[attr.aria-sort]': 'ariaSort',
@@ -132,19 +126,15 @@ export class ClrDatagridColumn<T = any>
   @Input('clrFilterNumberMinPlaceholder') filterNumberMinPlaceholder: string;
   @Input('clrDgDisableUnsort') disableUnsort = false;
 
-  // Disabled for now, together with the toggle in the template above and togglePinned() below.
-  // Kept as a line comment rather than a doc comment, so api-extractor does not attach it to the
-  // next declaration.
-  //
-  // /**
-  //  * Shows a pin toggle in the column header, letting the user pin and unpin the column from within
-  //  * the datagrid. It only adds the control - the pinned state itself stays on `clrDgPinned`.
-  //  */
-  // @Input({ alias: 'clrDgPinnable', transform: booleanAttribute }) pinnable = false;
+  /**
+   * Lets the user pin and unpin the column from within the datagrid, through the pin action in
+   * `clr-dg-column-actions`. It only offers the control - the pinned state itself stays on
+   * `clrDgPinned`.
+   */
+  @Input({ alias: 'clrDgPinnable', transform: booleanAttribute }) pinnable = false;
 
   @Output('clrDgSortOrderChange') sortOrderChange = new EventEmitter<ClrDatagridSortOrder>();
-  // Only togglePinned() ever emitted this, so it is disabled along with the pin toggle.
-  // @Output('clrDgPinnedChange') pinnedChange = new EventEmitter<boolean>();
+  @Output('clrDgPinnedChange') pinnedChange = new EventEmitter<boolean>();
   @Output('clrFilterValueChange') filterValueChange = new EventEmitter();
 
   @ViewChild('titleContainer', { read: ElementRef }) titleContainer: ElementRef<HTMLElement>;
@@ -446,10 +436,7 @@ export class ClrDatagridColumn<T = any>
     }
 
     if (!this.disableUnsort && reverse === undefined && this.sortOrder === ClrDatagridSortOrder.DESC) {
-      this._sortOrder = ClrDatagridSortOrder.UNSORTED;
-      this._sort.clear();
-      this._sortDirection = null;
-      this.sortOrderChange.emit(this._sortOrder);
+      this.clearSort();
       return;
     }
 
@@ -462,21 +449,30 @@ export class ClrDatagridColumn<T = any>
     this.sortOrderChange.emit(this._sortOrder);
   }
 
-  // Disabled for now, together with the pin toggle in the template and the clrDgPinnable input.
-  //
-  // /**
-  //  * Pins or unpins the column from the header control. Going through the `pinned` setter keeps the
-  //  * rendering in sync, and the output lets the application follow a change it did not initiate -
-  //  * without it a one-way [clrDgPinned] binding would write the old value straight back.
-  //  */
-  // protected togglePinned(event: MouseEvent) {
-  //   // The header is a drop target for the column ordering addon and a click target for the sort
-  //   // button next to us, so the toggle keeps its click to itself.
-  //   event.stopPropagation();
-  //
-  //   this.pinned = !this.pinned;
-  //   this.pinnedChange.emit(this.pinned);
-  // }
+  /**
+   * Returns the datagrid to its unsorted state. Both the tri-state title button and the sort actions
+   * in `clr-dg-column-actions` go through here, so the two cannot drift apart.
+   */
+  clearSort() {
+    if (!this.sortable || this._sortOrder === ClrDatagridSortOrder.UNSORTED) {
+      return;
+    }
+
+    this._sortOrder = ClrDatagridSortOrder.UNSORTED;
+    this._sort.clear();
+    this._sortDirection = null;
+    this.sortOrderChange.emit(this._sortOrder);
+  }
+
+  /**
+   * Pins or unpins the column. Going through the `pinned` setter keeps the rendering in sync, and the
+   * output lets the application follow a change it did not initiate - without it a one-way
+   * [clrDgPinned] binding would write the old value straight back.
+   */
+  togglePinned() {
+    this.pinned = !this.pinned;
+    this.pinnedChange.emit(this.pinned);
+  }
 
   private listenForDetailPaneChanges() {
     return this.detailService.stateChange.subscribe(state => {

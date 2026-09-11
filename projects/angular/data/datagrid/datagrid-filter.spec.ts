@@ -38,7 +38,16 @@ export default function (): void {
         filterService = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
         popoverService = new ClrPopoverService();
         filter = new TestFilter();
-        component = new ClrDatagridFilter(filterService, new ClrCommonStringsService(), popoverService, undefined);
+
+        // No key navigation and no column actions service: this suite drives the filter on its own,
+        // outside a column.
+        component = new ClrDatagridFilter(
+          filterService,
+          new ClrCommonStringsService(),
+          popoverService,
+          undefined,
+          undefined
+        );
       });
 
       afterEach(function () {

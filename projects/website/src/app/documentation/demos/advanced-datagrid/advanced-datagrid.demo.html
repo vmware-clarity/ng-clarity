@@ -607,21 +607,18 @@
           <strong cds-text="medium">Fixed Pinning:</strong> A column definition with
           <code cds-text="code">pinned: true</code> starts pinned and stays that way unless the application changes it.
         </li>
-        <!--
-          Disabled with clrDgPinnable:
-
-          <li>
-            <strong cds-text="medium">User Pinning:</strong> Adding <code cds-text="code">pinnable: true</code> puts a
-            pin toggle in the column header. The two flags are independent, so a column can be pinned without being
-            pinnable, or pinnable without starting out pinned.
-          </li>
-          <li>
-            <strong cds-text="medium">Change Notification:</strong> When the user works the toggle, the grid updates
-            <code cds-text="code">pinned</code> on the column definition and emits
-            <code cds-text="code">(columnPinnedChange)</code> with the column and its new state - use it to persist the
-            choice.
-          </li>
-        -->
+        <li>
+          <strong cds-text="medium">User Pinning:</strong> Adding <code cds-text="code">pinnable: true</code> offers Pin
+          Column in that column's actions menu, so it also needs <code cds-text="code">enableColumnActions</code> on the
+          grid. The two flags are independent, so a column can be pinned without being pinnable, or pinnable without
+          starting out pinned.
+        </li>
+        <li>
+          <strong cds-text="medium">Change Notification:</strong> When the user pins or unpins from the menu, the grid
+          updates <code cds-text="code">pinned</code> on the column definition and emits
+          <code cds-text="code">(columnPinnedChange)</code> with the column and its new state - use it to persist the
+          choice.
+        </li>
       </ul>
 
       <clr-alert [clrAlertClosable]="false" clrAlertType="info">
@@ -647,6 +644,82 @@
               name="pinnable-columns-demo"
               [componentTemplate]="pinnableColumnsHtml"
               [componentClass]="pinnableColumnsTs"
+              [additionalFiles]="additionalFiles"
+            ></app-stackblitz-example>
+          </clr-accordion-content>
+        </clr-accordion-panel>
+      </clr-accordion>
+    </div>
+
+    <!-- Column Actions -->
+    <div class="demo-section">
+      <h3 data-toc-item id="column-actions" cds-text="section" class="clr-mt-32px">Column Actions</h3>
+      <p cds-text="body" class="clr-mt-16px">
+        <code cds-text="code">enableColumnActions</code> puts a menu in the header of every column, gathering what that
+        column can do into one control instead of a row of icons. It is off by default.
+      </p>
+
+      <h2 class="clr-mt-48px" cds-text="subsection">Key Features</h2>
+      <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg m-b:lg">
+        <li>
+          <strong cds-text="medium">Built-in Items:</strong> Sort Ascending and Sort Descending appear on their own once
+          the column is sortable, along with Clear Sort while there is a sort to clear, and
+          <code cds-text="code">pinnable: true</code> adds Pin Column. An item is only ever offered when the column can
+          act on it, so the menu never shows a dead option.
+        </li>
+        <li>
+          <strong cds-text="medium">Filtering:</strong> A filterable column keeps its own filter icon in the header
+          rather than moving it into the menu, so the menu offers no filter action of its own - a column always has
+          exactly one way to reach its filter. The column title also stays sortable, so nothing that worked before goes
+          away.
+        </li>
+        <li>
+          <strong cds-text="medium">Moving Columns:</strong> <em>Move Left</em> and <em>Move Right</em> reorder a column
+          from the keyboard or the mouse, without dragging. Each column moves within its own group - pinned columns
+          reorder among the pinned ones and scrollable columns among the scrollable ones - so a move never takes a
+          column out of the region it is rendered in. Reordering reports through
+          <code cds-text="code">(columnOrderChange)</code>.
+        </li>
+        <li>
+          <strong cds-text="medium">Grid-wide Actions:</strong> <code cds-text="code">columnActions</code> takes a list
+          of <code cds-text="code">ActionDefinition</code> offered in every column's menu, after the built-in items. Use
+          it for anything that applies to whichever column it is invoked from.
+        </li>
+        <li>
+          <strong cds-text="medium">Per-column Actions:</strong> <code cds-text="code">actions</code> on a single column
+          definition is offered only on that column, appended after the grid-wide ones. Use it for something that only
+          makes sense there, like a date-specific action.
+        </li>
+        <li>
+          <strong cds-text="medium">Reporting Clicks:</strong> Both kinds report through the grid's
+          <code cds-text="code">(actionClick)</code> output, with the column definition as the event
+          <code cds-text="code">context</code> - that is what tells the handler which column the action was invoked
+          from.
+        </li>
+      </ul>
+
+      <clr-alert [clrAlertClosable]="false" clrAlertType="info">
+        <clr-alert-item>
+          <span class="alert-text">
+            An action that sets <code cds-text="code">icon</code> names a Clarity icon shape, and the application has to
+            register that shape itself, the same as it would for a <code cds-text="code">cds-icon</code> of its own. An
+            action without an icon is allowed, it just does not line up with the items that have one. A disabled action
+            stays in the menu, announced as disabled, rather than being hidden.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+
+      <clr-accordion cds-layout="m-t:md">
+        <clr-accordion-panel>
+          <clr-accordion-title>Example</clr-accordion-title>
+          <clr-accordion-content *clrIfExpanded>
+            <div class="clr-mt-16px">
+              <app-column-actions-advanced-grid-demo></app-column-actions-advanced-grid-demo>
+            </div>
+            <app-stackblitz-example
+              name="column-actions-demo"
+              [componentTemplate]="columnActionsHtml"
+              [componentClass]="columnActionsTs"
               [additionalFiles]="additionalFiles"
             ></app-stackblitz-example>
           </clr-accordion-content>
@@ -787,6 +860,31 @@
           <td>No</td>
         </tr>
         <tr>
+          <td><code cds-text="code">enableColumnActions</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Adds a column actions menu to the header of every column. The menu gathers what the column can already do:
+            sorting and filtering when the column is sortable or filterable, Pin Column when it is
+            <code cds-text="code">pinnable</code>, and moving the column left or right within its own group of pinned or
+            scrollable columns. Defaults to <code cds-text="code">false</code>.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">columnActions</code></td>
+          <td>Input</td>
+          <td><code cds-text="code">ActionDefinition[]</code></td>
+          <td>
+            Application actions offered in the actions menu of every column, after the built-in items. Clicking one
+            reports it through <code cds-text="code">actionClick</code> with the
+            <code cds-text="code">ColumnDefinition</code> it was invoked from as the event context. For an action that
+            belongs on one column only, use <code cds-text="code">ColumnDefinition.actions</code>, which is appended
+            after these. Requires <code cds-text="code">enableColumnActions</code>.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
           <td><code cds-text="code">totalItems</code></td>
           <td>Input</td>
           <td><code cds-text="code">number</code></td>
@@ -912,20 +1010,17 @@
           <td>Emits on advanced filter change.</td>
           <td>No</td>
         </tr>
-        <!--
-          Disabled with clrDgPinnable:
-
-          <tr>
-            <td><code cds-text="code">columnPinnedChange</code></td>
-            <td>Output</td>
-            <td><code cds-text="code">EventEmitter&lt;ColumnPinnedState&gt;</code></td>
-            <td>
-              Emits when the user pins or unpins a column from its header toggle. The
-              <code cds-text="code">pinned</code> flag on the column definition is updated before the event is emitted.
-            </td>
-            <td>No</td>
-          </tr>
-        -->
+        <tr>
+          <td><code cds-text="code">columnPinnedChange</code></td>
+          <td>Output</td>
+          <td><code cds-text="code">EventEmitter&lt;ColumnPinnedState&gt;</code></td>
+          <td>
+            Emits when the user pins or unpins a column from Pin Column in its actions menu. The
+            <code cds-text="code">pinned</code> flag on the column definition is updated before the event is emitted.
+            Requires <code cds-text="code">enableColumnActions</code>, which is what offers the control.
+          </td>
+          <td>No</td>
+        </tr>
         <tr>
           <td><code cds-text="code">toggleAll</code></td>
           <td>Method</td>
@@ -987,20 +1082,28 @@
           </td>
           <td>No</td>
         </tr>
-        <!--
-          Disabled with clrDgPinnable:
-
-          <tr>
-            <td><code cds-text="code">pinnable</code></td>
-            <td><code cds-text="code">boolean</code></td>
-            <td>
-              Adds a pin toggle to the column header so the user can pin and unpin the column. It only adds the control
-              - the state itself is held by <code cds-text="code">pinned</code>. Defaults to
-              <code cds-text="code">false</code>.
-            </td>
-            <td>No</td>
-          </tr>
-        -->
+        <tr>
+          <td><code cds-text="code">pinnable</code></td>
+          <td><code cds-text="code">boolean</code></td>
+          <td>
+            Offers Pin Column in the column's actions menu so the user can pin and unpin it. It only adds the control -
+            the state itself is held by <code cds-text="code">pinned</code> - and it needs
+            <code cds-text="code">enableColumnActions</code> on the grid to render the menu. Defaults to
+            <code cds-text="code">false</code>.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
+          <td><code cds-text="code">actions</code></td>
+          <td><code cds-text="code">ActionDefinition[]</code></td>
+          <td>
+            Application actions offered in this column's actions menu, after the built-in items and after any given to
+            the grid through <code cds-text="code">columnActions</code>. Clicking one reports it through the grid's
+            <code cds-text="code">actionClick</code> output with this column definition as the event context. Requires
+            <code cds-text="code">enableColumnActions</code>.
+          </td>
+          <td>No</td>
+        </tr>
         <tr>
           <td><code cds-text="code">stringFilter</code></td>
           <td><code cds-text="code">ClrDatagridStringFilterInterface&lt;T&gt;</code></td>
@@ -1299,6 +1402,16 @@ class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit
           <td>No</td>
         </tr>
         <tr>
+          <td><code cds-text="code">icon</code></td>
+          <td><code cds-text="code">string</code></td>
+          <td>
+            Name of a registered Clarity icon shape to lead the action with. Applies to column actions, where the
+            built-in items all carry an icon. The application registers the shape itself, the same as it would for a
+            <code cds-text="code">cds-icon</code> of its own.
+          </td>
+          <td>No</td>
+        </tr>
+        <tr>
           <td><code cds-text="code">class</code></td>
           <td><code cds-text="code">string</code></td>
           <td>CSS Class. Defaults to flatCompact.</td>
@@ -1339,7 +1452,10 @@ class DemoTextRendererComponent implements ColumnRenderer&lt;unknown&gt;, OnInit
         <tr>
           <td><code cds-text="code">context</code></td>
           <td><code cds-text="code">T</code></td>
-          <td>Context (selected items or row item).</td>
+          <td>
+            What the action was invoked on: the selected items for an action bar action, the row item for a single row
+            action, or the <code cds-text="code">ColumnDefinition</code> for a column action.
+          </td>
           <td>Yes</td>
         </tr>
       </tbody>

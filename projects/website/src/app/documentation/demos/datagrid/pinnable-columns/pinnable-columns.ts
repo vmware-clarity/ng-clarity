@@ -33,9 +33,9 @@ export class DatagridPinnableColumnsDemo {
   pinId = true;
   pinName = true;
 
-  // Used by the disabled 'Letting the User Pin Columns' section.
-  // idPinned = false;
-  // namePinned = false;
+  // Used by the 'Letting the User Pin Columns' section.
+  idPinned = false;
+  namePinned = false;
 
   constructor(inventory: Inventory) {
     inventory.size = 10;
@@ -44,9 +44,7 @@ export class DatagridPinnableColumnsDemo {
   }
 
   // Kept up to date by clrDgPinnedChange, which the two-way binding in the template uses under the hood.
-  //
-  // Disabled with clrDgPinnable, along with the section that displayed it.
-  // get pinnedColumns(): string {
-  //   return [this.idPinned ? 'User ID' : null, this.namePinned ? 'Name' : null].filter(Boolean).join(', ');
-  // }
+  get pinnedColumns(): string {
+    return [this.idPinned ? 'User ID' : null, this.namePinned ? 'Name' : null].filter(Boolean).join(', ');
+  }
 }

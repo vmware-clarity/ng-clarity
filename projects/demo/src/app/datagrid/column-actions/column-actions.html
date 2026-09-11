@@ -1,0 +1,156 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Datagrid: Column actions</h2>
+
+<p>
+  <code class="clr-code">clr-dg-column-actions</code> gathers the actions of a single column behind one menu in the
+  column header. It is opt-in per column, and it only offers what the column can already do - the behaviour stays on
+  <code class="clr-code">clr-dg-column</code>, so the menu and the header controls cannot drift apart.
+</p>
+
+<p>
+  The column title keeps its own click-to-sort, so the menu is an additional, more explicit way to reach it. The filter
+  is different: a column that has one gets a <em>Filter Column</em> action automatically and its filter toggle steps
+  aside, so the header keeps one control per column instead of two.
+</p>
+
+<h3>Sorting from the menu</h3>
+
+<p>
+  Every column below is sortable, so the menu offers <em>Sort Ascending</em> and <em>Sort Descending</em>, and the
+  active direction is marked. <em>Clear Sort</em> only appears once the column is sorted. The last column sets
+  <code class="clr-code">clrDgDisableUnsort</code>, so it never offers <em>Clear Sort</em> - the menu will not undo what
+  that input asked for.
+</p>
+
+<p>
+  Sorting through the menu and clicking the column title report the same way. Last change:
+  <strong>{{lastSort}}</strong>
+</p>
+
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'id'" (clrDgSortOrderChange)="reportSort('User ID', $event)">
+    User ID
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'" (clrDgSortOrderChange)="reportSort('Name', $event)">
+    Name
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column
+    [clrDgField]="'creation'"
+    [clrDgDisableUnsort]="true"
+    (clrDgSortOrderChange)="reportSort('Creation', $event)"
+  >
+    Creation date
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{user.id}}</clr-dg-cell>
+    <clr-dg-cell>{{user.name}}</clr-dg-cell>
+    <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+</clr-datagrid>
+
+<h3>Custom column actions</h3>
+
+<p>
+  Items projected into <code class="clr-code">clr-dg-column-actions</code> are appended after the built-in ones and have
+  to carry <code class="clr-code">clrDgColumnAction</code>. That directive is what joins them to the menu's arrow key
+  order and closes the menu when one is picked. <code class="clr-code">clrDropdownItem</code> cannot be used here: it
+  resolves its dropdown from where it is declared, which is outside the menu in the component's own template.
+</p>
+
+<p>
+  Custom items take an icon the same way the built-in ones do, which is what keeps the labels in the menu aligned with
+  each other.
+</p>
+
+<p>Exported columns: <strong>{{exported.length ? exported.join(', ') : 'none'}}</strong></p>
+<p>Copied: <strong>{{copied}}</strong></p>
+
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'id'" clrDgPinnable>
+    User ID
+    <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
+      <div class="dropdown-divider" role="separator"></div>
+      <button type="button" clrDgColumnAction (click)="export('User ID')">
+        <cds-icon shape="export" aria-hidden="true"></cds-icon>
+        Export column
+      </button>
+      <button type="button" clrDgColumnAction (click)="copyColumn('User ID', 'id')">
+        <cds-icon shape="copy" aria-hidden="true"></cds-icon>
+        Copy values
+      </button>
+      <!-- clrDisabled keeps the item in the menu but out of the arrow key order. -->
+      <button type="button" clrDgColumnAction clrDisabled>
+        <cds-icon shape="trash" aria-hidden="true"></cds-icon>
+        Delete column
+      </button>
+    </clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'">
+    Name
+    <clr-dg-column-actions>
+      <div class="dropdown-divider" role="separator"></div>
+      <button type="button" clrDgColumnAction (click)="export('Name')">
+        <cds-icon shape="export" aria-hidden="true"></cds-icon>
+        Export column
+      </button>
+      <button type="button" clrDgColumnAction (click)="copyColumn('Name', 'name')">
+        <cds-icon shape="copy" aria-hidden="true"></cds-icon>
+        Copy values
+      </button>
+    </clr-dg-column-actions>
+  </clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{user.id}}</clr-dg-cell>
+    <clr-dg-cell>{{user.name}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+</clr-datagrid>
+
+<h3>The filter moves into the menu</h3>
+
+<p>
+  All three columns below have a filter through <code class="clr-code">clrDgField</code>, but only the first two have an
+  actions menu. Compare their headers: the first two show no filter funnel and offer <em>Filter Column</em> in the menu
+  instead, while the third keeps its funnel. Filtering from the menu opens the same popover, anchored to the menu
+  trigger.
+</p>
+
+<p>
+  Filter one of the first two columns and then close the menu: the trigger stays highlighted, because with the funnel
+  gone it is the only thing left to show that the column is filtered.
+</p>
+
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'id'" clrDgPinnable>
+    User ID
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'" clrDgPinnable>
+    Name
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+  <!-- No menu, so this one keeps its own filter funnel. -->
+  <clr-dg-column [clrDgField]="'pokemon.number'" clrDgColType="number">Pokemon number</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{user.id}}</clr-dg-cell>
+    <clr-dg-cell>{{user.name}}</clr-dg-cell>
+    <clr-dg-cell>{{user.pokemon.number}}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+</clr-datagrid>
