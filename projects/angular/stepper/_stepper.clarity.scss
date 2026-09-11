@@ -76,7 +76,7 @@
     display: block;
     margin-bottom: density.$clr-base-vertical-offset-xl;
 
-    &.clr-stepper-has-step-description .clr-stepper-header > .clr-stepper-header-button > .clr-step-title-wrapper {
+    &:has(.clr-stepper-description) .clr-stepper-header > .clr-stepper-header-button > .clr-step-title-wrapper {
       max-width: mixins.baselinePx(264);
     }
 

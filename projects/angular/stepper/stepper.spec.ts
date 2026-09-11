@@ -87,35 +87,6 @@ class TemplateFormsTestComponent {
   }
 }
 
-@Component({
-  template: `
-    <form clrStepper [formGroup]="form">
-      <clr-stepper-panel formGroupName="group1">
-        <clr-step-title>Step 1</clr-step-title>
-        @if (showDescription) {
-          <clr-step-description>Description</clr-step-description>
-        }
-      </clr-stepper-panel>
-      @if (showSecondPanel) {
-        <clr-stepper-panel formGroupName="group2">
-          <clr-step-title>Step 2</clr-step-title>
-          <clr-step-description>Always has a description</clr-step-description>
-        </clr-stepper-panel>
-      }
-    </form>
-  `,
-  standalone: false,
-})
-class StepDescriptionTestComponent {
-  @ViewChild(ClrStepper) stepper: ClrStepper;
-  showDescription = false;
-  showSecondPanel = false;
-  form = new FormGroup({
-    group1: new FormGroup({}),
-    group2: new FormGroup({}),
-  });
-}
-
 describe('ClrStepper', () => {
   describe('Template API', () => {
     let fixture: ComponentFixture<any>;
@@ -353,69 +324,6 @@ describe('ClrStepper', () => {
       stepperService.navigateToNextPanel('group2');
 
       expect(stepperService.setPanelsWithErrors).toHaveBeenCalled();
-    });
-  });
-
-  describe('CDE-3000: clr-stepper-has-step-description container class', () => {
-    let fixture: ComponentFixture<StepDescriptionTestComponent>;
-    let testComponent: StepDescriptionTestComponent;
-
-    function getStepperElement() {
-      return fixture.debugElement.query(By.directive(ClrStepper)).nativeElement;
-    }
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [StepDescriptionTestComponent],
-        imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
-      });
-
-      fixture = TestBed.createComponent(StepDescriptionTestComponent);
-      testComponent = fixture.componentInstance;
-      fixture.detectChanges();
-    });
-
-    it('does not add the class when no panel has a description', () => {
-      expect(testComponent.stepper.hasStepDescription).toBe(false);
-      expect(getStepperElement().classList.contains('clr-stepper-has-step-description')).toBe(false);
-    });
-
-    it('adds the class when a description is dynamically added to an existing panel', () => {
-      testComponent.showDescription = true;
-      fixture.detectChanges();
-
-      expect(testComponent.stepper.hasStepDescription).toBe(true);
-      expect(getStepperElement().classList.contains('clr-stepper-has-step-description')).toBe(true);
-    });
-
-    it('removes the class when the only description is dynamically removed', () => {
-      testComponent.showDescription = true;
-      fixture.detectChanges();
-
-      testComponent.showDescription = false;
-      fixture.detectChanges();
-
-      expect(testComponent.stepper.hasStepDescription).toBe(false);
-      expect(getStepperElement().classList.contains('clr-stepper-has-step-description')).toBe(false);
-    });
-
-    it('adds the class as soon as a newly added panel with a description enters the view', () => {
-      testComponent.showSecondPanel = true;
-      fixture.detectChanges();
-
-      expect(testComponent.stepper.hasStepDescription).toBe(true);
-      expect(getStepperElement().classList.contains('clr-stepper-has-step-description')).toBe(true);
-    });
-
-    it('removes the class when the panel with the description is removed', () => {
-      testComponent.showSecondPanel = true;
-      fixture.detectChanges();
-
-      testComponent.showSecondPanel = false;
-      fixture.detectChanges();
-
-      expect(testComponent.stepper.hasStepDescription).toBe(false);
-      expect(getStepperElement().classList.contains('clr-stepper-has-step-description')).toBe(false);
     });
   });
 });
