@@ -676,6 +676,14 @@ describe('collectContextTree, choosing what to collect', () => {
     expect(types(components[0].children)).toEqual(['heading', 'text', 'form']);
   });
 
+  it('does not let a root selector reach into an ignored region', () => {
+    const { components } = collect(`${PAGE}<div data-clr-context-ignore><form><button>Secret</button></form></div>`, {
+      rootSelector: 'form',
+    });
+    expect(components.length).toBe(1);
+    expect(types(components[0].children)).toEqual(['textbox', 'button']);
+  });
+
   it('caps nesting depth, counting only nodes that appear in the snapshot', () => {
     const one = collect(PAGE, { maxDepth: 1 }).components;
     expect(types(one)).toEqual(['banner', 'main', 'contentinfo']);

@@ -188,7 +188,9 @@ function scopeOf(root: ParentNode, walk: Walk): { roots: ParentNode | Element[];
   }
   const selector = usableSelector(root, walk.options.rootSelector);
   if (selector) {
-    return { roots: Array.from(root.querySelectorAll(selector)) };
+    // A root inside an ignored region is still ignored: the region is inert to the
+    // engine however the walk is pointed at it.
+    return { roots: Array.from(root.querySelectorAll(selector)).filter(element => !element.closest(IGNORE_SELECTOR)) };
   }
   return { roots: root };
 }

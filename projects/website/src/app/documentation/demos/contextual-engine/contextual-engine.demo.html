@@ -49,6 +49,12 @@
       to a context engine.
     </p>
     <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Only what is relevant, configured once.</strong> Size budgets keep a snapshot small and
+      relevance options keep it useful: whole landmarks, selectors or nesting levels can be left out, an open modal can
+      be all that is described, and collections can be reduced to counts and selection — set once for the whole
+      application, with per-call overrides, and with a stream of what changed for conversations.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
       <strong cds-text="medium">Sensitive values never leave.</strong> Passwords, file inputs and anything whose
       <code cds-text="code">autocomplete</code> declares a credential or a payment card are reported as
       <code cds-text="code">redacted</code> rather than by value, as is anything marked
@@ -213,10 +219,59 @@
     <p class="clr-mt-16px" cds-text="body">
       Everything in a snapshot is bounded, and every budget can be tuned per call. Note that
       <code cds-text="code">maxComponents</code> stops the walk when it is reached, so a low value drops whatever comes
-      last in the document rather than sampling evenly.
+      last in the document rather than sampling evenly — and the snapshot then carries
+      <code cds-text="code">truncated: true</code>.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="budgetsExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h3 id="choosing" class="clr-mt-32px" cds-text="section">Choosing what to collect</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Size budgets keep a snapshot small; relevance options keep it <em>useful</em> — the difference between a page
+      described in 300 nodes and the 40 that matter to the question being asked. An assistant does not need the sixty
+      links of the navigation in every snapshot, nor the page behind an open dialog.
+      <code cds-text="code">excludeRoles</code> drops whole landmark subtrees,
+      <code cds-text="code">excludeSelectors</code> and <code cds-text="code">rootSelector</code> do the same by CSS
+      selector, <code cds-text="code">maxDepth</code> caps nesting,
+      <code cds-text="code">focus: 'modal'</code> describes only the open modal while one is open, and
+      <code cds-text="code">collectionItems: 'summary'</code> reduces lists, options and tabs to counts and the current
+      selection.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="optionsExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      Set them once for the whole application rather than at every call site. Three presets bundle the common choices:
+      <code cds-text="code">full</code> (the defaults), <code cds-text="code">interactive</code> (no prose, no chrome)
+      and <code cds-text="code">minimal</code> (no prose or chrome, summary collections, shorter text, a lower budget,
+      modal focus). Per-call options are applied over the application's.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="provideExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h4 class="clr-mt-24px" cds-text="subsection">Try it on this page</h4>
+    <p class="clr-mt-16px" cds-text="body">
+      Every control below is one snapshot option. The page you are reading is snapshotted again on each change, so the
+      effect of each option — and the size it saves — is visible immediately. The playground itself is marked
+      <code cds-text="code">data-clr-context-ignore</code>, so it never appears in its own output.
+    </p>
+    <div class="clr-mt-16px">
+      <clr-context-playground></clr-context-playground>
+    </div>
+
+    <h3 id="changes" class="clr-mt-32px" cds-text="section">Sending only what changed</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      In a conversation the page is described once; after that, what a model needs is the difference.
+      <code cds-text="code">ClrContextTrackerService.changes$</code> emits alongside every
+      <code cds-text="code">context$</code> emission: nodes added (with their subtrees), removed, and changed in their
+      own state, plus whether the route, title or annotations moved. The first emission after
+      <code cds-text="code">start()</code> lists everything as added. <code cds-text="code">diffClrContext()</code> is
+      the same comparison as a plain function.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="changesExample" language="typescript"></app-code-snippet>
     </div>
   </app-doc-tab>
 
