@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClarityIcons, ClrIcon, collapseCardIcon, expandCardIcon } from '@clr/angular/icon';
+import { angleIcon, ClarityIcons, ClrIcon } from '@clr/angular/icon';
 
 import { ClrCard } from './card';
 import { ClrCardBody } from './card-body';
@@ -46,6 +46,6 @@ const declarations = [
 })
 export class ClrCardModule {
   constructor() {
-    ClarityIcons.addIcons(expandCardIcon, collapseCardIcon);
+    ClarityIcons.addIcons(angleIcon);
   }
 }

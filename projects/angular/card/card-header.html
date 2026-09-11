@@ -14,9 +14,10 @@
   [attr.aria-label]="card.expandService.expanded ? commonStrings.keys.collapseCardAriaLabel : commonStrings.keys.expandCardAriaLabel"
 >
   <cds-icon
-    [shape]="card.expandService.expanded ? 'collapse-card' : 'expand-card'"
-    [flip]="'vertical'"
+    shape="angle"
+    direction="right"
     class="clr-card-header-icon"
+    [class.expanded]="card.expandService.expanded"
   ></cds-icon>
 </button>
 }

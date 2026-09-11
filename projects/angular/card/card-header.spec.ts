@@ -106,16 +106,16 @@ describe('ClrCardHeader', () => {
       expect(headerElement.textContent.trim()).toBe('Header text');
     });
 
-    it('swaps the icon shape and aria-label based on expand state', () => {
-      let icon = headerElement.querySelector('cds-icon');
-      expect(icon.getAttribute('shape')).toBe('collapse-card');
+    it('swaps the icon rotation class and aria-label based on expand state', () => {
+      const icon = headerElement.querySelector('cds-icon');
+      expect(icon.getAttribute('shape')).toBe('angle');
+      expect(icon.classList.contains('expanded')).toBe(true);
       const collapseLabel = button.getAttribute('aria-label');
 
       button.click();
       fixture.detectChanges();
 
-      icon = headerElement.querySelector('cds-icon');
-      expect(icon.getAttribute('shape')).toBe('expand-card');
+      expect(icon.classList.contains('expanded')).toBe(false);
       expect(button.getAttribute('aria-expanded')).toBe('false');
       expect(button.getAttribute('aria-label')).not.toBe(collapseLabel);
     });

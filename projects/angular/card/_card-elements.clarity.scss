@@ -62,7 +62,13 @@
   .clr-card-header-icon {
     display: block;
     color: tokens.$cds-alias-object-interaction-color;
+    transition: all tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
+    transform: rotate(90deg);
 
     @include mixins.min-equilateral(density.$clr-base-icon-size-m);
+
+    &.expanded {
+      transform: rotate(180deg);
+    }
   }
 }
