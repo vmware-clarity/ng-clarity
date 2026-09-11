@@ -11,11 +11,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { ClrContextualModule } from '@clr/angular/ai';
 
+import { ContextPlaygroundComponent } from './context-playground.component';
 import { ContextualDemo } from './contextual.demo';
 import { ROUTING } from './contextual.demo.routing';
 
 @NgModule({
-  imports: [CommonModule, FormsModule, ClarityModule, ClrContextualModule, ROUTING, ReactiveFormsModule],
+  imports: [
+    CommonModule,
+    FormsModule,
+    ClarityModule,
+    ClrContextualModule,
+    ROUTING,
+    ReactiveFormsModule,
+    ContextPlaygroundComponent,
+  ],
   declarations: [ContextualDemo],
   exports: [ContextualDemo],
 })

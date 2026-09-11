@@ -350,6 +350,16 @@ obsolete content". Added, all additive and off unless configured:
   `banner`), so `excludeRoles: ['navigation']` actually drops it; without the landmark the
   presets removed almost nothing on the demo page.
 
+- A live **playground** component (`ContextPlaygroundComponent`, standalone, one control per
+  option, snapshots the surrounding page on every change, shows bytes / nodes / `truncated` /
+  `focus` and what `changes$` would emit since the previous run) exists twice, deliberately —
+  `projects/demo/src/app/contextual/context-playground.component.*` and
+  `projects/website/src/app/documentation/demos/contextual-engine/context-playground.component.*`
+  — because the two apps share no code. Keep them identical. The website's "Code & Examples"
+  tab has "Choosing what to collect" (with the playground) and "Sending only what changed".
+- `rootSelector` matches are filtered out of `data-clr-context-ignore` regions (found because
+  `rootSelector: 'form'` on the demo page picked up the playground's own form).
+
 Specs: `walk.spec.ts` ("choosing what to collect"), `snapshot-options.spec.ts`, `diff.spec.ts`,
 `context-tracker.service.spec.ts` ("reporting what changed"), `contextual-engine.service.spec.ts`
 ("configured once for the application").

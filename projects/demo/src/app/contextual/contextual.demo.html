@@ -118,6 +118,16 @@
         </clr-tab>
       </clr-tabs>
     </section>
+
+    <section clrContext="Snapshot options playground" clrContextType="section">
+      <h3>Choose what to collect</h3>
+      <p>
+        Each control is one snapshot option. This page is snapshotted again on every change — independently of the live
+        panel on the right — so the effect of each option, and the size it saves, is visible at once. Open the
+        <em>Add host</em> modal with "only the modal" ticked to see the snapshot shrink to the dialog.
+      </p>
+      <clr-context-playground [maxBudget]="1000"></clr-context-playground>
+    </section>
   </div>
 
   <div class="clr-col-lg-5 clr-col-12">

@@ -12,6 +12,7 @@ import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ClarityDocComponent } from '../clarity-doc';
 import { ApiContextualEngineDemo } from './api-contextual-engine.demo';
+import { ContextPlaygroundComponent } from './context-playground.component';
 
 const INSTALL_EXAMPLE = `npm install @clr/angular --save`;
 
@@ -182,6 +183,45 @@ this.contextEngine.enableGlobalAccess();
 this.contextEngine.enableGlobalAccess('clrContext', { shareFormValues: true });
 `;
 
+const OPTIONS_EXAMPLE = `
+this.contextEngine.getSnapshot({
+  excludeRoles: ['navigation', 'banner', 'contentinfo'], // drop the application chrome
+  excludeSelectors: ['clr-header'], // drop chrome that cannot be annotated
+  rootSelector: 'main', // describe only the content area
+  maxDepth: 3, // no nesting deeper than three levels
+  focus: 'modal', // while a modal is open, describe only the modal
+  collectionItems: 'summary', // counts and selection only, no item lists
+});
+`;
+
+const PROVIDE_EXAMPLE = `
+import { provideClrContextOptions, clrContextPreset } from '@clr/angular/ai';
+
+// app.config.ts — every snapshot starts from these; per-call options are applied over them
+providers: [provideClrContextOptions('interactive', { excludeSelectors: ['clr-header'] })];
+
+// or explicit options
+providers: [provideClrContextOptions({ maxComponents: 200, includeText: false })];
+
+// a preset with overrides, for a single call
+this.contextTracker.start({ snapshot: clrContextPreset('minimal', { maxComponents: 200 }) });
+`;
+
+const CHANGES_EXAMPLE = `
+this.contextTracker.changes$.subscribe(change => {
+  // change.added   — nodes that were not there before, with their subtrees
+  // change.removed — nodes that are gone
+  // change.changed — nodes whose own state differs: { before, after }
+  // change.routeChanged / titleChanged / regionsChanged
+  if (!isEmptyClrContextChange(change)) {
+    assistant.send({ pageChanged: change });
+  }
+});
+
+// The same comparison for snapshots obtained any other way:
+const change = diffClrContext(previousSnapshot, currentSnapshot);
+`;
+
 const BUDGETS_EXAMPLE = `
 this.contextEngine.getSnapshot({
   maxTextLength: 60, // truncate any text beyond 60 characters
@@ -197,7 +237,13 @@ this.contextEngine.getSnapshot({
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [DocTabsComponent, DocTabComponent, CodeSnippetComponent, ApiContextualEngineDemo],
+  imports: [
+    DocTabsComponent,
+    DocTabComponent,
+    CodeSnippetComponent,
+    ApiContextualEngineDemo,
+    ContextPlaygroundComponent,
+  ],
 })
 export class ContextualEngineDemo extends ClarityDocComponent {
   installExample = INSTALL_EXAMPLE;
@@ -215,6 +261,9 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   frameClientExample = FRAME_CLIENT_EXAMPLE;
   globalAccessExample = GLOBAL_ACCESS_EXAMPLE;
   budgetsExample = BUDGETS_EXAMPLE;
+  optionsExample = OPTIONS_EXAMPLE;
+  provideExample = PROVIDE_EXAMPLE;
+  changesExample = CHANGES_EXAMPLE;
 
   constructor() {
     super('contextual-engine');
