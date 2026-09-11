@@ -5,7 +5,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 @if (panel | async; as panel) {
-<div [ngClass]="getPanelStateClasses(panel)">
+<div class="clr-stepper-inner-wrapper" [ngClass]="getPanelStateClasses(panel)">
   <div class="clr-stepper-header">
     <button
       type="button"

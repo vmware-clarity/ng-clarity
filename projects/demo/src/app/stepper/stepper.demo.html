@@ -192,10 +192,15 @@
 
 <h2>Stepper with a nested Stepper inside it</h2>
 
+<button class="btn btn-sm btn-outline" (click)="showOuterStepperDescriptions = !showOuterStepperDescriptions;">
+  Toggle Step 2 description: {{ showOuterStepperDescriptions ? 'ON' : 'OFF' }}
+</button>
 <form clrStepper [formGroup]="nestedStepperForm" (ngSubmit)="submit()">
   <clr-stepper-panel formGroupName="outer1">
-    <clr-step-title>Outer Step 1 – Has Nested Stepper</clr-step-title>
+    <clr-step-title>Outer Step 1 – Has Nested Stepper {{ showOuterStepperDescriptions ? '' : 'long' }}</clr-step-title>
+    @if (showOuterStepperDescriptions) {
     <clr-step-description>This step contains a nested stepper workflow.</clr-step-description>
+    }
     <clr-step-content *clrIfExpanded>
       <clr-input-container>
         <label>Outer Value</label>
@@ -235,7 +240,9 @@
 
   <clr-stepper-panel formGroupName="outer2">
     <clr-step-title>Outer Step 2</clr-step-title>
+    @if (showOuterStepperDescriptions) {
     <clr-step-description>Continue with the outer workflow.</clr-step-description>
+    }
     <clr-step-content *clrIfExpanded>
       <clr-input-container>
         <label>Value</label>
@@ -247,7 +254,9 @@
 
   <clr-stepper-panel formGroupName="outer3">
     <clr-step-title>Outer Step 3 – Submit</clr-step-title>
+    @if (showOuterStepperDescriptions) {
     <clr-step-description>Review and submit.</clr-step-description>
+    }
     <clr-step-content *clrIfExpanded>
       <clr-input-container>
         <label>Summary</label>
@@ -471,7 +480,12 @@
 @if (!loading) {
 <form clrStepper [formGroup]="form" (ngSubmit)="submit()" [clrInitialStep]="initialStep">
   <clr-stepper-panel formGroupName="name">
-    <clr-step-title>Legal Name First Name Looong Loooooong Name</clr-step-title>
+    <clr-step-title>Legal Name</clr-step-title>
+    <clr-step-description>
+      @if (!stepsExpandedState.name) {
+      <span>Closed</span>
+      } @else { Opened }
+    </clr-step-description>
     <clr-step-content [(clrIfExpanded)]="stepsExpandedState.name">
       <clr-input-container>
         <label>First Name</label>

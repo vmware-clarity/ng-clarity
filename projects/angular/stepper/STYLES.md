@@ -1,5 +1,9 @@
 # Stepper
 
+Stepper builds on [collapsible-panel](../collapsible-panel/STYLES.md) and does not re-alias its
+`--clr-collapsible-panel-*` custom properties under a `--clr-stepper-*` name — override those directly to
+customize panel colors and borders.
+
 ## CSS Custom Properties
 
 | CSS Custom Property                          | Description                                                      |
@@ -21,6 +25,7 @@
 | clr-stepper-panel-open             | Open or expanded state of a stepper panel.                               |
 | clr-stepper-panel-complete         | Completed state of a stepper panel.                                      |
 | clr-stepper-panel-error            | State of a stepper panel with a validation error.                        |
+| clr-stepper-panel-inactive         | State of a stepper panel that hasn't been visited yet.                   |
 | clr-stepper-header                 | Header section of a stepper panel.                                       |
 | clr-stepper-header-button          | Clickable button within the stepper header.                              |
 | clr-stepper-header-has-description | Stepper header of a panel that has a description.                        |
