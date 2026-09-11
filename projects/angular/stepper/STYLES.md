@@ -17,10 +17,12 @@
 | ---------------------------------- | ------------------------------------------------------------------------ |
 | clr-stepper-forms                  | Main stepper container (`form[clrStepper]`).                             |
 | clr-stepper-panel                  | Panel within the stepper.                                                |
+| clr-stepper-inner-wrapper          | Wrapper inside a stepper panel that carries the panel state classes.     |
 | clr-stepper-panel-disabled         | Disabled state of a stepper panel.                                       |
 | clr-stepper-panel-open             | Open or expanded state of a stepper panel.                               |
 | clr-stepper-panel-complete         | Completed state of a stepper panel.                                      |
 | clr-stepper-panel-error            | State of a stepper panel with a validation error.                        |
+| clr-stepper-panel-inactive         | State of a stepper panel that hasn't been visited yet.                   |
 | clr-stepper-header                 | Header section of a stepper panel.                                       |
 | clr-stepper-header-button          | Clickable button within the stepper header.                              |
 | clr-stepper-header-has-description | Stepper header of a panel that has a description.                        |
