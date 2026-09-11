@@ -313,5 +313,59 @@ this.contextEngine.getSnapshot({
   includeDomComponents: false, // skip DOM scanning entirely (regions + route only)
   includeText: false, // controls and structure only, no prose
   includeFrames: false, // do not look inside same-origin frames
+  excludeRoles: ['navigation', 'banner', 'contentinfo'], // drop the application chrome
+  excludeSelectors: ['clr-header'], // drop chrome that cannot be annotated
+  rootSelector: 'main', // describe only the content area
+  maxDepth: 3, // no nesting deeper than three levels
+  focus: 'modal', // while a modal is open, describe only the modal
+  collectionItems: 'summary', // counts and selection only, no item lists
 });
 ```
+
+## Choosing what to collect
+
+Size budgets keep a snapshot small; relevance options keep it _useful_ — the difference between a
+page described in 300 nodes and the 40 that matter to the question being asked. An agent does not
+need the 60 links of the navigation in every snapshot, nor the page behind an open dialog.
+
+- **`excludeRoles`** drops whole landmark subtrees — `['navigation', 'banner', 'contentinfo']`
+  removes the application chrome that repeats on every page.
+- **`excludeSelectors`** and **`rootSelector`** do the same by CSS selector, for chrome that
+  cannot be annotated with `data-clr-context-ignore`, or to describe only `main`.
+- **`maxDepth`** caps nesting; wrapper chains rarely carry meaning past a few levels.
+- **`focus: 'modal'`** describes only the open modal dialog while one is open — what the user can act
+  on _is_ the dialog — and the snapshot says so with `focus: 'modal'`.
+- **`collectionItems: 'summary'`** reduces lists, options and tabs to counts and the current
+  selection.
+
+Set them once for the whole application rather than at every call site:
+
+```ts
+// app.config.ts
+providers: [provideClrContextOptions('interactive', { excludeSelectors: ['clr-header'] })];
+```
+
+`CLR_CONTEXT_OPTIONS` is what every snapshot starts from — the engine, the tracker, the frame bridge
+and the global accessor all read it — and options passed to an individual call are applied over it.
+Three presets bundle the common choices: `full` (the defaults), `interactive` (no prose, no chrome)
+and `minimal` (no prose or chrome, summary collections, shorter text, a lower budget, modal focus).
+`clrContextPreset('minimal', { maxComponents: 200 })` gives a preset with overrides for a single call.
+
+### Sending only what changed
+
+In a conversation the page is described once; after that, what a model needs is the difference.
+`ClrContextTrackerService.changes$` emits alongside every `context$` emission:
+
+```ts
+this.contextTracker.changes$.subscribe(change => {
+  // change.added   — nodes that were not there before, with their subtrees
+  // change.removed — nodes that are gone
+  // change.changed — nodes whose own state differs: { before, after }
+  // change.routeChanged / titleChanged / regionsChanged
+});
+```
+
+The first emission after `start()` lists everything as added. `diffClrContext(previous, current)` is
+the same comparison as a plain function, for snapshots obtained any other way. Nodes are matched by
+what they are — role, rendering element and label — so a field whose value changed is reported as
+changed, a dialog that opened as added with its contents, and one that closed as removed.

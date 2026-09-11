@@ -61,4 +61,36 @@ export interface ClrContextSnapshotOptions {
    * Default `true`.
    */
   includeFrames?: boolean;
+  /**
+   * Roles whose whole subtree is left out — `['navigation', 'banner', 'contentinfo']`
+   * drops the application chrome that repeats in every snapshot. Default none.
+   */
+  excludeRoles?: string[];
+  /**
+   * CSS selectors for elements to leave out with their subtree: chrome that cannot be
+   * annotated with `data-clr-context-ignore`, such as a header component. Default none.
+   */
+  excludeSelectors?: string[];
+  /**
+   * CSS selector for the element(s) to describe instead of the whole document — `'main'`
+   * for the content area only. Nothing outside the matches is described. Default: the
+   * whole document.
+   */
+  rootSelector?: string;
+  /**
+   * Deepest nesting of described nodes, counted from the top: `1` reports only top-level
+   * nodes, `2` their children, and so on. `0` means unlimited. Default `0`.
+   */
+  maxDepth?: number;
+  /**
+   * `'modal'`: while a modal dialog is open, describe only the dialog — what the user can
+   * act on is the dialog, and the page behind it is exactly the content an agent no longer
+   * needs. The snapshot then carries `focus: 'modal'`. Default `'page'`.
+   */
+  focus?: 'page' | 'modal';
+  /**
+   * `'summary'`: collections report their counts and current selection only — no item,
+   * option or tab lists. Default `'all'`.
+   */
+  collectionItems?: 'all' | 'summary';
 }

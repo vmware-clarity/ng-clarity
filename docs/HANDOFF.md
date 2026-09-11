@@ -325,7 +325,36 @@ allow-popups-to-escape-sandbox allow-forms allow-downloads`) and loading a stati
   Frame→host publishing with host-side composition (for cross-origin plugins) was discussed
   and deliberately not built.
 
-## 10. Mistakes made in earlier sessions — do not repeat
+## 10. Choosing what to collect (2026-09-11)
+
+Demo feedback: "more configuration on what is collected, so the LLM is not flooded with
+obsolete content". Added, all additive and off unless configured:
+
+- Options: `excludeRoles`, `excludeSelectors`, `rootSelector`, `maxDepth`, `focus: 'modal'`
+  (snapshot carries `focus: 'modal'` while narrowed), `collectionItems: 'summary'` (counts +
+  selection only; collections now always carry `tabCount`/`optionCount`/`itemCount`).
+  Untrusted callers may send all but the selectors; `capSnapshotOptions` unions exclusions and
+  keeps a ceiling's root, modal focus and summary mode.
+- `provideClrContextOptions(preset | options, overrides?)` → `CLR_CONTEXT_OPTIONS`, read by the
+  engine in `getSnapshot` (per-call options over it, `undefined` keys ignored). Presets in
+  `snapshot-options.ts`: `full`, `interactive`, `minimal`; `clrContextPreset()` for one call.
+- `diff.ts`: `diffClrContext(previous, current)` → `ClrContextChange` (added with subtrees,
+  removed shallow, changed `{before, after}` shallow, route/title/regions flags); nodes matched
+  per level by `type|element|label` plus occurrence index. `ClrContextTrackerService.changes$`
+  emits it with every `context$` emission.
+- The contextual demo page has a profile selector (full / interactive / minimal) in the panel
+  header that restarts the tracker with the preset, so the size difference is visible: on that
+  page `full` is ~15 KB / 138 nodes, `interactive` ~5.8 KB / 58 nodes, and `minimal` with the
+  Add-host modal open is ~0.9 KB (the dialog only).
+- `clr-vertical-nav` now carries `role="navigation"` (an `@Input() role`, like the header's
+  `banner`), so `excludeRoles: ['navigation']` actually drops it; without the landmark the
+  presets removed almost nothing on the demo page.
+
+Specs: `walk.spec.ts` ("choosing what to collect"), `snapshot-options.spec.ts`, `diff.spec.ts`,
+`context-tracker.service.spec.ts` ("reporting what changed"), `contextual-engine.service.spec.ts`
+("configured once for the application").
+
+## 11. Mistakes made in earlier sessions — do not repeat
 
 - Reported a browser disconnect as `3090 of 3090 SUCCESS`. Check executed count vs the real total.
 - `git restore` on the user's demo files after misreading their in-progress work as corruption.

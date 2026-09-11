@@ -17,6 +17,12 @@ describe('ariaState', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
   });
 
   let container: HTMLElement;
@@ -197,6 +203,12 @@ describe('ariaState, native values as an agent should read them', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
   });
 
   let container: HTMLElement;

@@ -52,6 +52,12 @@ describe('ClrDatagrid element context', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
   };
 
   function published(): ReturnType<ClrElementContextCallback> {

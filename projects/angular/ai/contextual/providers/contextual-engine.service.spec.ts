@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 
+import { provideClrContextOptions } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextualEngineService } from './contextual-engine.service';
 import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
@@ -307,5 +308,47 @@ describe('ClrContextualEngineService, saying when a snapshot is cut off', () => 
 
   it('carries no flag when everything fit', () => {
     expect('truncated' in engine.getSnapshot({ maxComponents: 5000 })).toBe(false);
+  });
+});
+
+describe('ClrContextualEngineService, configured once for the application', () => {
+  let widgets: HTMLElement;
+
+  beforeEach(() => {
+    widgets = document.createElement('div');
+    widgets.innerHTML =
+      '<nav aria-label="Main"><a href="/a">A</a></nav><main><p>Prose</p><button>Go</button></main>' +
+      '<div role="dialog" aria-modal="true" aria-label="Confirm"><button>Yes</button></div>';
+    document.body.appendChild(widgets);
+  });
+
+  afterEach(() => widgets.remove());
+
+  function engineWith(...providers: unknown[]): ClrContextualEngineService {
+    TestBed.configureTestingModule({ providers: providers as never[] });
+    return TestBed.inject(ClrContextualEngineService);
+  }
+
+  function types(snapshot: ClrPageContext): string[] {
+    return snapshot.components.map(node => node.type);
+  }
+
+  it('applies a preset provided for the whole application', () => {
+    const engine = engineWith(provideClrContextOptions('interactive'));
+    const snapshot = engine.getSnapshot({ rootSelector: 'main, nav' });
+    expect(types(snapshot)).toEqual(['main']);
+    expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
+  });
+
+  it('lets a call override the application options', () => {
+    const engine = engineWith(provideClrContextOptions('interactive', { rootSelector: 'main, nav' }));
+    expect(types(engine.getSnapshot({ includeText: true, excludeRoles: [] }))).toEqual(['navigation', 'main']);
+  });
+
+  it('narrows to the open modal and says so', () => {
+    const engine = engineWith(provideClrContextOptions('minimal'));
+    const snapshot = engine.getSnapshot();
+    expect(snapshot.focus).toBe('modal');
+    expect(types(snapshot)).toEqual(['dialog']);
   });
 });

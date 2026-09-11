@@ -19,6 +19,12 @@ describe('collectContextTree', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
     ...overrides,
   });
 
@@ -218,6 +224,12 @@ describe('collectContextTree, what a summary must not hide', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
     ...overrides,
   });
 
@@ -378,6 +390,12 @@ describe('collectContextTree, text and frames', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
     ...overrides,
   });
 
@@ -549,6 +567,12 @@ describe('collectContextTreeWithin', () => {
     includeDomComponents: true,
     includeText: true,
     includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
     ...overrides,
   });
 
@@ -582,5 +606,119 @@ describe('collectContextTreeWithin', () => {
 
     const [node] = collectContextTree(container, budgets());
     expect(node.children?.[0]).toEqual({ type: 'text', label: 'Cluster health: degraded.' });
+  });
+});
+
+describe('collectContextTree, choosing what to collect', () => {
+  let container: HTMLElement;
+
+  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> => ({
+    maxTextLength: 100,
+    maxItemsPerCollection: 25,
+    maxComponents: 100,
+    includeDomComponents: true,
+    includeText: true,
+    includeFrames: true,
+    excludeRoles: [],
+    excludeSelectors: [],
+    rootSelector: '',
+    maxDepth: 0,
+    focus: 'page',
+    collectionItems: 'all',
+    ...overrides,
+  });
+
+  const PAGE = `
+    <header><nav aria-label="Main"><a href="/hosts">Hosts</a><a href="/vms">VMs</a></nav></header>
+    <main>
+      <h1>Hosts</h1>
+      <p>Four hosts in this datacenter.</p>
+      <form><input aria-label="Filter" /><button>Apply</button></form>
+    </main>
+    <footer>v2.0</footer>`;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => container.remove());
+
+  function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}) {
+    container.innerHTML = html;
+    return collectContextTreeWithin(container, budgets(overrides));
+  }
+
+  function types(nodes: ClrComponentContext[] | undefined): string[] {
+    return (nodes ?? []).map(node => node.type);
+  }
+
+  it('leaves out whole subtrees by role, which is how application chrome is dropped', () => {
+    const { components } = collect(PAGE, { excludeRoles: ['navigation', 'contentinfo'] });
+    expect(types(components)).toEqual(['banner', 'main']);
+    expect(components[0].children).toBeUndefined();
+    expect(types(components[1].children)).toEqual(['heading', 'text', 'form']);
+  });
+
+  it('leaves out whole subtrees by selector, for chrome that cannot be annotated', () => {
+    const { components } = collect(PAGE, { excludeSelectors: ['header', 'footer'] });
+    expect(types(components)).toEqual(['main']);
+  });
+
+  it('ignores a selector the document does not accept rather than failing the snapshot', () => {
+    const { components } = collect(PAGE, { excludeSelectors: ['[[nonsense'] });
+    expect(types(components)).toEqual(['banner', 'main', 'contentinfo']);
+  });
+
+  it('describes only what the root selector picks out', () => {
+    const { components } = collect(PAGE, { rootSelector: 'main' });
+    expect(types(components)).toEqual(['main']);
+    expect(types(components[0].children)).toEqual(['heading', 'text', 'form']);
+  });
+
+  it('caps nesting depth, counting only nodes that appear in the snapshot', () => {
+    const one = collect(PAGE, { maxDepth: 1 }).components;
+    expect(types(one)).toEqual(['banner', 'main', 'contentinfo']);
+    expect(one.every(node => !node.children)).toBe(true);
+
+    const two = collect(PAGE, { maxDepth: 2 }).components;
+    expect(types(two[1].children)).toEqual(['heading', 'text', 'form']);
+    expect(two[1].children?.[2].children).toBeUndefined();
+  });
+
+  it('describes only the open modal dialog under modal focus', () => {
+    const result = collect(
+      `${PAGE}<div role="dialog" aria-modal="true" aria-label="Add host"><input aria-label="Name" /><button>Add</button></div>`,
+      { focus: 'modal' }
+    );
+    expect(result.focus).toBe('modal');
+    expect(types(result.components)).toEqual(['dialog']);
+    expect(types(result.components[0].children)).toEqual(['textbox', 'button']);
+  });
+
+  it('takes the topmost dialog when several are open', () => {
+    const result = collect(
+      `<div role="dialog" aria-modal="true" aria-label="First"></div><div role="dialog" aria-modal="true" aria-label="Second"></div>`,
+      { focus: 'modal' }
+    );
+    expect(result.components.map(node => node.label)).toEqual(['Second']);
+  });
+
+  it('describes the whole page under modal focus while no modal is open', () => {
+    const result = collect(`${PAGE}<div role="dialog" aria-modal="true" hidden></div>`, { focus: 'modal' });
+    expect(result.focus).toBeUndefined();
+    expect(types(result.components)).toEqual(['banner', 'main', 'contentinfo']);
+  });
+
+  it('reduces collections to counts and selection in summary mode', () => {
+    const { components } = collect(
+      `<div role="tablist"><button role="tab">One</button><button role="tab" aria-selected="true">Two</button></div>
+       <select aria-label="Size"><option>S</option><option selected>M</option></select>
+       <ul><li>a</li><li>b</li></ul>`,
+      { collectionItems: 'summary' }
+    );
+    expect(components[0].state).toEqual({ tabCount: 2, activeTab: 'Two' });
+    expect(components[1].state).toEqual({ value: 'M', optionCount: 2 });
+    expect(components[2].state).toEqual({ itemCount: 2 });
   });
 });

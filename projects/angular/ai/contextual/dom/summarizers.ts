@@ -103,14 +103,23 @@ function summarizeGrid(element: Element, options: Required<ClrContextSnapshotOpt
   return state;
 }
 
+/**
+ * Whether item lists are wanted at all. In summary mode a collection reports what it is
+ * and what is selected — counts, the active tab, the chosen value — and nothing more.
+ */
+function listsItems(options: Required<ClrContextSnapshotOptions>): boolean {
+  return options.collectionItems !== 'summary';
+}
+
 function summarizeTablist(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
   const tabs = queryRole(element, 'tab');
   if (!tabs.length) {
     return {};
   }
-  const state: Record<string, unknown> = {
-    tabs: tabs.slice(0, options.maxItemsPerCollection).map(tab => nameOf(tab, options)),
-  };
+  const state: Record<string, unknown> = { tabCount: tabs.length };
+  if (listsItems(options)) {
+    state.tabs = tabs.slice(0, options.maxItemsPerCollection).map(tab => nameOf(tab, options));
+  }
   // Looked for among all the tabs, not the reported few: the active one being past the
   // budget must not read as "nothing is selected".
   const active = tabs.find(tab => tab.getAttribute('aria-selected') === 'true');
@@ -130,10 +139,11 @@ function summarizeList(element: Element, options: Required<ClrContextSnapshotOpt
   if (!items.length) {
     return {};
   }
-  return {
-    itemCount: items.length,
-    items: items.slice(0, options.maxItemsPerCollection).map(item => nameOf(item, options)),
-  };
+  const state: Record<string, unknown> = { itemCount: items.length };
+  if (listsItems(options)) {
+    state.items = items.slice(0, options.maxItemsPerCollection).map(item => nameOf(item, options));
+  }
+  return state;
 }
 
 /**
@@ -151,6 +161,9 @@ function summarizeCombobox(element: Element, options: Required<ClrContextSnapsho
   const choices = comboboxChoices(element);
   if (!choices.length) {
     return {};
+  }
+  if (!listsItems(options)) {
+    return { optionCount: choices.length };
   }
   return { options: choices.slice(0, options.maxItemsPerCollection).map(choice => nameOf(choice, options)) };
 }
@@ -208,9 +221,10 @@ function summarizeChoices(
   if (!entries.length) {
     return {};
   }
-  const state: Record<string, unknown> = {
-    options: entries.slice(0, options.maxItemsPerCollection).map(entry => nameOf(entry, options)),
-  };
+  const state: Record<string, unknown> = { optionCount: entries.length };
+  if (listsItems(options)) {
+    state.options = entries.slice(0, options.maxItemsPerCollection).map(entry => nameOf(entry, options));
+  }
   const selected = entries
     .filter(isSelected)
     .slice(0, options.maxItemsPerCollection)
@@ -224,7 +238,7 @@ function summarizeChoices(
     .filter(entry => entry.getAttribute('aria-disabled') === 'true' || (entry as HTMLOptionElement).disabled === true)
     .slice(0, options.maxItemsPerCollection)
     .map(entry => nameOf(entry, options));
-  if (disabled.length) {
+  if (disabled.length && listsItems(options)) {
     state.disabledOptions = disabled;
   }
   return state;
@@ -246,9 +260,10 @@ function summarizeRadiogroup(element: Element, options: Required<ClrContextSnaps
   if (!radios.length) {
     return {};
   }
-  const state: Record<string, unknown> = {
-    options: radios.slice(0, options.maxItemsPerCollection).map(radio => nameOf(radio, options)),
-  };
+  const state: Record<string, unknown> = { optionCount: radios.length };
+  if (listsItems(options)) {
+    state.options = radios.slice(0, options.maxItemsPerCollection).map(radio => nameOf(radio, options));
+  }
   const chosen = radios.find(
     radio => (radio as HTMLInputElement).checked || radio.getAttribute('aria-checked') === 'true'
   );

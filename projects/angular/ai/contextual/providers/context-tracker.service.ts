@@ -7,10 +7,11 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
-import { Observable, ReplaySubject, Subscription } from 'rxjs';
+import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextualEngineService } from './contextual-engine.service';
+import { ClrContextChange, diffClrContext } from '../diff';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 
@@ -65,8 +66,16 @@ const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
 export class ClrContextTrackerService implements OnDestroy {
   /** Emits the latest page context; replays the most recent snapshot to new subscribers. */
   readonly context$: Observable<ClrPageContext>;
+  /**
+   * Emits, alongside every {@link context$} emission, what changed since the previous one
+   * — nodes added, removed and changed, and whether the route, title or annotations moved
+   * — so a consumer in a conversation can send the difference rather than the whole page.
+   * The first emission after `start()` lists everything as added.
+   */
+  readonly changes$: Observable<ClrContextChange>;
 
   private readonly contextSubject = new ReplaySubject<ClrPageContext>(1);
+  private readonly changesSubject = new Subject<ClrContextChange>();
   private trackingOptions: ClrContextTrackingOptions = {};
   private tracking = false;
   private observer: MutationObserver | null = null;
@@ -85,6 +94,7 @@ export class ClrContextTrackerService implements OnDestroy {
     private readonly zone: NgZone
   ) {
     this.context$ = this.contextSubject.asObservable();
+    this.changes$ = this.changesSubject.asObservable();
   }
 
   /** The most recent snapshot the tracker has taken, or `null` before tracking starts. */
@@ -98,6 +108,7 @@ export class ClrContextTrackerService implements OnDestroy {
     // holding — a description of the whole page — should not either.
     this.latest = null;
     this.contextSubject.complete();
+    this.changesSubject.complete();
   }
 
   /**
@@ -151,8 +162,14 @@ export class ClrContextTrackerService implements OnDestroy {
 
   /** Takes a fresh snapshot immediately and emits it. */
   refresh(): void {
-    this.latest = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
-    this.contextSubject.next(this.latest);
+    this.emit(this.contextEngine.getSnapshot(this.trackingOptions.snapshot));
+  }
+
+  private emit(snapshot: ClrPageContext): void {
+    const previous = this.latest;
+    this.latest = snapshot;
+    this.contextSubject.next(snapshot);
+    this.changesSubject.next(diffClrContext(previous, snapshot));
   }
 
   private onMutations(records: MutationRecord[]): void {
@@ -197,8 +214,7 @@ export class ClrContextTrackerService implements OnDestroy {
     this.zone.run(() => {
       const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
       if (!contextEquals(snapshot, this.latest)) {
-        this.latest = snapshot;
-        this.contextSubject.next(snapshot);
+        this.emit(snapshot);
       }
     });
     // A frame that arrived with this change is watched from now on.

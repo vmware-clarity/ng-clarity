@@ -18,17 +18,22 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions
   'maxTextLength',
   'maxItemsPerCollection',
   'maxComponents',
+  'maxDepth',
   'includeDomComponents',
   'includeText',
   'includeFrames',
+  'excludeRoles',
+  'focus',
+  'collectionItems',
 ];
 
 /**
  * Reduces whatever an untrusted caller passed to the budgets it is allowed to set,
- * discarding everything else. Anything that is not a finite number or a boolean is
- * dropped, so a caller cannot smuggle a getter or an object through — nor a `NaN` or an
- * `Infinity`, which a budget check would never see as exhausted. The numbers that
- * survive are still held to their ranges when the snapshot is built.
+ * discarding everything else. Anything that is not a finite number, a boolean, a short
+ * string or a list of strings is dropped, so a caller cannot smuggle a getter or an
+ * object through — nor a `NaN` or an `Infinity`, which a budget check would never see as
+ * exhausted. What survives is still held to its range when the snapshot is built.
+ * Selectors are not accepted from an untrusted caller at all.
  */
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
   if (!options || typeof options !== 'object') {
@@ -40,6 +45,11 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
     const value = candidate[key];
     if ((typeof value === 'number' && Number.isFinite(value)) || typeof value === 'boolean') {
       (sanitized as Record<string, unknown>)[key] = value;
+    } else if (typeof value === 'string' && value.length <= 32) {
+      // Enumerations; anything that is not one of the values is dropped when resolved.
+      (sanitized as Record<string, unknown>)[key] = value;
+    } else if (Array.isArray(value)) {
+      (sanitized as Record<string, unknown>)[key] = value.filter(entry => typeof entry === 'string').slice(0, 50);
     }
   }
   return sanitized;

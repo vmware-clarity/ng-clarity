@@ -11,6 +11,7 @@ import { provideRouter, Router } from '@angular/router';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextTrackerService } from './context-tracker.service';
+import { ClrContextChange } from '../diff';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
 
@@ -405,5 +406,45 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     await wait(60);
 
     expect(emitted.length).toBe(before);
+  });
+});
+
+describe('ClrContextTrackerService, reporting what changed', () => {
+  let tracker: ClrContextTrackerService;
+  let changes: ClrContextChange[];
+  let widget: HTMLElement | null;
+
+  function wait(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    tracker = TestBed.inject(ClrContextTrackerService);
+    changes = [];
+    widget = null;
+    tracker.changes$.subscribe(change => changes.push(change));
+  });
+
+  afterEach(() => {
+    tracker.stop();
+    widget?.remove();
+  });
+
+  it('lists the first snapshot as all added, then only the difference', async () => {
+    tracker.start({ debounceMs: 10 });
+    expect(changes.length).toBe(1);
+    expect(changes[0].previous).toBeNull();
+    expect(changes[0].added.length).toBe(changes[0].current.components.length);
+
+    widget = document.createElement('button');
+    widget.textContent = 'Provision';
+    document.body.appendChild(widget);
+    await wait(60);
+
+    const latest = changes[changes.length - 1];
+    expect(latest.previous).not.toBeNull();
+    expect(latest.added).toEqual([{ type: 'button', label: 'Provision' }]);
+    expect(latest.removed).toEqual([]);
   });
 });

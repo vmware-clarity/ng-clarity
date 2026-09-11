@@ -117,6 +117,16 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">Takes a snapshot immediately and emits it.</td>
     </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">changes$</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrContextChange&gt;</code></td>
+      <td class="left">
+        Emits, alongside every <code cds-text="code">context$</code> emission, what changed since the previous one —
+        nodes added, removed and changed, and whether the route, title or annotations moved — so a conversation can send
+        the difference rather than the whole page. <code cds-text="code">diffClrContext(previous, current)</code> is the
+        same comparison as a function.
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -269,8 +279,61 @@
         content as children. A cross-origin frame is reported as a frame without children either way.
       </td>
     </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">excludeRoles</b></td>
+      <td class="left clr-hidden-xs-down">[]</td>
+      <td class="left">
+        Roles whose whole subtree is left out — <code cds-text="code">['navigation', 'banner', 'contentinfo']</code>
+        drops the application chrome that repeats in every snapshot.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">excludeSelectors</b></td>
+      <td class="left clr-hidden-xs-down">[]</td>
+      <td class="left">CSS selectors for elements to leave out with their subtree.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">rootSelector</b></td>
+      <td class="left clr-hidden-xs-down">whole document</td>
+      <td class="left">
+        CSS selector for the element(s) to describe instead of the whole document, e.g.
+        <code cds-text="code">main</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">maxDepth</b></td>
+      <td class="left clr-hidden-xs-down">0 (unlimited)</td>
+      <td class="left">Deepest nesting of described nodes, counted from the top.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">focus</b></td>
+      <td class="left clr-hidden-xs-down">'page'</td>
+      <td class="left">
+        <code cds-text="code">'modal'</code>: while a modal dialog is open, describe only the dialog; the snapshot then
+        carries <code cds-text="code">focus: 'modal'</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">collectionItems</b></td>
+      <td class="left clr-hidden-xs-down">'all'</td>
+      <td class="left">
+        <code cds-text="code">'summary'</code>: collections report counts and current selection only, without item,
+        option or tab lists.
+      </td>
+    </tr>
   </tbody>
 </table>
+
+<h3 cds-text="section" class="clr-mt-32px">Application-wide options and presets</h3>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">provideClrContextOptions(preset | options, overrides?)</code> sets the options every snapshot
+  starts from — the engine, the tracker, the frame bridge and the global accessor all read the
+  <code cds-text="code">CLR_CONTEXT_OPTIONS</code> token — with per-call options applied over them. Presets:
+  <code cds-text="code">'full'</code> (the defaults), <code cds-text="code">'interactive'</code> (no prose, no
+  navigation/banner/footer) and <code cds-text="code">'minimal'</code> (no prose or chrome, summary collections, shorter
+  text, a lower budget, modal focus). <code cds-text="code">clrContextPreset(name, overrides?)</code> returns a preset
+  with overrides for a single call.
+</p>
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Context shape</h2>
 
