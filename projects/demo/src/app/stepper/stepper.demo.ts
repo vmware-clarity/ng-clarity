@@ -7,7 +7,7 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ClrLoadingState } from '@clr/angular';
+import { ClrLoadingState, ClrStepper } from '@clr/angular';
 
 @Component({
   templateUrl: 'stepper.demo.html',
@@ -16,6 +16,7 @@ import { ClrLoadingState } from '@clr/angular';
 })
 export class StepperDemo {
   @ViewChild('nextBtn') nxtBtn?: ElementRef<HTMLElement>;
+  @ViewChild(ClrStepper) hasStepDescriptionStepper?: ClrStepper;
 
   state: ClrLoadingState = ClrLoadingState.DEFAULT;
   expanded = false;
@@ -33,6 +34,13 @@ export class StepperDemo {
     password: false,
   };
   loading = false;
+
+  // CDE-3000 demo form: verify the stepper container reflects whether any panel has a description.
+  hasStepDescriptionForm = new FormGroup({
+    step1: new FormGroup({ value: new FormControl('') }),
+    step2: new FormGroup({ value: new FormControl('') }),
+  });
+  showStep2Description = false;
 
   // CDE-3088 demo form: required fields to observe whether typing in one incorrectly touches its siblings.
   validateNoSiblingForm = new FormGroup({
