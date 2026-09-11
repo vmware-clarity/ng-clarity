@@ -117,7 +117,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
           @if (column.sortable || column.pinnable) {
             <div class="dropdown-divider" role="separator"></div>
           }
-          <button type="button" #trigger clrDropdownItem [class.active]="filterActive" (click)="openFilter($event)">
+          <button type="button" #trigger clrDropdownItem (click)="openFilter($event)">
             <cds-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></cds-icon>
             {{ commonStrings.keys.filterColumn }}
           </button>
