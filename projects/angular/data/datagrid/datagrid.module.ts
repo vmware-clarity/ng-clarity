@@ -18,6 +18,7 @@ import {
   arrowIcon,
   ClarityIcons,
   ClrIcon,
+  ellipsisGridCircleIcon,
   ellipsisVerticalIcon,
   filterGridCircleIcon,
   filterGridIcon,
@@ -165,6 +166,7 @@ export class ClrDatagridModule {
   constructor() {
     ClarityIcons.addIcons(
       ellipsisVerticalIcon,
+      ellipsisGridCircleIcon,
       viewColumnsIcon,
       windowCloseIcon,
       arrowIcon,
