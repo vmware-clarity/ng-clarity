@@ -1085,6 +1085,66 @@ describe('DatagridComponent', () => {
         expect(this.component.columnsDefs[3].defaultFilterValue).toBe('vm0');
       });
 
+      function columnElementByTitle(fixture: ComponentFixture<DatagridHostComponent>, title: string): HTMLElement {
+        return Array.from(fixture.debugElement.nativeElement.querySelectorAll('clr-dg-column')).find(
+          (el: HTMLElement) => el.querySelector('.datagrid-column-title')?.textContent.trim() === title
+        ) as HTMLElement;
+      }
+
+      // Drives a real resize through the column separator's keyboard shortcut, the same as
+      // core's own arrow-key resizing - core only reports a resize once it is actually applied
+      // (on keyup), not while it is only being calculated, so a synthetic width can't be
+      // substituted for it.
+      function resizeColumnByKeyboard(fixture: ComponentFixture<DatagridHostComponent>, title: string, by: number) {
+        const handle = columnElementByTitle(fixture, title).querySelector<HTMLElement>('.datagrid-column-handle');
+        const key = by > 0 ? 'ArrowRight' : 'ArrowLeft';
+        handle.dispatchEvent(new KeyboardEvent('keydown', { key: key, bubbles: true }));
+        handle.dispatchEvent(new KeyboardEvent('keyup', { key: key, bubbles: true }));
+        fixture.detectChanges();
+      }
+
+      // Rebuilding the column views throws every ClrDatagridColumn away and recreates them bound to
+      // [style]="column.width ? ...", so a resize that never made it onto the column definition is
+      // silently lost the next time anything rebuilds - which, once a column is pinned, is every
+      // move or drop. Reproduced with a real keyboard resize rather than calling onColumnResize
+      // directly, since that only reports a width - it does not drive one.
+      it('keeps a resized width when a column is moved', function (this: DatagridSpecContext) {
+        resizeColumnByKeyboard(this.fixture, 'C2', 1);
+        const resizedWidth = columnElementByTitle(this.fixture, 'C2').style.width;
+        expect(resizedWidth).not.toBe('');
+
+        clickMove(this.fixture, 4, 'Move Left'); // moves C5, unrelated to C2 - just needs to trigger a rebuild
+
+        expect(this.component.columnsDefs[1].width).toBe(resizedWidth);
+        expect(columnElementByTitle(this.fixture, 'C2').style.width).toBe(resizedWidth);
+      });
+
+      // Same loss, through the drag and drop path instead of the column actions menu - both funnel
+      // into the same rebuild once a column is pinned.
+      it('keeps a resized width when a column is reordered by drag and drop', function (this: DatagridSpecContext) {
+        resizeColumnByKeyboard(this.fixture, 'C2', 1);
+        const resizedWidth = columnElementByTitle(this.fixture, 'C2').style.width;
+        expect(resizedWidth).not.toBe('');
+
+        // Drags the loose C4 onto the loose C5's slot - same group, so the drop is not refused.
+        const cdkDropList = this.fixture.debugElement.query(By.directive(CdkDropList)).injector.get(CdkDropList);
+        const targetIndex = cdkDropList
+          .getSortedItems()
+          .findIndex((item: any) => item.data === this.component.columnsDefs[4]);
+        // CdkDragDrop is a large interface meant for a real drag - cast rather than fill in the rest
+        // of it, matching how the plain drag and drop reorder tests above work around the same gap.
+        const droppedData = {
+          item: { data: this.component.columnsDefs[3] },
+          currentIndex: targetIndex,
+        } as any;
+        cdkDropList.dropped.next(droppedData);
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C5', 'C4']);
+        expect(this.component.columnsDefs[1].width).toBe(resizedWidth);
+        expect(columnElementByTitle(this.fixture, 'C2').style.width).toBe(resizedWidth);
+      });
+
       // Rebuilding the column views destroys the menu along with the column it belongs to, so it
       // cannot be re-anchored the way it is when nothing is pinned. The menu on the column in its new
       // place is opened instead, which ends up in the same state - open, attached to the moved

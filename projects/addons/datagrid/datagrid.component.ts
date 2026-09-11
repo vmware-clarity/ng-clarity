@@ -972,6 +972,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   protected onColumnResize(columnSize: number, column: ColumnDefinition<T>): void {
+    // The column definition is what a rebuild reads to recreate the view - see rebuildColumnViews -
+    // so the resized width has to be written back here the same way sort and filter state is.
+    // Otherwise pinning a column and then moving or dragging any column, which rebuilds every column
+    // view, would silently discard every resize made before that pin.
+    column.width = `${columnSize}px`;
     this.columnResize.emit({ columnSize: columnSize, column: column });
   }
 
@@ -1202,8 +1207,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * from scratch. That is what makes reordering work with a pinned column anywhere in the list, and
    * it is also the only way the pinned columns can be reordered with each other.
    *
-   * Column state that has to survive this lives on the column definitions - `defaultSortOrder` and
-   * `defaultFilterValue` - so the rebuilt views bind it straight back.
+   * Column state that has to survive this lives on the column definitions - `defaultSortOrder`,
+   * `defaultFilterValue` and `width` - so the rebuilt views bind it straight back.
    */
   private rebuildColumnViews(): void {
     this.visibleColumns = [];
