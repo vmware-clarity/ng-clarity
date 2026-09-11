@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
+import { Component, EventEmitter, HostBinding, Input, OnDestroy, Output } from '@angular/core';
 import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
@@ -27,6 +27,14 @@ import { VerticalNavService } from './providers/vertical-nav.service';
 })
 export class ClrVerticalNav implements OnDestroy {
   @Input('clrVerticalNavToggleLabel') toggleLabel: string;
+
+  /**
+   * The vertical nav is a navigation landmark, the same way the header is a banner: it
+   * lets assistive technology jump to or past it, and lets page-context tooling leave it
+   * out as chrome. Set `role` on the element to override, e.g. when the nav is already
+   * wrapped in a `<nav>`.
+   */
+  @Input() @HostBinding('attr.role') role = 'navigation';
   contentId = uniqueIdFactory();
 
   @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
