@@ -24,6 +24,7 @@ describe('ariaState', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
   });
 
   let container: HTMLElement;
@@ -211,6 +212,7 @@ describe('ariaState, native values as an agent should read them', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
   });
 
   let container: HTMLElement;

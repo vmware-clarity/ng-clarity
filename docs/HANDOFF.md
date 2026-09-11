@@ -367,6 +367,16 @@ Specs: `walk.spec.ts` ("choosing what to collect"), `snapshot-options.spec.ts`, 
 `context-tracker.service.spec.ts` ("reporting what changed"), `contextual-engine.service.spec.ts`
 ("configured once for the application").
 
+- `includeRoutes` (off by default) adds `availableRoutes` to a snapshot: the router config
+  flattened to path patterns (`path`, optional `title` from `Route.title` or `data.title`,
+  `lazy: true` for `loadChildren` entries), wildcards and redirects left out, capped at
+  `max(maxItemsPerCollection, 50)`. Lazily loaded children appear only once the router has
+  loaded them. This answers "can the agent know where it can navigate?" — the engine never
+  navigates; it lists, the agent proposes, the application performs. Built in
+  `availableRoutes()` in `contextual-engine.service.ts`, specs in
+  `contextual-engine.service.spec.ts` ("the routes an application can navigate to"). The playground
+  has an "Add — the routes the application can navigate to" checkbox and shows the route count.
+
 ## 11. Mistakes made in earlier sessions — do not repeat
 
 - Reported a browser disconnect as `3090 of 3090 SUCCESS`. Check executed count vs the real total.

@@ -59,6 +59,7 @@ describe('ClrDatagrid element context', () => {
     maxDepth: 0,
     focus: 'page',
     collectionItems: 'all',
+    includeRoutes: false,
   };
 
   function published(): ReturnType<ClrElementContextCallback> {

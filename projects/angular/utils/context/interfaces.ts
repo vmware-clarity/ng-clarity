@@ -126,4 +126,11 @@ export interface ClrContextSnapshotOptions {
    * option or tab lists. Default `'all'`.
    */
   collectionItems?: 'all' | 'summary';
+  /**
+   * Whether to list the routes the application can navigate to — its configured router
+   * paths, with their titles where the configuration names them — so an agent can propose
+   * going somewhere the current page does not link to. The application performs the
+   * navigation; the engine only describes what exists. Default `false`.
+   */
+  includeRoutes?: boolean;
 }

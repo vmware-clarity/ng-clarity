@@ -98,6 +98,20 @@
         </clr-checkbox-wrapper>
       </clr-checkbox-container>
 
+      <clr-checkbox-container clrInline>
+        <label>Add</label>
+        <clr-checkbox-wrapper>
+          <input
+            type="checkbox"
+            clrCheckbox
+            name="includeRoutes"
+            [(ngModel)]="includeRoutes"
+            (ngModelChange)="edited()"
+          />
+          <label>the routes the application can navigate to</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+
       <clr-checkbox-container>
         <label>Leave out</label>
         @for (category of categories; track category.name) {
@@ -168,6 +182,9 @@
       }
       @if (focus) {
         <span class="label label-success">focus: {{ focus }}</span>
+      }
+      @if (routes) {
+        <span class="label">{{ routes }} routes</span>
       }
     </div>
     @if (change) {

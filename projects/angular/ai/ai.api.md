@@ -43,6 +43,13 @@ export const CLR_CONTEXTUAL_DIRECTIVES: any[];
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public
+export interface ClrAvailableRoute {
+    lazy?: boolean;
+    path: string;
+    title?: string;
+}
+
+// @public
 export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
@@ -195,6 +202,7 @@ export interface ClrContextSnapshotOptions {
     focus?: 'page' | 'modal';
     includeDomComponents?: boolean;
     includeFrames?: boolean;
+    includeRoutes?: boolean;
     includeText?: boolean;
     maxComponents?: number;
     maxDepth?: number;
@@ -271,6 +279,7 @@ export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOpt
 
 // @public
 export interface ClrPageContext {
+    availableRoutes?: ClrAvailableRoute[];
     collectedAt: string;
     components: ClrComponentContext[];
     focus?: 'modal';

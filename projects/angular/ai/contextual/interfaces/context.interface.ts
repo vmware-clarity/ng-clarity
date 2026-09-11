@@ -30,6 +30,16 @@ export interface ClrRouteContext {
   data?: Record<string, unknown>;
 }
 
+/** A route the application can navigate to, from its router configuration. */
+export interface ClrAvailableRoute {
+  /** The configured path pattern, e.g. `clusters/:id/hosts`. */
+  path: string;
+  /** The route's title, when the configuration names one. */
+  title?: string;
+  /** Present when the route loads its children lazily, so paths beneath it are not listed until it has been visited. */
+  lazy?: boolean;
+}
+
 /**
  * A full snapshot of the page context. This is always computed on demand from the live
  * application state and the rendered DOM — it is never cached, so it cannot contain
@@ -42,6 +52,11 @@ export interface ClrPageContext {
   url?: string;
   /** Route information, present when the application uses the Angular router. */
   route?: ClrRouteContext;
+  /**
+   * The routes the application can navigate to, present when asked for with
+   * `includeRoutes`. Bounded, and without wildcard or redirect entries.
+   */
+  availableRoutes?: ClrAvailableRoute[];
   /**
    * Application-provided contexts, registered through the `clrContext` directive or a
    * custom {@link ClrContextProvider}. These carry the semantic knowledge only the

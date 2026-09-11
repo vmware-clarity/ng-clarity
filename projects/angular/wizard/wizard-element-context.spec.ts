@@ -26,6 +26,7 @@ const BUDGETS: Required<ClrContextSnapshotOptions> = {
   maxDepth: 0,
   focus: 'page',
   collectionItems: 'all',
+  includeRoutes: false,
 };
 
 function publishedOn(element: Element): Record<string, unknown> {
