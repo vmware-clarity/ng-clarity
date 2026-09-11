@@ -170,6 +170,68 @@
 
     <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
 
+    <h2 id="angular-card-component" class="clr-mt-48px" cds-text="title">Angular Card Component</h2>
+
+    <p cds-text="body" class="clr-mt-16px">
+      If you are using Angular, use the <code cds-text="code">clr-card</code> component and its sub-components instead
+      of the raw CSS classes below.
+    </p>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="angular-basic-layout">Basic Layout</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A <code cds-text="code">clr-card</code> can contain a <code cds-text="code">clr-card-header</code>, a
+      <code cds-text="code">clr-card-footer</code>, and one or more <code cds-text="code">clr-card-body</code>s.
+    </p>
+
+    <clr-card-angular-basic-demo></clr-card-angular-basic-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="angular-collapsible-cards">Collapsible Cards</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Adding <code cds-text="code">clrCardCollapsible</code> adds a chevron toggle to the card header that collapses or
+      expands the rest of the card's content. Bind <code cds-text="code">[(clrCardCollapsed)]</code> to control or
+      observe the collapsed state.
+    </p>
+
+    <clr-card-angular-collapsible-demo></clr-card-angular-collapsible-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="angular-fixed-footer">Fixed Footer</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Set <code cds-text="code">clrCardFooterCollapsible</code> to <code cds-text="code">false</code> to keep the footer
+      visible even while a collapsible card is collapsed.
+    </p>
+
+    <clr-card-angular-footer-demo></clr-card-angular-footer-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="angular-card-image">Card Image</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A <code cds-text="code">clr-card-img</code> can be placed anywhere in the card.
+    </p>
+
+    <clr-card-angular-image-demo></clr-card-angular-image-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="angular-card-divider">Card Divider</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A <code cds-text="code">clr-card-divider</code> separates sections of content within a
+      <code cds-text="code">clr-card-body</code>.
+    </p>
+
+    <clr-card-angular-divider-demo></clr-card-angular-divider-demo>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="angular-card-media-block">Card Media Block</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      A <code cds-text="code">clr-card-media-block</code> combines a <code cds-text="code">clrCardMediaImage</code> and
+      a <code cds-text="code">clr-card-media-description</code>. The description can contain
+      <code cds-text="code">clrCardMediaTitle</code> and <code cds-text="code">clrCardMediaText</code>.
+    </p>
+
+    <clr-card-angular-media-block-demo></clr-card-angular-media-block-demo>
+
     <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="basic-card">Basic Card</h3>
 
     <p cds-text="body" class="clr-mt-16px">
@@ -264,6 +326,48 @@
   </app-doc-tab>
 
   <app-doc-tab tab="api">
+    <h2 id="angular-component" class="clr-mt-16px" cds-text="title">Angular Component</h2>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Property</th>
+          <th class="left">Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left"><code cds-text="code">clrCardCollapsible</code></td>
+          <td class="left">
+            Set on <code cds-text="code">clr-card</code> to enable the chevron-driven collapse/expand behavior. Default:
+            <code cds-text="code">false</code>.
+          </td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">[(clrCardCollapsed)]</code></td>
+          <td class="left">Two-way bindable collapsed state of the card.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">(clrCardCollapsedChange)</code></td>
+          <td class="left">Emits the new collapsed state whenever it changes.</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">clrCardFooterCollapsible</code></td>
+          <td class="left">
+            Set to <code cds-text="code">false</code> to keep the <code cds-text="code">clr-card-footer</code> visible
+            even while the card is collapsed. Default: <code cds-text="code">true</code>.
+          </td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">clrCardMediaWrap</code></td>
+          <td class="left">
+            Set on <code cds-text="code">clr-card-media-block</code> to stack the description below the image instead of
+            beside it.
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
     <app-style-docs styleDocsKey="Card"></app-style-docs>
   </app-doc-tab>
 
@@ -281,5 +385,41 @@
     <p>Information Card Footers can contain only Buttons or Button Groups.</p>
     <p>Clarity supports only the following non-clickable elements: Status/Indicator Icons, Badges, and Labels.</p>
     <h5 cds-text="subsection" class="clr-mt-24px">Clickable cards must not contain any clickable elements.</h5>
+
+    <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="angular-card-keyboard-interaction">
+      Angular Card: Keyboard Interaction
+    </h3>
+
+    <div class="clr-mt-24px">
+      <table class="table">
+        <thead>
+          <tr>
+            <th class="left">Keys</th>
+            <th class="left">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="left">Tab</td>
+            <td class="left">Moves focus to the collapse/expand chevron button in the card header.</td>
+          </tr>
+          <tr>
+            <td class="left">Enter or Space, while focused on the chevron</td>
+            <td class="left">
+              Toggles the card between expanded and collapsed, and updates
+              <code cds-text="code">aria-expanded</code>.
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p class="clr-mt-24px">
+      The chevron button carries <code cds-text="code">aria-expanded</code>, <code cds-text="code">aria-controls</code>,
+      and an <code cds-text="code">aria-label</code> that reflects the current action ("Expand card" or "Collapse
+      card"). The collapsible content region has <code cds-text="code">role="region"</code>,
+      <code cds-text="code">aria-hidden</code>, and <code cds-text="code">aria-labelledby</code> pointing back to the
+      card header.
+    </p>
   </app-doc-tab>
 </app-doc-tabs>

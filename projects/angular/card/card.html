@@ -1,0 +1,41 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<ng-content select="clr-card-header"></ng-content>
+<ng-template #bodyContent>
+  <ng-content></ng-content>
+</ng-template>
+<ng-template #footerContent>
+  <ng-content select="clr-card-footer"></ng-content>
+</ng-template>
+@if (collapsible) {
+<div
+  @skipInitialRender
+  role="region"
+  class="clr-card-collapsible-region"
+  [id]="contentId"
+  [attr.aria-hidden]="!expandService.expanded"
+  [attr.aria-labelledby]="headerId"
+>
+  @if (expandService.expanded) {
+  <div
+    @toggle
+    class="clr-card-collapsible-content"
+    [class.clr-card-collapsible-content-fixed-footer]="!footerCollapsible"
+  >
+    <ng-container *ngTemplateOutlet="bodyContent"></ng-container>
+    @if (footerCollapsible) {
+    <ng-container *ngTemplateOutlet="footerContent"></ng-container>
+    }
+  </div>
+  }
+</div>
+@if (!footerCollapsible) {
+<ng-container *ngTemplateOutlet="footerContent"></ng-container>
+} } @else {
+<ng-container *ngTemplateOutlet="bodyContent"></ng-container>
+<ng-container *ngTemplateOutlet="footerContent"></ng-container>
+}
