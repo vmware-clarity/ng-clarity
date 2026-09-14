@@ -58,6 +58,9 @@ export const screenshotOptions: ScreenshotOptions = {
   'header--collapsed': {
     viewport: { width: 500, height: 300 },
   },
+  'timeline--horizontal-layout-with-long-text': {
+    viewport: { width: 1000, height: 400 },
+  },
   'header-responsive-nav--level-1-nav-open': {
     viewport: { width: 500, height: 400 },
     fullPageScreenshot: true,

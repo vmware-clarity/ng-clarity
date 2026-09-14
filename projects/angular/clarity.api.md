@@ -7530,6 +7530,12 @@ export const eCheckIcon: IconShapeTuple;
 export const eCheckIconName = "e-check";
 
 // @public (undocumented)
+export const ellipsisGridCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const ellipsisGridCircleIconName = "ellipsis-grid-circle";
+
+// @public (undocumented)
 export const ellipsisHorizontalIcon: IconShapeTuple;
 
 // @public (undocumented)

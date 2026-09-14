@@ -691,15 +691,18 @@ export default function (): void {
         expect(element.querySelector(TOGGLE).classList).toContain('datagrid-column-actions-filtered');
       });
 
-      it('marks the trigger and the action once the column is filtered', function () {
+      // The filter item itself carries no highlight: the trigger is what shows the filtered state,
+      // through its class and the icon it switches to.
+      it('marks the trigger once the column is filtered', function () {
         const filter: any = context.clarityDirective.columns.first.filter;
         filter.value = 'aaa';
         context.detectChanges();
 
         expect(element.querySelector(TOGGLE).classList).toContain('datagrid-column-actions-filtered');
+        expect(element.querySelector(TOGGLE + ' cds-icon').getAttribute('shape')).toBe('ellipsis-grid-circle');
 
         openMenu();
-        expect(itemLabelled(commonStrings.keys.filterColumn).classList).toContain('active');
+        expect(itemLabelled(commonStrings.keys.filterColumn).classList).not.toContain('active');
       });
     });
 

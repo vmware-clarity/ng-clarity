@@ -70,7 +70,12 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
       [class.datagrid-column-actions-filtered]="filterActive"
       [attr.aria-label]="triggerLabel"
     >
-      <cds-icon shape="ellipsis-vertical" size="14" [badge]="filterActive ? 'info' : null" aria-hidden="true" />
+      <cds-icon
+        [size]="filterActive ? '16' : '12'"
+        [shape]="filterActive ? 'ellipsis-grid-circle' : 'ellipsis-vertical'"
+        [status]="filterActive ? 'info' : null"
+        aria-hidden="true"
+      />
     </button>
 
     <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
@@ -123,14 +128,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
           <div class="dropdown-divider" role="separator"></div>
         }
         <!-- Stays open because the filter popover is anchored to this very item. -->
-        <button
-          type="button"
-          #trigger
-          clrDropdownItem
-          [clrCloseMenuOnClick]="false"
-          [class.active]="filterActive"
-          (click)="openFilter($event)"
-        >
+        <button type="button" #trigger clrDropdownItem [clrCloseMenuOnClick]="false" (click)="openFilter($event)">
           <cds-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></cds-icon>
           {{ commonStrings.keys.filterColumn }}
         </button>
