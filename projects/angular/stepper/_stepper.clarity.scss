@@ -76,7 +76,9 @@
     display: block;
     margin-bottom: density.$clr-base-vertical-offset-xl;
 
-    $directChildren: '> .clr-stepper-panel > .clr-stepper-inner-wrapper > .clr-stepper-header > .clr-stepper-header-button';
+    // `> *` will select all variations of that element.It's used as shorth cut for classes:
+    // clr-stepper-panel-inactive, clr-stepper-panel-error and clr-stepper-panel-complete
+    $directChildren: '> .clr-stepper-panel > * > .clr-stepper-header > .clr-stepper-header-button';
 
     &:has(#{$directChildren} .clr-stepper-description) #{$directChildren} > .clr-step-title-wrapper {
       max-width: mixins.baselinePx(264);
