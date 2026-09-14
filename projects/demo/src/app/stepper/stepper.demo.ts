@@ -7,7 +7,7 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ClrLoadingState, ClrStepper } from '@clr/angular';
+import { ClrLoadingState } from '@clr/angular';
 
 @Component({
   templateUrl: 'stepper.demo.html',
@@ -16,7 +16,6 @@ import { ClrLoadingState, ClrStepper } from '@clr/angular';
 })
 export class StepperDemo {
   @ViewChild('nextBtn') nxtBtn?: ElementRef<HTMLElement>;
-  @ViewChild(ClrStepper) hasStepDescriptionStepper?: ClrStepper;
 
   state: ClrLoadingState = ClrLoadingState.DEFAULT;
   expanded = false;
@@ -25,6 +24,7 @@ export class StepperDemo {
   form: FormGroup = this.getReactiveForm();
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
+  showOuterStepperDescriptions = true;
   nestedStepperForm: FormGroup = this.getNestedStepperForm();
   nestedInnerForm: FormGroup = this.nestedStepperForm.get('outer1.inner') as FormGroup;
 
