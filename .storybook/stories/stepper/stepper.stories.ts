@@ -39,7 +39,6 @@ export default {
     ngSubmit: action('ngSubmit'),
     alignmentTest: false,
     showPreviousButton: false,
-    showDescriptions: true,
   },
 };
 
@@ -112,7 +111,7 @@ const StepperSingleDescriptionTemplate: StoryFn = args => ({
   template: `
     <form clrStepper [formGroup]="form">
       <clr-stepper-panel formGroupName="step1">
-        <clr-step-title>Step 1: Have a really long title that will wrap if any step have description.</clr-step-title>
+        <clr-step-title>Step 1: A really long title that will wrap if any step has a description.</clr-step-title>
         <clr-step-content *clrIfExpanded>
           <button clrStepButton="next">next</button>
         </clr-step-content>
@@ -143,6 +142,9 @@ const StepperSingleDescriptionTemplate: StoryFn = args => ({
 
 export const StepperLongTitleWithDescriptions: StoryObj = {
   render: StepperSingleDescriptionTemplate,
+  args: {
+    showDescriptions: true,
+  },
 };
 
 export const StepperLongTitleWithoutDescriptions: StoryObj = {
