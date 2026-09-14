@@ -168,8 +168,6 @@
       A card presents high-level information and can guide the user toward related actions and details.
     </p>
 
-    <h2 id="examples" cds-text="title" class="clr-mt-48px">Code &amp; Examples</h2>
-
     <h2 id="angular-card-component" class="clr-mt-48px" cds-text="title">Angular Card Component</h2>
 
     <p cds-text="body" class="clr-mt-16px">
@@ -231,6 +229,8 @@
     </p>
 
     <clr-card-angular-media-block-demo></clr-card-angular-media-block-demo>
+
+    <h2 id="css-card-component" class="clr-mt-48px" cds-text="title">CSS Card Component</h2>
 
     <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="basic-card">Basic Card</h3>
 
@@ -331,38 +331,58 @@
     <table class="table">
       <thead>
         <tr>
-          <th class="left">Property</th>
-          <th class="left">Description</th>
+          <th class="left">Input</th>
+          <th class="left hidden-xs-down">Values</th>
+          <th class="hidden-xs-down">Default</th>
+          <th class="left">Effect</th>
         </tr>
       </thead>
       <tbody>
         <tr>
-          <td class="left"><code cds-text="code">clrCardCollapsible</code></td>
           <td class="left">
-            Set on <code cds-text="code">clr-card</code> to enable the chevron-driven collapse/expand behavior. Default:
-            <code cds-text="code">false</code>.
+            <b cds-text="medium">[clrCardCollapsible]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">
+            If true, adds a chevron toggle to the card header that collapses or expands the rest of the card's content.
           </td>
         </tr>
         <tr>
-          <td class="left"><code cds-text="code">[(clrCardCollapsed)]</code></td>
-          <td class="left">Two-way bindable collapsed state of the card.</td>
-        </tr>
-        <tr>
-          <td class="left"><code cds-text="code">(clrCardCollapsedChange)</code></td>
-          <td class="left">Emits the new collapsed state whenever it changes.</td>
-        </tr>
-        <tr>
-          <td class="left"><code cds-text="code">clrCardFooterCollapsible</code></td>
           <td class="left">
-            Set to <code cds-text="code">false</code> to keep the <code cds-text="code">clr-card-footer</code> visible
-            even while the card is collapsed. Default: <code cds-text="code">true</code>.
+            <b cds-text="medium">[(clrCardCollapsed)]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">Two-way binding on the state of the card: expanded or collapsed.</td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrCardFooterCollapsible]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: true</div>
+          </td>
+          <td class="left hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">true</td>
+          <td class="left">
+            If false, the <code cds-text="code">clr-card-footer</code> stays visible even while the card is collapsed.
           </td>
         </tr>
         <tr>
-          <td class="left"><code cds-text="code">clrCardMediaWrap</code></td>
           <td class="left">
-            Set on <code cds-text="code">clr-card-media-block</code> to stack the description below the image instead of
-            beside it.
+            <b cds-text="medium">[clrCardMediaWrap]</b>
+            <div class="hidden-sm-up">Type: Boolean</div>
+            <div class="hidden-sm-up">Default: false</div>
+          </td>
+          <td class="left hidden-xs-down">true, false</td>
+          <td class="hidden-xs-down">false</td>
+          <td class="left">
+            If true, on <code cds-text="code">clr-card-media-block</code>, stacks the description below the image
+            instead of beside it.
           </td>
         </tr>
       </tbody>
