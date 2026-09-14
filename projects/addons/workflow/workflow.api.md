@@ -4,6 +4,80 @@
 
 ```ts
 
+import { AfterContentChecked } from '@angular/core';
+import { AfterContentInit } from '@angular/core';
+import { AfterViewChecked } from '@angular/core';
+import { AfterViewInit } from '@angular/core';
+import * as _angular_animations from '@angular/animations';
+import { AnimationBuilder } from '@angular/animations';
+import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
+import { AnimationMetadata } from '@angular/animations';
+import { BehaviorSubject } from 'rxjs';
+import { CdkDrag } from '@angular/cdk/drag-drop';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { ChangeDetectorRef } from '@angular/core';
+import { ComponentFactoryResolver } from '@angular/core';
+import { ConnectedPosition } from '@angular/cdk/overlay';
+import { Directionality } from '@angular/cdk/bidi';
+import { DoCheck } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
+import { DragDrop } from '@angular/cdk/drag-drop';
+import { DragDropConfig } from '@angular/cdk/drag-drop';
+import { ElementRef } from '@angular/core';
+import { EventEmitter } from '@angular/core';
+import { FactoryProvider } from '@angular/core';
+import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
+import { FocusTrapFactory } from '@angular/cdk/a11y';
+import { FormGroup } from '@angular/forms';
+import { FormGroupDirective } from '@angular/forms';
+import { FormGroupName } from '@angular/forms';
+import * as i0 from '@angular/core';
+import * as i8 from '@angular/common';
+import * as i9 from '@angular/forms';
+import { InjectionToken } from '@angular/core';
+import { Injector } from '@angular/core';
+import { IterableDiffers } from '@angular/core';
+import { NgControl } from '@angular/forms';
+import { NgForm } from '@angular/forms';
+import { NgModelGroup } from '@angular/forms';
+import { NgZone } from '@angular/core';
+import { Observable } from 'rxjs';
+import { Observer } from 'rxjs';
+import { OnChanges } from '@angular/core';
+import { OnDestroy } from '@angular/core';
+import { OnInit } from '@angular/core';
+import { Overlay } from '@angular/cdk/overlay';
+import { OverlayContainer } from '@angular/cdk/overlay';
+import { PipeTransform } from '@angular/core';
+import { QueryList } from '@angular/core';
+import { Renderer2 } from '@angular/core';
+import { SafeHtml } from '@angular/platform-browser';
+import { SimpleChange } from '@angular/core';
+import { SimpleChanges } from '@angular/core';
+import { Subject } from 'rxjs';
+import { Subscription } from 'rxjs';
+import { TemplateRef } from '@angular/core';
+import { Type } from '@angular/core';
+import { UntypedFormBuilder } from '@angular/forms';
+import { UntypedFormGroup } from '@angular/forms';
+import { ViewContainerRef } from '@angular/core';
+
+// @public (undocumented)
+export class AppfxWorkflowsModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<AppfxWorkflowsModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<AppfxWorkflowsModule>;
+    // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-addons-workflow.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2" needs to be exported by the entry point clr-addons-workflow.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i3" needs to be exported by the entry point clr-addons-workflow.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point clr-addons-workflow.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point clr-addons-workflow.d.ts
+    //
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxWorkflowsModule, never, [typeof i1.AppfxMultiPageDialogModule, typeof i2.AppfxStepperModule, typeof i3.AppfxTabsModule, typeof i4.AppfxWizardModule, typeof i5.AppfxWorkflowCoreModule], [typeof i1.AppfxMultiPageDialogModule, typeof i2.AppfxStepperModule, typeof i3.AppfxTabsModule, typeof i4.AppfxWizardModule]>;
+}
+
 // (No @packageDocumentation comment for this package)
 
 ```

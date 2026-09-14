@@ -67,6 +67,13 @@
   .action-item {
     @include menu-mixins.generate-dropdown-item();
     @include menu-mixins.generate-dropdown-item-height();
+
+    &:focus {
+      @include menu-mixins.dropdown-item-outline();
+
+      // We need to override the offset because action-item container in contrast to dropdown and combobox have padding.
+      outline-offset: 0;
+    }
   }
 }
 @mixin datagrid-action-button-styles(

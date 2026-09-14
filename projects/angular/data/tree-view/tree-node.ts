@@ -251,9 +251,13 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   focusTreeNode(): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     const containerEl = this.contentContainer.nativeElement;
-    if (isPlatformBrowser(this.platformId) && document.activeElement !== containerEl) {
-      this.setTabIndex(0);
+    this.setTabIndex(0);
+    if (document.activeElement !== containerEl) {
+      this.focusManager.broadcastFocusedNode(this.nodeId);
       containerEl.focus();
       containerEl.scrollIntoView({ block: 'nearest', inline: 'nearest' });
     }

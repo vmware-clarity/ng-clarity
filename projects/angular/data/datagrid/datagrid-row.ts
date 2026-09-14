@@ -36,6 +36,7 @@ import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { DatagridDisplayMode } from './enums/display-mode.enum';
 import { SelectionType } from './enums/selection-type';
+import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { DisplayModeService } from './providers/display-mode.service';
 import { ExpandableRowsCount } from './providers/global-expandable-rows';
@@ -98,6 +99,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @ViewChild(ClrExpandableAnimationDirective) expandAnimation: ClrExpandableAnimationDirective;
   @ViewChild('detailButton') detailButton: ElementRef<HTMLButtonElement>;
   @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells: ViewContainerRef;
+  @ViewChild('pinnedCells', { read: ViewContainerRef }) _pinnedCells: ViewContainerRef;
   @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
   @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
   @ViewChild('fixedCellTemplate') _fixedCellTemplate: TemplateRef<any>;
@@ -125,6 +127,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     public el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
     private items: Items,
+    private columnsService: ColumnsService,
     @Inject(DOCUMENT) private document: any
   ) {
     nbRow++;
@@ -252,11 +255,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
   ngAfterContentInit() {
     this.dgCells.changes.subscribe(() => {
-      this.dgCells.forEach(cell => {
-        if (!cell._view.destroyed) {
-          this._scrollableCells.insert(cell._view);
-        }
-      });
+      this.insertCellViews();
     });
   }
 
@@ -267,6 +266,10 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
         // remove cell views from display view
         for (let i = this._scrollableCells.length; i > 0; i--) {
           this._scrollableCells.detach();
+        }
+        // remove cell views of pinned columns from their static container
+        for (let i = this._pinnedCells.length; i > 0; i--) {
+          this._pinnedCells.detach();
         }
         // remove cell views from calculated view
         for (let i = this._calculatedCells.length; i > 0; i--) {
@@ -291,11 +294,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
           });
         } else {
           this.displayCells = true;
-          this.dgCells.forEach(cell => {
-            if (!cell._view.destroyed) {
-              this._scrollableCells.insert(cell._view);
-            }
-          });
+          this.insertCellViews();
         }
       }),
       this.expand.animate.subscribe(() => {
@@ -358,6 +357,23 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     } else {
       this.toggle(selected);
     }
+  }
+
+  /**
+   * Projects the cells into the display containers. Cells of pinned columns go into their static
+   * container so they stay visible during horizontal scroll; the rest stay scrollable. Cells are
+   * matched with their column by declaration index, and iterating in that order keeps both groups
+   * aligned with the header.
+   */
+  private insertCellViews() {
+    this.dgCells.forEach((cell, index) => {
+      if (cell._view.destroyed) {
+        return;
+      }
+
+      const container = this.columnsService.isPinned(index) ? this._pinnedCells : this._scrollableCells;
+      container.insert(cell._view);
+    });
   }
 
   private rangeSelect() {

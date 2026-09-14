@@ -54,7 +54,8 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
           map(droppedData => {
             return this.findColumnIndices(droppedData.item.data, droppedData.currentIndex);
           }),
-          filter(columnIndices => columnIndices.currentIndex !== columnIndices.previousIndex)
+          filter(columnIndices => columnIndices.currentIndex !== columnIndices.previousIndex),
+          filter(columnIndices => this.isReorderAllowed(columnIndices))
         )
         .subscribe(columnIndices => {
           this.reorderColumn(columnIndices);
@@ -69,7 +70,8 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
           }),
           filter(columnIndices => {
             return columnIndices.previousIndex !== columnIndices.currentIndex;
-          })
+          }),
+          filter(columnIndices => this.isReorderAllowed(columnIndices))
         )
         .subscribe(columnIndices => {
           this.reorderColumn(columnIndices);
@@ -110,6 +112,25 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
 
   ngOnDestroy() {
     this.subs.unsubscribe();
+  }
+
+  /**
+   * A pinned column is rendered in the datagrid's sticky container while the others are rendered in
+   * the scrollable one. Changing the relative order of the two groups cannot be re-rendered: the
+   * column elements are moved against a sibling that now lives in the other container, and the DOM
+   * insert throws. Until the datagrid can render that, a reorder that would cross a pinned column is
+   * refused rather than applied.
+   */
+  private isReorderAllowed(indices: { previousIndex: number; currentIndex: number }): boolean {
+    if (indices.previousIndex < 0 || indices.currentIndex < 0) {
+      return false;
+    }
+
+    const from = Math.min(indices.previousIndex, indices.currentIndex);
+    const to = Math.max(indices.previousIndex, indices.currentIndex);
+
+    // Only rendered columns matter, a hidden pinned column is not in either container.
+    return !this.dgColumnsOrderColumns.slice(from, to + 1).some(column => column.pinned && !column.hidden);
   }
 
   private reorderColumn(indices: { previousIndex: number; currentIndex: number }) {

@@ -102,6 +102,17 @@ export interface ClrCommonStrings {
    * Datagrid: sort of columns
    */
   sortColumn: string;
+  // Disabled along with the clrDgPinnable toggle that was their only consumer. Kept as line
+  // comments rather than doc comments, so api-extractor does not attach them to the next key.
+  //
+  // /**
+  //  * Datagrid: pin a column to the left of the datagrid
+  //  */
+  // pinColumn: string;
+  // /**
+  //  * Datagrid: unpin a pinned column
+  //  */
+  // unpinColumn: string;
   /**
    * Datagrid: first page
    */
@@ -147,7 +158,9 @@ export interface ClrCommonStrings {
    */
   datagridFilterLabel: string;
   /**
-   * Datagrid filter dialog
+   * Datagrid filter dialog.
+   * The popover already has `role="dialog"`, so this label should not include the word "dialog"
+   * to avoid screen readers announcing it twice.
    */
   datagridFilterDialogAriaLabel: string;
   /**

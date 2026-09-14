@@ -118,7 +118,6 @@
       </div>
       }
     </ng-container>
-    <!-- placeholder for projecting other sticky cells as pinned-->
   </div>
   <div
     class="datagrid-row-scrollable"
@@ -126,13 +125,14 @@
     [clrExpandableAnimation]="expandAnimationTrigger"
   >
     <div class="datagrid-scrolling-cells">
+      <div class="datagrid-pinned-cells">
+        <ng-container #pinnedCells></ng-container>
+      </div>
       <ng-content select="clr-dg-cell"></ng-content>
       <ng-container #scrollableCells></ng-container>
     </div>
-    <!-- details here when replace, re-visit when sticky container is used for pinned cells -->
-    @if (replaced && !expand.loading) {
-    <ng-template [ngTemplateOutlet]="detail"></ng-template>
-    } @if (!replaced && !expand.loading) {
+
+    @if (!expand.loading) {
     <ng-template [ngTemplateOutlet]="detail"></ng-template>
     }
   </div>

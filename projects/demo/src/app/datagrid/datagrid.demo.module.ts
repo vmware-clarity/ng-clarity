@@ -35,6 +35,7 @@ import { DatagridPaginationDemo } from './pagination/pagination';
 import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagination-conditional';
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
 import { DatagridPerformanceDemo } from './performance/performance';
+import { DatagridPinnableColumnsDemo } from './pinnable-columns/pinnable-columns';
 import { DatagridPlaceholderDemo } from './placeholder/placeholder';
 import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-selection';
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
@@ -91,6 +92,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridPlaceholderDemo,
     DatagridScrollingDemo,
     DatagridColumnSizingDemo,
+    DatagridPinnableColumnsDemo,
     DatagridExpandableRowsDemo,
     DatagridPerformanceDemo,
     DatagridTestCasesDemo,

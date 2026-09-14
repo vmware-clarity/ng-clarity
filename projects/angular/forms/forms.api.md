@@ -1058,7 +1058,7 @@ export interface ClrFileMaxFileSizeError {
 // @public (undocumented)
 export class ClrFileMessagesTemplate {
     // (undocumented)
-    static ngTemplateContextGuard(directive: ClrFileMessagesTemplate, context: unknown): context is ClrFileMessagesTemplateContext;
+    static ngTemplateContextGuard(_directive: ClrFileMessagesTemplate, _context: unknown): _context is ClrFileMessagesTemplateContext;
     // (undocumented)
     readonly templateRef: TemplateRef<ClrFileMessagesTemplateContext>;
     // (undocumented)
