@@ -512,6 +512,30 @@ export default function (): void {
         expect(itemLabelled(commonStrings.keys.sortColumnDescending).classList).not.toContain('active');
       });
 
+      // The component is OnPush and declared in the application's view, so a sort that arrives
+      // through the column rather than through this menu has to be reported to it explicitly.
+      it('follows a sort applied from outside while the menu is open', function () {
+        openMenu();
+        expect(itemLabelled(commonStrings.keys.clearColumnSort)).toBeUndefined();
+
+        context.clarityDirective.columns.first.sort();
+        context.detectChanges();
+
+        expect(itemLabelled(commonStrings.keys.sortColumnAscending).classList).toContain('active');
+        expect(itemLabelled(commonStrings.keys.sortColumnAscending).getAttribute('aria-checked')).toBe('true');
+        expect(itemLabelled(commonStrings.keys.clearColumnSort)).toBeDefined();
+      });
+
+      it('follows a pin applied from outside while the menu is open', function () {
+        openMenu();
+        expect(itemLabelled(commonStrings.keys.unpinColumn)).toBeUndefined();
+
+        context.clarityDirective.columns.first.togglePinned();
+        context.detectChanges();
+
+        expect(itemLabelled(commonStrings.keys.unpinColumn)).toBeDefined();
+      });
+
       // The class is visual only. The two directions are exclusive settings, so they are radio
       // menu items whose checked state a screen reader can announce.
       it('announces the sort direction as a checked radio menu item', function () {

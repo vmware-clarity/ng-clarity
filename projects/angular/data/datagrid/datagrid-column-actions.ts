@@ -223,6 +223,14 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
     if (filters) {
       this.columnSubscriptions.push(filters.change.subscribe(() => changeDetectorRef.markForCheck()));
     }
+
+    // The same goes for the sort direction and the pinned state: a change that arrives from outside
+    // this template - the column's title button, a binding on the column, or another column taking
+    // over the sort - would otherwise leave an open menu stale until the next click.
+    this.columnSubscriptions.push(
+      column.sortOrderChange.subscribe(() => changeDetectorRef.markForCheck()),
+      column.pinnedChange.subscribe(() => changeDetectorRef.markForCheck())
+    );
   }
 
   /**
