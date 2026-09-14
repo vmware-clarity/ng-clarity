@@ -460,8 +460,8 @@ export default function (): void {
         itemLabelled(label).click();
         context.detectChanges();
         // clrDropdownItem closes the menu in a setTimeout, which a synchronous test never reaches, and
-        // the pin and filter items keep it open on purpose, so the next invoke() would otherwise start
-        // from an already open menu.
+        // the pin item keeps it open on purpose, so the next invoke() would otherwise start from an
+        // already open menu.
         closeMenu();
       }
 
@@ -654,7 +654,9 @@ export default function (): void {
         expect(filterPanel()).not.toBeNull();
       });
 
-      it('anchors the filter popover to the filter menu item rather than the removed toggle', function () {
+      // The menu item that opens the filter is gone as soon as the menu closes, so the filter is
+      // anchored to the kebab in the header instead - the one element that stays put.
+      it('anchors the filter popover to the trigger rather than to the menu item', function () {
         // The column owns the popover service its filter uses, so this is the anchor the filter
         // popover positions against.
         const popover = context.fixture.debugElement
@@ -662,11 +664,49 @@ export default function (): void {
           .injector.get(ClrPopoverService);
 
         openMenu();
-        const filterItem = itemLabelled(commonStrings.keys.filterColumn);
-        filterItem.click();
+        itemLabelled(commonStrings.keys.filterColumn).click();
         context.detectChanges();
 
-        expect(popover.originElement.nativeElement).toBe(filterItem);
+        expect(popover.originElement.nativeElement).toBe(element.querySelector<HTMLElement>(TOGGLE));
+      });
+
+      it('closes the menu once the filter is open', async () => {
+        openMenu();
+        itemLabelled(commonStrings.keys.filterColumn).click();
+        context.detectChanges();
+        await settle();
+        context.detectChanges();
+
+        expect(filterPanel()).not.toBeNull();
+        expect(menuIsOpen()).toBeFalse();
+      });
+
+      // With the filter anchored to a menu item, closing the menu detached that item and the
+      // filter's observer then closed the filter as well; a scroll did exactly that.
+      it('keeps the filter open when the page scrolls', async () => {
+        openMenu();
+        itemLabelled(commonStrings.keys.filterColumn).click();
+        context.detectChanges();
+        await settle(30);
+
+        document.dispatchEvent(new Event('scroll'));
+        context.detectChanges();
+        await settle(250);
+
+        expect(filterPanel()).not.toBeNull();
+      });
+
+      it('returns focus to the trigger when the filter is closed', async () => {
+        openMenu();
+        itemLabelled(commonStrings.keys.filterColumn).click();
+        context.detectChanges();
+        await settle(30);
+
+        filterPanel().querySelector<HTMLButtonElement>('.close').click();
+        context.detectChanges();
+
+        expect(filterPanel()).toBeNull();
+        expect(document.activeElement).toBe(element.querySelector(TOGGLE));
       });
 
       // The menu and the filter are two separate overlays, so nothing structurally stops both being
@@ -678,9 +718,9 @@ export default function (): void {
         context.detectChanges();
         expect(filterPanel()).not.toBeNull();
 
-        // The filter item keeps the menu open, since the filter popover is anchored to it. Closing
-        // and reopening covers the same ground: the trigger click is the outside click that dismisses
-        // the filter.
+        // The filter item closes the menu on a timer that a synchronous test never reaches, so the
+        // menu is still open here. Closing and reopening covers the same ground: the trigger click is
+        // the outside click that dismisses the filter.
         closeMenu();
         openMenu();
 

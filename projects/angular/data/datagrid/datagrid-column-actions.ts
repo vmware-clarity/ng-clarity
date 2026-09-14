@@ -64,6 +64,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   selector: 'clr-dg-column-actions',
   template: `
     <button
+      #kebab
       class="datagrid-column-actions-toggle"
       type="button"
       clrDropdownTrigger
@@ -127,8 +128,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
         @if (column.sortable || column.pinnable) {
           <div class="dropdown-divider" role="separator"></div>
         }
-        <!-- Stays open because the filter popover is anchored to this very item. -->
-        <button type="button" #trigger clrDropdownItem [clrCloseMenuOnClick]="false" (click)="openFilter($event)">
+        <button type="button" clrDropdownItem (click)="openFilter($event)">
           <cds-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></cds-icon>
           {{ commonStrings.keys.filterColumn }}
         </button>
@@ -159,7 +159,7 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
 
   private _keepFilterInHeader = false;
 
-  @ViewChild('trigger', { read: ElementRef }) private trigger: ElementRef<HTMLButtonElement>;
+  @ViewChild('kebab', { read: ElementRef, static: true }) private kebab: ElementRef<HTMLButtonElement>;
 
   /**
    * The projected items. ClrDropdownMenu only ever sees the items declared in this template, so the
@@ -351,8 +351,11 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
   }
 
   /**
-   * Opens the filter of this column, anchored to the "Filter Column" menu item itself (`#trigger`
-   * above), so the popover positions off the item that was actually clicked rather than the kebab.
+   * Opens the filter of this column, anchored to the kebab trigger rather than to the menu item that
+   * was clicked. The item lives in the menu, which closes right after this - and would also be torn
+   * down by a scroll - so anchoring the filter to it would leave the filter without an origin: it
+   * could no longer be positioned, and closing it could not return focus anywhere. The kebab stays
+   * in the header for as long as the column does.
    *
    * The popover is driven through the column's ClrPopoverService rather than through
    * `ClrDatagridFilter.open`, because that is the one thing every filter flavour has in common - a
@@ -361,7 +364,7 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
    * itself only an assignment to that property, and with the toggle gone nothing else claims it.
    */
   protected openFilter(event: Event) {
-    this.columnPopover.origin = this.trigger;
+    this.columnPopover.origin = this.kebab;
 
     // The popover closes on an outside click, and ignores exactly one event while doing so: the one
     // that opened it. Without this, the very click on this menu item would close the filter again.
