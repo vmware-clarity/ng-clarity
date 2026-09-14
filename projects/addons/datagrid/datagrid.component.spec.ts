@@ -903,6 +903,20 @@ describe('DatagridComponent', () => {
         expect(menuItem('About column').querySelector('cds-icon')).toBeNull();
       });
 
+      // The filter never sits in this menu - appfx-datagrid keeps its toggle in the header - so a
+      // column that only has a filter renders no built-in item, and no divider in front of the moves.
+      it('does not start the menu with a separator for a column that only has a filter', function (this: DatagridSpecContext) {
+        this.component.columnActions = null;
+        this.columnsDefs[0].stringFilter = { accepts: () => true };
+        this.fixture.detectChanges();
+
+        toggleMenu(this.fixture, 0);
+
+        const menu = document.querySelector('.dropdown-menu');
+        expect(menu.firstElementChild.getAttribute('role')).toBe('menuitem');
+        expect(menu.querySelectorAll('.dropdown-divider').length).toBe(0);
+      });
+
       it('adds nothing to the menu when no actions are configured', function (this: DatagridSpecContext) {
         this.component.columnActions = null;
         this.columnsDefs[1].actions = undefined;

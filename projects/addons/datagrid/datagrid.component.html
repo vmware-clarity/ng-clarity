@@ -103,13 +103,11 @@
           column offers one way to reach its filter rather than two.
         -->
         <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
-          @if (
-            column.sortComparator ||
-            column.sortAndFilterByField ||
-            column.pinnable ||
-            column.stringFilter ||
-            column.filter
-          ) {
+          <!--
+            Only what the menu renders above counts: sort actions for a sortable column and the pin
+            action for a pinnable one. The filter stays in the header here, so it adds nothing.
+          -->
+          @if (column.sortComparator || column.sortAndFilterByField || column.pinnable) {
             <div class="dropdown-divider" role="separator"></div>
           }
           <!--
