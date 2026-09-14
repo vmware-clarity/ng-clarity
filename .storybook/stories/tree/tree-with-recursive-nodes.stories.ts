@@ -50,11 +50,10 @@ export const RecursiveNodes: StoryObj = {
 
 const RecursiveExpandAllTemplate: StoryFn = args => ({
   template: `
-    <div class="btn-group btn-sm">
+    <div class="btn-group btn-sm" cds-layout="m-b:md">
       <button type="button" class="btn" (click)="tree.expandAll()">Expand all</button>
       <button type="button" class="btn" (click)="tree.collapseAll()">Collapse all</button>
     </div>
-    <p cds-text="body">All expanded: {{ allExpanded }}</p>
     <clr-tree #tree [(clrExpandAll)]="allExpanded">
       <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren">
         {{ file.name }}
