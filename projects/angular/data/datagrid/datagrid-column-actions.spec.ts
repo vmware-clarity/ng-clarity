@@ -512,6 +512,23 @@ export default function (): void {
         expect(itemLabelled(commonStrings.keys.sortColumnDescending).classList).not.toContain('active');
       });
 
+      // The class is visual only. The two directions are exclusive settings, so they are radio
+      // menu items whose checked state a screen reader can announce.
+      it('announces the sort direction as a checked radio menu item', function () {
+        openMenu();
+        const ascending = () => itemLabelled(commonStrings.keys.sortColumnAscending);
+        const descending = () => itemLabelled(commonStrings.keys.sortColumnDescending);
+        expect(ascending().getAttribute('role')).toBe('menuitemradio');
+        expect(ascending().getAttribute('aria-checked')).toBe('false');
+        expect(descending().getAttribute('aria-checked')).toBe('false');
+        closeMenu();
+
+        invoke(commonStrings.keys.sortColumnDescending);
+        openMenu();
+        expect(ascending().getAttribute('aria-checked')).toBe('false');
+        expect(descending().getAttribute('aria-checked')).toBe('true');
+      });
+
       it('pins and unpins the column', function () {
         expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
 
@@ -668,6 +685,20 @@ export default function (): void {
         context.detectChanges();
 
         expect(popover.originElement.nativeElement).toBe(element.querySelector<HTMLElement>(TOGGLE));
+      });
+
+      it('announces the dialog the filter action opens', function () {
+        openMenu();
+        const filterItem = itemLabelled(commonStrings.keys.filterColumn);
+        expect(filterItem.getAttribute('aria-haspopup')).toBe('dialog');
+        expect(filterItem.getAttribute('aria-expanded')).toBe('false');
+        expect(filterItem.getAttribute('aria-controls')).toBeTruthy();
+
+        filterItem.click();
+        context.detectChanges();
+
+        expect(filterPanel().id).toBe(filterItem.getAttribute('aria-controls'));
+        expect(filterItem.getAttribute('aria-expanded')).toBe('true');
       });
 
       it('closes the menu once the filter is open', async () => {

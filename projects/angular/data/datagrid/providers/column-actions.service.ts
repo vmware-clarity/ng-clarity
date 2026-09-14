@@ -13,6 +13,8 @@ import { Injectable, signal } from '@angular/core';
  */
 export interface ColumnFilterHandle {
   readonly active: boolean;
+  /** The id of the popover the filter opens, for the menu item that opens it to point at. */
+  readonly popoverId?: string;
 }
 
 /**

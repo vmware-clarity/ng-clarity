@@ -16,7 +16,7 @@ import { RootDropdownService } from './providers/dropdown.service';
   host: {
     '[class.disabled]': 'disabled',
     '[class.dropdown-item]': 'true',
-    '[attr.role]': '"menuitem"',
+    '[attr.role]': 'role',
     '[attr.aria-disabled]': 'disabled',
     '[attr.id]': 'dropdownItemId',
   },
@@ -30,6 +30,13 @@ export class ClrDropdownItem {
    * stay open, such as a toggle whose next action is the one that undoes it.
    */
   @Input('clrCloseMenuOnClick') closeMenuOnClick: boolean | undefined;
+
+  /**
+   * The ARIA role of the item, `menuitem` unless the template says otherwise - `menuitemradio` for
+   * an item that stands for one of several exclusive settings, say. Declared as an input so that a
+   * plain `role` attribute in the template is honoured rather than overwritten by the host binding.
+   */
+  @Input() role = 'menuitem';
 
   constructor(
     private dropdown: ClrDropdown,

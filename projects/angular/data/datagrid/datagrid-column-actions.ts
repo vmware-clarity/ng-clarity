@@ -84,6 +84,8 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
         <button
           type="button"
           clrDropdownItem
+          role="menuitemradio"
+          [attr.aria-checked]="sortOrder === ClrDatagridSortOrder.ASC"
           [class.active]="sortOrder === ClrDatagridSortOrder.ASC"
           (click)="sort(false)"
         >
@@ -93,6 +95,8 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
         <button
           type="button"
           clrDropdownItem
+          role="menuitemradio"
+          [attr.aria-checked]="sortOrder === ClrDatagridSortOrder.DESC"
           [class.active]="sortOrder === ClrDatagridSortOrder.DESC"
           (click)="sort(true)"
         >
@@ -128,7 +132,14 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
         @if (column.sortable || column.pinnable) {
           <div class="dropdown-divider" role="separator"></div>
         }
-        <button type="button" clrDropdownItem (click)="openFilter($event)">
+        <button
+          type="button"
+          clrDropdownItem
+          aria-haspopup="dialog"
+          [attr.aria-expanded]="filterOpen"
+          [attr.aria-controls]="filterPopoverId"
+          (click)="openFilter($event)"
+        >
           <cds-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></cds-icon>
           {{ commonStrings.keys.filterColumn }}
         </button>
@@ -250,6 +261,14 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
 
   protected get hasFilter(): boolean {
     return !!this.columnActions.filter();
+  }
+
+  protected get filterOpen(): boolean {
+    return this.columnPopover.open;
+  }
+
+  protected get filterPopoverId(): string | null {
+    return this.columnActions.filter()?.popoverId ?? null;
   }
 
   /**
