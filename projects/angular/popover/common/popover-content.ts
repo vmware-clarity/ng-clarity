@@ -585,7 +585,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         entries.forEach(entry => {
           // If the origin is no longer visible (scrolled out of view)
           if (!entry.isIntersecting && this.popoverService.open) {
-            this.zone.run(() => this.closePopover());
+            this.closeIfOriginStaysHidden(entry.target);
           }
         });
       },
@@ -593,6 +593,39 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     );
 
     this.intersectionObserver.observe(this.popoverService.originElement.nativeElement);
+  }
+
+  /**
+   * An origin that is moved within the DOM - a datagrid column being pinned or reordered, say - is
+   * reported as not intersecting once, although it is back in place and visible by the time the
+   * next intersection is computed. So a single not-intersecting entry is only a prompt to look
+   * again: a fresh observer reports the state as of the next frame, and only an origin that is
+   * still hidden then closes the popover.
+   */
+  private closeIfOriginStaysHidden(origin: Element) {
+    const close = () => {
+      if (this.popoverService.open && this.intersectionObserver) {
+        this.zone.run(() => this.closePopover());
+      }
+    };
+
+    if (!origin.isConnected) {
+      close();
+      return;
+    }
+
+    const check = new IntersectionObserver(
+      ([entry]) => {
+        check.disconnect();
+
+        if (!entry.isIntersecting) {
+          close();
+        }
+      },
+      { root: null, threshold: 0.8 }
+    );
+
+    check.observe(origin);
   }
 
   private listenToScrollEvents() {

@@ -50,9 +50,10 @@ function menuIsOpen(): boolean {
   return menuItems().length > 0;
 }
 
-// clrDropdownItem closes the menu from a zero delay timeout, so a test has to let that run.
-function settle(): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve));
+// clrDropdownItem closes the menu from a zero delay timeout, so a test has to let that run. A
+// longer wait covers the popover's IntersectionObserver, which reports a frame later.
+function settle(ms = 0): Promise<void> {
+  return new Promise(resolve => setTimeout(resolve, ms));
 }
 
 @Component({
@@ -559,6 +560,24 @@ export default function (): void {
         expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
         expect(updatePosition).toHaveBeenCalled();
         expect(menuItemLabels()).toContain(commonStrings.keys.unpinColumn);
+      });
+
+      // The popover watches its origin with an IntersectionObserver, and a node that is moved in the
+      // DOM is reported as not intersecting once, although it is visible again by the next frame.
+      // Pinning moves the column, so without a second look the menu closed a frame after it had been
+      // re-anchored - which a synchronous test never sees.
+      it('keeps the menu open once the observer has reported on the moved trigger', async () => {
+        openMenu();
+        await settle(30);
+        context.detectChanges();
+
+        itemLabelled(commonStrings.keys.pinColumn).click();
+        context.detectChanges();
+        await settle(80);
+        context.detectChanges();
+
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
+        expect(menuIsOpen()).toBeTrue();
       });
 
       it('does not sort the column when the pin action is used', function () {

@@ -959,6 +959,23 @@ describe('DatagridComponent', () => {
         expect(repositionMenu).toHaveBeenCalled();
       });
 
+      // The popover's IntersectionObserver reports a moved origin as not intersecting once before it
+      // reports it visible again, and the menu used to close on that first entry - a frame after the
+      // move, which the synchronous tests above never reach.
+      it('keeps the menu open once the observer has reported on the moved trigger', async function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 0);
+        await new Promise(resolve => setTimeout(resolve, 30));
+        this.fixture.detectChanges();
+
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+        await new Promise(resolve => setTimeout(resolve, 80));
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
+        expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
+      });
+
       it('keeps the menu usable for a second step', function (this: DatagridSpecContext) {
         toggleMenu(this.fixture, 0);
         moveButton('Move Right').click();
