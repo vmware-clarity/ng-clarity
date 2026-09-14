@@ -990,6 +990,28 @@ describe('DatagridComponent', () => {
         expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
       });
 
+      // A hidden column is rendered in neither container, pinned or not, so it does not call for
+      // the rebuild that a rendered pinned column does.
+      it('does not rebuild the column views for a pinned column that is hidden', function (this: DatagridSpecContext) {
+        // Bound as a new array, the way an application changes its definitions: hidden columns are
+        // left out of the rendered set when the definitions are read.
+        this.component.columnsDefs = [
+          this.columnsDefs[0],
+          this.columnsDefs[1],
+          { ...this.columnsDefs[2], pinned: true, hidden: true },
+        ];
+        this.fixture.detectChanges();
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State']);
+        const rebuild = spyOn<any>(this.component.appfxDatagridComponent, 'rebuildColumnViews').and.callThrough();
+
+        toggleMenu(this.fixture, 0);
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Name']);
+        expect(rebuild).not.toHaveBeenCalled();
+      });
+
       it('keeps the menu usable for a second step', function (this: DatagridSpecContext) {
         toggleMenu(this.fixture, 0);
         moveButton('Move Right').click();
