@@ -228,6 +228,82 @@
     }
   }
 
+  //Collapsible Cards
+  //The collapse/expand animation is CSS only: toggling `.card-collapsed` on a `.card.card-collapsible`
+  //transitions the content wrapper between `1fr` and `0fr`, no JavaScript measurement needed.
+  //The chevron follows the toggle button's `aria-expanded` state so the two can never drift apart.
+  .card-header-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    border-radius: card-variables.$clr-card-border-radius;
+
+    &:focus-visible {
+      @include mixins.include-outline-style-form-fields();
+    }
+  }
+
+  .card-header-icon {
+    display: block;
+    color: tokens.$cds-alias-object-interaction-color;
+    transition: transform tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
+    transform: rotate(90deg);
+
+    @include mixins.min-equilateral(density.$clr-base-icon-size-m);
+  }
+
+  .card-header-toggle[aria-expanded='true'] .card-header-icon {
+    transform: rotate(180deg);
+  }
+
+  .card-collapsible-content {
+    display: grid;
+    grid-template-rows: 1fr;
+    transition: grid-template-rows tokens.$cds-global-animation-duration-quick
+      tokens.$cds-global-animation-easing-in-out;
+  }
+
+  .card-collapsible-inner {
+    min-height: 0;
+    overflow: hidden;
+  }
+
+  .card-collapsed > .card-collapsible-content {
+    grid-template-rows: 0fr;
+  }
+
+  //While collapsed the header sits directly on the card border, so its own border would double it.
+  //The border is kept (transparent) so the header height does not change during the transition.
+  .card-header {
+    transition: border-bottom-color tokens.$cds-global-animation-duration-quick
+      tokens.$cds-global-animation-easing-in-out;
+  }
+
+  .card-collapsed > .card-header {
+    border-bottom-color: transparent;
+  }
+
+  //A footer kept outside of the collapsible content ("fixed" footer) draws the separator itself, since the
+  //last block inside the collapsible content drops its bottom border.
+  .card-collapsible-content + .card-footer {
+    border-top: card-variables.$clr-card-border-width solid card-variables.$clr-card-border-color;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card-header,
+    .card-header-icon,
+    .card-collapsible-content {
+      transition: none;
+    }
+  }
+
   //Card Media Block
   .card-media-block {
     display: flex;

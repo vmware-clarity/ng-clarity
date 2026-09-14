@@ -8,7 +8,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrCard } from './card';
 import { ClrCardHeader } from './card-header';
@@ -44,7 +43,7 @@ describe('ClrCardHeader', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       declarations: [TestComponent, TestCollapsibleComponent, StandaloneHeaderComponent],
-      imports: [ClrCardModule, NoopAnimationsModule],
+      imports: [ClrCardModule],
     });
   });
 
@@ -73,6 +72,7 @@ describe('ClrCardHeader', () => {
     const standaloneFixture = TestBed.createComponent(StandaloneHeaderComponent);
     expect(() => standaloneFixture.detectChanges()).not.toThrow();
     expect(standaloneFixture.nativeElement.textContent.trim()).toBe('Standalone header');
+    expect(standaloneFixture.nativeElement.querySelector('.clr-card-header-content').hasAttribute('id')).toBe(false);
   });
 
   describe('when the parent card is collapsible', () => {
@@ -89,8 +89,10 @@ describe('ClrCardHeader', () => {
       button = headerElement.querySelector('button');
     });
 
-    it('gives the header element (not the toggle button) the header id', () => {
-      expect(headerElement.getAttribute('id')).toBe(cardInstance.headerId);
+    it('wraps the projected content in an element carrying the header content id', () => {
+      const content = headerElement.querySelector('.clr-card-header-content');
+      expect(content.getAttribute('id')).toBe(cardInstance.headerContentId);
+      expect(content.textContent.trim()).toBe('Header text');
       expect(button.hasAttribute('id')).toBe(false);
     });
 
@@ -99,6 +101,7 @@ describe('ClrCardHeader', () => {
       expect(button.getAttribute('aria-controls')).toBe(cardInstance.contentId);
       expect(button.getAttribute('aria-expanded')).toBe('true');
       expect(button.getAttribute('aria-label')).toBeTruthy();
+      expect(button.getAttribute('aria-describedby')).toBe(cardInstance.headerContentId);
     });
 
     it('renders the header content outside of the toggle button', () => {
@@ -106,36 +109,40 @@ describe('ClrCardHeader', () => {
       expect(headerElement.textContent.trim()).toBe('Header text');
     });
 
-    it('swaps the icon rotation class and aria-label based on expand state', () => {
+    it('swaps aria-expanded and aria-label based on the collapsed state', () => {
       const icon = headerElement.querySelector('cds-icon');
       expect(icon.getAttribute('shape')).toBe('angle');
-      expect(icon.classList.contains('expanded')).toBe(true);
       const collapseLabel = button.getAttribute('aria-label');
 
       button.click();
       fixture.detectChanges();
 
-      expect(icon.classList.contains('expanded')).toBe(false);
       expect(button.getAttribute('aria-expanded')).toBe('false');
       expect(button.getAttribute('aria-label')).not.toBe(collapseLabel);
     });
 
-    it('toggles the card expand state when the toggle button is clicked', () => {
-      expect(cardInstance.expandService.expanded).toBe(true);
+    it('toggles the card collapsed state when the toggle button is clicked', () => {
+      expect(cardInstance.collapsed).toBe(false);
 
       button.click();
       fixture.detectChanges();
-      expect(cardInstance.expandService.expanded).toBe(false);
+      expect(cardInstance.collapsed).toBe(true);
 
       button.click();
       fixture.detectChanges();
-      expect(cardInstance.expandService.expanded).toBe(true);
+      expect(cardInstance.collapsed).toBe(false);
+    });
+
+    it('reflects a programmatic collapse without a manual change detection subscription', () => {
+      cardInstance.collapsed = true;
+      fixture.detectChanges();
+      expect(button.getAttribute('aria-expanded')).toBe('false');
     });
 
     it('does not toggle when clicking the header outside of the toggle button', () => {
       headerElement.click();
       fixture.detectChanges();
-      expect(cardInstance.expandService.expanded).toBe(true);
+      expect(cardInstance.collapsed).toBe(false);
     });
   });
 });

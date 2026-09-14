@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { CardAngularDemo } from './angular/card-angular';
 import { CardClickableDemo } from './card-clickable';
+import { CardCollapsibleDemo } from './card-collapsible';
 import { CardDropdownDemo } from './card-dropdown';
 import { CardGridDemo } from './card-grid';
 import { CardImagesDemo } from './card-images';
@@ -28,6 +29,7 @@ const ROUTES: Routes = [
       { path: '', redirectTo: 'grid', pathMatch: 'full' },
       { path: 'grid', component: CardGridDemo },
       { path: 'clickable', component: CardClickableDemo },
+      { path: 'collapsible', component: CardCollapsibleDemo },
       { path: 'dropdown', component: CardDropdownDemo },
       { path: 'images', component: CardImagesDemo },
       { path: 'layout', component: CardLayoutDemo },

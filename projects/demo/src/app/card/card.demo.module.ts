@@ -11,6 +11,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { CardAngularDemo } from './angular/card-angular';
 import { CardClickableDemo } from './card-clickable';
+import { CardCollapsibleDemo } from './card-collapsible';
 import { CardDropdownDemo } from './card-dropdown';
 import { CardGridDemo } from './card-grid';
 import { CardImagesDemo } from './card-images';
@@ -36,6 +37,7 @@ import { ROUTING } from './card.demo.routing';
     CardDropdownDemo,
     CardListGroupDemo,
     CardAngularDemo,
+    CardCollapsibleDemo,
   ],
   exports: [
     CardDemo,
@@ -48,6 +50,7 @@ import { ROUTING } from './card.demo.routing';
     CardDropdownDemo,
     CardListGroupDemo,
     CardAngularDemo,
+    CardCollapsibleDemo,
   ],
 })
 export class CardDemoModule {}

@@ -16,6 +16,7 @@ import { CardAngularImageDemo } from './angular/card-angular-image';
 import { CardAngularMediaBlockDemo } from './angular/card-angular-media-block';
 import { CardAlertDemo } from './card-alert';
 import { CardClickableDemo } from './card-clickable';
+import { CardCollapsibleDemo } from './card-collapsible';
 import { CardDropdownDemo } from './card-dropdown';
 import { CardGridDemo } from './card-grid';
 import { CardImagesDemo } from './card-images';
@@ -52,6 +53,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     CardAngularMediaBlockDemo,
     CardLayoutDemo,
     CardClickableDemo,
+    CardCollapsibleDemo,
     CardImagesDemo,
     RouterLink,
     CardDropdownDemo,

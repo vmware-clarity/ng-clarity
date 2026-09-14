@@ -13,25 +13,19 @@
 </ng-template>
 @if (collapsible) {
 <div
-  @skipInitialRender
   role="region"
-  class="clr-card-collapsible-region"
+  class="card-collapsible-content"
   [id]="contentId"
-  [attr.aria-hidden]="!expandService.expanded"
-  [attr.aria-labelledby]="headerId"
+  [attr.aria-hidden]="collapsed"
+  [attr.inert]="collapsed ? '' : null"
+  [attr.aria-labelledby]="headerContentId"
 >
-  @if (expandService.expanded) {
-  <div
-    @toggle
-    class="clr-card-collapsible-content"
-    [class.clr-card-collapsible-content-fixed-footer]="!footerCollapsible"
-  >
+  <div class="card-collapsible-inner">
     <ng-container *ngTemplateOutlet="bodyContent"></ng-container>
     @if (footerCollapsible) {
     <ng-container *ngTemplateOutlet="footerContent"></ng-container>
     }
   </div>
-  }
 </div>
 @if (!footerCollapsible) {
 <ng-container *ngTemplateOutlet="footerContent"></ng-container>

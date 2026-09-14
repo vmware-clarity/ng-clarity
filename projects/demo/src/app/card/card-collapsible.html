@@ -1,0 +1,97 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h4>Collapsible card (CSS only)</h4>
+
+<p>
+  No Angular card component involved: the card toggles the <code>card-collapsed</code> class and the button's
+  <code>aria-expanded</code> attribute. The height transition and the chevron rotation are CSS only.
+</p>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <div class="card card-collapsible" [class.card-collapsed]="collapsed">
+        <div class="card-header">
+          <button
+            type="button"
+            class="card-header-toggle"
+            aria-controls="css-card-content"
+            [attr.aria-expanded]="!collapsed"
+            [attr.aria-label]="collapsed ? 'Expand card' : 'Collapse card'"
+            aria-describedby="css-card-header"
+            (click)="collapsed = !collapsed"
+          >
+            <cds-icon shape="angle" direction="right" class="card-header-icon"></cds-icon>
+          </button>
+          <span id="css-card-header">Header</span>
+        </div>
+        <div
+          id="css-card-content"
+          role="region"
+          class="card-collapsible-content"
+          aria-labelledby="css-card-header"
+          [attr.aria-hidden]="collapsed"
+          [attr.inert]="collapsed ? '' : null"
+        >
+          <div class="card-collapsible-inner">
+            <div class="card-block">
+              <h4 class="card-title">Block</h4>
+              <p class="card-text">Click the chevron in the header to collapse or expand this card.</p>
+            </div>
+            <div class="card-footer">
+              <button class="btn btn-sm btn-link">Footer Action</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h4>Collapsible card with a fixed footer (CSS only)</h4>
+
+<div class="clr-example nomargin">
+  <div class="clr-row">
+    <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
+      <div class="card card-collapsible" [class.card-collapsed]="fixedFooterCollapsed">
+        <div class="card-header">
+          <button
+            type="button"
+            class="card-header-toggle"
+            aria-controls="css-card-fixed-content"
+            [attr.aria-expanded]="!fixedFooterCollapsed"
+            [attr.aria-label]="fixedFooterCollapsed ? 'Expand card' : 'Collapse card'"
+            aria-describedby="css-card-fixed-header"
+            (click)="fixedFooterCollapsed = !fixedFooterCollapsed"
+          >
+            <cds-icon shape="angle" direction="right" class="card-header-icon"></cds-icon>
+          </button>
+          <span id="css-card-fixed-header">Header</span>
+        </div>
+        <div
+          id="css-card-fixed-content"
+          role="region"
+          class="card-collapsible-content"
+          aria-labelledby="css-card-fixed-header"
+          [attr.aria-hidden]="fixedFooterCollapsed"
+          [attr.inert]="fixedFooterCollapsed ? '' : null"
+        >
+          <div class="card-collapsible-inner">
+            <div class="card-block">
+              <h4 class="card-title">Block</h4>
+              <p class="card-text">The footer below stays visible even while this card is collapsed.</p>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <button class="btn btn-sm btn-link">Footer Action</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1499,35 +1499,30 @@ export class ClrCalendar implements OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrCard implements OnInit, OnDestroy {
-    constructor(expandService: IfExpandService, cdr: ChangeDetectorRef);
-    // (undocumented)
-    readonly cardId: string;
+export class ClrCard {
     // (undocumented)
     get collapsed(): boolean;
     set collapsed(value: boolean);
     // (undocumented)
     collapsedChange: EventEmitter<boolean>;
     // (undocumented)
-    collapsible: boolean;
+    get collapsible(): boolean;
+    set collapsible(value: boolean);
     // (undocumented)
     readonly contentId: string;
     // (undocumented)
-    expandService: IfExpandService;
-    // (undocumented)
     footerCollapsible: boolean;
     // (undocumented)
-    readonly headerId: string;
+    readonly headerContentId: string;
+    // (undocumented)
+    static ngAcceptInputType_collapsed: unknown;
     // (undocumented)
     static ngAcceptInputType_collapsible: unknown;
     // (undocumented)
     static ngAcceptInputType_footerCollapsible: unknown;
+    toggle(): void;
     // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCard, "clr-card", never, { "collapsible": { "alias": "clrCardCollapsible"; "required": false; }; "footerCollapsible": { "alias": "clrCardFooterCollapsible"; "required": false; }; "collapsed": { "alias": "clrCardCollapsed"; "required": false; }; }, { "collapsedChange": "clrCardCollapsedChange"; }, never, ["clr-card-header", "*", "clr-card-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCard, "clr-card", never, { "footerCollapsible": { "alias": "clrCardFooterCollapsible"; "required": false; }; "collapsible": { "alias": "clrCardCollapsible"; "required": false; }; "collapsed": { "alias": "clrCardCollapsed"; "required": false; }; }, { "collapsedChange": "clrCardCollapsedChange"; }, never, ["clr-card-header", "*", "clr-card-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCard, never>;
 }
@@ -1573,20 +1568,16 @@ export class ClrCardFooter {
 }
 
 // @public (undocumented)
-export class ClrCardHeader implements OnInit, OnDestroy {
-    constructor(card: ClrCard, commonStrings: ClrCommonStringsService, cdr: ChangeDetectorRef);
+export class ClrCardHeader {
+    constructor(card: ClrCard, commonStrings: ClrCommonStringsService);
     // (undocumented)
-    card: ClrCard;
+    protected readonly card: ClrCard;
     // (undocumented)
-    commonStrings: ClrCommonStringsService;
-    // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
+    protected readonly commonStrings: ClrCommonStringsService;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardHeader, "clr-card-header", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardHeader, [{ optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardHeader, [{ optional: true; }, null]>;
 }
 
 // @public (undocumented)
