@@ -646,7 +646,9 @@ export default function (): void {
         expect(element.querySelector(TOGGLE).classList).toContain('datagrid-column-actions-filtered');
 
         openMenu();
-        expect(itemLabelled(commonStrings.keys.filterColumn).classList).toContain('active');
+
+        const filterIcon = itemLabelled(commonStrings.keys.filterColumn)?.querySelector('cds-icon');
+        expect(filterIcon.getAttribute('shape')).toContain('filter-grid-circle');
       });
     });
 
