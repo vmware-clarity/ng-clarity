@@ -22,10 +22,12 @@ import {
   OnInit,
   Optional,
   Output,
+  QueryList,
   SimpleChanges,
   TemplateRef,
   TrackByFunction,
   ViewChild,
+  ViewChildren,
 } from '@angular/core';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { FilterablePropertyDefinition, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
@@ -44,6 +46,7 @@ import { filter, takeUntil } from 'rxjs/operators';
 
 import { ExportProviderService } from './addons/export/export-provider.service';
 import { ClientSideExportConfig, DatagridItemSet, ExportStatus } from './addons/export/export.interface';
+import { DatagridFilterComponent } from './filters/datagrid-filter.component';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
 import { uniqueIdProvider, uniqueIdToken } from './id-generator/id-generator';
 import {
@@ -522,6 +525,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   protected enableSingleRowActions = false;
 
   @ViewChild(ClrDatagrid, { static: true }) private clrDatagrid: ClrDatagrid;
+
+  /** The header filters, which have to be nudged after a rebuild - see rebuildColumnViews. */
+  @ViewChildren(DatagridFilterComponent) private filterComponents: QueryList<DatagridFilterComponent>;
+
+  /** Set while rebuildColumnViews runs, so the state changes it causes are not reported. */
+  private rebuildingColumns = false;
 
   readonly #defaultActionButtonClass: string = ActionBarLayout.flatCompact;
   readonly #interpolationExpression: RegExp = /\{(\d+)\}/g;
@@ -1063,7 +1072,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   protected refreshGrid(state: ClrDatagridStateInterface): void {
-    if (this.virtualScrolling) {
+    if (this.virtualScrolling || this.rebuildingColumns) {
       return;
     }
 
@@ -1211,12 +1220,44 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    *
    * Column state that has to survive this lives on the column definitions - `defaultSortOrder`,
    * `defaultFilterValue` and `width` - so the rebuilt views bind it straight back.
+   *
+   * Destroying a column unregisters its filter, and the datagrid treats losing an active filter as
+   * a filter change: it resets the page and reports a state without that filter, which a
+   * server-driven grid would turn into a request for page 1 unfiltered. The rebuilt filter then
+   * registers before its value is bound back, so on its own it would never count as active again.
+   * The grid ends the rebuild in the state it started in, so nothing it reports in between is
+   * passed on, each rebuilt filter that carries a value reports it once the views are back - which
+   * also filters the rows again - and the page is put back where it was.
    */
   private rebuildColumnViews(): void {
-    this.visibleColumns = [];
-    this.cdr.detectChanges();
-    this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
-    this.cdr.detectChanges();
+    const page = this.clrDatagridPagination?.currentPage;
+
+    this.rebuildingColumns = true;
+    try {
+      this.visibleColumns = [];
+      this.cdr.detectChanges();
+      this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
+      this.cdr.detectChanges();
+
+      this.filterComponents.forEach(filter => {
+        if (filter.isActive()) {
+          filter.changes.next(true);
+        }
+      });
+
+      if (page !== undefined && this.clrDatagridPagination && this.clrDatagridPagination.currentPage !== page) {
+        this.clrDatagridPagination.currentPage = page;
+      }
+
+      // Reporting the filters and the page again re-renders the rows straight away, outside change
+      // detection. The datagrid projects the rows it has queried on every layout pass, and until the
+      // query is refreshed that still includes the rows just removed - so the pass is run here, the
+      // same way the column views above are.
+      this.cdr.detectChanges();
+    } finally {
+      this.rebuildingColumns = false;
+    }
+
     // The columns are measured from scratch, and this also covers an empty grid, where the datagrid
     // does not re-render the columns on its own.
     this.resize();

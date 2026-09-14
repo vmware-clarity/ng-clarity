@@ -1129,6 +1129,56 @@ describe('DatagridComponent', () => {
         expect(columnByField(this.fixture, 'host').sortOrder).toBe(ClrDatagridSortOrder.ASC);
       });
 
+      // Typed through the header filter, the way a user does it, so the filter is registered as
+      // active with the datagrid and the rows are actually filtered - not only the definition.
+      async function filterByHost(fixture: ComponentFixture<DatagridHostComponent>, value: string) {
+        columnElementByTitle(fixture, 'C4').querySelector<HTMLButtonElement>('.datagrid-filter-toggle').click();
+        fixture.detectChanges();
+        await new Promise(resolve => setTimeout(resolve, 10));
+        const input = document.querySelector<HTMLInputElement>('.datagrid-filter input');
+        input.value = value;
+        input.dispatchEvent(new KeyboardEvent('keyup', { bubbles: true }));
+        fixture.detectChanges();
+        document.body.click();
+        fixture.detectChanges();
+        await new Promise(resolve => setTimeout(resolve, 10));
+      }
+
+      // The rebuilt filter registered with the datagrid before its value was bound back, so it was
+      // not counted as active: the input still showed the value and the toggle stayed marked, but
+      // every row was back.
+      it('keeps the rows filtered when a column is moved', async function (this: DatagridSpecContext) {
+        await filterByHost(this.fixture, '10.23.45.68');
+        const filteredRows = new GridHelper(this.fixture.debugElement).getRows().length;
+        expect(filteredRows).toBeLessThan(this.data.length);
+
+        clickMove(this.fixture, 2, 'Move Right');
+        await new Promise(resolve => setTimeout(resolve, 10));
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+        expect(new GridHelper(this.fixture.debugElement).getRows().length).toBe(filteredRows);
+      });
+
+      // Losing the filter reset the page to 1 and reported a state without it; the rebuild leaves the
+      // grid where it was, so nothing in between is a state a data source should act on.
+      it('keeps the page and reports no refresh when a column is moved', async function (this: DatagridSpecContext) {
+        this.component.appfxDatagridComponent.pageSize = 1;
+        this.fixture.detectChanges();
+        await filterByHost(this.fixture, '10.23.45.6');
+        this.component.appfxDatagridComponent.clrDatagridPagination.currentPage = 2;
+        this.fixture.detectChanges();
+        expect(this.component.appfxDatagridComponent.clrDatagridPagination.currentPage).toBe(2);
+        const refresh = spyOn(this.component.appfxDatagridComponent.refreshGridData, 'emit');
+
+        clickMove(this.fixture, 2, 'Move Right');
+        await new Promise(resolve => setTimeout(resolve, 10));
+        this.fixture.detectChanges();
+
+        expect(this.component.appfxDatagridComponent.clrDatagridPagination.currentPage).toBe(2);
+        expect(refresh).not.toHaveBeenCalled();
+      });
+
       it('keeps an applied filter value when a column is moved', function (this: DatagridSpecContext) {
         this.component.appfxDatagridComponent['onFilterChange']('vm0', this.component.columnsDefs[3]);
         this.fixture.detectChanges();
