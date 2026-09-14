@@ -817,6 +817,9 @@ export default function (): void {
 
         openMenu();
         expect(itemLabelled(commonStrings.keys.filterColumn).classList).not.toContain('active');
+
+        const filterIcon = itemLabelled(commonStrings.keys.filterColumn)?.querySelector('cds-icon');
+        expect(filterIcon.getAttribute('shape')).toContain('filter-grid-circle');
       });
     });
 
