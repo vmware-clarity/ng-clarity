@@ -130,7 +130,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: dist/website
-          key: website-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'angular.json')}}
+          key: website-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'angular.json', 'tsconfig.json')}}
       - name: Build Website
         if: steps.website-cache.outputs.cache-hit != 'true'
         run: npm run _build:website

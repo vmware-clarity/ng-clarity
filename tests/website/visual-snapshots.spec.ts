@@ -92,7 +92,10 @@ const pages = [
 
 // The screenshots taken per test are discovered at runtime (the documentation tabs), so each
 // worker process appends the paths it captured to its own used-screenshot-paths file as it goes.
-const workerId = process.env['TEST_PARALLEL_INDEX'] ?? 'main';
+// The file is keyed by TEST_WORKER_INDEX, which is unique per worker process: when Playwright
+// replaces a worker after a failed test, the replacement gets a fresh index and file, so the
+// paths the previous worker already recorded for its passed (not re-run) tests survive.
+const workerId = process.env['TEST_WORKER_INDEX'] ?? 'main';
 const usedScreenshotsFilePath = path.join(
   '.',
   'tests',
@@ -150,7 +153,12 @@ for (const sitePage of pages) {
       }
 
       const tab = tabRoute.split('/').pop();
-      await captureView(page, sitePage.name, tab, tabRoute);
+      if (websiteScreenshotOptions[`${sitePage.name}-${tab}`]?.exclude) {
+        // An excluded tab is never navigated to, so its section subpages (discovered from the
+        // tab's own landing page below) are skipped along with it.
+        continue;
+      }
+      await capturePage(page, sitePage.name, tab, tabRoute);
 
       // Some tabs split their examples into section subpages linked from the tab's landing
       // page (for example /documentation/datagrid/code/pagination). Capture each link that
@@ -275,4 +283,8 @@ async function fitViewportToContent(page: Page, viewportWidth: number) {
 
     viewportHeight = contentHeight;
   } while (Date.now() < deadline);
+
+  // The settle timeout elapsed with the content height still changing (a resize feedback
+  // loop); apply the last measurement so the screenshot at least matches it.
+  await page.setViewportSize({ width: viewportWidth, height: viewportHeight });
 }

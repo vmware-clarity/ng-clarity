@@ -42,7 +42,7 @@ for (const story of stories) {
 
     const viewport = getPageViewPort(componentParsed, storyName);
     if (viewport) {
-      page.setViewportSize(viewport);
+      await page.setViewportSize(viewport);
     }
 
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
