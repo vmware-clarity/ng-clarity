@@ -41,6 +41,10 @@ export class RecursiveChildren<T> {
   subscription: Subscription;
   role: string;
 
+  // One context object per node: a new object on every change detection pass would make ngTemplateOutlet
+  // run ngOnChanges and rewrite the context of every node on every pass.
+  private contexts = new WeakMap<TreeNodeModel<T>, ClrRecursiveForOfContext<T>>();
+
   constructor(
     public featuresService: TreeFeaturesService<T>,
     @Optional() private expandService: IfExpandService
@@ -72,10 +76,12 @@ export class RecursiveChildren<T> {
   }
 
   getContext(node: TreeNodeModel<T>): ClrRecursiveForOfContext<T> {
-    return {
-      $implicit: node.model,
-      clrModel: node,
-    };
+    let context = this.contexts.get(node);
+    if (!context) {
+      context = { $implicit: node.model, clrModel: node };
+      this.contexts.set(node, context);
+    }
+    return context;
   }
 
   ngOnDestroy() {
