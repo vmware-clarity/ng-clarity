@@ -1293,6 +1293,49 @@ describe('DatagridComponent', () => {
       });
     });
 
+    // A hidden column is left out of visibleColumns, so a pinned-and-hidden one is rendered in
+    // neither container and does not stand in the way of the ordinary reorder - it never has a DOM
+    // node for the reconciliation to relocate across containers.
+    describe('column moves with a pinned column that is hidden', () => {
+      function toggleMenu(fixture: ComponentFixture<DatagridHostComponent>, columnIndex: number) {
+        fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[columnIndex].nativeElement.click();
+        fixture.detectChanges();
+      }
+
+      function moveButton(label: string): HTMLElement {
+        return Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item')).find(
+          item => item.textContent.trim() === label
+        );
+      }
+
+      beforeEach(function (this: DatagridSpecContext) {
+        this.component.data = this.data;
+        this.component.enableColumnActions = true;
+        // Bound as a new array with hidden already set - mutating hidden on an already-bound
+        // definition does not recompute visibleColumns, and the column then stays rendered.
+        this.component.columnsDefs = [
+          { displayName: 'C1', field: 'name', pinnable: true, pinned: true, hidden: true },
+          { displayName: 'C2', field: 'powerState' },
+          { displayName: 'C3', field: 'status' },
+        ] as Array<ColumnDefinition<any>>;
+        this.fixture.detectChanges(false);
+      });
+
+      it('does not rebuild the column views', function (this: DatagridSpecContext) {
+        const rebuildColumnViews = spyOn<any>(
+          this.component.appfxDatagridComponent,
+          'rebuildColumnViews'
+        ).and.callThrough();
+
+        toggleMenu(this.fixture, 0);
+        moveButton('Move Right').click();
+        this.fixture.detectChanges();
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C3', 'C2']);
+        expect(rebuildColumnViews).not.toHaveBeenCalled();
+      });
+    });
+
     describe('disableUnsort', () => {
       function getColumnDisableUnsort(fixture: ComponentFixture<DatagridHostComponent>): boolean[] {
         return fixture.debugElement

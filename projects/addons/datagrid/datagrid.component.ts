@@ -817,7 +817,9 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   onColumnOrderChange(data: ColumnOrderChanged) {
     this.columns = data.columns;
 
-    if (this.columns.some((column: ColumnDefinition<T>) => column.pinned)) {
+    // Only a pinned column that is actually rendered sits in the sticky container; a hidden one is
+    // in neither container and does not stand in the way of the ordinary reorder.
+    if (this.columns.some((column: ColumnDefinition<T>) => column.pinned && !column.hidden)) {
       this.rebuildColumnViews();
     } else {
       this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
