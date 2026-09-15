@@ -226,10 +226,13 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
 
     // The same goes for the sort direction and the pinned state: a change that arrives from outside
     // this template - the column's title button, a binding on the column, or another column taking
-    // over the sort - would otherwise leave an open menu stale until the next click.
+    // over the sort - would otherwise leave an open menu stale until the next click. And for the
+    // filter action reporting whether the filter is open: closing it is an outside click or an escape
+    // key handled by the overlay, and the item would be left announcing itself expanded.
     this.columnSubscriptions.push(
       column.sortOrderChange.subscribe(() => changeDetectorRef.markForCheck()),
-      column.pinnedChange.subscribe(() => changeDetectorRef.markForCheck())
+      column.pinnedChange.subscribe(() => changeDetectorRef.markForCheck()),
+      columnPopover.openChange.subscribe(() => changeDetectorRef.markForCheck())
     );
   }
 
