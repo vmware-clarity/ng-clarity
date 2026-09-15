@@ -24,7 +24,7 @@ export class ClrCardHeader {
   /**
    * Level of the card header heading from 1 to 6.
    */
-  @Input('clrCardHeaderHeadingLevel') explicitHeadingLevel: HeadingLevel;
+  @Input('clrHeadingLevel') explicitHeadingLevel: HeadingLevel;
 
   constructor(
     @Optional() protected readonly card: ClrCard,

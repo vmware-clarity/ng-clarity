@@ -384,4 +384,29 @@
       }
     }
   }
+
+  // The static .card-header/.card-title/.card-text/.card-block/.card-img classes never set
+  // `display` themselves - they rely on their original host tag (h3/h4/div) being block-level
+  // by default. Our Angular sub-components render as custom element tags, which default to
+  // `display: inline`, so we restore block layout here explicitly.
+  .clr-card-body,
+  .clr-card-body-title,
+  .clr-card-body-text,
+  .clr-card-image {
+    display: block;
+  }
+
+  // The header is a flex row so the toggle button (only present when the card is collapsible)
+  // sits to the left of the projected content. The projected content is wrapped so that it keeps
+  // its normal inline flow and can be referenced by id for accessible names.
+  .clr-card-header {
+    display: flex;
+    align-items: center;
+    gap: density.$clr-base-gap-s;
+  }
+
+  .clr-card-header-content {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
 }

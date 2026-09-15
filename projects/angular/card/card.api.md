@@ -67,7 +67,7 @@ export class ClrCardBodyTitle {
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel" needs to be exported by the entry point clr-angular-card.d.ts
     explicitHeadingLevel: HeadingLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardBodyTitle, "clr-card-body-title", never, { "explicitHeadingLevel": { "alias": "clrCardBodyTitleHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardBodyTitle, "clr-card-body-title", never, { "explicitHeadingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardBodyTitle, never>;
 }
@@ -99,7 +99,7 @@ export class ClrCardHeader {
     protected readonly commonStrings: ClrCommonStringsService;
     explicitHeadingLevel: HeadingLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardHeader, "clr-card-header", never, { "explicitHeadingLevel": { "alias": "clrCardHeaderHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardHeader, "clr-card-header", never, { "explicitHeadingLevel": { "alias": "clrHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardHeader, [{ optional: true; }, null]>;
 }

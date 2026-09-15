@@ -36,7 +36,7 @@ class TestCollapsibleComponent {}
 @Component({
   template: `
     <clr-card clrCardCollapsible>
-      <clr-card-header clrCardHeaderHeadingLevel="2">Header text</clr-card-header>
+      <clr-card-header clrHeadingLevel="2">Header text</clr-card-header>
     </clr-card>
   `,
   standalone: false,
@@ -85,7 +85,7 @@ describe('ClrCardHeader', () => {
     expect(standaloneFixture.nativeElement.querySelector('.clr-card-header-content').hasAttribute('id')).toBe(false);
   });
 
-  it('gives clr-card-body-title-style heading semantics via clrCardHeaderHeadingLevel', () => {
+  it('gives clr-card-body-title-style heading semantics via clrHeadingLevel', () => {
     const fixture = TestBed.createComponent(TestHeadingLevelComponent);
     fixture.detectChanges();
 

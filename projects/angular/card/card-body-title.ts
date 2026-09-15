@@ -24,5 +24,5 @@ export class ClrCardBodyTitle {
   /**
    * Level of the card body title heading from 1 to 6.
    */
-  @Input('clrCardBodyTitleHeadingLevel') explicitHeadingLevel: HeadingLevel;
+  @Input('clrHeadingLevel') explicitHeadingLevel: HeadingLevel;
 }

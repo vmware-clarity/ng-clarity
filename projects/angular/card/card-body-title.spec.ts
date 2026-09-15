@@ -19,7 +19,7 @@ import { ClrCardModule } from './card.module';
 class TestComponent {}
 
 @Component({
-  template: `<clr-card-body-title clrCardBodyTitleHeadingLevel="3">Hello world</clr-card-body-title>`,
+  template: `<clr-card-body-title clrHeadingLevel="3">Hello world</clr-card-body-title>`,
   standalone: false,
 })
 class TestHeadingLevelComponent {}
@@ -52,7 +52,7 @@ describe('ClrCardBodyTitle', () => {
     expect(el.hasAttribute('role')).toBe(false);
   });
 
-  it('gets a heading role and level when clrCardBodyTitleHeadingLevel is set', () => {
+  it('gets a heading role and level when clrHeadingLevel is set', () => {
     const headingFixture = TestBed.createComponent(TestHeadingLevelComponent);
     headingFixture.detectChanges();
 
