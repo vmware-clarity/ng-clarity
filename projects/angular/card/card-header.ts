@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, Optional } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
+import { ChangeDetectionStrategy, Component, Input, Optional } from '@angular/core';
+import { ClrCommonStringsService, HeadingLevel } from '@clr/angular/utils';
 
 import { ClrCard } from './card';
 
@@ -17,29 +16,18 @@ import { ClrCard } from './card';
   host: {
     '[class.card-header]': 'true',
     '[class.clr-card-header]': 'true',
-    '[attr.id]': 'card?.headerId',
   },
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class ClrCardHeader implements OnInit, OnDestroy {
-  private subscription: Subscription;
+export class ClrCardHeader {
+  /**
+   * Level of the card header heading from 1 to 6.
+   */
+  @Input('clrCardHeaderHeadingLevel') explicitHeadingLevel: HeadingLevel;
 
   constructor(
-    @Optional() public card: ClrCard,
-    public commonStrings: ClrCommonStringsService,
-    private cdr: ChangeDetectorRef
+    @Optional() protected readonly card: ClrCard,
+    protected readonly commonStrings: ClrCommonStringsService
   ) {}
-
-  ngOnInit() {
-    // The card's expand state lives on a service owned by the parent ClrCard. Mutating that
-    // service from this component's own click handler doesn't automatically mark the parent
-    // (or its content-projected siblings) dirty, so we subscribe here to explicitly refresh
-    // this component whenever the expand state changes, regardless of what triggered it.
-    this.subscription = this.card?.expandService.expandChange.subscribe(() => this.cdr.markForCheck());
-  }
-
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
-  }
 }

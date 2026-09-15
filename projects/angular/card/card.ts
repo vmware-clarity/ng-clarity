@@ -8,64 +8,61 @@
 import {
   booleanAttribute,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   EventEmitter,
   Input,
-  OnDestroy,
-  OnInit,
   Output,
+  signal,
 } from '@angular/core';
-import { collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
-import { IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
+import { uniqueIdFactory } from '@clr/angular/utils';
 
 @Component({
   selector: 'clr-card',
   templateUrl: './card.html',
-  host: { '[class.card]': 'true', '[class.clr-card]': 'true' },
+  host: {
+    '[class.card]': 'true',
+    '[class.clr-card]': 'true',
+    '[class.card-collapsible]': 'collapsible',
+    '[class.card-collapsed]': 'collapsible && !expanded',
+  },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: collapsiblePanelAnimation,
-  providers: [IfExpandService],
   standalone: false,
 })
-export class ClrCard implements OnInit, OnDestroy {
-  @Input({ alias: 'clrCardCollapsible', transform: booleanAttribute }) collapsible = false;
+export class ClrCard {
   @Input({ alias: 'clrCardFooterCollapsible', transform: booleanAttribute }) footerCollapsible = true;
-  @Output('clrCardCollapsedChange') collapsedChange = new EventEmitter<boolean>();
+  @Output('clrCardExpandedChange') expandedChange = new EventEmitter<boolean>();
 
-  readonly cardId = uniqueIdFactory();
-  readonly headerId = `clr-card-header-${this.cardId}`;
-  readonly contentId = `clr-card-content-${this.cardId}`;
+  readonly headerContentId = `clr-card-header-content-${uniqueIdFactory()}`;
+  readonly contentId = `clr-card-content-${uniqueIdFactory()}`;
 
-  private subscription: Subscription;
+  private readonly _collapsible = signal(false);
+  private readonly _expanded = signal(true);
 
-  constructor(
-    public expandService: IfExpandService,
-    private cdr: ChangeDetectorRef
-  ) {
-    expandService.expanded = true;
+  @Input({ alias: 'clrCardCollapsible', transform: booleanAttribute })
+  get collapsible(): boolean {
+    return this._collapsible();
+  }
+  set collapsible(value: boolean) {
+    this._collapsible.set(value);
   }
 
-  @Input('clrCardCollapsed')
-  get collapsed(): boolean {
-    return !this.expandService.expanded;
+  @Input({ alias: 'clrCardExpanded', transform: booleanAttribute })
+  get expanded(): boolean {
+    return this._expanded();
   }
-  set collapsed(value: boolean) {
-    this.expandService.expanded = !value;
-  }
-
-  ngOnInit() {
-    // The toggle button lives in the content-projected ClrCardHeader, a separate component, so a
-    // click there mutating this.expandService doesn't automatically mark this component dirty.
-    // Subscribing here ensures our own template (region visibility, animation trigger) refreshes.
-    this.subscription = this.expandService.expandChange.subscribe(expanded => {
-      this.collapsedChange.emit(!expanded);
-      this.cdr.markForCheck();
-    });
+  set expanded(value: boolean) {
+    this._expanded.set(value);
   }
 
-  ngOnDestroy() {
-    this.subscription?.unsubscribe();
+  /**
+   * Toggles the expanded state of a collapsible card and emits `clrCardExpandedChange`.
+   * Setting the `clrCardExpanded` input programmatically does not emit.
+   */
+  toggle() {
+    if (!this.collapsible) {
+      return;
+    }
+    this._expanded.set(!this._expanded());
+    this.expandedChange.emit(this._expanded());
   }
 }

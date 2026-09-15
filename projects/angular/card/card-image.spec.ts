@@ -9,16 +9,16 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
-import { ClrCardImg } from './card-img';
+import { ClrCardImage } from './card-image';
 import { ClrCardModule } from './card.module';
 
 @Component({
-  template: `<clr-card-img><img src="test.png" alt="" /></clr-card-img>`,
+  template: `<clr-card-image><img src="test.png" alt="" /></clr-card-image>`,
   standalone: false,
 })
 class TestComponent {}
 
-describe('ClrCardImg', () => {
+describe('ClrCardImage', () => {
   let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(() => {
@@ -35,9 +35,9 @@ describe('ClrCardImg', () => {
     expect(fixture.nativeElement.querySelector('img')).not.toBeNull();
   });
 
-  it('adds .card-img and .clr-card-img classes on the host element', () => {
-    const el = fixture.debugElement.query(By.directive(ClrCardImg)).nativeElement;
+  it('adds .card-img and .clr-card-image classes on the host element', () => {
+    const el = fixture.debugElement.query(By.directive(ClrCardImage)).nativeElement;
     expect(el.classList.contains('card-img')).toBe(true);
-    expect(el.classList.contains('clr-card-img')).toBe(true);
+    expect(el.classList.contains('clr-card-image')).toBe(true);
   });
 });

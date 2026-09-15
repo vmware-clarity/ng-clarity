@@ -18,12 +18,18 @@ import { ClrCardModule } from './card.module';
 })
 class TestComponent {}
 
+@Component({
+  template: `<clr-card-body-title clrCardBodyTitleHeadingLevel="3">Hello world</clr-card-body-title>`,
+  standalone: false,
+})
+class TestHeadingLevelComponent {}
+
 describe('ClrCardBodyTitle', () => {
   let fixture: ComponentFixture<TestComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent],
+      declarations: [TestComponent, TestHeadingLevelComponent],
       imports: [ClrCardModule],
     });
 
@@ -39,5 +45,19 @@ describe('ClrCardBodyTitle', () => {
     const el = fixture.debugElement.query(By.directive(ClrCardBodyTitle)).nativeElement;
     expect(el.classList.contains('card-title')).toBe(true);
     expect(el.classList.contains('clr-card-body-title')).toBe(true);
+  });
+
+  it('has no heading role by default', () => {
+    const el = fixture.debugElement.query(By.directive(ClrCardBodyTitle)).nativeElement;
+    expect(el.hasAttribute('role')).toBe(false);
+  });
+
+  it('gets a heading role and level when clrCardBodyTitleHeadingLevel is set', () => {
+    const headingFixture = TestBed.createComponent(TestHeadingLevelComponent);
+    headingFixture.detectChanges();
+
+    const el = headingFixture.debugElement.query(By.directive(ClrCardBodyTitle)).nativeElement;
+    expect(el.getAttribute('role')).toBe('heading');
+    expect(el.getAttribute('aria-level')).toBe('3');
   });
 });

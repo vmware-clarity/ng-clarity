@@ -14,6 +14,6 @@ import { Component } from '@angular/core';
   standalone: false,
 })
 export class CardAngularDemo {
-  collapsed = false;
-  fixedFooterCollapsed = false;
+  expanded = true;
+  fixedFooterExpanded = true;
 }

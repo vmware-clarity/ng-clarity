@@ -188,8 +188,8 @@
 
     <p cds-text="body" class="clr-mt-16px">
       Adding <code cds-text="code">clrCardCollapsible</code> adds a chevron toggle to the card header that collapses or
-      expands the rest of the card's content. Bind <code cds-text="code">[(clrCardCollapsed)]</code> to control or
-      observe the collapsed state.
+      expands the rest of the card's content. Bind <code cds-text="code">[(clrCardExpanded)]</code> to control or
+      observe the expanded state.
     </p>
 
     <clr-card-angular-collapsible-demo></clr-card-angular-collapsible-demo>
@@ -206,7 +206,7 @@
     <h3 data-toc-item class="clr-mt-32px" cds-text="section" id="angular-card-image">Card Image</h3>
 
     <p cds-text="body" class="clr-mt-16px">
-      A <code cds-text="code">clr-card-img</code> can be placed anywhere in the card.
+      A <code cds-text="code">clr-card-image</code> can be placed anywhere in the card.
     </p>
 
     <clr-card-angular-image-demo></clr-card-angular-image-demo>
@@ -352,12 +352,12 @@
         </tr>
         <tr>
           <td class="left">
-            <b cds-text="medium">[(clrCardCollapsed)]</b>
+            <b cds-text="medium">[(clrCardExpanded)]</b>
             <div class="hidden-sm-up">Type: Boolean</div>
-            <div class="hidden-sm-up">Default: false</div>
+            <div class="hidden-sm-up">Default: true</div>
           </td>
           <td class="left hidden-xs-down">true, false</td>
-          <td class="hidden-xs-down">false</td>
+          <td class="hidden-xs-down">true</td>
           <td class="left">Two-way binding on the state of the card: expanded or collapsed.</td>
         </tr>
         <tr>
@@ -383,6 +383,34 @@
           <td class="left">
             If true, on <code cds-text="code">clr-card-media-block</code>, stacks the description below the image
             instead of beside it.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrCardHeaderHeadingLevel]</b>
+            <div class="hidden-sm-up">Type: Number (1-6)</div>
+            <div class="hidden-sm-up">Default: none</div>
+          </td>
+          <td class="left hidden-xs-down">1, 2, 3, 4, 5, 6</td>
+          <td class="hidden-xs-down">none</td>
+          <td class="left">
+            If set, on <code cds-text="code">clr-card-header</code>, gives the header content
+            <code cds-text="code">role="heading"</code> and this <code cds-text="code">aria-level</code> for
+            screen-reader heading navigation.
+          </td>
+        </tr>
+        <tr>
+          <td class="left">
+            <b cds-text="medium">[clrCardBodyTitleHeadingLevel]</b>
+            <div class="hidden-sm-up">Type: Number (1-6)</div>
+            <div class="hidden-sm-up">Default: none</div>
+          </td>
+          <td class="left hidden-xs-down">1, 2, 3, 4, 5, 6</td>
+          <td class="hidden-xs-down">none</td>
+          <td class="left">
+            If set, on <code cds-text="code">clr-card-body-title</code>, gives it
+            <code cds-text="code">role="heading"</code> and this <code cds-text="code">aria-level</code> for
+            screen-reader heading navigation.
           </td>
         </tr>
       </tbody>
@@ -439,7 +467,15 @@
       and an <code cds-text="code">aria-label</code> that reflects the current action ("Expand card" or "Collapse
       card"). The collapsible content region has <code cds-text="code">role="region"</code>,
       <code cds-text="code">aria-hidden</code>, and <code cds-text="code">aria-labelledby</code> pointing back to the
-      card header.
+      header content, not the chevron button, so the region's accessible name stays unambiguous even when a page has
+      several cards.
+    </p>
+
+    <p class="clr-mt-24px">
+      Use <code cds-text="code">clrCardHeaderHeadingLevel</code> and
+      <code cds-text="code">clrCardBodyTitleHeadingLevel</code> to give the card header and body title a heading role
+      and level for screen-reader heading navigation, the same way
+      <code cds-text="code">clrAccordionPanelHeadingLevel</code> works for the accordion.
     </p>
   </app-doc-tab>
 </app-doc-tabs>

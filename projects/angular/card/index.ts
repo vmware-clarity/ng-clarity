@@ -11,7 +11,7 @@ export * from './card-body';
 export * from './card-body-title';
 export * from './card-body-text';
 export * from './card-footer';
-export * from './card-img';
+export * from './card-image';
 export * from './card-divider';
 export * from './card-media-block';
 export * from './card-media-description';

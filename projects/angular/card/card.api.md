@@ -11,46 +11,37 @@ import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import * as i0 from '@angular/core';
 import * as i14 from '@angular/common';
-import { Observable } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { PipeTransform } from '@angular/core';
 import { SafeHtml } from '@angular/platform-browser';
-import { Subject } from 'rxjs';
 import { Type } from '@angular/core';
 
 // @public (undocumented)
-export class ClrCard implements OnInit, OnDestroy {
-    constructor(expandService: IfExpandService, cdr: ChangeDetectorRef);
+export class ClrCard {
     // (undocumented)
-    readonly cardId: string;
-    // (undocumented)
-    get collapsed(): boolean;
-    set collapsed(value: boolean);
-    // (undocumented)
-    collapsedChange: EventEmitter<boolean>;
-    // (undocumented)
-    collapsible: boolean;
+    get collapsible(): boolean;
+    set collapsible(value: boolean);
     // (undocumented)
     readonly contentId: string;
-    // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point clr-angular-card.d.ts
-    //
     // (undocumented)
-    expandService: IfExpandService;
+    get expanded(): boolean;
+    set expanded(value: boolean);
+    // (undocumented)
+    expandedChange: EventEmitter<boolean>;
     // (undocumented)
     footerCollapsible: boolean;
     // (undocumented)
-    readonly headerId: string;
+    readonly headerContentId: string;
     // (undocumented)
     static ngAcceptInputType_collapsible: unknown;
     // (undocumented)
+    static ngAcceptInputType_expanded: unknown;
+    // (undocumented)
     static ngAcceptInputType_footerCollapsible: unknown;
+    toggle(): void;
     // (undocumented)
-    ngOnDestroy(): void;
-    // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCard, "clr-card", never, { "collapsible": { "alias": "clrCardCollapsible"; "required": false; }; "footerCollapsible": { "alias": "clrCardFooterCollapsible"; "required": false; }; "collapsed": { "alias": "clrCardCollapsed"; "required": false; }; }, { "collapsedChange": "clrCardCollapsedChange"; }, never, ["clr-card-header", "*", "clr-card-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCard, "clr-card", never, { "footerCollapsible": { "alias": "clrCardFooterCollapsible"; "required": false; }; "collapsible": { "alias": "clrCardCollapsible"; "required": false; }; "expanded": { "alias": "clrCardExpanded"; "required": false; }; }, { "expandedChange": "clrCardExpandedChange"; }, never, ["clr-card-header", "*", "clr-card-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCard, never>;
 }
@@ -73,8 +64,10 @@ export class ClrCardBodyText {
 
 // @public (undocumented)
 export class ClrCardBodyTitle {
+    // Warning: (ae-forgotten-export) The symbol "HeadingLevel" needs to be exported by the entry point clr-angular-card.d.ts
+    explicitHeadingLevel: HeadingLevel;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardBodyTitle, "clr-card-body-title", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardBodyTitle, "clr-card-body-title", never, { "explicitHeadingLevel": { "alias": "clrCardBodyTitleHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardBodyTitle, never>;
 }
@@ -96,30 +89,27 @@ export class ClrCardFooter {
 }
 
 // @public (undocumented)
-export class ClrCardHeader implements OnInit, OnDestroy {
-    constructor(card: ClrCard, commonStrings: ClrCommonStringsService, cdr: ChangeDetectorRef);
+export class ClrCardHeader {
+    constructor(card: ClrCard, commonStrings: ClrCommonStringsService);
     // (undocumented)
-    card: ClrCard;
+    protected readonly card: ClrCard;
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-card.d.ts
     //
     // (undocumented)
-    commonStrings: ClrCommonStringsService;
+    protected readonly commonStrings: ClrCommonStringsService;
+    explicitHeadingLevel: HeadingLevel;
     // (undocumented)
-    ngOnDestroy(): void;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardHeader, "clr-card-header", never, { "explicitHeadingLevel": { "alias": "clrCardHeaderHeadingLevel"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
-    ngOnInit(): void;
-    // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardHeader, "clr-card-header", never, {}, {}, never, ["*"], false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardHeader, [{ optional: true; }, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardHeader, [{ optional: true; }, null]>;
 }
 
 // @public (undocumented)
-export class ClrCardImg {
+export class ClrCardImage {
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardImg, "clr-card-img", never, {}, {}, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCardImage, "clr-card-image", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardImg, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrCardImage, never>;
 }
 
 // @public (undocumented)
@@ -176,7 +166,7 @@ export class ClrCardModule {
     // Warning: (ae-forgotten-export) The symbol "i15" needs to be exported by the entry point clr-angular-card.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCardModule, [typeof ClrCard, typeof ClrCardHeader, typeof ClrCardBody, typeof ClrCardBodyTitle, typeof ClrCardBodyText, typeof ClrCardFooter, typeof ClrCardImg, typeof ClrCardDivider, typeof ClrCardMediaBlock, typeof ClrCardMediaDescription, typeof ClrCardMediaImage, typeof ClrCardMediaTitle, typeof ClrCardMediaText], [typeof i14.CommonModule, typeof i15.ClrIcon], [typeof ClrCard, typeof ClrCardHeader, typeof ClrCardBody, typeof ClrCardBodyTitle, typeof ClrCardBodyText, typeof ClrCardFooter, typeof ClrCardImg, typeof ClrCardDivider, typeof ClrCardMediaBlock, typeof ClrCardMediaDescription, typeof ClrCardMediaImage, typeof ClrCardMediaTitle, typeof ClrCardMediaText]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrCardModule, [typeof ClrCard, typeof ClrCardHeader, typeof ClrCardBody, typeof ClrCardBodyTitle, typeof ClrCardBodyText, typeof ClrCardFooter, typeof ClrCardImage, typeof ClrCardDivider, typeof ClrCardMediaBlock, typeof ClrCardMediaDescription, typeof ClrCardMediaImage, typeof ClrCardMediaTitle, typeof ClrCardMediaText], [typeof i14.CommonModule, typeof i15.ClrIcon], [typeof ClrCard, typeof ClrCardHeader, typeof ClrCardBody, typeof ClrCardBodyTitle, typeof ClrCardBodyText, typeof ClrCardFooter, typeof ClrCardImage, typeof ClrCardDivider, typeof ClrCardMediaBlock, typeof ClrCardMediaDescription, typeof ClrCardMediaImage, typeof ClrCardMediaTitle, typeof ClrCardMediaText]>;
 }
 
 // (No @packageDocumentation comment for this package)

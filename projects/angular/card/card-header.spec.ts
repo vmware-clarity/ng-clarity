@@ -8,7 +8,6 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrCard } from './card';
 import { ClrCardHeader } from './card-header';
@@ -35,6 +34,16 @@ class TestComponent {}
 class TestCollapsibleComponent {}
 
 @Component({
+  template: `
+    <clr-card clrCardCollapsible>
+      <clr-card-header clrCardHeaderHeadingLevel="2">Header text</clr-card-header>
+    </clr-card>
+  `,
+  standalone: false,
+})
+class TestHeadingLevelComponent {}
+
+@Component({
   template: `<clr-card-header>Standalone header</clr-card-header>`,
   standalone: false,
 })
@@ -43,8 +52,8 @@ class StandaloneHeaderComponent {}
 describe('ClrCardHeader', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [TestComponent, TestCollapsibleComponent, StandaloneHeaderComponent],
-      imports: [ClrCardModule, NoopAnimationsModule],
+      declarations: [TestComponent, TestCollapsibleComponent, TestHeadingLevelComponent, StandaloneHeaderComponent],
+      imports: [ClrCardModule],
     });
   });
 
@@ -73,6 +82,19 @@ describe('ClrCardHeader', () => {
     const standaloneFixture = TestBed.createComponent(StandaloneHeaderComponent);
     expect(() => standaloneFixture.detectChanges()).not.toThrow();
     expect(standaloneFixture.nativeElement.textContent.trim()).toBe('Standalone header');
+    expect(standaloneFixture.nativeElement.querySelector('.clr-card-header-content').hasAttribute('id')).toBe(false);
+  });
+
+  it('gives clr-card-body-title-style heading semantics via clrCardHeaderHeadingLevel', () => {
+    const fixture = TestBed.createComponent(TestHeadingLevelComponent);
+    fixture.detectChanges();
+
+    const content = fixture.debugElement
+      .query(By.directive(ClrCardHeader))
+      .nativeElement.querySelector('.clr-card-header-content');
+
+    expect(content.getAttribute('role')).toBe('heading');
+    expect(content.getAttribute('aria-level')).toBe('2');
   });
 
   describe('when the parent card is collapsible', () => {
@@ -89,8 +111,10 @@ describe('ClrCardHeader', () => {
       button = headerElement.querySelector('button');
     });
 
-    it('gives the header element (not the toggle button) the header id', () => {
-      expect(headerElement.getAttribute('id')).toBe(cardInstance.headerId);
+    it('wraps the projected content in an element carrying the header content id', () => {
+      const content = headerElement.querySelector('.clr-card-header-content');
+      expect(content.getAttribute('id')).toBe(cardInstance.headerContentId);
+      expect(content.textContent.trim()).toBe('Header text');
       expect(button.hasAttribute('id')).toBe(false);
     });
 
@@ -99,6 +123,7 @@ describe('ClrCardHeader', () => {
       expect(button.getAttribute('aria-controls')).toBe(cardInstance.contentId);
       expect(button.getAttribute('aria-expanded')).toBe('true');
       expect(button.getAttribute('aria-label')).toBeTruthy();
+      expect(button.getAttribute('aria-describedby')).toBe(cardInstance.headerContentId);
     });
 
     it('renders the header content outside of the toggle button', () => {
@@ -106,36 +131,40 @@ describe('ClrCardHeader', () => {
       expect(headerElement.textContent.trim()).toBe('Header text');
     });
 
-    it('swaps the icon rotation class and aria-label based on expand state', () => {
+    it('swaps aria-expanded and aria-label based on the expanded state', () => {
       const icon = headerElement.querySelector('cds-icon');
       expect(icon.getAttribute('shape')).toBe('angle');
-      expect(icon.classList.contains('expanded')).toBe(true);
       const collapseLabel = button.getAttribute('aria-label');
 
       button.click();
       fixture.detectChanges();
 
-      expect(icon.classList.contains('expanded')).toBe(false);
       expect(button.getAttribute('aria-expanded')).toBe('false');
       expect(button.getAttribute('aria-label')).not.toBe(collapseLabel);
     });
 
-    it('toggles the card expand state when the toggle button is clicked', () => {
-      expect(cardInstance.expandService.expanded).toBe(true);
+    it('toggles the card expanded state when the toggle button is clicked', () => {
+      expect(cardInstance.expanded).toBe(true);
 
       button.click();
       fixture.detectChanges();
-      expect(cardInstance.expandService.expanded).toBe(false);
+      expect(cardInstance.expanded).toBe(false);
 
       button.click();
       fixture.detectChanges();
-      expect(cardInstance.expandService.expanded).toBe(true);
+      expect(cardInstance.expanded).toBe(true);
+    });
+
+    it('reflects a programmatic expanded change without a manual change detection subscription', () => {
+      cardInstance.expanded = false;
+      fixture.detectChanges();
+      expect(button.getAttribute('aria-expanded')).toBe('false');
     });
 
     it('does not toggle when clicking the header outside of the toggle button', () => {
       headerElement.click();
       fixture.detectChanges();
-      expect(cardInstance.expandService.expanded).toBe(true);
+      expect(cardInstance.expanded).toBe(true);
     });
   });
 });

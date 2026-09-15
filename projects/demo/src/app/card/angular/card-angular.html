@@ -9,26 +9,19 @@
 
 <h4>Collapsible card</h4>
 
-<p>Current state: {{ collapsed ? 'collapsed' : 'expanded' }}</p>
+<p>Current state: {{ expanded ? 'expanded' : 'collapsed' }}</p>
 
 <div class="clr-example nomargin">
   <div class="clr-row">
     <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
-      <clr-card class="clickable" clrCardCollapsible [(clrCardCollapsed)]="collapsed">
-        <clr-card-header>
-          <div style="width: 100%">
-            <clr-alert clrAlertType="danger" [clrAlertAppLevel]="true">
-              <clr-alert-item>
-                <span class="alert-text">This is an app level alert.</span>
-                <div class="alert-actions">
-                  <button class="btn alert-action">Fix</button>
-                </div>
-              </clr-alert-item>
-            </clr-alert>
-            Header
-          </div>
-        </clr-card-header>
+      <clr-card clrCardCollapsible [(clrCardExpanded)]="expanded">
+        <clr-card-header>Header</clr-card-header>
         <clr-card-body>
+          <clr-alert clrAlertType="danger">
+            <clr-alert-item>
+              <span class="alert-text">This is an alert inside a collapsible card's body.</span>
+            </clr-alert-item>
+          </clr-alert>
           <clr-card-body-title>Block</clr-card-body-title>
           <clr-card-body-text>Click the chevron in the header to collapse or expand this card.</clr-card-body-text>
         </clr-card-body>
@@ -42,12 +35,12 @@
 
 <h4>Collapsible card with a fixed footer</h4>
 
-<p>Current state: {{ fixedFooterCollapsed ? 'collapsed' : 'expanded' }}</p>
+<p>Current state: {{ fixedFooterExpanded ? 'expanded' : 'collapsed' }}</p>
 
 <div class="clr-example nomargin">
   <div class="clr-row">
     <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
-      <clr-card clrCardCollapsible [clrCardFooterCollapsible]="false" [(clrCardCollapsed)]="fixedFooterCollapsed">
+      <clr-card clrCardCollapsible [clrCardFooterCollapsible]="false" [(clrCardExpanded)]="fixedFooterExpanded">
         <clr-card-header>Header</clr-card-header>
         <clr-card-body>
           <clr-card-body-title>Block</clr-card-body-title>
@@ -106,7 +99,7 @@
   <div class="clr-row">
     <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
       <clr-card>
-        <clr-card-img><img src="assets/placeholder_480x200.png" alt="" /></clr-card-img>
+        <clr-card-image><img src="assets/placeholder_480x200.png" alt="" /></clr-card-image>
         <clr-card-body>
           <clr-card-body-text>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</clr-card-body-text>
         </clr-card-body>
@@ -170,7 +163,7 @@
   <div class="clr-row">
     <div class="clr-col-lg-5 clr-col-md-8 clr-col-12">
       <clr-card>
-        <clr-card-img><img src="assets/placeholder_350x150.png" alt="" /></clr-card-img>
+        <clr-card-image><img src="assets/placeholder_350x150.png" alt="" /></clr-card-image>
         <clr-card-body>
           <clr-card-body-title>Title</clr-card-body-title>
           <clr-card-body-text>

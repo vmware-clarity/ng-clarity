@@ -8,10 +8,10 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-card-img',
+  selector: 'clr-card-image',
   template: `<ng-content></ng-content>`,
-  host: { '[class.card-img]': 'true', '[class.clr-card-img]': 'true' },
+  host: { '[class.card-img]': 'true', '[class.clr-card-image]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class ClrCardImg {}
+export class ClrCardImage {}

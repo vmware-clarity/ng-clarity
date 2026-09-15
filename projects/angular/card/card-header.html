@@ -7,18 +7,21 @@
 @if (card?.collapsible) {
 <button
   type="button"
-  class="clr-card-header-toggle"
-  (click)="card.expandService.toggle()"
+  class="card-header-toggle"
+  (click)="card.toggle()"
   [attr.aria-controls]="card.contentId"
-  [attr.aria-expanded]="card.expandService.expanded"
-  [attr.aria-label]="card.expandService.expanded ? commonStrings.keys.collapseCardAriaLabel : commonStrings.keys.expandCardAriaLabel"
+  [attr.aria-expanded]="card.expanded"
+  [attr.aria-label]="card.expanded ? commonStrings.keys.collapseCardAriaLabel : commonStrings.keys.expandCardAriaLabel"
+  [attr.aria-describedby]="card.headerContentId"
 >
-  <cds-icon
-    shape="angle"
-    direction="right"
-    class="clr-card-header-icon"
-    [class.expanded]="card.expandService.expanded"
-  ></cds-icon>
+  <cds-icon shape="angle" direction="right" class="card-header-icon"></cds-icon>
 </button>
 }
-<ng-content></ng-content>
+<div
+  class="clr-card-header-content"
+  [attr.id]="card?.headerContentId"
+  [attr.role]="explicitHeadingLevel ? 'heading' : null"
+  [attr.aria-level]="explicitHeadingLevel ? explicitHeadingLevel : null"
+>
+  <ng-content></ng-content>
+</div>

@@ -12,12 +12,12 @@ import { StackblitzExampleComponent } from '../../../../shared/stackblitz-exampl
 
 const HTML_EXAMPLE = `
 <clr-card>
-  <clr-card-img>
+  <clr-card-image>
     <img
       src="/assets/images/documentation/cards/placeholder_480x200.png"
       alt="Example of Image in a Card"
     />
-  </clr-card-img>
+  </clr-card-image>
   <clr-card-body>
     <clr-card-body-text>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</clr-card-body-text>
   </clr-card-body>

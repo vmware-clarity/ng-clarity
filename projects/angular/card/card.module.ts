@@ -16,7 +16,7 @@ import { ClrCardBodyTitle } from './card-body-title';
 import { ClrCardDivider } from './card-divider';
 import { ClrCardFooter } from './card-footer';
 import { ClrCardHeader } from './card-header';
-import { ClrCardImg } from './card-img';
+import { ClrCardImage } from './card-image';
 import { ClrCardMediaBlock } from './card-media-block';
 import { ClrCardMediaDescription } from './card-media-description';
 import { ClrCardMediaImage } from './card-media-image.directive';
@@ -30,7 +30,7 @@ const declarations = [
   ClrCardBodyTitle,
   ClrCardBodyText,
   ClrCardFooter,
-  ClrCardImg,
+  ClrCardImage,
   ClrCardDivider,
   ClrCardMediaBlock,
   ClrCardMediaDescription,

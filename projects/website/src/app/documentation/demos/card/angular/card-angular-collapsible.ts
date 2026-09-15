@@ -11,7 +11,7 @@ import { ClrCardModule } from '@clr/angular';
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
 
 const HTML_EXAMPLE = `
-<clr-card clrCardCollapsible [(clrCardCollapsed)]="collapsed">
+<clr-card clrCardCollapsible [(clrCardExpanded)]="expanded">
   <clr-card-header>Header</clr-card-header>
   <clr-card-body>
     <clr-card-body-title>Title</clr-card-body-title>
@@ -33,5 +33,5 @@ const HTML_EXAMPLE = `
 })
 export class CardAngularCollapsibleDemo {
   htmlExample = HTML_EXAMPLE;
-  collapsed = false;
+  expanded = true;
 }

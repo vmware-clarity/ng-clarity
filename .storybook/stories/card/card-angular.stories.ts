@@ -21,7 +21,7 @@ export default {
   ],
   args: {
     clrCardCollapsible: false,
-    clrCardCollapsed: false,
+    clrCardExpanded: true,
     clrCardFooterCollapsible: true,
     headerText: 'Header',
     bodyTitle: 'Title',
@@ -34,7 +34,7 @@ export default {
       <clr-card
         [clrCardCollapsible]="clrCardCollapsible"
         [clrCardFooterCollapsible]="clrCardFooterCollapsible"
-        [clrCardCollapsed]="clrCardCollapsed"
+        [clrCardExpanded]="clrCardExpanded"
       >
         <clr-card-header>{{ headerText }}</clr-card-header>
         <clr-card-body>
@@ -62,14 +62,14 @@ export const Collapsible: StoryObj = {
 export const Collapsed: StoryObj = {
   args: {
     clrCardCollapsible: true,
-    clrCardCollapsed: true,
+    clrCardExpanded: false,
   },
 };
 
 export const CollapsedWithFixedFooter: StoryObj = {
   args: {
     clrCardCollapsible: true,
-    clrCardCollapsed: true,
+    clrCardExpanded: false,
     clrCardFooterCollapsible: false,
   },
 };
