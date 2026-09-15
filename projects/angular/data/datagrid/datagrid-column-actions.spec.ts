@@ -5,15 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component } from '@angular/core';
+import { ApplicationRef, Component, getDebugNode } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { ClrDropdown, ClrDropdownItem } from '@clr/angular/popover/dropdown';
 import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridColumn } from './datagrid-column';
+import { ClrDatagridColumnAction } from './datagrid-column-action';
 import { ClrDatagridColumnActions } from './datagrid-column-actions';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 
@@ -360,6 +362,34 @@ export default function (): void {
         expect(itemLabelled('Custom').getAttribute('id')).toBeTruthy();
         // A plain clrDropdownItem is projected the same way.
         expect(itemLabelled('Plain').getAttribute('tabindex')).toBe('-1');
+      });
+
+      // What lets clrDgColumnAction be a clrDropdownItem at all. A projected item is declared outside
+      // this component, so it can only resolve ClrDropdown because the component is the dropdown and
+      // provides itself under that token - a clr-dropdown inside its template would be out of reach.
+      it('is the dropdown a projected action injects', function () {
+        // The item is only rendered while the menu is open, and then it sits in the overlay rather
+        // than in the fixture, which is why it is reached through its element.
+        openMenu();
+
+        const actions = context.fixture.debugElement.query(By.directive(ClrDatagridColumnActions));
+        const action = getDebugNode(document.querySelector('.custom-action'));
+
+        expect(action.injector.get(ClrDatagridColumnAction)).toBeInstanceOf(ClrDropdownItem);
+        expect(action.injector.get(ClrDropdown)).toBe(actions.componentInstance);
+        expect(actions.injector.get(ClrDropdown)).toBe(actions.componentInstance);
+        expect(actions.nativeElement.classList).toContain('dropdown');
+      });
+
+      // The menu is anchored with its own popover service; the column's, which its filter uses, is a
+      // different one. Being the dropdown is what brings the second service - without it the menu
+      // would be driving the same overlay as the filter.
+      it('keeps the menu overlay apart from the column one', function () {
+        const actions = context.fixture.debugElement.query(By.directive(ClrDatagridColumnActions));
+        const column = context.fixture.debugElement.query(By.directive(ClrDatagridColumn));
+
+        expect(actions.injector.get(ClrPopoverService)).not.toBe(column.injector.get(ClrPopoverService));
+        expect(actions.injector.get(ClrPopoverService)).toBe(actions.componentInstance.popoverService);
       });
 
       // clrDgColumnAction is a clrDropdownItem, so it has to be its own focusable item rather than
