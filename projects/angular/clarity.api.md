@@ -2348,6 +2348,8 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected commonStrings: ClrCommonStringsService;
     protected get filterActive(): boolean;
+    protected get filterOpen(): boolean;
+    protected get filterPopoverId(): string | null;
     focusAction(item: FocusableItem): void;
     // (undocumented)
     protected get hasFilter(): boolean;
@@ -3370,8 +3372,9 @@ export class ClrDropdownItem {
     set disabled(value: boolean | string);
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
+    role: string;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "role": { "alias": "role"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
 }
@@ -7513,6 +7516,12 @@ export const eCheckIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const eCheckIconName = "e-check";
+
+// @public (undocumented)
+export const ellipsisGridCircleIcon: IconShapeTuple;
+
+// @public (undocumented)
+export const ellipsisGridCircleIconName = "ellipsis-grid-circle";
 
 // @public (undocumented)
 export const ellipsisHorizontalIcon: IconShapeTuple;

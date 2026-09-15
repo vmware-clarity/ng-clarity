@@ -405,6 +405,8 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // (undocumented)
     protected commonStrings: ClrCommonStringsService;
     protected get filterActive(): boolean;
+    protected get filterOpen(): boolean;
+    protected get filterPopoverId(): string | null;
     focusAction(item: FocusableItem): void;
     // (undocumented)
     protected get hasFilter(): boolean;

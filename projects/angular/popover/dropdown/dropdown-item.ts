@@ -16,7 +16,7 @@ import { RootDropdownService } from './providers/dropdown.service';
   host: {
     '[class.disabled]': 'disabled',
     '[class.dropdown-item]': 'true',
-    '[attr.role]': '"menuitem"',
+    '[attr.role]': 'role',
     '[attr.aria-disabled]': 'disabled',
     '[attr.id]': 'dropdownItemId',
   },
@@ -24,6 +24,16 @@ import { RootDropdownService } from './providers/dropdown.service';
   standalone: false,
 })
 export class ClrDropdownItem {
+  /**
+   * The role of the item, `menuitem` unless the item says otherwise.
+   *
+   * An item that represents a setting rather than a command needs one of the checkable menu roles -
+   * `menuitemradio` for one of several exclusive settings, `menuitemcheckbox` for an independent one -
+   * so that assistive technology can announce which of them is applied. Writing the role as a plain
+   * attribute on the item is not enough: the host binding above would win over it.
+   */
+  @Input() role = 'menuitem';
+
   constructor(
     private dropdown: ClrDropdown,
     private _dropdownService: RootDropdownService,
