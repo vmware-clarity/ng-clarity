@@ -10,7 +10,7 @@ import { StoryIndex, StoryIndexV3 } from '@storybook/types';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { browser, density, matrixKey, screenshotExpectOptions, theme } from './helpers/vrt';
+import { density, matrixKey, screenshotExpectOptions, screenshotPathFor, theme } from './helpers/vrt';
 import { screenshotOptions } from './screenshot-options';
 
 const usedScreenshotPaths: string[] = [];
@@ -25,11 +25,14 @@ for (const story of stories) {
   const storyId = story.id;
   const componentParsed = component.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
   const storyName = storyId.replace(`${componentParsed}-`, '');
-  if (story.id.endsWith('--docs') || !component || excludeTakingScreenshot(componentParsed, storyName)) {
+  // Component-level options apply to all of the component's stories; a story-level entry
+  // fills in what the component entry doesn't set.
+  const options = { ...screenshotOptions[storyName], ...screenshotOptions[componentParsed] };
+  if (story.id.endsWith('--docs') || !component || options.exclude) {
     continue;
   }
 
-  const screenshotPath = path.join(browser, componentParsed, `${storyName}-${theme}-${density}.png`);
+  const screenshotPath = screenshotPathFor(componentParsed, storyName);
   usedScreenshotPaths.push(screenshotPath);
 
   test(screenshotPath, async ({ page }) => {
@@ -40,46 +43,25 @@ for (const story of stories) {
       viewMode: 'story',
     });
 
-    const viewport = getPageViewPort(componentParsed, storyName);
-    if (viewport) {
-      await page.setViewportSize(viewport);
+    if (options.viewport) {
+      await page.setViewportSize(options.viewport);
     }
 
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-    for (const selector of getWaitForSelectors(componentParsed, storyName)) {
+    for (const selector of options.waitForSelectors ?? []) {
       await page.locator(selector).waitFor();
     }
 
-    const fullPage = takeFullPageScreenshot(componentParsed, storyName);
+    const fullPage = options.fullPageScreenshot ?? false;
     const screenshotTarget = fullPage ? page : page.locator('body');
 
     await expect(screenshotTarget).toHaveScreenshot(screenshotPath.split(path.sep), {
       fullPage,
       ...screenshotExpectOptions,
-      mask: getMaskSelectors(componentParsed, storyName).map(selector => page.locator(selector)),
+      mask: (options.maskSelectors ?? []).map(selector => page.locator(selector)),
     });
   });
-}
-
-function excludeTakingScreenshot(component: string, storyName: string) {
-  return screenshotOptions[component]?.exclude || screenshotOptions[storyName]?.exclude;
-}
-
-function takeFullPageScreenshot(component: string, storyName: string) {
-  return screenshotOptions[component]?.fullPageScreenshot || screenshotOptions[storyName]?.fullPageScreenshot;
-}
-
-function getPageViewPort(component: string, storyName: string) {
-  return screenshotOptions[component]?.viewport || screenshotOptions[storyName]?.viewport;
-}
-
-function getWaitForSelectors(component: string, storyName: string) {
-  return screenshotOptions[component]?.waitForSelectors || screenshotOptions[storyName]?.waitForSelectors || [];
-}
-
-function getMaskSelectors(component: string, storyName: string) {
-  return screenshotOptions[component]?.maskSelectors || screenshotOptions[storyName]?.maskSelectors || [];
 }
 
 function convertToIndexV3(index: StoryIndex): StoryIndexV3 {

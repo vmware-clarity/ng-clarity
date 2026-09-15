@@ -7,7 +7,7 @@
 
 import { defineConfig, devices } from '@playwright/test';
 
-const browser = process.env['CLARITY_VRT_BROWSER'];
+import { browser } from './vrt';
 
 const deviceMap = {
   chromium: { ...devices['Desktop Chrome'], channel: 'chromium' },

@@ -5,10 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import * as path from 'path';
+
 export const browser = process.env['CLARITY_VRT_BROWSER'];
 export const theme = process.env['CLARITY_VRT_THEME'];
 export const density = process.env['CLARITY_VRT_DENSITY'];
-export const shard = process.env['CLARITY_VRT_SHARD'];
+
+const shard = process.env['CLARITY_VRT_SHARD'];
 
 // The used-screenshot-paths file only needs to be unique per CI job; shard is appended so
 // parallel shards of the same browser/theme/density combo don't write the same filename.
@@ -20,3 +23,11 @@ export const screenshotExpectOptions = {
   caret: 'hide',
   threshold: 0.01,
 } as const;
+
+/**
+ * The snapshot naming convention shared by both suites: {browser}/{group}/{name}-{theme}-{density}.png,
+ * resolved against the snapshotPathTemplate in create-vrt-config.ts.
+ */
+export function screenshotPathFor(group: string, name: string) {
+  return path.join(browser, group, `${name}-${theme}-${density}.png`);
+}

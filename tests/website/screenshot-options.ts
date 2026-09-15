@@ -10,6 +10,8 @@ import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
 /**
  * This config is a rudimentary method of changing how the screenshots are taken for specific
  * website pages, mirroring tests/screenshot-options.ts for the Storybook visual tests.
+ * The available options are documented on the shared ScreenshotOptions type in
+ * tests/helpers/screenshot-options.interface.ts.
  *
  * Each key is a page name plus the view within it, as generated in
  * tests/website/visual-snapshots.spec.ts, e.g.
@@ -19,14 +21,6 @@ import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
  * /documentation/datagrid/code/full => datagrid-code-full
  * /pages/introduction               => introduction
  * /                                 => home
- *
- * Available options:
- * - fullPageScreenshot: pages are captured full page by default; set to false to capture
- *   only the viewport (useful for very long pages where only the top matters).
- * - viewport: override the browser viewport size for the page.
- * - exclude: skip taking a screenshot of the page.
- * - maskSelectors: CSS selectors for regions that render non-deterministically and should
- *   be masked out of the screenshot.
  */
 export const websiteScreenshotOptions: ScreenshotOptions = {
   'accessibility-docs': {

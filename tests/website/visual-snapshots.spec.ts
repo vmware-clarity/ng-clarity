@@ -11,7 +11,7 @@ import * as path from 'path';
 
 import { websiteScreenshotOptions } from './screenshot-options';
 import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
-import { browser, density, matrixKey, screenshotExpectOptions, theme } from '../helpers/vrt';
+import { browser, density, matrixKey, screenshotExpectOptions, screenshotPathFor, theme } from '../helpers/vrt';
 
 const baseUrl = 'http://localhost:8081';
 const defaultViewport = { width: 1280, height: 720 };
@@ -43,8 +43,10 @@ const defaultMaskSelectors = ['img[src*=".gif"]', 'progress:not([value])', 'app-
 // On the datagrid page the clr-mt-* margin utilities are re-asserted with !important: they
 // compete at equal specificity with cds-text margin rules in the lazily injected demo styles,
 // and with the datagrid page's many parallel demo chunks the injection order (and therefore
-// the winning rule) varies between loads. Other pages resolve that order consistently, so the
-// pins are scoped to the datagrid demo to leave their production rendering untouched.
+// the winning rule) varies between loads — a real website bug, visible to users as
+// load-dependent margins. Remove the pins (they mirror the utilities in
+// projects/website/src/styles/components.scss) once the specificity conflict is fixed in the
+// website's styles.
 function growPageWithContentStyles(minHeightPx: number) {
   return `
     html, body { height: auto !important; overflow-x: clip !important; }
@@ -152,20 +154,19 @@ for (const sitePage of pages) {
         continue; // the overview tab links to the base route and is already captured
       }
 
+      // An excluded tab is never navigated to, so its section subpages (discovered from the
+      // tab's own landing page below) are skipped along with it.
       const tab = tabRoute.split('/').pop();
-      if (websiteScreenshotOptions[`${sitePage.name}-${tab}`]?.exclude) {
-        // An excluded tab is never navigated to, so its section subpages (discovered from the
-        // tab's own landing page below) are skipped along with it.
+      if (!(await capturePage(page, sitePage.name, tab, tabRoute))) {
         continue;
       }
-      await capturePage(page, sitePage.name, tab, tabRoute);
 
       // Some tabs split their examples into section subpages linked from the tab's landing
       // page (for example /documentation/datagrid/code/pagination). Capture each link that
       // sits exactly one level below the tab; deeper links are an embedded demo's own
       // navigation states (for example vertical-nav's example pages), not documentation.
       for (const sectionRoute of await discoverSectionRoutes(page, tabRoute)) {
-        await captureView(page, sitePage.name, `${tab}-${sectionRoute.split('/').pop()}`, sectionRoute);
+        await capturePage(page, sitePage.name, `${tab}-${sectionRoute.split('/').pop()}`, sectionRoute);
       }
     }
   });
@@ -181,18 +182,18 @@ async function discoverSectionRoutes(page: Page, tabRoute: string) {
   );
 }
 
-async function captureView(page: Page, pageName: string, view: string, route: string) {
-  if (!websiteScreenshotOptions[`${pageName}-${view}`]?.exclude) {
-    await capturePage(page, pageName, view, route);
-  }
-}
-
+/** Captures one view of a page; returns false without navigating when the view is excluded. */
 async function capturePage(page: Page, pageName: string, view: string, route: string) {
-  // Screenshots are grouped in one directory per page, mirroring the Storybook suite's
-  // one directory per component.
   const options: ScreenshotOptions[string] =
     websiteScreenshotOptions[view === 'overview' ? pageName : `${pageName}-${view}`] ?? {};
-  const screenshotPath = path.join(browser, 'website', pageName, `${view}-${theme}-${density}.png`);
+
+  if (options.exclude) {
+    return false;
+  }
+
+  // Screenshots are grouped in one directory per page, mirroring the Storybook suite's
+  // one directory per component.
+  const screenshotPath = screenshotPathFor(path.join('website', pageName), view);
   fs.appendFileSync(usedScreenshotsFilePath, screenshotPath + '\n');
 
   const viewport = options.viewport ?? defaultViewport;
@@ -200,7 +201,18 @@ async function capturePage(page: Page, pageName: string, view: string, route: st
   await page.goto(`${baseUrl}${route}`);
   // The documentation demos are lazy-loaded modules; wait until all chunks have loaded so the
   // page has its final content (and therefore its final height) before capturing.
-  await waitForQuietNetwork(page);
+  await waitForQuietNetwork();
+
+  // A route that redirects to another page would be captured under the requested page's
+  // name, silently duplicating the target page's screenshots; fail loudly so the route gets
+  // an explicit exclude entry instead (see 'accessibility-docs' in the screenshot options).
+  // Redirects within the route are fine — a tab with section subpages redirects to its first
+  // section (for example vertical-nav's code tab), and that is what the tab displays.
+  const landedPath = new URL(page.url()).pathname;
+  if (landedPath !== route && !landedPath.startsWith(`${route}/`)) {
+    throw new Error(`${route} redirected to ${landedPath}; exclude it or capture it under its own name`);
+  }
+
   await page.addStyleTag({ content: growPageWithContentStyles(viewport.height) });
   await page.evaluate(() => document.fonts.ready);
 
@@ -216,6 +228,8 @@ async function capturePage(page: Page, pageName: string, view: string, route: st
     ...screenshotExpectOptions,
     mask: [...defaultMaskSelectors, ...(options.maskSelectors ?? [])].map(selector => page.locator(selector)),
   });
+
+  return true;
 }
 
 // How long the network must stay free of in-flight requests to count as quiet (the same
@@ -231,15 +245,18 @@ const networkQuietCheckIntervalMs = 50;
  * datagrid documentation) it can fire before 'load' and never fire again, hanging the wait
  * even though the network has long gone quiet.
  */
-async function waitForQuietNetwork(page: Page) {
+async function waitForQuietNetwork() {
   const deadline = Date.now() + networkQuietTimeoutMs;
+  let quietForMs = 0;
 
-  for (let quietForMs = 0; quietForMs < networkQuietMs;) {
+  while (quietForMs < networkQuietMs) {
     if (Date.now() > deadline) {
       throw new Error(`network requests still in flight after ${networkQuietTimeoutMs}ms: ${inFlightRequests.size}`);
     }
 
-    await page.waitForTimeout(networkQuietCheckIntervalMs);
+    // A plain timer, not page.waitForTimeout: the in-flight set lives in this process, so
+    // there is no reason to make a browser round trip on every check.
+    await new Promise(resolve => setTimeout(resolve, networkQuietCheckIntervalMs));
     quietForMs = inFlightRequests.size > 0 ? 0 : quietForMs + networkQuietCheckIntervalMs;
   }
 }
