@@ -103,13 +103,7 @@
           column offers one way to reach its filter rather than two.
         -->
         <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
-          @if (
-            column.sortComparator ||
-            column.sortAndFilterByField ||
-            column.pinnable ||
-            column.stringFilter ||
-            column.filter
-          ) {
+          @if (column.sortComparator || column.sortAndFilterByField || column.pinnable) {
             <div class="dropdown-divider" role="separator"></div>
           }
           <!--

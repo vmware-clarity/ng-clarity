@@ -753,6 +753,64 @@ describe('DatagridComponent', () => {
           this.columnsDefs.length
         );
       });
+
+      // The divider in front of the move actions only belongs there when the menu rendered something
+      // above it. A filter does not: it keeps its toggle in the header, and the menu drops its filter
+      // action in exchange - so a column that only has a filter used to open on a separator.
+      describe('divider in front of the move actions', () => {
+        // The menu is rendered into a CDK overlay attached to document.body, outside the fixture, so
+        // it has to be read through plain document queries once it is open.
+        function menuRoles(fixture: ComponentFixture<DatagridHostComponent>): string[] {
+          fixture.debugElement.query(By.css('.datagrid-column-actions-toggle')).nativeElement.click();
+          fixture.detectChanges();
+
+          const roles = Array.from(document.querySelector('.dropdown-menu').children).map(item =>
+            item.getAttribute('role')
+          );
+
+          fixture.debugElement.query(By.css('.datagrid-column-actions-toggle')).nativeElement.click();
+          fixture.detectChanges();
+
+          return roles;
+        }
+
+        function openMenuFor(this: DatagridSpecContext, column: ColumnDefinition<any>): string[] {
+          this.component.enableColumnActions = true;
+          this.component.columnsDefs = [column];
+          this.fixture.detectChanges(false);
+
+          return menuRoles(this.fixture);
+        }
+
+        it('is left out on a column that only has a filter', function (this: DatagridSpecContext) {
+          const roles = openMenuFor.call(this, {
+            displayName: 'Only filter',
+            field: 'name',
+            stringFilter: { accepts: () => true },
+          } as ColumnDefinition<any>);
+
+          expect(roles).toEqual(['menuitem', 'menuitem']);
+        });
+
+        it('separates the sort actions from the move actions', function (this: DatagridSpecContext) {
+          const roles = openMenuFor.call(this, {
+            displayName: 'Sortable',
+            sortAndFilterByField: 'name',
+          } as ColumnDefinition<any>);
+
+          expect(roles).toEqual(['menuitemradio', 'menuitemradio', 'separator', 'menuitem', 'menuitem']);
+        });
+
+        it('separates the pin action from the move actions', function (this: DatagridSpecContext) {
+          const roles = openMenuFor.call(this, {
+            displayName: 'Pinnable',
+            field: 'name',
+            pinnable: true,
+          } as ColumnDefinition<any>);
+
+          expect(roles).toEqual(['menuitem', 'separator', 'menuitem', 'menuitem']);
+        });
+      });
     });
 
     describe('pin toggle in the column actions menu', () => {
