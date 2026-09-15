@@ -8,16 +8,29 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrSelectedState } from './selected-state.enum';
-import { TreeNodeModel } from './tree-node.model';
+import { TreeNodeExpander, TreeNodeModel } from './tree-node.model';
 
 class TestModel extends TreeNodeModel<string> {
-  children: TestModel[];
+  children: TestModel[] = [];
   parent: TestModel | null;
 
   constructor(name: string, parent: TestModel) {
     super();
     this.model = name;
     this.parent = parent;
+  }
+}
+
+class TestExpander implements TreeNodeExpander {
+  expanded = false;
+  descendantsCollapsedCount = 0;
+
+  setExpandedInBulk(expanded: boolean) {
+    this.expanded = expanded;
+  }
+
+  onDescendantsCollapsed() {
+    this.descendantsCollapsedCount++;
   }
 }
 
@@ -167,6 +180,66 @@ export default function (): void {
       root.disabled = false;
       expect(root.disabled).toBeFalse();
       expect(child.disabled).toBeTrue();
+    });
+
+    describe('bulk expansion', function () {
+      let expanders: Map<TestModel, TestExpander>;
+
+      beforeEach(function () {
+        expanders = new Map();
+        [root, child, ...root.children, ...child.children].forEach(model => {
+          const expander = new TestExpander();
+          expanders.set(model, expander);
+          model._expander = expander;
+        });
+      });
+
+      it('expands or collapses a node and every known descendant', function () {
+        root.setExpandedRecursive(true);
+        expanders.forEach(expander => expect(expander.expanded).toBeTrue());
+        child.setExpandedRecursive(false);
+        expect(expanders.get(root).expanded).toBeTrue();
+        expect(expanders.get(child).expanded).toBeFalse();
+        child.children.forEach(c => expect(expanders.get(c).expanded).toBeFalse());
+      });
+
+      it('leaves disabled nodes and their descendants untouched', function () {
+        child.disabled = true;
+        root.setExpandedRecursive(true);
+        expect(expanders.get(root).expanded).toBeTrue();
+        expect(expanders.get(child).expanded).toBeFalse();
+        child.children.forEach(c => expect(expanders.get(c).expanded).toBeFalse());
+      });
+
+      it('knows whether a node is inside a subtree expected to be expanded', function () {
+        expect(child.children[0].isInExpandedSubtree()).toBeFalse();
+        child.descendantsExpanded = true;
+        expect(child.isInExpandedSubtree()).toBeTrue();
+        expect(child.children[0].isInExpandedSubtree()).toBeTrue();
+        expect(root.isInExpandedSubtree()).toBeFalse();
+        expect(root.children[1].isInExpandedSubtree()).toBeFalse();
+      });
+
+      it('clears the descendantsExpanded flag of every ancestor when a node collapses', function () {
+        root.descendantsExpanded = true;
+        child.descendantsExpanded = true;
+        child.children[0]._clearDescendantsExpanded();
+        expect(root.descendantsExpanded).toBeFalse();
+        expect(child.descendantsExpanded).toBeFalse();
+        expect(expanders.get(root).descendantsCollapsedCount).toBe(1);
+        expect(expanders.get(child).descendantsCollapsedCount).toBe(1);
+        expect(expanders.get(child.children[0]).descendantsCollapsedCount).toBe(0);
+        // Only notifies once
+        child.children[0]._clearDescendantsExpanded();
+        expect(expanders.get(root).descendantsCollapsedCount).toBe(1);
+      });
+
+      it('forgets its expander on destroy', function () {
+        const model = new TestModel('X', null);
+        model._expander = new TestExpander();
+        model.destroy();
+        expect(model._expander).toBeNull();
+      });
     });
   });
 }

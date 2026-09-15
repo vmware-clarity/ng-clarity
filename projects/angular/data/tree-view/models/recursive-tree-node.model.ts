@@ -41,6 +41,10 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     this._children = value;
   }
 
+  override get loadedChildren(): RecursiveTreeNodeModel<T>[] {
+    return this._children || [];
+  }
+
   override destroy() {
     if (this.subscription) {
       this.subscription.unsubscribe();

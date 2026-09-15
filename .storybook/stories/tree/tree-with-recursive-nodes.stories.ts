@@ -70,15 +70,18 @@ export const RecursiveNodesExpandAll: StoryObj = {
   },
 };
 
-const RecursiveSubtreeExpandAllTemplate: StoryFn = args => ({
+const RecursiveExpandDescendantsTemplate: StoryFn = args => ({
   template: `
     <p cds-text="body">
       The
       <code>src</code>
-      subtree is fully expanded through the node-level [clrExpandAll] input.
+      subtree is fully expanded through the node-level [clrExpandDescendants] input.
     </p>
     <clr-tree>
-      <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren" [clrExpandAll]="file.name === 'src'">
+      <clr-tree-node
+        *clrRecursiveFor="let file of files; getChildren: getChildren"
+        [clrExpandDescendants]="file.name === 'src'"
+      >
         {{ file.name }}
       </clr-tree-node>
     </clr-tree>
@@ -86,6 +89,6 @@ const RecursiveSubtreeExpandAllTemplate: StoryFn = args => ({
   props: args,
 });
 
-export const RecursiveNodesSubtreeExpandAll: StoryObj = {
-  render: RecursiveSubtreeExpandAllTemplate,
+export const RecursiveNodesExpandDescendants: StoryObj = {
+  render: RecursiveExpandDescendantsTemplate,
 };

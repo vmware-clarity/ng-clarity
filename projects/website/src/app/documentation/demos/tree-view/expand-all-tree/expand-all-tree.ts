@@ -25,7 +25,7 @@ const EXAMPLE_HTML = `
       <clr-tree-node>Palo Alto, CA (Headquarters)</clr-tree-node>
       <clr-tree-node>Seattle, WA</clr-tree-node>
     </clr-tree-node>
-    <clr-tree-node [(clrExpandAll)]="europeAllExpanded">
+    <clr-tree-node [(clrExpandDescendants)]="europeExpanded">
       Europe
       <clr-tree-node>
         UK
@@ -53,7 +53,7 @@ import { ClrTreeViewModule } from '@clr/angular';
 })
 export class ExampleComponent {
   allExpanded = false;
-  europeAllExpanded = true;
+  europeExpanded = true;
 }
 `;
 
@@ -68,5 +68,5 @@ export class ExpandAllTreeDemo {
   exampleTs = EXAMPLE_TS;
 
   allExpanded = false;
-  europeAllExpanded = true;
+  europeExpanded = true;
 }

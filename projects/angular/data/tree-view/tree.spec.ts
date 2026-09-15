@@ -59,29 +59,39 @@ class TreeTypeAhead {}
 
 @Component({
   template: `
-    <clr-tree #tree [(clrExpandAll)]="allExpanded">
-      <clr-tree-node #california [(clrExpanded)]="californiaExpanded">
-        California
-        <clr-tree-node #sanFrancisco>
-          San Francisco
-          <clr-tree-node>Mission District</clr-tree-node>
+    @if (hasTree) {
+      <clr-tree #tree [(clrExpandAll)]="allExpanded">
+        <clr-tree-node #california [(clrExpanded)]="californiaExpanded">
+          California
+          <clr-tree-node #sanFrancisco>
+            San Francisco
+            <clr-tree-node>Mission District</clr-tree-node>
+          </clr-tree-node>
+          <clr-tree-node #losAngeles [(clrExpanded)]="losAngelesExpanded">Los Angeles</clr-tree-node>
         </clr-tree-node>
-        <clr-tree-node #losAngeles>Los Angeles</clr-tree-node>
-      </clr-tree-node>
-      <clr-tree-node #washington [(clrExpandAll)]="washingtonAllExpanded">
-        Washington
-        <clr-tree-node #seattle>
-          Seattle
-          <clr-tree-node>Capitol Hill</clr-tree-node>
+        <clr-tree-node #washington [(clrExpandDescendants)]="washingtonDescendantsExpanded">
+          Washington
+          <clr-tree-node #seattle>
+            Seattle
+            <clr-tree-node>Capitol Hill</clr-tree-node>
+          </clr-tree-node>
         </clr-tree-node>
-      </clr-tree-node>
-      @if (hasVermont) {
-        <clr-tree-node #vermont>
-          Vermont
-          <clr-tree-node>Burlington</clr-tree-node>
+        <clr-tree-node #oregon [clrDisabled]="true">
+          Oregon
+          <clr-tree-node #portland>
+            Portland
+            <clr-tree-node>Pearl District</clr-tree-node>
+          </clr-tree-node>
         </clr-tree-node>
-      }
-    </clr-tree>
+        @if (hasVermont) {
+          <clr-tree-node #vermont>
+            Vermont
+            <clr-tree-node>Burlington</clr-tree-node>
+          </clr-tree-node>
+          <clr-tree-node #maine [(clrExpanded)]="maineExpanded">Maine</clr-tree-node>
+        }
+      </clr-tree>
+    }
   `,
   standalone: false,
 })
@@ -92,11 +102,17 @@ class ExpandAllTestComponent {
   @ViewChild('losAngeles') losAngeles: ClrTreeNode<void>;
   @ViewChild('washington') washington: ClrTreeNode<void>;
   @ViewChild('seattle') seattle: ClrTreeNode<void>;
+  @ViewChild('oregon') oregon: ClrTreeNode<void>;
+  @ViewChild('portland') portland: ClrTreeNode<void>;
   @ViewChild('vermont') vermont: ClrTreeNode<void>;
+  @ViewChild('maine') maine: ClrTreeNode<void>;
 
+  hasTree = true;
   allExpanded = false;
-  washingtonAllExpanded = false;
+  washingtonDescendantsExpanded = false;
   californiaExpanded = false;
+  losAngelesExpanded = false;
+  maineExpanded = false;
   hasVermont = false;
 }
 
@@ -251,12 +267,11 @@ export default function (): void {
       return context.fixture.debugElement.queryAll(By.directive(ClrTreeNode)).map(de => de.componentInstance);
     }
 
-    async function settle(context: ExpandAllContext) {
-      await context.fixture.whenStable();
-      context.detectChanges();
+    function expandedNodes(context: ExpandAllContext): number {
+      return context.clarityElement.querySelectorAll('[aria-expanded="true"]').length;
     }
 
-    it('expandAll() expands every expandable node in a single pass and leaves the leaves alone', function (this: ExpandAllContext) {
+    it('expandAll() expands every expandable node and leaves the leaves alone', function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
       this.detectChanges();
       expect(this.testComponent.california.expanded).toBeTrue();
@@ -265,7 +280,7 @@ export default function (): void {
       expect(this.testComponent.seattle.expanded).toBeTrue();
       expect(this.testComponent.losAngeles.expanded).toBeFalse();
       expect(this.testComponent.sanFrancisco._model.expanded).toBeTrue();
-      expect(this.clarityElement.querySelectorAll('[aria-expanded="true"]').length).toBe(4);
+      expect(expandedNodes(this)).toBe(4);
     });
 
     it('collapseAll() collapses every node', function (this: ExpandAllContext) {
@@ -274,60 +289,95 @@ export default function (): void {
       this.testComponent.tree.collapseAll();
       this.detectChanges();
       expect(allNodes(this).every(node => !node.expanded)).toBeTrue();
-      expect(this.clarityElement.querySelectorAll('[aria-expanded="true"]').length).toBe(0);
+      expect(expandedNodes(this)).toBe(0);
     });
 
-    it('keeps the two-way bindings of the nodes in sync', async function (this: ExpandAllContext) {
+    it('leaves disabled nodes and their children untouched', function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
-      await settle(this);
+      this.detectChanges();
+      expect(this.testComponent.oregon.expanded).toBeFalse();
+      expect(this.testComponent.portland.expanded).toBeFalse();
+
+      this.testComponent.oregon.disabled = false;
+      this.testComponent.oregon.expanded = true;
+      this.testComponent.portland.expanded = true;
+      this.testComponent.oregon.disabled = true;
+      this.testComponent.tree.collapseAll();
+      this.detectChanges();
+      expect(this.testComponent.oregon.expanded).toBeTrue();
+      expect(this.testComponent.portland.expanded).toBeTrue();
+    });
+
+    it('keeps the two-way bindings of the nodes in sync', function (this: ExpandAllContext) {
+      this.testComponent.tree.expandAll();
       expect(this.testComponent.californiaExpanded).toBeTrue();
       this.testComponent.tree.collapseAll();
-      await settle(this);
       expect(this.testComponent.californiaExpanded).toBeFalse();
     });
 
-    it('emits clrExpandAllChange on expandAll() and collapseAll()', async function (this: ExpandAllContext) {
+    it('emits clrExpandAllChange on expandAll() and collapseAll()', function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
-      await settle(this);
       expect(this.testComponent.allExpanded).toBeTrue();
       this.testComponent.tree.collapseAll();
-      await settle(this);
       expect(this.testComponent.allExpanded).toBeFalse();
     });
 
-    it('emits clrExpandAllChange false as soon as any node collapses', async function (this: ExpandAllContext) {
+    it('does not emit clrExpandAllChange when nothing changes', function (this: ExpandAllContext) {
+      const spy = spyOn(this.testComponent.tree.expandAllChange, 'emit');
+      this.testComponent.tree.collapseAll();
+      expect(spy).not.toHaveBeenCalled();
       this.testComponent.tree.expandAll();
-      await settle(this);
+      this.testComponent.tree.expandAll();
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('emits clrExpandAllChange false as soon as any node collapses', function (this: ExpandAllContext) {
+      this.testComponent.tree.expandAll();
       expect(this.testComponent.allExpanded).toBeTrue();
       this.testComponent.seattle.expanded = false;
-      await settle(this);
       expect(this.testComponent.allExpanded).toBeFalse();
-      expect(this.getClarityProvider(TreeFeaturesService).expandedScopes.size).toBe(0);
+      expect(this.testComponent.tree.allExpanded).toBeFalse();
       // Other nodes are left untouched
       expect(this.testComponent.california.expanded).toBeTrue();
     });
 
-    it('does not emit clrExpandAllChange when a node collapses without a previous expand all', async function (this: ExpandAllContext) {
+    it('does not emit clrExpandAllChange when a node collapses without a previous expand all', function (this: ExpandAllContext) {
       const spy = spyOn(this.testComponent.tree.expandAllChange, 'emit');
       this.testComponent.california.expanded = true;
       this.testComponent.california.expanded = false;
-      await settle(this);
       expect(spy).not.toHaveBeenCalled();
     });
 
-    it('offers a [(clrExpandAll)] two-way binding on the tree', async function (this: ExpandAllContext) {
+    it('offers a [(clrExpandAll)] two-way binding on the tree', function (this: ExpandAllContext) {
       this.testComponent.allExpanded = true;
       this.detectChanges();
-      // Existing nodes are only flipped once the change detection pass that set the input is over
-      await settle(this);
       expect(this.testComponent.california.expanded).toBeTrue();
       expect(this.testComponent.seattle.expanded).toBeTrue();
       expect(this.testComponent.tree.allExpanded).toBeTrue();
 
       this.testComponent.allExpanded = false;
       this.detectChanges();
-      await settle(this);
       expect(allNodes(this).every(node => !node.expanded)).toBeTrue();
+    });
+
+    it('keeps the tree and the binding consistent when a node is collapsed in the same pass', function (this: ExpandAllContext) {
+      this.testComponent.tree.expandAll();
+      this.detectChanges();
+      this.testComponent.allExpanded = false;
+      this.testComponent.californiaExpanded = false;
+      this.detectChanges();
+      this.testComponent.allExpanded = true;
+      this.testComponent.californiaExpanded = false;
+      this.detectChanges();
+      expect(this.testComponent.california.expanded).toBe(this.testComponent.californiaExpanded);
+      expect(this.testComponent.tree.allExpanded).toBe(this.testComponent.allExpanded);
+      expect(this.testComponent.tree.allExpanded).toBeTrue();
+    });
+
+    it('does not throw when the tree is destroyed right after the input is set', function (this: ExpandAllContext) {
+      this.testComponent.allExpanded = true;
+      this.testComponent.hasTree = false;
+      expect(() => this.detectChanges()).not.toThrow();
     });
 
     it('expands nodes added to the tree while everything is expanded', function (this: ExpandAllContext) {
@@ -339,6 +389,18 @@ export default function (): void {
       expect(this.testComponent.vermont._model.expanded).toBeTrue();
     });
 
+    it('leaves leaves added to the tree while everything is expanded alone', function (this: ExpandAllContext) {
+      this.testComponent.tree.expandAll();
+      this.detectChanges();
+      this.testComponent.hasVermont = true;
+      this.detectChanges();
+      expect(this.testComponent.maine.expanded).toBeFalse();
+      expect(this.testComponent.maineExpanded).toBeFalse();
+      const spy = spyOn(this.testComponent.maine.expandedChange, 'emit');
+      this.testComponent.tree.collapseAll();
+      expect(spy).not.toHaveBeenCalled();
+    });
+
     it('does not expand nodes added to the tree after a node was collapsed', function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
       this.detectChanges();
@@ -348,54 +410,52 @@ export default function (): void {
       expect(this.testComponent.vermont.expanded).toBeFalse();
     });
 
-    it('expandAll() on a node only expands its own subtree', async function (this: ExpandAllContext) {
-      this.testComponent.washington.expandAll();
-      await settle(this);
+    it('expandDescendants() on a node only expands its own subtree', function (this: ExpandAllContext) {
+      this.testComponent.washington.expandDescendants();
       expect(this.testComponent.washington.expanded).toBeTrue();
       expect(this.testComponent.seattle.expanded).toBeTrue();
       expect(this.testComponent.california.expanded).toBeFalse();
       expect(this.testComponent.sanFrancisco.expanded).toBeFalse();
-      expect(this.testComponent.washingtonAllExpanded).toBeTrue();
+      expect(this.testComponent.washingtonDescendantsExpanded).toBeTrue();
       expect(this.testComponent.allExpanded).toBeFalse();
 
-      this.testComponent.washington.collapseAll();
-      await settle(this);
+      this.testComponent.washington.collapseDescendants();
       expect(this.testComponent.washington.expanded).toBeFalse();
       expect(this.testComponent.seattle.expanded).toBeFalse();
-      expect(this.testComponent.washingtonAllExpanded).toBeFalse();
+      expect(this.testComponent.washingtonDescendantsExpanded).toBeFalse();
     });
 
-    it('offers a [(clrExpandAll)] two-way binding on a node', async function (this: ExpandAllContext) {
-      this.testComponent.washingtonAllExpanded = true;
+    it('offers a [(clrExpandDescendants)] two-way binding on a node', function (this: ExpandAllContext) {
+      this.testComponent.washingtonDescendantsExpanded = true;
       this.detectChanges();
-      await settle(this);
       expect(this.testComponent.washington.expanded).toBeTrue();
       expect(this.testComponent.seattle.expanded).toBeTrue();
       expect(this.testComponent.california.expanded).toBeFalse();
 
       // Collapsing a descendant resets the binding
       this.testComponent.seattle.expanded = false;
-      await settle(this);
-      expect(this.testComponent.washingtonAllExpanded).toBeFalse();
+      expect(this.testComponent.washingtonDescendantsExpanded).toBeFalse();
       expect(this.testComponent.washington.expanded).toBeTrue();
     });
 
-    it('clears a node scope when the tree collapses', async function (this: ExpandAllContext) {
-      this.testComponent.washington.expandAll();
-      await settle(this);
+    it('resets the descendants binding of a node when the tree collapses', function (this: ExpandAllContext) {
+      this.testComponent.washington.expandDescendants();
       this.testComponent.tree.collapseAll();
-      await settle(this);
-      expect(this.testComponent.washingtonAllExpanded).toBeFalse();
-      expect(this.getClarityProvider(TreeFeaturesService).expandedScopes.size).toBe(0);
+      expect(this.testComponent.washingtonDescendantsExpanded).toBeFalse();
+      expect(this.testComponent.washington.descendantsExpanded).toBeFalse();
     });
 
-    it('disables the animations while a bulk change is rendered', async function (this: ExpandAllContext) {
-      const featuresService = this.getClarityProvider(TreeFeaturesService);
-      expect(featuresService.animationsDisabled).toBeFalse();
+    it('skips the animation for bulk changes only', function (this: ExpandAllContext) {
+      const node = this.testComponent.california;
+      expect(node.childrenAnimationState).toBe('collapsed');
       this.testComponent.tree.expandAll();
-      expect(featuresService.animationsDisabled).toBeTrue();
-      await settle(this);
-      expect(featuresService.animationsDisabled).toBeFalse();
+      expect(node.childrenAnimationState).toBe('expandedInstant');
+      node.expandService.toggle();
+      expect(node.childrenAnimationState).toBe('collapsed');
+      node.expandService.toggle();
+      expect(node.childrenAnimationState).toBe('expanded');
+      this.testComponent.tree.collapseAll();
+      expect(node.childrenAnimationState).toBe('collapsedInstant');
     });
   });
 
@@ -439,6 +499,16 @@ export default function (): void {
       nodeByName(this, 'AA').expanded = true;
       await settleLoading(this);
       expect(nodeByName(this, 'AAA').expanded).toBeFalse();
+    });
+
+    it('cascades a subtree through lazy-loaded levels', async function (this: LazyContext) {
+      nodeByName(this, 'A').expanded = true;
+      await settleLoading(this);
+      nodeByName(this, 'AA').expandDescendants();
+      await settleLoading(this);
+      expect(nodeByName(this, 'AAA').expanded).toBeTrue();
+      expect(nodeByName(this, 'AAAA')).toBeTruthy();
+      expect(this.testComponent.tree.allExpanded).toBeFalse();
     });
   });
 }

@@ -7,12 +7,10 @@
 
 import {
   AfterContentInit,
-  ChangeDetectorRef,
   Component,
   ContentChildren,
   ElementRef,
   EventEmitter,
-  Injector,
   Input,
   NgZone,
   OnDestroy,
@@ -22,6 +20,7 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
+import { TreeNodeModel } from './models/tree-node.model';
 import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
@@ -43,14 +42,13 @@ import { ClrTreeNode } from './tree-node';
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
   /**
-   * Emits `false` as soon as any node of the tree gets collapsed after an expand all,
-   * and `true` when all nodes get expanded through the `expandAll()` method.
+   * Emits `true` when all nodes get expanded and `false` as soon as any node gets collapsed afterwards.
    */
-  @Output('clrExpandAllChange') expandAllChange = new EventEmitter<boolean>(true);
+  @Output('clrExpandAllChange') expandAllChange = new EventEmitter<boolean>();
 
   @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
 
-  private _allExpanded = false;
+  private rootModels: TreeNodeModel<T>[] = [];
   private subscriptions: Subscription[] = [];
   private _isMultiSelectable = false;
 
@@ -59,9 +57,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     private focusManagerService: TreeFocusManagerService<T>,
     private renderer: Renderer2,
     private el: ElementRef<HTMLElement>,
-    ngZone: NgZone,
-    private injector: Injector,
-    private cdr: ChangeDetectorRef
+    ngZone: NgZone
   ) {
     const subscription = ngZone.runOutsideAngular(() =>
       fromEvent(el.nativeElement, 'focusin').subscribe((event: FocusEvent) => {
@@ -76,15 +72,9 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
       })
     );
 
-    this.subscriptions.push(
-      subscription,
-      featuresService.expandedScopeCleared.subscribe(scope => {
-        if (scope === null && this._allExpanded) {
-          this._allExpanded = false;
-          this.expandAllChange.emit(false);
-        }
-      })
-    );
+    this.subscriptions.push(subscription);
+
+    featuresService._onAllExpandedCleared = () => this.expandAllChange.emit(false);
   }
 
   @Input('clrLazy')
@@ -93,24 +83,17 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
   }
 
   /**
-   * Two-way binding to expand or collapse every node of the tree at once.
-   * Nodes added to the tree later on, including lazy-loaded children, come in expanded while this is `true`.
+   * Two-way binding to expand or collapse every node of the tree at once, see `expandAll()`.
    */
   @Input('clrExpandAll')
   get allExpanded(): boolean {
-    return this._allExpanded;
+    return this.featuresService.allExpanded;
   }
   set allExpanded(value: boolean) {
     value = !!value;
-    if (value === this._allExpanded) {
-      return;
+    if (value !== this.featuresService.allExpanded) {
+      this.setAllExpanded(value);
     }
-    this._allExpanded = value;
-    // The scope is stored right away so that nodes initializing in this very change detection pass pick it up,
-    // but existing nodes are only updated once the pass is over: flipping them (and their own two-way bindings)
-    // in the middle of it would trigger ExpressionChangedAfterItHasBeenChecked errors in the application.
-    this.featuresService.setExpandedScope(null, value);
-    Promise.resolve().then(() => this.requestExpandAll(value));
   }
 
   get isMultiSelectable() {
@@ -133,29 +116,28 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
   }
 
   /**
-   * Expands every expandable node of the tree, in a single change detection pass and without animations.
+   * Expands every expandable node of the tree, without animation. Disabled nodes are left untouched.
+   * Nodes added to the tree afterwards, including lazy-loaded children, come in expanded until any node gets collapsed.
    */
   expandAll() {
     this.setAllExpanded(true);
   }
 
   /**
-   * Collapses every node of the tree, in a single change detection pass and without animations.
+   * Collapses every node of the tree, without animation. Disabled nodes are left untouched.
    */
   collapseAll() {
     this.setAllExpanded(false);
   }
 
   private setAllExpanded(expanded: boolean) {
-    if (this._allExpanded !== expanded) {
-      this._allExpanded = expanded;
+    const changed = this.featuresService.allExpanded !== expanded;
+    // Set before walking the tree, so that the collapsing nodes don't report the change themselves.
+    this.featuresService.allExpanded = expanded;
+    this.rootModels.forEach(model => model.setExpandedRecursive(expanded));
+    if (changed) {
       this.expandAllChange.emit(expanded);
     }
-    this.requestExpandAll(expanded);
-  }
-
-  private requestExpandAll(expanded: boolean) {
-    this.featuresService.requestExpandAll(null, expanded, this.injector, this.cdr);
   }
 
   private setMultiSelectable() {
@@ -172,6 +154,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // if node has no parent, it's a root node
     // for recursive tree, this.rootNodes registers also nested children
     // so we have to use filter to extract the ones that are truly root nodes
-    this.focusManagerService.rootNodeModels = this.rootNodes.map(node => node._model).filter(node => !node.parent);
+    this.rootModels = this.rootNodes.map(node => node._model).filter(node => !node.parent);
+    this.focusManagerService.rootNodeModels = this.rootModels;
   }
 }
