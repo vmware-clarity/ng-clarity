@@ -1097,6 +1097,8 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
     // (undocumented)
+    protected readonly animatesCollapse = false;
+    // (undocumented)
     disabled: boolean;
     explicitHeadingLevel: HeadingLevel;
     // (undocumented)
@@ -1304,7 +1306,9 @@ export interface ClrAnimationReferenceMetadata {
 // @public
 export class ClrAnimationsService {
     readonly disabled: boolean;
+    trackInitialRender(injector: Injector): ClrInitialRenderState;
     whenComplete(element: Element): Promise<void>;
+    whenCompleteAfterRender(getElement: () => Element | null | undefined, injector: Injector): Promise<void>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAnimationsService, never>;
     // (undocumented)
@@ -4055,6 +4059,11 @@ export class ClrIfSuccess extends AbstractIfState {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfSuccess, [{ optional: true; }, null, null]>;
 }
 
+// @public
+export interface ClrInitialRenderState {
+    readonly done: boolean;
+}
+
 // @public (undocumented)
 export class ClrInput extends WrappedFormControl<ClrInputContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
@@ -4264,11 +4273,11 @@ export class ClrLoadingButton implements LoadingListener, AfterViewInit {
     buttonState: typeof ClrLoadingState;
     // (undocumented)
     clrLoadingChange: EventEmitter<ClrLoadingState>;
-    protected get contentEnterClass(): string;
     // (undocumented)
     disabled: boolean;
     // (undocumented)
     el: ElementRef<HTMLButtonElement>;
+    protected get enterClass(): string;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -6868,6 +6877,7 @@ export const COLLAPSIBLE_PANEL_EXPANDING_CLASS = "clr-collapsible-panel-expandin
 // @public
 export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    protected readonly animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
     // (undocumented)
@@ -6876,6 +6886,12 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     get contentEnterClass(): string;
     // (undocumented)
     abstract get disabled(): boolean;
+    // (undocumented)
+    abstract getContentId(id: string): string;
+    // (undocumented)
+    abstract getHeaderId(id: string): string;
+    // (undocumented)
+    abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
     // (undocumented)
     protected handlePanelInputChanges(changes: SimpleChanges): void;
     // (undocumented)

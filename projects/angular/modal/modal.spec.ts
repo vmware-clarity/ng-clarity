@@ -12,6 +12,7 @@ import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
 import { ClrModal } from './modal';
+import { ModalStackService } from './modal-stack.service';
 import { ClrModalModule } from './modal.module';
 
 @Component({
@@ -130,6 +131,26 @@ describe('Modal', () => {
     spyOn(modal._openChanged, 'emit');
     modal.open();
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
+  });
+
+  it('emits clrModalOpenChange only once when the two-way binding propagates the closing', async () => {
+    // Mimics an application: close() runs from an event handler, the notification microtask updates the
+    // two-way bound property and only then does change detection see the input flip to false.
+    spyOn(modal._openChanged, 'emit').and.callThrough();
+    modal.close();
+    await delay();
+    expect(fixture.componentInstance.opened).toBe(false);
+
+    fixture.detectChanges();
+    await delay();
+    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+  });
+
+  it('stops tracking the modal in the modal stack when destroyed while open', () => {
+    const modalStackService = TestBed.inject(ModalStackService);
+    spyOn(modalStackService, 'trackModalClose');
+    fixture.destroy();
+    expect(modalStackService.trackModalClose).toHaveBeenCalledWith(modal);
   });
 
   it('emits clrModalOpenChange once the modal has been removed after closing', async () => {

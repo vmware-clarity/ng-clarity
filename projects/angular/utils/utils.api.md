@@ -204,7 +204,9 @@ export interface ClrAnimationReferenceMetadata {
 // @public
 export class ClrAnimationsService {
     readonly disabled: boolean;
+    trackInitialRender(injector: Injector): ClrInitialRenderState;
     whenComplete(element: Element): Promise<void>;
+    whenCompleteAfterRender(getElement: () => Element | null | undefined, injector: Injector): Promise<void>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAnimationsService, never>;
     // (undocumented)
@@ -585,6 +587,11 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": { "alias": "clrIfExpanded"; "required": false; }; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
+}
+
+// @public
+export interface ClrInitialRenderState {
+    readonly done: boolean;
 }
 
 // @public (undocumented)

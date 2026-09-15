@@ -23,6 +23,7 @@ export const COLLAPSIBLE_PANEL_EXPANDING_CLASS = "clr-collapsible-panel-expandin
 // @public
 export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    protected readonly animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
     // (undocumented)
@@ -31,6 +32,12 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     get contentEnterClass(): string;
     // (undocumented)
     abstract get disabled(): boolean;
+    // (undocumented)
+    abstract getContentId(id: string): string;
+    // (undocumented)
+    abstract getHeaderId(id: string): string;
+    // (undocumented)
+    abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
     // (undocumented)
     protected handlePanelInputChanges(changes: SimpleChanges): void;
     // (undocumented)

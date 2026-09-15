@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { Injector } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { delay } from '@clr/angular/testing';
 
@@ -33,12 +34,39 @@ describe('ClrAnimationsService', () => {
     });
   });
 
+  describe('with animations disabled (TestBed default)', () => {
+    it('whenCompleteAfterRender resolves without waiting for a render', async () => {
+      await expectAsync(
+        TestBed.inject(ClrAnimationsService).whenCompleteAfterRender(() => element, TestBed.inject(Injector))
+      ).toBeResolved();
+    });
+  });
+
   describe('with animations enabled', () => {
     let service: ClrAnimationsService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({ animationsEnabled: true });
       service = TestBed.inject(ClrAnimationsService);
+    });
+
+    it('whenCompleteAfterRender waits for the next render, then for the animations', async () => {
+      let complete = false;
+      service.whenCompleteAfterRender(() => element, TestBed.inject(Injector)).then(() => (complete = true));
+      expect(complete).toBeFalse();
+
+      TestBed.tick();
+      expect(complete).toBeFalse(); // rendered, the animations are awaited asynchronously
+      await delay();
+      expect(complete).toBeTrue();
+    });
+
+    it('trackInitialRender reports the render as done once it happened', async () => {
+      const initialRender = service.trackInitialRender(TestBed.inject(Injector));
+      expect(initialRender.done).toBeFalse();
+
+      TestBed.tick();
+      expect(initialRender.done).toBeTrue();
     });
 
     it('is enabled', () => {

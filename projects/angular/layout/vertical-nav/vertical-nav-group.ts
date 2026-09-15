@@ -7,7 +7,7 @@
 
 import {
   AfterContentInit,
-  afterNextRender,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -46,6 +46,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   private _expandAnimationState: string = COLLAPSED_STATE;
   private readonly injector = inject(Injector);
   private readonly animations = inject(ClrAnimationsService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   constructor(
     private _itemExpand: IfExpandService,
@@ -179,20 +180,13 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 
   // closes a group after the collapse animation, so that links projected with clrIfExpanded stay rendered until then
   private closeGroupAfterCollapseAnimation() {
-    const closeGroup = () => {
-      if (this.expandAnimationState === COLLAPSED_STATE) {
-        this.expanded = false;
-      }
-    };
-
-    if (this.animations.disabled) {
-      Promise.resolve().then(closeGroup);
-      return;
-    }
-
-    // The collapse animation starts once the children have been rendered without the expanded class.
-    afterNextRender(() => this.animations.whenComplete(this.children.nativeElement).then(closeGroup), {
-      injector: this.injector,
-    });
+    this.animations
+      .whenCompleteAfterRender(() => this.children.nativeElement, this.injector)
+      .then(() => {
+        if (this.expandAnimationState === COLLAPSED_STATE) {
+          this.expanded = false;
+          this.cdr.markForCheck();
+        }
+      });
   }
 }

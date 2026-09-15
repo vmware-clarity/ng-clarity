@@ -6,8 +6,8 @@
  */
 
 import {
-  afterNextRender,
   AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -18,7 +18,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ClrAnimationsService, ClrLoadingState, LoadingListener } from '@clr/angular/utils';
+import { ClrAnimationsService, ClrInitialRenderState, ClrLoadingState, LoadingListener } from '@clr/angular/utils';
 
 // minimum width to fit loading spinner
 const MIN_BUTTON_WIDTH = 42;
@@ -30,7 +30,7 @@ const MIN_BUTTON_WIDTH = 42;
       @switch (state) {
         @case (buttonState.LOADING) {
           <span
-            animate.enter="clr-loading-btn-enter"
+            [animate.enter]="enterClass"
             animate.leave="clr-loading-btn-leave"
             class="spinner spinner-inline"
           ></span>
@@ -43,7 +43,7 @@ const MIN_BUTTON_WIDTH = 42;
           ></span>
         }
         @case (buttonState.DEFAULT) {
-          <span [animate.enter]="contentEnterClass" class="clr-loading-btn-content">
+          <span [animate.enter]="enterClass" class="clr-loading-btn-content">
             <ng-content></ng-content>
           </span>
         }
@@ -62,9 +62,10 @@ export class ClrLoadingButton implements LoadingListener, AfterViewInit {
   buttonState = ClrLoadingState;
   state: ClrLoadingState = ClrLoadingState.DEFAULT;
 
-  private initialRenderDone = false;
+  private initialRender: ClrInitialRenderState = { done: false };
   private readonly injector = inject(Injector);
   private readonly animations = inject(ClrAnimationsService);
+  private readonly cdr = inject(ChangeDetectorRef);
 
   constructor(
     public el: ElementRef<HTMLButtonElement>,
@@ -78,23 +79,22 @@ export class ClrLoadingButton implements LoadingListener, AfterViewInit {
       this.animations.whenComplete(icon.nativeElement).then(() => {
         if (this.state === ClrLoadingState.SUCCESS) {
           this.loadingStateChange(ClrLoadingState.DEFAULT);
+          this.cdr.markForCheck();
         }
       });
     }
   }
 
   /**
-   * Class animating the button content in, meant for its `animate.enter` binding.
-   * The content is not animated when the button is first rendered.
+   * Class animating the spinner and the button content in, meant for their `animate.enter` bindings.
+   * Nothing is animated when the button is first rendered.
    */
-  protected get contentEnterClass(): string {
-    return this.initialRenderDone ? 'clr-loading-btn-enter' : '';
+  protected get enterClass(): string {
+    return this.initialRender.done ? 'clr-loading-btn-enter' : '';
   }
 
   ngAfterViewInit() {
-    // Enter animations of the elements rendered by the current change detection run after it; only elements
-    // rendered later are animated.
-    afterNextRender(() => (this.initialRenderDone = true), { injector: this.injector });
+    this.initialRender = this.animations.trackInitialRender(this.injector);
   }
 
   loadingStateChange(state: ClrLoadingState): void {

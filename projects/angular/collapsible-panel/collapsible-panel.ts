@@ -6,7 +6,6 @@
  */
 
 import {
-  afterNextRender,
   AfterViewInit,
   ChangeDetectorRef,
   DestroyRef,
@@ -19,7 +18,7 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { ClrAnimationsService, IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrAnimationsService, ClrInitialRenderState, IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
@@ -42,7 +41,8 @@ export const COLLAPSIBLE_PANEL_COLLAPSING_CLASS = 'clr-collapsible-panel-collaps
  *   <div #panelContent [animate.enter]="contentEnterClass" [class.clr-collapsible-panel-collapsing]="collapsing">
  * ```
  *
- * Binding the `collapsing` class is what animates the collapse; a panel that only animates its expansion leaves it out.
+ * Binding the `collapsing` class is what animates the collapse; a panel that only animates its expansion leaves it out
+ * and sets `animatesCollapse` to `false`.
  */
 @Directive()
 export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
@@ -58,10 +58,13 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
 
   protected _panelIndex: number;
 
+  /** Whether the template animates the collapse of the content by binding the `collapsing` class. */
+  protected readonly animatesCollapse: boolean = true;
+
   @ViewChild('panelContent') private readonly panelContent: ElementRef<HTMLElement>;
 
   private _id = uniqueIdFactory();
-  private initialRenderDone = false;
+  private initialRender: ClrInitialRenderState = { done: false };
   private destroyed = false;
   private readonly injector = inject(Injector);
   private readonly animations = inject(ClrAnimationsService);
@@ -88,7 +91,7 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
    * Content that is open when the panel is first rendered is not animated.
    */
   get contentEnterClass(): string {
-    return this.initialRenderDone ? COLLAPSIBLE_PANEL_EXPANDING_CLASS : '';
+    return this.initialRender.done ? COLLAPSIBLE_PANEL_EXPANDING_CLASS : '';
   }
 
   ngOnInit() {
@@ -101,9 +104,7 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    // Enter animations of the elements rendered by the current change detection run after it; only elements
-    // rendered later are animated.
-    afterNextRender(() => (this.initialRenderDone = true), { injector: this.injector });
+    this.initialRender = this.animations.trackInitialRender(this.injector);
   }
 
   togglePanel() {
@@ -151,7 +152,7 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
       return;
     }
 
-    if (this.animations.disabled) {
+    if (this.animations.disabled || !this.animatesCollapse) {
       // The next change detection removes the content; clean up right after it, like a completed animation would.
       Promise.resolve().then(() => this.collapsePanelOnAnimationDone(panel));
       return;
@@ -159,24 +160,21 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
 
     this.collapsing = true;
 
-    // The collapse animation starts once the content has been rendered with the `collapsing` class.
-    afterNextRender(
-      () => {
-        const content = this.panelContent?.nativeElement;
-        const collapsed = content ? this.animations.whenComplete(content) : Promise.resolve();
-
-        collapsed.then(() => {
-          if (!this.collapsing || this.destroyed) {
-            return; // the panel was opened again or destroyed in the meantime
-          }
-          this.collapsing = false;
-          // Remove the content right away rather than on the next change detection, which is what the
-          // tests of applications using the panels expect.
-          this.cdr.detectChanges();
-          this.collapsePanelOnAnimationDone(panel);
-        });
-      },
-      { injector: this.injector }
-    );
+    this.animations
+      .whenCompleteAfterRender(() => this.panelContent?.nativeElement, this.injector)
+      .then(() => {
+        if (!this.collapsing || this.destroyed) {
+          return; // the panel was opened again or destroyed in the meantime
+        }
+        this.collapsing = false;
+        // Remove the content right away rather than on the next change detection, which is what the
+        // tests of applications using the panels expect.
+        this.cdr.detectChanges();
+        this.collapsePanelOnAnimationDone(panel);
+      });
   }
+
+  abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
+  abstract getContentId(id: string): string;
+  abstract getHeaderId(id: string): string;
 }

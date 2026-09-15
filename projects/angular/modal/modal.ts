@@ -6,7 +6,6 @@
  */
 
 import {
-  afterNextRender,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -82,6 +81,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   @ViewChild('dialog') private readonly dialogElementRef: ElementRef<HTMLElement>;
 
   private destroyed = false;
+  private closeHandled = false;
   private readonly injector = inject(Injector);
   private readonly animations = inject(ClrAnimationsService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -126,6 +126,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
         this.closing = false;
+        this.closeHandled = false;
       } else {
         this.closeAfterLeaveAnimation();
       }
@@ -144,6 +145,8 @@ export class ClrModal implements OnChanges, OnDestroy {
   ngOnDestroy(): void {
     this.destroyed = true;
     this._scrollingService.resumeScrolling();
+    // A modal destroyed while open must not keep handling the Escape key.
+    this.modalStackService.trackModalClose(this);
   }
 
   open(): void {
@@ -152,6 +155,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     }
     this._open = true;
     this.closing = false;
+    this.closeHandled = false;
     this._openChanged.emit(true);
     this.modalStackService.trackModalOpen(this);
   }
@@ -189,12 +193,14 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   /**
    * Keeps the modal rendered while the dialog animates out, then removes it and notifies about the closing.
-   * Nothing to do when the modal is not rendered (it was never opened, is already closing or was destroyed).
+   * Nothing to do when the modal is not rendered (it was never opened, was destroyed) or when the closing was
+   * already handled: `close()` and the input flipping to false through a two-way binding both end up here.
    */
   private closeAfterLeaveAnimation() {
-    if (this.closing || this.destroyed || !this.dialogElementRef) {
+    if (this.closeHandled || this.destroyed || !this.dialogElementRef) {
       return;
     }
+    this.closeHandled = true;
 
     if (this.animations.disabled) {
       // The next change detection removes the modal; notify right after it, like a completed animation would.
@@ -204,27 +210,21 @@ export class ClrModal implements OnChanges, OnDestroy {
 
     this.closing = true;
 
-    // The leave animation starts once the dialog has been rendered with its leave class.
-    afterNextRender(
-      () => {
-        const dialog = this.dialogElementRef?.nativeElement;
-        const done = dialog ? this.animations.whenComplete(dialog) : Promise.resolve();
-
-        done.then(() => {
-          if (!this.closing) {
-            return; // the modal was opened again in the meantime
-          }
-          this.closing = false;
-          if (!this.destroyed) {
-            // Remove the modal right away rather than on the next change detection, which is what the
-            // clrModalOpenChange event and the tests of applications using the modal expect.
-            this.cdr.detectChanges();
-          }
+    this.animations
+      .whenCompleteAfterRender(() => this.dialogElementRef?.nativeElement, this.injector)
+      .then(() => {
+        if (!this.closing) {
           this.modalClosed();
-        });
-      },
-      { injector: this.injector }
-    );
+          return; // the modal was opened again in the meantime
+        }
+        this.closing = false;
+        if (!this.destroyed) {
+          // Remove the modal right away rather than on the next change detection, which is what the
+          // clrModalOpenChange event and the tests of applications using the modal expect.
+          this.cdr.detectChanges();
+        }
+        this.modalClosed();
+      });
   }
 
   private modalClosed() {
