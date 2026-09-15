@@ -555,6 +555,51 @@
         }
       }
 
+      // The actions menu sits at the trailing edge of the header, after the title and the filter
+      // toggle but in front of the resize handle. The host is only a positioning context - the
+      // trigger inside it is what carries the filter toggle's sizing, so the two line up when a
+      // column has both.
+      .datagrid-column-actions {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        margin-left: auto;
+        order: 99;
+
+        .datagrid-column-actions-toggle {
+          @include mixins.clr-no-styles-button();
+          @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-filter-toggle-size);
+
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-left: density.$clr-base-horizontal-offset-s;
+
+          cds-icon {
+            color: tokens.$cds-alias-object-interaction-color;
+          }
+
+          &:hover cds-icon {
+            color: tokens.$cds-alias-object-interaction-color-hover;
+          }
+
+          &:active cds-icon {
+            color: tokens.$cds-alias-object-interaction-color-active;
+          }
+
+          // With the filter toggle gone, the trigger is the only place left to show that the column
+          // is filtered, so it borrows the colour the toggle used for that.
+          &.datagrid-column-actions-filtered {
+            padding: tokens.$cds-global-space-1;
+
+            cds-icon {
+              color: tokens.$cds-alias-object-interaction-color-selected;
+            }
+          }
+        }
+      }
+
       &.datagrid-fixed-width {
         flex: 0 0 auto;
       }
@@ -563,35 +608,6 @@
         display: flex;
         flex: 1 1 auto;
       }
-
-      // The pin toggle sits at the very left of the header, in front of the title. It has to stay
-      // outside the title button, otherwise clicking it would sort the column as well.
-      //
-      // Disabled for now, along with the clrDgPinnable input that renders the toggle.
-      //
-      // .datagrid-column-pin {
-      //   @include mixins.clr-no-styles-button();
-      //   @include mixins.min-equilateral(datagrid-variables.$clr-datagrid-filter-toggle-size);
-      //
-      //   cursor: pointer;
-      //   align-self: center;
-      //   flex: 0 0 auto;
-      //   display: flex;
-      //   margin-right: density.$clr-base-horizontal-offset-s;
-      //   padding: density.$clr-base-vertical-offset-2xs density.$clr-base-horizontal-offset-2xs;
-      //
-      //   cds-icon {
-      //     color: tokens.$cds-alias-object-interaction-color;
-      //   }
-      //
-      //   &:hover cds-icon {
-      //     color: tokens.$cds-alias-object-interaction-color-hover;
-      //   }
-      //
-      //   &:active cds-icon {
-      //     color: tokens.$cds-alias-object-interaction-color-active;
-      //   }
-      // }
 
       .datagrid-column-title {
         @include mixins.clr-no-styles-button();

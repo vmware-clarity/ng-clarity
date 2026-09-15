@@ -1,0 +1,179 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2 class="clr-mt-48px" cds-text="title">Column Actions</h2>
+
+<p class="clr-mt-16px" cds-text="body">
+  A <code cds-text="code">clr-dg-column-actions</code> inside a <code cds-text="code">clr-dg-column</code> puts a menu
+  at the trailing edge of that column's header and gathers what the column can do into one control, instead of a row of
+  icons growing across the header.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  The menu only offers what the column can actually perform, so it never shows a dead option. A sortable column gets
+  Sort Ascending and Sort Descending, and Clear Sort once it is sorted and
+  <code cds-text="code">clrDgDisableUnsort</code> allows it. A column with a filter gets Filter Column. A column with
+  <code cds-text="code">clrDgPinnable</code> gets Pin Column - see
+  <a routerLink="../pinnable-columns">Pinnable Columns</a>.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  Nothing that worked before goes away: the column title stays sortable, so the menu is an addition rather than a
+  replacement.
+</p>
+
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'id'">
+    User ID
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'name'">
+    Name
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Column Actions"
+  [componentTemplate]="examples.basicExample"
+  [componentClass]="commonFiles.exampleTs"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<h3 cds-text="section" class="clr-mt-32px">The Filter Moves Into the Menu</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  A column that has a filter normally shows its own filter icon in the header. While the menu is present that icon is
+  dropped and Filter Column takes over, so the header keeps one control per column rather than two. Choosing it opens
+  the same filter, anchored to the menu item rather than to the header.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  The menu trigger also takes over showing that the column is filtered, which the icon used to do - it carries a badge
+  while a filter is applied.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  Set <code cds-text="code">clrDgKeepFilterInHeader</code> to keep the filter icon where it was. The menu then drops its
+  Filter Column action in exchange, so a column always offers one way to reach its filter and never two - either the
+  icon in the header or the action in the menu.
+</p>
+
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'name'">
+    Name
+    <clr-dg-column-actions [clrDgKeepFilterInHeader]="true"></clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Column Actions Keeping the Filter in the Header"
+  [componentTemplate]="examples.keepFilterInHeaderExample"
+  [componentClass]="commonFiles.exampleTs"
+  [showComponentClass]="false"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<h3 cds-text="section" class="clr-mt-32px">Adding Your Own Actions</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  Anything projected into <code cds-text="code">clr-dg-column-actions</code> is appended after the built-in items. Mark
+  each one with <code cds-text="code">clrDgColumnAction</code>, which gives it the styling of a menu item, a place in
+  the arrow key order, and the same close-on-click behaviour as the built-in items.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">clrDropdownItem</code> cannot be used for this. Injection resolves from where a node is declared
+  rather than where it ends up rendered, so an item projected into the menu sits outside the injector of the dropdown in
+  that component's template and cannot reach it. <code cds-text="code">clrDgColumnAction</code> registers with the
+  component it is projected into instead, which does resolve, and lets that component hand it to the dropdown.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  Use <code cds-text="code">clrDisabled</code> for an action that does not apply right now. It stays in the menu,
+  announced as disabled and skipped by activation, rather than disappearing and moving the items under it. The built-in
+  items work the other way round - they are left out entirely until the column can act on them - so this is a choice you
+  make for your own actions rather than a pattern to match.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  Use <code cds-text="code">clrCanClosePopover</code> set to <code cds-text="code">false</code> for an action that moves
+  the column the menu belongs to. The menu is anchored to a trigger that travels with the column, so leaving it open
+  where the column used to be would be worse than closing it - with this it is re-anchored to the trigger in the
+  column's new place instead. This is what the built-in Pin Column action does.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">
+  A projected action renders its own <code cds-text="code">cds-icon</code>, so register whatever shape it names.
+</p>
+
+<p class="clr-mt-16px" cds-text="body">Last action: <b cds-text="medium">{{ lastAction || 'none yet' }}</b></p>
+
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'name'">
+    Name
+    <clr-dg-column-actions>
+      <button type="button" clrDgColumnAction (click)="renameColumn()">
+        <cds-icon shape="pencil" aria-hidden="true"></cds-icon>
+        Rename column
+      </button>
+      <button type="button" clrDgColumnAction [clrDisabled]="true">
+        <cds-icon shape="trash" aria-hidden="true"></cds-icon>
+        Clear column
+      </button>
+    </clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<app-stackblitz-example
+  name="Datagrid Column Actions With Application Actions"
+  [componentTemplate]="examples.customActionsExample"
+  [componentClass]="examples.customActionsComponentTS"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>
+
+<h3 cds-text="section" class="clr-mt-32px">Accessibility</h3>
+
+<p class="clr-mt-16px" cds-text="body">
+  The trigger is labelled with the column it belongs to, so a screen reader announces which column's actions are being
+  opened rather than repeating the same label down the header. The menu is a
+  <code cds-text="code">menu</code> of <code cds-text="code">menuitem</code>s, walkable with the arrow keys, and each
+  item is activated with space or enter. Items projected with <code cds-text="code">clrDgColumnAction</code> join that
+  order, so an application action is reachable the same way as a built-in one.
+</p>

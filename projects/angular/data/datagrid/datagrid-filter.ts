@@ -21,6 +21,7 @@ import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { ClrDatagridFilterInterface } from './interfaces/filter.interface';
+import { ColumnActionsService } from './providers/column-actions.service';
 import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider, RegisteredFilter } from './providers/filters';
 import { DatagridFilterRegistrar } from './utils/datagrid-filter-registrar';
@@ -36,23 +37,30 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   // We register this component as a CustomFilter, for the parent column to detect it.
   providers: [{ provide: CustomFilter, useExisting: ClrDatagridFilter }],
   template: `
-    <button
-      class="datagrid-filter-toggle"
-      type="button"
-      #anchor
-      [attr.aria-expanded]="ariaExpanded"
-      [attr.aria-controls]="popoverId"
-      clrPopoverOrigin
-      clrPopoverOpenCloseButton
-      [class.datagrid-filter-open]="open"
-      [class.datagrid-filtered]="active"
-    >
-      <cds-icon
-        [status]="active ? 'info' : null"
-        [shape]="active ? 'filter-grid-circle' : 'filter-grid'"
-        solid
-      ></cds-icon>
-    </button>
+    <!--
+      The toggle stands down when the column has a clr-dg-column-actions menu, which then owns
+      opening this filter. Nothing else here changes: the popover is still driven through the
+      column's ClrPopoverService, the menu just points its origin at its own trigger instead.
+    -->
+    @if (!columnActions?.present()) {
+      <button
+        class="datagrid-filter-toggle"
+        type="button"
+        #anchor
+        [attr.aria-expanded]="ariaExpanded"
+        [attr.aria-controls]="popoverId"
+        clrPopoverOrigin
+        clrPopoverOpenCloseButton
+        [class.datagrid-filter-open]="open"
+        [class.datagrid-filtered]="active"
+      >
+        <cds-icon
+          [status]="active ? 'info' : null"
+          [shape]="active ? 'filter-grid-circle' : 'filter-grid'"
+          solid
+        ></cds-icon>
+      </button>
+    }
 
     <div
       class="datagrid-filter"
@@ -94,7 +102,8 @@ export class ClrDatagridFilter<T = any>
     _filters: FiltersProvider<T>,
     public commonStrings: ClrCommonStringsService,
     private popoverService: ClrPopoverService,
-    @Optional() private keyNavigation: KeyNavigationGridController
+    @Optional() private keyNavigation: KeyNavigationGridController,
+    @Optional() protected columnActions: ColumnActionsService
   ) {
     super(_filters);
     this.subs.push(
@@ -103,6 +112,9 @@ export class ClrDatagridFilter<T = any>
         this.openChange.emit(change);
       })
     );
+
+    // Optional so the filter keeps working outside a column, e.g. in isolated tests.
+    columnActions?.filter.set(this);
   }
 
   @Input({ alias: 'clrDgFilterOpen', transform: booleanAttribute })
@@ -135,5 +147,9 @@ export class ClrDatagridFilter<T = any>
   override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.subs.forEach(sub => sub.unsubscribe());
+
+    if (this.columnActions?.filter() === this) {
+      this.columnActions.filter.set(null);
+    }
   }
 }

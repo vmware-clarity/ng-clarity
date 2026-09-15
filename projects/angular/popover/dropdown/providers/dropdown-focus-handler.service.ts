@@ -140,6 +140,24 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     }
   }
 
+  /**
+   * Makes `item` the one the menu's keyboard handling acts on, and focuses it.
+   *
+   * Space and enter activate whatever the focus service considers current, not whatever the browser
+   * has focused - see `FocusService.registerContainer`. So moving focus to a menu item without going
+   * through here leaves the two disagreeing, and the keys then fire a different item than the one the
+   * user can see is focused.
+   */
+  moveTo(item: FocusableItem) {
+    // Opening the menu already moves to its first item, which focuses it, which is reported back
+    // here by the item itself. Without this the same move would be applied twice.
+    if (this.focusService.current === item) {
+      return;
+    }
+
+    this.focusService.moveTo(item);
+  }
+
   resetChildren() {
     this.children = new ReplaySubject<FocusableItem[]>(1);
     if (this.parent) {
