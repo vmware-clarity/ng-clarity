@@ -37,7 +37,7 @@ export class ClrDropdownItem {
   constructor(
     private dropdown: ClrDropdown,
     private _dropdownService: RootDropdownService,
-    private focusableItem: FocusableItem,
+    protected focusableItem: FocusableItem,
     private el: ElementRef,
     private renderer: Renderer2
   ) {}

@@ -50,6 +50,7 @@ import { Observer } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Optional } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
@@ -366,35 +367,34 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "ClrDropdownItem" needs to be exported by the entry point clr-angular-data.d.ts
+//
 // @public
-export class ClrDatagridColumnAction implements OnDestroy {
+export class ClrDatagridColumnAction extends ClrDropdownItem implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "FocusableItem" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(columnActions: ClrDatagridColumnActions, focusableItem: FocusableItem);
+    // Warning: (ae-forgotten-export) The symbol "RootDropdownService" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(columnActions: ClrDatagridColumnActions, item: FocusableItem, dropdownService: RootDropdownService, el: ElementRef, renderer: Renderer2);
     canClosePopover: boolean;
-    // (undocumented)
-    get disabled(): boolean;
-    set disabled(value: boolean);
     // (undocumented)
     static ngAcceptInputType_canClosePopover: unknown;
     // (undocumented)
-    static ngAcceptInputType_disabled: unknown;
-    // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    protected onActivate(event: KeyboardEvent): void;
-    // (undocumented)
-    protected onClick(): void;
+    protected onColumnActionClick(): void;
     protected onFocus(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "canClosePopover": { "alias": "clrCanClosePopover"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "canClosePopover": { "alias": "clrCanClosePopover"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnAction, never>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "ClrDropdown" needs to be exported by the entry point clr-angular-data.d.ts
+//
 // @public
-export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
+export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ColumnActionsService" needs to be exported by the entry point clr-angular-data.d.ts
-    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, keyNavigation: KeyNavigationGridController, filters: FiltersProvider);
+    // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler" needs to be exported by the entry point clr-angular-data.d.ts
+    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, keyNavigation: KeyNavigationGridController, filters: FiltersProvider, parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, dropdownService: RootDropdownService);
     // (undocumented)
     protected get canClearSort(): boolean;
     closeMenu(): void;
@@ -431,7 +431,7 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, { skipSelf: true; }, null, null, { optional: true; }, { optional: true; }, { optional: true; skipSelf: true; }, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -1791,7 +1791,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1172:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1173:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

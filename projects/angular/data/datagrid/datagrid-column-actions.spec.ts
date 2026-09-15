@@ -5,15 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component } from '@angular/core';
+import { ApplicationRef, Component, getDebugNode } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { ClrDropdown, ClrDropdownItem } from '@clr/angular/popover/dropdown';
 import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridColumn } from './datagrid-column';
+import { ClrDatagridColumnAction } from './datagrid-column-action';
+import { ClrDatagridColumnActions } from './datagrid-column-actions';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 
 const HEADER_PINNED = '.datagrid-header .datagrid-pinned-cells';
@@ -342,6 +345,34 @@ export default function (): void {
         expect(custom.getAttribute('role')).toBe('menuitem');
       });
 
+      // What lets clrDgColumnAction be a clrDropdownItem at all. A projected item is declared outside
+      // this component, so it can only resolve ClrDropdown because the component is the dropdown and
+      // provides itself under that token - a clr-dropdown inside its template would be out of reach.
+      it('is the dropdown a projected action injects', function () {
+        // The item is only rendered while the menu is open, and then it sits in the overlay rather
+        // than in the fixture, which is why it is reached through its element.
+        openMenu();
+
+        const actions = context.fixture.debugElement.query(By.directive(ClrDatagridColumnActions));
+        const action = getDebugNode(document.querySelector('.custom-action'));
+
+        expect(action.injector.get(ClrDatagridColumnAction)).toBeInstanceOf(ClrDropdownItem);
+        expect(action.injector.get(ClrDropdown)).toBe(actions.componentInstance);
+        expect(actions.injector.get(ClrDropdown)).toBe(actions.componentInstance);
+        expect(actions.nativeElement.classList).toContain('dropdown');
+      });
+
+      // The menu is anchored with its own popover service; the column's, which its filter uses, is a
+      // different one. Being the dropdown is what brings the second service - without it the menu
+      // would be driving the same overlay as the filter.
+      it('keeps the menu overlay apart from the column one', function () {
+        const actions = context.fixture.debugElement.query(By.directive(ClrDatagridColumnActions));
+        const column = context.fixture.debugElement.query(By.directive(ClrDatagridColumn));
+
+        expect(actions.injector.get(ClrPopoverService)).not.toBe(column.injector.get(ClrPopoverService));
+        expect(actions.injector.get(ClrPopoverService)).toBe(actions.componentInstance.popoverService);
+      });
+
       // The whole point of clrDgColumnAction over a plain button: ClrDropdownMenu collects its items
       // through @ContentChildren, which never sees projected content, so the directive has to hand
       // itself to the dropdown's focus handler to take part in arrow key navigation.
@@ -352,9 +383,9 @@ export default function (): void {
         expect(itemLabelled('Custom').getAttribute('id')).toBeTruthy();
       });
 
-      // clr-dropdown-menu is opened with [clrCloseMenuOnItemClick]="false", so a built-in item like
-      // Sort Ascending does not close the menu either. closeMenu() checks the same isMenuClosable flag
-      // clrDropdownItem does, so a projected action follows suit rather than closing on its own.
+      // The menu sets isMenuClosable to false, so a built-in item like Sort Ascending does not close
+      // it either. closeMenu() checks that same flag, the way clrDropdownItem does, so a projected
+      // action follows suit rather than closing on its own.
       it('leaves the menu open when a projected action is picked', function () {
         openMenu();
         expect(menuItems().length).toBeGreaterThan(0);
@@ -521,8 +552,10 @@ export default function (): void {
       // column used to be. The relocation happens on the render cycle the pin schedules, which is
       // why the hook runs after it rather than during the click.
       it('re-anchors the open menu after pinning moves the column', function () {
+        // The menu is its own dropdown, so this is the popover service the menu is anchored with -
+        // the column's, which its filter uses, is a separate one from the parent injector.
         const popoverService = context.fixture.debugElement
-          .query(By.css('clr-dropdown'))
+          .query(By.css('clr-dg-column-actions'))
           .injector.get(ClrPopoverService);
         const updatePosition = spyOn(popoverService, 'updatePosition').and.callThrough();
 

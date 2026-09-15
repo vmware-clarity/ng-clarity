@@ -57,6 +57,7 @@ import { Observer } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Optional } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
@@ -2311,33 +2312,26 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
 }
 
 // @public
-export class ClrDatagridColumnAction implements OnDestroy {
-    constructor(columnActions: ClrDatagridColumnActions, focusableItem: FocusableItem);
+export class ClrDatagridColumnAction extends ClrDropdownItem implements OnDestroy {
+    constructor(columnActions: ClrDatagridColumnActions, item: FocusableItem, dropdownService: RootDropdownService, el: ElementRef, renderer: Renderer2);
     canClosePopover: boolean;
-    // (undocumented)
-    get disabled(): boolean;
-    set disabled(value: boolean);
     // (undocumented)
     static ngAcceptInputType_canClosePopover: unknown;
     // (undocumented)
-    static ngAcceptInputType_disabled: unknown;
-    // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    protected onActivate(event: KeyboardEvent): void;
-    // (undocumented)
-    protected onClick(): void;
+    protected onColumnActionClick(): void;
     protected onFocus(): void;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "canClosePopover": { "alias": "clrCanClosePopover"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "canClosePopover": { "alias": "clrCanClosePopover"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnAction, never>;
 }
 
 // @public
-export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
+export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ColumnActionsService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, keyNavigation: KeyNavigationGridController, filters: FiltersProvider);
+    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, keyNavigation: KeyNavigationGridController, filters: FiltersProvider, parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, dropdownService: RootDropdownService);
     // (undocumented)
     protected get canClearSort(): boolean;
     closeMenu(): void;
@@ -2374,7 +2368,7 @@ export class ClrDatagridColumnActions implements AfterViewInit, OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, null, null, null, { optional: true; }, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, { skipSelf: true; }, null, null, { optional: true; }, { optional: true; }, { optional: true; skipSelf: true; }, null, null, null]>;
 }
 
 // @public (undocumented)
@@ -3342,10 +3336,7 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 
 // @public (undocumented)
 export class ClrDropdown implements OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "RootDropdownService" needs to be exported by the entry point clr-angular.d.ts
     constructor(parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
-    // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler" needs to be exported by the entry point clr-angular.d.ts
-    //
     // (undocumented)
     focusHandler: DropdownFocusHandler;
     // (undocumented)
@@ -3372,6 +3363,8 @@ export class ClrDropdownItem {
     set disabled(value: boolean | string);
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
+    // (undocumented)
+    protected focusableItem: FocusableItem;
     role: string;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "role": { "alias": "role"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
@@ -5151,6 +5144,9 @@ export interface ClrRecursiveForOfContext<T> {
     // (undocumented)
     clrModel: TreeNodeModel<T>;
 }
+
+// @public (undocumented)
+export function clrRootDropdownFactory(existing: RootDropdownService): RootDropdownService;
 
 // @public (undocumented)
 export class ClrRovingTabindex extends ClrKeyFocus {
@@ -7509,7 +7505,50 @@ export const dragHandleIcon: IconShapeTuple;
 export const dragHandleIconName = "drag-handle";
 
 // @public (undocumented)
+export const DROPDOWN_FOCUS_HANDLER_PROVIDER: (i0.Type<DropdownFocusHandler> | {
+    provide: typeof FocusableItem;
+    useExisting: i0.Type<DropdownFocusHandler>;
+})[];
+
+// @public (undocumented)
 export const DROPDOWN_POSITIONS: ClrPopoverPosition[];
+
+// @public (undocumented)
+export class DropdownFocusHandler implements OnDestroy, FocusableItem {
+    constructor(renderer: Renderer2, parent: DropdownFocusHandler, popoverService: ClrPopoverService, focusService: FocusService, platformId: any);
+    // (undocumented)
+    activate(): void;
+    // (undocumented)
+    addChildren(children: FocusableItem[]): void;
+    // (undocumented)
+    blur(): void;
+    // (undocumented)
+    get container(): HTMLElement;
+    set container(el: HTMLElement);
+    // (undocumented)
+    down?: Observable<FocusableItem>;
+    // (undocumented)
+    focus(): void;
+    // (undocumented)
+    id: string;
+    moveTo(item: FocusableItem): void;
+    moveToFirstItemWhenOpen(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    resetChildren(): void;
+    // (undocumented)
+    right?: Observable<FocusableItem>;
+    // (undocumented)
+    get trigger(): HTMLElement;
+    set trigger(el: HTMLElement);
+    // (undocumented)
+    up?: Observable<FocusableItem>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DropdownFocusHandler, [null, { optional: true; skipSelf: true; }, null, null, null]>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<DropdownFocusHandler>;
+}
 
 // @public (undocumented)
 export const eCheckIcon: IconShapeTuple;
@@ -9139,6 +9178,25 @@ export const rewindIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const rewindIconName = "rewind";
+
+// @public (undocumented)
+export const ROOT_DROPDOWN_PROVIDER: {
+    provide: typeof RootDropdownService;
+    useFactory: typeof clrRootDropdownFactory;
+    deps: Optional[][];
+};
+
+// @public (undocumented)
+export class RootDropdownService {
+    // (undocumented)
+    get changes(): Observable<boolean>;
+    // (undocumented)
+    closeMenus(): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<RootDropdownService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<RootDropdownService>;
+}
 
 // @public (undocumented)
 export const routerIcon: IconShapeTuple;
