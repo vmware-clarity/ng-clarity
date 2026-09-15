@@ -1,0 +1,41 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<div class="storage-policy-container">
+  <label>VM Storage Policy:</label>
+  <clr-dropdown>
+    <button *ngIf="selectedPolicy" class="dropdown-toggle btn btn-link" clrDropdownTrigger>
+      {{ selectedPolicy.name }}
+      <cds-icon shape="angle" direction="down"></cds-icon>
+    </button>
+    <clr-dropdown-menu *clrIfOpen>
+      <div *ngFor="let policy of model.storagePolicies" clrDropdownItem (click)="selectPolicy(policy)">
+        {{ policy.name }}
+      </div>
+    </clr-dropdown-menu>
+  </clr-dropdown>
+</div>
+
+<clr-datagrid
+  [(clrDgSelected)]="selectedDatastores"
+  [clrDgSelectionType]="'single'"
+  (clrDgSelectedChange)="onSelectDatastore()"
+  class="datastores-grid"
+>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Capacity</clr-dg-column>
+  <clr-dg-column>Provisioned</clr-dg-column>
+  <clr-dg-column>Free</clr-dg-column>
+
+  <clr-dg-row *ngFor="let ds of model.datastores" [clrDgItem]="ds">
+    <clr-dg-cell>{{ ds.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ ds.capacity }}</clr-dg-cell>
+    <clr-dg-cell>{{ ds.provisioned }}</clr-dg-cell>
+    <clr-dg-cell>{{ ds.free }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ model.datastores?.length }} Datastores</clr-dg-footer>
+</clr-datagrid>

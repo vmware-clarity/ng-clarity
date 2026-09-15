@@ -230,4 +230,15 @@ describe('icon element', () => {
       expect(component.el.nativeElement.hasAttribute('badge')).toBe(false);
     });
   });
+
+  describe('registry access performance: ', () => {
+    it('updateIcon should not copy the whole icon registry via the registry getter', () => {
+      const registrySpy = spyOnProperty(ClarityIcons, 'registry', 'get').and.callThrough();
+
+      component.shape = 'testing';
+      fixture.detectChanges();
+
+      expect(registrySpy).not.toHaveBeenCalled();
+    });
+  });
 });

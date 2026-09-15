@@ -25,6 +25,11 @@ export interface ColumnHiddenState extends ColumnState {
   hidden: boolean;
 }
 
+// Disabled along with clrDgPinnable - nothing emits a pinned change while the toggle is gone.
+// export interface ColumnPinnedState extends ColumnState {
+//   pinned: boolean;
+// }
+
 export interface ColumnFilterChange extends ColumnState {
   filterValue: any;
 }

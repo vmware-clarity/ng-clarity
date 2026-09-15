@@ -1,0 +1,54 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<clr-tree>
+  <clr-tree-node [clrExpanded]="true">
+    <cds-icon shape="folder-open"></cds-icon>
+    vcenter.example.com
+
+    <clr-tree-node [clrExpanded]="true">
+      <cds-icon shape="building"></cds-icon>
+      Datacenter
+
+      <clr-tree-node>
+        <button
+          class="clr-treenode-link"
+          [class.active]="isNodeSelected('vm-10')"
+          (click)="selectNode('vm-10', 'Prod-VM 10')"
+        >
+          <cds-icon shape="vm"></cds-icon> Prod-VM 10
+        </button>
+      </clr-tree-node>
+      <clr-tree-node>
+        <button
+          class="clr-treenode-link"
+          [class.active]="isNodeSelected('vm-11')"
+          (click)="selectNode('vm-11', 'Prod-VM 11')"
+        >
+          <cds-icon shape="vm"></cds-icon> Prod-VM 11
+        </button>
+      </clr-tree-node>
+      <clr-tree-node>
+        <button
+          class="clr-treenode-link"
+          [class.active]="isNodeSelected('vm-12')"
+          (click)="selectNode('vm-12', 'Prod-VM 12')"
+        >
+          <cds-icon shape="vm"></cds-icon> Prod-VM 12
+        </button>
+      </clr-tree-node>
+      <clr-tree-node>
+        <button
+          class="clr-treenode-link"
+          [class.active]="isNodeSelected('vm-13')"
+          (click)="selectNode('vm-13', 'Prod-VM 13')"
+        >
+          <cds-icon shape="vm"></cds-icon> Prod-VM 13
+        </button>
+      </clr-tree-node>
+    </clr-tree-node>
+  </clr-tree-node>
+</clr-tree>

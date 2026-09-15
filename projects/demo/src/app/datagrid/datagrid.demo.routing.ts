@@ -28,6 +28,7 @@ import { DatagridPaginationDemo } from './pagination/pagination';
 import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagination-conditional';
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
 import { DatagridPerformanceDemo } from './performance/performance';
+import { DatagridPinnableColumnsDemo } from './pinnable-columns/pinnable-columns';
 import { DatagridPlaceholderDemo } from './placeholder/placeholder';
 import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-selection';
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
@@ -76,6 +77,7 @@ const ROUTES: Routes = [
       { path: 'virtual-scroll-server-side', component: DatagridVirtualScrollServerSideDemo },
       { path: 'scrolling', component: DatagridScrollingDemo },
       { path: 'column-sizing', component: DatagridColumnSizingDemo },
+      { path: 'pinnable-columns', component: DatagridPinnableColumnsDemo },
       { path: 'compact', component: DatagridCompactDemo },
       { path: 'density', component: DatagridDensityDemo },
       { path: 'detail', component: DatagridDetailDemo },

@@ -60,9 +60,13 @@ $clr-layers: (
   select-box: 2,
   datalist-box: 2,
   datagrid-row: 500,
+  // The pinned columns are static next to the row controls, which stay on top of them if the two
+  // ever overlap, so they sit one layer below.
+  datagrid-row-pinned: 499,
   datagrid-row-sticky: 500,
   datagrid-row-skeleton: 501,
   datagrid-header: 501,
+  datagrid-header-pinned: 501,
   datagrid-header-sticky: 502,
   datagrid-host: 590,
   alert: 1033,

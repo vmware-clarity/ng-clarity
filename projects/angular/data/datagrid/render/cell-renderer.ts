@@ -8,7 +8,7 @@
 import { Directive, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
+import { HIDDEN_COLUMN_CLASS, PINNED_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
@@ -41,6 +41,7 @@ export class DatagridCellRenderer implements OnDestroy {
   resetState(state: ColumnState) {
     this.setWidth(state);
     this.setHidden(state);
+    this.setPinned(state);
   }
 
   setWidth(state: ColumnState) {
@@ -57,6 +58,14 @@ export class DatagridCellRenderer implements OnDestroy {
       this.renderer.addClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
     } else {
       this.renderer.removeClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
+    }
+  }
+
+  setPinned(state: ColumnState) {
+    if (state.pinned) {
+      this.renderer.addClass(this.el.nativeElement, PINNED_COLUMN_CLASS);
+    } else {
+      this.renderer.removeClass(this.el.nativeElement, PINNED_COLUMN_CLASS);
     }
   }
 

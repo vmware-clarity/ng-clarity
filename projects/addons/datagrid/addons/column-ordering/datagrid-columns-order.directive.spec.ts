@@ -152,6 +152,67 @@ describe('DatagridColumnsOrderDirective', () => {
     });
   });
 
+  // Pinned columns are rendered in the datagrid's sticky container, so a reorder that changes the
+  // relative order of the pinned and the scrollable group cannot be re-rendered and is refused.
+  describe('when a column is pinned', () => {
+    function dropOnto(this: any, draggedIndex: number, targetIndex: number) {
+      const sortedItems = this.datagridHostComponent.cdkDropListDirective.getSortedItems();
+      const currentIndex = sortedItems.findIndex(
+        (item: any) => item.data === this.datagridHostComponent.visibleColumns[targetIndex]
+      );
+
+      this.datagridHostComponent.cdkDropListDirective.dropped.next({
+        item: { data: this.datagridHostComponent.visibleColumns[draggedIndex] },
+        currentIndex: currentIndex,
+      });
+      this.fixture.detectChanges();
+    }
+
+    beforeEach(function (this: any) {
+      // The visible columns are Name, State and Status. Name is the pinned one.
+      this.datagridHostComponent.columns[0].pinned = true;
+      this.fixture.detectChanges();
+    });
+
+    it('refuses a drop that would move a column across it', function (this: any) {
+      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+
+      // 'Status' dropped onto the pinned 'Name'.
+      dropOnto.call(this, 2, 0);
+
+      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+    });
+
+    it('refuses a keyboard move that would cross it', function (this: any) {
+      service.grabbedColumn.next(this.datagridHostComponent.visibleColumns[1]);
+
+      // 'State' moved left would put it in front of the pinned 'Name'.
+      service.moveVisibleColumn.next({ visibleColumnIndex: 1, moveLeft: true });
+      this.fixture.detectChanges();
+
+      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+    });
+
+    it('does not emit dgColumnsOrderChange for a refused reorder', function (this: any) {
+      let emitted = false;
+      this.datagridHostComponent.dgColumnsOrderDirective.dgColumnsOrderChange.subscribe(() => (emitted = true));
+
+      dropOnto.call(this, 2, 0);
+
+      expect(emitted).toBeFalse();
+    });
+
+    it('still reorders the columns that stay on the same side of it', function (this: any) {
+      // 'State' and 'Status' are both after the pinned column, so they can still swap.
+      service.grabbedColumn.next(this.datagridHostComponent.visibleColumns[2]);
+
+      service.moveVisibleColumn.next({ visibleColumnIndex: 2, moveLeft: true });
+      this.fixture.detectChanges();
+
+      expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'Status', 'State']);
+    });
+  });
+
   describe('when dropped event is received', () => {
     beforeEach(function (this: any) {
       this.fixture.detectChanges();

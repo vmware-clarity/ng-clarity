@@ -30,8 +30,8 @@
     & [cds-theme] {
       --clr-spinner-fill-bg-color: #{tokens.$cds-alias-object-container-background-shade};
       --clr-spinner-fill-inverse-bg-color: #{tokens.$cds-alias-object-container-background-inverse-tint};
-      --clr-spinner-fill-color: #{tokens.$cds-alias-status-info};
-      --clr-spinner-fill-inverse-color: #{tokens.$cds-alias-status-info-tint};
+      --clr-spinner-fill-color: #{tokens.$cds-alias-primary};
+      --clr-spinner-fill-inverse-color: #{tokens.$cds-alias-primary-tint};
     }
   }
 }

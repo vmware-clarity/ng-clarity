@@ -6,6 +6,28 @@
  */
 
 export const COLOR_STATUS = {
+  primary: [
+    {
+      text: 'primary',
+      color: '--cds-alias-primary',
+    },
+    {
+      text: 'primary-shade',
+      color: '--cds-alias-primary-shade',
+    },
+    {
+      text: 'primary-tint',
+      color: '--cds-alias-primary-tint',
+    },
+    {
+      text: 'primary-dark',
+      color: '--cds-alias-primary-dark',
+    },
+    {
+      text: 'primary-tint-dark',
+      color: '--cds-alias-primary-tint-dark',
+    },
+  ],
   info: [
     {
       text: 'info',

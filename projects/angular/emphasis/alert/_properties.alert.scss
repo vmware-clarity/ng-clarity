@@ -105,7 +105,7 @@
       // App Warning type
       // Usage: ./_alert.clarity.scss
       --clr-app-alert-warning-bg-color: #{tokens.$cds-alias-status-warning};
-      --clr-app-alert-warning-font-color: #{tokens.$cds-global-color-black};
+      --clr-app-alert-warning-font-color: #{tokens.$cds-alias-typography-color-black};
       --clr-app-alert-warning-border-color: none;
       --clr-app-alert-warning-icon-color: var(--clr-app-alert-warning-font-color);
       --clr-app-alert-warning-close-icon-color: var(--clr-app-alert-warning-font-color);
@@ -154,7 +154,7 @@
       --clr-app-alert-success-pager-bg-color: #{tokens.$cds-alias-status-success-shade};
       --clr-app-alert-neutral-pager-bg-color: #{tokens.$cds-alias-status-neutral-shade};
       --clr-app-alert-info-pager-font-color: #{tokens.$cds-alias-typography-color-100};
-      --clr-app-alert-warning-pager-font-color: #{tokens.$cds-global-color-black};
+      --clr-app-alert-warning-pager-font-color: #{tokens.$cds-alias-typography-color-black};
       --clr-app-alert-danger-pager-font-color: #{tokens.$cds-alias-typography-color-100};
       --clr-app-alert-success-pager-font-color: #{tokens.$cds-alias-typography-color-100};
       --clr-app-alert-neutral-pager-font-color: #{tokens.$cds-alias-typography-color-100};

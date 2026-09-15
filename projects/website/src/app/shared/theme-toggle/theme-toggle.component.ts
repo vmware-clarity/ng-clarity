@@ -5,9 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { ClarityIcons, ClrIcon, moonIcon, sunIcon } from '@clr/angular';
 import { Observable, Subscription } from 'rxjs';
+
+import { ThemeLockService } from './theme-lock.service';
 
 type ThemeType = 'light' | 'dark';
 
@@ -19,6 +21,7 @@ const themeLocalStorageKey = 'theme';
     <button
       class="btn btn-link nav-link"
       [attr.aria-label]="'toggle to ' + (theme === 'light' ? 'dark' : 'light') + ' theme'"
+      [class.disabled]="themeLockService.lightThemeLocked()"
       (click)="toggleTheme()"
       (mouseenter)="themeIconInverse = true"
       (mouseleave)="themeIconInverse = false"
@@ -26,7 +29,7 @@ const themeLocalStorageKey = 'theme';
       <clr-icon
         class="theme-toggle-icon"
         size="md"
-        [solid]="themeIconInverse"
+        [solid]="!themeLockService.lightThemeLocked() && themeIconInverse"
         [shape]="theme === 'light' ? 'moon' : 'sun'"
       ></clr-icon>
       {{ theme === 'light' ? 'Dark' : 'Light' }}
@@ -39,9 +42,17 @@ const themeLocalStorageKey = 'theme';
         align-items: center;
         position: relative;
       }
-      button.btn-link {
-        &,
-        &:hover {
+      button.btn.nav-link.btn-link {
+        &.disabled {
+          color: var(--cds-alias-status-disabled-shade);
+
+          clr-icon.theme-toggle-icon {
+            color: var(--cds-alias-status-disabled-shade);
+          }
+        }
+
+        &:not(.disabled),
+        &:hover:not(.disabled) {
           clr-icon.theme-toggle-icon {
             color: var(--clr-header-font-color);
           }
@@ -55,15 +66,21 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
   protected theme = getPreferredTheme();
   protected themeIconInverse = false;
 
+  protected readonly themeLockService = inject(ThemeLockService);
+
   private toggleThemeOnSystemThemeChangeSubscription: Subscription | undefined;
 
   constructor() {
     ClarityIcons.addIcons(moonIcon, sunIcon);
+
+    // Forces the light theme onto the page (without touching the user's stored preference)
+    // while app-theme-builder holds the lock, and restores the preferred theme once released.
+    effect(() => {
+      this.setTheme(this.themeLockService.lightThemeLocked() ? 'light' : this.theme);
+    });
   }
 
   ngOnInit() {
-    this.setTheme(this.theme);
-
     if (!userHasSetTheme()) {
       this.toggleThemeOnSystemThemeChangeSubscription = this.toggleThemeOnSystemThemeChange().subscribe();
     }
@@ -74,6 +91,10 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
   }
 
   protected toggleTheme() {
+    if (this.themeLockService.lightThemeLocked()) {
+      return;
+    }
+
     this.setTheme(this.theme === 'light' ? 'dark' : 'light');
 
     setPreferredTheme(this.theme);
@@ -91,7 +112,9 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
       const darkThemeMediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
 
       const handler = (event: MediaQueryListEvent) => {
-        this.setTheme(event.matches ? 'dark' : 'light');
+        if (!this.themeLockService.lightThemeLocked()) {
+          this.setTheme(event.matches ? 'dark' : 'light');
+        }
       };
 
       darkThemeMediaQuery.addEventListener('change', handler);

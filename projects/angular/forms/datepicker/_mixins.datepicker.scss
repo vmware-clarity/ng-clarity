@@ -39,10 +39,9 @@
   }
 
   &:focus {
-    //Only because we have defined a background color for focus above
+    // Only because we have defined a background color for is-selected:focus
     // using cds-alias-object-interaction-outline token will be better when focus state get implemented
-    outline: tokens.$cds-global-color-blue-700 solid 2px;
-    outline-offset: calc(-1 * tokens.$cds-global-space-2);
+    outline-offset: #{mixins.baselinePx(-3)};
     background: tokens.$cds-alias-object-interaction-background-hover;
   }
 
