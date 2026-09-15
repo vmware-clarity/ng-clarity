@@ -15,6 +15,7 @@ import { ClrContextChange, diffClrContext } from '../diff';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 
+/** How the tracker paces its snapshots and what each one collects; see `start`. */
 export interface ClrContextTrackingOptions {
   /** Budgets applied to every snapshot the tracker takes. */
   snapshot?: ClrContextSnapshotOptions;
@@ -85,6 +86,8 @@ export class ClrContextTrackerService implements OnDestroy {
   private readonly frames = new Map<HTMLIFrameElement, TrackedFrame>();
   private registrySubscription: Subscription | null = null;
   private latest: ClrPageContext | null = null;
+  /** `latest` serialised once at emission, for the change check on the next scrape. */
+  private latestSerialized: string | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: unknown,
@@ -107,6 +110,7 @@ export class ClrContextTrackerService implements OnDestroy {
     // Nothing outlives the injector that owned this service; the snapshot it was
     // holding — a description of the whole page — should not either.
     this.latest = null;
+    this.latestSerialized = null;
     this.contextSubject.complete();
     this.changesSubject.complete();
   }
@@ -122,7 +126,8 @@ export class ClrContextTrackerService implements OnDestroy {
     this.stop();
     this.tracking = true;
     this.trackingOptions = options;
-    this.refresh();
+    // Observers first: should the first snapshot throw — an extractor, a publisher — the
+    // page is still watched, and the next change tries again.
     // Created outside the Angular zone: zone.js patches MutationObserver, and an
     // in-zone observer would trigger change detection on every mutation batch.
     this.zone.runOutsideAngular(() => {
@@ -139,6 +144,7 @@ export class ClrContextTrackerService implements OnDestroy {
       // An annotation's state is application data, changed without any DOM change.
       this.registrySubscription = this.contextRegistry.changes.subscribe(() => this.scheduleScrape());
     });
+    this.refresh();
   }
 
   /** Stops tracking. The last emitted context stays available to subscribers. */
@@ -165,11 +171,15 @@ export class ClrContextTrackerService implements OnDestroy {
     this.emit(this.contextEngine.getSnapshot(this.trackingOptions.snapshot));
   }
 
-  private emit(snapshot: ClrPageContext): void {
+  private emit(snapshot: ClrPageContext, serialized: string | null = serialize(snapshot)): void {
     const previous = this.latest;
     this.latest = snapshot;
+    this.latestSerialized = serialized;
     this.contextSubject.next(snapshot);
-    this.changesSubject.next(diffClrContext(previous, snapshot));
+    // A diff is only computed for someone; it is the costlier of the two emissions.
+    if (this.changesSubject.observed) {
+      this.changesSubject.next(diffClrContext(previous, snapshot));
+    }
   }
 
   private onMutations(records: MutationRecord[]): void {
@@ -210,15 +220,22 @@ export class ClrContextTrackerService implements OnDestroy {
     if (!this.tracking) {
       return;
     }
-    // Re-enter the zone for the emission so subscribers' views update normally.
-    this.zone.run(() => {
-      const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
-      if (!contextEquals(snapshot, this.latest)) {
-        this.emit(snapshot);
-      }
-    });
-    // A frame that arrived with this change is watched from now on.
-    this.zone.runOutsideAngular(() => this.observeFrames());
+    try {
+      // Re-enter the zone for the emission so subscribers' views update normally.
+      this.zone.run(() => {
+        const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
+        const serialized = serialize(snapshot);
+        // A snapshot that cannot be serialised — a provider handed over something
+        // circular — counts as changed, so it is at least emitted rather than dropped.
+        if (serialized === null || serialized !== this.latestSerialized) {
+          this.emit(snapshot, serialized);
+        }
+      });
+    } finally {
+      // A frame that arrived with this change is watched from now on, even when this
+      // snapshot failed: the error surfaces, tracking does not stop.
+      this.zone.runOutsideAngular(() => this.observeFrames());
+    }
   }
 
   private observeDocument(target: Document): MutationObserver {
@@ -335,18 +352,11 @@ function isInsideIgnoredRegion(node: Node): boolean {
   return !!element?.closest(IGNORE_SELECTOR);
 }
 
-/**
- * Compares two snapshots for meaningful equality, ignoring the capture timestamp. A
- * snapshot that cannot be serialised — a provider handed over something circular —
- * counts as changed, so it is at least emitted rather than silently dropped.
- */
-function contextEquals(a: ClrPageContext, b: ClrPageContext | null): boolean {
-  if (!b) {
-    return false;
-  }
+/** The snapshot as text, without the timestamp that differs on every take; `null` when it cannot be serialised. */
+function serialize(snapshot: ClrPageContext): string | null {
   try {
-    return JSON.stringify({ ...a, collectedAt: undefined }) === JSON.stringify({ ...b, collectedAt: undefined });
+    return JSON.stringify({ ...snapshot, collectedAt: undefined });
   } catch {
-    return false;
+    return null;
   }
 }

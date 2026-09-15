@@ -5,9 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
+import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { capSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
+import { stripQueryAndFragment } from '../url';
 
 /**
  * Identifier of the cross-frame context protocol. The protocol is plain,
@@ -34,24 +35,39 @@ const DEFAULT_MIN_REQUEST_INTERVAL_MS = 200;
  */
 const MAX_REQUESTS_PER_INTERVAL = 10;
 
+/** How long a frame waits for the host's answer before giving up. */
+const DEFAULT_REQUEST_TIMEOUT_MS = 2000;
+
 /** Message an embedded frame posts to its parent to ask for the page context. */
 export interface ClrContextFrameRequest {
+  /** Names the protocol, so unrelated messages are ignored. */
   protocol: typeof CLR_CONTEXT_PROTOCOL;
+  /** What the message is. */
   kind: 'context-request';
   /** Correlates a response with its request. */
   requestId: string;
-  /** Optional snapshot budgets the requester wants applied. */
+  /**
+   * Snapshot options the requester wants applied. Only the keys in
+   * `CLR_CONTEXT_UNTRUSTED_OPTION_KEYS` are honoured — budgets, categories, roles,
+   * focus and collection mode, never selectors — and only to ask for less than the
+   * host allows.
+   */
   options?: ClrContextSnapshotOptions;
 }
 
 /** Message the hosting page posts back with a freshly computed snapshot. */
 export interface ClrContextFrameResponse {
+  /** Names the protocol, so unrelated messages are ignored. */
   protocol: typeof CLR_CONTEXT_PROTOCOL;
+  /** What the message is. */
   kind: 'context-response';
+  /** The `requestId` of the request this answers. */
   requestId: string;
+  /** The host page's context, as the frame is allowed to see it. */
   context: ClrPageContext;
 }
 
+/** How a host page serves context to the frames it embeds; see `enableFrameBridge`. */
 export interface ClrContextFrameHostOptions {
   /**
    * Origins allowed to request context. Defaults to the host page's own origin.
@@ -104,6 +120,7 @@ export interface ClrContextFrameHostOptions {
   minRequestIntervalMs?: number;
 }
 
+/** How an embedded page asks its host for context; see `requestHostContext`. */
 export interface ClrContextFrameRequestOptions {
   /** Window to ask for context. Defaults to `window.parent`. */
   targetWindow?: Window;
@@ -270,8 +287,23 @@ export class ClrContextFrameHost {
       }
       shared.route = route;
     }
+    // The same reasoning applies to the page's links: a signed download, an invitation,
+    // a reset link all carry their secret in the query string.
+    shared.components = shared.components.map(withoutLinkQueries);
     return shared;
   }
+}
+
+function withoutLinkQueries(node: ClrComponentContext): ClrComponentContext {
+  let result = node;
+  const href = node.state?.['href'];
+  if (typeof href === 'string') {
+    result = { ...result, state: { ...node.state, href: stripQueryAndFragment(href) } };
+  }
+  if (node.children?.length) {
+    result = { ...result, children: node.children.map(withoutLinkQueries) };
+  }
+  return result;
 }
 
 /**
@@ -323,7 +355,7 @@ export function requestClrContextFromHost(options: ClrContextFrameRequestOptions
     const timeout = setTimeout(() => {
       cleanup();
       resolve(null);
-    }, options.timeoutMs ?? 2000);
+    }, options.timeoutMs ?? DEFAULT_REQUEST_TIMEOUT_MS);
 
     window.addEventListener('message', responseListener);
     targetWindow.postMessage(request, { targetOrigin });
@@ -361,9 +393,9 @@ function isContextResponse(value: unknown, requestId: string): value is ClrConte
 }
 
 /**
- * An unguessable correlator. The previous scheme — a counter plus a millisecond
- * timestamp — could be guessed in a few thousand attempts, which is all a frame needs to
- * answer a request it cannot see.
+ * An unguessable correlator. A predictable id — a counter, a timestamp — could be guessed
+ * in a few thousand attempts, which is all a sibling frame needs to answer a request it
+ * cannot see.
  */
 function newRequestId(): string {
   const webCrypto = (globalThis as { crypto?: Crypto }).crypto;
@@ -411,6 +443,3 @@ function ownOrigin(): string {
 }
 
 /** Everything up to the first `?` or `#`, for both absolute and relative URLs. */
-function stripQueryAndFragment(url: string): string {
-  return url.split(/[?#]/)[0];
-}

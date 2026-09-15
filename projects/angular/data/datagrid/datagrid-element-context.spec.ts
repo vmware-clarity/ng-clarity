@@ -86,7 +86,7 @@ describe('ClrDatagrid element context', () => {
 
   it('publishes the total row count, which the rendered page cannot show', () => {
     // The DOM holds two rows; the grid holds 4210. Only the component knows the total.
-    expect(published()?.state?.rowCount).toBe(4210);
+    expect(published()?.state?.totalRows).toBe(4210);
   });
 
   it('publishes which columns are filtered, which a closed filter popover cannot show', async () => {

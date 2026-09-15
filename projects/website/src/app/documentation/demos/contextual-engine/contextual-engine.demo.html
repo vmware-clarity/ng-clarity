@@ -182,8 +182,11 @@
     <p class="clr-mt-16px" cds-text="body">
       UI embedded in an iframe — such as a chat assistant built with a separate UI library — can receive the hosting
       page's context. An embedded document is trusted less than the application that embeds it: same-origin only by
-      default, no form values, no URL query string, and one snapshot per frame per
-      <code cds-text="code">minRequestIntervalMs</code> so a frame in a loop cannot keep the host's main thread busy.
+      default; no form values (typed, chosen or ticked), no query strings in the page URL or its links; only the options
+      in <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> honoured, and only to ask for less than the host
+      and the application-wide options allow; one snapshot per frame per
+      <code cds-text="code">minRequestIntervalMs</code>, and at most ten across all frames per interval, so frames in a
+      loop cannot keep the host's main thread busy.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="frameHostExample" language="typescript"></app-code-snippet>

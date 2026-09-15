@@ -60,14 +60,17 @@
       <p>
         Each tab below is an iframe loading a plain static page, the way a plugin-based shell composes its UI, with the
         sandbox a shell grants its plugins (<code class="clr-code">allow-same-origin allow-scripts allow-forms …</code
-        >). A plugin served from this application's own origin appears in the snapshot as a
-        <code class="clr-code">frame</code> node with its own controls, text and form as children — type into the
-        inventory form and watch the value change on the right. The third plugin is served from a different origin
-        (<code class="clr-code">{{ thirdPartyOrigin || 'none found' }}</code>), so the browser lets no script on this
-        page read it — the sandbox makes no difference to that: <code class="clr-code">allow-same-origin</code> only
-        lets a frame keep its real origin, it never grants the host access to another origin. The engine reports that a
-        frame is there and nothing else, and such a plugin can instead ask this page for context through the frame
-        bridge. Plugins served from the shell's own origin behave like the first two tabs.
+        >). Note that for a plugin from the shell's own origin this sandbox isolates nothing: with both
+        <code class="clr-code">allow-same-origin</code> and <code class="clr-code">allow-scripts</code> the framed page
+        can lift its own sandbox, so it is exactly as trusted as the shell. A plugin served from this application's own
+        origin appears in the snapshot as a <code class="clr-code">frame</code> node with its own controls, text and
+        form as children — type into the inventory form and watch the value change on the right. The third plugin is
+        served from a different origin (<code class="clr-code">{{ thirdPartyOrigin || 'none found' }}</code>), so the
+        browser lets no script on this page read it — the sandbox makes no difference to that:
+        <code class="clr-code">allow-same-origin</code> only lets a frame keep its real origin, it never grants the host
+        access to another origin. The engine reports that a frame is there and nothing else, and such a plugin can
+        instead ask this page for context through the frame bridge. Plugins served from the shell's own origin behave
+        like the first two tabs.
       </p>
       <clr-tabs>
         <clr-tab>

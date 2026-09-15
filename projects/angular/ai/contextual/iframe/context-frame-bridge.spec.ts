@@ -206,6 +206,28 @@ describe('Context frame bridge', () => {
         expect(json).not.toContain('"value"');
       });
 
+      it('withholds the query string of the page’s links too, for the same reason', () => {
+        host.stop();
+        host = new ClrContextFrameHost(
+          () => ({
+            ...pageContext,
+            components: [
+              { type: 'link', label: 'Download', state: { href: '/files/report.pdf?sig=secret#page=2' } },
+              { type: 'main', children: [{ type: 'link', label: 'Invite', state: { href: '/join?token=abc' } }] },
+            ],
+          }),
+          window,
+          { minRequestIntervalMs: 0 }
+        );
+        host.start();
+
+        dispatchRequest(frameRequest('request-links'));
+
+        const [download, main] = servedContext(frame).components;
+        expect(download.state?.href).toBe('/files/report.pdf');
+        expect(main.children?.[0].state?.href).toBe('/join');
+      });
+
       it('still describes the fields and what they permit', () => {
         dispatchRequest(frameRequest('request-fields'));
 
@@ -258,6 +280,16 @@ describe('Context frame bridge', () => {
         dispatchRequest(frameRequest('third'));
 
         expect(getSnapshot).toHaveBeenCalledTimes(1);
+      });
+
+      it('serves a frame again once the interval has passed', () => {
+        const now = spyOn(Date, 'now').and.returnValue(1_000_000);
+        dispatchRequest(frameRequest('first'));
+        dispatchRequest(frameRequest('too-soon'));
+        now.and.returnValue(1_000_000 + 10_001);
+        dispatchRequest(frameRequest('later'));
+
+        expect(getSnapshot).toHaveBeenCalledTimes(2);
       });
 
       it('throttles each frame on its own, so one busy frame cannot starve another', () => {

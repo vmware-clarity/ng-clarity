@@ -6,7 +6,7 @@
  */
 
 import { Component, OnDestroy } from '@angular/core';
-import { ClrContextTrackerService, ClrContextualEngineService, ClrPageContext } from '@clr/angular/ai';
+import { ClrContextTrackerService, ClrPageContext } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
 /**
@@ -29,10 +29,7 @@ export class ContextInspectorComponent implements OnDestroy {
 
   private subscription?: Subscription;
 
-  constructor(
-    private contextEngine: ClrContextualEngineService,
-    private contextTracker: ClrContextTrackerService
-  ) {}
+  constructor(private contextTracker: ClrContextTrackerService) {}
 
   toggle(): void {
     this.setOpen(!this.open);
@@ -44,6 +41,7 @@ export class ContextInspectorComponent implements OnDestroy {
    */
   setOpen(open: boolean): void {
     this.open = open;
+    this.subscription?.unsubscribe();
     if (open) {
       // start() is idempotent and cheap to call again: it always leaves tracking in a
       // known-good state, so this is self-healing even if some other page's own
@@ -52,10 +50,9 @@ export class ContextInspectorComponent implements OnDestroy {
       this.contextTracker.start();
       this.subscription = this.contextTracker.context$.subscribe(snapshot => this.render(snapshot));
     } else {
-      // No DOM work happens for this panel while it isn't visible. Tracking itself is
-      // deliberately left running for whichever page is current — closing the panel
-      // only stops reacting to it.
-      this.subscription?.unsubscribe();
+      // Nothing consumes the context while the panel is closed, and tracking walks the
+      // whole document on every DOM change; it is not left running for nobody.
+      this.contextTracker.stop();
     }
   }
 

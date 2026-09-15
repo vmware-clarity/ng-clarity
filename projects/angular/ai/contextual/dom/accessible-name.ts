@@ -6,7 +6,7 @@
  */
 
 import { isNameFromContents } from './roles';
-import { accessibleText, truncate } from './text';
+import { accessibleText, referencedText, truncate } from './text';
 
 /** Elements whose name a `<label>` may supply. */
 const LABELABLE = new Set(['button', 'input', 'meter', 'output', 'progress', 'select', 'textarea']);
@@ -60,17 +60,7 @@ export function accessibleName(element: Element, role: string | null, maxTextLen
 
 /** The joined text of every element `aria-labelledby` points at. */
 function labelledByText(element: Element): string {
-  const ids = element.getAttribute('aria-labelledby')?.trim();
-  if (!ids) {
-    return '';
-  }
-  const document = element.ownerDocument;
-  return ids
-    .split(/\s+/)
-    .map(id => document.getElementById(id))
-    .map(referenced => (referenced ? accessibleText(referenced).trim() : ''))
-    .filter(text => text)
-    .join(' ');
+  return referencedText(element, 'aria-labelledby');
 }
 
 /** The name HTML itself supplies for this element, or `null` when it supplies none. */

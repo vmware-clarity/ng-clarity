@@ -303,9 +303,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     this.teardownElementContext = publishElementContext(this.el.nativeElement, () => {
       const state: Record<string, unknown> = {};
 
+      // Named apart from the `rowCount` the engine reads off the grid (the rows on this
+      // page, or `aria-rowcount`), which is a different number for a paginated grid.
       const total = this.page.size > 0 ? this.page.totalItems : 0;
       if (total > 0) {
-        state.rowCount = total;
+        state.totalRows = total;
       }
 
       // A filter's state is a CSS class on its toggle, and the value it holds lives

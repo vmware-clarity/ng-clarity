@@ -9,7 +9,9 @@ import { ClrComponentContext, ClrPageContext } from './interfaces/context.interf
 
 /** A node whose own state changed between two snapshots, without its children. */
 export interface ClrComponentContextChange {
+  /** The node as it was in the previous snapshot. */
   before: ClrComponentContext;
+  /** The node as it is now. */
   after: ClrComponentContext;
 }
 
@@ -22,6 +24,7 @@ export interface ClrComponentContextChange {
 export interface ClrContextChange {
   /** The snapshot before, or `null` for the first one — in which case everything is `added`. */
   previous: ClrPageContext | null;
+  /** The snapshot the change leads to. */
   current: ClrPageContext;
   /** Nodes that were not there before, with their subtrees. */
   added: ClrComponentContext[];

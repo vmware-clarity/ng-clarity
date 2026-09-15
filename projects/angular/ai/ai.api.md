@@ -14,6 +14,7 @@ import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Provider } from '@angular/core';
 import { Router } from '@angular/router';
+import { Type } from '@angular/core';
 
 // @public
 export const CLR_CONTEXT_CATEGORIES: Record<ClrContextCategory, readonly string[]>;
@@ -36,8 +37,11 @@ export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
 // @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
-// @public (undocumented)
-export const CLR_CONTEXTUAL_DIRECTIVES: any[];
+// @public
+export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions)[];
+
+// @public
+export const CLR_CONTEXTUAL_DIRECTIVES: Type<any>[];
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
@@ -60,16 +64,13 @@ export interface ClrComponentContext {
 
 // @public
 export interface ClrComponentContextChange {
-    // (undocumented)
     after: ClrComponentContext;
-    // (undocumented)
     before: ClrComponentContext;
 }
 
 // @public
 export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvider {
     constructor(contextRegistry: ClrContextRegistryService);
-    // (undocumented)
     getClrContext(): ClrComponentContext | null;
     label: string;
     // (undocumented)
@@ -96,7 +97,6 @@ export function clrContextCategoryRoles(categories: readonly ClrContextCategory[
 export interface ClrContextChange {
     added: ClrComponentContext[];
     changed: ClrComponentContextChange[];
-    // (undocumented)
     current: ClrPageContext;
     previous: ClrPageContext | null;
     regionsChanged: boolean;
@@ -120,7 +120,7 @@ export class ClrContextFrameHost {
     stop(): void;
 }
 
-// @public (undocumented)
+// @public
 export interface ClrContextFrameHostOptions {
     allowAnyOrigin?: boolean;
     allowedOrigins?: string[];
@@ -132,15 +132,13 @@ export interface ClrContextFrameHostOptions {
 
 // @public
 export interface ClrContextFrameRequest {
-    // (undocumented)
     kind: 'context-request';
     options?: ClrContextSnapshotOptions;
-    // (undocumented)
     protocol: typeof CLR_CONTEXT_PROTOCOL;
     requestId: string;
 }
 
-// @public (undocumented)
+// @public
 export interface ClrContextFrameRequestOptions {
     hostOrigin?: string;
     options?: ClrContextSnapshotOptions;
@@ -151,13 +149,9 @@ export interface ClrContextFrameRequestOptions {
 
 // @public
 export interface ClrContextFrameResponse {
-    // (undocumented)
     context: ClrPageContext;
-    // (undocumented)
     kind: 'context-response';
-    // (undocumented)
     protocol: typeof CLR_CONTEXT_PROTOCOL;
-    // (undocumented)
     requestId: string;
 }
 
@@ -228,7 +222,7 @@ export class ClrContextTrackerService implements OnDestroy {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextTrackerService>;
 }
 
-// @public (undocumented)
+// @public
 export interface ClrContextTrackingOptions {
     debounceMs?: number;
     maxWaitMs?: number;

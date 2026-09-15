@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
 import { resolveRole } from './roles';
@@ -73,7 +73,9 @@ export function summarizeRole(
 function summarizeGrid(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
   const state: Record<string, unknown> = {};
 
+  // A header cell in a row that also holds data names that row, not a column.
   const columns = queryRole(element, 'columnheader')
+    .filter(header => !header.closest('tr, [role="row"]')?.querySelector(DATA_CELL_SELECTOR))
     .slice(0, options.maxItemsPerCollection)
     .map(header => nameOf(header, options));
   if (columns.length) {
@@ -90,7 +92,8 @@ function summarizeGrid(element: Element, options: Required<ClrContextSnapshotOpt
   const total = declared === null ? Number.NaN : Number(declared);
   state.rowCount = Number.isFinite(total) && total >= 0 ? total : dataRows(element).length;
 
-  const selected = element.querySelectorAll('[aria-selected="true"]').length;
+  // Only rows, and only this table's: a selected tab or option inside a cell is not a row.
+  const selected = queryRole(element, 'row').filter(row => row.getAttribute('aria-selected') === 'true').length;
   if (selected) {
     state.selectedRows = selected;
   }
@@ -135,6 +138,8 @@ function summarizeTablist(element: Element, options: Required<ClrContextSnapshot
  * the summary alone would lose where they go.
  */
 function summarizeList(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
+  // Only this list's own items: a nested list is summarised when the walk reaches it,
+  // and counting its items here would both inflate the count and name them twice.
   const items = queryRole(element, 'listitem');
   if (!items.length) {
     return {};
@@ -279,12 +284,43 @@ function summarizeRadiogroup(element: Element, options: Required<ClrContextSnaps
  * (`<th scope="row">`) names its own row and does not make it a header row.
  */
 function dataRows(element: Element): Element[] {
-  return queryRole(element, 'row').filter(row => !row.querySelector(ROLE_SELECTORS.columnheader));
+  // A row of column headers names the columns; a row that also holds data cells is a
+  // record whose first cell happens to be a header (`<th>` without `scope="row"`).
+  return queryRole(element, 'row').filter(
+    row => !row.querySelector(ROLE_SELECTORS.columnheader) || row.querySelector(DATA_CELL_SELECTOR)
+  );
 }
 
+const DATA_CELL_SELECTOR = 'td, [role="cell"], [role="gridcell"]';
+
+/**
+ * The collection an item of each role belongs to, so that a nested collection's items
+ * are left to that collection: a sub-list's entries, the rows of a table inside an
+ * expanded row, the options of a listbox inside a menu.
+ */
+const CONTAINER_SELECTORS: Record<string, string> = {
+  columnheader: 'table, [role="table"], [role="grid"], [role="treegrid"]',
+  row: 'table, [role="table"], [role="grid"], [role="treegrid"]',
+  tab: '[role="tablist"]',
+  listitem: 'ul, ol, menu, [role="list"]',
+  option: 'select, datalist, [role="listbox"], [role="combobox"]',
+  menuitem: '[role="menu"], [role="menubar"]',
+  radio: '[role="radiogroup"]',
+};
+
+/**
+ * The elements of a role inside `element` that belong to it: not hidden, not in an
+ * ignored region, and not part of a collection nested inside this one.
+ */
 function queryRole(element: Element, role: string): Element[] {
-  return Array.from(element.querySelectorAll(ROLE_SELECTORS[role]));
+  const container = CONTAINER_SELECTORS[role];
+  return Array.from(element.querySelectorAll(ROLE_SELECTORS[role])).filter(
+    item => !item.closest(HIDDEN_ITEM_SELECTOR) && (!container || item.parentElement?.closest(container) === element)
+  );
 }
+
+/** Items the user cannot see are not part of what a collection offers. */
+const HIDDEN_ITEM_SELECTOR = `[hidden], [aria-hidden="true"], [${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
 
 function nameOf(element: Element, options: Required<ClrContextSnapshotOptions>): string {
   return accessibleName(element, resolveRole(element), options.maxTextLength);

@@ -54,7 +54,8 @@ export interface ClrPageContext {
   route?: ClrRouteContext;
   /**
    * The routes the application can navigate to, present when asked for with
-   * `includeRoutes`. Bounded, and without wildcard or redirect entries.
+   * `includeRoutes`. Bounded by `maxItemsPerCollection`, never to fewer than 50 entries,
+   * and without wildcard or redirect entries.
    */
   availableRoutes?: ClrAvailableRoute[];
   /**
@@ -64,7 +65,8 @@ export interface ClrPageContext {
    */
   regions: ClrComponentContext[];
   /**
-   * Clarity components discovered in the rendered DOM, with their current state, as a
+   * Everything rendered in the DOM that carries a role, a name or text — Clarity
+   * components, other libraries' components, plain HTML — with its current state, as a
    * tree. A button or link is wherever it actually is in the DOM — inside the dialog,
    * the heading, the alert that owns it — there is no separate top-level list of
    * actions, so nesting is never discarded in favor of a flat array.

@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { CLR_CONTEXT_REDACT_ATTRIBUTE, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
-import { accessibleText, truncate } from './text';
+import { accessibleText, referencedText, truncate } from './text';
 
 /**
  * ARIA attributes that are only worth reporting when they are on, reported as a flag.
@@ -45,15 +45,7 @@ const ENUM_ATTRIBUTES: { attribute: string; key: string; empty: string }[] = [
   { attribute: 'aria-invalid', key: 'invalid', empty: 'false' },
 ];
 
-/**
- * Marks a control, or a region containing controls, whose value must never appear in a
- * snapshot. Use it for anything sensitive that the input type alone does not reveal — an
- * account number or an API token in a plain text field.
- *
- * The field itself is still described, so an agent knows it exists and that its value is
- * being withheld rather than being absent.
- */
-export const CLR_CONTEXT_REDACT_ATTRIBUTE = 'data-clr-context-redact';
+export { CLR_CONTEXT_REDACT_ATTRIBUTE };
 
 /** Input types whose value is never reported, whatever the caller asked for. */
 const REDACTED_INPUT_TYPES = new Set(['password', 'file']);
@@ -151,7 +143,8 @@ function assignNativeState(
   if ((tagName === 'details' || tagName === 'dialog') && element.hasAttribute('open')) {
     state.open = true;
   }
-  if ('disabled' in element && (element as HTMLInputElement).disabled) {
+  // `:disabled` also covers a control inside a disabled fieldset, which the property does not.
+  if ('disabled' in element && ((element as HTMLInputElement).disabled || element.matches(':disabled'))) {
     state.disabled = true;
   }
   if ('required' in element && (element as HTMLInputElement).required) {
@@ -236,6 +229,12 @@ function assignValueState(
     state.value = truncate((element as HTMLTextAreaElement).value, options.maxTextLength);
     return;
   }
+  if (isContentEditable(element)) {
+    // A rich-text editor holds what the user typed the same way a textarea does; it is
+    // a value, so that redaction and value-withholding apply to it.
+    state.value = truncate(accessibleText(element), options.maxTextLength);
+    return;
+  }
   if (tagName === 'select') {
     // What the user sees is the option's text; its `value` may be an internal key — an
     // Angular `[ngValue]` binding renders as "3: Object" — that means nothing to an agent.
@@ -252,17 +251,7 @@ function assignValueState(
 
 /** The joined text of every element that describes this one. */
 function describedByText(element: Element, options: Required<ClrContextSnapshotOptions>): string {
-  const ids = element.getAttribute('aria-describedby')?.trim();
-  if (!ids) {
-    return '';
-  }
-  const document = element.ownerDocument;
-  const described = ids
-    .split(/\s+/)
-    .map(id => document.getElementById(id))
-    .map(target => (target ? accessibleText(target).trim() : ''))
-    .filter(text => text)
-    .join(' ');
+  const described = referencedText(element, 'aria-describedby');
   return truncate(described, options.maxTextLength);
 }
 
@@ -296,4 +285,47 @@ function numberAttribute(element: Element, attribute: string): number | undefine
   }
   const value = Number(raw);
   return Number.isFinite(value) ? value : undefined;
+}
+
+/**
+ * The state keys that carry what the user entered or chose: what they typed, which
+ * options they picked, whether they ticked a box. Withheld together wherever values are
+ * withheld — a choice is as much the user's input as typed text is.
+ */
+export const VALUE_STATE_KEYS: readonly string[] = ['value', 'selected', 'checked'];
+
+/** Whether an element is an editing host: `contenteditable` on, in any spelling but `false`. */
+export function isContentEditable(element: Element): boolean {
+  const editable = element.getAttribute('contenteditable');
+  return editable !== null && editable.trim().toLowerCase() !== 'false';
+}
+
+/**
+ * The same node with every value key removed from its state, recursively, so that
+ * neither the node nor anything published under it keeps what the user entered.
+ * Returns the node itself when there is nothing to remove.
+ */
+export function withoutValues(node: ClrComponentContext): ClrComponentContext {
+  let result = node;
+  const state = node.state;
+  if (state && VALUE_STATE_KEYS.some(key => key in state)) {
+    const kept: Record<string, unknown> = { ...state };
+    for (const key of VALUE_STATE_KEYS) {
+      delete kept[key];
+    }
+    result = { ...result };
+    if (Object.keys(kept).length) {
+      result.state = kept;
+    } else {
+      delete result.state;
+    }
+  }
+  const children = node.children;
+  if (children?.length) {
+    const reduced = children.map(withoutValues);
+    if (reduced.some((child, index) => child !== children[index])) {
+      result = { ...result, children: reduced };
+    }
+  }
+  return result;
 }

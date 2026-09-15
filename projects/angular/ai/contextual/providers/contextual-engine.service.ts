@@ -24,10 +24,16 @@ import {
   ClrPageContext,
   ClrRouteContext,
 } from '../interfaces/context.interface';
-import { capSnapshotOptions } from '../snapshot-options';
+import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
+
+/**
+ * The fewest routes `availableRoutes` lists, whatever the collection budget: a route
+ * map cut to a handful of entries would misdescribe where the application can go.
+ */
+const MIN_ROUTE_LIMIT = 50;
 
 /**
  * What a global accessor may be called: a plain identifier. Anything else — a name with
@@ -98,10 +104,9 @@ export class ClrContextualEngineService implements OnDestroy {
       snapshot.route = route;
     }
     if (effective.includeRoutes && this.router?.config.length) {
-      snapshot.availableRoutes = availableRoutes(
-        this.router.config,
-        Math.max(effective.maxItemsPerCollection ?? 25, 50)
-      );
+      // Bounded by the resolved budget, so an out-of-range request is clamped here too.
+      const limit = Math.max(resolveSnapshotOptions(effective).maxItemsPerCollection, MIN_ROUTE_LIMIT);
+      snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId) && effective.includeDomComponents !== false) {
       const tree = collectClrDomContextTree(this.document, effective, this.customExtractors);
@@ -153,15 +158,18 @@ export class ClrContextualEngineService implements OnDestroy {
       return;
     }
     const { shareFormValues, ...budgets } = hostOptions;
-    this.disableGlobalAccess();
     const host = window as unknown as Record<string, unknown>;
-    if (propertyName in host) {
+    // Checked before anything is torn down, so a refused name leaves the existing
+    // accessor in place; the engine's own accessor may be re-registered under its name.
+    if (propertyName in host && propertyName !== this.globalProperty) {
       throw new Error(`ClrContextualEngineService: window.${propertyName} already exists and will not be replaced.`);
     }
+    this.disableGlobalAccess();
     this.globalProperty = propertyName;
+    const ceiling = this.untrustedCeiling(budgets);
     host[propertyName] = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
-      const snapshot = this.getSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), budgets));
+      const snapshot = this.getSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
       return shareFormValues ? snapshot : withoutFormValues(snapshot);
     };
   }
@@ -188,7 +196,14 @@ export class ClrContextualEngineService implements OnDestroy {
       return;
     }
     this.disableFrameBridge();
-    this.frameHost = new ClrContextFrameHost(snapshotOptions => this.getSnapshot(snapshotOptions), window, options);
+    // The host caps each frame's request against `options.snapshot`; the application's
+    // own options are the ceiling above that, so a frame cannot undo them either.
+    const ceiling = this.untrustedCeiling(options?.snapshot);
+    this.frameHost = new ClrContextFrameHost(
+      snapshotOptions => this.getSnapshot(capSnapshotOptions(snapshotOptions, ceiling)),
+      window,
+      options
+    );
     this.frameHost.start();
   }
 
@@ -207,6 +222,14 @@ export class ClrContextualEngineService implements OnDestroy {
       return Promise.resolve(null);
     }
     return requestClrContextFromHost(options);
+  }
+
+  /**
+   * What a caller the application does not control may at most be given: the host's
+   * own ceiling for that caller, held to the application-wide options above it.
+   */
+  private untrustedCeiling(hostCeiling?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
+    return capSnapshotOptions(hostCeiling, this.applicationOptions ?? undefined);
   }
 
   /** The call's options over the application's, ignoring keys a caller left undefined. */
@@ -246,7 +269,10 @@ export class ClrContextualEngineService implements OnDestroy {
         pathSegments.push(route.routeConfig.path);
       }
       Object.assign(params, route.params);
-      for (const [key, value] of Object.entries(route.data)) {
+      // Only the route's static configuration: `route.data` on the activated snapshot
+      // also carries what resolvers fetched — user records, entitlements, API payloads —
+      // which is application data, not a description of the page.
+      for (const [key, value] of Object.entries(route.routeConfig?.data ?? {})) {
         const serializable = jsonSafe(value, 2);
         if (serializable !== undefined) {
           data[key] = serializable;
@@ -309,9 +335,9 @@ function availableRoutes(config: Route[], limit: number): ClrAvailableRoute[] {
 }
 
 /**
- * Reduces a route `data` value to its JSON-serializable subset, dropping functions,
- * class instances and anything nested too deeply. Route data commonly mixes plain
- * configuration (useful to an agent) with resolvers and component references (useless
+ * Reduces a route's static `data` to its JSON-serializable subset, dropping functions,
+ * class instances and anything nested too deeply. Route configuration commonly mixes
+ * plain values (useful to an agent) with component references and factories (useless
  * and potentially huge), and only the former belongs in a snapshot.
  */
 function jsonSafe(value: unknown, depth: number): unknown {

@@ -8,27 +8,13 @@
 import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { summarizeRole } from './summarizers';
+import { resolveSnapshotOptions } from '../snapshot-options';
 
 describe('summarizeRole', () => {
   let container: HTMLElement;
 
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> => ({
-    maxTextLength: 100,
-    maxItemsPerCollection: 25,
-    maxComponents: 100,
-    includeDomComponents: true,
-    includeText: true,
-    includeFrames: true,
-    excludeCategories: [],
-    excludeRoles: [],
-    excludeSelectors: [],
-    rootSelector: '',
-    maxDepth: 0,
-    focus: 'page',
-    collectionItems: 'all',
-    includeRoutes: false,
-    ...overrides,
-  });
+  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> =>
+    resolveSnapshotOptions({ maxComponents: 100, ...overrides });
 
   beforeEach(() => {
     container = document.createElement('div');
@@ -64,6 +50,21 @@ describe('summarizeRole', () => {
     expect(state?.rowCount).toBe(2);
     expect(state?.selectedRows).toBe(1);
     expect(state?.sort).toEqual({ column: 'Name', direction: 'ascending' });
+  });
+
+  it('counts only rows the user can see, and only this table’s own', () => {
+    const state = summarize(
+      `<table>
+         <tr><th>Name</th><th>Status</th></tr>
+         <tr aria-selected="true"><th>esx-01</th><td>ok<table><tr><td>nested</td></tr></table></td></tr>
+         <tr hidden><td>gone</td><td>gone</td></tr>
+         <tr><td>esx-02</td><td><span role="tab" aria-selected="true">not a row</span></td></tr>
+       </table>`,
+      'table'
+    );
+    expect(state?.columns).toEqual(['Name', 'Status']);
+    expect(state?.rowCount).toBe(2);
+    expect(state?.selectedRows).toBe(1);
   });
 
   it('prefers the declared row count, which is the only truth for a paginated grid', () => {
@@ -166,23 +167,8 @@ describe('summarizeRole', () => {
 describe('summarizeRole, collections the first version misread', () => {
   let container: HTMLElement;
 
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> => ({
-    maxTextLength: 100,
-    maxItemsPerCollection: 25,
-    maxComponents: 100,
-    includeDomComponents: true,
-    includeText: true,
-    includeFrames: true,
-    excludeCategories: [],
-    excludeRoles: [],
-    excludeSelectors: [],
-    rootSelector: '',
-    maxDepth: 0,
-    focus: 'page',
-    collectionItems: 'all',
-    includeRoutes: false,
-    ...overrides,
-  });
+  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> =>
+    resolveSnapshotOptions({ maxComponents: 100, ...overrides });
 
   beforeEach(() => {
     container = document.createElement('div');

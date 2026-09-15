@@ -39,12 +39,14 @@
     <pre id="out"></pre>
     <script>
       // The host's origin, disclosed by the embedder through the referrer. The answer is
-      // accepted only from the window that was asked, and only from that origin.
-      var hostOrigin = document.referrer ? new URL(document.referrer).origin : '*';
+      // accepted only from the window that was asked, and only from that origin. Without a
+      // referrer there is no origin to trust, and nothing is asked: a request broadcast to
+      // '*' could be answered by whatever the parent has navigated to since.
+      var hostOrigin = document.referrer ? new URL(document.referrer).origin : null;
       var requestId = crypto.randomUUID();
       window.addEventListener('message', function (event) {
         var message = event.data;
-        if (event.source !== window.parent || (hostOrigin !== '*' && event.origin !== hostOrigin)) {
+        if (event.source !== window.parent || event.origin !== hostOrigin) {
           return;
         }
         if (
@@ -57,6 +59,10 @@
         }
       });
       document.getElementById('ask').addEventListener('click', function () {
+        if (!hostOrigin) {
+          document.getElementById('out').textContent = 'No referrer from the embedder: no host origin to ask.';
+          return;
+        }
         requestId = crypto.randomUUID();
         window.parent.postMessage(
           { protocol: 'ui-context/v1', kind: 'context-request', requestId: requestId, options: { maxComponents: 40 } },

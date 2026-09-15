@@ -120,7 +120,7 @@ const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames', 'in
 const LIST_KEYS = ['excludeRoles', 'excludeSelectors'] as const;
 
 /** Most entries a selector or role list may hold, and the longest any entry may be. */
-const MAX_LIST_ENTRIES = 50;
+export const MAX_LIST_ENTRIES = 50;
 const MAX_ENTRY_LENGTH = 500;
 
 /**

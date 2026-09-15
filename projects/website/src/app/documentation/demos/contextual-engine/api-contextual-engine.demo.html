@@ -61,9 +61,13 @@
       <td class="left"><b cds-text="medium">enableGlobalAccess(propertyName?, options?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">
-        Exposes <code cds-text="code">window.clrContext()</code> for agents driving the browser. Caller options are
-        reduced to budgets and form values are withheld unless <code cds-text="code">shareFormValues</code> is set,
-        because any script on the page can call it.
+        Exposes <code cds-text="code">window.clrContext()</code> for agents driving the browser. Because any script on
+        the page can call it, the caller is treated as untrusted: only the options in
+        <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> are honoured (budgets, categories, roles, focus,
+        collection mode — never selectors), each held to what the application allows through
+        <code cds-text="code">options</code> here and <code cds-text="code">provideClrContextOptions</code>, and what
+        the user entered — typed values, chosen options, ticked boxes — is withheld unless
+        <code cds-text="code">shareFormValues</code> is set.
       </td>
     </tr>
     <tr>
@@ -285,7 +289,8 @@
       <td class="left">
         Whether to list the routes the application can navigate to (<code cds-text="code">availableRoutes</code>: path
         patterns from the router configuration, with titles where named), so an agent can propose going somewhere the
-        page does not link to. The application performs the navigation.
+        page does not link to. The application performs the navigation. The list is bounded by
+        <code cds-text="code">maxItemsPerCollection</code>, never to fewer than 50 routes.
       </td>
     </tr>
     <tr>

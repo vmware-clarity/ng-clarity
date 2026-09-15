@@ -142,9 +142,21 @@ this.contextEngine.enableFrameBridge({
 
 const FRAME_CLIENT_EXAMPLE = `
 // Inside the iframe: any framework, no Clarity required — plain postMessage.
-parent.postMessage({ protocol: 'ui-context/v1', kind: 'context-request', requestId: 'r1' }, '*');
-// The host answers with a freshly computed snapshot:
-// { protocol: 'ui-context/v1', kind: 'context-response', requestId: 'r1', context: { ... } }
+const hostOrigin = new URL(document.referrer).origin; // the embedder, disclosed by the referrer
+const requestId = crypto.randomUUID(); // unguessable, so no other frame can answer for the host
+
+window.addEventListener('message', event => {
+  // Only the window that was asked, only from its origin, only the answer to this request.
+  if (event.source !== window.parent || event.origin !== hostOrigin) {
+    return;
+  }
+  const message = event.data;
+  if (message?.protocol === 'ui-context/v1' && message.kind === 'context-response' && message.requestId === requestId) {
+    render(message.context); // { title, url, route, regions, components, ... }
+  }
+});
+
+parent.postMessage({ protocol: 'ui-context/v1', kind: 'context-request', requestId }, hostOrigin);
 `;
 
 const FORM_CONTEXT_EXAMPLE = `
