@@ -2333,6 +2333,8 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
     // (undocumented)
     protected commonStrings: ClrCommonStringsService;
     protected get filterActive(): boolean;
+    protected get filterOpen(): boolean;
+    protected get filterPopoverId(): string | null;
     // (undocumented)
     protected get hasFilter(): boolean;
     get keepFilterInHeader(): boolean;
@@ -3349,8 +3351,9 @@ export class ClrDropdownItem {
     set disabled(value: boolean | string);
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
+    role: string;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "closeMenuOnClick": { "alias": "clrCloseMenuOnClick"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "closeMenuOnClick": { "alias": "clrCloseMenuOnClick"; "required": false; }; "role": { "alias": "role"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, [null, null, null, { optional: true; }, null, null]>;
 }

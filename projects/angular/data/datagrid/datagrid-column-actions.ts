@@ -80,9 +80,16 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
 
     <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
       @if (column.sortable) {
+        <!--
+          The two directions are one exclusive setting rather than two commands, so they are radio
+          items: the applied one is then announced as such. The active class alone would leave it
+          visible only to a sighted user - the column header's aria-sort is not read from in here.
+        -->
         <button
           type="button"
           clrDropdownItem
+          role="menuitemradio"
+          [attr.aria-checked]="sortOrder === ClrDatagridSortOrder.ASC"
           [class.active]="sortOrder === ClrDatagridSortOrder.ASC"
           (click)="sort(false)"
         >
@@ -92,6 +99,8 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
         <button
           type="button"
           clrDropdownItem
+          role="menuitemradio"
+          [attr.aria-checked]="sortOrder === ClrDatagridSortOrder.DESC"
           [class.active]="sortOrder === ClrDatagridSortOrder.DESC"
           (click)="sort(true)"
         >
@@ -127,8 +136,21 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
         @if (column.sortable || column.pinnable) {
           <div class="dropdown-divider" role="separator"></div>
         }
-        <!-- Stays open because the filter popover is anchored to this very item. -->
-        <button type="button" #trigger clrDropdownItem [clrCloseMenuOnClick]="false" (click)="openFilter($event)">
+        <!--
+          Stays open because the filter popover is anchored to this very item. The item stands in for
+          the filter's own toggle, so it takes over the state that toggle announced: that it opens a
+          dialog, and whether that dialog is open right now.
+        -->
+        <button
+          type="button"
+          #trigger
+          clrDropdownItem
+          [clrCloseMenuOnClick]="false"
+          aria-haspopup="dialog"
+          [attr.aria-expanded]="filterOpen"
+          [attr.aria-controls]="filterPopoverId"
+          (click)="openFilter($event)"
+        >
           <cds-icon [shape]="filterActive ? 'filter-grid-circle' : 'filter-grid'" solid aria-hidden="true"></cds-icon>
           {{ commonStrings.keys.filterColumn }}
         </button>
@@ -212,6 +234,10 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
     if (filters) {
       this.columnSubscriptions.push(filters.change.subscribe(() => changeDetectorRef.markForCheck()));
     }
+
+    // Same for the filter action reporting whether the filter is open: closing it is an outside click
+    // or an escape key handled by the overlay, and the item would be left announcing itself expanded.
+    this.columnSubscriptions.push(columnPopover.openChange.subscribe(() => changeDetectorRef.markForCheck()));
   }
 
   /**
@@ -258,6 +284,23 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
    */
   protected get filterActive(): boolean {
     return !!this.columnActions.filter()?.active && !this.keepFilterInHeader;
+  }
+
+  /**
+   * Whether the filter this menu opens is open, for the filter action to report the same way the
+   * toggle it replaced did. Read from the column's popover service rather than from the filter,
+   * because that service is what the action opens.
+   */
+  protected get filterOpen(): boolean {
+    return this.columnPopover.open;
+  }
+
+  /**
+   * The popover the filter action opens, so it can point at what it controls - again the same thing
+   * the replaced toggle pointed at.
+   */
+  protected get filterPopoverId(): string | null {
+    return this.columnActions.filter()?.popoverId ?? null;
   }
 
   /**

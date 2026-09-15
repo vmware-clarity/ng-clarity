@@ -511,6 +511,34 @@ export default function (): void {
         expect(itemLabelled(commonStrings.keys.sortColumnDescending).classList).not.toContain('active');
       });
 
+      // The active class above is visual only. The two directions are one exclusive setting rather
+      // than two commands, so each is a radio item and the applied one is the checked one - without
+      // that, a screen reader announces two identical menu items and never says which is in effect.
+      // The column header's aria-sort does not cover it: it is not read from inside the menu.
+      it('announces the applied sort direction as the checked radio item', function () {
+        openMenu();
+
+        expect(itemLabelled(commonStrings.keys.sortColumnAscending).getAttribute('role')).toBe('menuitemradio');
+        expect(itemLabelled(commonStrings.keys.sortColumnDescending).getAttribute('role')).toBe('menuitemradio');
+        expect(itemLabelled(commonStrings.keys.sortColumnAscending).getAttribute('aria-checked')).toBe('false');
+        expect(itemLabelled(commonStrings.keys.sortColumnDescending).getAttribute('aria-checked')).toBe('false');
+
+        invoke(commonStrings.keys.sortColumnDescending);
+        openMenu();
+
+        expect(itemLabelled(commonStrings.keys.sortColumnAscending).getAttribute('aria-checked')).toBe('false');
+        expect(itemLabelled(commonStrings.keys.sortColumnDescending).getAttribute('aria-checked')).toBe('true');
+      });
+
+      // The checkable role belongs to the sort items alone - everything else in the menu performs an
+      // action rather than reporting a setting, so it keeps the plain menuitem role.
+      it('leaves the remaining items as plain menu items', function () {
+        openMenu();
+
+        expect(itemLabelled(commonStrings.keys.pinColumn).getAttribute('role')).toBe('menuitem');
+        expect(itemLabelled(commonStrings.keys.pinColumn).getAttribute('aria-checked')).toBeNull();
+      });
+
       it('pins and unpins the column', function () {
         expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
 
@@ -689,6 +717,45 @@ export default function (): void {
         await context.fixture.whenStable();
 
         expect(element.querySelector(TOGGLE).classList).toContain('datagrid-column-actions-filtered');
+      });
+
+      // This item stands in for the filter's own toggle, which announced all of this - see the
+      // aria-expanded and aria-controls on .datagrid-filter-toggle. Without them the item reads as a
+      // plain command, with no sign that it opens a dialog, which dialog, or that it is already open.
+      it('announces the filter action as opening the filter dialog', function () {
+        openMenu();
+        const filterItem = itemLabelled(commonStrings.keys.filterColumn);
+
+        expect(filterItem.getAttribute('aria-haspopup')).toBe('dialog');
+        expect(filterItem.getAttribute('aria-expanded')).toBe('false');
+
+        filterItem.click();
+        context.detectChanges();
+
+        expect(filterItem.getAttribute('aria-expanded')).toBe('true');
+        expect(filterItem.getAttribute('aria-controls')).toBe(filterPanel().id);
+        expect(filterPanel().getAttribute('role')).toBe('dialog');
+      });
+
+      // The filter is closed by an outside click or an escape key, neither of which goes through this
+      // template, and the menu is OnPush - so without being told, the item would be left announcing
+      // itself as expanded over a filter that is gone. Closing through the service is that path: it is
+      // what both of those gestures end up doing.
+      it('reports the filter closed again when it is dismissed from the outside', function () {
+        const popover = context.fixture.debugElement
+          .query(By.directive(ClrDatagridColumn))
+          .injector.get(ClrPopoverService);
+
+        openMenu();
+        const filterItem = itemLabelled(commonStrings.keys.filterColumn);
+        filterItem.click();
+        context.detectChanges();
+        expect(filterItem.getAttribute('aria-expanded')).toBe('true');
+
+        popover.open = false;
+        context.detectChanges();
+
+        expect(filterItem.getAttribute('aria-expanded')).toBe('false');
       });
 
       // The filter item itself carries no highlight: the trigger is what shows the filtered state,

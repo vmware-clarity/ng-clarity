@@ -395,6 +395,8 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterConten
     // (undocumented)
     protected commonStrings: ClrCommonStringsService;
     protected get filterActive(): boolean;
+    protected get filterOpen(): boolean;
+    protected get filterPopoverId(): string | null;
     // (undocumented)
     protected get hasFilter(): boolean;
     get keepFilterInHeader(): boolean;

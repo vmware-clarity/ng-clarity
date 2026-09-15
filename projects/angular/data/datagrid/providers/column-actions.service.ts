@@ -13,6 +13,13 @@ import { Injectable, signal } from '@angular/core';
  */
 export interface ColumnFilterHandle {
   readonly active: boolean;
+
+  /**
+   * The id of the popover the filter renders its content into, for the menu item that opens it to
+   * point `aria-controls` at. Optional because it only exists once the filter has an element to
+   * label - a handle can register before then.
+   */
+  readonly popoverId?: string;
 }
 
 /**
