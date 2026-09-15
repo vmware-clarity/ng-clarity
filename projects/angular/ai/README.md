@@ -19,4 +19,5 @@ component that publishes context does not depend on this entry point.
 Through custom extractors and a framework-agnostic `postMessage` protocol it also reaches other UI
 libraries and UI embedded in iframes, such as chat components.
 
-See [docs/CONTEXTUAL_ENGINE.md](../../../docs/CONTEXTUAL_ENGINE.md) for the full guide.
+The full guide, option reference and a live playground are on the Clarity website under "Contextual Engine"
+(`projects/website/src/app/documentation/demos/contextual-engine`).
