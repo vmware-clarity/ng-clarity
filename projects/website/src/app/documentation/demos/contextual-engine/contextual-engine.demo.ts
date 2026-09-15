@@ -151,7 +151,11 @@ window.addEventListener('message', event => {
     return;
   }
   const message = event.data;
-  if (message?.protocol === 'ui-context/v1' && message.kind === 'context-response' && message.requestId === requestId) {
+  if (
+    message?.protocol === 'ui-context/v1' &&
+    message.kind === 'context-response' &&
+    message.requestId === requestId
+  ) {
     render(message.context); // { title, url, route, regions, components, ... }
   }
 });
