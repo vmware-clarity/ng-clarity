@@ -35,8 +35,8 @@ import {
   preventArrowKeyScroll,
   uniqueIdFactory,
 } from '@clr/angular/utils';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { asapScheduler, Subject, Subscription } from 'rxjs';
+import { debounceTime, filter, skip } from 'rxjs/operators';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
@@ -46,6 +46,15 @@ import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNodeLink } from './tree-node-link';
 
 const LVIEW_CONTEXT_INDEX = 8;
+
+/*
+ * Collapsed children containers are hidden with `content-visibility: hidden` (see the .clr-treenode-children-collapsed
+ * styles), which skips their rendering entirely and removes them from the focus order and the accessibility tree.
+ * Browsers without support fall back to `inert`, which achieves the same for focus and assistive technologies
+ * but forces a style recalculation of the whole subtree every time a node gets toggled.
+ */
+const SUPPORTS_CONTENT_VISIBILITY =
+  typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('content-visibility', 'hidden');
 
 // If the user types multiple keys without allowing 200ms to pass between them,
 // then those keys are sent together in one request.
@@ -78,6 +87,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
 
   STATES = ClrSelectedState;
+  inertWhenCollapsed = !SUPPORTS_CONTENT_VISIBILITY;
   isModelLoading = false;
   nodeId = uniqueIdFactory();
   contentContainerTabindex = -1;
@@ -213,8 +223,15 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       })
     );
 
+    // The loading state can flip in the middle of a change detection pass (a lazy fetch starts when the template
+    // reads the children), so it is applied in a microtask rather than synchronously. Using a macrotask timer here
+    // would schedule one timer per node when a large tree gets created, and one extra change detection pass per
+    // fetched node in lazy trees. The current value is read directly instead of debouncing the replayed initial one.
+    this.isModelLoading = this._model.loading;
     this.subscriptions.push(
-      this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading))
+      this._model.loading$
+        .pipe(skip(1), debounceTime(0, asapScheduler))
+        .subscribe(isLoading => (this.isModelLoading = isLoading))
     );
   }
 
