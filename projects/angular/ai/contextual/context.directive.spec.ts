@@ -8,7 +8,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ClrContextualModule } from './contextual.module';
+import { ClrContextModule } from './contextual.module';
 import { ClrContextRegistryService } from './providers/context-registry.service';
 
 @Component({
@@ -31,7 +31,7 @@ describe('ClrContext directive', () => {
   let registry: ClrContextRegistryService;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [ClrContextualModule], declarations: [TestComponent] });
+    TestBed.configureTestingModule({ imports: [ClrContextModule], declarations: [TestComponent] });
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
     registry = TestBed.inject(ClrContextRegistryService);
@@ -77,10 +77,10 @@ describe('ClrContext directive, announcing its changes', () => {
   let changes: number;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [ClrContextualModule], declarations: [TestComponent] });
+    TestBed.configureTestingModule({ imports: [ClrContextModule], declarations: [TestComponent] });
     registry = TestBed.inject(ClrContextRegistryService);
     changes = 0;
-    registry.changes.subscribe(() => changes++);
+    registry.changes$.subscribe(() => changes++);
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
   });
@@ -113,6 +113,18 @@ describe('ClrContext directive, announcing its changes', () => {
     expect(earlier).toEqual({ cluster: 'alpha' });
     expect(registry.collect()[0].state).toEqual({ cluster: 'omega' });
     expect(registry.collect()[0].state).not.toBe(state);
+  });
+
+  it('neither throws nor contributes while its state cannot be serialised', () => {
+    const circular: Record<string, unknown> = {};
+    circular['self'] = circular;
+    fixture.componentInstance.state = circular;
+
+    expect(() => fixture.detectChanges()).not.toThrow();
+    expect(registry.collect()).toEqual([]);
+    const before = changes;
+    fixture.detectChanges();
+    expect(changes).toBe(before);
   });
 
   it('stays quiet while nothing changed', () => {

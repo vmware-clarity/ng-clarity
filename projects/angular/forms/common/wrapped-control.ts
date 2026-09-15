@@ -48,6 +48,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   protected subscriptions: Subscription[] = [];
 
   private controlClassService: ControlClassService;
+  private readonly authoredAriaInvalid: string | null;
+  private readonly authoredAriaRequired: string | null;
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
   private _containerInjector: Injector;
@@ -64,6 +66,10 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected renderer: Renderer2,
     protected el: ElementRef<HTMLElement>
   ) {
+    // Static attributes are set before the directive is created, so what the author
+    // wrote is readable here and is not overwritten by the host bindings below.
+    this.authoredAriaInvalid = el?.nativeElement?.getAttribute('aria-invalid') ?? null;
+    this.authoredAriaRequired = el?.nativeElement?.getAttribute('aria-required') ?? null;
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.markControlService = injector.get(MarkControlService, null);
@@ -99,7 +105,11 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
    * has not reached yet should not be announced as wrong.
    */
   @HostBinding('attr.aria-invalid')
-  protected get ariaInvalid(): true | null {
+  protected get ariaInvalid(): string | true | null {
+    // An attribute the author wrote in the template is theirs to keep.
+    if (this.authoredAriaInvalid !== null) {
+      return this.authoredAriaInvalid;
+    }
     return this.ngControl?.invalid && this.ngControl?.touched ? true : null;
   }
 
@@ -111,7 +121,10 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
    * reports it explicitly.
    */
   @HostBinding('attr.aria-required')
-  protected get ariaRequired(): true | null {
+  protected get ariaRequired(): string | true | null {
+    if (this.authoredAriaRequired !== null) {
+      return this.authoredAriaRequired;
+    }
     return hasRequiredValidator(this.ngControl?.control) ? true : null;
   }
 

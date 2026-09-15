@@ -75,7 +75,7 @@ describe('ClrCombobox element context', () => {
   });
 
   it('exposes the current selection, which a closed popover does not show', () => {
-    expect(publishedContext().state.value).toBe('apple');
+    expect(publishedContext().state.value).toBe('Apple');
   });
 
   it('lists the same options while the popover is open, without screen reader additions', () => {
@@ -95,5 +95,63 @@ describe('ClrCombobox element context', () => {
     fixture.destroy();
 
     expect((host as HTMLElement & { clrElementContext?: unknown }).clrElementContext).toBeUndefined();
+  });
+});
+
+@Component({
+  template: `
+    <clr-combobox name="fruits" [(ngModel)]="selection" clrMulti="true">
+      <clr-options>
+        <clr-option clrValue="apple">Apple</clr-option>
+        <clr-option clrValue="pear">Pear</clr-option>
+        <clr-option clrValue="plum">Plum</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox name="async" [(ngModel)]="asyncSelection" class="async"></clr-combobox>
+  `,
+  standalone: false,
+})
+class MoreShapesTestComponent {
+  selection: string[] = ['apple', 'plum'];
+  asyncSelection: string | null = null;
+}
+
+describe('ClrCombobox element context, other shapes', () => {
+  let fixture: ComponentFixture<MoreShapesTestComponent>;
+
+  function publishedOn(selector: string): ReturnType<ElementContextCallback> {
+    const host = fixture.nativeElement.querySelector(selector) as HTMLElement & {
+      clrElementContext?: ElementContextCallback;
+    };
+    const callback = host.clrElementContext;
+    if (!callback) {
+      throw new Error('expected the combobox to publish a clrElementContext callback');
+    }
+    return callback({});
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      declarations: [MoreShapesTestComponent],
+    });
+    fixture = TestBed.createComponent(MoreShapesTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('reports every selected value of a multi-select combobox', () => {
+    const context = publishedOn('clr-combobox');
+    expect(context.state.multiSelect).toBe(true);
+    expect(context.state.value).toEqual(['Apple', 'Plum']);
+  });
+
+  it('says that an async combobox has no options until a search loads them', () => {
+    const context = publishedOn('clr-combobox.async');
+    expect(context.state.optionsAvailable).toBe(false);
+    expect('options' in context.state).toBe(false);
   });
 });

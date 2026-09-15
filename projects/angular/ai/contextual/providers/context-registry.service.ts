@@ -25,13 +25,13 @@ export class ClrContextRegistryService {
    * changed. Context that lives only in application state changes without touching the
    * DOM, so anything keeping a snapshot current has nothing else to watch for it.
    */
-  readonly changes: Observable<void>;
+  readonly changes$: Observable<void>;
 
   private readonly providers: ClrContextProvider[] = [];
   private readonly changesSubject = new Subject<void>();
 
   constructor() {
-    this.changes = this.changesSubject.asObservable();
+    this.changes$ = this.changesSubject.asObservable();
   }
 
   /**

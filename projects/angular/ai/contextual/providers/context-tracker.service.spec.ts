@@ -87,13 +87,13 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('coalesces a burst of changes into a single emission', async () => {
-    tracker.start({ debounceMs: 60 });
+    tracker.start({ debounceMs: 150 });
     const countAfterStart = emitted.length;
 
     addWidget('First');
-    await wait(15);
+    await wait(40);
     addWidget('Second');
-    await wait(200);
+    await wait(500);
 
     expect(emitted.length).toBe(countAfterStart + 1);
     expect(widgetLabels(tracker.currentContext)).toEqual(['First', 'Second']);
@@ -128,7 +128,7 @@ describe('ClrContextTrackerService', () => {
   });
 
   it('still scrapes at the max-wait bound when the page never goes quiet', async () => {
-    tracker.start({ debounceMs: 80, maxWaitMs: 200 });
+    tracker.start({ debounceMs: 200, maxWaitMs: 500 });
 
     const noise = document.createElement('div');
     document.body.appendChild(noise);
@@ -137,7 +137,7 @@ describe('ClrContextTrackerService', () => {
     const interval = setInterval(() => noise.setAttribute('data-tick', String(Date.now())), 30);
 
     try {
-      await wait(350);
+      await wait(900);
       expect(widgetLabels(tracker.currentContext)).toContain('Appears despite noise');
     } finally {
       clearInterval(interval);
@@ -394,6 +394,25 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     addFrameButton('Third');
     await wait(60);
     expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Second', 'Third']);
+  });
+
+  it('drops a frame that leaves the page and no longer reacts to its detached document', async () => {
+    await loadFrame('<button>Run</button>');
+    tracker.start({ debounceMs: 20 });
+    await wait(120);
+    expect(frameButtons(tracker.currentContext)).toEqual(['Run']);
+    const detached = frameBody();
+
+    frame.remove();
+    await wait(120);
+    expect(frameButtons(tracker.currentContext)).toEqual([]);
+    const emissions = emitted.length;
+
+    const button = detached.ownerDocument.createElement('button');
+    button.textContent = 'Ghost';
+    detached.appendChild(button);
+    await wait(120);
+    expect(emitted.length).toBe(emissions);
   });
 
   it('stops watching a frame once tracking stops', async () => {

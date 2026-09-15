@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions, ClrElementContextCallback } from '@clr/angular/utils';
+import { Observable } from 'rxjs';
 
 import { ClrTreeViewModule } from './tree-view.module';
 
@@ -86,5 +87,39 @@ describe('ClrTreeNode element context', () => {
     fixture.destroy();
 
     expect(CLR_ELEMENT_CONTEXT_PROPERTY in node).toBe(false);
+  });
+});
+
+@Component({
+  template: `
+    <clr-tree>
+      <clr-tree-node *clrRecursiveFor="let item of roots; getChildren: getChildren" [clrExpanded]="true">
+        {{ item }}
+      </clr-tree-node>
+    </clr-tree>
+  `,
+  standalone: false,
+})
+class LazyTestComponent {
+  roots = ['Datacenters'];
+  // Children that never arrive: the node stays in its loading state.
+  getChildren = (): Observable<string[]> => new Observable<string[]>(() => undefined);
+}
+
+describe('ClrTreeNode element context while children load', () => {
+  it('publishes that the children are still loading, which the DOM cannot show', async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrTreeViewModule, NoopAnimationsModule],
+      declarations: [LazyTestComponent],
+    });
+    const fixture = TestBed.createComponent(LazyTestComponent);
+    fixture.detectChanges();
+    // The loading flag is debounced by a tick.
+    await new Promise(resolve => setTimeout(resolve));
+    fixture.detectChanges();
+
+    const state = publishedOn(fixture.nativeElement.querySelector('clr-tree-node'));
+    expect(state.loading).toBe(true);
+    fixture.destroy();
   });
 });

@@ -6182,11 +6182,11 @@ export class ClrTreeViewModule {
 }
 
 // @public (undocumented)
-export class ClrVerticalNav implements OnDestroy {
+export class ClrVerticalNav implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService, el: ElementRef<HTMLElement>);
     // (undocumented)
     get ariaExpanded(): string;
     // (undocumented)
@@ -6205,7 +6205,10 @@ export class ClrVerticalNav implements OnDestroy {
     get hasNavGroups(): boolean;
     // (undocumented)
     ngOnDestroy(): void;
-    role: string;
+    // (undocumented)
+    ngOnInit(): void;
+    get role(): string | null;
+    set role(value: string | null);
     // (undocumented)
     toggleByButton(): void;
     // (undocumented)
@@ -10046,8 +10049,8 @@ export class WrappedColumn implements AfterViewInit, OnDestroy {
 // @public (undocumented)
 export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
-    protected get ariaInvalid(): true | null;
-    protected get ariaRequired(): true | null;
+    protected get ariaInvalid(): string | true | null;
+    protected get ariaRequired(): string | true | null;
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)

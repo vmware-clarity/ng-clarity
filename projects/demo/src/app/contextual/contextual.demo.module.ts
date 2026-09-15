@@ -9,7 +9,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { ClrContextualModule } from '@clr/angular/ai';
+import { ClrContextModule } from '@clr/angular/ai';
 
 import { ContextPlaygroundComponent } from './context-playground.component';
 import { ContextualDemo } from './contextual.demo';
@@ -20,7 +20,7 @@ import { ROUTING } from './contextual.demo.routing';
     CommonModule,
     FormsModule,
     ClarityModule,
-    ClrContextualModule,
+    ClrContextModule,
     ROUTING,
     ReactiveFormsModule,
     ContextPlaygroundComponent,

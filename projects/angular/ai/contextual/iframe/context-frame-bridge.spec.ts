@@ -292,6 +292,18 @@ describe('Context frame bridge', () => {
         expect(getSnapshot).toHaveBeenCalledTimes(2);
       });
 
+      it('lets frames a frame nests share its allowance, so spawning frames buys nothing', () => {
+        const nested = fakeWindow();
+        (nested as unknown as { parent: unknown }).parent = frame;
+        (frame as unknown as { parent: unknown }).parent = window;
+
+        dispatchRequest(frameRequest('outer'), window.location.origin, frame);
+        dispatchRequest(frameRequest('inner'), window.location.origin, nested);
+
+        expect(getSnapshot).toHaveBeenCalledTimes(1);
+        expect(nested.postMessage).not.toHaveBeenCalled();
+      });
+
       it('throttles each frame on its own, so one busy frame cannot starve another', () => {
         const other = fakeWindow();
 
@@ -529,7 +541,7 @@ describe('Context frame bridge, what the host stays in charge of', () => {
       dispatchRequest(frameRequest(`frame-${index}`), { postMessage: jasmine.createSpy() });
     }
 
-    expect(getSnapshot.calls.count()).toBe(10);
+    expect(getSnapshot.calls.count()).toBe(5);
   });
 
   it('keeps serving after one request blows up', () => {

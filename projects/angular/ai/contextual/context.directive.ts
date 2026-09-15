@@ -61,6 +61,14 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 
   /** The annotation as a context node, or `null` while it has neither label nor state. */
   getClrContext(): ClrComponentContext | null {
+    // A copy, parsed from the serialised form the change check already computes: the
+    // tracker compares snapshots, and a state object edited in place would otherwise
+    // read as unchanged on both sides.
+    const serialized = this.serialized();
+    return serialized ? JSON.parse(serialized) : null;
+  }
+
+  private annotation(): ClrComponentContext | null {
     if (!this.label && !this.state) {
       return null;
     }
@@ -69,9 +77,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
       context.label = this.label;
     }
     if (this.state && Object.keys(this.state).length) {
-      // A copy: the tracker compares a snapshot against the previous one, and a state
-      // object edited in place would read as unchanged on both sides.
-      context.state = copyOf(this.state);
+      context.state = this.state;
     }
     return context;
   }
@@ -79,19 +85,11 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
   /** The annotation as it would appear in a snapshot; what "changed" is measured against. */
   private serialized(): string {
     try {
-      return JSON.stringify(this.getClrContext());
+      const annotation = this.annotation();
+      return annotation ? JSON.stringify(annotation) : '';
     } catch {
       // A state that cannot be serialised cannot appear in a snapshot either.
       return '';
     }
-  }
-}
-
-/** A JSON copy of a state object; the object itself when it cannot be serialised. */
-function copyOf(state: Record<string, unknown>): Record<string, unknown> {
-  try {
-    return JSON.parse(JSON.stringify(state));
-  } catch {
-    return state;
   }
 }

@@ -12,10 +12,10 @@ import {
   CLR_CONTEXT_DEFAULT_OPTIONS,
   ClrContextCategory,
   ClrContextChange,
-  clrContextPreset,
+  ClrContextEngineService,
   ClrContextPreset,
+  clrContextPreset,
   ClrContextSnapshotOptions,
-  ClrContextualEngineService,
   ClrPageContext,
   diffClrContext,
 } from '@clr/angular/ai';
@@ -78,7 +78,7 @@ export class ContextPlaygroundComponent implements OnInit {
 
   private previous: ClrPageContext | null = null;
 
-  constructor(private readonly contextEngine: ClrContextualEngineService) {}
+  constructor(private readonly contextEngine: ClrContextEngineService) {}
 
   ngOnInit(): void {
     this.run();

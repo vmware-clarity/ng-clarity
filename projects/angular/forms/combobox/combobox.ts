@@ -658,8 +658,11 @@ export class ClrCombobox<T>
       if (model === null || model === undefined) {
         state.value = null;
       } else {
-        const displayNames = this.getDisplayNames(model);
-        state.value = this.multiSelect ? displayNames : (displayNames[0] ?? null);
+        // What the user sees: the option's label when the value matches an option, the
+        // display field otherwise, the value itself as a last resort.
+        const values = Array.isArray(model) ? model : [model];
+        const names = values.map(value => this.selectedValueLabel(value));
+        state.value = this.multiSelect ? names : (names[0] ?? null);
       }
       return { type: 'combobox', state };
     };
@@ -679,6 +682,17 @@ export class ClrCombobox<T>
       }
     });
     return text.replace(/\s+/g, ' ').trim() || String(option.value);
+  }
+
+  private selectedValueLabel(value: T): unknown {
+    const option = this.options?.items?.find(candidate => candidate.value === value);
+    if (option) {
+      return this.optionLabel(option);
+    }
+    if (this.displayField && value) {
+      return (value as Record<string, unknown>)[this.displayField];
+    }
+    return value;
   }
 
   private getDisplayNames(model: T | T[]) {

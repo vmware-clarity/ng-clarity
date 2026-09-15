@@ -19,6 +19,11 @@ import { ClrVerticalNavModule } from './vertical-nav.module';
     <clr-vertical-nav role="none" class="wrapped">
       <a clrVerticalNavLink href="#/vms">VMs</a>
     </clr-vertical-nav>
+    <nav aria-label="Sidebar">
+      <clr-vertical-nav class="inside-nav">
+        <a clrVerticalNavLink href="#/storage">Storage</a>
+      </clr-vertical-nav>
+    </nav>
   `,
   standalone: false,
 })
@@ -42,7 +47,11 @@ describe('Vertical nav, as assistive technology sees it', () => {
     expect(fixture.nativeElement.querySelector('clr-vertical-nav').getAttribute('role')).toBe('navigation');
   });
 
-  it('lets the application override the role, for a nav that is already wrapped in a landmark', () => {
+  it('lets the application override the role', () => {
     expect(fixture.nativeElement.querySelector('clr-vertical-nav.wrapped').getAttribute('role')).toBe('none');
+  });
+
+  it('adds no landmark of its own inside an existing one, so the page does not get two nested', () => {
+    expect(fixture.nativeElement.querySelector('clr-vertical-nav.inside-nav').hasAttribute('role')).toBe(false);
   });
 });
