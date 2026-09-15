@@ -553,6 +553,15 @@ export default function (): void {
         expect(descending().getAttribute('aria-checked')).toBe('true');
       });
 
+      // The checkable role belongs to the sort items alone - everything else in the menu performs an
+      // action rather than reporting a setting, so it keeps the plain menuitem role.
+      it('leaves the remaining items as plain menu items', function () {
+        openMenu();
+
+        expect(itemLabelled(commonStrings.keys.pinColumn).getAttribute('role')).toBe('menuitem');
+        expect(itemLabelled(commonStrings.keys.pinColumn).getAttribute('aria-checked')).toBeNull();
+      });
+
       it('pins and unpins the column', function () {
         expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
 
@@ -723,6 +732,27 @@ export default function (): void {
 
         expect(filterPanel().id).toBe(filterItem.getAttribute('aria-controls'));
         expect(filterItem.getAttribute('aria-expanded')).toBe('true');
+      });
+
+      // The filter is closed by an outside click or an escape key, neither of which goes through this
+      // template, and the menu is OnPush - so without being told, the item would be left announcing
+      // itself as expanded over a filter that is gone. Closing through the service is that path: it is
+      // what both of those gestures end up doing.
+      it('reports the filter closed again when it is dismissed from the outside', function () {
+        const popover = context.fixture.debugElement
+          .query(By.directive(ClrDatagridColumn))
+          .injector.get(ClrPopoverService);
+
+        openMenu();
+        const filterItem = itemLabelled(commonStrings.keys.filterColumn);
+        filterItem.click();
+        context.detectChanges();
+        expect(filterItem.getAttribute('aria-expanded')).toBe('true');
+
+        popover.open = false;
+        context.detectChanges();
+
+        expect(filterItem.getAttribute('aria-expanded')).toBe('false');
       });
 
       it('closes the menu once the filter is open', async () => {
