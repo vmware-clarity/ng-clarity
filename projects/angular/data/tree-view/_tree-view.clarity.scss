@@ -255,6 +255,18 @@
     margin-left: tree-view-variables.$clr-tree-node-children-margin;
     will-change: height;
     overflow-y: hidden;
+
+    // Collapsed subtrees are skipped from rendering entirely, which also removes them from the focus order and
+    // the accessibility tree. The discrete transition delays it until the collapse animation (200ms) is over,
+    // and lets the subtree render again right away when the node expands.
+    transition-property: content-visibility;
+    transition-duration: 0s;
+    transition-behavior: allow-discrete;
+
+    &.clr-treenode-children-collapsed {
+      content-visibility: hidden;
+      transition-delay: 0.2s;
+    }
   }
 
   .clr-treenode-link {
