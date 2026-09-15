@@ -40,7 +40,7 @@ import { debounceTime, filter } from 'rxjs/operators';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
-import { TreeNodeModel } from './models/tree-node.model';
+import { TreeNodeExpander, TreeNodeModel } from './models/tree-node.model';
 import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNodeLink } from './tree-node-link';
@@ -57,10 +57,18 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }],
   animations: [
     trigger('toggleChildrenAnim', [
-      transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
-      transition('expanded => collapsed', [style({ height: '*' }), animate(200, style({ height: 0 }))]),
-      state('expanded', style({ height: '*', 'overflow-y': 'visible' })),
-      state('collapsed', style({ height: 0 })),
+      // The "instant" states are used by bulk operations (expand all, expand descendants): they have the same
+      // styles but no transition leads to them, so hundreds of nested containers don't animate at once.
+      transition('collapsed => expanded, collapsedInstant => expanded', [
+        style({ height: 0 }),
+        animate(200, style({ height: '*' })),
+      ]),
+      transition('expanded => collapsed, expandedInstant => collapsed', [
+        style({ height: '*' }),
+        animate(200, style({ height: 0 })),
+      ]),
+      state('expanded, expandedInstant', style({ height: '*', 'overflow-y': 'visible' })),
+      state('collapsed, collapsedInstant', style({ height: 0 })),
     ]),
   ],
   host: {
@@ -69,13 +77,18 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   },
   standalone: false,
 })
-export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
+export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy, TreeNodeExpander {
   // Allows the consumer to override our logic deciding if a node is expandable.
   // Useful for recursive trees that don't want to pre-load one level ahead just to know which nodes are expandable.
   @Input('clrExpandable') expandable: boolean | undefined;
 
   @Output('clrSelectedChange') selectedChange = new EventEmitter<ClrSelectedState>(false);
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
+  /**
+   * Emits `true` when the node and all of its descendants get expanded,
+   * and `false` as soon as the node or any of its descendants gets collapsed afterwards.
+   */
+  @Output('clrExpandDescendantsChange') expandDescendantsChange = new EventEmitter<boolean>();
 
   STATES = ClrSelectedState;
   isModelLoading = false;
@@ -83,6 +96,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   contentContainerTabindex = -1;
   _model: TreeNodeModel<T>;
 
+  private bulkChange = false;
+  private skipAnimation = false;
   private skipEmitChange = false;
   private typeAheadKeyBuffer = '';
   private typeAheadKeyEvent = new Subject<string>();
@@ -122,6 +137,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this._model = new DeclarativeTreeNodeModel(parent ? (parent._model as DeclarativeTreeNodeModel<T>) : null);
     }
     this._model.nodeId = this.nodeId;
+    this._model._expander = this;
   }
 
   @Input('clrDisabled')
@@ -165,6 +181,20 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     this.expandService.expanded = value;
   }
 
+  /**
+   * Two-way binding to expand or collapse this node and all of its descendants at once, see `expandDescendants()`.
+   */
+  @Input('clrExpandDescendants')
+  get descendantsExpanded(): boolean {
+    return this._model.descendantsExpanded;
+  }
+  set descendantsExpanded(value: boolean) {
+    value = !!value;
+    if (value !== this._model.descendantsExpanded) {
+      this.setDescendantsExpanded(value);
+    }
+  }
+
   @Input('clrForTypeAhead')
   set clrForTypeAhead(value: string) {
     this._model.textContent = trimAndLowerCase(value || this.elementRef.nativeElement.textContent);
@@ -184,6 +214,13 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     return this.treeNodeLinkList && this.treeNodeLinkList.first;
   }
 
+  get childrenAnimationState(): string {
+    if (this.expandService.expanded) {
+      return this.skipAnimation ? 'expandedInstant' : 'expanded';
+    }
+    return this.skipAnimation ? 'collapsedInstant' : 'collapsed';
+  }
+
   private get isParent() {
     return this._model.children && this._model.children.length > 0;
   }
@@ -198,8 +235,14 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     );
     this.subscriptions.push(
       this.expandService.expandChange.subscribe(value => {
+        this.skipAnimation = this.bulkChange;
         this.expandedChange.emit(value);
         this._model.expanded = value;
+        if (!value) {
+          // Nothing above this node can claim that all of its descendants are expanded anymore.
+          this._model._clearDescendantsExpanded();
+          this.featuresService._clearAllExpanded();
+        }
       })
     );
     this.subscriptions.push(
@@ -219,6 +262,17 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngAfterContentInit() {
+    // Nodes created while everything above them is expected to be expanded (lazy-loaded children, dynamic nodes,
+    // or a node with [clrExpandDescendants]="true") come in expanded. Children are only known at this point,
+    // not in ngOnInit, which is why the check happens here.
+    if (
+      !this.expanded &&
+      (this.featuresService.allExpanded || this._model.isInExpandedSubtree()) &&
+      !this.disabled &&
+      this.isExpandable()
+    ) {
+      this.expandService.expanded = true;
+    }
     this.subscriptions.push(
       this.typeAheadKeyEvent.pipe(debounceTime(TREE_TYPE_AHEAD_TIMEOUT)).subscribe((bufferedKeys: string) => {
         this.focusManager.focusNodeStartsWith(bufferedKeys, this._model);
@@ -248,6 +302,39 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   isSelectable() {
     return this.featuresService.selectable;
+  }
+
+  /**
+   * Expands this node and every expandable node below it, without animation. Disabled nodes are left untouched.
+   * Descendants added afterwards, including lazy-loaded children, come in expanded until any node of the subtree
+   * gets collapsed.
+   */
+  expandDescendants() {
+    this.setDescendantsExpanded(true);
+  }
+
+  /**
+   * Collapses this node and every node below it, without animation. Disabled nodes are left untouched.
+   */
+  collapseDescendants() {
+    this.setDescendantsExpanded(false);
+  }
+
+  /*
+   * TreeNodeExpander implementation, called by the model tree during bulk operations.
+   */
+  setExpandedInBulk(expanded: boolean) {
+    // Leaves are left alone when expanding, so that they don't emit a meaningless clrExpandedChange.
+    if (expanded && !this.isExpandable()) {
+      return;
+    }
+    this.bulkChange = true;
+    this.expandService.expanded = expanded;
+    this.bulkChange = false;
+  }
+
+  onDescendantsCollapsed() {
+    this.expandDescendantsChange.emit(false);
   }
 
   focusTreeNode(): void {
@@ -316,6 +403,16 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
     // if non-letter keys are pressed, do reset.
     this.typeAheadKeyBuffer = '';
+  }
+
+  private setDescendantsExpanded(expanded: boolean) {
+    const changed = this._model.descendantsExpanded !== expanded;
+    // Set before walking the subtree, so that the collapsing descendants don't report the change themselves.
+    this._model.descendantsExpanded = expanded;
+    this._model.setExpandedRecursive(expanded);
+    if (changed) {
+      this.expandDescendantsChange.emit(expanded);
+    }
   }
 
   private setTabIndex(value: number) {

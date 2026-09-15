@@ -20,6 +20,28 @@ export class TreeFeaturesService<T> {
     root: RecursiveTreeNodeModel<T>[];
   };
   childrenFetched = new Subject<void>();
+
+  /**
+   * True while every node of the tree is expected to be expanded, see `ClrTree.expandAll()`.
+   * Nodes created afterwards (lazy-loaded children, dynamic nodes) come in expanded while this is set.
+   */
+  allExpanded = false;
+  /*
+   * Internal, registered by ClrTree to be told when a node collapses while allExpanded was set.
+   */
+  _onAllExpandedCleared: () => void;
+
+  /*
+   * Internal, called when any node of the tree collapses.
+   */
+  _clearAllExpanded() {
+    if (this.allExpanded) {
+      this.allExpanded = false;
+      if (this._onAllExpandedCleared) {
+        this._onAllExpandedCleared();
+      }
+    }
+  }
 }
 
 export function treeFeaturesFactory<T>(existing: TreeFeaturesService<T>) {
