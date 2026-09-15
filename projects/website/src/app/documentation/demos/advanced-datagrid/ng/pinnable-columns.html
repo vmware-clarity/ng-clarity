@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="card card-block">
+  <p class="card-text">Pinned columns: {{ pinnedColumns || 'none' }}</p>
+  <!-- Disabled with clrDgPinnable: <p class="card-text">Last change: {{ lastPinnedChange || 'none yet' }}</p> -->
+</div>
+
+<!--
+  Disabled with clrDgPinnable. Restoring it means putting this back on the grid below:
+    (columnPinnedChange)="onColumnPinnedChange($event)"
+-->
+<appfx-datagrid
+  [gridItems]="vms"
+  [columns]="columns"
+  [selectedItems]="selectedVms"
+  [selectionType]="SelectionType.Multi"
+  [layoutModel]="{ stretchToParentHeight: false }"
+  [footerModel]="{ showFooter: true }"
+  [pageSize]="10"
+  (selectedItemsChange)="onSelectedItemsChange($event)"
+>
+</appfx-datagrid>

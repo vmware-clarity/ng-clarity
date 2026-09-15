@@ -24,7 +24,7 @@ import { User } from '../inventory/user';
 import { CommonFiles } from '../utils/stackblitz-common-data';
 
 const MAIN_EXAMPLE = `
-<clr-datagrid [(clrDgSelected)]="selected">
+<clr-datagrid [clrDgSelectionType]="'multi'" [(clrDgSelected)]="selected">
   <clr-dg-action-bar>
     <div class="btn-group">
       <button type="button" class="btn btn-sm btn-secondary" (click)="onAdd()">Add to group</button>

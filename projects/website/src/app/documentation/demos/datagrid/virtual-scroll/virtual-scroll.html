@@ -111,6 +111,7 @@
   [clrDgLoading]="loading"
   [clrLoadingMoreItems]="loadingMoreItems"
   [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="'multi'"
   (clrDgRefresh)="refresh($event)"
   [class.datagrid-compact]="rowSize === 'compact'"
   style="height: 24rem"
@@ -176,6 +177,7 @@
 <clr-datagrid
   #datagrid
   [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="'multi'"
   [clrDgItemsIdentityFn]="trackItemById"
   (clrDgRefresh)="refreshDataDriven($event)"
   class="datagrid-compact"

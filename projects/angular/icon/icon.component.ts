@@ -151,7 +151,7 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     this.updateIcon(); // Initial render
 
     this.subscription = GlobalStateService.stateUpdates.subscribe(update => {
-      if (update.key === 'iconRegistry' && ClarityIcons.registry[this.shape] && this._priorShape !== this.shape) {
+      if (update.key === 'iconRegistry' && ClarityIcons.getIconShape(this.shape) && this._priorShape !== this.shape) {
         this._priorShape = this.shape;
         this.updateIcon();
       }
@@ -167,7 +167,7 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateIcon() {
-    const shapeTemplate = ClarityIcons.registry[this.shape] || ClarityIcons.registry['unknown'];
+    const shapeTemplate = ClarityIcons.getIconShape(this.shape) || ClarityIcons.getIconShape('unknown');
 
     if (typeof shapeTemplate === 'string') {
       this.isStringIcon = true;

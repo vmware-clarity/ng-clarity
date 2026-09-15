@@ -1,0 +1,51 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h1>Multi-Page Dialog</h1>
+
+<div class="dialog-playground-controls">
+  <clr-select-container>
+    <label>Layout</label>
+    <select clrSelect [(ngModel)]="selectedLayout">
+      <option value="horizontal">Horizontal</option>
+      <option value="vertical">Vertical</option>
+    </select>
+  </clr-select-container>
+
+  <clr-select-container>
+    <label>Size</label>
+    <select clrSelect [(ngModel)]="selectedSize">
+      <option *ngFor="let s of sizes" [value]="s">{{ s }}</option>
+    </select>
+  </clr-select-container>
+
+  <clr-select-container>
+    <label>Default Button</label>
+    <select clrSelect [(ngModel)]="selectedDefaultButton">
+      <option value="close">Close</option>
+      <option value="submit">Submit</option>
+    </select>
+  </clr-select-container>
+
+  <label>
+    <input type="checkbox" clrCheckbox [(ngModel)]="showTabLinks" />
+    Show Tab Links
+  </label>
+
+  <button class="btn btn-primary" (click)="openDialog()">Open Dialog</button>
+</div>
+
+<appfx-dialog
+  [(opened)]="dialogOpened"
+  [steps]="steps"
+  [model]="dialogModel"
+  title="VM Provisioning"
+  [tabLayout]="selectedLayout"
+  [size]="selectedSize"
+  [defaultButton]="selectedDefaultButton"
+  [showTabLinks]="showTabLinks"
+>
+</appfx-dialog>

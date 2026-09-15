@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { IconAlias, IconRegistry, IconShapeTuple } from './interfaces/icon.interfaces';
+import { IconAlias, IconRegistry, IconRegistrySources, IconShapeTuple } from './interfaces/icon.interfaces';
 import { GlobalStateService } from './services/global.service';
 import { unknownIcon } from './shapes/unknown';
 
@@ -29,6 +29,21 @@ export class ClarityIcons {
     return { unknown: unknownIcon[1] as string, ...GlobalStateService.state.iconRegistry };
   }
 
+  /**
+   * Looks up a single icon shape by name without copying the entire registry.
+   *
+   * Prefer this over indexing into `registry` (e.g. `registry[name]`) in hot paths like icon
+   * rendering: `registry` spreads the whole (potentially large) registry into a new object on
+   * every access, which becomes expensive/memory-churning when many icons render or re-render.
+   */
+  static getIconShape(name: string): IconRegistrySources[string] | undefined {
+    const iconRegistry = GlobalStateService.state.iconRegistry;
+    if (name in iconRegistry) {
+      return iconRegistry[name];
+    }
+    return name === 'unknown' ? (unknownIcon[1] as string) : undefined;
+  }
+
   static addIcons(...shapes: IconShapeTuple[]) {
     // Use the static GlobalStateService
     const currentRegistry = GlobalStateService.state.iconRegistry;
@@ -49,12 +64,11 @@ export class ClarityIcons {
    * The team will revisit this method for possible deprecation.
    */
   static addAliases(...aliases: IconAlias[]) {
-    const currentRegistry = ClarityIcons.registry; // Use the getter to include 'unknown'
     const currentGlobalRegistry = GlobalStateService.state.iconRegistry;
 
     const newAliases = aliases
-      .filter(([name]) => currentRegistry[name]) // Check if the icon to be aliased exists
-      .map(([name, aliasNames]) => aliasNames.map(alias => [alias, currentRegistry[name]])); // Map to [aliasName, iconTemplate]
+      .filter(([name]) => ClarityIcons.getIconShape(name)) // Check if the icon to be aliased exists
+      .map(([name, aliasNames]) => aliasNames.map(alias => [alias, ClarityIcons.getIconShape(name)])); // Map to [aliasName, iconTemplate]
 
     GlobalStateService.setValue('iconRegistry', {
       ...currentGlobalRegistry,

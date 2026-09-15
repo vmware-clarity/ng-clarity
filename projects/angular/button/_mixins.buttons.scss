@@ -21,6 +21,12 @@
   @if $type == default-outline {
     @return buttons-variables.lookupFromDefaultOutlineButtonColors($property);
   }
+  @if $type == info {
+    @return buttons-variables.lookupFromInfoButtonColors($property);
+  }
+  @if $type == info-outline {
+    @return buttons-variables.lookupFromInfoOutlineButtonColors($property);
+  }
   @if $type == primary {
     @return buttons-variables.lookupFromPrimaryButtonColors($property);
   }
@@ -36,14 +42,14 @@
   @if $type == danger {
     @return buttons-variables.lookupFromDangerButtonColors($property);
   }
+  @if $type == danger-outline {
+    @return buttons-variables.lookupFromDangerOutlineButtonColors($property);
+  }
   @if $type == neutral {
     @return buttons-variables.lookupFromNeutralButtonColors($property);
   }
   @if $type == neutral-outline {
     @return buttons-variables.lookupFromNeutralOutlineButtonColors($property);
-  }
-  @if $type == danger-outline {
-    @return buttons-variables.lookupFromDangerOutlineButtonColors($property);
   }
   @if $type == warning {
     @return buttons-variables.lookupFromWarningButtonColors($property);
@@ -56,6 +62,9 @@
   }
   @if $type == link-primary {
     @return buttons-variables.lookupFromLinkPrimaryButtonColors($property);
+  }
+  @if $type == link-info {
+    @return buttons-variables.lookupFromLinkInfoButtonColors($property);
   }
   @if $type == link-success {
     @return buttons-variables.lookupFromLinkSuccessButtonColors($property);

@@ -20,8 +20,8 @@
     color: map.get($badge-colors, color);
   }
 
-  cds-icon,
-  clr-icon {
+  & > cds-icon,
+  & > clr-icon {
     color: map.get($colors, color);
   }
 
@@ -41,7 +41,8 @@
     background-color: map.get($colors, solid-bg-color);
     color: map.get($colors, solid-color);
 
-    &.clickable:not(.disabled, :disabled, :active, :hover) > .badge {
+    &.clickable:not(.disabled, :disabled, :active, :hover) > .badge,
+    &:not(.clickable) > .badge {
       border-color: map.get($badge-colors, outline-border-color);
       background-color: map.get($badge-colors, outline-bg-color);
       color: map.get($badge-colors, outline-color);
@@ -54,8 +55,8 @@
       color: map.get($badge-colors, color);
     }
 
-    cds-icon,
-    clr-icon {
+    & > cds-icon,
+    & > clr-icon {
       color: map.get($colors, solid-color);
     }
   }

@@ -16,6 +16,7 @@ export interface ColumnState {
   strictWidth?: number; // This is the strict width if defined in styles/css
   hideable?: boolean; // This tells whether column can be hidden or not
   hidden?: boolean; // This is the state of column visibility
+  pinned?: boolean; // This tells whether the column is pinned (static) to the left of the datagrid
   titleTemplateRef?: TemplateRef<any>; // This is the template of the column content that will be used in the column toggle.
 }
 

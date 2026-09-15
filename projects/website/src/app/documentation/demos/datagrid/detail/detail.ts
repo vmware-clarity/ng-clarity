@@ -19,7 +19,7 @@ import { User } from '../inventory/user';
 import { CommonFiles } from '../utils/stackblitz-common-data';
 
 const MAIN_EXAMPLE = `
-<clr-datagrid [(clrDgSelected)]="selected">
+<clr-datagrid [clrDgSelectionType]="'multi'" [(clrDgSelected)]="selected">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column>Name</clr-dg-column>
 

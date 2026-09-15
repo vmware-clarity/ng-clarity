@@ -1,0 +1,102 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:root {
+  :host ::ng-deep {
+    .tab-content {
+      display: inline;
+    }
+  }
+}
+
+/* considered as a clone of js-ui-lib from `vxActivityIndicator.less`. Simplify and reduce these styles as needed */
+.center-dialog-content {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* considered as a clone of js-ui-lib from `modal.less`. Simplify and reduce these styles as needed */
+%text-overflow-ellipsis {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+// action and object name parts of a title
+.modal-title {
+  display: flex;
+  align-items: flex-start;
+  padding-left: 0;
+
+  // note: Clarity should define headers, however using the h3 introduced awkward spacing
+  $title-height: 24px;
+  $secondary-title-height: 18px;
+
+  .primaryTitle {
+    flex-shrink: 0;
+    font-size: $title-height;
+
+    &.secondaryTitleIsEmpty {
+      @extend %text-overflow-ellipsis;
+
+      flex-shrink: 1;
+    }
+
+    &:not(.secondaryTitleIsEmpty) {
+      max-width: 65%;
+    }
+  }
+
+  .secondaryTitle {
+    display: block;
+    word-break: break-all;
+    margin-top: 0;
+    margin-bottom: 0;
+    line-height: 24px;
+    font-size: $secondary-title-height;
+  }
+
+  .separator {
+    content: '';
+    border-left: 1px solid #ccc;
+    margin: 0 18px;
+    height: 22px;
+  }
+}
+
+.div-disabled {
+  pointer-events: none;
+  cursor: not-allowed;
+  opacity: 0.6;
+
+  // Prevent double-disabling of elements.
+  .div-disabled {
+    opacity: 1;
+  }
+}
+
+.debug-popup {
+  ::ng-deep {
+    div.modal-dialog.modal-xl {
+      margin-left: 350px; // width of clr-signpost-popup
+    }
+  }
+}
+
+clr-tabs {
+  ::ng-deep {
+    section {
+      flex: 1 1 auto;
+    }
+  }
+}

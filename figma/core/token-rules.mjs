@@ -47,7 +47,11 @@ export function createTokenRules({ exclusionPatterns, exclusionExact, scopeRules
    * Map a token name to Figma variable scopes using the config scope rules.
    * Rules are tested in order; first match wins. Falls back to ALL_SCOPES.
    *
-   * @param {string} name
+   * For humanReadable variables, callers pass the display name (e.g.
+   * "Container/App Background") rather than the underlying CSS token name,
+   * so scopeRules can match on display-name-oriented patterns.
+   *
+   * @param {string} name - humanReadable display name or CSS token name
    * @returns {string[]}
    */
   function resolveFigmaScopes(name) {

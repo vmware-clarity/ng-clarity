@@ -40,6 +40,7 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
+import * as i1_2 from '@angular/platform-browser/animations';
 import * as i38 from '@angular/common';
 import * as i46 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
@@ -57,6 +58,7 @@ import { OnInit } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
+import { Predicate } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
@@ -256,6 +258,16 @@ export class GridRowTestHelper {
 }
 
 // @public (undocumented)
+export class InvalidMockComponent extends MockStepComponent {
+    // (undocumented)
+    validate(): Observable<boolean>;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<InvalidMockComponent, "appfx-invalid-mock-page-page", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<InvalidMockComponent, never>;
+}
+
+// @public (undocumented)
 export class MockA11yService {
     // (undocumented)
     isDraggableOver(): void;
@@ -390,6 +402,86 @@ export class MockAppfxDatagridComponent {
 }
 
 // @public (undocumented)
+export class MockAppfxDialogComponent {
+    // (undocumented)
+    cancelButtonLabel: string;
+    // Warning: (ae-forgotten-export) The symbol "CloseHandler" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    closeHandler: CloseHandler;
+    // Warning: (ae-forgotten-export) The symbol "DefaultButton" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    defaultButton: DefaultButton;
+    // (undocumented)
+    disableTabsContent: boolean;
+    // (undocumented)
+    height: string;
+    // (undocumented)
+    loading: boolean;
+    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    model: WorkflowModel;
+    // (undocumented)
+    okButtonLabel: string;
+    // (undocumented)
+    onClose: EventEmitter<void>;
+    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    readonly onModelChange: EventEmitter<ModelChange[]>;
+    // (undocumented)
+    opened: boolean;
+    // (undocumented)
+    openedChange: EventEmitter<boolean>;
+    // (undocumented)
+    showTabLinks: boolean;
+    // (undocumented)
+    size: string;
+    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    steps: Step[];
+    // (undocumented)
+    subTitle: string;
+    // Warning: (ae-forgotten-export) The symbol "TabLayout" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    tabLayout: TabLayout;
+    // (undocumented)
+    title: string;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogComponent, "appfx-dialog", never, { "title": { "alias": "title"; "required": false; }; "subTitle": { "alias": "subTitle"; "required": false; }; "size": { "alias": "size"; "required": false; }; "height": { "alias": "height"; "required": false; }; "defaultButton": { "alias": "defaultButton"; "required": false; }; "cancelButtonLabel": { "alias": "cancelButtonLabel"; "required": false; }; "okButtonLabel": { "alias": "okButtonLabel"; "required": false; }; "tabLayout": { "alias": "tabLayout"; "required": false; }; "disableTabsContent": { "alias": "disableTabsContent"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "steps": { "alias": "steps"; "required": false; }; "model": { "alias": "model"; "required": false; }; "closeHandler": { "alias": "closeHandler"; "required": false; }; "showTabLinks": { "alias": "showTabLinks"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "onModelChange": "onModelChange"; "onClose": "onClose"; "openedChange": "openedChange"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxDialogHeaderComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogHeaderComponent, "appfx-dialog-header", never, {}, {}, never, ["*"], false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogHeaderComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxDialogHeaderStandaloneComponent extends MockAppfxDialogHeaderComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogHeaderStandaloneComponent, "appfx-dialog-header", never, {}, {}, never, ["*"], true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogHeaderStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxDialogStandaloneComponent extends MockAppfxDialogComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxDialogStandaloneComponent, "appfx-dialog", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxDialogStandaloneComponent, never>;
+}
+
+// @public (undocumented)
 export class MockAppfxMenuActionComponent {
     // (undocumented)
     actionId: string;
@@ -437,6 +529,36 @@ export class MockAppfxMenuStandaloneComponent extends MockAppfxMenuComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxMenuStandaloneComponent, "appfx-menu", never, {}, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxMenuStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockAppfxWizardComponent {
+    // (undocumented)
+    loading: boolean;
+    // Warning: (ae-forgotten-export) The symbol "Reason" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    onClose: EventEmitter<Reason>;
+    // (undocumented)
+    onFinish: EventEmitter<void>;
+    // (undocumented)
+    onModelChange: EventEmitter<ModelChange[]>;
+    // (undocumented)
+    opened: boolean;
+    // (undocumented)
+    openedChange: EventEmitter<boolean>;
+    // (undocumented)
+    pages: Step[];
+    // (undocumented)
+    size: string;
+    // (undocumented)
+    title: string;
+    // (undocumented)
+    wizardModel: WorkflowModel;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockAppfxWizardComponent, "appfx-wizard", never, { "title": { "alias": "title"; "required": false; }; "pages": { "alias": "pages"; "required": false; }; "wizardModel": { "alias": "wizardModel"; "required": false; }; "loading": { "alias": "loading"; "required": false; }; "size": { "alias": "size"; "required": false; }; "opened": { "alias": "opened"; "required": false; }; }, { "openedChange": "openedChange"; "onModelChange": "onModelChange"; "onFinish": "onFinish"; "onClose": "onClose"; }, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockAppfxWizardComponent, never>;
 }
 
 // @public (undocumented)
@@ -662,22 +784,52 @@ export class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent 
     static ɵfac: i0.ɵɵFactoryDeclaration<MockStandaloneDatagridComponent, never>;
 }
 
+// Warning: (ae-forgotten-export) The symbol "OnStepValidate" needs to be exported by the entry point clr-addons-testing.d.ts
+// Warning: (ae-forgotten-export) The symbol "OnStepActivate" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export class MockStepComponent implements OnStepValidate, OnStepActivate {
+    // (undocumented)
+    activate(): void;
+    // (undocumented)
+    model: MockStepModel;
+    // (undocumented)
+    validate(): Observable<boolean>;
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockStepComponent, "appfx-mock-page-page", never, {}, {}, never, never, false, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockStepComponent, never>;
+}
+
+// Warning: (ae-forgotten-export) The symbol "StepModel" needs to be exported by the entry point clr-addons-testing.d.ts
+//
+// @public (undocumented)
+export class MockStepModel implements StepModel {
+    constructor(mockPropertyValue: string);
+    // (undocumented)
+    isActivated: boolean;
+    // (undocumented)
+    isValidated: boolean;
+    // (undocumented)
+    mockPropertyValue: string;
+    // (undocumented)
+    readyToComplete: boolean;
+    // Warning: (ae-forgotten-export) The symbol "StepValidationState" needs to be exported by the entry point clr-addons-testing.d.ts
+    //
+    // (undocumented)
+    validationState: StepValidationState;
+}
+
 // @public (undocumented)
 export class MockStepperComponent {
     // (undocumented)
     loading: boolean;
     // (undocumented)
     onFinish: EventEmitter<void>;
-    // Warning: (ae-forgotten-export) The symbol "ModelChange" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     onModelChange: EventEmitter<ModelChange[]>;
-    // Warning: (ae-forgotten-export) The symbol "Step" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     steps: Step[];
-    // Warning: (ae-forgotten-export) The symbol "WorkflowModel" needs to be exported by the entry point clr-addons-testing.d.ts
-    //
     // (undocumented)
     wizardModel: WorkflowModel;
     // (undocumented)
@@ -692,6 +844,31 @@ export class MockStepperStandaloneComponent extends MockStepperComponent {
     static ɵcmp: i0.ɵɵComponentDeclaration<MockStepperStandaloneComponent, "appfx-stepper", never, {}, {}, never, ["*"], true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<MockStepperStandaloneComponent, never>;
+}
+
+// @public (undocumented)
+export class MockWizardStandaloneComponent extends MockAppfxWizardComponent {
+    // (undocumented)
+    static ɵcmp: i0.ɵɵComponentDeclaration<MockWizardStandaloneComponent, "appfx-wizard", never, {}, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockWizardStandaloneComponent, never>;
+}
+
+// @public
+export class MockWorkflowConfigurationService {
+    // (undocumented)
+    get debug(): boolean;
+    set debug(newValue: boolean);
+}
+
+// @public (undocumented)
+export class MockWorkflowTestModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<MockWorkflowTestModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<MockWorkflowTestModule>;
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<MockWorkflowTestModule, [typeof InvalidMockComponent, typeof MockStepComponent], [typeof i1_2.NoopAnimationsModule], never>;
 }
 
 // @public (undocumented)
@@ -758,6 +935,23 @@ export class SampleCardWithoutHeaderComponent {
 // @public (undocumented)
 export const sortCardsFn: (a: AppfxCard, b: AppfxCard) => number;
 
+// @public (undocumented)
+export class TabsHelper {
+    constructor(contextDebugElement: DebugElement);
+    // (undocumented)
+    areTabsVisible(): boolean;
+    clickLink(linkIndex: number): void;
+    findContentView(childTabContentQuery?: Predicate<DebugElement>): DebugElement | undefined;
+    findLink(linkIndex: number): DebugElement | undefined;
+    findLinkIcon(linkIndex: number): DebugElement | undefined;
+    findLinkText(linkIndex: number): string | undefined;
+    // Warning: (ae-forgotten-export) The symbol "ClrTab" needs to be exported by the entry point clr-addons-testing.d.ts
+    getActiveTab(): ClrTab;
+    getActiveTabContentElement(): HTMLElement | undefined;
+    getActiveTabIndex(): number;
+    getLinkList(): Array<DebugElement>;
+}
+
 // Warning: (ae-forgotten-export) The symbol "PropertyViewMessageModel" needs to be exported by the entry point clr-addons-testing.d.ts
 //
 // @public (undocumented)
@@ -767,6 +961,61 @@ export function verifyPropertyViewMessage(textValue: string, icon: string, messa
 //
 // @public (undocumented)
 export function verifyPropertyViewProperty(key: string, value: string[], propertyModel: PropertyViewPropertyModel): void;
+
+// @public (undocumented)
+export class WizardHelper {
+    constructor(wizard: DebugElement);
+    // (undocumented)
+    get activePageNavTitle(): string | undefined;
+    // (undocumented)
+    get activePageTitle(): string;
+    // (undocumented)
+    back(): void;
+    // (undocumented)
+    get backButton(): DebugElement;
+    // (undocumented)
+    get backButtonText(): string;
+    // (undocumented)
+    get buttons(): DebugElement[];
+    // (undocumented)
+    cancel(): void;
+    // (undocumented)
+    get cancelButton(): DebugElement;
+    // (undocumented)
+    get cancelButtonText(): string;
+    // (undocumented)
+    closeNavigator(): void;
+    // (undocumented)
+    finish(): void;
+    // (undocumented)
+    get finishButton(): DebugElement;
+    // (undocumented)
+    get finishButtonText(): string;
+    // (undocumented)
+    isNavVisible(): boolean;
+    // (undocumented)
+    isShowNavIconVisible(): boolean;
+    // (undocumented)
+    isStepNavEnabled(stepIndex: number): boolean;
+    // (undocumented)
+    get isVisible(): boolean;
+    // (undocumented)
+    navigateToStep(stepIndex: number): void;
+    // (undocumented)
+    next(): void;
+    // (undocumented)
+    get nextButton(): DebugElement;
+    // (undocumented)
+    get nextButtonText(): string;
+    // (undocumented)
+    get pageNavTitles(): Array<string | undefined>;
+    // (undocumented)
+    showNavigator(): void;
+    // (undocumented)
+    get size(): string | undefined;
+    // (undocumented)
+    get visibleButtons(): DebugElement[];
+}
 
 // @public (undocumented)
 export class ZoomLevelServiceMock {

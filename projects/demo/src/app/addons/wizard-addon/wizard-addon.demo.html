@@ -1,0 +1,57 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h1>Wizard Demo</h1>
+
+<div style="display: flex; flex-direction: column; gap: 0.25rem" class="clr-mb-24px">
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="inlineMode" />
+    <label>Inline Wizard (Stepper)</label>
+  </clr-toggle-wrapper>
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="configurationService.debug" />
+    <label>Debug Mode</label>
+  </clr-toggle-wrapper>
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="longNavTitle" [disabled]="inlineMode" />
+    <label>Long Wizard Navigation Labels</label>
+  </clr-toggle-wrapper>
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="showSummaryPage" [disabled]="inlineMode" />
+    <label>Show Summary Page</label>
+  </clr-toggle-wrapper>
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="asyncErrorOnSubmit" [disabled]="inlineMode" />
+    <label>Error on Finish</label>
+  </clr-toggle-wrapper>
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="useCustomFooter" [disabled]="inlineMode" />
+    <label>Custom Footer</label>
+  </clr-toggle-wrapper>
+
+  <clr-radio-container clrInline class="clr-mt-16px">
+    <label>Select Wizard size</label>
+    <clr-radio-wrapper *ngFor="let size of supportedWizardSizes">
+      <label>{{ size }}</label>
+      <input clrRadio type="radio" [value]="size" [(ngModel)]="selectedWizardSize" [disabled]="inlineMode" />
+    </clr-radio-wrapper>
+  </clr-radio-container>
+
+  <button class="btn btn-primary clr-mt-16px" (click)="openSimpleWizard()">Open Workflow</button>
+</div>
+
+<clr-demo-sample-wizard
+  *ngIf="simpleWizardOpened && !inlineMode"
+  (onClose)="closeSimpleWizard()"
+  [vcMoRef]="vcMoRef"
+  [wizardSize]="selectedWizardSize"
+  [useDescriptionForNavTitle]="longNavTitle"
+  [showSummaryPage]="showSummaryPage"
+  [asyncErrorOnSubmit]="asyncErrorOnSubmit"
+  [useCustomFooter]="useCustomFooter"
+></clr-demo-sample-wizard>
+
+<clr-demo-sample-stepper *ngIf="simpleWizardOpened && inlineMode" [vcMoRef]="vcMoRef"></clr-demo-sample-stepper>

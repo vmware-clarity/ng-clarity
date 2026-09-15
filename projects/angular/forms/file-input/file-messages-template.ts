@@ -29,9 +29,9 @@ export class ClrFileMessagesTemplate {
   readonly templateRef: TemplateRef<ClrFileMessagesTemplateContext> = inject(TemplateRef);
 
   static ngTemplateContextGuard(
-    directive: ClrFileMessagesTemplate,
-    context: unknown
-  ): context is ClrFileMessagesTemplateContext {
+    _directive: ClrFileMessagesTemplate,
+    _context: unknown
+  ): _context is ClrFileMessagesTemplateContext {
     return true;
   }
 }

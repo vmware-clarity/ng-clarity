@@ -11,6 +11,7 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
 
 const HTML_EXAMPLE_1 = `
 <button class="btn btn-primary">Primary</button>
+<button class="btn btn-info">Info</button>
 <button class="btn btn-success">Success</button>
 <button class="btn btn-warning">Warning</button>
 <button class="btn btn-danger">Danger</button>

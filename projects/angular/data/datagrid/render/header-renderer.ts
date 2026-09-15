@@ -9,7 +9,7 @@ import { Directive, ElementRef, EventEmitter, Inject, OnDestroy, Output, Rendere
 import { DomAdapter } from '@clr/angular/utils';
 import { BehaviorSubject, Subscription } from 'rxjs';
 
-import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
+import { HIDDEN_COLUMN_CLASS, PINNED_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
@@ -85,6 +85,14 @@ export class DatagridHeaderRenderer implements OnDestroy {
       this.renderer.addClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
     } else {
       this.renderer.removeClass(this.el.nativeElement, HIDDEN_COLUMN_CLASS);
+    }
+  }
+
+  setPinned(state: ColumnState) {
+    if (state.pinned) {
+      this.renderer.addClass(this.el.nativeElement, PINNED_COLUMN_CLASS);
+    } else {
+      this.renderer.removeClass(this.el.nativeElement, PINNED_COLUMN_CLASS);
     }
   }
 
