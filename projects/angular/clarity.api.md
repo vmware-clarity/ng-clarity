@@ -908,6 +908,12 @@ export const CLR_ALERT_DIRECTIVES: Type<any>[];
 // @public (undocumented)
 export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 
@@ -3502,6 +3508,7 @@ export class ClrFileInfo {
 // @public (undocumented)
 export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
+    protected get ariaRequired(): true | null;
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
     // (undocumented)

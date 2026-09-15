@@ -5,7 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
+import { withoutValues } from './dom/aria-state';
+import { ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
+import { MAX_LIST_ENTRIES } from './snapshot-options';
 
 /**
  * Snapshot budgets a caller the application does not control — an embedded frame, a
@@ -37,6 +39,9 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions
  * exhausted. What survives is still held to its range when the snapshot is built.
  * Selectors are not accepted from an untrusted caller at all.
  */
+/** The longest an enumeration value — `focus`, `collectionItems`, a role or category name — may be. */
+const MAX_ENUM_LENGTH = 32;
+
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
   if (!options || typeof options !== 'object') {
     return undefined;
@@ -47,20 +52,22 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
     const value = candidate[key];
     if ((typeof value === 'number' && Number.isFinite(value)) || typeof value === 'boolean') {
       (sanitized as Record<string, unknown>)[key] = value;
-    } else if (typeof value === 'string' && value.length <= 32) {
+    } else if (typeof value === 'string' && value.length <= MAX_ENUM_LENGTH) {
       // Enumerations; anything that is not one of the values is dropped when resolved.
       (sanitized as Record<string, unknown>)[key] = value;
     } else if (Array.isArray(value)) {
-      (sanitized as Record<string, unknown>)[key] = value.filter(entry => typeof entry === 'string').slice(0, 50);
+      (sanitized as Record<string, unknown>)[key] = value
+        .filter(entry => typeof entry === 'string')
+        .slice(0, MAX_LIST_ENTRIES);
     }
   }
   return sanitized;
 }
 
 /**
- * The same context with everything the user typed taken out, for a consumer the
- * application does not control — an embedded frame, a script calling the global
- * accessor.
+ * The same context with everything the user entered taken out — what they typed, which
+ * options they chose, which boxes they ticked — for a consumer the application does not
+ * control: an embedded frame, a script calling the global accessor.
  *
  * Fields keep their label, type, constraints and validation state, so such a consumer
  * still learns the shape of a form; it just does not learn its contents.
@@ -69,23 +76,5 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
  * annotations, so whatever is in them was put there deliberately.
  */
 export function withoutFormValues(context: ClrPageContext): ClrPageContext {
-  return { ...context, components: context.components.map(withoutValue) };
-}
-
-function withoutValue(component: ClrComponentContext): ClrComponentContext {
-  const reduced: ClrComponentContext = { ...component };
-
-  if (reduced.state && 'value' in reduced.state) {
-    const state = { ...reduced.state };
-    delete state.value;
-    if (Object.keys(state).length) {
-      reduced.state = state;
-    } else {
-      delete reduced.state;
-    }
-  }
-  if (reduced.children?.length) {
-    reduced.children = reduced.children.map(withoutValue);
-  }
-  return reduced;
+  return { ...context, components: context.components.map(withoutValues) };
 }

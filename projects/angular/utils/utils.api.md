@@ -144,6 +144,12 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
 }
 
 // @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public (undocumented)

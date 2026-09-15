@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
+
 /**
  * Normalizes whitespace and enforces a text budget, marking anything shortened with an
  * ellipsis so a reader can tell truncated text from a genuinely short value. The result
@@ -13,11 +15,6 @@
 export function truncate(text: string, maxLength: number): string {
   const normalized = text.replace(/\s+/g, ' ').trim();
   return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}…` : normalized;
-}
-
-/** An element's text content, budgeted. */
-export function textOf(element: Element | null | undefined, maxLength: number): string {
-  return truncate(element?.textContent || '', maxLength);
 }
 
 /**
@@ -62,7 +59,9 @@ function isExcludedFromName(element: Element): boolean {
 }
 
 function isClipped(element: Element, style: CSSStyleDeclaration): boolean {
-  if (style.clipPath && style.clipPath !== 'none') {
+  // The visually-hidden idiom clips to nothing with `inset(...)`; a shape — a circle
+  // masking an avatar, a polygon — still shows what it clips.
+  if (style.clipPath?.startsWith('inset(')) {
     return true;
   }
   if (style.clip && style.clip !== 'auto') {
@@ -107,3 +106,29 @@ export function accessibleText(element: Element, exclude?: Element): string {
   }
   return text;
 }
+
+/**
+ * The joined text of every element an id-list attribute (`aria-labelledby`,
+ * `aria-describedby`) points at, in the order the ids are given; missing and empty
+ * targets are skipped.
+ */
+export function referencedText(element: Element, attribute: string): string {
+  const ids = element.getAttribute(attribute)?.trim();
+  if (!ids) {
+    return '';
+  }
+  const document = element.ownerDocument;
+  return (
+    ids
+      .split(/\s+/)
+      .map(id => document.getElementById(id))
+      // A reference must not reach into a region the engine may not read: page content
+      // can point an `aria-describedby` at anything with an id.
+      .filter((referenced): referenced is HTMLElement => !!referenced && !referenced.closest(UNREADABLE_SELECTOR))
+      .map(referenced => accessibleText(referenced).trim())
+      .filter(text => text)
+      .join(' ')
+  );
+}
+
+const UNREADABLE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}], [${CLR_CONTEXT_REDACT_ATTRIBUTE}]`;

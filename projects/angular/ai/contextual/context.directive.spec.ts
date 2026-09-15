@@ -104,6 +104,17 @@ describe('ClrContext directive, announcing its changes', () => {
     expect(registry.collect()[0].state).toEqual({ cluster: 'omega' });
   });
 
+  it('hands out a copy of its state, so an in-place edit reads as a change between two snapshots', () => {
+    const state = fixture.componentInstance.state as Record<string, unknown>;
+    const earlier = registry.collect()[0].state;
+    state.cluster = 'omega';
+    fixture.detectChanges();
+
+    expect(earlier).toEqual({ cluster: 'alpha' });
+    expect(registry.collect()[0].state).toEqual({ cluster: 'omega' });
+    expect(registry.collect()[0].state).not.toBe(state);
+  });
+
   it('stays quiet while nothing changed', () => {
     const before = changes;
     fixture.detectChanges();

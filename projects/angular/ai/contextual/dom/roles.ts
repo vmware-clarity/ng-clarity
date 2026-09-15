@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isContentEditable } from './aria-state';
+
 /**
  * Mapping from HTML element to the ARIA role it carries implicitly, following HTML-AAM.
  *
@@ -89,7 +91,7 @@ const INPUT_ROLES_BY_TYPE: Record<string, string> = {
 };
 
 /** `<input>` types that deliberately have no role: they expose no useful semantics. */
-const ROLELESS_INPUT_TYPES = new Set(['hidden', 'color', 'image-map']);
+const ROLELESS_INPUT_TYPES = new Set(['hidden', 'color']);
 
 /**
  * Sectioning ancestors that turn a `<header>` or `<footer>` into a plain container: only
@@ -217,6 +219,12 @@ export function isPresentationalRole(role: string): boolean {
 
 function implicitRole(element: Element): string | null {
   const tagName = element.tagName.toLowerCase();
+
+  // An editing host is a text field whatever element it is drawn on: what a rich-text
+  // editor holds was typed by the user, and must be treated as a value, never as prose.
+  if (isContentEditable(element)) {
+    return 'textbox';
+  }
 
   switch (tagName) {
     case 'input':

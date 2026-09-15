@@ -9,6 +9,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
+  CLR_CONTEXT_DEFAULT_OPTIONS,
   ClrContextCategory,
   ClrContextChange,
   clrContextPreset,
@@ -54,10 +55,10 @@ export class ContextPlaygroundComponent implements OnInit {
   readonly categories = CATEGORIES;
 
   preset: ClrContextPreset | 'custom' = 'full';
-  maxComponents = 300;
-  maxItemsPerCollection = 25;
-  maxTextLength = 100;
-  maxDepth = 0;
+  maxComponents = CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents;
+  maxItemsPerCollection = CLR_CONTEXT_DEFAULT_OPTIONS.maxItemsPerCollection;
+  maxTextLength = CLR_CONTEXT_DEFAULT_OPTIONS.maxTextLength;
+  maxDepth = CLR_CONTEXT_DEFAULT_OPTIONS.maxDepth;
   focusModal = false;
   summaryCollections = false;
   includeRoutes = false;
@@ -89,11 +90,11 @@ export class ContextPlaygroundComponent implements OnInit {
     if (preset === 'custom') {
       return;
     }
-    const options = clrContextPreset(preset);
-    this.maxComponents = options.maxComponents ?? 300;
-    this.maxItemsPerCollection = options.maxItemsPerCollection ?? 25;
-    this.maxTextLength = options.maxTextLength ?? 100;
-    this.maxDepth = options.maxDepth ?? 0;
+    const options = { ...CLR_CONTEXT_DEFAULT_OPTIONS, ...clrContextPreset(preset) };
+    this.maxComponents = options.maxComponents;
+    this.maxItemsPerCollection = options.maxItemsPerCollection;
+    this.maxTextLength = options.maxTextLength;
+    this.maxDepth = options.maxDepth;
     this.focusModal = options.focus === 'modal';
     this.summaryCollections = options.collectionItems === 'summary';
     this.includeRoutes = options.includeRoutes === true;

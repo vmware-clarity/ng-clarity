@@ -59,6 +59,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     this.contextRegistry.unregister(this);
   }
 
+  /** The annotation as a context node, or `null` while it has neither label nor state. */
   getClrContext(): ClrComponentContext | null {
     if (!this.label && !this.state) {
       return null;
@@ -68,7 +69,9 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
       context.label = this.label;
     }
     if (this.state && Object.keys(this.state).length) {
-      context.state = this.state;
+      // A copy: the tracker compares a snapshot against the previous one, and a state
+      // object edited in place would read as unchanged on both sides.
+      context.state = copyOf(this.state);
     }
     return context;
   }
@@ -81,5 +84,14 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
       // A state that cannot be serialised cannot appear in a snapshot either.
       return '';
     }
+  }
+}
+
+/** A JSON copy of a state object; the object itself when it cannot be serialised. */
+function copyOf(state: Record<string, unknown>): Record<string, unknown> {
+  try {
+    return JSON.parse(JSON.stringify(state));
+  } catch {
+    return state;
   }
 }

@@ -8,24 +8,10 @@
 import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { ariaState } from './aria-state';
+import { resolveSnapshotOptions } from '../snapshot-options';
 
 describe('ariaState', () => {
-  const budgets = (): Required<ClrContextSnapshotOptions> => ({
-    maxTextLength: 100,
-    maxItemsPerCollection: 25,
-    maxComponents: 100,
-    includeDomComponents: true,
-    includeText: true,
-    includeFrames: true,
-    excludeCategories: [],
-    excludeRoles: [],
-    excludeSelectors: [],
-    rootSelector: '',
-    maxDepth: 0,
-    focus: 'page',
-    collectionItems: 'all',
-    includeRoutes: false,
-  });
+  const budgets = (): Required<ClrContextSnapshotOptions> => resolveSnapshotOptions({ maxComponents: 100 });
 
   let container: HTMLElement;
 
@@ -198,22 +184,7 @@ describe('ariaState', () => {
 });
 
 describe('ariaState, native values as an agent should read them', () => {
-  const budgets = (): Required<ClrContextSnapshotOptions> => ({
-    maxTextLength: 100,
-    maxItemsPerCollection: 25,
-    maxComponents: 100,
-    includeDomComponents: true,
-    includeText: true,
-    includeFrames: true,
-    excludeCategories: [],
-    excludeRoles: [],
-    excludeSelectors: [],
-    rootSelector: '',
-    maxDepth: 0,
-    focus: 'page',
-    collectionItems: 'all',
-    includeRoutes: false,
-  });
+  const budgets = (): Required<ClrContextSnapshotOptions> => resolveSnapshotOptions({ maxComponents: 100 });
 
   let container: HTMLElement;
 

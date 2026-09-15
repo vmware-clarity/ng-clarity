@@ -921,6 +921,7 @@ export class ClrFileInfo {
 // @public (undocumented)
 export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
+    protected get ariaRequired(): true | null;
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
     // (undocumented)

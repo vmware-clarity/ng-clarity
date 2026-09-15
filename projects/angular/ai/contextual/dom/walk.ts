@@ -5,22 +5,22 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import {
+  CLR_CONTEXT_IGNORE_ATTRIBUTE,
+  CLR_ELEMENT_CONTEXT_PROPERTY,
+  ClrComponentContext,
+  ClrContextSnapshotOptions,
+} from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
-import { ariaState, CLR_CONTEXT_REDACT_ATTRIBUTE, isRedacted } from './aria-state';
+import { ariaState, CLR_CONTEXT_REDACT_ATTRIBUTE, isRedacted, withoutValues } from './aria-state';
 import { mergeElementContext } from './element-context';
 import { isLeafRole, isNameFromContents, isPresentationalRole, mayContainControls, resolveRole } from './roles';
 import { summarizeRole } from './summarizers';
 import { accessibleText, isVisuallyHidden, truncate } from './text';
+import { stripQueryAndFragment } from '../url';
 
-/**
- * Elements carrying this attribute — and everything inside them — are invisible to the
- * engine: the collector never describes them and the context tracker ignores their
- * mutations. Put it on UI that consumes context (an AI chat panel, a debug view) so it
- * neither describes itself into the page context nor triggers tracking feedback loops.
- */
-export const CLR_CONTEXT_IGNORE_ATTRIBUTE = 'data-clr-context-ignore';
+export { CLR_CONTEXT_IGNORE_ATTRIBUTE };
 
 /**
  * Teaches the collector how to describe one kind of element it would otherwise skip.
@@ -41,6 +41,7 @@ export interface ClrContextDomExtractor {
 const SKIPPED_TAGS = new Set(['script', 'style', 'template', 'link', 'meta', 'noscript', 'head']);
 
 const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
+const REDACT_SELECTOR = `[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`;
 
 /**
  * Anything a user could act on. A described-by target containing one of these is real
@@ -93,12 +94,19 @@ interface Walk {
   readonly excludeRoles: ReadonlySet<string>;
   /** Selector for elements left out with their subtrees, or `''` for none. */
   readonly excludeSelector: string;
-  /** Ids of elements that exist only to describe another element. */
-  readonly describedByIds: Set<string>;
-  /** Ids of elements that name another element, and so are not free-standing text. */
-  readonly labelIds: Set<string>;
+  /** Ids of elements that exist only to describe another element, in the current document. */
+  describedByIds: Set<string>;
+  /** Ids of elements that name another element, and so are not free-standing text, in the current document. */
+  labelIds: Set<string>;
   /** Components still within budget. Shared across the whole walk. */
   remaining: number;
+  /** Whether the budget ran out while there was still something to describe. */
+  truncated: boolean;
+  /**
+   * Whether this walk only asks "is there anything left?": a probe describes at most
+   * one node and never starts a probe of its own.
+   */
+  readonly probing: boolean;
   /** Greater than zero while inside an element marked `data-clr-context-redact`. */
   redactedDepth: number;
   /** Greater than zero while inside a list whose items were summarised. */
@@ -107,27 +115,6 @@ interface Walk {
   textDepth: number;
   /** How many described nodes are above the current one. */
   depth: number;
-}
-
-/**
- * Describes everything currently on the page as a tree, by reading the accessibility
- * tree rather than any library's selectors.
- *
- * One depth-first pass. Each element is either skipped with its subtree, skipped but
- * descended into, described and descended into, or described as a leaf. Because
- * ancestry is known from the walk itself, nothing has to be cross-checked against the
- * elements already described — which is what makes this linear in the size of the DOM.
- *
- * The result is a pure function of the DOM at the moment of the call: only attached,
- * visible elements are described, so it can never report UI that has been closed,
- * destroyed or navigated away from.
- */
-export function collectContextTree(
-  root: ParentNode,
-  options: Required<ClrContextSnapshotOptions>,
-  extractors: ClrContextDomExtractor[] = []
-): ClrComponentContext[] {
-  return collectContextTreeWithin(root, options, extractors).components;
 }
 
 /** The result of a walk, and whether it ran out of budget before it ran out of page. */
@@ -146,12 +133,16 @@ export function collectContextTreeWithin(
 ): ClrContextTreeResult {
   const walk: Walk = {
     options,
-    extractors,
+    // An extractor whose selector the document rejects would throw on every element.
+    extractors: extractors.filter(extractor => usableSelector(root, extractor.selector)),
     excludeRoles: new Set(options.excludeRoles),
-    excludeSelector: usableSelector(root, options.excludeSelectors.join(', ')),
+    // Validated one by one, so a single bad entry does not silently drop every exclusion.
+    excludeSelector: options.excludeSelectors.filter(selector => usableSelector(root, selector)).join(', '),
     describedByIds: new Set(),
     labelIds: new Set(),
     remaining: options.maxComponents,
+    truncated: false,
+    probing: false,
     redactedDepth: 0,
     summarizedListDepth: 0,
     textDepth: 0,
@@ -160,11 +151,7 @@ export function collectContextTreeWithin(
   collectReferencedIds(root, walk);
   const scope = scopeOf(root, walk);
   const components = describeScope(scope.roots, walk);
-  // The budget ran out if the walk had to stop while there was still something to see.
-  const result: ClrContextTreeResult = {
-    components,
-    truncated: walk.remaining <= 0 && hasUndescribedContent(scope.roots, walk),
-  };
+  const result: ClrContextTreeResult = { components, truncated: walk.truncated };
   if (scope.focus) {
     result.focus = scope.focus;
   }
@@ -186,20 +173,69 @@ function scopeOf(root: ParentNode, walk: Walk): { roots: ParentNode | Element[];
       return { roots: [dialogs[dialogs.length - 1]], focus: 'modal' };
     }
   }
-  const selector = usableSelector(root, walk.options.rootSelector);
-  if (selector) {
+  if (walk.options.rootSelector) {
+    // A selector the document rejects matches nothing, the same as one that matches no
+    // element: it must not silently widen the snapshot to the whole page.
+    const selector = usableSelector(root, walk.options.rootSelector);
+    const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
     // A root inside an ignored region is still ignored: the region is inert to the
     // engine however the walk is pointed at it.
-    return { roots: Array.from(root.querySelectorAll(selector)).filter(element => !element.closest(IGNORE_SELECTOR)) };
+    return { roots: roots.filter(element => !element.closest(IGNORE_SELECTOR)) };
   }
   return { roots: root };
 }
 
+/**
+ * Describes the chosen roots. A root chosen by a selector or by modal focus may sit
+ * inside a redacted region, which a walk starting from it cannot see; the region's
+ * ancestry is checked once per root so that what it withholds stays withheld however
+ * the walk is pointed at it.
+ */
 function describeScope(roots: ParentNode | Element[], walk: Walk): ClrComponentContext[] {
   if (Array.isArray(roots)) {
-    return roots.flatMap(element => (walk.remaining > 0 ? describeElement(element, walk, null) : []));
+    const nodes: ClrComponentContext[] = [];
+    for (const element of roots) {
+      if (walk.remaining <= 0) {
+        noteUndescribed(element, walk, null);
+        break;
+      }
+      nodes.push(...withinRedactedAncestry(element, walk, () => describeElement(element, walk, null)));
+    }
+    return nodes;
   }
-  return describeChildren(roots, walk, null);
+  return withinRedactedAncestry(roots, walk, () => describeChildren(roots, walk, null));
+}
+
+/**
+ * Called when the budget is spent and `element` (with whatever follows it) is left
+ * undescribed. Whether the snapshot is actually cut off depends on whether anything
+ * there would have produced a node — an invisible or empty leftover is not a loss — so a
+ * probe with a budget of one is walked from it, stopping at the first node it would
+ * produce. The probe shares this walk's context but not its counters, and is itself
+ * never probed, so it costs at most one node's worth of work. Once the walk is known to
+ * be cut off, nothing further is probed.
+ */
+function noteUndescribed(element: Element, walk: Walk, owner: Element | null): void {
+  if (walk.probing || walk.truncated) {
+    return;
+  }
+  const probe: Walk = { ...walk, remaining: 1, truncated: false, probing: true };
+  if (describeElement(element, probe, owner).length) {
+    walk.truncated = true;
+  }
+}
+
+function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () => T): T {
+  const ancestor = node.nodeType === Node.ELEMENT_NODE ? (node as Element).parentElement : null;
+  if (!ancestor?.closest(REDACT_SELECTOR)) {
+    return describe();
+  }
+  walk.redactedDepth++;
+  try {
+    return describe();
+  } finally {
+    walk.redactedDepth--;
+  }
 }
 
 /** A selector the document accepts, or `''` for none or an invalid one. */
@@ -213,23 +249,6 @@ function usableSelector(root: ParentNode, selector: string): string {
   } catch {
     return '';
   }
-}
-
-/**
- * Whether the walk left anything behind. Only consulted once the budget is spent — a
- * page that fits exactly must not be reported as cut off — and answered by a second
- * pass with a budget one larger: if that pass describes more than the budget allowed,
- * something was left out. The probe is bounded the same way the walk is, so it costs at
- * most one more node's worth of work than the walk itself.
- */
-function hasUndescribedContent(roots: ParentNode | Element[], walk: Walk): boolean {
-  const probe: Walk = { ...walk, remaining: walk.options.maxComponents + 1, depth: 0 };
-  const described = countNodes(describeScope(roots, probe));
-  return described > walk.options.maxComponents;
-}
-
-function countNodes(nodes: ClrComponentContext[]): number {
-  return nodes.reduce((total, node) => total + 1 + countNodes(node.children ?? []), 0);
 }
 
 /**
@@ -308,7 +327,7 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
 function describeVisible(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
   const extractor = walk.extractors.find(candidate => element.matches(candidate.selector));
   if (extractor) {
-    const described = extractor.extract(element as HTMLElement, walk.options);
+    const described = extractSafely(extractor, element as HTMLElement, walk);
     if (!described) {
       // The extractor owns this element: when it declines to describe it, the element is
       // not described generically either, but its contents may still be interesting.
@@ -318,7 +337,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       return [];
     }
     walk.remaining--;
-    return [finish(described, element, walk)];
+    return [finish(described, element, walk, true)];
   }
 
   const tagName = element.tagName.toLowerCase();
@@ -367,8 +386,17 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       return [finish(only, element, walk)];
     }
     if (rendered.length > 1) {
+      if (walk.remaining <= 0) {
+        // The parts were counted; a wrapper for them is not affordable, so they stand alone.
+        return rendered;
+      }
       walk.remaining--;
       return [finish({ type: tagName, element: tagName, children: rendered }, element, walk)];
+    }
+    // Nothing rendered, nothing said, nothing published: a closed modal, an icon, a
+    // spacer. Such an element is not on the page as far as an agent is concerned.
+    if (!accessibleText(element).trim() && !(CLR_ELEMENT_CONTEXT_PROPERTY in element)) {
+      return [];
     }
   }
 
@@ -518,11 +546,24 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     state.crossOrigin = true;
   } else if (!contents.body) {
     state.loading = true;
+  } else if (isStillNavigating(frame, contents)) {
+    state.loading = true;
   } else {
-    collectReferencedIds(contents, walk);
-    const children = describeNested(contents.body, walk, null);
-    if (children.length) {
-      node.children = children;
+    // Ids are scoped to a document: the frame's references must not skip or fold the
+    // host's elements that happen to share an id, nor the other way round.
+    const hostDescribedByIds = walk.describedByIds;
+    const hostLabelIds = walk.labelIds;
+    walk.describedByIds = new Set();
+    walk.labelIds = new Set();
+    try {
+      collectReferencedIds(contents, walk);
+      const children = describeNested(contents.body, walk, null);
+      if (children.length) {
+        node.children = children;
+      }
+    } finally {
+      walk.describedByIds = hostDescribedByIds;
+      walk.labelIds = hostLabelIds;
     }
   }
 
@@ -530,6 +571,33 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     node.state = state;
   }
   return [finish(node, frame, walk)];
+}
+
+/**
+ * Whether a frame still shows the initial blank document while its real one loads: the
+ * blank document has a body of its own, so the body alone does not tell.
+ */
+function isStillNavigating(frame: HTMLIFrameElement, contents: Document): boolean {
+  const src = frame.getAttribute('src');
+  return (
+    contents.location.href === 'about:blank' && !!src && !src.startsWith('about:') && !frame.hasAttribute('srcdoc')
+  );
+}
+
+/**
+ * An extractor's description, or `null` when it throws: application code describing
+ * one element must not take the whole snapshot down.
+ */
+function extractSafely(
+  extractor: ClrContextDomExtractor,
+  element: HTMLElement,
+  walk: Walk
+): ClrComponentContext | null {
+  try {
+    return extractor.extract(element, walk.options);
+  } catch {
+    return null;
+  }
 }
 
 /** A frame's document when it is same-origin and readable, `null` when it is not. */
@@ -542,9 +610,6 @@ function frameDocument(frame: HTMLIFrameElement): Document | null {
 }
 
 /** Everything up to the first `?` or `#`. */
-function stripQueryAndFragment(url: string): string {
-  return url.split(/[?#]/)[0];
-}
 
 /**
  * The children of a described node: one level deeper, and left out altogether once the
@@ -566,11 +631,19 @@ function describeNested(parent: ParentNode, walk: Walk, owner: Element | null): 
 
 function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null): ClrComponentContext[] {
   const nodes: ClrComponentContext[] = [];
-  for (const child of Array.from(parent.children)) {
+  const children = Array.from(parent.children);
+  for (let index = 0; index < children.length; index++) {
     if (walk.remaining <= 0) {
+      // Whatever follows would be described from here on; check that it would have been.
+      for (const leftover of children.slice(index)) {
+        if (walk.truncated || walk.probing) {
+          break;
+        }
+        noteUndescribed(leftover, walk, owner);
+      }
       break;
     }
-    nodes.push(...describeElement(child, walk, owner));
+    nodes.push(...describeElement(children[index], walk, owner));
   }
   return nodes;
 }
@@ -583,16 +656,19 @@ function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null)
  * extractor's result: an extractor is application code, but the element it describes
  * may sit inside a region the application marked as sensitive.
  */
-function finish(node: ClrComponentContext, element: Element, walk: Walk): ClrComponentContext {
+function finish(node: ClrComponentContext, element: Element, walk: Walk, deep = false): ClrComponentContext {
   let described = mergeElementContext(node, element, walk.options);
+  // Anything published or extracted arrives unpruned and may carry children of its own.
+  const foreign = deep || described !== node;
 
   if (described.state?.['redacted'] === true || isRedacted(element, walk.redactedDepth > 0)) {
-    const state: Record<string, unknown> = { ...described.state, redacted: true };
-    delete state['value'];
-    described = { ...described, state };
+    // What the user entered goes, along with what was published under it: a component
+    // must not be able to reinstate through its children what the engine withheld.
+    const withheld = withoutValues(described);
+    described = { ...withheld, state: { ...withheld.state, redacted: true } };
   }
 
-  return pruneEmpty(described);
+  return pruneEmpty(described, foreign);
 }
 
 /** Whether an element and everything inside it is invisible to the engine. */
@@ -616,7 +692,14 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
   // Text that only describes another element is reported as that element's description.
   // But a described-by target that holds controls is content in its own right — a dialog
   // described by its own body — and folding it away would lose what a user can do there.
-  if (element.id && walk.describedByIds.has(element.id) && !element.querySelector(CONTROL_SELECTOR)) {
+  // Only role-less text folds away: an alert, a region, a heading is content whatever
+  // points at it, and page content can point an `aria-describedby` at any id.
+  if (
+    element.id &&
+    walk.describedByIds.has(element.id) &&
+    !element.querySelector(CONTROL_SELECTOR) &&
+    !resolveRole(element)
+  ) {
     return true;
   }
   return !isVisible(element as HTMLElement);
@@ -629,13 +712,14 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
  */
 function isVisible(element: HTMLElement): boolean {
   if (typeof element.checkVisibility === 'function') {
-    return element.checkVisibility({ visibilityProperty: true, opacityProperty: true, contentVisibilityAuto: true });
+    // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.
+    return element.checkVisibility({ visibilityProperty: true, opacityProperty: true });
   }
   return element.getClientRects().length > 0;
 }
 
 /** Removes empty labels, states and children so snapshots stay minimal. */
-export function pruneEmpty(context: ClrComponentContext): ClrComponentContext {
+function pruneEmpty(context: ClrComponentContext, deep = false): ClrComponentContext {
   const pruned: ClrComponentContext = { type: context.type };
   if (context.element) {
     pruned.element = context.element;
@@ -647,7 +731,9 @@ export function pruneEmpty(context: ClrComponentContext): ClrComponentContext {
     pruned.state = context.state;
   }
   if (context.children?.length) {
-    pruned.children = context.children.map(child => pruneEmpty(child));
+    // Children the walk produced were each pruned as they were finished; only children
+    // that arrived from outside the walk need visiting.
+    pruned.children = deep ? context.children.map(child => pruneEmpty(child, true)) : context.children;
   }
   return pruned;
 }

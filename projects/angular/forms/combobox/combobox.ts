@@ -318,8 +318,7 @@ export class ClrCombobox<T>
 
   ngAfterContentInit() {
     this.initializeSubscriptions();
-    // Captured before ngAfterViewInit reassigns `el` to the wrapped text input.
-    this.publishContext(this.el.nativeElement);
+    this.publishContext(this.comboboxHostElement);
 
     // Initialize with preselected value
     if (!this.optionSelectionService.selectionModel.isEmpty()) {

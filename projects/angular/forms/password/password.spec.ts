@@ -11,9 +11,10 @@ import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@ang
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
+import { CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 
 import { ClrPassword } from './password';
-import { ClrPasswordContainer } from './password-container';
+import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
 import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
@@ -84,6 +85,18 @@ export default function (): void {
 
       it('should set the password type attribute', () => {
         expect(containerEl.querySelector('input').type).toEqual('password');
+      });
+
+      it('marks itself as holding a secret whatever type it currently shows', () => {
+        const input = containerEl.querySelector('input');
+        expect(input.getAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE)).toBe('');
+
+        // The reveal toggle switches the field to plain text; a context snapshot taken then
+        // must still withhold what it holds.
+        containerDE.injector.get(TOGGLE_SERVICE).next(true);
+        fixture.detectChanges();
+        expect(input.type).toEqual('text');
+        expect(input.getAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE)).toBe('');
       });
     });
   });

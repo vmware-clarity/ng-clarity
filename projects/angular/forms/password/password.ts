@@ -26,7 +26,12 @@ import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
 
 @Directive({
   selector: '[clrPassword]',
-  host: { '[class.clr-input]': 'true' },
+  host: {
+    '[class.clr-input]': 'true',
+    // The value is a secret while the field shows it as text too (the reveal toggle
+    // switches `type`); the attribute is CLR_CONTEXT_REDACT_ATTRIBUTE from @clr/angular/utils.
+    '[attr.data-clr-context-redact]': '""',
+  },
   standalone: false,
 })
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {

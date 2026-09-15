@@ -125,6 +125,18 @@ describe('ClrContextualEngineService', () => {
         expect(snapshotVia().components.some(component => component.type === 'textbox')).toBe(true);
       });
 
+      it('withholds what the user chose or ticked as much as what they typed', () => {
+        form.innerHTML +=
+          '<select multiple aria-label="Roles"><option selected>admin</option><option>viewer</option></select>' +
+          '<input type="checkbox" aria-label="Remember" checked />';
+        engine.enableGlobalAccess('testClrContext');
+
+        const json = JSON.stringify(snapshotVia());
+        expect(json).not.toContain('"selected"');
+        expect(json).not.toContain('"checked"');
+        expect(json).toContain('"optionCount":2');
+      });
+
       it('shares what the user typed only when the application says so', () => {
         engine.enableGlobalAccess('testClrContext', { shareFormValues: true });
 
@@ -221,6 +233,28 @@ describe('ClrContextualEngineService', () => {
       expect(route?.params).toEqual({ id: '42' });
       expect(route?.queryParams).toEqual({ tab: 'general' });
       expect(route?.data).toEqual({ section: 'items', tags: ['inventory'], meta: { owner: 'core-team' } });
+    });
+
+    it('reports the route’s static data, never what a resolver fetched', async () => {
+      TestBed.configureTestingModule({
+        providers: [
+          provideRouter([
+            {
+              path: 'account',
+              component: RoutedComponent,
+              data: { section: 'account' },
+              resolve: { user: () => ({ email: 'someone@example.test', token: 'secret' }) },
+            },
+          ]),
+        ],
+      });
+      const engine = TestBed.inject(ClrContextualEngineService);
+
+      await TestBed.inject(Router).navigateByUrl('/account');
+      const snapshot = engine.getSnapshot({ includeDomComponents: false });
+
+      expect(snapshot.route?.data).toEqual({ section: 'account' });
+      expect(JSON.stringify(snapshot)).not.toContain('secret');
     });
   });
 });
@@ -351,6 +385,35 @@ describe('ClrContextualEngineService, configured once for the application', () =
     expect(snapshot.focus).toBe('modal');
     expect(types(snapshot)).toEqual(['dialog']);
   });
+
+  it('accepts the options themselves, not only a preset name', () => {
+    const engine = engineWith(provideClrContextOptions({ rootSelector: 'main' }, { includeText: false }));
+    const snapshot = engine.getSnapshot();
+    expect(types(snapshot)).toEqual(['main']);
+    expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
+  });
+
+  it('holds a caller the application does not control to the application options', () => {
+    const engine = engineWith(
+      provideClrContextOptions({
+        includeText: false,
+        excludeRoles: ['navigation'],
+        rootSelector: 'main, nav',
+        maxComponents: 5,
+      })
+    );
+    engine.enableGlobalAccess('testClrContextCeiling');
+    try {
+      const accessor = (window as unknown as Record<string, (options?: unknown) => ClrPageContext>)[
+        'testClrContextCeiling'
+      ];
+      const snapshot = accessor({ includeText: true, excludeRoles: [], maxComponents: 10_000 });
+      expect(types(snapshot)).toEqual(['main']);
+      expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
+    } finally {
+      engine.disableGlobalAccess();
+    }
+  });
 });
 
 describe('ClrContextualEngineService, the routes an application can navigate to', () => {
@@ -381,6 +444,20 @@ describe('ClrContextualEngineService, the routes an application can navigate to'
       { path: 'clusters/:id/hosts' },
       { path: 'billing', lazy: true },
     ]);
+  });
+
+  it('lists the root path as "/", and never fewer than fifty routes however small the collection budget', () => {
+    const many = Array.from({ length: 70 }, (_, index) => ({ path: `page-${index}`, component: RoutedComponent }));
+    TestBed.configureTestingModule({
+      providers: [provideRouter([{ path: '', component: RoutedComponent, title: 'Home' }, ...many])],
+    });
+    const engine = TestBed.inject(ClrContextualEngineService);
+
+    const few = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true, maxItemsPerCollection: 5 });
+    expect(few.availableRoutes?.[0]).toEqual({ path: '/', title: 'Home' });
+    expect(few.availableRoutes?.length).toBe(50);
+    const more = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true, maxItemsPerCollection: 60 });
+    expect(more.availableRoutes?.length).toBe(60);
   });
 
   it('lists nothing unless asked', () => {

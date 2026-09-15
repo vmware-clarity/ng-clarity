@@ -47,16 +47,7 @@ export interface ClrComponentContext {
  * - `frames` — same-origin frames (the `includeFrames` switch)
  */
 export type ClrContextCategory =
-  | 'layout'
-  | 'actions'
-  | 'forms'
-  | 'headings'
-  | 'collections'
-  | 'dialogs'
-  | 'status'
-  | 'images'
-  | 'text'
-  | 'frames';
+  'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
 
 /**
  * Budgets applied while building a snapshot. The defaults are deliberately conservative
@@ -73,7 +64,7 @@ export interface ClrContextSnapshotOptions {
    * the scope rather than mistake a cut-off tree for the whole page.
    */
   maxComponents?: number;
-  /** Whether to scan the rendered DOM for Clarity components. Default `true`. */
+  /** Whether to describe what is rendered in the DOM at all. Default `true`. */
   includeDomComponents?: boolean;
   /**
    * Whether to report visible text that carries no role — a paragraph, a card's body,

@@ -33,21 +33,30 @@ const EMBEDDED_CHAT_PAGE = `
       <button id="ask" style="padding: 6px 12px">Request host page context</button>
       <pre id="out" style="background: #f4f4f4; padding: 8px; white-space: pre-wrap"></pre>
       <script>
+        // What a hand-written client must do: an unguessable request id, an answer
+        // accepted only from the window that was asked and only from its origin, and a
+        // request addressed to that origin rather than broadcast.
+        var hostOrigin = window.location.origin;
+        var requestId = crypto.randomUUID();
         window.addEventListener('message', function (event) {
           var message = event.data;
-          if (message && message.protocol === 'ui-context/v1' && message.kind === 'context-response') {
-            var context = message.context;
-            document.getElementById('out').textContent = JSON.stringify(
-              context,
-              null,
-              2
-            );
+          if (event.source !== window.parent || event.origin !== hostOrigin) {
+            return;
+          }
+          if (
+            message &&
+            message.protocol === 'ui-context/v1' &&
+            message.kind === 'context-response' &&
+            message.requestId === requestId
+          ) {
+            document.getElementById('out').textContent = JSON.stringify(message.context, null, 2);
           }
         });
         document.getElementById('ask').addEventListener('click', function () {
+          requestId = crypto.randomUUID();
           parent.postMessage(
-            { protocol: 'ui-context/v1', kind: 'context-request', requestId: 'chat-demo', options: { maxComponents: 30 } },
-            '*'
+            { protocol: 'ui-context/v1', kind: 'context-request', requestId: requestId, options: { maxComponents: 30 } },
+            hostOrigin
           );
         });
       </script>

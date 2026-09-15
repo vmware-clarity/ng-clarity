@@ -6,15 +6,17 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { NgModule } from '@angular/core';
+import { NgModule, Type } from '@angular/core';
 
 import { ClrContext } from './context.directive';
 
-export const CLR_CONTEXTUAL_DIRECTIVES: any[] = [ClrContext];
+/** The directives {@link ClrContextualModule} declares and exports. */
+export const CLR_CONTEXTUAL_DIRECTIVES: Type<any>[] = [ClrContext];
 
 @NgModule({
   imports: [CommonModule],
   declarations: [CLR_CONTEXTUAL_DIRECTIVES],
   exports: [CLR_CONTEXTUAL_DIRECTIVES],
 })
+/** Declares the `clrContext` directive for applications that use NgModules. */
 export class ClrContextualModule {}

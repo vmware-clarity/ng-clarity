@@ -55,5 +55,10 @@ export function mergeElementContext(
       (merged.state as Record<string, unknown>)[key] = value.slice(0, options.maxItemsPerCollection);
     }
   }
+  // Children a component publishes are not walked, so they are not counted against the
+  // component budget either; the collection budget bounds them instead.
+  if (Array.isArray(merged.children)) {
+    merged.children = merged.children.slice(0, options.maxItemsPerCollection);
+  }
   return merged;
 }
