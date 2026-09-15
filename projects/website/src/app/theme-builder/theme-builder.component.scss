@@ -22,6 +22,14 @@
   }
 }
 
+// ── Preset actions ──
+
+.tb-preset-actions {
+  display: flex;
+  gap: var(--clr-base-gap-sm);
+  flex-wrap: wrap;
+}
+
 // ── Generated CSS card ──
 
 .tb-output-card {
@@ -32,7 +40,7 @@
     margin-bottom: var(--clr-base-vertical-offset-l);
   }
 
-  // Card-header contains title + tab buttons + copy button in a flex row
+  // Card-header contains title + copy button in a flex row
   .card-header {
     display: flex;
     align-items: center;
