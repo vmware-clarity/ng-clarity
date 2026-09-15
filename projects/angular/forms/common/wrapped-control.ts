@@ -23,7 +23,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { HostWrapper } from '@clr/angular/utils';
+import { hasRequiredValidator, HostWrapper } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';
@@ -48,6 +48,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   protected subscriptions: Subscription[] = [];
 
   private controlClassService: ControlClassService;
+  private readonly authoredAriaInvalid: string | null;
+  private readonly authoredAriaRequired: string | null;
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
   private _containerInjector: Injector;
@@ -64,6 +66,10 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected renderer: Renderer2,
     protected el: ElementRef<HTMLElement>
   ) {
+    // Static attributes are set before the directive is created, so what the author
+    // wrote is readable here and is not overwritten by the host bindings below.
+    this.authoredAriaInvalid = el?.nativeElement?.getAttribute('aria-invalid') ?? null;
+    this.authoredAriaRequired = el?.nativeElement?.getAttribute('aria-required') ?? null;
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.markControlService = injector.get(MarkControlService, null);
@@ -89,6 +95,37 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (this.controlIdService) {
       this.controlIdService.id = value;
     }
+  }
+
+  /**
+   * Whether the control is currently in error, as assistive technology should hear it.
+   *
+   * Gated on the control having been touched, which is the same rule the container uses
+   * to decide whether to show the error (see `ClrAbstractContainer`): a field the user
+   * has not reached yet should not be announced as wrong.
+   */
+  @HostBinding('attr.aria-invalid')
+  protected get ariaInvalid(): string | true | null {
+    // An attribute the author wrote in the template is theirs to keep.
+    if (this.authoredAriaInvalid !== null) {
+      return this.authoredAriaInvalid;
+    }
+    return this.ngControl?.invalid && this.ngControl?.touched ? true : null;
+  }
+
+  /**
+   * Whether a value is required.
+   *
+   * A `required` attribute in the template is already exposed by the browser, but a
+   * reactive `Validators.required` is not — nothing in the DOM conveys it — so this
+   * reports it explicitly.
+   */
+  @HostBinding('attr.aria-required')
+  protected get ariaRequired(): string | true | null {
+    if (this.authoredAriaRequired !== null) {
+      return this.authoredAriaRequired;
+    }
+    return hasRequiredValidator(this.ngControl?.control) ? true : null;
   }
 
   @HostBinding('attr.aria-describedby')

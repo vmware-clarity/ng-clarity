@@ -1,0 +1,206 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-row">
+  <div class="clr-col-lg-5 clr-col-12">
+    <form clrForm clrLayout="vertical" class="playground-controls">
+      <clr-select-container>
+        <label>Preset</label>
+        <select clrSelect name="preset" [ngModel]="preset" (ngModelChange)="applyPreset($event)">
+          <option value="full">full — everything visible, prose included</option>
+          <option value="interactive">interactive — no prose, no header/navigation/footer</option>
+          <option value="minimal">minimal — counts and selection only, modal focus</option>
+          <option value="custom">custom</option>
+        </select>
+        <clr-control-helper
+          >Picking a preset fills the controls below; editing any of them makes it custom.</clr-control-helper
+        >
+      </clr-select-container>
+
+      <div class="clr-row">
+        <div class="clr-col-6">
+          <clr-number-input-container>
+            <label>maxComponents</label>
+            <input
+              clrNumberInput
+              type="number"
+              name="maxComponents"
+              min="0"
+              [max]="maxBudget"
+              [(ngModel)]="maxComponents"
+              (ngModelChange)="edited()"
+            />
+          </clr-number-input-container>
+        </div>
+        <div class="clr-col-6">
+          <clr-number-input-container>
+            <label>maxDepth (0 = unlimited)</label>
+            <input
+              clrNumberInput
+              type="number"
+              name="maxDepth"
+              min="0"
+              max="20"
+              [(ngModel)]="maxDepth"
+              (ngModelChange)="edited()"
+            />
+          </clr-number-input-container>
+        </div>
+        <div class="clr-col-6">
+          <clr-number-input-container>
+            <label>maxItemsPerCollection</label>
+            <input
+              clrNumberInput
+              type="number"
+              name="maxItemsPerCollection"
+              min="1"
+              max="200"
+              [(ngModel)]="maxItemsPerCollection"
+              (ngModelChange)="edited()"
+            />
+          </clr-number-input-container>
+        </div>
+        <div class="clr-col-6">
+          <clr-number-input-container>
+            <label>maxTextLength</label>
+            <input
+              clrNumberInput
+              type="number"
+              name="maxTextLength"
+              min="1"
+              max="1000"
+              [(ngModel)]="maxTextLength"
+              (ngModelChange)="edited()"
+            />
+          </clr-number-input-container>
+        </div>
+      </div>
+
+      <clr-checkbox-container clrInline>
+        <label>Narrow</label>
+        <clr-checkbox-wrapper>
+          <input
+            type="checkbox"
+            clrCheckbox
+            name="summary"
+            [(ngModel)]="summaryCollections"
+            (ngModelChange)="edited()"
+          />
+          <label>collections as summary only</label>
+        </clr-checkbox-wrapper>
+        <clr-checkbox-wrapper>
+          <input type="checkbox" clrCheckbox name="focusModal" [(ngModel)]="focusModal" (ngModelChange)="edited()" />
+          <label>only the modal while one is open</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+
+      <clr-checkbox-container clrInline>
+        <label>Add</label>
+        <clr-checkbox-wrapper>
+          <input
+            type="checkbox"
+            clrCheckbox
+            name="includeRoutes"
+            [(ngModel)]="includeRoutes"
+            (ngModelChange)="edited()"
+          />
+          <label>the routes the application can navigate to</label>
+        </clr-checkbox-wrapper>
+      </clr-checkbox-container>
+
+      <clr-checkbox-container>
+        <label>Leave out</label>
+        @for (category of categories; track category.name) {
+          <clr-checkbox-wrapper>
+            <input
+              type="checkbox"
+              clrCheckbox
+              [name]="'exclude-' + category.name"
+              [(ngModel)]="excluded[category.name]"
+              (ngModelChange)="edited()"
+            />
+            <label
+              >{{ category.name }} <span class="playground-covers">— {{ category.covers }}</span></label
+            >
+          </clr-checkbox-wrapper>
+        }
+        <clr-control-helper>
+          Each category is a name for a set of roles (<code class="clr-code">excludeCategories</code>); anything finer
+          goes in <code class="clr-code">excludeRoles</code> below.
+        </clr-control-helper>
+      </clr-checkbox-container>
+
+      <clr-input-container>
+        <label>excludeRoles</label>
+        <input
+          clrInput
+          name="excludeRoles"
+          placeholder="button, heading"
+          [(ngModel)]="excludeRoles"
+          (ngModelChange)="edited()"
+        />
+        <clr-control-helper>Comma-separated ARIA roles, left out with their subtree.</clr-control-helper>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>excludeSelectors</label>
+        <input
+          clrInput
+          name="excludeSelectors"
+          placeholder="clr-header, .sidenav"
+          [(ngModel)]="excludeSelectors"
+          (ngModelChange)="edited()"
+        />
+        <clr-control-helper>Comma-separated CSS selectors, left out with their subtree.</clr-control-helper>
+      </clr-input-container>
+
+      <clr-input-container>
+        <label>rootSelector</label>
+        <input clrInput name="rootSelector" placeholder="main" [(ngModel)]="rootSelector" (ngModelChange)="edited()" />
+        <clr-control-helper>Describe only what this selector matches.</clr-control-helper>
+      </clr-input-container>
+
+      <button type="button" class="btn btn-sm btn-primary clr-mt-16px" (click)="run()">Snapshot this page again</button>
+    </form>
+
+    <details class="clr-mt-16px">
+      <summary>Options as passed to <code class="clr-code">getSnapshot()</code></summary>
+      <pre class="playground-json">{{ optionsJson }}</pre>
+    </details>
+  </div>
+
+  <div class="clr-col-lg-7 clr-col-12">
+    <div class="playground-summary">
+      <span class="label label-info">{{ bytes }} bytes</span>
+      <span class="label">{{ nodes }} nodes</span>
+      @if (truncated) {
+        <span class="label label-warning">truncated — raise maxComponents</span>
+      }
+      @if (focus) {
+        <span class="label label-success">focus: {{ focus }}</span>
+      }
+      @if (routes) {
+        <span class="label">{{ routes }} routes</span>
+      }
+    </div>
+    @if (change) {
+      <p class="playground-change">
+        Since the previous run: <strong>{{ change.added.length }}</strong> added
+        @if (change.added.length) {
+          ({{ labelsOf(change.added) }})
+        }
+        , <strong>{{ change.removed.length }}</strong> removed
+        @if (change.removed.length) {
+          ({{ labelsOf(change.removed) }})
+        }
+        , <strong>{{ change.changed.length }}</strong> changed — this is what
+        <code class="clr-code">changes$</code> emits.
+      </p>
+    }
+    <pre class="playground-json playground-snapshot">{{ snapshotJson }}</pre>
+  </div>
+</div>

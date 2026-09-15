@@ -908,6 +908,12 @@ export const CLR_ALERT_DIRECTIVES: Type<any>[];
 // @public (undocumented)
 export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 
@@ -916,6 +922,9 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
+
+// @public
+export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public (undocumented)
 export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT: InjectionToken<ClrFileMessagesTemplateContext>;
@@ -1114,6 +1123,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     get alertType(): string;
     set alertType(val: string);
+    get ariaRole(): 'alert' | 'status';
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -1583,8 +1593,11 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     get ariaControls(): string;
     // (undocumented)
     get ariaDescribedBySelection(): string;
+    protected get ariaInvalid(): true | null;
     // (undocumented)
     get ariaOwns(): string;
+    // (undocumented)
+    protected get ariaRequired(): true | null;
     // (undocumented)
     protected calculatedLimit: number | undefined;
     // (undocumented)
@@ -1629,6 +1642,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected index: number;
     // (undocumented)
     inputId(): string;
+    get isInvalid(): boolean;
+    get isRequired(): boolean;
     // (undocumented)
     protected isTotalSelection: boolean;
     // (undocumented)
@@ -1934,6 +1949,15 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
 }
 
+// @public
+export interface ClrComponentContext {
+    children?: ClrComponentContext[];
+    element?: string;
+    label?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -1942,6 +1966,27 @@ export class ClrConditionalModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, never, [typeof i2.CommonModule, typeof ClrIfActive, typeof ClrIfExpanded], [typeof ClrIfActive, typeof ClrIfExpanded]>;
+}
+
+// @public
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export interface ClrContextSnapshotOptions {
+    collectionItems?: 'all' | 'summary';
+    excludeCategories?: ClrContextCategory[];
+    excludeRoles?: string[];
+    excludeSelectors?: string[];
+    focus?: 'page' | 'modal';
+    includeDomComponents?: boolean;
+    includeFrames?: boolean;
+    includeRoutes?: boolean;
+    includeText?: boolean;
+    maxComponents?: number;
+    maxDepth?: number;
+    maxItemsPerCollection?: number;
+    maxTextLength?: number;
+    rootSelector?: string;
 }
 
 // @public (undocumented)
@@ -3338,6 +3383,9 @@ export class ClrDropdownTrigger {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
 }
 
+// @public
+export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+
 // @public (undocumented)
 export class ClrEmphasisModule {
     // (undocumented)
@@ -3460,6 +3508,7 @@ export class ClrFileInfo {
 // @public (undocumented)
 export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
+    protected get ariaRequired(): true | null;
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
     // (undocumented)
@@ -4950,6 +4999,9 @@ export class ClrProgressBarModule {
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected get ariaInvalid(): true | null;
+    // (undocumented)
+    protected get ariaRequired(): true | null;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -4960,7 +5012,10 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
+    protected get ariaInvalid(): true | null;
+    // (undocumented)
     ariaLabelledBy: string;
+    protected get ariaRequired(): true | null;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
@@ -5008,6 +5063,7 @@ export class ClrRadioWrapper implements OnInit {
 // @public (undocumented)
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected get ariaRequired(): true | null;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -5889,7 +5945,7 @@ export class ClrTimelineModule {
 }
 
 // @public (undocumented)
-export class ClrTimelineStep {
+export class ClrTimelineStep implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TimelineIconAttributeService" needs to be exported by the entry point clr-angular.d.ts
     constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
     // (undocumented)
@@ -5902,6 +5958,8 @@ export class ClrTimelineStep {
     get isProcessing(): boolean;
     // (undocumented)
     ngAfterContentInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     state: ClrTimelineStepState;
     // (undocumented)
@@ -6124,11 +6182,11 @@ export class ClrTreeViewModule {
 }
 
 // @public (undocumented)
-export class ClrVerticalNav implements OnDestroy {
+export class ClrVerticalNav implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService, el: ElementRef<HTMLElement>);
     // (undocumented)
     get ariaExpanded(): string;
     // (undocumented)
@@ -6148,11 +6206,15 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
+    ngOnInit(): void;
+    get role(): string | null;
+    set role(value: string | null);
+    // (undocumented)
     toggleByButton(): void;
     // (undocumented)
     toggleLabel: string;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "role": { "alias": "role"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
 }
@@ -7886,6 +7948,9 @@ export const hashtagIcon: IconShapeTuple;
 // @public (undocumented)
 export const hashtagIconName = "hashtag";
 
+// @public
+export function hasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
@@ -8889,6 +8954,9 @@ export const processOnVmIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const processOnVmIconName = "process-on-vm";
+
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
 
 // @public (undocumented)
 export const qrCodeIcon: IconShapeTuple;
@@ -9981,6 +10049,8 @@ export class WrappedColumn implements AfterViewInit, OnDestroy {
 // @public (undocumented)
 export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
+    protected get ariaInvalid(): string | true | null;
+    protected get ariaRequired(): string | true | null;
     // (undocumented)
     protected controlIdService: ControlIdService;
     // (undocumented)

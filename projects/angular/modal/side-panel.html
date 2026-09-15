@@ -21,6 +21,7 @@
   <button
     type="button"
     [attr.aria-label]="commonStrings.keys.sidePanelPin"
+    [attr.aria-pressed]="pinned"
     class="leading-button pinnable"
     (click)="togglePinned()"
   >

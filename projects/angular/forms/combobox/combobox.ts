@@ -40,11 +40,14 @@ import {
 } from '@clr/angular/popover/common';
 import {
   ClrCommonStringsService,
+  ClrElementContextCallback,
   ClrLoadingState,
   FOCUS_SERVICE_PROVIDER,
+  hasRequiredValidator,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
+  publishElementContext,
 } from '@clr/angular/utils';
 import { debounceTime, Subject } from 'rxjs';
 
@@ -52,6 +55,7 @@ import { ClrComboboxContainer } from './combobox-container';
 import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
+import { ClrOption } from './option';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
@@ -70,7 +74,6 @@ import { OptionSelectionService } from './providers/option-selection.service';
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
-    '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
   },
@@ -116,9 +119,12 @@ export class ClrCombobox<T>
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
+  private teardownElementContext?: () => void;
+
   private _searchText = '';
   private onTouchedCallback: () => any;
   private onChangeCallback: (model: T | T[]) => any;
+  private readonly comboboxHostElement: HTMLElement;
 
   constructor(
     vcr: ViewContainerRef,
@@ -139,6 +145,9 @@ export class ClrCombobox<T>
     @Optional() @Host() private container: ClrComboboxContainer
   ) {
     super(vcr, ClrComboboxContainer, injector, control, renderer, el);
+    // Captured now because ngAfterViewInit reassigns `el` to the wrapped text input, and
+    // a template-driven `required` sits on the host.
+    this.comboboxHostElement = el.nativeElement;
     if (control) {
       control.valueAccessor = this;
     }
@@ -267,12 +276,49 @@ export class ClrCombobox<T>
     );
   }
 
+  /**
+   * Whether a value must be chosen. Reported on the element carrying `role="combobox"`,
+   * which is where ARIA requires it — the host used to carry a `class="aria-required"`
+   * instead, which no stylesheet defines and no assistive technology reads.
+   *
+   * Both spellings are honored: `Validators.required` on a reactive control, and a
+   * `required` attribute on a template-driven one, which Angular applies through a
+   * directive rather than the validator function this could otherwise look for.
+   */
+  get isRequired(): boolean {
+    return hasRequiredValidator(this.control?.control) || this.comboboxHostElement.hasAttribute('required');
+  }
+
+  /**
+   * Whether the field is in error, as assistive technology should hear it: gated on the
+   * control having been touched, like every other Clarity control (see
+   * `WrappedFormControl`), so a required field is not announced as wrong before the user
+   * has reached it.
+   */
+  get isInvalid(): boolean {
+    return !!this.control?.invalid && !!this.control?.touched;
+  }
+
+  /**
+   * Suppressed on the host: this component reports both on the element carrying
+   * `role="combobox"` (see the template), which is where ARIA requires them. The host is
+   * a role-less wrapper, so the same attributes there would be meaningless noise.
+   */
+  protected override get ariaInvalid(): true | null {
+    return null;
+  }
+
+  protected override get ariaRequired(): true | null {
+    return null;
+  }
+
   private get disabled() {
     return this.control?.disabled;
   }
 
   ngAfterContentInit() {
     this.initializeSubscriptions();
+    this.publishContext(this.comboboxHostElement);
 
     // Initialize with preselected value
     if (!this.optionSelectionService.selectionModel.isEmpty()) {
@@ -299,6 +345,7 @@ export class ClrCombobox<T>
 
   override ngOnDestroy(): void {
     super.ngOnDestroy();
+    this.teardownElementContext?.();
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -580,6 +627,72 @@ export class ClrCombobox<T>
     if (this.onChangeCallback) {
       this.onChangeCallback(this.optionSelectionService.selectionModel.model);
     }
+  }
+
+  /**
+   * Publishes instance state the rendered DOM cannot show — the selection model and,
+   * while the options popover is instantiated, the option list — through the plain
+   * element context contract in `@clr/angular/utils`, where page-context tooling such as
+   * `@clr/angular/ai` discovers it. The contract lives in utils rather than in the engine
+   * so publishing costs this component nothing but one import.
+   */
+  private publishContext(host: HTMLElement) {
+    const describe: ClrElementContextCallback = snapshotOptions => {
+      // The contract is a plain element property that any page tooling may call, not
+      // only the engine that passes budgets, so a missing argument must not throw.
+      const maxItems = snapshotOptions?.maxItemsPerCollection ?? 25;
+      const state: Record<string, unknown> = { multiSelect: this.multiSelect };
+      const items = this.options?.items;
+      if (items?.length) {
+        // Option content children exist even while the popover is closed, so the
+        // choices are available regardless of what the DOM currently shows.
+        state.options = items
+          .toArray()
+          .slice(0, maxItems)
+          .map(option => this.optionLabel(option));
+      } else {
+        // Async comboboxes have no option list until a search loads one.
+        state.optionsAvailable = false;
+      }
+      const model = this.optionSelectionService.selectionModel?.model;
+      if (model === null || model === undefined) {
+        state.value = null;
+      } else {
+        // What the user sees: the option's label when the value matches an option, the
+        // display field otherwise, the value itself as a last resort.
+        const values = Array.isArray(model) ? model : [model];
+        const names = values.map(value => this.selectedValueLabel(value));
+        state.value = this.multiSelect ? names : (names[0] ?? null);
+      }
+      return { type: 'combobox', state };
+    };
+
+    this.teardownElementContext = publishElementContext(host, describe);
+  }
+
+  /** An option's visible label, without screen-reader-only additions such as "Selected". */
+  private optionLabel(option: ClrOption<T>): string {
+    let text = '';
+    option.elRef.nativeElement.childNodes.forEach(node => {
+      const isPlainText = node.nodeType === Node.TEXT_NODE;
+      const isVisibleElement =
+        node.nodeType === Node.ELEMENT_NODE && !(node as Element).classList.contains('clr-sr-only');
+      if (isPlainText || isVisibleElement) {
+        text += node.textContent ?? '';
+      }
+    });
+    return text.replace(/\s+/g, ' ').trim() || String(option.value);
+  }
+
+  private selectedValueLabel(value: T): unknown {
+    const option = this.options?.items?.find(candidate => candidate.value === value);
+    if (option) {
+      return this.optionLabel(option);
+    }
+    if (this.displayField && value) {
+      return (value as Record<string, unknown>)[this.displayField];
+    }
+    return value;
   }
 
   private getDisplayNames(model: T | T[]) {

@@ -9,8 +9,8 @@
  * API Extractor Runner
  *
  * Runs Microsoft's API Extractor against every public entry point of each
- * library in this monorepo (@clr/angular and @clr/addons). It operates in
- * two modes controlled by the --local flag:
+ * library in this monorepo (@clr/angular and @clr/addons).
+ * It operates in two modes controlled by the --local flag:
  *
  *   npm run public-api:update   (--local)  — Regenerates .api.md report files
  *                                            next to each entry point source.
