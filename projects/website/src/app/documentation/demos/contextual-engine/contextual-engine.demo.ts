@@ -17,13 +17,13 @@ import { ContextPlaygroundComponent } from './context-playground.component';
 const INSTALL_EXAMPLE = `npm install @clr/angular --save`;
 
 const SNAPSHOT_EXAMPLE = `
-import { ClrContextualEngineService } from '@clr/angular/ai';
+import { ClrContextEngineService } from '@clr/angular/ai';
 
 @Component({
   // ...
 })
 export class AssistantPanelComponent {
-  constructor(private contextEngine: ClrContextualEngineService) {}
+  constructor(private contextEngine: ClrContextEngineService) {}
 
   askAssistant(question: string) {
     const context = this.contextEngine.getSnapshot();
@@ -96,10 +96,10 @@ const DIRECTIVE_EXAMPLE = `
 `;
 
 const DIRECTIVE_MODULE_EXAMPLE = `
-import { ClrContextualModule } from '@clr/angular/ai';
+import { ClrContextModule } from '@clr/angular/ai';
 
 @NgModule({
-  imports: [ClrContextualModule],
+  imports: [ClrContextModule],
 })
 export class AppModule {}
 `;

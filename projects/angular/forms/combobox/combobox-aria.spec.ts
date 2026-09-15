@@ -51,6 +51,18 @@ describe('ClrCombobox required state', () => {
     expect(comboboxInput().getAttribute('aria-required')).toBe('true');
   });
 
+  it('reports the field invalid once touched while a required value is missing', () => {
+    fixture.componentInstance.fruit = new FormControl<string | null>(null, Validators.required);
+    fixture.detectChanges();
+    fixture.componentInstance.fruit.markAsTouched();
+    fixture.detectChanges();
+    expect(comboboxInput().getAttribute('aria-invalid')).toBe('true');
+
+    fixture.componentInstance.fruit.setValue('apple');
+    fixture.detectChanges();
+    expect(comboboxInput().hasAttribute('aria-invalid')).toBe(false);
+  });
+
   it('says nothing about requiredness when a value is optional', () => {
     expect(comboboxInput().hasAttribute('aria-required')).toBe(false);
   });

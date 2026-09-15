@@ -100,17 +100,11 @@ function scopedText(element: Element, selector: string): string | null {
  * name leaves the control itself out: a `<select>`'s options are not part of its name.
  */
 function labelText(control: Element): string | null {
+  // The browser keeps the association for labelable elements; only an element that
+  // cannot be labelled (a custom textbox) falls back to a label wrapped around it.
   const labels = (control as HTMLInputElement).labels;
-  if (labels !== undefined) {
-    const label = labels?.[0];
-    return label ? accessibleText(label, control) : null;
-  }
-
-  if (control.id) {
-    const associated = control.ownerDocument.querySelector(`label[for="${CSS.escape(control.id)}"]`);
-    if (associated) {
-      return accessibleText(associated, control);
-    }
+  if (labels) {
+    return labels[0] ? accessibleText(labels[0], control) : null;
   }
   const wrapping = control.closest('label');
   return wrapping ? accessibleText(wrapping, control) : null;

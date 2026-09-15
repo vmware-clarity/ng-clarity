@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, ValidatorFn, Validators } from '@angular/forms';
 
 export function triggerAllFormControlValidation(formGroup: FormGroup) {
   Object.keys(formGroup.controls).forEach(field => {
@@ -43,11 +43,36 @@ export function hasRequiredValidator(control: AbstractControl | null | undefined
   if (!validator) {
     return false;
   }
+  // Host bindings ask on every change detection cycle; the composed validator runs
+  // once per recomputation of the control's validity instead (see `remember`).
+  const remembered = REQUIRED_BY_CONTROL.get(control);
+  if (remembered && remembered.validator === validator) {
+    return remembered.required;
+  }
+  let required = false;
   try {
-    return validator(EMPTY_CONTROL)?.required === true;
+    required = validator(EMPTY_CONTROL)?.required === true;
   } catch {
     // A custom validator that assumes a parent or a value is not one that expresses
     // "required", and must not take the host binding down with it.
-    return false;
   }
+  remember(control, validator, required);
+  return required;
+}
+
+/**
+ * What a control's composed validator last said about emptiness. The composed function
+ * keeps its identity when a `[required]` binding toggles — the directive only re-runs
+ * validation — so the answer is forgotten whenever the control recomputes its validity,
+ * and recomputed when its validator is replaced.
+ */
+const REQUIRED_BY_CONTROL = new WeakMap<AbstractControl, { validator: ValidatorFn; required: boolean }>();
+
+function remember(control: AbstractControl, validator: ValidatorFn, required: boolean): void {
+  if (!REQUIRED_BY_CONTROL.has(control)) {
+    // One subscription per control, for the control's lifetime: `statusChanges` emits on
+    // every updateValueAndValidity, which is what a `[required]` toggle triggers.
+    control.statusChanges.subscribe(() => REQUIRED_BY_CONTROL.delete(control));
+  }
+  REQUIRED_BY_CONTROL.set(control, { validator, required });
 }

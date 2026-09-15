@@ -21,7 +21,9 @@ interface Node {
   template: `
     <clr-datagrid>
       <clr-dg-column [clrDgField]="'name'" [clrFilterValue]="nameFilter">Name</clr-dg-column>
-      <clr-dg-column [clrDgField]="'status'">Status</clr-dg-column>
+      <clr-dg-column [clrDgField]="'status'">
+        <ng-container *clrDgHideableColumn="{ hidden: hideStatus }">Status</ng-container>
+      </clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell>{{ item.name }}</clr-dg-cell>
         <clr-dg-cell>{{ item.status }}</clr-dg-cell>
@@ -35,6 +37,7 @@ interface Node {
 })
 class TestComponent {
   total = 4210;
+  hideStatus = false;
   nameFilter = '';
   items: Node[] = [
     { name: 'node-1', status: 'ok' },
@@ -101,6 +104,12 @@ describe('ClrDatagrid element context', () => {
     expect('filteredColumns' in (published()?.state ?? {})).toBe(false);
   });
 
+  it('publishes which columns are hidden, which the DOM cannot show', () => {
+    fixture.componentInstance.hideStatus = true;
+    fixture.detectChanges();
+    expect(published()?.state?.hiddenColumns).toEqual(['status']);
+  });
+
   it('publishes nothing about hidden columns while every column is shown', () => {
     expect('hiddenColumns' in (published()?.state ?? {})).toBe(false);
   });
@@ -110,5 +119,55 @@ describe('ClrDatagrid element context', () => {
     fixture.destroy();
 
     expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(false);
+  });
+});
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class UnpaginatedTestComponent {
+  items: Node[] = [{ name: 'node-1', status: 'ok' }];
+}
+
+describe('ClrDatagrid element context without pagination', () => {
+  it('publishes no total, since the rows on the page are the rows', () => {
+    TestBed.configureTestingModule({
+      imports: [ClrDatagridModule, NoopAnimationsModule],
+      declarations: [UnpaginatedTestComponent],
+    });
+    const fixture = TestBed.createComponent(UnpaginatedTestComponent);
+    fixture.detectChanges();
+    const host = fixture.nativeElement.querySelector('clr-datagrid') as HTMLElement & {
+      [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback;
+    };
+    const published = host[CLR_ELEMENT_CONTEXT_PROPERTY];
+
+    const budgets = {
+      maxTextLength: 100,
+      maxItemsPerCollection: 25,
+      maxComponents: 100,
+      includeDomComponents: true,
+      includeText: true,
+      includeFrames: true,
+      excludeCategories: [],
+      excludeRoles: [],
+      excludeSelectors: [],
+      rootSelector: '',
+      maxDepth: 0,
+      focus: 'page',
+      collectionItems: 'all',
+      includeRoutes: false,
+    } as Required<ClrContextSnapshotOptions>;
+
+    expect(published && 'totalRows' in (published(budgets)?.state ?? {})).toBeFalsy();
+    fixture.destroy();
   });
 });

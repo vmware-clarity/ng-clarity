@@ -10,7 +10,7 @@ import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@a
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
 import { ClrContextRegistryService } from './context-registry.service';
-import { ClrContextualEngineService } from './contextual-engine.service';
+import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrContextChange, diffClrContext } from '../diff';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
@@ -92,7 +92,7 @@ export class ClrContextTrackerService implements OnDestroy {
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: unknown,
     @Inject(DOCUMENT) private readonly document: Document,
-    private readonly contextEngine: ClrContextualEngineService,
+    private readonly contextEngine: ClrContextEngineService,
     private readonly contextRegistry: ClrContextRegistryService,
     private readonly zone: NgZone
   ) {
@@ -142,7 +142,7 @@ export class ClrContextTrackerService implements OnDestroy {
       this.document.body.addEventListener('change', this.valueListener, true);
 
       // An annotation's state is application data, changed without any DOM change.
-      this.registrySubscription = this.contextRegistry.changes.subscribe(() => this.scheduleScrape());
+      this.registrySubscription = this.contextRegistry.changes$.subscribe(() => this.scheduleScrape());
     });
     this.refresh();
   }

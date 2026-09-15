@@ -23,6 +23,9 @@ export const CLR_CONTEXT_CATEGORIES: Record<ClrContextCategory, readonly string[
 export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions>;
 
 // @public
+export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
+
+// @public
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
@@ -39,9 +42,6 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions)[];
-
-// @public
-export const CLR_CONTEXTUAL_DIRECTIVES: Type<any>[];
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
@@ -112,6 +112,26 @@ export interface ClrContextDomExtractor {
 }
 
 // @public
+export class ClrContextEngineService implements OnDestroy {
+    constructor(platformId: unknown, document: Document, contextRegistry: ClrContextRegistryService, router: Router | null);
+    // (undocumented)
+    disableFrameBridge(): void;
+    // (undocumented)
+    disableGlobalAccess(): void;
+    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
+    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
+    getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
+    // (undocumented)
+    ngOnDestroy(): void;
+    registerDomExtractor(extractor: ClrContextDomExtractor): () => void;
+    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextEngineService, [null, null, null, { optional: true; }]>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextEngineService>;
+}
+
+// @public
 export class ClrContextFrameHost {
     constructor(getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext, hostWindow: Window, options?: ClrContextFrameHostOptions);
     // (undocumented)
@@ -142,7 +162,6 @@ export interface ClrContextFrameRequest {
 export interface ClrContextFrameRequestOptions {
     hostOrigin?: string;
     options?: ClrContextSnapshotOptions;
-    targetOrigin?: string;
     targetWindow?: Window;
     timeoutMs?: number;
 }
@@ -160,6 +179,16 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
     shareFormValues?: boolean;
 }
 
+// @public (undocumented)
+export class ClrContextModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrContextModule>;
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextModule, [typeof ClrContext], [typeof i2.CommonModule], [typeof ClrContext]>;
+}
+
 // @public
 export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
 
@@ -175,7 +204,7 @@ export interface ClrContextProvider {
 // @public
 export class ClrContextRegistryService {
     constructor();
-    readonly changes: Observable<void>;
+    readonly changes$: Observable<void>;
     collect(): ClrComponentContext[];
     notifyChanged(): void;
     register(provider: ClrContextProvider): () => void;
@@ -207,7 +236,7 @@ export interface ClrContextSnapshotOptions {
 
 // @public
 export class ClrContextTrackerService implements OnDestroy {
-    constructor(platformId: unknown, document: Document, contextEngine: ClrContextualEngineService, contextRegistry: ClrContextRegistryService, zone: NgZone);
+    constructor(platformId: unknown, document: Document, contextEngine: ClrContextEngineService, contextRegistry: ClrContextRegistryService, zone: NgZone);
     readonly changes$: Observable<ClrContextChange>;
     readonly context$: Observable<ClrPageContext>;
     get currentContext(): ClrPageContext | null;
@@ -236,36 +265,6 @@ export interface ClrContextTreeResult {
     focus?: 'modal';
     // (undocumented)
     truncated: boolean;
-}
-
-// @public
-export class ClrContextualEngineService implements OnDestroy {
-    constructor(platformId: unknown, document: Document, contextRegistry: ClrContextRegistryService, router: Router | null);
-    // (undocumented)
-    disableFrameBridge(): void;
-    // (undocumented)
-    disableGlobalAccess(): void;
-    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
-    enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
-    getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
-    // (undocumented)
-    ngOnDestroy(): void;
-    registerDomExtractor(extractor: ClrContextDomExtractor): () => void;
-    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextualEngineService, [null, null, null, { optional: true; }]>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextualEngineService>;
-}
-
-// @public (undocumented)
-export class ClrContextualModule {
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextualModule, never>;
-    // (undocumented)
-    static ɵinj: i0.ɵɵInjectorDeclaration<ClrContextualModule>;
-    // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextualModule, [typeof ClrContext], [typeof i2.CommonModule], [typeof ClrContext]>;
 }
 
 // @public

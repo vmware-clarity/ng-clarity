@@ -67,7 +67,7 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
  * chat surface built with a different UI library can receive the hosting page's context.
  */
 @Injectable({ providedIn: 'root' })
-export class ClrContextualEngineService implements OnDestroy {
+export class ClrContextEngineService implements OnDestroy {
   private readonly customExtractors: ClrContextDomExtractor[] = [];
   // What the application configured once for every snapshot; see provideClrContextOptions.
   private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
@@ -151,7 +151,7 @@ export class ClrContextualEngineService implements OnDestroy {
     hostOptions: ClrContextGlobalAccessOptions = {}
   ): void {
     if (!GLOBAL_PROPERTY_PATTERN.test(propertyName)) {
-      throw new Error(`ClrContextualEngineService: "${propertyName}" is not a valid name for a global accessor.`);
+      throw new Error(`ClrContextEngineService: "${propertyName}" is not a valid name for a global accessor.`);
     }
     const window = this.browserWindow();
     if (!window) {
@@ -162,7 +162,7 @@ export class ClrContextualEngineService implements OnDestroy {
     // Checked before anything is torn down, so a refused name leaves the existing
     // accessor in place; the engine's own accessor may be re-registered under its name.
     if (propertyName in host && propertyName !== this.globalProperty) {
-      throw new Error(`ClrContextualEngineService: window.${propertyName} already exists and will not be replaced.`);
+      throw new Error(`ClrContextEngineService: window.${propertyName} already exists and will not be replaced.`);
     }
     this.disableGlobalAccess();
     this.globalProperty = propertyName;

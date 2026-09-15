@@ -38,7 +38,7 @@ function findContext(
 
 @Component({
   template: `
-    <clr-alert clrAlertType="danger" [clrAlertClosable]="false">
+    <clr-alert clrAlertType="danger" [clrAlertClosable]="false" [clrAlertAppLevel]="true">
       <clr-alert-item>
         <span class="alert-text">Disk almost full</span>
       </clr-alert-item>

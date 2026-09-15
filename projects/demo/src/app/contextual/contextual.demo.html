@@ -182,37 +182,31 @@
   </div>
 </clr-modal>
 
-<form
-  clrForm
-  [formGroup]="form"
-  [clrLayout]="clrLayout"
-  [class.clr-form-full-width]="isFullWidth"
-  [class.is-readonly]="isReadonly"
->
+<form clrForm [formGroup]="form" clrLayout="horizontal">
   <clr-input-container>
     <label>Text</label>
-    <input type="text" clrInput name="name" formControlName="name" [readonly]="isReadonly" />
+    <input type="text" clrInput name="name" formControlName="name" />
     <clr-control-helper>Helper Subtext</clr-control-helper>
     <clr-control-error>State Subtext</clr-control-error>
     <clr-control-success>State Subtext</clr-control-success>
   </clr-input-container>
   <clr-number-input-container>
     <label>Number</label>
-    <input type="number" clrNumberInput name="age" formControlName="age" [readonly]="isReadonly" />
+    <input type="number" clrNumberInput name="age" formControlName="age" />
     <clr-control-helper>Helper Subtext</clr-control-helper>
     <clr-control-error>State Subtext</clr-control-error>
     <clr-control-success>State Subtext</clr-control-success>
   </clr-number-input-container>
   <clr-password-container>
     <label>Password</label>
-    <input type="password" clrPassword name="password" formControlName="password" [readonly]="isReadonly" />
+    <input type="password" clrPassword name="password" formControlName="password" />
     <clr-control-helper>Helper Subtext</clr-control-helper>
     <clr-control-error>State Subtext</clr-control-error>
     <clr-control-success>State Subtext</clr-control-success>
   </clr-password-container>
   <clr-textarea-container>
     <label>Textarea</label>
-    <textarea clrTextarea name="description" formControlName="description" [readonly]="isReadonly"></textarea>
+    <textarea clrTextarea name="description" formControlName="description"></textarea>
     <clr-control-helper>Helper Subtext</clr-control-helper>
     <clr-control-error>State Subtext</clr-control-error>
     <clr-control-success>State Subtext</clr-control-success>
@@ -230,7 +224,7 @@
   </clr-select-container>
   <clr-datalist-container>
     <label>Datalist</label>
-    <input clrDatalistInput placeholder="No label" name="datalist" formControlName="datalist" [readonly]="isReadonly" />
+    <input clrDatalistInput placeholder="No label" name="datalist" formControlName="datalist" />
     <datalist>
       <option value="one"></option>
       <option value="two"></option>
@@ -269,7 +263,7 @@
   </clr-checkbox-container>
   <clr-date-container>
     <label>Datepicker</label>
-    <input type="date" autocomplete="off" clrDate formControlName="date" name="date" [readonly]="isReadonly" />
+    <input type="date" autocomplete="off" clrDate formControlName="date" name="date" />
     <clr-control-helper>Helper Subtext</clr-control-helper>
     <clr-control-error>State Subtext</clr-control-error>
     <clr-control-success>State Subtext</clr-control-success>

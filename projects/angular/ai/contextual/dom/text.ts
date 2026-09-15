@@ -122,9 +122,15 @@ export function referencedText(element: Element, attribute: string): string {
     ids
       .split(/\s+/)
       .map(id => document.getElementById(id))
-      // A reference must not reach into a region the engine may not read: page content
-      // can point an `aria-describedby` at anything with an id.
-      .filter((referenced): referenced is HTMLElement => !!referenced && !referenced.closest(UNREADABLE_SELECTOR))
+      // A reference must not reach into a region the engine may not read, nor into an
+      // element that is not rendered at all: page content can point an `aria-describedby`
+      // at anything with an id. (ARIA would include an unrendered target; for an agent
+      // consumer that is a way to smuggle in text nobody sees. Text hidden only visually,
+      // clipped for screen readers, is still read, as intended.)
+      .filter(
+        (referenced): referenced is HTMLElement =>
+          !!referenced && !referenced.closest(UNREADABLE_SELECTOR) && !isUnrendered(referenced)
+      )
       .map(referenced => accessibleText(referenced).trim())
       .filter(text => text)
       .join(' ')
@@ -132,3 +138,20 @@ export function referencedText(element: Element, attribute: string): string {
 }
 
 const UNREADABLE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}], [${CLR_CONTEXT_REDACT_ATTRIBUTE}]`;
+
+/** Whether an element is not rendered: `hidden`, or `display: none` on it or an ancestor. */
+function isUnrendered(element: Element): boolean {
+  if (element.closest('[hidden]')) {
+    return true;
+  }
+  const view = element.ownerDocument.defaultView;
+  if (!view) {
+    return false;
+  }
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    if (view.getComputedStyle(current).display === 'none') {
+      return true;
+    }
+  }
+  return false;
+}

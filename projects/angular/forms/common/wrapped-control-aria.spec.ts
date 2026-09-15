@@ -23,6 +23,10 @@ import { ClrInputModule } from '../input/input.module';
         <label>Notes</label>
         <input clrInput formControlName="notes" />
       </clr-input-container>
+      <clr-input-container>
+        <label>Authored</label>
+        <input clrInput formControlName="authored" aria-invalid="grammar" aria-required="false" />
+      </clr-input-container>
     </form>
   `,
   standalone: false,
@@ -31,6 +35,7 @@ class TestComponent {
   form = new FormGroup({
     host: new FormControl('', Validators.required),
     notes: new FormControl(''),
+    authored: new FormControl('', Validators.required),
   });
 }
 
@@ -55,6 +60,14 @@ describe('Wrapped form control, as assistive technology sees it', () => {
   it('tells assistive technology that a value is required', () => {
     // The control has no `required` attribute, so without this nothing conveys it.
     expect(input('host').getAttribute('aria-required')).toBe('true');
+  });
+
+  it('keeps aria-invalid and aria-required the author wrote, rather than overwriting them', () => {
+    fixture.componentInstance.form.get('authored')?.markAsTouched();
+    fixture.detectChanges();
+
+    expect(input('authored').getAttribute('aria-required')).toBe('false');
+    expect(input('authored').getAttribute('aria-invalid')).toBe('grammar');
   });
 
   it('says nothing about requiredness for an optional control', () => {

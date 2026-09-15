@@ -33,7 +33,7 @@ const DEFAULT_MIN_REQUEST_INTERVAL_MS = 200;
  * throttle bounds each frame; this bounds their sum, so a document nesting many frames
  * cannot multiply its way past the per-frame floor.
  */
-const MAX_REQUESTS_PER_INTERVAL = 10;
+const MAX_REQUESTS_PER_INTERVAL = 5;
 
 /** How long a frame waits for the host's answer before giving up. */
 const DEFAULT_REQUEST_TIMEOUT_MS = 2000;
@@ -125,15 +125,10 @@ export interface ClrContextFrameRequestOptions {
   /** Window to ask for context. Defaults to `window.parent`. */
   targetWindow?: Window;
   /**
-   * Origin to address the request to. Defaults to {@link hostOrigin}, then to the origin
-   * of the document that embedded this one (its referrer), then to this document's own
-   * origin.
-   */
-  targetOrigin?: string;
-  /**
-   * Origin the answer must come from. Defaults to the origin the request was addressed
-   * to; a response from any other origin is ignored even if it arrives from the right
-   * window.
+   * The host page's origin: where the request is addressed, and the only origin an
+   * answer is accepted from even when it arrives from the right window. Defaults to the
+   * origin of the document that embedded this one (its referrer), then to this
+   * document's own origin.
    */
   hostOrigin?: string;
   /** How long to wait for an answer before resolving with `null`. Defaults to `2000`. */
@@ -253,7 +248,10 @@ export class ClrContextFrameHost {
       return false;
     }
     const now = Date.now();
-    const previous = this.lastServedAt.get(source);
+    // Keyed by the top-level embedded frame: frames a frame nests share its allowance,
+    // so spawning frames buys no more snapshots than one frame gets.
+    const key = this.topLevelFrameOf(source);
+    const previous = this.lastServedAt.get(key);
     if (previous !== undefined && now - previous < this.minRequestIntervalMs) {
       return true;
     }
@@ -265,8 +263,23 @@ export class ClrContextFrameHost {
       return true;
     }
     this.servedInInterval++;
-    this.lastServedAt.set(source, now);
+    this.lastServedAt.set(key, now);
     return false;
+  }
+
+  /** The child of this window that `source` sits in, or `source` itself when the chain cannot be followed. */
+  private topLevelFrameOf(source: Window): Window {
+    let frame = source;
+    try {
+      // `parent` is readable across origins; it is one of the properties the browser
+      // exposes on a cross-origin window.
+      while (frame.parent && frame.parent !== this.hostWindow && frame.parent !== frame) {
+        frame = frame.parent;
+      }
+    } catch {
+      return source;
+    }
+    return frame;
   }
 
   /** The snapshot as a frame is allowed to see it, leaving the original untouched. */
@@ -324,8 +337,8 @@ export function requestClrContextFromHost(options: ClrContextFrameRequestOptions
   if (!targetWindow || targetWindow === window) {
     return Promise.resolve(null);
   }
-  const targetOrigin = options.targetOrigin || options.hostOrigin || embedderOrigin() || ownOrigin();
-  const expectedOrigin = options.hostOrigin || (targetOrigin !== '*' ? targetOrigin : undefined);
+  const targetOrigin = options.hostOrigin || embedderOrigin() || ownOrigin();
+  const expectedOrigin = targetOrigin !== '*' ? targetOrigin : undefined;
   const requestId = newRequestId();
   const request: ClrContextFrameRequest = {
     protocol: CLR_CONTEXT_PROTOCOL,

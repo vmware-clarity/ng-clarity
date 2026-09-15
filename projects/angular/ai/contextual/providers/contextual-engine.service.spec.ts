@@ -11,19 +11,19 @@ import { provideRouter, Router } from '@angular/router';
 
 import { provideClrContextOptions } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
-import { ClrContextualEngineService } from './contextual-engine.service';
+import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
 
 @Component({ template: '' })
 class RoutedComponent {}
 
-describe('ClrContextualEngineService', () => {
+describe('ClrContextEngineService', () => {
   describe('without configured routes', () => {
-    let engine: ClrContextualEngineService;
+    let engine: ClrContextEngineService;
 
     beforeEach(() => {
       TestBed.configureTestingModule({});
-      engine = TestBed.inject(ClrContextualEngineService);
+      engine = TestBed.inject(ClrContextEngineService);
     });
 
     afterEach(() => {
@@ -223,7 +223,7 @@ describe('ClrContextualEngineService', () => {
           ]),
         ],
       });
-      const engine = TestBed.inject(ClrContextualEngineService);
+      const engine = TestBed.inject(ClrContextEngineService);
 
       await TestBed.inject(Router).navigateByUrl('/items/42?tab=general');
       const route = engine.getSnapshot({ includeDomComponents: false }).route;
@@ -248,7 +248,7 @@ describe('ClrContextualEngineService', () => {
           ]),
         ],
       });
-      const engine = TestBed.inject(ClrContextualEngineService);
+      const engine = TestBed.inject(ClrContextEngineService);
 
       await TestBed.inject(Router).navigateByUrl('/account');
       const snapshot = engine.getSnapshot({ includeDomComponents: false });
@@ -259,8 +259,8 @@ describe('ClrContextualEngineService', () => {
   });
 });
 
-describe('ClrContextualEngineService, the global accessor as a boundary', () => {
-  let engine: ClrContextualEngineService;
+describe('ClrContextEngineService, the global accessor as a boundary', () => {
+  let engine: ClrContextEngineService;
   let form: HTMLElement;
 
   function snapshotVia(options?: unknown): ClrPageContext {
@@ -272,7 +272,7 @@ describe('ClrContextualEngineService, the global accessor as a boundary', () => 
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    engine = TestBed.inject(ClrContextualEngineService);
+    engine = TestBed.inject(ClrContextEngineService);
     form = document.createElement('div');
     form.innerHTML = '<button>one</button><button>two</button><button>three</button>';
     document.body.appendChild(form);
@@ -322,13 +322,13 @@ describe('ClrContextualEngineService, the global accessor as a boundary', () => 
   });
 });
 
-describe('ClrContextualEngineService, saying when a snapshot is cut off', () => {
-  let engine: ClrContextualEngineService;
+describe('ClrContextEngineService, saying when a snapshot is cut off', () => {
+  let engine: ClrContextEngineService;
   let widgets: HTMLElement;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    engine = TestBed.inject(ClrContextualEngineService);
+    engine = TestBed.inject(ClrContextEngineService);
     widgets = document.createElement('div');
     widgets.innerHTML = '<button>one</button><button>two</button><button>three</button>';
     document.body.appendChild(widgets);
@@ -345,7 +345,7 @@ describe('ClrContextualEngineService, saying when a snapshot is cut off', () => 
   });
 });
 
-describe('ClrContextualEngineService, configured once for the application', () => {
+describe('ClrContextEngineService, configured once for the application', () => {
   let widgets: HTMLElement;
 
   beforeEach(() => {
@@ -358,9 +358,9 @@ describe('ClrContextualEngineService, configured once for the application', () =
 
   afterEach(() => widgets.remove());
 
-  function engineWith(...providers: unknown[]): ClrContextualEngineService {
+  function engineWith(...providers: unknown[]): ClrContextEngineService {
     TestBed.configureTestingModule({ providers: providers as never[] });
-    return TestBed.inject(ClrContextualEngineService);
+    return TestBed.inject(ClrContextEngineService);
   }
 
   function types(snapshot: ClrPageContext): string[] {
@@ -416,7 +416,7 @@ describe('ClrContextualEngineService, configured once for the application', () =
   });
 });
 
-describe('ClrContextualEngineService, the routes an application can navigate to', () => {
+describe('ClrContextEngineService, the routes an application can navigate to', () => {
   it('lists configured paths with their titles, leaving wildcards and redirects out', () => {
     TestBed.configureTestingModule({
       providers: [
@@ -434,7 +434,7 @@ describe('ClrContextualEngineService, the routes an application can navigate to'
         ]),
       ],
     });
-    const engine = TestBed.inject(ClrContextualEngineService);
+    const engine = TestBed.inject(ClrContextEngineService);
 
     const routes = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
 
@@ -451,7 +451,7 @@ describe('ClrContextualEngineService, the routes an application can navigate to'
     TestBed.configureTestingModule({
       providers: [provideRouter([{ path: '', component: RoutedComponent, title: 'Home' }, ...many])],
     });
-    const engine = TestBed.inject(ClrContextualEngineService);
+    const engine = TestBed.inject(ClrContextEngineService);
 
     const few = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true, maxItemsPerCollection: 5 });
     expect(few.availableRoutes?.[0]).toEqual({ path: '/', title: 'Home' });
@@ -462,7 +462,7 @@ describe('ClrContextualEngineService, the routes an application can navigate to'
 
   it('lists nothing unless asked', () => {
     TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
-    const engine = TestBed.inject(ClrContextualEngineService);
+    const engine = TestBed.inject(ClrContextEngineService);
     expect('availableRoutes' in engine.getSnapshot({ includeDomComponents: false })).toBe(false);
   });
 });
