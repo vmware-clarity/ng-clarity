@@ -8,11 +8,7 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_animations from '@angular/animations';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
-import { AnimationBuilder } from '@angular/animations';
-import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
-import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
@@ -39,7 +35,6 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import * as i1_2 from '@angular/platform-browser/animations';
 import * as i38 from '@angular/common';
 import * as i46 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
@@ -867,7 +862,7 @@ export class MockWorkflowTestModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<MockWorkflowTestModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MockWorkflowTestModule, [typeof InvalidMockComponent, typeof MockStepComponent], [typeof i1_2.NoopAnimationsModule], never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<MockWorkflowTestModule, [typeof InvalidMockComponent, typeof MockStepComponent], never, never>;
 }
 
 // @public (undocumented)

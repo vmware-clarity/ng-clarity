@@ -136,6 +136,8 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
     // (undocumented)
+    protected readonly animatesCollapse = false;
+    // (undocumented)
     disabled: boolean;
     // Warning: (ae-forgotten-export) The symbol "HeadingLevel" needs to be exported by the entry point clr-angular-accordion.d.ts
     explicitHeadingLevel: HeadingLevel;

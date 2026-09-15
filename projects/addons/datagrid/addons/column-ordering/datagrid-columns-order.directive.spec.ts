@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GridHelper } from '@clr/addons/testing';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 
@@ -56,7 +55,7 @@ describe('DatagridColumnsOrderDirective', () => {
 
   beforeEach(function (this: any) {
     TestBed.configureTestingModule({
-      imports: [CommonModule, ClrDatagridModule, DragDropModule, NoopAnimationsModule, TestClrDatagridHostComponent],
+      imports: [CommonModule, ClrDatagridModule, DragDropModule, TestClrDatagridHostComponent],
     });
     columns = [];
     columnDefsMock.forEach(val => columns.push(Object.assign({}, val)));

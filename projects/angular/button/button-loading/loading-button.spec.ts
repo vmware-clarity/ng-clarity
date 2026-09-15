@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
 import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
 
@@ -19,7 +18,7 @@ describe('Loading Buttons', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrLoadingModule, ClrLoadingButtonModule, NoopAnimationsModule],
+      imports: [ClrLoadingModule, ClrLoadingButtonModule],
       declarations: [TestLoadingButtonComponent],
     });
 
@@ -111,6 +110,27 @@ describe('Loading Buttons', () => {
     expect(fixture.nativeElement.querySelector('.spinner')).toBeFalsy();
   });
 
+  it('returns to the DEFAULT state inside an OnPush host without any external change detection', async () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [ClrLoadingModule, ClrLoadingButtonModule],
+      declarations: [OnPushTestLoadingButtonComponent],
+    });
+    const onPushFixture = TestBed.createComponent(OnPushTestLoadingButtonComponent);
+    onPushFixture.detectChanges();
+
+    onPushFixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    onPushFixture.debugElement.injector.get(ChangeDetectorRef).markForCheck();
+    onPushFixture.detectChanges();
+    expect(onPushFixture.nativeElement.querySelector('.spinner-check')).toBeTruthy();
+
+    await delay();
+    onPushFixture.detectChanges();
+    expect(onPushFixture.nativeElement.querySelector('.spinner-check')).toBeNull();
+    expect(onPushFixture.nativeElement.querySelector('.clr-loading-btn-content')).toBeTruthy();
+    onPushFixture.destroy();
+  });
+
   it('has minimum width of 42px when loading', () => {
     fixture.componentInstance.buttonContent = '';
     fixture.detectChanges();
@@ -130,4 +150,13 @@ class TestLoadingButtonComponent {
   buttonState: ClrLoadingState = ClrLoadingState.DEFAULT;
   disabled = false;
   buttonContent = 'Test 1';
+}
+
+@Component({
+  template: `<button [clrLoading]="buttonState">Test</button>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class OnPushTestLoadingButtonComponent {
+  buttonState: ClrLoadingState = ClrLoadingState.DEFAULT;
 }

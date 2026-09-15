@@ -10,7 +10,6 @@ import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/c
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ZoomLevelService } from '@clr/addons/a11y';
 import {
   GridHelper,
@@ -183,7 +182,6 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     TestBed.configureTestingModule({
       imports: [
         FormsModule,
-        NoopAnimationsModule,
         OverlayModule,
         DatagridColumnsOrderModule,
         DragDropModule,

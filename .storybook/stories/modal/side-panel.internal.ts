@@ -38,7 +38,6 @@ export const config = {
     clrSidePanelOpenChange: { control: { disable: true } },
     clrSidePanelAltClose: { control: { disable: true } },
     // methods
-    fadeDone: { control: { disable: true }, table: { disable: true } },
     open: { control: { disable: true }, table: { disable: true } },
     close: { control: { disable: true }, table: { disable: true } },
   },

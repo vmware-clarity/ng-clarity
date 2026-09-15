@@ -5,13 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, inject, OnDestroy, Renderer2 } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
+import { ClrAnimationsService } from '../animations.service';
+
+/** Applied to the host while its height transitions, see `_animations.clarity.scss`. */
+const ACTIVE_CLASS = 'clr-expandable-animation-active';
 
 @Directive()
-export class BaseExpandableAnimation {
+export class BaseExpandableAnimation implements OnDestroy {
   startHeight = 0;
+
+  protected readonly animations = inject(ClrAnimationsService);
+
+  private animationCount = 0;
 
   constructor(
     protected element: ElementRef<HTMLElement>,
@@ -19,8 +27,50 @@ export class BaseExpandableAnimation {
     protected renderer: Renderer2
   ) {}
 
+  ngOnDestroy() {
+    // Invalidates the completion callback of an animation that may still be running.
+    this.animationCount++;
+  }
+
   updateStartHeight() {
     this.startHeight = this.domAdapter.computedHeight(this.element.nativeElement) || 0;
+  }
+
+  /**
+   * Transitions the height of the host from `startHeight` to the current height of its content.
+   *
+   * Call it once the content has been updated; the height it starts from is the one captured by the last
+   * `updateStartHeight()` call (or the last animation).
+   */
+  playAnimation() {
+    const element = this.element.nativeElement;
+    const animation = ++this.animationCount;
+
+    // Interrupt a running animation, so that the natural height of the content can be measured.
+    this.renderer.removeClass(element, ACTIVE_CLASS);
+    this.renderer.removeStyle(element, 'height');
+    const endHeight = this.domAdapter.computedHeight(element) || 0;
+
+    if (this.animations.disabled || endHeight === this.startHeight) {
+      this.cleanupAnimationEffects();
+      return;
+    }
+
+    this.initAnimationEffects();
+    this.renderer.setStyle(element, 'height', `${this.startHeight}px`);
+    // Commit the start height before the transition is enabled, otherwise there is nothing to transition from.
+    void element.offsetHeight;
+    this.renderer.addClass(element, ACTIVE_CLASS);
+    this.renderer.setStyle(element, 'height', `${endHeight}px`);
+
+    this.animations.whenComplete(element).then(() => {
+      if (animation !== this.animationCount) {
+        return; // superseded by another animation or destroyed
+      }
+      this.renderer.removeClass(element, ACTIVE_CLASS);
+      this.renderer.removeStyle(element, 'height');
+      this.cleanupAnimationEffects();
+    });
   }
 
   initAnimationEffects() {
@@ -31,6 +81,10 @@ export class BaseExpandableAnimation {
     this.renderer.setStyle(this.element.nativeElement, 'overflow', 'clip');
   }
 
+  /**
+   * @param cancelAnimations Also cancels the finished Web Animations of the host.
+   * @deprecated The parameter is no longer needed: the height transition leaves no styles behind.
+   */
   cleanupAnimationEffects(cancelAnimations = false) {
     this.renderer.removeStyle(this.element.nativeElement, 'overflow');
 
@@ -44,7 +98,7 @@ export class BaseExpandableAnimation {
   }
 
   private cancelElementAnimations() {
-    this.element.nativeElement.getAnimations().forEach(animation => {
+    this.element.nativeElement.getAnimations?.().forEach(animation => {
       if (animation.playState === 'finished') {
         animation.cancel(); // clears animation-style set on the element
       }

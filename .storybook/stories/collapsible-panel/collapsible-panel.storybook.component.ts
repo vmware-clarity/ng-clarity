@@ -20,12 +20,7 @@ import {
   ViewChildren,
   ViewEncapsulation,
 } from '@angular/core';
-import {
-  CollapsiblePanel,
-  collapsiblePanelExpandAnimation,
-  CollapsiblePanelModel,
-  CollapsiblePanelService,
-} from '@clr/angular/collapsible-panel';
+import { CollapsiblePanel, CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { ClrIcon } from '@clr/angular/icon';
 import { IfExpandService } from '@clr/angular/utils';
 import { createArray } from 'helpers/common';
@@ -56,15 +51,14 @@ import { startWith } from 'rxjs/operators';
           </button>
         </div>
         <div
-          @skipInitialRender
           role="region"
           class="clr-collapsible-content-region"
           [id]="getContentId(panel.templateId)"
           [attr.aria-hidden]="!panel.open"
           [attr.aria-labelledby]="getHeaderId(panel.templateId)"
         >
-          @if (panel.open) {
-            <div @toggle (@toggle.done)="collapsePanelOnAnimationDone(panel)" class="clr-collapsible-content">
+          @if (panel.open || collapsing) {
+            <div #panelContent [animate.enter]="contentEnterClass" class="clr-collapsible-content">
               <div class="clr-collapsible-inner-content">
                 <ng-content></ng-content>
               </div>
@@ -75,7 +69,6 @@ import { startWith } from 'rxjs/operators';
     }
   `,
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: collapsiblePanelExpandAnimation,
   providers: [IfExpandService],
   host: { '[class.clr-collapsible-panel]': 'true' },
 })

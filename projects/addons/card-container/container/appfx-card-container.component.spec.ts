@@ -9,7 +9,6 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
 import { Renderer2 } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
 import { MockRenderer2, sampleCards } from '@clr/addons/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
@@ -43,7 +42,7 @@ describe('AppfxCardContainerComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [CommonModule, NoopAnimationsModule, ClrDropdownModule, DragDropModule, AppfxTranslateModule],
+      imports: [CommonModule, ClrDropdownModule, DragDropModule, AppfxTranslateModule],
       declarations: [AppfxCardComponent, AppfxCardContainerComponent, AppfxCardContainerSettingsComponent],
       providers: [
         DragAndDropGroupService,

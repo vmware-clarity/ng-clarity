@@ -10,7 +10,6 @@ import { CdkConnectedOverlay, CdkOverlayOrigin, OverlayModule } from '@angular/c
 import { Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ZoomLevelService } from '@clr/addons/a11y';
 import {
   MockDatagridCellContainerComponent,
@@ -83,7 +82,7 @@ describe('DatagridPersistSettingsDirective', () => {
 
   beforeEach(function (this: any) {
     TestBed.configureTestingModule({
-      imports: [FormsModule, NoopAnimationsModule, DragDropModule, OverlayModule, DatagridHostComponent],
+      imports: [FormsModule, DragDropModule, OverlayModule, DatagridHostComponent],
       declarations: [MockDatagridColumnToggleComponent, MockDatagridCellContainerComponent, MockIsRowSelectablePipe],
       providers: [
         {

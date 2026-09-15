@@ -10,6 +10,19 @@
 @use 'variables.collapsible-panel' as panel-variables;
 @use '../styles/variables/variables.density' as density;
 
+// Expand / collapse animations of the panel content, driven by the `clr-collapsible-panel-expanding` and
+// `clr-collapsible-panel-collapsing` classes that `CollapsiblePanel` applies to it.
+@keyframes clr-collapsible-panel-expand {
+  from {
+    grid-template-rows: 0fr;
+  }
+}
+@keyframes clr-collapsible-panel-collapse {
+  to {
+    grid-template-rows: 0fr;
+  }
+}
+
 @mixin collapsible-panel(
   $prefix,
   $text-color: panel-variables.$clr-collapsible-panel-text-color,
@@ -136,6 +149,7 @@
 
   .#{$prefix}-content {
     display: none;
+    grid-template-rows: 1fr;
     overflow: hidden;
     border: tokens.$cds-global-space-1 solid $border-color;
     border-bottom: 0;
@@ -144,9 +158,21 @@
     .clr-form {
       padding: 0;
     }
+
+    &.clr-collapsible-panel-expanding {
+      animation: clr-collapsible-panel-expand tokens.$cds-global-animation-duration-quick
+        tokens.$cds-global-animation-easing-in-out;
+    }
+
+    &.clr-collapsible-panel-collapsing {
+      display: grid;
+      animation: clr-collapsible-panel-collapse tokens.$cds-global-animation-duration-quick
+        tokens.$cds-global-animation-easing-in-out forwards;
+    }
   }
 
   .#{$prefix}-inner-content {
+    min-height: 0;
     padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
   }
 
@@ -157,7 +183,7 @@
 
   .#{$prefix}-panel-open {
     & > .#{$prefix}-content-region .#{$prefix}-content {
-      display: block;
+      display: grid;
     }
 
     & > .#{$prefix}-header {

@@ -78,7 +78,6 @@
     "@amanda-mitchell/semantic-release-npm-multiple": "3.17.0",
     "@angular-builders/custom-esbuild": "^21.1.0",
     "@angular-devkit/build-angular": "21.2.23",
-    "@angular/animations": "21.1.3",
     "@angular/build": "21.2.23",
     "@angular/cdk": "21.2.14",
     "@angular/cli": "21.2.23",

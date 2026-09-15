@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, DebugElement, Input, NgModule } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { PropertyViewSectionBuilder, PropertyViewSectionModel } from '@clr/addons/property-view';
 import {
@@ -237,15 +236,7 @@ describe('appfx-wizard', () => {
   const page4Title = 'Page 4 Title';
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
-      imports: [
-        ClrAlertModule,
-        ClrSignpostModule,
-        ClrSpinnerModule,
-        ClrWizardModule,
-        ClrIcon,
-        NoopAnimationsModule,
-        AppfxWizardTestModule,
-      ],
+      imports: [ClrAlertModule, ClrSignpostModule, ClrSpinnerModule, ClrWizardModule, ClrIcon, AppfxWizardTestModule],
       declarations: [
         Spinner,
         WizardComponent,

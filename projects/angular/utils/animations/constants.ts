@@ -5,11 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, animation, style } from '@angular/animations';
+import { animationAnimate, animationReference, animationStyle } from './animation-metadata';
 
+/** @deprecated Clarity animates with native CSS; use the `--cds-global-animation-*` tokens instead. */
 export const defaultAnimationTiming = '0.2s ease-in-out';
-export const defaultExpandAnimation = animation(
-  [style({ height: '{{ startHeight }}px' }), animate(defaultAnimationTiming, style({ height: '*' }))],
+
+/** @deprecated Clarity animates with native CSS; see `ClrExpandableAnimation` and `.clr-expandable-animation-active`. */
+export const defaultExpandAnimation = animationReference(
+  [
+    animationStyle({ height: '{{ startHeight }}px' }),
+    animationAnimate(defaultAnimationTiming, animationStyle({ height: '*' })),
+  ],
   {
     params: {
       startHeight: 0, // default

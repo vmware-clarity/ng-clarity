@@ -8,7 +8,6 @@
 import { Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 
 import { MockPropertyViewStrings } from '../../testing';
@@ -104,7 +103,7 @@ describe('PropertyViewSectionComponent', function () {
     };
 
     TestBed.configureTestingModule({
-      imports: [ClrDropdownModule, NoopAnimationsModule],
+      imports: [ClrDropdownModule],
       declarations: [PropertyViewSectionComponent, PropertyViewMessageMockComponent, PropertyViewPropertyMockComponent],
       providers: [
         {

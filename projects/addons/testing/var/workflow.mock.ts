@@ -6,7 +6,6 @@
  */
 
 import { Component, NgModule } from '@angular/core';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { OnStepActivate, OnStepValidate, StepModel, StepValidationState } from '@clr/addons/var';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
@@ -71,7 +70,6 @@ export class MockWorkflowConfigurationService {
 }
 
 @NgModule({
-  imports: [NoopAnimationsModule],
   declarations: [InvalidMockComponent, MockStepComponent],
 })
 export class MockWorkflowTestModule {}

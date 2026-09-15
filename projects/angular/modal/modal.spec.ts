@@ -5,15 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationEvent } from '@angular/animations';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
 import { ClrModal } from './modal';
+import { ModalStackService } from './modal-stack.service';
 import { ClrModalModule } from './modal.module';
 
 @Component({
@@ -72,7 +71,7 @@ describe('Modal', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrModalModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrModalModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
@@ -134,24 +133,35 @@ describe('Modal', () => {
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
   });
 
-  it('should not emit clrModalOpenChange - animation will do that for us', async () => {
-    /**
-     * Needed just to mock the event so I could enter the `if` statement.
-     */
-    const fakeAnimationEvent: AnimationEvent = {
-      fromState: '',
-      toState: 'void',
-      totalTime: 0,
-      phaseName: '',
-      element: {},
-      triggerName: '',
-      disabled: false,
-    };
+  it('emits clrModalOpenChange only once when the two-way binding propagates the closing', async () => {
+    // Mimics an application: close() runs from an event handler, the notification microtask updates the
+    // two-way bound property and only then does change detection see the input flip to false.
+    spyOn(modal._openChanged, 'emit').and.callThrough();
+    modal.close();
+    await delay();
+    expect(fixture.componentInstance.opened).toBe(false);
 
+    fixture.detectChanges();
+    await delay();
+    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+  });
+
+  it('stops tracking the modal in the modal stack when destroyed while open', () => {
+    const modalStackService = TestBed.inject(ModalStackService);
+    spyOn(modalStackService, 'trackModalClose');
+    fixture.destroy();
+    expect(modalStackService.trackModalClose).toHaveBeenCalledWith(modal);
+  });
+
+  it('emits clrModalOpenChange once the modal has been removed after closing', async () => {
     spyOn(modal._openChanged, 'emit');
     modal.close();
-    modal.fadeDone(fakeAnimationEvent);
-    expect(modal._openChanged.emit).toHaveBeenCalledTimes(1);
+    expect(modal._openChanged.emit).not.toHaveBeenCalled();
+
+    fixture.detectChanges();
+    await delay();
+    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+    expect(fixture.nativeElement.querySelector('.modal-dialog')).toBeNull();
   });
 
   it('should not close when already closed', async () => {

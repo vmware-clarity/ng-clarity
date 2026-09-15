@@ -5,14 +5,14 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-@if (_open) {
+@if (_open || closing) {
 <div class="modal" [class.modal-full-screen]="size == 'full-screen'">
-  <!--fixme: revisit when ngClass works with exit animation-->
   <div
+    #dialog
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-    [@fadeMove]="fadeMove"
-    (@fadeMove.done)="fadeDone($event)"
+    [animate.enter]="dialogEnterClass"
+    [class]="closing ? dialogLeaveClass : null"
     class="modal-dialog"
     [class.modal-sm]="size == 'sm'"
     [class.modal-lg]="size == 'lg'"
@@ -56,7 +56,8 @@
   <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   @if (backdrop) {
   <div
-    [@fade]
+    animate.enter="clr-fade-enter"
+    [class.clr-fade-leave]="closing"
     class="modal-backdrop"
     [class.static]="staticBackdrop"
     aria-hidden="true"

@@ -312,6 +312,11 @@
     }
   }
 
+  // Bottom side panels slide in and out over half of their height.
+  .side-panel-bottom .modal-dialog {
+    --clr-slide-offset: 50%;
+  }
+
   .modal-backdrop {
     position: fixed;
     inset: -100vh 0 0 -100vw;

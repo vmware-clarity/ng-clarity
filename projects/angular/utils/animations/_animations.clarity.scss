@@ -41,4 +41,156 @@ $clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
   .skeleton-loading {
     @include animation-mixins.skeleton-loading();
   }
+
+  // Enter / leave animations.
+  //
+  // Meant to be used with Angular's `animate.enter` and `animate.leave` bindings, but they are plain CSS classes and
+  // can be applied by any other means. The distance covered by the slide animations can be customized with the
+  // `--clr-slide-offset` custom property (defaults to 25% of the element's size).
+  @keyframes clr-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes clr-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  .clr-fade-enter {
+    animation: clr-fade-in $clr-animation-duration $clr-animation-easing;
+  }
+
+  .clr-fade-leave {
+    animation: clr-fade-out $clr-animation-duration $clr-animation-easing forwards;
+  }
+
+  @keyframes clr-slide-up-in {
+    from {
+      transform: translate(0, var(--clr-slide-offset, 25%));
+    }
+  }
+
+  @keyframes clr-slide-up-out {
+    to {
+      transform: translate(0, var(--clr-slide-offset, 25%));
+    }
+  }
+
+  @keyframes clr-fade-slide-up-in {
+    from {
+      opacity: 0;
+      transform: translate(0, var(--clr-slide-offset, 25%));
+    }
+  }
+
+  @keyframes clr-fade-slide-up-out {
+    to {
+      opacity: 0;
+      transform: translate(0, var(--clr-slide-offset, 25%));
+    }
+  }
+
+  @keyframes clr-slide-down-in {
+    from {
+      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
+    }
+  }
+
+  @keyframes clr-slide-down-out {
+    to {
+      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
+    }
+  }
+
+  @keyframes clr-fade-slide-down-in {
+    from {
+      opacity: 0;
+      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
+    }
+  }
+
+  @keyframes clr-fade-slide-down-out {
+    to {
+      opacity: 0;
+      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
+    }
+  }
+
+  @keyframes clr-slide-left-in {
+    from {
+      transform: translate(var(--clr-slide-offset, 25%), 0);
+    }
+  }
+
+  @keyframes clr-slide-left-out {
+    to {
+      transform: translate(var(--clr-slide-offset, 25%), 0);
+    }
+  }
+
+  @keyframes clr-fade-slide-left-in {
+    from {
+      opacity: 0;
+      transform: translate(var(--clr-slide-offset, 25%), 0);
+    }
+  }
+
+  @keyframes clr-fade-slide-left-out {
+    to {
+      opacity: 0;
+      transform: translate(var(--clr-slide-offset, 25%), 0);
+    }
+  }
+
+  @keyframes clr-slide-right-in {
+    from {
+      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
+    }
+  }
+
+  @keyframes clr-slide-right-out {
+    to {
+      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
+    }
+  }
+
+  @keyframes clr-fade-slide-right-in {
+    from {
+      opacity: 0;
+      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
+    }
+  }
+
+  @keyframes clr-fade-slide-right-out {
+    to {
+      opacity: 0;
+      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
+    }
+  }
+
+  @each $direction in up, down, left, right {
+    .clr-slide-#{$direction}-enter {
+      animation: clr-slide-#{$direction}-in $clr-animation-duration $clr-animation-easing;
+    }
+
+    .clr-slide-#{$direction}-leave {
+      animation: clr-slide-#{$direction}-out $clr-animation-duration $clr-animation-easing forwards;
+    }
+
+    .clr-fade-slide-#{$direction}-enter {
+      animation: clr-fade-slide-#{$direction}-in $clr-animation-duration $clr-animation-easing;
+    }
+
+    .clr-fade-slide-#{$direction}-leave {
+      animation: clr-fade-slide-#{$direction}-out $clr-animation-duration $clr-animation-easing forwards;
+    }
+  }
+
+  // Applied by `ClrExpandableAnimation` / `clrExpandableAnimation` while the height of the host is animated.
+  .clr-expandable-animation-active {
+    transition: height $clr-animation-duration $clr-animation-easing;
+  }
 }

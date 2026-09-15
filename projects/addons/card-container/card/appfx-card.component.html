@@ -13,7 +13,8 @@
   [cdkDropListConnectedTo]="cdkDropGroup"
   [class.draggable-over]="isDraggableOver"
   (cdkDropListDropped)="onDrop()"
-  [@cardAnimation]
+  animate.enter="clr-fade-slide-right-enter"
+  animate.leave="clr-fade-leave"
 >
   <div
     tabindex="0"

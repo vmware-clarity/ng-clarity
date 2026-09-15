@@ -6,28 +6,28 @@
  */
 
 import {
-  AnimationAnimateMetadata,
-  AnimationMetadata,
-  AnimationStateMetadata,
-  AnimationStyleMetadata,
-  AnimationTransitionMetadata,
-  style,
-} from '@angular/animations';
+  animationStyle,
+  ClrAnimationAnimateMetadata,
+  ClrAnimationMetadata,
+  ClrAnimationStateMetadata,
+  ClrAnimationStyleMetadata,
+  ClrAnimationTransitionMetadata,
+} from '../animation-metadata';
 
 import { collapse } from './index';
 
 describe('Collapse', () => {
-  const myCollapse: AnimationMetadata[] = collapse();
-  const state: AnimationStateMetadata = myCollapse[0] as AnimationStateMetadata;
-  const transition1: AnimationTransitionMetadata = myCollapse[1] as AnimationTransitionMetadata;
-  const transition2: AnimationTransitionMetadata = myCollapse[2] as AnimationTransitionMetadata;
+  const myCollapse: ClrAnimationMetadata[] = collapse();
+  const state: ClrAnimationStateMetadata = myCollapse[0] as ClrAnimationStateMetadata;
+  const transition1: ClrAnimationTransitionMetadata = myCollapse[1] as ClrAnimationTransitionMetadata;
+  const transition2: ClrAnimationTransitionMetadata = myCollapse[2] as ClrAnimationTransitionMetadata;
 
-  it('should return an array of AnimationMetadata', () => {
+  it('should return an array of ClrAnimationMetadata', () => {
     expect(myCollapse.length).toEqual(3);
   });
 
   it('should contain a default state with correct style', () => {
-    expect(state.styles).toEqual(style({ height: 0, 'overflow-y': 'hidden' }));
+    expect(state.styles).toEqual(animationStyle({ height: 0, 'overflow-y': 'hidden' }));
   });
 
   it('should contain a transition for true => false', () => {
@@ -39,16 +39,16 @@ describe('Collapse', () => {
   });
 
   it('should contain a transition with height of * and timing of 0.2s ease-in-out for true => false', () => {
-    const step1: AnimationAnimateMetadata = (transition1.animation as any)[0];
+    const step1: ClrAnimationAnimateMetadata = (transition1.animation as any)[0];
 
-    expect(step1.styles).toEqual(style({ height: '*', 'overflow-y': 'hidden' }));
+    expect(step1.styles).toEqual(animationStyle({ height: '*', 'overflow-y': 'hidden' }));
   });
 
   it('should contain a transition with height of * and timing of 0.2s ease-in-out for false => true', () => {
-    const step1: AnimationStyleMetadata = (transition2.animation as any)[0];
-    const step2: AnimationAnimateMetadata = (transition2.animation as any)[1];
+    const step1: ClrAnimationStyleMetadata = (transition2.animation as any)[0];
+    const step2: ClrAnimationAnimateMetadata = (transition2.animation as any)[1];
 
-    expect(step1).toEqual(style({ height: '*', 'overflow-y': 'hidden' }));
+    expect(step1).toEqual(animationStyle({ height: '*', 'overflow-y': 'hidden' }));
     expect(step2.timings).toEqual('0.2s ease-in-out');
   });
 });
