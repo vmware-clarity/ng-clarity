@@ -137,7 +137,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this._model = new DeclarativeTreeNodeModel(parent ? (parent._model as DeclarativeTreeNodeModel<T>) : null);
     }
     this._model.nodeId = this.nodeId;
-    featuresService.registerExpander(this._model, this);
+    this._model.componentRef = this;
   }
 
   @Input('clrDisabled')
@@ -241,7 +241,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
         this._model.expanded = value;
         if (!value) {
           // Nothing above this node can claim that all of its descendants are expanded anymore.
-          this.featuresService._onNodeCollapsed(this._model);
+          this._model._clearDescendantsExpanded();
+          this.featuresService._clearAllExpanded();
         }
       })
     );
@@ -289,7 +290,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnDestroy() {
-    this.featuresService.unregisterExpander(this._model, this);
     this._model.destroy();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
@@ -322,7 +322,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   /*
-   * Internal, called by the features service while it walks the model tree during a bulk operation.
+   * Internal, called while the model tree is walked during a bulk operation.
    */
   setExpandedInBulk(expanded: boolean) {
     // Leaves are left alone when expanding, so that they don't emit a meaningless clrExpandedChange.
@@ -410,7 +410,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     const changed = this._model.descendantsExpanded !== expanded;
     // Set before walking the subtree, so that the collapsing descendants don't report the change themselves.
     this._model.descendantsExpanded = expanded;
-    this.featuresService.setExpandedRecursive(this._model, expanded);
+    this._model.setExpandedRecursive(expanded);
     if (changed) {
       this.descendantsExpandedChange.emit(expanded);
     }

@@ -8,6 +8,7 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrSelectedState } from './selected-state.enum';
+import type { ClrTreeNode } from '../tree-node';
 import { TreeNodeModel } from './tree-node.model';
 
 class TestModel extends TreeNodeModel<string> {
@@ -18,6 +19,20 @@ class TestModel extends TreeNodeModel<string> {
     super();
     this.model = name;
     this.parent = parent;
+  }
+}
+
+/* Stands in for the rendered node: the model only ever calls these two. */
+class FakeTreeNode {
+  expanded = false;
+  descendantsCollapsedCount = 0;
+
+  setExpandedInBulk(expanded: boolean) {
+    this.expanded = expanded;
+  }
+
+  onDescendantsCollapsed() {
+    this.descendantsCollapsedCount++;
   }
 }
 
@@ -180,6 +195,66 @@ export default function (): void {
 
     it('exposes the children it already knows about', function () {
       expect(root.loadedChildren).toBe(root.children);
+    });
+
+    describe('bulk expansion', function () {
+      let nodes: Map<TestModel, FakeTreeNode>;
+
+      beforeEach(function () {
+        nodes = new Map();
+        [root, child, ...root.children, ...child.children].forEach(model => {
+          const node = new FakeTreeNode();
+          nodes.set(model, node);
+          model.componentRef = node as unknown as ClrTreeNode<string>;
+        });
+      });
+
+      it('expands or collapses a node and every descendant it already knows about', function () {
+        root.setExpandedRecursive(true);
+        nodes.forEach(node => expect(node.expanded).toBeTrue());
+
+        child.setExpandedRecursive(false);
+        expect(nodes.get(root).expanded).toBeTrue();
+        expect(nodes.get(child).expanded).toBeFalse();
+        child.children.forEach(c => expect(nodes.get(c).expanded).toBeFalse());
+      });
+
+      it('leaves disabled nodes and their descendants untouched', function () {
+        child.disabled = true;
+        root.setExpandedRecursive(true);
+        expect(nodes.get(root).expanded).toBeTrue();
+        expect(nodes.get(child).expanded).toBeFalse();
+        child.children.forEach(c => expect(nodes.get(c).expanded).toBeFalse());
+      });
+
+      it('does nothing for a node that is not rendered', function () {
+        const orphan = new TestModel('X', null);
+        expect(() => orphan.setExpandedRecursive(true)).not.toThrow();
+      });
+
+      it('clears the descendantsExpanded flag of every ancestor when a node collapses', function () {
+        root.descendantsExpanded = true;
+        child.descendantsExpanded = true;
+
+        child.children[0]._clearDescendantsExpanded();
+
+        expect(root.descendantsExpanded).toBeFalse();
+        expect(child.descendantsExpanded).toBeFalse();
+        expect(nodes.get(root).descendantsCollapsedCount).toBe(1);
+        expect(nodes.get(child).descendantsCollapsedCount).toBe(1);
+        expect(nodes.get(child.children[0]).descendantsCollapsedCount).toBe(0);
+
+        // Only notifies once
+        child.children[0]._clearDescendantsExpanded();
+        expect(nodes.get(root).descendantsCollapsedCount).toBe(1);
+      });
+
+      it('drops its reference to the node on destroy', function () {
+        const model = new TestModel('Y', null);
+        model.componentRef = new FakeTreeNode() as unknown as ClrTreeNode<string>;
+        model.destroy();
+        expect(model.componentRef).toBeNull();
+      });
     });
   });
 }

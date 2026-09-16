@@ -7,6 +7,7 @@
 
 import { BehaviorSubject } from 'rxjs';
 
+import type { ClrTreeNode } from '../tree-node';
 import { ClrSelectedState } from './selected-state.enum';
 
 export abstract class TreeNodeModel<T> {
@@ -17,6 +18,12 @@ export abstract class TreeNodeModel<T> {
    * Descendants created afterwards (lazy-loaded children, dynamic nodes) come in expanded while this is set.
    */
   descendantsExpanded = false;
+  /*
+   * Internal, the component rendering this model. Bulk operations walk the model tree and need to reach
+   * the node itself, for its expandable state, its animation and its outputs.
+   * Type-only import, so this stays a plain data class at runtime.
+   */
+  componentRef: ClrTreeNode<T> | null = null;
   model: T | null;
   textContent: string;
   loading$ = new BehaviorSubject(false);
@@ -64,8 +71,25 @@ export abstract class TreeNodeModel<T> {
   }
 
   destroy() {
+    this.componentRef = null;
     // Just to be safe
     this.selected.complete();
+  }
+
+  /**
+   * Expands or collapses this node and every descendant that is already known.
+   * Disabled nodes are left untouched, like for selection.
+   */
+  setExpandedRecursive(expanded: boolean) {
+    if (this.disabled) {
+      return;
+    }
+    if (this.componentRef) {
+      this.componentRef.setExpandedInBulk(expanded);
+    }
+    for (const child of this.loadedChildren) {
+      child.setExpandedRecursive(expanded);
+    }
   }
 
   /**
@@ -109,6 +133,21 @@ export abstract class TreeNodeModel<T> {
     // NOTE: we always propagate selection up in this method because it is only called when the user takes an action.
     // It should never be called from lifecycle hooks or app-provided inputs.
     this.setSelected(newState, true, propagate);
+  }
+
+  /*
+   * Internal, called when this node collapses: neither this node nor any of its ancestors
+   * can claim that all of their descendants are expanded anymore.
+   */
+  _clearDescendantsExpanded() {
+    for (let current: TreeNodeModel<T> = this; current; current = current.parent) {
+      if (current.descendantsExpanded) {
+        current.descendantsExpanded = false;
+        if (current.componentRef) {
+          current.componentRef.onDescendantsCollapsed();
+        }
+      }
+    }
   }
 
   /*

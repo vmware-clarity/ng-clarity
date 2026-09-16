@@ -135,7 +135,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     const changed = this.featuresService.allExpanded !== expanded;
     // Set before walking the tree, so that the collapsing nodes don't report the change themselves.
     this.featuresService.allExpanded = expanded;
-    this.rootModels.forEach(model => this.featuresService.setExpandedRecursive(model, expanded));
+    this.rootModels.forEach(model => model.setExpandedRecursive(expanded));
     if (changed) {
       this.allExpandedChange.emit(expanded);
     }

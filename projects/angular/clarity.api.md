@@ -9659,6 +9659,10 @@ export const treeIconName = "tree";
 export abstract class TreeNodeModel<T> {
     // (undocumented)
     abstract children: TreeNodeModel<T>[];
+    // (undocumented)
+    _clearDescendantsExpanded(): void;
+    // (undocumented)
+    componentRef: ClrTreeNode<T> | null;
     descendantsExpanded: boolean;
     // (undocumented)
     destroy(): void;
@@ -9683,6 +9687,7 @@ export abstract class TreeNodeModel<T> {
     abstract parent: TreeNodeModel<T> | null;
     // (undocumented)
     selected: BehaviorSubject<ClrSelectedState>;
+    setExpandedRecursive(expanded: boolean): void;
     // (undocumented)
     setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean): void;
     // (undocumented)
