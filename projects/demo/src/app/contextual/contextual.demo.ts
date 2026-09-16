@@ -64,8 +64,21 @@ const EMBEDDED_CHAT_PAGE = `
  * different origin. Which alternate name actually answers depends on what the dev server
  * listens on — `localhost` may resolve to `::1` while `127.0.0.1` refuses — so the
  * candidates are probed and the first one that responds is used.
+ *
+ * This only ever works on a developer's own machine, where the demo is one of these
+ * names and another is a second origin for the same server. It is therefore never
+ * attempted from a deployed copy of this demo: a page on a public origin that requests a
+ * loopback address makes the browser ask the reader for permission to reach other
+ * services on their device, which is an alarming question to answer on someone else's
+ * behalf, and nothing here would be found anyway.
  */
 const ALTERNATE_HOSTS = ['127.0.0.1', '[::1]', 'localhost'];
+
+/** Whether this page is itself served from a loopback name, i.e. from a dev server. */
+function servedFromLoopback(): boolean {
+  const host = new URL(document.baseURI).hostname;
+  return ALTERNATE_HOSTS.includes(host) || host === '::1' || /^127\./.test(host);
+}
 
 function alternateOrigins(): URL[] {
   const current = new URL('assets/plugins/billing.html', document.baseURI);
@@ -113,6 +126,7 @@ export class ContextualDemo implements OnInit, OnDestroy {
   thirdPartyPluginUrl: SafeResourceUrl | null = null;
   thirdPartyOrigin = '';
   thirdPartyProbed = false;
+  readonly servedLocally = servedFromLoopback();
 
   form = new FormGroup({
     name: new FormControl(),
@@ -183,6 +197,11 @@ export class ContextualDemo implements OnInit, OnDestroy {
   }
 
   private async resolveThirdPartyPlugin(): Promise<void> {
+    if (!this.servedLocally) {
+      // Nothing is asked of the network away from a dev machine; see ALTERNATE_HOSTS.
+      this.thirdPartyProbed = true;
+      return;
+    }
     for (const candidate of alternateOrigins()) {
       if (await reachable(candidate.href)) {
         this.thirdPartyOrigin = candidate.origin;
