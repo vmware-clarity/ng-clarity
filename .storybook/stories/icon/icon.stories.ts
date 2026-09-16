@@ -5,12 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { arrowIcon, ClarityIcons, ClrIcon, homeIcon, imageIcon, userIcon } from '@clr/angular';
+import {
+  arrowIcon,
+  checkCircleIcon,
+  ClarityIcons,
+  ClrIcon,
+  exclamationCircleIcon,
+  homeIcon,
+  imageIcon,
+  userIcon,
+} from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
-ClarityIcons.addIcons(userIcon, imageIcon, homeIcon, arrowIcon);
+ClarityIcons.addIcons(userIcon, imageIcon, homeIcon, arrowIcon, exclamationCircleIcon, checkCircleIcon);
 
 export default {
   title: 'Icon/Icon',
@@ -295,6 +304,59 @@ const InverseTemplate: StoryFn = () => ({
 });
 
 export const Inverse: StoryObj = { render: InverseTemplate };
+
+// ─── Inner Offset ─────────────────────────────────────────────────────────────
+
+const InnerOffsetTemplate: StoryFn = () => ({
+  template: `
+    <div cds-layout="horizontal gap:lg align:vertical-center">
+      <div cds-layout="vertical gap:xs align:center">
+        <cds-icon
+          shape="exclamation-circle"
+          status="danger"
+          size="16"
+          role="img"
+          aria-label="exclamation circle with default inner offset"
+        ></cds-icon>
+        <span cds-text="caption">default (0)</span>
+      </div>
+      <div cds-layout="vertical gap:xs align:center">
+        <cds-icon
+          shape="exclamation-circle"
+          status="danger"
+          size="16"
+          inner-offset="4"
+          role="img"
+          aria-label="exclamation circle with an inner offset of 4 pixels"
+        ></cds-icon>
+        <span cds-text="caption">inner-offset: 4</span>
+      </div>
+      <div cds-layout="vertical gap:xs align:center">
+        <cds-icon
+          shape="check-circle"
+          status="success"
+          size="16"
+          role="img"
+          aria-label="check circle with default inner offset"
+        ></cds-icon>
+        <span cds-text="caption">default (0)</span>
+      </div>
+      <div cds-layout="vertical gap:xs align:center">
+        <cds-icon
+          shape="check-circle"
+          status="success"
+          size="16"
+          inner-offset="4"
+          role="img"
+          aria-label="check circle with an inner offset of 4 pixels"
+        ></cds-icon>
+        <span cds-text="caption">inner-offset: 4</span>
+      </div>
+    </div>
+  `,
+});
+
+export const InnerOffset: StoryObj = { render: InnerOffsetTemplate };
 
 // ─── Custom Styles ────────────────────────────────────────────────────────────
 

@@ -71,6 +71,14 @@ export function updateIconSizeStyle(el: HTMLElement, size: string) {
   }
 }
 
+export function updateIconInnerOffsetStyle(el: HTMLElement, offset: number) {
+  if (typeof offset === 'number' && offset > 0) {
+    el.style.setProperty('--inner-offset', pxToRem(offset));
+  } else {
+    el.style.removeProperty('--inner-offset');
+  }
+}
+
 export function updateElementStyles(el: HTMLElement, ...styleTuples: [string, string][]): HTMLElement {
   styleTuples.forEach(([styleKey, value]) => {
     (el.style as { [key: string]: any })[styleKey] = value;

@@ -15,6 +15,7 @@
 
 :host {
   --color: currentColor;
+  --inner-offset: 0px;
 
   display: inline-block;
   @include mixins.equilateral(#{tokens.$cds-global-space-7});
@@ -35,6 +36,9 @@
 
 svg {
   display: block;
+  width: calc(100% + (var(--inner-offset) * 2));
+  height: calc(100% + (var(--inner-offset) * 2));
+  margin: calc(var(--inner-offset) * -1) 0 0 calc(var(--inner-offset) * -1);
 }
 
 // sizing
