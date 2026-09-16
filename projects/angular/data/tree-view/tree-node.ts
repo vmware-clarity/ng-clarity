@@ -137,7 +137,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this._model = new DeclarativeTreeNodeModel(parent ? (parent._model as DeclarativeTreeNodeModel<T>) : null);
     }
     this._model.nodeId = this.nodeId;
-    this._model.componentRef = this;
+    this._model.node = this;
   }
 
   @Input('clrDisabled')

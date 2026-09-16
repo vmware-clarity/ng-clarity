@@ -205,7 +205,7 @@ export default function (): void {
         [root, child, ...root.children, ...child.children].forEach(model => {
           const node = new FakeTreeNode();
           nodes.set(model, node);
-          model.componentRef = node as unknown as ClrTreeNode<string>;
+          model.node = node as unknown as ClrTreeNode<string>;
         });
       });
 
@@ -251,9 +251,9 @@ export default function (): void {
 
       it('drops its reference to the node on destroy', function () {
         const model = new TestModel('Y', null);
-        model.componentRef = new FakeTreeNode() as unknown as ClrTreeNode<string>;
+        model.node = new FakeTreeNode() as unknown as ClrTreeNode<string>;
         model.destroy();
-        expect(model.componentRef).toBeNull();
+        expect(model.node).toBeNull();
       });
     });
   });

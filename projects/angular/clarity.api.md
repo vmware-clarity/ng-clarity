@@ -9661,8 +9661,6 @@ export abstract class TreeNodeModel<T> {
     abstract children: TreeNodeModel<T>[];
     // (undocumented)
     _clearDescendantsExpanded(): void;
-    // (undocumented)
-    componentRef: ClrTreeNode<T> | null;
     descendantsExpanded: boolean;
     // (undocumented)
     destroy(): void;
@@ -9681,6 +9679,8 @@ export abstract class TreeNodeModel<T> {
     set loading(isLoading: boolean);
     // (undocumented)
     model: T | null;
+    // (undocumented)
+    node: ClrTreeNode<T> | null;
     // (undocumented)
     nodeId: string;
     // (undocumented)

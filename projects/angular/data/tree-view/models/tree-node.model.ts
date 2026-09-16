@@ -19,11 +19,11 @@ export abstract class TreeNodeModel<T> {
    */
   descendantsExpanded = false;
   /*
-   * Internal, the component rendering this model. Bulk operations walk the model tree and need to reach
-   * the node itself, for its expandable state, its animation and its outputs.
-   * Type-only import, so this stays a plain data class at runtime.
+   * Internal, the node rendering this model. Bulk operations walk the model tree and need the node itself,
+   * for its expandable state, its animation and its outputs.
+   * Imported as a type only, so the models pull in nothing from the components at runtime.
    */
-  componentRef: ClrTreeNode<T> | null = null;
+  node: ClrTreeNode<T> | null = null;
   model: T | null;
   textContent: string;
   loading$ = new BehaviorSubject(false);
@@ -71,7 +71,7 @@ export abstract class TreeNodeModel<T> {
   }
 
   destroy() {
-    this.componentRef = null;
+    this.node = null;
     // Just to be safe
     this.selected.complete();
   }
@@ -84,8 +84,8 @@ export abstract class TreeNodeModel<T> {
     if (this.disabled) {
       return;
     }
-    if (this.componentRef) {
-      this.componentRef.setExpandedInBulk(expanded);
+    if (this.node) {
+      this.node.setExpandedInBulk(expanded);
     }
     for (const child of this.loadedChildren) {
       child.setExpandedRecursive(expanded);
@@ -143,8 +143,8 @@ export abstract class TreeNodeModel<T> {
     for (let current: TreeNodeModel<T> = this; current; current = current.parent) {
       if (current.descendantsExpanded) {
         current.descendantsExpanded = false;
-        if (current.componentRef) {
-          current.componentRef.onDescendantsCollapsed();
+        if (current.node) {
+          current.node.onDescendantsCollapsed();
         }
       }
     }
