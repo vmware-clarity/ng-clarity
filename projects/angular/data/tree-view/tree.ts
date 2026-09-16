@@ -44,7 +44,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
   /**
    * Emits `true` when all nodes get expanded and `false` as soon as any node gets collapsed afterwards.
    */
-  @Output('clrExpandAllChange') expandAllChange = new EventEmitter<boolean>();
+  @Output('clrAllExpandedChange') allExpandedChange = new EventEmitter<boolean>();
 
   @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
 
@@ -74,7 +74,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 
     this.subscriptions.push(subscription);
 
-    featuresService._onAllExpandedCleared = () => this.expandAllChange.emit(false);
+    featuresService._onAllExpandedCleared = () => this.allExpandedChange.emit(false);
   }
 
   @Input('clrLazy')
@@ -83,9 +83,10 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
   }
 
   /**
-   * Two-way binding to expand or collapse every node of the tree at once, see `expandAll()`.
+   * Two-way binding reflecting whether every node of the tree is expanded. Setting it expands or collapses
+   * them all, see `expandAll()` and `collapseAll()`.
    */
-  @Input('clrExpandAll')
+  @Input('clrAllExpanded')
   get allExpanded(): boolean {
     return this.featuresService.allExpanded;
   }
@@ -134,9 +135,9 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     const changed = this.featuresService.allExpanded !== expanded;
     // Set before walking the tree, so that the collapsing nodes don't report the change themselves.
     this.featuresService.allExpanded = expanded;
-    this.rootModels.forEach(model => model.setExpandedRecursive(expanded));
+    this.rootModels.forEach(model => this.featuresService.setExpandedRecursive(model, expanded));
     if (changed) {
-      this.expandAllChange.emit(expanded);
+      this.allExpandedChange.emit(expanded);
     }
   }
 

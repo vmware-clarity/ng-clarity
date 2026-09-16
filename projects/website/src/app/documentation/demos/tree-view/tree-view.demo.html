@@ -318,9 +318,9 @@
     <p cds-text="body" class="clr-mt-16px">
       To expand or collapse every node at once, use the <code cds-text="code">expandAll()</code> and
       <code cds-text="code">collapseAll()</code> methods of the tree, or its
-      <code cds-text="code">[(clrExpandAll)]</code> two-way binding. To do the same for a single subtree, use the
+      <code cds-text="code">[(clrAllExpanded)]</code> two-way binding. To do the same for a single subtree, use the
       <code cds-text="code">expandDescendants()</code> and <code cds-text="code">collapseDescendants()</code> methods of
-      a tree node, or its <code cds-text="code">[(clrExpandDescendants)]</code> two-way binding. Nodes are updated
+      a tree node, or its <code cds-text="code">[(clrDescendantsExpanded)]</code> two-way binding. Nodes are updated
       without the expand animation, so this stays fast on large trees. Disabled nodes are left untouched.
     </p>
 
@@ -328,6 +328,14 @@
       The bindings emit <code cds-text="code">false</code> as soon as any node of the tree, or of the subtree, gets
       collapsed. While they are <code cds-text="code">true</code>, nodes added later on, including lazy-loaded children,
       come in expanded: on a lazy-loaded tree, expanding all fetches every level of the tree.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Prefer the methods for buttons and other user actions. Like every Angular input, the bindings only react when the
+      value they are bound to actually changes, so writing the same value twice does nothing: on a tree whose nodes were
+      expanded individually, the binding is already
+      <code cds-text="code">false</code> and setting it to <code cds-text="code">false</code> again will not collapse
+      anything, while <code cds-text="code">collapseAll()</code> always applies.
     </p>
 
     <section class="clr-demo">
@@ -509,7 +517,7 @@
         </tr>
         <tr>
           <td class="left">
-            <b cds-text="medium">[(clrExpandAll)]</b>
+            <b cds-text="medium">[(clrAllExpanded)]</b>
             <div class="hidden-sm-up">Type: boolean</div>
             <div class="hidden-sm-up">Default: false</div>
           </td>
@@ -557,7 +565,7 @@
         </tr>
         <tr>
           <td class="left">
-            <b cds-text="medium">[(clrExpandDescendants)]</b>
+            <b cds-text="medium">[(clrDescendantsExpanded)]</b>
             <div class="hidden-sm-up">Type: boolean</div>
             <div class="hidden-sm-up">Default: false</div>
           </td>

@@ -9,21 +9,6 @@ import { BehaviorSubject } from 'rxjs';
 
 import { ClrSelectedState } from './selected-state.enum';
 
-/**
- * Implemented by the component rendering a node, so that bulk expand operations driven by the model tree
- * can be applied to the rendered node.
- */
-export interface TreeNodeExpander {
-  /**
-   * Expands or collapses the rendered node as part of a bulk operation.
-   */
-  setExpandedInBulk(expanded: boolean): void;
-  /**
-   * Called when a descendant got collapsed while `descendantsExpanded` was set on the node.
-   */
-  onDescendantsCollapsed(): void;
-}
-
 export abstract class TreeNodeModel<T> {
   nodeId: string;
   expanded: boolean;
@@ -32,10 +17,6 @@ export abstract class TreeNodeModel<T> {
    * Descendants created afterwards (lazy-loaded children, dynamic nodes) come in expanded while this is set.
    */
   descendantsExpanded = false;
-  /*
-   * Internal, registered by the component rendering this model.
-   */
-  _expander: TreeNodeExpander | null = null;
   model: T | null;
   textContent: string;
   loading$ = new BehaviorSubject(false);
@@ -83,25 +64,8 @@ export abstract class TreeNodeModel<T> {
   }
 
   destroy() {
-    this._expander = null;
     // Just to be safe
     this.selected.complete();
-  }
-
-  /**
-   * Expands or collapses this node and every descendant that is already known.
-   * Disabled nodes are left untouched, like for selection.
-   */
-  setExpandedRecursive(expanded: boolean) {
-    if (this.disabled) {
-      return;
-    }
-    if (this._expander) {
-      this._expander.setExpandedInBulk(expanded);
-    }
-    for (const child of this.loadedChildren) {
-      child.setExpandedRecursive(expanded);
-    }
   }
 
   /**
@@ -114,21 +78,6 @@ export abstract class TreeNodeModel<T> {
       }
     }
     return false;
-  }
-
-  /*
-   * Internal, called when this node collapses: neither this node nor any of its ancestors
-   * can claim that all of their descendants are expanded anymore.
-   */
-  _clearDescendantsExpanded() {
-    for (let current: TreeNodeModel<T> = this; current; current = current.parent) {
-      if (current.descendantsExpanded) {
-        current.descendantsExpanded = false;
-        if (current._expander) {
-          current._expander.onDescendantsCollapsed();
-        }
-      }
-    }
   }
 
   // Propagate by default when eager, don't propagate in the lazy-loaded tree.

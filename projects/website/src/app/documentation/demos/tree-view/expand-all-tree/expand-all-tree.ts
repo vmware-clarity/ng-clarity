@@ -17,7 +17,7 @@ const EXAMPLE_HTML = `
 </div>
 <p>All expanded: {{ allExpanded }}</p>
 
-<clr-tree #tree [(clrExpandAll)]="allExpanded">
+<clr-tree #tree [(clrAllExpanded)]="allExpanded">
   <clr-tree-node>
     Office Locations
     <clr-tree-node>
@@ -25,7 +25,7 @@ const EXAMPLE_HTML = `
       <clr-tree-node>Palo Alto, CA (Headquarters)</clr-tree-node>
       <clr-tree-node>Seattle, WA</clr-tree-node>
     </clr-tree-node>
-    <clr-tree-node [(clrExpandDescendants)]="europeExpanded">
+    <clr-tree-node [(clrDescendantsExpanded)]="europeExpanded">
       Europe
       <clr-tree-node>
         UK

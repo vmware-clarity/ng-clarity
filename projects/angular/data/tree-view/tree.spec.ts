@@ -60,7 +60,7 @@ class TreeTypeAhead {}
 @Component({
   template: `
     @if (hasTree) {
-      <clr-tree #tree [(clrExpandAll)]="allExpanded">
+      <clr-tree #tree [(clrAllExpanded)]="allExpanded">
         <clr-tree-node #california [(clrExpanded)]="californiaExpanded">
           California
           <clr-tree-node #sanFrancisco>
@@ -69,7 +69,7 @@ class TreeTypeAhead {}
           </clr-tree-node>
           <clr-tree-node #losAngeles [(clrExpanded)]="losAngelesExpanded">Los Angeles</clr-tree-node>
         </clr-tree-node>
-        <clr-tree-node #washington [(clrExpandDescendants)]="washingtonDescendantsExpanded">
+        <clr-tree-node #washington [(clrDescendantsExpanded)]="washingtonDescendantsExpanded">
           Washington
           <clr-tree-node #seattle>
             Seattle
@@ -315,15 +315,15 @@ export default function (): void {
       expect(this.testComponent.californiaExpanded).toBeFalse();
     });
 
-    it('emits clrExpandAllChange on expandAll() and collapseAll()', function (this: ExpandAllContext) {
+    it('emits clrAllExpandedChange on expandAll() and collapseAll()', function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
       expect(this.testComponent.allExpanded).toBeTrue();
       this.testComponent.tree.collapseAll();
       expect(this.testComponent.allExpanded).toBeFalse();
     });
 
-    it('does not emit clrExpandAllChange when nothing changes', function (this: ExpandAllContext) {
-      const spy = spyOn(this.testComponent.tree.expandAllChange, 'emit');
+    it('does not emit clrAllExpandedChange when nothing changes', function (this: ExpandAllContext) {
+      const spy = spyOn(this.testComponent.tree.allExpandedChange, 'emit');
       this.testComponent.tree.collapseAll();
       expect(spy).not.toHaveBeenCalled();
       this.testComponent.tree.expandAll();
@@ -331,7 +331,7 @@ export default function (): void {
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
-    it('emits clrExpandAllChange false as soon as any node collapses', function (this: ExpandAllContext) {
+    it('emits clrAllExpandedChange false as soon as any node collapses', function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
       expect(this.testComponent.allExpanded).toBeTrue();
       this.testComponent.seattle.expanded = false;
@@ -341,14 +341,14 @@ export default function (): void {
       expect(this.testComponent.california.expanded).toBeTrue();
     });
 
-    it('does not emit clrExpandAllChange when a node collapses without a previous expand all', function (this: ExpandAllContext) {
-      const spy = spyOn(this.testComponent.tree.expandAllChange, 'emit');
+    it('does not emit clrAllExpandedChange when a node collapses without a previous expand all', function (this: ExpandAllContext) {
+      const spy = spyOn(this.testComponent.tree.allExpandedChange, 'emit');
       this.testComponent.california.expanded = true;
       this.testComponent.california.expanded = false;
       expect(spy).not.toHaveBeenCalled();
     });
 
-    it('offers a [(clrExpandAll)] two-way binding on the tree', function (this: ExpandAllContext) {
+    it('offers a [(clrAllExpanded)] two-way binding on the tree', function (this: ExpandAllContext) {
       this.testComponent.allExpanded = true;
       this.detectChanges();
       expect(this.testComponent.california.expanded).toBeTrue();
@@ -425,7 +425,7 @@ export default function (): void {
       expect(this.testComponent.washingtonDescendantsExpanded).toBeFalse();
     });
 
-    it('offers a [(clrExpandDescendants)] two-way binding on a node', function (this: ExpandAllContext) {
+    it('offers a [(clrDescendantsExpanded)] two-way binding on a node', function (this: ExpandAllContext) {
       this.testComponent.washingtonDescendantsExpanded = true;
       this.detectChanges();
       expect(this.testComponent.washington.expanded).toBeTrue();

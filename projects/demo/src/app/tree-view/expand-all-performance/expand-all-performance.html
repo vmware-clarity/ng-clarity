@@ -136,7 +136,7 @@
 
 <div class="clr-example">
   @if (treeVisible && typeAhead) {
-  <clr-tree [clrLazy]="lazy" [(clrExpandAll)]="allExpanded">
+  <clr-tree [clrLazy]="lazy" [(clrAllExpanded)]="allExpanded">
     <clr-tree-node
       *clrRecursiveFor="let node of data; getChildren: getChildren"
       [clrExpandable]="lazy ? !!node.children : undefined"
@@ -146,7 +146,7 @@
     </clr-tree-node>
   </clr-tree>
   } @else if (treeVisible) {
-  <clr-tree [clrLazy]="lazy" [(clrExpandAll)]="allExpanded">
+  <clr-tree [clrLazy]="lazy" [(clrAllExpanded)]="allExpanded">
     <clr-tree-node
       *clrRecursiveFor="let node of data; getChildren: getChildren"
       [clrExpandable]="lazy ? !!node.children : undefined"

@@ -40,7 +40,7 @@ import { debounceTime, filter } from 'rxjs/operators';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
-import { TreeNodeExpander, TreeNodeModel } from './models/tree-node.model';
+import { TreeNodeModel } from './models/tree-node.model';
 import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNodeLink } from './tree-node-link';
@@ -77,7 +77,7 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   },
   standalone: false,
 })
-export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy, TreeNodeExpander {
+export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
   // Allows the consumer to override our logic deciding if a node is expandable.
   // Useful for recursive trees that don't want to pre-load one level ahead just to know which nodes are expandable.
   @Input('clrExpandable') expandable: boolean | undefined;
@@ -88,7 +88,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
    * Emits `true` when the node and all of its descendants get expanded,
    * and `false` as soon as the node or any of its descendants gets collapsed afterwards.
    */
-  @Output('clrExpandDescendantsChange') expandDescendantsChange = new EventEmitter<boolean>();
+  @Output('clrDescendantsExpandedChange') descendantsExpandedChange = new EventEmitter<boolean>();
 
   STATES = ClrSelectedState;
   isModelLoading = false;
@@ -137,7 +137,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this._model = new DeclarativeTreeNodeModel(parent ? (parent._model as DeclarativeTreeNodeModel<T>) : null);
     }
     this._model.nodeId = this.nodeId;
-    this._model._expander = this;
+    featuresService.registerExpander(this._model, this);
   }
 
   @Input('clrDisabled')
@@ -182,9 +182,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   /**
-   * Two-way binding to expand or collapse this node and all of its descendants at once, see `expandDescendants()`.
+   * Two-way binding reflecting whether this node and all of its descendants are expanded. Setting it expands or
+   * collapses the whole subtree, see `expandDescendants()` and `collapseDescendants()`.
    */
-  @Input('clrExpandDescendants')
+  @Input('clrDescendantsExpanded')
   get descendantsExpanded(): boolean {
     return this._model.descendantsExpanded;
   }
@@ -240,8 +241,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
         this._model.expanded = value;
         if (!value) {
           // Nothing above this node can claim that all of its descendants are expanded anymore.
-          this._model._clearDescendantsExpanded();
-          this.featuresService._clearAllExpanded();
+          this.featuresService._onNodeCollapsed(this._model);
         }
       })
     );
@@ -263,7 +263,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   ngAfterContentInit() {
     // Nodes created while everything above them is expected to be expanded (lazy-loaded children, dynamic nodes,
-    // or a node with [clrExpandDescendants]="true") come in expanded. Children are only known at this point,
+    // or a node with [clrDescendantsExpanded]="true") come in expanded. Children are only known at this point,
     // not in ngOnInit, which is why the check happens here.
     if (
       !this.expanded &&
@@ -289,6 +289,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnDestroy() {
+    this.featuresService.unregisterExpander(this._model, this);
     this._model.destroy();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
@@ -321,7 +322,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   /*
-   * TreeNodeExpander implementation, called by the model tree during bulk operations.
+   * Internal, called by the features service while it walks the model tree during a bulk operation.
    */
   setExpandedInBulk(expanded: boolean) {
     // Leaves are left alone when expanding, so that they don't emit a meaningless clrExpandedChange.
@@ -334,7 +335,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   onDescendantsCollapsed() {
-    this.expandDescendantsChange.emit(false);
+    this.descendantsExpandedChange.emit(false);
   }
 
   focusTreeNode(): void {
@@ -409,9 +410,9 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     const changed = this._model.descendantsExpanded !== expanded;
     // Set before walking the subtree, so that the collapsing descendants don't report the change themselves.
     this._model.descendantsExpanded = expanded;
-    this._model.setExpandedRecursive(expanded);
+    this.featuresService.setExpandedRecursive(this._model, expanded);
     if (changed) {
-      this.expandDescendantsChange.emit(expanded);
+      this.descendantsExpandedChange.emit(expanded);
     }
   }
 

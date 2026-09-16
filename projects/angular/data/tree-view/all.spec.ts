@@ -10,6 +10,7 @@ import RecursiveTreeNodeModelSpecs from './models/recursive-tree-node.model.spec
 import TreeNodeModelSpecs from './models/tree-node.model.spec';
 import RecursiveChildrenSpecs from './recursive-children.spec';
 import RecursiveForOfSpecs from './recursive-for-of.spec';
+import TreeFeaturesSpecs from './tree-features.service.spec';
 import TreeFocusManagerSpecs from './tree-focus-manager.service.spec';
 import TreeNodeSpec from './tree-node.spec';
 import TreeSpecs from './tree.spec';
@@ -30,5 +31,6 @@ describe('Tree View', () => {
 
   describe('Services', () => {
     TreeFocusManagerSpecs();
+    TreeFeaturesSpecs();
   });
 });
