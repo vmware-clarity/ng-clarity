@@ -30,7 +30,7 @@ const densityLocalStorageKey = 'density';
         direction="left"
         [solid]="solidDensityIcon"
       ></clr-icon>
-      <span>Compact</span>
+      <span>{{ density === 'compact' ? 'Compact' : 'Regular' }}</span>
     </button>
   `,
   styles: [

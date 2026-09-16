@@ -18,15 +18,15 @@
     </p>
 
     <div cds-layout="m-t:xxl">
-      <h3 cds-text="section">Visual comparison between default and compact</h3>
+      <h3 cds-text="section">Visual comparison between regular and compact</h3>
       <p cds-text="body" cds-layout="m-t:md">
-        Shows the visual difference between default and compact theme which resolves in smaller paddings, font-sizes,
+        Shows the visual difference between regular and compact density which resolves in smaller paddings, font-sizes,
         line-heights and etc.
       </p>
 
       <div cds-layout="grid cols:6 gap:md m-t:md">
         <div>
-          <h4 cds-layout="m-b:xs">Default</h4>
+          <h4 cds-layout="m-b:xs">Regular</h4>
           <app-themed-image
             [lightSrc]="'/assets/images/documentation/density/density_datagrid-default_example.svg'"
             [darkSrc]="'/assets/images/documentation/density/density_datagrid-default-dark_example.svg'"
@@ -53,12 +53,8 @@
 
     <ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
       <li>
-        <strong>Default</strong> – optimized for readability and comfort, with ample spacing ideal for touch devices and
-        desktop applications.
-      </li>
-      <li>
-        <strong>Regular</strong> – Will replace "Default" in next major version although it's the same as default plus
-        little optimisations in terms of row heights from 36px to 32px.
+        <strong>Regular</strong> – optimized for readability and comfort, with ample spacing ideal for touch devices
+        and desktop applications.
       </li>
       <li>
         <strong>Compact</strong> – optimized for data-dense views, reducing spacing and component padding to maximize
@@ -143,9 +139,9 @@
     <p cds-text="body" cds-layout="m-t:md m-b:lg">The supported values are:</p>
 
     <ul class="list" cds-text="body" cds-layout="m-t:sm m-l:lg">
-      <li><code cds-text="code">default</code> – default layout with generous spacing for readability and comfort.</li>
       <li>
-        <code cds-text="code">regular</code> – similar to default layout but with lowered row height. 36px -> 32px
+        omitting the attribute (or setting it to an empty string) applies the
+        <strong>regular</strong> density – generous spacing for readability and comfort.
       </li>
       <li>
         <code cds-text="code">compact</code> – reduced spacing and control sizes, suitable for data-dense interfaces.
