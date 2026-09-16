@@ -65,8 +65,8 @@
         can lift its own sandbox, so it is exactly as trusted as the shell. A plugin served from this application's own
         origin appears in the snapshot as a <code class="clr-code">frame</code> node with its own controls, text and
         form as children — type into the inventory form and watch the value change on the right. The third plugin is
-        served from a different origin (<code class="clr-code">{{ thirdPartyOrigin || 'none found' }}</code>), so the
-        browser lets no script on this page read it — the sandbox makes no difference to that:
+        served from a different origin (<code class="clr-code">{{ thirdPartyOrigin || 'local demo only' }}</code>), so
+        the browser lets no script on this page read it — the sandbox makes no difference to that:
         <code class="clr-code">allow-same-origin</code> only lets a frame keep its real origin, it never grants the host
         access to another origin. The engine reports that a frame is there and nothing else, and such a plugin can
         instead ask this page for context through the frame bridge. Plugins served from the shell's own origin behave
@@ -106,13 +106,17 @@
               sandbox="allow-same-origin allow-scripts allow-popups allow-popups-to-escape-sandbox allow-forms allow-downloads"
             ></iframe>
             } @else if (thirdPartyProbed) {
-            <clr-alert clrAlertType="warning" [clrAlertClosable]="false">
+            <clr-alert clrAlertType="info" [clrAlertClosable]="false">
               <clr-alert-item>
                 <span class="alert-text">
-                  No second origin answers on this machine, so the cross-origin plugin cannot be shown. Serve the demo
-                  on every interface — <code class="clr-code">ng serve clr-demo --host 0.0.0.0</code> — so that both
+                  @if (servedLocally) { No second origin answers on this machine, so the cross-origin plugin cannot be
+                  shown. Serve the demo on every interface —
+                  <code class="clr-code">ng serve clr-demo --host 0.0.0.0</code> — so that both
                   <code class="clr-code">localhost</code> and <code class="clr-code">127.0.0.1</code> respond, then
-                  reload.
+                  reload. } @else { A second origin for this page exists only on a developer's own machine, so the
+                  cross-origin plugin appears only when the demo is run locally. Nothing is requested from your device
+                  here: a page on a public origin that reached for a local address would have your browser ask whether
+                  it may access other services on this device, and that is not a question a demo should put to you. }
                 </span>
               </clr-alert-item>
             </clr-alert>
