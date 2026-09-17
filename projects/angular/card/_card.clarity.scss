@@ -219,23 +219,32 @@
     color: inherit;
     cursor: pointer;
     border-radius: card-variables.$clr-card-border-radius;
+    @include mixins.min-equilateral(density.$clr-base-icon-size-l);
 
     &:focus-visible {
       @include mixins.include-outline-style-form-fields();
     }
-  }
 
-  .card-header-icon {
-    display: block;
-    color: tokens.$cds-alias-object-interaction-color;
-    transition: transform tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
-    transform: rotate(90deg);
+    .card-header-icon {
+      display: block;
+      color: tokens.$cds-alias-object-interaction-color;
+      transition: transform tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
+      transform: rotate(90deg);
 
-    @include mixins.min-equilateral(density.$clr-base-icon-size-m);
-  }
+      @include mixins.min-equilateral(density.$clr-base-icon-size-m);
+    }
 
-  .card-header-toggle[aria-expanded='true'] .card-header-icon {
-    transform: rotate(180deg);
+    &:hover {
+      background-color: tokens.$cds-alias-object-interaction-background-hover;
+    }
+
+    &:active {
+      background-color: tokens.$cds-alias-object-interaction-background-active;
+    }
+
+    &[aria-expanded='true'] .card-header-icon {
+      transform: rotate(180deg);
+    }
   }
 
   .card-collapsible-content {
