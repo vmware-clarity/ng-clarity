@@ -7,7 +7,9 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import {
+  AfterViewInit,
   ApplicationRef,
+  ComponentRef,
   createComponent,
   Directive,
   DOCUMENT,
@@ -17,6 +19,7 @@ import {
   Inject,
   Injector,
   Input,
+  OnDestroy,
   OnInit,
   PLATFORM_ID,
   Renderer2,
@@ -34,13 +37,15 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
   hostDirectives: [ClrStandaloneCdkTrapFocus],
   standalone: false,
 })
-export class ClrNavLevel implements OnInit {
+export class ClrNavLevel implements OnInit, AfterViewInit, OnDestroy {
   @Input('clr-nav-level') _level: number;
   @Input('closeAriaLabel') closeButtonAriaLabel: string;
 
   private _isOpen = false;
   private _document: Document;
   private _subscription: Subscription;
+  private closeButtonIconRef: ComponentRef<ClrIcon>;
+  private unlistenCloseButtonClick: () => void;
 
   constructor(
     @Inject(PLATFORM_ID) platformId: any,
@@ -114,7 +119,7 @@ export class ClrNavLevel implements OnInit {
 
   ngAfterViewInit() {
     const closeButton = this.createCloseButton();
-    this.renderer.listen(closeButton, 'click', this.close.bind(this));
+    this.unlistenCloseButtonClick = this.renderer.listen(closeButton, 'click', this.close.bind(this));
     this.renderer.insertBefore(this.elementRef.nativeElement, closeButton, this.elementRef.nativeElement.firstChild);
 
     if (this._document.body.clientWidth < LARGE_BREAKPOINT) {
@@ -131,6 +136,7 @@ export class ClrNavLevel implements OnInit {
   ngOnDestroy() {
     this.responsiveNavService.unregisterNav(this.level);
     this._subscription.unsubscribe();
+    this.destroyCloseButton();
   }
 
   @HostListener('window:resize', ['$event'])
@@ -231,6 +237,28 @@ export class ClrNavLevel implements OnInit {
     this.appRef.attachView(iconRef.hostView);
     closeButton.appendChild(iconRef.location.nativeElement);
 
+    // The icon is created outside of any view container, so nothing destroys it for us when this
+    // directive goes away - see destroyCloseButton().
+    this.closeButtonIconRef = iconRef;
+
     return closeButton;
+  }
+
+  /**
+   * The close button icon is instantiated imperatively and attached to the ApplicationRef, which
+   * holds on to every view attached to it until it is detached again. Leaving it attached leaks the
+   * icon component, its host element and the close button containing it on every navigation that
+   * recreates the nav, and the icon's own subscription to the global icon registry keeps that
+   * detached subtree reachable on top of it.
+   */
+  private destroyCloseButton() {
+    this.unlistenCloseButtonClick?.();
+    this.unlistenCloseButtonClick = null;
+
+    if (this.closeButtonIconRef) {
+      this.appRef.detachView(this.closeButtonIconRef.hostView);
+      this.closeButtonIconRef.destroy();
+      this.closeButtonIconRef = null;
+    }
   }
 }

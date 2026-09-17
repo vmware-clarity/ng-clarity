@@ -14,6 +14,7 @@ import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
 import { ClrModal } from './modal';
+import { ModalStackService } from './modal-stack.service';
 import { ClrModalModule } from './modal.module';
 
 @Component({
@@ -345,5 +346,20 @@ describe('Modal', () => {
     const maybleCloseButton = modalHeader.children[1];
     expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
     expect(maybleCloseButton.classList.contains('close')).toBeTrue();
+  });
+
+  it('leaves the modal stack when destroyed while still open', () => {
+    const modalStackService = TestBed.inject(ModalStackService);
+    const trackModalCloseSpy = spyOn(modalStackService, 'trackModalClose').and.callThrough();
+    const closeSpy = spyOn(modal, 'close');
+
+    fixture.destroy();
+
+    expect(trackModalCloseSpy).toHaveBeenCalledWith(modal);
+
+    // The stack is application wide, so an entry left behind would keep the destroyed modal - and
+    // its detached DOM - alive, and would still answer to the escape key.
+    document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
+    expect(closeSpy).not.toHaveBeenCalled();
   });
 });

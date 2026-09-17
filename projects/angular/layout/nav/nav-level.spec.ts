@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ApplicationRef, Component, ViewRef } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { spec } from '@clr/angular/testing';
 import { LARGE_BREAKPOINT } from '@clr/angular/utils';
 
@@ -196,6 +197,22 @@ describe('NavLevelDirective', function () {
   });
 
   describe('Close button:', function () {
+    it('should destroy the close button icon when the nav level is destroyed', function () {
+      const appRef = TestBed.inject(ApplicationRef);
+      const iconRef = (this.clarityDirective as any).closeButtonIconRef;
+      const detachViewSpy = spyOn(appRef, 'detachView').and.callThrough();
+
+      expect(iconRef).toBeTruthy();
+
+      this.fixture.destroy();
+
+      // Left attached, the ApplicationRef would hold on to the icon - and through it the detached
+      // close button - for the lifetime of the application.
+      expect(detachViewSpy).toHaveBeenCalledWith(iconRef.hostView);
+      expect((iconRef.hostView as ViewRef).destroyed).toBeTrue();
+      expect((this.clarityDirective as any).closeButtonIconRef).toBeNull();
+    });
+
     it('should hide navigation when the close button is clicked', function () {
       /**
        * Tried to spyOn on the 'close` function but since we are using `this.close.bind(this)` the spy is not working.

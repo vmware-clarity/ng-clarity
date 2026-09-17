@@ -45,6 +45,7 @@ import DatagridSingleSelectionDirectiveSpec from './datagrid-single-selection.di
 import DatagridVirtualScrollSpec from './datagrid-virtual-scroll.directive.spec';
 import DatagridSpecs from './datagrid.spec';
 import ColumnResizerServiceSpecs from './providers/column-resizer.service.spec';
+import DetailServiceSpecs from './providers/detail.service.spec';
 import DisplayModeServiceSpecs from './providers/display-mode.service.spec';
 import FiltersProviderSpecs from './providers/filters.spec';
 import ItemsProviderSpecs from './providers/items.spec';
@@ -77,6 +78,7 @@ describe('Datagrid', function () {
     DisplayModeServiceSpecs();
     TableSizeServiceSpec();
     ColumnResizerServiceSpecs();
+    DetailServiceSpecs();
   });
 
   describe('Components', function () {

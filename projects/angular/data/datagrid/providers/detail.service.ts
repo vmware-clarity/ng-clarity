@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, OnDestroy } from '@angular/core';
 import { ModalStackService } from '@clr/angular/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -14,7 +14,7 @@ export const DEFAULT_DETAIL_WIDTH = 66;
 export const MIN_DETAIL_WIDTH = 0;
 
 @Injectable()
-export class DetailService {
+export class DetailService implements OnDestroy {
   id: string;
   detailWidth = DEFAULT_DETAIL_WIDTH;
 
@@ -51,6 +51,21 @@ export class DetailService {
 
   get isOpen() {
     return this.toggleState === true;
+  }
+
+  /**
+   * The detail pane registers itself in the application-wide modal stack when it opens, and only
+   * close() takes it back out. A datagrid destroyed with its detail pane open - navigating away
+   * from the page, for instance - would otherwise leave this service in that stack forever, and
+   * with it the cached row and the detail button element it holds, which is a detached DOM node by
+   * then. This does not call close(), because returning focus to a button that is on its way out
+   * would steal focus from whatever is being navigated to.
+   */
+  ngOnDestroy() {
+    this.modalStackService.trackModalClose(this);
+    this.toggleState = false;
+    this.button = null;
+    this.cache = null;
   }
 
   open(item: any, button?: HTMLButtonElement) {

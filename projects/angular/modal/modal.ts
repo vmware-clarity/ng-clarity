@@ -118,6 +118,12 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   ngOnDestroy(): void {
     this._scrollingService.resumeScrolling();
+
+    // A modal that is destroyed while still open never reaches the leave animation that normally
+    // calls trackModalClose() - navigating away with the modal open is the common case. The stack
+    // lives for the lifetime of the application, so an entry left behind keeps this component, its
+    // view and the whole detached modal subtree alive, and keeps the body keyup listener attached.
+    this.modalStackService.trackModalClose(this);
   }
 
   open(): void {

@@ -17,10 +17,12 @@ const PLATFORM_SERVER_ID = 'server';
 export default function (): void {
   describe('DetailService provider', function () {
     let provider: DetailService;
+    let modalStackService: ModalStackService;
     let subscription: Subscription;
 
     beforeEach(function () {
-      provider = new DetailService(new ModalStackService(PLATFORM_SERVER_ID));
+      modalStackService = new ModalStackService(PLATFORM_SERVER_ID);
+      provider = new DetailService(modalStackService);
     });
 
     afterEach(() => {
@@ -95,6 +97,24 @@ export default function (): void {
       // Toggle the currently open row
       provider.toggle('two');
       expect(provider.isOpen).toBeFalse();
+    });
+
+    it('leaves the modal stack and releases the cached row when destroyed while open', () => {
+      const button = document.createElement('button');
+      const trackModalCloseSpy = spyOn(modalStackService, 'trackModalClose').and.callThrough();
+      const focusSpy = spyOn(button, 'focus');
+
+      provider.open('one', button);
+      provider.ngOnDestroy();
+
+      // The stack is application wide, so an entry left behind would keep this service - and with
+      // it the detached detail button and the cached row - alive for the lifetime of the app.
+      expect(trackModalCloseSpy).toHaveBeenCalledWith(provider);
+      expect(provider.isOpen).toBeFalse();
+      expect(provider.state).toBeNull();
+
+      // Focus must not be moved back to a button that is being destroyed along with the datagrid.
+      expect(focusSpy).not.toHaveBeenCalled();
     });
   });
 }

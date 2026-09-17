@@ -251,7 +251,7 @@ export class ClrNavigationModule {
 }
 
 // @public (undocumented)
-export class ClrNavLevel implements OnInit {
+export class ClrNavLevel implements OnInit, AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ClrStandaloneCdkTrapFocus" needs to be exported by the entry point clr-angular-layout.d.ts
     constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector, environmentInjector: EnvironmentInjector, appRef: ApplicationRef);
     // (undocumented)

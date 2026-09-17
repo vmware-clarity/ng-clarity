@@ -4359,7 +4359,7 @@ export class ClrNavigationModule {
 }
 
 // @public (undocumented)
-export class ClrNavLevel implements OnInit {
+export class ClrNavLevel implements OnInit, AfterViewInit, OnDestroy {
     constructor(platformId: any, cdkTrapFocus: ClrStandaloneCdkTrapFocus, responsiveNavService: ResponsiveNavigationService, elementRef: ElementRef<HTMLElement>, renderer: Renderer2, injector: Injector, environmentInjector: EnvironmentInjector, appRef: ApplicationRef);
     // (undocumented)
     addNavClass(level: number): void;
