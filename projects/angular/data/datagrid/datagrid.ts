@@ -14,6 +14,7 @@ import {
   DoCheck,
   DOCUMENT,
   ElementRef,
+  EmbeddedViewRef,
   EventEmitter,
   forwardRef,
   Inject,
@@ -165,6 +166,14 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   private _subscriptions: Subscription[] = [];
   private _virtualScrollSubscriptions: Subscription[] = [];
+
+  /**
+   * The placeholder columns we create from `fixedColumnTemplate` for the calculate pass. Unlike
+   * the column views, which belong to their `WrappedColumn`, these are created here on every
+   * pass, so they are ours to destroy. Detaching them from the container only unlinks them - the
+   * views themselves would stay alive and keep the whole datagrid in memory.
+   */
+  private fixedColumnViews: EmbeddedViewRef<void>[] = [];
 
   private cachedRowsHeight = 0;
   private cachedContentHeight = 0;
@@ -397,6 +406,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this._projectedStickyColumns.detach();
         }
         // Remove any projected columns from the projectedCalculationColumns container
+        this.destroyFixedColumnViews();
         for (let i = this._projectedCalculationColumns.length; i > 0; i--) {
           this._projectedCalculationColumns.detach();
         }
@@ -435,11 +445,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
             this.selection.selectionType !== this.SELECTION_TYPE.None,
             this.expandableRows.hasExpandableRow || this.detailService.enabled,
           ];
-          fixedColumnConditions
-            .filter(Boolean)
-            .forEach(() =>
-              this._projectedCalculationColumns.insert(this._fixedColumnTemplate.createEmbeddedView(null))
-            );
+          fixedColumnConditions.filter(Boolean).forEach(() => {
+            const fixedColumnView = this._fixedColumnTemplate.createEmbeddedView(null);
+            this.fixedColumnViews.push(fixedColumnView);
+            this._projectedCalculationColumns.insert(fixedColumnView);
+          });
           this.columns.forEach(column => {
             this._projectedCalculationColumns.insert(column._view);
           });
@@ -479,6 +489,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngOnDestroy() {
+    this.destroyFixedColumnViews();
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this.resizeObserver.disconnect();
@@ -525,6 +536,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   dataChanged() {
     this.items.refresh();
+  }
+
+  private destroyFixedColumnViews() {
+    this.fixedColumnViews.forEach(view => view.destroy());
+    this.fixedColumnViews = [];
   }
 
   private toggleVirtualScrollSubscriptions() {

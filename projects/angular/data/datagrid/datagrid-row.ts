@@ -12,6 +12,7 @@ import {
   ContentChildren,
   DOCUMENT,
   ElementRef,
+  EmbeddedViewRef,
   EventEmitter,
   Inject,
   Injector,
@@ -111,6 +112,14 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   private _rowSelectionLabel = '';
   private wrappedInjector: Injector;
   private subscriptions: Subscription[] = [];
+
+  /**
+   * The placeholder cells we create from `fixedCellTemplate` for the calculate pass. Unlike the
+   * cell views, which belong to their `WrappedCell`, these are created here on every pass, so
+   * they are ours to destroy. Detaching them from the container only unlinks them - the views
+   * themselves would stay alive and keep the whole row, and the datagrid with it, in memory.
+   */
+  private fixedCellViews: EmbeddedViewRef<void>[] = [];
 
   // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
   private _selectable: boolean | string = true;
@@ -272,6 +281,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
           this._pinnedCells.detach();
         }
         // remove cell views from calculated view
+        this.destroyFixedCellViews();
         for (let i = this._calculatedCells.length; i > 0; i--) {
           this._calculatedCells.detach();
         }
@@ -284,9 +294,11 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
             this.globalExpandable.hasExpandableRow,
             this.detailService.enabled,
           ];
-          fixedCellConditions
-            .filter(Boolean)
-            .forEach(() => this._calculatedCells.insert(this._fixedCellTemplate.createEmbeddedView(null)));
+          fixedCellConditions.filter(Boolean).forEach(() => {
+            const fixedCellView = this._fixedCellTemplate.createEmbeddedView(null);
+            this.fixedCellViews.push(fixedCellView);
+            this._calculatedCells.insert(fixedCellView);
+          });
           this.dgCells.forEach(cell => {
             if (!cell._view.destroyed) {
               this._calculatedCells.insert(cell._view);
@@ -304,6 +316,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   ngOnDestroy() {
+    this.destroyFixedCellViews();
     this.subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
   }
 
@@ -365,6 +378,11 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
    * matched with their column by declaration index, and iterating in that order keeps both groups
    * aligned with the header.
    */
+  private destroyFixedCellViews() {
+    this.fixedCellViews.forEach(view => view.destroy());
+    this.fixedCellViews = [];
+  }
+
   private insertCellViews() {
     this.dgCells.forEach((cell, index) => {
       if (cell._view.destroyed) {
