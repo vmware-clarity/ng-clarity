@@ -85,10 +85,12 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   @Output('clrSelectedChange') selectedChange = new EventEmitter<ClrSelectedState>(false);
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
   /**
-   * Emits `true` when the node and all of its descendants get expanded,
-   * and `false` as soon as the node or any of its descendants gets collapsed afterwards.
+   * Emits `true` when the node and all of its descendants are expanded, `false` when none of them are, and
+   * `null` when only some of them are, which is what a node toggled on its own leaves behind.
    */
-  @Output('clrDescendantsExpandedChange') descendantsExpandedChange = new EventEmitter<boolean>();
+  @Output('clrDescendantsExpandedChange') descendantsExpandedChange: EventEmitter<boolean | null> = new EventEmitter<
+    boolean | null
+  >(true);
 
   STATES = ClrSelectedState;
   isModelLoading = false;
@@ -186,10 +188,15 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
    * collapses the whole subtree, see `expandDescendants()` and `collapseDescendants()`.
    */
   @Input('clrDescendantsExpanded')
-  get descendantsExpanded(): boolean {
+  get descendantsExpanded(): boolean | null {
     return this._model.descendantsExpanded;
   }
-  set descendantsExpanded(value: boolean) {
+  set descendantsExpanded(value: boolean | null) {
+    // `null` is the mixed state the node reports back. Writing it means "I don't know", so it is ignored,
+    // which is also what stops the two-way binding from echoing a partial collapse back as an instruction.
+    if (value === null || value === undefined) {
+      return;
+    }
     value = !!value;
     if (value !== this._model.descendantsExpanded) {
       this.setDescendantsExpanded(value);
@@ -239,10 +246,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
         this.skipAnimation = this.bulkChange;
         this.expandedChange.emit(value);
         this._model.expanded = value;
-        if (!value) {
-          // Nothing above this node can claim that all of its descendants are expanded anymore.
-          this._model._clearDescendantsExpanded();
-          this.featuresService._clearAllExpanded();
+        if (!this.bulkChange) {
+          // Toggled on its own, so the subtrees that claimed the opposite are only partly expanded now.
+          this._model._markDescendantsMixed(value);
+          this.featuresService._markAllExpandedMixed(value);
         }
       })
     );
@@ -334,8 +341,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     this.bulkChange = false;
   }
 
-  onDescendantsCollapsed() {
-    this.descendantsExpandedChange.emit(false);
+  onDescendantsExpandedChange(state: boolean | null) {
+    this.descendantsExpandedChange.emit(state);
   }
 
   focusTreeNode(): void {
@@ -407,13 +414,13 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   private setDescendantsExpanded(expanded: boolean) {
-    const changed = this._model.descendantsExpanded !== expanded;
-    // Set before walking the subtree, so that the collapsing descendants don't report the change themselves.
-    this._model.descendantsExpanded = expanded;
+    // The walk records the state of every node it visits, this one included, and reports each change.
     this._model.setExpandedRecursive(expanded);
-    if (changed) {
-      this.descendantsExpandedChange.emit(expanded);
+    // Above the subtree nothing was walked, so any ancestor claiming the opposite is now only partly expanded.
+    if (this._model.parent) {
+      this._model.parent._markDescendantsMixed(expanded);
     }
+    this.featuresService._markAllExpandedMixed(expanded);
   }
 
   private setTabIndex(value: number) {

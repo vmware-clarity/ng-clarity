@@ -42,9 +42,12 @@ import { ClrTreeNode } from './tree-node';
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
   /**
-   * Emits `true` when all nodes get expanded and `false` as soon as any node gets collapsed afterwards.
+   * Emits `true` when every node is expanded, `false` when none of them are, and `null` when only some of
+   * them are, which is what a node expanded or collapsed on its own leaves behind.
    */
-  @Output('clrAllExpandedChange') allExpandedChange = new EventEmitter<boolean>();
+  @Output('clrAllExpandedChange') allExpandedChange: EventEmitter<boolean | null> = new EventEmitter<boolean | null>(
+    true
+  );
 
   @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
 
@@ -74,7 +77,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 
     this.subscriptions.push(subscription);
 
-    featuresService._onAllExpandedCleared = () => this.allExpandedChange.emit(false);
+    featuresService._onAllExpandedChange = state => this.allExpandedChange.emit(state);
   }
 
   @Input('clrLazy')
@@ -87,10 +90,15 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
    * them all, see `expandAll()` and `collapseAll()`.
    */
   @Input('clrAllExpanded')
-  get allExpanded(): boolean {
+  get allExpanded(): boolean | null {
     return this.featuresService.allExpanded;
   }
-  set allExpanded(value: boolean) {
+  set allExpanded(value: boolean | null) {
+    // `null` is the mixed state the tree reports back. Writing it means "I don't know", so it is ignored,
+    // which is also what stops the two-way binding from echoing a partial collapse back as an instruction.
+    if (value === null || value === undefined) {
+      return;
+    }
     value = !!value;
     if (value !== this.featuresService.allExpanded) {
       this.setAllExpanded(value);
@@ -132,11 +140,10 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
   }
 
   private setAllExpanded(expanded: boolean) {
-    const changed = this.featuresService.allExpanded !== expanded;
-    // Set before walking the tree, so that the collapsing nodes don't report the change themselves.
-    this.featuresService.allExpanded = expanded;
+    const previous = this.featuresService.allExpanded;
     this.rootModels.forEach(model => model.setExpandedRecursive(expanded));
-    if (changed) {
+    this.featuresService.allExpanded = expanded;
+    if (expanded !== previous) {
       this.allExpandedChange.emit(expanded);
     }
   }

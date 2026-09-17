@@ -14,10 +14,11 @@ export abstract class TreeNodeModel<T> {
   nodeId: string;
   expanded: boolean;
   /**
-   * True while this node and all of its descendants are expected to be expanded, see `expandDescendants()`.
-   * Descendants created afterwards (lazy-loaded children, dynamic nodes) come in expanded while this is set.
+   * Whether this node and all of its descendants are expanded: `true` when they all are, `false` when none of
+   * them are, and `null` when only some of them are, the same way selection reports an indeterminate state.
+   * Descendants created afterwards (lazy-loaded children, dynamic nodes) come in expanded while this is `true`.
    */
-  descendantsExpanded = false;
+  descendantsExpanded: boolean | null = false;
   /*
    * Internal, the node rendering this model. Bulk operations walk the model tree and need the node itself,
    * for its expandable state, its animation and its outputs.
@@ -77,8 +78,8 @@ export abstract class TreeNodeModel<T> {
   }
 
   /**
-   * Expands or collapses this node and every descendant that is already known.
-   * Disabled nodes are left untouched, like for selection.
+   * Expands or collapses this node and every descendant that is already known, and records the new state on
+   * each of them. Disabled branches are left untouched and excluded, the same way selection excludes them.
    */
   setExpandedRecursive(expanded: boolean) {
     if (this.disabled) {
@@ -89,6 +90,12 @@ export abstract class TreeNodeModel<T> {
     }
     for (const child of this.loadedChildren) {
       child.setExpandedRecursive(expanded);
+    }
+    if (expanded !== this.descendantsExpanded) {
+      this.descendantsExpanded = expanded;
+      if (this.node) {
+        this.node.onDescendantsExpandedChange(expanded);
+      }
     }
   }
 
@@ -136,15 +143,16 @@ export abstract class TreeNodeModel<T> {
   }
 
   /*
-   * Internal, called when this node collapses: neither this node nor any of its ancestors
-   * can claim that all of their descendants are expanded anymore.
+   * Internal, called when this node expands or collapses on its own. Any ancestor claiming the opposite for
+   * its whole subtree is now only partly expanded, so it moves to the mixed state and reports it.
    */
-  _clearDescendantsExpanded() {
+  _markDescendantsMixed(expanded: boolean) {
+    const contradicted = !expanded;
     for (let current: TreeNodeModel<T> = this; current; current = current.parent) {
-      if (current.descendantsExpanded) {
-        current.descendantsExpanded = false;
+      if (current.descendantsExpanded === contradicted) {
+        current.descendantsExpanded = null;
         if (current.node) {
-          current.node.onDescendantsCollapsed();
+          current.node.onDescendantsExpandedChange(null);
         }
       }
     }

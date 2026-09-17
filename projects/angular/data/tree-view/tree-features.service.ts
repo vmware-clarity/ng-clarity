@@ -22,23 +22,25 @@ export class TreeFeaturesService<T> {
   childrenFetched = new Subject<void>();
 
   /**
-   * True while every node of the tree is expected to be expanded, see `ClrTree.expandAll()`.
-   * Nodes created afterwards (lazy-loaded children, dynamic nodes) come in expanded while this is set.
+   * Whether every node of the tree is expanded: `true` when they all are, `false` when none of them are, and
+   * `null` when only some of them are. See `ClrTree.expandAll()`.
+   * Nodes created afterwards (lazy-loaded children, dynamic nodes) come in expanded while this is `true`.
    */
-  allExpanded = false;
+  allExpanded: boolean | null = false;
   /*
-   * Internal, registered by ClrTree to be told when a node collapses while allExpanded was set.
+   * Internal, registered by ClrTree to be told when the tree-wide state changes on its own.
    */
-  _onAllExpandedCleared: () => void;
+  _onAllExpandedChange: (state: boolean | null) => void;
 
   /*
-   * Internal, called when any node of the tree collapses.
+   * Internal, called when any node of the tree expands or collapses on its own. If the tree claimed the
+   * opposite for every node, it is now only partly expanded.
    */
-  _clearAllExpanded() {
-    if (this.allExpanded) {
-      this.allExpanded = false;
-      if (this._onAllExpandedCleared) {
-        this._onAllExpandedCleared();
+  _markAllExpandedMixed(expanded: boolean) {
+    if (this.allExpanded === !expanded) {
+      this.allExpanded = null;
+      if (this._onAllExpandedChange) {
+        this._onAllExpandedChange(null);
       }
     }
   }

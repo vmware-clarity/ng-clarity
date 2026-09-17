@@ -108,8 +108,8 @@ class ExpandAllTestComponent {
   @ViewChild('maine') maine: ClrTreeNode<void>;
 
   hasTree = true;
-  allExpanded = false;
-  washingtonDescendantsExpanded = false;
+  allExpanded: boolean | null = false;
+  washingtonDescendantsExpanded: boolean | null = false;
   californiaExpanded = false;
   losAngelesExpanded = false;
   maineExpanded = false;
@@ -271,6 +271,12 @@ export default function (): void {
       return context.clarityElement.querySelectorAll('[aria-expanded="true"]').length;
     }
 
+    // The tri-state outputs are asynchronous, so the bound values only settle on the next turn.
+    async function settle(context: ExpandAllContext) {
+      await context.fixture.whenStable();
+      context.detectChanges();
+    }
+
     it('expandAll() expands every expandable node and leaves the leaves alone', function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
       this.detectChanges();
@@ -315,10 +321,12 @@ export default function (): void {
       expect(this.testComponent.californiaExpanded).toBeFalse();
     });
 
-    it('emits clrAllExpandedChange on expandAll() and collapseAll()', function (this: ExpandAllContext) {
+    it('emits clrAllExpandedChange on expandAll() and collapseAll()', async function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
+      await settle(this);
       expect(this.testComponent.allExpanded).toBeTrue();
       this.testComponent.tree.collapseAll();
+      await settle(this);
       expect(this.testComponent.allExpanded).toBeFalse();
     });
 
@@ -331,21 +339,54 @@ export default function (): void {
       expect(spy).toHaveBeenCalledTimes(1);
     });
 
-    it('emits clrAllExpandedChange false as soon as any node collapses', function (this: ExpandAllContext) {
+    it('reports the mixed state as soon as any node collapses', async function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
+      await settle(this);
       expect(this.testComponent.allExpanded).toBeTrue();
+
       this.testComponent.seattle.expanded = false;
-      expect(this.testComponent.allExpanded).toBeFalse();
-      expect(this.testComponent.tree.allExpanded).toBeFalse();
+      await settle(this);
+      // Not every node is expanded anymore, but not every node is collapsed either
+      expect(this.testComponent.allExpanded).toBeNull();
+      expect(this.testComponent.tree.allExpanded).toBeNull();
       // Other nodes are left untouched
       expect(this.testComponent.california.expanded).toBeTrue();
     });
 
-    it('does not emit clrAllExpandedChange when a node collapses without a previous expand all', function (this: ExpandAllContext) {
-      const spy = spyOn(this.testComponent.tree.allExpandedChange, 'emit');
+    it('collapses everything when the binding goes from mixed to false', async function (this: ExpandAllContext) {
+      this.testComponent.tree.expandAll();
+      await settle(this);
+      this.testComponent.seattle.expanded = false;
+      await settle(this);
+      expect(this.testComponent.allExpanded).toBeNull();
+
+      // From the mixed state, asking for false is a real change, so it applies
+      this.testComponent.allExpanded = false;
+      this.detectChanges();
+      expect(allNodes(this).every(node => !node.expanded)).toBeTrue();
+    });
+
+    it('ignores the mixed state written back into the binding', async function (this: ExpandAllContext) {
+      this.testComponent.tree.expandAll();
+      await settle(this);
+      this.testComponent.seattle.expanded = false;
+      await settle(this);
+
+      // The echo of the mixed state must not be read as an instruction to collapse
+      this.detectChanges();
+      await settle(this);
+      expect(this.testComponent.california.expanded).toBeTrue();
+      expect(this.testComponent.washington.expanded).toBeTrue();
+    });
+
+    it('reports the mixed state when a node is expanded on its own', async function (this: ExpandAllContext) {
+      expect(this.testComponent.tree.allExpanded).toBeFalse();
+
       this.testComponent.california.expanded = true;
-      this.testComponent.california.expanded = false;
-      expect(spy).not.toHaveBeenCalled();
+      await settle(this);
+      // The tree claimed every node was collapsed, which is no longer true
+      expect(this.testComponent.allExpanded).toBeNull();
+      expect(this.testComponent.tree.allExpanded).toBeNull();
     });
 
     it('offers a [(clrAllExpanded)] two-way binding on the tree', function (this: ExpandAllContext) {
@@ -410,37 +451,48 @@ export default function (): void {
       expect(this.testComponent.vermont.expanded).toBeFalse();
     });
 
-    it('expandDescendants() on a node only expands its own subtree', function (this: ExpandAllContext) {
+    it('expandDescendants() on a node only expands its own subtree', async function (this: ExpandAllContext) {
       this.testComponent.washington.expandDescendants();
       expect(this.testComponent.washington.expanded).toBeTrue();
       expect(this.testComponent.seattle.expanded).toBeTrue();
       expect(this.testComponent.california.expanded).toBeFalse();
       expect(this.testComponent.sanFrancisco.expanded).toBeFalse();
+      await settle(this);
       expect(this.testComponent.washingtonDescendantsExpanded).toBeTrue();
-      expect(this.testComponent.allExpanded).toBeFalse();
+      // Part of the tree is expanded now, so the tree itself is mixed
+      expect(this.testComponent.allExpanded).toBeNull();
 
       this.testComponent.washington.collapseDescendants();
+      await settle(this);
       expect(this.testComponent.washington.expanded).toBeFalse();
       expect(this.testComponent.seattle.expanded).toBeFalse();
       expect(this.testComponent.washingtonDescendantsExpanded).toBeFalse();
     });
 
-    it('offers a [(clrDescendantsExpanded)] two-way binding on a node', function (this: ExpandAllContext) {
+    it('offers a [(clrDescendantsExpanded)] two-way binding on a node', async function (this: ExpandAllContext) {
       this.testComponent.washingtonDescendantsExpanded = true;
       this.detectChanges();
       expect(this.testComponent.washington.expanded).toBeTrue();
       expect(this.testComponent.seattle.expanded).toBeTrue();
       expect(this.testComponent.california.expanded).toBeFalse();
 
-      // Collapsing a descendant resets the binding
+      // Collapsing a descendant moves the binding to the mixed state
       this.testComponent.seattle.expanded = false;
-      expect(this.testComponent.washingtonDescendantsExpanded).toBeFalse();
+      await settle(this);
+      expect(this.testComponent.washingtonDescendantsExpanded).toBeNull();
       expect(this.testComponent.washington.expanded).toBeTrue();
+
+      // And from there, asking for false collapses the subtree
+      this.testComponent.washingtonDescendantsExpanded = false;
+      this.detectChanges();
+      expect(this.testComponent.washington.expanded).toBeFalse();
     });
 
-    it('resets the descendants binding of a node when the tree collapses', function (this: ExpandAllContext) {
+    it('resets the descendants binding of a node when the tree collapses', async function (this: ExpandAllContext) {
       this.testComponent.washington.expandDescendants();
+      await settle(this);
       this.testComponent.tree.collapseAll();
+      await settle(this);
       expect(this.testComponent.washingtonDescendantsExpanded).toBeFalse();
       expect(this.testComponent.washington.descendantsExpanded).toBeFalse();
     });
@@ -508,7 +560,8 @@ export default function (): void {
       await settleLoading(this);
       expect(nodeByName(this, 'AAA').expanded).toBeTrue();
       expect(nodeByName(this, 'AAAA')).toBeTruthy();
-      expect(this.testComponent.tree.allExpanded).toBeFalse();
+      // Only part of the tree was expanded
+      expect(this.testComponent.tree.allExpanded).toBeNull();
     });
   });
 }

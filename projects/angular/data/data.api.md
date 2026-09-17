@@ -1197,9 +1197,9 @@ export class ClrStackViewModule {
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService" needs to be exported by the entry point clr-angular-data.d.ts
     constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
-    get allExpanded(): boolean;
-    set allExpanded(value: boolean);
-    allExpandedChange: EventEmitter<boolean>;
+    get allExpanded(): boolean | null;
+    set allExpanded(value: boolean | null);
+    allExpandedChange: EventEmitter<boolean | null>;
     collapseAll(): void;
     expandAll(): void;
     // (undocumented)
@@ -1234,9 +1234,9 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     contentContainerTabindex: number;
-    get descendantsExpanded(): boolean;
-    set descendantsExpanded(value: boolean);
-    descendantsExpandedChange: EventEmitter<boolean>;
+    get descendantsExpanded(): boolean | null;
+    set descendantsExpanded(value: boolean | null);
+    descendantsExpandedChange: EventEmitter<boolean | null>;
     // (undocumented)
     get disabled(): boolean;
     set disabled(value: boolean);
@@ -1275,7 +1275,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     nodeId: string;
     // (undocumented)
-    onDescendantsCollapsed(): void;
+    onDescendantsExpandedChange(state: boolean | null): void;
     // (undocumented)
     onKeyDown(event: KeyboardEvent): void;
     // (undocumented)
@@ -1651,9 +1651,7 @@ export function selectionTypeAttribute(value: SelectionType | string): Selection
 export abstract class TreeNodeModel<T> {
     // (undocumented)
     abstract children: TreeNodeModel<T>[];
-    // (undocumented)
-    _clearDescendantsExpanded(): void;
-    descendantsExpanded: boolean;
+    descendantsExpanded: boolean | null;
     // (undocumented)
     destroy(): void;
     // (undocumented)
@@ -1669,6 +1667,8 @@ export abstract class TreeNodeModel<T> {
     // (undocumented)
     get loading(): boolean;
     set loading(isLoading: boolean);
+    // (undocumented)
+    _markDescendantsMixed(expanded: boolean): void;
     // (undocumented)
     model: T | null;
     // (undocumented)

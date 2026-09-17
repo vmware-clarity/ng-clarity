@@ -52,8 +52,8 @@ import { ClrTreeViewModule } from '@clr/angular';
   imports: [ClrTreeViewModule],
 })
 export class ExampleComponent {
-  allExpanded = false;
-  europeExpanded = true;
+  allExpanded: boolean | null = false;
+  europeExpanded: boolean | null = true;
 }
 `;
 
@@ -67,6 +67,6 @@ export class ExpandAllTreeDemo {
   exampleHtml = EXAMPLE_HTML;
   exampleTs = EXAMPLE_TS;
 
-  allExpanded = false;
-  europeExpanded = true;
+  allExpanded: boolean | null = false;
+  europeExpanded: boolean | null = true;
 }

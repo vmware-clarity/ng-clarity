@@ -25,14 +25,14 @@ class TestModel extends TreeNodeModel<string> {
 /* Stands in for the rendered node: the model only ever calls these two. */
 class FakeTreeNode {
   expanded = false;
-  descendantsCollapsedCount = 0;
+  reported: (boolean | null)[] = [];
 
   setExpandedInBulk(expanded: boolean) {
     this.expanded = expanded;
   }
 
-  onDescendantsCollapsed() {
-    this.descendantsCollapsedCount++;
+  onDescendantsExpandedChange(state: boolean | null) {
+    this.reported.push(state);
   }
 }
 
@@ -232,21 +232,45 @@ export default function (): void {
         expect(() => orphan.setExpandedRecursive(true)).not.toThrow();
       });
 
-      it('clears the descendantsExpanded flag of every ancestor when a node collapses', function () {
+      it('records the state of every node it walks', function () {
+        root.setExpandedRecursive(true);
+        expect(root.descendantsExpanded).toBeTrue();
+        expect(child.descendantsExpanded).toBeTrue();
+        expect(nodes.get(root).reported).toEqual([true]);
+
+        root.setExpandedRecursive(false);
+        expect(root.descendantsExpanded).toBeFalse();
+        expect(child.descendantsExpanded).toBeFalse();
+        expect(nodes.get(root).reported).toEqual([true, false]);
+      });
+
+      it('moves ancestors claiming the opposite to the mixed state when a node is toggled on its own', function () {
         root.descendantsExpanded = true;
         child.descendantsExpanded = true;
 
-        child.children[0]._clearDescendantsExpanded();
+        child.children[0]._markDescendantsMixed(false);
 
-        expect(root.descendantsExpanded).toBeFalse();
-        expect(child.descendantsExpanded).toBeFalse();
-        expect(nodes.get(root).descendantsCollapsedCount).toBe(1);
-        expect(nodes.get(child).descendantsCollapsedCount).toBe(1);
-        expect(nodes.get(child.children[0]).descendantsCollapsedCount).toBe(0);
+        expect(root.descendantsExpanded).toBeNull();
+        expect(child.descendantsExpanded).toBeNull();
+        expect(nodes.get(root).reported).toEqual([null]);
+        expect(nodes.get(child).reported).toEqual([null]);
+        expect(nodes.get(child.children[0]).reported).toEqual([]);
 
-        // Only notifies once
-        child.children[0]._clearDescendantsExpanded();
-        expect(nodes.get(root).descendantsCollapsedCount).toBe(1);
+        // Already mixed, so nothing more to report
+        child.children[0]._markDescendantsMixed(false);
+        expect(nodes.get(root).reported).toEqual([null]);
+      });
+
+      it('leaves ancestors alone when the toggle agrees with what they claim', function () {
+        root.descendantsExpanded = true;
+        child.descendantsExpanded = true;
+
+        // A node expanding does not contradict "everything is expanded"
+        child.children[0]._markDescendantsMixed(true);
+
+        expect(root.descendantsExpanded).toBeTrue();
+        expect(child.descendantsExpanded).toBeTrue();
+        expect(nodes.get(root).reported).toEqual([]);
       });
 
       it('drops its reference to the node on destroy', function () {

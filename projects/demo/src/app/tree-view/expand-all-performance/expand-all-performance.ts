@@ -83,7 +83,7 @@ export class ExpandAllPerformanceDemo implements OnInit {
   data: PerfNode[] = [];
   totalNodes = 0;
   treeVisible = true;
-  allExpanded = false;
+  allExpanded: boolean | null = false;
   running = false;
   measurements: Measurement[] = [];
 
