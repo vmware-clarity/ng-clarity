@@ -488,6 +488,14 @@ interface ClrCommonStrings {
     unselectedTreeNode: string;
     breadcrumbsLabel: string;
     expandBreadcrumbsLabel: string;
+    /**
+     * Aria label of a collapsible card's toggle button while the card is collapsed
+     */
+    expandCardAriaLabel: string;
+    /**
+     * Aria label of a collapsible card's toggle button while the card is expanded
+     */
+    collapseCardAriaLabel: string;
 }
 
 declare class ClrCommonStringsService {

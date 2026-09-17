@@ -21,20 +21,22 @@ import * as i10 from '@clr/angular/wizard';
 export * from '@clr/angular/wizard';
 import * as i11 from '@clr/angular/accordion';
 export * from '@clr/angular/accordion';
-import * as i12 from '@clr/angular/stepper';
+import * as i12 from '@clr/angular/card';
+export * from '@clr/angular/card';
+import * as i13 from '@clr/angular/stepper';
 export * from '@clr/angular/stepper';
-import * as i13 from '@clr/angular/progress/spinner';
+import * as i14 from '@clr/angular/progress/spinner';
 export * from '@clr/angular/progress/spinner';
-import * as i14 from '@clr/angular/progress/progress-bars';
+import * as i15 from '@clr/angular/progress/progress-bars';
 export * from '@clr/angular/progress/progress-bars';
-import * as i15 from '@clr/angular/popover/common';
-import * as i16 from '@clr/angular/timeline';
+import * as i16 from '@clr/angular/popover/common';
+import * as i17 from '@clr/angular/timeline';
 export * from '@clr/angular/timeline';
 export * from '@clr/angular/collapsible-panel';
 
 declare class ClarityModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClarityModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i1.ClrIcon], [typeof i2.ClrEmphasisModule, typeof i3.ClrDataModule, typeof i1.ClrIcon, typeof i1.ClrIconModule, typeof i4.ClrModalModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrFocusOnViewInitModule, typeof i6.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11.ClrAccordionModule, typeof i12.ClrStepperModule, typeof i13.ClrSpinnerModule, typeof i14.ClrProgressBarModule, typeof i15.ClrPopoverModuleNext, typeof i16.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i1.ClrIcon], [typeof i2.ClrEmphasisModule, typeof i3.ClrDataModule, typeof i1.ClrIcon, typeof i1.ClrIconModule, typeof i4.ClrModalModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrFocusOnViewInitModule, typeof i6.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11.ClrAccordionModule, typeof i12.ClrCardModule, typeof i13.ClrStepperModule, typeof i14.ClrSpinnerModule, typeof i15.ClrProgressBarModule, typeof i16.ClrPopoverModuleNext, typeof i17.ClrTimelineModule]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClarityModule>;
 }
 

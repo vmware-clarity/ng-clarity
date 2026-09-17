@@ -4,6 +4,8 @@ import { ClrAccordionModule } from '@clr/angular/accordion';
 export * from '@clr/angular/accordion';
 import { ClrButtonModule } from '@clr/angular/button';
 export * from '@clr/angular/button';
+import { ClrCardModule } from '@clr/angular/card';
+export * from '@clr/angular/card';
 import { ClrDataModule } from '@clr/angular/data';
 export * from '@clr/angular/data';
 import { ClrEmphasisModule } from '@clr/angular/emphasis';
@@ -56,6 +58,7 @@ class ClarityModule {
             ClrWizardModule,
             ClrSidePanelModule,
             ClrAccordionModule,
+            ClrCardModule,
             ClrStepperModule,
             ClrSpinnerModule,
             ClrProgressBarModule,
@@ -75,6 +78,7 @@ class ClarityModule {
             ClrWizardModule,
             ClrSidePanelModule,
             ClrAccordionModule,
+            ClrCardModule,
             ClrStepperModule,
             ClrSpinnerModule,
             ClrProgressBarModule,
@@ -101,6 +105,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.23", ngImpo
                         ClrWizardModule,
                         ClrSidePanelModule,
                         ClrAccordionModule,
+                        ClrCardModule,
                         ClrStepperModule,
                         ClrSpinnerModule,
                         ClrProgressBarModule,
