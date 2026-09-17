@@ -846,6 +846,9 @@ const commonStringsDefault = {
     // Breadcrumbs
     breadcrumbsLabel: 'breadcrumbs',
     expandBreadcrumbsLabel: 'Expand breadcrumbs',
+    // Card
+    expandCardAriaLabel: 'Expand card',
+    collapseCardAriaLabel: 'Collapse card',
 };
 
 /*
