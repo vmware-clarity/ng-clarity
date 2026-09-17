@@ -8,6 +8,7 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { CardAngularDemo } from './angular/card-angular';
 import { CardClickableDemo } from './card-clickable';
 import { CardDropdownDemo } from './card-dropdown';
 import { CardGridDemo } from './card-grid';
@@ -34,6 +35,7 @@ const ROUTES: Routes = [
       { path: 'media-block', component: CardMediaBlockDemo },
       { path: 'list-group', component: CardListGroupDemo },
       { path: 'old', component: CardOldDemo },
+      { path: 'angular', component: CardAngularDemo },
     ],
   },
 ];
