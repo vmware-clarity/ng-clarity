@@ -36,6 +36,12 @@ const defaultMaskSelectors = ['img[src*=".gif"]', 'progress:not([value])', 'app-
 // any documentation page's screenshot nondeterministic. Remove the rule once #2678 is fixed to
 // restore visual coverage of the table of contents.
 //
+// The version select is hidden entirely: its button label is the environment's version
+// ("Version 18" on main, "Version next" on next), so the branding row would render at a
+// different width on each branch and every snapshot would differ between them, which makes
+// backporting the baselines impossible. Hiding it (rather than masking it) keeps the layout
+// itself identical across branches.
+//
 // The login demos' min-height is pinned to the original viewport height: the .login form is
 // min-height: 100vh, so it would otherwise grow along with the viewport resizes below and
 // re-center its content nondeterministically mid-capture.
@@ -54,6 +60,7 @@ function growPageWithContentStyles(minHeightPx: number) {
     app-root > .main-container > .content-container { height: auto !important; }
     app-root > .main-container > .content-container > .content-area { overflow-y: visible !important; overflow-x: clip !important; min-width: 0 !important; }
     app-table-of-contents { display: none !important; }
+    app-version-select { display: none !important; }
     .clr-example .login-wrapper .login { min-height: ${minHeightPx}px !important; }
     clr-datagrid-demo .clr-mt-0px { margin-top: 0 !important; }
     clr-datagrid-demo .clr-mt-8px { margin-top: var(--cds-global-layout-space-xs) !important; }
