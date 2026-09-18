@@ -6,101 +6,19 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
 import { AppfxMultiPageDialogModule, DialogComponent } from '@clr/addons/dialog';
-import { AppfxWorkflowCoreModule, Step, StepModel, StepModelHolder, TabLayout, Var } from '@clr/addons/var';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { AppfxWorkflowCoreModule, TabLayout } from '@clr/addons/var';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 
-// ─── Step models ─────────────────────────────────────────────────────────────
+import { DialogStoryWrapperComponent } from './dialog.storybook.component';
 
-class NameModel implements StepModel {
-  name = Var.of<string>('');
-  readyToComplete = true;
-}
+/**
+ * The render targets `<clr-dialog-story-wrapper>`, so the wrapper — not the aliased `DialogComponent` —
+ * owns the names the args bind to.
+ */
+type DialogArgs = DialogStoryWrapperComponent;
 
-class ReviewModel implements StepModel {
-  readyToComplete = true;
-}
-
-class DialogWorkflowModel {}
-
-// ─── Step components ─────────────────────────────────────────────────────────
-
-@Component({
-  selector: 'clr-dialog-story-name-step',
-  standalone: true,
-  imports: [CommonModule],
-  template: `
-    <div *ngIf="model">
-      <label class="clr-control-label">Name</label>
-      <input
-        class="clr-input"
-        type="text"
-        [value]="model.name.value"
-        (input)="model.name.value = $any($event.target).value"
-      />
-    </div>
-  `,
-})
-class DialogNameStepComponent implements StepModelHolder {
-  model: NameModel;
-}
-
-@Component({
-  selector: 'clr-dialog-story-review-step',
-  standalone: true,
-  imports: [CommonModule],
-  template: '<p>Ready to complete.</p>',
-})
-class DialogReviewStepComponent {}
-
-// ─── Wrapper ─────────────────────────────────────────────────────────────────
-
-@Component({
-  selector: 'clr-dialog-story-wrapper',
-  standalone: true,
-  imports: [CommonModule, AppfxMultiPageDialogModule, DialogNameStepComponent, DialogReviewStepComponent],
-  template: `
-    <button class="btn btn-primary" (click)="opened = true">Open Dialog</button>
-    <appfx-dialog
-      [(opened)]="opened"
-      [steps]="steps"
-      [model]="model"
-      [title]="title"
-      [tabLayout]="tabLayout"
-      [size]="size"
-      [defaultButton]="defaultButton"
-      [showTabLinks]="showTabLinks"
-    ></appfx-dialog>
-  `,
-})
-class DialogStoryWrapperComponent implements OnInit {
-  title = 'Dialog Title';
-  @Input() tabLayout: TabLayout = TabLayout.horizontal;
-  @Input() size: string;
-  @Input() defaultButton: 'submit' | 'close' = 'close';
-  @Input() showTabLinks = true;
-  @Input() opened = true;
-
-  steps: Step[] = [];
-  model = new DialogWorkflowModel();
-
-  ngOnInit() {
-    this.steps = [
-      { title: 'Name', navTitle: 'Name', componentClass: DialogNameStepComponent, model: new NameModel() } as Step,
-      {
-        title: 'Review',
-        navTitle: 'Review',
-        componentClass: DialogReviewStepComponent,
-        model: new ReviewModel(),
-      } as Step,
-    ];
-  }
-}
-
-// ─── Meta ─────────────────────────────────────────────────────────────────────
-
-export default {
+const meta: Meta<DialogArgs> = {
   title: 'Addons/Dialog',
   component: DialogComponent,
   decorators: [
@@ -129,37 +47,34 @@ export default {
     defaultButton: 'close',
     showTabLinks: true,
   },
+  render: args => ({
+    props: args,
+    component: DialogStoryWrapperComponent,
+    template: `
+      <clr-dialog-story-wrapper
+        [title]="title"
+        [tabLayout]="tabLayout"
+        [size]="size"
+        [defaultButton]="defaultButton"
+        [showTabLinks]="showTabLinks"
+      ></clr-dialog-story-wrapper>
+    `,
+  }),
 };
 
-type Story = StoryObj<DialogComponent>;
+export default meta;
 
-const template: StoryFn<DialogStoryWrapperComponent> = args => ({
-  props: args,
-  component: DialogStoryWrapperComponent,
-  template: `
-    <clr-dialog-story-wrapper
-      [title]="title"
-      [tabLayout]="tabLayout"
-      [size]="size"
-      [defaultButton]="defaultButton"
-      [showTabLinks]="showTabLinks"
-    ></clr-dialog-story-wrapper>
-  `,
-});
+type Story = StoryObj<DialogArgs>;
 
-export const Default: Story = {
-  render: template,
-};
+export const Default: Story = {};
 
 export const VerticalTabs: Story = {
-  render: template,
   args: {
     tabLayout: TabLayout.vertical,
   },
 };
 
 export const SubmitDefault: Story = {
-  render: template,
   args: {
     defaultButton: 'submit',
   },

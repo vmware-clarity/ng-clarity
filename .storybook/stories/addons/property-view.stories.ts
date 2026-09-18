@@ -11,7 +11,13 @@ import {
   PropertyViewComponent,
   PropertyViewModel,
 } from '@clr/addons/property-view';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+
+/**
+ * The render binds `<appfx-property-view>` directly and `PropertyViewComponent` declares `data`
+ * without an alias, so the component itself is the args type.
+ */
+type PropertyViewArgs = PropertyViewComponent;
 
 function buildVmData(): PropertyViewModel {
   const builder = new PropertyViewBuilder();
@@ -43,7 +49,7 @@ function buildMultiCategoryData(): PropertyViewModel {
   return builder.build();
 }
 
-export default {
+const meta: Meta<PropertyViewArgs> = {
   title: 'Addons/Property View',
   component: PropertyViewComponent,
   decorators: [
@@ -54,21 +60,22 @@ export default {
   argTypes: {
     data: { control: { disable: true } },
   },
+  render: args => ({
+    props: args,
+    template: `
+      <appfx-property-view [data]="data"></appfx-property-view>
+    `,
+  }),
 };
 
-const PropertyViewTemplate: StoryFn = args => ({
-  props: args,
-  template: `
-    <appfx-property-view [data]="data"></appfx-property-view>
-  `,
-});
+export default meta;
 
-export const SingleCategory: StoryObj = {
-  render: PropertyViewTemplate,
+type Story = StoryObj<PropertyViewArgs>;
+
+export const SingleCategory: Story = {
   args: { data: buildVmData() },
 };
 
-export const MultipleCategories: StoryObj = {
-  render: PropertyViewTemplate,
+export const MultipleCategories: Story = {
   args: { data: buildMultiCategoryData() },
 };

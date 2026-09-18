@@ -6,104 +6,16 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { AppfxWorkflowCoreModule, CloseHandler, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
+import { AppfxWorkflowCoreModule } from '@clr/addons/var';
 import { AppfxWizardModule, WizardComponent } from '@clr/addons/wizard';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 
-class Step1Model implements StepModel {
-  name = Var.of<string>('');
-  readyToComplete = true;
-}
+import { WizardStoryWrapperComponent } from './wizard.storybook.component';
 
-@Component({
-  selector: 'clr-story-wizard-step1',
-  standalone: true,
-  imports: [FormsModule],
-  template: `
-    <div class="clr-form-group">
-      <label class="clr-control-label" for="name">Name</label>
-      <input id="name" type="text" class="clr-input" [(ngModel)]="model.name.value" />
-    </div>
-  `,
-})
-class WizardStoryStep1 implements StepModelHolder {
-  model: Step1Model;
-}
+/** The render targets `<clr-wizard-story-wrapper>`, so the wrapper's members are the args. */
+type WizardArgs = WizardStoryWrapperComponent;
 
-class Step2Model implements StepModel {
-  region = Var.of<string>('us-east');
-  readyToComplete = true;
-}
-
-@Component({
-  selector: 'clr-story-wizard-step2',
-  standalone: true,
-  imports: [FormsModule],
-  template: `
-    <div class="clr-select-wrapper">
-      <select class="clr-select" [(ngModel)]="model.region.value">
-        <option value="us-east">US East</option>
-        <option value="us-west">US West</option>
-        <option value="eu-central">EU Central</option>
-      </select>
-    </div>
-  `,
-})
-class WizardStoryStep2 implements StepModelHolder {
-  model: Step2Model;
-}
-
-class DemoModel {
-  name = Var.of<string>('');
-  region = Var.of<string>('us-east');
-}
-
-@Component({
-  selector: 'clr-wizard-story-wrapper',
-  standalone: true,
-  imports: [CommonModule, AppfxWizardModule, WizardStoryStep1, WizardStoryStep2],
-  template: `
-    <button class="btn btn-primary" (click)="open()">{{ label }}</button>
-    <appfx-wizard
-      [title]="title"
-      [pages]="steps"
-      [wizardModel]="model"
-      [opened]="isOpen"
-      (openedChange)="isOpen = $event"
-      [size]="size"
-      [closeHandler]="closeHandler"
-    ></appfx-wizard>
-  `,
-})
-class WizardStoryWrapperComponent implements OnInit {
-  label = 'Open Wizard';
-  title = 'Create Workload';
-  size = 'lg';
-  isOpen = false;
-  model = new DemoModel();
-  steps: Step[];
-  closeHandler: CloseHandler = {
-    onSubmit: (): Observable<void> => of(undefined).pipe(delay(300)),
-  };
-
-  ngOnInit() {
-    this.steps = [
-      { title: 'Name', componentClass: WizardStoryStep1, model: new Step1Model() },
-      { title: 'Region', componentClass: WizardStoryStep2, model: new Step2Model() },
-    ];
-  }
-
-  open() {
-    this.model = new DemoModel();
-    this.isOpen = true;
-  }
-}
-
-export default {
+const meta: Meta<WizardArgs> = {
   title: 'Addons/Wizard',
   component: WizardComponent,
   decorators: [
@@ -122,20 +34,20 @@ export default {
     title: 'Create Workload',
     size: 'lg',
   },
+  render: args => ({
+    props: args,
+    template: `
+      <clr-wizard-story-wrapper [label]="label" [title]="title" [size]="size"></clr-wizard-story-wrapper>
+    `,
+  }),
 };
 
-const WizardTemplate: StoryFn = args => ({
-  props: args,
-  template: `
-    <clr-wizard-story-wrapper [label]="label" [title]="title" [size]="size"></clr-wizard-story-wrapper>
-  `,
-});
+export default meta;
 
-export const Default: StoryObj = {
-  render: WizardTemplate,
-};
+type Story = StoryObj<WizardArgs>;
 
-export const FullScreen: StoryObj = {
-  render: WizardTemplate,
+export const Default: Story = {};
+
+export const FullScreen: Story = {
   args: { size: 'full-screen', label: 'Open Full-Screen Wizard' },
 };

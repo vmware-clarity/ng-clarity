@@ -6,12 +6,37 @@
  */
 
 import { ClrCheckboxModule, ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
-import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryContext, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 import { action } from 'storybook/actions';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * `ClrModal` aliases every one of its inputs (`@Input('clrModalOpen') _open`), so the `clrModal*`
+ * names this story binds are not properties of the class and cannot come from it. Only the three
+ * methods whose docs rows the `argTypes` suppress are, so those are picked off `ClrModal`.
+ */
+type ModalArgs = Pick<ClrModal, 'fadeDone' | 'open' | 'close'> & {
+  clrModalClosable: boolean;
+  clrModalCloseButtonAriaLabel: string;
+  clrModalLabelledById: string;
+  clrModalOpen: boolean;
+  clrModalOverrideScrollService: boolean;
+  clrModalPreventClose: boolean;
+  clrModalSize: string;
+  clrModalSkipAnimation: boolean;
+  clrModalStaticBackdrop: boolean;
+  clrModalAlternateClose: (open: boolean) => void;
+  clrModalOpenChange: (open: boolean) => void;
+  createArray: (n: number) => unknown[];
+  title: string;
+  body: string;
+  showLongPageContent: boolean;
+  showLongModalContent: boolean;
+  showToggle: boolean;
+};
 
-export default {
+const meta: Meta<ModalArgs> = {
   title: 'Modal/Modal',
   decorators: [
     moduleMetadata({
@@ -26,12 +51,9 @@ export default {
     clrModalAlternateClose: { control: { disable: true } },
     clrModalOpenChange: { control: { disable: true } },
     // methods
-    fadeDone: { control: { disable: true }, table: { disable: true } },
-    open: { control: { disable: true }, table: { disable: true } },
-    close: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('fadeDone', 'open', 'close'),
     // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
-    showLongPageContent: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('createArray', 'showLongPageContent'),
   },
   args: {
     // inputs
@@ -59,69 +81,69 @@ export default {
       },
     },
   },
-};
-
-const ModalTemplate: StoryFn = args => ({
-  template: `
-    <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
-    @if (showLongPageContent) {
-      <div>
-        This list is provided to demonstrate scrolling capability when modal is open.
-        <ul>
-          @for (_ of createArray(100); track $index; let i = $index) {
-            <li>{{ i + 1 }}</li>
+  render: args => ({
+    template: `
+      <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
+      @if (showLongPageContent) {
+        <div>
+          This list is provided to demonstrate scrolling capability when modal is open.
+          <ul>
+            @for (_ of createArray(100); track $index; let i = $index) {
+              <li>{{ i + 1 }}</li>
+            }
+          </ul>
+        </div>
+      }
+      <clr-modal
+        [clrModalClosable]="clrModalClosable"
+        [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
+        [clrModalLabelledById]="clrModalLabelledById"
+        [clrModalOpen]="clrModalOpen"
+        [clrModalOverrideScrollService]="clrModalOverrideScrollService"
+        [clrModalPreventClose]="clrModalPreventClose"
+        [clrModalSize]="clrModalSize"
+        [clrModalSkipAnimation]="clrModalSkipAnimation"
+        [clrModalStaticBackdrop]="clrModalStaticBackdrop"
+        (clrModalAlternateClose)="clrModalAlternateClose($event)"
+        (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
+      >
+        <h3 class="modal-title">{{ title }}</h3>
+        <div class="modal-body">
+          {{ body }}
+          @if (showToggle) {
+            <clr-toggle-wrapper>
+              <input type="checkbox" clrToggle />
+              <label>Focus on Toggle should not cut outline</label>
+            </clr-toggle-wrapper>
           }
-        </ul>
-      </div>
-    }
-    <clr-modal
-      [clrModalClosable]="clrModalClosable"
-      [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
-      [clrModalLabelledById]="clrModalLabelledById"
-      [clrModalOpen]="clrModalOpen"
-      [clrModalOverrideScrollService]="clrModalOverrideScrollService"
-      [clrModalPreventClose]="clrModalPreventClose"
-      [clrModalSize]="clrModalSize"
-      [clrModalSkipAnimation]="clrModalSkipAnimation"
-      [clrModalStaticBackdrop]="clrModalStaticBackdrop"
-      (clrModalAlternateClose)="clrModalAlternateClose($event)"
-      (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
-    >
-      <h3 class="modal-title">{{ title }}</h3>
-      <div class="modal-body">
-        {{ body }}
-        @if (showToggle) {
-          <clr-toggle-wrapper>
-            <input type="checkbox" clrToggle />
-            <label>Focus on Toggle should not cut outline</label>
-          </clr-toggle-wrapper>
-        }
-        @if (showLongModalContent) {
-          <div cds-layout="m-t:md">
-            This list is provided to demonstrate scrolling capability within the modal.
-            <ul>
-              @for (_ of createArray(100); track $index; let i = $index) {
-                <li>{{ i + 1 }}</li>
-              }
-            </ul>
-          </div>
-        }
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
-        <button type="button" class="btn btn-primary" (click)="clrModalOpen = false">Ok</button>
-      </div>
-    </clr-modal>
-  `,
-  props: args,
-});
-
-export const Modal: StoryObj = {
-  render: ModalTemplate,
+          @if (showLongModalContent) {
+            <div cds-layout="m-t:md">
+              This list is provided to demonstrate scrolling capability within the modal.
+              <ul>
+                @for (_ of createArray(100); track $index; let i = $index) {
+                  <li>{{ i + 1 }}</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="clrModalOpen = false">Ok</button>
+        </div>
+      </clr-modal>
+    `,
+    props: args,
+  }),
 };
 
-export const OpenSmallModal: StoryObj = {
-  render: ModalTemplate,
+export default meta;
+
+type Story = StoryObj<ModalArgs>;
+
+export const Modal: Story = {};
+
+export const OpenSmallModal: Story = {
   args: {
     clrModalOpen: true,
     clrModalSize: 'sm',
@@ -131,8 +153,7 @@ export const OpenSmallModal: StoryObj = {
   },
 };
 
-export const OpenMediumModal: StoryObj = {
-  render: ModalTemplate,
+export const OpenMediumModal: Story = {
   args: {
     clrModalOpen: true,
     clrModalSize: 'md',
@@ -142,8 +163,7 @@ export const OpenMediumModal: StoryObj = {
   },
 };
 
-export const OpenLargeModal: StoryObj = {
-  render: ModalTemplate,
+export const OpenLargeModal: Story = {
   args: {
     clrModalOpen: true,
     clrModalSize: 'lg',
@@ -153,8 +173,7 @@ export const OpenLargeModal: StoryObj = {
   },
 };
 
-export const OpenExtraLargeModal: StoryObj = {
-  render: ModalTemplate,
+export const OpenExtraLargeModal: Story = {
   args: {
     clrModalOpen: true,
     clrModalSize: 'xl',
@@ -164,8 +183,7 @@ export const OpenExtraLargeModal: StoryObj = {
   },
 };
 
-export const OpenFullScreenModal: StoryObj = {
-  render: ModalTemplate,
+export const OpenFullScreenModal: Story = {
   args: {
     clrModalOpen: true,
     clrModalSize: 'full-screen',
@@ -175,8 +193,7 @@ export const OpenFullScreenModal: StoryObj = {
   },
 };
 
-export const NestedFocusedFormElements: StoryObj = {
-  render: ModalTemplate,
+export const NestedFocusedFormElements: Story = {
   play: focusToggle,
   args: {
     showToggle: true,

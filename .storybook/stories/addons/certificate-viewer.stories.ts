@@ -6,36 +6,15 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
 import { AppfxCertificateViewerModule } from '@clr/addons/certificate-viewer';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 
-import googleCerts from '../../../projects/website/src/app/documentation/demos/certificate-viewer/certs/google-certs.json';
+import { CertViewerStoryWrapperComponent } from './certificate-viewer.storybook.component';
 
-// ─── Wrapper ─────────────────────────────────────────────────────────────────
+/** The story renders the wrapper component itself, so its public members are the args. */
+type CertificateViewerArgs = CertViewerStoryWrapperComponent;
 
-@Component({
-  selector: 'clr-cert-viewer-story-wrapper',
-  standalone: true,
-  imports: [CommonModule, AppfxCertificateViewerModule],
-  template: `
-    <div style="height: 500px; display: flex; flex-direction: column">
-      <appfx-certificate-viewer
-        [pemEncodedCertificatesChain]="pemChain"
-        [topHeadingLevel]="topHeadingLevel"
-        style="flex: 1 1 auto; overflow: auto"
-      ></appfx-certificate-viewer>
-    </div>
-  `,
-})
-class CertViewerStoryWrapperComponent {
-  @Input() pemChain: string[] = googleCerts;
-  @Input() topHeadingLevel = 5;
-}
-
-// ─── Meta ─────────────────────────────────────────────────────────────────────
-
-export default {
+const meta: Meta<CertificateViewerArgs> = {
   title: 'Addons/Certificate Viewer',
   component: CertViewerStoryWrapperComponent,
   decorators: [
@@ -51,21 +30,19 @@ export default {
   args: {
     topHeadingLevel: 5,
   },
+  render: args => ({
+    props: args,
+    component: CertViewerStoryWrapperComponent,
+  }),
 };
 
-type Story = StoryObj<CertViewerStoryWrapperComponent>;
+export default meta;
 
-const template: StoryFn<CertViewerStoryWrapperComponent> = args => ({
-  props: args,
-  component: CertViewerStoryWrapperComponent,
-});
+type Story = StoryObj<CertificateViewerArgs>;
 
-export const GoogleCertificateChain: Story = {
-  render: template,
-};
+export const GoogleCertificateChain: Story = {};
 
 export const HeadingLevel1: Story = {
-  render: template,
   args: {
     topHeadingLevel: 1,
   },

@@ -6,18 +6,37 @@
  */
 
 import { ClrSidePanel, ClrSidePanelModule, commonStringsDefault } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 import { fn } from 'storybook/test';
 
-export function render(story: StoryObj, template: StoryFn): StoryObj {
-  return {
-    ...story,
-    render: template,
-  };
-}
+/**
+ * `ClrSidePanel` aliases almost every input (`@Input('clrSidePanelOpen') _open`), so the `clrSidePanel*`
+ * names these stories bind are mostly not properties of the class. Only `clrSidePanelBackdrop`,
+ * `clrSidePanelPinnable` and the `open`/`close` methods line up, so those come off `ClrSidePanel` and
+ * the rest are declared here.
+ */
+export type SidePanelArgs = Pick<ClrSidePanel, 'clrSidePanelBackdrop' | 'clrSidePanelPinnable' | 'open' | 'close'> & {
+  clrSidePanelCloseButtonAriaLabel: string;
+  clrSidePanelLabelledById: string;
+  clrSidePanelSize: string;
+  clrSidePanelPosition: string;
+  clrSidePanelOpen: boolean;
+  clrSidePanelClosable: boolean;
+  clrSidePanelPinned: boolean;
+  clrSidePanelPreventClose: boolean;
+  clrSidePanelSkipAnimation: boolean;
+  clrSidePanelStaticBackdrop: boolean;
+  clrSidePanelOpenChange: (open: boolean) => void;
+  clrSidePanelAltClose: (open: boolean) => void;
+  title: string;
+  body: string;
+  showLongPageContent: boolean;
+};
 
-export const config = {
+/** The parts of the meta both side-panel story files share; each file adds its own title and render. */
+export const config: Pick<Meta<SidePanelArgs>, 'decorators' | 'component' | 'argTypes' | 'args'> = {
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrSidePanelModule],
@@ -38,9 +57,7 @@ export const config = {
     clrSidePanelOpenChange: { control: { disable: true } },
     clrSidePanelAltClose: { control: { disable: true } },
     // methods
-    fadeDone: { control: { disable: true }, table: { disable: true } },
-    open: { control: { disable: true }, table: { disable: true } },
-    close: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('fadeDone', 'open', 'close'),
   },
   args: {
     // inputs
@@ -62,9 +79,9 @@ export const config = {
   },
 };
 
-export const SidePanel: StoryObj = {};
+export const SidePanel: StoryObj<SidePanelArgs> = {};
 
-export const SidePanelSmall: StoryObj = {
+export const SidePanelSmall: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'sm',
@@ -74,7 +91,7 @@ export const SidePanelSmall: StoryObj = {
   },
 };
 
-export const SidePanelMedium: StoryObj = {
+export const SidePanelMedium: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -84,7 +101,7 @@ export const SidePanelMedium: StoryObj = {
   },
 };
 
-export const SidePanelLarge: StoryObj = {
+export const SidePanelLarge: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'lg',
@@ -94,7 +111,7 @@ export const SidePanelLarge: StoryObj = {
   },
 };
 
-export const SidePanelExtraLarge: StoryObj = {
+export const SidePanelExtraLarge: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'xl',
@@ -104,7 +121,7 @@ export const SidePanelExtraLarge: StoryObj = {
   },
 };
 
-export const SidePanelBottomSmall: StoryObj = {
+export const SidePanelBottomSmall: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'sm',
@@ -115,7 +132,7 @@ export const SidePanelBottomSmall: StoryObj = {
   },
 };
 
-export const SidePanelBottomMedium: StoryObj = {
+export const SidePanelBottomMedium: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -126,7 +143,7 @@ export const SidePanelBottomMedium: StoryObj = {
   },
 };
 
-export const SidePanelBottomLarge: StoryObj = {
+export const SidePanelBottomLarge: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'lg',
@@ -137,7 +154,7 @@ export const SidePanelBottomLarge: StoryObj = {
   },
 };
 
-export const SidePanelBottomExtraLarge: StoryObj = {
+export const SidePanelBottomExtraLarge: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'xl',
@@ -148,7 +165,7 @@ export const SidePanelBottomExtraLarge: StoryObj = {
   },
 };
 
-export const SidePanelWithBackdrop: StoryObj = {
+export const SidePanelWithBackdrop: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -158,7 +175,7 @@ export const SidePanelWithBackdrop: StoryObj = {
   },
 };
 
-export const SidePanelAlternateClose: StoryObj = {
+export const SidePanelAlternateClose: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -173,7 +190,7 @@ export const SidePanelAlternateClose: StoryObj = {
   },
 };
 
-export const SidePanelPinnable: StoryObj = {
+export const SidePanelPinnable: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -183,7 +200,7 @@ export const SidePanelPinnable: StoryObj = {
   },
 };
 
-export const SidePanelPinned: StoryObj = {
+export const SidePanelPinned: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -195,7 +212,7 @@ export const SidePanelPinned: StoryObj = {
   },
 };
 
-export const SidePanelBottomPinnable: StoryObj = {
+export const SidePanelBottomPinnable: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -206,7 +223,7 @@ export const SidePanelBottomPinnable: StoryObj = {
   },
 };
 
-export const SidePanelBottomPinned: StoryObj = {
+export const SidePanelBottomPinned: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'md',
@@ -219,7 +236,7 @@ export const SidePanelBottomPinned: StoryObj = {
   },
 };
 
-export const SidePanelFullScreen: StoryObj = {
+export const SidePanelFullScreen: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'full-screen',
@@ -230,7 +247,7 @@ export const SidePanelFullScreen: StoryObj = {
   },
 };
 
-export const SidePanelBottomFullScreen: StoryObj = {
+export const SidePanelBottomFullScreen: StoryObj<SidePanelArgs> = {
   args: {
     clrSidePanelOpen: true,
     clrSidePanelSize: 'full-screen',

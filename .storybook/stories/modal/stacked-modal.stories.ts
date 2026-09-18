@@ -6,12 +6,17 @@
  */
 
 import { ClrModalModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { type Element, elements } from '@storybook-helpers/elements.data';
 
-import { CommonModules } from '../../helpers/common';
-import { elements } from '../../helpers/elements.data';
+/** The story hand-writes the modal markup, so there is no component behind the args. */
+type StackedModalArgs = {
+  elements: Element[];
+};
 
-export default {
+const meta: Meta<StackedModalArgs> = {
   title: 'Modal/Stacked Modal',
   decorators: [
     moduleMetadata({
@@ -20,43 +25,44 @@ export default {
   ],
   argTypes: {
     // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('elements'),
   },
   args: {
     // story helpers
     elements,
   },
+  render: args => ({
+    template: `
+      <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
+
+      <button type="button" class="btn btn-primary" (click)="modal1Open = true">Open Modal 1</button>
+
+      <clr-modal [(clrModalOpen)]="modal1Open">
+        <h3 class="modal-title">Modal 1</h3>
+        <div class="modal-body">
+          This is modal 1.
+
+          <button type="button" class="btn btn-primary" (click)="modal2Open = true">Open Modal 2</button>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="modal1Open = false">Close</button>
+        </div>
+      </clr-modal>
+
+      <clr-modal [(clrModalOpen)]="modal2Open">
+        <h3 class="modal-title">Modal 2</h3>
+        <div class="modal-body">This is modal 2. Pressing escape should only close this modal, not both.</div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="modal2Open = false">Close</button>
+        </div>
+      </clr-modal>
+    `,
+    props: args,
+  }),
 };
 
-const StackedModalTemplate: StoryFn = args => ({
-  template: `
-    <div><strong>This story is NOT an endorsement of this UX pattern.</strong></div>
+export default meta;
 
-    <button type="button" class="btn btn-primary" (click)="modal1Open = true">Open Modal 1</button>
+type Story = StoryObj<StackedModalArgs>;
 
-    <clr-modal [(clrModalOpen)]="modal1Open">
-      <h3 class="modal-title">Modal 1</h3>
-      <div class="modal-body">
-        This is modal 1.
-
-        <button type="button" class="btn btn-primary" (click)="modal2Open = true">Open Modal 2</button>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="modal1Open = false">Close</button>
-      </div>
-    </clr-modal>
-
-    <clr-modal [(clrModalOpen)]="modal2Open">
-      <h3 class="modal-title">Modal 2</h3>
-      <div class="modal-body">This is modal 2. Pressing escape should only close this modal, not both.</div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary" (click)="modal2Open = false">Close</button>
-      </div>
-    </clr-modal>
-  `,
-  props: args,
-});
-
-export const StackedModal: StoryObj = {
-  render: StackedModalTemplate,
-};
+export const StackedModal: Story = {};
