@@ -7,10 +7,25 @@
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { type Element, elements } from '@storybook-helpers/elements.data';
 
-import { CommonModules } from '../../helpers/common';
-import { elements } from '../../helpers/elements.data';
+/**
+ * The template is raw `clrForm` markup -- there is no Clarity component and no story wrapper to base the
+ * args on -- so the args are declared explicitly. `form` holds the mapping key, not the `FormGroup`:
+ * Storybook swaps it for the real group through the `mapping` in `argTypes`.
+ */
+type FormsReactiveArgs = {
+  clrLabelSize: number;
+  elements: Element[];
+  patterns: { alphaNumeric: RegExp; letters: RegExp; numbers: RegExp };
+  clrLayout: ClrFormLayout;
+  screenReaderContent: string;
+  form: string;
+  namePlaceholder: string;
+};
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -19,7 +34,22 @@ const patterns = {
   numbers: /\d/i,
 };
 
-export default {
+function getForm() {
+  return new FormGroup({
+    name: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
+    age: new FormControl(null, [Validators.min(5), Validators.max(99)]),
+    element: new FormControl(null),
+    password: new FormControl(null, [
+      Validators.minLength(8),
+      Validators.pattern(patterns.alphaNumeric),
+      Validators.pattern(patterns.letters),
+      Validators.pattern(patterns.numbers),
+    ]),
+    description: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
+  });
+}
+
+const meta: Meta<FormsReactiveArgs> = {
   title: 'Forms/Reactive',
   decorators: [
     moduleMetadata({
@@ -30,7 +60,7 @@ export default {
     // inputs
     clrLabelSize: { control: { type: 'number', min: 1, max: 12 } },
     // story helpers
-    patterns: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('patterns'),
     form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
     clrLayout: {
       control: { type: 'radio' },
@@ -48,106 +78,89 @@ export default {
     form: formMappingKey,
     namePlaceholder: '',
   },
+  render: args => ({
+    template: `
+      <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
+        <span class="clr-sr-only">{{ screenReaderContent }}</span>
+        <clr-input-container>
+          <label>Name</label>
+          <input clrInput formControlName="name" required [placeholder]="namePlaceholder" />
+          <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+          <clr-control-success>Name is valid</clr-control-success>
+          <clr-control-error *clrIfError="'required'">Name is required</clr-control-error>
+          <clr-control-error *clrIfError="'minlength'">Must be at least 5 characters</clr-control-error>
+          <clr-control-error *clrIfError="'pattern'">Must contain only alpha-numeric characters</clr-control-error>
+        </clr-input-container>
+        <clr-number-input-container>
+          <label>Age</label>
+          <input clrNumberInput formControlName="age" type="number" min="0" required />
+          <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+          <clr-control-success>Age is valid</clr-control-success>
+          <clr-control-error *clrIfError="'required'">Age is required</clr-control-error>
+          <clr-control-error *clrIfError="'min'">Must be at least 5 years old</clr-control-error>
+          <clr-control-error *clrIfError="'max'">Must be less than 100 years old</clr-control-error>
+        </clr-number-input-container>
+        <clr-datalist-container>
+          <label>Element</label>
+          <input clrDatalistInput formControlName="element" required />
+          <datalist>
+            @for (element of elements; track element) {
+              <option [value]="element.symbol">{{ element.name }}</option>
+            }
+          </datalist>
+          <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+          <clr-control-error *clrIfError="'required'">Element is required</clr-control-error>
+        </clr-datalist-container>
+        <clr-password-container>
+          <label>Password</label>
+          <input clrPassword autocomplete="current-password" formControlName="password" required />
+          <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+          <clr-control-success>Password is valid</clr-control-success>
+          <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
+          <clr-control-error *clrIfError="'minlength'">Must be at least 8 characters</clr-control-error>
+          <clr-control-error *clrIfError="'pattern'; error as error">
+            @switch (error?.requiredPattern) {
+              @case (patterns.alphaNumeric.toString()) {
+                Must contain only letters and numbers
+              }
+              @case (patterns.letters.toString()) {
+                Must contain at least one letter
+              }
+              @case (patterns.numbers.toString()) {
+                Must contain at least one number
+              }
+            }
+          </clr-control-error>
+        </clr-password-container>
+        <clr-textarea-container>
+          <label>Description</label>
+          <textarea clrTextarea formControlName="description" required></textarea>
+          <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
+          <clr-control-success>Description is valid</clr-control-success>
+          <clr-control-error *clrIfError="'required'">Description is required</clr-control-error>
+          <clr-control-error *clrIfError="'minlength'">Must be at least 5 characters</clr-control-error>
+          <clr-control-error *clrIfError="'pattern'">Must contain only alpha-numeric characters</clr-control-error>
+        </clr-textarea-container>
+      </form>
+    `,
+    props: args,
+  }),
 };
 
-const ReactiveFormTemplate: StoryFn = args => ({
-  template: `
-    <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
-      <span class="clr-sr-only">{{ screenReaderContent }}</span>
-      <clr-input-container>
-        <label>Name</label>
-        <input clrInput formControlName="name" required [placeholder]="namePlaceholder" />
-        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-        <clr-control-success>Name is valid</clr-control-success>
-        <clr-control-error *clrIfError="'required'">Name is required</clr-control-error>
-        <clr-control-error *clrIfError="'minlength'">Must be at least 5 characters</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'">Must contain only alpha-numeric characters</clr-control-error>
-      </clr-input-container>
-      <clr-number-input-container>
-        <label>Age</label>
-        <input clrNumberInput formControlName="age" type="number" min="0" required />
-        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-        <clr-control-success>Age is valid</clr-control-success>
-        <clr-control-error *clrIfError="'required'">Age is required</clr-control-error>
-        <clr-control-error *clrIfError="'min'">Must be at least 5 years old</clr-control-error>
-        <clr-control-error *clrIfError="'max'">Must be less than 100 years old</clr-control-error>
-      </clr-number-input-container>
-      <clr-datalist-container>
-        <label>Element</label>
-        <input clrDatalistInput formControlName="element" required />
-        <datalist>
-          @for (element of elements; track element) {
-            <option [value]="element.symbol">{{ element.name }}</option>
-          }
-        </datalist>
-        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-        <clr-control-error *clrIfError="'required'">Element is required</clr-control-error>
-      </clr-datalist-container>
-      <clr-password-container>
-        <label>Password</label>
-        <input clrPassword autocomplete="current-password" formControlName="password" required />
-        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-        <clr-control-success>Password is valid</clr-control-success>
-        <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
-        <clr-control-error *clrIfError="'minlength'">Must be at least 8 characters</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'; error as error">
-          @switch (error?.requiredPattern) {
-            @case (patterns.alphaNumeric.toString()) {
-              Must contain only letters and numbers
-            }
-            @case (patterns.letters.toString()) {
-              Must contain at least one letter
-            }
-            @case (patterns.numbers.toString()) {
-              Must contain at least one number
-            }
-          }
-        </clr-control-error>
-      </clr-password-container>
-      <clr-textarea-container>
-        <label>Description</label>
-        <textarea clrTextarea formControlName="description" required></textarea>
-        <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-        <clr-control-success>Description is valid</clr-control-success>
-        <clr-control-error *clrIfError="'required'">Description is required</clr-control-error>
-        <clr-control-error *clrIfError="'minlength'">Must be at least 5 characters</clr-control-error>
-        <clr-control-error *clrIfError="'pattern'">Must contain only alpha-numeric characters</clr-control-error>
-      </clr-textarea-container>
-    </form>
-  `,
-  props: args,
-});
+export default meta;
 
-function getForm() {
-  return new FormGroup({
-    name: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
-    age: new FormControl(null, [Validators.min(5), Validators.max(99)]),
-    element: new FormControl(null),
-    password: new FormControl(null, [
-      Validators.minLength(8),
-      Validators.pattern(patterns.alphaNumeric),
-      Validators.pattern(patterns.letters),
-      Validators.pattern(patterns.numbers),
-    ]),
-    description: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
-  });
-}
+type Story = StoryObj<FormsReactiveArgs>;
 
-export const HorizontalLayout: StoryObj = {
-  render: ReactiveFormTemplate,
-};
+export const HorizontalLayout: Story = {};
 
-export const HorizontalLayoutLabelSize6: StoryObj = {
-  render: ReactiveFormTemplate,
+export const HorizontalLayoutLabelSize6: Story = {
   args: { clrLabelSize: 6 },
 };
 
-export const VerticalLayout: StoryObj = {
-  render: ReactiveFormTemplate,
+export const VerticalLayout: Story = {
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.VERTICAL },
 };
 
-export const CompactLayout: StoryObj = {
-  render: ReactiveFormTemplate,
+export const CompactLayout: Story = {
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.COMPACT },
 };

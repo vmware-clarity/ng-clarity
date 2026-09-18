@@ -8,9 +8,8 @@
 import { NgTemplateOutlet } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClrAlertModule, ClrDropdownModule, ClrIcon } from '@clr/angular';
-import { createArray } from 'helpers/common';
-
-import { RenderComponentStorybook } from '../../helpers/render-component';
+import { createArray } from '@storybook-helpers/common';
+import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 
 @Component({
   selector: 'storybook-app-level-alert',

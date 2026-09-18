@@ -6,12 +6,20 @@
  */
 
 import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { HeaderStorybookComponent } from './header.storybook.component';
-import { CommonModules } from '../../helpers/common';
 
-export default {
+/**
+ * The args drive `<storybook-header>`, so the args type is that wrapper. The five hidden entries are
+ * `ClrHeader` methods, hidden so they do not appear as rows in the table generated from
+ * `component: ClrHeader`; they go through the `hideControls()` spread and so need no declaration here.
+ */
+type HeaderArgs = HeaderStorybookComponent;
+
+const meta: Meta<HeaderArgs> = {
   title: 'Header/Header',
   decorators: [
     moduleMetadata({
@@ -21,15 +29,11 @@ export default {
   component: ClrHeader,
   argTypes: {
     // methods
-    closeOpenNav: { control: { disable: true }, table: { disable: true } },
-    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
-    openNav: { control: { disable: true }, table: { disable: true } },
-    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
-    toggleNav: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('closeOpenNav', 'initializeNavTriggers', 'openNav', 'resetNavTriggers', 'toggleNav'),
     // story helpers
   },
   args: {},
-  render: (args: HeaderStorybookComponent) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -39,6 +43,10 @@ export default {
   }),
 };
 
-export const Default: StoryObj = {};
+export default meta;
 
-export const Collapsed: StoryObj = {};
+type Story = StoryObj<HeaderArgs>;
+
+export const Default: Story = {};
+
+export const Collapsed: Story = {};

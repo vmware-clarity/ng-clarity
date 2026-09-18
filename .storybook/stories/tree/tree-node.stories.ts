@@ -6,13 +6,36 @@
  */
 
 import { ClrSelectedState, ClrTreeNode, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { filesRoot, getFileTreeNodeMarkup } from '@storybook-helpers/files.data';
 import { action } from 'storybook/actions';
 
-import { CommonModules } from '../../helpers/common';
-import { filesRoot, getFileTreeNodeMarkup } from '../../helpers/files.data';
+/**
+ * `ClrTreeNode` aliases every input and output it declares (`@Input('clrExpandable') expandable`,
+ * `@Output('clrSelectedChange') selectedChange`, ...), so the `clr*` names the story binds are not
+ * properties of the class and are declared here. Its methods are picked from the class, because they
+ * exist in `argTypes` only to hide the rows `component: ClrTreeNode` generates for them.
+ *
+ * `clrSelected` is deliberately `any`: before `mapping` is applied it holds one of the option strings
+ * (`'not selectable'`), after it holds a `ClrSelectedState` or `undefined`, and `getFileTreeNodeMarkup()`
+ * declares the same value as a `boolean` flag it only tests for definedness. The arg *name* stays
+ * checked, which is what `argTypes` and `args` need.
+ */
+type TreeNodeArgs = Pick<
+  ClrTreeNode<unknown>,
+  'broadcastFocusOnContainer' | 'focusTreeNode' | 'isExpandable' | 'isSelectable' | 'onKeyDown'
+> & {
+  clrDisabled: boolean;
+  clrExpandable: boolean;
+  clrExpanded: boolean;
+  clrSelected: any;
+  clrExpandedChange: (expanded: boolean) => void;
+  clrSelectedChange: (selected: ClrSelectedState) => void;
+};
 
-export default {
+const meta: Meta<TreeNodeArgs> = {
   title: 'Tree/Tree Node',
   decorators: [
     moduleMetadata({
@@ -37,11 +60,7 @@ export default {
     clrExpandedChange: { control: { disable: true } },
     clrSelectedChange: { control: { disable: true } },
     // methods
-    broadcastFocusOnContainer: { control: { disable: true }, table: { disable: true } },
-    focusTreeNode: { control: { disable: true }, table: { disable: true } },
-    isExpandable: { control: { disable: true }, table: { disable: true } },
-    isSelectable: { control: { disable: true }, table: { disable: true } },
-    onKeyDown: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('broadcastFocusOnContainer', 'focusTreeNode', 'isExpandable', 'isSelectable', 'onKeyDown'),
   },
   args: {
     // inputs
@@ -53,51 +72,50 @@ export default {
     clrExpandedChange: action('clrExpandedChange'),
     clrSelectedChange: action('clrSelectedChange'),
   },
+  render: args => ({
+    template: `
+      <clr-tree>
+        <clr-tree-node
+          [clrExpandable]="clrExpandable"
+          [clrExpanded]="clrExpanded"
+          [clrDisabled]="clrDisabled"
+          ${args.clrSelected === undefined ? '' : '[clrSelected]="clrSelected"'}
+          (clrExpandedChange)="clrExpandedChange($event)"
+          (clrSelectedChange)="clrSelectedChange($event)"
+        >
+          Files ${args.clrExpandable ? getFileTreeNodeMarkup(filesRoot, args) : ''}
+        </clr-tree-node>
+      </clr-tree>
+    `,
+    props: args,
+  }),
 };
 
-const TreeViewNodeTemplate: StoryFn = args => ({
-  template: `
-    <clr-tree>
-      <clr-tree-node
-        [clrExpandable]="clrExpandable"
-        [clrExpanded]="clrExpanded"
-        [clrDisabled]="clrDisabled"
-        ${args.clrSelected === undefined ? '' : '[clrSelected]="clrSelected"'}
-        (clrExpandedChange)="clrExpandedChange($event)"
-        (clrSelectedChange)="clrSelectedChange($event)"
-      >
-        Files ${args.clrExpandable ? getFileTreeNodeMarkup(filesRoot, args) : ''}
-      </clr-tree-node>
-    </clr-tree>
-  `,
-  props: args,
-});
+export default meta;
 
-export const TreeNode: StoryObj = {
-  render: TreeViewNodeTemplate,
+type Story = StoryObj<TreeNodeArgs>;
+
+export const TreeNode: Story = {
   args: {
     clrExpanded: true,
   },
 };
 
-export const CheckboxSelected: StoryObj = {
-  render: TreeViewNodeTemplate,
+export const CheckboxSelected: Story = {
   args: {
     clrExpanded: true,
     clrSelected: ClrSelectedState.SELECTED,
   },
 };
 
-export const CheckboxIndeterminate: StoryObj = {
-  render: TreeViewNodeTemplate,
+export const CheckboxIndeterminate: Story = {
   args: {
     clrExpanded: true,
     clrSelected: ClrSelectedState.INDETERMINATE,
   },
 };
 
-export const CheckboxUnselected: StoryObj = {
-  render: TreeViewNodeTemplate,
+export const CheckboxUnselected: Story = {
   args: {
     clrExpanded: true,
     clrSelected: ClrSelectedState.UNSELECTED,

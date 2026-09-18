@@ -22,7 +22,7 @@ import {
   loadTextEditIconSet,
   loadTravelIconSet,
 } from '@clr/angular';
-import { elements } from 'helpers/elements.data';
+import { elements } from '@storybook-helpers/elements.data';
 
 import { organization } from './organization';
 import { VerticalNavIconService } from '../../../../projects/angular/layout/vertical-nav/providers/vertical-nav-icon.service';

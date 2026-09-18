@@ -6,10 +6,41 @@
  */
 
 import { ClrWizardModule, ClrWizardPage } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { action } from 'storybook/actions';
 
-export default {
+/**
+ * `ClrWizardPage` aliases every one of its inputs and outputs (`@Input('clrWizardPageHasError')
+ * hasError`), so the class cannot be the args type: none of the `clrWizardPage*` names the story binds
+ * are properties of it. The args are therefore declared standalone, with `makeCurrent` picked from the
+ * component so the `argTypes` entry that hides that method stays type-checked.
+ */
+type WizardPageArgs = Pick<ClrWizardPage, 'makeCurrent'> & {
+  // inputs
+  clrHeadingLevel: number;
+  clrWizardPageHasError: boolean;
+  clrWizardPageNextDisabled: boolean;
+  clrWizardPagePreventDefault: boolean;
+  clrWizardPagePreventDefaultCancel: boolean;
+  clrWizardPagePreventDefaultNext: boolean;
+  clrWizardPagePreviousDisabled: boolean;
+  id: string;
+  // outputs
+  clrWizardPageCustomButton: (event: unknown) => void;
+  clrWizardPageDanger: (event: unknown) => void;
+  clrWizardPageFinish: (event: unknown) => void;
+  clrWizardPageNext: (event: unknown) => void;
+  clrWizardPageNextDisabledChange: (event: unknown) => void;
+  clrWizardPageOnCancel: (event: unknown) => void;
+  clrWizardPageOnCommit: (event: unknown) => void;
+  clrWizardPageOnLoad: (event: unknown) => void;
+  clrWizardPagePreventDefaultCancelChange: (event: unknown) => void;
+  clrWizardPagePrevious: (event: unknown) => void;
+  clrWizardPagePreviousDisabledChange: (event: unknown) => void;
+  clrWizardPagePrimary: (event: unknown) => void;
+};
+
+const meta: Meta<WizardPageArgs> = {
   title: 'Wizard/Wizard Page',
   component: ClrWizardPage,
   decorators: [
@@ -68,62 +99,62 @@ export default {
       },
     },
   },
+  render: args => ({
+    template: `
+      <clr-wizard [clrWizardOpen]="true">
+        <clr-wizard-title>Wizard</clr-wizard-title>
+
+        <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
+        <clr-wizard-button type="previous">Previous</clr-wizard-button>
+        <clr-wizard-button type="next">Next</clr-wizard-button>
+        <clr-wizard-button type="finish">Finish</clr-wizard-button>
+
+        <clr-wizard-page>
+          <ng-template clrPageTitle>First Page</ng-template>
+          <p>Content for first page. Click next to see story page.</p>
+        </clr-wizard-page>
+
+        <clr-wizard-page
+          [id]="id"
+          [clrWizardPageHasError]="clrWizardPageHasError"
+          [clrWizardPageNextDisabled]="clrWizardPageNextDisabled"
+          [clrWizardPagePreventDefaultCancel]="clrWizardPagePreventDefaultCancel"
+          [clrWizardPagePreventDefaultNext]="clrWizardPagePreventDefaultNext"
+          [clrWizardPagePreviousDisabled]="clrWizardPagePreviousDisabled"
+          (clrWizardPageCustomButton)="clrWizardPageCustomButton($event)"
+          (clrWizardPageDanger)="clrWizardPageDanger($event)"
+          (clrWizardPageFinish)="clrWizardPageFinish($event)"
+          (clrWizardPageNext)="clrWizardPageNext($event)"
+          (clrWizardPageNextDisabledChange)="clrWizardPageNextDisabledChange($event)"
+          (clrWizardPageOnCancel)="clrWizardPageOnCancel($event)"
+          (clrWizardPageOnCommit)="clrWizardPageOnCommit($event)"
+          (clrWizardPageOnLoad)="clrWizardPageOnLoad($event)"
+          (clrWizardPagePreventDefaultCancelChange)="clrWizardPagePreventDefaultCancelChange($event)"
+          (clrWizardPagePrevious)="clrWizardPagePrevious($event)"
+          (clrWizardPagePreviousDisabledChange)="clrWizardPagePreviousDisabledChange($event)"
+          (clrWizardPagePrimary)="clrWizardPagePrimary($event)"
+        >
+          <ng-template clrPageTitle [clrHeadingLevel]="clrHeadingLevel">Story Page</ng-template>
+          <p>Content for story page.</p>
+        </clr-wizard-page>
+
+        <clr-wizard-page>
+          <ng-template clrPageTitle>Last Page</ng-template>
+          <p>Content for last page. Click previous to see story page.</p>
+        </clr-wizard-page>
+      </clr-wizard>
+    `,
+    props: { ...args },
+  }),
 };
 
-const WizardPageTemplate: StoryFn = args => ({
-  template: `
-    <clr-wizard [clrWizardOpen]="true">
-      <clr-wizard-title>Wizard</clr-wizard-title>
+export default meta;
 
-      <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
-      <clr-wizard-button type="previous">Previous</clr-wizard-button>
-      <clr-wizard-button type="next">Next</clr-wizard-button>
-      <clr-wizard-button type="finish">Finish</clr-wizard-button>
+type Story = StoryObj<WizardPageArgs>;
 
-      <clr-wizard-page>
-        <ng-template clrPageTitle>First Page</ng-template>
-        <p>Content for first page. Click next to see story page.</p>
-      </clr-wizard-page>
+export const WizardPage: Story = {};
 
-      <clr-wizard-page
-        [id]="id"
-        [clrWizardPageHasError]="clrWizardPageHasError"
-        [clrWizardPageNextDisabled]="clrWizardPageNextDisabled"
-        [clrWizardPagePreventDefaultCancel]="clrWizardPagePreventDefaultCancel"
-        [clrWizardPagePreventDefaultNext]="clrWizardPagePreventDefaultNext"
-        [clrWizardPagePreviousDisabled]="clrWizardPagePreviousDisabled"
-        (clrWizardPageCustomButton)="clrWizardPageCustomButton($event)"
-        (clrWizardPageDanger)="clrWizardPageDanger($event)"
-        (clrWizardPageFinish)="clrWizardPageFinish($event)"
-        (clrWizardPageNext)="clrWizardPageNext($event)"
-        (clrWizardPageNextDisabledChange)="clrWizardPageNextDisabledChange($event)"
-        (clrWizardPageOnCancel)="clrWizardPageOnCancel($event)"
-        (clrWizardPageOnCommit)="clrWizardPageOnCommit($event)"
-        (clrWizardPageOnLoad)="clrWizardPageOnLoad($event)"
-        (clrWizardPagePreventDefaultCancelChange)="clrWizardPagePreventDefaultCancelChange($event)"
-        (clrWizardPagePrevious)="clrWizardPagePrevious($event)"
-        (clrWizardPagePreviousDisabledChange)="clrWizardPagePreviousDisabledChange($event)"
-        (clrWizardPagePrimary)="clrWizardPagePrimary($event)"
-      >
-        <ng-template clrPageTitle [clrHeadingLevel]="clrHeadingLevel">Story Page</ng-template>
-        <p>Content for story page.</p>
-      </clr-wizard-page>
-
-      <clr-wizard-page>
-        <ng-template clrPageTitle>Last Page</ng-template>
-        <p>Content for last page. Click previous to see story page.</p>
-      </clr-wizard-page>
-    </clr-wizard>
-  `,
-  props: { ...args },
-});
-
-export const WizardPage: StoryObj = {
-  render: WizardPageTemplate,
-};
-
-export const WizardPageStatusIndicators: StoryObj = {
-  render: WizardPageTemplate,
+export const WizardPageStatusIndicators: Story = {
   play: async ({ canvasElement, userEvent }) => {
     // navigate to the last page
     const nextButtonElement = await canvasElement.querySelector<HTMLButtonElement>(
@@ -137,8 +168,7 @@ export const WizardPageStatusIndicators: StoryObj = {
   },
 };
 
-export const WizardPageStatusIndicatorsWithCurrentStepError: StoryObj = {
-  render: WizardPageTemplate,
+export const WizardPageStatusIndicatorsWithCurrentStepError: Story = {
   play: async ({ canvasElement, userEvent }) => {
     // navigate to the last page
     const nextButtonElement = await canvasElement.querySelector<HTMLButtonElement>(

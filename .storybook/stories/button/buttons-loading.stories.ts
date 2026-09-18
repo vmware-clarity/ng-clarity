@@ -5,13 +5,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrLoading, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { ClrButton, ClrLoading, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { ButtonStorybookComponent } from './button.storybook.component';
-import { CommonModules } from '../../helpers/common';
 
-export default {
+/**
+ * The args drive `<storybook-button templateMode="loading">`, so the args type is that component. The
+ * two `ClrButton` methods are picked from the class, and `class` and `clrInMenu` are declared here
+ * (`ClrButton` aliases both, as `@Input('class') get classNames` and `@Input('clrInMenu') get inMenu`):
+ * all four appear in `argTypes` only to quieten the controls table.
+ */
+type ButtonLoadingArgs = ButtonStorybookComponent &
+  Pick<ClrButton, 'emitClick' | 'loadingStateChange'> & {
+    class: string;
+    clrInMenu: boolean;
+  };
+
+const meta: Meta<ButtonLoadingArgs> = {
   title: 'Button/Button Loading States',
   component: ClrLoading,
   decorators: [
@@ -22,19 +35,18 @@ export default {
   argTypes: {
     // inputs
     class: { control: { disable: true } },
-    clrInMenu: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('clrInMenu'),
     // outputs
     click: { control: { disable: true } },
     // methods
-    emitClick: { control: { disable: true }, table: { disable: true } },
-    loadingStateChange: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('emitClick', 'loadingStateChange'),
   },
   args: {
     stateName: 'Default Buttons',
     validateState: ClrLoadingState.DEFAULT,
     submitState: ClrLoadingState.DEFAULT,
   },
-  render: (args: ButtonStorybookComponent) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -44,9 +56,13 @@ export default {
   }),
 };
 
-export const ButtonLoadingStates: StoryObj = {};
+export default meta;
 
-export const Loading: StoryObj = {
+type Story = StoryObj<ButtonLoadingArgs>;
+
+export const ButtonLoadingStates: Story = {};
+
+export const Loading: Story = {
   args: {
     stateName: 'Loading buttons',
     validateState: ClrLoadingState.LOADING,

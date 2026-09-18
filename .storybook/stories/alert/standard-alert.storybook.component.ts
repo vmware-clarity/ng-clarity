@@ -8,8 +8,8 @@
 import { Component, Input } from '@angular/core';
 import { ClrAlertModule, ClrDropdownModule, commonStringsDefault } from '@clr/angular';
 import { ALERT_TYPES } from '@clr/angular/emphasis/alert';
-import { createArray } from 'helpers/common';
-import { RenderComponentStorybook } from 'helpers/render-component';
+import { createArray } from '@storybook-helpers/common';
+import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 @Component({
   selector: 'storybook-standard-alert',
   standalone: true,

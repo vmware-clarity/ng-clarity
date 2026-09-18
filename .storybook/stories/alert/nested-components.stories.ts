@@ -6,14 +6,18 @@
  */
 
 import { ClarityModule } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
-import { RenderComponentStorybook } from 'helpers/render-component';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 
 import { AppLevelAlertStorybookComponent } from './app-level-alert.storybook.component';
 import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
-import { CommonModules } from '../../helpers/common';
 import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
+
+/** The only arg is the list `<storybook-render-component>` instantiates, so its `@Input()` is the args type. */
+type NestedComponentsArgs = RenderComponentStorybook;
 
 const LABEL_TYPES = ['info', 'success', 'warning', 'danger'];
 const BADGE_TYPES = ['info', 'success', 'warning', 'danger'];
@@ -120,7 +124,7 @@ const nestedComponents = [
   },
 ];
 
-export default {
+const meta: Meta<NestedComponentsArgs> = {
   title: 'Alert/Nesting Components',
   decorators: [
     moduleMetadata({
@@ -128,13 +132,13 @@ export default {
     }),
   ],
   argTypes: {
-    components: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('components'),
   },
   args: {
     // story helpers
     components: nestedComponents,
   },
-  render: (args: RenderComponentStorybook) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -144,4 +148,8 @@ export default {
   }),
 };
 
-export const Default: StoryObj = {};
+export default meta;
+
+type Story = StoryObj<NestedComponentsArgs>;
+
+export const Default: Story = {};

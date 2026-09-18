@@ -6,13 +6,28 @@
  */
 
 import { ClrHeader, ClrIcon, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * Both args are story-only -- `color` is the class the demo header wears and `HEADER_VARIANTS` is the
+ * list the showcase iterates -- and neither is a `ClrHeader` input, so the args type is standalone.
+ * The five hidden `ClrHeader` methods go through the `hideControls()` spread and need no declaration.
+ *
+ * `HEADER_VARIANTS` carried a third `type: 'array'` property alongside its hidden-control pair. A bare
+ * `'array'` is not a valid `InputType['type']` (only the scalar names are), and with both the control
+ * and the docs row disabled it is unobservable, so it is folded into `hideControls()` rather than
+ * rewritten into a well-formed `{ name: 'array', value: … }` that was never there.
+ */
+type HeaderColorsArgs = {
+  color: string;
+  HEADER_VARIANTS: string[];
+};
 
 const HEADER_VARIANTS = ['header-1', 'header-2', 'header-3'];
 
-export default {
+const meta: Meta<HeaderColorsArgs> = {
   title: 'Header/Header Colors',
   decorators: [
     moduleMetadata({
@@ -23,55 +38,52 @@ export default {
   argTypes: {
     color: { control: { type: 'select' }, options: HEADER_VARIANTS },
     // methods
-    closeOpenNav: { control: { disable: true }, table: { disable: true } },
-    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
-    openNav: { control: { disable: true }, table: { disable: true } },
-    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
-    toggleNav: { control: { disable: true }, table: { disable: true } },
-    HEADER_VARIANTS: { control: { disable: true }, table: { disable: true }, type: 'array' },
+    ...hideControls('closeOpenNav', 'initializeNavTriggers', 'openNav', 'resetNavTriggers', 'toggleNav'),
+    // story helpers
+    ...hideControls('HEADER_VARIANTS'),
   },
   args: {
     color: 'header-1',
     HEADER_VARIANTS,
   },
+  render: args => ({
+    template: `
+      <header [class]="color">
+        <div class="branding">
+          <a href="javascript://" class="nav-link">
+            <cds-icon shape="vm-bug"></cds-icon>
+            <span class="title">Clarity Design</span>
+          </a>
+        </div>
+      </header>
+    `,
+    props: args,
+  }),
 };
 
-const HeaderColorTemplate: StoryFn = args => ({
-  template: `
-    <header [class]="color">
-      <div class="branding">
-        <a href="javascript://" class="nav-link">
-          <cds-icon shape="vm-bug"></cds-icon>
-          <span class="title">Clarity Design</span>
-        </a>
-      </div>
-    </header>
-  `,
-  props: args,
-});
+export default meta;
 
-const HeaderColorAllTemplate: StoryFn = args => ({
-  template: `
-    @for (color of HEADER_VARIANTS; track color) {
-      <div style="margin-top: 10px">
-        <header [class]="color">
-          <div class="branding">
-            <a href="javascript://" class="nav-link">
-              <cds-icon shape="vm-bug"></cds-icon>
-              <span class="title">Clarity Design</span>
-            </a>
-          </div>
-        </header>
-      </div>
-    }
-  `,
-  props: args,
-});
+type Story = StoryObj<HeaderColorsArgs>;
 
-export const HeaderColors: StoryObj = {
-  render: HeaderColorTemplate,
-};
+export const HeaderColors: Story = {};
 
-export const Showcase: StoryObj = {
-  render: HeaderColorAllTemplate,
+export const Showcase: Story = {
+  // render-override: this story repeats the header once per variant, which the single-header meta template cannot express
+  render: args => ({
+    template: `
+      @for (color of HEADER_VARIANTS; track color) {
+        <div style="margin-top: 10px">
+          <header [class]="color">
+            <div class="branding">
+              <a href="javascript://" class="nav-link">
+                <cds-icon shape="vm-bug"></cds-icon>
+                <span class="title">Clarity Design</span>
+              </a>
+            </div>
+          </header>
+        </div>
+      }
+    `,
+    props: args,
+  }),
 };

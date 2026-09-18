@@ -7,9 +7,23 @@
 
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * The template is raw `clrForm` markup -- there is no Clarity component and no story wrapper to base the
+ * args on -- so the args are declared explicitly. `form` holds the mapping key, not the `FormGroup`:
+ * Storybook swaps it for the real group through the `mapping` in `argTypes`.
+ */
+type FormsRequiredMarkArgs = {
+  clrLabelSize: number;
+  patterns: { alphaNumeric: RegExp; letters: RegExp; numbers: RegExp };
+  clrLayout: ClrFormLayout;
+  screenReaderContent: string;
+  form: string;
+  namePlaceholder: string;
+};
 
 const formMappingKey = 'form-mapping-key';
 const patterns = {
@@ -17,130 +31,6 @@ const patterns = {
   letters: /[a-z]/i,
   numbers: /\d/i,
 };
-
-export default {
-  title: 'Forms/Required Mark',
-  decorators: [
-    moduleMetadata({
-      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
-    }),
-  ],
-  argTypes: {
-    // inputs
-    clrLabelSize: { control: { type: 'number', min: 1, max: 12 } },
-    // story helpers
-    patterns: { control: { disable: true }, table: { disable: true } },
-    form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
-    clrLayout: {
-      control: { type: 'radio' },
-      options: Object.values(ClrFormLayout).filter(value => typeof value === 'string'),
-    },
-  },
-  args: {
-    // inputs
-    clrLabelSize: 2,
-    // story helpers
-    patterns,
-    clrLayout: ClrFormLayout.HORIZONTAL,
-    screenReaderContent: 'Please fill out the form',
-    form: formMappingKey,
-    namePlaceholder: '',
-  },
-};
-
-const RequiredMarkTemplate: StoryFn = args => ({
-  template: `
-    <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
-      <span class="clr-sr-only">{{ screenReaderContent }}</span>
-      <span class="clr-required-mark">Required information</span>
-      <clr-input-container>
-        <label class="clr-required-mark">Name</label>
-        <input clrInput formControlName="name" [placeholder]="namePlaceholder" required />
-      </clr-input-container>
-      <clr-number-input-container>
-        <label class="clr-required-mark">Age</label>
-        <input clrNumberInput formControlName="age" type="number" min="0" required />
-      </clr-number-input-container>
-      <clr-password-container>
-        <label class="clr-required-mark">Password</label>
-        <input clrPassword autocomplete="current-password" formControlName="password" required />
-      </clr-password-container>
-      <clr-textarea-container>
-        <label class="clr-required-mark">Description</label>
-        <textarea clrTextarea formControlName="description" required></textarea>
-      </clr-textarea-container>
-      <clr-control-container>
-        <label class="clr-required-mark">Custom Control</label>
-        <input clrControl formControlName="customControl" placeholder="Basic text" name="basic" required />
-      </clr-control-container>
-      <clr-select-container>
-        <label class="clr-required-mark">Select</label>
-        <select clrSelect name="options" formControlName="select" required>
-          <option value="one">One</option>
-          <option value="two">Two</option>
-          <option value="three">Three</option>
-        </select>
-      </clr-select-container>
-      <clr-checkbox-container>
-        <label class="clr-required-mark">Checkbox</label>
-        <clr-checkbox-wrapper>
-          <input type="checkbox" formControlName="checkbox" clrCheckbox value="option1" name="options1" required />
-          <label>Option 1</label>
-        </clr-checkbox-wrapper>
-        <clr-checkbox-wrapper>
-          <input type="checkbox" formControlName="checkbox" clrCheckbox value="option2" name="options2" />
-          <label>Option 2</label>
-        </clr-checkbox-wrapper>
-      </clr-checkbox-container>
-      <clr-combobox-container>
-        <label class="clr-required-mark">Combobox</label>
-        <clr-combobox formControlName="combobox" name="two" placeholder="Select a number" required>
-          <clr-options>
-            <clr-option clrValue="1">1</clr-option>
-            <clr-option clrValue="2">2</clr-option>
-            <clr-option clrValue="3">3</clr-option>
-          </clr-options>
-        </clr-combobox>
-      </clr-combobox-container>
-      <clr-datalist-container>
-        <label class="clr-required-mark">Datalist</label>
-        <input clrDatalistInput formControlName="datalist" placeholder="No label" name="Option" required />
-        <datalist>
-          <option value="1"></option>
-          <option value="2"></option>
-          <option value="3"></option>
-        </datalist>
-      </clr-datalist-container>
-      <clr-date-container>
-        <label class="clr-required-mark">Datepicker</label>
-        <input type="date" formControlName="datepicker" autocomplete="off" clrDate name="demo" required />
-      </clr-date-container>
-      <clr-radio-container>
-        <label class="clr-required-mark">Radio</label>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio value="option1" formControlName="radio" required />
-          <label>Option 1</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio value="option2" formControlName="radio" />
-          <label>Option 2</label>
-        </clr-radio-wrapper>
-      </clr-radio-container>
-      <clr-range-container>
-        <label class="clr-required-mark">Range</label>
-        <input type="range" clrRange formControlName="range" name="three" required />
-      </clr-range-container>
-      <clr-toggle-container>
-        <label class="clr-required-mark">Toggle switch</label>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="toggle" formControlName="toggle" required value="option1" />
-          <label>Option 1</label>
-        </clr-toggle-wrapper>
-      </clr-toggle-container>
-    </form>
-  `,
-  props: args,
-});
 
 function getForm() {
   return new FormGroup({
@@ -160,16 +50,139 @@ function getForm() {
   });
 }
 
-export const HorizontalLayout: StoryObj = {
-  render: RequiredMarkTemplate,
+const meta: Meta<FormsRequiredMarkArgs> = {
+  title: 'Forms/Required Mark',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrLabelSize: { control: { type: 'number', min: 1, max: 12 } },
+    // story helpers
+    ...hideControls('patterns'),
+    form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
+    clrLayout: {
+      control: { type: 'radio' },
+      options: Object.values(ClrFormLayout).filter(value => typeof value === 'string'),
+    },
+  },
+  args: {
+    // inputs
+    clrLabelSize: 2,
+    // story helpers
+    patterns,
+    clrLayout: ClrFormLayout.HORIZONTAL,
+    screenReaderContent: 'Please fill out the form',
+    form: formMappingKey,
+    namePlaceholder: '',
+  },
+  render: args => ({
+    template: `
+      <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
+        <span class="clr-sr-only">{{ screenReaderContent }}</span>
+        <span class="clr-required-mark">Required information</span>
+        <clr-input-container>
+          <label class="clr-required-mark">Name</label>
+          <input clrInput formControlName="name" [placeholder]="namePlaceholder" required />
+        </clr-input-container>
+        <clr-number-input-container>
+          <label class="clr-required-mark">Age</label>
+          <input clrNumberInput formControlName="age" type="number" min="0" required />
+        </clr-number-input-container>
+        <clr-password-container>
+          <label class="clr-required-mark">Password</label>
+          <input clrPassword autocomplete="current-password" formControlName="password" required />
+        </clr-password-container>
+        <clr-textarea-container>
+          <label class="clr-required-mark">Description</label>
+          <textarea clrTextarea formControlName="description" required></textarea>
+        </clr-textarea-container>
+        <clr-control-container>
+          <label class="clr-required-mark">Custom Control</label>
+          <input clrControl formControlName="customControl" placeholder="Basic text" name="basic" required />
+        </clr-control-container>
+        <clr-select-container>
+          <label class="clr-required-mark">Select</label>
+          <select clrSelect name="options" formControlName="select" required>
+            <option value="one">One</option>
+            <option value="two">Two</option>
+            <option value="three">Three</option>
+          </select>
+        </clr-select-container>
+        <clr-checkbox-container>
+          <label class="clr-required-mark">Checkbox</label>
+          <clr-checkbox-wrapper>
+            <input type="checkbox" formControlName="checkbox" clrCheckbox value="option1" name="options1" required />
+            <label>Option 1</label>
+          </clr-checkbox-wrapper>
+          <clr-checkbox-wrapper>
+            <input type="checkbox" formControlName="checkbox" clrCheckbox value="option2" name="options2" />
+            <label>Option 2</label>
+          </clr-checkbox-wrapper>
+        </clr-checkbox-container>
+        <clr-combobox-container>
+          <label class="clr-required-mark">Combobox</label>
+          <clr-combobox formControlName="combobox" name="two" placeholder="Select a number" required>
+            <clr-options>
+              <clr-option clrValue="1">1</clr-option>
+              <clr-option clrValue="2">2</clr-option>
+              <clr-option clrValue="3">3</clr-option>
+            </clr-options>
+          </clr-combobox>
+        </clr-combobox-container>
+        <clr-datalist-container>
+          <label class="clr-required-mark">Datalist</label>
+          <input clrDatalistInput formControlName="datalist" placeholder="No label" name="Option" required />
+          <datalist>
+            <option value="1"></option>
+            <option value="2"></option>
+            <option value="3"></option>
+          </datalist>
+        </clr-datalist-container>
+        <clr-date-container>
+          <label class="clr-required-mark">Datepicker</label>
+          <input type="date" formControlName="datepicker" autocomplete="off" clrDate name="demo" required />
+        </clr-date-container>
+        <clr-radio-container>
+          <label class="clr-required-mark">Radio</label>
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio value="option1" formControlName="radio" required />
+            <label>Option 1</label>
+          </clr-radio-wrapper>
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio value="option2" formControlName="radio" />
+            <label>Option 2</label>
+          </clr-radio-wrapper>
+        </clr-radio-container>
+        <clr-range-container>
+          <label class="clr-required-mark">Range</label>
+          <input type="range" clrRange formControlName="range" name="three" required />
+        </clr-range-container>
+        <clr-toggle-container>
+          <label class="clr-required-mark">Toggle switch</label>
+          <clr-toggle-wrapper>
+            <input type="checkbox" clrToggle name="toggle" formControlName="toggle" required value="option1" />
+            <label>Option 1</label>
+          </clr-toggle-wrapper>
+        </clr-toggle-container>
+      </form>
+    `,
+    props: args,
+  }),
 };
 
-export const VerticalLayout: StoryObj = {
-  render: RequiredMarkTemplate,
+export default meta;
+
+type Story = StoryObj<FormsRequiredMarkArgs>;
+
+export const HorizontalLayout: Story = {};
+
+export const VerticalLayout: Story = {
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.VERTICAL },
 };
 
-export const CompactLayout: StoryObj = {
-  render: RequiredMarkTemplate,
+export const CompactLayout: Story = {
   args: { namePlaceholder: 'Test placeholder', clrLayout: ClrFormLayout.COMPACT },
 };

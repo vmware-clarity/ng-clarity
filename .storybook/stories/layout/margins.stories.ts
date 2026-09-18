@@ -5,54 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+import { LayoutTestComponent } from './margins.storybook.component';
 
-@Component({
-  selector: 'layout-test-component',
-  template: `
-    <div class="demo">
-      <div class="item"><span cds-layout="m:none" class="placeholder">m:none</span></div>
-      <div class="item"><span cds-layout="m:xxs" class="placeholder">m:xxs</span></div>
-      <div class="item"><span cds-layout="m:xs" class="placeholder">m:xs</span></div>
-      <div class="item"><span cds-layout="m:sm" class="placeholder">m:sm</span></div>
-      <div class="item"><span cds-layout="m:md" class="placeholder">m:md</span></div>
-      <div class="item"><span cds-layout="m:lg" class="placeholder">m:lg</span></div>
-      <div class="item"><span cds-layout="m:xl" class="placeholder">m:xl</span></div>
-      <div class="item"><span cds-layout="m:xxl" class="placeholder">m:xxl</span></div>
-    </div>
-  `,
-  styles: [
-    `
-      .demo {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .item {
-        background-color: #f8cb9b;
-      }
-      .placeholder {
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: var(--cds-global-color-cool-gray-700);
-        color: var(--cds-global-color-gray-0);
-        font-size: var(--cds-alias-typography-body-font-size);
-        min-width: 50px;
-        min-height: 50px;
-      }
-    `,
-  ],
-})
-export class LayoutTestComponent {}
+/**
+ * The story renders `<layout-test-component>` through `component:`. The component takes no
+ * `@Input()`s -- the margin scale is spelled out in its template -- so the args are empty.
+ */
+type MarginsArgs = LayoutTestComponent;
 
-export default {
+const meta: Meta<MarginsArgs> = {
   title: 'Layout/Spacing',
   decorators: [
     moduleMetadata({
@@ -64,4 +28,8 @@ export default {
   args: {},
 };
 
-export const Margins: StoryObj = {};
+export default meta;
+
+type Story = StoryObj<MarginsArgs>;
+
+export const Margins: Story = {};

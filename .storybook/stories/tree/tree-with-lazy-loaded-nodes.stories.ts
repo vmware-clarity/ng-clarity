@@ -6,12 +6,21 @@
  */
 
 import { ClrConditionalModule, ClrLoadingModule, ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { filesRoot } from '@storybook-helpers/files.data';
 import { Observable, timer } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
 
-import { CommonModules } from '../../helpers/common';
-import { filesRoot } from '../../helpers/files.data';
+/**
+ * `ClrTree` declares its input as `@Input('clrLazy') set lazy`, so `clrLazy` is not a property of the
+ * class; `fileService` is a story-only prop the template reads through `props`.
+ */
+type LazyLoadedNodesArgs = {
+  clrLazy: boolean;
+  fileService: FileService;
+};
 
 class FileService {
   loading = false;
@@ -29,7 +38,7 @@ class FileService {
   }
 }
 
-export default {
+const meta: Meta<LazyLoadedNodesArgs> = {
   title: 'Tree/Tree with lazy-loaded nodes',
   decorators: [
     moduleMetadata({
@@ -41,32 +50,33 @@ export default {
     // inputs
     clrLazy: { control: { disable: true } },
     // story helpers
-    fileService: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('fileService'),
   },
   args: {
     // story helpers
     fileService: new FileService(),
   },
+  render: args => ({
+    template: `
+      <clr-tree [clrLazy]="true">
+        <clr-tree-node [clrLoading]="fileService.loading">
+          Files
+          <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fileService.getFilenames() : null">
+            @for (filename of fileService.filenames | async; track filename) {
+              <clr-tree-node>
+                {{ filename }}
+              </clr-tree-node>
+            }
+          </ng-template>
+        </clr-tree-node>
+      </clr-tree>
+    `,
+    props: args,
+  }),
 };
 
-const LazyLoadedTreeTemplate: StoryFn = args => ({
-  template: `
-    <clr-tree [clrLazy]="true">
-      <clr-tree-node [clrLoading]="fileService.loading">
-        Files
-        <ng-template clrIfExpanded (clrIfExpandedChange)="$event ? fileService.getFilenames() : null">
-          @for (filename of fileService.filenames | async; track filename) {
-            <clr-tree-node>
-              {{ filename }}
-            </clr-tree-node>
-          }
-        </ng-template>
-      </clr-tree-node>
-    </clr-tree>
-  `,
-  props: args,
-});
+export default meta;
 
-export const LazyLoadedNodes: StoryObj = {
-  render: LazyLoadedTreeTemplate,
-};
+type Story = StoryObj<LazyLoadedNodesArgs>;
+
+export const LazyLoadedNodes: Story = {};

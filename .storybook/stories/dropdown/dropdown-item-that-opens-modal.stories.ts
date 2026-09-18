@@ -6,11 +6,18 @@
  */
 
 import { ClrDropdown, ClrDropdownModule, ClrModalModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * `ClrDropdown` declares its input as `@Input('clrCloseMenuOnItemClick') isMenuClosable`, so
+ * `clrCloseMenuOnItemClick` is not a property of the class and the single arg is declared here.
+ */
+type DropdownWithModalArgs = {
+  clrCloseMenuOnItemClick: boolean;
+};
 
-export default {
+const meta: Meta<DropdownWithModalArgs> = {
   title: 'Dropdown/Dropdown With Modal',
   decorators: [
     moduleMetadata({
@@ -29,43 +36,45 @@ export default {
       },
     },
   },
+  render: args => ({
+    template: `
+      <div style="margin-bottom: 100px">
+        <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
+          <button class="btn btn-outline-primary" clrDropdownTrigger>
+            Dropdown
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <clr-dropdown-menu>
+            <div clrDropdownItem (click)="modalOpen = true">Open Modal</div>
+            <div clrDropdownItem>Do Nothing</div>
+            <clr-dropdown>
+              <button clrDropdownTrigger>Nested Trigger</button>
+              <clr-dropdown-menu>
+                <div clrDropdownItem (click)="modalOpen = true">Open Modal</div>
+                <div clrDropdownItem>Do Nothing</div>
+              </clr-dropdown-menu>
+            </clr-dropdown>
+          </clr-dropdown-menu>
+        </clr-dropdown>
+
+        <clr-modal [(clrModalOpen)]="modalOpen">
+          <h3 class="modal-title">Modal</h3>
+          <div class="modal-body">This is a modal.</div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" (click)="modalOpen = false">Close</button>
+          </div>
+        </clr-modal>
+      </div>
+    `,
+    props: args,
+  }),
 };
 
-const DropdownModalTemplate: StoryFn = args => ({
-  template: `
-    <div style="margin-bottom: 100px">
-      <clr-dropdown [clrCloseMenuOnItemClick]="clrCloseMenuOnItemClick">
-        <button class="btn btn-outline-primary" clrDropdownTrigger>
-          Dropdown
-          <cds-icon shape="angle" direction="down"></cds-icon>
-        </button>
-        <clr-dropdown-menu>
-          <div clrDropdownItem (click)="modalOpen = true">Open Modal</div>
-          <div clrDropdownItem>Do Nothing</div>
-          <clr-dropdown>
-            <button clrDropdownTrigger>Nested Trigger</button>
-            <clr-dropdown-menu>
-              <div clrDropdownItem (click)="modalOpen = true">Open Modal</div>
-              <div clrDropdownItem>Do Nothing</div>
-            </clr-dropdown-menu>
-          </clr-dropdown>
-        </clr-dropdown-menu>
-      </clr-dropdown>
+export default meta;
 
-      <clr-modal [(clrModalOpen)]="modalOpen">
-        <h3 class="modal-title">Modal</h3>
-        <div class="modal-body">This is a modal.</div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-primary" (click)="modalOpen = false">Close</button>
-        </div>
-      </clr-modal>
-    </div>
-  `,
-  props: args,
-});
+type Story = StoryObj<DropdownWithModalArgs>;
 
-export const DropdownWithModal: StoryObj = {
-  render: DropdownModalTemplate,
+export const DropdownWithModal: Story = {
   args: {
     clrCloseMenuOnItemClick: true,
   },

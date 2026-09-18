@@ -6,12 +6,20 @@
  */
 
 import { ClrHeader, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { HeaderStorybookComponent } from './header.storybook.component';
-import { CommonModules } from '../../helpers/common';
 
-export default {
+/**
+ * The stories render `<storybook-header>` and drive it through `play()` rather than args, so the file
+ * has no args of its own; the wrapper is still the class an arg would bind to, and the hidden entries
+ * are `ClrHeader` methods that go through the `hideControls()` spread.
+ */
+type HeaderResponsiveNavArgs = HeaderStorybookComponent;
+
+const meta: Meta<HeaderResponsiveNavArgs> = {
   title: 'Header/Header Responsive Nav',
   decorators: [
     moduleMetadata({
@@ -20,11 +28,7 @@ export default {
   ],
   component: ClrHeader,
   argTypes: {
-    closeOpenNav: { control: { disable: true }, table: { disable: true } },
-    initializeNavTriggers: { control: { disable: true }, table: { disable: true } },
-    openNav: { control: { disable: true }, table: { disable: true } },
-    resetNavTriggers: { control: { disable: true }, table: { disable: true } },
-    toggleNav: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('closeOpenNav', 'initializeNavTriggers', 'openNav', 'resetNavTriggers', 'toggleNav'),
   },
   args: {},
   render: () => ({
@@ -34,14 +38,18 @@ export default {
   }),
 };
 
-export const Level1NavOpen: StoryObj = {
+export default meta;
+
+type Story = StoryObj<HeaderResponsiveNavArgs>;
+
+export const Level1NavOpen: Story = {
   async play({ canvasElement, userEvent }) {
     const hamburger = canvasElement.querySelector<HTMLButtonElement>('.header-hamburger-trigger');
     await userEvent.click(hamburger);
   },
 };
 
-export const Level2NavOpen: StoryObj = {
+export const Level2NavOpen: Story = {
   async play({ canvasElement, userEvent }) {
     const overflow = canvasElement.querySelector<HTMLButtonElement>('.header-overflow-trigger');
     await userEvent.click(overflow);

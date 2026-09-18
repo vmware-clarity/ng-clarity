@@ -6,10 +6,20 @@
  */
 
 import { ClrIcon, ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
-export default {
+/**
+ * `ClrTree` declares its input as `@Input('clrLazy') set lazy`, so `clrLazy` is not a property of the
+ * class; `active` is a story-only prop the template writes back to on click.
+ */
+type TreeWithActionableNodesArgs = {
+  clrLazy: boolean;
+  active: string;
+};
+
+const meta: Meta<TreeWithActionableNodesArgs> = {
   title: 'Tree/Tree with actionable nodes',
   decorators: [
     moduleMetadata({
@@ -18,7 +28,7 @@ export default {
   ],
   component: ClrTree,
   argTypes: {
-    clrLazy: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('clrLazy'),
     active: {
       control: { type: 'inline-radio' },
       options: ['apples', 'oranges', 'pumpkins'],
@@ -27,43 +37,49 @@ export default {
   args: {
     active: 'oranges',
   },
+  render: args => ({
+    template: `
+      <clr-tree>
+        <clr-tree-node [clrExpanded]="true">
+          <cds-icon shape="folder"></cds-icon>
+          Fruits
+          <clr-tree-node>
+            <button
+              id="apples"
+              (click)="active = 'apples'"
+              class="clr-treenode-link"
+              [class.active]="active === 'apples'"
+            >
+              <cds-icon shape="file"></cds-icon>
+              Apples (button)
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <button (click)="active = 'oranges'" class="clr-treenode-link" [class.active]="active === 'oranges'">
+              <cds-icon shape="file"></cds-icon>
+              Oranges (button)
+            </button>
+          </clr-tree-node>
+          <clr-tree-node>
+            <a
+              href="javascript:void(0)"
+              (click)="active = 'pumpkins'"
+              class="clr-treenode-link"
+              [class.active]="active === 'pumpkins'"
+            >
+              <cds-icon shape="file"></cds-icon>
+              Pumpkins (anchor)
+            </a>
+          </clr-tree-node>
+        </clr-tree-node>
+      </clr-tree>
+    `,
+    props: args,
+  }),
 };
 
-const TreeWithActionableNodesTemplate: StoryFn = args => ({
-  template: `
-    <clr-tree>
-      <clr-tree-node [clrExpanded]="true">
-        <cds-icon shape="folder"></cds-icon>
-        Fruits
-        <clr-tree-node>
-          <button id="apples" (click)="active = 'apples'" class="clr-treenode-link" [class.active]="active === 'apples'">
-            <cds-icon shape="file"></cds-icon>
-            Apples (button)
-          </button>
-        </clr-tree-node>
-        <clr-tree-node>
-          <button (click)="active = 'oranges'" class="clr-treenode-link" [class.active]="active === 'oranges'">
-            <cds-icon shape="file"></cds-icon>
-            Oranges (button)
-          </button>
-        </clr-tree-node>
-        <clr-tree-node>
-          <a
-            href="javascript:void(0)"
-            (click)="active = 'pumpkins'"
-            class="clr-treenode-link"
-            [class.active]="active === 'pumpkins'"
-          >
-            <cds-icon shape="file"></cds-icon>
-            Pumpkins (anchor)
-          </a>
-        </clr-tree-node>
-      </clr-tree-node>
-    </clr-tree>
-  `,
-  props: args,
-});
+export default meta;
 
-export const TreeWithActionableNodes: StoryObj = {
-  render: TreeWithActionableNodesTemplate,
-};
+type Story = StoryObj<TreeWithActionableNodesArgs>;
+
+export const TreeWithActionableNodes: Story = {};

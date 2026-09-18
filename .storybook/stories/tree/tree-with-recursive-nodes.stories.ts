@@ -6,12 +6,22 @@
  */
 
 import { ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { type File, filesRoot } from '@storybook-helpers/files.data';
 
-import { CommonModules } from '../../helpers/common';
-import { filesRoot } from '../../helpers/files.data';
+/**
+ * `ClrTree` declares its input as `@Input('clrLazy') set lazy`, so `clrLazy` is not a property of the
+ * class; `files` and `getChildren` are story-only props `*clrRecursiveFor` reads through `props`.
+ */
+type RecursiveNodesArgs = {
+  clrLazy: boolean;
+  files: File[];
+  getChildren: (file: File) => File[];
+};
 
-export default {
+const meta: Meta<RecursiveNodesArgs> = {
   title: 'Tree/Tree with recursive nodes',
   decorators: [
     moduleMetadata({
@@ -23,27 +33,27 @@ export default {
     // inputs
     clrLazy: { control: { disable: true } },
     // story helpers
-    files: { control: { disable: true }, table: { disable: true } },
-    getChildren: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('files', 'getChildren'),
   },
   args: {
     // story helpers
     files: filesRoot,
     getChildren: file => file.files,
   },
+  render: args => ({
+    template: `
+      <clr-tree>
+        <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren">
+          {{ file.name }}
+        </clr-tree-node>
+      </clr-tree>
+    `,
+    props: args,
+  }),
 };
 
-const RecursiveTreeViewTemplate: StoryFn = args => ({
-  template: `
-    <clr-tree>
-      <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren">
-        {{ file.name }}
-      </clr-tree-node>
-    </clr-tree>
-  `,
-  props: args,
-});
+export default meta;
 
-export const RecursiveNodes: StoryObj = {
-  render: RecursiveTreeViewTemplate,
-};
+type Story = StoryObj<RecursiveNodesArgs>;
+
+export const RecursiveNodes: Story = {};

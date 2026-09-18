@@ -12,13 +12,23 @@ import {
   ClrLoadingModule,
   commonStringsDefault,
 } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { ClrPopoverPosition } from '@clr/angular/popover/common';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { BUTTON_STYLES, BUTTON_TYPES } from '@storybook-helpers/button-class.helper';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { ButtonGroupStorybookComponent } from './button-group.storybook.component';
-import { BUTTON_STYLES, BUTTON_TYPES } from '../../helpers/button-class.helper';
 
-export default {
+/**
+ * The args drive `<storybook-button-group>`, so the args type is that component. The three
+ * `ClrButtonGroup` methods are picked from the class: they appear in `argTypes` only to quieten the
+ * controls table generated from `component: ClrButtonGroup`.
+ */
+type ButtonGroupArgs = ButtonGroupStorybookComponent &
+  Pick<ClrButtonGroup, 'getMoveIndex' | 'initializeButtons' | 'rearrangeButton'>;
+
+const meta: Meta<ButtonGroupArgs> = {
   title: 'Button/Button Group',
   component: ClrButtonGroup,
   decorators: [
@@ -30,21 +40,21 @@ export default {
     // inputs
     clrMenuPosition: { control: { type: 'radio' }, options: CLR_MENU_POSITIONS },
     // methods
-    getMoveIndex: { control: { disable: true }, table: { disable: true } },
-    initializeButtons: { control: { disable: true }, table: { disable: true } },
-    rearrangeButton: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('getMoveIndex', 'initializeButtons', 'rearrangeButton'),
     buttonCount: { control: { type: 'number', min: 1, max: 100 } },
     inMenuButtonCount: { control: { type: 'number', min: 1, max: 100 } },
     disabledButtonsPosition: {
       description: 'Enter JSON array (e.g. `[2,3]`)',
-      control: { type: 'array' },
+      // 'array' was dropped from the public ControlType union; it is still an alias of 'object' at
+      // runtime (both resolve to ObjectControl), so this renders exactly the same control.
+      control: { type: 'object' },
     },
     buttonStyle: { control: { type: 'radio' }, options: BUTTON_STYLES },
     buttonType: { control: { type: 'radio' }, options: BUTTON_TYPES },
-    templateMode: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('templateMode'),
   },
   args: {
-    clrMenuPosition: 'bottom-left',
+    clrMenuPosition: ClrPopoverPosition.BOTTOM_LEFT,
     loading: false,
     clrToggleButtonAriaLabel: commonStringsDefault.rowActions,
     buttonCount: 3,
@@ -55,7 +65,7 @@ export default {
     buttonStyle: 'outline',
     templateMode: 'default', // Default template mode
   },
-  render: (args: ButtonGroupStorybookComponent) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -65,30 +75,34 @@ export default {
   }),
 };
 
-export const ButtonGroup: StoryObj = {};
+export default meta;
 
-export const ButtonGroupShowcase: StoryObj = {
+type Story = StoryObj<ButtonGroupArgs>;
+
+export const ButtonGroup: Story = {};
+
+export const ButtonGroupShowcase: Story = {
   args: {
     templateMode: 'showcase',
   },
 };
 
-export const ButtonGroupLoading: StoryObj = {
+export const ButtonGroupLoading: Story = {
   args: {
     inMenuButtonCount: 0,
     loading: true,
   },
 };
 
-export const DisabledButtons: StoryObj = {
+export const DisabledButtons: Story = {
   args: {
     disabledButtonsPosition: [1, 2],
   },
 };
 
-export const ButtonGroupOverflow: StoryObj = {
+export const ButtonGroupOverflow: Story = {
   args: {
-    clrMenuPosition: 'top-left',
+    clrMenuPosition: ClrPopoverPosition.TOP_LEFT,
   },
   play({ canvasElement }) {
     (canvasElement.querySelector('.dropdown-toggle') as HTMLElement)?.click();

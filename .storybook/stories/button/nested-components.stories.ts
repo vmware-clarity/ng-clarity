@@ -6,13 +6,17 @@
  */
 
 import { ClarityModule } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
-import { RenderComponentStorybook } from 'helpers/render-component';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 
 import { ButtonStorybookComponent } from './button.storybook.component';
-import { CommonModules } from '../../helpers/common';
 import { BadgeStoryBookComponent } from '../badge/badge.storybook.component';
 import { LabelStoryBookComponent } from '../label/label.storybook.component';
+
+/** The story renders `<storybook-render-component>`, so its one input is the only arg. */
+type NestedComponentsArgs = RenderComponentStorybook;
 
 const LABEL_TYPES = ['info', 'success', 'warning', 'danger'];
 const BADGE_TYPES = ['info', 'success', 'warning', 'danger'];
@@ -56,7 +60,7 @@ const nestedComponents = [
   },
 ];
 
-export default {
+const meta: Meta<NestedComponentsArgs> = {
   title: 'Button/Nesting Components',
   decorators: [
     moduleMetadata({
@@ -64,13 +68,13 @@ export default {
     }),
   ],
   argTypes: {
-    components: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('components'),
   },
   args: {
     // story helpers
     components: nestedComponents,
   },
-  render: (args: RenderComponentStorybook) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -80,4 +84,8 @@ export default {
   }),
 };
 
-export const Default: StoryObj = {};
+export default meta;
+
+type Story = StoryObj<NestedComponentsArgs>;
+
+export const Default: Story = {};

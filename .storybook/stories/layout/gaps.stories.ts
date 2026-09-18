@@ -5,80 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+import { LayoutTestComponent } from './gaps.storybook.component';
 
-@Component({
-  selector: 'layout-test-component',
-  template: `
-    <div class="demo">
-      <div class="item" cds-layout="gap:none">
-        <span class="placeholder">none</span>
-        <span class="placeholder"></span>
-      </div>
-      <div class="item" cds-layout="gap:xxs">
-        <span class="placeholder">xxs</span>
-        <span class="placeholder"></span>
-      </div>
-      <div class="item" cds-layout="gap:xs">
-        <span class="placeholder">xs</span>
-        <span class="placeholder"></span>
-      </div>
-      <div class="item" cds-layout="gap:sm">
-        <span class="placeholder">sm</span>
-        <span class="placeholder"></span>
-      </div>
-      <div class="item" cds-layout="gap:md">
-        <span class="placeholder">md</span>
-        <span class="placeholder"></span>
-      </div>
-      <div class="item" cds-layout="gap:lg">
-        <span class="placeholder">lg</span>
-        <span class="placeholder"></span>
-      </div>
-      <div class="item" cds-layout="gap:xl">
-        <span class="placeholder">xl</span>
-        <span class="placeholder"></span>
-      </div>
-      <div class="item" cds-layout="gap:xxl">
-        <span class="placeholder">xxl</span>
-        <span class="placeholder"></span>
-      </div>
-    </div>
-  `,
-  styles: [
-    `
-      .demo {
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        align-items: flex-start;
-        gap: 8px;
-      }
-      .item {
-        display: flex;
-        background-color: #a9b7c5;
-      }
-      .placeholder {
-        padding: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: var(--cds-global-color-cool-gray-700);
-        color: var(--cds-global-color-gray-0);
-        font-size: var(--cds-alias-typography-body-font-size);
-        min-width: 50px;
-        min-height: 50px;
-        margin-left: 1px;
-      }
-    `,
-  ],
-})
-export class LayoutTestComponent {}
+/**
+ * The story renders `<layout-test-component>` through `component:`. The component takes no
+ * `@Input()`s -- the gap scale is spelled out in its template -- so the args are empty.
+ */
+type GapsArgs = LayoutTestComponent;
 
-export default {
+const meta: Meta<GapsArgs> = {
   title: 'Layout/Spacing',
   decorators: [
     moduleMetadata({
@@ -90,4 +28,8 @@ export default {
   args: {},
 };
 
-export const Gaps: StoryObj = {};
+export default meta;
+
+type Story = StoryObj<GapsArgs>;
+
+export const Gaps: Story = {};

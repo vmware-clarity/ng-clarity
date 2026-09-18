@@ -6,12 +6,24 @@
  */
 
 import { ClrAlert, ClrAlertModule, commonStringsDefault } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { AppLevelAlertStorybookComponent } from './app-level-alert.storybook.component';
 
-export default {
+/**
+ * The args drive `<storybook-app-level-alert>`, so the args type is that wrapper. `ClrAlert` itself
+ * cannot be used -- it aliases every input (`@Input('clrAlertClosable') closable`), so none of the
+ * `clr*` names the story binds are properties of the class. `close` and `open` are picked from
+ * `ClrAlert` only so the `argTypes` entries that hide those two methods stay type-checked.
+ */
+type AppLevelAlertArgs = AppLevelAlertStorybookComponent & Pick<ClrAlert, 'close' | 'open'>;
+
+/** Shared by the three paginated stories, which hide the args that the paginated view ignores. */
+const paginatedArgTypes = hideControls('clrCloseButtonAriaLabel', 'alertCount', 'close', 'open');
+
+const meta: Meta<AppLevelAlertArgs> = {
   title: 'Alert/App Level Alerts',
   component: ClrAlert,
   decorators: [
@@ -39,11 +51,7 @@ export default {
     close: { control: { disable: true } },
     open: { control: { disable: true } },
     // story helpers
-    clrAlertType: { control: { disable: true }, table: { disable: true } },
-    clrAlertClosed: { control: { disable: true }, table: { disable: true } },
-    clrAlertAppLevel: { control: { disable: true }, table: { disable: true } },
-    clrAlertSizeSmall: { control: { disable: true }, table: { disable: true } },
-    clrAlertLightweight: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('clrAlertType', 'clrAlertClosed', 'clrAlertAppLevel', 'clrAlertSizeSmall', 'clrAlertLightweight'),
   },
   args: {
     // inputs
@@ -58,7 +66,7 @@ export default {
     showActions: false,
     paginated: false,
   },
-  render: (args: AppLevelAlertStorybookComponent) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -68,7 +76,11 @@ export default {
   }),
 };
 
-export const SingleAlert: StoryObj = {
+export default meta;
+
+type Story = StoryObj<AppLevelAlertArgs>;
+
+export const SingleAlert: Story = {
   args: {
     alertTypes: ['info'],
     alertCount: 1,
@@ -76,34 +88,27 @@ export const SingleAlert: StoryObj = {
   },
 };
 
-export const Alert: StoryObj = {};
+export const Alert: Story = {};
 
-export const DifferentIcon: StoryObj = {
+export const DifferentIcon: Story = {
   args: {
     clrAlertIcon: 'settings',
   },
 };
 
-export const Closable: StoryObj = {
+export const Closable: Story = {
   args: {
     clrAlertClosable: true,
   },
 };
 
-export const WithActions: StoryObj = {
+export const WithActions: Story = {
   args: {
     showActions: true,
   },
 };
 
-const paginatedArgTypes = {
-  clrCloseButtonAriaLabel: { control: { disable: true }, table: { disable: true } },
-  alertCount: { control: { disable: true }, table: { disable: true } },
-  close: { control: { disable: true }, table: { disable: true } },
-  open: { control: { disable: true }, table: { disable: true } },
-};
-
-export const Paginated: StoryObj = {
+export const Paginated: Story = {
   argTypes: paginatedArgTypes,
   args: {
     paginated: true,
@@ -111,7 +116,7 @@ export const Paginated: StoryObj = {
   },
 };
 
-export const PaginatedWithActions: StoryObj = {
+export const PaginatedWithActions: Story = {
   argTypes: paginatedArgTypes,
   args: {
     paginated: true,
@@ -120,7 +125,7 @@ export const PaginatedWithActions: StoryObj = {
   },
 };
 
-export const PaginatedClosable: StoryObj = {
+export const PaginatedClosable: Story = {
   argTypes: paginatedArgTypes,
   args: {
     paginated: true,

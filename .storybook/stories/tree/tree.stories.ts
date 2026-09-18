@@ -6,12 +6,22 @@
  */
 
 import { ClrIcon, ClrTree, ClrTreeViewModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { CommonModules } from '@storybook-helpers/common';
+import { filesRoot, getFileTreeNodeMarkup } from '@storybook-helpers/files.data';
 
-import { CommonModules } from '../../helpers/common';
-import { filesRoot, getFileTreeNodeMarkup } from '../../helpers/files.data';
+/**
+ * `ClrTree` cannot be the args type: it declares its only input as `@Input('clrLazy') set lazy`, so
+ * `clrLazy` is not a property of the class. `asLink` and `hasIcon` are story-only props consumed by
+ * `getFileTreeNodeMarkup()` while the template string is built.
+ */
+type TreeArgs = {
+  clrLazy: boolean;
+  asLink: boolean;
+  hasIcon: boolean;
+};
 
-export default {
+const meta: Meta<TreeArgs> = {
   title: 'Tree/Tree',
   decorators: [
     moduleMetadata({
@@ -28,35 +38,33 @@ export default {
     asLink: false,
     hasIcon: false,
   },
+  render: args => ({
+    template: `
+      <clr-tree>${getFileTreeNodeMarkup(filesRoot, args)}</clr-tree>
+    `,
+    props: args,
+  }),
 };
 
-const TreeViewTemplate: StoryFn = args => ({
-  template: `
-    <clr-tree>${getFileTreeNodeMarkup(filesRoot, args)}</clr-tree>
-  `,
-  props: args,
-});
+export default meta;
 
-export const TreeView: StoryObj = {
-  render: TreeViewTemplate,
-};
+type Story = StoryObj<TreeArgs>;
 
-export const TreeViewAsLink: StoryObj = {
-  render: TreeViewTemplate,
+export const TreeView: Story = {};
+
+export const TreeViewAsLink: Story = {
   args: {
     asLink: true,
   },
 };
 
-export const TreeViewHasIcon: StoryObj = {
-  render: TreeViewTemplate,
+export const TreeViewHasIcon: Story = {
   args: {
     hasIcon: true,
   },
 };
 
-export const TreeViewAsLinkHasIcon: StoryObj = {
-  render: TreeViewTemplate,
+export const TreeViewAsLinkHasIcon: Story = {
   args: {
     asLink: true,
     hasIcon: true,

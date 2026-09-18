@@ -5,11 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryObj } from '@storybook/angular';
+import { type Meta, type StoryObj } from '@storybook/angular';
 
 import { ApplicationLayoutStorybookComponent } from './application-layout/application-layout.storybook.component';
 
-export default {
+/**
+ * The stories render `<storybook-application-layout>` through `component:`, and the four
+ * `level*Navigation` args are its own `@Input()`s under those exact names, so the wrapper is the args type.
+ */
+type ApplicationLayoutArgs = ApplicationLayoutStorybookComponent;
+
+const meta: Meta<ApplicationLayoutArgs> = {
   title: 'Layout/Application',
   component: ApplicationLayoutStorybookComponent,
   decorators: [],
@@ -22,9 +28,13 @@ export default {
   },
 };
 
-export const Default: StoryObj = {};
+export default meta;
 
-export const FirstNavigationOnly: StoryObj = {
+type Story = StoryObj<ApplicationLayoutArgs>;
+
+export const Default: Story = {};
+
+export const FirstNavigationOnly: Story = {
   args: {
     level1Navigation: true,
     level2Navigation: false,
@@ -32,7 +42,7 @@ export const FirstNavigationOnly: StoryObj = {
     level4Navigation: false,
   },
 };
-export const NoNavigations: StoryObj = {
+export const NoNavigations: Story = {
   args: {
     level1Navigation: false,
     level2Navigation: false,

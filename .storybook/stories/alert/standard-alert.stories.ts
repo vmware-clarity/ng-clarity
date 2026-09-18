@@ -6,13 +6,34 @@
  */
 
 import { ClrAlert, ClrAlertModule } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 import { action } from 'storybook/actions';
 
 import { StandardAlertStorybookComponent } from './standard-alert.storybook.component';
-import { CommonModules } from '../../helpers/common';
 
-export default {
+/**
+ * The args drive `<storybook-standard-alert>`, so the args type is that wrapper -- `ClrAlert` aliases
+ * every input (`@Input('clrAlertClosable') closable`), so the `clr*` names the story binds are not
+ * properties of it. `close` and `open` are picked from `ClrAlert` only so the `argTypes` entries that
+ * hide those two methods stay type-checked, and `clrAlertClosedChange` is declared because it is an
+ * arg (an `action()`) without being a member of the wrapper.
+ *
+ * `clrAlertClosable` and `clrCloseButtonAriaLabel` are widened because the `Lightweight` story passes
+ * argTypes-shaped objects (`{ value: false, table: { disable: true } }`) as *args*. That is an
+ * authoring mistake -- `argsToTemplate` binds them straight through, so the alert renders with a
+ * truthy `clrAlertClosable` -- but it is the markup the committed snapshot was recorded from, so the
+ * values are left exactly as they are. Correcting them changes a snapshot and belongs in its own change.
+ */
+type StandardAlertArgs = Omit<StandardAlertStorybookComponent, 'clrAlertClosable' | 'clrCloseButtonAriaLabel'> &
+  Pick<ClrAlert, 'close' | 'open'> & {
+    clrAlertClosable: boolean | Record<string, unknown>;
+    clrCloseButtonAriaLabel: string | Record<string, unknown>;
+    clrAlertClosedChange: (closed: boolean) => void;
+  };
+
+const meta: Meta<StandardAlertArgs> = {
   title: 'Alert/Standard Alerts',
   component: ClrAlert,
   decorators: [
@@ -53,18 +74,14 @@ export default {
     close: { control: { disable: true } },
     open: { control: { disable: true } },
     // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
-    ALERT_TYPES: { control: { disable: true }, table: { disable: true } },
-    clrAlertType: { control: { disable: true }, table: { disable: true } },
-    clrAlertClosed: { control: { disable: true }, table: { disable: true } },
-    clrAlertAppLevel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('createArray', 'ALERT_TYPES', 'clrAlertType', 'clrAlertClosed', 'clrAlertAppLevel'),
   },
   args: {
     clrAlertClosable: false,
     clrAlertLightweight: false,
     clrAlertClosedChange: action('clrAlertClosedChange'),
   },
-  render: (args: StandardAlertStorybookComponent) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -74,35 +91,39 @@ export default {
   }),
 };
 
-export const SingleAlert: StoryObj = {
+export default meta;
+
+type Story = StoryObj<StandardAlertArgs>;
+
+export const SingleAlert: Story = {
   args: {
     alertCount: 1,
     alertTypes: ['info'],
   },
 };
 
-export const Alert: StoryObj = {};
+export const Alert: Story = {};
 
-export const Small: StoryObj = {
+export const Small: Story = {
   args: {
     clrAlertSizeSmall: true,
   },
 };
 
-export const SmallLightweight: StoryObj = {
+export const SmallLightweight: Story = {
   args: {
     clrAlertSizeSmall: true,
     clrAlertLightweight: true,
   },
 };
 
-export const Closable: StoryObj = {
+export const Closable: Story = {
   args: {
     clrAlertClosable: true,
   },
 };
 
-export const Lightweight: StoryObj = {
+export const Lightweight: Story = {
   args: {
     clrAlertLightweight: true,
     clrCloseButtonAriaLabel: { table: { disable: true } },
@@ -110,19 +131,19 @@ export const Lightweight: StoryObj = {
   },
 };
 
-export const DifferentIcon: StoryObj = {
+export const DifferentIcon: Story = {
   args: {
     clrAlertIcon: 'settings',
   },
 };
 
-export const WithActions: StoryObj = {
+export const WithActions: Story = {
   args: {
     showActions: true,
   },
 };
 
-export const WithOpenActionsDropdown: StoryObj = {
+export const WithOpenActionsDropdown: Story = {
   args: {
     alertCount: 1,
     showActions: true,
@@ -131,7 +152,7 @@ export const WithOpenActionsDropdown: StoryObj = {
   },
 };
 
-export const WithLongContentAndOpenActionsDropdown: StoryObj = {
+export const WithLongContentAndOpenActionsDropdown: Story = {
   args: {
     alertCount: 1,
     content: `
@@ -147,7 +168,7 @@ export const WithLongContentAndOpenActionsDropdown: StoryObj = {
   },
 };
 
-export const MultipleSeparatedAlerts: StoryObj = {
+export const MultipleSeparatedAlerts: Story = {
   args: {
     alertCount: 1,
     alertTypes: ['info', 'info'],

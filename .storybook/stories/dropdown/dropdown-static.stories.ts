@@ -6,11 +6,18 @@
  */
 
 import { ClrDropdown, ClrDropdownModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * The template is static Clarity markup rather than `<clr-dropdown>` bindings, so no aliased
+ * `ClrDropdown` input is an arg here; `showIcon` is the one story-only prop.
+ */
+type DropdownStaticArgs = ClrDropdown & {
+  showIcon: boolean;
+};
 
-export default {
+const meta: Meta<DropdownStaticArgs> = {
   title: 'Dropdown/Dropdown Static',
   decorators: [
     moduleMetadata({
@@ -21,81 +28,86 @@ export default {
   args: {
     showIcon: false,
   },
-};
-
-const DropdownStaticTemplate: StoryFn = args => ({
-  template: `
-    <div style="margin-bottom: 200px; text-align: center">
-      <div class="dropdown open">
-        <button class="dropdown-toggle btn btn-primary" type="button">
-          Dropdown
-          <cds-icon shape="angle" direction="down"></cds-icon>
-        </button>
-        <div class="dropdown-menu" role="menu">
-          <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
-          <div aria-label="Dropdown header Action" class="dropdown-item active" role="menuitem">
-            @if (showIcon) {
-              <cds-icon shape="user"></cds-icon>
-            }
-            <span>Action</span>
-          </div>
-          <div
-            aria-label="Dropdown header Disabled Link"
-            class="dropdown-item disabled"
-            role="menuitem"
-            aria-disabled="true"
-          >
-            @if (showIcon) {
-              <cds-icon shape="user"></cds-icon>
-            }
-            <span>Disabled Link</span>
-          </div>
-          <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
-          <button class="dropdown-item" role="menuitem">Lorem</button>
-          <div class="dropdown open right-bottom">
-            <button class="dropdown-item active expandable" role="menuitem" aria-expanded="true" aria-haspopup="menu">
-              Lorem ipsum
-            </button>
-            <div class="dropdown-menu" role="menu">
-              <button class="dropdown-item" role="menuitem">
-                @if (showIcon) {
-                  <cds-icon shape="user"></cds-icon>
-                }
-                <span>Foo.</span>
+  render: args => ({
+    template: `
+      <div style="margin-bottom: 200px; text-align: center">
+        <div class="dropdown open">
+          <button class="dropdown-toggle btn btn-primary" type="button">
+            Dropdown
+            <cds-icon shape="angle" direction="down"></cds-icon>
+          </button>
+          <div class="dropdown-menu" role="menu">
+            <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
+            <div aria-label="Dropdown header Action" class="dropdown-item active" role="menuitem">
+              @if (showIcon) {
+                <cds-icon shape="user"></cds-icon>
+              }
+              <span>Action</span>
+            </div>
+            <div
+              aria-label="Dropdown header Disabled Link"
+              class="dropdown-item disabled"
+              role="menuitem"
+              aria-disabled="true"
+            >
+              @if (showIcon) {
+                <cds-icon shape="user"></cds-icon>
+              }
+              <span>Disabled Link</span>
+            </div>
+            <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
+            <button class="dropdown-item" role="menuitem">Lorem</button>
+            <div class="dropdown open right-bottom">
+              <button class="dropdown-item active expandable" role="menuitem" aria-expanded="true" aria-haspopup="menu">
+                Lorem ipsum
               </button>
-              <div class="dropdown open right-top">
-                <button class="dropdown-item active expandable" role="menuitem" aria-expanded="true" aria-haspopup="menu">
+              <div class="dropdown-menu" role="menu">
+                <button class="dropdown-item" role="menuitem">
                   @if (showIcon) {
                     <cds-icon shape="user"></cds-icon>
                   }
-                  <span>Bar</span>
+                  <span>Foo.</span>
                 </button>
-                <div class="dropdown-menu" role="menu">
-                  <div class="dropdown-item" role="menuitem">
+                <div class="dropdown open right-top">
+                  <button
+                    class="dropdown-item active expandable"
+                    role="menuitem"
+                    aria-expanded="true"
+                    aria-haspopup="menu"
+                  >
                     @if (showIcon) {
                       <cds-icon shape="user"></cds-icon>
                     }
-                    <span>Baz</span>
+                    <span>Bar</span>
+                  </button>
+                  <div class="dropdown-menu" role="menu">
+                    <div class="dropdown-item" role="menuitem">
+                      @if (showIcon) {
+                        <cds-icon shape="user"></cds-icon>
+                      }
+                      <span>Baz</span>
+                    </div>
                   </div>
                 </div>
+                <div class="dropdown-item" role="menuitem">Foo 2</div>
               </div>
-              <div class="dropdown-item" role="menuitem">Foo 2</div>
             </div>
+            <div class="dropdown-item" role="menuitem">Ipsum</div>
           </div>
-          <div class="dropdown-item" role="menuitem">Ipsum</div>
         </div>
       </div>
-    </div>
-  `,
-  props: args,
-});
-
-export const DropdownStatic: StoryObj = {
-  render: DropdownStaticTemplate,
+    `,
+    props: args,
+  }),
 };
 
-export const DropdownWithIconsStatic: StoryObj = {
-  render: DropdownStaticTemplate,
+export default meta;
+
+type Story = StoryObj<DropdownStaticArgs>;
+
+export const DropdownStatic: Story = {};
+
+export const DropdownWithIconsStatic: Story = {
   args: {
     showIcon: true,
   },
