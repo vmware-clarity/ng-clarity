@@ -6211,6 +6211,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     focusTreeNode(): void;
     // (undocumented)
+    inertWhenCollapsed: boolean;
+    // (undocumented)
     isExpandable(): boolean;
     // (undocumented)
     isModelLoading: boolean;

@@ -8,7 +8,7 @@
 import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
-import { expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
+import { delay, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, IfExpandService, Keys } from '@clr/angular/utils';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
@@ -568,20 +568,35 @@ export default function (): void {
         expect(focusManager.focusParent).toHaveBeenCalledWith(this.clarityDirective._model);
       });
 
-      it('sets inert on the children container when the node is collapsed to prevent Tab into hidden children', function (this: Context) {
-        const childrenContainer = this.clarityElement.querySelector('.clr-treenode-children') as HTMLElement;
-        // Initially collapsed — inert should be present
-        expect(this.clarityDirective.expanded).toBeFalse();
+      it('hides the children container from rendering, focus and assistive technologies when collapsed', async function (this: Context) {
+        const childrenContainer: HTMLElement = this.clarityElement.querySelector('.clr-treenode-children');
+        // Initially collapsed: the subtree is skipped entirely, which also makes it unfocusable and hidden from AT
+        expect(childrenContainer.classList).toContain('clr-treenode-children-collapsed');
+        expect(getComputedStyle(childrenContainer).contentVisibility).toBe('hidden');
+        expect(childrenContainer.hasAttribute('inert')).toBeFalse();
+        // Expand the node: the subtree is rendered again right away
+        this.clarityDirective.expanded = true;
+        this.detectChanges();
+        expect(childrenContainer.classList).not.toContain('clr-treenode-children-collapsed');
+        expect(getComputedStyle(childrenContainer).contentVisibility).toBe('visible');
+        expect(childrenContainer.hasAttribute('inert')).toBeFalse();
+        // Collapse the node: the subtree is only hidden once the collapse animation is over
+        this.clarityDirective.expanded = false;
+        this.detectChanges();
+        expect(childrenContainer.classList).toContain('clr-treenode-children-collapsed');
+        expect(getComputedStyle(childrenContainer).contentVisibility).toBe('visible');
+        await delay(250);
+        expect(getComputedStyle(childrenContainer).contentVisibility).toBe('hidden');
+      });
+
+      it('falls back to inert on the children container when content-visibility is not supported', function (this: Context) {
+        const childrenContainer: HTMLElement = this.clarityElement.querySelector('.clr-treenode-children');
+        this.clarityDirective.inertWhenCollapsed = true;
         this.detectChanges();
         expect(childrenContainer.hasAttribute('inert')).toBeTrue();
-        // Expand the node — inert should be removed
         this.clarityDirective.expanded = true;
         this.detectChanges();
         expect(childrenContainer.hasAttribute('inert')).toBeFalse();
-        // Collapse again — inert should be restored
-        this.clarityDirective.expanded = false;
-        this.detectChanges();
-        expect(childrenContainer.hasAttribute('inert')).toBeTrue();
       });
     });
 
