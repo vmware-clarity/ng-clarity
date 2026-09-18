@@ -75,7 +75,7 @@
   }
   <div class="clr-form-control">
     <div class="clr-control-container">
-      <button type="button" class="btn btn-sm btn-primary" (click)="build()" [disabled]="running">
+      <button type="button" class="btn btn-sm btn-primary" (click)="build()" [disabled]="running || tooManyNodes">
         Build tree with {{ plannedNodes | number }} nodes
       </button>
       @if (!lazy && plannedNodes > 50000) {
@@ -97,13 +97,22 @@
   <button type="button" class="btn btn-link" (click)="clearMeasurements()" [disabled]="running">Clear results</button>
 </div>
 
-<p>
-  {{ totalNodes | number }} nodes, {{ mode }} loading. All expanded: <b>{{ allExpanded }}</b>
-  @if (running) {
+<p role="status">
+  {{ totalNodes | number }} nodes, {{ mode }} loading. @if (running) {
   <span class="spinner spinner-inline"></span> measuring }
 </p>
-
-@if (measurements.length) {
+@if (tooManyNodes) {
+<div class="alert alert-warning" role="alert">
+  <div class="alert-items">
+    <div class="alert-item static">
+      <span class="alert-text">
+        These settings ask for {{ plannedNodes | number }} nodes, which is more than this page will build. Lower the
+        branching factor or the depth.
+      </span>
+    </div>
+  </div>
+</div>
+} @if (measurements.length) {
 <table class="table table-compact example-margin-bottom">
   <thead>
     <tr>
@@ -136,7 +145,7 @@
 
 <div class="clr-example">
   @if (treeVisible && typeAhead) {
-  <clr-tree [clrLazy]="lazy" [(clrAllExpanded)]="allExpanded">
+  <clr-tree [clrLazy]="lazy">
     <clr-tree-node
       *clrRecursiveFor="let node of data; getChildren: getChildren"
       [clrExpandable]="lazy ? !!node.children : undefined"
@@ -146,7 +155,7 @@
     </clr-tree-node>
   </clr-tree>
   } @else if (treeVisible) {
-  <clr-tree [clrLazy]="lazy" [(clrAllExpanded)]="allExpanded">
+  <clr-tree [clrLazy]="lazy">
     <clr-tree-node
       *clrRecursiveFor="let node of data; getChildren: getChildren"
       [clrExpandable]="lazy ? !!node.children : undefined"

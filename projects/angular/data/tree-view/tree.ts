@@ -10,11 +10,9 @@ import {
   Component,
   ContentChildren,
   ElementRef,
-  EventEmitter,
   Input,
   NgZone,
   OnDestroy,
-  Output,
   QueryList,
   Renderer2,
 } from '@angular/core';
@@ -41,14 +39,6 @@ import { ClrTreeNode } from './tree-node';
   standalone: false,
 })
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
-  /**
-   * Emits `true` when every node is expanded, `false` when none of them are, and `null` when only some of
-   * them are, which is what a node expanded or collapsed on its own leaves behind.
-   */
-  @Output('clrAllExpandedChange') allExpandedChange: EventEmitter<boolean | null> = new EventEmitter<boolean | null>(
-    true
-  );
-
   @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
 
   private rootModels: TreeNodeModel<T>[] = [];
@@ -76,33 +66,11 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     );
 
     this.subscriptions.push(subscription);
-
-    featuresService._onAllExpandedChange = state => this.allExpandedChange.emit(state);
   }
 
   @Input('clrLazy')
   set lazy(value: boolean) {
     this.featuresService.eager = !value;
-  }
-
-  /**
-   * Two-way binding reflecting whether every node of the tree is expanded. Setting it expands or collapses
-   * them all, see `expandAll()` and `collapseAll()`.
-   */
-  @Input('clrAllExpanded')
-  get allExpanded(): boolean | null {
-    return this.featuresService.allExpanded;
-  }
-  set allExpanded(value: boolean | null) {
-    // `null` is the mixed state the tree reports back. Writing it means "I don't know", so it is ignored,
-    // which is also what stops the two-way binding from echoing a partial collapse back as an instruction.
-    if (value === null || value === undefined) {
-      return;
-    }
-    value = !!value;
-    if (value !== this.featuresService.allExpanded) {
-      this.setAllExpanded(value);
-    }
   }
 
   get isMultiSelectable() {
@@ -140,11 +108,27 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
   }
 
   private setAllExpanded(expanded: boolean) {
-    const previous = this.featuresService.allExpanded;
-    this.rootModels.forEach(model => model.setExpandedRecursive(expanded));
-    this.featuresService.allExpanded = expanded;
-    if (expanded !== previous) {
-      this.allExpandedChange.emit(expanded);
+    this.featuresService._allExpanded = expanded;
+    this.rootModels.forEach(model => model._setExpandedRecursive(expanded));
+    if (!expanded) {
+      this.reclaimTabStop();
+    }
+  }
+
+  /*
+   * A collapsed subtree is made inert, so the tree's single tab stop must not be left inside one: the host
+   * gives up its own tabindex the first time it is focused, which would leave the whole tree unreachable by
+   * keyboard. Only the roots stay visible after a collapse, so the first one takes the tab stop over.
+   */
+  private reclaimTabStop() {
+    const stranded = this.el.nativeElement.querySelector(
+      '.clr-treenode-children .clr-tree-node-content-container[tabindex="0"]'
+    );
+    if (stranded) {
+      const firstRoot = this.rootNodes.find(node => !node._model.parent);
+      if (firstRoot) {
+        firstRoot._takeTabStop();
+      }
     }
   }
 

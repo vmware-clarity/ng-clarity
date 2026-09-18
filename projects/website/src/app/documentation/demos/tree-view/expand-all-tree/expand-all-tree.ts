@@ -15,9 +15,8 @@ const EXAMPLE_HTML = `
   <button type="button" class="btn" (click)="tree.expandAll()">Expand all</button>
   <button type="button" class="btn" (click)="tree.collapseAll()">Collapse all</button>
 </div>
-<p>All expanded: {{ allExpanded }}</p>
 
-<clr-tree #tree [(clrAllExpanded)]="allExpanded">
+<clr-tree #tree>
   <clr-tree-node>
     Office Locations
     <clr-tree-node>
@@ -25,8 +24,12 @@ const EXAMPLE_HTML = `
       <clr-tree-node>Palo Alto, CA (Headquarters)</clr-tree-node>
       <clr-tree-node>Seattle, WA</clr-tree-node>
     </clr-tree-node>
-    <clr-tree-node [(clrDescendantsExpanded)]="europeExpanded">
+    <clr-tree-node #europe>
       Europe
+      <div class="btn-group btn-sm">
+        <button type="button" class="btn btn-link" (click)="europe.expandDescendants()">Expand Europe</button>
+        <button type="button" class="btn btn-link" (click)="europe.collapseDescendants()">Collapse Europe</button>
+      </div>
       <clr-tree-node>
         UK
         <clr-tree-node>London</clr-tree-node>
@@ -51,10 +54,7 @@ import { ClrTreeViewModule } from '@clr/angular';
 
   imports: [ClrTreeViewModule],
 })
-export class ExampleComponent {
-  allExpanded: boolean | null = false;
-  europeExpanded: boolean | null = true;
-}
+export class ExampleComponent {}
 `;
 
 @Component({
@@ -66,7 +66,4 @@ export class ExampleComponent {
 export class ExpandAllTreeDemo {
   exampleHtml = EXAMPLE_HTML;
   exampleTs = EXAMPLE_TS;
-
-  allExpanded: boolean | null = false;
-  europeExpanded: boolean | null = true;
 }

@@ -316,25 +316,23 @@
     <h3 data-toc-item id="expand-all" cds-text="section" class="clr-mt-32px">Expanding or collapsing all nodes</h3>
 
     <p cds-text="body" class="clr-mt-16px">
-      To expand or collapse every node at once, use the <code cds-text="code">expandAll()</code> and
-      <code cds-text="code">collapseAll()</code> methods of the tree, or its
-      <code cds-text="code">[(clrAllExpanded)]</code> two-way binding. To do the same for a single subtree, use the
+      To expand or collapse every node at once, call the <code cds-text="code">expandAll()</code> and
+      <code cds-text="code">collapseAll()</code> methods of the tree. To do the same for a single subtree, call the
       <code cds-text="code">expandDescendants()</code> and <code cds-text="code">collapseDescendants()</code> methods of
-      a tree node, or its <code cds-text="code">[(clrDescendantsExpanded)]</code> two-way binding. Nodes are updated
-      without the expand animation, so this stays fast on large trees. Disabled nodes are left untouched.
+      a tree node. Get hold of either through a template reference variable, for example
+      <code cds-text="code">&lt;clr-tree #tree&gt;</code> and then
+      <code cds-text="code">(click)="tree.expandAll()"</code>.
     </p>
 
     <p cds-text="body" class="clr-mt-16px">
-      Both bindings report three states, the way a checkbox reports an indeterminate one:
-      <code cds-text="code">true</code> when every node in scope is expanded, <code cds-text="code">false</code> when
-      none of them are, and <code cds-text="code">null</code> when only some of them are, which is what expanding or
-      collapsing a single node leaves behind. Writing <code cds-text="code">null</code> yourself does nothing, so the
-      mixed state coming back out of the binding is never read as an instruction.
+      Nodes are updated without the expand animation, so this stays fast on large trees. The expanded state of each node
+      stays available through its own <code cds-text="code">[(clrExpanded)]</code> binding.
     </p>
 
     <p cds-text="body" class="clr-mt-16px">
-      While a binding is <code cds-text="code">true</code>, nodes added later on, including lazy-loaded children, come
-      in expanded: on a lazy-loaded tree, expanding all fetches every level of the tree.
+      After a bulk expand, nodes added later on, including lazy-loaded children, come in expanded: on a lazy-loaded
+      tree, expanding all fetches every level of the tree. This stops as soon as any node in scope is collapsed, so a
+      node expanded again afterwards does not cascade.
     </p>
 
     <p cds-text="body" class="clr-mt-16px">
@@ -520,21 +518,6 @@
           <td class="hidden-xs-down">false</td>
           <td class="left">Indicates to the tree that children nodes should be lazy-loaded</td>
         </tr>
-        <tr>
-          <td class="left">
-            <b cds-text="medium">[(clrAllExpanded)]</b>
-            <div class="hidden-sm-up">Type: boolean | null</div>
-            <div class="hidden-sm-up">Default: false</div>
-          </td>
-          <td class="hidden-xs-down">boolean | null</td>
-          <td class="hidden-xs-down">false</td>
-          <td class="left">
-            Two-way binding to expand or collapse every node of the tree at once. Reports true when every node is
-            expanded, false when none are, and null when only some are. The
-            <code cds-text="code">expandAll()</code> and <code cds-text="code">collapseAll()</code> methods of the tree
-            do the same.
-          </td>
-        </tr>
       </tbody>
     </table>
 
@@ -568,21 +551,6 @@
           <td class="hidden-xs-down">boolean</td>
           <td class="hidden-xs-down">false</td>
           <td class="left">Two-way binding on the expanded/collapsed state of the node.</td>
-        </tr>
-        <tr>
-          <td class="left">
-            <b cds-text="medium">[(clrDescendantsExpanded)]</b>
-            <div class="hidden-sm-up">Type: boolean | null</div>
-            <div class="hidden-sm-up">Default: false</div>
-          </td>
-          <td class="hidden-xs-down">boolean | null</td>
-          <td class="hidden-xs-down">false</td>
-          <td class="left">
-            Two-way binding to expand or collapse the node and all of its descendants at once. Reports true when the
-            whole subtree is expanded, false when none of it is, and null when only part of it is. The
-            <code cds-text="code">expandDescendants()</code> and
-            <code cds-text="code">collapseDescendants()</code> methods of the node do the same.
-          </td>
         </tr>
         <tr>
           <td class="left">

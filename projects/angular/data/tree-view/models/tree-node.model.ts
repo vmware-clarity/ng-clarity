@@ -13,18 +13,18 @@ import { ClrSelectedState } from './selected-state.enum';
 export abstract class TreeNodeModel<T> {
   nodeId: string;
   expanded: boolean;
-  /**
-   * Whether this node and all of its descendants are expanded: `true` when they all are, `false` when none of
-   * them are, and `null` when only some of them are, the same way selection reports an indeterminate state.
-   * Descendants created afterwards (lazy-loaded children, dynamic nodes) come in expanded while this is `true`.
+  /*
+   * Internal. Whether a bulk expansion is currently in effect for this node's subtree, so that descendants
+   * created afterwards (lazy-loaded children, dynamic nodes) come in expanded.
+   * Cleared as soon as any node of the subtree is collapsed on its own.
    */
-  descendantsExpanded: boolean | null = false;
+  _descendantsExpanded = false;
   /*
    * Internal, the node rendering this model. Bulk operations walk the model tree and need the node itself,
-   * for its expandable state, its animation and its outputs.
+   * for its expandable state and its animation.
    * Imported as a type only, so the models pull in nothing from the components at runtime.
    */
-  node: ClrTreeNode<T> | null = null;
+  _node: ClrTreeNode<T> | null = null;
   model: T | null;
   textContent: string;
   loading$ = new BehaviorSubject(false);
@@ -57,9 +57,9 @@ export abstract class TreeNodeModel<T> {
   }
 
   /*
-   * The children that are already known, without triggering a lazy fetch.
+   * Internal. The children that are already known, without triggering a lazy fetch.
    */
-  get loadedChildren(): TreeNodeModel<T>[] {
+  get _loadedChildren(): TreeNodeModel<T>[] {
     return this.children;
   }
 
@@ -72,39 +72,34 @@ export abstract class TreeNodeModel<T> {
   }
 
   destroy() {
-    this.node = null;
+    this._node = null;
     // Just to be safe
     this.selected.complete();
   }
 
-  /**
-   * Expands or collapses this node and every descendant that is already known, and records the new state on
-   * each of them. Disabled branches are left untouched and excluded, the same way selection excludes them.
+  /*
+   * Internal. Expands or collapses this node and every descendant that is already known.
+   * Disabled branches are left untouched and excluded, the same way selection excludes them.
    */
-  setExpandedRecursive(expanded: boolean) {
+  _setExpandedRecursive(expanded: boolean) {
     if (this.disabled) {
       return;
     }
-    if (this.node) {
-      this.node.setExpandedInBulk(expanded);
+    if (this._node) {
+      this._node._setExpandedInBulk(expanded);
     }
-    for (const child of this.loadedChildren) {
-      child.setExpandedRecursive(expanded);
+    for (const child of this._loadedChildren) {
+      child._setExpandedRecursive(expanded);
     }
-    if (expanded !== this.descendantsExpanded) {
-      this.descendantsExpanded = expanded;
-      if (this.node) {
-        this.node.onDescendantsExpandedChange(expanded);
-      }
-    }
+    this._descendantsExpanded = expanded;
   }
 
-  /**
-   * Whether this node, or one of its ancestors, expects all of its descendants to be expanded.
+  /*
+   * Internal. Whether this node, or one of its ancestors, expects all of its descendants to be expanded.
    */
-  isInExpandedSubtree(): boolean {
+  _isInExpandedSubtree(): boolean {
     for (let current: TreeNodeModel<T> = this; current; current = current.parent) {
-      if (current.descendantsExpanded) {
+      if (current._descendantsExpanded) {
         return true;
       }
     }
@@ -143,18 +138,12 @@ export abstract class TreeNodeModel<T> {
   }
 
   /*
-   * Internal, called when this node expands or collapses on its own. Any ancestor claiming the opposite for
-   * its whole subtree is now only partly expanded, so it moves to the mixed state and reports it.
+   * Internal, called when this node is collapsed on its own. No ancestor can still expect its whole subtree
+   * to be expanded, so nodes created afterwards must not keep cascading open.
    */
-  _markDescendantsMixed(expanded: boolean) {
-    const contradicted = !expanded;
+  _clearExpandedSubtree() {
     for (let current: TreeNodeModel<T> = this; current; current = current.parent) {
-      if (current.descendantsExpanded === contradicted) {
-        current.descendantsExpanded = null;
-        if (current.node) {
-          current.node.onDescendantsExpandedChange(null);
-        }
-      }
+      current._descendantsExpanded = false;
     }
   }
 

@@ -59,7 +59,7 @@ const LazyExpandAllTemplate: StoryFn = args => ({
       <button type="button" class="btn" (click)="tree.expandAll()">Expand all</button>
       <button type="button" class="btn" (click)="tree.collapseAll()">Collapse all</button>
     </div>
-    <clr-tree #tree [clrLazy]="true" [(clrAllExpanded)]="allExpanded">
+    <clr-tree #tree [clrLazy]="true">
       <clr-tree-node
         *clrRecursiveFor="let file of files | async; getChildren: getChildren"
         [clrExpandable]="!!file?.files"
@@ -73,7 +73,5 @@ const LazyExpandAllTemplate: StoryFn = args => ({
 
 export const LazyLoadedRecursiveNodesExpandAll: StoryObj = {
   render: LazyExpandAllTemplate,
-  args: {
-    allExpanded: false,
-  },
+  args: {},
 };

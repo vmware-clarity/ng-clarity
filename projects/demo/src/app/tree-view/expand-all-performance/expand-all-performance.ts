@@ -45,6 +45,14 @@ interface Measurement {
  */
 const STABLE_FRAMES = 5;
 const MAX_MEASUREMENTS = 12;
+const MAX_ROOTS = 1000;
+const MAX_BRANCHING = 1000;
+const MAX_DEPTH = 50;
+/*
+ * The three settings are clamped individually, but their product is what gets built: 1000 roots branching 1000
+ * wide over 50 levels is not a number of nodes any browser survives. Refuse above this instead.
+ */
+const MAX_NODES = 250_000;
 
 @Component({
   selector: 'clr-expand-all-performance-demo',
@@ -83,7 +91,6 @@ export class ExpandAllPerformanceDemo implements OnInit {
   data: PerfNode[] = [];
   totalNodes = 0;
   treeVisible = true;
-  allExpanded: boolean | null = false;
   running = false;
   measurements: Measurement[] = [];
 
@@ -102,6 +109,14 @@ export class ExpandAllPerformanceDemo implements OnInit {
    */
   get plannedNodes(): number {
     return plannedNodes(this.roots, this.branching, this.depth);
+  }
+
+  /**
+   * Whether the current settings ask for more nodes than the page is willing to build. The three inputs are
+   * clamped individually, but their product is not, so a handful of digits can otherwise lock the tab.
+   */
+  get tooManyNodes(): boolean {
+    return this.plannedNodes > MAX_NODES;
   }
 
   presetLabel(preset: SizePreset): string {
@@ -129,10 +144,12 @@ export class ExpandAllPerformanceDemo implements OnInit {
   }
 
   build() {
+    if (this.tooManyNodes) {
+      return;
+    }
     this.measure('build tree', () => {
-      this.data = generateTree(clamp(this.roots, 1, 1000), clamp(this.branching, 0, 1000), clamp(this.depth, 1, 50));
+      this.data = generateTree(...clampSettings(this.roots, this.branching, this.depth));
       this.totalNodes = countNodes(this.data);
-      this.allExpanded = false;
       if (this.tree) {
         // Destroy and recreate the tree, so that the mode and the data are picked up from scratch.
         this.treeVisible = false;
@@ -245,10 +262,12 @@ function generateTree(count: number, branching: number, depth: number, prefix = 
   return nodes;
 }
 
+function clampSettings(roots: number, branching: number, depth: number): [number, number, number] {
+  return [clamp(roots, 1, MAX_ROOTS), clamp(branching, 0, MAX_BRANCHING), clamp(depth, 1, MAX_DEPTH)];
+}
+
 function plannedNodes(roots: number, branching: number, depth: number): number {
-  roots = clamp(roots, 1, 1000);
-  branching = clamp(branching, 0, 1000);
-  depth = clamp(depth, 1, 50);
+  [roots, branching, depth] = clampSettings(roots, branching, depth);
   if (depth === 1 || branching === 0) {
     return roots;
   }

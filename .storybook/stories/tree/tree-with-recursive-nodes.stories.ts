@@ -54,7 +54,7 @@ const RecursiveExpandAllTemplate: StoryFn = args => ({
       <button type="button" class="btn" (click)="tree.expandAll()">Expand all</button>
       <button type="button" class="btn" (click)="tree.collapseAll()">Collapse all</button>
     </div>
-    <clr-tree #tree [(clrAllExpanded)]="allExpanded">
+    <clr-tree #tree>
       <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren">
         {{ file.name }}
       </clr-tree-node>
@@ -65,24 +65,21 @@ const RecursiveExpandAllTemplate: StoryFn = args => ({
 
 export const RecursiveNodesExpandAll: StoryObj = {
   render: RecursiveExpandAllTemplate,
-  args: {
-    allExpanded: false,
-  },
 };
 
 const RecursiveExpandDescendantsTemplate: StoryFn = args => ({
   template: `
     <p cds-text="body">
-      The
+      Only the
       <code>src</code>
-      subtree is fully expanded through the node-level [clrDescendantsExpanded] input.
+      subtree is expanded, through expandDescendants() on that node.
     </p>
     <clr-tree>
-      <clr-tree-node
-        *clrRecursiveFor="let file of files; getChildren: getChildren"
-        [clrDescendantsExpanded]="file.name === 'src'"
-      >
+      <clr-tree-node #node *clrRecursiveFor="let file of files; getChildren: getChildren">
         {{ file.name }}
+        @if (file.name === 'src') {
+          <button type="button" class="btn btn-sm btn-link" (click)="node.expandDescendants()">Expand src</button>
+        }
       </clr-tree-node>
     </clr-tree>
   `,

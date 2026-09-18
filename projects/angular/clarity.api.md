@@ -6015,9 +6015,6 @@ export class ClrTooltipTrigger {
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService" needs to be exported by the entry point clr-angular.d.ts
     constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
-    get allExpanded(): boolean | null;
-    set allExpanded(value: boolean | null);
-    allExpandedChange: EventEmitter<boolean | null>;
     collapseAll(): void;
     expandAll(): void;
     // (undocumented)
@@ -6031,7 +6028,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; "allExpanded": { "alias": "clrAllExpanded"; "required": false; }; }, { "allExpandedChange": "clrAllExpandedChange"; }, ["rootNodes"], ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; }, {}, ["rootNodes"], ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTree<any>, never>;
 }
@@ -6052,9 +6049,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     contentContainerTabindex: number;
-    get descendantsExpanded(): boolean | null;
-    set descendantsExpanded(value: boolean | null);
-    descendantsExpandedChange: EventEmitter<boolean | null>;
     // (undocumented)
     get disabled(): boolean;
     set disabled(value: boolean);
@@ -6091,8 +6085,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     nodeId: string;
     // (undocumented)
-    onDescendantsExpandedChange(state: boolean | null): void;
-    // (undocumented)
     onKeyDown(event: KeyboardEvent): void;
     // (undocumented)
     get selected(): ClrSelectedState | boolean;
@@ -6100,13 +6092,15 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     selectedChange: EventEmitter<ClrSelectedState>;
     // (undocumented)
-    setExpandedInBulk(expanded: boolean): void;
+    _setExpandedInBulk(expanded: boolean): void;
     // (undocumented)
     STATES: typeof ClrSelectedState;
     // (undocumented)
+    _takeTabStop(): void;
+    // (undocumented)
     get treeNodeLink(): ClrTreeNodeLink;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "descendantsExpanded": { "alias": "clrDescendantsExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; "descendantsExpandedChange": "clrDescendantsExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
 }
@@ -8937,7 +8931,7 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     // (undocumented)
     fetchChildren(): void;
     // (undocumented)
-    get loadedChildren(): RecursiveTreeNodeModel<T>[];
+    get _loadedChildren(): RecursiveTreeNodeModel<T>[];
     // (undocumented)
     parent: RecursiveTreeNodeModel<T> | null;
 }
@@ -9659,7 +9653,10 @@ export const treeIconName = "tree";
 export abstract class TreeNodeModel<T> {
     // (undocumented)
     abstract children: TreeNodeModel<T>[];
-    descendantsExpanded: boolean | null;
+    // (undocumented)
+    _clearExpandedSubtree(): void;
+    // (undocumented)
+    _descendantsExpanded: boolean;
     // (undocumented)
     destroy(): void;
     // (undocumented)
@@ -9667,27 +9664,27 @@ export abstract class TreeNodeModel<T> {
     set disabled(value: boolean);
     // (undocumented)
     expanded: boolean;
-    isInExpandedSubtree(): boolean;
     // (undocumented)
-    get loadedChildren(): TreeNodeModel<T>[];
+    _isInExpandedSubtree(): boolean;
+    // (undocumented)
+    get _loadedChildren(): TreeNodeModel<T>[];
     // (undocumented)
     loading$: BehaviorSubject<boolean>;
     // (undocumented)
     get loading(): boolean;
     set loading(isLoading: boolean);
     // (undocumented)
-    _markDescendantsMixed(expanded: boolean): void;
-    // (undocumented)
     model: T | null;
     // (undocumented)
-    node: ClrTreeNode<T> | null;
+    _node: ClrTreeNode<T> | null;
     // (undocumented)
     nodeId: string;
     // (undocumented)
     abstract parent: TreeNodeModel<T> | null;
     // (undocumented)
     selected: BehaviorSubject<ClrSelectedState>;
-    setExpandedRecursive(expanded: boolean): void;
+    // (undocumented)
+    _setExpandedRecursive(expanded: boolean): void;
     // (undocumented)
     setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean): void;
     // (undocumented)

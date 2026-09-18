@@ -69,14 +69,11 @@ const ExpandAllTemplate: StoryFn = args => ({
       <button type="button" class="btn" (click)="tree.expandAll()">Expand all</button>
       <button type="button" class="btn" (click)="tree.collapseAll()">Collapse all</button>
     </div>
-    <clr-tree #tree [(clrAllExpanded)]="allExpanded">${getFileTreeNodeMarkup(filesRoot, args)}</clr-tree>
+    <clr-tree #tree>${getFileTreeNodeMarkup(filesRoot, args)}</clr-tree>
   `,
   props: args,
 });
 
 export const TreeViewExpandAll: StoryObj = {
   render: ExpandAllTemplate,
-  args: {
-    allExpanded: false,
-  },
 };
