@@ -7,8 +7,9 @@
 
 /**
  * Per-screenshot overrides shared by the Storybook and website visual regression suites.
- * The key format differs per suite; see tests/screenshot-options.ts and
- * tests/website/screenshot-options.ts.
+ * The key format differs per suite: the Storybook suite keys on the story file's path
+ * (`<group>` or `<group>/<file>--<story-name>`), the website suite on the route.
+ * See tests/screenshot-options.ts and tests/website/screenshot-options.ts.
  */
 export type ScreenshotOptions = {
   [name: string]: {

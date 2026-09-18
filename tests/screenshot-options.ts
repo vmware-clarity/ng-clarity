@@ -13,119 +13,132 @@ import { ScreenshotOptions } from './helpers/screenshot-options.interface';
  * as the default implementation only takes a screenshot of the body element and if the element being
  * tested extends beyond that element it will be clipped.
  *
- * Each key in the object below is either a component name or a story name. The case/spelling of the name
- * should come from the URL, see the examples below:
+ * Keys are derived from the story file's path under `.storybook/stories/`, not from the story's
+ * `title` — see the comment in tests/visual-snapshots.spec.ts. There are two forms:
  *
- * /?path=/story/header-headers-static--header-static => component name: header, story name: headers-static--header-static
- * /?path=/story/datepicker-datepicker--datepicker => component name: datepicker, story name: datepicker--datepicker
+ *   `<group>`                        the story file's directory; applies to every story in it
+ *   `<group>/<file>--<story-name>`   one story
  *
- * If a component name is used, all stories under that component name will use the options specified.
+ * For example, `.storybook/stories/components/forms/datepicker/datepicker-opened.stories.ts`
+ * exporting `MonthView`:
+ *
+ *   `components/forms/datepicker`
+ *       -> every story under stories/components/forms/datepicker/
+ *   `components/forms/datepicker/datepicker-opened--month-view`
+ *       -> that one story
+ *
+ * The matching snapshot lands at `tests/snapshots/<browser>/<key>-<theme>-<density>.png`, so a key
+ * can be read straight off a snapshot path (and vice versa).
  */
 export const screenshotOptions: ScreenshotOptions = {
-  'popover--popover': {
+  'components/overlays/popover/popover--popover': {
     // The popover overlay attaches asynchronously after the story renders; on slow machines
     // the screenshot occasionally caught the story before the overlay appeared.
     waitForSelectors: ['#hello_world'],
   },
-  'dialog--default': {
+  'addons/dialog/dialog--default': {
     fullPageScreenshot: true,
   },
-  'dialog--vertical-tabs': {
+  'addons/dialog/dialog--vertical-tabs': {
     fullPageScreenshot: true,
   },
-  'dialog--submit-default': {
+  'addons/dialog/dialog--submit-default': {
     fullPageScreenshot: true,
   },
-  dropdown: {
+  // The old flat `dropdown/` directory is now two groups; both keep the full-page screenshot.
+  'components/overlays/dropdown': {
     fullPageScreenshot: true,
   },
-  'headers-static--header-static': {
+  'patterns/dropdown-combinations': {
     fullPageScreenshot: true,
   },
-  'combobox--loading': {
+  'components/navigation/header/header-static--header-static': {
     fullPageScreenshot: true,
   },
-  'combobox--no-results': {
+  'components/forms/combobox/combobox--loading': {
     fullPageScreenshot: true,
   },
-  'combobox--opened': {
+  'components/forms/combobox/combobox--no-results': {
     fullPageScreenshot: true,
   },
-  'combobox--opened-multi-line-items': {
+  'components/forms/combobox/combobox--opened': {
     fullPageScreenshot: true,
   },
-  'header--collapsed': {
+  'components/forms/combobox/combobox--opened-multi-line-items': {
+    fullPageScreenshot: true,
+  },
+  'components/navigation/header/header--collapsed': {
     viewport: { width: 500, height: 300 },
   },
-  'timeline--horizontal-layout-with-long-text': {
+  'components/timeline/timeline--horizontal-layout-with-long-text': {
     viewport: { width: 1000, height: 400 },
   },
-  'header-responsive-nav--level-1-nav-open': {
+  'components/navigation/header/header-responsive-nav--level-1-nav-open': {
     viewport: { width: 500, height: 400 },
     fullPageScreenshot: true,
   },
-  'header-responsive-nav--level-2-nav-open': {
+  'components/navigation/header/header-responsive-nav--level-2-nav-open': {
     viewport: { width: 500, height: 400 },
     fullPageScreenshot: true,
   },
-  'application--default': {
+  'patterns/application-layout/application-layout--default': {
     exclude: true,
   },
-  'application--first-navigation-only': {
+  'patterns/application-layout/application-layout--first-navigation-only': {
     fullPageScreenshot: true,
   },
-  'application--no-navigations': {
+  'patterns/application-layout/application-layout--no-navigations': {
     fullPageScreenshot: true,
   },
-  'modal--open-small-modal': {
+  'components/overlays/modal/modal--open-small-modal': {
     fullPageScreenshot: true,
   },
-  'modal--open-medium-modal': {
+  'components/overlays/modal/modal--open-medium-modal': {
     fullPageScreenshot: true,
   },
-  'modal--open-large-modal': {
+  'components/overlays/modal/modal--open-large-modal': {
     fullPageScreenshot: true,
   },
-  'modal--open-extra-large-modal': {
+  'components/overlays/modal/modal--open-extra-large-modal': {
     fullPageScreenshot: true,
   },
-  'modal--open-full-screen-modal': {
+  'components/overlays/modal/modal--open-full-screen-modal': {
     fullPageScreenshot: true,
   },
-  'signpost--opened': {
+  'components/signpost/signpost--opened': {
     fullPageScreenshot: true,
   },
-  'standard-alerts--with-open-actions-dropdown': {
+  'components/alert/standard-alert--with-open-actions-dropdown': {
     fullPageScreenshot: true,
   },
-  'standard-alerts--with-long-content-and-open-actions-dropdown': {
+  'components/alert/standard-alert--with-long-content-and-open-actions-dropdown': {
     fullPageScreenshot: true,
   },
-  wizard: {
+  'components/flows/wizard': {
     fullPageScreenshot: true,
   },
-  'opened--datepicker': {
+  'components/forms/datepicker/datepicker-opened--datepicker': {
     fullPageScreenshot: true,
   },
-  'opened--default-date': {
+  'components/forms/datepicker/datepicker-opened--default-date': {
     fullPageScreenshot: true,
   },
-  'opened--min-date': {
+  'components/forms/datepicker/datepicker-opened--min-date': {
     fullPageScreenshot: true,
   },
-  'opened--max-date': {
+  'components/forms/datepicker/datepicker-opened--max-date': {
     fullPageScreenshot: true,
   },
-  'opened--action-buttons': {
+  'components/forms/datepicker/datepicker-opened--action-buttons': {
     fullPageScreenshot: true,
   },
-  'opened--month-view': {
+  'components/forms/datepicker/datepicker-opened--month-view': {
     fullPageScreenshot: true,
   },
-  'opened--year-view': {
+  'components/forms/datepicker/datepicker-opened--year-view': {
     fullPageScreenshot: true,
   },
-  'opened--predefined-date-ranges-open': {
+  'components/forms/datepicker/datepicker-opened--predefined-date-ranges-open': {
     fullPageScreenshot: true,
   },
 };
