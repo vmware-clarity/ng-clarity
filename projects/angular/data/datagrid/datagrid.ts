@@ -29,7 +29,7 @@ import {
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, publishElementContext, uniqueIdFactory } from '@clr/angular/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
@@ -156,6 +156,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
+
+  private teardownElementContext?: () => void;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;
@@ -293,6 +295,47 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngAfterContentInit() {
+    // A paginated or server-driven grid holds only the current page, so the total is
+    // something only the component knows. ARIA's aria-rowcount would be the natural home
+    // for it, but it is only meaningful alongside aria-rowindex on every row, which
+    // Clarity does not set — so reporting it here avoids half-implemented ARIA that would
+    // mislead a screen reader.
+    this.teardownElementContext = publishElementContext(this.el.nativeElement, () => {
+      const state: Record<string, unknown> = {};
+
+      // Named apart from the `rowCount` the engine reads off the grid (the rows on this
+      // page, or `aria-rowcount`), which is a different number for a paginated grid.
+      const total = this.page.size > 0 ? this.page.totalItems : 0;
+      if (total > 0) {
+        state.totalRows = total;
+      }
+
+      // A filter's state is a CSS class on its toggle, and the value it holds lives
+      // inside a popover that is absent from the DOM while closed.
+      const filtered = this.columns
+        .toArray()
+        .filter(column => column.filter?.isActive?.())
+        .map(column => column.field)
+        .filter((field): field is string => !!field);
+      if (filtered.length) {
+        state.filteredColumns = filtered;
+      }
+
+      // A hidden column is not rendered at all, so nothing in the DOM says it exists or
+      // that it could be shown again. Each column knows its own state, so nothing has
+      // to be paired up by position.
+      const hidden = this.columns
+        .toArray()
+        .filter(column => column.isHidden)
+        .map(column => column.field)
+        .filter((field): field is string => !!field);
+      if (hidden.length) {
+        state.hiddenColumns = hidden;
+      }
+
+      return Object.keys(state).length ? { state } : null;
+    });
+
     if (!this.items.smart) {
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
     }
@@ -479,6 +522,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this.resizeObserver.disconnect();

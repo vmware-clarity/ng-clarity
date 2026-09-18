@@ -1,0 +1,157 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { FormsModule } from '@angular/forms';
+import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+
+import { ClrComboboxModule } from './combobox.module';
+
+type ElementContextCallback = (options: { maxItemsPerCollection?: number }) => {
+  type: string;
+  state: Record<string, unknown>;
+};
+
+@Component({
+  template: `
+    <clr-combobox name="fruit" [(ngModel)]="selection">
+      <clr-options>
+        <clr-option clrValue="apple">Apple</clr-option>
+        <clr-option clrValue="pear">Pear</clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class TestComponent {
+  selection: string | null = 'apple';
+}
+
+describe('ClrCombobox element context', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let host: HTMLElement;
+
+  function publishedContext(options: Parameters<ElementContextCallback>[0] = {}) {
+    const callback = (host as HTMLElement & { clrElementContext?: ElementContextCallback }).clrElementContext;
+    if (!callback) {
+      throw new Error('expected the combobox to publish a clrElementContext callback');
+    }
+    return callback(options);
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      declarations: [TestComponent],
+    });
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    host = fixture.nativeElement.querySelector('clr-combobox');
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  it('publishes a context callback on its host element', () => {
+    const context = publishedContext();
+
+    expect(context.type).toBe('combobox');
+    expect(context.state.multiSelect).toBe(false);
+  });
+
+  it('lists its options even while the popover is closed', () => {
+    const context = publishedContext({ maxItemsPerCollection: 25 });
+
+    expect(context.state.options).toEqual(['Apple', 'Pear']);
+    expect(context.state.optionsAvailable).toBeUndefined();
+  });
+
+  it('exposes the current selection, which a closed popover does not show', () => {
+    expect(publishedContext().state.value).toBe('Apple');
+  });
+
+  it('lists the same options while the popover is open, without screen reader additions', () => {
+    fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
+    fixture.detectChanges();
+
+    const context = publishedContext({ maxItemsPerCollection: 25 });
+
+    expect(context.state.options).toEqual(['Apple', 'Pear']);
+  });
+
+  it('caps the option list to the collection budget', () => {
+    expect(publishedContext({ maxItemsPerCollection: 1 }).state.options).toEqual(['Apple']);
+  });
+
+  it('removes the callback when the combobox is destroyed', () => {
+    fixture.destroy();
+
+    expect((host as HTMLElement & { clrElementContext?: unknown }).clrElementContext).toBeUndefined();
+  });
+});
+
+@Component({
+  template: `
+    <clr-combobox name="fruits" [(ngModel)]="selection" clrMulti="true">
+      <clr-options>
+        <clr-option clrValue="apple">Apple</clr-option>
+        <clr-option clrValue="pear">Pear</clr-option>
+        <clr-option clrValue="plum">Plum</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox name="async" [(ngModel)]="asyncSelection" class="async"></clr-combobox>
+  `,
+  standalone: false,
+})
+class MoreShapesTestComponent {
+  selection: string[] = ['apple', 'plum'];
+  asyncSelection: string | null = null;
+}
+
+describe('ClrCombobox element context, other shapes', () => {
+  let fixture: ComponentFixture<MoreShapesTestComponent>;
+
+  function publishedOn(selector: string): ReturnType<ElementContextCallback> {
+    const host = fixture.nativeElement.querySelector(selector) as HTMLElement & {
+      clrElementContext?: ElementContextCallback;
+    };
+    const callback = host.clrElementContext;
+    if (!callback) {
+      throw new Error('expected the combobox to publish a clrElementContext callback');
+    }
+    return callback({});
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      declarations: [MoreShapesTestComponent],
+    });
+    fixture = TestBed.createComponent(MoreShapesTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('reports every selected value of a multi-select combobox', () => {
+    const context = publishedOn('clr-combobox');
+    expect(context.state.multiSelect).toBe(true);
+    expect(context.state.value).toEqual(['Apple', 'Plum']);
+  });
+
+  it('says that an async combobox has no options until a search loads them', () => {
+    const context = publishedOn('clr-combobox.async');
+    expect(context.state.optionsAvailable).toBe(false);
+    expect('options' in context.state).toBe(false);
+  });
+});

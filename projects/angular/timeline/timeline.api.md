@@ -51,7 +51,7 @@ export class ClrTimelineModule {
 }
 
 // @public (undocumented)
-export class ClrTimelineStep {
+export class ClrTimelineStep implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TimelineIconAttributeService" needs to be exported by the entry point clr-angular-timeline.d.ts
     constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
     // (undocumented)
@@ -64,6 +64,8 @@ export class ClrTimelineStep {
     get isProcessing(): boolean;
     // (undocumented)
     ngAfterContentInit(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     state: ClrTimelineStepState;
     // (undocumented)

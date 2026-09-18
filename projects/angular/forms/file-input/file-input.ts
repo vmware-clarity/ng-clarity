@@ -50,6 +50,11 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     super(viewContainerRef, ClrFileInputContainer, injector, control, renderer, elementRef);
   }
 
+  /** Suppressed: a file input is exposed as a `button`, which does not support `aria-required`. */
+  protected override get ariaRequired(): true | null {
+    return null;
+  }
+
   @HostListener('change')
   private handleChange() {
     this.updateSelection();

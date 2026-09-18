@@ -17,7 +17,7 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/utils';
+import { ClrCommonStringsService, publishElementContext } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
@@ -43,6 +43,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private _isLightweight = false;
   private _origAlertType: string;
+  private teardownElementContext?: () => void;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -61,6 +62,20 @@ export class ClrAlert implements OnInit, OnDestroy {
     this._isLightweight = val;
 
     this.configAlertType(this._origAlertType);
+  }
+
+  /**
+   * How this alert should be announced. An app-level danger or warning describes
+   * something the user has to deal with now, so it interrupts; everything else — an
+   * informational alert, and any alert placed inline in the content, where several may
+   * render at once — is reported politely and waits its turn.
+   *
+   * Without a role an alert is announced by nothing at all, and its severity lives only
+   * in a CSS class, which neither assistive technology nor page-context tooling can read.
+   */
+  get ariaRole(): 'alert' | 'status' {
+    const urgent = this.alertType === 'danger' || this.alertType === 'warning';
+    return urgent && this.isAppLevel ? 'alert' : 'status';
   }
 
   @Input('clrAlertType')
@@ -109,6 +124,13 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // role="alert" versus role="status" only says important versus informational. Which
+    // of danger, warning, success, info or neutral this is lives in a CSS class, which
+    // nothing can read semantically, so the component reports it directly.
+    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
+      state: { severity: this.alertType },
+    }));
+
     if (this.multiAlertService) {
       this.subscriptions.push(
         this.multiAlertService.changes.subscribe(() => {
@@ -119,6 +141,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 

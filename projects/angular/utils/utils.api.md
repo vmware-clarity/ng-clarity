@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
 import { AfterContentChecked } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
@@ -141,6 +142,15 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, [null, null, { optional: true; }]>;
 }
+
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
@@ -322,6 +332,15 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
 }
 
+// @public
+export interface ClrComponentContext {
+    children?: ClrComponentContext[];
+    element?: string;
+    label?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -333,6 +352,27 @@ export class ClrConditionalModule {
 }
 
 // @public
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export interface ClrContextSnapshotOptions {
+    collectionItems?: 'all' | 'summary';
+    excludeCategories?: ClrContextCategory[];
+    excludeRoles?: string[];
+    excludeSelectors?: string[];
+    focus?: 'page' | 'modal';
+    includeDomComponents?: boolean;
+    includeFrames?: boolean;
+    includeRoutes?: boolean;
+    includeText?: boolean;
+    maxComponents?: number;
+    maxDepth?: number;
+    maxItemsPerCollection?: number;
+    maxTextLength?: number;
+    rootSelector?: string;
+}
+
+// @public
 export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
@@ -341,6 +381,9 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
 }
+
+// @public
+export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
 
 // @public (undocumented)
 export class ClrExpandableAnimation extends BaseExpandableAnimation {
@@ -774,6 +817,9 @@ export class FocusService {
     static ɵprov: i0.ɵɵInjectableDeclaration<FocusService>;
 }
 
+// @public
+export function hasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
@@ -978,6 +1024,9 @@ export class OutsideClick implements OnDestroy {
 
 // @public (undocumented)
 export function preventArrowKeyScroll(event: KeyboardEvent): void;
+
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
 
 // @public (undocumented)
 export class ScrollingService {
