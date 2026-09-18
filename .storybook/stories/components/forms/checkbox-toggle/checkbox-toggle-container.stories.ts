@@ -24,7 +24,7 @@ enum CheckboxType {
 }
 
 const meta: Meta<CheckboxToggleContainerArgs> = {
-  title: 'Checkbox or Toggle/Checkbox or Toggle Container',
+  title: 'Components/Forms/Checkbox Toggle/Container',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrCheckboxModule, CheckboxToggleStorybookComponent],

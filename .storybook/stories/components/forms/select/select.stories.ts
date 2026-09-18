@@ -20,7 +20,7 @@ type SelectArgs = {
 };
 
 const meta: Meta<SelectArgs> = {
-  title: 'Select/Select',
+  title: 'Components/Forms/Select',
   component: ClrSelect,
   decorators: [
     moduleMetadata({

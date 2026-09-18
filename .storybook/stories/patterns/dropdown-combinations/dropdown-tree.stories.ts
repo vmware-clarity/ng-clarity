@@ -21,7 +21,7 @@ type DropdownWithTreeArgs = ClrDropdown & {
 };
 
 const meta: Meta<DropdownWithTreeArgs> = {
-  title: 'Dropdown/Dropdown With Tree',
+  title: 'Patterns/Dropdown Combinations/Dropdown Tree',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrDropdownModule, ClrTreeViewModule],

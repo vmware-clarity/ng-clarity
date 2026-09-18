@@ -22,7 +22,7 @@ type RecursiveNodesArgs = {
 };
 
 const meta: Meta<RecursiveNodesArgs> = {
-  title: 'Tree/Tree with recursive nodes',
+  title: 'Components/Data/Tree/With Recursive Nodes',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrTreeViewModule],

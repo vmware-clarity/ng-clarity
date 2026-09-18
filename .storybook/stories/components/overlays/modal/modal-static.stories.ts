@@ -46,7 +46,7 @@ const MODAL_STATIC_STYLES = `
 `;
 
 const meta: Meta<ModalStaticArgs> = {
-  title: 'Modal/Static',
+  title: 'Components/Overlays/Modal/Static',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrModalModule],

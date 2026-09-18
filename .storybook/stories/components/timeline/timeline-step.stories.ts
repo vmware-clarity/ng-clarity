@@ -32,7 +32,7 @@ const TIMELINE_STEP_STATE = [
 ];
 
 const meta: Meta<TimelineStepArgs> = {
-  title: 'Timeline/Timeline Step',
+  title: 'Components/Timeline/Step',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrTimelineModule],

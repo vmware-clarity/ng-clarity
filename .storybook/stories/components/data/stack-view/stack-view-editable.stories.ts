@@ -26,7 +26,7 @@ type StackViewEditableArgs = {
 };
 
 const meta: Meta<StackViewEditableArgs> = {
-  title: 'Stack View/Stack View Editable',
+  title: 'Components/Data/Stack View/Editable',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrStackViewModule, ClrModalModule],

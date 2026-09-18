@@ -29,7 +29,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<NestedDetailInDetailArgs> = {
-  title: 'Datagrid/Nested Detail In Detail',
+  title: 'Patterns/Nested Detail',
   decorators: [
     moduleMetadata({
       imports: [ClrDatagridModule, ClrModalModule],

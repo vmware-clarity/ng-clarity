@@ -26,7 +26,7 @@ function collectionTemplate(collectionName: string) {
 }
 
 const meta: Meta<IconCollectionArgs> = {
-  title: 'Icon/Icon Collection',
+  title: 'Foundations/Icons/Icon Collection',
   decorators: [
     moduleMetadata({
       imports: [IconCollectionStorybookComponent, ...CommonModules, ClrIcon],

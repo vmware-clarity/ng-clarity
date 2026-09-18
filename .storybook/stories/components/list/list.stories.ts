@@ -19,7 +19,7 @@ type ListArgs = {
 };
 
 const meta: Meta<ListArgs> = {
-  title: 'List/List',
+  title: 'Components/List',
   argTypes: {
     // story helpers
     ...hideControls('createArray'),

@@ -43,7 +43,7 @@ const menuItemsHref = [
 class MockComponent {}
 
 const meta: Meta<BreadcrumbsArgs> = {
-  title: 'Breadcrumbs/Breadcrumbs',
+  title: 'Components/Navigation/Breadcrumbs',
   component: ClrBreadcrumbs,
   decorators: [
     moduleMetadata({

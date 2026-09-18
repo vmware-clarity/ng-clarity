@@ -22,7 +22,7 @@ type TreeArgs = {
 };
 
 const meta: Meta<TreeArgs> = {
-  title: 'Tree/Tree',
+  title: 'Components/Data/Tree',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrTreeViewModule, ClrIcon],

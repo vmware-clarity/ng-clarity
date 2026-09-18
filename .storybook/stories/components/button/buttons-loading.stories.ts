@@ -25,7 +25,7 @@ type ButtonLoadingArgs = ButtonStorybookComponent &
   };
 
 const meta: Meta<ButtonLoadingArgs> = {
-  title: 'Button/Button Loading States',
+  title: 'Components/Button/Buttons Loading',
   component: ClrLoading,
   decorators: [
     moduleMetadata({

@@ -25,7 +25,7 @@ const longText =
   'This step has a long description that wraps onto several lines, so the spacing between neighbouring steps is visible.';
 
 const meta: Meta<TimelineArgs> = {
-  title: 'Timeline/Timeline',
+  title: 'Components/Timeline',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrTimelineModule],

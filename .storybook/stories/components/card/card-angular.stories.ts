@@ -25,7 +25,7 @@ type CardAngularArgs = {
 };
 
 const meta: Meta<CardAngularArgs> = {
-  title: 'Card/Angular Card',
+  title: 'Components/Card/Angular',
   component: ClrCard,
   subcomponents: { ClrCardBody, ClrCardBodyTitle, ClrCardBodyText, ClrCardFooter },
   decorators: [

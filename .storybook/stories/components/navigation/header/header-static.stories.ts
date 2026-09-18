@@ -19,7 +19,7 @@ import { CommonModules } from '@storybook-helpers/common';
 type HeaderStaticArgs = ClrHeader;
 
 const meta: Meta<HeaderStaticArgs> = {
-  title: 'Header/Headers Static',
+  title: 'Components/Navigation/Header/Static',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule, ClrDropdownModule],

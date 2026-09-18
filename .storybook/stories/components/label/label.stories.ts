@@ -17,7 +17,7 @@ const LABEL_COLOR_TYPES = ['', 'purple', 'blue', 'orange', 'light-blue'];
 const LABEL_STATUS_TYPES = ['info', 'success', 'warning', 'danger'];
 
 const meta: Meta<LabelArgs> = {
-  title: 'Label/Label',
+  title: 'Components/Label',
   component: LabelStoryBookComponent,
   decorators: [],
   argTypes: {

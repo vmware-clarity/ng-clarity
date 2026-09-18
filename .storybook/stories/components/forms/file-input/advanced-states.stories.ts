@@ -21,7 +21,7 @@ type AdvancedFileInputStatesArgs = {
 };
 
 const meta: Meta<AdvancedFileInputStatesArgs> = {
-  title: 'File Input/Advanced File Input States',
+  title: 'Components/Forms/File Input/Advanced States',
   decorators: [
     moduleMetadata({
       imports: [FormsModule, ClrFileInputModule],

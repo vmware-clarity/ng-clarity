@@ -52,7 +52,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<ExpandableRowArgs> = {
-  title: 'Datagrid/Expandable Rows',
+  title: 'Components/Data/Datagrid/Expandable Row',
   component: ClrDatagridRow,
   decorators: [
     moduleMetadata({

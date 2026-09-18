@@ -18,7 +18,7 @@ type DropdownWithModalArgs = {
 };
 
 const meta: Meta<DropdownWithModalArgs> = {
-  title: 'Dropdown/Dropdown With Modal',
+  title: 'Patterns/Dropdown Combinations/Dropdown Item That Opens Modal',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrDropdownModule, ClrModalModule],

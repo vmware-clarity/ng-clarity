@@ -142,7 +142,7 @@ const nestedComponents = [
 ];
 
 const meta: Meta<NestedComponentsArgs> = {
-  title: 'Accordion/Nesting Components',
+  title: 'Components/Accordion/Nested Components',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrAccordionModule, RenderComponentStorybook],

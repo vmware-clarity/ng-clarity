@@ -29,7 +29,7 @@ type ButtonGroupArgs = ButtonGroupStorybookComponent &
   Pick<ClrButtonGroup, 'getMoveIndex' | 'initializeButtons' | 'rearrangeButton'>;
 
 const meta: Meta<ButtonGroupArgs> = {
-  title: 'Button/Button Group',
+  title: 'Components/Button/Group',
   component: ClrButtonGroup,
   decorators: [
     moduleMetadata({

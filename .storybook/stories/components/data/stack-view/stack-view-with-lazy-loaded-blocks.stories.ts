@@ -43,7 +43,7 @@ class ElementsBlockService {
 }
 
 const meta: Meta<StackViewLazyLoadingArgs> = {
-  title: 'Stack View/Stack View with lazy-loaded blocks',
+  title: 'Components/Data/Stack View/With Lazy Loaded Blocks',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrStackViewModule, ClrSpinnerModule],

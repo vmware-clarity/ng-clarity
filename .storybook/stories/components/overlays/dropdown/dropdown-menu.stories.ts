@@ -28,7 +28,7 @@ type DropdownMenuArgs = {
 };
 
 const meta: Meta<DropdownMenuArgs> = {
-  title: 'Dropdown/Dropdown Menu',
+  title: 'Components/Overlays/Dropdown/Menu',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrDropdownModule],

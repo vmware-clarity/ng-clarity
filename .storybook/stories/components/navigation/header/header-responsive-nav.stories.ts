@@ -20,7 +20,7 @@ import { HeaderStorybookComponent } from './header.storybook.component';
 type HeaderResponsiveNavArgs = HeaderStorybookComponent;
 
 const meta: Meta<HeaderResponsiveNavArgs> = {
-  title: 'Header/Header Responsive Nav',
+  title: 'Components/Navigation/Header/Responsive Nav',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule, HeaderStorybookComponent],

@@ -56,7 +56,7 @@ type WizardLongTitlesArgs = Pick<
 };
 
 const meta: Meta<WizardLongTitlesArgs> = {
-  title: 'Wizard/Wizard Long Titles',
+  title: 'Components/Flows/Wizard/Long Titles',
   component: ClrWizard,
   decorators: [
     moduleMetadata({

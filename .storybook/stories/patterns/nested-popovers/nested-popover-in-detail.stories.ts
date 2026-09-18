@@ -35,7 +35,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<NestedPopoverInDetailArgs> = {
-  title: 'Datagrid/Nested Popover In Detail',
+  title: 'Patterns/Nested Popovers/Nested Popover in Detail',
   decorators: [
     moduleMetadata({
       imports: [ClrDatagridModule, ClrConditionalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule],

@@ -23,7 +23,7 @@ type TooltipArgs = {
 };
 
 const meta: Meta<TooltipArgs> = {
-  title: 'Tooltip/Tooltip',
+  title: 'Components/Tooltip',
   decorators: [
     moduleMetadata({
       imports: [ClrTooltipModule],

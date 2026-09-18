@@ -41,7 +41,7 @@ type WizardPageArgs = Pick<ClrWizardPage, 'makeCurrent'> & {
 };
 
 const meta: Meta<WizardPageArgs> = {
-  title: 'Wizard/Wizard Page',
+  title: 'Components/Flows/Wizard/Page',
   component: ClrWizardPage,
   decorators: [
     moduleMetadata({

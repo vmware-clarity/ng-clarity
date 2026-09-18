@@ -37,7 +37,7 @@ type DatepickerArgs = {
 };
 
 const meta: Meta<DatepickerArgs> = {
-  title: 'Datepicker/Datepicker',
+  title: 'Components/Forms/Datepicker',
   component: ClrDateInput,
   decorators: [
     moduleMetadata({

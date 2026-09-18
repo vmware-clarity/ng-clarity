@@ -17,7 +17,7 @@ import { LayoutTestComponent } from './paddings.storybook.component';
 type PaddingsArgs = LayoutTestComponent;
 
 const meta: Meta<PaddingsArgs> = {
-  title: 'Layout/Spacing',
+  title: 'Foundations/Spacing/Paddings',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules],

@@ -26,7 +26,7 @@ type PlaceholderArgs = {
 };
 
 const meta: Meta<PlaceholderArgs> = {
-  title: 'Datagrid/Placeholder',
+  title: 'Components/Data/Datagrid/Placeholder',
   component: ClrDatagridPlaceholder,
   decorators: [
     moduleMetadata({

@@ -32,7 +32,7 @@ type ProgressBarArgs = {
 const STATUS_TYPES = ['', 'success', 'warning', 'danger'];
 
 const meta: Meta<ProgressBarArgs> = {
-  title: 'Progress Bar/Progress Bar',
+  title: 'Components/Progress Bar',
   component: ClrProgressBar,
   argTypes: {
     // inputs

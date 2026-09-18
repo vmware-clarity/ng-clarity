@@ -27,7 +27,7 @@ const SPINNER_INVERSE_STYLES = `
 `;
 
 const meta: Meta<SpinnerArgs> = {
-  title: 'Spinner/Spinner',
+  title: 'Components/Spinner',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrSpinnerModule],

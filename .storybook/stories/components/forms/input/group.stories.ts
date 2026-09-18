@@ -6,21 +6,21 @@
  */
 
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
-import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
 import { CommonModules } from '@storybook-helpers/common';
 
-import { FormsStoryComponent } from './forms-input-states-components.storybook.component';
+import { FormsStoryComponent } from './group.storybook.component';
 
 /**
- * The stories render `<forms-input-states-components>` through `component:`, and every arg -- `clrLayout`,
- * `isDisabled`, `isError`, `isSuccess`, `isFullWidth`, `isReadonly` -- is one of its own `@Input()`s under
- * that exact name, so the story component is the args type.
+ * The args drive `<forms-input-group>`, so the args type is that component: `clrLayout`, `isDisabled`,
+ * `isError` and `isSuccess` are its own `@Input()`s, declared under those exact names. The Clarity form
+ * directives are never bound directly, so their aliased inputs never enter the picture.
  */
-type FormsInputStatesComponentsArgs = FormsStoryComponent;
+type FormsInputGroupArgs = FormsStoryComponent;
 
-const meta: Meta<FormsInputStatesComponentsArgs> = {
-  title: 'Forms/Input States (Using Components)',
+const meta: Meta<FormsInputGroupArgs> = {
+  title: 'Components/Forms/Input/Group',
   component: FormsStoryComponent,
   decorators: [
     moduleMetadata({
@@ -40,13 +40,20 @@ const meta: Meta<FormsInputStatesComponentsArgs> = {
     isDisabled: false,
     isError: false,
     isSuccess: false,
-    isFullWidth: false,
   },
+  render: args => ({
+    props: {
+      ...args,
+    },
+    template: `
+      <forms-input-group ${argsToTemplate(args)}></forms-input-group>
+    `,
+  }),
 };
 
 export default meta;
 
-type Story = StoryObj<FormsInputStatesComponentsArgs>;
+type Story = StoryObj<FormsInputGroupArgs>;
 
 export const InputStates: Story = {};
 
@@ -58,23 +65,8 @@ export const CompactInputStates: Story = {
   args: { clrLayout: ClrFormLayout.COMPACT },
 };
 
-export const FullWidthInputStates: Story = {
-  args: { isFullWidth: true },
-};
-
-export const VerticaFullWidthInputStates: Story = {
-  args: { clrLayout: ClrFormLayout.VERTICAL, isFullWidth: true },
-};
-
-export const CompactFullWidthInputStates: Story = {
-  args: { clrLayout: ClrFormLayout.COMPACT, isFullWidth: true },
-};
-
 export const DisabledStates: Story = {
   args: { isDisabled: true },
-};
-export const ReadonlyStates: Story = {
-  args: { isReadonly: true },
 };
 
 export const ErrorStates: Story = {
@@ -87,18 +79,6 @@ export const CompactErrorStates: Story = {
   args: { isError: true, clrLayout: ClrFormLayout.COMPACT },
 };
 
-export const FullWidthErrorStates: Story = {
-  args: { isError: true, isFullWidth: true },
-};
-
-export const VerticalFullWidthErrorStates: Story = {
-  args: { isError: true, clrLayout: ClrFormLayout.VERTICAL, isFullWidth: true },
-};
-
-export const CompactFullWidthErrorStates: Story = {
-  args: { isError: true, clrLayout: ClrFormLayout.COMPACT, isFullWidth: true },
-};
-
 export const SuccessStates: Story = {
   args: { isSuccess: true },
 };
@@ -107,16 +87,4 @@ export const VerticalSuccessStates: Story = {
 };
 export const CompactSuccessStates: Story = {
   args: { isSuccess: true, clrLayout: ClrFormLayout.COMPACT },
-};
-
-export const FullWidthSuccessStates: Story = {
-  args: { isSuccess: true, isFullWidth: true },
-};
-
-export const FullWidthVerticalSuccessStates: Story = {
-  args: { isSuccess: true, clrLayout: ClrFormLayout.VERTICAL, isFullWidth: true },
-};
-
-export const FullWidthCompactSuccessStates: Story = {
-  args: { isSuccess: true, clrLayout: ClrFormLayout.COMPACT, isFullWidth: true },
 };

@@ -45,7 +45,7 @@ const ICON_CUSTOM_STYLES = `
 ClarityIcons.addIcons(userIcon, imageIcon, homeIcon, arrowIcon);
 
 const meta: Meta<IconArgs> = {
-  title: 'Icon/Icon',
+  title: 'Foundations/Icons/Icon',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrIcon],

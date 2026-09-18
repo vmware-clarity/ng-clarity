@@ -29,7 +29,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<ModalStackedOnDetailArgs> = {
-  title: 'Datagrid/Modal Stacked On Detail',
+  title: 'Patterns/Datagrid in Modal/Modal Stacked on Detail',
   decorators: [
     moduleMetadata({
       imports: [ClrDatagridModule, ClrModalModule],

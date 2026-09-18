@@ -20,7 +20,7 @@ import { HeaderStorybookComponent } from './header.storybook.component';
 type HeaderArgs = HeaderStorybookComponent;
 
 const meta: Meta<HeaderArgs> = {
-  title: 'Header/Header',
+  title: 'Components/Navigation/Header',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule, HeaderStorybookComponent],

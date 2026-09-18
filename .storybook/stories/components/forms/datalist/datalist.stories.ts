@@ -23,7 +23,7 @@ type DatalistArgs = {
 };
 
 const meta: Meta<DatalistArgs> = {
-  title: 'Datalist/Datalist',
+  title: 'Components/Forms/Datalist',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrDatalistModule, ClrFormsModule],

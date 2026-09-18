@@ -18,7 +18,7 @@ import { CommonModules } from '@storybook-helpers/common';
 type DateContainerArgs = ClrDateContainer;
 
 const meta: Meta<DateContainerArgs> = {
-  title: 'Datepicker/DateContainer',
+  title: 'Components/Forms/Datepicker/Date Container',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrFormsModule, ClrDatepickerModule],

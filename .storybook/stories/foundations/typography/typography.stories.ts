@@ -12,7 +12,7 @@ import { CommonModules } from '@storybook-helpers/common';
 type TypographyArgs = Record<never, never>;
 
 const meta: Meta<TypographyArgs> = {
-  title: 'Layout/Typography',
+  title: 'Foundations/Typography',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules],

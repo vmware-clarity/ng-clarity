@@ -37,7 +37,7 @@ const Positions: any = [
 ];
 
 const meta: Meta<PopoverArgs> = {
-  title: 'Popover/Popover',
+  title: 'Components/Overlays/Popover',
   component: StorybookPopoverComponent,
   decorators: [
     moduleMetadata({

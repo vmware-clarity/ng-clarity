@@ -51,7 +51,7 @@ function getForm() {
 }
 
 const meta: Meta<FormsRequiredMarkArgs> = {
-  title: 'Forms/Required Mark',
+  title: 'Components/Forms/Input/Required Mark',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],

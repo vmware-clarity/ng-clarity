@@ -32,7 +32,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<NestedDatagridDetailArgs> = {
-  title: 'Modal/Nested Datagrid Detail',
+  title: 'Patterns/Datagrid in Modal/Nested Datagrid Detail',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrModalModule, ClrSignpostModule, ClrDatagridModule],

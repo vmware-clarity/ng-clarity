@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ClrFormLayout, ClrFormsModule, ClrLayoutModule } from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
@@ -14,16 +13,17 @@ import { type Element, elements } from '@storybook-helpers/elements.data';
 
 /**
  * The template is raw `clrForm` markup -- there is no Clarity component and no story wrapper to base the
- * args on -- so the args are declared explicitly. `form` holds the mapping key, not the `FormGroup`:
- * Storybook swaps it for the real group through the `mapping` in `argTypes`.
+ * args on -- so the args are declared explicitly. `data` holds the mapping key, not the model object:
+ * Storybook swaps it for the real object through the `mapping` in `argTypes`. `namePlaceholder` is set by
+ * two stories but never read by this template; it is declared so those `args` keep type-checking.
  */
-type FormsReactiveArgs = {
+type FormsTemplateDrivenArgs = {
   clrLabelSize: number;
   elements: Element[];
   patterns: { alphaNumeric: RegExp; letters: RegExp; numbers: RegExp };
   clrLayout: ClrFormLayout;
   screenReaderContent: string;
-  form: string;
+  data: string;
   namePlaceholder: string;
 };
 
@@ -35,22 +35,16 @@ const patterns = {
 };
 
 function getForm() {
-  return new FormGroup({
-    name: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
-    age: new FormControl(null, [Validators.min(5), Validators.max(99)]),
-    element: new FormControl(null),
-    password: new FormControl(null, [
-      Validators.minLength(8),
-      Validators.pattern(patterns.alphaNumeric),
-      Validators.pattern(patterns.letters),
-      Validators.pattern(patterns.numbers),
-    ]),
-    description: new FormControl(null, [Validators.minLength(5), Validators.pattern(/^[a-z\d ]+$/i)]),
-  });
+  return {
+    name: '',
+    age: null,
+    password: '',
+    description: '',
+  };
 }
 
-const meta: Meta<FormsReactiveArgs> = {
-  title: 'Forms/Reactive',
+const meta: Meta<FormsTemplateDrivenArgs> = {
+  title: 'Components/Forms/Form Bindings/Template Driven',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrLayoutModule, ClrFormsModule],
@@ -61,7 +55,7 @@ const meta: Meta<FormsReactiveArgs> = {
     clrLabelSize: { control: { type: 'number', min: 1, max: 12 } },
     // story helpers
     ...hideControls('patterns'),
-    form: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
+    data: { control: { disable: true }, table: { disable: true }, mapping: { [formMappingKey]: getForm() } },
     clrLayout: {
       control: { type: 'radio' },
       options: Object.values(ClrFormLayout).filter(value => typeof value === 'string'),
@@ -75,16 +69,15 @@ const meta: Meta<FormsReactiveArgs> = {
     patterns,
     clrLayout: ClrFormLayout.HORIZONTAL,
     screenReaderContent: 'Please fill out the form',
-    form: formMappingKey,
-    namePlaceholder: '',
+    data: formMappingKey,
   },
   render: args => ({
     template: `
-      <form clrForm [formGroup]="form" [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
+      <form clrForm [clrLayout]="clrLayout" [clrLabelSize]="clrLabelSize">
         <span class="clr-sr-only">{{ screenReaderContent }}</span>
         <clr-input-container>
           <label>Name</label>
-          <input clrInput formControlName="name" required [placeholder]="namePlaceholder" />
+          <input clrInput [(ngModel)]="data.name" required name="name" />
           <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
           <clr-control-success>Name is valid</clr-control-success>
           <clr-control-error *clrIfError="'required'">Name is required</clr-control-error>
@@ -93,7 +86,7 @@ const meta: Meta<FormsReactiveArgs> = {
         </clr-input-container>
         <clr-number-input-container>
           <label>Age</label>
-          <input clrNumberInput formControlName="age" type="number" min="0" required />
+          <input clrNumberInput [(ngModel)]="data.age" type="number" min="0" required name="age" />
           <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
           <clr-control-success>Age is valid</clr-control-success>
           <clr-control-error *clrIfError="'required'">Age is required</clr-control-error>
@@ -102,24 +95,23 @@ const meta: Meta<FormsReactiveArgs> = {
         </clr-number-input-container>
         <clr-datalist-container>
           <label>Element</label>
-          <input clrDatalistInput formControlName="element" required />
+          <input clrDatalistInput name="element" [(ngModel)]="data.element" />
           <datalist>
             @for (element of elements; track element) {
               <option [value]="element.symbol">{{ element.name }}</option>
             }
           </datalist>
           <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
-          <clr-control-error *clrIfError="'required'">Element is required</clr-control-error>
         </clr-datalist-container>
         <clr-password-container>
           <label>Password</label>
-          <input clrPassword autocomplete="current-password" formControlName="password" required />
+          <input clrPassword autocomplete="current-password" [(ngModel)]="data.password" required name="password" />
           <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
           <clr-control-success>Password is valid</clr-control-success>
           <clr-control-error *clrIfError="'required'">Password is required</clr-control-error>
           <clr-control-error *clrIfError="'minlength'">Must be at least 8 characters</clr-control-error>
           <clr-control-error *clrIfError="'pattern'; error as error">
-            @switch (error?.requiredPattern) {
+            @switch (error.requiredPattern) {
               @case (patterns.alphaNumeric.toString()) {
                 Must contain only letters and numbers
               }
@@ -134,7 +126,7 @@ const meta: Meta<FormsReactiveArgs> = {
         </clr-password-container>
         <clr-textarea-container>
           <label>Description</label>
-          <textarea clrTextarea formControlName="description" required></textarea>
+          <textarea clrTextarea [(ngModel)]="data.description" required name="description"></textarea>
           <clr-control-helper>Helper text that shows while it is pristine and valid</clr-control-helper>
           <clr-control-success>Description is valid</clr-control-success>
           <clr-control-error *clrIfError="'required'">Description is required</clr-control-error>
@@ -149,7 +141,7 @@ const meta: Meta<FormsReactiveArgs> = {
 
 export default meta;
 
-type Story = StoryObj<FormsReactiveArgs>;
+type Story = StoryObj<FormsTemplateDrivenArgs>;
 
 export const HorizontalLayout: Story = {};
 

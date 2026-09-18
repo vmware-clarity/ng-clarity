@@ -46,7 +46,7 @@ const predefinedDateRanges = [
 ];
 
 const meta: Meta<DateRangePickerArgs> = {
-  title: 'Datepicker/DateRangepicker',
+  title: 'Components/Forms/Datepicker/Daterangepicker',
   component: ClrStartDateInput,
   subcomponents: { ClrEndDateInput },
   decorators: [

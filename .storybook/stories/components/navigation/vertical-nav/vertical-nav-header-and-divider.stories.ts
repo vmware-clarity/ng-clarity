@@ -43,7 +43,7 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
 ];
 
 const meta: Meta<VerticalNavHeaderAndDividerArgs> = {
-  title: 'Vertical Nav/Vertical Header and Divider',
+  title: 'Components/Navigation/Vertical Nav/Header and Divider',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrVerticalNavModule],

@@ -42,7 +42,7 @@ const STACK_VIEW_STATES = [
 ];
 
 const meta: Meta<StackViewArgs> = {
-  title: 'Stack View/Stack View',
+  title: 'Components/Data/Stack View',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrStackViewModule],

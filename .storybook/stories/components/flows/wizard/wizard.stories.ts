@@ -72,7 +72,7 @@ function getStepperForm() {
 const stepperFormMappingKey = 'stepper-form-mapping-key';
 
 const meta: Meta<WizardArgs> = {
-  title: 'Wizard/Wizard',
+  title: 'Components/Flows/Wizard',
   component: ClrWizard,
   decorators: [
     moduleMetadata({

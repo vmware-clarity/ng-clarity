@@ -51,7 +51,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<ActionOverflowArgs> = {
-  title: 'Datagrid/Action Overflow',
+  title: 'Components/Data/Datagrid/Action Overflow',
   component: ClrDatagridActionOverflow,
   decorators: [
     moduleMetadata({

@@ -13,7 +13,7 @@ import { LinkStorybookComponent } from './link.storybook.component';
 type LinkArgs = LinkStorybookComponent;
 
 const meta: Meta<LinkArgs> = {
-  title: 'Link/Link',
+  title: 'Components/Link',
   component: LinkStorybookComponent,
   args: {
     active: false,

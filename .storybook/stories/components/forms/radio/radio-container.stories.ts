@@ -23,7 +23,7 @@ type RadioContainerArgs = {
 } & Pick<ClrRadioContainer, 'addGrid' | 'controlClass'>;
 
 const meta: Meta<RadioContainerArgs> = {
-  title: 'Radio/Radio Container',
+  title: 'Components/Forms/Radio/Container',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrRadioModule],

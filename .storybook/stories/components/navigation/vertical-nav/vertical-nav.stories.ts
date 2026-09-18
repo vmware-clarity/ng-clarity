@@ -47,7 +47,7 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
 ];
 
 const meta: Meta<VerticalNavArgs> = {
-  title: 'Vertical Nav/Vertical Nav',
+  title: 'Components/Navigation/Vertical Nav',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrVerticalNavModule],

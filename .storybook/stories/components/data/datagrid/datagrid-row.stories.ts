@@ -52,7 +52,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<RowArgs> = {
-  title: 'Datagrid/Row',
+  title: 'Components/Data/Datagrid/Row',
   component: ClrDatagridRow,
   decorators: [
     moduleMetadata({

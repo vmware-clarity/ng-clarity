@@ -20,7 +20,7 @@ type TableArgs = {
 };
 
 const meta: Meta<TableArgs> = {
-  title: 'Table/Table',
+  title: 'Components/Data/Table',
   argTypes: {
     // story helpers
     ...hideControls('elements'),

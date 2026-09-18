@@ -13,7 +13,7 @@ import { CommonModules } from '@storybook-helpers/common';
 type DropdownRelativePositionArgs = ClrDropdown;
 
 const meta: Meta<DropdownRelativePositionArgs> = {
-  title: 'Dropdown/Dropdown Relative Position',
+  title: 'Components/Overlays/Dropdown/Relative Position',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrDropdownModule],

@@ -16,7 +16,7 @@ import { ApplicationLayoutStorybookComponent } from './application-layout.storyb
 type ApplicationLayoutArgs = ApplicationLayoutStorybookComponent;
 
 const meta: Meta<ApplicationLayoutArgs> = {
-  title: 'Layout/Application',
+  title: 'Patterns/Application Layout',
   component: ApplicationLayoutStorybookComponent,
   decorators: [],
   argTypes: {},

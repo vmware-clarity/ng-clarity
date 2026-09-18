@@ -61,7 +61,7 @@ const nestedComponents = [
 ];
 
 const meta: Meta<NestedComponentsArgs> = {
-  title: 'Button/Nesting Components',
+  title: 'Components/Button/Nested Components',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClarityModule, RenderComponentStorybook],

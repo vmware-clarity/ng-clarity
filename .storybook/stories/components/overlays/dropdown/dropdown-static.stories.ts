@@ -18,7 +18,7 @@ type DropdownStaticArgs = ClrDropdown & {
 };
 
 const meta: Meta<DropdownStaticArgs> = {
-  title: 'Dropdown/Dropdown Static',
+  title: 'Components/Overlays/Dropdown/Static',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrDropdownModule],

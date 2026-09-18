@@ -24,7 +24,7 @@ type AppLevelAlertArgs = AppLevelAlertStorybookComponent & Pick<ClrAlert, 'close
 const paginatedArgTypes = hideControls('clrCloseButtonAriaLabel', 'alertCount', 'close', 'open');
 
 const meta: Meta<AppLevelAlertArgs> = {
-  title: 'Alert/App Level Alerts',
+  title: 'Components/Alert/App Level Alert',
   component: ClrAlert,
   decorators: [
     moduleMetadata({

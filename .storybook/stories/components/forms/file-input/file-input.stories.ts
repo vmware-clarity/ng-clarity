@@ -34,7 +34,7 @@ const fileInputTemplate = `
 `;
 
 const meta: Meta<FileInputArgs> = {
-  title: 'File Input/File Input',
+  title: 'Components/Forms/File Input',
   decorators: [
     moduleMetadata({
       imports: [FormsModule, ClrFileInputModule],

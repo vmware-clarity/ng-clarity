@@ -25,7 +25,7 @@ type DropdownArgs = {
 const DROPDOWN_BUTTON_TYPE: string[] = ['btn-primary', 'btn-outline-primary', 'btn-link'];
 
 const meta: Meta<DropdownArgs> = {
-  title: 'Dropdown/Dropdown',
+  title: 'Components/Overlays/Dropdown',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrDropdownModule],

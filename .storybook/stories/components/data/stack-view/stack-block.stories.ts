@@ -29,7 +29,7 @@ type StackBlockArgs = Pick<ClrStackBlock, 'addChild' | 'getStackChildrenId' | 't
 };
 
 const meta: Meta<StackBlockArgs> = {
-  title: 'Stack View/Stack Block',
+  title: 'Components/Data/Stack View/Stack Block',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrStackViewModule],

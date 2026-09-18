@@ -26,7 +26,7 @@ type TabsArgs = {
 };
 
 const meta: Meta<TabsArgs> = {
-  title: 'Tabs/Tabs',
+  title: 'Components/Navigation/Tabs',
   decorators: [
     moduleMetadata({
       imports: [ClrTabsModule],

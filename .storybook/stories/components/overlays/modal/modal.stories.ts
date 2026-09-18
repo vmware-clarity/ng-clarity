@@ -37,7 +37,7 @@ type ModalArgs = Pick<ClrModal, 'fadeDone' | 'open' | 'close'> & {
 };
 
 const meta: Meta<ModalArgs> = {
-  title: 'Modal/Modal',
+  title: 'Components/Overlays/Modal',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrModalModule, ClrCheckboxModule],

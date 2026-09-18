@@ -29,7 +29,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<ScrollArgs> = {
-  title: 'Datagrid/Scrolling',
+  title: 'Components/Data/Datagrid/Scroll',
   decorators: [
     moduleMetadata({
       imports: [ClrDatagridModule, ClrConditionalModule, ClrComboboxModule, ClrPopoverModule],

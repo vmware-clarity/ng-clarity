@@ -10,7 +10,7 @@ import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@story
 import { hideControls } from '@storybook-helpers/arg-types';
 import { CommonModules } from '@storybook-helpers/common';
 
-import { FormsStoryComponent } from './forms-input-column-width.storybook.component';
+import { FormsStoryComponent } from './column-width.storybook.component';
 
 /**
  * The args drive `<forms-input-states-components>`, so the args type is that component: `clrLayout`,
@@ -20,7 +20,7 @@ import { FormsStoryComponent } from './forms-input-column-width.storybook.compon
 type FormsInputColumnWidthArgs = FormsStoryComponent;
 
 const meta: Meta<FormsInputColumnWidthArgs> = {
-  title: 'Forms/Input Column Widths',
+  title: 'Components/Forms/Input/Column Width',
   component: FormsStoryComponent,
   decorators: [
     moduleMetadata({

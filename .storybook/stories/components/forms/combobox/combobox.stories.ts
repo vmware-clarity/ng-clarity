@@ -29,7 +29,7 @@ type ComboboxArgs = Omit<StorybookComboboxComponent, 'singleModel' | 'multiModel
 };
 
 const meta: Meta<ComboboxArgs> = {
-  title: 'Combobox/Combobox',
+  title: 'Components/Forms/Combobox',
   component: StorybookComboboxComponent,
   decorators: [
     moduleMetadata({

@@ -20,7 +20,7 @@ import { AccordionStorybookComponent } from './accordion.storybook.component';
 type AccordionArgs = AccordionStorybookComponent;
 
 const meta: Meta<AccordionArgs> = {
-  title: 'Accordion/Accordion',
+  title: 'Components/Accordion',
   component: ClrAccordion,
   subcomponents: [ClrAccordionPanel],
   decorators: [

@@ -17,7 +17,7 @@ import { LayoutTestComponent } from './margins.storybook.component';
 type MarginsArgs = LayoutTestComponent;
 
 const meta: Meta<MarginsArgs> = {
-  title: 'Layout/Spacing',
+  title: 'Foundations/Spacing/Margins',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules],

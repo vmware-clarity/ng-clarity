@@ -26,7 +26,7 @@ type ButtonArgs = ButtonStorybookComponent &
   };
 
 const meta: Meta<ButtonArgs> = {
-  title: 'Button/Button',
+  title: 'Components/Button',
   component: ClrButton,
   decorators: [
     moduleMetadata({

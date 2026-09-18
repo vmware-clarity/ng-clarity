@@ -104,7 +104,7 @@ const VERTICAL_NAV_STATES = [
 ];
 
 const meta: Meta<VerticalNavRoutingArgs> = {
-  title: 'Vertical Nav/Vertical Nav Routing',
+  title: 'Components/Navigation/Vertical Nav/Routing',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrVerticalNavModule],

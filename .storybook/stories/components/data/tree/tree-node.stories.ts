@@ -36,7 +36,7 @@ type TreeNodeArgs = Pick<
 };
 
 const meta: Meta<TreeNodeArgs> = {
-  title: 'Tree/Tree Node',
+  title: 'Components/Data/Tree/Node',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrTreeViewModule],

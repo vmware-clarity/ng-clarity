@@ -61,7 +61,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<DatagridArgs> = {
-  title: 'Datagrid/Datagrid',
+  title: 'Components/Data/Datagrid',
   component: ClrDatagrid,
   decorators: [
     moduleMetadata({

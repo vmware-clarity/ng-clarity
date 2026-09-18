@@ -87,7 +87,7 @@ const FOOTER_NAV_STYLES = `
 `;
 
 const meta: Meta<VirtualScrollDetailArgs> = {
-  title: 'Datagrid/Virtual Scroll Details',
+  title: 'Components/Data/Datagrid/Virtualscroll Detail',
   component: ClrDatagrid,
   decorators: [
     moduleMetadata({

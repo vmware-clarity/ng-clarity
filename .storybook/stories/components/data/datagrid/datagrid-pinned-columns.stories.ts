@@ -40,7 +40,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<PinnedColumnsArgs> = {
-  title: 'Datagrid/Pinned Columns',
+  title: 'Components/Data/Datagrid/Pinned Columns',
   component: ClrDatagrid,
   decorators: [
     moduleMetadata({

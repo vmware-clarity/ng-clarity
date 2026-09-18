@@ -42,7 +42,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<PageSizeArgs> = {
-  title: 'Datagrid/Page Size',
+  title: 'Components/Data/Datagrid/Page Size',
   component: ClrDatagridPageSize,
   decorators: [
     moduleMetadata({

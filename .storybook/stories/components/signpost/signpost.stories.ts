@@ -39,7 +39,7 @@ const positions: string[] = [
 ];
 
 const meta: Meta<SignpostArgs> = {
-  title: 'Signpost/Signpost',
+  title: 'Components/Signpost',
   component: ClrSignpostContent,
   decorators: [
     moduleMetadata({

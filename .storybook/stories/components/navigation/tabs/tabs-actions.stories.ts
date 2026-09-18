@@ -28,7 +28,7 @@ type TabsActionsArgs = {
 };
 
 const meta: Meta<TabsActionsArgs> = {
-  title: 'Tabs/Tabs Actions',
+  title: 'Components/Navigation/Tabs/Actions',
   decorators: [
     moduleMetadata({
       imports: [ClrTabsModule, ClrIcon],

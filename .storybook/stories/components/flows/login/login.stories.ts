@@ -18,7 +18,7 @@ type LoginArgs = {
 };
 
 const meta: Meta<LoginArgs> = {
-  title: 'Login/Login',
+  title: 'Components/Flows/Login',
   decorators: [
     moduleMetadata({
       imports: [

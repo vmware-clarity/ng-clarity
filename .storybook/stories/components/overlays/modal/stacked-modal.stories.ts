@@ -17,7 +17,7 @@ type StackedModalArgs = {
 };
 
 const meta: Meta<StackedModalArgs> = {
-  title: 'Modal/Stacked Modal',
+  title: 'Components/Overlays/Modal/Stacked Modal',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrModalModule],

@@ -15,7 +15,7 @@ import { StorybookPanelGroup } from './collapsible-panel.storybook.component';
 type CollapsiblePanelArgs = StorybookPanelGroup;
 
 const meta: Meta<CollapsiblePanelArgs> = {
-  title: 'Collapsible Panel/Collapsible Panel',
+  title: 'Components/Collapsible Panel',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, StorybookPanelGroup],

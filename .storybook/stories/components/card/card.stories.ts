@@ -18,7 +18,7 @@ import { CardStorybookComponent } from './card.storybook.component';
 type CardArgs = CardStorybookComponent;
 
 const meta: Meta<CardArgs> = {
-  title: 'Card/Card',
+  title: 'Components/Card',
   component: CardStorybookComponent,
   argTypes: {
     ...hideControls('createArray'),

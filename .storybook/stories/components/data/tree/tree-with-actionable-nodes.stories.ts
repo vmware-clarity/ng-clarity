@@ -20,7 +20,7 @@ type TreeWithActionableNodesArgs = {
 };
 
 const meta: Meta<TreeWithActionableNodesArgs> = {
-  title: 'Tree/Tree with actionable nodes',
+  title: 'Components/Data/Tree/With Actionable Nodes',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrTreeViewModule, ClrIcon],

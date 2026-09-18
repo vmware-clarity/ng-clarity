@@ -21,7 +21,7 @@ type AccordionPanelArgs = AccordionPanelStorybookComponent &
   Pick<ClrAccordionPanel, 'togglePanel' | 'collapsePanelOnAnimationDone' | 'getPanelStateClasses'>;
 
 const meta: Meta<AccordionPanelArgs> = {
-  title: 'Accordion/Accordion Panel',
+  title: 'Components/Accordion/Panel',
   component: ClrAccordionPanel,
   decorators: [
     moduleMetadata({

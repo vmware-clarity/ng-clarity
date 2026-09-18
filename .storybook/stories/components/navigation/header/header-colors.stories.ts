@@ -28,7 +28,7 @@ type HeaderColorsArgs = {
 const HEADER_VARIANTS = ['header-1', 'header-2', 'header-3'];
 
 const meta: Meta<HeaderColorsArgs> = {
-  title: 'Header/Header Colors',
+  title: 'Components/Navigation/Header/Colors',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrMainContainerModule, ClrNavigationModule, ClrIcon],

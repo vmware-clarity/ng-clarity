@@ -20,7 +20,7 @@ type TreeWithMultiLineNodesArgs = {
 };
 
 const meta: Meta<TreeWithMultiLineNodesArgs> = {
-  title: 'Tree/Tree with multi-line nodes',
+  title: 'Components/Data/Tree/With Multi Line Nodes',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrTreeViewModule, ClrIcon],

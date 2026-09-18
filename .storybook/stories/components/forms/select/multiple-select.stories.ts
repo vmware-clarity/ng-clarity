@@ -21,7 +21,7 @@ type MultipleSelectArgs = {
 };
 
 const meta: Meta<MultipleSelectArgs> = {
-  title: 'Select/Multiple Select',
+  title: 'Components/Forms/Select/Multiple Select',
   component: ClrSelect,
   decorators: [
     moduleMetadata({

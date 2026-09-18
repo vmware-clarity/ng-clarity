@@ -21,7 +21,7 @@ type RangeArgs = {
 } & Pick<ClrRangeContainer, 'getRangeProgressFillWidth' | 'addGrid' | 'controlClass'>;
 
 const meta: Meta<RangeArgs> = {
-  title: 'Range/Range Container',
+  title: 'Components/Forms/Range',
   decorators: [
     moduleMetadata({
       imports: [ClrRangeModule],

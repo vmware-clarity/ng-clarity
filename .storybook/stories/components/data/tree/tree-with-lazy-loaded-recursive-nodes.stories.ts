@@ -24,7 +24,7 @@ type LazyLoadedRecursiveNodesArgs = {
 };
 
 const meta: Meta<LazyLoadedRecursiveNodesArgs> = {
-  title: 'Tree/Tree with lazy-loaded recursive nodes',
+  title: 'Components/Data/Tree/With Lazy Loaded Recursive Nodes',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrTreeViewModule],

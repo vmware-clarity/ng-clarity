@@ -17,7 +17,7 @@ type NestedPopoverArgs = {
 };
 
 const meta: Meta<NestedPopoverArgs> = {
-  title: 'Modal/Nested Popover',
+  title: 'Patterns/Nested Popovers/Nested Popover',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrModalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule],

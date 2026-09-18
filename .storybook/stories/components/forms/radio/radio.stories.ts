@@ -22,7 +22,7 @@ type RadioArgs = {
 };
 
 const meta: Meta<RadioArgs> = {
-  title: 'Radio/Radio',
+  title: 'Components/Forms/Radio',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrRadioModule],

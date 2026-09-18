@@ -64,7 +64,7 @@ const advancedAdvancedFileInputTemplate = `
 `;
 
 const meta: Meta<AdvancedFileInputArgs> = {
-  title: 'File Input/Advanced File Input',
+  title: 'Components/Forms/File Input/Advanced',
   decorators: [
     moduleMetadata({
       imports: [FormsModule, ClrFileInputModule],

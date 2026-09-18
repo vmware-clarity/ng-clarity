@@ -34,7 +34,7 @@ type StandardAlertArgs = Omit<StandardAlertStorybookComponent, 'clrAlertClosable
   };
 
 const meta: Meta<StandardAlertArgs> = {
-  title: 'Alert/Standard Alerts',
+  title: 'Components/Alert/Standard Alert',
   component: ClrAlert,
   decorators: [
     moduleMetadata({

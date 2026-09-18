@@ -39,7 +39,7 @@ class FileService {
 }
 
 const meta: Meta<LazyLoadedNodesArgs> = {
-  title: 'Tree/Tree with lazy-loaded nodes',
+  title: 'Components/Data/Tree/With Lazy Loaded Nodes',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrTreeViewModule, ClrConditionalModule, ClrLoadingModule],

@@ -21,7 +21,7 @@ type FileInputStatesArgs = {
 };
 
 const meta: Meta<FileInputStatesArgs> = {
-  title: 'File Input/File Input States',
+  title: 'Components/Forms/File Input/States',
   decorators: [
     moduleMetadata({
       imports: [FormsModule, ClrFileInputModule],

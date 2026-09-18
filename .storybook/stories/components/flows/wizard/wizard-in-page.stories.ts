@@ -71,7 +71,7 @@ const IN_PAGE_WIZARD_STYLES = `
 `;
 
 const meta: Meta<WizardInPageArgs> = {
-  title: 'Wizard/Wizard (in-page)',
+  title: 'Components/Flows/Wizard/In Page',
   component: ClrWizard,
   decorators: [
     moduleMetadata({

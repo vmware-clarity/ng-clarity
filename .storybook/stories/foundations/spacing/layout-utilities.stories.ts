@@ -61,7 +61,7 @@ const LAYOUT_UTILITIES_STYLES = `
 `;
 
 const meta: Meta<LayoutUtilitiesArgs> = {
-  title: 'Layout/Spacing',
+  title: 'Foundations/Spacing/Layout Utilities',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules],

@@ -13,7 +13,7 @@ import * as stories from './side-panel.internal';
 type SidePanelArgs = stories.SidePanelArgs;
 
 const meta: Meta<SidePanelArgs> = {
-  title: 'Modal/Side Panel (inline)',
+  title: 'Components/Overlays/Side Panel/Inline',
   decorators: stories.config.decorators,
   component: stories.config.component,
   argTypes: stories.config.argTypes,

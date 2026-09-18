@@ -125,7 +125,7 @@ const nestedComponents = [
 ];
 
 const meta: Meta<NestedComponentsArgs> = {
-  title: 'Alert/Nesting Components',
+  title: 'Components/Alert/Nested Components',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClarityModule, RenderComponentStorybook],

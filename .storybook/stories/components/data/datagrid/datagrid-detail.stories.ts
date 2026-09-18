@@ -74,7 +74,7 @@ const longUninterruptedContentElement: Element = {
 };
 
 const meta: Meta<DetailArgs> = {
-  title: 'Datagrid/Detail',
+  title: 'Components/Data/Datagrid/Detail',
   component: ClrDatagridDetail,
   decorators: [
     moduleMetadata({

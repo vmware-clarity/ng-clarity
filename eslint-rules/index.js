@@ -12,6 +12,7 @@ const storybookSingleRenderRule = require('./storybook-single-render');
 const storybookNoComponentDecoratorRule = require('./storybook-no-component-decorator');
 const storybookNoInlineHiddenControlRule = require('./storybook-no-inline-hidden-control');
 const storybookNoInlineStyleRule = require('./storybook-no-inline-style');
+const storybookTitleRule = require('./storybook-title');
 
 const projectName = 'ng-clarity-eslint-rules';
 
@@ -29,6 +30,7 @@ const rules = {
   'storybook-no-component-decorator': storybookNoComponentDecoratorRule,
   'storybook-no-inline-hidden-control': storybookNoInlineHiddenControlRule,
   'storybook-no-inline-style': storybookNoInlineStyleRule,
+  'storybook-title': storybookTitleRule,
 };
 
 module.exports = { configs, rules };

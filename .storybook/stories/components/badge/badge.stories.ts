@@ -17,7 +17,7 @@ const BADGE_COLOR_TYPES = ['gray', 'purple', 'blue', 'orange', 'light-blue', '1'
 const BADGE_STATUS_TYPES = ['', 'info', 'success', 'warning', 'danger'];
 
 const meta: Meta<BadgeArgs> = {
-  title: 'Badge/Badge',
+  title: 'Components/Badge',
   component: BadgeStoryBookComponent,
   decorators: [],
   argTypes: {

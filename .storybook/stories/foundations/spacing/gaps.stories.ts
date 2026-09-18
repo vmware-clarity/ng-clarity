@@ -17,7 +17,7 @@ import { LayoutTestComponent } from './gaps.storybook.component';
 type GapsArgs = LayoutTestComponent;
 
 const meta: Meta<GapsArgs> = {
-  title: 'Layout/Spacing',
+  title: 'Foundations/Spacing/Gaps',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules],

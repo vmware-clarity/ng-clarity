@@ -164,7 +164,7 @@ module.exports = [
   },
 
   // Storybook story files (see docs/CONTRIBUTING_STORYBOOK.md for the canonical story shape).
-  // Every rule here is a 'warn' on purpose: the existing stories do not conform yet.
+  // These are errors: every story file conforms, and the point is to keep it that way.
   {
     files: ['.storybook/**/*.stories.ts'],
     plugins: {
@@ -201,6 +201,8 @@ module.exports = [
       'ng-clarity-eslint-rules/storybook-no-component-decorator': 'error',
       'ng-clarity-eslint-rules/storybook-no-inline-hidden-control': 'error',
       'ng-clarity-eslint-rules/storybook-no-inline-style': 'error',
+      // R7: the title is derived from the file path. `npx eslint --fix` writes it; never type one.
+      'ng-clarity-eslint-rules/storybook-title': 'error',
     },
   },
 

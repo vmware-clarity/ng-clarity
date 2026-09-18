@@ -11,5 +11,6 @@ require('./storybook-single-render.test');
 require('./storybook-no-component-decorator.test');
 require('./storybook-no-inline-hidden-control.test');
 require('./storybook-no-inline-style.test');
+require('./storybook-title.test');
 
 console.log('all eslint-rules story tests passed');

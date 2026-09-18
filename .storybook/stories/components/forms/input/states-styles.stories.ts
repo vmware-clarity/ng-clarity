@@ -23,7 +23,7 @@ type FormsInputStatesStylesArgs = {
 };
 
 const meta: Meta<FormsInputStatesStylesArgs> = {
-  title: 'Forms/Input States (Styles only)',
+  title: 'Components/Forms/Input/States Styles',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrIcon],

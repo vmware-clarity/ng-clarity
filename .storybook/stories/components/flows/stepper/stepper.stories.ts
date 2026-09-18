@@ -63,7 +63,7 @@ const longTitleTemplate = `
 `;
 
 const meta: Meta<StepperArgs> = {
-  title: 'Stepper/Stepper',
+  title: 'Components/Flows/Stepper',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrStepperModule, ClrConditionalModule, ClrInputModule],

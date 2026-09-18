@@ -50,7 +50,7 @@ const nestedComponents = [
 ];
 
 const meta: Meta<NestedComponentsArgs> = {
-  title: 'Label/Nesting Components',
+  title: 'Components/Label/Nested Components',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClarityModule, RenderComponentStorybook],

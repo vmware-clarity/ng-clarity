@@ -48,7 +48,7 @@ const ELECTRONEGATIVITY_STYLES = `
 `;
 
 const meta: Meta<PaginationArgs> = {
-  title: 'Datagrid/Pagination',
+  title: 'Components/Data/Datagrid/Pagination',
   component: ClrDatagridPagination,
   decorators: [
     moduleMetadata({
