@@ -6,12 +6,21 @@
  */
 
 import { ClrAccordionModule, ClrAccordionPanel } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { AccordionPanelStorybookComponent } from './accordion-panel.storybook.component';
-import { CommonModules } from '../../helpers/common';
 
-export default {
+/**
+ * The args drive `<storybook-accordion-panel>`. The three `ClrAccordionPanel` methods are not args -- they
+ * are picked up in `argTypes` only so the controls table generated from `component: ClrAccordionPanel` can
+ * hide them, so they are named here to keep `argTypes` type-checked.
+ */
+type AccordionPanelArgs = AccordionPanelStorybookComponent &
+  Pick<ClrAccordionPanel, 'togglePanel' | 'collapsePanelOnAnimationDone' | 'getPanelStateClasses'>;
+
+const meta: Meta<AccordionPanelArgs> = {
   title: 'Accordion/Accordion Panel',
   component: ClrAccordionPanel,
   decorators: [
@@ -24,8 +33,7 @@ export default {
     content: { description: 'Rendered within the `<clr-accordion-content>` element' },
     // methods
     togglePanel: { control: { disable: true } },
-    collapsePanelOnAnimationDone: { control: { disable: true }, table: { disable: true } },
-    getPanelStateClasses: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('collapsePanelOnAnimationDone', 'getPanelStateClasses'),
   },
   args: {
     // story helpers
@@ -34,7 +42,7 @@ export default {
     clrAccordionPanelDisabled: false,
     clrAccordionPanelOpen: false,
   },
-  render: (args: AccordionPanelStorybookComponent) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -44,26 +52,30 @@ export default {
   }),
 };
 
-export const PanelClosed: StoryObj = {
+export default meta;
+
+type Story = StoryObj<AccordionPanelArgs>;
+
+export const PanelClosed: Story = {
   args: {
     clrAccordionPanelOpen: false,
   },
 };
 
-export const PanelOpened: StoryObj = {
+export const PanelOpened: Story = {
   args: {
     clrAccordionPanelOpen: true,
   },
 };
 
-export const PanelClosedDisabled: StoryObj = {
+export const PanelClosedDisabled: Story = {
   args: {
     clrAccordionPanelOpen: false,
     clrAccordionPanelDisabled: true,
   },
 };
 
-export const PanelOpenedDisabled: StoryObj = {
+export const PanelOpenedDisabled: Story = {
   args: {
     clrAccordionPanelOpen: true,
     clrAccordionPanelDisabled: true,

@@ -6,12 +6,20 @@
  */
 
 import { ClrAccordion, ClrAccordionModule, ClrAccordionPanel } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { AccordionStorybookComponent } from './accordion.storybook.component';
-import { CommonModules } from '../../helpers/common';
 
-export default {
+/**
+ * The args drive `<storybook-accordion>`, so the args type is that component: its `@Input()`s carry the
+ * `clr*` names the story binds. `ClrAccordion` itself cannot be used here -- it declares the input as
+ * `@Input('clrAccordionMultiPanel') multiPanel`, so `clrAccordionMultiPanel` is not a property of the class.
+ */
+type AccordionArgs = AccordionStorybookComponent;
+
+const meta: Meta<AccordionArgs> = {
   title: 'Accordion/Accordion',
   component: ClrAccordion,
   subcomponents: [ClrAccordionPanel],
@@ -22,8 +30,7 @@ export default {
   ],
   argTypes: {
     // story helpers
-    openIndices: { control: { disable: true }, table: { disable: true } },
-    createArray: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('openIndices'),
     panelCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
@@ -31,7 +38,6 @@ export default {
     clrAccordionMultiPanel: false,
     // story helpers
     openIndices: [],
-    createArray: n => new Array(n),
     panelCount: 4,
     title: 'Title',
     content: 'Hello World!',
@@ -39,7 +45,7 @@ export default {
     alignmentTest: false,
     clrAccordionPanelDisabled: false,
   },
-  render: (args: AccordionStorybookComponent) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -49,55 +55,59 @@ export default {
   }),
 };
 
-export const Default: StoryObj = {};
+export default meta;
 
-export const FirstPanelOpened: StoryObj = {
+type Story = StoryObj<AccordionArgs>;
+
+export const Default: Story = {};
+
+export const FirstPanelOpened: Story = {
   args: {
     openIndices: [true, false, false, false],
   },
 };
 
-export const SecondPanelOpened: StoryObj = {
+export const SecondPanelOpened: Story = {
   args: {
     openIndices: [false, true, false, false],
   },
 };
 
-export const MultiplePanelsOpened: StoryObj = {
+export const MultiplePanelsOpened: Story = {
   args: {
     clrAccordionMultiPanel: true,
     openIndices: [true, true, false, false],
   },
 };
 
-export const WithPanelDescriptions: StoryObj = {
+export const WithPanelDescriptions: Story = {
   args: {
     showDescriptions: true,
   },
 };
 
-export const AlignmentTest: StoryObj = {
+export const AlignmentTest: Story = {
   args: {
     showDescriptions: true,
     alignmentTest: true,
   },
 };
 
-export const SinglePanelOpened: StoryObj = {
+export const SinglePanelOpened: Story = {
   args: {
     panelCount: 1,
     openIndices: [true],
   },
 };
 
-export const SinglePanelClosed: StoryObj = {
+export const SinglePanelClosed: Story = {
   args: {
     panelCount: 1,
     openIndices: [false],
   },
 };
 
-export const SinglePanelOpenedDisabled: StoryObj = {
+export const SinglePanelOpenedDisabled: Story = {
   args: {
     panelCount: 1,
     openIndices: [true],
@@ -105,7 +115,7 @@ export const SinglePanelOpenedDisabled: StoryObj = {
   },
 };
 
-export const SinglePanelClosedDisabled: StoryObj = {
+export const SinglePanelClosedDisabled: Story = {
   args: {
     panelCount: 1,
     openIndices: [false],

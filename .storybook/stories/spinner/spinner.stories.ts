@@ -6,16 +6,33 @@
  */
 
 import { ClrSpinner, ClrSpinnerModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { CommonModules } from '@storybook-helpers/common';
+import { withStyles } from '@storybook-helpers/decorators';
 
-import { CommonModules } from '../../helpers/common';
+/** `ClrSpinner` declares its inputs under their own names (`@Input('clrInline') set clrInline`), so the
+ * component class can be used directly as the args type; `text` is the one story-only prop. */
+type SpinnerArgs = ClrSpinner & {
+  text: string;
+};
 
-export default {
+/** Was an inline `<style>` at the head of the story template; `withStyles()` injects it unencapsulated,
+ * exactly as the inline block did. */
+const SPINNER_INVERSE_STYLES = `
+  .spinner-inverse-container {
+    background: var(--cds-alias-object-container-background-inverse);
+    color: var(--cds-alias-typography-color-100);
+    padding: 20px;
+  }
+`;
+
+const meta: Meta<SpinnerArgs> = {
   title: 'Spinner/Spinner',
   decorators: [
     moduleMetadata({
       imports: [...CommonModules, ClrSpinnerModule],
     }),
+    withStyles(SPINNER_INVERSE_STYLES),
   ],
   component: ClrSpinner,
   argTypes: {
@@ -31,65 +48,52 @@ export default {
     // story helpers
     text: 'Loading',
   },
-};
-
-const SpinnerTemplate: StoryFn = args => ({
-  template: `
-    <style>
-      .spinner-inverse-container {
-        background: var(--cds-alias-object-container-background-inverse);
-        color: var(--cds-alias-typography-color-100);
-        padding: 20px;
-      }
-    </style>
-    <div style="text-align: center" [class.spinner-inverse-container]="clrInverse">
-      <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">
+  render: args => ({
+    template: `
+      <div style="text-align: center" [class.spinner-inverse-container]="clrInverse">
+        <clr-spinner [clrInverse]="clrInverse" [clrSmall]="clrSmall" [clrMedium]="clrMedium" [clrInline]="clrInline">
+          {{ text }}
+        </clr-spinner>
+        @if (!clrInline) {
+          <br />
+        }
         {{ text }}
-      </clr-spinner>
-      @if (!clrInline) {
-        <br />
-      }
-      {{ text }}
-    </div>
-  `,
-  props: args,
-});
-
-export const Spinner: StoryObj = {
-  render: SpinnerTemplate,
+      </div>
+    `,
+    props: args,
+  }),
 };
 
-export const Inverse: StoryObj = {
-  render: SpinnerTemplate,
+export default meta;
+
+type Story = StoryObj<SpinnerArgs>;
+
+export const Spinner: Story = {};
+
+export const Inverse: Story = {
   args: { clrInverse: true },
 };
 
-export const Medium: StoryObj = {
-  render: SpinnerTemplate,
+export const Medium: Story = {
   args: { clrMedium: true },
 };
 
-export const MediumInverse: StoryObj = {
-  render: SpinnerTemplate,
+export const MediumInverse: Story = {
   args: { clrMedium: true, clrInverse: true },
 };
 
-export const Small: StoryObj = {
-  render: SpinnerTemplate,
+export const Small: Story = {
   args: { clrSmall: true },
 };
 
-export const SmallInverse: StoryObj = {
-  render: SpinnerTemplate,
+export const SmallInverse: Story = {
   args: { clrSmall: true, clrInverse: true },
 };
 
-export const Inline: StoryObj = {
-  render: SpinnerTemplate,
+export const Inline: Story = {
   args: { clrInline: true },
 };
 
-export const InlineInverse: StoryObj = {
-  render: SpinnerTemplate,
+export const InlineInverse: Story = {
   args: { clrInline: true, clrInverse: true },
 };

@@ -6,8 +6,10 @@
  */
 
 import { ClrAccordionModule } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
-import { RenderComponentStorybook } from 'helpers/render-component';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 import { StandardAlertStorybookComponent } from 'stories/alert/standard-alert.storybook.component';
 import { BadgeStoryBookComponent } from 'stories/badge/badge.storybook.component';
 import { ButtonGroupStorybookComponent } from 'stories/button/button-group.storybook.component';
@@ -17,7 +19,9 @@ import { CheckboxToggleStorybookComponent } from 'stories/checkbox-toggle/checkb
 import { LinkStorybookComponent } from 'stories/link/link.storybook.component';
 
 import { AccordionStorybookComponent } from './accordion.storybook.component';
-import { CommonModules } from '../../helpers/common';
+
+/** The only arg is the list `<storybook-render-component>` instantiates, so its `@Input()` is the args type. */
+type NestedComponentsArgs = RenderComponentStorybook;
 
 const nestedComponents = [
   { type: AccordionStorybookComponent, options: { panelCount: 1 } },
@@ -137,7 +141,7 @@ const nestedComponents = [
   { type: LinkStorybookComponent },
 ];
 
-export default {
+const meta: Meta<NestedComponentsArgs> = {
   title: 'Accordion/Nesting Components',
   decorators: [
     moduleMetadata({
@@ -145,13 +149,13 @@ export default {
     }),
   ],
   argTypes: {
-    components: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('components'),
   },
   args: {
     // story helpers
     components: nestedComponents,
   },
-  render: (args: RenderComponentStorybook) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -180,4 +184,8 @@ export default {
   }),
 };
 
-export const Default: StoryObj = {};
+export default meta;
+
+type Story = StoryObj<NestedComponentsArgs>;
+
+export const Default: Story = {};

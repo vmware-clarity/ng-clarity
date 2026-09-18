@@ -7,7 +7,7 @@
 
 import { Component, Input } from '@angular/core';
 import { ClrAccordionModule } from '@clr/angular';
-import { createArray } from 'helpers/common';
+import { createArray } from '@storybook-helpers/common';
 
 @Component({
   selector: 'storybook-accordion',
