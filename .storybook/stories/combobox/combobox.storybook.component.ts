@@ -9,8 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrComboboxModule, ClrLoadingModule } from '@clr/angular';
-
-import { elements } from '../../helpers/elements.data';
+import { elements } from '@storybook-helpers/elements.data';
 
 interface OptionGroup {
   groupName: string;

@@ -247,11 +247,16 @@ If a single story genuinely needs a different template — a different host elem
 around it — override it and say why:
 
 ```ts
-// render-override: this story places the datagrid inside a modal, which the meta template cannot express
 export const InModal: Story = {
+  // render-override: this story places the datagrid inside a modal, which the meta template cannot express
   render: args => ({ props: args, template: `<clr-modal [clrModalOpen]="true">…</clr-modal>` }),
 };
 ```
+
+The comment must sit on the line directly above the `render` property, **inside** the story object — not
+above the `export const`. The lint rule resolves it with `getCommentsBefore(renderProperty)` and requires
+`comment.loc.end.line === render.loc.start.line - 1`, so a comment placed above the export is not attached
+to the property and the rule still reports.
 
 Do not instead grow the meta template into a mega-template with `*ngIf` branches for every story. That changes
 the DOM of stories that were previously fine, and therefore changes their snapshots.

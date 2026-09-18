@@ -7,30 +7,21 @@
 
 import { FormsModule } from '@angular/forms';
 import { ClrFileInputModule, ClrFormLayout, commonStringsDefault } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 
-export default {
-  title: 'File Input/Advanced File Input',
-  decorators: [
-    moduleMetadata({
-      imports: [FormsModule, ClrFileInputModule],
-    }),
-  ],
-  argTypes: {
-    // inputs
-    clrButtonLabel: { type: 'string' },
-    // form inputs
-    clrLayout: { control: { disable: true } },
-  },
-  args: {
-    // inputs
-    clrButtonLabel: commonStringsDefault.browse,
-    clrMinFileSize: 50,
-    clrMaxFileSize: 500,
-    // input attributes
-    accept: 'text/plain',
-    multiple: true,
-  },
+/**
+ * This file has no `component:`, and the args are named after Clarity's input aliases
+ * (`ClrFileInputContainer` declares `@Input('clrButtonLabel') customButtonLabel`, the file-input validator
+ * declares `@Input('clrMinFileSize') minFileSize`), so no class can serve as the args base. `accept` and
+ * `multiple` are plain input attributes.
+ */
+type AdvancedFileInputArgs = {
+  clrButtonLabel: string;
+  clrMinFileSize: number;
+  clrMaxFileSize: number;
+  accept: string;
+  multiple: boolean;
+  clrLayout: ClrFormLayout | string;
 };
 
 const advancedAdvancedFileInputTemplate = `
@@ -72,27 +63,51 @@ const advancedAdvancedFileInputTemplate = `
   </form>
 `;
 
-const advancedAdvancedFileInputStoryFn: StoryFn = args => ({
-  template: advancedAdvancedFileInputTemplate,
-  props: { ...args },
-});
+const meta: Meta<AdvancedFileInputArgs> = {
+  title: 'File Input/Advanced File Input',
+  decorators: [
+    moduleMetadata({
+      imports: [FormsModule, ClrFileInputModule],
+    }),
+  ],
+  argTypes: {
+    // inputs
+    clrButtonLabel: { type: 'string' },
+    // form inputs
+    clrLayout: { control: { disable: true } },
+  },
+  args: {
+    // inputs
+    clrButtonLabel: commonStringsDefault.browse,
+    clrMinFileSize: 50,
+    clrMaxFileSize: 500,
+    // input attributes
+    accept: 'text/plain',
+    multiple: true,
+  },
+  render: args => ({
+    template: advancedAdvancedFileInputTemplate,
+    props: { ...args },
+  }),
+};
 
-export const VerticalAdvancedFileInput: StoryObj = {
-  render: advancedAdvancedFileInputStoryFn,
+export default meta;
+
+type Story = StoryObj<AdvancedFileInputArgs>;
+
+export const VerticalAdvancedFileInput: Story = {
   args: {
     clrLayout: ClrFormLayout.VERTICAL,
   },
 };
 
-export const HorizontalAdvancedFileInput: StoryObj = {
-  render: advancedAdvancedFileInputStoryFn,
+export const HorizontalAdvancedFileInput: Story = {
   args: {
     clrLayout: ClrFormLayout.HORIZONTAL,
   },
 };
 
-export const CompactAdvancedFileInput: StoryObj = {
-  render: advancedAdvancedFileInputStoryFn,
+export const CompactAdvancedFileInput: Story = {
   args: {
     clrLayout: ClrFormLayout.COMPACT,
   },

@@ -5,19 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryObj } from '@storybook/angular';
+import { type Meta, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
 
 import { BadgeStoryBookComponent } from './badge.storybook.component';
+
+/** Every arg is an `@Input()` of the story component, which is also this file's `component:`. */
+type BadgeArgs = BadgeStoryBookComponent;
 
 const BADGE_COLOR_TYPES = ['gray', 'purple', 'blue', 'orange', 'light-blue', '1', '2', '3', '4', '5'];
 const BADGE_STATUS_TYPES = ['', 'info', 'success', 'warning', 'danger'];
 
-export default {
+const meta: Meta<BadgeArgs> = {
   title: 'Badge/Badge',
   component: BadgeStoryBookComponent,
   decorators: [],
   argTypes: {
-    badgeTypes: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('badgeTypes'),
   },
   args: {
     context: '42',
@@ -28,22 +32,26 @@ export default {
   },
 };
 
-export const Initial: StoryObj = {
+export default meta;
+
+type Story = StoryObj<BadgeArgs>;
+
+export const Initial: Story = {
   argTypes: {
-    badgeType: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('badgeType'),
   },
 };
 
-export const Outlined: StoryObj = {
+export const Outlined: Story = {
   argTypes: {
-    badgeType: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('badgeType'),
   },
   args: {
     outlined: true,
   },
 };
 
-export const SingleBadge: StoryObj = {
+export const SingleBadge: Story = {
   argTypes: {
     badgeType: { control: { type: 'select' }, options: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES] },
   },
@@ -53,7 +61,7 @@ export const SingleBadge: StoryObj = {
   },
 };
 
-export const BadgeComponent: StoryObj = {
+export const BadgeComponent: Story = {
   argTypes: {
     badgeType: { control: { type: 'select' }, options: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES] },
   },
@@ -62,7 +70,7 @@ export const BadgeComponent: StoryObj = {
   },
 };
 
-export const OutlinedBadgeComponent: StoryObj = {
+export const OutlinedBadgeComponent: Story = {
   argTypes: {
     badgeType: { control: { type: 'select' }, options: [...BADGE_STATUS_TYPES, ...BADGE_COLOR_TYPES] },
   },

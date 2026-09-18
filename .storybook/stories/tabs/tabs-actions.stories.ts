@@ -6,11 +6,28 @@
  */
 
 import { ClrIcon, ClrTabs, ClrTabsModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
 
 import { TabsLayout } from '../../../projects/angular/layout/tabs/enums/tabs-layout.enum';
 
-export default {
+/**
+ * `ClrTabs` aliases its input (`@Input('clrLayout')`), so the component class cannot be the args type; the
+ * args are the names the template binds. `createArray` and `clickTabAction` stay args because the template
+ * calls them through `props`.
+ */
+type TabsActionsArgs = {
+  clrLayout: TabsLayout;
+  tabsActionsPosition: 'left' | 'right';
+  createArray: (n: number) => unknown[];
+  clickTabAction: () => void;
+  tabCount: number;
+  activeTab: number;
+  title: string;
+  content: string;
+};
+
+const meta: Meta<TabsActionsArgs> = {
   title: 'Tabs/Tabs Actions',
   decorators: [
     moduleMetadata({
@@ -20,19 +37,20 @@ export default {
   component: ClrTabs,
   argTypes: {
     // inputs
-    clrLayout: { control: { type: 'inline-radio' }, options: TabsLayout },
+    clrLayout: { control: { type: 'inline-radio' }, options: Object.values(TabsLayout) },
     tabsActionsPosition: { control: { type: 'inline-radio' }, options: ['left', 'right'] },
     // methods
-    closeOnEscapeKey: { control: { disable: true }, table: { disable: true } },
-    closeOnFocusOut: { control: { disable: true }, table: { disable: true } },
-    closeOnOutsideClick: { control: { disable: true }, table: { disable: true } },
-    openOverflowOnFocus: { control: { disable: true }, table: { disable: true } },
-    resetKeyFocusCurrentToActive: { control: { disable: true }, table: { disable: true } },
-    toggleOverflowOnClick: { control: { disable: true }, table: { disable: true } },
-    toggleOverflowOnPosition: { control: { disable: true }, table: { disable: true } },
+    ...hideControls(
+      'closeOnEscapeKey',
+      'closeOnFocusOut',
+      'closeOnOutsideClick',
+      'openOverflowOnFocus',
+      'resetKeyFocusCurrentToActive',
+      'toggleOverflowOnClick',
+      'toggleOverflowOnPosition'
+    ),
     // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
-    clickTabAction: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('createArray', 'clickTabAction'),
     tabCount: { control: { type: 'number', min: 1, max: 100 } },
     activeTab: { control: { type: 'number', min: 1, max: 100 } },
   },
@@ -48,44 +66,43 @@ export default {
     title: 'Tab',
     content: 'Tab Content',
   },
+  render: args => ({
+    template: `
+      <clr-tabs [clrLayout]="clrLayout">
+        <clr-tabs-actions [position]="tabsActionsPosition">
+          <button class="btn btn-icon btn-link" (click)="clickTabAction()" clrTabAction>
+            <cds-icon shape="plus"></cds-icon>
+            Tab Action
+          </button>
+        </clr-tabs-actions>
+        @for (_ of createArray(tabCount); track $index; let i = $index) {
+          <clr-tab>
+            <button clrTabLink>{{ title }} {{ i + 1 }}</button>
+            <clr-tab-content *clrIfActive="activeTab === i + 1">
+              <p>{{ content }} {{ i + 1 }}</p>
+            </clr-tab-content>
+          </clr-tab>
+        }
+      </clr-tabs>
+    `,
+    props: { ...args },
+  }),
 };
 
-const tabsTemplate: StoryFn = args => ({
-  template: `
-    <clr-tabs [clrLayout]="clrLayout">
-      <clr-tabs-actions [position]="tabsActionsPosition">
-        <button class="btn btn-icon btn-link" (click)="clickTabAction()" clrTabAction>
-          <cds-icon shape="plus"></cds-icon>
-          Tab Action
-        </button>
-      </clr-tabs-actions>
-      @for (_ of createArray(tabCount); track $index; let i = $index) {
-        <clr-tab>
-          <button clrTabLink>{{ title }} {{ i + 1 }}</button>
-          <clr-tab-content *clrIfActive="activeTab === i + 1">
-            <p>{{ content }} {{ i + 1 }}</p>
-          </clr-tab-content>
-        </clr-tab>
-      }
-    </clr-tabs>
-  `,
-  props: { ...args },
-});
+export default meta;
 
-export const Tabs: StoryObj = {
-  render: tabsTemplate,
-};
+type Story = StoryObj<TabsActionsArgs>;
 
-export const VerticalTabs: StoryObj = {
-  render: tabsTemplate,
+export const Tabs: Story = {};
+
+export const VerticalTabs: Story = {
   args: {
     tabsActionsPosition: 'left',
     clrLayout: TabsLayout.VERTICAL,
   },
 };
 
-export const TabsResponsive: StoryObj = {
-  render: tabsTemplate,
+export const TabsResponsive: Story = {
   globals: {
     viewport: {
       value: 'large',
@@ -94,8 +111,7 @@ export const TabsResponsive: StoryObj = {
   },
 };
 
-export const TabsActionsLeft: StoryObj = {
-  render: tabsTemplate,
+export const TabsActionsLeft: Story = {
   args: {
     tabsActionsPosition: 'left',
   },

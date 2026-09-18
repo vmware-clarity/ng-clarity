@@ -5,13 +5,30 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { elements } from '@storybook-helpers/elements.data';
 
 import { StorybookComboboxComponent } from './combobox.storybook.component';
-import { CommonModules } from '../../helpers/common';
-import { elements } from '../../helpers/elements.data';
 
-export default {
+/** Either an option symbol or the whole element object, depending on the `objectValues` arg. */
+type ComboboxModel = string | { name: string; symbol: string; number: number; electronegativity: number };
+
+/**
+ * The args drive `<storybook-combobox>`, so the args type is that wrapper, with the two models widened
+ * because the object-value stories swap a symbol string for the element object. `optionCount` and
+ * `updateOn` are declared only in `argTypes` -- they are neither inputs nor args -- so they are named here
+ * to keep `argTypes` type-checked.
+ */
+type ComboboxArgs = Omit<StorybookComboboxComponent, 'singleModel' | 'multiModel'> & {
+  singleModel: ComboboxModel;
+  multiModel: ComboboxModel[];
+  optionCount: number;
+  updateOn: 'change' | 'blur' | 'submit';
+};
+
+const meta: Meta<ComboboxArgs> = {
   title: 'Combobox/Combobox',
   component: StorybookComboboxComponent,
   decorators: [
@@ -25,26 +42,27 @@ export default {
     clrOpenChange: { control: { disable: true } },
     clrSelectionChange: { control: { disable: true } },
     // methods
-    focusFirstActive: { control: { disable: true }, table: { disable: true } },
-    focusInput: { control: { disable: true }, table: { disable: true } },
-    getActiveDescendant: { control: { disable: true }, table: { disable: true } },
-    getSelectionAriaLabel: { control: { disable: true }, table: { disable: true } },
-    inputId: { control: { disable: true }, table: { disable: true } },
-    loadingStateChange: { control: { disable: true }, table: { disable: true } },
-    onBlur: { control: { disable: true }, table: { disable: true } },
-    onFocus: { control: { disable: true }, table: { disable: true } },
-    onKeyUp: { control: { disable: true }, table: { disable: true } },
-    registerOnChange: { control: { disable: true }, table: { disable: true } },
-    registerOnTouched: { control: { disable: true }, table: { disable: true } },
-    setDisabledState: { control: { disable: true }, table: { disable: true } },
-    unselect: { control: { disable: true }, table: { disable: true } },
-    writeValue: { control: { disable: true }, table: { disable: true } },
-    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
-    triggerValidation: { control: { disable: true }, table: { disable: true } },
+    ...hideControls(
+      'focusFirstActive',
+      'focusInput',
+      'getActiveDescendant',
+      'getSelectionAriaLabel',
+      'inputId',
+      'loadingStateChange',
+      'onBlur',
+      'onFocus',
+      'onKeyUp',
+      'registerOnChange',
+      'registerOnTouched',
+      'setDisabledState',
+      'unselect',
+      'writeValue',
+      'getProviderFromContainer',
+      'triggerValidation'
+    ),
     // story helpers
     useGroups: { control: { type: 'boolean' } },
-    elements: { control: { disable: true }, table: { disable: true } },
-    optionGroups: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('elements', 'optionGroups'),
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
     updateOn: { control: { type: 'radio' }, options: ['change', 'blur', 'submit'] },
     useIdentityFn: { control: { type: 'boolean' } },
@@ -71,37 +89,42 @@ export default {
   },
 };
 
-export const SingleSelection: StoryObj = {};
+export default meta;
 
-export const SingleSelection_Preselected: StoryObj = {
+type Story = StoryObj<ComboboxArgs>;
+
+export const SingleSelection: Story = {};
+
+export const SingleSelection_Preselected: Story = {
   args: {
     singleModel: 'Ba',
   },
 };
 
-export const SingleSelectionWithGroups: StoryObj = {
+export const SingleSelectionWithGroups: Story = {
   args: {
     useGroups: true,
   },
 };
 
-export const SingleSelectionDisabled: StoryObj = {
+export const SingleSelectionDisabled: Story = {
   args: {
     controlDisabled: true,
   },
 };
 
-export const SingleSelectionEditable: StoryObj = {
+export const SingleSelectionEditable: Story = {
   args: {
     clrEditable: true,
   },
 };
 
-export const SingleSelectionEditableWithObjectValues: StoryObj = {
+export const SingleSelectionEditableWithObjectValues: Story = {
   args: {
     clrEditable: true,
     objectValues: true,
   },
+  // render-override: this story swaps the single model for the whole element object before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.singleModel = transformedArgs.objectValues
@@ -118,12 +141,13 @@ export const SingleSelectionEditableWithObjectValues: StoryObj = {
   },
 };
 
-export const SingleSelectionEditableWithIdentityFnAndResolver: StoryObj = {
+export const SingleSelectionEditableWithIdentityFnAndResolver: Story = {
   args: {
     clrEditable: true,
     objectValues: true,
     useIdentityFn: true,
   },
+  // render-override: this story swaps the single model for the whole element object before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.singleModel = transformedArgs.objectValues
@@ -138,11 +162,12 @@ export const SingleSelectionEditableWithIdentityFnAndResolver: StoryObj = {
   },
 };
 
-export const SingleSelectionWithIdentityFn: StoryObj = {
+export const SingleSelectionWithIdentityFn: Story = {
   args: {
     objectValues: true,
     useIdentityFn: true,
   },
+  // render-override: this story swaps the single model for the whole element object before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.singleModel = transformedArgs.objectValues
@@ -157,46 +182,47 @@ export const SingleSelectionWithIdentityFn: StoryObj = {
   },
 };
 
-export const MultiSelection: StoryObj = {
+export const MultiSelection: Story = {
   args: {
     clrMulti: true,
   },
 };
 
-export const MultiSelection_MultiLine: StoryObj = {
+export const MultiSelection_MultiLine: Story = {
   args: {
     clrMulti: true,
     multiModel: elements.map(element => element.symbol), // all elements
   },
 };
 
-export const MultiSelectionWithGroups: StoryObj = {
+export const MultiSelectionWithGroups: Story = {
   args: {
     clrMulti: true,
     useGroups: true,
   },
 };
 
-export const MultiSelectionDisabled: StoryObj = {
+export const MultiSelectionDisabled: Story = {
   args: {
     clrMulti: true,
     controlDisabled: true,
   },
 };
 
-export const MultiSelectionEditable: StoryObj = {
+export const MultiSelectionEditable: Story = {
   args: {
     clrMulti: true,
     clrEditable: true,
   },
 };
 
-export const MultiSelectionEditableWithObjectValues: StoryObj = {
+export const MultiSelectionEditableWithObjectValues: Story = {
   args: {
     clrMulti: true,
     clrEditable: true,
     objectValues: true,
   },
+  // render-override: this story swaps the multi model for whole element objects before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.multiModel = transformedArgs.objectValues
@@ -217,7 +243,7 @@ export const MultiSelectionEditableWithObjectValues: StoryObj = {
   },
 };
 
-export const MultiSelectionEditableWithIdentityFnAndResolver: StoryObj = {
+export const MultiSelectionEditableWithIdentityFnAndResolver: Story = {
   args: {
     clrMulti: true,
     clrEditable: true,
@@ -228,6 +254,7 @@ export const MultiSelectionEditableWithIdentityFnAndResolver: StoryObj = {
       { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
     ],
   },
+  // render-override: this story swaps the multi model for whole element objects before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.multiModel = transformedArgs.objectValues
@@ -246,7 +273,7 @@ export const MultiSelectionEditableWithIdentityFnAndResolver: StoryObj = {
   },
 };
 
-export const MultiSelectionWithIdentityFn: StoryObj = {
+export const MultiSelectionWithIdentityFn: Story = {
   args: {
     clrMulti: true,
     objectValues: true,
@@ -256,6 +283,7 @@ export const MultiSelectionWithIdentityFn: StoryObj = {
       { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
     ],
   },
+  // render-override: this story swaps the multi model for whole element objects before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.multiModel = transformedArgs.objectValues
@@ -274,14 +302,14 @@ export const MultiSelectionWithIdentityFn: StoryObj = {
   },
 };
 
-export const MultiSelectionWithSelectAll: StoryObj = {
+export const MultiSelectionWithSelectAll: Story = {
   args: {
     clrMulti: true,
     showSelectAll: true,
   },
 };
 
-export const MultiSelectionWithSelectAll_Opened: StoryObj = {
+export const MultiSelectionWithSelectAll_Opened: Story = {
   args: {
     clrMulti: true,
     showSelectAll: true,
@@ -291,7 +319,7 @@ export const MultiSelectionWithSelectAll_Opened: StoryObj = {
   },
 };
 
-export const MultiSelectionWithSelectAllAndIdentityFn: StoryObj = {
+export const MultiSelectionWithSelectAllAndIdentityFn: Story = {
   args: {
     clrMulti: true,
     showSelectAll: true,
@@ -302,17 +330,9 @@ export const MultiSelectionWithSelectAllAndIdentityFn: StoryObj = {
       { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
     ],
   },
-  render: args => {
-    return {
-      props: args,
-      template: `
-        <storybook-combobox ${argsToTemplate(args)}></storybook-combobox>
-      `,
-    };
-  },
 };
 
-export const SingleSelectionRequired: StoryObj = {
+export const SingleSelectionRequired: Story = {
   args: {
     singleModel: '',
     controlHelper: true,
@@ -320,7 +340,7 @@ export const SingleSelectionRequired: StoryObj = {
   },
 };
 
-export const MultiSelectionRequired: StoryObj = {
+export const MultiSelectionRequired: Story = {
   args: {
     multiModel: [],
     clrMulti: true,
@@ -329,7 +349,7 @@ export const MultiSelectionRequired: StoryObj = {
   },
 };
 
-export const Loading: StoryObj = {
+export const Loading: Story = {
   args: {
     clrLoading: true,
     elements: [],
@@ -339,13 +359,13 @@ export const Loading: StoryObj = {
   },
 };
 
-export const Opened: StoryObj = {
+export const Opened: Story = {
   play({ canvasElement }) {
     (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
   },
 };
 
-export const OpenedMultiLineItems: StoryObj = {
+export const OpenedMultiLineItems: Story = {
   args: {
     multiLineItems: true,
   },
@@ -354,7 +374,7 @@ export const OpenedMultiLineItems: StoryObj = {
   },
 };
 
-export const NoResults: StoryObj = {
+export const NoResults: Story = {
   play({ canvasElement }) {
     (canvasElement.querySelector('.clr-combobox-trigger') as HTMLElement).click();
     (canvasElement.querySelector('.clr-combobox-input') as HTMLInputElement).value = 'Lapis philosophorum';

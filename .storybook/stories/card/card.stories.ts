@@ -5,16 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryObj } from '@storybook/angular';
-import { BUTTON_STYLES } from 'helpers/button-class.helper';
+import { type Meta, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { BUTTON_STYLES } from '@storybook-helpers/button-class.helper';
 
 import { CardStorybookComponent } from './card.storybook.component';
 
-export default {
+/**
+ * The stories render `<storybook-card>` through `component:`, and every arg is one of its `@Input()`s or
+ * the `createArray` helper it exposes as a field, so the wrapper is the args type.
+ */
+type CardArgs = CardStorybookComponent;
+
+const meta: Meta<CardArgs> = {
   title: 'Card/Card',
   component: CardStorybookComponent,
   argTypes: {
-    createArray: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('createArray'),
     buttonStyle: { control: { type: 'radio' }, options: BUTTON_STYLES },
   },
   args: {
@@ -33,9 +40,13 @@ export default {
   },
 };
 
-export const Card: StoryObj = {};
+export default meta;
 
-export const CardWithAlerts: StoryObj = {
+type Story = StoryObj<CardArgs>;
+
+export const Card: Story = {};
+
+export const CardWithAlerts: Story = {
   args: {
     showAlerts: true,
   },

@@ -8,8 +8,7 @@
 import { NgClass } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ClrIcon, ClrLabel } from '@clr/angular';
-
-import { RenderComponentStorybook } from '../../helpers/render-component';
+import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 
 @Component({
   selector: 'storybook-label',

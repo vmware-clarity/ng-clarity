@@ -6,9 +6,22 @@
  */
 
 import { ClrTimelineModule, ClrTimelineStep, ClrTimelineStepState } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * `ClrTimelineStep` aliases its input (`@Input('clrState') state`), so the component class cannot be the
+ * args type; the args are the names the templates bind, including the two data lists they read.
+ */
+type TimelineStepArgs = {
+  clrState: ClrTimelineStepState;
+  ClrTimelineStepState: typeof ClrTimelineStepState;
+  header: string;
+  title: string;
+  description: string;
+  TIMELINE_STEP_STATE: Array<{ clrState: ClrTimelineStepState }>;
+};
 
 const TIMELINE_STEP_STATE = [
   { clrState: ClrTimelineStepState.NOT_STARTED },
@@ -18,7 +31,7 @@ const TIMELINE_STEP_STATE = [
   { clrState: ClrTimelineStepState.ERROR },
 ];
 
-export default {
+const meta: Meta<TimelineStepArgs> = {
   title: 'Timeline/Timeline Step',
   decorators: [
     moduleMetadata({
@@ -28,10 +41,9 @@ export default {
   component: ClrTimelineStep,
   argTypes: {
     // inputs
-    clrState: { control: { type: 'inline-radio' }, options: ClrTimelineStepState },
+    clrState: { control: { type: 'inline-radio' }, options: Object.values(ClrTimelineStepState) },
     // story helpers
-    ClrTimelineStepState: { control: { disable: true }, table: { disable: true } },
-    TIMELINE_STEP_STATE: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('ClrTimelineStepState', 'TIMELINE_STEP_STATE'),
   },
   args: {
     // inputs
@@ -43,56 +55,56 @@ export default {
     description: 'description',
     TIMELINE_STEP_STATE,
   },
+  render: args => ({
+    template: `
+      <clr-timeline>
+        <clr-timeline-step [clrState]="clrState">
+          @if (header) {
+            <clr-timeline-step-header>{{ header }}</clr-timeline-step-header>
+          }
+          @if (title) {
+            <clr-timeline-step-title>{{ title }}</clr-timeline-step-title>
+          }
+          @if (description) {
+            <clr-timeline-step-description>{{ description }}</clr-timeline-step-description>
+          }
+        </clr-timeline-step>
+      </clr-timeline>
+    `,
+    props: args,
+  }),
 };
 
-const TimelineStepTemplate: StoryFn = args => ({
-  template: `
-    <clr-timeline>
-      <clr-timeline-step [clrState]="clrState">
-        @if (header) {
-          <clr-timeline-step-header>{{ header }}</clr-timeline-step-header>
-        }
-        @if (title) {
-          <clr-timeline-step-title>{{ title }}</clr-timeline-step-title>
-        }
-        @if (description) {
-          <clr-timeline-step-description>{{ description }}</clr-timeline-step-description>
-        }
-      </clr-timeline-step>
-    </clr-timeline>
-  `,
-  props: args,
-});
+export default meta;
 
-const TimelineStepAllTemplate: StoryFn = args => ({
-  template: `
-    @for (state of TIMELINE_STEP_STATE; track state) {
-      <div style="margin-top: 20px">
-        <clr-timeline>
-          <clr-timeline-step [clrState]="state.clrState">
-            @if (header) {
-              <clr-timeline-step-header>{{ header }}</clr-timeline-step-header>
-            }
-            @if (title) {
-              <clr-timeline-step-title>{{ title }}</clr-timeline-step-title>
-            }
-            @if (description) {
-              <clr-timeline-step-description>{{ description }}</clr-timeline-step-description>
-            }
-          </clr-timeline-step>
-        </clr-timeline>
-      </div>
-    }
-  `,
-  props: args,
-});
+type Story = StoryObj<TimelineStepArgs>;
 
-export const TimelineStep: StoryObj = {
-  render: TimelineStepTemplate,
-};
+export const TimelineStep: Story = {};
 
-export const TimelineStepStates: StoryObj = {
-  render: TimelineStepAllTemplate,
+export const TimelineStepStates: Story = {
+  // render-override: this story repeats the step for every state in one canvas, which the single-step meta template cannot express
+  render: args => ({
+    template: `
+      @for (state of TIMELINE_STEP_STATE; track state) {
+        <div style="margin-top: 20px">
+          <clr-timeline>
+            <clr-timeline-step [clrState]="state.clrState">
+              @if (header) {
+                <clr-timeline-step-header>{{ header }}</clr-timeline-step-header>
+              }
+              @if (title) {
+                <clr-timeline-step-title>{{ title }}</clr-timeline-step-title>
+              }
+              @if (description) {
+                <clr-timeline-step-description>{{ description }}</clr-timeline-step-description>
+              }
+            </clr-timeline-step>
+          </clr-timeline>
+        </div>
+      }
+    `,
+    props: args,
+  }),
   parameters: {
     actions: { disable: true },
     controls: { disable: true },

@@ -6,11 +6,23 @@
  */
 
 import { ClrRadioContainer, ClrRadioModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * The template binds `<clr-radio-container [clrInline]>` and plain radio inputs, so the args are declared
+ * standalone; the two container methods are picked in because `argTypes` names them explicitly.
+ * `createArray` stays an arg because the meta template calls it through `props`.
+ */
+type RadioContainerArgs = {
+  clrInline: boolean;
+  label: string;
+  createArray: (n: number) => unknown[];
+  optionCount: number;
+} & Pick<ClrRadioContainer, 'addGrid' | 'controlClass'>;
 
-export default {
+const meta: Meta<RadioContainerArgs> = {
   title: 'Radio/Radio Container',
   decorators: [
     moduleMetadata({
@@ -23,7 +35,7 @@ export default {
     addGrid: { control: { disabled: true }, table: { disable: true } },
     controlClass: { control: { disabled: true }, table: { disable: true } },
     // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('createArray'),
   },
   args: {
     // inputs
@@ -33,29 +45,29 @@ export default {
     createArray: n => new Array(n),
     optionCount: 3,
   },
+  render: args => ({
+    template: `
+      <clr-radio-container [clrInline]="clrInline">
+        <label>{{ label }}</label>
+        @for (_ of createArray(optionCount); track $index; let i = $index) {
+          <clr-radio-wrapper>
+            <input type="radio" clrRadio name="options" value="i + 1" />
+            <label>Option {{ i + 1 }}</label>
+          </clr-radio-wrapper>
+        }
+      </clr-radio-container>
+    `,
+    props: { ...args },
+  }),
 };
 
-const RadioContainerTemplate: StoryFn = args => ({
-  template: `
-    <clr-radio-container [clrInline]="clrInline">
-      <label>{{ label }}</label>
-      @for (_ of createArray(optionCount); track $index; let i = $index) {
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="options" value="i + 1" />
-          <label>Option {{ i + 1 }}</label>
-        </clr-radio-wrapper>
-      }
-    </clr-radio-container>
-  `,
-  props: { ...args },
-});
+export default meta;
 
-export const RadioContainer: StoryObj = {
-  render: RadioContainerTemplate,
-};
+type Story = StoryObj<RadioContainerArgs>;
 
-export const Inline: StoryObj = {
-  render: RadioContainerTemplate,
+export const RadioContainer: Story = {};
+
+export const Inline: Story = {
   args: {
     clrInline: true,
   },

@@ -7,12 +7,20 @@
 
 import { FormsModule } from '@angular/forms';
 import { ClrFileInputModule, ClrFormLayout } from '@clr/angular';
-import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryContext, type StoryObj } from '@storybook/angular';
+import { toCamelCase, toKebabCase } from '@storybook-helpers/casing.helpers';
 
 import { clearFiles, selectFiles } from '../../../projects/angular/forms/file-input/file-input.helpers';
-import { toCamelCase, toKebabCase } from '../../helpers/casing.helpers';
 
-export default {
+/**
+ * This file has no `component:` and the single arg is named after `ClrForm`'s input alias
+ * (`@Input('clrLayout') layout`), so no class can serve as the args base.
+ */
+type AdvancedFileInputStatesArgs = {
+  clrLayout: ClrFormLayout | string;
+};
+
+const meta: Meta<AdvancedFileInputStatesArgs> = {
   title: 'File Input/Advanced File Input States',
   decorators: [
     moduleMetadata({
@@ -23,26 +31,50 @@ export default {
     // form inputs
     clrLayout: { control: { disable: true } },
   },
+  render: args => ({
+    template: `
+      <form clrForm [clrLayout]="clrLayout">
+        <div>${advancedFileInputTemplateFn('Success State')}</div>
+        <div>${advancedFileInputTemplateFn('Empty Error State')}</div>
+        <div>${advancedFileInputTemplateFn('Multiple Files Success State')}</div>
+        <div>${advancedFileInputTemplateFn('Multiple Files Error State')}</div>
+        <div>${advancedFileInputTemplateFn('Multiple Files Mixed State')}</div>
+        <div>${advancedFileInputTemplateFn('Long Filename')}</div>
+
+        <clr-file-input-container>
+          <label>Disabled</label>
+          <input type="file" clrFileInput disabled />
+        </clr-file-input-container>
+      </form>
+    `,
+    props: { ...args },
+  }),
 };
 
-const advancedFileInputStatesTemplate: StoryFn = args => ({
-  template: `
-    <form clrForm [clrLayout]="clrLayout">
-      <div>${advancedFileInputTemplateFn('Success State')}</div>
-      <div>${advancedFileInputTemplateFn('Empty Error State')}</div>
-      <div>${advancedFileInputTemplateFn('Multiple Files Success State')}</div>
-      <div>${advancedFileInputTemplateFn('Multiple Files Error State')}</div>
-      <div>${advancedFileInputTemplateFn('Multiple Files Mixed State')}</div>
-      <div>${advancedFileInputTemplateFn('Long Filename')}</div>
+export default meta;
 
-      <clr-file-input-container>
-        <label>Disabled</label>
-        <input type="file" clrFileInput disabled />
-      </clr-file-input-container>
-    </form>
-  `,
-  props: { ...args },
-});
+type Story = StoryObj<AdvancedFileInputStatesArgs>;
+
+export const VerticalAdvancedFileInputStates: Story = {
+  play: fileInputStatesPlayFn,
+  args: {
+    clrLayout: ClrFormLayout.VERTICAL,
+  },
+};
+
+export const HorizontalAdvancedFileInputStates: Story = {
+  play: fileInputStatesPlayFn,
+  args: {
+    clrLayout: ClrFormLayout.HORIZONTAL,
+  },
+};
+
+export const CompactAdvancedFileInputStates: Story = {
+  play: fileInputStatesPlayFn,
+  args: {
+    clrLayout: ClrFormLayout.COMPACT,
+  },
+};
 
 function advancedFileInputTemplateFn(label: string) {
   const id = `${toKebabCase(label)}-file-input`;
@@ -84,30 +116,6 @@ function advancedFileInputTemplateFn(label: string) {
 </clr-file-input-container>
 `;
 }
-
-export const VerticalAdvancedFileInputStates: StoryObj = {
-  render: advancedFileInputStatesTemplate,
-  play: fileInputStatesPlayFn,
-  args: {
-    clrLayout: ClrFormLayout.VERTICAL,
-  },
-};
-
-export const HorizontalAdvancedFileInputStates: StoryObj = {
-  render: advancedFileInputStatesTemplate,
-  play: fileInputStatesPlayFn,
-  args: {
-    clrLayout: ClrFormLayout.HORIZONTAL,
-  },
-};
-
-export const CompactAdvancedFileInputStates: StoryObj = {
-  render: advancedFileInputStatesTemplate,
-  play: fileInputStatesPlayFn,
-  args: {
-    clrLayout: ClrFormLayout.COMPACT,
-  },
-};
 
 function fileInputStatesPlayFn({ canvasElement }: StoryContext) {
   const successStateFileInputElement = canvasElement.querySelector<HTMLInputElement>('#success-state-file-input');

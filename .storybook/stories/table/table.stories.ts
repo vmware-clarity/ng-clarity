@@ -5,15 +5,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { type Element, elements } from '@storybook-helpers/elements.data';
 
-import { elements } from '../../helpers/elements.data';
+/** Plain table markup with no component and no story wrapper, so the args are declared standalone. */
+type TableArgs = {
+  elements: Element[];
+  rowCount: number;
+  leftAligned: boolean;
+  bordered: boolean;
+  compact: boolean;
+  vertical: boolean;
+};
 
-export default {
+const meta: Meta<TableArgs> = {
   title: 'Table/Table',
   argTypes: {
     // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('elements'),
     rowCount: { control: { type: 'number', min: 0, max: elements.length } },
   },
   args: {
@@ -25,41 +35,43 @@ export default {
     compact: false,
     vertical: false,
   },
+  render: args => ({
+    template: `
+      <table
+        class="table"
+        [ngClass]="{ 'table-noborder': !bordered, 'table-compact': compact, 'table-vertical': vertical }"
+      >
+        <thead>
+          <tr>
+            <th [ngClass]="{ left: leftAligned }">Element Name</th>
+            <th [ngClass]="{ left: leftAligned }">Symbol</th>
+            <th [ngClass]="{ left: leftAligned }">Atomic Number</th>
+            <th [ngClass]="{ left: leftAligned }">Electronegativity (χ)</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (element of elements; track element; let i = $index) {
+            @if (i < rowCount) {
+              <tr>
+                <td [ngClass]="{ left: leftAligned }">{{ element.name }}</td>
+                <td [ngClass]="{ left: leftAligned }">{{ element.symbol }}</td>
+                <td [ngClass]="{ left: leftAligned }">{{ element.number }}</td>
+                <td [ngClass]="{ left: leftAligned }">{{ element.electronegativity }}</td>
+              </tr>
+            }
+          }
+        </tbody>
+      </table>
+    `,
+    props: { ...args },
+  }),
 };
 
-const TableTemplate: StoryFn = args => ({
-  template: `
-    <table
-      class="table"
-      [ngClass]="{ 'table-noborder': !bordered, 'table-compact': compact, 'table-vertical': vertical }"
-    >
-      <thead>
-        <tr>
-          <th [ngClass]="{ left: leftAligned }">Element Name</th>
-          <th [ngClass]="{ left: leftAligned }">Symbol</th>
-          <th [ngClass]="{ left: leftAligned }">Atomic Number</th>
-          <th [ngClass]="{ left: leftAligned }">Electronegativity (χ)</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (element of elements; track element; let i = $index) {
-          @if (i < rowCount) {
-            <tr>
-              <td [ngClass]="{ left: leftAligned }">{{ element.name }}</td>
-              <td [ngClass]="{ left: leftAligned }">{{ element.symbol }}</td>
-              <td [ngClass]="{ left: leftAligned }">{{ element.number }}</td>
-              <td [ngClass]="{ left: leftAligned }">{{ element.electronegativity }}</td>
-            </tr>
-          }
-        }
-      </tbody>
-    </table>
-  `,
-  props: { ...args },
-});
+export default meta;
 
-export const Basic: StoryObj = {
-  render: TableTemplate,
+type Story = StoryObj<TableArgs>;
+
+export const Basic: Story = {
   args: {
     leftAligned: false,
     bordered: true,
@@ -68,8 +80,7 @@ export const Basic: StoryObj = {
   },
 };
 
-export const Compact: StoryObj = {
-  render: TableTemplate,
+export const Compact: Story = {
   args: {
     leftAligned: false,
     bordered: true,
@@ -78,8 +89,7 @@ export const Compact: StoryObj = {
   },
 };
 
-export const NonBordered: StoryObj = {
-  render: TableTemplate,
+export const NonBordered: Story = {
   args: {
     leftAligned: false,
     bordered: false,
@@ -88,8 +98,7 @@ export const NonBordered: StoryObj = {
   },
 };
 
-export const LeftAligned: StoryObj = {
-  render: TableTemplate,
+export const LeftAligned: Story = {
   args: {
     leftAligned: true,
     bordered: true,
@@ -98,8 +107,7 @@ export const LeftAligned: StoryObj = {
   },
 };
 
-export const Vertical: StoryObj = {
-  render: TableTemplate,
+export const Vertical: Story = {
   args: {
     leftAligned: false,
     bordered: true,

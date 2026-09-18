@@ -6,9 +6,21 @@
  */
 
 import { ClrSelect, ClrSelectModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
 
-export default {
+/**
+ * The template binds a plain `<select multiple clrSelect>` rather than `ClrSelect` itself, so the args are
+ * declared standalone. `createArray` stays an arg because the meta template calls it through `props`.
+ */
+type MultipleSelectArgs = {
+  id: string;
+  createArray: (n: number) => unknown[];
+  optionCount: number;
+  selectedOptions: number[];
+};
+
+const meta: Meta<MultipleSelectArgs> = {
   title: 'Select/Multiple Select',
   component: ClrSelect,
   decorators: [
@@ -18,10 +30,9 @@ export default {
   ],
   argTypes: {
     // methods
-    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
-    triggerValidation: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('getProviderFromContainer', 'triggerValidation'),
     // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('createArray'),
   },
   args: {
     // inputs
@@ -31,37 +42,36 @@ export default {
     optionCount: 3,
     selectedOptions: [],
   },
+  render: args => ({
+    template: `
+      <clr-select-container>
+        <label>Options</label>
+        <select multiple clrSelect>
+          @for (_ of createArray(optionCount); track $index; let i = $index) {
+            <option [value]="i + 1" [selected]="selectedOptions.includes(i + 1)" [disabled]="i === 0">
+              Option {{ i + 1 }}
+            </option>
+          }
+        </select>
+      </clr-select-container>
+    `,
+    props: { ...args },
+  }),
 };
 
-const multipleSelectTemplate: StoryFn = args => ({
-  template: `
-    <clr-select-container>
-      <label>Options</label>
-      <select multiple clrSelect>
-        @for (_ of createArray(optionCount); track $index; let i = $index) {
-          <option [value]="i + 1" [selected]="selectedOptions.includes(i + 1)" [disabled]="i === 0">
-            Option {{ i + 1 }}
-          </option>
-        }
-      </select>
-    </clr-select-container>
-  `,
-  props: { ...args },
-});
+export default meta;
 
-export const MultipleSelect: StoryObj = {
-  render: multipleSelectTemplate,
-};
+type Story = StoryObj<MultipleSelectArgs>;
 
-export const MultipleSelectWithSelectedOption: StoryObj = {
-  render: multipleSelectTemplate,
+export const MultipleSelect: Story = {};
+
+export const MultipleSelectWithSelectedOption: Story = {
   args: {
     selectedOptions: [2],
   },
 };
 
-export const MultipleSelectWithSelectedOptions: StoryObj = {
-  render: multipleSelectTemplate,
+export const MultipleSelectWithSelectedOptions: Story = {
   args: {
     selectedOptions: [1, 3],
   },

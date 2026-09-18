@@ -16,10 +16,36 @@ import {
   searchIcon,
   userIcon,
 } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 import { action } from 'storybook/actions';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * `ClrVerticalNav` aliases every input (`@Input('clrVerticalNavCollapsed') get collapsed()`), so the `clr*`
+ * names the template binds are declared here rather than taken from the class; only `toggleByButton` is
+ * picked off the component, so the `argTypes` entry that hides its docgen row stays type-checked. The
+ * templates read `createRoute` and `handleClick` off `props`, so both stay args rather than moving to a
+ * story component.
+ */
+type VerticalNavRoutingArgs = Pick<ClrVerticalNav, 'toggleByButton'> & {
+  clrVerticalNavGroupExpanded: boolean;
+  clrVerticalNavCollapsible: boolean;
+  clrVerticalNavCollapsed: boolean;
+  clrVerticalNavCollapsedChange: (collapsed: boolean) => void;
+  clrVerticalNavGroupExpandedChange: (expanded: boolean) => void;
+  navLinks: { iconShapeTuple: IconShapeTuple; text: string; children: { text: string }[] }[];
+  activeRoute: string;
+  includeIcons: boolean;
+  createRoute: (text: string, i: number) => string;
+  handleClick: (event: Event, route: string) => void;
+  VERTICAL_NAV_STATES: {
+    clrVerticalNavGroupExpanded: boolean;
+    clrVerticalNavCollapsible: boolean;
+    clrVerticalNavCollapsed: boolean;
+    includeIcons: boolean;
+  }[];
+};
 
 const childLinks: { text: string }[] = [{ text: 'Route 1' }, { text: 'Route 1' }, { text: 'Route 1' }];
 
@@ -77,7 +103,7 @@ const VERTICAL_NAV_STATES = [
   },
 ];
 
-export default {
+const meta: Meta<VerticalNavRoutingArgs> = {
   title: 'Vertical Nav/Vertical Nav Routing',
   decorators: [
     moduleMetadata({
@@ -90,12 +116,9 @@ export default {
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
     clrVerticalNavCollapsedChange: { control: { disable: true } },
     // methods
-    toggleByButton: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('toggleByButton'),
     // story helpers
-    navLinks: { control: { disable: true }, table: { disable: true } },
-    createRoute: { control: { disable: true }, table: { disable: true } },
-    handleClick: { control: { disable: true }, table: { disable: true } },
-    VERTICAL_NAV_STATES: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('navLinks', 'createRoute', 'handleClick', 'VERTICAL_NAV_STATES'),
   },
   args: {
     // inputs
@@ -117,94 +140,94 @@ export default {
     },
     VERTICAL_NAV_STATES,
   },
-};
-
-const NavRoutingTemplate: StoryFn = args => ({
-  template: `
-    <div class="main-container">
-      <div class="content-container">
-        <clr-vertical-nav
-          [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
-          [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
-          (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
-        >
-          @for (navLink of navLinks; track navLink) {
-            <clr-vertical-nav-group
-              [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
-              (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
-            >
-              @if (includeIcons) {
-                <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-              }
-              {{ navLink.text }}
-              <clr-vertical-nav-group-children>
-                @for (childNavLink of navLink.children; track childNavLink; let index = $index) {
-                  <a
-                    clrVerticalNavLink
-                    [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
-                    (click)="handleClick($event, createRoute(navLink.text, index))"
-                  >
-                    {{ createRoute(navLink.text, index) }}
-                  </a>
+  render: args => ({
+    template: `
+      <div class="main-container">
+        <div class="content-container">
+          <clr-vertical-nav
+            [clrVerticalNavCollapsible]="clrVerticalNavCollapsible"
+            [clrVerticalNavCollapsed]="clrVerticalNavCollapsed"
+            (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
+          >
+            @for (navLink of navLinks; track navLink) {
+              <clr-vertical-nav-group
+                [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
+                (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+              >
+                @if (includeIcons) {
+                  <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
                 }
-              </clr-vertical-nav-group-children>
-            </clr-vertical-nav-group>
-          }
-        </clr-vertical-nav>
-      </div>
-    </div>
-  `,
-  props: args,
-});
-
-const NavRoutingAllTemplate: StoryFn = args => ({
-  template: `
-    @for (state of VERTICAL_NAV_STATES; track state) {
-      <div style="margin-bottom: 30px">
-        <div class="main-container">
-          <div class="content-container">
-            <clr-vertical-nav
-              [clrVerticalNavCollapsible]="state?.clrVerticalNavCollapsible"
-              [clrVerticalNavCollapsed]="state?.clrVerticalNavCollapsed"
-              (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
-            >
-              @for (navLink of navLinks; track navLink) {
-                <clr-vertical-nav-group
-                  [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
-                  (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
-                >
-                  @if (state?.includeIcons) {
-                    <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                {{ navLink.text }}
+                <clr-vertical-nav-group-children>
+                  @for (childNavLink of navLink.children; track childNavLink; let index = $index) {
+                    <a
+                      clrVerticalNavLink
+                      [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
+                      (click)="handleClick($event, createRoute(navLink.text, index))"
+                    >
+                      {{ createRoute(navLink.text, index) }}
+                    </a>
                   }
-                  {{ navLink.text }}
-                  <clr-vertical-nav-group-children>
-                    @for (childNavLink of navLink.children; track childNavLink; let index = $index) {
-                      <a
-                        clrVerticalNavLink
-                        [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
-                        (click)="handleClick($event, createRoute(navLink.text, index))"
-                      >
-                        {{ createRoute(navLink.text, index) }}
-                      </a>
-                    }
-                  </clr-vertical-nav-group-children>
-                </clr-vertical-nav-group>
-              }
-            </clr-vertical-nav>
-          </div>
+                </clr-vertical-nav-group-children>
+              </clr-vertical-nav-group>
+            }
+          </clr-vertical-nav>
         </div>
       </div>
-    }
-  `,
-  props: args,
-});
-
-export const NavWithRouting: StoryObj = {
-  render: NavRoutingTemplate,
+    `,
+    props: args,
+  }),
 };
 
-export const Showcase: StoryObj = {
-  render: NavRoutingAllTemplate,
+export default meta;
+
+type Story = StoryObj<VerticalNavRoutingArgs>;
+
+export const NavWithRouting: Story = {};
+
+export const Showcase: Story = {
+  // render-override: this story renders one nav per VERTICAL_NAV_STATES entry, which the meta template cannot express
+  render: args => ({
+    template: `
+      @for (state of VERTICAL_NAV_STATES; track state) {
+        <div style="margin-bottom: 30px">
+          <div class="main-container">
+            <div class="content-container">
+              <clr-vertical-nav
+                [clrVerticalNavCollapsible]="state?.clrVerticalNavCollapsible"
+                [clrVerticalNavCollapsed]="state?.clrVerticalNavCollapsed"
+                (clrVerticalNavCollapsedChange)="clrVerticalNavCollapsedChange($event)"
+              >
+                @for (navLink of navLinks; track navLink) {
+                  <clr-vertical-nav-group
+                    [clrVerticalNavGroupExpanded]="state?.clrVerticalNavGroupExpanded"
+                    (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+                  >
+                    @if (state?.includeIcons) {
+                      <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                    }
+                    {{ navLink.text }}
+                    <clr-vertical-nav-group-children>
+                      @for (childNavLink of navLink.children; track childNavLink; let index = $index) {
+                        <a
+                          clrVerticalNavLink
+                          [ngClass]="{ active: createRoute(navLink.text, index) == activeRoute }"
+                          (click)="handleClick($event, createRoute(navLink.text, index))"
+                        >
+                          {{ createRoute(navLink.text, index) }}
+                        </a>
+                      }
+                    </clr-vertical-nav-group-children>
+                  </clr-vertical-nav-group>
+                }
+              </clr-vertical-nav>
+            </div>
+          </div>
+        </div>
+      }
+    `,
+    props: args,
+  }),
   parameters: {
     actions: { disable: true },
     controls: { disable: true },

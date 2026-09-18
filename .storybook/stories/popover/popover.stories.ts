@@ -5,16 +5,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrPopoverModule, ClrPopoverService } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { ClrPopoverModule } from '@clr/angular';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
 
-import { StorybookPopoverComponent } from './storybook-popover.component';
+import { StorybookPopoverComponent } from './popover.storybook.component';
 import {
   ClrPopoverPosition,
   ClrPopoverType,
   SIGNPOST_POSITIONS,
   TOOLTIP_POSITIONS,
 } from '../../../projects/angular/popover/common/utils/popover-positions';
+
+/**
+ * The args drive `<storybook-popover>`, so the args type is that wrapper. Its positions input is aliased
+ * (`@Input('scrollPositions') availablePositionKeys`), so the alias is added explicitly.
+ */
+type PopoverArgs = StorybookPopoverComponent & {
+  scrollPositions: ClrPopoverPosition[];
+};
 
 const Positions: any = [
   'bottom-right',
@@ -27,7 +36,7 @@ const Positions: any = [
   'left-top',
 ];
 
-export default {
+const meta: Meta<PopoverArgs> = {
   title: 'Popover/Popover',
   component: StorybookPopoverComponent,
   decorators: [
@@ -35,8 +44,7 @@ export default {
       imports: [ClrPopoverModule],
     }),
   ],
-  providers: [ClrPopoverService],
-  render: (args: StorybookPopoverComponent) => ({
+  render: args => ({
     template: `
       <div style="height: 100vh; width: 100%; display: flex; padding: 50px; justify-content: center">
         <storybook-popover ${argsToTemplate(args)}></storybook-popover>
@@ -49,9 +57,13 @@ export default {
   }),
 };
 
-export const Popover: StoryObj = {
+export default meta;
+
+type Story = StoryObj<PopoverArgs>;
+
+export const Popover: Story = {
   argTypes: {
-    position: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('position'),
     dropdownPosition: {
       name: 'position',
       control: { type: 'select' },
@@ -76,10 +88,12 @@ export const Popover: StoryObj = {
       options: SIGNPOST_POSITIONS,
       if: { arg: 'type', eq: ClrPopoverType.DEFAULT },
     },
+    // `ClrPopoverType` is a numeric enum, so the option labels are supplied through `mapping` to keep the
+    // readable names the previous object-shaped `options` produced.
     type: {
       control: { type: 'select' },
-      options: {
-        // @ts-ignore
+      options: ['DEFAULT', 'DROPDOWN', 'SIGNPOST', 'TOOLTIP'],
+      mapping: {
         DEFAULT: ClrPopoverType.DEFAULT,
         DROPDOWN: ClrPopoverType.DROPDOWN,
         SIGNPOST: ClrPopoverType.SIGNPOST,
@@ -101,9 +115,9 @@ export const Popover: StoryObj = {
   },
 };
 
-export const PopoverCustomPositions: StoryObj = {
+export const PopoverCustomPositions: Story = {
   argTypes: {
-    useConnectedPosition: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('useConnectedPosition'),
     originX: {
       control: { type: 'select' },
       options: ['start', 'center', 'end'],

@@ -6,67 +6,80 @@
  */
 
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridPlaceholder } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { withStyles } from '@storybook-helpers/decorators';
+import { type Element, elements } from '@storybook-helpers/elements.data';
+import { HIGHLIGHT_STYLES, highlightArgs, highlightArgTypes } from '@storybook-helpers/highlight';
 
-import { elements } from '../../helpers/elements.data';
+/**
+ * The args drive a bare template, not an instance of `ClrDatagridPlaceholder`, and Clarity aliases its
+ * inputs, so the component class is not the args type here -- the args are the story's own knobs.
+ */
+type PlaceholderArgs = {
+  elements: Element[];
+  highlight: boolean;
+  compact: boolean;
+  hidableColumns: boolean;
+  height: number;
+  content: string;
+};
 
-export default {
+const meta: Meta<PlaceholderArgs> = {
   title: 'Datagrid/Placeholder',
   component: ClrDatagridPlaceholder,
   decorators: [
     moduleMetadata({
       imports: [ClrDatagridModule, ClrConditionalModule],
     }),
+    withStyles(HIGHLIGHT_STYLES),
   ],
   argTypes: {
     // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('elements'),
+    ...highlightArgTypes,
   },
   args: {
     // story helpers
     elements,
-    highlight: true,
+    ...highlightArgs,
     compact: false,
     hidableColumns: false,
     height: 0,
     content: "We couldn't find any elements!",
   },
+  render: args => ({
+    template: `
+      <clr-datagrid ${args.height ? '[style.height.px]="height"' : ''} [ngClass]="{ 'datagrid-compact': compact }">
+        <clr-dg-column [style.width.px]="250">
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
+        </clr-dg-column>
+        <clr-dg-column [style.width.px]="250">
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
+        </clr-dg-column>
+        <clr-dg-column [style.width.px]="250">
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
+        </clr-dg-column>
+        <clr-dg-column>
+          <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
+        </clr-dg-column>
+
+        <clr-dg-placeholder [ngClass]="{ highlight }">{{ content }}</clr-dg-placeholder>
+
+        <clr-dg-footer>
+          <clr-dg-pagination #pagination>
+            <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
+            {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
+          </clr-dg-pagination>
+        </clr-dg-footer>
+      </clr-datagrid>
+    `,
+    props: { ...args },
+  }),
 };
 
-const PlaceholderTemplate: StoryFn = args => ({
-  template: `
-    <style>
-      .highlight {
-        border: 1px solid var(--cds-alias-status-danger) !important;
-      }
-    </style>
-    <clr-datagrid ${args.height ? '[style.height.px]="height"' : ''} [ngClass]="{ 'datagrid-compact': compact }">
-      <clr-dg-column [style.width.px]="250">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Name</ng-container>
-      </clr-dg-column>
-      <clr-dg-column [style.width.px]="250">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Symbol</ng-container>
-      </clr-dg-column>
-      <clr-dg-column [style.width.px]="250">
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Number</ng-container>
-      </clr-dg-column>
-      <clr-dg-column>
-        <ng-container ${args.hidableColumns ? '*clrDgHideableColumn' : ''}>Electronegativity</ng-container>
-      </clr-dg-column>
+export default meta;
 
-      <clr-dg-placeholder [ngClass]="{ highlight }">{{ content }}</clr-dg-placeholder>
+type Story = StoryObj<PlaceholderArgs>;
 
-      <clr-dg-footer>
-        <clr-dg-pagination #pagination>
-          <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Elements per page</clr-dg-page-size>
-          {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} elements
-        </clr-dg-pagination>
-      </clr-dg-footer>
-    </clr-datagrid>
-  `,
-  props: { ...args },
-});
-
-export const Placeholder: StoryObj = {
-  render: PlaceholderTemplate,
-};
+export const Placeholder: Story = {};

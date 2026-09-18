@@ -6,11 +6,25 @@
  */
 
 import { ClrCard, ClrCardBody, ClrCardBodyText, ClrCardBodyTitle, ClrCardFooter, ClrCardModule } from '@clr/angular';
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * `ClrCard` cannot be the args base: it aliases every input
+ * (`@Input({ alias: 'clrCardExpanded' }) get expanded()`), so the `clrCard*` names the template binds are
+ * not properties of the class. The remaining args are story-only content props.
+ */
+type CardAngularArgs = {
+  clrCardCollapsible: boolean;
+  clrCardExpanded: boolean;
+  clrCardFooterCollapsible: boolean;
+  headerText: string;
+  bodyTitle: string;
+  bodyText: string;
+  showFooter: boolean;
+};
 
-export default {
+const meta: Meta<CardAngularArgs> = {
   title: 'Card/Angular Card',
   component: ClrCard,
   subcomponents: { ClrCardBody, ClrCardBodyTitle, ClrCardBodyText, ClrCardFooter },
@@ -28,7 +42,7 @@ export default {
     bodyText: 'Hello World!',
     showFooter: true,
   },
-  render: (args: Record<string, unknown>) => ({
+  render: args => ({
     props: { ...args },
     template: `
       <clr-card
@@ -51,22 +65,26 @@ export default {
   }),
 };
 
-export const Default: StoryObj = {};
+export default meta;
 
-export const Collapsible: StoryObj = {
+type Story = StoryObj<CardAngularArgs>;
+
+export const Default: Story = {};
+
+export const Collapsible: Story = {
   args: {
     clrCardCollapsible: true,
   },
 };
 
-export const Collapsed: StoryObj = {
+export const Collapsed: Story = {
   args: {
     clrCardCollapsible: true,
     clrCardExpanded: false,
   },
 };
 
-export const CollapsedWithFixedFooter: StoryObj = {
+export const CollapsedWithFixedFooter: Story = {
   args: {
     clrCardCollapsible: true,
     clrCardExpanded: false,

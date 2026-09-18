@@ -7,11 +7,33 @@
 
 import { FormsModule } from '@angular/forms';
 import { ClrFileInputModule, ClrFormLayout, commonStringsDefault } from '@clr/angular';
-import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryContext, type StoryObj } from '@storybook/angular';
 
 import { selectFiles } from '../../../projects/angular/forms/file-input/file-input.helpers';
 
-export default {
+/**
+ * This file has no `component:`, and the two args are named after Clarity's input aliases
+ * (`ClrFileInputContainer` declares `@Input('clrButtonLabel') customButtonLabel`, `ClrForm` declares
+ * `@Input('clrLayout') layout`), so neither class can serve as the args base. The args are declared here.
+ */
+type FileInputArgs = {
+  clrButtonLabel: string;
+  clrLayout: ClrFormLayout | string;
+};
+
+const fileInputTemplate = `
+  <form clrForm [clrLayout]="clrLayout">
+    <clr-file-input-container [clrButtonLabel]="clrButtonLabel">
+      <label>File</label>
+      <input type="file" name="file" [(ngModel)]="file" clrFileInput required multiple />
+      <clr-control-helper>Helper message</clr-control-helper>
+      <clr-control-success>Success message</clr-control-success>
+      <clr-control-error *clrIfError="'required'">Required</clr-control-error>
+    </clr-file-input-container>
+  </form>
+`;
+
+const meta: Meta<FileInputArgs> = {
   title: 'File Input/File Input',
   decorators: [
     moduleMetadata({
@@ -28,64 +50,49 @@ export default {
     // inputs
     clrButtonLabel: commonStringsDefault.browse,
   },
+  render: args => ({
+    template: fileInputTemplate,
+    props: { ...args },
+  }),
 };
 
-const fileInputTemplate = `
-  <form clrForm [clrLayout]="clrLayout">
-    <clr-file-input-container [clrButtonLabel]="clrButtonLabel">
-      <label>File</label>
-      <input type="file" name="file" [(ngModel)]="file" clrFileInput required multiple />
-      <clr-control-helper>Helper message</clr-control-helper>
-      <clr-control-success>Success message</clr-control-success>
-      <clr-control-error *clrIfError="'required'">Required</clr-control-error>
-    </clr-file-input-container>
-  </form>
-`;
+export default meta;
 
-const fileInputTemplateStoryFn: StoryFn = args => ({
-  template: fileInputTemplate,
-  props: { ...args },
-});
+type Story = StoryObj<FileInputArgs>;
 
-export const VerticalFileInput: StoryObj = {
-  render: fileInputTemplateStoryFn,
+export const VerticalFileInput: Story = {
   args: {
     clrLayout: ClrFormLayout.VERTICAL,
   },
 };
 
-export const VerticalFileInputWithSelection: StoryObj = {
-  render: fileInputTemplateStoryFn,
+export const VerticalFileInputWithSelection: Story = {
   play: selectFile,
   args: {
     clrLayout: ClrFormLayout.VERTICAL,
   },
 };
 
-export const HorizontalFileInput: StoryObj = {
-  render: fileInputTemplateStoryFn,
+export const HorizontalFileInput: Story = {
   args: {
     clrLayout: ClrFormLayout.HORIZONTAL,
   },
 };
 
-export const HorizontalFileInputSelection: StoryObj = {
-  render: fileInputTemplateStoryFn,
+export const HorizontalFileInputSelection: Story = {
   play: selectFile,
   args: {
     clrLayout: ClrFormLayout.HORIZONTAL,
   },
 };
 
-export const CompactFileInput: StoryObj = {
-  render: fileInputTemplateStoryFn,
+export const CompactFileInput: Story = {
   args: {
     clrLayout: ClrFormLayout.COMPACT,
   },
 };
 
-export const CompactFileInputWithSelection: StoryObj = {
-  render: fileInputTemplateStoryFn,
+export const CompactFileInputWithSelection: Story = {
   play: selectFile,
   args: {
     clrLayout: ClrFormLayout.COMPACT,
@@ -93,7 +100,8 @@ export const CompactFileInputWithSelection: StoryObj = {
 };
 
 // regression test for CDE-2183
-export const VerticalFileInputWithSelectionInConstrainedContainer: StoryObj = {
+export const VerticalFileInputWithSelectionInConstrainedContainer: Story = {
+  // render-override: this story wraps the form in a 10px-wide container, which the meta template cannot express
   render: args => ({
     template: `
       <div style="width: 10px">${fileInputTemplate}</div>

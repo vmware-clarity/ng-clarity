@@ -6,18 +6,17 @@
  */
 
 import { ClrIcon } from '@clr/angular';
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { IconCollectionStorybookComponent } from './icon.storybook.component';
-import { CommonModules } from '../../helpers/common';
 
-export default {
-  title: 'Icon/Icon Collection',
-  decorators: [
-    moduleMetadata({
-      imports: [IconCollectionStorybookComponent, ...CommonModules, ClrIcon],
-    }),
-  ],
+/**
+ * Each story differed only in the collection name baked into its template, so the name is the one arg and
+ * `collectionTemplate` still produces the same markup each story rendered before.
+ */
+type IconCollectionArgs = {
+  collectionName: string;
 };
 
 function collectionTemplate(collectionName: string) {
@@ -26,42 +25,56 @@ function collectionTemplate(collectionName: string) {
   `;
 }
 
-export const Core: StoryObj = {
-  render: () => ({ template: collectionTemplate('core') }),
+const meta: Meta<IconCollectionArgs> = {
+  title: 'Icon/Icon Collection',
+  decorators: [
+    moduleMetadata({
+      imports: [IconCollectionStorybookComponent, ...CommonModules, ClrIcon],
+    }),
+  ],
+  render: args => ({ template: collectionTemplate(args.collectionName) }),
 };
 
-export const Essential: StoryObj = {
-  render: () => ({ template: collectionTemplate('essential') }),
+export default meta;
+
+type Story = StoryObj<IconCollectionArgs>;
+
+export const Core: Story = {
+  args: { collectionName: 'core' },
 };
 
-export const Chart: StoryObj = {
-  render: () => ({ template: collectionTemplate('chart') }),
+export const Essential: Story = {
+  args: { collectionName: 'essential' },
 };
 
-export const Commerce: StoryObj = {
-  render: () => ({ template: collectionTemplate('commerce') }),
+export const Chart: Story = {
+  args: { collectionName: 'chart' },
 };
 
-export const Media: StoryObj = {
-  render: () => ({ template: collectionTemplate('media') }),
+export const Commerce: Story = {
+  args: { collectionName: 'commerce' },
 };
 
-export const Mini: StoryObj = {
-  render: () => ({ template: collectionTemplate('mini') }),
+export const Media: Story = {
+  args: { collectionName: 'media' },
 };
 
-export const Social: StoryObj = {
-  render: () => ({ template: collectionTemplate('social') }),
+export const Mini: Story = {
+  args: { collectionName: 'mini' },
 };
 
-export const Technology: StoryObj = {
-  render: () => ({ template: collectionTemplate('technology') }),
+export const Social: Story = {
+  args: { collectionName: 'social' },
 };
 
-export const TextEdit: StoryObj = {
-  render: () => ({ template: collectionTemplate('text-edit') }),
+export const Technology: Story = {
+  args: { collectionName: 'technology' },
 };
 
-export const Travel: StoryObj = {
-  render: () => ({ template: collectionTemplate('travel') }),
+export const TextEdit: Story = {
+  args: { collectionName: 'text-edit' },
+};
+
+export const Travel: Story = {
+  args: { collectionName: 'travel' },
 };

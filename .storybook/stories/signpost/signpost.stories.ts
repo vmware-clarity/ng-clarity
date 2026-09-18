@@ -6,9 +6,22 @@
  */
 
 import { ClrSignpostContent, ClrSignpostModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * `ClrSignpostContent` aliases its inputs (`@Input('clrPosition') get position`,
+ * `@Input('clrSignpostCloseAriaLabel') signpostCloseAriaLabel`), so the component class cannot be the args
+ * type; the args are the `clr*` names the templates bind plus the two story-only strings.
+ */
+type SignpostArgs = {
+  clrPosition: string;
+  clrSignpostCloseAriaLabel: string;
+  clrSignpostTriggerAriaLabel: string;
+  content: string;
+  title: string;
+};
 
 const positions: string[] = [
   'top-left',
@@ -25,7 +38,7 @@ const positions: string[] = [
   'left-top',
 ];
 
-export default {
+const meta: Meta<SignpostArgs> = {
   title: 'Signpost/Signpost',
   component: ClrSignpostContent,
   decorators: [
@@ -37,9 +50,7 @@ export default {
     // inputs
     clrPosition: { control: { type: 'radio' }, options: positions },
     // methods
-    close: { control: { disable: true }, table: { disable: true } },
-    anchor: { control: { disable: true }, table: { disable: true } },
-    release: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('close', 'anchor', 'release'),
   },
   args: {
     // inputs
@@ -50,70 +61,54 @@ export default {
     content: 'Hello World!',
     title: 'Title',
   },
+  render: args => ({
+    template: `
+      <div style="padding: 250px; text-align: center">
+        <clr-signpost [clrSignpostTriggerAriaLabel]="clrSignpostTriggerAriaLabel">
+          <clr-signpost-content [clrPosition]="clrPosition" [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
+            {{ content }}
+          </clr-signpost-content>
+        </clr-signpost>
+      </div>
+    `,
+    props: args,
+  }),
 };
 
-const SignpostDefaultPositionTemplate: StoryFn = args => ({
-  template: `
-    <div style="padding: 250px; text-align: center">
-      <clr-signpost [clrSignpostTriggerAriaLabel]="clrSignpostTriggerAriaLabel">
-        <clr-signpost-content [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
-          {{ content }}
-        </clr-signpost-content>
-      </clr-signpost>
-    </div>
-  `,
-  props: args,
-});
+export default meta;
 
-const SignpostTemplate: StoryFn = args => ({
-  template: `
-    <div style="padding: 250px; text-align: center">
-      <clr-signpost [clrSignpostTriggerAriaLabel]="clrSignpostTriggerAriaLabel">
-        <clr-signpost-content [clrPosition]="clrPosition" [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
-          {{ content }}
-        </clr-signpost-content>
-      </clr-signpost>
-    </div>
-  `,
-  props: args,
-});
+type Story = StoryObj<SignpostArgs>;
 
-const SignpostTitleTemplate: StoryFn = args => ({
-  template: `
-    <div style="padding: 250px; text-align: center">
-      <clr-signpost>
-        <clr-signpost-content [clrPosition]="clrPosition">
-          <clr-signpost-title>{{ title }}</clr-signpost-title>
-          {{ content }}
-        </clr-signpost-content>
-      </clr-signpost>
-    </div>
-  `,
-  props: args,
-});
+export const Initial: Story = {};
 
-export const Initial: StoryObj = {
-  render: SignpostTemplate,
-};
-
-export const Opened = {
-  render: SignpostTemplate,
+export const Opened: Story = {
   play({ canvasElement }) {
     canvasElement.querySelector('button').click();
   },
 };
 
 // visual regression test for CDE-3123
-export const DefaultPositionOpened = {
-  render: SignpostDefaultPositionTemplate,
+export const DefaultPositionOpened: Story = {
+  // render-override: this story omits the `clrPosition` binding entirely so the content falls back to its default position, which the meta template cannot express
+  render: args => ({
+    template: `
+      <div style="padding: 250px; text-align: center">
+        <clr-signpost [clrSignpostTriggerAriaLabel]="clrSignpostTriggerAriaLabel">
+          <clr-signpost-content [clrSignpostCloseAriaLabel]="clrSignpostCloseAriaLabel">
+            {{ content }}
+          </clr-signpost-content>
+        </clr-signpost>
+      </div>
+    `,
+    props: args,
+  }),
   play({ canvasElement }) {
     canvasElement.querySelector('button').click();
   },
 };
 
 // visual regression test for CDE-2226
-export const OpenedLongContent = {
-  render: SignpostTemplate,
+export const OpenedLongContent: Story = {
   play({ canvasElement }) {
     canvasElement.querySelector('button').click();
   },
@@ -122,8 +117,21 @@ export const OpenedLongContent = {
   },
 };
 
-export const SignpostWithTitle: StoryObj = {
-  render: SignpostTitleTemplate,
+export const SignpostWithTitle: Story = {
+  // render-override: this story adds a `<clr-signpost-title>` and drops the aria-label bindings, which the meta template cannot express
+  render: args => ({
+    template: `
+      <div style="padding: 250px; text-align: center">
+        <clr-signpost>
+          <clr-signpost-content [clrPosition]="clrPosition">
+            <clr-signpost-title>{{ title }}</clr-signpost-title>
+            {{ content }}
+          </clr-signpost-content>
+        </clr-signpost>
+      </div>
+    `,
+    props: args,
+  }),
   play({ canvasElement }) {
     canvasElement.querySelector('button').click();
   },

@@ -6,9 +6,20 @@
  */
 
 import { ClrSelect, ClrSelectModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
 
-export default {
+/**
+ * The template binds a plain `<select clrSelect>` rather than `ClrSelect` itself, so the args are declared
+ * standalone. `createArray` stays an arg because the meta template calls it through `props`.
+ */
+type SelectArgs = {
+  id: string;
+  createArray: (n: number) => unknown[];
+  optionCount: number;
+};
+
+const meta: Meta<SelectArgs> = {
   title: 'Select/Select',
   component: ClrSelect,
   decorators: [
@@ -18,10 +29,9 @@ export default {
   ],
   argTypes: {
     // methods
-    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
-    triggerValidation: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('getProviderFromContainer', 'triggerValidation'),
     // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('createArray'),
   },
   args: {
     // inputs
@@ -30,22 +40,23 @@ export default {
     createArray: n => new Array(n),
     optionCount: 3,
   },
+  render: args => ({
+    template: `
+      <clr-select-container>
+        <label>Options</label>
+        <select clrSelect>
+          @for (_ of createArray(optionCount); track $index; let i = $index) {
+            <option [value]="i + 1" [disabled]="i === 0">Option {{ i + 1 }}</option>
+          }
+        </select>
+      </clr-select-container>
+    `,
+    props: { ...args },
+  }),
 };
 
-const selectTemplate: StoryFn = args => ({
-  template: `
-    <clr-select-container>
-      <label>Options</label>
-      <select clrSelect>
-        @for (_ of createArray(optionCount); track $index; let i = $index) {
-          <option [value]="i + 1" [disabled]="i === 0">Option {{ i + 1 }}</option>
-        }
-      </select>
-    </clr-select-container>
-  `,
-  props: { ...args },
-});
+export default meta;
 
-export const Select: StoryObj = {
-  render: selectTemplate,
-};
+type Story = StoryObj<SelectArgs>;
+
+export const Select: Story = {};

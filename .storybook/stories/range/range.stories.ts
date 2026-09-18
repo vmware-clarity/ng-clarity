@@ -6,9 +6,21 @@
  */
 
 import { ClrRangeContainer, ClrRangeModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 
-export default {
+/**
+ * `ClrRangeContainer` aliases its only input (`@Input('clrRangeHasProgress') get hasProgress`), so the
+ * component class cannot be the args type. The three container methods are named explicitly in `argTypes`,
+ * so they are picked into the type to keep `argTypes` type-checked.
+ */
+type RangeArgs = {
+  clrRangeHasProgress: boolean;
+  label: string;
+  value: number;
+  disabled: boolean;
+} & Pick<ClrRangeContainer, 'getRangeProgressFillWidth' | 'addGrid' | 'controlClass'>;
+
+const meta: Meta<RangeArgs> = {
   title: 'Range/Range Container',
   decorators: [
     moduleMetadata({
@@ -31,53 +43,53 @@ export default {
     value: 50,
     disabled: false,
   },
+  render: args => ({
+    template: `
+      <clr-range-container [clrRangeHasProgress]="clrRangeHasProgress">
+        <label>{{ label }}</label>
+        <input type="range" clrRange [value]="value" [disabled]="disabled" />
+      </clr-range-container>
+    `,
+    props: args,
+  }),
 };
 
-const rangeTemplate: StoryFn = args => ({
-  template: `
-    <clr-range-container [clrRangeHasProgress]="clrRangeHasProgress">
-      <label>{{ label }}</label>
-      <input type="range" clrRange [value]="value" [disabled]="disabled" />
-    </clr-range-container>
-  `,
-  props: args,
-});
+export default meta;
 
-const rangeAllTemplate: StoryFn = args => ({
-  template: `
-    <h6>Default Range</h6>
-    <clr-range-container [clrRangeHasProgress]="false">
-      <label>{{ label }}</label>
-      <input type="range" clrRange [value]="value" [disabled]="false" />
-    </clr-range-container>
+type Story = StoryObj<RangeArgs>;
 
-    <h6>Disabled Range</h6>
-    <clr-range-container [clrRangeHasProgress]="false">
-      <label>{{ label }}</label>
-      <input type="range" clrRange [value]="value" [disabled]="true" />
-    </clr-range-container>
+export const Range: Story = {};
 
-    <h6>Range with Progress</h6>
-    <clr-range-container [clrRangeHasProgress]="true">
-      <label>{{ label }}</label>
-      <input type="range" clrRange [value]="value" [disabled]="false" />
-    </clr-range-container>
+export const ShowcaseRange: Story = {
+  // render-override: this story lines up four differently configured range containers side by side, which the single-container meta template cannot express
+  render: args => ({
+    template: `
+      <h6>Default Range</h6>
+      <clr-range-container [clrRangeHasProgress]="false">
+        <label>{{ label }}</label>
+        <input type="range" clrRange [value]="value" [disabled]="false" />
+      </clr-range-container>
 
-    <h6>Disabled Range with Progress</h6>
-    <clr-range-container class="compact" [clrRangeHasProgress]="true">
-      <label>{{ label }}</label>
-      <input type="range" clrRange [value]="value" [disabled]="true" />
-    </clr-range-container>
-  `,
-  props: args,
-});
+      <h6>Disabled Range</h6>
+      <clr-range-container [clrRangeHasProgress]="false">
+        <label>{{ label }}</label>
+        <input type="range" clrRange [value]="value" [disabled]="true" />
+      </clr-range-container>
 
-export const Range: StoryObj = {
-  render: rangeTemplate,
-};
+      <h6>Range with Progress</h6>
+      <clr-range-container [clrRangeHasProgress]="true">
+        <label>{{ label }}</label>
+        <input type="range" clrRange [value]="value" [disabled]="false" />
+      </clr-range-container>
 
-export const ShowcaseRange: StoryObj = {
-  render: rangeAllTemplate,
+      <h6>Disabled Range with Progress</h6>
+      <clr-range-container class="compact" [clrRangeHasProgress]="true">
+        <label>{{ label }}</label>
+        <input type="range" clrRange [value]="value" [disabled]="true" />
+      </clr-range-container>
+    `,
+    props: args,
+  }),
   parameters: {
     actions: { disable: true },
     controls: { disable: true },

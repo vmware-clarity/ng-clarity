@@ -6,10 +6,19 @@
  */
 
 import { provideRouter } from '@angular/router';
-import { ClrBreadcrumbs, ClrBreadcrumbsModule } from '@clr/angular/layout/breadcrumbs';
-import { applicationConfig, moduleMetadata, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { BreadcrumbItem, ClrBreadcrumbs, ClrBreadcrumbsModule } from '@clr/angular/layout/breadcrumbs';
+import { applicationConfig, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 import { action } from 'storybook/actions';
+
+/**
+ * The args bind to `ClrBreadcrumbs`, whose input name equals its alias. Only the output is
+ * re-typed: the arg is an `action()` handler, not the component's `EventEmitter`.
+ */
+type BreadcrumbsArgs = Omit<ClrBreadcrumbs, 'clrBreadcrumbItemClick'> & {
+  clrBreadcrumbItemClick: (item: BreadcrumbItem) => void;
+};
 
 const menuItems = [
   { label: 'Home', routerLink: '/home' },
@@ -33,7 +42,7 @@ const menuItemsHref = [
 
 class MockComponent {}
 
-export default {
+const meta: Meta<BreadcrumbsArgs> = {
   title: 'Breadcrumbs/Breadcrumbs',
   component: ClrBreadcrumbs,
   decorators: [
@@ -61,8 +70,7 @@ export default {
     //outputs
     clrBreadcrumbItemClick: { control: { disable: true } },
     //methods
-    expand: { control: { disable: true }, table: { disable: true } },
-    handleItemClick: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('expand', 'handleItemClick'),
     // story helpers
     items: { control: { type: 'object' } },
   },
@@ -73,15 +81,19 @@ export default {
   },
 };
 
-export const BreadcrumbWithRouter: StoryObj = {};
+export default meta;
 
-export const BreadcrumbWithHref: StoryObj = {
+type Story = StoryObj<BreadcrumbsArgs>;
+
+export const BreadcrumbWithRouter: Story = {};
+
+export const BreadcrumbWithHref: Story = {
   args: {
     items: menuItemsHref,
   },
 };
 
-export const Collapsed: StoryObj = {
+export const Collapsed: Story = {
   args: {
     items: menuItemsCollapsed,
   },

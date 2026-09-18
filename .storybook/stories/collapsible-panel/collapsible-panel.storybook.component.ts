@@ -28,7 +28,7 @@ import {
 } from '@clr/angular/collapsible-panel';
 import { ClrIcon } from '@clr/angular/icon';
 import { IfExpandService } from '@clr/angular/utils';
-import { createArray } from 'helpers/common';
+import { createArray } from '@storybook-helpers/common';
 import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 

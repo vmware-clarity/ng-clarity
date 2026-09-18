@@ -6,9 +6,25 @@
  */
 
 import { ClrStackView, ClrStackViewModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * `ClrStackView` declares no inputs at all, so every arg here is story-only and the args type is a
+ * standalone declaration rather than the component class. The templates call `createArray` off `props`,
+ * so it stays an arg.
+ */
+type StackViewArgs = {
+  openIndices: boolean[];
+  createArray: (n: number) => any[];
+  blockCount: number;
+  label: string;
+  content: string;
+  subLabel: string;
+  subContent: string;
+  STACK_VIEW_STATES: { openIndices: boolean[] }[];
+};
 
 const STACK_VIEW_STATES = [
   {
@@ -25,7 +41,7 @@ const STACK_VIEW_STATES = [
   },
 ];
 
-export default {
+const meta: Meta<StackViewArgs> = {
   title: 'Stack View/Stack View',
   decorators: [
     moduleMetadata({
@@ -35,10 +51,9 @@ export default {
   component: ClrStackView,
   argTypes: {
     // story helpers
-    openIndices: { control: { disable: true }, table: { disable: true } },
-    createArray: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('openIndices', 'createArray'),
     blockCount: { control: { type: 'number', min: 1, max: 100 } },
-    STACK_VIEW_STATES: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('STACK_VIEW_STATES'),
   },
   args: {
     // story helpers
@@ -51,54 +66,54 @@ export default {
     subContent: 'Sub-block content',
     STACK_VIEW_STATES,
   },
-};
-
-const StackViewTemplate: StoryFn = args => ({
-  template: `
-    <clr-stack-view>
-      @for (_ of createArray(blockCount); track $index; let i = $index) {
-        <clr-stack-block [clrSbExpanded]="!!openIndices[i]">
-          <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
-          <clr-stack-content>{{ content }}</clr-stack-content>
-          <clr-stack-block>
-            <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
-            <clr-stack-content>{{ subContent }}</clr-stack-content>
-          </clr-stack-block>
-        </clr-stack-block>
-      }
-    </clr-stack-view>
-  `,
-  props: args,
-});
-
-const StackViewAllTemplate: StoryFn = args => ({
-  template: `
-    @for (state of STACK_VIEW_STATES; track state) {
-      <div style="margin-top: 20px">
-        <clr-stack-view>
-          @for (_ of createArray(blockCount); track $index; let i = $index) {
-            <clr-stack-block [clrSbExpanded]="!!state.openIndices[i]">
-              <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
-              <clr-stack-content>{{ content }}</clr-stack-content>
-              <clr-stack-block>
-                <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
-                <clr-stack-content>{{ subContent }}</clr-stack-content>
-              </clr-stack-block>
+  render: args => ({
+    template: `
+      <clr-stack-view>
+        @for (_ of createArray(blockCount); track $index; let i = $index) {
+          <clr-stack-block [clrSbExpanded]="!!openIndices[i]">
+            <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
+            <clr-stack-content>{{ content }}</clr-stack-content>
+            <clr-stack-block>
+              <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
+              <clr-stack-content>{{ subContent }}</clr-stack-content>
             </clr-stack-block>
-          }
-        </clr-stack-view>
-      </div>
-    }
-  `,
-  props: args,
-});
-
-export const StackView: StoryObj = {
-  render: StackViewTemplate,
+          </clr-stack-block>
+        }
+      </clr-stack-view>
+    `,
+    props: args,
+  }),
 };
 
-export const StackViewShowcase: StoryObj = {
-  render: StackViewAllTemplate,
+export default meta;
+
+type Story = StoryObj<StackViewArgs>;
+
+export const StackView: Story = {};
+
+export const StackViewShowcase: Story = {
+  // render-override: this story repeats the stack view once per STACK_VIEW_STATES entry, which the meta template cannot express
+  render: args => ({
+    template: `
+      @for (state of STACK_VIEW_STATES; track state) {
+        <div style="margin-top: 20px">
+          <clr-stack-view>
+            @for (_ of createArray(blockCount); track $index; let i = $index) {
+              <clr-stack-block [clrSbExpanded]="!!state.openIndices[i]">
+                <clr-stack-label>{{ label }} {{ i + 1 }}</clr-stack-label>
+                <clr-stack-content>{{ content }}</clr-stack-content>
+                <clr-stack-block>
+                  <clr-stack-label>{{ subLabel }} {{ i + 1 }}</clr-stack-label>
+                  <clr-stack-content>{{ subContent }}</clr-stack-content>
+                </clr-stack-block>
+              </clr-stack-block>
+            }
+          </clr-stack-view>
+        </div>
+      }
+    `,
+    props: args,
+  }),
   args: {
     blockCount: 4,
   },

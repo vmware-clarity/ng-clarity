@@ -6,12 +6,23 @@
  */
 
 import { ClrDatalist, ClrDatalistModule, ClrFormsModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { type Element, elements } from '@storybook-helpers/elements.data';
 
-import { CommonModules } from '../../helpers/common';
-import { elements } from '../../helpers/elements.data';
+/**
+ * The template binds a plain `<input clrDatalistInput>`, not `ClrDatalist` itself, so the args are
+ * the story-only props the template reads plus the two input attributes it forwards.
+ */
+type DatalistArgs = {
+  elements: Element[];
+  optionCount: number;
+  placeholder: string;
+  disabled: boolean;
+};
 
-export default {
+const meta: Meta<DatalistArgs> = {
   title: 'Datalist/Datalist',
   decorators: [
     moduleMetadata({
@@ -21,7 +32,7 @@ export default {
   component: ClrDatalist,
   argTypes: {
     // story helpers
-    elements: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('elements'),
     optionCount: { control: { type: 'number', min: 1, max: elements.length } },
   },
   args: {
@@ -31,32 +42,32 @@ export default {
     placeholder: 'Options',
     disabled: false,
   },
-};
-
-const DatalistTemplate: StoryFn = args => ({
-  template: `
-    <clr-datalist-container>
-      <label>Element</label>
-      <input clrDatalistInput [disabled]="disabled" [placeholder]="placeholder" />
-      <datalist>
-        @for (element of elements; track element; let i = $index) {
-          @if (i < optionCount) {
-            <option [value]="element.symbol">{{ element.name }}</option>
+  render: args => ({
+    template: `
+      <clr-datalist-container>
+        <label>Element</label>
+        <input clrDatalistInput [disabled]="disabled" [placeholder]="placeholder" />
+        <datalist>
+          @for (element of elements; track element; let i = $index) {
+            @if (i < optionCount) {
+              <option [value]="element.symbol">{{ element.name }}</option>
+            }
           }
-        }
-      </datalist>
-      <clr-control-helper>Helper text</clr-control-helper>
-      <clr-control-error>There was an error</clr-control-error>
-    </clr-datalist-container>
-  `,
-  props: args,
-});
-
-export const Datalist: StoryObj = {
-  render: DatalistTemplate,
+        </datalist>
+        <clr-control-helper>Helper text</clr-control-helper>
+        <clr-control-error>There was an error</clr-control-error>
+      </clr-datalist-container>
+    `,
+    props: args,
+  }),
 };
 
-export const Disabled: StoryObj = {
-  render: DatalistTemplate,
+export default meta;
+
+type Story = StoryObj<DatalistArgs>;
+
+export const Datalist: Story = {};
+
+export const Disabled: Story = {
   args: { disabled: true },
 };

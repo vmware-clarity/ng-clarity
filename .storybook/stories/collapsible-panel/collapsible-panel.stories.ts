@@ -5,12 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { moduleMetadata, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { StorybookPanelGroup } from './collapsible-panel.storybook.component';
-import { CommonModules } from '../../helpers/common';
 
-export default {
+/** The args drive `<storybook-panel-group>`, so the args type is that wrapper. */
+type CollapsiblePanelArgs = StorybookPanelGroup;
+
+const meta: Meta<CollapsiblePanelArgs> = {
   title: 'Collapsible Panel/Collapsible Panel',
   decorators: [
     moduleMetadata({
@@ -22,7 +26,7 @@ export default {
     panelDisabled: { control: 'boolean' },
     title: { control: 'text' },
     content: { control: 'text' },
-    openIndices: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('openIndices'),
   },
   args: {
     panelCount: 3,
@@ -31,7 +35,7 @@ export default {
     content: 'Content for panel',
     openIndices: [],
   },
-  render: (args: StorybookPanelGroup) => ({
+  render: args => ({
     props: args,
     template: `
       <storybook-panel-group
@@ -45,28 +49,32 @@ export default {
   }),
 };
 
-export const DefaultCollapsed: StoryObj = {};
+export default meta;
 
-export const SinglePanelExpanded: StoryObj = {
+type Story = StoryObj<CollapsiblePanelArgs>;
+
+export const DefaultCollapsed: Story = {};
+
+export const SinglePanelExpanded: Story = {
   args: { openIndices: [true] },
 };
 
-export const AllPanelsDisabled: StoryObj = {
+export const AllPanelsDisabled: Story = {
   args: { panelDisabled: true },
 };
 
-export const ExpandedAndDisabled: StoryObj = {
+export const ExpandedAndDisabled: Story = {
   args: { openIndices: [true], panelDisabled: true },
 };
 
-export const MultiplePanelsExpanded: StoryObj = {
+export const MultiplePanelsExpanded: Story = {
   args: { openIndices: [true, false, true] },
 };
 
-export const SinglePanel: StoryObj = {
+export const SinglePanel: Story = {
   args: { panelCount: 1, openIndices: [true] },
 };
 
-export const ManyPanels: StoryObj = {
+export const ManyPanels: Story = {
   args: { panelCount: 8, openIndices: [false, false, true] },
 };

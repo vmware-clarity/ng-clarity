@@ -5,13 +5,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
 
-export default {
+/**
+ * Plain markup with no component and no story wrapper, so the args are declared standalone.
+ * `createArray` stays an arg: the meta template calls it through `props: args`.
+ */
+type ListArgs = {
+  createArray: (n: number) => unknown[];
+  itemCount: number;
+  unstyled: boolean;
+};
+
+const meta: Meta<ListArgs> = {
   title: 'List/List',
   argTypes: {
     // story helpers
-    createArray: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('createArray'),
   },
   args: {
     // story helpers
@@ -19,37 +30,37 @@ export default {
     itemCount: 4,
     unstyled: false,
   },
+  render: args => ({
+    template: `
+      <div>
+        Unordered List
+        <ul [ngClass]="{ list: !unstyled, 'list-unstyled': unstyled }">
+          @for (_ of createArray(itemCount); track $index; let i = $index) {
+            <li>Item {{ i + 1 }}</li>
+          }
+        </ul>
+      </div>
+
+      <div style="margin-top: 20px">
+        Ordered List
+        <ol [ngClass]="{ list: !unstyled, 'list-unstyled': unstyled }">
+          @for (_ of createArray(itemCount); track $index; let i = $index) {
+            <li>Item {{ i + 1 }}</li>
+          }
+        </ol>
+      </div>
+    `,
+    props: args,
+  }),
 };
 
-const ListTemplate: StoryFn = args => ({
-  template: `
-    <div>
-      Unordered List
-      <ul [ngClass]="{ list: !unstyled, 'list-unstyled': unstyled }">
-        @for (_ of createArray(itemCount); track $index; let i = $index) {
-          <li>Item {{ i + 1 }}</li>
-        }
-      </ul>
-    </div>
+export default meta;
 
-    <div style="margin-top: 20px">
-      Ordered List
-      <ol [ngClass]="{ list: !unstyled, 'list-unstyled': unstyled }">
-        @for (_ of createArray(itemCount); track $index; let i = $index) {
-          <li>Item {{ i + 1 }}</li>
-        }
-      </ol>
-    </div>
-  `,
-  props: args,
-});
+type Story = StoryObj<ListArgs>;
 
-export const List: StoryObj = {
-  render: ListTemplate,
-};
+export const List: Story = {};
 
-export const UnstyledList: StoryObj = {
-  render: ListTemplate,
+export const UnstyledList: Story = {
   args: {
     unstyled: true,
   },

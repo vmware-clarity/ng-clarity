@@ -16,10 +16,27 @@ import {
   searchIcon,
   userIcon,
 } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 import { action } from 'storybook/actions';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * `ClrVerticalNavGroup` cannot be the args base: it declares its input as
+ * `@Input('clrVerticalNavGroupExpanded') set userExpandedInput`, so `clrVerticalNavGroupExpanded` is not a
+ * property of the class. The four methods are picked off the component only so the `argTypes` entries that
+ * hide their docgen rows stay type-checked.
+ */
+type VerticalNavGroupArgs = Pick<
+  ClrVerticalNavGroup,
+  'collapseGroup' | 'expandAnimationDone' | 'expandGroup' | 'toggleExpand'
+> & {
+  clrVerticalNavGroupExpanded: boolean;
+  clrVerticalNavGroupExpandedChange: (expanded: boolean) => void;
+  navLinks: { iconShapeTuple: IconShapeTuple; text: string }[];
+  activeIndex: number;
+  includeIcons: boolean;
+};
 
 const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: bellIcon, text: 'Notifications' },
@@ -30,7 +47,7 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: userIcon, text: 'Profile' },
 ];
 
-export default {
+const meta: Meta<VerticalNavGroupArgs> = {
   title: 'Vertical Nav/Vertical Nav Group',
   decorators: [
     moduleMetadata({
@@ -42,12 +59,9 @@ export default {
     // outputs
     clrVerticalNavGroupExpandedChange: { control: { disable: true } },
     // methods
-    collapseGroup: { control: { disable: true }, table: { disable: true } },
-    expandAnimationDone: { control: { disable: true }, table: { disable: true } },
-    expandGroup: { control: { disable: true }, table: { disable: true } },
-    toggleExpand: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('collapseGroup', 'expandAnimationDone', 'expandGroup', 'toggleExpand'),
     // story helpers
-    navLinks: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('navLinks'),
   },
   args: {
     // inputs
@@ -59,70 +73,69 @@ export default {
     activeIndex: 0,
     includeIcons: true,
   },
+  render: args => ({
+    template: `
+      <div class="main-container">
+        <div class="content-container">
+          <clr-vertical-nav [clrVerticalNavCollapsible]="true">
+            <clr-vertical-nav-group
+              [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
+              (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
+            >
+              @if (includeIcons) {
+                <cds-icon shape="bars" clrVerticalNavIcon></cds-icon>
+              }
+              Menu
+              <clr-vertical-nav-group-children>
+                @for (navLink of navLinks; track navLink; let index = $index) {
+                  <a
+                    clrVerticalNavLink
+                    [ngClass]="{ active: index == activeIndex }"
+                    href="javascript:void(0)"
+                    (click)="activeIndex = index"
+                  >
+                    @if (includeIcons) {
+                      <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
+                    }
+                    {{ navLink.text }}
+                  </a>
+                }
+              </clr-vertical-nav-group-children>
+            </clr-vertical-nav-group>
+          </clr-vertical-nav>
+        </div>
+      </div>
+    `,
+    props: args,
+  }),
 };
 
-const NavGroupTemplate: StoryFn = args => ({
-  template: `
-    <div class="main-container">
-      <div class="content-container">
-        <clr-vertical-nav [clrVerticalNavCollapsible]="true">
-          <clr-vertical-nav-group
-            [clrVerticalNavGroupExpanded]="clrVerticalNavGroupExpanded"
-            (clrVerticalNavGroupExpandedChange)="clrVerticalNavGroupExpandedChange($event)"
-          >
-            @if (includeIcons) {
-              <cds-icon shape="bars" clrVerticalNavIcon></cds-icon>
-            }
-            Menu
-            <clr-vertical-nav-group-children>
-              @for (navLink of navLinks; track navLink; let index = $index) {
-                <a
-                  clrVerticalNavLink
-                  [ngClass]="{ active: index == activeIndex }"
-                  href="javascript:void(0)"
-                  (click)="activeIndex = index"
-                >
-                  @if (includeIcons) {
-                    <cds-icon [shape]="navLink.iconShapeTuple[0]" clrVerticalNavIcon></cds-icon>
-                  }
-                  {{ navLink.text }}
-                </a>
-              }
-            </clr-vertical-nav-group-children>
-          </clr-vertical-nav-group>
-        </clr-vertical-nav>
-      </div>
-    </div>
-  `,
-  props: args,
-});
+export default meta;
 
-export const NavGroupCollapsedWithIcons: StoryObj = {
-  render: NavGroupTemplate,
+type Story = StoryObj<VerticalNavGroupArgs>;
+
+export const NavGroupCollapsedWithIcons: Story = {
   args: {
     clrVerticalNavGroupExpanded: false,
     includeIcons: true,
   },
 };
 
-export const NavGroupExpandedWithIcons: StoryObj = {
-  render: NavGroupTemplate,
+export const NavGroupExpandedWithIcons: Story = {
   args: {
     clrVerticalNavGroupExpanded: true,
     includeIcons: true,
   },
 };
 
-export const BasicNavGroupCollapsed: StoryObj = {
-  render: NavGroupTemplate,
+export const BasicNavGroupCollapsed: Story = {
   args: {
     clrVerticalNavGroupExpanded: false,
     includeIcons: false,
   },
 };
 
-export const BasicNavGroupExpanded: StoryObj = {
-  render: NavGroupTemplate,
+export const BasicNavGroupExpanded: Story = {
   args: {
     clrVerticalNavGroupExpanded: true,
     includeIcons: false,

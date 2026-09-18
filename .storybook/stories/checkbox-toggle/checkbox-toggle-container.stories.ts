@@ -6,17 +6,24 @@
  */
 
 import { ClrCheckboxContainer, ClrCheckboxModule } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { CheckboxToggleStorybookComponent } from './checkbox-toggle.storybook.component';
-import { CommonModules } from '../../helpers/common';
+
+/**
+ * The args drive `<storybook-checkbox-toggle>`, so the args type is that wrapper.
+ * `ClrCheckboxContainer` only supplies the docs table through `component:`.
+ */
+type CheckboxToggleContainerArgs = CheckboxToggleStorybookComponent;
 
 enum CheckboxType {
   Checkbox = 'checkbox',
   Toggle = 'toggle',
 }
 
-export default {
+const meta: Meta<CheckboxToggleContainerArgs> = {
   title: 'Checkbox or Toggle/Checkbox or Toggle Container',
   decorators: [
     moduleMetadata({
@@ -26,11 +33,9 @@ export default {
   component: ClrCheckboxContainer,
   argTypes: {
     // methods
-    addGrid: { control: { disable: true }, table: { disable: true } },
-    controlClass: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('addGrid', 'controlClass'),
     // story helpers
-    type: { control: { type: 'inline-radio' }, options: CheckboxType },
-    createArray: { control: { disable: true }, table: { disable: true } },
+    type: { control: { type: 'inline-radio' }, options: Object.values(CheckboxType) },
     optionCount: { control: { type: 'number', min: 1, max: 100 } },
   },
   args: {
@@ -39,11 +44,10 @@ export default {
     // story helpers
     type: CheckboxType.Checkbox,
     containerLabel: 'Options',
-    createArray: n => new Array(n),
     optionCount: 4,
     disabledIndexes: [],
   },
-  render: (args: CheckboxToggleStorybookComponent) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -53,69 +57,73 @@ export default {
   }),
 };
 
-export const CheckboxContainer: StoryObj = {
+export default meta;
+
+type Story = StoryObj<CheckboxToggleContainerArgs>;
+
+export const CheckboxContainer: Story = {
   args: {
     type: CheckboxType.Checkbox,
   },
 };
 
-export const CheckboxContainerHelperText: StoryObj = {
+export const CheckboxContainerHelperText: Story = {
   args: {
     type: CheckboxType.Checkbox,
     showHelperText: true,
   },
 };
 
-export const ToggleContainer: StoryObj = {
+export const ToggleContainer: Story = {
   args: {
     type: CheckboxType.Toggle,
   },
 };
 
-export const CheckboxContainerDisabled: StoryObj = {
+export const CheckboxContainerDisabled: Story = {
   args: {
     type: CheckboxType.Checkbox,
     disabledIndexes: [0, 1, 2, 3],
   },
 };
 
-export const ToggleContainerDisabled: StoryObj = {
+export const ToggleContainerDisabled: Story = {
   args: {
     type: CheckboxType.Toggle,
     disabledIndexes: [0, 1, 2, 3],
   },
 };
 
-export const CheckboxContainerPartiallyDisabled: StoryObj = {
+export const CheckboxContainerPartiallyDisabled: Story = {
   args: {
     type: CheckboxType.Checkbox,
     disabledIndexes: [0, 2],
   },
 };
 
-export const ToggleContainerPartiallyDisabled: StoryObj = {
+export const ToggleContainerPartiallyDisabled: Story = {
   args: {
     type: CheckboxType.Toggle,
     disabledIndexes: [0, 2],
   },
 };
 
-export const CheckboxContainerInline: StoryObj = {
+export const CheckboxContainerInline: Story = {
   args: { type: CheckboxType.Checkbox, clrInline: true },
 };
 
-export const CheckboxContainerInlineHelperText: StoryObj = {
+export const CheckboxContainerInlineHelperText: Story = {
   args: { type: CheckboxType.Checkbox, clrInline: true, showHelperText: true },
 };
 
-export const ToggleContainerInline: StoryObj = {
+export const ToggleContainerInline: Story = {
   args: { type: CheckboxType.Toggle, clrInline: true },
 };
 
-export const ToggleContainerRightAligned: StoryObj = {
+export const ToggleContainerRightAligned: Story = {
   args: { type: CheckboxType.Toggle, rightAligned: true },
 };
 
-export const ToggleContainerRightAlignedHelperText: StoryObj = {
+export const ToggleContainerRightAlignedHelperText: Story = {
   args: { type: CheckboxType.Toggle, rightAligned: true, showHelperText: true },
 };

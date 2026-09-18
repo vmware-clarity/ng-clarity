@@ -61,6 +61,16 @@ type WizardArgs = Pick<
   stepperForm: string;
 };
 
+function getStepperForm() {
+  return new FormGroup({
+    name: new FormGroup({ value: new FormControl('') }),
+    description: new FormGroup({ value: new FormControl('') }),
+    details: new FormGroup({ value: new FormControl('') }),
+  });
+}
+
+const stepperFormMappingKey = 'stepper-form-mapping-key';
+
 const meta: Meta<WizardArgs> = {
   title: 'Wizard/Wizard',
   component: ClrWizard,
@@ -267,16 +277,6 @@ export const NestedWizardHorizontal: Story = {
     clrWizardStepnavLayout: 'horizontal',
   },
 };
-
-function getStepperForm() {
-  return new FormGroup({
-    name: new FormGroup({ value: new FormControl('') }),
-    description: new FormGroup({ value: new FormControl('') }),
-    details: new FormGroup({ value: new FormControl('') }),
-  });
-}
-
-const stepperFormMappingKey = 'stepper-form-mapping-key';
 
 export const NestedStepperHorizontal: Story = {
   // render-override: this story puts a stepper form inside a wizard page, which the meta template cannot express

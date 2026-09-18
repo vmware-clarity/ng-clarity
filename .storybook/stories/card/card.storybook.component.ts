@@ -8,8 +8,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
-import { getButtonClass } from 'helpers/button-class.helper';
-import { createArray } from 'helpers/common';
+import { getButtonClass } from '@storybook-helpers/button-class.helper';
+import { createArray } from '@storybook-helpers/common';
 
 @Component({
   selector: 'storybook-card',

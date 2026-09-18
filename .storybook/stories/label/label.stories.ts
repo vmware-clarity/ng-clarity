@@ -5,19 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryObj } from '@storybook/angular';
+import { type Meta, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
 
 import { LabelStoryBookComponent } from './label.storybook.component';
+
+/** Every arg is an `@Input()` of the story component, which is also this file's `component:`. */
+type LabelArgs = LabelStoryBookComponent;
 
 const LABEL_COLOR_TYPES = ['', 'purple', 'blue', 'orange', 'light-blue'];
 const LABEL_STATUS_TYPES = ['info', 'success', 'warning', 'danger'];
 
-export default {
+const meta: Meta<LabelArgs> = {
   title: 'Label/Label',
   component: LabelStoryBookComponent,
   decorators: [],
   argTypes: {
-    labelTypes: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelTypes'),
   },
   args: {
     labelType: null,
@@ -33,7 +37,11 @@ export default {
   },
 };
 
-export const Initial: StoryObj = {
+export default meta;
+
+type Story = StoryObj<LabelArgs>;
+
+export const Initial: Story = {
   argTypes: {
     labelType: { control: { type: 'select' }, options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
   },
@@ -42,33 +50,27 @@ export const Initial: StoryObj = {
   },
 };
 
-export const ColorLabel: StoryObj = {
+export const ColorLabel: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    showProjectedContent: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'showProjectedContent', 'cssLabel'),
   },
   args: {
     labelTypes: LABEL_COLOR_TYPES,
   },
 };
 
-export const StatusLabel: StoryObj = {
+export const StatusLabel: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    showProjectedContent: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'showProjectedContent', 'cssLabel'),
   },
   args: {
     labelTypes: LABEL_STATUS_TYPES,
   },
 };
 
-export const DisabledLabel: StoryObj = {
+export const DisabledLabel: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    showProjectedContent: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'showProjectedContent', 'cssLabel'),
   },
   args: {
     labelType: '',
@@ -76,11 +78,9 @@ export const DisabledLabel: StoryObj = {
   },
 };
 
-export const StatusLabelClickable: StoryObj = {
+export const StatusLabelClickable: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    showProjectedContent: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'showProjectedContent', 'cssLabel'),
   },
   args: {
     labelTypes: LABEL_STATUS_TYPES,
@@ -88,11 +88,9 @@ export const StatusLabelClickable: StoryObj = {
   },
 };
 
-export const ColorLabelClosable: StoryObj = {
+export const ColorLabelClosable: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    showProjectedContent: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'showProjectedContent', 'cssLabel'),
   },
   args: {
     labelTypes: LABEL_COLOR_TYPES,
@@ -100,11 +98,9 @@ export const ColorLabelClosable: StoryObj = {
   },
 };
 
-export const StatusLabelClickableWithClose: StoryObj = {
+export const StatusLabelClickableWithClose: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    showProjectedContent: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'showProjectedContent', 'cssLabel'),
   },
   args: {
     labelTypes: LABEL_STATUS_TYPES,
@@ -113,10 +109,10 @@ export const StatusLabelClickableWithClose: StoryObj = {
   },
 };
 
-export const LabelComponent: StoryObj = {
+export const LabelComponent: Story = {
   argTypes: {
     labelType: { control: { type: 'select' }, options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -124,10 +120,10 @@ export const LabelComponent: StoryObj = {
   },
 };
 
-export const LabelComponentWithProjectedContent: StoryObj = {
+export const LabelComponentWithProjectedContent: Story = {
   argTypes: {
     labelType: { control: { type: 'select' }, options: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES] },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -136,10 +132,9 @@ export const LabelComponentWithProjectedContent: StoryObj = {
   },
 };
 
-export const LabelComponentClickableWithBadge: StoryObj = {
+export const LabelComponentClickableWithBadge: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -149,10 +144,9 @@ export const LabelComponentClickableWithBadge: StoryObj = {
   },
 };
 
-export const LabelComponentClickableWithBadgeHover: StoryObj = {
+export const LabelComponentClickableWithBadgeHover: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -165,10 +159,9 @@ export const LabelComponentClickableWithBadgeHover: StoryObj = {
   },
 };
 
-export const LabelComponentClickableWithBadgeClicked: StoryObj = {
+export const LabelComponentClickableWithBadgeClicked: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -181,10 +174,9 @@ export const LabelComponentClickableWithBadgeClicked: StoryObj = {
   },
 };
 
-export const LabelComponentSolidClickableWithBadge: StoryObj = {
+export const LabelComponentSolidClickableWithBadge: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -195,10 +187,9 @@ export const LabelComponentSolidClickableWithBadge: StoryObj = {
   },
 };
 
-export const LabelComponentSolidClickableWithBadgeHover: StoryObj = {
+export const LabelComponentSolidClickableWithBadgeHover: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -212,10 +203,9 @@ export const LabelComponentSolidClickableWithBadgeHover: StoryObj = {
   },
 };
 
-export const LabelComponentSolidClickableWithBadgeActive: StoryObj = {
+export const LabelComponentSolidClickableWithBadgeActive: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -229,10 +219,9 @@ export const LabelComponentSolidClickableWithBadgeActive: StoryObj = {
   },
 };
 
-export const LabelComponentClickableWithClose: StoryObj = {
+export const LabelComponentClickableWithClose: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -242,10 +231,9 @@ export const LabelComponentClickableWithClose: StoryObj = {
   },
 };
 
-export const LabelComponentSolidDisabled: StoryObj = {
+export const LabelComponentSolidDisabled: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],
@@ -258,10 +246,9 @@ export const LabelComponentSolidDisabled: StoryObj = {
   },
 };
 
-export const LabelComponentDisabled: StoryObj = {
+export const LabelComponentDisabled: Story = {
   argTypes: {
-    labelType: { control: { disable: true }, table: { disable: true } },
-    cssLabel: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('labelType', 'cssLabel'),
   },
   args: {
     labelTypes: [...LABEL_COLOR_TYPES, ...LABEL_STATUS_TYPES],

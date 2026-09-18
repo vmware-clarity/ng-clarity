@@ -6,11 +6,18 @@
  */
 
 import { CLR_MENU_POSITIONS, ClrDateContainer, ClrDatepickerModule, ClrFormsModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * The exception to Clarity's aliasing: `ClrDateContainer` declares both of these inputs under their own
+ * names (`@Input('clrPosition') set clrPosition`, `@Input('showActionButtons') set showActionButtons`), so
+ * the component class is the args type, and the two `argTypes`-only method names come with it.
+ */
+type DateContainerArgs = ClrDateContainer;
 
-export default {
+const meta: Meta<DateContainerArgs> = {
   title: 'Datepicker/DateContainer',
   decorators: [
     moduleMetadata({
@@ -22,28 +29,28 @@ export default {
     // inputs
     clrPosition: { control: { type: 'radio' }, options: CLR_MENU_POSITIONS },
     // methods
-    addGrid: { control: { disable: true }, table: { disable: true } },
-    controlClass: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('addGrid', 'controlClass'),
   },
   args: {
     // inputs
     clrPosition: 'bottom-left',
     showActionButtons: false,
   },
+  render: args => ({
+    template: `
+      <div style="margin-top: 300px; display: flex; justify-content: center">
+        <clr-date-container [showActionButtons]="showActionButtons" [clrPosition]="clrPosition">
+          <label>Date</label>
+          <input type="date" autocomplete="off" clrDate />
+        </clr-date-container>
+      </div>
+    `,
+    props: { ...args },
+  }),
 };
 
-const DatePickerTemplate: StoryFn = args => ({
-  template: `
-    <div style="margin-top: 300px; display: flex; justify-content: center">
-      <clr-date-container [showActionButtons]="showActionButtons" [clrPosition]="clrPosition">
-        <label>Date</label>
-        <input type="date" autocomplete="off" clrDate />
-      </clr-date-container>
-    </div>
-  `,
-  props: { ...args },
-});
+export default meta;
 
-export const DateContainer: StoryObj = {
-  render: DatePickerTemplate,
-};
+type Story = StoryObj<DateContainerArgs>;
+
+export const DateContainer: Story = {};

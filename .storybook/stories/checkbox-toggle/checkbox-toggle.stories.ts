@@ -6,12 +6,20 @@
  */
 
 import { ClrCheckbox, ClrCheckboxModule } from '@clr/angular';
-import { argsToTemplate, moduleMetadata, StoryObj } from '@storybook/angular';
-import { CommonModules } from 'helpers/common';
+import { argsToTemplate, type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 
 import { CheckboxToggleStorybookComponent, CheckboxType } from './checkbox-toggle.storybook.component';
 
-export default {
+/**
+ * The args drive `<storybook-checkbox-toggle>`, so the args type is that wrapper. `ClrCheckbox` only
+ * supplies the docs table through `component:`; its methods are hidden through the untyped
+ * `hideControls()` spread and so need no place in the args type.
+ */
+type CheckboxToggleArgs = CheckboxToggleStorybookComponent;
+
+const meta: Meta<CheckboxToggleArgs> = {
   title: 'Checkbox or Toggle/Checkbox or Toggle',
   component: ClrCheckbox,
   decorators: [
@@ -21,10 +29,9 @@ export default {
   ],
   argTypes: {
     // The original story hid these methods.
-    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
-    triggerValidation: { control: { disable: true }, table: { disable: true } },
-    type: { control: { type: 'inline-radio' }, options: CheckboxType },
-    templateMode: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('getProviderFromContainer', 'triggerValidation'),
+    type: { control: { type: 'inline-radio' }, options: Object.values(CheckboxType) },
+    ...hideControls('templateMode'),
   },
   args: {
     id: '',
@@ -34,7 +41,7 @@ export default {
     disabled: false,
     templateMode: 'single',
   },
-  render: (args: CheckboxToggleStorybookComponent) => ({
+  render: args => ({
     props: {
       ...args,
     },
@@ -44,13 +51,17 @@ export default {
   }),
 };
 
-export const CheckboxOrToggle: StoryObj = {
+export default meta;
+
+type Story = StoryObj<CheckboxToggleArgs>;
+
+export const CheckboxOrToggle: Story = {
   args: {
     templateMode: 'single',
   },
 };
 
-export const CheckboxLongLabel: StoryObj = {
+export const CheckboxLongLabel: Story = {
   args: {
     type: CheckboxType.Checkbox,
     templateMode: 'single',
@@ -59,7 +70,7 @@ export const CheckboxLongLabel: StoryObj = {
   },
 };
 
-export const ToggleLongLabel: StoryObj = {
+export const ToggleLongLabel: Story = {
   args: {
     type: CheckboxType.Toggle,
     templateMode: 'single',
@@ -68,7 +79,7 @@ export const ToggleLongLabel: StoryObj = {
   },
 };
 
-export const ShowcaseCheckbox: StoryObj = {
+export const ShowcaseCheckbox: Story = {
   args: {
     type: CheckboxType.Checkbox,
     templateMode: 'showcase',
@@ -79,7 +90,7 @@ export const ShowcaseCheckbox: StoryObj = {
   },
 };
 
-export const ShowcaseToggleSwitch: StoryObj = {
+export const ShowcaseToggleSwitch: Story = {
   args: {
     type: CheckboxType.Toggle,
     templateMode: 'showcase',

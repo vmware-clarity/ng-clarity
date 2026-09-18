@@ -6,12 +6,37 @@
  */
 
 import { ClrDateInput, ClrDatepickerModule, ClrFormsModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
 import { action } from 'storybook/actions';
 
-import { CommonModules } from '../../helpers/common';
+/**
+ * `ClrDateInput` cannot be the args base: it aliases its input and output (`@Input('clrDate') set date`,
+ * `@Output('clrDateChange') dateChange`), and `showActionButtons` belongs to the container rather than the
+ * input. The method names below are not args either -- they exist so the `argTypes` entries that hide
+ * their generated docs rows stay type-checked -- and `getProviderFromContainer` is `protected`, so they
+ * cannot be picked off the class.
+ */
+type DatepickerArgs = {
+  clrDate: Date | number | string;
+  min: Date | number | string;
+  max: Date | number | string;
+  disabled: boolean;
+  placeholder: string;
+  id: string;
+  showActionButtons: boolean;
+  clrDateChange: (date: Date) => void;
+  getDateObject: (date: Date | number | string) => Date;
+  getDateString: (date: Date | number | string) => string;
+  // `argTypes`-only: `ClrDateInput` methods whose generated docs rows are hidden
+  onValueChange: never;
+  setFocusStates: never;
+  triggerValidation: never;
+  getProviderFromContainer: never;
+};
 
-export default {
+const meta: Meta<DatepickerArgs> = {
   title: 'Datepicker/Datepicker',
   component: ClrDateInput,
   decorators: [
@@ -27,13 +52,9 @@ export default {
     // outputs
     clrDateChange: { control: { disable: true } },
     // methods
-    onValueChange: { control: { disable: true }, table: { disable: true } },
-    setFocusStates: { control: { disable: true }, table: { disable: true } },
-    triggerValidation: { control: { disable: true }, table: { disable: true } },
-    getProviderFromContainer: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('onValueChange', 'setFocusStates', 'triggerValidation', 'getProviderFromContainer'),
     // story helpers
-    getDateObject: { control: { disable: true }, table: { disable: true } },
-    getDateString: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('getDateObject', 'getDateString'),
   },
   args: {
     // inputs
@@ -46,63 +67,59 @@ export default {
     // story helpers
     getDateString: date => date && new Date(date).toISOString().split('T')[0],
   },
+  render: args => ({
+    template: `
+      <clr-date-container [showActionButtons]="showActionButtons">
+        <label>Date</label>
+        <input
+          #date
+          type="date"
+          [id]="id"
+          [(clrDate)]="clrDate"
+          [min]="getDateString(min)"
+          [max]="getDateString(max)"
+          [disabled]="disabled"
+          [placeholder]="placeholder"
+          (clrDateChange)="clrDateChange($event)"
+          autocomplete="off"
+        />
+      </clr-date-container>
+    `,
+    props: { ...args },
+  }),
 };
 
-const DatePickerTemplate: StoryFn = args => ({
-  template: `
-    <clr-date-container [showActionButtons]="showActionButtons">
-      <label>Date</label>
-      <input
-        #date
-        type="date"
-        [id]="id"
-        [(clrDate)]="clrDate"
-        [min]="getDateString(min)"
-        [max]="getDateString(max)"
-        [disabled]="disabled"
-        [placeholder]="placeholder"
-        (clrDateChange)="clrDateChange($event)"
-        autocomplete="off"
-      />
-    </clr-date-container>
-  `,
-  props: { ...args },
-});
+export default meta;
 
-export const Datepicker: StoryObj = {
-  render: DatePickerTemplate,
-};
+type Story = StoryObj<DatepickerArgs>;
 
-export const DefaultDate: StoryObj = {
-  render: DatePickerTemplate,
+export const Datepicker: Story = {};
+
+export const DefaultDate: Story = {
   args: {
     clrDate: '2025-01-01 00:00:00.000',
   },
 };
 
-export const Disabled: StoryObj = {
-  render: DatePickerTemplate,
+export const Disabled: Story = {
   args: {
     disabled: true,
   },
 };
 
-export const MinDate: StoryObj = {
-  render: DatePickerTemplate,
+export const MinDate: Story = {
   args: {
     min: Date.now() - 2592000000,
   },
 };
 
-export const MaxDate: StoryObj = {
-  render: DatePickerTemplate,
+export const MaxDate: Story = {
   args: {
     max: Date.now() + 2592000000,
   },
 };
 
-export const ActionButtons: StoryObj = {
-  render: DatePickerTemplate,
+export const ActionButtons: Story = {
   args: {
     showActionButtons: true,
   },

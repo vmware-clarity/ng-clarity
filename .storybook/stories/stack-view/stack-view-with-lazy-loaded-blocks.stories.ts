@@ -6,12 +6,20 @@
  */
 
 import { ClrSpinnerModule, ClrStackView, ClrStackViewModule } from '@clr/angular';
-import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { elements } from '@storybook-helpers/elements.data';
 import { Observable, timer } from 'rxjs';
 import { mapTo, tap } from 'rxjs/operators';
 
-import { CommonModules } from '../../helpers/common';
-import { elements } from '../../helpers/elements.data';
+/**
+ * `ClrStackView` declares no inputs at all; the only arg is the service the template reads its blocks and
+ * loading flag off, so the args type is a standalone declaration rather than the component class.
+ */
+type StackViewLazyLoadingArgs = {
+  elementsBlockService: ElementsBlockService;
+};
 
 interface Block {
   label: string;
@@ -34,7 +42,7 @@ class ElementsBlockService {
   }
 }
 
-export default {
+const meta: Meta<StackViewLazyLoadingArgs> = {
   title: 'Stack View/Stack View with lazy-loaded blocks',
   decorators: [
     moduleMetadata({
@@ -44,38 +52,39 @@ export default {
   component: ClrStackView,
   argTypes: {
     // story helpers
-    elementsBlockService: { control: { disable: true }, table: { disable: true } },
+    ...hideControls('elementsBlockService'),
   },
   args: {
     // story helpers
     elementsBlockService: new ElementsBlockService(),
   },
+  render: args => ({
+    template: `
+      <clr-stack-view>
+        <clr-stack-block [clrSbExpandable]="true" (clrSbExpandedChange)="elementsBlockService.getBlocks()">
+          <clr-stack-label>Elements</clr-stack-label>
+
+          @if (elementsBlockService.loading) {
+            <clr-stack-block>
+              <clr-spinner clrInline>Loading...</clr-spinner>
+            </clr-stack-block>
+          }
+
+          @for (block of elementsBlockService.blocks | async; track block) {
+            <clr-stack-block>
+              <clr-stack-label>{{ block.label }}</clr-stack-label>
+              <clr-stack-content>{{ block.content }}</clr-stack-content>
+            </clr-stack-block>
+          }
+        </clr-stack-block>
+      </clr-stack-view>
+    `,
+    props: args,
+  }),
 };
 
-const StackViewTemplate: StoryFn = args => ({
-  template: `
-    <clr-stack-view>
-      <clr-stack-block [clrSbExpandable]="true" (clrSbExpandedChange)="elementsBlockService.getBlocks()">
-        <clr-stack-label>Elements</clr-stack-label>
+export default meta;
 
-        @if (elementsBlockService.loading) {
-          <clr-stack-block>
-            <clr-spinner clrInline>Loading...</clr-spinner>
-          </clr-stack-block>
-        }
+type Story = StoryObj<StackViewLazyLoadingArgs>;
 
-        @for (block of elementsBlockService.blocks | async; track block) {
-          <clr-stack-block>
-            <clr-stack-label>{{ block.label }}</clr-stack-label>
-            <clr-stack-content>{{ block.content }}</clr-stack-content>
-          </clr-stack-block>
-        }
-      </clr-stack-block>
-    </clr-stack-view>
-  `,
-  props: args,
-});
-
-export const LazyLoading: StoryObj = {
-  render: StackViewTemplate,
-};
+export const LazyLoading: Story = {};

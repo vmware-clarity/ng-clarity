@@ -7,12 +7,20 @@
 
 import { FormsModule } from '@angular/forms';
 import { ClrFileInputModule, ClrFormLayout } from '@clr/angular';
-import { moduleMetadata, StoryContext, StoryFn, StoryObj } from '@storybook/angular';
+import { type Meta, moduleMetadata, type StoryContext, type StoryObj } from '@storybook/angular';
+import { toCamelCase, toKebabCase } from '@storybook-helpers/casing.helpers';
 
 import { clearFiles, selectFiles } from '../../../projects/angular/forms/file-input/file-input.helpers';
-import { toCamelCase, toKebabCase } from '../../helpers/casing.helpers';
 
-export default {
+/**
+ * This file has no `component:` and the single arg is named after `ClrForm`'s input alias
+ * (`@Input('clrLayout') layout`), so no class can serve as the args base.
+ */
+type FileInputStatesArgs = {
+  clrLayout: ClrFormLayout | string;
+};
+
+const meta: Meta<FileInputStatesArgs> = {
   title: 'File Input/File Input States',
   decorators: [
     moduleMetadata({
@@ -23,24 +31,48 @@ export default {
     // form inputs
     clrLayout: { control: { disable: true } },
   },
+  render: args => ({
+    template: `
+      <form clrForm [clrLayout]="clrLayout">
+        <div>${fileInputTemplateFn('Success State')}</div>
+        <div>${fileInputTemplateFn('Error State')}</div>
+        <div>${fileInputTemplateFn('Multiple Files')}</div>
+        <div>${fileInputTemplateFn('Long Filename')}</div>
+
+        <clr-file-input-container>
+          <label>Disabled</label>
+          <input type="file" clrFileInput disabled />
+        </clr-file-input-container>
+      </form>
+    `,
+    props: { ...args },
+  }),
 };
 
-const fileInputStatesTemplate: StoryFn = args => ({
-  template: `
-    <form clrForm [clrLayout]="clrLayout">
-      <div>${fileInputTemplateFn('Success State')}</div>
-      <div>${fileInputTemplateFn('Error State')}</div>
-      <div>${fileInputTemplateFn('Multiple Files')}</div>
-      <div>${fileInputTemplateFn('Long Filename')}</div>
+export default meta;
 
-      <clr-file-input-container>
-        <label>Disabled</label>
-        <input type="file" clrFileInput disabled />
-      </clr-file-input-container>
-    </form>
-  `,
-  props: { ...args },
-});
+type Story = StoryObj<FileInputStatesArgs>;
+
+export const VerticalFileInputStates: Story = {
+  play: fileInputStatesPlayFn,
+  args: {
+    clrLayout: ClrFormLayout.VERTICAL,
+  },
+};
+
+export const HorizontalFileInputStates: Story = {
+  play: fileInputStatesPlayFn,
+  args: {
+    clrLayout: ClrFormLayout.HORIZONTAL,
+  },
+};
+
+export const CompactFileInputStates: Story = {
+  play: fileInputStatesPlayFn,
+  args: {
+    clrLayout: ClrFormLayout.COMPACT,
+  },
+};
 
 function fileInputTemplateFn(label: string) {
   const id = `${toKebabCase(label)}-file-input`;
@@ -64,30 +96,6 @@ function fileInputTemplateFn(label: string) {
 </clr-file-input-container>
 `;
 }
-
-export const VerticalFileInputStates: StoryObj = {
-  render: fileInputStatesTemplate,
-  play: fileInputStatesPlayFn,
-  args: {
-    clrLayout: ClrFormLayout.VERTICAL,
-  },
-};
-
-export const HorizontalFileInputStates: StoryObj = {
-  render: fileInputStatesTemplate,
-  play: fileInputStatesPlayFn,
-  args: {
-    clrLayout: ClrFormLayout.HORIZONTAL,
-  },
-};
-
-export const CompactFileInputStates: StoryObj = {
-  render: fileInputStatesTemplate,
-  play: fileInputStatesPlayFn,
-  args: {
-    clrLayout: ClrFormLayout.COMPACT,
-  },
-};
 
 function fileInputStatesPlayFn({ canvasElement }: StoryContext) {
   const successStateFileInputElement = canvasElement.querySelector<HTMLInputElement>('#success-state-file-input');

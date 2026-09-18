@@ -5,11 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { StoryObj } from '@storybook/angular';
+import { type Meta, type StoryObj } from '@storybook/angular';
 
 import { LinkStorybookComponent } from './link.storybook.component';
 
-export default {
+/** Every arg is an `@Input()` of the story component, which is also this file's `component:`. */
+type LinkArgs = LinkStorybookComponent;
+
+const meta: Meta<LinkArgs> = {
   title: 'Link/Link',
   component: LinkStorybookComponent,
   args: {
@@ -20,24 +23,28 @@ export default {
   },
 };
 
-export const Link: StoryObj = {};
+export default meta;
 
-export const LinkActive: StoryObj = {
+type Story = StoryObj<LinkArgs>;
+
+export const Link: Story = {};
+
+export const LinkActive: Story = {
   args: {
     active: true,
   },
 };
-export const LinkHover: StoryObj = {
+export const LinkHover: Story = {
   args: {
     hover: true,
   },
 };
-export const LinkVisited: StoryObj = {
+export const LinkVisited: Story = {
   args: {
     visited: true,
   },
 };
-export const LinkVisitedHover: StoryObj = {
+export const LinkVisitedHover: Story = {
   args: {
     visitedHover: true,
   },
