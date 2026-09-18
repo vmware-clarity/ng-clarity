@@ -539,7 +539,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   private destroyFixedColumnViews() {
-    this.fixedColumnViews.forEach(view => view.destroy());
+    // On teardown Angular has already destroyed the views in our container by the time it runs our
+    // `ngOnDestroy`, so only the calculate/display transition has live ones to release here.
+    this.fixedColumnViews.forEach(view => {
+      if (!view.destroyed) {
+        view.destroy();
+      }
+    });
     this.fixedColumnViews = [];
   }
 

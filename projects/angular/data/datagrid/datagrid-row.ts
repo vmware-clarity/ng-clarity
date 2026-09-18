@@ -372,17 +372,23 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     }
   }
 
+  private destroyFixedCellViews() {
+    // On teardown Angular has already destroyed the views in our container by the time it runs our
+    // `ngOnDestroy`, so only the calculate/display transition has live ones to release here.
+    this.fixedCellViews.forEach(view => {
+      if (!view.destroyed) {
+        view.destroy();
+      }
+    });
+    this.fixedCellViews = [];
+  }
+
   /**
    * Projects the cells into the display containers. Cells of pinned columns go into their static
    * container so they stay visible during horizontal scroll; the rest stay scrollable. Cells are
    * matched with their column by declaration index, and iterating in that order keeps both groups
    * aligned with the header.
    */
-  private destroyFixedCellViews() {
-    this.fixedCellViews.forEach(view => view.destroy());
-    this.fixedCellViews = [];
-  }
-
   private insertCellViews() {
     this.dgCells.forEach((cell, index) => {
       if (cell._view.destroyed) {

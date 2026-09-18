@@ -259,6 +259,9 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         this.virtualScrollStrategy
       );
       this.virtualScrollViewport = viewport.virtualScrollViewport;
+      // Registered before anything below can throw, so a half-finished init still tears down what
+      // it did manage to create.
+      this.cdkInjectors.push(viewport.injector);
 
       const virtualFor = createCdkVirtualForOfDirective(
         this.viewContainerRef,
@@ -268,9 +271,8 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
         this.ngZone
       );
       this.cdkVirtualFor = virtualFor.cdkVirtualFor;
-
       // `CdkVirtualForOf` reads from the viewport, so it has to go away first.
-      this.cdkInjectors.push(...virtualFor.injectors, viewport.injector);
+      this.cdkInjectors.unshift(virtualFor.injector);
 
       this.virtualScrollViewport.ngOnInit();
     });
@@ -314,14 +316,21 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
   }
 
   ngOnDestroy() {
-    // Destroying the injectors calls `ngOnDestroy` on the CDK instances they created and runs the
-    // `DestroyRef` cleanup CDK registered for them, so we must not call those hooks ourselves.
-    this.cdkInjectors.forEach(injector => injector.destroy());
-    this.cdkInjectors.length = 0;
+    // Ours first: CDK teardown emits on the streams we subscribe to, and third-party teardown that
+    // throws must not be able to leave our own observer and subscriptions behind.
     this.mutationChanges?.disconnect();
     this.subscriptions.forEach(subscription => {
       subscription.unsubscribe();
     });
+
+    try {
+      // Destroying the injectors calls `ngOnDestroy` on the CDK instances they created and runs the
+      // `DestroyRef` cleanup CDK registered for them, so we must not call those hooks ourselves.
+      this.cdkInjectors.forEach(injector => injector.destroy());
+    } finally {
+      // An injector cannot be destroyed twice, so drop them even if one of them threw.
+      this.cdkInjectors.length = 0;
+    }
   }
 
   scrollUp(offset: number, behavior: ScrollBehavior = 'auto') {
@@ -436,17 +445,38 @@ function createCdkVirtualScrollViewport(
       { provide: NgZone, useValue: ngZone },
       { provide: Renderer2, useValue: renderer2 },
       { provide: VIRTUAL_SCROLL_STRATEGY, useValue: virtualScrollStrategy },
-      { provide: Directionality, useValue: directionality },
-      { provide: ScrollDispatcher, useValue: scrollDispatcher },
-      { provide: ViewportRuler, useValue: viewportRuler },
       { provide: CdkVirtualScrollable, useValue: scrollable },
       { provide: CdkVirtualScrollViewport, useClass: CdkVirtualScrollViewport },
     ],
-    inject(EnvironmentInjector)
+    createApplicationSingletonInjector(directionality, scrollDispatcher, viewportRuler)
   );
   const virtualScrollViewport = injector.get(CdkVirtualScrollViewport);
   virtualScrollViewport._contentWrapper = contentWrapper;
   return { virtualScrollViewport, injector };
+}
+
+/**
+ * `Directionality`, `ScrollDispatcher` and `ViewportRuler` belong to the application, not to us.
+ * Angular registers every value an injector hands out that has an `ngOnDestroy` - `useValue`
+ * providers included - and calls it from `injector.destroy()`, so putting them in an injector we
+ * destroy would end scroll, resize and text-direction notification for the whole application the
+ * first time a virtual scroll datagrid goes away. They live in this parent, which nothing destroys,
+ * so the viewport still resolves the very instances our host injector gave us - including a
+ * `Directionality` overridden by an ancestor `[dir]`.
+ */
+function createApplicationSingletonInjector(
+  directionality: Directionality,
+  scrollDispatcher: ScrollDispatcher,
+  viewportRuler: ViewportRuler
+) {
+  return createEnvironmentInjector(
+    [
+      { provide: Directionality, useValue: directionality },
+      { provide: ScrollDispatcher, useValue: scrollDispatcher },
+      { provide: ViewportRuler, useValue: viewportRuler },
+    ],
+    inject(EnvironmentInjector)
+  );
 }
 
 function createCdkVirtualForOfDirective<T>(
@@ -457,7 +487,9 @@ function createCdkVirtualForOfDirective<T>(
   ngZone: NgZone
 ) {
   // `CdkVirtualForOf` resolves the viewport with `skipSelf`, so it has to come from a parent
-  // injector rather than the one that provides `CdkVirtualForOf` itself.
+  // injector rather than the one that provides `CdkVirtualForOf` itself. That parent holds nothing
+  // but the value provider, and destroying it would run the viewport's `ngOnDestroy` a second time
+  // on top of the one its own injector already runs, so it is left to be garbage collected.
   const virtualScrollViewportInjector = createEnvironmentInjector(
     [{ provide: CDK_VIRTUAL_SCROLL_VIEWPORT, useValue: virtualScrollViewport }],
     inject(EnvironmentInjector)
@@ -476,6 +508,6 @@ function createCdkVirtualForOfDirective<T>(
 
   return {
     cdkVirtualFor: cdkVirtualForInjector.get<CdkVirtualForOf<T>>(CdkVirtualForOf),
-    injectors: [cdkVirtualForInjector, virtualScrollViewportInjector],
+    injector: cdkVirtualForInjector,
   };
 }
