@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectionStrategy, Component, Input, TrackByFunction } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EmbeddedViewRef, Input, TrackByFunction } from '@angular/core';
 import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 import { Subject } from 'rxjs';
 
@@ -31,6 +31,10 @@ import { Selection } from './providers/selection';
 import { Sort } from './providers/sort';
 import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DatagridRenderOrganizer } from './render/render-organizer';
+
+function getFixedColumnViews(datagrid: ClrDatagrid): EmbeddedViewRef<void>[] {
+  return (datagrid as unknown as { fixedColumnViews: EmbeddedViewRef<void>[] }).fixedColumnViews;
+}
 
 @Component({
   template: `
@@ -1467,6 +1471,34 @@ export default function (): void {
         const calculationTable = context.clarityElement.querySelector('.datagrid-calculation-table');
         const calculationRows = calculationTable.querySelectorAll('.datagrid-row');
         expect(calculationRows.length).toBe(3);
+      });
+
+      it('destroys the fixed columns it created when it leaves calculate mode', function () {
+        // a fixed column is only rendered when the datagrid has something to put in it
+        context.getClarityProvider(ExpandableRowsCount).register();
+        displayModeService.updateView(DatagridDisplayMode.CALCULATE);
+
+        const fixedColumnViews = [...getFixedColumnViews(context.clarityDirective)];
+        expect(fixedColumnViews.length).toBeGreaterThan(0);
+
+        displayModeService.updateView(DatagridDisplayMode.DISPLAY);
+
+        // detaching them from the container is not enough - an undestroyed view keeps the whole
+        // datagrid alive for as long as the application lives
+        expect(fixedColumnViews.every(view => view.destroyed)).toBe(true);
+        expect(getFixedColumnViews(context.clarityDirective).length).toBe(0);
+      });
+
+      it('destroys the fixed columns it created when the datagrid is destroyed', function () {
+        context.getClarityProvider(ExpandableRowsCount).register();
+        displayModeService.updateView(DatagridDisplayMode.CALCULATE);
+
+        const fixedColumnViews = [...getFixedColumnViews(context.clarityDirective)];
+        expect(fixedColumnViews.length).toBeGreaterThan(0);
+
+        context.clarityDirective.ngOnDestroy();
+
+        expect(fixedColumnViews.every(view => view.destroyed)).toBe(true);
       });
 
       it('projects async row cells in correct order', function () {

@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ScrollDispatcher, ViewportRuler } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -201,6 +202,41 @@ export default function (): void {
 
       afterEach(() => {
         fixture.destroy();
+      });
+
+      it('leaves the application-wide CDK services alone when the datagrid is destroyed', async function () {
+        // The viewport is built from a hand-made injector. Anything that injector hands out and
+        // that has an `ngOnDestroy` is destroyed with it, so the application's own ScrollDispatcher
+        // and ViewportRuler must not be reachable through it - completing them would stop scroll
+        // and resize notification for every CDK overlay in the application.
+        const scrollDispatcher = TestBed.inject(ScrollDispatcher);
+        const viewportRuler = TestBed.inject(ViewportRuler);
+        let scrolledCompleted = false;
+        let viewportChangeCompleted = false;
+        scrollDispatcher.scrolled(0).subscribe({ complete: () => (scrolledCompleted = true) });
+        viewportRuler.change(0).subscribe({ complete: () => (viewportChangeCompleted = true) });
+
+        await finishInit(fixture);
+        fixture.destroy();
+
+        expect(scrolledCompleted).withContext('ScrollDispatcher.scrolled() completed').toBe(false);
+        expect(viewportChangeCompleted).withContext('ViewportRuler.change() completed').toBe(false);
+      });
+
+      it('tears the virtual-for down before the viewport it reads from', async function () {
+        await finishInit(fixture);
+
+        const cdk = instance.virtualScroll as unknown as {
+          cdkVirtualFor: { ngOnDestroy(): void };
+          virtualScrollViewport: { ngOnDestroy(): void };
+        };
+        const teardownOrder: string[] = [];
+        spyOn(cdk.cdkVirtualFor, 'ngOnDestroy').and.callFake(() => teardownOrder.push('cdkVirtualFor'));
+        spyOn(cdk.virtualScrollViewport, 'ngOnDestroy').and.callFake(() => teardownOrder.push('viewport'));
+
+        fixture.destroy();
+
+        expect(teardownOrder).toEqual(['cdkVirtualFor', 'viewport']);
       });
 
       it('allows to manually force a refresh of displayed items when data mutates', function () {
