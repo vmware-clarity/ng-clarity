@@ -21,11 +21,24 @@ const unusedImports = require('eslint-plugin-unused-imports');
 const decoratorPosition = require('eslint-plugin-decorator-position');
 const licenseHeader = require('eslint-plugin-license-header');
 const htmlParser = require('@html-eslint/parser');
+// eslint-plugin-storybook ships as ESM with a default export; `require` of it yields the module namespace.
+const storybookPluginModule = require('eslint-plugin-storybook');
+const storybookPlugin = storybookPluginModule.default ?? storybookPluginModule;
 // Your custom rules plugin (kept as-is)
 const ngClarityRules = require('eslint-plugin-ng-clarity-eslint-rules');
 
 // Local member ordering config (kept as-is)
 const memberOrderingConfig = require('./.eslintrc-member-ordering');
+
+// The story-file rules of eslint-plugin-storybook's flat/recommended config, downgraded to 'warn'.
+// They are raised to their recommended severities in a follow-up, once the stories conform.
+const storybookRecommendedStoryRules = Object.fromEntries(
+  storybookPlugin.configs['flat/recommended']
+    .filter(config => config.files?.some(pattern => pattern.includes('*.stories.')))
+    .flatMap(config => Object.entries(config.rules ?? {}))
+    .filter(([ruleId]) => ruleId.startsWith('storybook/'))
+    .map(([ruleId]) => [ruleId, 'warn'])
+);
 
 module.exports = [
   // Base JS/recommended + globals
@@ -146,6 +159,47 @@ module.exports = [
     files: ['projects/website/src/app/documentation/demos/**/*.ts'],
     rules: {
       '@typescript-eslint/no-var-requires': 'off',
+    },
+  },
+
+  // Storybook story files (see docs/CONTRIBUTING_STORYBOOK.md for the canonical story shape).
+  // Every rule here is a 'warn' on purpose: the existing stories do not conform yet.
+  {
+    files: ['.storybook/**/*.stories.ts'],
+    plugins: {
+      storybook: storybookPlugin,
+    },
+    rules: {
+      // eslint-plugin-storybook (flat/recommended, story files only)
+      ...storybookRecommendedStoryRules,
+
+      // R4: no StoryFn. R9: helper imports go through the @storybook-helpers/* alias.
+      'no-restricted-imports': [
+        'warn',
+        {
+          paths: [
+            {
+              name: '@storybook/angular',
+              importNames: ['StoryFn'],
+              message:
+                'StoryFn is banned. Use `StoryObj` for stories and a single meta-level `render` for the template.',
+            },
+          ],
+          patterns: [
+            {
+              group: ['**/helpers/*', '../helpers/*', './helpers/*'],
+              message: 'Import story helpers through the `@storybook-helpers/*` alias.',
+            },
+          ],
+        },
+      ],
+
+      // Custom story rules
+      'ng-clarity-eslint-rules/storybook-typed-meta': 'warn',
+      'ng-clarity-eslint-rules/storybook-single-render': 'warn',
+      'ng-clarity-eslint-rules/storybook-no-component-decorator': 'warn',
+      'ng-clarity-eslint-rules/storybook-no-inline-hidden-control': 'warn',
+      'ng-clarity-eslint-rules/storybook-no-inline-style': 'warn',
     },
   },
 
