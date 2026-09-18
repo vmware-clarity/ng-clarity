@@ -382,4 +382,14 @@ export interface ClrCommonStrings {
   // Breadcrumbs
   breadcrumbsLabel: string;
   expandBreadcrumbsLabel: string;
+
+  // Card
+  /**
+   * Aria label of a collapsible card's toggle button while the card is collapsed
+   */
+  expandCardAriaLabel: string;
+  /**
+   * Aria label of a collapsible card's toggle button while the card is expanded
+   */
+  collapseCardAriaLabel: string;
 }
