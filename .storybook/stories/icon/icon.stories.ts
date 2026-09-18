@@ -307,56 +307,68 @@ export const Inverse: StoryObj = { render: InverseTemplate };
 
 // ─── Inner Offset ─────────────────────────────────────────────────────────────
 
-const InnerOffsetTemplate: StoryFn = () => ({
+const InnerOffsetTemplate: StoryFn = args => ({
+  // ClrIcon's `size` input is a string (it parses t-shirt sizes or numeric strings), but the
+  // Storybook number control produces a real number, so it's coerced here before binding.
+  props: { ...args, size: String(args.size) },
   template: `
-    <div cds-layout="horizontal gap:lg align:vertical-center">
-      <div cds-layout="vertical gap:xs align:center">
-        <cds-icon
-          shape="exclamation-circle"
-          status="danger"
-          size="16"
-          role="img"
-          aria-label="exclamation circle with default inner offset"
-        ></cds-icon>
-        <span cds-text="caption">default (0)</span>
+    <style>
+      .icon-box {
+        width: 300px;
+        justify-content: space-between;
+      }
+
+      .icon-offset-box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+        border-radius: var(--cds-alias-object-border-radius-100);
+        background-color: var(--cds-alias-status-warning-tint);
+      }
+    </style>
+    <div cds-layout="vertical gap:md align:center">
+      <div class="icon-box" cds-layout="horizontal gap:md align:center">
+        Default
+        <span class="icon-offset-box" [style.width.px]="size" [style.height.px]="size">
+          <cds-icon [shape]="shape" [size]="size"></cds-icon>
+        </span>
       </div>
-      <div cds-layout="vertical gap:xs align:center">
-        <cds-icon
-          shape="exclamation-circle"
-          status="danger"
-          size="16"
-          inner-offset="4"
-          role="img"
-          aria-label="exclamation circle with an inner offset of 4 pixels"
-        ></cds-icon>
-        <span cds-text="caption">inner-offset: 4</span>
-      </div>
-      <div cds-layout="vertical gap:xs align:center">
-        <cds-icon
-          shape="check-circle"
-          status="success"
-          size="16"
-          role="img"
-          aria-label="check circle with default inner offset"
-        ></cds-icon>
-        <span cds-text="caption">default (0)</span>
-      </div>
-      <div cds-layout="vertical gap:xs align:center">
-        <cds-icon
-          shape="check-circle"
-          status="success"
-          size="16"
-          inner-offset="4"
-          role="img"
-          aria-label="check circle with an inner offset of 4 pixels"
-        ></cds-icon>
-        <span cds-text="caption">inner-offset: 4</span>
+      <div class="icon-box" cds-layout="horizontal gap:md align:center">
+        Inner offset changed
+        <span class="icon-offset-box" [style.width.px]="size" [style.height.px]="size">
+          <cds-icon [shape]="shape" [size]="size" [innerOffset]="offset"></cds-icon>
+        </span>
       </div>
     </div>
   `,
 });
 
-export const InnerOffset: StoryObj = { render: InnerOffsetTemplate };
+export const InnerOffset: StoryObj = {
+  render: InnerOffsetTemplate,
+  argTypes: {
+    shape: {
+      control: 'select',
+      options: [
+        'exclamation-circle',
+        'check-circle',
+        'info-circle',
+        'exclamation-triangle',
+        'user',
+        'home',
+        'image',
+        'arrow',
+      ],
+    },
+    size: { control: { type: 'number', min: 8, max: 100, step: 1 } },
+    offset: { control: { type: 'number', min: 0, max: 100, step: 1 } },
+  },
+  args: {
+    shape: 'exclamation-circle',
+    size: 32,
+    offset: 12,
+  },
+};
 
 // ─── Custom Styles ────────────────────────────────────────────────────────────
 
