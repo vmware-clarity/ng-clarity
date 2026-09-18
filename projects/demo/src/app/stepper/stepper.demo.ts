@@ -24,6 +24,7 @@ export class StepperDemo {
   form: FormGroup = this.getReactiveForm();
   templateForm: any = this.getTemplateForm();
   partiallyCompletedForm: FormGroup = this.getReactiveForm();
+  showOuterStepperDescriptions = true;
   nestedStepperForm: FormGroup = this.getNestedStepperForm();
   nestedInnerForm: FormGroup = this.nestedStepperForm.get('outer1.inner') as FormGroup;
 
@@ -33,6 +34,13 @@ export class StepperDemo {
     password: false,
   };
   loading = false;
+
+  // CDE-3000 demo form: verify the stepper container reflects whether any panel has a description.
+  hasStepDescriptionForm = new FormGroup({
+    step1: new FormGroup({ value: new FormControl('') }),
+    step2: new FormGroup({ value: new FormControl('') }),
+  });
+  showStep2Description = false;
 
   // CDE-3088 demo form: required fields to observe whether typing in one incorrectly touches its siblings.
   validateNoSiblingForm = new FormGroup({
