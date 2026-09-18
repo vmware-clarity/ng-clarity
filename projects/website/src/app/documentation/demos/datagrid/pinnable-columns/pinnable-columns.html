@@ -197,64 +197,67 @@
   <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
 </clr-datagrid>
 
-<!--
-  clrDgPinnable is disabled for now, so the whole section documenting it is commented out.
-  Restoring it also needs the idPinned / namePinned fields and the pinnedColumns getter in
-  pinnable-columns.ts, and the pinnableExample / pinnableComponentTS entries in examples.ts.
+<h3 cds-text="section" class="clr-mt-32px">Letting the User Pin Columns</h3>
 
-  <h3 cds-text="section" class="clr-mt-32px">Letting the User Pin Columns</h3>
+<p class="clr-mt-16px" cds-text="body">
+  Add <code cds-text="code">clrDgPinnable</code> to let the user pin and unpin the column from inside the datagrid
+  instead of the application driving it. It offers Pin Column in the column's actions menu, so the column also needs a
+  <code cds-text="code">clr-dg-column-actions</code> to render that menu - the label and its icon follow the state, a
+  pin while the column is loose and an unpin once it is pinned.
+</p>
 
-  <p class="clr-mt-16px" cds-text="body">
-    Add <code cds-text="code">clrDgPinnable</code> to put a pin toggle in the column header, so the user can pin and
-    unpin the column from inside the datagrid instead of the application driving it. The toggle sits in front of the
-    column title, and its icon shows the action it performs - a pin while the column is loose, an unpin once it is
-    pinned.
-  </p>
+<p class="clr-mt-16px" cds-text="body">
+  The two inputs are independent and do different jobs. <code cds-text="code">clrDgPinnable</code> only adds the
+  control; the pinned state itself stays on <code cds-text="code">clrDgPinned</code>. A column can therefore be pinned
+  without being user-pinnable, and pinnable without starting out pinned.
+</p>
 
-  <p class="clr-mt-16px" cds-text="body">
-    The two inputs are independent and do different jobs. <code cds-text="code">clrDgPinnable</code> only adds the
-    control; the pinned state itself stays on <code cds-text="code">clrDgPinned</code>. A column can therefore be
-    pinned without being user-pinnable, and pinnable without starting out pinned.
-  </p>
+<p class="clr-mt-16px" cds-text="body">
+  When the user pins or unpins from the menu, the column reports the new state through
+  <code cds-text="code">clrDgPinnedChange</code>. Bind both halves with <code cds-text="code">[(clrDgPinned)]</code> so
+  the application follows along - the example below uses it to list which columns are pinned. A one-way
+  <code cds-text="code">[clrDgPinned]</code> binding would write its old value straight back on the next change
+  detection, and the action would appear to do nothing.
+</p>
 
-  <p class="clr-mt-16px" cds-text="body">
-    When the user works the toggle, the column reports the new state through
-    <code cds-text="code">clrDgPinnedChange</code>. Bind both halves with
-    <code cds-text="code">[(clrDgPinned)]</code> so the application follows along - the example below uses it to list
-    which columns are pinned. A one-way <code cds-text="code">[clrDgPinned]</code> binding would write its old value
-    straight back on the next change detection, and the toggle would appear to do nothing.
-  </p>
+<p class="clr-mt-16px" cds-text="body">
+  The menu stays open after pinning, so the action that undoes it is right there, and it follows the column as it moves
+  into the pinned region rather than being left behind.
+</p>
 
-  <p class="clr-mt-16px" cds-text="body">
-    Pinned from the header: <b cds-text="medium">{{ pinnedColumns || 'none' }}</b>
-  </p>
+<p class="clr-mt-16px" cds-text="body">Pinned from the menu: <b cds-text="medium">{{ pinnedColumns || 'none' }}</b></p>
 
-  <clr-datagrid>
-    <clr-dg-column clrDgPinnable [(clrDgPinned)]="idPinned" [style.width.px]="140">User ID</clr-dg-column>
-    <clr-dg-column clrDgPinnable [(clrDgPinned)]="namePinned" [style.width.px]="240">Name</clr-dg-column>
-    <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
-    <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
-    <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
+<clr-datagrid>
+  <clr-dg-column clrDgPinnable [(clrDgPinned)]="idPinned" [style.width.px]="140">
+    User ID
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column clrDgPinnable [(clrDgPinned)]="namePinned" [style.width.px]="240">
+    Name
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
+  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
 
-    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-      <clr-dg-cell>
-        <span class="color-square" [style.backgroundColor]="user.color"></span>
-      </clr-dg-cell>
-      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-    </clr-dg-row>
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+  </clr-dg-row>
 
-    <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-  </clr-datagrid>
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
 
-  <app-stackblitz-example
-    name="Datagrid User Pinnable Columns"
-    [componentTemplate]="examples.pinnableExample"
-    [componentClass]="examples.pinnableComponentTS"
-    [componentStyles]="commonFiles.exampleCss"
-    [showComponentStyles]="false"
-    [additionalFiles]="commonFiles.additionalFiles"
-  ></app-stackblitz-example>
--->
+<app-stackblitz-example
+  name="Datagrid User Pinnable Columns"
+  [componentTemplate]="examples.pinnableExample"
+  [componentClass]="examples.pinnableComponentTS"
+  [componentStyles]="commonFiles.exampleCss"
+  [showComponentStyles]="false"
+  [additionalFiles]="commonFiles.additionalFiles"
+></app-stackblitz-example>

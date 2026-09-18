@@ -13,6 +13,7 @@ import {
 } from '@clr/angular/data/datagrid';
 
 import { ColumnFilter } from '../../interfaces/column-filter';
+import { ActionDefinition } from '../action/action-definition';
 
 /**
  * Defines a column in the Datagrid.
@@ -58,18 +59,24 @@ export interface ColumnDefinition<T> {
    */
   pinned?: boolean;
 
-  // Disabled for now, along with the clrDgPinnable toggle in the core datagrid that renders it.
-  // Kept as a line comment rather than a doc comment, so api-extractor does not attach it to the
-  // next property.
-  //
-  // /**
-  //  * Determines whether the user can pin and unpin the column from a control in its header. It only
-  //  * adds the control - the pinned state itself is held by `pinned`, which is kept up to date when
-  //  * the user toggles it.
-  //  *
-  //  * @default false - Columns cannot be pinned by the user by default.
-  //  */
-  // pinnable?: boolean;
+  /**
+   * Determines whether the user can pin and unpin the column from a control in its header. It only
+   * adds the control - the pinned state itself is held by `pinned`, which is kept up to date when
+   * the user toggles it.
+   *
+   * @default false - Columns cannot be pinned by the user by default.
+   */
+  pinnable?: boolean;
+
+  /**
+   * Application actions to offer in this column's actions menu, after the built-in ones and after
+   * any actions given to the grid as a whole through `columnActions`. Use these for something that
+   * only applies to this column - anything that applies to every column belongs on the grid instead.
+   *
+   * Clicking one reports it through the grid's `actionClick` output, with this column definition as
+   * the event's context. Requires `enableColumnActions` on the grid, which is what renders the menu.
+   */
+  actions?: ActionDefinition[];
 
   /**
    * Defines string filter for data in this column.
@@ -82,7 +89,8 @@ export interface ColumnDefinition<T> {
   filter?: Type<ColumnFilter<T>>;
 
   /**
-   * Default filter value for the column's filter.
+   * Default filter value for the column's filter. It is kept up to date when the user changes the
+   * filter, so it also holds the currently applied value.
    */
   defaultFilterValue?: any;
 

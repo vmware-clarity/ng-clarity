@@ -12,6 +12,7 @@ import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
 import { DatagridBasicOnPushDemo } from './basic-with-on-push/basic-on-push';
 import { DatagridBindingPropertiesDemo } from './binding-properties/binding-properties';
 import { DatagridBuiltInFiltersDemo } from './built-in-filters/built-in-filters';
+import { DatagridColumnActionsDemo } from './column-actions/column-actions';
 import { DatagridColumnSizingDemo } from './column-sizing/column-sizing';
 import { DatagridCompactDemo } from './compact/compact';
 import { DatagridConditionalSelectionsDemo } from './conditional-selection/conditional-selection';
@@ -78,6 +79,7 @@ const ROUTES: Routes = [
       { path: 'scrolling', component: DatagridScrollingDemo },
       { path: 'column-sizing', component: DatagridColumnSizingDemo },
       { path: 'pinnable-columns', component: DatagridPinnableColumnsDemo },
+      { path: 'column-actions', component: DatagridColumnActionsDemo },
       { path: 'compact', component: DatagridCompactDemo },
       { path: 'density', component: DatagridDensityDemo },
       { path: 'detail', component: DatagridDetailDemo },
