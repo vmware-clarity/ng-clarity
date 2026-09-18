@@ -107,3 +107,44 @@ export const StackViewShowcase: StoryObj = {
     controls: { disable: true },
   },
 };
+
+const StackViewBaseCssTemplate: StoryFn = args => ({
+  template: `
+    <div class="stack-view">
+      <div class="stack-block">
+        <div class="stack-block-label">
+          <div class="stack-view-key" aria-level="1" aria-posinset="1" aria-setsize="3">Immutable Key</div>
+          <div class="stack-block-content">Immutable Content</div>
+        </div>
+      </div>
+      @for (_ of createArray(blockCount); track $index; let i = $index) {
+        <div class="stack-block stack-block-expandable stack-block-expanded">
+          <div class="stack-block-label">
+            <div class="stack-view-key">{{ label }} {{ i + 1 }}</div>
+            <div class="stack-block-content">{{ content }}</div>
+          </div>
+          <div class="stack-children">
+            <div class="stack-block">
+              <div class="stack-block-label">
+                <div class="stack-view-key">{{ subLabel }} {{ i + 1 }}</div>
+                <div class="stack-block-content">{{ subContent }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+      <div class="stack-block stack-block-expandable">
+        <div class="stack-block-label">
+          <div class="stack-view-key" aria-level="1" aria-posinset="3" aria-setsize="3">Immutable Expandable Key</div>
+          <div class="stack-block-content">Immutable Expandable Content</div>
+        </div>
+        <div class="stack-children"></div>
+      </div>
+    </div>
+  `,
+  props: args,
+});
+
+export const StackViewBaseCss: StoryObj = {
+  render: StackViewBaseCssTemplate,
+};
