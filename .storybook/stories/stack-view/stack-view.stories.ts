@@ -107,3 +107,31 @@ export const StackViewShowcase: StoryObj = {
     controls: { disable: true },
   },
 };
+
+const StackViewBaseCssTemplate: StoryFn = args => ({
+  template: `
+    <div class="stack-view">
+      @for (_ of createArray(blockCount); track $index; let i = $index) {
+        <div class="stack-block stack-block-expandable" [class.stack-block-expanded]="!!openIndices[i]">
+          <div class="stack-block-label">
+            <div class="stack-view-key">{{ label }} {{ i + 1 }}</div>
+            <div class="stack-block-content">{{ content }}</div>
+          </div>
+          <div class="stack-children">
+            <div class="stack-block">
+              <div class="stack-block-label">
+                <div class="stack-view-key">{{ subLabel }} {{ i + 1 }}</div>
+                <div class="stack-block-content">{{ subContent }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  `,
+  props: args,
+});
+
+export const StackViewBaseCss: StoryObj = {
+  render: StackViewBaseCssTemplate,
+};
