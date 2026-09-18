@@ -57,10 +57,18 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }],
   animations: [
     trigger('toggleChildrenAnim', [
-      transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
-      transition('expanded => collapsed', [style({ height: '*' }), animate(200, style({ height: 0 }))]),
-      state('expanded', style({ height: '*', 'overflow-y': 'visible' })),
-      state('collapsed', style({ height: 0 })),
+      // The "instant" states are used by bulk operations (expand all, expand descendants): they have the same
+      // styles but no transition leads to them, so hundreds of nested containers don't animate at once.
+      transition('collapsed => expanded, collapsedInstant => expanded', [
+        style({ height: 0 }),
+        animate(200, style({ height: '*' })),
+      ]),
+      transition('expanded => collapsed, expandedInstant => collapsed', [
+        style({ height: '*' }),
+        animate(200, style({ height: 0 })),
+      ]),
+      state('expanded, expandedInstant', style({ height: '*', 'overflow-y': 'visible' })),
+      state('collapsed, collapsedInstant', style({ height: 0 })),
     ]),
   ],
   host: {
@@ -83,6 +91,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   contentContainerTabindex = -1;
   _model: TreeNodeModel<T>;
 
+  private bulkChange = false;
+  private skipAnimation = false;
   private skipEmitChange = false;
   private typeAheadKeyBuffer = '';
   private typeAheadKeyEvent = new Subject<string>();
@@ -122,6 +132,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this._model = new DeclarativeTreeNodeModel(parent ? (parent._model as DeclarativeTreeNodeModel<T>) : null);
     }
     this._model.nodeId = this.nodeId;
+    this._model._node = this;
   }
 
   @Input('clrDisabled')
@@ -184,6 +195,13 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     return this.treeNodeLinkList && this.treeNodeLinkList.first;
   }
 
+  get childrenAnimationState(): string {
+    if (this.expandService.expanded) {
+      return this.skipAnimation ? 'expandedInstant' : 'expanded';
+    }
+    return this.skipAnimation ? 'collapsedInstant' : 'collapsed';
+  }
+
   private get isParent() {
     return this._model.children && this._model.children.length > 0;
   }
@@ -198,8 +216,15 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     );
     this.subscriptions.push(
       this.expandService.expandChange.subscribe(value => {
+        this.skipAnimation = this.bulkChange;
         this.expandedChange.emit(value);
         this._model.expanded = value;
+        if (!this.bulkChange && !value) {
+          // Collapsed on its own, so nothing above can still expect its whole subtree to be expanded and
+          // nodes created afterwards must not keep cascading open.
+          this._model._clearExpandedSubtree();
+          this.featuresService._allExpanded = false;
+        }
       })
     );
     this.subscriptions.push(
@@ -219,6 +244,19 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngAfterContentInit() {
+    // Nodes created while everything above them is expected to be expanded (lazy-loaded children, dynamic
+    // nodes) come in expanded. Children are only known at this point, not in ngOnInit, which is why the check
+    // happens here. This is a continuation of the bulk operation, not a toggle of its own, so it goes through
+    // the same path: no animation, and the cascade keeps going for this node's own descendants.
+    if (
+      !this.expanded &&
+      (this.featuresService._allExpanded || this._model._isInExpandedSubtree()) &&
+      !this.disabled &&
+      this.isExpandable()
+    ) {
+      this._setExpandedInBulk(true);
+      this._model._descendantsExpanded = true;
+    }
     this.subscriptions.push(
       this.typeAheadKeyEvent.pipe(debounceTime(TREE_TYPE_AHEAD_TIMEOUT)).subscribe((bufferedKeys: string) => {
         this.focusManager.focusNodeStartsWith(bufferedKeys, this._model);
@@ -248,6 +286,49 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   isSelectable() {
     return this.featuresService.selectable;
+  }
+
+  /**
+   * Expands this node and every expandable node below it, without animation. Disabled nodes are left untouched.
+   * Descendants added afterwards, including lazy-loaded children, come in expanded until any node of the subtree
+   * gets collapsed.
+   */
+  expandDescendants() {
+    this._model._setExpandedRecursive(true);
+  }
+
+  /**
+   * Collapses this node and every node below it, without animation. Disabled nodes are left untouched.
+   */
+  collapseDescendants() {
+    this._model._setExpandedRecursive(false);
+    this.reclaimTabStop();
+  }
+
+  /*
+   * Internal, called while the model tree is walked during a bulk operation.
+   */
+  _setExpandedInBulk(expanded: boolean) {
+    // Leaves are left alone when expanding, so that they don't emit a meaningless clrExpandedChange.
+    if (expanded && !this.isExpandable()) {
+      return;
+    }
+    this.bulkChange = true;
+    try {
+      // Consumers run synchronously on clrExpandedChange from here, so the flag is restored even if they throw.
+      this.expandService.expanded = expanded;
+    } finally {
+      this.bulkChange = false;
+    }
+  }
+
+  /*
+   * Internal. Takes over the tree's single tab stop without moving focus, so that a collapse cannot leave it
+   * on a node that is now hidden.
+   */
+  _takeTabStop() {
+    this.setTabIndex(0);
+    this.focusManager.broadcastFocusedNode(this.nodeId);
   }
 
   focusTreeNode(): void {
@@ -316,6 +397,20 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
     // if non-letter keys are pressed, do reset.
     this.typeAheadKeyBuffer = '';
+  }
+
+  /*
+   * A collapsed subtree is made inert, so the tree's single tab stop must not be left inside the one that was
+   * just collapsed: the tree host gives up its own tabindex the first time it is focused, which would leave the
+   * whole tree unreachable by keyboard. This node is still visible, so it takes the tab stop over.
+   */
+  private reclaimTabStop() {
+    const stranded = this.elementRef.nativeElement.querySelector(
+      '.clr-treenode-children .clr-tree-node-content-container[tabindex="0"]'
+    );
+    if (stranded) {
+      this._takeTabStop();
+    }
   }
 
   private setTabIndex(value: number) {
