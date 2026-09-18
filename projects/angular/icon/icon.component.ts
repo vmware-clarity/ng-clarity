@@ -24,7 +24,7 @@ import { ClarityIcons } from './icon.service';
 import { Directions, Orientations, StatusTypes } from './interfaces/icon.interfaces';
 import { GlobalStateService } from './services/global.service';
 import { IconHtmlPipe } from './utils/icon-html.pipe';
-import { updateIconInnerOffsetStyle, updateIconSizeStyle } from './utils/icon.classnames';
+import { pxToRem, updateIconSizeStyle } from './utils/icon.classnames';
 import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers';
 
 @Component({
@@ -201,7 +201,11 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
   }
 
   updateInnerOffset(value: number) {
-    updateIconInnerOffsetStyle(this.el.nativeElement, value);
+    if (typeof value === 'number' && value > 0) {
+      this.el.nativeElement.style.setProperty('--inner-offset', pxToRem(value));
+    } else {
+      this.el.nativeElement.style.removeProperty('--inner-offset');
+    }
   }
 
   /*
