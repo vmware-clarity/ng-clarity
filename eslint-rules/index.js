@@ -7,6 +7,12 @@
 
 const noParameterPropertyThisInConstructorRule = require('./no-parameter-property-this-in-constructor');
 const htmlLicenseHeaderRule = require('./html-license-header');
+const storybookTypedMetaRule = require('./storybook-typed-meta');
+const storybookSingleRenderRule = require('./storybook-single-render');
+const storybookNoComponentDecoratorRule = require('./storybook-no-component-decorator');
+const storybookNoInlineHiddenControlRule = require('./storybook-no-inline-hidden-control');
+const storybookNoInlineStyleRule = require('./storybook-no-inline-style');
+const storybookTitleRule = require('./storybook-title');
 
 const projectName = 'ng-clarity-eslint-rules';
 
@@ -19,6 +25,12 @@ const configs = {
 const rules = {
   'no-parameter-property-this-in-constructor': noParameterPropertyThisInConstructorRule,
   'html-license-header': htmlLicenseHeaderRule,
+  'storybook-typed-meta': storybookTypedMetaRule,
+  'storybook-single-render': storybookSingleRenderRule,
+  'storybook-no-component-decorator': storybookNoComponentDecoratorRule,
+  'storybook-no-inline-hidden-control': storybookNoInlineHiddenControlRule,
+  'storybook-no-inline-style': storybookNoInlineStyleRule,
+  'storybook-title': storybookTitleRule,
 };
 
 module.exports = { configs, rules };

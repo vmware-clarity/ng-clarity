@@ -30,6 +30,7 @@ First, make sure you:
   Your signature certifies that you wrote the patch or have the right to pass it
   on as an open-source patch.
 - Read our [Angular coding guidelines](/CODING_GUIDELINES_ANGULAR.md) and [Web Component coding guidelines](/CODING_GUIDELINES_CORE.md).
+- Read our [Storybook authoring guide](CONTRIBUTING_STORYBOOK.md) before adding or changing stories in `.storybook/`.
 
 ### Getting started
 

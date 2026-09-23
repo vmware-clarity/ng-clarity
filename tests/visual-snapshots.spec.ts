@@ -6,9 +6,9 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { StoryIndex, StoryIndexV3 } from '@storybook/types';
 import * as fs from 'fs';
 import * as path from 'path';
+import type { StoryIndex } from 'storybook/internal/types';
 
 import { density, matrixKey, screenshotExpectOptions, screenshotPathFor, theme } from './helpers/vrt';
 import { screenshotOptions } from './screenshot-options';
@@ -16,23 +16,76 @@ import { screenshotOptions } from './screenshot-options';
 const usedScreenshotPaths: string[] = [];
 const indexFilePath = path.join('.', 'dist', 'docs', 'index.json');
 
-const index = JSON.parse(fs.readFileSync(indexFilePath).toString());
+const index: StoryIndex = JSON.parse(fs.readFileSync(indexFilePath).toString());
 
-const stories: any[] = Object.values(convertToIndexV3(index).stories);
+const entries = Object.values(index.entries);
 
-for (const story of stories) {
-  const component = story.kind.split('/')[0];
-  const storyId = story.id;
-  const componentParsed = component.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
-  const storyName = storyId.replace(`${componentParsed}-`, '');
+/**
+ * Snapshot paths are derived from the story file's `importPath`, never from its `title`, so
+ * retitling a story does not move or orphan its committed PNGs.
+ *
+ *   importPath: "./.storybook/stories/components/forms/datepicker/datepicker-opened.stories.ts"
+ *   storyId:    "components-forms-datepicker-opened--month-view"
+ *   group:      "components/forms/datepicker"            <- the directory
+ *   storyName:  "datepicker-opened--month-view"          <- "<file>--<story>"
+ *   snapshot:   "<browser>/components/forms/datepicker/datepicker-opened--month-view-<theme>-<density>.png"
+ *
+ * The file's base name is part of the story name because sibling story files routinely export
+ * the same story names (`side-panel.stories.ts` and `side-panel-inline.stories.ts` share all of
+ * theirs). Without it those stories would share a snapshot path, and the last one written would
+ * silently replace the other's baseline; the duplicate check below guards against that.
+ */
+function groupFor(importPath: string) {
+  return path
+    .dirname(importPath)
+    .replace(/^\.\/?\.storybook\/stories\/?/, '')
+    .replace(/\\/g, '/');
+}
+
+function storyNameFor(importPath: string, storyId: string) {
+  const file = path.basename(importPath).replace(/\.stories\.[jt]sx?$/, '');
+  // indexOf, not split('--'), so a story name that itself contains '--' is not truncated.
+  const separator = storyId.indexOf('--');
+  return `${file}--${storyId.slice(separator + 2)}`;
+}
+
+const takenScreenshotPaths = new Map<string, string>();
+
+for (const entry of entries) {
+  const storyId = entry.id;
+  const group = groupFor(entry.importPath);
+  const storyName = storyNameFor(entry.importPath, storyId);
   // Component-level options apply to all of the component's stories; a story-level entry
   // fills in what the component entry doesn't set.
-  const options = { ...screenshotOptions[storyName], ...screenshotOptions[componentParsed] };
-  if (story.id.endsWith('--docs') || !component || options.exclude) {
+  const options = { ...screenshotOptions[`${group}/${storyName}`], ...screenshotOptions[group] };
+  if (storyId.endsWith('--docs')) {
+    continue;
+  }
+  // A story file placed directly in `.storybook/stories/` has no directory to name its snapshot
+  // group. Skipping it would silently leave every story in it without a snapshot, so fail loudly.
+  if (!group) {
+    throw new Error(
+      `Story "${storyId}" comes from "${entry.importPath}", which sits directly in .storybook/stories/. ` +
+        `Move the story file into a directory so its stories get a snapshot group.`
+    );
+  }
+  if (options.exclude) {
     continue;
   }
 
-  const screenshotPath = screenshotPathFor(componentParsed, storyName);
+  const screenshotPath = screenshotPathFor(group, storyName);
+
+  // Two stories sharing a snapshot path would overwrite each other under --update-snapshots and
+  // leave one of them silently unverified. Fail loudly instead.
+  const owner = takenScreenshotPaths.get(screenshotPath);
+  if (owner) {
+    throw new Error(
+      `Duplicate snapshot path "${screenshotPath}" for stories "${owner}" and "${storyId}". ` +
+        `Rename one of the story exports or move it to its own directory.`
+    );
+  }
+  takenScreenshotPaths.set(screenshotPath, storyId);
+
   usedScreenshotPaths.push(screenshotPath);
 
   test(screenshotPath, async ({ page }) => {
@@ -62,31 +115,6 @@ for (const story of stories) {
       mask: (options.maskSelectors ?? []).map(selector => page.locator(selector)),
     });
   });
-}
-
-function convertToIndexV3(index: StoryIndex): StoryIndexV3 {
-  const { entries } = index;
-  const stories = Object.entries(entries).reduce(
-    (acc, [id, entry]) => {
-      const { type, ...rest } = entry;
-      acc[id] = {
-        ...rest,
-        kind: rest.title,
-        story: rest.name,
-        parameters: {
-          __id: rest.id,
-          docsOnly: type === 'docs',
-          fileName: rest.importPath,
-        },
-      };
-      return acc;
-    },
-    {} as StoryIndexV3['stories']
-  );
-  return {
-    v: 3,
-    stories,
-  };
 }
 
 const usedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);

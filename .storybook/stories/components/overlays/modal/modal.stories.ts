@@ -1,0 +1,207 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { ClrCheckboxModule, ClrModal, ClrModalModule, commonStringsDefault } from '@clr/angular';
+import { type Meta, moduleMetadata, type StoryContext, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { action } from 'storybook/actions';
+
+/**
+ * `ClrModal` aliases every one of its inputs (`@Input('clrModalOpen') _open`), so the `clrModal*`
+ * names this story binds are not properties of the class and cannot come from it. Only the three
+ * methods whose docs rows the `argTypes` suppress are, so those are picked off `ClrModal`.
+ */
+type ModalArgs = Pick<ClrModal, 'fadeDone' | 'open' | 'close'> & {
+  clrModalClosable: boolean;
+  clrModalCloseButtonAriaLabel: string;
+  clrModalLabelledById: string;
+  clrModalOpen: boolean;
+  clrModalOverrideScrollService: boolean;
+  clrModalPreventClose: boolean;
+  clrModalSize: string;
+  clrModalSkipAnimation: boolean;
+  clrModalStaticBackdrop: boolean;
+  clrModalAlternateClose: (open: boolean) => void;
+  clrModalOpenChange: (open: boolean) => void;
+  createArray: (n: number) => unknown[];
+  title: string;
+  body: string;
+  showLongPageContent: boolean;
+  showLongModalContent: boolean;
+  showToggle: boolean;
+};
+
+const meta: Meta<ModalArgs> = {
+  title: 'Components/Overlays/Modal',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrModalModule, ClrCheckboxModule],
+    }),
+  ],
+  component: ClrModal,
+  argTypes: {
+    // inputs
+    clrModalSize: { control: { type: 'radio' }, options: ['sm', 'md', 'lg', 'xl', 'full-screen'] },
+    // outputs
+    clrModalAlternateClose: { control: { disable: true } },
+    clrModalOpenChange: { control: { disable: true } },
+    // methods
+    ...hideControls('fadeDone', 'open', 'close'),
+    // story helpers
+    ...hideControls('createArray', 'showLongPageContent'),
+  },
+  args: {
+    // inputs
+    clrModalCloseButtonAriaLabel: commonStringsDefault.close,
+    clrModalLabelledById: '',
+    clrModalSize: 'md',
+    clrModalSkipAnimation: false,
+    clrModalClosable: true,
+    // outputs
+    clrModalAlternateClose: action('clrModalAlternateClose'),
+    clrModalOpenChange: action('clrModalOpenChange'),
+    // story helpers
+    createArray: n => new Array(n),
+    title: 'Modal Title',
+    body: 'Hello World!',
+    showLongPageContent: true,
+    showLongModalContent: false,
+    showToggle: false,
+  },
+  parameters: {
+    docs: {
+      story: {
+        inline: false,
+        iframeHeight: 400,
+      },
+    },
+  },
+  render: args => ({
+    template: `
+      <button type="button" class="btn btn-primary" (click)="clrModalOpen = true">Open Modal</button>
+      @if (showLongPageContent) {
+        <div>
+          This list is provided to demonstrate scrolling capability when modal is open.
+          <ul>
+            @for (_ of createArray(100); track $index; let i = $index) {
+              <li>{{ i + 1 }}</li>
+            }
+          </ul>
+        </div>
+      }
+      <clr-modal
+        [clrModalClosable]="clrModalClosable"
+        [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
+        [clrModalLabelledById]="clrModalLabelledById"
+        [clrModalOpen]="clrModalOpen"
+        [clrModalOverrideScrollService]="clrModalOverrideScrollService"
+        [clrModalPreventClose]="clrModalPreventClose"
+        [clrModalSize]="clrModalSize"
+        [clrModalSkipAnimation]="clrModalSkipAnimation"
+        [clrModalStaticBackdrop]="clrModalStaticBackdrop"
+        (clrModalAlternateClose)="clrModalAlternateClose($event)"
+        (clrModalOpenChange)="clrModalOpen = $event; clrModalOpenChange($event)"
+      >
+        <h3 class="modal-title">{{ title }}</h3>
+        <div class="modal-body">
+          {{ body }}
+          @if (showToggle) {
+            <clr-toggle-wrapper>
+              <input type="checkbox" clrToggle />
+              <label>Focus on Toggle should not cut outline</label>
+            </clr-toggle-wrapper>
+          }
+          @if (showLongModalContent) {
+            <div cds-layout="m-t:md">
+              This list is provided to demonstrate scrolling capability within the modal.
+              <ul>
+                @for (_ of createArray(100); track $index; let i = $index) {
+                  <li>{{ i + 1 }}</li>
+                }
+              </ul>
+            </div>
+          }
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline" (click)="clrModalOpen = false">Cancel</button>
+          <button type="button" class="btn btn-primary" (click)="clrModalOpen = false">Ok</button>
+        </div>
+      </clr-modal>
+    `,
+    props: args,
+  }),
+};
+
+export default meta;
+
+type Story = StoryObj<ModalArgs>;
+
+export const Modal: Story = {};
+
+export const OpenSmallModal: Story = {
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'sm',
+    title: 'Small Modal',
+    body: 'This is a small modal.',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenMediumModal: Story = {
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'md',
+    title: 'Medium Modal',
+    body: 'This is a medium modal.',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenLargeModal: Story = {
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'lg',
+    title: 'Large Modal',
+    body: 'This is a large modal.',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenExtraLargeModal: Story = {
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'xl',
+    title: 'Extra-Large Modal',
+    body: 'This is a extra-large modal.',
+    showLongPageContent: false,
+  },
+};
+
+export const OpenFullScreenModal: Story = {
+  args: {
+    clrModalOpen: true,
+    clrModalSize: 'full-screen',
+    title: 'Full-Screen Modal',
+    body: 'This is a full-screen modal.',
+    showLongPageContent: false,
+  },
+};
+
+export const NestedFocusedFormElements: Story = {
+  play: focusToggle,
+  args: {
+    showToggle: true,
+    clrModalOpen: true,
+  },
+};
+
+function focusToggle({ canvasElement }: StoryContext) {
+  // force keyboard focus outline over input checkbox
+  canvasElement.querySelector<HTMLElement>('input[type=checkbox]')?.focus();
+}

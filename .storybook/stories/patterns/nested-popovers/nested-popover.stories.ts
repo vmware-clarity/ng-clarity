@@ -1,0 +1,86 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { ClrComboboxModule, ClrDropdownModule, ClrModalModule, ClrSignpostModule } from '@clr/angular';
+import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
+import { hideControls } from '@storybook-helpers/arg-types';
+import { CommonModules } from '@storybook-helpers/common';
+import { type Element, elements } from '@storybook-helpers/elements.data';
+
+/** The story hand-writes the modal markup, so there is no component behind the args. */
+type NestedPopoverArgs = {
+  elements: Element[];
+};
+
+const meta: Meta<NestedPopoverArgs> = {
+  title: 'Patterns/Nested Popovers/Nested Popover',
+  decorators: [
+    moduleMetadata({
+      imports: [...CommonModules, ClrModalModule, ClrComboboxModule, ClrDropdownModule, ClrSignpostModule],
+    }),
+  ],
+  argTypes: {
+    // story helpers
+    ...hideControls('elements'),
+  },
+  args: {
+    // story helpers
+    elements,
+  },
+  render: args => ({
+    template: `
+      <button type="button" class="btn btn-primary" (click)="modalOpen = true">Open Modal</button>
+
+      <clr-modal [(clrModalOpen)]="modalOpen">
+        <h3 class="modal-title">Modal Title</h3>
+        <div class="modal-body">
+          Pressing escape on a nested popover should not close the modal.
+          <br />
+
+          <clr-dropdown>
+            <button class="btn btn-outline-primary" clrDropdownTrigger>
+              Dropdown
+              <cds-icon shape="angle" direction="down"></cds-icon>
+            </button>
+            <clr-dropdown-menu>
+              <div aria-label="Action 1" clrDropdownItem>Action 1</div>
+              <div aria-label="Action 2" clrDropdownItem>Action 2</div>
+              <div aria-label="Action 3" clrDropdownItem>Action 3</div>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+          <br />
+
+          <clr-combobox>
+            <ng-container *clrOptionSelected="let selected">
+              {{ selected }}
+            </ng-container>
+            <clr-options>
+              @for (element of elements; track element) {
+                <clr-option [clrValue]="element.symbol">{{ element.name }}</clr-option>
+              }
+            </clr-options>
+          </clr-combobox>
+          <br />
+
+          <clr-signpost>
+            <clr-signpost-content>This is a signpost.</clr-signpost-content>
+          </clr-signpost>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="modalOpen = false">Close</button>
+        </div>
+      </clr-modal>
+    `,
+    props: args,
+  }),
+};
+
+export default meta;
+
+type Story = StoryObj<NestedPopoverArgs>;
+
+export const NestedPopover: Story = {};
