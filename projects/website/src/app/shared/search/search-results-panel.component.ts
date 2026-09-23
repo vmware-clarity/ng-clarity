@@ -30,7 +30,9 @@ import { SearchIndexEntry, SearchResult } from './search-index.model';
             [fragment]="result.entry.fragment"
             (click)="resultSelected.emit(result.entry)"
           >
-            <span class="search-result-category">{{ result.entry.category }}</span>
+            <div cds-text="bold uppercase">
+              <app-search-highlight [text]="result.entry.category" [query]="query()" />
+            </div>
             <span class="search-result-breadcrumb">
               <app-search-highlight [text]="result.entry.title" [query]="query()" />
               @if (result.entry.kind === 'heading') {
@@ -47,55 +49,7 @@ import { SearchIndexEntry, SearchResult } from './search-index.model';
       }
     </ul>
   `,
-  styles: [
-    `
-      :host {
-        display: block;
-        min-width: 320px;
-        max-width: 480px;
-      }
-      .search-results-list {
-        margin: 0;
-        padding: 4px 0;
-        list-style: none;
-        max-height: 60vh;
-        overflow-y: auto;
-        background-color: var(--clr-signpost-content-bg-color);
-        color: var(--clr-signpost-content-color);
-        border: 1px solid var(--clr-signpost-content-border-color);
-        border-radius: var(--clr-signpost-border-radius);
-        box-shadow: 0 2px 8px rgb(140 140 140 / 25%);
-      }
-      .search-result-row {
-        display: block;
-        padding: 6px 12px;
-        text-decoration: none;
-        color: inherit;
-        overflow: hidden;
-        white-space: nowrap;
-
-        &:hover,
-        &.active {
-          background-color: color-mix(in srgb, var(--clr-signpost-content-color) 10%, transparent);
-        }
-      }
-      .search-result-category {
-        display: block;
-        font-size: 0.6875rem;
-        text-transform: uppercase;
-        opacity: 0.7;
-      }
-      .search-result-breadcrumb {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .search-result-empty {
-        padding: 6px 12px;
-        opacity: 0.7;
-      }
-    `,
-  ],
+  styleUrl: './search-results-panel.component.scss',
   imports: [RouterModule, SearchHighlightComponent],
 })
 export class SearchResultsPanelComponent {

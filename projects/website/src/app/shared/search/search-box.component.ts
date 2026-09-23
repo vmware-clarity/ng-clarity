@@ -64,6 +64,10 @@ const DEBOUNCE_MS = 150;
       :host {
         display: flex;
         align-items: center;
+
+        .search:before {
+          top: 0;
+        }
       }
     `,
   ],

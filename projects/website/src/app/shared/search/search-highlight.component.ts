@@ -5,34 +5,36 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, computed, input } from '@angular/core';
+import { Component, input } from '@angular/core';
 
 import { splitForHighlight } from './search-match.util';
 
 @Component({
   selector: 'app-search-highlight',
-  template: `
-    @for (segment of segments(); track $index) {
-      @if (segment.matched) {
-        <mark>{{ segment.text }}</mark>
-      } @else {
-        {{ segment.text }}
-      }
-    }
-  `,
+  template: ``,
   styles: [
     `
       mark {
-        background-color: transparent;
-        color: inherit;
+        text-decoration: underline;
         font-weight: var(--cds-alias-typography-font-weight-semibold);
       }
     `,
   ],
+  host: {
+    '[innerHTML]': 'generatedHTML',
+  },
 })
 export class SearchHighlightComponent {
   readonly text = input.required<string>();
   readonly query = input('');
 
-  protected readonly segments = computed(() => splitForHighlight(this.text(), this.query()));
+  protected get generatedHTML() {
+    let result = '';
+
+    splitForHighlight(this.text(), this.query()).forEach(segment => {
+      result += segment.matched ? `<mark>${segment.text}</mark>` : segment.text;
+    });
+
+    return result;
+  }
 }
