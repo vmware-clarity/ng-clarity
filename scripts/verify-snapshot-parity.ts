@@ -8,549 +8,341 @@
 import { execFileSync } from 'child_process';
 import * as fs from 'fs';
 import * as path from 'path';
+import { parseArgs } from 'util';
+
+import { screenshotExpectOptions } from '../tests/helpers/vrt';
 
 /*
- * Verifies that a pull request which RENAMES visual regression snapshots changed only paths, never pixels.
+ * Verifies that a pull request which MOVES visual regression snapshots changed only paths, never pixels.
  *
- * Why this exists
- * ---------------
- * Snapshots are not maintained by hand. `.github/workflows/pr-build.yml` runs
- * `npx playwright test --update-snapshots` over the browser x theme x density matrix and uploads a binary
- * diff; `.github/workflows/pr-visual-snapshot-update-bot.yml` applies that diff and then runs
- * `scripts/delete-unused-screenshots.ts` to drop the orphans. So when a story is retitled or a story file is
- * moved, every snapshot is deleted and re-created under a new path. In the review of such a pull request
- * *every* snapshot looks new, which means a genuine visual regression is invisible. This script is the
- * safety net: it compares the CONTENT of the snapshot set before and after, ignoring paths entirely.
+ * When stories are retitled or story files move, their snapshots move too, and in the review of such a pull
+ * request every snapshot looks new, so a genuine visual regression is invisible. This script compares the
+ * CONTENT of the snapshot set before and after, ignoring paths:
  *
- * Equality test: byte equality
- * ----------------------------
- * Two snapshots are "the same picture" here when their bytes are identical. That is a valid test in this
- * repository because CI already depends on Playwright's PNG output being byte-stable: the snapshot bot
- * commits the regenerated snapshots only when `git diff-index` reports the work tree dirty, so an unstable
- * encoder would make the bot commit noise on every single run, which it does not.
+ *   1. Bytes. A base snapshot whose exact bytes exist anywhere in the working tree survived. Snapshots moved
+ *      with `git mv` always pass here.
+ *   2. Pixels. A base snapshot whose bytes are gone is compared with the working tree snapshots that could
+ *      be its successor (same path, or same browser, theme, density and image size, closest file name
+ *      first), using Playwright's own PNG comparator at the threshold `toHaveScreenshot()` uses. This
+ *      catches re-encoded screenshots: `playwright test --update-snapshots` writes a fresh render for every
+ *      snapshot path that has no baseline, and a fresh render rarely has the same bytes even when every
+ *      pixel matches.
  *
- * If byte instability ever does show up in practice, the correct fallback is a PIXEL comparison (decode both
- * PNGs and compare with e.g. `pixelmatch`), keeping the same report shape. Silently weakening this to a
- * count-only comparison ("both sides still have 6368 files, looks fine") is NOT an acceptable fallback - a
- * count comparison passes happily while every pixel changes, which is exactly the failure this guards.
+ * A base snapshot that fails both is LOST: a real visual change, or a snapshot that was dropped.
  *
- * Hashing: git's blob sha1, on both sides
- * ---------------------------------------
- * The base side is read straight out of the object database with `git ls-tree -r <ref>`, which already
- * carries a content hash per blob - git's sha1. Using it means the 894 MB of base snapshot bytes never has
- * to be piped out of `git cat-file`. For the comparison to mean anything the work tree side has to be
- * hashed the same way, so it goes through `git hash-object --stdin-paths`, which produces the identical
- * sha1 for identical content (verified: `git hash-object <path>` matches the `ls-tree` blob id for a tracked
- * snapshot). sha256 was the alternative, but it would force the whole base tree through a pipe for no gain:
- * the threat model here is an accidental byte change, not an adversary crafting a sha1 collision.
- *
- * Usage
- * -----
- *   npm run verify:snapshot-parity -- --base <git-ref> [--verbose]
- *
- * Exit codes: 0 parity holds, 1 content present in base is missing from head, 2 usage or git error.
+ * Usage:   npm run verify:snapshot-parity -- --base <git-ref> [--base-dir <path>] [--head-dir <path>] [--verbose]
+ * Exit codes: 0 parity holds, 1 a base snapshot was lost, 2 usage or git error.
  */
+
+// `playwright-core/lib/coreBundle` is a subpath playwright-core exports; it holds the comparator
+// `toHaveScreenshot()` itself uses, so "matches" here means exactly what it means in CI.
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { utils } = require('playwright-core/lib/coreBundle') as {
+  utils: {
+    getComparator(mimeType: string): (actual: Buffer, expected: Buffer, options: { threshold: number }) => unknown;
+  };
+};
 
 const DEFAULT_SNAPSHOT_DIR = 'tests/snapshots';
 const EXIT_OK = 0;
-const EXIT_CONTENT_LOST = 1;
+const EXIT_LOST = 1;
 const EXIT_USAGE = 2;
-const HASH_BATCH_SIZE = 2000;
-const MAX_RENAME_GROUPS = 40;
+const MAX_PIXEL_CANDIDATES = 10;
+const BLOB_BATCH_SIZE = 500;
+const CELL_SUFFIX = /-[a-z]+-[a-z]+\.png$/;
+const BROWSER_DIR = /^(chromium|firefox|webkit)\//;
 
 const USAGE = `Usage: npm run verify:snapshot-parity -- --base <git-ref> [options]
 
-Compares the snapshot set at <git-ref> with the snapshot set in the working tree by content, not by path,
-and fails when content that exists at <git-ref> cannot be found anywhere in the working tree.
+Compares the snapshots at <git-ref> with the snapshots in the working tree by content, not by path, and
+fails when a snapshot at <git-ref> has no byte-identical or pixel-identical counterpart in the working tree.
 
 Options:
-  --base <git-ref>   Required. The ref to compare against, e.g. origin/main or HEAD.
+  --base <git-ref>   Required. The ref to compare against, e.g. origin/main.
   --base-dir <path>  Snapshot root inside <git-ref>. Default: ${DEFAULT_SNAPSHOT_DIR}
   --head-dir <path>  Snapshot root in the working tree. Default: ${DEFAULT_SNAPSHOT_DIR}
-                     Both directory options exist so the check can be scoped to a subtree
-                     (e.g. --base-dir ${DEFAULT_SNAPSHOT_DIR}/chromium) and so it can be exercised
-                     against a fixture directory in tests.
-  --verbose          Print every old -> new path pair instead of the collapsed per-directory summary.
-  --help             Print this message.
+                     Both directory options let the check be scoped to a subtree, e.g.
+                     --base-dir ${DEFAULT_SNAPSHOT_DIR}/chromium --head-dir ${DEFAULT_SNAPSHOT_DIR}/chromium,
+                     or pointed at a directory of snapshots extracted from a CI artifact.
+  --verbose          List every moved and every re-encoded snapshot.
+  --help             Print this message.`;
 
-Exit codes:
-  0  parity holds
-  1  content present in the base is missing from the working tree (a pixel change or a lost snapshot)
-  2  usage error, bad ref, or a failing git command`;
-
-interface Options {
-  base: string;
-  baseDir: string;
-  headDir: string;
-  verbose: boolean;
+interface Snapshot {
+  /** Path relative to its snapshot root, with forward slashes. */
+  path: string;
+  /** git's blob id of the content, so both sides hash identically. */
+  hash: string;
 }
 
-interface RenamePair {
-  from: string;
-  to: string;
-}
+const { values: options } = parseOptions();
+const threshold = screenshotExpectOptions.threshold;
+const comparePng = utils.getComparator('image/png');
+const repositoryRoot = execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim();
+const baseDir = toPosixPath(options['base-dir']);
+const headRoot = path.resolve(repositoryRoot, options['head-dir']);
 
-interface RenameGroup {
-  fromDir: string;
-  toDir: string;
-  pairs: RenamePair[];
-}
+const base = readBaseSnapshots();
+const head = readHeadSnapshots();
+process.exit(report());
 
-/** Snapshot content hash -> every snapshot path (relative to the snapshot root) holding that content. */
-type PathsByHash = Map<string, string[]>;
-
-const options = parseArguments(process.argv.slice(2));
-const repositoryRoot = findRepositoryRoot();
-
-verifyRef(options.base);
-
-const basePathsByHash = readBaseSnapshots(options.base, options.baseDir);
-const headPathsByHash = readHeadSnapshots(options.headDir);
-
-process.exit(report(basePathsByHash, headPathsByHash, options));
-
-function parseArguments(argv: string[]): Options {
-  const values = new Map<string, string>();
-  let verbose = false;
-
-  for (let index = 0; index < argv.length; index++) {
-    const argument = argv[index];
-
-    if (argument === '--help' || argument === '-h') {
-      console.log(USAGE);
-      process.exit(EXIT_OK);
-    } else if (argument === '--verbose') {
-      verbose = true;
-    } else if (argument === '--base' || argument === '--base-dir' || argument === '--head-dir') {
-      const value = argv[index + 1];
-
-      if (value === undefined || value.startsWith('--')) {
-        failWithUsage(`${argument} requires a value.`);
-      }
-
-      values.set(argument, value);
-      index++;
-    } else {
-      failWithUsage(`unknown argument '${argument}'.`);
-    }
-  }
-
-  const base = values.get('--base');
-
-  if (base === undefined) {
-    failWithUsage('--base <git-ref> is required.');
-  }
-
-  return {
-    base,
-    baseDir: toPosixPath(values.get('--base-dir') ?? DEFAULT_SNAPSHOT_DIR),
-    headDir: values.get('--head-dir') ?? DEFAULT_SNAPSHOT_DIR,
-    verbose,
-  };
-}
-
-function findRepositoryRoot(): string {
+function parseOptions() {
   try {
-    return execFileSync('git', ['rev-parse', '--show-toplevel'], { encoding: 'utf8' }).trim();
-  } catch {
-    fail('not inside a git repository (git rev-parse --show-toplevel failed).');
-  }
-}
-
-function verifyRef(ref: string): void {
-  try {
-    git(['rev-parse', '--verify', '--quiet', `${ref}^{commit}`]);
-  } catch {
-    fail(`'${ref}' is not a commit in this repository. Pass an existing ref to --base, e.g. origin/main.`);
-  }
-}
-
-function readBaseSnapshots(ref: string, baseDir: string): PathsByHash {
-  const listing = git(['ls-tree', '-r', '-z', '--full-name', `${ref}^{tree}`, '--', baseDir]);
-  const pathsByHash: PathsByHash = new Map();
-
-  for (const record of listing.split('\0')) {
-    if (record === '') {
-      continue;
-    }
-
-    // Record shape: "<mode> SP <type> SP <object-id> TAB <path>".
-    const tabIndex = record.indexOf('\t');
-    const metadata = record.slice(0, tabIndex).split(' ');
-    const type = metadata[1];
-    const objectId = metadata[2];
-    const filePath = record.slice(tabIndex + 1);
-
-    if (type !== 'blob' || !filePath.endsWith('.png')) {
-      continue;
-    }
-
-    addPath(pathsByHash, objectId, path.posix.relative(baseDir, filePath));
-  }
-
-  if (pathsByHash.size === 0) {
-    fail(`no .png files found under '${baseDir}' at '${ref}'. Check --base and --base-dir.`);
-  }
-
-  return pathsByHash;
-}
-
-function readHeadSnapshots(headDir: string): PathsByHash {
-  const absoluteRoot = path.resolve(repositoryRoot, headDir);
-
-  if (!fs.existsSync(absoluteRoot) || !fs.statSync(absoluteRoot).isDirectory()) {
-    fail(`'${headDir}' is not a directory. Check --head-dir.`);
-  }
-
-  const relativePaths = listPngFiles(absoluteRoot, '').sort();
-
-  if (relativePaths.length === 0) {
-    fail(`no .png files found under '${headDir}' in the working tree. Check --head-dir.`);
-  }
-
-  const hashes = hashFiles(absoluteRoot, relativePaths);
-  const pathsByHash: PathsByHash = new Map();
-
-  for (let index = 0; index < relativePaths.length; index++) {
-    addPath(pathsByHash, hashes[index], relativePaths[index]);
-  }
-
-  return pathsByHash;
-}
-
-function listPngFiles(absoluteRoot: string, relativeDir: string): string[] {
-  const filePaths: string[] = [];
-
-  for (const entry of fs.readdirSync(path.join(absoluteRoot, relativeDir), { withFileTypes: true })) {
-    const relativePath = relativeDir === '' ? entry.name : `${relativeDir}/${entry.name}`;
-
-    if (entry.isDirectory()) {
-      filePaths.push(...listPngFiles(absoluteRoot, relativePath));
-    } else if (entry.isFile() && entry.name.endsWith('.png')) {
-      filePaths.push(relativePath);
-    }
-  }
-
-  return filePaths;
-}
-
-/*
- * Hashes work tree files with git itself, so that the resulting sha1 is directly comparable with the blob
- * ids `git ls-tree` reported for the base side. `--stdin-paths` reads newline separated paths, so a path
- * containing a newline or a double quote cannot be passed unambiguously - no snapshot has one, but bail out
- * loudly rather than silently mis-hashing if that ever changes.
- */
-function hashFiles(absoluteRoot: string, relativePaths: string[]): string[] {
-  const hashes: string[] = [];
-
-  for (let start = 0; start < relativePaths.length; start += HASH_BATCH_SIZE) {
-    const batch = relativePaths.slice(start, start + HASH_BATCH_SIZE);
-    const absolutePaths = batch.map(relativePath => {
-      if (/["\n\r]/.test(relativePath)) {
-        fail(`snapshot path cannot be hashed because it contains a quote or newline: ${relativePath}`);
-      }
-
-      return path.join(absoluteRoot, relativePath);
+    const parsed = parseArgs({
+      options: {
+        base: { type: 'string' },
+        'base-dir': { type: 'string', default: DEFAULT_SNAPSHOT_DIR },
+        'head-dir': { type: 'string', default: DEFAULT_SNAPSHOT_DIR },
+        verbose: { type: 'boolean', default: false },
+        help: { type: 'boolean', short: 'h', default: false },
+      },
     });
 
-    const output = git(['hash-object', '--stdin-paths'], `${absolutePaths.join('\n')}\n`);
-    const batchHashes = output.split('\n').filter(line => line !== '');
-
-    if (batchHashes.length !== batch.length) {
-      fail(`git hash-object returned ${batchHashes.length} hashes for ${batch.length} files.`);
+    if (parsed.values.help) {
+      console.log(USAGE);
+      process.exit(EXIT_OK);
     }
 
-    hashes.push(...batchHashes);
-  }
+    if (parsed.values.base === undefined) {
+      throw new Error('--base <git-ref> is required.');
+    }
 
-  return hashes;
+    return parsed as typeof parsed & { values: { base: string } };
+  } catch (error) {
+    return fail(`${(error as Error).message}\n\n${USAGE}`);
+  }
 }
 
-function report(base: PathsByHash, head: PathsByHash, reportOptions: Options): number {
-  const baseFileCount = countPaths(base);
-  const headFileCount = countPaths(head);
+function readBaseSnapshots(): Snapshot[] {
+  let listing: string;
 
-  console.log('Snapshot parity check');
-  console.log(`  base : ${reportOptions.baseDir} @ ${reportOptions.base} (${describeRef(reportOptions.base)})`);
-  console.log(`  head : ${reportOptions.headDir} (working tree)`);
-  console.log('');
+  try {
+    listing = git(['ls-tree', '-r', '-z', '--full-name', `${options.base}^{tree}`, '--', baseDir]);
+  } catch {
+    return fail(`'${options.base}' is not a commit in this repository. Pass an existing ref, e.g. origin/main.`);
+  }
+
+  // Record shape: "<mode> SP <type> SP <object-id> TAB <path>".
+  const snapshots = listing
+    .split('\0')
+    .map(record => record.match(/^\d+ blob ([0-9a-f]+)\t(.*\.png)$/))
+    .filter((match): match is RegExpMatchArray => match !== null)
+    .map(match => ({ path: path.posix.relative(baseDir, match[2]), hash: match[1] }));
+
+  if (snapshots.length === 0) {
+    fail(`no .png files found under '${baseDir}' at '${options.base}'. Check --base and --base-dir.`);
+  }
+
+  return snapshots;
+}
+
+function readHeadSnapshots(): Snapshot[] {
+  if (!fs.existsSync(headRoot) || !fs.statSync(headRoot).isDirectory()) {
+    fail(`'${options['head-dir']}' is not a directory. Check --head-dir.`);
+  }
+
+  const paths = fs
+    .readdirSync(headRoot, { recursive: true, encoding: 'utf8' })
+    .map(toPosixPath)
+    .filter(relativePath => relativePath.endsWith('.png'))
+    .sort();
+
+  if (paths.length === 0) {
+    fail(`no .png files found under '${options['head-dir']}'. Check --head-dir.`);
+  }
+
+  // `git hash-object --stdin-paths` produces the same blob id `git ls-tree` reports for identical content.
+  // It reads newline-separated paths; no snapshot path contains a newline.
+  const hashes = git(
+    ['hash-object', '--stdin-paths'],
+    paths.map(relativePath => path.join(headRoot, relativePath)).join('\n') + '\n'
+  )
+    .split('\n')
+    .filter(line => line !== '');
+
+  if (hashes.length !== paths.length) {
+    fail(`git hash-object returned ${hashes.length} hashes for ${paths.length} files.`);
+  }
+
+  return paths.map((relativePath, index) => ({ path: relativePath, hash: hashes[index] }));
+}
+
+function report(): number {
+  // Pass 1: bytes. Each head snapshot stands in for at most one base snapshot, and a snapshot that kept its
+  // path claims its own file first, since identical renders (e.g. across densities) share their bytes.
+  const headByHash = new Map<string, Snapshot[]>();
+  head.forEach(snapshot => headByHash.set(snapshot.hash, [...(headByHash.get(snapshot.hash) ?? []), snapshot]));
+
+  const claim = (candidates: Snapshot[], candidate: Snapshot) => candidates.splice(candidates.indexOf(candidate), 1);
+  const unchanged = new Set<string>();
+  const moved: string[] = [];
+  const bytesGone: Snapshot[] = [];
+
+  base.forEach(snapshot => {
+    const candidates = headByHash.get(snapshot.hash) ?? [];
+    const own = candidates.find(candidate => candidate.path === snapshot.path);
+
+    if (own !== undefined) {
+      claim(candidates, own);
+      unchanged.add(snapshot.path);
+    }
+  });
+
+  base
+    .filter(snapshot => !unchanged.has(snapshot.path))
+    .forEach(snapshot => {
+      const candidates = headByHash.get(snapshot.hash) ?? [];
+
+      if (candidates.length === 0) {
+        bytesGone.push(snapshot);
+      } else {
+        moved.push(`${snapshot.path} -> ${candidates[0].path}`);
+        claim(candidates, candidates[0]);
+      }
+    });
+
+  // Pass 2: pixels, for the base snapshots whose bytes are gone, against the head snapshots left over. Only a
+  // head snapshot of the same browser, theme, density and image size can be a successor, so the leftovers are
+  // bucketed by exactly that, once.
+  const leftover = new Set<Snapshot>();
+  const buckets = new Map<string, Snapshot[]>();
+  headByHash.forEach(snapshots => snapshots.forEach(snapshot => leftover.add(snapshot)));
+  leftover.forEach(snapshot => {
+    const key = bucketKey(snapshot.path, readHeadSnapshot(snapshot));
+    buckets.set(key, [...(buckets.get(key) ?? []), snapshot]);
+  });
+
+  const reencoded: string[] = [];
+  const lost: string[] = [];
+
+  // Base blobs are read in batches: all of them at once can run to hundreds of megabytes.
+  for (let start = 0; start < bytesGone.length; start += BLOB_BATCH_SIZE) {
+    const batch = bytesGone.slice(start, start + BLOB_BATCH_SIZE);
+    const baseImages = readBlobs(batch.map(snapshot => snapshot.hash));
+
+    batch.forEach(snapshot => {
+      const baseImage = baseImages.get(snapshot.hash) as Buffer;
+      const bucket = buckets.get(bucketKey(snapshot.path, baseImage)) ?? [];
+      const match = likeliestFirst(snapshot, bucket).find(
+        candidate => comparePng(readHeadSnapshot(candidate), baseImage, { threshold }) === null
+      );
+
+      if (match === undefined) {
+        lost.push(snapshot.path);
+      } else {
+        reencoded.push(`${snapshot.path} -> ${match.path}`);
+        bucket.splice(bucket.indexOf(match), 1);
+        leftover.delete(match);
+      }
+    });
+  }
+
+  const added: string[] = [];
+  leftover.forEach(snapshot => added.push(snapshot.path));
+  added.sort();
+
   console.log(
-    `  files          base ${baseFileCount}   head ${headFileCount}   (delta ${headFileCount - baseFileCount})`
+    `Snapshot parity: ${baseDir} @ ${options.base} (${base.length} files) vs ${options['head-dir']} (${head.length} files)`
   );
-  console.log(`  distinct bytes base ${base.size}   head ${head.size}`);
   console.log('');
+  printGroup('same bytes, same path', unchanged.size);
+  printGroup('same bytes, new path', moved, options.verbose);
+  printGroup(`same pixels (threshold ${threshold}), new bytes`, reencoded, options.verbose);
+  printGroup('NEW: no counterpart in the base (a human must confirm these are new stories)', added, true);
+  printGroup('LOST: no byte or pixel counterpart in the working tree', lost, true);
 
-  const baseOnly = hashesMissingFrom(base, head);
-  const headOnly = hashesMissingFrom(head, base);
-
-  reportBaseOnly(base, baseOnly);
-  reportHeadOnly(head, headOnly);
-  reportDuplicateCountChanges(base, head);
-  reportMatchedPaths(base, head, reportOptions);
-
-  if (baseOnly.length > 0) {
-    console.log(
-      `RESULT: FAIL - ${baseOnly.length} content hash(es) from the base are not present in the working tree.`
-    );
-    console.log('        A snapshot rename must not change a single byte. Investigate before merging.');
-    return EXIT_CONTENT_LOST;
+  if (lost.length > 0) {
+    console.log(`RESULT: FAIL - ${lost.length} base snapshot(s) were lost or changed. Investigate before merging.`);
+    return EXIT_LOST;
   }
 
-  console.log('RESULT: PASS - every byte sequence in the base is still present in the working tree.');
-
-  if (headOnly.length > 0) {
-    console.log(`        ${headOnly.length} new content hash(es) were added and must be justified by a human.`);
-  }
-
+  console.log('RESULT: PASS - every base snapshot survives, byte for byte or pixel for pixel.');
   return EXIT_OK;
 }
 
-function reportBaseOnly(base: PathsByHash, baseOnly: string[]): void {
-  console.log(`Content in the base that is MISSING from the working tree: ${baseOnly.length}`);
-
-  if (baseOnly.length === 0) {
-    console.log('  (none)');
-    console.log('');
-    return;
-  }
-
-  console.log('  Each of these is a real pixel change or a lost snapshot:');
-
-  for (const hash of baseOnly.sort()) {
-    const paths = base.get(hash) ?? [];
-    console.log(`  ${hash}  (${paths.length} base path(s))`);
-
-    for (const filePath of paths) {
-      console.log(`      ${filePath}`);
-    }
-  }
-
-  console.log('');
-}
-
-function reportHeadOnly(head: PathsByHash, headOnly: string[]): void {
-  console.log(`Content in the working tree that is NEW (absent from the base): ${headOnly.length}`);
-
-  if (headOnly.length === 0) {
-    console.log('  (none)');
-    console.log('');
-    return;
-  }
-
-  console.log('  Not fatal - these are new stories, but a human must confirm that is intended:');
-
-  for (const hash of headOnly.sort()) {
-    const paths = head.get(hash) ?? [];
-    console.log(`  ${hash}  (${paths.length} head path(s))`);
-
-    for (const filePath of paths) {
-      console.log(`      ${filePath}`);
-    }
-  }
-
-  console.log('');
-}
-
-/*
- * A hash legitimately repeats: stories that render identically across themes or densities produce identical
- * PNGs. Comparing the two sides as multisets means a change in how often a hash occurs is reported too - it
- * usually means a duplicate snapshot was added or dropped.
+/**
+ * Snapshots that could be successors share this key: browser directory (when the snapshot root is above
+ * it), theme and density, and image size.
  */
-function reportDuplicateCountChanges(base: PathsByHash, head: PathsByHash): void {
-  const changes: string[] = [];
-
-  base.forEach((paths, hash) => {
-    const headPaths = head.get(hash);
-
-    if (headPaths !== undefined && headPaths.length !== paths.length) {
-      changes.push(`  ${hash}  base ${paths.length} file(s) -> head ${headPaths.length} file(s)`);
-    }
-  });
-
-  console.log(`Content kept on both sides but a different number of times: ${changes.length}`);
-
-  if (changes.length === 0) {
-    console.log('  (none)');
-  } else {
-    console.log('  Not fatal - the pixels still exist, but a snapshot was duplicated or dropped:');
-    changes.sort().forEach(change => console.log(change));
-  }
-
-  console.log('');
+function bucketKey(snapshotPath: string, image: Buffer) {
+  return `${snapshotPath.match(BROWSER_DIR)?.[0]} ${snapshotPath.match(CELL_SUFFIX)?.[0]} ${pngSize(image)}`;
 }
 
-function reportMatchedPaths(base: PathsByHash, head: PathsByHash, reportOptions: Options): void {
-  const renames: RenamePair[] = [];
-  const droppedPaths: string[] = [];
-  const addedPaths: string[] = [];
-  let unchangedCount = 0;
+/**
+ * The best {@link MAX_PIXEL_CANDIDATES} of a bucket, ranked by how many path words they share with the base
+ * snapshot (`accordion`, `multi`, `panel`, ...) so the true successor is compared first. Comparing every
+ * same-sized PNG for every lost snapshot would be quadratic in decodes; a successor ranked lower than that is
+ * reported LOST, never silently passed.
+ */
+function likeliestFirst(snapshot: Snapshot, bucket: Snapshot[]) {
+  const words = new Set(wordsOf(snapshot.path));
+  const rank = (candidate: Snapshot) =>
+    candidate.path === snapshot.path ? Infinity : wordsOf(candidate.path).filter(word => words.has(word)).length;
 
-  base.forEach((basePaths, hash) => {
-    const headPaths = head.get(hash);
-
-    if (headPaths === undefined) {
-      return;
-    }
-
-    const headPathSet = new Set(headPaths);
-    const movedFrom = basePaths.filter(basePath => !headPathSet.has(basePath));
-    const basePathSet = new Set(basePaths);
-    const movedTo = headPaths.filter(headPath => !basePathSet.has(headPath));
-
-    unchangedCount += basePaths.length - movedFrom.length;
-
-    for (let index = 0; index < Math.max(movedFrom.length, movedTo.length); index++) {
-      if (index < movedFrom.length && index < movedTo.length) {
-        renames.push({ from: movedFrom[index], to: movedTo[index] });
-      } else if (index < movedFrom.length) {
-        droppedPaths.push(movedFrom[index]);
-      } else {
-        addedPaths.push(movedTo[index]);
-      }
-    }
-  });
-
-  console.log('Matched content');
-  console.log(`  same bytes, same path : ${unchangedCount} file(s)`);
-  console.log(`  same bytes, new path  : ${renames.length} file(s)`);
-  console.log('');
-
-  if (renames.length > 0) {
-    printRenames(renames, reportOptions.verbose);
-  }
-
-  printExtraPaths('Base paths with no working tree counterpart (their bytes survive elsewhere)', droppedPaths);
-  printExtraPaths('Working tree paths with no base counterpart (their bytes existed in the base)', addedPaths);
+  return bucket
+    .map(candidate => ({ candidate, rank: rank(candidate) }))
+    .sort((left, right) => right.rank - left.rank)
+    .slice(0, MAX_PIXEL_CANDIDATES)
+    .map(ranked => ranked.candidate);
 }
 
-function printRenames(renames: RenamePair[], verbose: boolean): void {
-  if (verbose) {
-    console.log('  old -> new (full listing):');
-    renames
-      .slice()
-      .sort((left, right) => left.from.localeCompare(right.from))
-      .forEach(rename => console.log(`    ${rename.from} -> ${rename.to}`));
-    console.log('');
-    return;
-  }
-
-  const groups = groupRenames(renames);
-  console.log(`  old -> new, collapsed into ${groups.length} directory group(s) (run with --verbose for every file):`);
-
-  for (const group of groups.slice(0, MAX_RENAME_GROUPS)) {
-    console.log(`    ${group.fromDir} -> ${group.toDir}    ${group.pairs.length} file(s)`);
-
-    const renamedFiles = group.pairs.filter(pair => path.posix.basename(pair.from) !== path.posix.basename(pair.to));
-
-    if (renamedFiles.length === 0) {
-      console.log('        file names unchanged');
-    } else {
-      const example = renamedFiles[0];
-      console.log(`        e.g. ${path.posix.basename(example.from)} -> ${path.posix.basename(example.to)}`);
-    }
-  }
-
-  if (groups.length > MAX_RENAME_GROUPS) {
-    console.log(
-      `    ... and ${groups.length - MAX_RENAME_GROUPS} more group(s); run with --verbose for the full listing`
-    );
-  }
-
-  console.log('');
+/** "chromium/components/forms/datepicker/datepicker-opened--month-view-light-default.png" -> its path words. */
+function wordsOf(snapshotPath: string) {
+  return snapshotPath.replace(BROWSER_DIR, '').replace(CELL_SUFFIX, '').split(/[/-]+/);
 }
 
-function groupRenames(renames: RenamePair[]): RenameGroup[] {
-  const groups = new Map<string, RenameGroup>();
-  const orderedGroups: RenameGroup[] = [];
+/** Reads many blobs through one `git cat-file --batch`, rather than one git process per blob. */
+function readBlobs(hashes: string[]) {
+  const blobs = new Map<string, Buffer>();
+  const output = git(['cat-file', '--batch'], hashes.join('\n') + '\n', 'buffer');
+  let offset = 0;
 
-  for (const rename of renames) {
-    const fromDir = `${path.posix.dirname(rename.from)}/`;
-    const toDir = `${path.posix.dirname(rename.to)}/`;
-    const key = `${fromDir}\0${toDir}`;
-    let group = groups.get(key);
-
-    if (group === undefined) {
-      group = { fromDir, toDir, pairs: [] };
-      groups.set(key, group);
-      orderedGroups.push(group);
-    }
-
-    group.pairs.push(rename);
+  // Each object is "<object-id> SP <type> SP <size> LF <contents> LF".
+  while (offset < output.length) {
+    const headerEnd = output.indexOf(0x0a, offset);
+    const [hash, , size] = output.toString('utf8', offset, headerEnd).split(' ');
+    const start = headerEnd + 1;
+    blobs.set(hash, output.subarray(start, start + Number(size)));
+    offset = start + Number(size) + 1;
   }
 
-  return orderedGroups.sort((left, right) => left.fromDir.localeCompare(right.fromDir));
+  return blobs;
 }
 
-function printExtraPaths(label: string, filePaths: string[]): void {
-  if (filePaths.length === 0) {
-    return;
-  }
-
-  console.log(`  ${label}: ${filePaths.length}`);
-  filePaths.sort().forEach(filePath => console.log(`    ${filePath}`));
-  console.log('');
+function readHeadSnapshot(snapshot: Snapshot) {
+  return fs.readFileSync(path.join(headRoot, snapshot.path));
 }
 
-function describeRef(ref: string): string {
-  try {
-    return git(['rev-parse', '--short', `${ref}^{commit}`]).trim();
-  } catch {
-    return 'unknown';
+/** Width x height from the IHDR chunk, which the PNG format requires to come first. */
+function pngSize(image: Buffer) {
+  return `${image.readUInt32BE(16)}x${image.readUInt32BE(20)}`;
+}
+
+function printGroup(label: string, entries: number | string[], listEntries = false) {
+  const count = typeof entries === 'number' ? entries : entries.length;
+  console.log(`  ${label}: ${count}`);
+
+  if (listEntries && typeof entries !== 'number') {
+    entries.forEach(entry => console.log(`      ${entry}`));
   }
 }
 
-function addPath(pathsByHash: PathsByHash, hash: string, filePath: string): void {
-  const paths = pathsByHash.get(hash);
-
-  if (paths === undefined) {
-    pathsByHash.set(hash, [filePath]);
-  } else {
-    paths.push(filePath);
-  }
-}
-
-function countPaths(pathsByHash: PathsByHash): number {
-  let total = 0;
-
-  pathsByHash.forEach(paths => {
-    total += paths.length;
-  });
-
-  return total;
-}
-
-/** Content hashes that exist in `source` but nowhere in `other`. */
-function hashesMissingFrom(source: PathsByHash, other: PathsByHash): string[] {
-  const missing: string[] = [];
-
-  source.forEach((paths, hash) => {
-    if (!other.has(hash)) {
-      missing.push(hash);
-    }
-  });
-
-  return missing;
-}
-
-function toPosixPath(filePath: string): string {
+function toPosixPath(filePath: string) {
   return filePath.replace(/\\/g, '/').replace(/\/+$/, '');
 }
 
-function git(args: string[], input?: string): string {
+function git(args: string[], input?: string): string;
+function git(args: string[], input: string, encoding: 'buffer'): Buffer;
+function git(args: string[], input?: string, encoding: 'utf8' | 'buffer' = 'utf8'): string | Buffer {
   return execFileSync('git', args, {
     cwd: repositoryRoot,
-    encoding: 'utf8',
+    encoding: encoding === 'buffer' ? null : 'utf8',
     input,
     maxBuffer: 256 * 1024 * 1024,
-  });
+    stdio: ['pipe', 'pipe', 'pipe'],
+  }) as string | Buffer;
 }
 
 function fail(message: string): never {
   process.stderr.write(`verify-snapshot-parity: ${message}\n`);
-  process.exit(EXIT_USAGE);
-}
-
-function failWithUsage(message: string): never {
-  process.stderr.write(`verify-snapshot-parity: ${message}\n\n${USAGE}\n`);
   process.exit(EXIT_USAGE);
 }
