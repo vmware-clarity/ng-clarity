@@ -12,6 +12,7 @@ import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrDropdown, ClrDropdownItem } from '@clr/angular/popover/dropdown';
 import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
+import { Subject } from 'rxjs';
 
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridColumn } from './datagrid-column';
@@ -160,6 +161,29 @@ class NoFilterTest {
 class KeepFilterInHeaderTest {
   items = [{ name: 'aaa' }, { name: 'bbb' }];
   keepInHeader = true;
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>
+        Removable
+        @if (showFilter) {
+          <clr-dg-filter [clrDgFilter]="filter">Filter content</clr-dg-filter>
+        }
+        <clr-dg-column-actions></clr-dg-column-actions>
+      </clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class RemovableFilterTest {
+  items = [{ name: 'aaa' }];
+  showFilter = true;
+  filter = { isActive: () => false, accepts: () => true, changes: new Subject<any>() };
 }
 
 export default function (): void {
@@ -844,6 +868,49 @@ export default function (): void {
         context.detectChanges();
 
         expect(element.querySelector('.datagrid-header .datagrid-filter-toggle')).not.toBeNull();
+      });
+    });
+
+    // The filter connects itself to the menu when it is created, and has to disconnect again when it
+    // is destroyed - otherwise the menu keeps offering to open a filter that no longer exists.
+    describe('filter that comes and goes', function () {
+      let context: TestContext<ClrDatagrid, RemovableFilterTest>;
+      let element: HTMLElement;
+      const commonStrings = new ClrCommonStringsService();
+
+      function toggleMenu() {
+        element.querySelector<HTMLButtonElement>(TOGGLE).click();
+        context.detectChanges();
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, RemovableFilterTest);
+        element = context.clarityElement;
+      });
+
+      afterEach(function () {
+        if (menuIsOpen()) {
+          toggleMenu();
+        }
+      });
+
+      it('stops offering the filter action once the filter is removed', function () {
+        context.testComponent.showFilter = false;
+        context.detectChanges();
+        toggleMenu();
+
+        expect(itemLabelled(commonStrings.keys.filterColumn)).toBeFalsy();
+      });
+
+      it('offers it again once the filter is added back', function () {
+        context.testComponent.showFilter = false;
+        context.detectChanges();
+        context.testComponent.showFilter = true;
+        context.detectChanges();
+        toggleMenu();
+
+        expect(itemLabelled(commonStrings.keys.filterColumn)).toBeTruthy();
+        expect(element.querySelector('.datagrid-header .datagrid-filter-toggle')).toBeNull();
       });
     });
   });

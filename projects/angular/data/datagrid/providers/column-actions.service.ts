@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, signal } from '@angular/core';
+import { DestroyRef, Injectable, signal } from '@angular/core';
 
 /**
  * The part of a filter that the actions menu needs. Declared here rather than importing
@@ -43,4 +43,20 @@ export class ColumnActionsService {
 
   /** The filter rendered for this column, if it has one. */
   readonly filter = signal<ColumnFilterHandle | null>(null);
+
+  /**
+   * Makes `filter` the one the actions menu opens, until `destroyRef` - the filter's own - is
+   * destroyed. Tying it to the filter's lifetime means the menu can never be left pointing at a
+   * filter that is gone.
+   */
+  registerFilter(filter: ColumnFilterHandle, destroyRef: DestroyRef): void {
+    this.filter.set(filter);
+
+    destroyRef.onDestroy(() => {
+      // Only if it is still this filter: a replacement may have registered in the meantime.
+      if (this.filter() === filter) {
+        this.filter.set(null);
+      }
+    });
+  }
 }

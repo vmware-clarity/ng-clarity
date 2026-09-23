@@ -6,6 +6,7 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
@@ -38,15 +39,10 @@ export default function (): void {
         filterService = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
         popoverService = new ClrPopoverService();
         filter = new TestFilter();
-
-        // No key navigation and no column actions service: this suite drives the filter on its own,
-        // outside a column.
-        component = new ClrDatagridFilter(
-          filterService,
-          new ClrCommonStringsService(),
-          popoverService,
-          undefined,
-          undefined
+        // The filter finds its column with inject(), so it has to be built in an injection
+        // context; there is no column here, which is what this suite wants - the filter on its own.
+        component = TestBed.runInInjectionContext(
+          () => new ClrDatagridFilter(filterService, new ClrCommonStringsService(), popoverService, undefined)
         );
       });
 

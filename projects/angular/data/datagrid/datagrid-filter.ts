@@ -8,8 +8,10 @@
 import {
   booleanAttribute,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   Optional,
@@ -96,14 +98,16 @@ export class ClrDatagridFilter<T = any>
 
   @ViewChild('anchor', { read: ElementRef }) anchor: ElementRef<HTMLButtonElement>;
 
+  // Optional so the filter keeps working outside a column, e.g. in isolated tests.
+  protected readonly columnActions = inject(ColumnActionsService, { optional: true });
+
   private subs: Subscription[] = [];
 
   constructor(
     _filters: FiltersProvider<T>,
     public commonStrings: ClrCommonStringsService,
     private popoverService: ClrPopoverService,
-    @Optional() private keyNavigation: KeyNavigationGridController,
-    @Optional() protected columnActions: ColumnActionsService
+    @Optional() private keyNavigation: KeyNavigationGridController
   ) {
     super(_filters);
     this.subs.push(
@@ -113,8 +117,8 @@ export class ClrDatagridFilter<T = any>
       })
     );
 
-    // Optional so the filter keeps working outside a column, e.g. in isolated tests.
-    columnActions?.filter.set(this);
+    // Lets the column's actions menu, if it has one, open this filter and show whether it is active.
+    this.columnActions?.registerFilter(this, inject(DestroyRef));
   }
 
   @Input({ alias: 'clrDgFilterOpen', transform: booleanAttribute })
@@ -147,9 +151,5 @@ export class ClrDatagridFilter<T = any>
   override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.subs.forEach(sub => sub.unsubscribe());
-
-    if (this.columnActions?.filter() === this) {
-      this.columnActions.filter.set(null);
-    }
   }
 }
