@@ -20,7 +20,7 @@ import { CheckboxToggleStorybookComponent, CheckboxType } from './checkbox-toggl
 type CheckboxToggleArgs = CheckboxToggleStorybookComponent;
 
 const meta: Meta<CheckboxToggleArgs> = {
-  title: 'Components/Forms/Checkbox Toggle',
+  title: 'Components/Forms/Checkbox or Toggle',
   component: ClrCheckbox,
   decorators: [
     moduleMetadata({

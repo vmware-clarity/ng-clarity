@@ -12,12 +12,12 @@
  * contributor never types a title: `npx eslint --fix` writes it. This map is the one escape hatch,
  * for the rare label that Title-Casing a kebab-case path segment genuinely cannot produce — for
  * example a directory named `checkbox-toggle` whose sidebar label needs to read
- * `Checkbox and Toggle`, or an acronym that must stay upper-case.
+ * `Checkbox or Toggle`, or an acronym that must stay upper-case.
  *
  * Keys are paths relative to `.storybook/stories/`, with `/` separators, in one of two forms:
  *
  *   `<directory>`              replaces the directory part of the title for every story file in it,
- *                              e.g. 'components/forms/checkbox-toggle': 'Components/Forms/Checkbox and Toggle'
+ *                              e.g. 'components/forms/checkbox-toggle': 'Components/Forms/Checkbox or Toggle'
  *   `<file>.stories.ts`        replaces the whole title of that one file,
  *                              e.g. 'components/data/datagrid/datagrid-row.stories.ts': 'Components/Data/Datagrid/Row'
  *
@@ -26,5 +26,6 @@
  * all read. An entry here makes the title and the path disagree forever.
  */
 module.exports = {
-  // intentionally empty — see the note above before adding anything
+  // "Checkbox or Toggle" is the label the sidebar has always used; a path segment cannot spell "or".
+  'components/forms/checkbox-toggle': 'Components/Forms/Checkbox or Toggle',
 };

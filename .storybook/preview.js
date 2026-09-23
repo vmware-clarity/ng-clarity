@@ -80,7 +80,7 @@ export const parameters = {
   options: {
     storySort: {
       method: 'alphabetical',
-      order: ['Home', 'Foundations', 'Components', 'Addons', 'Patterns'],
+      order: ['Home', 'Themes', 'Foundations', 'Components', 'Addons', 'Patterns'],
     },
   },
   viewport: {

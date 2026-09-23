@@ -61,10 +61,13 @@ that are merely complicated.
 
 ### File naming
 
-- **Single-file directory:** name the file after the component — `components/badge/badge.stories.ts`.
-- **Multi-file directory:** name each file after the _variant_ it covers, not the component —
-  `components/data/datagrid/detail.stories.ts`, `components/data/datagrid/pagination.stories.ts`. Do not
-  repeat the directory name in every file.
+- **The directory's main file:** name it after the directory — `components/badge/badge.stories.ts`,
+  `components/data/datagrid/datagrid.stories.ts`. That makes it the directory's primary file, which takes the
+  directory's own title (see [Titles are derived, never typed](#titles-are-derived-never-typed)).
+- **Every other file:** name it after the _variant_ it covers. Prefixing it with the directory name is
+  optional: the `<directory>-` prefix is stripped from the title, so `datagrid-detail.stories.ts` and
+  `detail.stories.ts` both produce `Components/Data/Datagrid/Detail`. Follow whichever the directory already
+  uses.
 - **Story component:** a `@Component` used by a story lives beside it in a file with the same base name and
   the `.storybook.component.ts` suffix — `badge.stories.ts` → `badge.storybook.component.ts`.
 - **Supporting data and models:** `<name>.data.ts` and `<name>.model.ts`. These are not components; do not
@@ -317,34 +320,27 @@ title = directory title                          if the file is the directory's 
       = directory title + '/' + Title-Cased leaf  otherwise
 ```
 
-A file is the directory's **primary** file when it is the only story file in the directory, or when its base
-name equals the directory name. Every other file adds its own leaf: its base name, with a redundant
-`<directory>-` prefix stripped. Title-Casing splits on `-` and capitalises each word, except
-`and, or, in, on, of, with, to, a, an, the`, which stay lowercase unless they are the first word. So:
+A file is the directory's **primary** file when its base name equals the directory name. Every other file adds
+its own leaf: its base name, with a redundant `<directory>-` prefix stripped. Title-Casing splits on `-` and
+capitalises each word, except `and, or, in, on, of, with, to, a, an, the`, which stay lowercase unless they are
+the first word. So:
 
-- `components/badge/badge.stories.ts` → `Components/Badge` (the only file, so primary)
-- `components/accordion/accordion.stories.ts` → `Components/Accordion` (named after its directory)
+- `components/badge/badge.stories.ts` → `Components/Badge` (named after its directory)
 - `components/accordion/accordion-panel.stories.ts` → `Components/Accordion/Panel` (prefix stripped)
 - `foundations/spacing/gaps.stories.ts` → `Foundations/Spacing/Gaps` (no primary file in that directory)
 
-Every story file therefore gets its own title. That matters: two files sharing a title would share one
-story-id namespace, and Storybook refuses to index a duplicate story id, so the build would fail. The rule
-reports two files resolving to the same title before Storybook gets that far.
+A file's title depends only on its own path, never on its siblings, so adding, removing or renaming one story
+file never retitles another.
 
-Two consequences worth knowing:
-
-1. **Adding or removing a story file can retitle one you did not touch.** A directory's single file is its
-   primary file only while it is alone, so adding a sibling moves it to a leaf title (and vice versa). Its
-   story ids and URLs change with it. Name the file after its directory if you want its title to stay put, and
-   run the full `npm run _lint:code` rather than `lint:changed` after adding or removing a story file, since
-   the file whose title changed is not one you edited.
-2. Splitting a story file into two files in the same directory adds a sidebar entry; it is not a
-   sidebar-neutral change.
+Every story file gets its own title. That matters: two files sharing a title would share one story-id
+namespace, and Storybook refuses to index a duplicate story id, so the build would fail. The rule reports two
+files resolving to the same title before Storybook gets that far. Splitting a story file into two therefore
+adds a sidebar entry; it is not a sidebar-neutral change.
 
 When Title-Casing genuinely cannot produce the right label, the exception goes in
 `eslint-rules/storybook-title-overrides.js`, which is the _single_ place a non-derivable label may be declared.
-The map is empty today. Do not work around a bad title by hand-editing `title:`; the lint rule will just
-rewrite it.
+It holds one entry today: `checkbox-toggle` reads `Checkbox or Toggle`. Do not work around a bad title by
+hand-editing `title:`; the lint rule will just rewrite it.
 
 In practice: write the file, run `npx eslint --fix <your file>`, and the correct `title:` appears. If it
 appears wrong, the file is in the wrong directory.
