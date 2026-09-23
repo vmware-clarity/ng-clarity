@@ -152,6 +152,9 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
+// @public
+export const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
+
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
 
@@ -335,6 +338,7 @@ export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
+    ref?: string;
     state?: Record<string, unknown>;
     type: string;
 }
@@ -382,6 +386,22 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 
 // @public
 export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+
+// @public
+export type ClrElementMutation = {
+    value: unknown;
+    refused?: never;
+} | {
+    refused: string;
+    value?: never;
+};
+
+// @public
+export interface ClrElementMutator {
+    coerce?(proposed: unknown): ClrElementMutation;
+    read?(): unknown;
+    write?(proposed: unknown): ClrElementMutation;
+}
 
 // @public (undocumented)
 export class ClrExpandableAnimation extends BaseExpandableAnimation {
@@ -1025,6 +1045,12 @@ export function preventArrowKeyScroll(event: KeyboardEvent): void;
 
 // @public
 export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
+
+// @public
+export function readElementMutator(element: Element): ClrElementMutator | null;
 
 // @public (undocumented)
 export class ScrollingService {

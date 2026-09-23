@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
-import { isBooleanAttributeSet } from '@clr/angular/utils';
+import { ClrElementMutation, isBooleanAttributeSet, publishElementMutator } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -59,6 +59,7 @@ export abstract class ClrDateInputBase
 
   private initialClrDateInputValue: Date;
   private previousDateChange: Date;
+  private teardownElementMutator?: () => void;
 
   protected abstract dateChange: EventEmitter<Date>;
 
@@ -112,6 +113,7 @@ export abstract class ClrDateInputBase
   override ngOnInit() {
     super.ngOnInit();
     this.populateServicesFromContainerComponent();
+    this.publishMutator();
 
     this.subscriptions.push(
       this.listenForUserSelectedDayChanges(),
@@ -154,6 +156,11 @@ export abstract class ClrDateInputBase
     } else {
       this.emitDateOutput(null);
     }
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.teardownElementMutator?.();
   }
 
   protected datepickerHasFormControl() {
@@ -317,5 +324,53 @@ export abstract class ClrDateInputBase
     }
   }
 
+  /**
+   * Says how this input is written to, through the element mutator contract in
+   * `@clr/angular/utils`: its form control holds the date as the locale's display
+   * string, which is not something an agent has. Given a `Date`, an ISO date or a
+   * string already in the display format, this returns what the control takes; anything
+   * else is refused with the accepted forms named.
+   */
+  private publishMutator() {
+    this.teardownElementMutator = publishElementMutator(this.el.nativeElement, {
+      coerce: (proposed: unknown): ClrElementMutation => {
+        if (proposed === null || proposed === '') {
+          return { value: '' };
+        }
+        const date = this.dateFromProposal(proposed);
+        if (!date) {
+          return { refused: `A date is expected: ${this.dateIOService.placeholderText}, or ISO YYYY-MM-DD.` };
+        }
+        return {
+          value: this.usingNativeDatepicker()
+            ? isoDateString(date)
+            : this.dateIOService.toLocaleDisplayFormatString(date),
+        };
+      },
+    });
+  }
+
+  private dateFromProposal(proposed: unknown): Date | null {
+    if (proposed instanceof Date) {
+      return Number.isNaN(proposed.getTime()) ? null : proposed;
+    }
+    if (typeof proposed !== 'string') {
+      return null;
+    }
+    const iso = /^(\d{4})-(\d{2})-(\d{2})(?:T.*)?$/.exec(proposed.trim());
+    if (iso) {
+      // Read as a local date: `new Date('2026-03-06')` is UTC midnight, which is the
+      // evening before in half the world.
+      const date = new Date(+iso[1], +iso[2] - 1, +iso[3]);
+      return date.getMonth() === +iso[2] - 1 && date.getDate() === +iso[3] ? date : null;
+    }
+    return this.dateIOService.getDateValueFromDateString(proposed);
+  }
+
   protected abstract updateDayModel(dayModel: DayModel): void;
+}
+
+function isoDateString(date: Date): string {
+  const pad = (part: number) => String(part).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }

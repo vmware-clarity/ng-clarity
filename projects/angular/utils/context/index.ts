@@ -8,3 +8,4 @@
 export * from './attributes';
 export * from './interfaces';
 export * from './element-context';
+export * from './element-mutator';

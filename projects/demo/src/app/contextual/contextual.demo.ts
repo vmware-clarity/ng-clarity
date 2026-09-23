@@ -8,13 +8,28 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
-import { ClrContextEngineService, ClrContextPreset, clrContextPreset, ClrContextTrackerService } from '@clr/angular/ai';
+import {
+  ClrComponentContext,
+  ClrContextEngineService,
+  ClrContextPreset,
+  clrContextPreset,
+  ClrContextTrackerService,
+  ClrMutationEngineService,
+  ClrMutationOperation,
+} from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
 interface DemoHost {
   name: string;
   cluster: string;
   status: string;
+}
+
+/** A node in the live context that the mutation engine could write to. */
+interface WritableTarget {
+  ref: string;
+  type: string;
+  label: string;
 }
 
 const EMBEDDED_CHAT_PAGE = `
@@ -127,6 +142,11 @@ export class ContextualDemo implements OnInit, OnDestroy {
   thirdPartyOrigin = '';
   thirdPartyProbed = false;
   readonly servedLocally = servedFromLoopback();
+  writableTargets: WritableTarget[] = [];
+  targetRef = '';
+  proposedValue = '';
+  routePath = '';
+  mutationResult = '';
 
   form = new FormGroup({
     name: new FormControl(),
@@ -149,6 +169,7 @@ export class ContextualDemo implements OnInit, OnDestroy {
   constructor(
     private contextEngine: ClrContextEngineService,
     private contextTracker: ClrContextTrackerService,
+    private mutationEngine: ClrMutationEngineService,
     private changeDetectorRef: ChangeDetectorRef,
     private sanitizer: DomSanitizer
   ) {
@@ -171,6 +192,10 @@ export class ContextualDemo implements OnInit, OnDestroy {
       this.snapshotFocus = snapshot.focus ?? null;
       this.snapshotBytes = JSON.stringify(snapshot).length;
       this.snapshotJson = JSON.stringify(snapshot, null, 2);
+      this.writableTargets = writableTargets(snapshot.components);
+      if (!this.writableTargets.some(target => target.ref === this.targetRef)) {
+        this.targetRef = this.writableTargets[0]?.ref ?? '';
+      }
     });
     this.setProfile(this.profile);
   }
@@ -180,6 +205,25 @@ export class ContextualDemo implements OnInit, OnDestroy {
    * long form, three plugin frames — so it needs more than the default budget; the panel
    * says so when it still runs out.
    */
+  setValue(): void {
+    const description = this.writableTargets.find(target => target.ref === this.targetRef)?.label ?? '';
+    this.applyOperation({
+      operation: 'setValue',
+      ref: this.targetRef,
+      description,
+      value: proposal(this.proposedValue),
+    });
+  }
+
+  clearValue(): void {
+    const description = this.writableTargets.find(target => target.ref === this.targetRef)?.label ?? '';
+    this.applyOperation({ operation: 'clear', ref: this.targetRef, description });
+  }
+
+  navigate(): void {
+    this.applyOperation({ operation: 'navigate', path: this.routePath.trim() });
+  }
+
   setProfile(profile: ClrContextPreset): void {
     this.profile = profile;
     this.contextTracker.start({ snapshot: clrContextPreset(profile, { maxComponents: 500 }) });
@@ -194,6 +238,19 @@ export class ContextualDemo implements OnInit, OnDestroy {
 
   refreshNow(): void {
     this.contextTracker.refresh();
+  }
+
+  /**
+   * What an agent's client does: hand the engine the operations and show what came
+   * back. The report's snapshot and change are left out here, since the live panel on
+   * the right already shows the page as it is now.
+   */
+  private applyOperation(operation: ClrMutationOperation): void {
+    this.mutationResult = 'Applying…';
+    this.mutationEngine.apply([operation]).then(report => {
+      this.mutationResult = JSON.stringify(report.results, null, 2);
+      this.changeDetectorRef.markForCheck();
+    });
   }
 
   private async resolveThirdPartyPlugin(): Promise<void> {
@@ -214,4 +271,25 @@ export class ContextualDemo implements OnInit, OnDestroy {
     this.thirdPartyProbed = true;
     this.changeDetectorRef.markForCheck();
   }
+}
+
+/** Every node carrying a ref, in document order, with what the agent would call it. */
+function writableTargets(nodes: ClrComponentContext[]): WritableTarget[] {
+  return nodes.flatMap(node => [
+    ...(node.ref ? [{ ref: node.ref, type: node.type, label: node.label ?? '' }] : []),
+    ...writableTargets(node.children ?? []),
+  ]);
+}
+
+/** A typed value where the text is JSON — an array, a boolean, a number — and the text otherwise. */
+function proposal(text: string): unknown {
+  const trimmed = text.trim();
+  if (/^(\[|true$|false$|null$|-?\d+(\.\d+)?$)/.test(trimmed)) {
+    try {
+      return JSON.parse(trimmed);
+    } catch {
+      return text;
+    }
+  }
+  return text;
 }

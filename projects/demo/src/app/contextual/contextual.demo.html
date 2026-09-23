@@ -126,6 +126,58 @@
       </clr-tabs>
     </section>
 
+    <!-- data-clr-context-ignore: a tool for driving the engine, not part of the page it describes. -->
+    <section class="mutation-panel" data-clr-context-ignore>
+      <h3>Let an agent write</h3>
+      <p>
+        The write half of the engine. Every writable control in the live context on the right carries a
+        <code class="clr-code">ref</code>; pick one, propose a value the way an agent would — text, a number,
+        <code class="clr-code">true</code>, an option's label, a date such as <code class="clr-code">2026-03-06</code>,
+        a row such as <code class="clr-code">esx-prod-03</code> — and the engine writes it through the form control, or
+        says why not. Try a label no option has, or clear a required field, and read the result. Navigation asks first:
+        this application classifies leaving the page as consequential.
+      </p>
+      <form clrForm clrLayout="horizontal" (ngSubmit)="setValue()">
+        <clr-select-container>
+          <label>Target</label>
+          <select clrSelect name="mutation-target" [(ngModel)]="targetRef">
+            @for (target of writableTargets; track target.ref) {
+            <option [value]="target.ref">{{ target.ref }} — {{ target.type }} “{{ target.label }}”</option>
+            }
+          </select>
+        </clr-select-container>
+        <clr-input-container>
+          <label>Value</label>
+          <input clrInput name="mutation-value" [(ngModel)]="proposedValue" placeholder="What an agent would say" />
+          <clr-control-helper
+            >A JSON array or literal is read as such: <code class="clr-code">["esx-prod-01", "esx-prod-03"]</code>,
+            <code class="clr-code">true</code>, <code class="clr-code">42</code>.</clr-control-helper
+          >
+        </clr-input-container>
+        <div class="mutation-actions">
+          <button type="submit" class="btn btn-primary btn-sm" [disabled]="!targetRef">Set value</button>
+          <button type="button" class="btn btn-sm" [disabled]="!targetRef" (click)="clearValue()">Clear</button>
+        </div>
+      </form>
+      <form clrForm clrLayout="horizontal" (ngSubmit)="navigate()">
+        <clr-input-container>
+          <label>Route</label>
+          <input
+            clrInput
+            name="mutation-route"
+            [(ngModel)]="routePath"
+            placeholder="a path from availableRoutes, e.g. datagrid"
+          />
+        </clr-input-container>
+        <div class="mutation-actions">
+          <button type="submit" class="btn btn-sm" [disabled]="!routePath">Navigate</button>
+        </div>
+      </form>
+      @if (mutationResult) {
+      <pre class="mutation-result">{{ mutationResult }}</pre>
+      }
+    </section>
+
     <section clrContext="Snapshot options playground" clrContextType="section">
       <h3>Choose what to collect</h3>
       <p>

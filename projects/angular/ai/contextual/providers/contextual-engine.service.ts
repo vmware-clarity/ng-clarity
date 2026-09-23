@@ -7,7 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
-import { ActivatedRouteSnapshot, Route, Router } from '@angular/router';
+import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
@@ -18,12 +18,11 @@ import {
   ClrContextFrameRequestOptions,
   requestClrContextFromHost,
 } from '../iframe/context-frame-bridge';
-import {
-  ClrAvailableRoute,
-  ClrContextSnapshotOptions,
-  ClrPageContext,
-  ClrRouteContext,
-} from '../interfaces/context.interface';
+import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
+import { jsonSafe } from '../json-safe';
+import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
+import { ClrContextRefRegistry } from '../mutation/ref-registry';
+import { availableRoutes } from '../routes';
 import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
 
@@ -60,7 +59,9 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
  * Snapshots are always computed at call time from the live application — nothing is
  * cached — so they can never contain obsolete information about UI that no longer exists.
  *
- * The engine only ever reads. It describes the page and never changes it.
+ * The engine only ever reads. It describes the page and never changes it; changing it
+ * is the mutation engine's job (`ClrMutationEngineService`), which works from the refs
+ * these snapshots carry once the application has provided a `ClrMutationPolicy`.
  *
  * The engine can also serve snapshots across an iframe boundary (see
  * {@link enableFrameBridge} and {@link requestHostContext}), so embedded UI such as a
@@ -71,8 +72,14 @@ export class ClrContextEngineService implements OnDestroy {
   private readonly customExtractors: ClrContextDomExtractor[] = [];
   // What the application configured once for every snapshot; see provideClrContextOptions.
   private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
+  // Refs are handed out only while there is a policy to write under: readers who never
+  // write pay nothing for them.
+  private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
+  private readonly refs = inject(ClrContextRefRegistry);
   private frameHost: ClrContextFrameHost | null = null;
   private globalProperty: string | null = null;
+  private _latestSnapshot: ClrPageContext | null = null;
+  private _latestSnapshotOptions: ClrContextSnapshotOptions | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: unknown,
@@ -80,6 +87,20 @@ export class ClrContextEngineService implements OnDestroy {
     private readonly contextRegistry: ClrContextRegistryService,
     @Optional() private readonly router: Router | null
   ) {}
+
+  /**
+   * The last snapshot the application took (through {@link getSnapshot}; not one served
+   * to a frame or through the global accessor), or `null` before the first. It is what
+   * the mutation engine's refs refer to and what its report's changes are measured from.
+   */
+  get latestSnapshot(): ClrPageContext | null {
+    return this._latestSnapshot;
+  }
+
+  /** The options {@link latestSnapshot} was taken with, so it can be retaken alike. */
+  get latestSnapshotOptions(): ClrContextSnapshotOptions | null {
+    return this._latestSnapshotOptions;
+  }
 
   ngOnDestroy(): void {
     this.disableFrameBridge();
@@ -89,35 +110,16 @@ export class ClrContextEngineService implements OnDestroy {
   /**
    * Takes a fresh snapshot of the page context. Options given here are applied over the
    * application-wide ones (see `provideClrContextOptions`).
+   *
+   * While the application has provided a `ClrMutationPolicy`, every node the mutation
+   * engine could write to carries a `ref`, and the snapshot becomes the one those refs
+   * are valid against: a ref from an earlier snapshot that this one no longer lists is
+   * refused from here on.
    */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
-    const effective = this.effectiveOptions(options);
-    const snapshot: ClrPageContext = {
-      title: this.document.title,
-      url: this.currentUrl(),
-      regions: this.contextRegistry.collect(),
-      components: [],
-      collectedAt: new Date().toISOString(),
-    };
-    const route = this.routeContext();
-    if (route) {
-      snapshot.route = route;
-    }
-    if (effective.includeRoutes && this.router?.config.length) {
-      // Bounded by the resolved budget, so an out-of-range request is clamped here too.
-      const limit = Math.max(resolveSnapshotOptions(effective).maxItemsPerCollection, MIN_ROUTE_LIMIT);
-      snapshot.availableRoutes = availableRoutes(this.router.config, limit);
-    }
-    if (isPlatformBrowser(this.platformId) && effective.includeDomComponents !== false) {
-      const tree = collectClrDomContextTree(this.document, effective, this.customExtractors);
-      snapshot.components = tree.components;
-      if (tree.truncated) {
-        snapshot.truncated = true;
-      }
-      if (tree.focus) {
-        snapshot.focus = tree.focus;
-      }
-    }
+    const snapshot = this.snapshot(options, !!this.mutationPolicy);
+    this._latestSnapshot = snapshot;
+    this._latestSnapshotOptions = options ? { ...options } : null;
     return snapshot;
   }
 
@@ -169,7 +171,7 @@ export class ClrContextEngineService implements OnDestroy {
     const ceiling = this.untrustedCeiling(budgets);
     host[propertyName] = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
-      const snapshot = this.getSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
+      const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), false);
       return shareFormValues ? snapshot : withoutFormValues(snapshot);
     };
   }
@@ -200,7 +202,7 @@ export class ClrContextEngineService implements OnDestroy {
     // own options are the ceiling above that, so a frame cannot undo them either.
     const ceiling = this.untrustedCeiling(options?.snapshot);
     this.frameHost = new ClrContextFrameHost(
-      snapshotOptions => this.getSnapshot(capSnapshotOptions(snapshotOptions, ceiling)),
+      snapshotOptions => this.snapshot(capSnapshotOptions(snapshotOptions, ceiling), false),
       window,
       options
     );
@@ -222,6 +224,42 @@ export class ClrContextEngineService implements OnDestroy {
       return Promise.resolve(null);
     }
     return requestClrContextFromHost(options);
+  }
+
+  private snapshot(options: ClrContextSnapshotOptions | undefined, withRefs: boolean): ClrPageContext {
+    const effective = this.effectiveOptions(options);
+    const snapshot: ClrPageContext = {
+      title: this.document.title,
+      url: this.currentUrl(),
+      regions: this.contextRegistry.collect(),
+      components: [],
+      collectedAt: new Date().toISOString(),
+    };
+    const route = this.routeContext();
+    if (route) {
+      snapshot.route = route;
+    }
+    if (effective.includeRoutes && this.router?.config.length) {
+      // Bounded by the resolved budget, so an out-of-range request is clamped here too.
+      const limit = Math.max(resolveSnapshotOptions(effective).maxItemsPerCollection, MIN_ROUTE_LIMIT);
+      snapshot.availableRoutes = availableRoutes(this.router.config, limit);
+    }
+    if (isPlatformBrowser(this.platformId) && effective.includeDomComponents !== false) {
+      const refs = withRefs ? this.refs.begin() : null;
+      const tree = collectClrDomContextTree(this.document, effective, this.customExtractors, refs);
+      refs?.commit();
+      snapshot.components = tree.components;
+      if (tree.truncated) {
+        snapshot.truncated = true;
+      }
+      if (tree.focus) {
+        snapshot.focus = tree.focus;
+      }
+    } else if (withRefs) {
+      // Nothing was described, so nothing from before may be written to either.
+      this.refs.clear();
+    }
+    return snapshot;
   }
 
   /**
@@ -293,73 +331,4 @@ export class ClrContextEngineService implements OnDestroy {
     }
     return context;
   }
-}
-
-/**
- * The navigable routes in a router configuration, flattened to path patterns: children
- * under their parent, wildcards and redirects left out, lazily loaded children listed
- * only once loaded (the router keeps them where a walk cannot see them until then).
- */
-function availableRoutes(config: Route[], limit: number): ClrAvailableRoute[] {
-  const routes: ClrAvailableRoute[] = [];
-  const visit = (entries: Route[], prefix: string) => {
-    for (const entry of entries) {
-      if (routes.length >= limit) {
-        return;
-      }
-      const segment = entry.path ?? '';
-      if (segment === '**' || entry.redirectTo !== undefined) {
-        continue;
-      }
-      const path = [prefix, segment].filter(Boolean).join('/');
-      if (entry.component || entry.loadComponent || (!entry.children && !entry.loadChildren)) {
-        const route: ClrAvailableRoute = { path: path || '/' };
-        const title = entry.title ?? (entry.data as Record<string, unknown> | undefined)?.['title'];
-        if (typeof title === 'string' && title) {
-          route.title = title;
-        }
-        if (entry.loadChildren) {
-          route.lazy = true;
-        }
-        routes.push(route);
-      } else if (entry.loadChildren) {
-        routes.push({ path: path || '/', lazy: true });
-      }
-      if (entry.children) {
-        visit(entry.children, path);
-      }
-    }
-  };
-  visit(config, '');
-  return routes;
-}
-
-/**
- * Reduces a route's static `data` to its JSON-serializable subset, dropping functions,
- * class instances and anything nested too deeply. Route configuration commonly mixes
- * plain values (useful to an agent) with component references and factories (useless
- * and potentially huge), and only the former belongs in a snapshot.
- */
-function jsonSafe(value: unknown, depth: number): unknown {
-  if (value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
-    return value;
-  }
-  if (depth <= 0) {
-    return undefined;
-  }
-  if (Array.isArray(value)) {
-    const items = value.map(item => jsonSafe(item, depth - 1)).filter(item => item !== undefined);
-    return items.length ? items : undefined;
-  }
-  if (typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype) {
-    const result: Record<string, unknown> = {};
-    for (const [key, entry] of Object.entries(value)) {
-      const serializable = jsonSafe(entry, depth - 1);
-      if (serializable !== undefined) {
-        result[key] = serializable;
-      }
-    }
-    return Object.keys(result).length ? result : undefined;
-  }
-  return undefined;
 }

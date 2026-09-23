@@ -41,6 +41,7 @@ import {
 import {
   ClrCommonStringsService,
   ClrElementContextCallback,
+  ClrElementMutation,
   ClrLoadingState,
   FOCUS_SERVICE_PROVIDER,
   hasRequiredValidator,
@@ -48,6 +49,7 @@ import {
   Keys,
   LoadingListener,
   publishElementContext,
+  publishElementMutator,
 } from '@clr/angular/utils';
 import { debounceTime, Subject } from 'rxjs';
 
@@ -120,6 +122,7 @@ export class ClrCombobox<T>
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
   private teardownElementContext?: () => void;
+  private teardownElementMutator?: () => void;
 
   private _searchText = '';
   private onTouchedCallback: () => any;
@@ -319,6 +322,7 @@ export class ClrCombobox<T>
   ngAfterContentInit() {
     this.initializeSubscriptions();
     this.publishContext(this.comboboxHostElement);
+    this.publishMutator(this.comboboxHostElement);
 
     // Initialize with preselected value
     if (!this.optionSelectionService.selectionModel.isEmpty()) {
@@ -346,6 +350,7 @@ export class ClrCombobox<T>
   override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.teardownElementContext?.();
+    this.teardownElementMutator?.();
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -668,6 +673,66 @@ export class ClrCombobox<T>
     };
 
     this.teardownElementContext = publishElementContext(host, describe);
+  }
+
+  /**
+   * Says how this combobox is written to: its form control holds an option's value,
+   * which may be an object, while an agent knows the option by the label it saw in the
+   * published context. Given a label (one per item for multi-select) this returns the
+   * option's value for the engine to write through the form control; a label no option
+   * has is refused with the options named, so a value the component would otherwise
+   * accept silently never reaches the model. Read back, the selection is labels again.
+   */
+  private publishMutator(host: HTMLElement) {
+    this.teardownElementMutator = publishElementMutator(host, {
+      coerce: (proposed: unknown): ClrElementMutation => {
+        if (proposed === null || proposed === undefined || proposed === '') {
+          return { value: this.multiSelect ? [] : null };
+        }
+        const proposals = Array.isArray(proposed) ? proposed : [proposed];
+        if (!this.multiSelect && proposals.length > 1) {
+          return { refused: 'The combobox takes one option.' };
+        }
+        const items = this.options?.items?.toArray() ?? [];
+        if (!items.length) {
+          return { refused: 'No options are loaded: the combobox loads them as the user types.' };
+        }
+        const values: T[] = [];
+        for (const proposal of proposals) {
+          const option = items.find(candidate => this.optionMatches(candidate, proposal));
+          if (!option) {
+            const labels = items.slice(0, 25).map(candidate => `"${this.optionLabel(candidate)}"`);
+            return { refused: `No such option. The options are: ${labels.join(', ')}.` };
+          }
+          values.push(option.value);
+        }
+        return { value: this.multiSelect ? values : values[0] };
+      },
+      read: () => {
+        const model = this.optionSelectionService.selectionModel?.model;
+        if (model === null || model === undefined) {
+          return this.multiSelect ? [] : null;
+        }
+        const names = (Array.isArray(model) ? model : [model]).map(value => this.selectedValueLabel(value));
+        return this.multiSelect ? names : (names[0] ?? null);
+      },
+    });
+  }
+
+  private optionMatches(option: ClrOption<T>, proposal: unknown): boolean {
+    if (typeof proposal !== 'string') {
+      return proposal === option.value;
+    }
+    const wanted = proposal.replace(/\s+/g, ' ').trim().toLowerCase();
+    if (this.optionLabel(option).toLowerCase() === wanted) {
+      return true;
+    }
+    const value = option.value;
+    if (typeof value === 'string' || typeof value === 'number') {
+      return String(value).toLowerCase() === wanted;
+    }
+    const display = this.selectedValueLabel(value);
+    return typeof display === 'string' && display.toLowerCase() === wanted;
   }
 
   /** An option's visible label, without screen-reader-only additions such as "Selected". */

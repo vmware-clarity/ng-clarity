@@ -281,6 +281,119 @@
     <div class="clr-mt-16px">
       <app-code-snippet [code]="changesExample" language="typescript"></app-code-snippet>
     </div>
+
+    <h2 id="writing-back" class="clr-mt-48px" cds-text="title">Writing back</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Once an agent has read the page it usually wants to act on it: fill in the form it was asked about, or go to the
+      route it found under <code cds-text="code">availableRoutes</code>.
+      <code cds-text="code">ClrMutationEngineService</code>
+      is the write half of the same engine. It does two things — gives Angular-bound form controls values, and navigates
+      through the router — and nothing else: it does not submit, click, or invoke. The person does that.
+    </p>
+
+    <h3 id="mutation-policy" class="clr-mt-32px" cds-text="section">Enabling it: the policy</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Nothing is writable until the application says what writing would mean. A field is not consequential in itself;
+      "Delete account" is, and only the application knows which one that is. So the engine never guesses: the
+      application provides a <code cds-text="code">ClrMutationPolicy</code> that classifies each operation as
+      <code cds-text="code">reversible</code>, <code cds-text="code">consequential</code> (applied only once the
+      policy's <code cds-text="code">confirm</code> hook agrees — where a person sees what is about to happen) or
+      <code cds-text="code">forbidden</code>. Without a policy, snapshots carry no refs and every operation is refused
+      as <code cds-text="code">unclassified</code>.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="mutationPolicyExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h3 id="refs" class="clr-mt-32px" cds-text="section">Refs: addressing what to write</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      With a policy in place, every node an agent could propose a value for carries a
+      <code cds-text="code">ref</code> — <code cds-text="code">e12</code> — in the snapshot: text inputs, checkboxes,
+      radio groups, selects, comboboxes, date inputs, and a datagrid with row selection. An operation names its target
+      by ref and nothing else. A CSS selector is something a model can make up; a ref can only be recalled from a
+      snapshot it actually read. Each ref stays the same for the same element from one snapshot to the next, and is
+      refused as <code cds-text="code">stale</code> once the element is no longer in the latest snapshot — never
+      silently redirected to whatever now holds its place. Beside the ref, an operation carries the node's label in the
+      agent's words; when it does not match the node, the operation is refused as <code cds-text="code">mismatch</code>,
+      so a ref that drifted is caught rather than written to.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="refsExample" language="json"></app-code-snippet>
+    </div>
+
+    <h3 id="filling-forms" class="clr-mt-32px" cds-text="section">Filling forms</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      A value is written the way a user's input arrives: through the Angular form control, so the view updates,
+      <code cds-text="code">ngModelChange</code> fires once, and the control is marked dirty and touched — which is what
+      makes Clarity show its validation messages. Values are whatever an agent would naturally say: an option's label
+      for a select, combobox or radio group; <code cds-text="code">true</code> for a checkbox; a date or ISO string for
+      a date input; the rows to select for a datagrid. Components whose model differs from what an agent sees — the
+      combobox stores an option's value, the date input a locale string — translate for themselves, so a label no option
+      has is refused with the options named rather than accepted silently. <code cds-text="code">clear</code> is its own
+      operation, so a model can say "no value" deliberately instead of inventing one.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="applyExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      A result never says only "ok". It says what is true now: the value the control actually holds, its validity and
+      errors, and the previous value so the application can revert. A validation failure is therefore a result an agent
+      can repair from — which field, which validator — not a later surprise. The report ends with a fresh snapshot,
+      whose refs the agent continues from, and the difference from the snapshot before, so a multi-step agent can see
+      that a step changed nothing before it builds on it.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="resultExample" language="json"></app-code-snippet>
+    </div>
+
+    <h3 id="navigating" class="clr-mt-32px" cds-text="section">Navigating</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      A <code cds-text="code">navigate</code> operation takes a path exactly as
+      <code cds-text="code">availableRoutes</code> listed it, with values for its parameters, and goes there through the
+      router, so every guard the application configured runs. The outcome comes from the router's events rather than its
+      promise, which resolves <code cds-text="code">true</code> when a guard redirected the user somewhere else and
+      <code cds-text="code">false</code> when nothing needed to happen: the result says
+      <code cds-text="code">navigated</code>, <code cds-text="code">redirected</code> (and where to),
+      <code cds-text="code">rejected</code>, <code cds-text="code">unchanged</code> or
+      <code cds-text="code">failed</code>, with the URL the page is now at.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="navigateExample" language="typescript"></app-code-snippet>
+    </div>
+
+    <h3 id="mutation-limits" class="clr-mt-32px" cds-text="section">What it will not do</h3>
+    <ul class="list clr-mt-16px" cds-text="body">
+      <li>
+        <b cds-text="medium">Submit, click or invoke.</b> Filling and navigating are idempotent: repeating either
+        changes nothing. Submitting is the first operation that is not, and the first channel by which page content an
+        attacker influenced could send data somewhere. It stays with the person.
+      </li>
+      <li>
+        <b cds-text="medium">Write what a snapshot would not show.</b> A hidden, inert, disabled, read-only or ignored
+        control is refused, and so is anything in a redacted region — the agent is not the thing that types a password.
+        Form fields hidden from the user are a documented attack on form-filling agents, and the visibility rules are
+        the defence.
+      </li>
+      <li>
+        <b cds-text="medium">Write an unbound control.</b> A control without an Angular form binding — plain HTML the
+        application never modelled — is refused as <code cds-text="code">unbound</code>. What the model does not know
+        about, the engine does not touch.
+      </li>
+      <li>
+        <b cds-text="medium">Leave the application.</b> Neither the global accessor nor the frame bridge exposes the
+        mutation engine, and the snapshots they serve carry no refs. Writing is available to application code only.
+      </li>
+    </ul>
+    <p class="clr-mt-16px" cds-text="body">
+      A component whose value is not what an agent sees, or whose state is not a form control at all, says how it is
+      written to with <code cds-text="code">publishElementMutator</code> from
+      <code cds-text="code">&#64;clr/angular/utils</code> — the mirror of
+      <code cds-text="code">publishElementContext</code>. <code cds-text="code">ClrCombobox</code>,
+      <code cds-text="code">ClrDateInput</code> and <code cds-text="code">ClrDatagrid</code> ship this built in.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="elementMutatorExample" language="typescript"></app-code-snippet>
+    </div>
   </app-doc-tab>
 
   <app-doc-tab tab="api">

@@ -28,3 +28,18 @@
   height: 22rem;
   border: 1px dashed var(--cds-alias-object-border-color, #8c8c8c);
 }
+
+.mutation-panel {
+  .mutation-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin: 0.75rem 0 0;
+  }
+
+  .mutation-result {
+    margin-top: 0.75rem;
+    max-height: 18rem;
+    overflow: auto;
+    font-size: 0.7rem;
+  }
+}

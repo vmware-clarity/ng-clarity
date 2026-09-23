@@ -29,7 +29,13 @@ import {
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
-import { ClrCommonStringsService, publishElementContext, uniqueIdFactory } from '@clr/angular/utils';
+import {
+  ClrCommonStringsService,
+  ClrElementMutation,
+  publishElementContext,
+  publishElementMutator,
+  uniqueIdFactory,
+} from '@clr/angular/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
@@ -158,6 +164,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   SELECTION_TYPE = SelectionType;
 
   private teardownElementContext?: () => void;
+  private teardownElementMutator?: () => void;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;
@@ -300,7 +307,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // for it, but it is only meaningful alongside aria-rowindex on every row, which
     // Clarity does not set — so reporting it here avoids half-implemented ARIA that would
     // mislead a screen reader.
-    this.teardownElementContext = publishElementContext(this.el.nativeElement, () => {
+    this.teardownElementContext = publishElementContext(this.el.nativeElement, snapshotOptions => {
       const state: Record<string, unknown> = {};
 
       // Named apart from the `rowCount` the engine reads off the grid (the rows on this
@@ -308,6 +315,26 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       const total = this.page.size > 0 ? this.page.totalItems : 0;
       if (total > 0) {
         state.totalRows = total;
+      }
+
+      // Which rows can be selected, and which are: the rows by their content, so an
+      // agent can name one to select, and the selection in the same terms. A grid's
+      // rows are otherwise only counted, since listing every cell of every row would
+      // bury the page; here it is bounded by the collection budget and left out of a
+      // summary snapshot like every other item list.
+      if (this.selection.selectable) {
+        state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
+        const maxItems = snapshotOptions?.maxItemsPerCollection ?? 25;
+        if (snapshotOptions?.collectionItems !== 'summary') {
+          state.rows = this.rows
+            .toArray()
+            .slice(0, maxItems)
+            .map(row => this.rowLabel(row));
+        }
+        const selected = this.selectedRowLabels();
+        if (selected.length) {
+          state.selection = selected.slice(0, maxItems);
+        }
       }
 
       // A filter's state is a CSS class on its toggle, and the value it holds lives
@@ -335,6 +362,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
       return Object.keys(state).length ? { state } : null;
     });
+
+    this.publishMutator();
 
     if (!this.items.smart) {
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
@@ -523,6 +552,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   ngOnDestroy() {
     this.teardownElementContext?.();
+    this.teardownElementMutator?.();
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this.resizeObserver.disconnect();
@@ -681,4 +711,97 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.renderer.removeClass(rowsWrapper, scrollClass);
     }
   }
+
+  /**
+   * Says how the selection is written to, through the element mutator contract in
+   * `@clr/angular/utils`. Row selection is not a form control, so the mutation engine
+   * cannot reach it through one; it is written here instead, by naming rows the way the
+   * published context lists them, and read back the same way. The selection becomes
+   * exactly the rows named, so repeating a write changes nothing.
+   */
+  private publishMutator() {
+    this.teardownElementMutator = publishElementMutator(this.el.nativeElement, {
+      write: (proposed: unknown): ClrElementMutation => {
+        if (!this.selection.selectable) {
+          return { refused: 'The datagrid does not offer row selection.' };
+        }
+        const wanted =
+          proposed === null || proposed === undefined || proposed === ''
+            ? []
+            : Array.isArray(proposed)
+              ? proposed
+              : [proposed];
+        if (this.selection.selectionType === SelectionType.Single && wanted.length > 1) {
+          return { refused: 'The datagrid selects one row at a time.' };
+        }
+        const rows: ClrDatagridRow<T>[] = [];
+        for (const label of wanted) {
+          const row = this.rows.find(candidate => this.rowMatches(candidate, label));
+          if (!row) {
+            const listed = this.rows
+              .toArray()
+              .slice(0, 25)
+              .map(candidate => `"${this.rowLabel(candidate)}"`);
+            return { refused: `No such row on this page. The rows are: ${listed.join(', ')}.` };
+          }
+          if (this.selection.isLocked(row.item)) {
+            return { refused: `The row "${this.rowLabel(row)}" is locked and cannot be selected or deselected.` };
+          }
+          rows.push(row);
+        }
+        if (!rows.length) {
+          this.selection.clearSelection();
+        } else if (this.selection.selectionType === SelectionType.Single) {
+          this.selection.setSelected(rows[0].item, true);
+        } else {
+          this.selection.current = rows.map(row => row.item);
+        }
+        return { value: this.readSelection() };
+      },
+      read: () => this.readSelection(),
+    });
+  }
+
+  private readSelection(): string | string[] | null {
+    const selected = this.selectedRowLabels();
+    return this.selection.selectionType === SelectionType.Single ? (selected[0] ?? null) : selected;
+  }
+
+  private selectedRowLabels(): string[] {
+    return this.rows
+      .toArray()
+      .filter(row => this.selection.isSelected(row.item))
+      .map(row => this.rowLabel(row));
+  }
+
+  /** A row by its content: the text of its cells, in order. */
+  private rowLabel(row: ClrDatagridRow<T>): string {
+    return this.rowCells(row).join(' | ');
+  }
+
+  /** Whether a row is the one an agent named: by its whole label, or by any one cell of it. */
+  private rowMatches(row: ClrDatagridRow<T>, label: unknown): boolean {
+    if (typeof label !== 'string') {
+      return false;
+    }
+    const wanted = normaliseText(label);
+    if (!wanted) {
+      return false;
+    }
+    const cells = this.rowCells(row).map(cell => normaliseText(cell));
+    return normaliseText(this.rowLabel(row)) === wanted || cells.includes(wanted);
+  }
+
+  /** The row's content cells, not the selection or action cells the grid adds. */
+  private rowCells(row: ClrDatagridRow<T>): string[] {
+    return Array.from(row.el.nativeElement.querySelectorAll('clr-dg-cell'))
+      .filter(cell => cell.closest('clr-dg-row') === row.el.nativeElement)
+      .map(cell => normaliseText(cell.textContent ?? '', false))
+      .filter(Boolean);
+  }
+}
+
+function normaliseText(text: string, lowercase = true): string {
+  const collapsed = text.replace(/\s+/g, ' ').trim();
+  return lowercase ? collapsed.toLowerCase() : collapsed;
 }

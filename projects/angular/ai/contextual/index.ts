@@ -24,3 +24,5 @@ export * from './iframe/context-frame-bridge';
 export * from './context.directive';
 export * from './contextual.module';
 export { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS } from './untrusted-options';
+export * from './mutation/mutation.interface';
+export * from './mutation/mutation-engine.service';

@@ -8,6 +8,7 @@
 import {
   CLR_CONTEXT_IGNORE_ATTRIBUTE,
   CLR_ELEMENT_CONTEXT_PROPERTY,
+  CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
 } from '@clr/angular/utils';
@@ -36,6 +37,36 @@ export interface ClrContextDomExtractor {
   /** Describes the element's current state, or returns `null` when there is nothing to report. */
   extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
 }
+
+/**
+ * Receives, for every described node, the element it was produced from — so that a
+ * later operation can find the element again from the node's `ref`. The walk calls it
+ * innermost element first: a node folded into the custom element that renders it is
+ * noted once for the role-bearing element and once for the host, which is how the host
+ * that carries the form binding is reachable from a node the DOM attributed to an
+ * element inside it.
+ */
+export interface ClrContextRefSink {
+  note(node: ClrComponentContext, element: Element): void;
+}
+
+/**
+ * Roles an agent can propose a value for. A node with one of these roles is given a ref
+ * whether or not it turns out to be writable — the engine decides that when asked, and
+ * says why when it is not.
+ */
+export const WRITABLE_ROLES: ReadonlySet<string> = new Set([
+  'textbox',
+  'searchbox',
+  'combobox',
+  'listbox',
+  'checkbox',
+  'radio',
+  'switch',
+  'slider',
+  'spinbutton',
+  'radiogroup',
+]);
 
 /** Elements that never carry meaning for an agent. */
 const SKIPPED_TAGS = new Set(['script', 'style', 'template', 'link', 'meta', 'noscript', 'head']);
@@ -115,6 +146,15 @@ interface Walk {
   textDepth: number;
   /** How many described nodes are above the current one. */
   depth: number;
+  /** Greater than zero while inside an embedded frame's document. */
+  frameDepth: number;
+  /**
+   * Greater than zero while inside a custom element that published how it is written
+   * to: the component owns writing, so the controls it renders get no refs of their own.
+   */
+  mutatorDepth: number;
+  /** Where refs go, when the snapshot is to carry them. */
+  readonly refs: ClrContextRefSink | null;
 }
 
 /** The result of a walk, and whether it ran out of budget before it ran out of page. */
@@ -129,7 +169,8 @@ export interface ClrContextTreeResult {
 export function collectContextTreeWithin(
   root: ParentNode,
   options: Required<ClrContextSnapshotOptions>,
-  extractors: ClrContextDomExtractor[] = []
+  extractors: ClrContextDomExtractor[] = [],
+  refs: ClrContextRefSink | null = null
 ): ClrContextTreeResult {
   const walk: Walk = {
     options,
@@ -147,6 +188,9 @@ export function collectContextTreeWithin(
     summarizedListDepth: 0,
     textDepth: 0,
     depth: 0,
+    frameDepth: 0,
+    mutatorDepth: 0,
+    refs,
   };
   collectReferencedIds(root, walk);
   const scope = scopeOf(root, walk);
@@ -222,6 +266,23 @@ function noteUndescribed(element: Element, walk: Walk, owner: Element | null): v
   const probe: Walk = { ...walk, remaining: 1, truncated: false, probing: true };
   if (describeElement(element, probe, owner).length) {
     walk.truncated = true;
+  }
+}
+
+/**
+ * Describes what a custom element renders, noting when the element is a component that
+ * published how it is written to, so that nothing it renders is offered for writing on
+ * its own: the component speaks for its parts.
+ */
+function withinComponent<T>(element: Element, walk: Walk, describe: () => T): T {
+  if (!(CLR_ELEMENT_MUTATOR_PROPERTY in element)) {
+    return describe();
+  }
+  walk.mutatorDepth++;
+  try {
+    return describe();
+  } finally {
+    walk.mutatorDepth--;
   }
 }
 
@@ -363,7 +424,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
         : describeChildren(element, walk, owner);
     }
     // An anonymous custom element is a wrapper around whatever it renders.
-    const rendered = describeChildren(element, walk, element);
+    const rendered = withinComponent(element, walk, () => describeChildren(element, walk, element));
 
     // A single reportable descendant effectively IS this element, so it is returned
     // directly, attributed back to here (see the owner mechanism above) — how
@@ -391,7 +452,17 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
         return rendered;
       }
       walk.remaining--;
-      return [finish({ type: tagName, element: tagName, children: rendered }, element, walk)];
+      const wrapper: ClrComponentContext = { type: tagName, element: tagName, children: rendered };
+      // A component that is written to as one thing is named by the control it renders
+      // — a combobox by the input the user types into — so the node carrying its ref
+      // carries the name an agent would refer to it by.
+      if (CLR_ELEMENT_MUTATOR_PROPERTY in element) {
+        const named = rendered.find(part => part.label && WRITABLE_ROLES.has(part.type));
+        if (named) {
+          wrapper.label = named.label;
+        }
+      }
+      return [finish(wrapper, element, walk)];
     }
     // Nothing rendered, nothing said, nothing published: a closed modal, an icon, a
     // spacer. Such an element is not on the page as far as an agent is concerned.
@@ -447,7 +518,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     if (carriesText) {
       walk.textDepth++;
     }
-    const children = describeNested(element, walk, null);
+    const children = withinComponent(element, walk, () => describeNested(element, walk, null));
     if (carriesText) {
       walk.textDepth--;
     }
@@ -555,6 +626,7 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     const hostLabelIds = walk.labelIds;
     walk.describedByIds = new Set();
     walk.labelIds = new Set();
+    walk.frameDepth++;
     try {
       collectReferencedIds(contents, walk);
       const children = describeNested(contents.body, walk, null);
@@ -562,6 +634,7 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
         node.children = children;
       }
     } finally {
+      walk.frameDepth--;
       walk.describedByIds = hostDescribedByIds;
       walk.labelIds = hostLabelIds;
     }
@@ -668,7 +741,30 @@ function finish(node: ClrComponentContext, element: Element, walk: Walk, deep = 
     described = { ...withheld, state: { ...withheld.state, redacted: true } };
   }
 
-  return pruneEmpty(described, foreign);
+  const pruned = pruneEmpty(described, foreign);
+  noteRef(pruned, element, walk);
+  return pruned;
+}
+
+/**
+ * Gives a node a ref when it is something an agent could propose a value for — a
+ * writable role, or an element that published how it is written to — and records the
+ * element behind it. A node that already has a ref, because it was finished once for
+ * the element inside and is now being finished for the host that renders it, keeps the
+ * ref and gains the host as a second way to find its binding. Nothing inside a frame, a
+ * redacted region or a component that publishes its own mutator gets a ref: the engine
+ * never writes there, so nothing should invite it to.
+ */
+function noteRef(node: ClrComponentContext, element: Element, walk: Walk): void {
+  if (!walk.refs || walk.probing || walk.frameDepth > 0 || walk.redactedDepth > 0 || walk.mutatorDepth > 0) {
+    return;
+  }
+  if (node.ref || WRITABLE_ROLES.has(node.type) || CLR_ELEMENT_MUTATOR_PROPERTY in element) {
+    if (node.state?.['redacted'] === true) {
+      return;
+    }
+    walk.refs.note(node, element);
+  }
 }
 
 /** Whether an element and everything inside it is invisible to the engine. */
@@ -710,7 +806,7 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
  * `display: none`, `visibility: hidden`, `content-visibility: hidden` and full
  * transparency all hide it. `checkVisibility` without options only covers the first.
  */
-function isVisible(element: HTMLElement): boolean {
+export function isVisible(element: HTMLElement): boolean {
   if (typeof element.checkVisibility === 'function') {
     // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.
     return element.checkVisibility({ visibilityProperty: true, opacityProperty: true });
@@ -723,6 +819,9 @@ function pruneEmpty(context: ClrComponentContext, deep = false): ClrComponentCon
   const pruned: ClrComponentContext = { type: context.type };
   if (context.element) {
     pruned.element = context.element;
+  }
+  if (context.ref) {
+    pruned.ref = context.ref;
   }
   if (context.label) {
     pruned.label = context.label;

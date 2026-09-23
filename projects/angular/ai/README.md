@@ -19,5 +19,13 @@ component that publishes context does not depend on this entry point.
 Through custom extractors and a framework-agnostic `postMessage` protocol it also reaches other UI
 libraries and UI embedded in iframes, such as chat components.
 
+The engine's write half, the **mutation engine** (`ClrMutationEngineService`), lets an agent act
+on what it read: fill Angular-bound form controls (reactive and template-driven) and navigate to
+routes the snapshot listed, addressing controls by the `ref` each snapshot node carries. It never
+submits, clicks or invokes; never writes what a snapshot would not show; and does nothing at all
+until the application provides a `ClrMutationPolicy` classifying what each operation would do.
+Components whose value is not what an agent sees — the combobox, the date input, the datagrid's row
+selection — say how they are written to through `publishElementMutator` from `@clr/angular/utils`.
+
 The full guide, option reference and a live playground are on the Clarity website under "Contextual Engine"
 (`projects/website/src/app/documentation/demos/contextual-engine`).

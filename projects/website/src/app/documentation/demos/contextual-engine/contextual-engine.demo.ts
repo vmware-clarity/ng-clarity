@@ -248,6 +248,130 @@ this.contextEngine.getSnapshot({
 });
 `;
 
+const MUTATION_POLICY_EXAMPLE = `
+import { provideClrMutationPolicy } from '@clr/angular/ai';
+
+bootstrapApplication(AppComponent, {
+  providers: [
+    provideClrMutationPolicy({
+      // What each operation would do. Never inferred: the application declares it.
+      classify: target => {
+        if (target.operation === 'navigate') {
+          return target.path.startsWith('billing') ? 'consequential' : 'reversible';
+        }
+        return target.label === 'Account owner' ? 'forbidden' : 'reversible';
+      },
+      // Asked before anything consequential is applied; resolving false refuses it.
+      confirm: target => this.dialogs.confirm(\`Go to \${target.url}?\`),
+    }),
+  ],
+});
+`;
+
+const REFS_EXAMPLE = `
+{
+  "type": "combobox",
+  "element": "clr-combobox",
+  "ref": "e6",
+  "label": "Cluster",
+  "state": { "options": ["Alpha cluster", "Beta cluster"], "value": null }
+}
+`;
+
+const APPLY_EXAMPLE = `
+const report = await this.mutationEngine.apply([
+  { operation: 'setValue', ref: 'e1', description: 'Name', value: 'Ada' },
+  { operation: 'setValue', ref: 'e6', description: 'Cluster', value: 'Beta cluster' },
+  { operation: 'setValue', ref: 'e9', description: 'When', value: '2026-03-06' },
+  { operation: 'setValue', ref: 'e14', description: 'Hosts', value: ['esx-01', 'esx-02'] },
+  { operation: 'clear', ref: 'e3', description: 'Notes' },
+]);
+
+// What each operation did, then the page as it is now and what changed.
+report.results; // ClrMutationResult[]
+report.snapshot; // a fresh ClrPageContext, with refs to continue from
+report.changes; // diffClrContext(before, after)
+
+// plan() resolves, classifies and coerces without writing anything.
+const plan = this.mutationEngine.plan(operations);
+`;
+
+const RESULT_EXAMPLE = `
+[
+  {
+    "operation": "setValue",
+    "ref": "e1",
+    "applied": true,
+    "value": "Ada",
+    "previous": "",
+    "status": "VALID"
+  },
+  {
+    "operation": "setValue",
+    "ref": "e6",
+    "applied": true,
+    "value": "Beta cluster",
+    "previous": null,
+    "status": "VALID"
+  },
+  {
+    "operation": "setValue",
+    "ref": "e2",
+    "applied": true,
+    "value": "",
+    "previous": "seed",
+    "status": "INVALID",
+    "errors": { "required": true }
+  },
+  {
+    "operation": "setValue",
+    "ref": "e6",
+    "applied": false,
+    "refused": "invalid",
+    "detail": "No such option. The options are: 'Alpha cluster', 'Beta cluster'."
+  },
+  {
+    "operation": "setValue",
+    "ref": "e7",
+    "applied": false,
+    "refused": "stale",
+    "detail": "The ref is not in the latest snapshot. Take a new snapshot and use its refs."
+  }
+]
+`;
+
+const NAVIGATE_EXAMPLE = `
+const report = await this.mutationEngine.apply([
+  { operation: 'navigate', path: 'clusters/:id', params: { id: '42' }, queryParams: { tab: 'hosts' } },
+]);
+
+report.results[0];
+// { operation: 'navigate', path: 'clusters/:id', applied: true, outcome: 'navigated', url: '/clusters/42?tab=hosts' }
+// or: { applied: true, outcome: 'redirected', url: '/login' }
+// or: { applied: false, outcome: 'rejected', url: '/', detail: 'A route guard refused the navigation.' }
+`;
+
+const ELEMENT_MUTATOR_EXAMPLE = `
+import { publishElementMutator } from '@clr/angular/utils';
+
+// A component whose form control takes something other than what an agent sees.
+this.teardown = publishElementMutator(this.host.nativeElement, {
+  // Turn the agent's proposal into what the control takes, or refuse with what would do.
+  coerce: proposed => {
+    const option = this.options.find(option => option.label === proposed);
+    return option ? { value: option.id } : { refused: \`No such option. The options are: \${this.labels()}.\` };
+  },
+  // Read the current value back in the agent's terms.
+  read: () => this.selectedOption()?.label ?? null,
+});
+
+// A component whose state is not a form control at all writes it itself.
+publishElementMutator(host, {
+  write: rows => { this.select(rows); return { value: this.selectedRowLabels() }; },
+  read: () => this.selectedRowLabels(),
+});
+`;
+
 @Component({
   templateUrl: './contextual-engine.demo.html',
   host: {
@@ -281,6 +405,12 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   optionsExample = OPTIONS_EXAMPLE;
   provideExample = PROVIDE_EXAMPLE;
   changesExample = CHANGES_EXAMPLE;
+  mutationPolicyExample = MUTATION_POLICY_EXAMPLE;
+  refsExample = REFS_EXAMPLE;
+  applyExample = APPLY_EXAMPLE;
+  resultExample = RESULT_EXAMPLE;
+  navigateExample = NAVIGATE_EXAMPLE;
+  elementMutatorExample = ELEMENT_MUTATOR_EXAMPLE;
 
   constructor() {
     super('contextual-engine');
