@@ -6,14 +6,10 @@
  */
 
 import { CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { DOCUMENT } from '@angular/common';
 import {
-  afterNextRender,
   Directive,
   ElementRef,
   EventEmitter,
-  Inject,
-  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -65,9 +61,7 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
   constructor(
     private readonly elementRef: ElementRef<HTMLElement>,
     private readonly cdkDropList: CdkDropList,
-    private readonly columnOrderingService: DatagridColumnsOrderService,
-    private readonly injector: Injector,
-    @Inject(DOCUMENT) private readonly document: Document
+    private readonly columnOrderingService: DatagridColumnsOrderService
   ) {
     cdkDropList.orientation = 'horizontal';
   }
@@ -126,43 +120,6 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
 
     this.reorderColumn(indices);
     return true;
-  }
-
-  /**
-   * Brings the column actions menu back on the given column, wherever it ended up.
-   *
-   * Only needed for a move that rebuilt the column views, which destroys the menu along with the
-   * column it belonged to. There is no menu left to re-anchor the way pinning does, so the one on the
-   * column in its new place is opened instead - the end state a caller wanted, reached by reopening
-   * rather than by keeping the original.
-   */
-  reopenColumnActions(column: ColumnDefinition<any>, direction: ColumnMoveDirection): void {
-    this.findColumnActionsTrigger(column)?.focus();
-
-    // Deferred until the click that started the move has finished propagating. The popover closes on
-    // an outside click and only ever forgives the event that opened it, so opening the menu while
-    // that click is still in flight - from a button that no longer exists - closes it again straight
-    // away. The trigger is looked up again here because the rebuild may have replaced it once more.
-    afterNextRender(
-      () => {
-        const trigger = this.findColumnActionsTrigger(column);
-
-        if (!trigger) {
-          return;
-        }
-
-        trigger.click();
-
-        // Opening a dropdown through its trigger makes it move focus to its first item, which is not
-        // the one that was just used. It does that from a timeout of its own - see
-        // DropdownFocusHandler.moveToFirstItemWhenOpen - so putting focus back has to be queued
-        // behind it rather than done here. Both are zero delay timeouts and this one is queued while
-        // the click above is still on the stack, so it always runs second, and the intermediate focus
-        // is never painted.
-        setTimeout(() => this.focusMoveAction(direction));
-      },
-      { injector: this.injector }
-    );
   }
 
   setDgColumnsContainer(): void {
@@ -295,41 +252,6 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
       previousIndex: previousIndex,
       currentIndex: currentIndex,
     };
-  }
-
-  /**
-   * Puts focus on the move action of the open menu, so repeating it does not mean finding it again.
-   *
-   * The menu is rendered into an overlay outside the datagrid, so it is reached through the document
-   * rather than through the host element. Only one menu is ever open - the others are kept out of the
-   * DOM entirely - so there is no ambiguity about which one this is.
-   */
-  private focusMoveAction(direction: ColumnMoveDirection): void {
-    this.document.querySelector<HTMLElement>(`.dropdown-menu [appfxcolumnmoveaction="${direction}"]`)?.focus();
-  }
-
-  /**
-   * The column actions trigger of a column, found by position rather than by identity - after a
-   * rebuild the elements are not the ones a caller was holding on to.
-   *
-   * Pinned columns are rendered in the static container ahead of the rest, so the rendered order has
-   * to be reconstructed instead of read straight off the column array.
-   */
-  private findColumnActionsTrigger(column: ColumnDefinition<any>): HTMLElement | null {
-    const visibleColumns = this.dgColumnsOrderColumns.filter(other => !other.hidden);
-    const renderedColumns = [
-      ...visibleColumns.filter(other => other.pinned),
-      ...visibleColumns.filter(other => !other.pinned),
-    ];
-    const renderedIndex = renderedColumns.findIndex(other => isEqualColumns(column, other));
-
-    if (renderedIndex < 0) {
-      return null;
-    }
-
-    return this.elementRef.nativeElement
-      .querySelectorAll<HTMLElement>('.datagrid-column-actions-toggle')
-      .item(renderedIndex);
   }
 
   private findColumnIndex(column: ColumnDefinition<any>) {

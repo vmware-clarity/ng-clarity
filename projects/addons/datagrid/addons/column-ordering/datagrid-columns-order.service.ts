@@ -8,6 +8,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Subject } from 'rxjs';
 
+import type { ColumnMoveDirection } from './datagrid-columns-order.directive';
 import { ColumnDefinition } from '../../shared/column/column-definitions';
 
 /**
@@ -34,4 +35,16 @@ export class DatagridColumnsOrderService {
    * Event emitter to tell the dragged column to set focus
    */
   readonly focusGrabbedColumn = new Subject<void>();
+
+  /**
+   * The column whose actions menu has to be opened again, with the move action that was used in it.
+   *
+   * A move that rebuilds the column views destroys the open menu along with its column, so the
+   * column in its new place opens its own menu instead. A BehaviorSubject, because that column may be
+   * created before or after the move reports itself here.
+   */
+  readonly reopenColumnActions = new BehaviorSubject<{
+    column: ColumnDefinition<any>;
+    direction: ColumnMoveDirection;
+  } | null>(null);
 }

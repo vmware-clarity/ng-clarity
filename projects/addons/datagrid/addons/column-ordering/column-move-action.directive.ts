@@ -8,6 +8,7 @@
 import { Directive, ElementRef, HostListener, Input } from '@angular/core';
 
 import { ColumnMoveDirection, DatagridColumnsOrderDirective } from './datagrid-columns-order.directive';
+import { DatagridColumnsOrderService } from './datagrid-columns-order.service';
 
 /**
  * Moves this column left, right, to the start, or to the end of the reorderable columns, meant for
@@ -34,11 +35,17 @@ export class ColumnMoveActionDirective {
 
   constructor(
     private readonly columnsOrderDirective: DatagridColumnsOrderDirective,
+    private readonly columnOrderingService: DatagridColumnsOrderService,
     private readonly elementRef: ElementRef<HTMLElement>
   ) {}
 
   get disabled(): boolean {
     return !this.columnsOrderDirective.canMoveColumn(this.columnIndex, this.direction);
+  }
+
+  /** Used to put focus back on this action once its menu has been reopened after a move. */
+  focus(): void {
+    this.elementRef.nativeElement.focus();
   }
 
   @HostListener('click')
@@ -60,7 +67,7 @@ export class ColumnMoveActionDirective {
     // destroyed with the column it belonged to - there is no menu left to re-anchor, so the one on
     // the column in its new place is opened instead to end up in the same state.
     if (!this.elementRef.nativeElement.isConnected) {
-      this.columnsOrderDirective.reopenColumnActions(column, this.direction);
+      this.columnOrderingService.reopenColumnActions.next({ column, direction: this.direction });
     }
   }
 }
