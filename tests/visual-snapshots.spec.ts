@@ -6,9 +6,9 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { StoryIndex } from '@storybook/types';
 import * as fs from 'fs';
 import * as path from 'path';
+import type { StoryIndex } from 'storybook/internal/types';
 
 import { density, matrixKey, screenshotExpectOptions, screenshotPathFor, theme } from './helpers/vrt';
 import { screenshotOptions } from './screenshot-options';
@@ -21,20 +21,19 @@ const index: StoryIndex = JSON.parse(fs.readFileSync(indexFilePath).toString());
 const entries = Object.values(index.entries);
 
 /**
- * Snapshot paths are derived from the story file's `importPath`, never from its `title`.
- * A title is a hand-typed string; the file path is not, so renaming or retitling a story
- * can no longer silently orphan 8 committed PNGs.
+ * Snapshot paths are derived from the story file's `importPath`, never from its `title`, so
+ * retitling a story does not move or orphan its committed PNGs.
  *
- *   importPath: "./.storybook/stories/datepicker/datepicker-opened.stories.ts"
- *   storyId:    "datepicker-opened--month-view"
- *   group:      "datepicker"                         <- the directory
- *   storyName:  "datepicker-opened--month-view"      <- "<file>--<story>"
- *   snapshot:   "<browser>/datepicker/datepicker-opened--month-view-<theme>-<density>.png"
+ *   importPath: "./.storybook/stories/components/forms/datepicker/datepicker-opened.stories.ts"
+ *   storyId:    "components-forms-datepicker-opened--month-view"
+ *   group:      "components/forms/datepicker"            <- the directory
+ *   storyName:  "datepicker-opened--month-view"          <- "<file>--<story>"
+ *   snapshot:   "<browser>/components/forms/datepicker/datepicker-opened--month-view-<theme>-<density>.png"
  *
- * The file's base name is part of the story name because a directory holds many story files
- * that routinely export the same story names (every `addons/*.stories.ts` exports `Default`,
- * `side-panel.stories.ts` and `side-panel-inline.stories.ts` export the same 17 names, ...).
- * Without it, 101 of the 561 stories would share a snapshot path with another story.
+ * The file's base name is part of the story name because sibling story files routinely export
+ * the same story names (`side-panel.stories.ts` and `side-panel-inline.stories.ts` share all of
+ * theirs). Without it those stories would share a snapshot path, and the last one written would
+ * silently replace the other's baseline; the duplicate check below guards against that.
  */
 function groupFor(importPath: string) {
   return path

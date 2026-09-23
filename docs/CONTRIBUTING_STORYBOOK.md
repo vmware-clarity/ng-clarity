@@ -70,10 +70,6 @@ that are merely complicated.
 - **Supporting data and models:** `<name>.data.ts` and `<name>.model.ts`. These are not components; do not
   give them the `.storybook.component.ts` suffix.
 
-> **While the restructure is in progress:** if the directory you are editing has not been moved into the tree
-> above yet, add your file beside its existing siblings and leave the path alone. Directory moves are made in
-> one separately reviewed change, because they rewrite snapshot paths.
-
 ## The canonical story file
 
 This is the shape every story file converges on. Copy it as a starting point.
@@ -314,36 +310,41 @@ they are not a drop-in replacement for an inline `<style>` block that was stylin
 **Do not invent a `title:`.** It is computed from the file's path:
 
 ```
-title = the path segments of dirname(file), relative to .storybook/stories/,
-        each segment Title-Cased from kebab-case,
-        joined with '/'
+directory title = the path segments of dirname(file), relative to .storybook/stories/,
+                  each segment Title-Cased from kebab-case, joined with '/'
+
+title = directory title                          if the file is the directory's primary file
+      = directory title + '/' + Title-Cased leaf  otherwise
 ```
 
-Title-Casing splits the segment on `-` and capitalises each word, except the words
+A file is the directory's **primary** file when it is the only story file in the directory, or when its base
+name equals the directory name. Every other file adds its own leaf: its base name, with a redundant
+`<directory>-` prefix stripped. Title-Casing splits on `-` and capitalises each word, except
 `and, or, in, on, of, with, to, a, an, the`, which stay lowercase unless they are the first word. So:
 
-- `.storybook/stories/components/badge/badge.stories.ts` → `Components/Badge`
-- `.storybook/stories/components/data/stack-view/stack-view.stories.ts` → `Components/Data/Stack View`
-- `.storybook/stories/patterns/datagrid-in-modal/datagrid-in-modal.stories.ts` → `Patterns/Datagrid in Modal`
+- `components/badge/badge.stories.ts` → `Components/Badge` (the only file, so primary)
+- `components/accordion/accordion.stories.ts` → `Components/Accordion` (named after its directory)
+- `components/accordion/accordion-panel.stories.ts` → `Components/Accordion/Panel` (prefix stripped)
+- `foundations/spacing/gaps.stories.ts` → `Foundations/Spacing/Gaps` (no primary file in that directory)
 
-The file's own base name contributes **nothing** to the title. That is what keeps `Badge/Badge` from
-happening, and it means that **every story file in a directory merges into one sidebar entry**. Four files in
-`foundations/spacing/` all appear under `Foundations/Spacing`.
+Every story file therefore gets its own title. That matters: two files sharing a title would share one
+story-id namespace, and Storybook refuses to index a duplicate story id, so the build would fail. The rule
+reports two files resolving to the same title before Storybook gets that far.
 
-Two consequences:
+Two consequences worth knowing:
 
-1. Files that share a directory share one title, and therefore one story-id namespace. **Story export names
-   must be unique across all files in the directory** — two files in `components/data/datagrid/` cannot both
-   export `Default`, because both would resolve to the story id `components-data-datagrid--default`.
-   (Snapshot paths are safe either way: they include the file's base name. It is the Storybook side that
-   collides.)
-2. Splitting a long story file into two files in the same directory changes nothing about the sidebar. Do it
-   freely; it is a pure readability improvement.
+1. **Adding or removing a story file can retitle one you did not touch.** A directory's single file is its
+   primary file only while it is alone, so adding a sibling moves it to a leaf title (and vice versa). Its
+   story ids and URLs change with it. Name the file after its directory if you want its title to stay put, and
+   run the full `npm run _lint:code` rather than `lint:changed` after adding or removing a story file, since
+   the file whose title changed is not one you edited.
+2. Splitting a story file into two files in the same directory adds a sidebar entry; it is not a
+   sidebar-neutral change.
 
-When Title-Casing genuinely cannot produce the right label — `Components/Forms/Checkbox and Toggle` from
-`checkbox-toggle` — the exception goes in `eslint-rules/storybook-title-overrides.js`, which is the _single_
-place a non-derivable label may be declared. Do not work around a bad title by hand-editing `title:`; the lint
-rule will just rewrite it.
+When Title-Casing genuinely cannot produce the right label, the exception goes in
+`eslint-rules/storybook-title-overrides.js`, which is the _single_ place a non-derivable label may be declared.
+The map is empty today. Do not work around a bad title by hand-editing `title:`; the lint rule will just
+rewrite it.
 
 In practice: write the file, run `npx eslint --fix <your file>`, and the correct `title:` appears. If it
 appears wrong, the file is in the wrong directory.
@@ -426,8 +427,8 @@ there are derived from the story file's path, in two forms: `<group>` (the file'
 story in it) and `<group>/<file>--<story-name>` (one story):
 
 ```ts
-'datagrid': { fullPageScreenshot: true },
-'datagrid/datagrid-row--live-updating': { exclude: true },
+'components/data/datagrid': { fullPageScreenshot: true },
+'components/data/datagrid/datagrid-row--live-updating': { exclude: true },
 ```
 
 A key can be read straight off a snapshot path and back again, since the snapshot lands at
@@ -638,9 +639,9 @@ Story files are checked by, in addition to the repository-wide Prettier, Styleli
   `eslint-rules/` plugin;
 - `no-restricted-imports`, which bans the `StoryFn` import (R4) and relative `../**/helpers/*` paths (R9).
 
-The story rules run as **warnings** while the existing story files are being converted to the shape above,
-and are raised to errors once that conversion lands. Treat a warning as an error in anything you write: a
-warning here means your file is one of the ones somebody will have to come back and fix.
+The story rules are **errors**: every story file conforms, and a violation fails `npm run lint`. The one
+standing warning is `storybook/prefer-pascal-case` on four legacy `datagrid-row` exports, which keeps them
+visible without failing the build.
 
 If one of these rules fires on something you believe is correct, say so in the PR and leave the rule alone.
 Do not add an inline `eslint-disable`, and do not downgrade a rule to make a build pass.

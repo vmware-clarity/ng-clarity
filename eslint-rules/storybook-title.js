@@ -87,8 +87,8 @@ function storyFilesIn(directory) {
  * A directory with a single story file, or whose story file repeats the directory name, is that
  * directory's *primary* file and takes the directory's own title. Every other file appends its own
  * leaf — with a redundant `<directory>-` prefix stripped — so that sibling files never merge into
- * one title. Merged titles share one story-id namespace, which silently drops stories whose export
- * names collide, so each file keeping its own title is load bearing, not cosmetic.
+ * one title. Merged titles share one story-id namespace, and Storybook refuses to index a duplicate
+ * story id, so each file keeping its own title is load bearing, not cosmetic.
  */
 function canonicalTitle(located) {
   const fileOverride = TITLE_OVERRIDES[located.relativePath];
@@ -167,8 +167,10 @@ function exportedStoryNames(filePath) {
 }
 
 /**
- * Files that resolve to `title` other than `self`. Recomputed per lint run and cached per stories
- * root, because both cross-file checks below need it.
+ * Files that resolve to `title` other than `self`, cached per stories root because both cross-file
+ * checks below need it. The cache lives for the life of the process: fine for the CLI, which starts
+ * fresh each run, but a long-lived ESLint server (an editor integration) keeps the tree it first saw
+ * until it restarts.
  */
 const siblingTitleCache = new Map();
 
