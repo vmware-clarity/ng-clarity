@@ -73,6 +73,23 @@ ruleTester.run('storybook-single-render', rule, {
       ].join('\n'),
       errors: [{ message: MULTIPLE_RENDERS_MESSAGE }],
     },
+    {
+      // an override comment with no reason is not a justification
+      code: ['export const Odd: Story = {', '  // render-override:', '  render: args => ({ props: args }),', '};'].join(
+        '\n'
+      ),
+      errors: [{ message: MISSING_OVERRIDE_COMMENT_MESSAGE }],
+    },
+    {
+      // the justification must be a line comment
+      code: [
+        'export const Odd: Story = {',
+        '  /* render-override: x */',
+        '  render: args => ({ props: args }),',
+        '};',
+      ].join('\n'),
+      errors: [{ message: MISSING_OVERRIDE_COMMENT_MESSAGE }],
+    },
   ],
 });
 

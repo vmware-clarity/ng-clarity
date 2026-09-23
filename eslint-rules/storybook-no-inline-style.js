@@ -28,6 +28,35 @@ function containsStyleTag(node) {
   return node.type === 'Literal' && typeof node.value === 'string' && node.value.includes('<style');
 }
 
+/**
+ * The initializer of the same-file `const` that `identifier` names, or undefined when it names
+ * anything else (a `let`, a parameter, an import, an unresolved global). Imports are not followed.
+ */
+function constInitializer(sourceCode, identifier) {
+  for (let scope = sourceCode.getScope(identifier); scope; scope = scope.upper) {
+    const variable = scope.set.get(identifier.name);
+
+    if (variable === undefined) {
+      continue;
+    }
+
+    const definition = variable.defs[variable.defs.length - 1];
+
+    if (
+      definition === undefined ||
+      definition.type !== 'Variable' ||
+      definition.parent.kind !== 'const' ||
+      definition.node.id.type !== 'Identifier'
+    ) {
+      return undefined;
+    }
+
+    return definition.node.init ?? undefined;
+  }
+
+  return undefined;
+}
+
 module.exports = {
   meta: {
     type: 'problem',
@@ -36,9 +65,18 @@ module.exports = {
     },
   },
   create: context => {
+    const sourceCode = context.sourceCode || context.getSourceCode();
+
     return {
       Property: node => {
-        if (isTemplateProperty(node) && containsStyleTag(node.value)) {
+        if (!isTemplateProperty(node)) {
+          return;
+        }
+
+        // `template: tpl` is inspected through `tpl`'s same-file `const` initializer.
+        const template = node.value.type === 'Identifier' ? constInitializer(sourceCode, node.value) : node.value;
+
+        if (template !== undefined && containsStyleTag(template)) {
           context.report({ node: node.value, message: MESSAGE });
         }
       },

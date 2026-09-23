@@ -22,6 +22,18 @@ ruleTester.run('storybook-no-inline-style', rule, {
     {
       code: 'const styles = `<style>.highlight { color: red; }</style>`;',
     },
+    {
+      // a same-file const without a <style>
+      code: "const tpl = '<b></b>';\nconst meta = { render: () => ({ template: tpl }) };",
+    },
+    {
+      // the parameter shadows the module-level const, so the const is not what is rendered
+      code: ["const tpl = '<style>.x {}</style>';", 'const meta = { render: tpl => ({ template: tpl }) };'].join('\n'),
+    },
+    {
+      // imports are not followed
+      code: "import { tpl } from './template';\nconst meta = { render: () => ({ template: tpl }) };",
+    },
   ],
   invalid: [
     {
@@ -42,6 +54,24 @@ ruleTester.run('storybook-no-inline-style', rule, {
     {
       code: "const component = { template: '<style>.a { color: red; }</style>' };",
       errors: [{ message: MESSAGE }],
+    },
+    {
+      // the template held in a same-file const
+      code: "const tpl = '<style>.x{}</style><b></b>';\nconst meta = { render: () => ({ template: tpl }) };",
+      output: null,
+      errors: [{ message: MESSAGE, line: 2, column: 43 }],
+    },
+    {
+      // a template literal, declared after its use
+      code: [
+        'const meta = { render: () => ({ template: tpl }) };',
+        'const tpl = `',
+        '  <style>.x {}</style>',
+        '  <b></b>',
+        '`;',
+      ].join('\n'),
+      output: null,
+      errors: [{ message: MESSAGE, line: 1, column: 43 }],
     },
   ],
 });
