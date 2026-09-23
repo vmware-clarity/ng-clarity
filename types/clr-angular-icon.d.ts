@@ -68,6 +68,7 @@ declare class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     private _status;
     private _inverse;
     private _badge;
+    private _innerOffset;
     private subscription;
     private _priorShape;
     constructor(el: ElementRef<HTMLElement>, cdr: ChangeDetectorRef);
@@ -87,16 +88,24 @@ declare class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
     set inverse(value: boolean);
     get badge(): string | boolean;
     set badge(value: string | boolean);
+    /**
+     * Given a pixel value, offsets any surrounding whitespace within the icon's svg,
+     * growing it outward by that amount on every side so the visible glyph fills its box.
+     */
+    get innerOffset(): number;
+    set innerOffset(value: number);
     ngOnInit(): void;
     ngAfterViewInit(): void;
     ngOnDestroy(): void;
     updateIcon(): void;
     updateIconSize(value: string): void;
+    updateInnerOffset(value: number): void;
     private cleanUpAdoptedStyleSheets;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIcon, never>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon, cds-icon", never, { "shape": { "alias": "shape"; "required": false; }; "size": { "alias": "size"; "required": false; }; "direction": { "alias": "direction"; "required": false; }; "flip": { "alias": "flip"; "required": false; }; "solid": { "alias": "solid"; "required": false; }; "status": { "alias": "status"; "required": false; }; "inverse": { "alias": "inverse"; "required": false; }; "badge": { "alias": "badge"; "required": false; }; }, {}, never, never, true, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrIcon, "clr-icon, cds-icon", never, { "shape": { "alias": "shape"; "required": false; }; "size": { "alias": "size"; "required": false; }; "direction": { "alias": "direction"; "required": false; }; "flip": { "alias": "flip"; "required": false; }; "solid": { "alias": "solid"; "required": false; }; "status": { "alias": "status"; "required": false; }; "inverse": { "alias": "inverse"; "required": false; }; "badge": { "alias": "badge"; "required": false; }; "innerOffset": { "alias": "innerOffset"; "required": false; }; }, {}, never, never, true, never>;
     static ngAcceptInputType_solid: unknown;
     static ngAcceptInputType_inverse: unknown;
+    static ngAcceptInputType_innerOffset: unknown;
 }
 
 /**
