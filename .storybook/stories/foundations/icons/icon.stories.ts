@@ -5,18 +5,31 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { arrowIcon, ClarityIcons, ClrIcon, homeIcon, imageIcon, userIcon } from '@clr/angular';
+import {
+  arrowIcon,
+  checkCircleIcon,
+  ClarityIcons,
+  ClrIcon,
+  exclamationCircleIcon,
+  homeIcon,
+  imageIcon,
+  userIcon,
+} from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { CommonModules } from '@storybook-helpers/common';
 import { withStyles } from '@storybook-helpers/decorators';
 
 /**
- * Every story here is a static gallery of `<cds-icon>` markup: there is nothing to configure, so the args
- * type has no keys at all. It is `Record<never, never>` rather than `Record<string, never>` because
- * Storybook's Angular arg transform rewrites a string index signature into one that requires `*Change`
- * handlers, which then rejects the `withStyles` decorator below.
+ * Every story here is a static gallery of `<cds-icon>` markup except Inner Offset, whose three
+ * controls are the only args. They are declared as known optional keys rather than widened to a
+ * `Record<string, …>`: Storybook's Angular arg transform rewrites a string index signature into one
+ * that requires `*Change` handlers, which then rejects the `withStyles` decorators below.
  */
-type IconArgs = Record<never, never>;
+type IconArgs = {
+  shape?: string;
+  size?: number;
+  offset?: number;
+};
 
 /**
  * Was an inline `<style>` at the head of the Custom Styles template. It is applied as a decorator on that
@@ -42,7 +55,24 @@ const ICON_CUSTOM_STYLES = `
   }
 `;
 
-ClarityIcons.addIcons(userIcon, imageIcon, homeIcon, arrowIcon);
+/** Was an inline `<style>` at the head of the Inner Offset template; applied as a decorator on that story. */
+const ICON_INNER_OFFSET_STYLES = `
+  .icon-box {
+    width: 300px;
+    justify-content: space-between;
+  }
+
+  .icon-offset-box {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+    border-radius: var(--cds-alias-object-border-radius-100);
+    background-color: var(--cds-alias-status-warning-tint);
+  }
+`;
+
+ClarityIcons.addIcons(userIcon, imageIcon, homeIcon, arrowIcon, exclamationCircleIcon, checkCircleIcon);
 
 const meta: Meta<IconArgs> = {
   title: 'Foundations/Icons/Icon',
@@ -335,6 +365,56 @@ export const Inverse: Story = {
       </div>
     `,
   }),
+};
+
+// ─── Inner Offset ─────────────────────────────────────────────────────────────
+
+export const InnerOffset: Story = {
+  decorators: [withStyles(ICON_INNER_OFFSET_STYLES)],
+  // render-override: this story compares an icon with and without an inner offset, driven by its own controls, which the meta template cannot express
+  render: args => ({
+    // ClrIcon's `size` input is a string (it parses t-shirt sizes or numeric strings), but the
+    // Storybook number control produces a real number, so it's coerced here before binding.
+    props: { ...args, size: String(args.size) },
+    template: `
+      <div cds-layout="vertical gap:md align:center">
+        <div class="icon-box" cds-layout="horizontal gap:md align:center">
+          Default
+          <span class="icon-offset-box" [style.width.px]="size" [style.height.px]="size">
+            <cds-icon [shape]="shape" [size]="size"></cds-icon>
+          </span>
+        </div>
+        <div class="icon-box" cds-layout="horizontal gap:md align:center">
+          Inner offset changed
+          <span class="icon-offset-box" [style.width.px]="size" [style.height.px]="size">
+            <cds-icon [shape]="shape" [size]="size" [innerOffset]="offset"></cds-icon>
+          </span>
+        </div>
+      </div>
+    `,
+  }),
+  argTypes: {
+    shape: {
+      control: 'select',
+      options: [
+        'exclamation-circle',
+        'check-circle',
+        'info-circle',
+        'exclamation-triangle',
+        'user',
+        'home',
+        'image',
+        'arrow',
+      ],
+    },
+    size: { control: { type: 'number', min: 8, max: 100, step: 1 } },
+    offset: { control: { type: 'number', min: 0, max: 100, step: 1 } },
+  },
+  args: {
+    shape: 'exclamation-circle',
+    size: 32,
+    offset: 12,
+  },
 };
 
 // ─── Custom Styles ────────────────────────────────────────────────────────────

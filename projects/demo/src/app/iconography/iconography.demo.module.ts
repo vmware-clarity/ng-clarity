@@ -12,6 +12,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { IconColorsDemo } from './icon-colors';
 import { IconInverseColorDemo } from './icon-inverse-color';
+import { IconOptionsDemo } from './icon-options';
 import { IconOrientationDemo } from './icon-orientation';
 import { IconSelectionDemo } from './icon-selection';
 import { IconSizeDemo } from './icon-size';
@@ -31,6 +32,7 @@ import { IconsViewBoxTestDemo } from './icons-view-box-test.demo';
     IconInverseColorDemo,
     IconVariantsDemo,
     IconsViewBoxTestDemo,
+    IconOptionsDemo,
   ],
   exports: [
     IconsDemo,
@@ -40,6 +42,7 @@ import { IconsViewBoxTestDemo } from './icons-view-box-test.demo';
     IconSizeDemo,
     IconInverseColorDemo,
     IconVariantsDemo,
+    IconOptionsDemo,
   ],
 })
 export class IconographyDemoModule {}
