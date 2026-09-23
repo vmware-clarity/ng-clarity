@@ -639,9 +639,7 @@ Story files are checked by, in addition to the repository-wide Prettier, Styleli
   `eslint-rules/` plugin;
 - `no-restricted-imports`, which bans the `StoryFn` import (R4) and relative `../**/helpers/*` paths (R9).
 
-The story rules are **errors**: every story file conforms, and a violation fails `npm run lint`. The one
-standing warning is `storybook/prefer-pascal-case` on four legacy `datagrid-row` exports, which keeps them
-visible without failing the build.
+The story rules are **errors**: every story file conforms, and a violation fails `npm run lint`.
 
 If one of these rules fires on something you believe is correct, say so in the PR and leave the rule alone.
 Do not add an inline `eslint-disable`, and do not downgrade a rule to make a build pass.

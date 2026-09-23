@@ -31,9 +31,7 @@ const ngClarityRules = require('eslint-plugin-ng-clarity-eslint-rules');
 const memberOrderingConfig = require('./.eslintrc-member-ordering');
 
 // The story-file rules of eslint-plugin-storybook's flat/recommended config, at their recommended
-// severities. `prefer-pascal-case` is a warning there, which is what keeps the four legacy
-// datagrid-row story exports reportable without failing the build: renaming a story export changes
-// its id and therefore its snapshot filename, so those are corrected alongside the snapshot move.
+// severities.
 const storybookRecommendedStoryRules = Object.fromEntries(
   storybookPlugin.configs['flat/recommended']
     .filter(config => config.files?.some(pattern => pattern.includes('*.stories.')))

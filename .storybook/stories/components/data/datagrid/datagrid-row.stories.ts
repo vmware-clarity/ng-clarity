@@ -174,25 +174,25 @@ type Story = StoryObj<RowArgs>;
 
 export const Row: Story = {};
 
-export const singleSelection: Story = {
+export const SingleSelection: Story = {
   args: {
     clrDgSelectionType: SelectionType.Single,
   },
 };
 
-export const multiSelection: Story = {
+export const MultiSelection: Story = {
   args: {
     clrDgSelectionType: SelectionType.Multi,
   },
 };
 
-export const emptyRow: Story = {
+export const EmptyRow: Story = {
   args: {
     emptyRow: true,
   },
 };
 
-export const compactEmptyRow: Story = {
+export const CompactEmptyRow: Story = {
   args: {
     emptyRow: true,
     compact: true,
