@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, input, Output } from '@angular/core';
+import { Component, effect, ElementRef, EventEmitter, inject, input, Output } from '@angular/core';
 import { RouterModule } from '@angular/router';
 
 import { SearchHighlightComponent } from './search-highlight.component';
@@ -24,7 +24,7 @@ import { SearchIndexEntry, SearchResult } from './search-index.model';
             class="search-result-row"
             role="option"
             [id]="'search-result-' + i"
-            [class.active]="i === activeIndex()"
+            [class.focused]="i === activeIndex()"
             [attr.aria-selected]="i === activeIndex()"
             [routerLink]="[result.entry.url]"
             [fragment]="result.entry.fragment"
@@ -58,4 +58,23 @@ export class SearchResultsPanelComponent {
   readonly activeIndex = input(-1);
 
   @Output() resultSelected = new EventEmitter<SearchIndexEntry>();
+
+  private readonly elementRef = inject(ElementRef<HTMLElement>);
+
+  // Same approach as ComboboxFocusHandler.scrollIntoSelectedModel: keyboard navigation only
+  // moves an index, it never scrolls the list on its own, so the active row must be scrolled
+  // into view manually whenever activeIndex changes.
+  constructor() {
+    effect(() => {
+      const index = this.activeIndex();
+
+      if (index < 0) {
+        return;
+      }
+
+      this.elementRef.nativeElement
+        .querySelector(`#search-result-${index}`)
+        ?.scrollIntoView({ behavior: 'smooth', block: 'center', inline: 'nearest' });
+    });
+  }
 }

@@ -31,9 +31,19 @@
   overflow: hidden;
   white-space: nowrap;
 
-  &:hover,
-  &.active {
+  &:hover {
     background-color: var(--cds-alias-object-interaction-background-hover);
+  }
+
+  &:active {
+    background-color: var(--cds-alias-object-interaction-background-active);
+  }
+
+  &.focused {
+    outline-color: Highlight;
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-offset: calc(-1 * var(--cds-global-space-2));
   }
 }
 

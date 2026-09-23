@@ -90,7 +90,7 @@
       <h4 cds-text="subsection" class="clr-mt-32px">Demo</h4>
       <div class="clr-mt-16px">
         <clr-tabs appfxOverflowTabs>
-          @for (tab of [].constructor(10); track tab; let i = $index) {
+          @for (tab of [].constructor(10); track $index; let i = $index) {
           <clr-tab>
             <button clrTabLink>Clarity Tab {{ i + 1 }}</button>
             <clr-tab-content>Tab {{ i + 1 }} content</clr-tab-content>

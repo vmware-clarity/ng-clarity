@@ -46,7 +46,7 @@ const DEBOUNCE_MS = 150;
           [attr.aria-expanded]="isOpen"
           [attr.aria-activedescendant]="activeIndex >= 0 ? 'search-result-' + activeIndex : null"
           (input)="onInput($event)"
-          (focus)="onFocus()"
+          (click)="onClick($event)"
           (keydown)="onKeydown($event)"
         />
       </label>
@@ -113,8 +113,9 @@ export class SearchBoxComponent implements OnInit, OnDestroy {
     this.querySubject.next(this.query);
   }
 
-  protected onFocus() {
+  protected onClick(event: MouseEvent) {
     if (this.query.trim().length >= MIN_QUERY_LENGTH) {
+      this.popoverService.openEvent = event;
       this.runSearch(this.query);
     }
   }
