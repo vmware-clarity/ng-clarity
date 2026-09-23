@@ -6165,6 +6165,8 @@ export class ClrTooltipTrigger {
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TreeFocusManagerService" needs to be exported by the entry point clr-angular.d.ts
     constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
+    collapseAll(): void;
+    expandAll(): void;
     // (undocumented)
     featuresService: TreeFeaturesService<T>;
     // (undocumented)
@@ -6189,7 +6191,10 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     broadcastFocusOnContainer(): void;
     // (undocumented)
+    get childrenAnimationState(): string;
+    // (undocumented)
     set clrForTypeAhead(value: string);
+    collapseDescendants(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -6199,6 +6204,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     set disabled(value: boolean);
     // (undocumented)
     expandable: boolean | undefined;
+    expandDescendants(): void;
     // (undocumented)
     get expanded(): boolean;
     set expanded(value: boolean);
@@ -6236,7 +6242,11 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     selectedChange: EventEmitter<ClrSelectedState>;
     // (undocumented)
+    _setExpandedInBulk(expanded: boolean): void;
+    // (undocumented)
     STATES: typeof ClrSelectedState;
+    // (undocumented)
+    _takeTabStop(): void;
     // (undocumented)
     get treeNodeLink(): ClrTreeNodeLink;
     // (undocumented)
@@ -9071,6 +9081,8 @@ export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     // (undocumented)
     fetchChildren(): void;
     // (undocumented)
+    get _loadedChildren(): RecursiveTreeNodeModel<T>[];
+    // (undocumented)
     parent: RecursiveTreeNodeModel<T> | null;
 }
 
@@ -9792,12 +9804,20 @@ export abstract class TreeNodeModel<T> {
     // (undocumented)
     abstract children: TreeNodeModel<T>[];
     // (undocumented)
+    _clearExpandedSubtree(): void;
+    // (undocumented)
+    _descendantsExpanded: boolean;
+    // (undocumented)
     destroy(): void;
     // (undocumented)
     get disabled(): boolean;
     set disabled(value: boolean);
     // (undocumented)
     expanded: boolean;
+    // (undocumented)
+    _isInExpandedSubtree(): boolean;
+    // (undocumented)
+    get _loadedChildren(): TreeNodeModel<T>[];
     // (undocumented)
     loading$: BehaviorSubject<boolean>;
     // (undocumented)
@@ -9806,11 +9826,15 @@ export abstract class TreeNodeModel<T> {
     // (undocumented)
     model: T | null;
     // (undocumented)
+    _node: ClrTreeNode<T> | null;
+    // (undocumented)
     nodeId: string;
     // (undocumented)
     abstract parent: TreeNodeModel<T> | null;
     // (undocumented)
     selected: BehaviorSubject<ClrSelectedState>;
+    // (undocumented)
+    _setExpandedRecursive(expanded: boolean): void;
     // (undocumented)
     setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean): void;
     // (undocumented)

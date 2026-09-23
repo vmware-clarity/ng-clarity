@@ -313,6 +313,38 @@
       <clr-tree-node-label-change-expand-demo></clr-tree-node-label-change-expand-demo>
     </section>
 
+    <h3 data-toc-item id="expand-all" cds-text="section" class="clr-mt-32px">Expanding or collapsing all nodes</h3>
+
+    <p cds-text="body" class="clr-mt-16px">
+      To expand or collapse every node at once, call the <code cds-text="code">expandAll()</code> and
+      <code cds-text="code">collapseAll()</code> methods of the tree. To do the same for a single subtree, call the
+      <code cds-text="code">expandDescendants()</code> and <code cds-text="code">collapseDescendants()</code> methods of
+      a tree node. Get hold of either through a template reference variable, for example
+      <code cds-text="code">&lt;clr-tree #tree&gt;</code> and then
+      <code cds-text="code">(click)="tree.expandAll()"</code>.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Nodes are updated without the expand animation, so this stays fast on large trees. The expanded state of each node
+      stays available through its own <code cds-text="code">[(clrExpanded)]</code> binding.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      After a bulk expand, nodes added later on, including lazy-loaded children, come in expanded: on a lazy-loaded
+      tree, expanding all fetches every level of the tree. This stops as soon as any node in scope is collapsed, so a
+      node expanded again afterwards does not cascade.
+    </p>
+
+    <p cds-text="body" class="clr-mt-16px">
+      Disabled nodes are left out of all of this, the same way they are left out of selection. A bulk operation skips a
+      disabled branch and leaves it as it was, so enabling that branch later does not expand it retroactively. Call
+      <code cds-text="code">expandDescendants()</code> on it if you need it opened.
+    </p>
+
+    <section class="clr-demo">
+      <clr-tree-expand-all-demo></clr-tree-expand-all-demo>
+    </section>
+
     <h3 data-toc-item id="routing-tree" cds-text="section" class="clr-mt-32px">Routing using a Tree</h3>
 
     <p cds-text="body" class="clr-mt-16px">

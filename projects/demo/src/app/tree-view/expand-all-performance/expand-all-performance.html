@@ -8,16 +8,11 @@
 <h4>Expand all performance</h4>
 
 <p>
-  A generated recursive tree to measure what it costs to expand or collapse a large amount of nodes the way the tree
-  view supports today: every node is bound with <code class="clr-code">[(clrExpanded)]</code> to a flag the page keeps
-  in its own data, and expanding everything means walking that data and flipping every flag.
-</p>
-
-<p>
-  In eager mode every node is in the DOM from the start, so the work is one change detection pass over every binding. In
-  lazy mode children are fetched on expand, so expanding cascades level after level and the "settled" column is the one
-  to look at. The "call" column only covers flipping the flags, which is cheap here because the real work happens during
-  change detection: compare <b>first frame</b> and <b>settled</b>.
+  A generated recursive tree to measure <code class="clr-code">expandAll()</code>,
+  <code class="clr-code">collapseAll()</code>, <code class="clr-code">expandDescendants()</code> and
+  <code class="clr-code">collapseDescendants()</code> on a large amount of nodes. In eager mode every node is in the DOM
+  from the start, so a bulk operation is pure state change plus one change detection pass. In lazy mode children are
+  fetched on expand, so expand all cascades level after level and the "settled" column is the one to look at.
 </p>
 
 <form clrForm clrLayout="horizontal" class="example-margin-bottom">
@@ -155,7 +150,6 @@
       *clrRecursiveFor="let node of data; getChildren: getChildren"
       [clrExpandable]="lazy ? !!node.children : undefined"
       [clrForTypeAhead]="node.name"
-      [(clrExpanded)]="node.expanded"
     >
       {{ node.name }}
     </clr-tree-node>
@@ -165,7 +159,6 @@
     <clr-tree-node
       *clrRecursiveFor="let node of data; getChildren: getChildren"
       [clrExpandable]="lazy ? !!node.children : undefined"
-      [(clrExpanded)]="node.expanded"
     >
       {{ node.name }}
     </clr-tree-node>
