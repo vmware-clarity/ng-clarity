@@ -52,6 +52,7 @@ export const APP_ROUTES: Routes = [
     path: 'datepicker',
     loadChildren: () => import('./datepicker/datepicker.demo.module').then(m => m.DatepickerDemoModule),
   },
+  { path: 'details', loadChildren: () => import('./details/details.demo.module').then(m => m.DetailsDemoModule) },
   {
     path: 'dropdown',
     loadChildren: () => import('./dropdown/dropdown.demo.module').then(m => m.DropdownDemoModule),

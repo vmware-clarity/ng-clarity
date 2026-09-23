@@ -1,0 +1,129 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../../../angular/styles/mixins';
+@use '../../../../angular/styles/core/tokens/variables.tokens' as tokens;
+@use '../../../../angular/styles/variables/variables.density' as density;
+@use '../../../../angular/image/icons.clarity';
+@use '../../../../angular/image/mixins.images' as images-mixins;
+@use '../../../../angular/accordion/variables.accordion' as accordion-variables;
+
+.clr-details-group {
+  max-width: var(--cds-global-layout-width-md);
+  margin-bottom: density.$clr-base-vertical-offset-xl;
+}
+
+.clr-details {
+  display: block;
+  border: tokens.$cds-alias-object-border-width-100 solid accordion-variables.$clr-accordion-border-color;
+  background: accordion-variables.$clr-accordion-content-background-color;
+
+  // Stacked panels share a single border, like the accordion
+  & + & {
+    border-top-width: 0;
+  }
+
+  &:first-child {
+    border-top-left-radius: accordion-variables.$clr-accordion-border-radius;
+    border-top-right-radius: accordion-variables.$clr-accordion-border-radius;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: accordion-variables.$clr-accordion-border-radius;
+    border-bottom-right-radius: accordion-variables.$clr-accordion-border-radius;
+  }
+
+  > summary {
+    display: flex;
+    align-items: center;
+    gap: density.$clr-base-horizontal-offset-m;
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l;
+    // Removes the native disclosure triangle (Chrome, Firefox, Edge)
+    list-style: none;
+    border-radius: inherit;
+    color: accordion-variables.$clr-accordion-text-color;
+    background-color: accordion-variables.$clr-accordion-header-background-color;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
+
+    @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+
+    // Removes the native disclosure triangle (Safari)
+    &::-webkit-details-marker {
+      display: none;
+    }
+
+    // Clarity caret icon. Used as a mask so it follows the text color in every state and theme.
+    &::before {
+      display: inline-block;
+      flex-shrink: 0;
+      content: '';
+
+      @include mixins.equilateral(density.$clr-base-icon-size-s);
+      @include images-mixins.icon-background-styles();
+
+      mask: icons.generateCaretIcon() center / contain no-repeat;
+      background-color: currentcolor;
+      transform: rotate(-90deg);
+      transition: transform tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
+    }
+
+    &:hover {
+      color: accordion-variables.$clr-accordion-text-color-hover;
+      background-color: accordion-variables.$clr-accordion-header-hover-background-color;
+    }
+
+    &:active {
+      color: accordion-variables.$clr-accordion-text-color-active;
+      background-color: accordion-variables.$clr-accordion-header-active-background-color;
+    }
+
+    &:focus-visible {
+      outline: tokens.$cds-alias-object-interaction-outline;
+      outline-offset: calc(-1 * #{tokens.$cds-alias-object-border-width-200});
+    }
+  }
+
+  &[open] > summary {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    background-color: accordion-variables.$clr-accordion-header-open-background-color;
+
+    &::before {
+      transform: rotate(0deg);
+    }
+
+    &:hover {
+      background-color: accordion-variables.$clr-accordion-header-open-hover-background-color;
+    }
+
+    &:active {
+      background-color: accordion-variables.$clr-accordion-header-open-active-background-color;
+    }
+  }
+
+  > .clr-details-content {
+    border-top: tokens.$cds-alias-object-border-width-100 solid accordion-variables.$clr-accordion-border-color;
+    // Aligns the content with the summary text (after the caret)
+    padding: density.$clr-base-vertical-offset-m density.$clr-base-horizontal-offset-l
+      density.$clr-base-vertical-offset-m
+      calc(
+        density.$clr-base-horizontal-offset-l + density.$clr-base-icon-size-s + density.$clr-base-horizontal-offset-m
+      );
+    color: accordion-variables.$clr-accordion-content-color;
+
+    @include mixins.generate-typography-token('SECONDARY-13-RG-STD');
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .clr-details > summary,
+  .clr-details > summary::before {
+    transition: none;
+  }
+}
