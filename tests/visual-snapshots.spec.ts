@@ -58,7 +58,18 @@ for (const entry of entries) {
   // Component-level options apply to all of the component's stories; a story-level entry
   // fills in what the component entry doesn't set.
   const options = { ...screenshotOptions[`${group}/${storyName}`], ...screenshotOptions[group] };
-  if (storyId.endsWith('--docs') || !group || options.exclude) {
+  if (storyId.endsWith('--docs')) {
+    continue;
+  }
+  // A story file placed directly in `.storybook/stories/` has no directory to name its snapshot
+  // group. Skipping it would silently leave every story in it without a snapshot, so fail loudly.
+  if (!group) {
+    throw new Error(
+      `Story "${storyId}" comes from "${entry.importPath}", which sits directly in .storybook/stories/. ` +
+        `Move the story file into a directory so its stories get a snapshot group.`
+    );
+  }
+  if (options.exclude) {
     continue;
   }
 
