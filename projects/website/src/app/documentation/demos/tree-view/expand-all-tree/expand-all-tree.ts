@@ -27,8 +27,12 @@ const EXAMPLE_HTML = `
     <clr-tree-node #europe>
       Europe
       <div class="btn-group btn-sm">
-        <button type="button" class="btn btn-link" (click)="europe.expandDescendants()">Expand Europe</button>
-        <button type="button" class="btn btn-link" (click)="europe.collapseDescendants()">Collapse Europe</button>
+        <button type="button" class="btn btn-link" (click)="europe.expandDescendants()">
+          Expand Europe
+        </button>
+        <button type="button" class="btn btn-link" (click)="europe.collapseDescendants()">
+          Collapse Europe
+        </button>
       </div>
       <clr-tree-node>
         UK
