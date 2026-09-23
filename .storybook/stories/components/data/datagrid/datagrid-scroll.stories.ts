@@ -8,6 +8,7 @@
 import { ClrComboboxModule, ClrConditionalModule, ClrDatagridModule, ClrPopoverModule } from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
+import { ELECTRONEGATIVITY_STYLES } from '@storybook-helpers/datagrid.helpers';
 import { withStyles } from '@storybook-helpers/decorators';
 import { type Element, elements } from '@storybook-helpers/elements.data';
 
@@ -15,18 +16,6 @@ import { type Element, elements } from '@storybook-helpers/elements.data';
 type ScrollArgs = {
   elements: Element[];
 };
-
-/** Was an inline `<style>` at the head of the story template; copied verbatim. */
-const ELECTRONEGATIVITY_STYLES = `
-  .electronegativity-container {
-    display: flex;
-    justify-content: space-between;
-
-    .electronegativity-bar {
-      background-color: var(--cds-alias-status-info);
-    }
-  }
-`;
 
 const meta: Meta<ScrollArgs> = {
   title: 'Components/Data/Datagrid/Scroll',

@@ -14,6 +14,7 @@ import {
 } from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
+import { ELECTRONEGATIVITY_STYLES, selectionTypeArgType } from '@storybook-helpers/datagrid.helpers';
 import { withStyles } from '@storybook-helpers/decorators';
 import { type Element, elements } from '@storybook-helpers/elements.data';
 import { HIGHLIGHT_STYLES, highlightArgs, highlightArgTypes } from '@storybook-helpers/highlight';
@@ -38,18 +39,6 @@ type ActionOverflowArgs = {
   height: number;
 };
 
-/** Was an inline `<style>` at the head of the story template; copied verbatim. */
-const ELECTRONEGATIVITY_STYLES = `
-  .electronegativity-container {
-    display: flex;
-    justify-content: space-between;
-
-    .electronegativity-bar {
-      background-color: var(--cds-alias-status-info);
-    }
-  }
-`;
-
 const meta: Meta<ActionOverflowArgs> = {
   title: 'Components/Data/Datagrid/Action Overflow',
   component: ClrDatagridActionOverflow,
@@ -62,15 +51,7 @@ const meta: Meta<ActionOverflowArgs> = {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
-    clrDgSelectionType: {
-      control: { type: 'select' },
-      // Legacy label -> value object; `InputType` types `options` as an array, hence the cast.
-      options: {
-        None: SelectionType.None,
-        Single: SelectionType.Single,
-        Multi: SelectionType.Multi,
-      } as unknown as SelectionType[],
-    },
+    clrDgSelectionType: selectionTypeArgType,
     // outputs
     clrDgActionOverflowOpenChange: { control: { disable: true } },
     // methods

@@ -9,6 +9,7 @@ import { ClrDatagridModule, ClrModalModule, ClrSignpostModule } from '@clr/angul
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
 import { CommonModules } from '@storybook-helpers/common';
+import { ELECTRONEGATIVITY_STYLES } from '@storybook-helpers/datagrid.helpers';
 import { withStyles } from '@storybook-helpers/decorators';
 import { type Element, elements } from '@storybook-helpers/elements.data';
 
@@ -19,17 +20,6 @@ type NestedDatagridDetailArgs = {
   modalOpen: boolean;
   actionOverflowOpen: boolean;
 };
-
-const ELECTRONEGATIVITY_STYLES = `
-  .electronegativity-container {
-    display: flex;
-    justify-content: space-between;
-
-    .electronegativity-bar {
-      background-color: var(--cds-alias-status-info);
-    }
-  }
-`;
 
 const meta: Meta<NestedDatagridDetailArgs> = {
   title: 'Patterns/Datagrid in Modal/Nested Datagrid Detail',

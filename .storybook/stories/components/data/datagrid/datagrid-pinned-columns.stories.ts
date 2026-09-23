@@ -8,6 +8,7 @@
 import { ClrConditionalModule, ClrDatagrid, ClrDatagridModule } from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
+import { ELECTRONEGATIVITY_STYLES } from '@storybook-helpers/datagrid.helpers';
 import { withStyles } from '@storybook-helpers/decorators';
 import { behaviorElements, type Element, elements } from '@storybook-helpers/elements.data';
 import type { BehaviorSubject } from 'rxjs';
@@ -26,18 +27,6 @@ type PinnedColumnsArgs = {
   behaviorElements: BehaviorSubject<Element[]>;
   setExpanded: (expanded: boolean, element: Element) => void;
 };
-
-/** Was an inline `<style>` at the head of both story templates; copied verbatim. */
-const ELECTRONEGATIVITY_STYLES = `
-  .electronegativity-container {
-    display: flex;
-    justify-content: space-between;
-
-    .electronegativity-bar {
-      background-color: var(--cds-alias-status-info);
-    }
-  }
-`;
 
 const meta: Meta<PinnedColumnsArgs> = {
   title: 'Components/Data/Datagrid/Pinned Columns',

@@ -8,6 +8,7 @@
 import { ClrConditionalModule, ClrDatagridModule, ClrDatagridRow, ClrTooltipModule, SelectionType } from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryContext, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
+import { selectionTypeArgType } from '@storybook-helpers/datagrid.helpers';
 import { withStyles } from '@storybook-helpers/decorators';
 import { type Element, elements } from '@storybook-helpers/elements.data';
 import { action } from 'storybook/actions';
@@ -64,15 +65,7 @@ const meta: Meta<ExpandableRowArgs> = {
     // inputs
     clrDgItem: { control: { disable: true } },
     clrDgSelected: { control: { disable: true } },
-    clrDgSelectionType: {
-      control: { type: 'select' },
-      // Legacy label -> value object; `InputType` types `options` as an array, hence the cast.
-      options: {
-        None: SelectionType.None,
-        Single: SelectionType.Single,
-        Multi: SelectionType.Multi,
-      } as unknown as SelectionType[],
-    },
+    clrDgSelectionType: selectionTypeArgType,
     // outputs
     clrDgExpandedChange: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },

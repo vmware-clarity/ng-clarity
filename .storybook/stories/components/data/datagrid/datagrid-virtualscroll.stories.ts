@@ -15,6 +15,7 @@ import {
 } from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
+import { ELECTRONEGATIVITY_STYLES, FOOTER_NAV_STYLES, selectionTypeArgType } from '@storybook-helpers/datagrid.helpers';
 import { withStyles } from '@storybook-helpers/decorators';
 import { behaviorElements, type Element } from '@storybook-helpers/elements.data';
 import type { BehaviorSubject } from 'rxjs';
@@ -58,31 +59,6 @@ type VirtualScrollArgs = Pick<ClrDatagrid, 'dataChanged' | 'resize'> & {
   setExpanded: (expanded: boolean, element: Element) => void;
 };
 
-/** Was part of an inline `<style>` at the head of the story template; copied verbatim. */
-const ELECTRONEGATIVITY_STYLES = `
-  .electronegativity-container {
-    display: flex;
-    justify-content: space-between;
-
-    .electronegativity-bar {
-      background-color: var(--cds-alias-status-info);
-    }
-  }
-`;
-
-/** Was part of an inline `<style>` at the head of the story template; copied verbatim. */
-const FOOTER_NAV_STYLES = `
-  .footer-nav-buttons {
-    display: inline-block;
-    margin-left: var(--cds-global-space-5);
-  }
-  .footer-button {
-    min-width: var(--cds-global-space-9);
-    margin: 0 0 0 var(--cds-global-space-5);
-    padding: 0;
-  }
-`;
-
 const meta: Meta<VirtualScrollArgs> = {
   title: 'Components/Data/Datagrid/Virtualscroll',
   component: ClrDatagrid,
@@ -95,15 +71,7 @@ const meta: Meta<VirtualScrollArgs> = {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
-    clrDgSelectionType: {
-      control: { type: 'select' },
-      // Legacy label -> value object; `InputType` types `options` as an array, hence the cast.
-      options: {
-        None: SelectionType.None,
-        Single: SelectionType.Single,
-        Multi: SelectionType.Multi,
-      } as unknown as SelectionType[],
-    },
+    clrDgSelectionType: selectionTypeArgType,
     // outputs
     clrDgRefresh: { control: { disable: true } },
     clrDgSelectedChange: { control: { disable: true } },

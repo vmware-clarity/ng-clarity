@@ -8,6 +8,7 @@
 import { ClrConditionalModule, ClrDatagridDetail, ClrDatagridModule, SelectionType } from '@clr/angular';
 import { type Meta, moduleMetadata, type StoryContext, type StoryObj } from '@storybook/angular';
 import { hideControls } from '@storybook-helpers/arg-types';
+import { ELECTRONEGATIVITY_STYLES, selectionTypeArgType } from '@storybook-helpers/datagrid.helpers';
 import { withStyles } from '@storybook-helpers/decorators';
 import { type Element, elements } from '@storybook-helpers/elements.data';
 import { HIGHLIGHT_STYLES, highlightArgs, highlightArgTypes } from '@storybook-helpers/highlight';
@@ -36,18 +37,6 @@ type DetailArgs = Pick<ClrDatagridDetail, 'close'> & {
   disabledDetailIndex: number;
   hiddenDetailIndex: number;
 };
-
-/** Was part of an inline `<style>` at the head of the story template; copied verbatim. */
-const ELECTRONEGATIVITY_STYLES = `
-  .electronegativity-container {
-    display: flex;
-    justify-content: space-between;
-
-    .electronegativity-bar {
-      background-color: var(--cds-alias-status-info);
-    }
-  }
-`;
 
 /** Was part of an inline `<style>` at the head of the story template; copied verbatim. */
 const REMOVED_MARGIN_STYLES = `
@@ -85,15 +74,7 @@ const meta: Meta<DetailArgs> = {
   argTypes: {
     // inputs
     clrDgSelected: { control: { disable: true } },
-    clrDgSelectionType: {
-      control: { type: 'select' },
-      // Legacy label -> value object; `InputType` types `options` as an array, hence the cast.
-      options: {
-        None: SelectionType.None,
-        Single: SelectionType.Single,
-        Multi: SelectionType.Multi,
-      } as unknown as SelectionType[],
-    },
+    clrDgSelectionType: selectionTypeArgType,
     clrDetailWidth: {
       description:
         'Sets the width of the detail pane as a percentage of the datagrid width. ' +
