@@ -9,8 +9,10 @@
   position: sticky;
   top: 0;
 
-  pre {
-    max-height: 42rem;
+  // Sticky, so the whole panel has to fit the viewport: the header and profile
+  // controls above the snapshot take about 18rem.
+  .snapshot-json {
+    max-height: min(42rem, calc(100vh - 18rem));
     overflow: auto;
     font-size: 0.7rem;
     line-height: 1.4;

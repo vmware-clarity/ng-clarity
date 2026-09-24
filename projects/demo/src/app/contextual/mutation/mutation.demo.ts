@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
   ClrComponentContext,
@@ -50,17 +50,17 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
   mutationResult = '';
 
   form = new FormGroup({
-    name: new FormControl(),
-    age: new FormControl(),
+    name: new FormControl('', Validators.required),
+    age: new FormControl<number | null>(null, [Validators.min(1), Validators.max(64)]),
     password: new FormControl(),
     description: new FormControl(),
     selectedOption: new FormControl(),
     selectedOptionCombobox: new FormControl(),
     datalist: new FormControl(),
-    option1: new FormControl(),
+    option1: new FormControl(false),
     date: new FormControl(),
     radio: new FormControl(),
-    toggle: new FormControl(),
+    toggle: new FormControl(true),
     files: new FormControl(),
     range: new FormControl(50),
   });

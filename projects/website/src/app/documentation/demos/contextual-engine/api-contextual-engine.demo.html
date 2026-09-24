@@ -39,9 +39,12 @@
       <td class="left"><b cds-text="medium">enableFrameBridge(options?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">
-        Starts answering context requests from embedded frames. Same-origin only unless told otherwise, and a frame
-        receives neither form values nor the URL's query string unless the host shares them. A frame's budgets are
-        capped at the host's own <code cds-text="code">snapshot</code> budgets.
+        Starts answering context requests from embedded frames. Same-origin only unless told otherwise. A frame receives
+        neither form values nor the page's address — only the route pattern, such as
+        <code cds-text="code">clusters/:id</code>, and links without their query strings — unless the host sets
+        <code cds-text="code">shareFormValues</code> or <code cds-text="code">shareFullUrl</code>. A frame's budgets are
+        capped at the host's own <code cds-text="code">snapshot</code> budgets, and at the defaults wherever the host
+        set none.
       </td>
     </tr>
     <tr>
@@ -65,9 +68,12 @@
         the page can call it, the caller is treated as untrusted: only the options in
         <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> are honoured (budgets, categories, roles, focus,
         collection mode — never selectors), each held to what the application allows through
-        <code cds-text="code">options</code> here and <code cds-text="code">provideClrContextOptions</code>, and what
-        the user entered — typed values, chosen options, ticked boxes — is withheld unless
-        <code cds-text="code">shareFormValues</code> is set.
+        <code cds-text="code">options</code> here and <code cds-text="code">provideClrContextOptions</code>, and to the
+        defaults wherever neither says: a caller cannot turn on <code cds-text="code">includeRoutes</code> or raise
+        <code cds-text="code">maxComponents</code> past them. What the user entered — typed values, chosen options,
+        ticked boxes, selected rows — is withheld unless <code cds-text="code">shareFormValues</code> is set, and the
+        page's address is reduced to its route pattern, with links losing their query strings, unless
+        <code cds-text="code">shareFullUrl</code> is set.
       </td>
     </tr>
     <tr>
@@ -102,6 +108,14 @@
       <td class="left"><b cds-text="medium">currentContext</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">ClrPageContext | null</code></td>
       <td class="left">The most recent snapshot, or <code cds-text="code">null</code> before tracking starts.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">isTracking</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">
+        Whether the tracker is watching the page. The tracker is shared: a consumer that only wants to look can check
+        this and leave starting and stopping to whoever owns tracking.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">start(options?)</b></td>
@@ -150,12 +164,15 @@
   </thead>
   <tbody>
     <tr>
-      <td class="left"><b cds-text="medium">apply(operations)</b></td>
+      <td class="left"><b cds-text="medium">apply(operations, snapshotOptions?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrMutationReport&gt;</code></td>
       <td class="left">
         Applies the operations in order — <code cds-text="code">setValue</code>, <code cds-text="code">clear</code>,
-        <code cds-text="code">navigate</code> — and reports what each did, then a fresh snapshot and the difference from
-        the one before. A refused operation does not stop the ones after it.
+        <code cds-text="code">navigate</code> — and reports what each did, then a fresh snapshot taken with
+        <code cds-text="code">snapshotOptions</code> and the difference from the page before. A refused operation does
+        not stop the ones after it. Calls run one at a time: a call made while another is running waits for it. Each
+        operation is resolved again after a confirmation, and refused as <code cds-text="code">stale</code> if its
+        target changed while the person was deciding.
       </td>
     </tr>
     <tr>
@@ -206,7 +223,10 @@
       </td>
       <td class="left">
         Goes to a route from <code cds-text="code">availableRoutes</code> through the router, with the pattern's
-        parameters filled in. Guards run; the outcome is read from the router's events.
+        parameters filled in. Each parameter fills one path segment literally — a slash or a space stays part of the
+        value — and <code cds-text="code">.</code> or <code cds-text="code">..</code> is refused. Guards run; the
+        outcome is read from the router's events. A route whose module has not loaded yet is listed as
+        <code cds-text="code">lazy</code>, and its own routes once it has.
       </td>
     </tr>
   </tbody>
@@ -291,8 +311,10 @@
       </td>
       <td class="left">
         Declares what an operation would do, given its resolved target: the node's ref, label, type and element, the
-        value about to be written, or the route and URL. The engine never infers this; a policy that throws or answers
-        anything else forbids.
+        <code cds-text="code">value</code> about to be written in the agent's terms (an option's label, not its bound
+        object, which is in <code cds-text="code">modelValue</code>), or the route, URL and query parameters. The engine
+        never infers this; a policy that throws or answers anything else forbids. Judge the element or the form control
+        rather than the label: a label is translated, and can repeat.
       </td>
     </tr>
     <tr>
@@ -302,6 +324,15 @@
         Optional. Asked before a consequential operation is applied; <code cds-text="code">false</code> refuses it as
         <code cds-text="code">declined</code>. A consequential operation with no hook to ask is refused as
         <code cds-text="code">unconfirmed</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">announce(report)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Optional. Told what an <code cds-text="code">apply()</code> did once it is done, so the application can let the
+        person know — through a live region or a message — which fields were filled for them and which now show an
+        error. The engine announces nothing itself: the words, and the language, are the application's.
       </td>
     </tr>
   </tbody>
@@ -322,10 +353,13 @@
   </thead>
   <tbody>
     <tr>
-      <td class="left"><b cds-text="medium">register(provider)</b></td>
+      <td class="left"><b cds-text="medium">register(provider, element?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
-        Registers a <code cds-text="code">ClrContextProvider</code>. Returns a function that unregisters it.
+        Registers a <code cds-text="code">ClrContextProvider</code>. Returns a function that unregisters it. Given the
+        element the annotation sits on, the annotation follows that element's fate: left out when the element is hidden,
+        ignored or outside the snapshot root, and reported without its state inside a redacted region.
+        <code cds-text="code">[clrContext]</code> passes its host element.
       </td>
     </tr>
     <tr>
@@ -388,16 +422,18 @@
     <tr>
       <td class="left"><b cds-text="medium">data-clr-context-ignore</b></td>
       <td class="left">
-        The element and everything inside it is invisible to the engine: never described, and its mutations never
-        trigger a re-scrape. Put it on UI that renders the context, so a panel cannot describe itself or loop. Exported
-        as <code cds-text="code">CLR_CONTEXT_IGNORE_ATTRIBUTE</code>.
+        The element and everything inside it is invisible to the engine: never described, never written to, and its
+        mutations and annotations never trigger a re-scrape. Put it on UI that renders the context, so a panel cannot
+        describe itself or loop. Exported as <code cds-text="code">CLR_CONTEXT_IGNORE_ATTRIBUTE</code>.
       </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">data-clr-context-redact</b></td>
       <td class="left">
         The control, or every control in the region, is still described — label, type, what it permits — but its value
-        is never reported. Exported as <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
+        is never reported, never written, and the text the region shows is left out. A component inside publishes only
+        that it is redacted: a datagrid reports neither its rows nor its selection. An annotation inside is reported
+        without its state. Exported as <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
       </td>
     </tr>
   </tbody>
@@ -406,7 +442,9 @@
 <h2 id="snapshot-options" cds-text="title" class="clr-mt-48px">Snapshot options</h2>
 <p class="clr-mt-16px" cds-text="body">
   <code cds-text="code">ClrContextSnapshotOptions</code>. Defaults are in
-  <code cds-text="code">CLR_CONTEXT_DEFAULT_OPTIONS</code>.
+  <code cds-text="code">CLR_CONTEXT_DEFAULT_OPTIONS</code>, which, like
+  <code cds-text="code">CLR_CONTEXT_PRESETS</code> and <code cds-text="code">CLR_CONTEXT_CATEGORIES</code>, is frozen:
+  spread it into an object of your own to change it.
 </p>
 <table class="table">
   <thead>
@@ -661,9 +699,11 @@
       <td class="left"><b cds-text="medium">ref</b></td>
       <td class="left clr-hidden-xs-down">String</td>
       <td class="left">
-        The handle the mutation engine accepts for this node — <code cds-text="code">e12</code>. Present only on nodes
-        the engine may be able to write to, and only while the application has provided a mutation policy. Stable for
-        the same element across snapshots; refused once the element is no longer in the latest one.
+        The handle the mutation engine accepts for this node — <code cds-text="code">e4k9x2m7q</code>. Present only on
+        nodes the engine may be able to write to, and only while the application has provided a mutation policy. Random,
+        so it cannot be guessed, and stable for the same element across snapshots, including a narrower snapshot that
+        left the element out; refused once the element has left the page. Only the engine hands out refs: one in
+        published or extracted context is removed.
       </td>
     </tr>
   </tbody>
@@ -701,7 +741,20 @@
         turns what an agent proposes into what the form control takes, or refuses with what would have been accepted;
         <code cds-text="code">write(proposed)</code> writes state that is not a form control, such as a datagrid's
         selection; <code cds-text="code">read()</code> reads the value back in the agent's terms. Every member is
-        optional. A component that publishes one speaks for the controls it renders, which get no refs of their own.
+        optional. Set <code cds-text="code">ownsContents</code> when the component is written as one thing and what it
+        renders is its own — a combobox's input and options — so those get no refs of their own. Leave it unset when the
+        contents belong to the application: controls in a datagrid's cells keep their own refs.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ClrHostAttribute</b></td>
+      <td class="left clr-hidden-xs-down">—</td>
+      <td class="left">
+        For a component that reports an ARIA attribute through a host binding —
+        <code cds-text="code">aria-invalid</code>, <code cds-text="code">role</code> — without overriding the
+        application: an attribute written in the template is kept, and once the application binds its own value, that
+        value wins. <code cds-text="code">new ClrHostAttribute(element, 'aria-invalid').value(computed)</code> from the
+        host binding getter.
       </td>
     </tr>
   </tbody>

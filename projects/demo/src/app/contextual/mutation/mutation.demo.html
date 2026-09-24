@@ -55,8 +55,11 @@
         <button type="submit" class="btn btn-sm" [disabled]="!routePath">Navigate</button>
       </div>
     </form>
-    <h4>Result</h4>
-    <pre class="mutation-result">{{ mutationResult || 'Nothing applied yet.' }}</pre>
+    <h4 id="mutation-result-heading">Result</h4>
+    <!-- A live region, so the outcome of each operation is announced as it arrives. -->
+    <div role="status" aria-labelledby="mutation-result-heading">
+      <pre class="mutation-result">{{ mutationResult || 'Nothing applied yet.' }}</pre>
+    </div>
   </div>
 
   <div class="clr-col-lg-7 clr-col-12">
@@ -78,131 +81,101 @@
       <h4>Request form</h4>
       <form clrForm [formGroup]="form" clrLayout="horizontal">
         <clr-input-container>
-          <label>Text</label>
+          <label>Requester</label>
           <input type="text" clrInput name="name" formControlName="name" />
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <clr-control-helper>Who is asking for the maintenance window.</clr-control-helper>
+          <clr-control-error>Enter who is asking.</clr-control-error>
         </clr-input-container>
         <clr-number-input-container>
-          <label>Number</label>
-          <input type="number" clrNumberInput name="age" formControlName="age" />
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <label>Hosts affected</label>
+          <input type="number" clrNumberInput name="age" formControlName="age" min="1" max="64" />
+          <clr-control-helper>Between 1 and 64.</clr-control-helper>
+          <clr-control-error>Enter a number between 1 and 64.</clr-control-error>
         </clr-number-input-container>
         <clr-password-container>
-          <label>Password</label>
+          <label>Approval code</label>
           <input type="password" clrPassword name="password" formControlName="password" />
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <clr-control-helper>The code from the change ticket. The readout masks it.</clr-control-helper>
         </clr-password-container>
         <clr-textarea-container>
-          <label>Textarea</label>
+          <label>Reason</label>
           <textarea clrTextarea name="description" formControlName="description"></textarea>
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <clr-control-helper>What the maintenance is for.</clr-control-helper>
         </clr-textarea-container>
         <clr-select-container>
-          <label>Basic select</label>
+          <label>Priority</label>
           <select clrSelect name="options" formControlName="selectedOption">
-            <option value="one">One</option>
-            <option value="two">Two</option>
-            <option value="three">Three</option>
+            <option value="low">Low</option>
+            <option value="normal">Normal</option>
+            <option value="urgent" disabled>Urgent (needs a manager)</option>
           </select>
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <clr-control-helper>Urgent is disabled, so the engine refuses it.</clr-control-helper>
         </clr-select-container>
         <clr-datalist-container>
-          <label>Datalist</label>
-          <input clrDatalistInput placeholder="No label" name="datalist" formControlName="datalist" />
+          <label>Datacenter</label>
+          <input clrDatalistInput name="datalist" formControlName="datalist" />
           <datalist>
-            <option value="one"></option>
-            <option value="two"></option>
-            <option value="three"></option>
+            <option value="Frankfurt"></option>
+            <option value="Oregon"></option>
+            <option value="Singapore"></option>
           </datalist>
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <clr-control-helper>Suggestions only: any name is accepted.</clr-control-helper>
         </clr-datalist-container>
         <clr-combobox-container>
-          <label>Combobox</label>
+          <label>Teams to notify</label>
           <clr-combobox name="combobox" formControlName="selectedOptionCombobox" [clrMulti]="true">
             <ng-container *clrOptionSelected="let selected">
-              <cds-icon shape="sun" size="12" role="img" aria-label="welcome home"></cds-icon>
+              <cds-icon shape="users" size="12" aria-hidden="true"></cds-icon>
               {{ selected }}
             </ng-container>
             <clr-options>
-              <clr-option [clrValue]="'one'">One</clr-option>
-              <clr-option [clrValue]="'two'">Two</clr-option>
-              <clr-option [clrValue]="'three'">Three</clr-option>
+              <clr-option [clrValue]="'network'">Network</clr-option>
+              <clr-option [clrValue]="'storage'">Storage</clr-option>
+              <clr-option [clrValue]="'security'">Security</clr-option>
             </clr-options>
           </clr-combobox>
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <clr-control-helper>Pick one or more, by label.</clr-control-helper>
         </clr-combobox-container>
         <clr-checkbox-container>
-          <label>Checkbox</label>
+          <label>Owners</label>
           <clr-checkbox-wrapper>
-            <input type="checkbox" clrCheckbox name="option1" value="option1" formControlName="option1" />
-            <label>Option 1</label>
+            <input type="checkbox" clrCheckbox name="option1" formControlName="option1" />
+            <label>Email the VM owners</label>
           </clr-checkbox-wrapper>
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
         </clr-checkbox-container>
         <clr-date-container>
-          <label>Datepicker</label>
+          <label>Start date</label>
           <input type="date" autocomplete="off" clrDate formControlName="date" name="date" />
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <clr-control-helper>Give a date such as 2026-03-06.</clr-control-helper>
+          <clr-control-error>Enter a valid date.</clr-control-error>
         </clr-date-container>
         <clr-radio-container>
-          <label>Basic radio</label>
+          <label>Impact</label>
           <clr-radio-wrapper>
-            <input type="radio" clrRadio name="radio" value="radio1" formControlName="radio" />
-            <label>Option 1</label>
+            <input type="radio" clrRadio name="radio" value="none" formControlName="radio" />
+            <label>No downtime</label>
           </clr-radio-wrapper>
           <clr-radio-wrapper>
-            <input type="radio" clrRadio name="radio" value="radio2" formControlName="radio" />
-            <label>Option 2</label>
+            <input type="radio" clrRadio name="radio" value="outage" formControlName="radio" />
+            <label>Planned outage</label>
           </clr-radio-wrapper>
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
         </clr-radio-container>
         <clr-toggle-container>
-          <label>Full toggle switch</label>
+          <label>Evacuation</label>
           <clr-toggle-wrapper>
-            <input type="checkbox" clrToggle value="option1" name="toggle-full" formControlName="toggle" />
-            <label>Option 1</label>
+            <input type="checkbox" clrToggle name="toggle" formControlName="toggle" />
+            <label>Live-migrate running VMs first</label>
           </clr-toggle-wrapper>
-          <clr-toggle-wrapper>
-            <input type="checkbox" clrToggle value="option2" name="toggle-full" formControlName="toggle" />
-            <label>Option 2</label>
-          </clr-toggle-wrapper>
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
         </clr-toggle-container>
         <clr-file-input-container>
-          <label>File Input</label>
-          <input type="file" formControlName="files" multiple required clrFileInput />
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <label>Runbook</label>
+          <input type="file" formControlName="files" clrFileInput />
+          <clr-control-helper>Files are for the user to choose: the engine refuses to write them.</clr-control-helper>
         </clr-file-input-container>
         <clr-range-container [clrRangeHasProgress]="true">
-          <label>Range</label>
-          <input type="range" clrRange name="three" formControlName="range" />
-          <clr-control-helper>Helper Subtext</clr-control-helper>
-          <clr-control-error>State Subtext</clr-control-error>
-          <clr-control-success>State Subtext</clr-control-success>
+          <label>Rollout</label>
+          <input type="range" clrRange name="three" formControlName="range" min="0" max="100" step="10" />
+          <clr-control-helper>Percentage of hosts per wave, in steps of 10.</clr-control-helper>
         </clr-range-container>
       </form>
 
@@ -221,7 +194,7 @@
     <div class="card mutation-readout" data-clr-context-ignore>
       <div class="card-header">What the application sees</div>
       <div class="card-block">
-        <pre>{{ readout() }}</pre>
+        <pre class="mutation-readout-json">{{ readout() }}</pre>
       </div>
     </div>
   </div>

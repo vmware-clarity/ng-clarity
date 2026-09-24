@@ -259,10 +259,13 @@ bootstrapApplication(AppComponent, {
         if (target.operation === 'navigate') {
           return target.path?.startsWith('billing') ? 'consequential' : 'reversible';
         }
-        return target.label === 'Account owner' ? 'forbidden' : 'reversible';
+        // Judge the element rather than its label: a label is translated, and can repeat.
+        return target.element?.closest('[data-agent-forbidden]') ? 'forbidden' : 'reversible';
       },
       // Asked before anything consequential is applied; resolving false refuses it.
       confirm: target => window.confirm(\`Go to \${target.url}?\`),
+      // Told what an apply() did, so the person learns it too — in the application's words.
+      announce: report => console.info(\`\${report.results.filter(result => result.applied).length} fields filled\`),
     }),
   ],
 });
@@ -272,7 +275,7 @@ const REFS_EXAMPLE = `
 {
   "type": "combobox",
   "element": "clr-combobox",
-  "ref": "e6",
+  "ref": "e0c9h3tzp",
   "label": "Cluster",
   "state": { "options": ["Alpha cluster", "Beta cluster"], "value": null }
 }
@@ -280,11 +283,11 @@ const REFS_EXAMPLE = `
 
 const APPLY_EXAMPLE = `
 const report = await this.mutationEngine.apply([
-  { operation: 'setValue', ref: 'e1', description: 'Name', value: 'Ada' },
-  { operation: 'setValue', ref: 'e6', description: 'Cluster', value: 'Beta cluster' },
-  { operation: 'setValue', ref: 'e9', description: 'When', value: '2026-03-06' },
-  { operation: 'setValue', ref: 'e14', description: 'Hosts', value: ['esx-01', 'esx-02'] },
-  { operation: 'clear', ref: 'e3', description: 'Notes' },
+  { operation: 'setValue', ref: 'e7mq2k4xa', description: 'Name', value: 'Ada' },
+  { operation: 'setValue', ref: 'e0c9h3tzp', description: 'Cluster', value: 'Beta cluster' },
+  { operation: 'setValue', ref: 'e5bw81nre', description: 'When', value: '2026-03-06' },
+  { operation: 'setValue', ref: 'e2kd6v0sm', description: 'Hosts', value: ['esx-01', 'esx-02'] },
+  { operation: 'clear', ref: 'e9yx4q7lf', description: 'Notes' },
 ]);
 
 // What each operation did, then the page as it is now and what changed.
@@ -300,7 +303,7 @@ const RESULT_EXAMPLE = `
 [
   {
     "operation": "setValue",
-    "ref": "e1",
+    "ref": "e7mq2k4xa",
     "applied": true,
     "value": "Ada",
     "previous": "",
@@ -308,7 +311,7 @@ const RESULT_EXAMPLE = `
   },
   {
     "operation": "setValue",
-    "ref": "e6",
+    "ref": "e0c9h3tzp",
     "applied": true,
     "value": "Beta cluster",
     "previous": null,
@@ -316,7 +319,7 @@ const RESULT_EXAMPLE = `
   },
   {
     "operation": "setValue",
-    "ref": "e2",
+    "ref": "e3pn5j2wd",
     "applied": true,
     "value": "",
     "previous": "seed",
@@ -325,17 +328,17 @@ const RESULT_EXAMPLE = `
   },
   {
     "operation": "setValue",
-    "ref": "e6",
+    "ref": "e0c9h3tzp",
     "applied": false,
     "refused": "invalid",
     "detail": "No such option. The options are: \\"Alpha cluster\\", \\"Beta cluster\\"."
   },
   {
     "operation": "setValue",
-    "ref": "e7",
+    "ref": "e8ht0r6gu",
     "applied": false,
     "refused": "stale",
-    "detail": "The ref is not in the latest snapshot. Take a new snapshot and use its refs."
+    "detail": "The ref does not name anything on the page. Take a new snapshot and use its refs."
   }
 ]
 `;
