@@ -213,7 +213,7 @@ export abstract class ClrDateInputBase
 
   private processInitialInputs() {
     if (this.datepickerHasFormControl()) {
-      this.updateDate(this.dateIOService.getDateValueFromDateString(this.control.value));
+      this.updateDate(this.dateFromControlValue(this.control.value));
     } else {
       this.updateDate(this.initialClrDateInputValue);
     }
