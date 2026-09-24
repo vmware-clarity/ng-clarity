@@ -1,0 +1,174 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h4>Expand all performance</h4>
+
+<p>
+  A generated recursive tree to measure what it costs to expand or collapse a large amount of nodes the way the tree
+  view supports today: every node is bound with <code class="clr-code">[(clrExpanded)]</code> to a flag the page keeps
+  in its own data, and expanding everything means walking that data and flipping every flag.
+</p>
+
+<p>
+  In eager mode every node is in the DOM from the start, so the work is one change detection pass over every binding. In
+  lazy mode children are fetched on expand, so expanding cascades level after level and the "settled" column is the one
+  to look at. The "call" column only covers flipping the flags, which is cheap here because the real work happens during
+  change detection: compare <b>first frame</b> and <b>settled</b>.
+</p>
+
+<form clrForm clrLayout="horizontal" class="example-margin-bottom">
+  <clr-number-input-container>
+    <label>Root nodes</label>
+    <input clrNumberInput type="number" name="roots" min="1" max="1000" [(ngModel)]="roots" [disabled]="running" />
+  </clr-number-input-container>
+  <clr-number-input-container>
+    <label>Children per node</label>
+    <input
+      clrNumberInput
+      type="number"
+      name="branching"
+      min="0"
+      max="1000"
+      [(ngModel)]="branching"
+      [disabled]="running"
+    />
+    <clr-control-helper>0 makes every root a leaf</clr-control-helper>
+  </clr-number-input-container>
+  <clr-number-input-container>
+    <label>Levels of nesting</label>
+    <input clrNumberInput type="number" name="depth" min="1" max="50" [(ngModel)]="depth" [disabled]="running" />
+    <clr-control-helper>1 renders the root nodes only</clr-control-helper>
+  </clr-number-input-container>
+  <div class="clr-form-control">
+    <label class="clr-control-label">Presets</label>
+    <div class="clr-control-container">
+      <div class="example-presets">
+        @for (item of presets; track $index) {
+        <button type="button" class="btn btn-sm btn-link" (click)="applyPreset(item)" [disabled]="running">
+          {{ presetLabel(item) }}
+        </button>
+        }
+      </div>
+    </div>
+  </div>
+  <clr-radio-container clrInline>
+    <label>Loading</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="mode" [value]="false" [(ngModel)]="lazy" [disabled]="running" />
+      <label>Eager (all nodes rendered up front)</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="mode" [value]="true" [(ngModel)]="lazy" [disabled]="running" />
+      <label>Lazy (children fetched on expand)</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+  <clr-checkbox-container>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="typeAhead" [(ngModel)]="typeAhead" [disabled]="running" />
+      <label>Provide [clrForTypeAhead] (otherwise every node scans the text of its subtree when rendered)</label>
+    </clr-checkbox-wrapper>
+  </clr-checkbox-container>
+  @if (lazy) {
+  <clr-number-input-container>
+    <label>Simulated fetch delay (ms)</label>
+    <input clrNumberInput type="number" name="lazyDelay" min="0" [(ngModel)]="lazyDelay" [disabled]="running" />
+  </clr-number-input-container>
+  }
+  <div class="clr-form-control">
+    <div class="clr-control-container">
+      <button type="button" class="btn btn-sm btn-primary" (click)="build()" [disabled]="running || tooManyNodes">
+        Build tree with {{ plannedNodes | number }} nodes
+      </button>
+      @if (!lazy && plannedNodes > 50000) {
+      <span class="clr-subtext">
+        Eager mode renders every node up front, expect the build itself to take a while above 50,000 nodes.
+      </span>
+      }
+    </div>
+  </div>
+</form>
+
+<div class="btn-group btn-sm example-margin-bottom">
+  <button type="button" class="btn" (click)="expandAll()" [disabled]="running">Expand all</button>
+  <button type="button" class="btn" (click)="collapseAll()" [disabled]="running">Collapse all</button>
+  <button type="button" class="btn" (click)="expandFirstRoot()" [disabled]="running">Expand first root subtree</button>
+  <button type="button" class="btn" (click)="collapseFirstRoot()" [disabled]="running">
+    Collapse first root subtree
+  </button>
+  <button type="button" class="btn btn-link" (click)="clearMeasurements()" [disabled]="running">Clear results</button>
+</div>
+
+<p role="status">
+  {{ totalNodes | number }} nodes, {{ mode }} loading. @if (running) {
+  <span class="spinner spinner-inline"></span> measuring }
+</p>
+@if (tooManyNodes) {
+<div class="alert alert-warning" role="alert">
+  <div class="alert-items">
+    <div class="alert-item static">
+      <span class="alert-text">
+        These settings ask for {{ plannedNodes | number }} nodes, which is more than this page will build. Lower the
+        branching factor or the depth.
+      </span>
+    </div>
+  </div>
+</div>
+} @if (measurements.length) {
+<table class="table table-compact example-margin-bottom">
+  <thead>
+    <tr>
+      <th class="left">Operation</th>
+      <th class="left">Mode</th>
+      <th>Nodes</th>
+      <th>Rendered</th>
+      <th>Expanded</th>
+      <th>Call (ms)</th>
+      <th>First frame (ms)</th>
+      <th>Settled (ms)</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (item of measurements; track $index) {
+    <tr>
+      <td class="left">{{ item.operation }}</td>
+      <td class="left">{{ item.mode }}</td>
+      <td>{{ item.nodes | number }}</td>
+      <td>{{ item.rendered | number }}</td>
+      <td>{{ item.expanded | number }}</td>
+      <td>{{ item.callMs | number: '1.0-1' }}</td>
+      <td>{{ item.firstFrameMs | number: '1.0-1' }}</td>
+      <td>{{ item.settledMs | number: '1.0-1' }}</td>
+    </tr>
+    }
+  </tbody>
+</table>
+}
+
+<div class="clr-example">
+  @if (treeVisible && typeAhead) {
+  <clr-tree [clrLazy]="lazy">
+    <clr-tree-node
+      *clrRecursiveFor="let node of data; getChildren: getChildren"
+      [clrExpandable]="lazy ? !!node.children : undefined"
+      [clrForTypeAhead]="node.name"
+      [(clrExpanded)]="node.expanded"
+    >
+      {{ node.name }}
+    </clr-tree-node>
+  </clr-tree>
+  } @else if (treeVisible) {
+  <clr-tree [clrLazy]="lazy">
+    <clr-tree-node
+      *clrRecursiveFor="let node of data; getChildren: getChildren"
+      [clrExpandable]="lazy ? !!node.children : undefined"
+      [(clrExpanded)]="node.expanded"
+    >
+      {{ node.name }}
+    </clr-tree-node>
+  </clr-tree>
+  }
+</div>
