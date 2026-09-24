@@ -1,0 +1,23 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<p>
+  Each control is one snapshot option. This page is snapshotted again on every change, so the effect of each option, and
+  the size it saves, is visible at once. Open the <em>Add host</em> modal with "only the modal" ticked to see the
+  snapshot shrink to the dialog.
+</p>
+
+<div class="clr-row">
+  <div class="clr-col-lg-5 clr-col-12">
+    <clr-context-inventory></clr-context-inventory>
+  </div>
+  <div class="clr-col-lg-7 clr-col-12">
+    <section clrContext="Snapshot options playground" clrContextType="section">
+      <clr-context-playground [maxBudget]="1000"></clr-context-playground>
+    </section>
+  </div>
+</div>

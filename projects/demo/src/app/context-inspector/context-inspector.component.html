@@ -1,0 +1,32 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<!-- data-clr-context-ignore: this panel renders the context, so the engine must not
+     describe it and the tracker must not react to its own re-renders. -->
+<clr-side-panel
+  [clrSidePanelOpen]="open"
+  (clrSidePanelOpenChange)="setOpen($event)"
+  clrSidePanelSize="lg"
+  [clrSidePanelBackdrop]="false"
+  [clrSidePanelPinnable]="true"
+  data-clr-context-ignore
+>
+  <div class="side-panel-title">Context inspector</div>
+  <div class="side-panel-body">
+    <p class="context-inspector-summary">
+      What <code class="clr-code">&#64;clr/angular/ai</code> currently sees on this page. This panel is mounted once for
+      the whole app, so it stays open as you navigate between component demos — try opening it, then browsing to a
+      different page in the header nav.
+    </p>
+    <div class="context-inspector-toolbar">
+      <span class="label">update #{{ snapshotCount }}</span>
+      <span class="label">{{ snapshotBytes }} bytes</span>
+      <button type="button" class="btn btn-sm btn-link" (click)="refresh()">Refresh now</button>
+    </div>
+    <pre class="context-inspector-json">{{ snapshotJson }}</pre>
+  </div>
+</clr-side-panel>

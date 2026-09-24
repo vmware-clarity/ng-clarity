@@ -23,7 +23,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { HostWrapper } from '@clr/angular/utils';
+import { ClrHostAttribute, hasRequiredValidator, HostWrapper } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';
@@ -48,6 +48,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   protected subscriptions: Subscription[] = [];
 
   private controlClassService: ControlClassService;
+  private readonly ariaInvalidAttribute: ClrHostAttribute;
+  private readonly ariaRequiredAttribute: ClrHostAttribute;
   private markControlService: MarkControlService;
   private containerIdService: ContainerIdService;
   private _containerInjector: Injector;
@@ -64,6 +66,10 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected renderer: Renderer2,
     protected el: ElementRef<HTMLElement>
   ) {
+    // What the application says about these attributes — written in the template or bound
+    // itself — is kept: see ClrHostAttribute.
+    this.ariaInvalidAttribute = new ClrHostAttribute(el?.nativeElement, 'aria-invalid');
+    this.ariaRequiredAttribute = new ClrHostAttribute(el?.nativeElement, 'aria-required');
     if (injector) {
       this.ngControlService = injector.get(NgControlService, null);
       this.markControlService = injector.get(MarkControlService, null);
@@ -89,6 +95,32 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     if (this.controlIdService) {
       this.controlIdService.id = value;
     }
+  }
+
+  /**
+   * Whether the control is currently in error, as assistive technology should hear it.
+   *
+   * Gated on the control having been touched, which is the same rule the container uses
+   * to decide whether to show the error (see `ClrAbstractContainer`): a field the user
+   * has not reached yet should not be announced as wrong.
+   */
+  @HostBinding('attr.aria-invalid')
+  private get hostAriaInvalid(): string | null {
+    const invalid = this.reportsAriaInvalid() && !!this.ngControl?.invalid && !!this.ngControl?.touched;
+    return this.ariaInvalidAttribute.value(invalid);
+  }
+
+  /**
+   * Whether a value is required.
+   *
+   * A `required` attribute in the template is already exposed by the browser, but a
+   * reactive `Validators.required` is not — nothing in the DOM conveys it — so this
+   * reports it explicitly.
+   */
+  @HostBinding('attr.aria-required')
+  private get hostAriaRequired(): string | null {
+    const required = this.reportsAriaRequired() && hasRequiredValidator(this.ngControl?.control);
+    return this.ariaRequiredAttribute.value(required);
   }
 
   @HostBinding('attr.aria-describedby')
@@ -176,6 +208,19 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   // We need to figure out why this fails for the ClrToggle scenario but works for Date picker...
   // To see the error, remove the try/catch here and run the ClrToggle suite to see issues getting the container
   // injector in time, and this ONLY HAPPENS in tests and not in dev/prod mode.
+  /**
+   * Whether this control reports `aria-invalid` on its host. A control whose host is not
+   * where ARIA expects the state — a radio, whose group reports it once — says no.
+   */
+  protected reportsAriaInvalid(): boolean {
+    return true;
+  }
+
+  /** Whether this control reports `aria-required` on its host; no for roles that do not support it. */
+  protected reportsAriaRequired(): boolean {
+    return true;
+  }
+
   protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
     try {
       return this._containerInjector.get(token, notFoundValue);

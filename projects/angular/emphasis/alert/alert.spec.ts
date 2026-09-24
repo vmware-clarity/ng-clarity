@@ -62,6 +62,81 @@ export default function (): void {
       fixture.destroy();
     });
 
+    it('announces an app-level error as an assertive alert', () => {
+      fixture.componentInstance.type = 'danger';
+      fixture.componentInstance.isAppLevel = true;
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
+    });
+
+    it('announces an app-level warning as an assertive alert', () => {
+      fixture.componentInstance.type = 'warning';
+      fixture.componentInstance.isAppLevel = true;
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
+    });
+
+    it('announces an inline error politely, since several may render at once', () => {
+      fixture.componentInstance.type = 'danger';
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('status');
+    });
+
+    it('announces informational content politely, so it does not interrupt', () => {
+      fixture.componentInstance.type = 'info';
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('status');
+    });
+
+    it('announces success politely', () => {
+      fixture.componentInstance.type = 'success';
+      fixture.detectChanges();
+
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('status');
+    });
+
+    it('announces only what changed in a polite alert, not the whole alert again', () => {
+      for (const type of ['info', 'success', 'neutral', 'danger', 'warning']) {
+        fixture.componentInstance.type = type;
+        fixture.detectChanges();
+
+        const alert = compiled.querySelector('.alert');
+        expect(alert.getAttribute('role')).withContext(type).toBe('status');
+        expect(alert.getAttribute('aria-atomic')).withContext(type).toBe('false');
+      }
+    });
+
+    it('leaves aria-atomic unset on an assertive alert', () => {
+      for (const type of ['danger', 'warning']) {
+        fixture.componentInstance.type = type;
+        fixture.componentInstance.isAppLevel = true;
+        fixture.detectChanges();
+
+        const alert = compiled.querySelector('.alert');
+        expect(alert.getAttribute('role')).withContext(type).toBe('alert');
+        expect(alert.hasAttribute('aria-atomic')).withContext(type).toBe(false);
+      }
+    });
+
+    it('updates aria-atomic when an alert turns from assertive to polite and back', () => {
+      fixture.componentInstance.type = 'danger';
+      fixture.componentInstance.isAppLevel = true;
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
+
+      fixture.componentInstance.type = 'info';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').getAttribute('aria-atomic')).toBe('false');
+
+      fixture.componentInstance.type = 'warning';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
+    });
+
     it('projects content', () => {
       const newAlertMsg = 'OHAI';
       expect(compiled.textContent).toMatch(/This is an alert!/);

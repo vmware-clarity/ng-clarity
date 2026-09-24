@@ -35,6 +35,9 @@ export class Selection<T = any> {
 
   private lockedRefs: T[] = []; // Ref of locked items
   private _currentSelectionRefs: T[] = [];
+  // The same refs as a set: every row asks whether it is selected on every check, and a
+  // linear search per row makes that quadratic in a large multi-selection.
+  private currentSelectionRefSet = new Set<T>();
   private valueCollector = new Subject<T[]>();
   private _selectionType: SelectionType = SelectionType.None;
 
@@ -233,6 +236,7 @@ export class Selection<T = any> {
   clearSelection(): void {
     this._current = [];
     this._currentSelectionRefs = [];
+    this.currentSelectionRefSet = new Set();
     this.emitChange();
   }
 
@@ -254,11 +258,11 @@ export class Selection<T = any> {
    * Checks if an item is currently selected
    */
   isSelected(item: T): boolean {
-    const refIndex = this.currentSelectionRefs.indexOf(this._items.identifyBy(item));
+    const ref = this._items.identifyBy(item);
     if (this._selectionType === SelectionType.Single) {
-      return refIndex === 0;
+      return this.currentSelectionRefs.length > 0 && this.currentSelectionRefs[0] === ref;
     } else if (this._selectionType === SelectionType.Multi) {
-      return refIndex >= 0;
+      return this.currentSelectionRefSet.has(ref);
     }
 
     return false;
@@ -408,5 +412,6 @@ export class Selection<T = any> {
 
   private updateCurrentSelectionRefs() {
     this._currentSelectionRefs = this._current?.map(item => this._items.identifyBy(item)) || [];
+    this.currentSelectionRefSet = new Set(this._currentSelectionRefs);
   }
 }

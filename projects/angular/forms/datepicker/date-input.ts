@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
-import { isBooleanAttributeSet } from '@clr/angular/utils';
+import { ClrElementMutation, isBooleanAttributeSet, publishElementMutator } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -59,6 +59,7 @@ export abstract class ClrDateInputBase
 
   private initialClrDateInputValue: Date;
   private previousDateChange: Date;
+  private teardownElementMutator?: () => void;
 
   protected abstract dateChange: EventEmitter<Date>;
 
@@ -112,6 +113,7 @@ export abstract class ClrDateInputBase
   override ngOnInit() {
     super.ngOnInit();
     this.populateServicesFromContainerComponent();
+    this.publishMutator();
 
     this.subscriptions.push(
       this.listenForUserSelectedDayChanges(),
@@ -154,6 +156,11 @@ export abstract class ClrDateInputBase
     } else {
       this.emitDateOutput(null);
     }
+  }
+
+  override ngOnDestroy() {
+    super.ngOnDestroy();
+    this.teardownElementMutator?.();
   }
 
   protected datepickerHasFormControl() {
@@ -206,7 +213,7 @@ export abstract class ClrDateInputBase
 
   private processInitialInputs() {
     if (this.datepickerHasFormControl()) {
-      this.updateDate(this.dateIOService.getDateValueFromDateString(this.control.value));
+      this.updateDate(this.dateFromControlValue(this.control.value));
     } else {
       this.updateDate(this.initialClrDateInputValue);
     }
@@ -273,7 +280,7 @@ export abstract class ClrDateInputBase
           // only update date value if not being set by user
           filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))
         )
-        .subscribe((value: string) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
+        .subscribe((value: string) => this.updateDate(this.dateFromControlValue(value)));
     } else {
       return null;
     }
@@ -317,5 +324,85 @@ export abstract class ClrDateInputBase
     }
   }
 
+  /**
+   * Says how this input is written to, through the element mutator contract in
+   * `@clr/angular/utils`: its form control holds the date as the locale's display
+   * string, which is not something an agent has. Given a `Date`, an ISO date or a
+   * string already in the display format, this returns what the control takes; anything
+   * else is refused with the accepted forms named.
+   */
+  private publishMutator() {
+    this.teardownElementMutator = publishElementMutator(this.el.nativeElement, {
+      coerce: (proposed: unknown): ClrElementMutation => {
+        if (proposed === null || proposed === '') {
+          return { value: '' };
+        }
+        const date = this.dateFromProposal(proposed);
+        if (!date) {
+          return { refused: `A date is expected: ${this.dateIOService.placeholderText}, or ISO YYYY-MM-DD.` };
+        }
+        return {
+          value: this.usingNativeDatepicker()
+            ? isoDateString(date)
+            : this.dateIOService.toLocaleDisplayFormatString(date),
+        };
+      },
+    });
+  }
+
+  private dateFromProposal(proposed: unknown): Date | null {
+    // Tested by tag rather than `instanceof`, which fails for a Date made in another frame.
+    if (Object.prototype.toString.call(proposed) === '[object Date]') {
+      const date = proposed as Date;
+      return Number.isNaN(date.getTime()) ? null : date;
+    }
+    if (typeof proposed !== 'string') {
+      return null;
+    }
+    const text = proposed.trim();
+    if (/^\d{4}-\d{2}-\d{2}T/.test(text)) {
+      // A moment in time: the day it falls on where the user is, offset and all.
+      const instant = new Date(text);
+      return Number.isNaN(instant.getTime())
+        ? null
+        : new Date(instant.getFullYear(), instant.getMonth(), instant.getDate());
+    }
+    return isoDate(text) ?? this.dateIOService.getDateValueFromDateString(text);
+  }
+
+  /**
+   * The date a form control's value stands for. The native picker's control holds an ISO
+   * date, which the locale's display-format parser would read as nonsense in most locales
+   * and blank the field with; the Clarity picker's holds the display format.
+   */
+  private dateFromControlValue(value: unknown): Date | null {
+    if (this.usingNativeDatepicker() && typeof value === 'string') {
+      const date = isoDate(value.trim());
+      if (date) {
+        return date;
+      }
+    }
+    return this.dateIOService.getDateValueFromDateString(value as string);
+  }
+
   protected abstract updateDayModel(dayModel: DayModel): void;
+}
+
+/**
+ * An ISO calendar date (`2026-03-06`) as a local date, or `null` for anything else or an
+ * impossible date. Read as local: `new Date('2026-03-06')` is UTC midnight, which is the
+ * evening before in half the world.
+ */
+function isoDate(text: string): Date | null {
+  const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+  if (!iso) {
+    return null;
+  }
+  const date = new Date(+iso[1], +iso[2] - 1, +iso[3]);
+  return date.getMonth() === +iso[2] - 1 && date.getDate() === +iso[3] ? date : null;
+}
+
+function isoDateString(date: Date): string {
+  const pad = (part: number) => String(part).padStart(2, '0');
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
 }

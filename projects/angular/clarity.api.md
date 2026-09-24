@@ -909,6 +909,15 @@ export const CLR_ALERT_DIRECTIVES: Type<any>[];
 // @public (undocumented)
 export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 
+// @public
+export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
+
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 
@@ -917,6 +926,12 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
+
+// @public
+export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
+
+// @public
+export const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
 
 // @public (undocumented)
 export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT: InjectionToken<ClrFileMessagesTemplateContext>;
@@ -1115,6 +1130,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     get alertType(): string;
     set alertType(val: string);
+    protected get ariaAtomic(): 'false' | null;
+    protected get ariaRole(): 'alert' | 'status';
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -1777,6 +1794,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected index: number;
     // (undocumented)
     inputId(): string;
+    protected get isInvalid(): boolean;
+    protected get isRequired(): boolean;
     // (undocumented)
     protected isTotalSelection: boolean;
     // (undocumented)
@@ -1824,6 +1843,9 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     registerOnTouched(onTouched: any): void;
     // (undocumented)
     protected renderer: Renderer2;
+    protected reportsAriaInvalid(): boolean;
+    // (undocumented)
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     get searchText(): string;
     set searchText(text: string);
@@ -2084,6 +2106,16 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
 }
 
+// @public
+export interface ClrComponentContext {
+    children?: ClrComponentContext[];
+    element?: string;
+    label?: string;
+    ref?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -2092,6 +2124,27 @@ export class ClrConditionalModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, never, [typeof i2.CommonModule, typeof ClrIfActive, typeof ClrIfExpanded], [typeof ClrIfActive, typeof ClrIfExpanded]>;
+}
+
+// @public
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export interface ClrContextSnapshotOptions {
+    collectionItems?: 'all' | 'summary';
+    excludeCategories?: ClrContextCategory[];
+    excludeRoles?: string[];
+    excludeSelectors?: string[];
+    focus?: 'page' | 'modal';
+    includeDomComponents?: boolean;
+    includeFrames?: boolean;
+    includeRoutes?: boolean;
+    includeText?: boolean;
+    maxComponents?: number;
+    maxDepth?: number;
+    maxItemsPerCollection?: number;
+    maxTextLength?: number;
+    rootSelector?: string;
 }
 
 // @public (undocumented)
@@ -3254,6 +3307,8 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     onValueChange(target: HTMLInputElement): void;
@@ -3488,6 +3543,26 @@ export class ClrDropdownTrigger {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
 }
 
+// @public
+export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+
+// @public
+export type ClrElementMutation = {
+    value: unknown;
+    refused?: never;
+} | {
+    refused: string;
+    value?: never;
+};
+
+// @public
+export interface ClrElementMutator {
+    coerce?(proposed: unknown): ClrElementMutation;
+    ownsContents?: boolean;
+    read?(): unknown;
+    write?(proposed: unknown): ClrElementMutation;
+}
+
 // @public (undocumented)
 export class ClrEmphasisModule {
     // (undocumented)
@@ -3612,6 +3687,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     selection: ClrFileInputSelection;
     // (undocumented)
@@ -3898,6 +3974,12 @@ export class ClrHeader implements OnDestroy {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrHeader, "clr-header", never, { "role": { "alias": "role"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeader, never>;
+}
+
+// @public
+export class ClrHostAttribute {
+    constructor(element: Element | null | undefined, name: string);
+    value(computed: string | boolean | null): string | null;
 }
 
 // @public
@@ -5106,6 +5188,9 @@ export class ClrProgressBarModule {
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected reportsAriaInvalid(): boolean;
+    // (undocumented)
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -5116,7 +5201,10 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
     // (undocumented)
+    protected get ariaInvalid(): true | null;
+    // (undocumented)
     ariaLabelledBy: string;
+    protected get ariaRequired(): true | null;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
@@ -5164,6 +5252,7 @@ export class ClrRadioWrapper implements OnInit {
 // @public (undocumented)
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -5729,7 +5818,7 @@ export class ClrStepperModule {
 
 // @public (undocumented)
 export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
-    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef, hostElement?: ElementRef<HTMLElement>);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -5768,7 +5857,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["stepDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -6045,9 +6134,9 @@ export class ClrTimelineModule {
 }
 
 // @public (undocumented)
-export class ClrTimelineStep {
+export class ClrTimelineStep implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TimelineIconAttributeService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
+    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any, hostElement?: ElementRef<HTMLElement>);
     // (undocumented)
     get iconAriaLabel(): string;
     // (undocumented)
@@ -6059,6 +6148,8 @@ export class ClrTimelineStep {
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     state: ClrTimelineStepState;
     // (undocumented)
     stepTitle: ElementRef<HTMLElement>;
@@ -6067,7 +6158,7 @@ export class ClrTimelineStep {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStep, "clr-timeline-step", never, { "state": { "alias": "clrState"; "required": false; }; }, {}, ["stepTitle"], ["clr-timeline-step-header", "clr-timeline-step-title", "clr-timeline-step-description"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, [null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -6280,11 +6371,11 @@ export class ClrTreeViewModule {
 }
 
 // @public (undocumented)
-export class ClrVerticalNav implements OnDestroy {
+export class ClrVerticalNav implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService, el?: ElementRef<HTMLElement>);
     // (undocumented)
     get ariaExpanded(): string;
     // (undocumented)
@@ -6304,13 +6395,15 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
     toggleByButton(): void;
     // (undocumented)
     toggleLabel: string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, [null, null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -6966,6 +7059,7 @@ export class CollapsiblePanelService {
     disablePanel(panelId: string, disabled?: boolean): void;
     // (undocumented)
     protected emitUpdatedPanels(): void;
+    getPanel(panelId: string): CollapsiblePanelModel | undefined;
     // (undocumented)
     getPanelChanges(panelId: string): Observable<CollapsiblePanelModel>;
     // (undocumented)
@@ -8042,6 +8136,9 @@ export const hashtagIcon: IconShapeTuple;
 // @public (undocumented)
 export const hashtagIconName = "hashtag";
 
+// @public
+export function hasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
@@ -8806,6 +8903,9 @@ export const nodesIcon: IconShapeTuple;
 // @public (undocumented)
 export const nodesIconName = "nodes";
 
+// @public
+export function normalizeContextText(text: string, lowercase?: boolean): string;
+
 // @public (undocumented)
 export const noteIcon: IconShapeTuple;
 
@@ -9046,6 +9146,12 @@ export const processOnVmIcon: IconShapeTuple;
 // @public (undocumented)
 export const processOnVmIconName = "process-on-vm";
 
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
+
 // @public (undocumented)
 export const qrCodeIcon: IconShapeTuple;
 
@@ -9063,6 +9169,9 @@ export const radarIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const radarIconName = "radar";
+
+// @public
+export function readElementMutator(element: Element): ClrElementMutator | null;
 
 // @public (undocumented)
 export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
@@ -10160,6 +10269,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     ngOnInit(): void;
     // (undocumented)
     protected renderer: Renderer2;
+    protected reportsAriaInvalid(): boolean;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     protected subscriptions: Subscription[];
     // (undocumented)

@@ -7,6 +7,7 @@
 <div
   role="row"
   [id]="id"
+  [attr.aria-selected]="selection.selectionType === SELECTION_TYPE.None ? null : selected"
   class="datagrid-row-master datagrid-row-flex"
   (mousedown)="clearRanges($event)"
   (click)="selectRow(!selected, $event)"
@@ -21,6 +22,7 @@
         class="datagrid-select datagrid-fixed-column datagrid-cell"
         [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
         role="gridcell"
+        data-clr-context-ignore
       >
         <div class="clr-checkbox-wrapper">
           <input
@@ -43,6 +45,7 @@
         class="datagrid-select datagrid-fixed-column datagrid-cell"
         [ngClass]="{ 'clr-form-control-disabled': !clrDgSelectable }"
         role="gridcell"
+        data-clr-context-ignore
       >
         <clr-radio-wrapper>
           <input

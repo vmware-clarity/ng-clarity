@@ -20,6 +20,11 @@ export class CollapsiblePanelService {
     return this._panelsChanges.pipe(map(panels => panels.find(s => s.id === panelId)));
   }
 
+  /** The panel as it is now, or `undefined` when no panel has this id. */
+  getPanel(panelId: string): CollapsiblePanelModel | undefined {
+    return this._panelsChanges.value.find(panel => panel.id === panelId);
+  }
+
   addPanel(panelId: string, open = false) {
     this.panelGroup.addPanel(panelId, open);
     this.emitUpdatedPanels();

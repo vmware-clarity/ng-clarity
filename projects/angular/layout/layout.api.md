@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
 import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
@@ -480,11 +481,11 @@ export class ClrTabsModule {
 }
 
 // @public (undocumented)
-export class ClrVerticalNav implements OnDestroy {
+export class ClrVerticalNav implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular-layout.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService" needs to be exported by the entry point clr-angular-layout.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular-layout.d.ts
-    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService);
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService, el?: ElementRef<HTMLElement>);
     // (undocumented)
     get ariaExpanded(): string;
     // (undocumented)
@@ -504,13 +505,15 @@ export class ClrVerticalNav implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
+    ngOnInit(): void;
+    // (undocumented)
     toggleByButton(): void;
     // (undocumented)
     toggleLabel: string;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, [null, null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)

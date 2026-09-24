@@ -1,0 +1,37 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<!-- data-clr-context-ignore: the panel renders the context, so the engine must not
+     describe it and the tracker must not react to its re-renders. -->
+<div class="snapshot-panel card" data-clr-context-ignore>
+  <div class="card-header">
+    Live context — updates as the page changes
+    <span class="label">{{ snapshotBytes }} bytes</span>
+    <span class="label">update #{{ snapshotCount }}</span>
+    @if (snapshotTruncated) {
+      <span class="label label-warning">truncated — raise maxComponents</span>
+    }
+    @if (snapshotFocus) {
+      <span class="label label-info">focus: {{ snapshotFocus }}</span>
+    }
+  </div>
+  <div class="card-block">
+    <clr-select-container>
+      <label>Profile</label>
+      <select clrSelect name="profile" [ngModel]="profile" (ngModelChange)="setProfile($event)">
+        <option value="full">full — everything visible, prose included</option>
+        <option value="interactive">interactive — no prose, no header/navigation/footer</option>
+        <option value="minimal">minimal — counts and selection only, modal focus</option>
+      </select>
+      <clr-control-helper>The same page, collected with a different preset; compare the size.</clr-control-helper>
+    </clr-select-container>
+  </div>
+  <div class="card-block">
+    <button type="button" class="btn btn-sm" (click)="refreshNow()">Refresh now</button>
+    <pre class="snapshot-json">{{ snapshotJson }}</pre>
+  </div>
+</div>

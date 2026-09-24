@@ -1,0 +1,29 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+export * from './interfaces/context.interface';
+export * from './providers/context-options';
+export * from './providers/context-registry.service';
+export * from './providers/context-tracker.service';
+export * from './providers/contextual-engine.service';
+export * from './dom/dom-context-collector';
+export * from './diff';
+export {
+  CLR_CONTEXT_CATEGORIES,
+  CLR_CONTEXT_PRESETS,
+  clrContextCategoryRoles,
+  clrContextPreset,
+} from './snapshot-options';
+export type { ClrContextPreset } from './snapshot-options';
+export { CLR_ELEMENT_CONTEXT_PROPERTY, publishElementContext } from './dom/element-context';
+export type { ClrElementContextCallback } from './dom/element-context';
+export * from './iframe/context-frame-bridge';
+export * from './context.directive';
+export * from './contextual.module';
+export { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS } from './untrusted-options';
+export * from './mutation/mutation.interface';
+export * from './mutation/mutation-engine.service';
