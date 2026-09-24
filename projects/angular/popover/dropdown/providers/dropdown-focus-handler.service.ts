@@ -18,7 +18,7 @@ import {
   wrapObservable,
 } from '@clr/angular/utils';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   id = uniqueIdFactory();
@@ -80,6 +80,8 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
 
     // All containers are registered to the focus service.
     this.focusService.registerContainer(el);
+
+    this._unlistenFuncs.push(this.renderer.listen(el, 'focusout', () => this.recoverFocusIfLost()));
 
     if (this.parent) {
       // if it's a nested container, pressing escape has the same effect as pressing left key, which closes the current
@@ -174,6 +176,18 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
       Linkers.linkParent(children, this.closeAndGetThis(), ArrowKeyDirection.LEFT);
     }
     this.children.next(children);
+  }
+
+  private recoverFocusIfLost() {
+    setTimeout(() => {
+      if (!this.popoverService.open || document.activeElement !== document.body) {
+        return;
+      }
+
+      const firstItem = this.parent ? this.right : this.down;
+
+      firstItem?.pipe(take(1)).subscribe(item => item && this.focusService.moveTo(item));
+    });
   }
 
   private openAndGetChildren() {

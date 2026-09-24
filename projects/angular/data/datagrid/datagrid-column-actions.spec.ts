@@ -453,6 +453,37 @@ export default function (): void {
         closeMenu();
       });
 
+      it('keeps focus on the item that was clicked, rather than snapping back to the first one', async () => {
+        context.fixture.autoDetectChanges(true);
+        openMenu();
+        await context.fixture.whenStable();
+
+        const descendingButton = itemLabelled(commonStrings.keys.sortColumnDescending);
+        descendingButton.focus();
+        descendingButton.click();
+        await context.fixture.whenStable();
+
+        expect(document.activeElement).toBe(descendingButton);
+      });
+
+      it('moves focus to the first item once the focused one removes itself', async () => {
+        context.fixture.autoDetectChanges(true);
+        openMenu();
+        await context.fixture.whenStable();
+
+        const ascendingButton = itemLabelled(commonStrings.keys.sortColumnAscending);
+        ascendingButton.focus();
+        ascendingButton.click();
+        await context.fixture.whenStable();
+
+        const clearButton = itemLabelled(commonStrings.keys.clearColumnSort);
+        clearButton.focus();
+        clearButton.click();
+        await context.fixture.whenStable();
+
+        expect(document.activeElement).toBe(ascendingButton);
+      });
+
       it('sorts ascending and descending', function () {
         const column = context.clarityDirective.columns.first;
 
