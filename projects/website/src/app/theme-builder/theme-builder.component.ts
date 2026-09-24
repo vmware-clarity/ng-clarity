@@ -6,9 +6,17 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnDestroy } from '@angular/core';
-import { ThemeBuilderComponent as ClrThemeBuilder, PRESETS } from '@clr/addons/theme-builder';
-import { ClrAlertModule } from '@clr/angular';
+import { ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ThemeBuilderComponent as ClrThemeBuilder, Color, PRESETS, ThemePreset } from '@clr/addons/theme-builder';
+import {
+  ClarityIcons,
+  ClrAlertModule,
+  ClrInputModule,
+  ClrModalModule,
+  ClrTextareaModule,
+  trashIcon,
+} from '@clr/angular';
 
 import { getFeatureFlags } from '../feature-flags';
 import { CodeSnippetComponent } from '../shared/code-snippet/code-snippet.component';
@@ -16,17 +24,39 @@ import { SiteFooterComponent } from '../shared/site-footer/site-footer.component
 import { SiteNavComponent } from '../shared/site-nav/site-nav.component';
 import { ThemeLockService } from '../shared/theme-toggle/theme-lock.service';
 
+const CUSTOM_PRESETS_STORAGE_KEY = 'clr-theme-builder-custom-presets';
+
 @Component({
   selector: 'app-theme-builder',
   templateUrl: './theme-builder.component.html',
   styleUrl: './theme-builder.component.scss',
   host: { '[class.content-container]': 'true' },
-  imports: [ClrAlertModule, ClrThemeBuilder, CodeSnippetComponent, CommonModule, SiteFooterComponent, SiteNavComponent],
+  imports: [
+    ClrAlertModule,
+    ClrModalModule,
+    ClrThemeBuilder,
+    CodeSnippetComponent,
+    CommonModule,
+    FormsModule,
+    SiteFooterComponent,
+    SiteNavComponent,
+    ClrTextareaModule,
+    ClrInputModule,
+  ],
 })
 export class ThemeBuilderComponent implements OnDestroy {
-  presets = PRESETS;
   generatedCss = '';
   copied = false;
+
+  saveModalOpen = false;
+  presetName = '';
+
+  importModalOpen = false;
+  cssToImport = '';
+
+  clearPresetsModalOpen = false;
+
+  @ViewChild(ClrThemeBuilder) themeBuilder!: ClrThemeBuilder;
 
   protected readonly themeBuilderOnly = getFeatureFlags().themeBuilderOnly;
 
@@ -35,8 +65,23 @@ export class ThemeBuilderComponent implements OnDestroy {
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
 
   constructor(public cd: ChangeDetectorRef) {
-    localStorage.setItem('theme', 'light');
+    ClarityIcons.addIcons(trashIcon);
     this.themeLockService.lockLightTheme();
+  }
+
+  get presets(): ThemePreset[] {
+    return [...PRESETS, ...this.savedPresets];
+  }
+
+  get savedPresets(): ThemePreset[] {
+    try {
+      const raw = localStorage.getItem(CUSTOM_PRESETS_STORAGE_KEY);
+      const parsed = raw ? (JSON.parse(raw) as ThemePreset[]) : [];
+
+      return this.rehydratePreset(parsed);
+    } catch {
+      return [];
+    }
   }
 
   ngOnDestroy(): void {
@@ -49,6 +94,53 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   writeGeneratedCss(css: string) {
     this.generatedCss = css;
+    this.cd.detectChanges();
+  }
+
+  openSaveModal(): void {
+    this.presetName = '';
+    this.saveModalOpen = true;
+  }
+
+  confirmSavePreset(): void {
+    const name = this.presetName.trim();
+    if (!name) {
+      return;
+    }
+
+    const preset: ThemePreset = {
+      name: name,
+      light: this.themeBuilder.colorStruct.light,
+      dark: this.themeBuilder.colorStruct.dark,
+    };
+    const withoutExistingNamesake = this.savedPresets.filter(saved => saved.name !== name);
+
+    localStorage.setItem(CUSTOM_PRESETS_STORAGE_KEY, JSON.stringify([...withoutExistingNamesake, preset]));
+
+    this.saveModalOpen = false;
+  }
+
+  openImportModal(): void {
+    this.cssToImport = '';
+    this.importModalOpen = true;
+  }
+
+  confirmImportCss(): void {
+    if (!this.cssToImport.trim()) {
+      return;
+    }
+
+    this.themeBuilder.importCSS(this.cssToImport);
+    this.importModalOpen = false;
+  }
+
+  openClearPresetsModal(): void {
+    this.clearPresetsModalOpen = true;
+  }
+
+  clearCustomPresets(): void {
+    localStorage.removeItem(CUSTOM_PRESETS_STORAGE_KEY);
+    this.clearPresetsModalOpen = false;
     this.cd.detectChanges();
   }
 
@@ -69,5 +161,25 @@ export class ThemeBuilderComponent implements OnDestroy {
     } catch {
       // clipboard not available — silently ignore
     }
+  }
+
+  /**
+   * Reattaches `Color.prototype` to every color in a preset loaded back from `localStorage`.
+   * `JSON.parse` recovers `Color`'s own data properties (`name`, `originalColor`, and
+   * `_color` when set) as plain objects, but not the class's prototype — so its
+   * `.color`/`.hex` getters are missing until the prototype is restored. Only the `Color`
+   * objects need this; `preset`/`light`/`dark` are plain data already, so it's mutated
+   * in place rather than rebuilt.
+   */
+  private rehydratePreset(presets: ThemePreset[]): ThemePreset[] {
+    for (const preset of presets) {
+      for (const themeColors of [preset.light, preset.dark]) {
+        for (const colors of Object.values(themeColors ?? {})) {
+          colors.forEach((color: any) => Object.setPrototypeOf(color, Color.prototype));
+        }
+      }
+    }
+
+    return presets;
   }
 }
