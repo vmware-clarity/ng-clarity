@@ -6,6 +6,7 @@
  */
 
 import { ClrComponentContext, ClrContextSnapshotOptions } from './interfaces';
+import { publishOnElement } from './publish';
 
 /**
  * Name of the element property through which a component publishes instance state the
@@ -43,12 +44,5 @@ export type ClrElementContextCallback = (
  * run without silently unpublishing the newer callback.
  */
 export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void {
-  const carrier = host as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback };
-  carrier[CLR_ELEMENT_CONTEXT_PROPERTY] = callback;
-
-  return () => {
-    if (carrier[CLR_ELEMENT_CONTEXT_PROPERTY] === callback) {
-      delete carrier[CLR_ELEMENT_CONTEXT_PROPERTY];
-    }
-  };
+  return publishOnElement(host, CLR_ELEMENT_CONTEXT_PROPERTY, callback);
 }

@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { publishOnElement } from './publish';
+
 /**
  * Name of the element property through which a component says how it is written to,
  * the way {@link CLR_ELEMENT_CONTEXT_PROPERTY} says what it is.
@@ -35,6 +37,14 @@ export type ClrElementMutation = { value: unknown; refused?: never } | { refused
  */
 export interface ClrElementMutator {
   /**
+   * `true` when the component is written to as one thing and the controls it renders are
+   * its own internals — a combobox's search input, which carries a form binding of its
+   * own that is not the value. Nothing inside such a component is offered for writing
+   * separately. Leave it unset for a component whose contents are the application's own
+   * — a datagrid's cells hold whatever controls the application put there.
+   */
+  ownsContents?: boolean;
+  /**
    * Turns what an agent proposes — an option's label, a date in any form — into the
    * value the element's form control takes, or refuses. `null` proposes clearing the
    * control and is passed through so the component can say what "empty" is for it.
@@ -61,14 +71,7 @@ export interface ClrElementMutator {
  * cannot unpublish a newer one.
  */
 export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void {
-  const carrier = host as Element & { [CLR_ELEMENT_MUTATOR_PROPERTY]?: ClrElementMutator };
-  carrier[CLR_ELEMENT_MUTATOR_PROPERTY] = mutator;
-
-  return () => {
-    if (carrier[CLR_ELEMENT_MUTATOR_PROPERTY] === mutator) {
-      delete carrier[CLR_ELEMENT_MUTATOR_PROPERTY];
-    }
-  };
+  return publishOnElement(host, CLR_ELEMENT_MUTATOR_PROPERTY, mutator);
 }
 
 /** The mutator an element publishes, if any. */

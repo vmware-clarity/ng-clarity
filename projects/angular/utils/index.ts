@@ -35,6 +35,7 @@ export * from './scrolling/scrolling-service';
 export * from './cdk/cdk-drag.module';
 export * from './cdk/cdk-trap-focus.module';
 export * from './destroy';
+export * from './host-attribute/host-attribute';
 export * from './types/heading-level';
 export * from './enums/keys.enum';
 export * from './enums/position.enum';
