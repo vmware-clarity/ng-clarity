@@ -28,6 +28,7 @@ export class ContextInspectorComponent implements OnDestroy {
   snapshotCount = 0;
 
   private subscription?: Subscription;
+  private startedTracking = false;
 
   constructor(private contextTracker: ClrContextTrackerService) {}
 
@@ -43,16 +44,19 @@ export class ContextInspectorComponent implements OnDestroy {
     this.open = open;
     this.subscription?.unsubscribe();
     if (open) {
-      // start() is idempotent and cheap to call again: it always leaves tracking in a
-      // known-good state, so this is self-healing even if some other page's own
-      // start()/stop() calls on this same singleton left it stopped while the panel
-      // was closed.
-      this.contextTracker.start();
+      // The tracker is shared: a demo page may already be tracking with options of its
+      // own, which restarting here would replace. The panel only starts tracking when
+      // nobody else is, and only then stops it again.
+      if (!this.contextTracker.isTracking) {
+        this.contextTracker.start();
+        this.startedTracking = true;
+      }
       this.subscription = this.contextTracker.context$.subscribe(snapshot => this.render(snapshot));
-    } else {
+    } else if (this.startedTracking) {
       // Nothing consumes the context while the panel is closed, and tracking walks the
       // whole document on every DOM change; it is not left running for nobody.
       this.contextTracker.stop();
+      this.startedTracking = false;
     }
   }
 

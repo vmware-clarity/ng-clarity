@@ -13,6 +13,7 @@ import { provideClrContextOptions } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
+import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 
 @Component({ template: '' })
 class RoutedComponent {}
@@ -464,5 +465,112 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
     TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
     const engine = TestBed.inject(ClrContextEngineService);
     expect('availableRoutes' in engine.getSnapshot({ includeDomComponents: false })).toBe(false);
+  });
+});
+
+describe('ClrContextEngineService, what the global accessor keeps back', () => {
+  type Accessor = (options?: unknown) => ClrPageContext;
+  let engine: ClrContextEngineService;
+  let page: HTMLElement;
+
+  function accessor(): Accessor {
+    return (window as unknown as Record<string, Accessor>)['testClrContext'];
+  }
+
+  function find(nodes: ClrComponentContext[], match: (node: ClrComponentContext) => boolean): ClrComponentContext[] {
+    return nodes.flatMap(node => [...(match(node) ? [node] : []), ...find(node.children ?? [], match)]);
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          { path: 'clusters/:id', component: RoutedComponent },
+          {
+            path: 'billing',
+            loadChildren: () => Promise.resolve([{ path: 'invoices', component: RoutedComponent, title: 'Invoices' }]),
+          },
+        ]),
+      ],
+    });
+    engine = TestBed.inject(ClrContextEngineService);
+    page = document.createElement('div');
+    page.innerHTML = '<a href="/download?signature=s3cr3t#part">Download</a>';
+    document.body.appendChild(page);
+    await TestBed.inject(Router).navigateByUrl('/clusters/42?token=s3cr3t');
+  });
+
+  afterEach(() => {
+    engine.disableGlobalAccess();
+    page.remove();
+  });
+
+  it('reports the route pattern instead of the address, and links without their query', () => {
+    engine.enableGlobalAccess('testClrContext');
+
+    const snapshot = accessor()();
+
+    expect(snapshot.route).toEqual({ url: '/clusters/:id', path: 'clusters/:id' });
+    expect(snapshot.url).toBe(`${location.origin}/clusters/:id`);
+    expect(find(snapshot.components, node => node.type === 'link')[0].state?.['href']).not.toContain('?');
+    expect(JSON.stringify(snapshot)).not.toContain('s3cr3t');
+    expect(JSON.stringify(snapshot)).not.toContain('42');
+  });
+
+  it('shares the full address only when the application says so', () => {
+    engine.enableGlobalAccess('testClrContext', { shareFullUrl: true });
+
+    const snapshot = accessor()();
+
+    expect(snapshot.route?.url).toBe('/clusters/42?token=s3cr3t');
+    expect(JSON.stringify(snapshot.components)).toContain('signature=s3cr3t');
+  });
+
+  it('withholds a selection as much as a typed value', () => {
+    const unregister = engine.registerDomExtractor({
+      selector: 'a',
+      extract: () => ({ type: 'grid', label: 'Users', state: { selection: ['Ada'], rowCount: 3 } }),
+    });
+    engine.enableGlobalAccess('testClrContext');
+
+    try {
+      const grid = find(accessor()().components, node => node.type === 'grid')[0];
+      expect(grid.state).toEqual({ rowCount: 3 });
+    } finally {
+      unregister();
+    }
+  });
+
+  it('does not let a caller turn on what the application left at its default', () => {
+    engine.enableGlobalAccess('testClrContext');
+
+    expect(accessor()({ includeRoutes: true }).availableRoutes).toBeUndefined();
+  });
+
+  it('lets a caller turn on what the application allowed', () => {
+    engine.enableGlobalAccess('testClrContext', { includeRoutes: true });
+
+    expect(accessor()({ includeRoutes: true }).availableRoutes?.length).toBeGreaterThan(0);
+  });
+
+  it('does not let a caller raise a budget past the default', () => {
+    page.innerHTML = Array.from({ length: 320 }, (_, index) => `<button>Button ${index}</button>`).join('');
+    engine.enableGlobalAccess('testClrContext');
+
+    const snapshot = accessor()({ maxComponents: 5000 });
+
+    expect(find(snapshot.components, () => true).length).toBeLessThanOrEqual(CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents);
+    expect(snapshot.truncated).toBe(true);
+  });
+
+  it('lists the routes of a lazy module once it has loaded', async () => {
+    const before = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
+    expect(before).toContain({ path: 'billing', lazy: true });
+
+    await TestBed.inject(Router).navigateByUrl('/billing/invoices');
+
+    const after = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
+    expect(after).toContain({ path: 'billing/invoices', title: 'Invoices' });
+    expect(after?.some(route => route.lazy)).toBe(false);
   });
 });

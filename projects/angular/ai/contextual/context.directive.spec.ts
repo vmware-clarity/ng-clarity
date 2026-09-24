@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrContextModule } from './contextual.module';
 import { ClrContextRegistryService } from './providers/context-registry.service';
+import { ClrContextEngineService } from './providers/contextual-engine.service';
 
 @Component({
   template: `
@@ -133,5 +134,68 @@ describe('ClrContext directive, announcing its changes', () => {
     fixture.detectChanges();
 
     expect(changes).toBe(before);
+  });
+});
+
+@Component({
+  template: `
+    <div id="main">
+      <section clrContext="Visible" [clrContextState]="{ step: 1 }"></section>
+      <section data-clr-context-redact>
+        <div clrContext="Payment" [clrContextState]="{ card: '4111' }"></div>
+      </section>
+    </div>
+    <aside data-clr-context-ignore>
+      <div clrContext="Chat" [clrContextState]="chat"></div>
+    </aside>
+    <footer><div clrContext="Footer notes"></div></footer>
+  `,
+  standalone: false,
+})
+class RegionsComponent {
+  chat: Record<string, unknown> = { unread: 1 };
+}
+
+describe('ClrContext directive, following the element it annotates', () => {
+  let fixture: ComponentFixture<RegionsComponent>;
+  let engine: ClrContextEngineService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({ imports: [ClrContextModule], declarations: [RegionsComponent] });
+    fixture = TestBed.createComponent(RegionsComponent);
+    fixture.detectChanges();
+    engine = TestBed.inject(ClrContextEngineService);
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('reports an annotation inside a redacted region without its state', () => {
+    const regions = engine.getSnapshot().regions;
+
+    expect(regions).toContain(jasmine.objectContaining({ label: 'Visible', state: { step: 1 } }));
+    expect(regions).toContain({ type: 'region', label: 'Payment', state: { redacted: true } });
+    expect(JSON.stringify(regions)).not.toContain('4111');
+  });
+
+  it('leaves out an annotation inside an ignored region', () => {
+    expect(engine.getSnapshot().regions.map(region => region.label)).not.toContain('Chat');
+  });
+
+  it('leaves out an annotation outside the snapshot root, and keeps one that contains it', () => {
+    const labels = engine.getSnapshot({ rootSelector: '#main' }).regions.map(region => region.label);
+
+    expect(labels).toContain('Visible');
+    expect(labels).not.toContain('Footer notes');
+  });
+
+  it('does not announce changes to an annotation inside an ignored region', () => {
+    const registry = TestBed.inject(ClrContextRegistryService);
+    let changes = 0;
+    registry.changes$.subscribe(() => changes++);
+
+    fixture.componentInstance.chat = { unread: 2 };
+    fixture.detectChanges();
+
+    expect(changes).toBe(0);
   });
 });

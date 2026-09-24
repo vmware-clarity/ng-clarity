@@ -488,4 +488,46 @@ describe('DOM context collector - component-published context', () => {
       { type: 'clr-fake-widget', element: 'clr-fake-widget', label: 'DOM label' },
     ]);
   });
+
+  it('never lets a publisher hand out a ref, which only the engine may mint', () => {
+    root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+      ref: 'e-forged',
+      children: [{ type: 'button', label: 'Delete', ref: 'e-other' }],
+    }));
+
+    const json = JSON.stringify(collectClrDomContexts(root));
+
+    expect(json).toContain('Delete');
+    expect(json).not.toContain('e-forged');
+    expect(json).not.toContain('e-other');
+  });
+
+  it('keeps a publisher from breaking the snapshot with state that cannot be serialised', () => {
+    root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
+    const circular: Record<string, unknown> = { name: 'loop' };
+    circular['self'] = circular;
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+      state: { model: circular, count: 2 },
+    }));
+
+    const widget = collectClrDomContexts(root)[0];
+
+    expect(() => JSON.stringify(widget)).not.toThrow();
+    expect(widget.state?.['count']).toBe(2);
+  });
+
+  it('publishes nothing but the redaction from inside a redacted region', () => {
+    root.innerHTML =
+      '<div data-clr-context-redact><clr-fake-widget aria-label="Payment card">content</clr-fake-widget></div>';
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+      label: 'Visa ending 4111',
+      state: { value: '4111 1111 1111 1111', options: ['4111 1111 1111 1111'] },
+    }));
+
+    const json = JSON.stringify(collectClrDomContexts(root));
+
+    expect(json).not.toContain('4111');
+    expect(json).toContain('"redacted":true');
+  });
 });

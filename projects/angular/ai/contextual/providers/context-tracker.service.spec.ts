@@ -18,14 +18,94 @@ import { ClrComponentContext, ClrPageContext } from '../interfaces/context.inter
 @Component({ template: '' })
 class RoutedComponent {}
 
+/*
+ * The tracker paces its scrapes with `setTimeout` (a debounce and a max-wait bound), so
+ * these specs drive time themselves rather than waiting on the wall clock: every count is
+ * asserted at an exact point on the tracker's own schedule.
+ *
+ * `jasmine.clock()` cannot be used here — zone.js replaces the global timers after
+ * Jasmine has booted, and the clock refuses to install over them — so a minimal fake
+ * stands in for `setTimeout`/`clearTimeout`; Jasmine restores both after every spec.
+ *
+ * A `MutationObserver` reports on a microtask, not synchronously, so after changing the
+ * DOM a spec lets it deliver (`flushMutations`) before advancing time;
+ * `input`/`change` events and registry notifications reach the tracker synchronously.
+ */
+
+interface FakeTimer {
+  at: number;
+  callback: () => void;
+}
+
+let now = 0;
+let nextTimerId = 1;
+const pendingTimers = new Map<number, FakeTimer>();
+
+/** Replaces `setTimeout`/`clearTimeout` for the current spec with timers run by `elapse`. */
+function useFakeTimers(): void {
+  now = 0;
+  nextTimerId = 1;
+  pendingTimers.clear();
+  spyOn(window, 'setTimeout').and.callFake((handler: TimerHandler, timeout?: number, ...args: unknown[]) => {
+    if (typeof handler !== 'function') {
+      throw new Error('the fake timers only take a function');
+    }
+    const id = nextTimerId++;
+    pendingTimers.set(id, { at: now + (timeout ?? 0), callback: () => handler(...args) });
+    return id;
+  });
+  spyOn(window, 'clearTimeout').and.callFake((id?: number) => {
+    if (id !== undefined) {
+      pendingTimers.delete(id);
+    }
+  });
+}
+
+/** Runs, in order, every fake timer due within the next `ms` milliseconds. */
+function advanceTimers(ms: number): void {
+  const until = now + ms;
+  for (;;) {
+    let dueId: number | null = null;
+    for (const [id, timer] of pendingTimers) {
+      if (timer.at <= until && (dueId === null || timer.at < (pendingTimers.get(dueId)?.at ?? Infinity))) {
+        dueId = id;
+      }
+    }
+    const due = dueId === null ? undefined : pendingTimers.get(dueId);
+    if (dueId === null || !due) {
+      break;
+    }
+    pendingTimers.delete(dueId);
+    now = due.at;
+    due.callback();
+  }
+  now = until;
+}
+
+// The real timer, captured before any spec replaces it.
+const realSetTimeout = window.setTimeout.bind(window);
+
+/**
+ * Lets pending MutationObserver callbacks run. They are delivered on a native microtask,
+ * which a zone-aware `await` does not wait for — zone.js drains its own promise queue
+ * synchronously — so this yields to the next task instead: the browser always delivers
+ * pending mutation records before running another task. This waits on no amount of time.
+ */
+function flushMutations(): Promise<void> {
+  return new Promise(resolve => realSetTimeout(resolve));
+}
+
+/** Delivers pending DOM change notifications, then advances the fake timers. */
+async function elapse(ms: number): Promise<void> {
+  await flushMutations();
+  advanceTimers(ms);
+  await flushMutations();
+}
+
 describe('ClrContextTrackerService', () => {
   let tracker: ClrContextTrackerService;
   let emitted: ClrPageContext[];
   let addedElements: Element[];
-
-  function wait(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
 
   function addWidget(label: string, parent: Element = document.body): Element {
     const widget = document.createElement('clr-fake-widget');
@@ -41,6 +121,7 @@ describe('ClrContextTrackerService', () => {
   }
 
   beforeEach(() => {
+    useFakeTimers();
     TestBed.configureTestingModule({});
     tracker = TestBed.inject(ClrContextTrackerService);
     emitted = [];
@@ -79,10 +160,14 @@ describe('ClrContextTrackerService', () => {
 
   it('scrapes and emits after the DOM changes', async () => {
     tracker.start({ debounceMs: 20 });
+    const countAfterStart = emitted.length;
 
     addWidget('Chat widget');
-    await wait(120);
+    await elapse(19);
+    expect(emitted.length).toBe(countAfterStart);
 
+    await elapse(1);
+    expect(emitted.length).toBe(countAfterStart + 1);
     expect(widgetLabels(tracker.currentContext)).toContain('Chat widget');
   });
 
@@ -91,12 +176,19 @@ describe('ClrContextTrackerService', () => {
     const countAfterStart = emitted.length;
 
     addWidget('First');
-    await wait(40);
+    await elapse(40);
     addWidget('Second');
-    await wait(500);
+    // The quiet window restarts with the second change.
+    await elapse(149);
+    expect(emitted.length).toBe(countAfterStart);
 
+    await elapse(1);
     expect(emitted.length).toBe(countAfterStart + 1);
     expect(widgetLabels(tracker.currentContext)).toEqual(['First', 'Second']);
+
+    // Nothing is left pending: the max-wait bound was cleared with the scrape.
+    await elapse(5000);
+    expect(emitted.length).toBe(countAfterStart + 1);
   });
 
   it('does not emit when the page context did not meaningfully change', async () => {
@@ -107,7 +199,7 @@ describe('ClrContextTrackerService', () => {
     const div = document.createElement('div');
     document.body.appendChild(div);
     addedElements.push(div);
-    await wait(120);
+    await elapse(5000);
 
     expect(emitted.length).toBe(countAfterStart);
   });
@@ -121,7 +213,7 @@ describe('ClrContextTrackerService', () => {
     const countAfterStart = emitted.length;
 
     addWidget('Panel internals', ignored);
-    await wait(120);
+    await elapse(5000);
 
     expect(emitted.length).toBe(countAfterStart);
     expect(widgetLabels(tracker.currentContext)).toEqual([]);
@@ -129,19 +221,24 @@ describe('ClrContextTrackerService', () => {
 
   it('still scrapes at the max-wait bound when the page never goes quiet', async () => {
     tracker.start({ debounceMs: 200, maxWaitMs: 500 });
+    const countAfterStart = emitted.length;
 
     const noise = document.createElement('div');
     document.body.appendChild(noise);
     addedElements.push(noise);
     addWidget('Appears despite noise');
-    const interval = setInterval(() => noise.setAttribute('data-tick', String(Date.now())), 30);
 
-    try {
-      await wait(900);
-      expect(widgetLabels(tracker.currentContext)).toContain('Appears despite noise');
-    } finally {
-      clearInterval(interval);
+    // A change every 30ms keeps restarting the 200ms quiet window.
+    for (let tick = 1; tick <= 16; tick++) {
+      await elapse(30);
+      noise.setAttribute('data-tick', String(tick));
     }
+    // 480ms since the first change: still inside the max-wait bound.
+    expect(emitted.length).toBe(countAfterStart);
+
+    await elapse(20);
+    expect(emitted.length).toBe(countAfterStart + 1);
+    expect(widgetLabels(tracker.currentContext)).toContain('Appears despite noise');
   });
 
   it('stops reacting to DOM changes once stopped', async () => {
@@ -150,7 +247,7 @@ describe('ClrContextTrackerService', () => {
     const countWhenStopped = emitted.length;
 
     addWidget('Too late');
-    await wait(120);
+    await elapse(5000);
 
     expect(emitted.length).toBe(countWhenStopped);
   });
@@ -159,7 +256,7 @@ describe('ClrContextTrackerService', () => {
     tracker.start({ debounceMs: 20, snapshot: { includeDomComponents: false } });
 
     addWidget('Never collected');
-    await wait(120);
+    await elapse(20);
 
     expect(tracker.currentContext?.components).toEqual([]);
   });
@@ -169,7 +266,7 @@ describe('ClrContextTrackerService', () => {
     tracker.start({ debounceMs: 20, snapshot: { includeDomComponents: false } });
 
     addWidget('Ignored by new budget');
-    await wait(120);
+    await elapse(20);
 
     expect(tracker.currentContext?.components).toEqual([]);
   });
@@ -195,7 +292,7 @@ describe('ClrContextTrackerService', () => {
         await TestBed.inject(Router).navigateByUrl('/inventory');
         // In a real app the navigation itself mutates the DOM; simulate that render.
         addWidget('Rendered by the new page');
-        await wait(120);
+        await elapse(20);
 
         expect(routedTracker.currentContext?.route?.url).toBe('/inventory');
       } finally {
@@ -225,32 +322,37 @@ describe('ClrContextTrackerService', () => {
     it('re-emits when a value changes, which mutates no DOM', async () => {
       const input = addInput('original');
       tracker.start({ debounceMs: 20, maxWaitMs: 60 });
-      await wait(60);
+      await elapse(60);
       const before = emitted.length;
 
       // Typing changes the property, never the attribute, so a DOM observer sees nothing.
       input.value = 'typed-by-user';
       input.dispatchEvent(new Event('input', { bubbles: true }));
-      await wait(120);
+      await elapse(20);
 
-      expect(emitted.length).toBeGreaterThan(before);
+      expect(emitted.length).toBe(before + 1);
       expect(trackedValue(tracker.currentContext)).toBe('typed-by-user');
     });
 
     it('coalesces a burst of typing into a single scrape', async () => {
       const input = addInput('a');
       tracker.start({ debounceMs: 40, maxWaitMs: 500 });
-      await wait(80);
+      await elapse(80);
       const before = emitted.length;
 
       for (const value of ['ab', 'abc', 'abcd']) {
         input.value = value;
         input.dispatchEvent(new Event('input', { bubbles: true }));
       }
-      await wait(150);
+      await elapse(39);
+      expect(emitted.length).toBe(before);
 
+      await elapse(1);
       expect(emitted.length).toBe(before + 1);
       expect(trackedValue(tracker.currentContext)).toBe('abcd');
+
+      await elapse(5000);
+      expect(emitted.length).toBe(before + 1);
     });
 
     it('ignores typing inside a region the engine is told to skip', async () => {
@@ -260,12 +362,12 @@ describe('ClrContextTrackerService', () => {
       addedElements.push(ignored);
       const input = addInput('original', ignored);
       tracker.start({ debounceMs: 20, maxWaitMs: 60 });
-      await wait(60);
+      await elapse(60);
       const before = emitted.length;
 
       input.value = 'typed-in-panel';
       input.dispatchEvent(new Event('input', { bubbles: true }));
-      await wait(120);
+      await elapse(5000);
 
       expect(emitted.length).toBe(before);
     });
@@ -277,11 +379,8 @@ describe('ClrContextTrackerService, tracking application context', () => {
   let registry: ClrContextRegistryService;
   let emitted: ClrPageContext[];
 
-  function wait(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   beforeEach(() => {
+    useFakeTimers();
     TestBed.configureTestingModule({});
     tracker = TestBed.inject(ClrContextTrackerService);
     registry = TestBed.inject(ClrContextRegistryService);
@@ -289,7 +388,9 @@ describe('ClrContextTrackerService, tracking application context', () => {
     tracker.context$.subscribe(context => emitted.push(context));
   });
 
-  afterEach(() => tracker.stop());
+  afterEach(() => {
+    tracker.stop();
+  });
 
   it('re-scrapes when an annotation reports a change, which mutates no DOM', async () => {
     const state: Record<string, unknown> = { cluster: 'alpha' };
@@ -299,7 +400,7 @@ describe('ClrContextTrackerService, tracking application context', () => {
 
     state.cluster = 'omega';
     registry.notifyChanged();
-    await wait(50);
+    await elapse(10);
 
     expect(emitted[emitted.length - 1].regions[0].state).toEqual({ cluster: 'omega' });
     unregister();
@@ -311,7 +412,7 @@ describe('ClrContextTrackerService, tracking application context', () => {
     expect(emitted[emitted.length - 1].regions.length).toBe(1);
 
     unregister();
-    await wait(50);
+    await elapse(10);
 
     expect(emitted[emitted.length - 1].regions.length).toBe(0);
   });
@@ -322,10 +423,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
   let emitted: ClrPageContext[];
   let frame: HTMLIFrameElement;
 
-  function wait(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
+  // Waits for the frame's real `load` event — an explicit signal, not a fixed delay.
   function loadFrame(html: string): Promise<void> {
     return new Promise(resolve => {
       frame.addEventListener('load', () => resolve(), { once: true });
@@ -356,6 +454,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
   }
 
   beforeEach(() => {
+    useFakeTimers();
     TestBed.configureTestingModule({});
     tracker = TestBed.inject(ClrContextTrackerService);
     emitted = [];
@@ -376,7 +475,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     expect(frameButtons(tracker.currentContext)).toEqual(['Run']);
 
     addFrameButton('Stop');
-    await wait(60);
+    await elapse(10);
 
     expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Run', 'Stop']);
   });
@@ -384,34 +483,34 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
   it('picks a frame up once it loads, and again when it navigates', async () => {
     tracker.start({ debounceMs: 10 });
     await loadFrame('<button>First</button>');
-    await wait(60);
+    await elapse(10);
     expect(frameButtons(emitted[emitted.length - 1])).toEqual(['First']);
 
     await loadFrame('<button>Second</button>');
-    await wait(60);
+    await elapse(10);
     expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Second']);
 
     addFrameButton('Third');
-    await wait(60);
+    await elapse(10);
     expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Second', 'Third']);
   });
 
   it('drops a frame that leaves the page and no longer reacts to its detached document', async () => {
     await loadFrame('<button>Run</button>');
     tracker.start({ debounceMs: 20 });
-    await wait(120);
+    await elapse(20);
     expect(frameButtons(tracker.currentContext)).toEqual(['Run']);
     const detached = frameBody();
 
     frame.remove();
-    await wait(120);
+    await elapse(20);
     expect(frameButtons(tracker.currentContext)).toEqual([]);
     const emissions = emitted.length;
 
     const button = detached.ownerDocument.createElement('button');
     button.textContent = 'Ghost';
     detached.appendChild(button);
-    await wait(120);
+    await elapse(5000);
     expect(emitted.length).toBe(emissions);
   });
 
@@ -422,7 +521,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     tracker.stop();
 
     addFrameButton('Stop');
-    await wait(60);
+    await elapse(5000);
 
     expect(emitted.length).toBe(before);
   });
@@ -433,11 +532,8 @@ describe('ClrContextTrackerService, reporting what changed', () => {
   let changes: ClrContextChange[];
   let widget: HTMLElement | null;
 
-  function wait(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
   beforeEach(() => {
+    useFakeTimers();
     TestBed.configureTestingModule({});
     tracker = TestBed.inject(ClrContextTrackerService);
     changes = [];
@@ -459,8 +555,9 @@ describe('ClrContextTrackerService, reporting what changed', () => {
     widget = document.createElement('button');
     widget.textContent = 'Provision';
     document.body.appendChild(widget);
-    await wait(60);
+    await elapse(10);
 
+    expect(changes.length).toBe(2);
     const latest = changes[changes.length - 1];
     expect(latest.previous).not.toBeNull();
     expect(latest.added).toEqual([{ type: 'button', label: 'Provision' }]);

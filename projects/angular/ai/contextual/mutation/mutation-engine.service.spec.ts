@@ -714,6 +714,7 @@ describe('ClrMutationEngineService', () => {
             { path: '', component: Routed },
             { path: 'hosts', component: Routed },
             { path: 'clusters/:id', component: Routed },
+            { path: 'billing', loadChildren: () => Promise.resolve([{ path: '', component: Routed }]) },
             { path: 'legacy', component: Routed, canActivate: [() => TestBed.inject(Router).parseUrl('/hosts')] },
             { path: 'admin', component: Routed, canActivate: [() => false] },
             { path: '**', redirectTo: '' },
@@ -756,6 +757,27 @@ describe('ClrMutationEngineService', () => {
       expect(missing.refused).toBe('invalid');
       expect(missing.detail).toContain('"id"');
       expect(router.url).toBe('/');
+    });
+
+    it('fills a parameter as one literal segment, whatever it contains', async () => {
+      const result = await navigate('clusters/:id', { id: 'a/b ?c' });
+
+      expect(result.outcome).toBe('navigated');
+      expect(result.url).toBe('/clusters/a%2Fb%20%3Fc');
+      expect(router.routerState.snapshot.root.firstChild?.params).toEqual({ id: 'a/b ?c' });
+    });
+
+    it('refuses a parameter that would step up the path', async () => {
+      const result = await navigate('clusters/:id', { id: '..' });
+
+      expect(result.refused).toBe('invalid');
+      expect(router.url).toBe('/');
+    });
+
+    it('navigates to a route whose module has not loaded yet', async () => {
+      const result = await navigate('billing');
+
+      expect(result).toEqual(jasmine.objectContaining({ applied: true, outcome: 'navigated', url: '/billing' }));
     });
 
     it('reports where a guard redirect actually went', async () => {

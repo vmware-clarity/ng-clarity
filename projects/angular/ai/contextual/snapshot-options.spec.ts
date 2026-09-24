@@ -7,11 +7,13 @@
 
 import {
   capSnapshotOptions,
+  CLR_CONTEXT_CATEGORIES,
   CLR_CONTEXT_DEFAULT_OPTIONS,
+  CLR_CONTEXT_PRESETS,
   clrContextPreset,
   resolveSnapshotOptions,
 } from './snapshot-options';
-import { sanitizeUntrustedSnapshotOptions } from './untrusted-options';
+import { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS, sanitizeUntrustedSnapshotOptions } from './untrusted-options';
 
 describe('snapshot options', () => {
   describe('resolveSnapshotOptions', () => {
@@ -196,5 +198,24 @@ describe('snapshot options, categories', () => {
     expect(clrContextPreset('interactive').excludeCategories).toEqual(['layout', 'text']);
     expect(resolveSnapshotOptions(clrContextPreset('interactive')).includeText).toBe(false);
     expect(resolveSnapshotOptions(clrContextPreset('interactive')).excludeRoles).toContain('navigation');
+  });
+});
+
+describe('snapshot options, the exported constants', () => {
+  it('cannot be changed by an application, since they decide what every snapshot and caller gets', () => {
+    expect(() => ((CLR_CONTEXT_DEFAULT_OPTIONS as { maxComponents: number }).maxComponents = 1e6)).toThrow();
+    expect(() => (CLR_CONTEXT_CATEGORIES.forms as string[]).push('dialog')).toThrow();
+    expect(() => (CLR_CONTEXT_PRESETS.minimal.excludeCategories as string[]).pop()).toThrow();
+    expect(() => (CLR_CONTEXT_UNTRUSTED_OPTION_KEYS as string[]).push('rootSelector')).toThrow();
+    expect(CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents).toBe(300);
+  });
+
+  it('hands out presets as copies the caller may change', () => {
+    const preset = clrContextPreset('minimal');
+    preset.excludeCategories?.push('dialogs');
+    preset.maxComponents = 5;
+
+    expect(CLR_CONTEXT_PRESETS.minimal.excludeCategories).toEqual(['layout', 'text']);
+    expect(CLR_CONTEXT_PRESETS.minimal.maxComponents).toBe(150);
   });
 });

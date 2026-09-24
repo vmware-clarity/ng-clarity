@@ -138,4 +138,23 @@ describe('accessibleName, sources the first version missed', () => {
       nameOf('<label for="h"><span style="display: none">Show</span><span>Hide</span></label><input id="h" />', 'input')
     ).toBe('Hide');
   });
+
+  describe('screen-reader-only text', () => {
+    const clipped = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap';
+
+    it('names an icon button whose only text is for screen readers', () => {
+      expect(
+        nameOf(`<button id="b"><svg aria-hidden="true"></svg><span style="${clipped}">Delete</span></button>`, '#b')
+      ).toBe('Delete');
+    });
+
+    it('leaves out screen-reader guidance next to visible text', () => {
+      expect(
+        nameOf(
+          `<div role="columnheader" id="h">Name<span style="${clipped}">Use left or right key to resize the column</span></div>`,
+          '#h'
+        )
+      ).toBe('Name');
+    });
+  });
 });

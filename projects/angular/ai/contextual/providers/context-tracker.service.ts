@@ -105,6 +105,14 @@ export class ClrContextTrackerService implements OnDestroy {
     return this.latest;
   }
 
+  /**
+   * Whether the tracker is watching the page. The tracker is shared, so a consumer that
+   * only wants to look can check this and leave tracking to whoever started it.
+   */
+  get isTracking(): boolean {
+    return this.tracking;
+  }
+
   ngOnDestroy(): void {
     this.stop();
     // Nothing outlives the injector that owned this service; the snapshot it was

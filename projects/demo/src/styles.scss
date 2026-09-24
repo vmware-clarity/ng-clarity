@@ -76,3 +76,11 @@
 .nav-content {
   padding-bottom: tokens.$cds-global-space-10;
 }
+
+// The header styles its action links but has no style for an action that is a button,
+// such as the context inspector's trigger: drop the button's own background and border.
+.header-actions button.nav-link {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
