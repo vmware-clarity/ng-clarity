@@ -6,14 +6,10 @@
  */
 
 import { CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
-import { DOCUMENT } from '@angular/common';
 import {
-  afterNextRender,
   Directive,
   ElementRef,
   EventEmitter,
-  Inject,
-  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -30,24 +26,20 @@ import { ColumnOrderChanged } from '../../interfaces/column-state';
 import { ColumnDefinition } from '../../shared/column/column-definitions';
 
 /**
- * `left`/`right` move the column one step, the same as the arrow keys while it is grabbed.
- * `start`/`end` jump it to either edge. Every direction is resolved among the scrollable columns,
- * because that is the order the user sees; a pinned column cannot be moved at all.
+ * The direction of a one step column move, the same as the arrow keys while a column is grabbed.
  */
-export type ColumnMoveDirection = 'left' | 'right' | 'start' | 'end';
+export enum ColumnMoveDirection {
+  Left = 'left',
+  Right = 'right',
+}
 
 /**
  * Reorders the columns of a datagrid through drag and drop, the arrow keys, or `moveColumnTo`.
  *
- * The host is responsible for rendering a new order by destroying and recreating the column views,
- * rather than letting Angular relocate the existing ones. A pinned column is rendered in the
- * datagrid's sticky container and the rest in the scrollable one, so a single declared list of
- * columns ends up split across two DOM parents. Reordering the list then makes Angular's `@for`
- * reconciliation relocate a column against a reference node that lives in the other container, and
- * the DOM insert throws - which leaves the header short of columns, because change detection gives
- * up half way through. Rebuilding gives the reconciliation nothing to relocate, which is what makes
- * every move among the scrollable columns renderable while a column is pinned. See
- * `rebuildColumnViews` in DatagridComponent. Pinned columns themselves are never moved.
+ * Pinned columns are not moved. The datagrid renders them in its sticky container and the rest in
+ * the scrollable one, so a single declared list of columns is split across two DOM parents, and
+ * reordering pinned columns makes Angular's `@for` relocate a column against a reference node in the
+ * other container - the DOM insert throws. Moves between the scrollable columns are not affected.
  */
 @Directive({
   selector: 'clr-datagrid[appfxDgColumnsOrder]',
@@ -65,9 +57,7 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
   constructor(
     private readonly elementRef: ElementRef<HTMLElement>,
     private readonly cdkDropList: CdkDropList,
-    private readonly columnOrderingService: DatagridColumnsOrderService,
-    private readonly injector: Injector,
-    @Inject(DOCUMENT) private readonly document: Document
+    private readonly columnOrderingService: DatagridColumnsOrderService
   ) {
     cdkDropList.orientation = 'horizontal';
   }
@@ -94,7 +84,7 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
       this.columnOrderingService.moveVisibleColumn.subscribe(visibleColumnIndices => {
         const moved = this.moveColumnTo(
           visibleColumnIndices.visibleColumnIndex,
-          visibleColumnIndices.moveLeft ? 'left' : 'right'
+          visibleColumnIndices.moveLeft ? ColumnMoveDirection.Left : ColumnMoveDirection.Right
         );
 
         if (moved) {
@@ -106,11 +96,11 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
 
   /**
    * Whether `moveColumnTo` would actually apply for this column and direction, so a menu action can
-   * disable itself instead of letting the user attempt a move that does nothing. Only the edges of
-   * the column's own group refuse a move.
+   * disable itself instead of letting the user attempt a move that does nothing. A pinned column, or
+   * one at either edge of the scrollable columns, has no move to make.
    */
   canMoveColumn(visibleColumnIndex: number, direction: ColumnMoveDirection): boolean {
-    return this.isMoveApplicable(this.computeTargetIndices(visibleColumnIndex, direction));
+    return !!this.computeTargetIndices(visibleColumnIndex, direction);
   }
 
   /**
@@ -120,49 +110,12 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
   moveColumnTo(visibleColumnIndex: number, direction: ColumnMoveDirection): boolean {
     const indices = this.computeTargetIndices(visibleColumnIndex, direction);
 
-    if (!this.isMoveApplicable(indices)) {
+    if (!indices) {
       return false;
     }
 
     this.reorderColumn(indices);
     return true;
-  }
-
-  /**
-   * Brings the column actions menu back on the given column, wherever it ended up.
-   *
-   * Only needed for a move that rebuilt the column views, which destroys the menu along with the
-   * column it belonged to. There is no menu left to re-anchor the way pinning does, so the one on the
-   * column in its new place is opened instead - the end state a caller wanted, reached by reopening
-   * rather than by keeping the original.
-   */
-  reopenColumnActions(column: ColumnDefinition<any>, direction: ColumnMoveDirection): void {
-    this.findColumnActionsTrigger(column)?.focus();
-
-    // Deferred until the click that started the move has finished propagating. The popover closes on
-    // an outside click and only ever forgives the event that opened it, so opening the menu while
-    // that click is still in flight - from a button that no longer exists - closes it again straight
-    // away. The trigger is looked up again here because the rebuild may have replaced it once more.
-    afterNextRender(
-      () => {
-        const trigger = this.findColumnActionsTrigger(column);
-
-        if (!trigger) {
-          return;
-        }
-
-        trigger.click();
-
-        // Opening a dropdown through its trigger makes it move focus to its first item, which is not
-        // the one that was just used. It does that from a timeout of its own - see
-        // DropdownFocusHandler.moveToFirstItemWhenOpen - so putting focus back has to be queued
-        // behind it rather than done here. Both are zero delay timeouts and this one is queued while
-        // the click above is still on the stack, so it always runs second, and the intermediate focus
-        // is never painted.
-        setTimeout(() => this.focusMoveAction(direction));
-      },
-      { injector: this.injector }
-    );
   }
 
   setDgColumnsContainer(): void {
@@ -200,19 +153,6 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
   }
 
   /**
-   * Whether a move resolved by `computeTargetIndices` is worth applying at all: it has to have a
-   * target, and that target has to be a different column. A pinned column never has a target, and a
-   * loose one's target is always another loose column, so nothing else can refuse it.
-   */
-  private isMoveApplicable(indices: { previousIndex: number; currentIndex: number }): boolean {
-    if (indices.previousIndex < 0 || indices.currentIndex < 0) {
-      return false;
-    }
-
-    return indices.previousIndex !== indices.currentIndex;
-  }
-
-  /**
    * Guards the drag and drop path, where a drop can target any column and so is not confined to the
    * dragged column's own group. Dropping a loose column among the pinned ones does not pin it, it
    * only changes where it sits in the list, so the column would stay in the scrollable container and
@@ -241,45 +181,24 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
   }
 
   /**
-   * Resolves a direction relative to `previousColumnIndex` (an index into the *visible* columns)
-   * into absolute previous/current indices into `dgColumnsOrderColumns`.
+   * Resolves a one step move of the column at `visibleColumnIndex` (an index into the visible columns)
+   * into indices into `dgColumnsOrderColumns`, or `null` when there is no move to make.
    *
-   * Only a loose column can be moved, and its target is looked up among the loose columns - they are
-   * the ones rendered together in the scrollable container, so those are the neighbours the user
-   * actually sees. Reading the neighbour off the full list instead picks a pinned column whenever
-   * one sits between them in the array, which is both the wrong target and a move that cannot be
-   * rendered. A pinned column resolves to no target at all.
+   * The neighbour is taken among the scrollable columns, because those are the ones the user sees side
+   * by side - a pinned column between them in the array is rendered in the other container. A pinned
+   * column itself is not moved, see the class comment.
    */
-  private computeTargetIndices(previousColumnIndex: number, direction: ColumnMoveDirection) {
-    const visibleColumns = this.dgColumnsOrderColumns.filter(column => !column.hidden);
-    const previousColumn = visibleColumns[previousColumnIndex];
+  private computeTargetIndices(visibleColumnIndex: number, direction: ColumnMoveDirection) {
+    const column = this.dgColumnsOrderColumns.filter(other => !other.hidden)[visibleColumnIndex];
+    const scrollableColumns = this.dgColumnsOrderColumns.filter(other => !other.hidden && !other.pinned);
+    const index = scrollableColumns.indexOf(column);
+    const target = scrollableColumns[index + (direction === ColumnMoveDirection.Left ? -1 : 1)];
 
-    if (!previousColumn || previousColumn.pinned) {
-      return { previousIndex: -1, currentIndex: -1 };
+    if (index < 0 || !target) {
+      return null;
     }
 
-    const group = visibleColumns.filter(column => !column.pinned);
-    const groupIndex = group.indexOf(previousColumn);
-    const lastGroupIndex = group.length - 1;
-
-    let targetGroupIndex: number;
-    switch (direction) {
-      case 'start':
-        targetGroupIndex = 0;
-        break;
-      case 'end':
-        targetGroupIndex = lastGroupIndex;
-        break;
-      case 'left':
-        targetGroupIndex = groupIndex - 1;
-        break;
-      case 'right':
-        targetGroupIndex = groupIndex + 1;
-        break;
-    }
-    targetGroupIndex = Math.min(Math.max(targetGroupIndex, 0), lastGroupIndex);
-
-    return this.createColumnIndices(previousColumn, group[targetGroupIndex]);
+    return this.createColumnIndices(column, target);
   }
 
   private findColumnIndices(previousColumn: ColumnDefinition<any>, currentDroppedItemIndex: number) {
@@ -300,41 +219,6 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
       previousIndex: previousIndex,
       currentIndex: currentIndex,
     };
-  }
-
-  /**
-   * Puts focus on the move action of the open menu, so repeating it does not mean finding it again.
-   *
-   * The menu is rendered into an overlay outside the datagrid, so it is reached through the document
-   * rather than through the host element. Only one menu is ever open - the others are kept out of the
-   * DOM entirely - so there is no ambiguity about which one this is.
-   */
-  private focusMoveAction(direction: ColumnMoveDirection): void {
-    this.document.querySelector<HTMLElement>(`.dropdown-menu [appfxcolumnmoveaction="${direction}"]`)?.focus();
-  }
-
-  /**
-   * The column actions trigger of a column, found by position rather than by identity - after a
-   * rebuild the elements are not the ones a caller was holding on to.
-   *
-   * Pinned columns are rendered in the static container ahead of the rest, so the rendered order has
-   * to be reconstructed instead of read straight off the column array.
-   */
-  private findColumnActionsTrigger(column: ColumnDefinition<any>): HTMLElement | null {
-    const visibleColumns = this.dgColumnsOrderColumns.filter(other => !other.hidden);
-    const renderedColumns = [
-      ...visibleColumns.filter(other => other.pinned),
-      ...visibleColumns.filter(other => !other.pinned),
-    ];
-    const renderedIndex = renderedColumns.findIndex(other => isEqualColumns(column, other));
-
-    if (renderedIndex < 0) {
-      return null;
-    }
-
-    return this.elementRef.nativeElement
-      .querySelectorAll<HTMLElement>('.datagrid-column-actions-toggle')
-      .item(renderedIndex);
   }
 
   private findColumnIndex(column: ColumnDefinition<any>) {

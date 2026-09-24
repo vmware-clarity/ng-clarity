@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostListener, Input } from '@angular/core';
+import { Directive, HostListener, Input } from '@angular/core';
 
 import { ColumnMoveDirection, DatagridColumnsOrderDirective } from './datagrid-columns-order.directive';
 
 /**
- * Moves this column left, right, to the start, or to the end of the reorderable columns, meant for
- * a `clrDgColumnAction` item inside a column's `clr-dg-column-actions` menu.
+ * Moves this column one step left or right, meant for a `clrDgColumnAction` item inside a column's
+ * `clr-dg-column-actions` menu.
  *
  * The move itself, and whether it is even possible right now, both live on
  * `DatagridColumnsOrderDirective` - the same place the mouse and keyboard reordering already go
@@ -19,8 +19,8 @@ import { ColumnMoveDirection, DatagridColumnsOrderDirective } from './datagrid-c
  * connects a menu item's index and direction to that.
  *
  * `DatagridColumnsOrderDirective` is injected rather than `DatagridColumnsOrderService`, because
- * the column order array (`dgColumnsOrderColumns`) that the pinned-column guard needs lives on the
- * directive, not the service.
+ * the column order array (`dgColumnsOrderColumns`) that resolves the move lives on the directive,
+ * not the service.
  */
 @Directive({
   selector: '[appfxColumnMoveAction]',
@@ -32,10 +32,7 @@ export class ColumnMoveActionDirective {
 
   @Input() columnIndex: number;
 
-  constructor(
-    private readonly columnsOrderDirective: DatagridColumnsOrderDirective,
-    private readonly elementRef: ElementRef<HTMLElement>
-  ) {}
+  constructor(private readonly columnsOrderDirective: DatagridColumnsOrderDirective) {}
 
   get disabled(): boolean {
     return !this.columnsOrderDirective.canMoveColumn(this.columnIndex, this.direction);
@@ -47,20 +44,6 @@ export class ColumnMoveActionDirective {
       return;
     }
 
-    // Read before the move, because afterwards this index points at whichever column took its place.
-    const column = this.columnsOrderDirective.dgColumnsOrderColumns.filter(other => !other.hidden)[this.columnIndex];
-
-    if (!this.columnsOrderDirective.moveColumnTo(this.columnIndex, this.direction) || !column) {
-      return;
-    }
-
-    // Normally the menu survives the move and `clrCanClosePopover="false"` re-anchors it to the
-    // trigger, so it is still open with focus on this item, which is where it belongs. Once a column
-    // is pinned though, applying the move rebuilds the column views, and this very button is
-    // destroyed with the column it belonged to - there is no menu left to re-anchor, so the one on
-    // the column in its new place is opened instead to end up in the same state.
-    if (!this.elementRef.nativeElement.isConnected) {
-      this.columnsOrderDirective.reopenColumnActions(column, this.direction);
-    }
+    this.columnsOrderDirective.moveColumnTo(this.columnIndex, this.direction);
   }
 }
