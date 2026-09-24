@@ -7,7 +7,6 @@
 
 import {
   afterNextRender,
-  AfterViewInit,
   booleanAttribute,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -24,6 +23,7 @@ import {
   SkipSelf,
   ViewChild,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import {
   ClrDropdown,
@@ -32,7 +32,7 @@ import {
   RootDropdownService,
 } from '@clr/angular/popover/dropdown';
 import { ClrCommonStringsService, FOCUS_SERVICE_PROVIDER, FocusableItem } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
+import { EMPTY, merge, Subscription } from 'rxjs';
 
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
@@ -197,7 +197,7 @@ class ColumnActionsFocusHandler extends DropdownFocusHandler {
   changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: false,
 })
-export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewInit, OnDestroy {
+export class ClrDatagridColumnActions extends ClrDropdown implements OnDestroy {
   // Exposed so the template can compare against the enum.
   protected readonly ClrDatagridSortOrder = ClrDatagridSortOrder;
 
@@ -206,7 +206,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   @ViewChild('trigger', { read: ElementRef }) private trigger: ElementRef<HTMLButtonElement>;
 
   // Named for this component rather than inherited: ClrDropdown keeps its own private list.
-  private subs: Subscription[] = [];
   private projectedItemsSubscription: Subscription;
   private readonly columnActionsFocusHandler = inject(ColumnActionsFocusHandler);
 
@@ -235,6 +234,14 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     // getter covers the default: Angular only invokes the setter above when the input is actually
     // bound, and by then the field initializer has already run.
     columnActions.present.set(!this._keepFilterInHeader);
+
+    // The trigger and the filter action show whether the column is filtered and whether its filter is
+    // open, and this component is OnPush - so it has to be told when either changes. Neither goes
+    // through this template: a value typed into the filter, or the filter closed by an outside click
+    // or the escape key.
+    merge(filters?.change ?? EMPTY, columnPopover.openChange)
+      .pipe(takeUntilDestroyed())
+      .subscribe(() => changeDetectorRef.markForCheck());
   }
 
   /**
@@ -313,22 +320,8 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     this.columnActionsFocusHandler.setProjectedItems(items.toArray());
   }
 
-  ngAfterViewInit() {
-    // The trigger and the filter action show whether the column is filtered, and this component is
-    // OnPush, so it has to be told when a filter value changes.
-    if (this.filters) {
-      this.subs.push(this.filters.change.subscribe(() => this.changeDetectorRef.markForCheck()));
-    }
-
-    // Same for the filter action reporting whether the filter is open: opening it goes through this
-    // template and refreshes the view on its own, but closing it does not - that is an outside click
-    // or an escape key handled by the overlay, and the item would be left announcing itself expanded.
-    this.subs.push(this.columnPopover.openChange.subscribe(() => this.changeDetectorRef.markForCheck()));
-  }
-
   override ngOnDestroy() {
     super.ngOnDestroy();
-    this.subs.forEach(sub => sub.unsubscribe());
     this.projectedItemsSubscription?.unsubscribe();
     // Hands the filter back its own toggle, in case the menu is removed while the column stays.
     this.columnActions.present.set(false);

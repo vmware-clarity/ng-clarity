@@ -2478,7 +2478,7 @@ export class ClrDatagridColumnAction extends ClrDropdownItem {
 }
 
 // @public (undocumented)
-export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewInit, OnDestroy {
+export class ClrDatagridColumnActions extends ClrDropdown implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ColumnActionsService" needs to be exported by the entry point clr-angular.d.ts
     constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, filters: FiltersProvider, parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, dropdownService: RootDropdownService);
     // (undocumented)
@@ -2500,8 +2500,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     set keepFilterInHeader(value: boolean);
     // (undocumented)
     static ngAcceptInputType_keepFilterInHeader: unknown;
-    // (undocumented)
-    ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
     protected openFilter(event: Event): void;
