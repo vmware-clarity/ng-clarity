@@ -42,6 +42,7 @@ import {
 import { Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
+import { ColumnMoveDirection } from './addons/column-ordering/datagrid-columns-order.directive';
 import { ExportProviderService } from './addons/export/export-provider.service';
 import { ClientSideExportConfig, DatagridItemSet, ExportStatus } from './addons/export/export.interface';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
@@ -516,6 +517,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     hideColumnToggle: false,
     enableCustomExport: false,
   };
+  protected readonly ColumnMoveDirection = ColumnMoveDirection;
   protected readonly defaultUnsetValue: string = undefined as unknown as string;
   protected readonly defaultUnsortedOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
   protected readonly dgStrings: DatagridStrings;
@@ -817,17 +819,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   onColumnOrderChange(data: ColumnOrderChanged) {
     this.columns = data.columns;
 
-    // Only a pinned column that is actually rendered sits in the sticky container; a hidden one is
-    // in neither container and does not stand in the way of the ordinary reorder.
-    if (this.columns.some((column: ColumnDefinition<T>) => column.pinned && !column.hidden)) {
-      this.rebuildColumnViews();
-    } else {
-      this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
-      this.cdr.detectChanges();
-      //Without resize when the grid is empty and column is moved
-      //the columns are not displayed correctly
-      this.resize();
-    }
+    this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
+    this.cdr.detectChanges();
+    //Without resize when the grid is empty and column is moved
+    //the columns are not displayed correctly
+    this.resize();
 
     this.columnOrderChange.emit(data);
   }
@@ -974,11 +970,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   protected onColumnResize(columnSize: number, column: ColumnDefinition<T>): void {
-    // The column definition is what a rebuild reads to recreate the view - see rebuildColumnViews -
-    // so the resized width has to be written back here the same way sort and filter state is.
-    // Otherwise pinning a column and then moving or dragging any column, which rebuilds every column
-    // view, would silently discard every resize made before that pin.
-    column.width = `${columnSize}px`;
     this.columnResize.emit({ columnSize: columnSize, column: column });
   }
 
@@ -1042,11 +1033,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   protected onFilterChange(filterValue: unknown, column: ColumnDefinition<T>): void {
-    // The column definition is what the filter is bound to, so the active value is kept there the
-    // same way the active sort order is. Otherwise reordering a column, which rebuilds the column
-    // views, would bind the filter back to the value it started with and silently drop the filter
-    // the user typed.
-    column.defaultFilterValue = filterValue;
     this.columnFilterChange.emit({
       filterValue: filterValue,
       column: column,
@@ -1193,33 +1179,6 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
   protected dropGroup(group: string): CdkDropList[] {
     return (this.groupService?.getGroupItems(group) || []) as CdkDropList[];
-  }
-
-  /**
-   * Renders a new column order by throwing the current column views away and building them again,
-   * rather than letting Angular relocate the existing ones. Only needed once a column is pinned,
-   * which is also why a move then closes the column actions menu instead of re-anchoring it.
-   *
-   * The datagrid renders the pinned columns in its sticky container and the rest in the scrollable
-   * one, so one declared list of columns is split across two DOM parents. Reordering that list makes
-   * Angular's `@for` reconciliation relocate a column against a reference node that lives in the
-   * other container, and the DOM insert throws - which leaves the header short of columns, since
-   * change detection gives up half way through. Emptying `visibleColumns` first destroys every
-   * column view, so the reconciliation has nothing left to relocate and the new order is rendered
-   * from scratch. That is what makes reordering work with a pinned column anywhere in the list, and
-   * it is also the only way the pinned columns can be reordered with each other.
-   *
-   * Column state that has to survive this lives on the column definitions - `defaultSortOrder`,
-   * `defaultFilterValue` and `width` - so the rebuilt views bind it straight back.
-   */
-  private rebuildColumnViews(): void {
-    this.visibleColumns = [];
-    this.cdr.detectChanges();
-    this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
-    this.cdr.detectChanges();
-    // The columns are measured from scratch, and this also covers an empty grid, where the datagrid
-    // does not re-render the columns on its own.
-    this.resize();
   }
 
   private hasExpandableRows(item: T): boolean {

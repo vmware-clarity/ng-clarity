@@ -351,6 +351,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     columnDefsChange: EventEmitter<ColumnDefinition<T>[]>;
     columnFilterChange: EventEmitter<ColumnFilterChange>;
     columnHiddenStateChange: EventEmitter<ColumnHiddenState>;
+    // Warning: (ae-forgotten-export) The symbol "ColumnMoveDirection" needs to be exported by the entry point clr-addons-datagrid.d.ts
+    //
+    // (undocumented)
+    protected readonly ColumnMoveDirection: typeof ColumnMoveDirection;
     columnOrderChange: EventEmitter<ColumnOrderChanged>;
     columnPinnedChange: EventEmitter<ColumnPinnedState>;
     columnResize: EventEmitter<ColumnResize>;
@@ -667,8 +671,6 @@ export class DatagridStrings {
     itemsPerPage: string;
     moveColumnLeft: string;
     moveColumnRight: string;
-    moveColumnToEnd: string;
-    moveColumnToStart: string;
     multipleItems: string;
     noItemsFound: string;
     pagedItems: string;

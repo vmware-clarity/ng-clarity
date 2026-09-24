@@ -14,6 +14,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GridHelper } from '@clr/addons/testing';
 import { ClrDatagrid, ClrDatagridModule } from '@clr/angular/data/datagrid';
 
+import { ColumnMoveDirection } from './datagrid-columns-order.directive';
 import { DatagridColumnsOrderModule } from './datagrid-columns-order.module';
 import { ColumnOrderChanged } from '../../interfaces/column-state';
 import { ColumnDefinition } from '../../shared/column/column-definitions';
@@ -44,24 +45,18 @@ describe('ColumnMoveActionDirective', () => {
 
   it('is enabled in the middle and disabled at both edges', function (this: any) {
     toggleMenu.call(this, 0);
-    expect(moveButton('Move to Start').getAttribute('aria-disabled')).toBe('true');
     expect(moveButton('Move Left').getAttribute('aria-disabled')).toBe('true');
     expect(moveButton('Move Right').getAttribute('aria-disabled')).toBe('false');
-    expect(moveButton('Move to End').getAttribute('aria-disabled')).toBe('false');
     toggleMenu.call(this, 0);
 
     toggleMenu.call(this, 1);
-    expect(moveButton('Move to Start').getAttribute('aria-disabled')).toBe('false');
     expect(moveButton('Move Left').getAttribute('aria-disabled')).toBe('false');
     expect(moveButton('Move Right').getAttribute('aria-disabled')).toBe('false');
-    expect(moveButton('Move to End').getAttribute('aria-disabled')).toBe('false');
     toggleMenu.call(this, 1);
 
     toggleMenu.call(this, 2);
-    expect(moveButton('Move to Start').getAttribute('aria-disabled')).toBe('false');
     expect(moveButton('Move Left').getAttribute('aria-disabled')).toBe('false');
     expect(moveButton('Move Right').getAttribute('aria-disabled')).toBe('true');
-    expect(moveButton('Move to End').getAttribute('aria-disabled')).toBe('true');
     toggleMenu.call(this, 2);
   });
 
@@ -73,14 +68,6 @@ describe('ColumnMoveActionDirective', () => {
     this.fixture.detectChanges();
 
     expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
-  });
-
-  it('jumps to the end when clicked', function (this: any) {
-    toggleMenu.call(this, 0);
-    moveButton('Move to End').click();
-    this.fixture.detectChanges();
-
-    expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Status', 'Name']);
   });
 
   it('does nothing when a disabled action is clicked', function (this: any) {
@@ -146,10 +133,8 @@ class TestClrDatagridHostComponent {
   @ViewChild(ClrDatagrid, { static: true }) clrDatagrid: ClrDatagrid<any>;
 
   moveActions = [
-    { direction: 'start', label: 'Move to Start' },
-    { direction: 'left', label: 'Move Left' },
-    { direction: 'right', label: 'Move Right' },
-    { direction: 'end', label: 'Move to End' },
+    { direction: ColumnMoveDirection.Left, label: 'Move Left' },
+    { direction: ColumnMoveDirection.Right, label: 'Move Right' },
   ];
 
   data: any[] = [
@@ -173,13 +158,9 @@ class TestClrDatagridHostComponent {
     return column.uid || column.displayName;
   }
 
-  // Mirrors DatagridComponent.onColumnOrderChange, which rebuilds the column views on every move so
-  // that the order renders and the actions menu does not outlive the trigger it is anchored to.
+  // Mirrors DatagridComponent.onColumnOrderChange.
   onColumnOrderChange(data: ColumnOrderChanged) {
-    const reordered = data.columns;
-    this.columns = [];
-    this.cdr.detectChanges();
-    this.columns = reordered;
+    this.columns = data.columns;
     this.cdr.detectChanges();
     this.clrDatagrid.resize();
   }
