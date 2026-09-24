@@ -1,0 +1,106 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h5>Icon Options</h5>
+<p>Exercise every input on &lt;clr-icon&gt;, including inner-offset, and preview the result live.</p>
+
+<div class="icon-options-preview">
+  <span class="clr-example" [class.inverse]="inverse">
+    <clr-icon
+      [shape]="shape"
+      [size]="size"
+      [direction]="direction"
+      [flip]="flip"
+      [solid]="solid"
+      [status]="status"
+      [inverse]="inverse"
+      [badge]="badge"
+      [innerOffset]="innerOffset"
+    ></clr-icon>
+  </span>
+  <pre class="icon-options-snippet">{{ snippet }}</pre>
+</div>
+
+<form clrForm clrLayout="horizontal">
+  <clr-select-container>
+    <label>Shape</label>
+    <select clrSelect name="shape" [(ngModel)]="shape">
+      @for (s of shapes; track s) {
+      <option [value]="s">{{ s }}</option>
+      }
+    </select>
+  </clr-select-container>
+
+  <clr-toggle-container>
+    <label>Solid</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="solid" [(ngModel)]="solid" id="solidToggle" />
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+
+  <clr-toggle-container>
+    <label>Inverse</label>
+    <clr-toggle-wrapper>
+      <input type="checkbox" clrToggle name="inverse" [(ngModel)]="inverse" id="inverseToggle" />
+    </clr-toggle-wrapper>
+  </clr-toggle-container>
+
+  <clr-select-container>
+    <label>Size</label>
+    <select clrSelect name="size" [(ngModel)]="size">
+      <option value="">(none)</option>
+      @for (s of sizes; track s) {
+      <option [value]="s">{{ s }}</option>
+      }
+    </select>
+  </clr-select-container>
+
+  <clr-select-container>
+    <label>Direction</label>
+    <select clrSelect name="direction" [(ngModel)]="direction">
+      <option value="">(none)</option>
+      @for (d of directions; track d) {
+      <option [value]="d">{{ d }}</option>
+      }
+    </select>
+  </clr-select-container>
+
+  <clr-select-container>
+    <label>Flip</label>
+    <select clrSelect name="flip" [(ngModel)]="flip">
+      <option value="">(none)</option>
+      @for (f of flips; track f) {
+      <option [value]="f">{{ f }}</option>
+      }
+    </select>
+  </clr-select-container>
+
+  <clr-select-container>
+    <label>Status</label>
+    <select clrSelect name="status" [(ngModel)]="status">
+      <option value="">(none)</option>
+      @for (s of statuses; track s) {
+      <option [value]="s">{{ s }}</option>
+      }
+    </select>
+  </clr-select-container>
+
+  <clr-select-container>
+    <label>Badge</label>
+    <select clrSelect name="badge" [(ngModel)]="badge">
+      <option value="">(none)</option>
+      @for (b of badges; track b) {
+      <option [value]="b">{{ b }}</option>
+      }
+    </select>
+  </clr-select-container>
+
+  <clr-input-container>
+    <label>Inner Offset (px)</label>
+    <input clrInput type="number" name="innerOffset" min="0" [(ngModel)]="innerOffset" />
+  </clr-input-container>
+</form>

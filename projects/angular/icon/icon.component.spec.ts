@@ -231,6 +231,56 @@ describe('icon element', () => {
     });
   });
 
+  describe('innerOffset: ', () => {
+    it('should default to undefined', async () => {
+      expect(component.innerOffset).toBe(undefined);
+      expect(component.el.nativeElement.hasAttribute('inner-offset')).toBe(false);
+    });
+
+    it('should update if assigned a new value', async () => {
+      component.innerOffset = 4;
+      fixture.detectChanges();
+      spyOn(component, 'updateInnerOffset').and.callThrough();
+      component.innerOffset = 8;
+      fixture.detectChanges();
+      expect(component.updateInnerOffset).toHaveBeenCalled();
+    });
+
+    it('should not run an update if assigned the value it already has', async () => {
+      component.innerOffset = 4;
+      fixture.detectChanges();
+      spyOn(component, 'updateInnerOffset').and.callThrough();
+      component.innerOffset = 4;
+      fixture.detectChanges();
+      expect(component.updateInnerOffset).not.toHaveBeenCalled();
+    });
+
+    it('should set the --inner-offset custom property when given a positive value', async () => {
+      component.innerOffset = 4;
+      fixture.detectChanges();
+      expect(component.el.nativeElement.style.getPropertyValue('--inner-offset')).toBe(
+        'calc((4 / var(--cds-global-base)) * 1rem)'
+      );
+    });
+
+    it('should not set the --inner-offset custom property when given a non-positive value', async () => {
+      component.innerOffset = 0;
+      fixture.detectChanges();
+      expect(component.el.nativeElement.style.getPropertyValue('--inner-offset')).toBe('');
+    });
+
+    it('should remove the inner-offset attribute if set to undefined', async () => {
+      component.innerOffset = 4; // Set a value first
+      fixture.detectChanges();
+      expect(component.el.nativeElement.hasAttribute('inner-offset')).toBe(true);
+
+      component.innerOffset = void 0;
+      fixture.detectChanges();
+      expect(component.el.nativeElement.hasAttribute('inner-offset')).toBe(false);
+      expect(component.el.nativeElement.style.getPropertyValue('--inner-offset')).toBe('');
+    });
+  });
+
   describe('registry access performance: ', () => {
     it('updateIcon should not copy the whole icon registry via the registry getter', () => {
       const registrySpy = spyOnProperty(ClarityIcons, 'registry', 'get').and.callThrough();
