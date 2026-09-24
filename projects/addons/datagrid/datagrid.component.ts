@@ -625,7 +625,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   set columns(columns: ColumnDefinition<T>[]) {
     this.#dgColumns = columns;
     if (columns) {
-      this.visibleColumns = columns.filter((column: ColumnDefinition<T>) => !column.hidden);
+      const visibleColumns = columns.filter((column: ColumnDefinition<T>) => !column.hidden);
+      if (this.needsColumnViewsRebuild(visibleColumns)) {
+        this.rebuildColumnViews(visibleColumns);
+      } else {
+        this.visibleColumns = visibleColumns;
+      }
       this.columnDefsChange.emit(this.#dgColumns);
     }
 
@@ -970,6 +975,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   protected onColumnResize(columnSize: number, column: ColumnDefinition<T>): void {
+    // Kept on the definition so a rebuild of the column views binds it back, see rebuildColumnViews.
+    column.width = `${columnSize}px`;
     this.columnResize.emit({ columnSize: columnSize, column: column });
   }
 
@@ -1033,6 +1040,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   protected onFilterChange(filterValue: unknown, column: ColumnDefinition<T>): void {
+    // Kept on the definition so a rebuild of the column views binds it back, see rebuildColumnViews.
+    column.defaultFilterValue = filterValue;
     this.columnFilterChange.emit({
       filterValue: filterValue,
       column: column,
@@ -1179,6 +1188,36 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
   protected dropGroup(group: string): CdkDropList[] {
     return (this.groupService?.getGroupItems(group) || []) as CdkDropList[];
+  }
+
+  /**
+   * Whether showing `visibleColumns` would make the `@for` loops create a column or cell in front of a
+   * rendered pinned one. Clarity moves pinned cells into the row's pinned container, out of the parent
+   * the cells are projected into, so inserting in front of one throws `NotFoundError` from
+   * `insertBefore` and the new column never renders. This happens when a column is shown again, or when
+   * the column definitions are replaced by new objects, while a column is pinned. Moves and hides only
+   * reuse or remove views, so they never need it.
+   */
+  private needsColumnViewsRebuild(visibleColumns: ColumnDefinition<T>[]): boolean {
+    const rendered = this.visibleColumns || [];
+    return (
+      !!this.clrDatagrid?.columns &&
+      rendered.some((column: ColumnDefinition<T>) => column.pinned) &&
+      visibleColumns.some((column: ColumnDefinition<T>) => !rendered.includes(column))
+    );
+  }
+
+  /**
+   * Renders `visibleColumns` by destroying every column and cell view first, so the `@for` loops have
+   * nothing to insert in front of. Column state that has to survive this is kept on the column
+   * definitions - `defaultSortOrder`, `defaultFilterValue` and `width` - so the new views bind it back.
+   */
+  private rebuildColumnViews(visibleColumns: ColumnDefinition<T>[]): void {
+    this.visibleColumns = [];
+    this.cdr.detectChanges();
+    this.visibleColumns = visibleColumns;
+    this.cdr.detectChanges();
+    this.resize();
   }
 
   private hasExpandableRows(item: T): boolean {

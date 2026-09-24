@@ -43,6 +43,7 @@ import { ClrIcon } from '@clr/angular/icon';
 import { Observable, Subject } from 'rxjs';
 
 import { DatagridColumnsOrderModule } from './addons/column-ordering/datagrid-columns-order.module';
+import { DatagridColumnToggleComponent } from './addons/column-toggle/datagrid-column-toggle.component';
 import { ExportProviderService } from './addons/export/export-provider.service';
 import { ExportType } from './addons/export/export-type';
 import { ClientSideExportConfig, ExportStatus } from './addons/export/export.interface';
@@ -1229,6 +1230,152 @@ describe('DatagridComponent', () => {
         this.fixture.detectChanges();
 
         expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C3', 'C2']);
+      });
+    });
+
+    // Clarity moves the cells of a pinned column into the row's pinned container, out of the parent the
+    // cells are projected into. A cell that the @for creates in front of one of them therefore cannot be
+    // inserted, which is what showing a column or replacing the definitions used to run into.
+    describe('showing columns while a column is pinned', () => {
+      function setHidden(fixture: ComponentFixture<DatagridHostComponent>, title: string, hidden: boolean) {
+        const toggle = fixture.debugElement.query(By.directive(DatagridColumnToggleComponent))
+          .componentInstance as DatagridColumnToggleComponent;
+        const column = toggle.columns.find(other => other.displayName === title);
+        toggle.toggleColumnState(column, { target: { checked: !hidden } } as unknown as Event);
+        fixture.detectChanges();
+      }
+
+      function pinnedHeaders(fixture: ComponentFixture<DatagridHostComponent>): string[] {
+        return Array.from(
+          fixture.nativeElement.querySelectorAll('.datagrid-pinned-cells clr-dg-column .datagrid-column-title')
+        ).map((element: HTMLElement) => element.textContent.trim());
+      }
+
+      function columnElementByTitle(fixture: ComponentFixture<DatagridHostComponent>, title: string): HTMLElement {
+        return Array.from(fixture.nativeElement.querySelectorAll('clr-dg-column')).find(
+          (el: HTMLElement) => el.querySelector('.datagrid-column-title')?.textContent.trim() === title
+        ) as HTMLElement;
+      }
+
+      function render(this: DatagridSpecContext, columns: Array<ColumnDefinition<any>>) {
+        this.component.data = this.data;
+        this.component.enableColumnActions = true;
+        this.component.columnsDefs = columns;
+        this.fixture.detectChanges(false);
+      }
+
+      describe('with two pinned columns', () => {
+        beforeEach(function (this: DatagridSpecContext) {
+          render.call(this, [
+            { displayName: 'C1', field: 'name', pinnable: true, pinned: true },
+            { displayName: 'C2', field: 'powerState', pinnable: true, pinned: true },
+            { displayName: 'C3', field: 'status', pinnable: true },
+            { displayName: 'C4', field: 'host', pinnable: true },
+          ] as Array<ColumnDefinition<any>>);
+        });
+
+        it('shows a pinned column again in front of the other one', function (this: DatagridSpecContext) {
+          setHidden(this.fixture, 'C1', true);
+          setHidden(this.fixture, 'C1', false);
+
+          expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C3', 'C4']);
+          expect(pinnedHeaders(this.fixture)).toEqual(['C1', 'C2']);
+        });
+
+        it('shows both pinned columns again, the second one first', function (this: DatagridSpecContext) {
+          setHidden(this.fixture, 'C1', true);
+          setHidden(this.fixture, 'C2', true);
+          setHidden(this.fixture, 'C2', false);
+          setHidden(this.fixture, 'C1', false);
+
+          expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C3', 'C4']);
+          expect(pinnedHeaders(this.fixture)).toEqual(['C1', 'C2']);
+        });
+
+        it('renders the same columns passed in as new definitions', function (this: DatagridSpecContext) {
+          this.component.columnsDefs = this.component.columnsDefs.map(column => ({ ...column }));
+          this.fixture.detectChanges();
+
+          expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C3', 'C4']);
+          expect(pinnedHeaders(this.fixture)).toEqual(['C1', 'C2']);
+        });
+
+        // Only a column that is not rendered yet needs the rebuild. A move or a hide keeps the other
+        // column views, so the actions menu stays open and anchored on a move.
+        it('does not rebuild the column views for a move or a hide', function (this: DatagridSpecContext) {
+          const rebuildColumnViews = spyOn<any>(
+            this.component.appfxDatagridComponent,
+            'rebuildColumnViews'
+          ).and.callThrough();
+
+          this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[2].nativeElement.click();
+          this.fixture.detectChanges();
+          Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item'))
+            .find(item => item.textContent.trim() === 'Move Right')
+            .click();
+          this.fixture.detectChanges();
+          setHidden(this.fixture, 'C3', true);
+
+          expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C4']);
+          expect(rebuildColumnViews).not.toHaveBeenCalled();
+        });
+      });
+
+      it('shows a loose column again in front of a pinned one', function (this: DatagridSpecContext) {
+        render.call(this, [
+          { displayName: 'C1', field: 'name', pinnable: true },
+          { displayName: 'C2', field: 'powerState', pinnable: true, pinned: true },
+          { displayName: 'C3', field: 'status', pinnable: true },
+        ] as Array<ColumnDefinition<any>>);
+
+        setHidden(this.fixture, 'C1', true);
+        setHidden(this.fixture, 'C1', false);
+
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C2', 'C1', 'C3']);
+      });
+
+      // Showing a column rebuilds every column view, so the state of the others has to come back from
+      // their definitions.
+      describe('keeps the state of the other columns', () => {
+        beforeEach(function (this: DatagridSpecContext) {
+          render.call(this, [
+            { displayName: 'Status', field: 'status', pinnable: true, pinned: true },
+            { displayName: 'Name', field: 'name', sortAndFilterByField: 'name' },
+            { displayName: 'State', field: 'powerState' },
+          ] as Array<ColumnDefinition<any>>);
+          setHidden(this.fixture, 'State', true);
+        });
+
+        it('keeps an applied filter', function (this: DatagridSpecContext) {
+          const gridHelper = new GridHelper(this.fixture.debugElement);
+          gridHelper.openFilter('Name');
+          this.fixture.detectChanges();
+          gridHelper.getFilterInput().inputText('vm2', 'keyup');
+          this.fixture.detectChanges();
+          gridHelper.closeFilter();
+          this.fixture.detectChanges();
+          expect(new GridHelper(this.fixture.debugElement).getRows().length).toBe(1);
+
+          setHidden(this.fixture, 'State', false);
+
+          expect(new GridHelper(this.fixture.debugElement).getRows().length).toBe(1);
+        });
+
+        // Reproduced with a real keyboard resize, since calling onColumnResize only reports a width.
+        it('keeps a resized width', function (this: DatagridSpecContext) {
+          const handle = columnElementByTitle(this.fixture, 'Name').querySelector<HTMLElement>(
+            '.datagrid-column-handle'
+          );
+          handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+          handle.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight', bubbles: true }));
+          this.fixture.detectChanges();
+          const resizedWidth = columnElementByTitle(this.fixture, 'Name').style.width;
+          expect(resizedWidth).not.toBe('');
+
+          setHidden(this.fixture, 'State', false);
+
+          expect(columnElementByTitle(this.fixture, 'Name').style.width).toBe(resizedWidth);
+        });
       });
     });
 
