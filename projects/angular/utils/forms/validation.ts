@@ -20,9 +20,6 @@ export function triggerAllFormControlValidation(formGroup: FormGroup) {
   });
 }
 
-/** A control that is empty, for probing what a validator says about emptiness. */
-const EMPTY_CONTROL = new FormControl<unknown>(null);
-
 /**
  * Whether a value is required of the control, however that requirement was expressed.
  *
@@ -51,7 +48,9 @@ export function hasRequiredValidator(control: AbstractControl | null | undefined
   }
   let required = false;
   try {
-    required = validator(EMPTY_CONTROL)?.required === true;
+    // A control of its own for each probe: a validator is application code and may touch
+    // the control it is given, which must not carry over into the next probe.
+    required = validator(new FormControl<unknown>(null))?.required === true;
   } catch {
     // A custom validator that assumes a parent or a value is not one that expresses
     // "required", and must not take the host binding down with it.
@@ -68,10 +67,18 @@ export function hasRequiredValidator(control: AbstractControl | null | undefined
  */
 const REQUIRED_BY_CONTROL = new WeakMap<AbstractControl, { validator: ValidatorFn; required: boolean }>();
 
+/**
+ * Controls already watched for recomputation. Kept apart from the cache itself: the cache
+ * entry is dropped on every recomputation, and a control whose entry is missing must not
+ * be subscribed to again — that would add one subscription per status change.
+ */
+const WATCHED_CONTROLS = new WeakSet<AbstractControl>();
+
 function remember(control: AbstractControl, validator: ValidatorFn, required: boolean): void {
-  if (!REQUIRED_BY_CONTROL.has(control)) {
+  if (!WATCHED_CONTROLS.has(control)) {
     // One subscription per control, for the control's lifetime: `statusChanges` emits on
     // every updateValueAndValidity, which is what a `[required]` toggle triggers.
+    WATCHED_CONTROLS.add(control);
     control.statusChanges.subscribe(() => REQUIRED_BY_CONTROL.delete(control));
   }
   REQUIRED_BY_CONTROL.set(control, { validator, required });

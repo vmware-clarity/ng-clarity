@@ -63,4 +63,36 @@ describe('hasRequiredValidator', () => {
     control.setValidators(throwing);
     expect(hasRequiredValidator(control)).toBe(false);
   });
+
+  it('watches a control once however often its validity is recomputed', () => {
+    const control = new FormControl('', Validators.minLength(3));
+    const subscribe = spyOn(control.statusChanges, 'subscribe').and.callThrough();
+    for (let edit = 0; edit < 5; edit++) {
+      hasRequiredValidator(control);
+      control.setValue(`value ${edit}`);
+    }
+    hasRequiredValidator(control);
+    expect(subscribe).toHaveBeenCalledTimes(1);
+  });
+
+  it('still notices a requirement added after the first answer', () => {
+    const control = new FormControl('', Validators.minLength(3));
+    expect(hasRequiredValidator(control)).toBe(false);
+    control.setValidators(control => Validators.required(control) ?? Validators.minLength(3)(control));
+    control.updateValueAndValidity();
+    expect(hasRequiredValidator(control)).toBe(true);
+  });
+
+  it('gives each probe a control of its own, so a validator that touches it cannot affect the next', () => {
+    const marking = (probed: AbstractControl) => {
+      probed.markAsTouched();
+      return probed.touched && probed.value === null ? { required: true } : null;
+    };
+    const first = new FormControl('');
+    first.setValidators(marking);
+    const second = new FormControl('');
+    second.setValidators(probed => (probed.touched ? { required: true } : null));
+    expect(hasRequiredValidator(first)).toBe(true);
+    expect(hasRequiredValidator(second)).toBe(false);
+  });
 });
