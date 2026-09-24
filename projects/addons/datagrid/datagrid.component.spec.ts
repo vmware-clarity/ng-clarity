@@ -953,6 +953,111 @@ describe('DatagridComponent', () => {
         expect(menuItem('About column').querySelector('cds-icon')).toBeNull();
       });
 
+      // Bound through [attr.title], so an action without a tooltip gets no title at all rather than
+      // title="undefined", which would be shown on hover and could be read out as its description.
+      it('only sets a title on an action that has a tooltip', function (this: DatagridSpecContext) {
+        this.component.columnActions = [
+          { id: 'copy', label: 'Copy values', enabled: true, tooltip: 'Copies the column values' },
+          { id: 'about', label: 'About column', enabled: true },
+        ];
+        this.fixture.detectChanges();
+
+        toggleMenu(this.fixture, 0);
+
+        expect(menuItem('Copy values').getAttribute('title')).toBe('Copies the column values');
+        expect(menuItem('About column').hasAttribute('title')).toBeFalse();
+      });
+
+      // The grid-wide and per-column lists are merged, so the same id can come from both. The actions
+      // are tracked by identity, not by id, so that neither drops one of them nor warns about it.
+      it('renders a column action that reuses the id of a grid action', function (this: DatagridSpecContext) {
+        const warn = spyOn(console, 'warn');
+        this.columnsDefs[1].actions = [{ id: 'copy', label: 'Copy state', enabled: true }];
+        this.fixture.detectChanges();
+
+        toggleMenu(this.fixture, 1);
+
+        const labels = menuItemLabels();
+        expect(labels).toContain('Copy values');
+        expect(labels).toContain('Copy state');
+        expect(warn.calls.allArgs().some(args => String(args[0]).includes('NG0955'))).toBeFalse();
+      });
+
+      // Custom actions do not move the column, and they stay open the same as the built-in items.
+      it('keeps the menu open after an action is clicked', function (this: DatagridSpecContext) {
+        toggleMenu(this.fixture, 1);
+        menuItem('Reset State').click();
+        this.fixture.detectChanges();
+
+        const trigger = this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[1].nativeElement;
+        expect(trigger.getAttribute('aria-expanded')).toBe('true');
+        expect(menuItem('Reset State')).toBeTruthy();
+      });
+
+      describe('with children', () => {
+        beforeEach(function (this: DatagridSpecContext) {
+          this.columnsDefs[1].actions = [
+            {
+              id: 'more',
+              label: 'More',
+              enabled: true,
+              children: [
+                { id: 'child', label: 'Child action', enabled: true },
+                { id: 'disabled-child', label: 'Disabled child', enabled: false },
+              ],
+            },
+          ];
+          this.fixture.detectChanges();
+        });
+
+        it('opens the children as a nested menu', function (this: DatagridSpecContext) {
+          toggleMenu(this.fixture, 1);
+          expect(menuItemLabels()).not.toContain('Child action');
+
+          menuItem('More').click();
+          this.fixture.detectChanges();
+
+          expect(menuItem('More').getAttribute('aria-haspopup')).toBe('menu');
+          expect(menuItem('More').getAttribute('aria-expanded')).toBe('true');
+          expect(menuItemLabels()).toContain('Child action');
+        });
+
+        it('reports a child through actionClick, not the parent', function (this: DatagridSpecContext) {
+          const received: ActionClickEvent[] = [];
+          this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) =>
+            received.push(event)
+          );
+
+          toggleMenu(this.fixture, 1);
+          menuItem('More').click();
+          this.fixture.detectChanges();
+          expect(received).toEqual([]);
+
+          menuItem('Child action').click();
+          this.fixture.detectChanges();
+
+          expect(received.length).toBe(1);
+          expect(received[0].action.id).toBe('child');
+          expect(received[0].context).toBe(this.columnsDefs[1]);
+        });
+
+        it('does not report a disabled child', function (this: DatagridSpecContext) {
+          const received: ActionClickEvent[] = [];
+          this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) =>
+            received.push(event)
+          );
+
+          toggleMenu(this.fixture, 1);
+          menuItem('More').click();
+          this.fixture.detectChanges();
+          expect(menuItem('Disabled child').getAttribute('aria-disabled')).toBe('true');
+          menuItem('Disabled child').click();
+          this.fixture.detectChanges();
+
+          expect(received).toEqual([]);
+        });
+      });
+
       it('adds nothing to the menu when no actions are configured', function (this: DatagridSpecContext) {
         this.component.columnActions = null;
         this.columnsDefs[1].actions = undefined;

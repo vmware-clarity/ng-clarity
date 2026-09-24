@@ -1105,7 +1105,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * column adds to the shared set rather than reordering it.
    */
   protected getColumnActions(column: ColumnDefinition<T>): ActionDefinition[] {
-    return [...(this.columnActions || []), ...(column.actions || [])];
+    const actions = [...(this.columnActions ?? [])];
+    if (column.actions?.length) {
+      actions.push(...column.actions);
+    }
+    return actions;
   }
 
   /**

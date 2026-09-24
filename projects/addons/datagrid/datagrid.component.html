@@ -130,21 +130,55 @@
             <cds-icon shape="angle" direction="right" aria-hidden="true"></cds-icon>
             {{ dgStrings.moveColumnRight }}
           </button>
-          @if (getColumnActions(column); as customColumnActions) {
-            @if (customColumnActions.length) {
-              <div class="dropdown-divider" role="separator"></div>
-              <!--
-                Application actions come last, so the built-in ones keep the same place in every menu
-                whatever a column adds. clrCanClosePopover is left at its default, so these close the
-                menu on click - unlike the move actions, they are not expected to be repeated.
-              -->
-              @for (action of customColumnActions; track action.id) {
+          @let customColumnActions = getColumnActions(column);
+          @if (customColumnActions.length) {
+            <div class="dropdown-divider" role="separator"></div>
+            <!--
+              Application actions come last, so the built-in ones keep the same place in every menu
+              whatever a column adds. They leave clrCanClosePopover at its default: they do not move
+              the column, so the menu has nothing to re-anchor, and it stays open like the built-in items.
+            -->
+            @for (action of customColumnActions; track action) {
+              <!-- An action with children opens them as a nested menu, the same as in the action bar. -->
+              @if (action.children) {
+                <clr-dropdown>
+                  <button
+                    type="button"
+                    clrDropdownTrigger
+                    [disabled]="!action.enabled"
+                    [attr.aria-label]="action.ariaLabel"
+                    [attr.title]="action.tooltip"
+                  >
+                    @if (action.icon) {
+                      <cds-icon [shape]="action.icon" aria-hidden="true"></cds-icon>
+                    }
+                    {{ action.label }}
+                  </button>
+                  <clr-dropdown-menu *clrIfOpen>
+                    @for (childAction of action.children; track childAction) {
+                      <button
+                        type="button"
+                        clrDropdownItem
+                        [clrDisabled]="!childAction.enabled"
+                        [attr.aria-label]="childAction.ariaLabel"
+                        [attr.title]="childAction.tooltip"
+                        (click)="onColumnActionClick(childAction, column)"
+                      >
+                        @if (childAction.icon) {
+                          <cds-icon [shape]="childAction.icon" aria-hidden="true"></cds-icon>
+                        }
+                        {{ childAction.label }}
+                      </button>
+                    }
+                  </clr-dropdown-menu>
+                </clr-dropdown>
+              } @else {
                 <button
                   type="button"
                   clrDgColumnAction
                   [clrDisabled]="!action.enabled"
                   [attr.aria-label]="action.ariaLabel"
-                  [title]="action.tooltip"
+                  [attr.title]="action.tooltip"
                   (click)="onColumnActionClick(action, column)"
                 >
                   @if (action.icon) {
