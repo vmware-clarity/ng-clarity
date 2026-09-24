@@ -603,8 +603,9 @@ describe('ClrMutationEngineService', () => {
 
         expect((await set(ghost, 'Ghost', 'x')).refused).toBe('hidden');
         expect((await set(frozen, 'Frozen', 'x')).refused).toBe('disabled');
-        // Once hidden it drops out of the snapshot each write ends with, so it is stale from then on.
-        expect((await set(ghost, 'Ghost', 'x')).refused).toBe('stale');
+        // A ref names its element for as long as it is on the page; it is refused for what
+        // is true of the element now, not for which snapshot came last.
+        expect((await set(ghost, 'Ghost', 'x')).refused).toBe('hidden');
         expect(host.form.value.frozen).toBe('');
         expect(host.ghost.value).toBe('');
       });
@@ -621,7 +622,14 @@ describe('ClrMutationEngineService', () => {
         await set(ref, 'Cluster', 'Alpha cluster');
 
         expect(classify).toHaveBeenCalledWith(
-          jasmine.objectContaining({ operation: 'setValue', ref, label: 'Cluster', type: 'combobox', value: 'alpha' })
+          jasmine.objectContaining({
+            operation: 'setValue',
+            ref,
+            label: 'Cluster',
+            type: 'combobox',
+            value: 'Alpha cluster',
+            modelValue: 'alpha',
+          })
         );
       });
 
@@ -679,8 +687,8 @@ describe('ClrMutationEngineService', () => {
 
         const report = await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }]);
 
-        expect(report.changes.previous).toBe(page);
-        expect(report.changes.current).toBe(report.snapshot);
+        expect('previous' in report.changes).toBeFalse();
+        expect('current' in report.changes).toBeFalse();
         const changed = report.changes.changed.find(change => change.after.ref === ref);
         expect(changed?.after.state?.['value']).toBe('Ada');
         expect(refOf(report.snapshot, 'Name')).toBe(ref);

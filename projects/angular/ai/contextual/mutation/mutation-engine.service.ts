@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { inject, Injectable } from '@angular/core';
+import { ApplicationRef, inject, Injectable, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { ContextRefRegistryService } from './context-ref-registry.service';
 import {
   CLR_MUTATION_POLICY,
   ClrElementMutationResult,
+  ClrMutationChanges,
   ClrMutationConsequence,
   ClrMutationOperation,
   ClrMutationPlanEntry,
@@ -22,9 +23,18 @@ import {
   ClrNavigateOperation,
   ClrNavigationMutationResult,
 } from './mutation.interface';
-import { fillRoutePath, navigateAndReport } from './navigate';
-import { coerceValue, descriptionMatches, resolveWriteTarget, WriteTarget, writeValue } from './write';
-import { diffClrContext } from '../diff';
+import { fillRoutePath, navigateAndReport, urlTreeFor } from './navigate';
+import {
+  coerceValue,
+  descriptionMatches,
+  markViewForCheck,
+  resolveWriteTarget,
+  WriteOutcome,
+  WriteTarget,
+  writeValue,
+} from './write';
+import { ClrContextChange, diffClrContext } from '../diff';
+import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
 import { ClrContextEngineService } from '../providers/contextual-engine.service';
 import { availableRoutes } from '../routes';
 
@@ -48,10 +58,15 @@ export class ClrMutationEngineService {
   private readonly refs = inject(ContextRefRegistryService);
   private readonly policy = inject(CLR_MUTATION_POLICY, { optional: true });
   private readonly router = inject(Router, { optional: true });
+  private readonly zone = inject(NgZone);
+  private readonly application = inject(ApplicationRef);
+  // Batches run one after another: a second agent turn must not interleave its writes
+  // with the first, nor measure its changes against a page the first is still changing.
+  private queue: Promise<unknown> = Promise.resolve();
 
   /**
    * What applying the operations would do, without doing any of it: each target
-   * resolved, classified and its value coerced, or the refusal it would meet.
+   * resolved, classified and its value translated, or the refusal it would meet.
    */
   plan(operations: ClrMutationOperation[]): ClrMutationPlanEntry[] {
     return operations.map(operation => {
@@ -60,9 +75,10 @@ export class ClrMutationEngineService {
         return { operation, refused: prepared.refused, detail: prepared.detail };
       }
       const entry: ClrMutationPlanEntry = { operation, target: prepared.target, consequence: prepared.consequence };
-      if (prepared.consequence === 'forbidden') {
-        entry.refused = 'forbidden';
-        entry.detail = 'The application forbids this operation.';
+      const blocked = this.verdict(prepared.consequence);
+      if (blocked) {
+        entry.refused = blocked.refused;
+        entry.detail = blocked.detail;
       }
       return entry;
     });
@@ -70,58 +86,96 @@ export class ClrMutationEngineService {
 
   /**
    * Applies the operations in order and reports what each did, followed by a fresh
-   * snapshot and the difference from the one before. A refused operation does not stop
-   * the ones after it; a navigation usually leaves every ref after it stale, which the
-   * results then say.
+   * snapshot and what changed since just before the first operation, both taken with
+   * `snapshotOptions`. A refused or failing operation does not stop the ones after it.
    */
-  async apply(operations: ClrMutationOperation[]): Promise<ClrMutationReport> {
-    const before = this.contextEngine.latestSnapshot;
+  apply(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): Promise<ClrMutationReport> {
+    const run = this.queue.then(() => this.run(operations, snapshotOptions));
+    this.queue = run.catch(() => undefined);
+    return run;
+  }
+
+  private async run(
+    operations: ClrMutationOperation[],
+    snapshotOptions?: ClrContextSnapshotOptions
+  ): Promise<ClrMutationReport> {
+    const before = this.contextEngine.getSnapshot(snapshotOptions);
     const results: ClrMutationResult[] = [];
-    for (const operation of operations) {
+    for (const operation of Array.isArray(operations) ? operations : []) {
       results.push(await this.applyOne(operation));
     }
+    // Brings every view that shows a written value up to date — a zoneless application,
+    // or a write made from outside the zone, would otherwise show the old one — then
+    // lets whatever the application schedules itself run before the page is read back.
+    this.zone.run(() => this.application.tick());
     await settle();
-    const snapshot = this.contextEngine.getSnapshot(this.contextEngine.latestSnapshotOptions ?? undefined);
-    return { results, snapshot, changes: diffClrContext(before, snapshot) };
+    const snapshot = this.contextEngine.getSnapshot(snapshotOptions);
+    const report: ClrMutationReport = {
+      results,
+      snapshot,
+      changes: withoutSnapshots(diffClrContext(before, snapshot)),
+    };
+    try {
+      this.policy?.announce?.(report);
+    } catch {
+      // The application's announcement failing must not lose the report.
+    }
+    return report;
   }
 
   private async applyOne(operation: ClrMutationOperation): Promise<ClrMutationResult> {
-    const prepared = this.prepare(operation);
+    let prepared = this.prepare(operation);
     if ('refused' in prepared) {
       return refusal(operation, prepared.refused, prepared.detail);
     }
-    const { target, consequence } = prepared;
-    if (consequence === 'forbidden') {
-      return refusal(operation, 'forbidden', 'The application forbids this operation.');
+    const blocked = this.verdict(prepared.consequence);
+    if (blocked) {
+      return refusal(operation, blocked.refused, blocked.detail);
     }
-    if (consequence === 'consequential') {
-      if (!this.policy?.confirm) {
-        return refusal(
-          operation,
-          'unconfirmed',
-          'The application calls this consequential and has no way to confirm it.'
-        );
-      }
+    if (prepared.consequence === 'consequential') {
       let confirmed = false;
       try {
-        confirmed = await this.policy.confirm(target);
+        confirmed = (await this.policy?.confirm?.(prepared.target)) === true;
       } catch {
         confirmed = false;
       }
       if (!confirmed) {
         return refusal(operation, 'declined', 'The application declined the operation.');
       }
+      // The person agreed to what they were shown. The page may have moved on while they
+      // looked — the field disabled, hidden, re-rendered — so it is checked again, and
+      // written only if it is still exactly what they agreed to.
+      const again = this.prepare(operation);
+      if ('refused' in again) {
+        return refusal(operation, again.refused, again.detail);
+      }
+      if (!sameOperation(prepared, again)) {
+        return refusal(
+          operation,
+          'stale',
+          'The page changed while the operation waited for confirmation. Take a new snapshot and ask again.'
+        );
+      }
+      prepared = again;
     }
     if (operation.operation === 'navigate') {
-      return this.navigate(operation, target.url ?? '');
+      return this.navigate(operation, prepared);
     }
-    const result = writeValue(prepared.write, prepared.coerced);
-    result.operation = operation.operation;
-    result.ref = operation.ref;
-    if (result.refused) {
-      result.refused = 'invalid';
+    const write = prepared.write as WriteTarget;
+    let outcome: WriteOutcome;
+    try {
+      outcome = this.zone.run(() => writeValue(write, prepared.coerced as { value: unknown; display: unknown }));
+    } catch (error) {
+      // A control's own code threw — a value accessor, a validator. Reported against this
+      // operation, so the ones before it keep their results and the ones after still run.
+      outcome = {
+        applied: false,
+        refused: 'invalid',
+        detail: error instanceof Error ? error.message : 'The control failed to take the value.',
+      };
     }
-    return result;
+    markViewForCheck(write.element);
+    return { operation: operation.operation, ref: operation.ref, ...outcome };
   }
 
   /** Everything up to, but not including, the write: the target, the value, the verdict. */
@@ -139,21 +193,23 @@ export class ClrMutationEngineService {
       return { refused: 'unsupported', detail: 'Supported operations are setValue, clear and navigate.' };
     }
     const ref = typeof operation.ref === 'string' ? this.refs.resolve(operation.ref) : null;
-    if (!ref || !ref.elements.every(element => element.isConnected)) {
+    if (!ref) {
       return {
         refused: 'stale',
-        detail: 'The ref is not in the latest snapshot. Take a new snapshot and use its refs.',
+        detail: 'The ref does not name anything on the page. Take a new snapshot and use its refs.',
       };
     }
-    const resolution = resolveWriteTarget(ref);
+    const resolution = resolveWriteTarget(ref, this.application);
     if ('refused' in resolution) {
       return resolution;
     }
     const write = resolution.target;
-    if (!descriptionMatches(operation.description, write.label)) {
+    if (!descriptionMatches(operation.description, write.label, write.type)) {
       return {
         refused: 'mismatch',
-        detail: `The node is "${write.label}", not "${String(operation.description)}". Take a new snapshot and use its refs.`,
+        detail: write.label
+          ? `The node is "${write.label}", not "${String(operation.description)}". Take a new snapshot and use its refs.`
+          : 'The node has no name; describe it by what it is, or leave the description empty.',
       };
     }
     const coerced = coerceValue(write, operation.operation === 'clear' ? null : operation.value);
@@ -166,9 +222,15 @@ export class ClrMutationEngineService {
       label: write.label,
       type: write.type,
       element: write.element,
-      value: coerced.value,
+      value: coerced.display,
+      modelValue: coerced.value,
     };
-    return { target, consequence: this.classify(target), write, coerced: coerced.value };
+    return {
+      target,
+      consequence: this.classify(target),
+      write,
+      coerced: { value: coerced.value, display: coerced.display },
+    };
   }
 
   private prepareNavigation(operation: ClrNavigateOperation): Prepared | Refused {
@@ -186,19 +248,22 @@ export class ClrMutationEngineService {
     if (filled.missing !== undefined) {
       return { refused: 'invalid', detail: `The route needs a value for its "${filled.missing}" parameter.` };
     }
+    if (filled.invalid !== undefined) {
+      return { refused: 'invalid', detail: `The "${filled.invalid}" parameter cannot be "." or "..".` };
+    }
     const queryParams = plainStrings(operation.queryParams);
-    const tree = this.router.createUrlTree([filled.url], Object.keys(queryParams).length ? { queryParams } : {});
-    const url = this.router.serializeUrl(tree);
-    const target: ClrMutationTarget = { operation: 'navigate', path: operation.path, url };
-    return { target, consequence: this.classify(target) };
+    const url = this.router.serializeUrl(urlTreeFor(filled.segments, queryParams));
+    const target: ClrMutationTarget = { operation: 'navigate', path: operation.path, url, queryParams };
+    return { target, consequence: this.classify(target), segments: filled.segments };
   }
 
-  private async navigate(operation: ClrNavigateOperation, url: string): Promise<ClrNavigationMutationResult> {
+  private async navigate(operation: ClrNavigateOperation, prepared: Prepared): Promise<ClrNavigationMutationResult> {
     const router = this.router;
-    if (!router) {
+    if (!router || !prepared.segments) {
       return refusal(operation, 'noRoute', 'The application has no routes.') as ClrNavigationMutationResult;
     }
-    const report = await navigateAndReport(router, router.parseUrl(url));
+    const tree = urlTreeFor(prepared.segments, prepared.target.queryParams);
+    const report = await this.zone.run(() => navigateAndReport(router, tree));
     const result: ClrNavigationMutationResult = {
       operation: 'navigate',
       path: operation.path,
@@ -221,18 +286,54 @@ export class ClrMutationEngineService {
       return 'forbidden';
     }
   }
+
+  /**
+   * The refusal a verdict alone decides, before anyone is asked: forbidden, or
+   * consequential with no way to confirm. The same answer for `plan()` and `apply()`.
+   */
+  private verdict(consequence: ClrMutationConsequence): Refused | null {
+    if (consequence === 'forbidden') {
+      return { refused: 'forbidden', detail: 'The application forbids this operation.' };
+    }
+    if (consequence === 'consequential' && !this.policy?.confirm) {
+      return {
+        refused: 'unconfirmed',
+        detail: 'The application calls this consequential and has no way to confirm it.',
+      };
+    }
+    return null;
+  }
 }
 
 interface Prepared {
   target: ClrMutationTarget;
   consequence: ClrMutationConsequence;
   write?: WriteTarget;
-  coerced?: unknown;
+  coerced?: { value: unknown; display: unknown };
+  segments?: string[];
 }
 
 interface Refused {
   refused: ClrMutationRefusal;
   detail: string;
+}
+
+/** A change without the two snapshots it compared: the report already carries the later one. */
+function withoutSnapshots(change: ClrContextChange): ClrMutationChanges {
+  const changes: Partial<ClrContextChange> = { ...change };
+  delete changes.previous;
+  delete changes.current;
+  return changes as ClrMutationChanges;
+}
+
+/** Whether a re-prepared operation is still the one that was confirmed. */
+function sameOperation(confirmed: Prepared, now: Prepared): boolean {
+  return (
+    confirmed.consequence === now.consequence &&
+    confirmed.target.element === now.target.element &&
+    confirmed.target.url === now.target.url &&
+    JSON.stringify(confirmed.target.value ?? null) === JSON.stringify(now.target.value ?? null)
+  );
 }
 
 function refusal(operation: ClrMutationOperation, refused: ClrMutationRefusal, detail: string): ClrMutationResult {
@@ -264,10 +365,9 @@ function plainStrings(value: unknown): Record<string, string> {
 
 /**
  * Lets the application catch up with what was written before anything is read back for
- * the report. A zoned application runs change detection when the current task's
- * microtasks drain; a zoneless one schedules it as a task of its own. Two turns of the
- * event loop cover both, and the `ngModel` inside a component's template, which writes
- * its view in a resolved promise.
+ * the report: whatever it scheduled itself — the `ngModel` inside a component's
+ * template, which writes its view in a resolved promise — runs within two turns of the
+ * event loop.
  */
 function settle(): Promise<void> {
   return new Promise(resolve => setTimeout(() => setTimeout(resolve)));

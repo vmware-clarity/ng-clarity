@@ -15,18 +15,24 @@ import {
   NavigationStart,
   Router,
   Event as RouterEvent,
+  UrlSegment,
+  UrlSegmentGroup,
   UrlTree,
 } from '@angular/router';
 
 import { ClrNavigationOutcome } from './mutation.interface';
 
-/** A route pattern with its parameters filled in, or the parameter that was missing. */
-export type ClrFilledPath = { url: string; missing?: never } | { missing: string; url?: never };
+/** A route pattern's path segments with its parameters filled in, or why it could not be filled. */
+export type ClrFilledPath =
+  | { segments: string[]; missing?: never; invalid?: never }
+  | { missing: string; segments?: never; invalid?: never }
+  | { invalid: string; segments?: never; missing?: never };
 
 /**
  * Fills a route pattern's `:param` segments from the values given: `clusters/:id` with
- * `{ id: '42' }` is `/clusters/42`. Values are encoded, so a value with a slash in it
- * stays one segment rather than becoming two.
+ * `{ id: '42' }` is `['clusters', '42']`. Each value is one segment, literally — a slash
+ * or a space in it stays part of that segment — and `.` or `..` is refused, because the
+ * router would read it as a step up the path and arrive at a route nobody classified.
  */
 export function fillRoutePath(pattern: string, params: Record<string, string> = {}): ClrFilledPath {
   const segments: string[] = [];
@@ -40,10 +46,32 @@ export function fillRoutePath(pattern: string, params: Record<string, string> = 
     if (typeof value !== 'string' || !value) {
       return { missing: name };
     }
-    segments.push(encodeURIComponent(value));
+    if (value === '.' || value === '..') {
+      return { invalid: name };
+    }
+    segments.push(value);
   }
-  return { url: '/' + segments.join('/') };
+  return { segments };
 }
+
+/**
+ * The URL tree for literal path segments. Built directly rather than through
+ * `createUrlTree`, which would split a segment at its slashes and read `..` as a step up.
+ */
+export function urlTreeFor(segments: string[], queryParams: Record<string, string> = {}): UrlTree {
+  const children: Record<string, UrlSegmentGroup> = segments.length
+    ? {
+        primary: new UrlSegmentGroup(
+          segments.map(path => new UrlSegment(path, {})),
+          {}
+        ),
+      }
+    : {};
+  return new UrlTree(new UrlSegmentGroup([], children), queryParams);
+}
+
+/** How long a navigation may take before it is reported as not having settled. */
+const NAVIGATION_TIMEOUT_MS = 60_000;
 
 export interface ClrNavigationReport {
   outcome: ClrNavigationOutcome;
@@ -65,35 +93,42 @@ export function navigateAndReport(router: Router, target: UrlTree): Promise<ClrN
   return new Promise<ClrNavigationReport>(resolve => {
     let id: number | null = null;
     let redirected = false;
+    let followedRedirect = false;
+    let timer: ReturnType<typeof setTimeout> | null = null;
+    const settle = (report: ClrNavigationReport) => {
+      subscription.unsubscribe();
+      if (timer !== null) {
+        clearTimeout(timer);
+      }
+      resolve(report);
+    };
     const subscription = router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationStart) {
-        if (id === null) {
+        // This navigation, recognised by where it is going — not whichever navigation
+        // happens to start next — and, after a guard redirected it, the redirect's own
+        // navigation, followed to see where the user ends up.
+        if ((id === null && event.url === requested) || redirected) {
           id = event.id;
-        } else if (redirected) {
-          // The redirect's own navigation: follow it to see where the user ends up.
-          id = event.id;
+          redirected = false;
         }
         return;
       }
       // A skipped navigation never starts, so it is the first thing heard of it.
-      if (event instanceof NavigationSkipped && id === null) {
+      if (event instanceof NavigationSkipped && id === null && event.url === requested) {
         id = event.id;
       }
       if (!('id' in event) || (event as { id: number }).id !== id) {
         return;
       }
-      const settle = (report: ClrNavigationReport) => {
-        subscription.unsubscribe();
-        resolve(report);
-      };
       if (event instanceof NavigationEnd) {
         settle({
-          outcome: redirected || event.urlAfterRedirects !== requested ? 'redirected' : 'navigated',
+          outcome: followedRedirect || event.urlAfterRedirects !== requested ? 'redirected' : 'navigated',
           url: router.url,
         });
       } else if (event instanceof NavigationCancel) {
         if (event.code === NavigationCancellationCode.Redirect) {
           redirected = true;
+          followedRedirect = true;
           return;
         }
         settle({
@@ -120,21 +155,29 @@ export function navigateAndReport(router: Router, target: UrlTree): Promise<ClrN
       }
     });
 
+    // A guard waiting on the user can hold a navigation indefinitely; the agent is told it
+    // has not settled rather than left waiting for good.
+    timer = setTimeout(
+      () =>
+        settle({
+          outcome: 'failed',
+          url: router.url,
+          detail: 'The navigation had not settled after a minute; it may still complete.',
+        }),
+      NAVIGATION_TIMEOUT_MS
+    );
+
     router.navigateByUrl(target).then(
       () => {
         // The events normally settle this first; should none have, the URL decides.
         setTimeout(() => {
           if (!subscription.closed) {
-            subscription.unsubscribe();
             const url = router.url;
-            resolve(url === requested ? { outcome: 'navigated', url } : { outcome: 'failed', url });
+            settle(url === requested ? { outcome: 'navigated', url } : { outcome: 'failed', url });
           }
         });
       },
-      error => {
-        subscription.unsubscribe();
-        resolve({ outcome: 'failed', url: router.url, detail: errorMessage(error) });
-      }
+      error => settle({ outcome: 'failed', url: router.url, detail: errorMessage(error) })
     );
   });
 }

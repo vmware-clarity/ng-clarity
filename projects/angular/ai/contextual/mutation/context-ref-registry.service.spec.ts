@@ -19,18 +19,23 @@ describe('ContextRefRegistryService', () => {
     input = document.createElement('input');
     host = document.createElement('clr-combobox');
     host.appendChild(input);
+    document.body.appendChild(host);
   });
 
-  it('gives a node a ref and resolves it to the element once committed', () => {
+  afterEach(() => {
+    host.remove();
+  });
+
+  it('gives a node a random ref and resolves it to the element once committed', () => {
     const sink = registry.begin();
     const node: ClrComponentContext = { type: 'textbox' };
 
     sink.note(node, input);
-    expect(node.ref).toBe('e1');
-    expect(registry.resolve('e1')).toBeNull();
+    expect(node.ref).toMatch(/^e[0-9a-z]{8}$/);
+    expect(registry.resolve(node.ref as string)).toBeNull();
 
     sink.commit();
-    expect(registry.resolve('e1')).toEqual({ elements: [input], type: 'textbox', label: undefined });
+    expect(registry.resolve(node.ref as string)).toEqual({ elements: [input], type: 'textbox', label: undefined });
   });
 
   it('keeps the same ref for the same element across snapshots', () => {
@@ -47,6 +52,16 @@ describe('ContextRefRegistryService', () => {
     expect(again.ref).toBe(node.ref);
   });
 
+  it('gives different elements refs that cannot be derived from one another', () => {
+    const sink = registry.begin();
+    const refs = Array.from({ length: 20 }, () => {
+      const node: ClrComponentContext = { type: 'textbox' };
+      sink.note(node, document.createElement('input'));
+      return node.ref;
+    });
+    expect(new Set(refs).size).toBe(20);
+  });
+
   it('records the host that renders a node ahead of the element inside it, as the node ends up', () => {
     const sink = registry.begin();
     const node: ClrComponentContext = { type: 'combobox' };
@@ -55,30 +70,42 @@ describe('ContextRefRegistryService', () => {
     sink.note({ ...node, label: 'Cluster' }, host);
     sink.commit();
 
-    expect(registry.resolve(String(node.ref))).toEqual({ elements: [host, input], type: 'combobox', label: 'Cluster' });
+    expect(registry.resolve(node.ref as string)).toEqual({
+      elements: [host, input],
+      type: 'combobox',
+      label: 'Cluster',
+    });
   });
 
-  it('only resolves refs from the latest committed snapshot', () => {
+  it('still resolves a ref after a later snapshot that did not show its element', () => {
     const first = registry.begin();
     const node: ClrComponentContext = { type: 'textbox' };
     first.note(node, input);
     first.commit();
 
-    const second = registry.begin();
-    second.note({ type: 'checkbox' }, document.createElement('input'));
-    second.commit();
+    const narrower = registry.begin();
+    narrower.note({ type: 'checkbox' }, document.createElement('input'));
+    narrower.commit();
 
-    expect(registry.resolve(String(node.ref))).toBeNull();
+    expect(registry.resolve(node.ref as string)?.elements).toEqual([input]);
   });
 
-  it('forgets everything on clear', () => {
+  it('stops resolving a ref once its element leaves the document', () => {
     const sink = registry.begin();
     const node: ClrComponentContext = { type: 'textbox' };
     sink.note(node, input);
     sink.commit();
 
-    registry.clear();
+    host.remove();
 
-    expect(registry.resolve(String(node.ref))).toBeNull();
+    expect(registry.resolve(node.ref as string)).toBeNull();
+  });
+
+  it('records nothing from a walk that is never committed', () => {
+    const sink = registry.begin();
+    const node: ClrComponentContext = { type: 'textbox' };
+    sink.note(node, input);
+
+    expect(registry.resolve(node.ref as string)).toBeNull();
   });
 });

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { InjectionToken, Provider } from '@angular/core';
+import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders } from '@angular/core';
 
 import { ClrContextChange } from '../diff';
 import { ClrPageContext } from '../interfaces/context.interface';
@@ -49,11 +49,20 @@ export interface ClrNavigateOperation {
   operation: 'navigate';
   /** The route's path pattern exactly as `availableRoutes` listed it, e.g. `clusters/:id`. */
   path: string;
-  /** Values for the pattern's parameters, e.g. `{ id: '42' }`. */
+  /**
+   * Values for the pattern's parameters, e.g. `{ id: '42' }`. Each value fills exactly
+   * one path segment, whatever characters it contains; `.` and `..` are refused, since
+   * they would move the navigation to a different route from the one classified.
+   */
   params?: Record<string, string>;
+  /**
+   * Query parameters to add. Not constrained by the route: an application that acts on
+   * query parameters (`returnUrl`, `action`) should classify on `ClrMutationTarget.queryParams`.
+   */
   queryParams?: Record<string, string>;
 }
 
+/** One operation the mutation engine can apply. It never submits, clicks or invokes anything. */
 export type ClrMutationOperation = ClrSetValueOperation | ClrClearOperation | ClrNavigateOperation;
 
 /**
@@ -84,10 +93,22 @@ export interface ClrMutationTarget {
   element?: Element;
   /** The route pattern, for navigation. */
   path?: string;
-  /** The URL the navigation would go to. */
+  /** The URL the navigation would go to, query string included. */
   url?: string;
-  /** The value about to be written, after coercion, for element operations. */
+  /** The query parameters the navigation would add, for navigation. */
+  queryParams?: Record<string, string>;
+  /**
+   * The value about to be written, in the terms an agent and a person use: the option's
+   * label, the radio's label, the date as the field shows it, `true` for a checkbox.
+   * `null` or `[]` when the operation clears the control. This is what a policy should
+   * judge and what a confirmation should show.
+   */
   value?: unknown;
+  /**
+   * The value the form control will receive, which may be an option's bound object or a
+   * locale string rather than anything a person would recognise. For inspection only.
+   */
+  modelValue?: unknown;
 }
 
 /**
@@ -103,12 +124,25 @@ export interface ClrMutationPolicy {
    * A consequential operation with no hook to ask is refused as `unconfirmed`.
    */
   confirm?(target: ClrMutationTarget): boolean | Promise<boolean>;
+  /**
+   * Told what an `apply()` did once it is done, so the application can let the person
+   * know — through a live region, a toast, a summary in the chat — that fields were
+   * filled for them and which of them now show an error. The engine announces nothing
+   * itself: the words, and the language, are the application's.
+   */
+  announce?(report: ClrMutationReport): void;
 }
 
+/**
+ * The application's {@link ClrMutationPolicy}. Provide it with `provideClrMutationPolicy`
+ * at application level: the engine is root-provided and reads the policy from the root
+ * injector only.
+ */
 export const CLR_MUTATION_POLICY = new InjectionToken<ClrMutationPolicy>('CLR_MUTATION_POLICY');
 
 /**
- * Enables the mutation engine with the application's policy.
+ * Enables the mutation engine with the application's policy. Application-level only
+ * (`bootstrapApplication` or the root `providers`), which the return type enforces.
  *
  * ```ts
  * provideClrMutationPolicy({
@@ -117,8 +151,8 @@ export const CLR_MUTATION_POLICY = new InjectionToken<ClrMutationPolicy>('CLR_MU
  * });
  * ```
  */
-export function provideClrMutationPolicy(policy: ClrMutationPolicy): Provider {
-  return { provide: CLR_MUTATION_POLICY, useValue: policy };
+export function provideClrMutationPolicy(policy: ClrMutationPolicy): EnvironmentProviders {
+  return makeEnvironmentProviders([{ provide: CLR_MUTATION_POLICY, useValue: policy }]);
 }
 
 /**
@@ -128,13 +162,17 @@ export function provideClrMutationPolicy(policy: ClrMutationPolicy): Provider {
  * - `forbidden` — the policy forbids it.
  * - `unconfirmed` — the policy calls it consequential and has no `confirm` hook.
  * - `declined` — the policy's `confirm` hook said no.
- * - `stale` — the ref is not in the latest snapshot; take a new snapshot.
+ * - `stale` — the ref's element is no longer on the page, or the page changed while the
+ *   operation waited for confirmation; take a new snapshot.
  * - `mismatch` — the description does not match the node's name; take a new snapshot.
- * - `hidden` — the node is not currently shown to the user.
+ * - `hidden` — the node is not currently shown to the user, or sits behind an open modal dialog.
  * - `redacted` — the node is in a region the application keeps from agents.
  * - `disabled`, `readOnly` — the control does not accept input.
- * - `unbound` — the control has no Angular form binding, which this engine requires.
- * - `unsupported` — the operation is malformed, or the node cannot take a value.
+ * - `unbound` — the control has no Angular form binding, which this engine requires, or
+ *   belongs to another Angular application on the page.
+ * - `unsupported` — the operation is malformed, or the node cannot take a value — a
+ *   custom control that does not say how it is written to, a select that applies its
+ *   value only on submit.
  * - `invalid` — the value is not one the control can take; the detail says what would be.
  * - `noRoute` — the path is not one of the application's `availableRoutes`.
  */
@@ -160,8 +198,11 @@ export type ClrMutationRefusal =
  * an agent filling a form learns of a validation failure from the write itself.
  */
 export interface ClrElementMutationResult {
+  /** The operation this result is for. */
   operation: 'setValue' | 'clear';
+  /** The ref the operation named. */
   ref: string;
+  /** Whether the control now holds the value. */
   applied: boolean;
   /** The control's value now, in the terms an agent sees. */
   value?: unknown;
@@ -190,9 +231,13 @@ export interface ClrElementMutationResult {
  */
 export type ClrNavigationOutcome = 'navigated' | 'redirected' | 'unchanged' | 'rejected' | 'superseded' | 'failed';
 
+/** What a navigate operation led to. */
 export interface ClrNavigationMutationResult {
+  /** The operation this result is for. */
   operation: 'navigate';
+  /** The route pattern the operation named. */
   path: string;
+  /** Whether the page moved, or was already where it was asked to go. */
   applied: boolean;
   outcome?: ClrNavigationOutcome;
   /** The router URL now. */
@@ -201,7 +246,14 @@ export interface ClrNavigationMutationResult {
   detail?: string;
 }
 
+/** What one operation did: {@link ClrElementMutationResult} or {@link ClrNavigationMutationResult}. */
 export type ClrMutationResult = ClrElementMutationResult | ClrNavigationMutationResult;
+
+/**
+ * What a batch of operations changed on the page, as {@link diffClrContext} reports it,
+ * without the two full snapshots: the report already carries the one after.
+ */
+export type ClrMutationChanges = Omit<ClrContextChange, 'previous' | 'current'>;
 
 /**
  * What applying a plan did, and what the page looks like now: the per-operation
@@ -211,10 +263,10 @@ export type ClrMutationResult = ClrElementMutationResult | ClrNavigationMutation
  */
 export interface ClrMutationReport {
   results: ClrMutationResult[];
-  /** The page after the operations, taken with the same options as the latest snapshot. */
+  /** The page after the operations, taken with the options given to `apply()`. */
   snapshot: ClrPageContext;
-  /** What the operations changed, as the difference between the snapshots before and after. */
-  changes: ClrContextChange;
+  /** What the operations changed: the difference between the page before and after, taken alike. */
+  changes: ClrMutationChanges;
 }
 
 /**

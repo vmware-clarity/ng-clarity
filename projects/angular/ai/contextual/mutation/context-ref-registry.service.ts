@@ -10,7 +10,7 @@ import { ClrComponentContext } from '@clr/angular/utils';
 
 import { ClrContextRefSink } from '../dom/walk';
 
-/** What a ref stands for: the node as the snapshot showed it, and the elements behind it. */
+/** What a ref stands for: the node as a snapshot last showed it, and the elements behind it. */
 export interface ContextRefTarget {
   /**
    * Outermost first: the custom element that renders the control and carries its form
@@ -24,25 +24,35 @@ export interface ContextRefTarget {
   label?: string;
 }
 
+interface StoredTarget {
+  elements: WeakRef<Element>[];
+  type: string;
+  label?: string;
+}
+
+/** Length of the random part of a ref: enough that one cannot be guessed, short enough to read. */
+const REF_RANDOM_LENGTH = 8;
+
 /**
- * Keeps the refs the latest snapshot handed out, and resolves them back to elements.
+ * Keeps the refs snapshots hand out, and resolves them back to elements.
  *
- * A ref is stable: the same element gets the same ref in every snapshot for as long as
- * the document holds it, so an agent that read `e12` last time still has `e12` this
- * time. Only the latest snapshot's refs resolve, though — an element that has dropped
- * out of the snapshot, or the document, is exactly what an agent must not write to on
- * the strength of a description that no longer holds. It is told to read again.
+ * A ref is stable: the same element gets the same ref in every snapshot, whoever took
+ * it and with whatever options, for as long as the document holds the element. It
+ * resolves for as long as the element is connected; whether the element may be written
+ * to right now — shown, enabled, not redacted — is decided when a write is attempted,
+ * not by which snapshot happened to be taken last. A ref is random, so one can only be
+ * recalled from a snapshot, never worked out from another.
+ *
+ * Elements are held weakly: a ref to UI that has been removed never keeps it alive.
  */
 @Injectable({ providedIn: 'root' })
 export class ContextRefRegistryService {
   private readonly refsByElement = new WeakMap<Element, string>();
-  private latest = new Map<string, ContextRefTarget>();
-  private next = 1;
+  private readonly targets = new Map<string, StoredTarget>();
 
   /**
-   * A sink for one walk. The refs it collects replace the previous snapshot's the moment
-   * the walk is committed, and not before, so a snapshot that fails midway leaves the
-   * last complete one in force.
+   * A sink for one walk. What it collects is recorded once the walk is committed, and
+   * not before, so a snapshot that fails midway records nothing.
    */
   begin(): ClrContextRefSink & { commit(): void } {
     const collected = new Map<string, ContextRefTarget>();
@@ -66,27 +76,61 @@ export class ContextRefRegistryService {
         }
       },
       commit: () => {
-        this.latest = collected;
+        for (const [ref, target] of collected) {
+          this.targets.set(ref, {
+            elements: target.elements.map(element => new WeakRef(element)),
+            type: target.type,
+            label: target.label,
+          });
+        }
+        this.prune();
       },
     };
   }
 
-  /** The elements behind a ref from the latest snapshot, or `null` when it is not one. */
+  /** The elements behind a ref, or `null` when it was never handed out or its element is gone. */
   resolve(ref: string): ContextRefTarget | null {
-    return this.latest.get(ref) ?? null;
+    const stored = this.targets.get(ref);
+    if (!stored) {
+      return null;
+    }
+    const elements = stored.elements.map(element => element.deref());
+    if (elements.some(element => !element || !element.isConnected)) {
+      return null;
+    }
+    return { elements: elements as Element[], type: stored.type, label: stored.label };
   }
 
-  /** Forgets every ref, so that none resolves until the next snapshot. */
-  clear(): void {
-    this.latest = new Map();
+  /** Forgets refs whose elements have left the document. */
+  private prune(): void {
+    for (const [ref, stored] of this.targets) {
+      if (stored.elements.some(element => !element.deref()?.isConnected)) {
+        this.targets.delete(ref);
+      }
+    }
   }
 
   private refFor(element: Element): string {
     let ref = this.refsByElement.get(element);
     if (!ref) {
-      ref = `e${this.next++}`;
+      do {
+        ref = `e${randomSuffix()}`;
+      } while (this.targets.has(ref));
       this.refsByElement.set(element, ref);
     }
     return ref;
   }
+}
+
+function randomSuffix(): string {
+  const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
+  const bytes = new Uint8Array(REF_RANDOM_LENGTH);
+  if (globalThis.crypto?.getRandomValues) {
+    globalThis.crypto.getRandomValues(bytes);
+  } else {
+    for (let index = 0; index < bytes.length; index++) {
+      bytes[index] = Math.floor(Math.random() * 256);
+    }
+  }
+  return Array.from(bytes, byte => alphabet[byte % alphabet.length]).join('');
 }
