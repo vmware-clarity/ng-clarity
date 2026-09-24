@@ -5,6 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-.contextual-nav {
-  column-count: 2;
+.snapshot-panel {
+  position: sticky;
+  top: 0;
+
+  pre {
+    max-height: 42rem;
+    overflow: auto;
+    font-size: 0.7rem;
+    line-height: 1.4;
+  }
 }
