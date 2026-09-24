@@ -5,6 +5,7 @@
 ```ts
 
 import { DoCheck } from '@angular/core';
+import { EnvironmentProviders } from '@angular/core';
 import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
 import { InjectionToken } from '@angular/core';
@@ -17,10 +18,10 @@ import { Router } from '@angular/router';
 import { Type } from '@angular/core';
 
 // @public
-export const CLR_CONTEXT_CATEGORIES: Record<ClrContextCategory, readonly string[]>;
+export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonly string[]>>;
 
 // @public
-export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions>;
+export const CLR_CONTEXT_DEFAULT_OPTIONS: Readonly<Required<ClrContextSnapshotOptions>>;
 
 // @public
 export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
@@ -32,7 +33,7 @@ export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 export const CLR_CONTEXT_OPTIONS: InjectionToken<ClrContextSnapshotOptions>;
 
 // @public
-export const CLR_CONTEXT_PRESETS: Record<ClrContextPreset, ClrContextSnapshotOptions>;
+export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
 export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
@@ -41,12 +42,12 @@ export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
-export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions)[];
+export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
-// @public (undocumented)
+// @public
 export const CLR_MUTATION_POLICY: InjectionToken<ClrMutationPolicy>;
 
 // @public
@@ -135,8 +136,6 @@ export class ClrContextEngineService implements OnDestroy {
     enableFrameBridge(options?: ClrContextFrameHostOptions): void;
     enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
     getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
-    get latestSnapshot(): ClrPageContext | null;
-    get latestSnapshotOptions(): ClrContextSnapshotOptions | null;
     // (undocumented)
     ngOnDestroy(): void;
     registerDomExtractor(extractor: ClrContextDomExtractor): () => void;
@@ -193,6 +192,7 @@ export interface ClrContextFrameResponse {
 // @public
 export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions {
     shareFormValues?: boolean;
+    shareFullUrl?: boolean;
 }
 
 // @public (undocumented)
@@ -218,18 +218,15 @@ export interface ClrContextProvider {
 }
 
 // @public
-export interface ClrContextRefSink {
-    // (undocumented)
-    note(node: ClrComponentContext, element: Element): void;
-}
+export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
 
 // @public
 export class ClrContextRegistryService {
     constructor();
     readonly changes$: Observable<void>;
-    collect(): ClrComponentContext[];
+    collect(filter?: ClrContextRegionFilter): ClrComponentContext[];
     notifyChanged(): void;
-    register(provider: ClrContextProvider): () => void;
+    register(provider: ClrContextProvider, element?: Element): () => void;
     // (undocumented)
     unregister(provider: ClrContextProvider): void;
     // (undocumented)
@@ -262,6 +259,7 @@ export class ClrContextTrackerService implements OnDestroy {
     readonly changes$: Observable<ClrContextChange>;
     readonly context$: Observable<ClrPageContext>;
     get currentContext(): ClrPageContext | null;
+    get isTracking(): boolean;
     // (undocumented)
     ngOnDestroy(): void;
     refresh(): void;
@@ -294,14 +292,11 @@ export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOpt
 
 // @public
 export interface ClrElementMutationResult {
-    // (undocumented)
     applied: boolean;
     detail?: string;
     errors?: Record<string, unknown>;
-    // (undocumented)
     operation: 'setValue' | 'clear';
     previous?: unknown;
-    // (undocumented)
     ref: string;
     // (undocumented)
     refused?: ClrMutationRefusal;
@@ -310,11 +305,14 @@ export interface ClrElementMutationResult {
 }
 
 // @public
+export type ClrMutationChanges = Omit<ClrContextChange, 'previous' | 'current'>;
+
+// @public
 export type ClrMutationConsequence = 'reversible' | 'consequential' | 'forbidden';
 
 // @public
 export class ClrMutationEngineService {
-    apply(operations: ClrMutationOperation[]): Promise<ClrMutationReport>;
+    apply(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): Promise<ClrMutationReport>;
     plan(operations: ClrMutationOperation[]): ClrMutationPlanEntry[];
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrMutationEngineService, never>;
@@ -322,7 +320,7 @@ export class ClrMutationEngineService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrMutationEngineService>;
 }
 
-// @public (undocumented)
+// @public
 export type ClrMutationOperation = ClrSetValueOperation | ClrClearOperation | ClrNavigateOperation;
 
 // @public
@@ -341,6 +339,7 @@ export interface ClrMutationPlanEntry {
 
 // @public
 export interface ClrMutationPolicy {
+    announce?(report: ClrMutationReport): void;
     classify(target: ClrMutationTarget): ClrMutationConsequence;
     confirm?(target: ClrMutationTarget): boolean | Promise<boolean>;
 }
@@ -350,22 +349,24 @@ export type ClrMutationRefusal = 'unclassified' | 'forbidden' | 'unconfirmed' | 
 
 // @public
 export interface ClrMutationReport {
-    changes: ClrContextChange;
+    changes: ClrMutationChanges;
     // (undocumented)
     results: ClrMutationResult[];
     snapshot: ClrPageContext;
 }
 
-// @public (undocumented)
+// @public
 export type ClrMutationResult = ClrElementMutationResult | ClrNavigationMutationResult;
 
 // @public
 export interface ClrMutationTarget {
     element?: Element;
     label?: string;
+    modelValue?: unknown;
     // (undocumented)
     operation: ClrMutationOperation['operation'];
     path?: string;
+    queryParams?: Record<string, string>;
     ref?: string;
     type?: string;
     url?: string;
@@ -378,21 +379,17 @@ export interface ClrNavigateOperation {
     operation: 'navigate';
     params?: Record<string, string>;
     path: string;
-    // (undocumented)
     queryParams?: Record<string, string>;
 }
 
-// @public (undocumented)
+// @public
 export interface ClrNavigationMutationResult {
-    // (undocumented)
     applied: boolean;
     // (undocumented)
     detail?: string;
-    // (undocumented)
     operation: 'navigate';
     // (undocumented)
     outcome?: ClrNavigationOutcome;
-    // (undocumented)
     path: string;
     // (undocumented)
     refused?: ClrMutationRefusal;
@@ -438,7 +435,7 @@ export interface ClrSetValueOperation {
 export function collectClrDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];
 
 // @public
-export function collectClrDomContextTree(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[], refs?: ClrContextRefSink | null): ClrContextTreeResult;
+export function collectClrDomContextTree(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrContextTreeResult;
 
 // @public
 export function diffClrContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
@@ -447,19 +444,13 @@ export function diffClrContext(previous: ClrPageContext | null, current: ClrPage
 export function isEmptyClrContextChange(change: ClrContextChange): boolean;
 
 // @public
-export function mergeElementContext(base: ClrComponentContext, element: Element, options: Required<ClrContextSnapshotOptions>): ClrComponentContext;
-
-// @public
 export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): Provider[];
 
 // @public
-export function provideClrMutationPolicy(policy: ClrMutationPolicy): Provider;
+export function provideClrMutationPolicy(policy: ClrMutationPolicy): EnvironmentProviders;
 
 // @public
 export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
-
-// @public
-export function readClrElementContext(element: Element, options: Required<ClrContextSnapshotOptions>): Partial<ClrComponentContext> | null;
 
 // @public
 export function requestClrContextFromHost(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;

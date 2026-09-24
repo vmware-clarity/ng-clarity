@@ -144,6 +144,9 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
 }
 
 // @public
+export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
+
+// @public
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
@@ -399,6 +402,7 @@ export type ClrElementMutation = {
 // @public
 export interface ClrElementMutator {
     coerce?(proposed: unknown): ClrElementMutation;
+    ownsContents?: boolean;
     read?(): unknown;
     write?(proposed: unknown): ClrElementMutation;
 }
@@ -478,6 +482,12 @@ export class ClrFocusOnViewInitModule {
 
 // @public (undocumented)
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
+
+// @public
+export class ClrHostAttribute {
+    constructor(element: Element | null | undefined, name: string);
+    value(computed: string | boolean | null): string | null;
+}
 
 // @public
 export class ClrHostWrappingModule {
@@ -1006,6 +1016,9 @@ export class MockFocusableItem implements FocusableItem {
     // (undocumented)
     up?: FocusableItem | Observable<FocusableItem>;
 }
+
+// @public
+export function normalizeContextText(text: string, lowercase?: boolean): string;
 
 // @public (undocumented)
 export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {

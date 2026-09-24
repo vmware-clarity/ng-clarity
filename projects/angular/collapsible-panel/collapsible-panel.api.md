@@ -109,6 +109,7 @@ export class CollapsiblePanelService {
     disablePanel(panelId: string, disabled?: boolean): void;
     // (undocumented)
     protected emitUpdatedPanels(): void;
+    getPanel(panelId: string): CollapsiblePanelModel | undefined;
     // (undocumented)
     getPanelChanges(panelId: string): Observable<CollapsiblePanelModel>;
     // (undocumented)
