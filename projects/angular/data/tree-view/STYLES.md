@@ -23,14 +23,15 @@
 
 ## CSS Classes
 
-| Class name                      | Description                                 |
-| ------------------------------- | ------------------------------------------- |
-| clr-tree-node                   | Main tree node element                      |
-| clr-tree-node-content-container | Wrapper for tree content and caret elements |
-| clr-treenode-content            | Content wrapper for tree node               |
-| clr-treenode-caret              | Tree node caret button                      |
-| clr-tree-node-caret-icon        | Tree node caret icon                        |
-| clr-treenode-spinner-container  | Wrapper for tree node spinner               |
-| clr-treenode-spinner            | Tree node spinner                           |
-| clr-treenode-children           | Wrapper for nested child tree nodes         |
-| clr-treenode-link               | Tree node link                              |
+| Class name                      | Description                                                                                     |
+| ------------------------------- | ----------------------------------------------------------------------------------------------- |
+| clr-tree-node                   | Main tree node element                                                                          |
+| clr-tree-node-content-container | Wrapper for tree content and caret elements                                                     |
+| clr-treenode-content            | Content wrapper for tree node                                                                   |
+| clr-treenode-caret              | Tree node caret button                                                                          |
+| clr-tree-node-caret-icon        | Tree node caret icon                                                                            |
+| clr-treenode-spinner-container  | Wrapper for tree node spinner                                                                   |
+| clr-treenode-spinner            | Tree node spinner                                                                               |
+| clr-treenode-children-wrapper   | Animates the expansion of `clr-treenode-children`; has `is-expanded` while the node is expanded |
+| clr-treenode-children           | Wrapper for nested child tree nodes                                                             |
+| clr-treenode-link               | Tree node link                                                                                  |

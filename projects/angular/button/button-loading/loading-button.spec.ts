@@ -7,7 +7,7 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { delay } from '@clr/angular/testing';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
 
 import { ClrLoadingButton } from './loading-button';
@@ -137,6 +137,57 @@ describe('Loading Buttons', () => {
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('button').offsetWidth).toBe(42);
+  });
+});
+
+describe('Loading Buttons with animations', () => {
+  let fixture: ComponentFixture<TestLoadingButtonComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(async () => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [ClrLoadingModule, ClrLoadingButtonModule],
+      declarations: [TestLoadingButtonComponent],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestLoadingButtonComponent);
+    fixture.detectChanges();
+    await delay(); // the initial render is not animated
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function animationNames(element: Element): string[] {
+    return element.getAnimations().map(animation => (animation as CSSAnimation).animationName);
+  }
+
+  it('keeps the spinner rotating while it fades in', async () => {
+    fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
+    fixture.detectChanges();
+    await delay();
+
+    const spinner = fixture.nativeElement.querySelector('.spinner');
+    expect(spinner.classList).toContain('clr-loading-btn-enter');
+    expect(animationNames(spinner)).toEqual(['clr-fade-in', 'spin']);
+  });
+
+  it('goes back to its default state once the check mark animation is done', async () => {
+    fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    fixture.detectChanges();
+
+    const check = fixture.nativeElement.querySelector('.spinner-check');
+    expect(animationNames(check)).toEqual(['clr-loading-btn-check']);
+    await delay();
+    expect(fixture.componentInstance.buttonState).toBe(ClrLoadingState.SUCCESS);
+
+    finishAnimations(check);
+    await delay();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.buttonState as ClrLoadingState).toBe(ClrLoadingState.DEFAULT);
   });
 });
 

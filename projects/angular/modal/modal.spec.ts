@@ -8,7 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { delay, expectActiveElementToBe } from '@clr/angular/testing';
+import { delay, enableCssAnimations, expectActiveElementToBe, finishAnimations } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
 import { ClrModal } from './modal';
@@ -355,5 +355,121 @@ describe('Modal', () => {
     const maybleCloseButton = modalHeader.children[1];
     expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
     expect(maybleCloseButton.classList.contains('close')).toBeTrue();
+  });
+});
+
+describe('Modal with animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let modal: ClrModal;
+  let openChanges: boolean[];
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [CdkTrapFocusModule, ClrModalModule],
+      declarations: [TestComponent],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+    modal = fixture.componentInstance.modalInstance;
+    openChanges = [];
+    modal._openChanged.subscribe((open: boolean) => openChanges.push(open));
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function modalElement(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.modal');
+  }
+
+  async function finishClosing() {
+    finishAnimations(fixture.nativeElement);
+    await delay();
+  }
+
+  it('stays rendered and inert while it animates out', async () => {
+    modal.close();
+    fixture.detectChanges();
+
+    expect(modalElement()).not.toBeNull();
+    expect(modalElement().hasAttribute('inert')).toBeTrue();
+    expect(fixture.nativeElement.querySelector('.modal-dialog').classList).toContain('clr-fade-slide-down-leave');
+    expect(fixture.nativeElement.querySelector('.modal-backdrop').classList).toContain('clr-fade-leave');
+    expect(openChanges).toEqual([]);
+
+    await finishClosing();
+
+    expect(modalElement()).toBeNull();
+    expect(openChanges).toEqual([false]);
+    expect(fixture.componentInstance.opened).toBeFalse();
+  });
+
+  it('can be opened again while it animates out', async () => {
+    modal.close();
+    fixture.detectChanges();
+    modal.open();
+    fixture.detectChanges();
+
+    expect(modalElement().hasAttribute('inert')).toBeFalse();
+    expect(fixture.nativeElement.querySelector('.modal-dialog').classList).not.toContain('clr-fade-slide-down-leave');
+
+    await finishClosing();
+
+    expect(modalElement()).not.toBeNull();
+    expect(openChanges).toEqual([true]);
+  });
+
+  it('notifies the closing once when closed, opened and closed again while it animates out', async () => {
+    modal.close();
+    fixture.detectChanges();
+    modal.open();
+    fixture.detectChanges();
+    modal.close();
+    fixture.detectChanges();
+
+    await finishClosing();
+
+    expect(modalElement()).toBeNull();
+    expect(openChanges).toEqual([true, false]);
+  });
+
+  it('gives the focus back as soon as it starts closing', async () => {
+    modal.close();
+    fixture.detectChanges();
+    await finishClosing();
+
+    const opener: HTMLButtonElement = fixture.nativeElement.querySelector('.to-focus');
+    opener.focus();
+    modal.open();
+    fixture.detectChanges();
+    await finishClosing();
+    expect(document.activeElement).not.toBe(opener);
+
+    modal.close();
+    fixture.detectChanges();
+
+    expect(modalElement()).not.toBeNull();
+    expect(document.activeElement).toBe(opener);
+    await finishClosing();
+  });
+
+  it('notifies the closing when destroyed while open', () => {
+    fixture.destroy();
+
+    expect(openChanges).toEqual([false]);
+  });
+
+  it('notifies the closing when destroyed while it animates out', () => {
+    modal.close();
+    fixture.detectChanges();
+
+    fixture.destroy();
+
+    expect(openChanges).toEqual([false]);
   });
 });

@@ -5,13 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isPlatformServer } from '@angular/common';
 import {
   afterNextRender,
+  ANIMATION_MODULE_TYPE,
   ɵANIMATIONS_DISABLED as ANIMATIONS_DISABLED,
   inject,
   Injectable,
   Injector,
+  MAX_ANIMATION_TIMEOUT,
+  PLATFORM_ID,
 } from '@angular/core';
+
+/** Extra time given to an animation past its computed end before `whenComplete()` stops waiting for it. */
+const COMPLETION_GRACE_PERIOD = 50;
 
 /** State returned by `ClrAnimationsService.trackInitialRender()`. */
 export interface ClrInitialRenderState {
@@ -29,33 +36,52 @@ export interface ClrInitialRenderState {
 @Injectable({ providedIn: 'root' })
 export class ClrAnimationsService {
   /**
-   * Whether animations are disabled for the application.
+   * Whether animations are disabled for the application. They are when:
    *
-   * Mirrors the switch behind Angular's own `animate.enter` / `animate.leave`: `TestBed` disables animations
-   * unless `animationsEnabled: true` is passed, so completion callbacks resolve immediately in unit tests.
+   * - the application opted into no-op animations (`provideNoopAnimations()`, `NoopAnimationsModule` or
+   *   `BrowserAnimationsModule.withConfig({ disableAnimations: true })`),
+   * - Angular's own `animate.enter` / `animate.leave` are disabled: `TestBed` does that unless
+   *   `animationsEnabled: true` is passed, so completion callbacks resolve immediately in unit tests,
+   * - the application is rendered on the server, where nothing animates.
    */
-  readonly disabled: boolean = inject(ANIMATIONS_DISABLED);
+  readonly disabled: boolean =
+    inject(ANIMATION_MODULE_TYPE, { optional: true }) === 'NoopAnimations' ||
+    // `ANIMATIONS_DISABLED` is not public API: keep working if Angular stops exporting it.
+    (!!ANIMATIONS_DISABLED && !!inject(ANIMATIONS_DISABLED, { optional: true })) ||
+    isPlatformServer(inject(PLATFORM_ID));
+
+  private readonly maxAnimationTimeout = inject(MAX_ANIMATION_TIMEOUT);
 
   /**
    * Resolves once every CSS animation and transition running on `element` has finished or was cancelled.
    *
-   * Resolves right away when animations are disabled, when nothing is animating (for example because of
-   * `prefers-reduced-motion`) or when the Web Animations API is not available (server rendering, jsdom).
-   * Infinite animations, such as spinners, are ignored.
+   * Resolves right away when animations are disabled, when there is no element, when nothing is animating (for example with the `low-motion`
+   * theme, which zeroes the animation duration tokens) or when the Web Animations API is not available (jsdom).
+   * Infinite animations, such as spinners, are ignored. Like Angular's `animate.leave`, it stops waiting shortly
+   * after the animations should have ended (and at the latest after `MAX_ANIMATION_TIMEOUT`), so a paused animation
+   * cannot keep a component in its transient state forever.
    */
-  whenComplete(element: Element): Promise<void> {
-    if (this.disabled || typeof element.getAnimations !== 'function') {
+  whenComplete(element: Element | null | undefined): Promise<void> {
+    if (this.disabled || typeof element?.getAnimations !== 'function') {
       return Promise.resolve();
     }
 
-    // Flush pending style changes, so that transitions triggered by a class added in the current task already exist.
-    void (element as HTMLElement).offsetWidth;
-
+    // `getAnimations()` flushes pending style changes itself, so transitions triggered by a class added in the
+    // current task are already included; no forced layout is needed.
     const animations = element
       .getAnimations()
       .filter(animation => animation.effect?.getTiming().iterations !== Infinity);
 
-    return Promise.allSettled(animations.map(animation => animation.finished)).then(() => undefined);
+    if (!animations.length) {
+      return Promise.resolve();
+    }
+
+    const finished = Promise.allSettled(animations.map(animation => animation.finished)).then(() => undefined);
+    const timeout = new Promise<void>(resolve =>
+      setTimeout(resolve, Math.min(this.remainingTime(animations) + COMPLETION_GRACE_PERIOD, this.maxAnimationTimeout))
+    );
+
+    return Promise.race([finished, timeout]);
   }
 
   /**
@@ -76,8 +102,7 @@ export class ClrAnimationsService {
     return new Promise(resolve => {
       afterNextRender(
         () => {
-          const element = getElement();
-          (element ? this.whenComplete(element) : Promise.resolve()).then(resolve);
+          this.whenComplete(getElement()).then(resolve);
         },
         { injector }
       );
@@ -98,5 +123,17 @@ export class ClrAnimationsService {
     const state = { done: false };
     afterNextRender(() => (state.done = true), { injector });
     return state;
+  }
+
+  /** Milliseconds until the last of `animations` should end, when played at their current rate. */
+  private remainingTime(animations: Animation[]): number {
+    return Math.max(
+      ...animations.map(animation => {
+        const endTime = Number(animation.effect?.getComputedTiming().endTime) || 0;
+        const currentTime = Number(animation.currentTime) || 0;
+        const rate = Math.abs(animation.playbackRate) || 1;
+        return Math.max(0, (endTime - currentTime) / rate);
+      })
+    );
   }
 }

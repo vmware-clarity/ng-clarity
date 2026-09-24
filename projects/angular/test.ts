@@ -35,6 +35,7 @@ export class ZoneConfigModule {}
  * (Angular's `TestBed` already disables its `animate.enter` / `animate.leave` and the Clarity animation callbacks).
  */
 const noAnimationsStyle = document.createElement('style');
+noAnimationsStyle.id = 'clr-test-no-animations'; // see `enableCssAnimations()`
 noAnimationsStyle.textContent = `*, *::before, *::after { animation: none !important; transition: none !important; }`;
 document.head.appendChild(noAnimationsStyle);
 

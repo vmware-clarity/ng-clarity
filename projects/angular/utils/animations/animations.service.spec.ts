@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injector } from '@angular/core';
+import { Injector, MAX_ANIMATION_TIMEOUT } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { delay } from '@clr/angular/testing';
 
@@ -98,6 +98,63 @@ describe('ClrAnimationsService', () => {
     it('ignores infinite animations', async () => {
       element.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1000, iterations: Infinity });
       await expectAsync(service.whenComplete(element)).toBeResolved();
+    });
+
+    it('resolves once the animations are finished', async () => {
+      const first = element.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1000 });
+      const second = element.animate([{ transform: 'none' }, { transform: 'scale(2)' }], { duration: 2000 });
+      let complete = false;
+      service.whenComplete(element).then(() => (complete = true));
+
+      first.finish();
+      await delay();
+      expect(complete).toBeFalse();
+
+      second.finish();
+      await delay();
+      expect(complete).toBeTrue();
+    });
+
+    it('resolves right away without an element', async () => {
+      await expectAsync(service.whenComplete(null)).toBeResolved();
+      await expectAsync(service.whenComplete(undefined)).toBeResolved();
+    });
+
+    it('resolves right away without the Web Animations API', async () => {
+      const elementWithoutAnimations = { getAnimations: undefined } as unknown as Element;
+      await expectAsync(service.whenComplete(elementWithoutAnimations)).toBeResolved();
+    });
+
+    it('resolves right away when the element returned after the render is gone', async () => {
+      let complete = false;
+      service.whenCompleteAfterRender(() => null, TestBed.inject(Injector)).then(() => (complete = true));
+      TestBed.tick();
+      await delay();
+      expect(complete).toBeTrue();
+    });
+  });
+
+  describe('with a paused animation', () => {
+    beforeEach(() => {
+      TestBed.configureTestingModule({
+        animationsEnabled: true,
+        providers: [{ provide: MAX_ANIMATION_TIMEOUT, useValue: 20 }],
+      });
+    });
+
+    it('stops waiting after MAX_ANIMATION_TIMEOUT', async () => {
+      const animation = element.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 10000 });
+      animation.pause();
+      let complete = false;
+      TestBed.inject(ClrAnimationsService)
+        .whenComplete(element)
+        .then(() => (complete = true));
+
+      await delay();
+      expect(complete).toBeFalse();
+      await delay(50);
+      expect(complete).toBeTrue();
+      animation.cancel();
     });
   });
 });

@@ -44,6 +44,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   private wasExpanded = false;
   private _subscriptions: Subscription[] = [];
   private _expandAnimationState: string = COLLAPSED_STATE;
+  private destroyed = false;
   private readonly injector = inject(Injector);
   private readonly animations = inject(ClrAnimationsService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -131,6 +132,11 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     }
   }
 
+  /** Whether the children are shown, or are being shown. */
+  protected get childrenExpanded(): boolean {
+    return this.expandAnimationState === EXPANDED_STATE;
+  }
+
   ngAfterContentInit() {
     // This makes sure that if someone marks a nav group expanded in a collapsed nav
     // the expanded property is switched back to collapsed state.
@@ -141,6 +147,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.destroyed = true;
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._navGroupRegistrationService.unregisterNavGroup();
   }
@@ -183,7 +190,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     this.animations
       .whenCompleteAfterRender(() => this.children.nativeElement, this.injector)
       .then(() => {
-        if (this.expandAnimationState === COLLAPSED_STATE) {
+        if (this.expandAnimationState === COLLAPSED_STATE && !this.destroyed) {
           this.expanded = false;
           this.cdr.markForCheck();
         }

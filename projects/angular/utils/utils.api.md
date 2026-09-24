@@ -77,8 +77,6 @@ export function assertNever(value: never): void;
 // @public (undocumented)
 export class BaseExpandableAnimation implements OnDestroy {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
-    // (undocumented)
-    protected readonly animations: ClrAnimationsService;
     // @deprecated (undocumented)
     cleanupAnimationEffects(cancelAnimations?: boolean): void;
     // (undocumented)
@@ -92,6 +90,7 @@ export class BaseExpandableAnimation implements OnDestroy {
     playAnimation(): void;
     // (undocumented)
     protected renderer: Renderer2;
+    protected scheduleAnimation(): void;
     // (undocumented)
     startHeight: number;
     // (undocumented)
@@ -205,7 +204,7 @@ export interface ClrAnimationReferenceMetadata {
 export class ClrAnimationsService {
     readonly disabled: boolean;
     trackInitialRender(injector: Injector): ClrInitialRenderState;
-    whenComplete(element: Element): Promise<void>;
+    whenComplete(element: Element | null | undefined): Promise<void>;
     whenCompleteAfterRender(getElement: () => Element | null | undefined, injector: Injector): Promise<void>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAnimationsService, never>;
@@ -498,6 +497,7 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
 
 // @public (undocumented)
 export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges {
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
     // (undocumented)
     expanded: boolean;
     // (undocumented)
@@ -505,7 +505,7 @@ export class ClrExpandableAnimationDirective extends BaseExpandableAnimation imp
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, [null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)

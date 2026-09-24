@@ -116,7 +116,9 @@ You can toggle to dark theme by setting `cds-theme="dark"`.
 
 ### Step 5: Add Clarity to Angular Application
 
-Import the `ClarityModule` into your Angular application's module. For example:
+Import the `ClarityModule` into your Angular application's module. Clarity animates with native CSS and does not
+need `BrowserAnimationsModule` or `provideAnimations()`; keep them only if your application uses `@angular/animations`
+triggers of its own. For example:
 
 ```typescript
 import { NgModule } from "@angular/core";

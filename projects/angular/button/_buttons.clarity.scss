@@ -13,26 +13,6 @@
 @use '../styles/core/tokens/variables.tokens' as tokens;
 
 @include meta.load-css('properties.buttons');
-
-// Check mark of a loading button bouncing in once the operation succeeded
-@keyframes clr-loading-btn-check {
-  0% {
-    transform: scale(0, 0);
-  }
-
-  40% {
-    transform: scale(1.2, 1.2);
-  }
-
-  60% {
-    transform: scale(0.9, 0.9);
-  }
-
-  100% {
-    transform: scale(1, 1);
-  }
-}
-
 @include mixins.exports('buttons.clarity') {
   .btn {
     @include button-mixins.generateButton();
@@ -41,28 +21,64 @@
 
     height: buttons-variables.$clr-btn-appearance-form-height;
     padding: buttons-variables.$clr-btn-appearance-form-padding;
+  }
 
-    .clr-loading-btn-content {
-      display: flex;
-      gap: buttons-variables.$clr-btn-gap;
-      align-items: center;
+  // Loading button (see `ClrLoadingButton`)
+  .clr-loading-btn-content {
+    display: flex;
+    gap: buttons-variables.$clr-btn-gap;
+    align-items: center;
+  }
+
+  // Transitions between the states of a loading button. The spinner keeps its rotation while it fades.
+  $loading-btn-enter: clr-fade-in tokens.$cds-global-animation-duration-quick ease-in
+    tokens.$cds-global-animation-duration-quickest backwards;
+  $loading-btn-leave: clr-fade-out tokens.$cds-global-animation-duration-quickest ease-out forwards;
+
+  .clr-loading-btn-enter {
+    animation: $loading-btn-enter;
+  }
+
+  .clr-loading-btn-leave {
+    animation: $loading-btn-leave;
+  }
+
+  .spinner.clr-loading-btn-enter {
+    animation:
+      $loading-btn-enter,
+      spin 1s linear infinite;
+  }
+
+  .spinner.clr-loading-btn-leave {
+    animation:
+      $loading-btn-leave,
+      spin 1s linear infinite;
+  }
+
+  // Check mark bouncing in once the operation succeeded
+  @keyframes clr-loading-btn-check {
+    0% {
+      transform: scale(0, 0);
     }
 
-    // Transitions between the states of a loading button (see `ClrLoadingButton`)
-    .clr-loading-btn-enter {
-      animation: clr-fade-in tokens.$cds-global-animation-duration-quick 100ms ease-in backwards;
+    40% {
+      transform: scale(1.2, 1.2);
     }
 
-    .clr-loading-btn-leave {
-      animation: clr-fade-out 100ms ease-out forwards;
+    60% {
+      transform: scale(0.9, 0.9);
     }
 
-    .spinner.clr-loading-btn-check {
-      animation: clr-loading-btn-check 600ms;
+    100% {
+      transform: scale(1, 1);
+    }
+  }
 
-      &.clr-loading-btn-leave {
-        animation: clr-fade-out 100ms ease-out forwards;
-      }
+  .spinner.spinner-check.clr-loading-btn-check {
+    animation: clr-loading-btn-check calc(#{tokens.$cds-global-animation-duration-quick} * 3);
+
+    &.clr-loading-btn-leave {
+      animation: $loading-btn-leave;
     }
   }
 

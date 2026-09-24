@@ -58,6 +58,8 @@ import { LayoutService } from '../services/layout.service';
       useValue: translations,
     },
   ],
+  // The card container removes the card by destroying the component: only its host element can animate out.
+  host: { 'animate.leave': 'clr-fade-leave' },
 })
 export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   /**

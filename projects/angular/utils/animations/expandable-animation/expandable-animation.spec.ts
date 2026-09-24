@@ -8,7 +8,7 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { delay } from '@clr/angular/testing';
+import { delay, finishAnimations } from '@clr/angular/testing';
 
 import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
 import { ClrExpandableAnimationModule } from './expandable-animation.module';
@@ -59,6 +59,12 @@ describe('Expandable animation component', () => {
 });
 describe('Expandable animation directive', () => {
   expandableAnimationSpec(TestComponentDirective, ClrExpandableAnimationDirective);
+});
+describe('Expandable animation component with animations enabled', () => {
+  animatedExpandableAnimationSpec(TestComponent, ClrExpandableAnimation);
+});
+describe('Expandable animation directive with animations enabled', () => {
+  animatedExpandableAnimationSpec(TestComponentDirective, ClrExpandableAnimationDirective);
 });
 
 function expandableAnimationSpec(testComponent, component) {
@@ -119,5 +125,70 @@ function expandableAnimationSpec(testComponent, component) {
       await delay();
       expect(clarityElement.clientHeight).toEqual(collapsedHeight);
     });
+  });
+}
+
+function animatedExpandableAnimationSpec(testComponent, component) {
+  let animatedFixture: ComponentFixture<TestComponent | TestComponentDirective>;
+  let expandable: ClrExpandableAnimation | ClrExpandableAnimationDirective;
+  let element: HTMLElement;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [ClrExpandableAnimationModule],
+      declarations: [testComponent],
+      providers: [DomAdapter],
+      animationsEnabled: true,
+    });
+    animatedFixture = TestBed.createComponent(testComponent);
+    animatedFixture.detectChanges();
+    const debugElement = animatedFixture.debugElement.query(By.directive(component));
+    element = debugElement.nativeElement;
+    expandable = debugElement.injector.get(component);
+  });
+
+  afterEach(() => {
+    animatedFixture.destroy();
+  });
+
+  it('animates the height from the start height to the height of the new content', async () => {
+    expandable.updateStartHeight();
+    const startHeight = expandable.startHeight;
+    animatedFixture.componentInstance.data.push({ id: 2, value: 'two' });
+    animatedFixture.componentInstance.expanded = true;
+    animatedFixture.detectChanges();
+
+    const animations = element.getAnimations();
+    expect(animations.length).toBe(1);
+    expect(element.classList).toContain('clr-expandable-animation-active');
+    expect(element.style.overflow).toBe('clip');
+    animations[0].pause();
+    animations[0].currentTime = 0;
+    expect(element.getBoundingClientRect().height).toBe(startHeight);
+
+    finishAnimations(element);
+    await delay();
+
+    expect(element.getAnimations().length).toBe(0);
+    expect(element.classList).not.toContain('clr-expandable-animation-active');
+    expect(element.style.overflow).toBe('');
+    expect(expandable.startHeight).toBe(startHeight * 2);
+  });
+
+  it('replaces a running animation', async () => {
+    expandable.updateStartHeight();
+    animatedFixture.componentInstance.data.push({ id: 2, value: 'two' });
+    animatedFixture.componentInstance.expanded = true;
+    animatedFixture.detectChanges();
+    const firstAnimation = element.getAnimations()[0];
+
+    animatedFixture.componentInstance.data.pop();
+    animatedFixture.componentInstance.expanded = false;
+    animatedFixture.detectChanges();
+
+    expect(firstAnimation.playState).toBe('idle'); // cancelled
+    finishAnimations(element);
+    await delay();
+    expect(element.classList).not.toContain('clr-expandable-animation-active');
   });
 }

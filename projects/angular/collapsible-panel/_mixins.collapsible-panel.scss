@@ -11,15 +11,31 @@
 @use '../styles/variables/variables.density' as density;
 
 // Expand / collapse animations of the panel content, driven by the `clr-collapsible-panel-expanding` and
-// `clr-collapsible-panel-collapsing` classes that `CollapsiblePanel` applies to it.
-@keyframes clr-collapsible-panel-expand {
-  from {
-    grid-template-rows: 0fr;
+// `clr-collapsible-panel-collapsing` classes that `CollapsiblePanel` applies to it. The vertical padding of the inner
+// content is animated along with the grid row, which cannot shrink below it.
+@include mixins.exports('collapsible-panel.keyframes') {
+  @keyframes clr-collapsible-panel-expand {
+    from {
+      grid-template-rows: 0fr;
+    }
   }
-}
-@keyframes clr-collapsible-panel-collapse {
-  to {
-    grid-template-rows: 0fr;
+
+  @keyframes clr-collapsible-panel-collapse {
+    to {
+      grid-template-rows: 0fr;
+    }
+  }
+
+  @keyframes clr-collapsible-panel-expand-padding {
+    from {
+      padding-block: 0;
+    }
+  }
+
+  @keyframes clr-collapsible-panel-collapse-padding {
+    to {
+      padding-block: 0;
+    }
   }
 }
 
@@ -162,16 +178,36 @@
     &.clr-collapsible-panel-expanding {
       animation: clr-collapsible-panel-expand tokens.$cds-global-animation-duration-quick
         tokens.$cds-global-animation-easing-in-out;
+
+      & > .#{$prefix}-inner-content {
+        animation: clr-collapsible-panel-expand-padding tokens.$cds-global-animation-duration-quick
+          tokens.$cds-global-animation-easing-in-out;
+      }
     }
 
     &.clr-collapsible-panel-collapsing {
       display: grid;
       animation: clr-collapsible-panel-collapse tokens.$cds-global-animation-duration-quick
         tokens.$cds-global-animation-easing-in-out forwards;
+
+      & > .#{$prefix}-inner-content {
+        animation: clr-collapsible-panel-collapse-padding tokens.$cds-global-animation-duration-quick
+          tokens.$cds-global-animation-easing-in-out forwards;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &,
+      & > .#{$prefix}-inner-content {
+        animation-duration: 0s;
+      }
     }
   }
 
   .#{$prefix}-inner-content {
+    // Grid items default to `min-width: auto`, which would size the column to the widest content and defeat
+    // horizontal scroll containers (datagrids, tables) inside the panel. Both minimums must be 0.
+    min-width: 0;
     min-height: 0;
     padding: density.$clr-base-vertical-offset-xl density.$clr-base-horizontal-offset-xl;
   }

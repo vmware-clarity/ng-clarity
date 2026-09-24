@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isPlatformBrowser } from '@angular/common';
 import {
   ChangeDetectorRef,
   Component,
@@ -18,11 +19,18 @@ import {
   OnChanges,
   OnDestroy,
   Output,
+  PLATFORM_ID,
   SimpleChange,
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { ClrAnimationsService, ClrCommonStringsService, ScrollingService, uniqueIdFactory } from '@clr/angular/utils';
+import {
+  CdkTrapFocusModule_CdkTrapFocus,
+  ClrAnimationsService,
+  ClrCommonStringsService,
+  ScrollingService,
+  uniqueIdFactory,
+} from '@clr/angular/utils';
 
 import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ModalStackService } from './modal-stack.service';
@@ -79,9 +87,20 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
   @ViewChild('dialog') private readonly dialogElementRef: ElementRef<HTMLElement>;
+  @ViewChild(CdkTrapFocusModule_CdkTrapFocus) private readonly trapFocus: CdkTrapFocusModule_CdkTrapFocus;
 
   private destroyed = false;
-  private closeHandled = false;
+  /**
+   * Where the current opening stands in its closing: `pending` from the close request until `clrModalOpenChange`
+   * notified it, `notified` afterwards. `close()` and the `clrModalOpen` input flipping to false through a two-way
+   * binding both request the closing; only the first request counts.
+   */
+  private closeState: 'none' | 'pending' | 'notified' = 'none';
+  /** Identifies the latest close request, so that the completion of a superseded one is ignored. */
+  private closeId = 0;
+  /** Element focused when the modal opened, focused again as soon as the modal starts closing. */
+  private focusReturnTarget: HTMLElement | null = null;
+  private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly injector = inject(Injector);
   private readonly animations = inject(ClrAnimationsService);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -121,12 +140,12 @@ export class ClrModal implements OnChanges, OnDestroy {
     return animation ? `${animation}-leave` : '';
   }
 
-  // Detect when _open is set to true and set no-scrolling to true
+  // Reacts to the clrModalOpen input: keeps the modal rendered while it animates out when it is closed,
+  // and stops / resumes page scrolling.
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
-        this.closing = false;
-        this.closeHandled = false;
+        this.startOpening();
       } else {
         this.closeAfterLeaveAnimation();
       }
@@ -143,6 +162,11 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    if (this._open || this.closeState === 'pending') {
+      // Destroyed while open or while animating out: notify the closing, like the leave animation callback of the
+      // dialog used to.
+      this._openChanged.emit(false);
+    }
     this.destroyed = true;
     this._scrollingService.resumeScrolling();
     // A modal destroyed while open must not keep handling the Escape key.
@@ -154,8 +178,7 @@ export class ClrModal implements OnChanges, OnDestroy {
       return;
     }
     this._open = true;
-    this.closing = false;
-    this.closeHandled = false;
+    this.startOpening();
     this._openChanged.emit(true);
     this.modalStackService.trackModalOpen(this);
   }
@@ -183,7 +206,7 @@ export class ClrModal implements OnChanges, OnDestroy {
   /** @deprecated The modal is animated with native CSS and closes itself once its leave animation is done. */
   fadeDone(e: { toState: string }) {
     if (e.toState === 'void') {
-      this.modalClosed();
+      this.modalClosed(this.closeId);
     }
   }
 
@@ -191,20 +214,47 @@ export class ClrModal implements OnChanges, OnDestroy {
     this.bodyElementRef.nativeElement.scrollTo(0, 0);
   }
 
+  /** Resets the closing state when the modal (re)opens, possibly while it was still animating out. */
+  private startOpening() {
+    const reopened = this.closing;
+    this.closing = false;
+    this.closeState = 'none';
+    this.closeId++; // ignores the completion of a closing that was in progress
+
+    if (reopened) {
+      // The dialog was kept rendered, so the focus trap does not capture the focus again by itself.
+      this.animations
+        .whenCompleteAfterRender(() => null, this.injector)
+        .then(() => {
+          if (this._open) {
+            this.trapFocus?.focusTrap?.focusInitialElementWhenReady();
+          }
+        });
+    } else if (this.isBrowser) {
+      this.focusReturnTarget = document.activeElement as HTMLElement | null;
+    }
+  }
+
   /**
    * Keeps the modal rendered while the dialog animates out, then removes it and notifies about the closing.
    * Nothing to do when the modal is not rendered (it was never opened, was destroyed) or when the closing was
-   * already handled: `close()` and the input flipping to false through a two-way binding both end up here.
+   * already requested.
    */
   private closeAfterLeaveAnimation() {
-    if (this.closeHandled || this.destroyed || !this.dialogElementRef) {
+    if (this.closeState !== 'none' || this.destroyed || !this.dialogElementRef) {
       return;
     }
-    this.closeHandled = true;
+    this.closeState = 'pending';
+    const closeId = ++this.closeId;
+
+    // The closing dialog is inert and no longer traps the focus (see the template): give the focus back right away,
+    // rather than once the dialog has been removed.
+    this.focusReturnTarget?.focus();
+    this.focusReturnTarget = null;
 
     if (this.animations.disabled) {
       // The next change detection removes the modal; notify right after it, like a completed animation would.
-      Promise.resolve().then(() => this.modalClosed());
+      Promise.resolve().then(() => this.modalClosed(closeId));
       return;
     }
 
@@ -213,8 +263,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     this.animations
       .whenCompleteAfterRender(() => this.dialogElementRef?.nativeElement, this.injector)
       .then(() => {
-        if (!this.closing) {
-          this.modalClosed();
+        if (closeId !== this.closeId) {
           return; // the modal was opened again in the meantime
         }
         this.closing = false;
@@ -223,14 +272,15 @@ export class ClrModal implements OnChanges, OnDestroy {
           // clrModalOpenChange event and the tests of applications using the modal expect.
           this.cdr.detectChanges();
         }
-        this.modalClosed();
+        this.modalClosed(closeId);
       });
   }
 
-  private modalClosed() {
-    if (this._open || this.destroyed) {
-      return; // the modal was opened again or destroyed in the meantime
+  private modalClosed(closeId: number) {
+    if (closeId !== this.closeId || this.closeState === 'notified' || this._open || this.destroyed) {
+      return; // superseded, already notified, opened again or destroyed in the meantime
     }
+    this.closeState = 'notified';
     this._openChanged.emit(false);
     this.modalStackService.trackModalClose(this);
   }

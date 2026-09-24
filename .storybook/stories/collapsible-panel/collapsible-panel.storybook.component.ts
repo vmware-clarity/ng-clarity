@@ -77,6 +77,9 @@ export class StorybookPanel extends CollapsiblePanel implements OnChanges {
   @Input() override panelOpen = false;
   @Output() override panelOpenChange = new EventEmitter<boolean>();
 
+  // Like the accordion, this panel only animates its expansion (the template does not bind the collapsing class).
+  protected override readonly animatesCollapse = false;
+
   get disabled(): boolean {
     return this.panelDisabled;
   }

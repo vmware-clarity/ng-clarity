@@ -253,21 +253,40 @@
   // The children of a node expand and collapse by transitioning the single row of this grid between 0 and 1 fraction
   // of the content height. Content is only clipped vertically: a `clip` overflow does not turn the wrapper into a
   // scroll container, and wide children still overflow the tree horizontally as they always did.
+  // The children are clipped while collapsed and while they animate, but not once expanded, so that content
+  // overflowing a node (dropdowns, tooltips...) is not cut off. The overflow switches right away on collapse and
+  // at the end of the transition on expand.
   .clr-treenode-children-wrapper {
     display: grid;
     grid-template-rows: 0fr;
     overflow: visible clip;
-    transition: grid-template-rows tokens.$cds-global-animation-duration-quick
-      tokens.$cds-global-animation-easing-in-out;
+    transition:
+      grid-template-rows tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out,
+      overflow 0s;
+    transition-behavior: allow-discrete;
 
     &.is-expanded {
       grid-template-rows: 1fr;
+      overflow: visible;
+      transition:
+        grid-template-rows tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out,
+        overflow 0s tokens.$cds-global-animation-duration-quick;
+      transition-behavior: allow-discrete;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &,
+      &.is-expanded {
+        transition-duration: 0s;
+        transition-delay: 0s;
+      }
     }
   }
 
   .clr-treenode-children {
     //Dimensions
     margin-left: tree-view-variables.$clr-tree-node-children-margin;
+    min-width: 0;
     min-height: 0;
   }
 

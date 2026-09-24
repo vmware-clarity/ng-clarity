@@ -36,8 +36,7 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['clrExpandTrigger'] && !changes['clrExpandTrigger'].firstChange) {
-      // Defer until the content has been rendered, so that the height to animate to can be measured.
-      Promise.resolve().then(() => this.playAnimation());
+      this.scheduleAnimation();
     }
   }
 

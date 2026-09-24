@@ -64,17 +64,18 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
   @ViewChild('panelContent') private readonly panelContent: ElementRef<HTMLElement>;
 
   private _id = uniqueIdFactory();
-  private initialRender: ClrInitialRenderState = { done: false };
-  private destroyed = false;
-  private readonly injector = inject(Injector);
-  private readonly animations = inject(ClrAnimationsService);
+  // ECMAScript private fields, so that they cannot clash with the members of existing subclasses.
+  #initialRender: ClrInitialRenderState = { done: false };
+  #destroyed = false;
+  readonly #injector = inject(Injector);
+  readonly #animations = inject(ClrAnimationsService);
 
   constructor(
     protected panelService: CollapsiblePanelService,
     protected ifExpandService: IfExpandService,
     protected cdr: ChangeDetectorRef
   ) {
-    inject(DestroyRef).onDestroy(() => (this.destroyed = true));
+    inject(DestroyRef).onDestroy(() => (this.#destroyed = true));
   }
 
   get id(): string {
@@ -91,7 +92,7 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
    * Content that is open when the panel is first rendered is not animated.
    */
   get contentEnterClass(): string {
-    return this.initialRender.done ? COLLAPSIBLE_PANEL_EXPANDING_CLASS : '';
+    return this.#initialRender.done ? COLLAPSIBLE_PANEL_EXPANDING_CLASS : '';
   }
 
   ngOnInit() {
@@ -104,7 +105,7 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.initialRender = this.animations.trackInitialRender(this.injector);
+    this.#initialRender = this.#animations.trackInitialRender(this.#injector);
   }
 
   togglePanel() {
@@ -137,7 +138,7 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
       this.panelOpenChange.emit(panel.open);
       this.panelOpen = panel.open;
       if (!panel.open) {
-        this.collapseContent(panel);
+        this.#collapseContent(panel);
       }
     }
 
@@ -147,12 +148,16 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     }
   }
 
-  private collapseContent(panel: CollapsiblePanelModel) {
-    if (this.destroyed) {
+  abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
+  abstract getContentId(id: string): string;
+  abstract getHeaderId(id: string): string;
+
+  #collapseContent(panel: CollapsiblePanelModel) {
+    if (this.#destroyed) {
       return;
     }
 
-    if (this.animations.disabled || !this.animatesCollapse) {
+    if (this.#animations.disabled || !this.animatesCollapse) {
       // The next change detection removes the content; clean up right after it, like a completed animation would.
       Promise.resolve().then(() => this.collapsePanelOnAnimationDone(panel));
       return;
@@ -160,10 +165,10 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
 
     this.collapsing = true;
 
-    this.animations
-      .whenCompleteAfterRender(() => this.panelContent?.nativeElement, this.injector)
+    this.#animations
+      .whenCompleteAfterRender(() => this.panelContent?.nativeElement, this.#injector)
       .then(() => {
-        if (!this.collapsing || this.destroyed) {
+        if (!this.collapsing || this.#destroyed) {
           return; // the panel was opened again or destroyed in the meantime
         }
         this.collapsing = false;
@@ -173,8 +178,4 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
         this.collapsePanelOnAnimationDone(panel);
       });
   }
-
-  abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
-  abstract getContentId(id: string): string;
-  abstract getHeaderId(id: string): string;
 }

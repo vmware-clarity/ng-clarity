@@ -6,10 +6,10 @@
   -->
 
 @if (_open || closing) {
-<div class="modal" [class.modal-full-screen]="size == 'full-screen'">
+<div class="modal" [class.modal-full-screen]="size == 'full-screen'" [attr.inert]="closing ? '' : null">
   <div
     #dialog
-    cdkTrapFocus
+    [cdkTrapFocus]="!closing"
     [cdkTrapFocusAutoCapture]="true"
     [animate.enter]="dialogEnterClass"
     [class]="closing ? dialogLeaveClass : null"

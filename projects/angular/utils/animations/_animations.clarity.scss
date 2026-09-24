@@ -46,7 +46,14 @@ $clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
   //
   // Meant to be used with Angular's `animate.enter` and `animate.leave` bindings, but they are plain CSS classes and
   // can be applied by any other means. The distance covered by the slide animations can be customized with the
-  // `--clr-slide-offset` custom property (defaults to 25% of the element's size).
+  // `--clr-slide-offset` custom property (defaults to 25% of the element's size). It is not inherited, so it has to be
+  // set on the animated element itself.
+  @property --clr-slide-offset {
+    syntax: '<length-percentage>';
+    inherits: false;
+    initial-value: 25%;
+  }
+
   @keyframes clr-fade-in {
     from {
       opacity: 0;
@@ -69,105 +76,105 @@ $clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
 
   @keyframes clr-slide-up-in {
     from {
-      transform: translate(0, var(--clr-slide-offset, 25%));
+      transform: translate(0, var(--clr-slide-offset));
     }
   }
 
   @keyframes clr-slide-up-out {
     to {
-      transform: translate(0, var(--clr-slide-offset, 25%));
+      transform: translate(0, var(--clr-slide-offset));
     }
   }
 
   @keyframes clr-fade-slide-up-in {
     from {
       opacity: 0;
-      transform: translate(0, var(--clr-slide-offset, 25%));
+      transform: translate(0, var(--clr-slide-offset));
     }
   }
 
   @keyframes clr-fade-slide-up-out {
     to {
       opacity: 0;
-      transform: translate(0, var(--clr-slide-offset, 25%));
+      transform: translate(0, var(--clr-slide-offset));
     }
   }
 
   @keyframes clr-slide-down-in {
     from {
-      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
+      transform: translate(0, calc(-1 * var(--clr-slide-offset)));
     }
   }
 
   @keyframes clr-slide-down-out {
     to {
-      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
+      transform: translate(0, calc(-1 * var(--clr-slide-offset)));
     }
   }
 
   @keyframes clr-fade-slide-down-in {
     from {
       opacity: 0;
-      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
+      transform: translate(0, calc(-1 * var(--clr-slide-offset)));
     }
   }
 
   @keyframes clr-fade-slide-down-out {
     to {
       opacity: 0;
-      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
+      transform: translate(0, calc(-1 * var(--clr-slide-offset)));
     }
   }
 
   @keyframes clr-slide-left-in {
     from {
-      transform: translate(var(--clr-slide-offset, 25%), 0);
+      transform: translate(var(--clr-slide-offset), 0);
     }
   }
 
   @keyframes clr-slide-left-out {
     to {
-      transform: translate(var(--clr-slide-offset, 25%), 0);
+      transform: translate(var(--clr-slide-offset), 0);
     }
   }
 
   @keyframes clr-fade-slide-left-in {
     from {
       opacity: 0;
-      transform: translate(var(--clr-slide-offset, 25%), 0);
+      transform: translate(var(--clr-slide-offset), 0);
     }
   }
 
   @keyframes clr-fade-slide-left-out {
     to {
       opacity: 0;
-      transform: translate(var(--clr-slide-offset, 25%), 0);
+      transform: translate(var(--clr-slide-offset), 0);
     }
   }
 
   @keyframes clr-slide-right-in {
     from {
-      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
+      transform: translate(calc(-1 * var(--clr-slide-offset)), 0);
     }
   }
 
   @keyframes clr-slide-right-out {
     to {
-      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
+      transform: translate(calc(-1 * var(--clr-slide-offset)), 0);
     }
   }
 
   @keyframes clr-fade-slide-right-in {
     from {
       opacity: 0;
-      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
+      transform: translate(calc(-1 * var(--clr-slide-offset)), 0);
     }
   }
 
   @keyframes clr-fade-slide-right-out {
     to {
       opacity: 0;
-      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
+      transform: translate(calc(-1 * var(--clr-slide-offset)), 0);
     }
   }
 
@@ -189,8 +196,16 @@ $clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
     }
   }
 
-  // Applied by `ClrExpandableAnimation` / `clrExpandableAnimation` while the height of the host is animated.
-  .clr-expandable-animation-active {
-    transition: height $clr-animation-duration $clr-animation-easing;
+  // Slides are motion: skip them when the user asked for reduced motion. The end state of the animations is kept, and
+  // they still complete (right away), so the elements they apply to are still removed.
+  @media (prefers-reduced-motion: reduce) {
+    @each $direction in up, down, left, right {
+      .clr-slide-#{$direction}-enter,
+      .clr-slide-#{$direction}-leave,
+      .clr-fade-slide-#{$direction}-enter,
+      .clr-fade-slide-#{$direction}-leave {
+        animation-duration: 0s;
+      }
+    }
   }
 }

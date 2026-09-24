@@ -27,20 +27,21 @@
 
 ## CSS Classes
 
-| Class name             | Description                                                     |
-| ---------------------- | --------------------------------------------------------------- |
-| clr-vertical-nav       | Vertical nav element                                            |
-| nav-content            | Navigation content                                              |
-| nav-divider            | Navigation content separator                                    |
-| nav-trigger            | Navigation trigger button for collapse/expand state             |
-| nav-trigger-icon       | Navigation trigger icon                                         |
-| nav-trigger--bottom    | Move navigation trigger at the bottom                           |
-| nav-group              | main vertical navigation group element                          |
-| nav-group-content      | Wrapper for navigation group content                            |
-| nav-group-text         | Navigation group content wrapper text                           |
-| nav-group-children     | Wrapper for navigation group children elements                  |
-| nav-group-trigger      | Navigation group trigger button for open/close group            |
-| nav-group-trigger-icon | Navigation group trigger button icon                            |
-| nav-btn                | Button to expand vertical nav when collapsed                    |
-| has-icons              | Internal class showing if vertical nav has icons                |
-| has-nav-groups         | Internal class showing if vertical nav has at least 1 nav group |
+| Class name                 | Description                                                                                   |
+| -------------------------- | --------------------------------------------------------------------------------------------- |
+| clr-vertical-nav           | Vertical nav element                                                                          |
+| nav-content                | Navigation content                                                                            |
+| nav-divider                | Navigation content separator                                                                  |
+| nav-trigger                | Navigation trigger button for collapse/expand state                                           |
+| nav-trigger-icon           | Navigation trigger icon                                                                       |
+| nav-trigger--bottom        | Move navigation trigger at the bottom                                                         |
+| nav-group                  | main vertical navigation group element                                                        |
+| nav-group-content          | Wrapper for navigation group content                                                          |
+| nav-group-text             | Navigation group content wrapper text                                                         |
+| nav-group-children-wrapper | Animates the expansion of `nav-group-children`; has `is-expanded` while the group is expanded |
+| nav-group-children         | Wrapper for navigation group children elements                                                |
+| nav-group-trigger          | Navigation group trigger button for open/close group                                          |
+| nav-group-trigger-icon     | Navigation group trigger button icon                                                          |
+| nav-btn                    | Button to expand vertical nav when collapsed                                                  |
+| has-icons                  | Internal class showing if vertical nav has icons                                              |
+| has-nav-groups             | Internal class showing if vertical nav has at least 1 nav group                               |

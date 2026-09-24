@@ -9,6 +9,7 @@ import { Component, Injectable, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
@@ -145,5 +146,78 @@ describe('ClrStep Template Forms', () => {
     it('should use template forms to access form groups', () => {
       expect(fixture.componentInstance.step.id).toBe('groupName');
     });
+  });
+});
+
+describe('ClrStep collapse animation', () => {
+  let fixture: ComponentFixture<ReactiveFormsTestComponent>;
+  let stepperService: MockStepperService;
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      declarations: [ReactiveFormsTestComponent],
+      providers: [{ provide: StepperService, useClass: MockStepperService }],
+      imports: [ReactiveFormsModule, ClrStepperModule],
+      animationsEnabled: true,
+    });
+    TestBed.overrideComponent(ClrStepper, {
+      set: { providers: [{ provide: StepperService, useClass: MockStepperService }] },
+    });
+
+    fixture = TestBed.createComponent(ReactiveFormsTestComponent);
+    fixture.detectChanges();
+    stepperService = fixture.debugElement
+      .query(By.directive(ClrStepperPanel))
+      .injector.get(StepperService) as MockStepperService;
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function content(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.clr-stepper-content');
+  }
+
+  function emitStep(open: boolean) {
+    const step = new StepperPanelModel('groupName', 0);
+    step.open = open;
+    stepperService.step.next(step);
+    fixture.detectChanges();
+  }
+
+  it('keeps the content rendered while it collapses', async () => {
+    emitStep(true);
+    expect(content().classList).toContain('clr-collapsible-panel-expanding');
+    finishAnimations(fixture.nativeElement);
+    await delay();
+
+    emitStep(false);
+
+    expect(content()).not.toBeNull();
+    expect(content().classList).toContain('clr-collapsible-panel-collapsing');
+    expect(content().getAnimations().length).toBe(1);
+
+    finishAnimations(fixture.nativeElement);
+    await delay();
+
+    expect(content()).toBeNull();
+  });
+
+  it('keeps the content when opened again while it collapses', async () => {
+    emitStep(true);
+    finishAnimations(fixture.nativeElement);
+    await delay();
+
+    emitStep(false);
+    emitStep(true);
+    finishAnimations(fixture.nativeElement);
+    await delay();
+
+    expect(content()).not.toBeNull();
+    expect(content().classList).not.toContain('clr-collapsible-panel-collapsing');
   });
 });

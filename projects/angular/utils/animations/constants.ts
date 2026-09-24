@@ -10,7 +10,7 @@ import { animationAnimate, animationReference, animationStyle } from './animatio
 /** @deprecated Clarity animates with native CSS; use the `--cds-global-animation-*` tokens instead. */
 export const defaultAnimationTiming = '0.2s ease-in-out';
 
-/** @deprecated Clarity animates with native CSS; see `ClrExpandableAnimation` and `.clr-expandable-animation-active`. */
+/** @deprecated Clarity no longer uses Angular animations; see `ClrExpandableAnimation` and `clrExpandableAnimation`. */
 export const defaultExpandAnimation = animationReference(
   [
     animationStyle({ height: '{{ startHeight }}px' }),

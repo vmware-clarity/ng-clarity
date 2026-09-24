@@ -26,6 +26,7 @@ export default {
     clrModalAlternateClose: { control: { disable: true } },
     clrModalOpenChange: { control: { disable: true } },
     // methods
+    fadeDone: { control: { disable: true }, table: { disable: true } },
     open: { control: { disable: true }, table: { disable: true } },
     close: { control: { disable: true }, table: { disable: true } },
     // story helpers

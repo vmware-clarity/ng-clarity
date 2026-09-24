@@ -112,6 +112,10 @@
         grid-template-rows: 1fr;
         visibility: visible;
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        transition-duration: 0s;
+      }
     }
 
     .nav-group-children {
