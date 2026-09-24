@@ -114,6 +114,10 @@ export class ClrDatagridFilter<T = any>
       popoverService.openChange.subscribe(change => {
         this.ariaExpanded = change;
         this.openChange.emit(change);
+
+        if (keyNavigation) {
+          keyNavigation.skipItemFocus = change;
+        }
       })
     );
 
@@ -129,10 +133,6 @@ export class ClrDatagridFilter<T = any>
     if (this.popoverService.open !== open) {
       this.popoverService.open = open;
       this.openChange.emit(open);
-
-      if (this.keyNavigation) {
-        this.keyNavigation.skipItemFocus = open;
-      }
     }
   }
 

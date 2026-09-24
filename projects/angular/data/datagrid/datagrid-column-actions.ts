@@ -36,7 +36,6 @@ import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ColumnActionsService } from './providers/column-actions.service';
 import { FiltersProvider } from './providers/filters';
-import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 /**
  * Groups the actions of a single column behind one menu in the column header. It only gathers
@@ -199,7 +198,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     @SkipSelf() private columnPopover: ClrPopoverService,
     private changeDetectorRef: ChangeDetectorRef,
     private injector: Injector,
-    @Optional() private keyNavigation: KeyNavigationGridController,
     @Optional() private filters: FiltersProvider,
     @SkipSelf() @Optional() parent: ClrDropdown,
     popoverService: ClrPopoverService,
@@ -304,16 +302,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   }
 
   ngAfterViewInit() {
-    // The grid owns arrow key handling for the header, so it has to stand down while either overlay
-    // has focus - the menu, or the filter this menu opens. ClrDatagridFilter normally does the second
-    // half itself, but only when it is opened through its own input, which is no longer the path.
-    if (this.keyNavigation) {
-      this.subs.push(
-        this.popoverService.openChange.subscribe(() => this.updateSkipItemFocus()),
-        this.columnPopover.openChange.subscribe(() => this.updateSkipItemFocus())
-      );
-    }
-
     // The trigger and the filter action show whether the column is filtered, and this component is
     // OnPush, so it has to be told when a filter value changes.
     if (this.filters) {
@@ -447,10 +435,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     // that opened it. Without this, the very click on this menu item would close the filter again.
     this.columnPopover.openEvent = event;
     this.columnPopover.open = true;
-  }
-
-  private updateSkipItemFocus() {
-    this.keyNavigation.skipItemFocus = this.popoverService.open || this.columnPopover.open;
   }
 
   private linkMenuItems() {
