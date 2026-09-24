@@ -13,6 +13,7 @@ import {
   Component,
   ElementRef,
   Input,
+  numberAttribute,
   OnDestroy,
   OnInit,
   ViewEncapsulation,
@@ -23,7 +24,7 @@ import { ClarityIcons } from './icon.service';
 import { Directions, Orientations, StatusTypes } from './interfaces/icon.interfaces';
 import { GlobalStateService } from './services/global.service';
 import { IconHtmlPipe } from './utils/icon-html.pipe';
-import { updateIconSizeStyle } from './utils/icon.classnames';
+import { pxToRem, updateIconSizeStyle } from './utils/icon.classnames';
 import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers';
 
 @Component({
@@ -41,6 +42,7 @@ import { getIconBadgeSVG, getIconSVG } from './utils/icon.svg-helpers';
     '[attr.status]': 'status',
     '[attr.inverse]': 'inverse ? true : null',
     '[attr.badge]': 'badge',
+    '[attr.inner-offset]': 'innerOffset',
   },
   imports: [IconHtmlPipe],
   providers: [IconHtmlPipe],
@@ -57,6 +59,7 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
   private _status: StatusTypes | string;
   private _inverse: boolean = false;
   private _badge: string | StatusTypes | 'inherit' | 'warning-triangle' | 'inherit-triangle' | true | false;
+  private _innerOffset: number;
   private subscription: Subscription;
   private _priorShape = 'unknown';
 
@@ -146,6 +149,20 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
       this.updateIcon();
     }
   }
+  /**
+   * Given a pixel value, offsets any surrounding whitespace within the icon's svg,
+   * growing it outward by that amount on every side so the visible glyph fills its box.
+   */
+  @Input({ transform: numberAttribute })
+  get innerOffset() {
+    return this._innerOffset;
+  }
+  set innerOffset(value: number) {
+    if (value !== this._innerOffset) {
+      this._innerOffset = value;
+      this.updateInnerOffset(value);
+    }
+  }
 
   ngOnInit() {
     this.updateIcon(); // Initial render
@@ -181,6 +198,14 @@ export class ClrIcon implements OnInit, AfterViewInit, OnDestroy {
 
   updateIconSize(value: string) {
     updateIconSizeStyle(this.el.nativeElement, value);
+  }
+
+  updateInnerOffset(value: number) {
+    if (typeof value === 'number' && value > 0) {
+      this.el.nativeElement.style.setProperty('--inner-offset', pxToRem(value));
+    } else {
+      this.el.nativeElement.style.removeProperty('--inner-offset');
+    }
   }
 
   /*

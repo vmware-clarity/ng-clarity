@@ -117,6 +117,17 @@
       <clr-icon size="lg" flip="horizontal" shape="image"></clr-icon>
     </div>
 
+    <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="inner-offset">Inner Offset</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      Some icon glyphs include whitespace inside their SVG viewBox. When such an icon is placed in a fixed-size
+      container, that whitespace can make the glyph appear smaller than expected. Use the inner-offset attribute to grow
+      the glyph outward, in pixels, cropping out the surrounding whitespace so it fills its box.
+    </p>
+    <div class="component-box-container clr-mt-16px clrweb-DoxMedia-img">
+      <clr-icon size="lg" shape="info-circle"></clr-icon>
+      <clr-icon size="lg" shape="info-circle" inner-offset="4"></clr-icon>
+    </div>
+
     <h3 data-toc-item class="clr-mt-24px" cds-text="section" id="icon-colors">Icon Colors</h3>
     <p class="clr-mt-16px" cds-text="body">
       Clarity icons also come with predefined colors using the status attribute. Colors are described as:
@@ -275,6 +286,14 @@
               <li>'warning-triangle' - yellow triangle</li>
               <li>'inherit-triangle' - triangle inherits color of full icon glyph</li>
             </ul>
+          </td>
+        </tr>
+        <tr>
+          <td class="left">innerOffset</td>
+          <td class="left">number</td>
+          <td class="left">
+            Given a pixel value, offsets any surrounding whitespace within the icon's svg, growing it outward by that
+            amount on every side so the visible glyph fills its box.
           </td>
         </tr>
       </tbody>
