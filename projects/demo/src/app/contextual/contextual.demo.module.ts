@@ -5,16 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ClarityModule } from '@clr/angular';
-import { ClrContextModule } from '@clr/angular/ai';
 
 import { ContextualDemo } from './contextual.demo';
 import { ROUTING } from './contextual.demo.routing';
 
 @NgModule({
-  imports: [CommonModule, ClarityModule, ClrContextModule, ROUTING],
+  imports: [ROUTING],
   declarations: [ContextualDemo],
   exports: [ContextualDemo],
 })

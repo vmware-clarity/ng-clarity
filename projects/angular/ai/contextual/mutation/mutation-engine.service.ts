@@ -8,6 +8,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
+import { ContextRefRegistryService } from './context-ref-registry.service';
 import {
   CLR_MUTATION_POLICY,
   ClrElementMutationResult,
@@ -22,8 +23,7 @@ import {
   ClrNavigationMutationResult,
 } from './mutation.interface';
 import { fillRoutePath, navigateAndReport } from './navigate';
-import { ClrContextRefRegistry } from './ref-registry';
-import { ClrWriteTarget, coerceValue, descriptionMatches, resolveWriteTarget, writeValue } from './write';
+import { coerceValue, descriptionMatches, resolveWriteTarget, WriteTarget, writeValue } from './write';
 import { diffClrContext } from '../diff';
 import { ClrContextEngineService } from '../providers/contextual-engine.service';
 import { availableRoutes } from '../routes';
@@ -45,7 +45,7 @@ import { availableRoutes } from '../routes';
 @Injectable({ providedIn: 'root' })
 export class ClrMutationEngineService {
   private readonly contextEngine = inject(ClrContextEngineService);
-  private readonly refs = inject(ClrContextRefRegistry);
+  private readonly refs = inject(ContextRefRegistryService);
   private readonly policy = inject(CLR_MUTATION_POLICY, { optional: true });
   private readonly router = inject(Router, { optional: true });
 
@@ -190,7 +190,7 @@ export class ClrMutationEngineService {
     const tree = this.router.createUrlTree([filled.url], Object.keys(queryParams).length ? { queryParams } : {});
     const url = this.router.serializeUrl(tree);
     const target: ClrMutationTarget = { operation: 'navigate', path: operation.path, url };
-    return { target, consequence: this.classify(target), url: tree };
+    return { target, consequence: this.classify(target) };
   }
 
   private async navigate(operation: ClrNavigateOperation, url: string): Promise<ClrNavigationMutationResult> {
@@ -226,9 +226,8 @@ export class ClrMutationEngineService {
 interface Prepared {
   target: ClrMutationTarget;
   consequence: ClrMutationConsequence;
-  write?: ClrWriteTarget;
+  write?: WriteTarget;
   coerced?: unknown;
-  url?: import('@angular/router').UrlTree;
 }
 
 interface Refused {

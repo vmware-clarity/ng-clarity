@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
 
 import { isRedacted } from '../dom/aria-state';
 import { isVisible } from '../dom/walk';
@@ -27,7 +27,7 @@ export function writeObstacle(element: Element): ClrWriteObstacle | null {
   if (!element.isConnected || element.closest(HIDDEN_ANCESTRY) || !isVisible(element as HTMLElement)) {
     return 'hidden';
   }
-  if (isRedacted(element) || element.closest(`[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`)) {
+  if (isRedacted(element)) {
     return 'redacted';
   }
   if (

@@ -34,7 +34,7 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
 
   private _sub: Subscription;
   private _role: string | null = 'navigation';
-  private _roleSet = false;
+  private roleSetByAuthor = false;
 
   constructor(
     private _navService: VerticalNavService,
@@ -62,7 +62,7 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
   }
   set role(value: string | null) {
     this._role = value;
-    this._roleSet = true;
+    this.roleSetByAuthor = true;
   }
 
   @Input('clrVerticalNavCollapsible')
@@ -97,7 +97,7 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    if (!this._roleSet && this.el.nativeElement.parentElement?.closest('nav, [role="navigation"]')) {
+    if (!this.roleSetByAuthor && this.el.nativeElement.parentElement?.closest('nav, [role="navigation"]')) {
       this._role = null;
     }
   }

@@ -9,8 +9,8 @@ import { getDebugNode } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { ClrElementMutation, ClrElementMutator, readElementMutator } from '@clr/angular/utils';
 
+import { ContextRefTarget } from './context-ref-registry.service';
 import { ClrElementMutationResult, ClrMutationRefusal } from './mutation.interface';
-import { ClrContextRefTarget } from './ref-registry';
 import { writeObstacle } from './writability';
 import { accessibleName } from '../dom/accessible-name';
 import { resolveRole } from '../dom/roles';
@@ -34,7 +34,7 @@ const MAX_LABEL_LENGTH = 100;
 type ControlKind = 'custom' | 'select' | 'checkbox' | 'radio' | 'radiogroup' | 'number' | 'text';
 
 /** An element a ref resolved to, with everything a write needs to know about it. */
-export interface ClrWriteTarget {
+export interface WriteTarget {
   /** The element carrying the form binding or the published mutator. */
   element: Element;
   /** The element carrying the role, which is what the user sees and what is checked for obstacles. */
@@ -46,13 +46,13 @@ export interface ClrWriteTarget {
   mutator: ClrElementMutator | null;
 }
 
-export type ClrTargetResolution = { target: ClrWriteTarget } | { refused: ClrMutationRefusal; detail: string };
+export type TargetResolution = { target: WriteTarget } | { refused: ClrMutationRefusal; detail: string };
 
 /**
  * Finds what a ref's elements amount to: the outermost element with a form binding or a
  * published mutator is what gets written to; the innermost is what the user sees.
  */
-export function resolveWriteTarget(ref: ClrContextRefTarget): ClrTargetResolution {
+export function resolveWriteTarget(ref: ContextRefTarget): TargetResolution {
   const { elements, type } = ref;
   const control = elements[elements.length - 1];
   const obstacle = writeObstacle(control);
@@ -122,7 +122,7 @@ export function descriptionMatches(description: unknown, label: string): boolean
  * What the control would be given for a proposal: the component's own coercion when it
  * published one, the primitive its kind takes otherwise. `null` proposes clearing.
  */
-export function coerceValue(target: ClrWriteTarget, proposed: unknown): ClrElementMutation {
+export function coerceValue(target: WriteTarget, proposed: unknown): ClrElementMutation {
   const mutator = target.mutator;
   if (mutator?.coerce) {
     return safely(() => mutator.coerce?.(proposed));
@@ -193,7 +193,7 @@ export function coerceValue(target: ClrWriteTarget, proposed: unknown): ClrEleme
  * `ngModelChange` fires — once — and with the control marked dirty and touched, so that
  * validation messages show as they would after a user left the field.
  */
-export function writeValue(target: ClrWriteTarget, coerced: unknown): ClrElementMutationResult {
+export function writeValue(target: WriteTarget, coerced: unknown): ClrElementMutationResult {
   const previous = readValue(target);
   const mutator = target.mutator;
   if (target.kind === 'custom') {
@@ -247,7 +247,7 @@ export function writeValue(target: ClrWriteTarget, coerced: unknown): ClrElement
 }
 
 /** The control's value in the terms an agent sees: labels for choices, primitives otherwise. */
-export function readValue(target: ClrWriteTarget): unknown {
+export function readValue(target: WriteTarget): unknown {
   if (target.mutator?.read) {
     try {
       return jsonSafe(target.mutator.read(), 3) ?? null;

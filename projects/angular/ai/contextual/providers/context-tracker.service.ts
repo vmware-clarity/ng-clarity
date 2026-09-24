@@ -221,16 +221,16 @@ export class ClrContextTrackerService implements OnDestroy {
       return;
     }
     try {
-      // Re-enter the zone for the emission so subscribers' views update normally.
-      this.zone.run(() => {
-        const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
-        const serialized = serialize(snapshot);
-        // A snapshot that cannot be serialised — a provider handed over something
-        // circular — counts as changed, so it is at least emitted rather than dropped.
-        if (serialized === null || serialized !== this.latestSerialized) {
-          this.emit(snapshot, serialized);
-        }
-      });
+      // Taken where the timer fired, outside the zone: leaving the zone runs change
+      // detection for the whole application, which only an emission warrants.
+      const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
+      const serialized = serialize(snapshot);
+      // A snapshot that cannot be serialised — a provider handed over something
+      // circular — counts as changed, so it is at least emitted rather than dropped.
+      if (serialized === null || serialized !== this.latestSerialized) {
+        // Re-enter the zone for the emission so subscribers' views update normally.
+        this.zone.run(() => this.emit(snapshot, serialized));
+      }
     } finally {
       // A frame that arrived with this change is watched from now on, even when this
       // snapshot failed: the error surfaces, tracking does not stop.

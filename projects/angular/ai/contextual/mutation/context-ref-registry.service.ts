@@ -11,7 +11,7 @@ import { ClrComponentContext } from '@clr/angular/utils';
 import { ClrContextRefSink } from '../dom/walk';
 
 /** What a ref stands for: the node as the snapshot showed it, and the elements behind it. */
-export interface ClrContextRefTarget {
+export interface ContextRefTarget {
   /**
    * Outermost first: the custom element that renders the control and carries its form
    * binding, then the element inside it that carries the role. Whichever of them has a
@@ -34,9 +34,9 @@ export interface ClrContextRefTarget {
  * the strength of a description that no longer holds. It is told to read again.
  */
 @Injectable({ providedIn: 'root' })
-export class ClrContextRefRegistry {
+export class ContextRefRegistryService {
   private readonly refsByElement = new WeakMap<Element, string>();
-  private latest = new Map<string, ClrContextRefTarget>();
+  private latest = new Map<string, ContextRefTarget>();
   private next = 1;
 
   /**
@@ -45,7 +45,7 @@ export class ClrContextRefRegistry {
    * last complete one in force.
    */
   begin(): ClrContextRefSink & { commit(): void } {
-    const collected = new Map<string, ClrContextRefTarget>();
+    const collected = new Map<string, ContextRefTarget>();
     return {
       note: (node: ClrComponentContext, element: Element) => {
         if (!node.ref) {
@@ -72,7 +72,7 @@ export class ClrContextRefRegistry {
   }
 
   /** The elements behind a ref from the latest snapshot, or `null` when it is not one. */
-  resolve(ref: string): ClrContextRefTarget | null {
+  resolve(ref: string): ContextRefTarget | null {
     return this.latest.get(ref) ?? null;
   }
 

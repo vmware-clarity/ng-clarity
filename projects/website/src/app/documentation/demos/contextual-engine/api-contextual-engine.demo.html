@@ -588,6 +588,21 @@
       <td class="left clr-hidden-xs-down">String</td>
       <td class="left">ISO timestamp of the moment the snapshot was taken.</td>
     </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">truncated</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">
+        Present and <code cds-text="code">true</code> when <code cds-text="code">maxComponents</code> ran out before the
+        whole page was described.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">focus</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'modal'</code></td>
+      <td class="left">
+        Present when <code cds-text="code">focus: 'modal'</code> narrowed the snapshot to the open modal dialog.
+      </td>
+    </tr>
   </tbody>
 </table>
 

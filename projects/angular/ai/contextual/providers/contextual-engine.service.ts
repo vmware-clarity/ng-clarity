@@ -20,8 +20,8 @@ import {
 } from '../iframe/context-frame-bridge';
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
 import { jsonSafe } from '../json-safe';
+import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
 import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
-import { ClrContextRefRegistry } from '../mutation/ref-registry';
 import { availableRoutes } from '../routes';
 import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
@@ -75,7 +75,7 @@ export class ClrContextEngineService implements OnDestroy {
   // Refs are handed out only while there is a policy to write under: readers who never
   // write pay nothing for them.
   private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
-  private readonly refs = inject(ClrContextRefRegistry);
+  private readonly refs = inject(ContextRefRegistryService);
   private frameHost: ClrContextFrameHost | null = null;
   private globalProperty: string | null = null;
   private _latestSnapshot: ClrPageContext | null = null;

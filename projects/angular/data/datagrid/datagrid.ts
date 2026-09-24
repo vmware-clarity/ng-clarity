@@ -331,9 +331,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
             .slice(0, maxItems)
             .map(row => this.rowLabel(row));
         }
-        const selected = this.selectedRowLabels();
+        const selected = this.selectedRowLabels(maxItems);
         if (selected.length) {
-          state.selection = selected.slice(0, maxItems);
+          state.selection = selected;
         }
       }
 
@@ -767,11 +767,18 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return this.selection.selectionType === SelectionType.Single ? (selected[0] ?? null) : selected;
   }
 
-  private selectedRowLabels(): string[] {
-    return this.rows
-      .toArray()
-      .filter(row => this.selection.isSelected(row.item))
-      .map(row => this.rowLabel(row));
+  /** The selected rows by content, stopping at `limit`: labelling a row costs a DOM query. */
+  private selectedRowLabels(limit = Infinity): string[] {
+    const labels: string[] = [];
+    for (const row of this.rows.toArray()) {
+      if (labels.length >= limit) {
+        break;
+      }
+      if (this.selection.isSelected(row.item)) {
+        labels.push(this.rowLabel(row));
+      }
+    }
+    return labels;
   }
 
   /** A row by its content: the text of its cells, in order. */

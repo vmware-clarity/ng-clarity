@@ -44,9 +44,10 @@
       thousand nodes.
     </p>
     <p class="clr-mt-16px" cds-text="body">
-      <strong cds-text="medium">Read-only.</strong> The engine describes the page and never changes it. Applying a value
-      an agent proposes is a decision that needs a person to approve it, which belongs to a review surface rather than
-      to a context engine.
+      <strong cds-text="medium">Reading never writes.</strong> Taking a snapshot describes the page and never changes
+      it. Writing back is a separate service, <code cds-text="code">ClrMutationEngineService</code>, that does nothing
+      until the application provides a policy, only fills form controls and navigates, and never submits or clicks (see
+      <em>Writing back</em>).
     </p>
     <p class="clr-mt-16px" cds-text="body">
       <strong cds-text="medium">Only what is relevant, configured once.</strong> Size budgets keep a snapshot small and
@@ -354,8 +355,8 @@
       promise, which resolves <code cds-text="code">true</code> when a guard redirected the user somewhere else and
       <code cds-text="code">false</code> when nothing needed to happen: the result says
       <code cds-text="code">navigated</code>, <code cds-text="code">redirected</code> (and where to),
-      <code cds-text="code">rejected</code>, <code cds-text="code">unchanged</code> or
-      <code cds-text="code">failed</code>, with the URL the page is now at.
+      <code cds-text="code">rejected</code>, <code cds-text="code">unchanged</code>,
+      <code cds-text="code">superseded</code> or <code cds-text="code">failed</code>, with the URL the page is now at.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="navigateExample" language="typescript"></app-code-snippet>

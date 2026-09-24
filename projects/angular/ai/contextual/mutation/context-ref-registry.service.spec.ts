@@ -7,15 +7,15 @@
 
 import { ClrComponentContext } from '@clr/angular/utils';
 
-import { ClrContextRefRegistry } from './ref-registry';
+import { ContextRefRegistryService } from './context-ref-registry.service';
 
-describe('ClrContextRefRegistry', () => {
-  let registry: ClrContextRefRegistry;
+describe('ContextRefRegistryService', () => {
+  let registry: ContextRefRegistryService;
   let input: HTMLInputElement;
   let host: HTMLElement;
 
   beforeEach(() => {
-    registry = new ClrContextRefRegistry();
+    registry = new ContextRefRegistryService();
     input = document.createElement('input');
     host = document.createElement('clr-combobox');
     host.appendChild(input);

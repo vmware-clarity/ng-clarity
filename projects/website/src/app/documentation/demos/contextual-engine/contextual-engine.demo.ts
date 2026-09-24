@@ -257,12 +257,12 @@ bootstrapApplication(AppComponent, {
       // What each operation would do. Never inferred: the application declares it.
       classify: target => {
         if (target.operation === 'navigate') {
-          return target.path.startsWith('billing') ? 'consequential' : 'reversible';
+          return target.path?.startsWith('billing') ? 'consequential' : 'reversible';
         }
         return target.label === 'Account owner' ? 'forbidden' : 'reversible';
       },
       // Asked before anything consequential is applied; resolving false refuses it.
-      confirm: target => this.dialogs.confirm(\`Go to \${target.url}?\`),
+      confirm: target => window.confirm(\`Go to \${target.url}?\`),
     }),
   ],
 });
@@ -328,7 +328,7 @@ const RESULT_EXAMPLE = `
     "ref": "e6",
     "applied": false,
     "refused": "invalid",
-    "detail": "No such option. The options are: 'Alpha cluster', 'Beta cluster'."
+    "detail": "No such option. The options are: \\"Alpha cluster\\", \\"Beta cluster\\"."
   },
   {
     "operation": "setValue",
