@@ -183,19 +183,17 @@ describe('Context frame bridge', () => {
     });
 
     describe('what a frame is allowed to see', () => {
-      it('withholds the query string and fragment, which routinely carry tenant and session data', () => {
+      it('serves the route pattern in place of the address, which routinely carries identifiers and tokens', () => {
         dispatchRequest(frameRequest('request-url'));
 
-        expect(servedContext(frame).url).toBe('https://app.example/clusters/42');
+        expect(servedContext(frame).url).toBe('https://app.example/clusters/:id');
       });
 
-      it('withholds query parameters from the route', () => {
+      it('withholds the route parameters, query parameters and data', () => {
         dispatchRequest(frameRequest('request-route'));
 
         const route = servedContext(frame).route;
-        expect(route?.queryParams).toBeUndefined();
-        expect(route?.url).toBe('/clusters/42');
-        expect(route?.params).toEqual({ id: '42' });
+        expect(route).toEqual({ url: '/clusters/:id', path: 'clusters/:id' });
       });
 
       it('withholds what the user typed, which the application sees but a frame has no claim to', () => {

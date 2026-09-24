@@ -5,7 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, DoCheck, Input, OnDestroy, OnInit } from '@angular/core';
+import { Directive, DoCheck, ElementRef, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
 
 import { ClrComponentContext, ClrContextProvider } from './interfaces/context.interface';
 import { ClrContextRegistryService } from './providers/context-registry.service';
@@ -39,15 +40,21 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
   @Input('clrContextState') state: Record<string, unknown> | null = null;
 
   private lastReported = '';
+  private readonly host: ElementRef<Element> | null = inject(ElementRef, { optional: true });
 
   constructor(private readonly contextRegistry: ClrContextRegistryService) {}
 
   ngOnInit(): void {
     this.lastReported = this.serialized();
-    this.contextRegistry.register(this);
+    this.contextRegistry.register(this, this.host?.nativeElement);
   }
 
   ngDoCheck(): void {
+    // An annotation inside an ignored region never reaches a snapshot, so its changes are
+    // no reason to take one: a chat panel marked ignore must not re-trigger tracking.
+    if (this.host?.nativeElement.closest?.(`[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`)) {
+      return;
+    }
     const current = this.serialized();
     if (current !== this.lastReported) {
       this.lastReported = current;

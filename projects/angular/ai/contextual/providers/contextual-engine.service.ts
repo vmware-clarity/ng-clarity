@@ -10,8 +10,10 @@ import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID 
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 
 import { CLR_CONTEXT_OPTIONS } from './context-options';
-import { ClrContextRegistryService } from './context-registry.service';
-import { ClrContextDomExtractor, collectClrDomContextTree } from '../dom/dom-context-collector';
+import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
+import { CLR_CONTEXT_REDACT_ATTRIBUTE } from '../dom/aria-state';
+import { ClrContextDomExtractor } from '../dom/dom-context-collector';
+import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
 import {
   ClrContextFrameHost,
   ClrContextFrameHostOptions,
@@ -24,7 +26,7 @@ import { ContextRefRegistryService } from '../mutation/context-ref-registry.serv
 import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
 import { availableRoutes } from '../routes';
 import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
-import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
+import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
 
@@ -48,6 +50,13 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
    * call the global accessor — including one the application did not write.
    */
   shareFormValues?: boolean;
+  /**
+   * Include the full URL — path, query string and fragment — and the route's parameters,
+   * query parameters and data. Off by default, when a caller learns only the route's
+   * pattern (`reset/:token`): addresses routinely carry identifiers and occasionally
+   * credentials, and any script on the page can call the accessor.
+   */
+  shareFullUrl?: boolean;
 }
 
 /**
@@ -78,8 +87,6 @@ export class ClrContextEngineService implements OnDestroy {
   private readonly refs = inject(ContextRefRegistryService);
   private frameHost: ClrContextFrameHost | null = null;
   private globalProperty: string | null = null;
-  private _latestSnapshot: ClrPageContext | null = null;
-  private _latestSnapshotOptions: ClrContextSnapshotOptions | null = null;
 
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: unknown,
@@ -87,20 +94,6 @@ export class ClrContextEngineService implements OnDestroy {
     private readonly contextRegistry: ClrContextRegistryService,
     @Optional() private readonly router: Router | null
   ) {}
-
-  /**
-   * The last snapshot the application took (through {@link getSnapshot}; not one served
-   * to a frame or through the global accessor), or `null` before the first. It is what
-   * the mutation engine's refs refer to and what its report's changes are measured from.
-   */
-  get latestSnapshot(): ClrPageContext | null {
-    return this._latestSnapshot;
-  }
-
-  /** The options {@link latestSnapshot} was taken with, so it can be retaken alike. */
-  get latestSnapshotOptions(): ClrContextSnapshotOptions | null {
-    return this._latestSnapshotOptions;
-  }
 
   ngOnDestroy(): void {
     this.disableFrameBridge();
@@ -112,15 +105,11 @@ export class ClrContextEngineService implements OnDestroy {
    * application-wide ones (see `provideClrContextOptions`).
    *
    * While the application has provided a `ClrMutationPolicy`, every node the mutation
-   * engine could write to carries a `ref`, and the snapshot becomes the one those refs
-   * are valid against: a ref from an earlier snapshot that this one no longer lists is
-   * refused from here on.
+   * engine could write to carries a `ref`: the same ref for the same element in every
+   * snapshot, for as long as the element is on the page.
    */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
-    const snapshot = this.snapshot(options, !!this.mutationPolicy);
-    this._latestSnapshot = snapshot;
-    this._latestSnapshotOptions = options ? { ...options } : null;
-    return snapshot;
+    return this.snapshot(options, !!this.mutationPolicy);
   }
 
   /**
@@ -144,9 +133,10 @@ export class ClrContextEngineService implements OnDestroy {
    * driving the browser can query the page context without an application API.
    *
    * Anything running on the page can call this, including a third-party script, so the
-   * caller is treated as untrusted: its options are reduced to budgets, the
-   * application's own budgets are applied over the top, and what the user has typed is
-   * withheld unless {@link ClrContextGlobalAccessOptions.shareFormValues} says otherwise.
+   * caller is treated as untrusted: its options are reduced to budgets and held to what
+   * the host and the application allow — the defaults, where neither says — and what the
+   * user has typed and the page's full address are withheld unless
+   * {@link ClrContextGlobalAccessOptions} says otherwise.
    */
   enableGlobalAccess(
     propertyName: string = DEFAULT_GLOBAL_PROPERTY,
@@ -159,7 +149,7 @@ export class ClrContextEngineService implements OnDestroy {
     if (!window) {
       return;
     }
-    const { shareFormValues, ...budgets } = hostOptions;
+    const { shareFormValues, shareFullUrl, ...budgets } = hostOptions;
     const host = window as unknown as Record<string, unknown>;
     // Checked before anything is torn down, so a refused name leaves the existing
     // accessor in place; the engine's own accessor may be re-registered under its name.
@@ -172,7 +162,8 @@ export class ClrContextEngineService implements OnDestroy {
     host[propertyName] = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
       const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), false);
-      return shareFormValues ? snapshot : withoutFormValues(snapshot);
+      const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
+      return shareFullUrl ? shared : withoutUrlDetails(shared);
     };
   }
 
@@ -228,10 +219,11 @@ export class ClrContextEngineService implements OnDestroy {
 
   private snapshot(options: ClrContextSnapshotOptions | undefined, withRefs: boolean): ClrPageContext {
     const effective = this.effectiveOptions(options);
+    const resolved = resolveSnapshotOptions(effective);
     const snapshot: ClrPageContext = {
       title: this.document.title,
       url: this.currentUrl(),
-      regions: this.contextRegistry.collect(),
+      regions: this.contextRegistry.collect(this.regionFilter(resolved)),
       components: [],
       collectedAt: new Date().toISOString(),
     };
@@ -241,12 +233,12 @@ export class ClrContextEngineService implements OnDestroy {
     }
     if (effective.includeRoutes && this.router?.config.length) {
       // Bounded by the resolved budget, so an out-of-range request is clamped here too.
-      const limit = Math.max(resolveSnapshotOptions(effective).maxItemsPerCollection, MIN_ROUTE_LIMIT);
+      const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId) && effective.includeDomComponents !== false) {
       const refs = withRefs ? this.refs.begin() : null;
-      const tree = collectClrDomContextTree(this.document, effective, this.customExtractors, refs);
+      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors, refs);
       refs?.commit();
       snapshot.components = tree.components;
       if (tree.truncated) {
@@ -255,19 +247,47 @@ export class ClrContextEngineService implements OnDestroy {
       if (tree.focus) {
         snapshot.focus = tree.focus;
       }
-    } else if (withRefs) {
-      // Nothing was described, so nothing from before may be written to either.
-      this.refs.clear();
     }
     return snapshot;
   }
 
   /**
+   * Which annotations a snapshot with these options reports, and how. An annotation sits
+   * on an element and follows the element's fate: left out when the walk would leave the
+   * element out — hidden, ignored, excluded, outside the root or the open modal — and
+   * reported without its state inside a region marked `data-clr-context-redact`.
+   * Annotations that did not say where they sit are always reported.
+   */
+  private regionFilter(options: Required<ClrContextSnapshotOptions>): ClrContextRegionFilter {
+    if (!isPlatformBrowser(this.platformId)) {
+      return () => 'keep';
+    }
+    const scope = engineScope(this.document, options);
+    const excludeSelector = options.excludeSelectors.filter(usableSelector(this.document)).join(', ');
+    return element => {
+      if (!element) {
+        return 'keep';
+      }
+      if (isHiddenFromEngine(element, excludeSelector)) {
+        return 'drop';
+      }
+      // An annotation on an ancestor of the scope describes a region that includes it.
+      if (scope.roots && !scope.roots.some(root => root.contains(element) || element.contains(root))) {
+        return 'drop';
+      }
+      return element.closest(`[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`) ? 'redact' : 'keep';
+    };
+  }
+
+  /**
    * What a caller the application does not control may at most be given: the host's
-   * own ceiling for that caller, held to the application-wide options above it.
+   * own ceiling for that caller, held to the application-wide options above it, and
+   * the defaults wherever neither says. A budget or switch nobody set is the default,
+   * not "unlimited": an untrusted caller cannot turn on `includeRoutes` or raise
+   * `maxComponents` past what the application itself would get.
    */
   private untrustedCeiling(hostCeiling?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
-    return capSnapshotOptions(hostCeiling, this.applicationOptions ?? undefined);
+    return resolveSnapshotOptions(capSnapshotOptions(hostCeiling, this.applicationOptions ?? undefined));
   }
 
   /** The call's options over the application's, ignoring keys a caller left undefined. */
@@ -331,4 +351,16 @@ export class ClrContextEngineService implements OnDestroy {
     }
     return context;
   }
+}
+
+/** A predicate for `Array.filter`: whether the document accepts the selector. */
+function usableSelector(document: Document): (selector: string) => boolean {
+  return selector => {
+    try {
+      document.querySelector(selector);
+      return true;
+    } catch {
+      return false;
+    }
+  };
 }

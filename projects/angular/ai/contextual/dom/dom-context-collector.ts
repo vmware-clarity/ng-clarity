@@ -7,13 +7,13 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
-import { ClrContextDomExtractor, ClrContextRefSink, ClrContextTreeResult, collectContextTreeWithin } from './walk';
+import { ClrContextDomExtractor, ClrContextTreeResult, collectContextTreeWithin } from './walk';
 import { resolveSnapshotOptions } from '../snapshot-options';
 
 export { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 export { CLR_CONTEXT_REDACT_ATTRIBUTE } from './aria-state';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE } from './walk';
-export type { ClrContextDomExtractor, ClrContextRefSink, ClrContextTreeResult } from './walk';
+export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
 
 /**
  * Describes everything currently rendered, as a tree, by reading the accessibility tree.
@@ -42,14 +42,12 @@ export function collectClrDomContexts(
 
 /**
  * {@link collectClrDomContexts}, also reporting whether the component budget ran out
- * before the whole page was described. With `refs`, every node an agent could propose a
- * value for is given a `ref` and the element behind it is handed to the sink.
+ * before the whole page was described.
  */
 export function collectClrDomContextTree(
   root: ParentNode,
   options?: ClrContextSnapshotOptions,
-  customExtractors: ClrContextDomExtractor[] = [],
-  refs: ClrContextRefSink | null = null
+  customExtractors: ClrContextDomExtractor[] = []
 ): ClrContextTreeResult {
-  return collectContextTreeWithin(root, resolveSnapshotOptions(options), customExtractors, refs);
+  return collectContextTreeWithin(root, resolveSnapshotOptions(options), customExtractors);
 }

@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
+import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { capSnapshotOptions } from '../snapshot-options';
-import { sanitizeUntrustedSnapshotOptions, withoutFormValues } from '../untrusted-options';
-import { stripQueryAndFragment } from '../url';
+import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 /**
  * Identifier of the cross-frame context protocol. The protocol is plain,
@@ -87,9 +86,10 @@ export interface ClrContextFrameHostOptions {
   allowAnyOrigin?: boolean;
 
   /**
-   * Share the full URL, including its query string and fragment, and the route's query
-   * parameters. Off by default: these routinely carry tenant identifiers, record
-   * identifiers and occasionally credentials, and an embedded document has no need for
+   * Share the full URL — its path, query string and fragment — and the route's
+   * parameters, query parameters and data. Off by default, when a frame learns only the
+   * route's pattern (`reset/:token`): paths and queries routinely carry tenant and record
+   * identifiers and occasionally credentials, and an embedded document needs none of
    * them to know which page it is on.
    */
   shareFullUrl?: boolean;
@@ -127,8 +127,12 @@ export interface ClrContextFrameRequestOptions {
   /**
    * The host page's origin: where the request is addressed, and the only origin an
    * answer is accepted from even when it arrives from the right window. Defaults to the
-   * origin of the document that embedded this one (its referrer), then to this
-   * document's own origin.
+   * origin of the document that embedded this one (as the browser reports it, else its
+   * referrer), then to this document's own origin.
+   *
+   * Set it for any UI that can be embedded by more than one site. Without it, whatever
+   * page embeds this one is the page trusted to answer — including one that answers with
+   * a made-up context to steer the agent reading it.
    */
   hostOrigin?: string;
   /** How long to wait for an answer before resolving with `null`. Defaults to `2000`. */
@@ -289,34 +293,8 @@ export class ClrContextFrameHost {
     if (this.shareFullUrl) {
       return shared;
     }
-    if (typeof shared.url === 'string') {
-      shared.url = stripQueryAndFragment(shared.url);
-    }
-    if (shared.route) {
-      const route = { ...shared.route };
-      delete route.queryParams;
-      if (typeof route.url === 'string') {
-        route.url = stripQueryAndFragment(route.url);
-      }
-      shared.route = route;
-    }
-    // The same reasoning applies to the page's links: a signed download, an invitation,
-    // a reset link all carry their secret in the query string.
-    shared.components = shared.components.map(withoutLinkQueries);
-    return shared;
+    return withoutUrlDetails(shared);
   }
-}
-
-function withoutLinkQueries(node: ClrComponentContext): ClrComponentContext {
-  let result = node;
-  const href = node.state?.['href'];
-  if (typeof href === 'string') {
-    result = { ...result, state: { ...node.state, href: stripQueryAndFragment(href) } };
-  }
-  if (node.children?.length) {
-    result = { ...result, children: node.children.map(withoutLinkQueries) };
-  }
-  return result;
 }
 
 /**
@@ -433,6 +411,16 @@ function newRequestId(): string {
  * when the embedder withheld it or the document was not embedded.
  */
 function embedderOrigin(): string {
+  // The embedding page's origin as the browser knows it, where it says so: unlike the
+  // referrer, it is not the frame's own previous page after an in-frame navigation, and
+  // is not emptied by a no-referrer policy.
+  const ancestors = (window.location as Location & { ancestorOrigins?: DOMStringList }).ancestorOrigins;
+  if (ancestors?.length) {
+    const ancestor = ancestors[0];
+    if (ancestor && ancestor !== 'null') {
+      return ancestor;
+    }
+  }
   const referrer = document.referrer;
   if (!referrer) {
     return '';
@@ -454,5 +442,3 @@ function ownOrigin(): string {
   const origin = window.location.origin;
   return origin && origin !== 'null' ? origin : '*';
 }
-
-/** Everything up to the first `?` or `#`, for both absolute and relative URLs. */

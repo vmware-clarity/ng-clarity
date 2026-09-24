@@ -11,11 +11,12 @@ import {
   CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
+  readElementMutator,
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
-import { ariaState, CLR_CONTEXT_REDACT_ATTRIBUTE, isRedacted, withoutValues } from './aria-state';
-import { mergeElementContext } from './element-context';
+import { ariaState, CLR_CONTEXT_REDACT_ATTRIBUTE, isRedacted, redactNode } from './aria-state';
+import { mergeElementContext, withoutRefs } from './element-context';
 import { isLeafRole, isNameFromContents, isPresentationalRole, mayContainControls, resolveRole } from './roles';
 import { summarizeRole } from './summarizers';
 import { accessibleText, isVisuallyHidden, truncate } from './text';
@@ -203,30 +204,73 @@ export function collectContextTreeWithin(
 }
 
 /**
- * What the walk starts from: the whole root, the elements a `rootSelector` picks out, or
- * — with modal focus, while a modal dialog is open — the topmost open dialog alone. The
- * dialog is what the user can act on; the page behind it is what an agent no longer
- * needs, so it is left out entirely rather than budgeted down.
+ * Everything that keeps an element, and whatever is inside it, out of what the engine
+ * describes: hidden from assistive technology, inert, or marked to be ignored.
  */
-function scopeOf(root: ParentNode, walk: Walk): { roots: ParentNode | Element[]; focus?: 'modal' } {
-  if (walk.options.focus === 'modal') {
-    const dialogs = Array.from(root.querySelectorAll(MODAL_SELECTOR)).filter(
-      dialog => !dialog.closest(IGNORE_SELECTOR) && !shouldSkipSubtree(dialog, walk)
-    );
-    if (dialogs.length) {
-      return { roots: [dialogs[dialogs.length - 1]], focus: 'modal' };
+export const ENGINE_HIDDEN_SELECTOR = `[hidden], [aria-hidden="true"], [inert], ${IGNORE_SELECTOR}`;
+
+/**
+ * Whether the engine would leave this element out of a snapshot, judged from the element
+ * and its ancestry: not in the document, inside something hidden, inert, ignored or
+ * excluded, or not rendered visibly. Used wherever something must follow the walk's
+ * rules without walking — the mutation engine before it writes, and annotations that
+ * sit on an element.
+ */
+export function isHiddenFromEngine(element: Element, excludeSelector = ''): boolean {
+  if (!element.isConnected || element.closest(ENGINE_HIDDEN_SELECTOR)) {
+    return true;
+  }
+  if (excludeSelector && element.closest(excludeSelector)) {
+    return true;
+  }
+  return !isVisible(element as HTMLElement);
+}
+
+/** The part of the page a snapshot describes, when that is not the whole page. */
+export interface ClrContextScope {
+  /** The elements the snapshot is limited to, or `null` for the whole page. */
+  roots: Element[] | null;
+  /** Present when the scope is the open modal dialog. */
+  focus?: 'modal';
+}
+
+/**
+ * What a snapshot with these options starts from: the whole page, the elements a
+ * `rootSelector` picks out, or — with modal focus, while a modal dialog is open — the
+ * topmost open dialog alone. The dialog is what the user can act on; the page behind it
+ * is what an agent no longer needs, so it is left out entirely rather than budgeted down.
+ */
+export function engineScope(root: ParentNode, options: Required<ClrContextSnapshotOptions>): ClrContextScope {
+  const excludeSelector = options.excludeSelectors.filter(selector => usableSelector(root, selector)).join(', ');
+  if (options.focus === 'modal') {
+    const dialog = topmostModal(root, excludeSelector);
+    if (dialog) {
+      return { roots: [dialog], focus: 'modal' };
     }
   }
-  if (walk.options.rootSelector) {
+  if (options.rootSelector) {
     // A selector the document rejects matches nothing, the same as one that matches no
     // element: it must not silently widen the snapshot to the whole page.
-    const selector = usableSelector(root, walk.options.rootSelector);
+    const selector = usableSelector(root, options.rootSelector);
     const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
     // A root inside an ignored region is still ignored: the region is inert to the
     // engine however the walk is pointed at it.
     return { roots: roots.filter(element => !element.closest(IGNORE_SELECTOR)) };
   }
-  return { roots: root };
+  return { roots: null };
+}
+
+/** The open modal dialog the user is looking at, if any: the last one the engine would describe. */
+export function topmostModal(root: ParentNode, excludeSelector = ''): Element | null {
+  const dialogs = Array.from(root.querySelectorAll(MODAL_SELECTOR)).filter(
+    dialog => !isHiddenFromEngine(dialog, excludeSelector)
+  );
+  return dialogs.length ? dialogs[dialogs.length - 1] : null;
+}
+
+function scopeOf(root: ParentNode, walk: Walk): { roots: ParentNode | Element[]; focus?: 'modal' } {
+  const scope = engineScope(root, walk.options);
+  return scope.roots ? { roots: scope.roots, focus: scope.focus } : { roots: root };
 }
 
 /**
@@ -271,11 +315,11 @@ function noteUndescribed(element: Element, walk: Walk, owner: Element | null): v
 
 /**
  * Describes what a custom element renders, noting when the element is a component that
- * published how it is written to, so that nothing it renders is offered for writing on
- * its own: the component speaks for its parts.
+ * is written to as one thing and owns what it renders (see `ClrElementMutator.ownsContents`),
+ * so that nothing it renders is offered for writing on its own.
  */
 function withinComponent<T>(element: Element, walk: Walk, describe: () => T): T {
-  if (!(CLR_ELEMENT_MUTATOR_PROPERTY in element)) {
+  if (!ownsContents(element)) {
     return describe();
   }
   walk.mutatorDepth++;
@@ -388,7 +432,9 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
 function describeVisible(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
   const extractor = walk.extractors.find(candidate => element.matches(candidate.selector));
   if (extractor) {
-    const described = extractSafely(extractor, element as HTMLElement, walk);
+    const extracted = extractSafely(extractor, element as HTMLElement, walk);
+    // Only the walk hands out refs: an extractor's node cannot claim another node's.
+    const described = extracted ? withoutRefs(extracted) : null;
     if (!described) {
       // The extractor owns this element: when it declines to describe it, the element is
       // not described generically either, but its contents may still be interesting.
@@ -456,7 +502,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       // A component that is written to as one thing is named by the control it renders
       // — a combobox by the input the user types into — so the node carrying its ref
       // carries the name an agent would refer to it by.
-      if (CLR_ELEMENT_MUTATOR_PROPERTY in element) {
+      if (ownsContents(element)) {
         const named = rendered.find(part => part.label && WRITABLE_ROLES.has(part.type));
         if (named) {
           wrapper.label = named.label;
@@ -682,8 +728,6 @@ function frameDocument(frame: HTMLIFrameElement): Document | null {
   }
 }
 
-/** Everything up to the first `?` or `#`. */
-
 /**
  * The children of a described node: one level deeper, and left out altogether once the
  * walk is as deep as `maxDepth` allows. Transparent wrappers do not count as levels —
@@ -730,15 +774,18 @@ function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null)
  * may sit inside a region the application marked as sensitive.
  */
 function finish(node: ClrComponentContext, element: Element, walk: Walk, deep = false): ClrComponentContext {
-  let described = mergeElementContext(node, element, walk.options);
+  const redacted = isRedacted(element, walk.redactedDepth > 0);
+  // Inside a region the application keeps from agents, what a component publishes about
+  // itself is not merged at all: a publisher reports its own state — a grid's rows and
+  // selection, a combobox's value — and would otherwise carry it straight out.
+  let described = redacted ? node : mergeElementContext(node, element, walk.options);
   // Anything published or extracted arrives unpruned and may carry children of its own.
   const foreign = deep || described !== node;
 
-  if (described.state?.['redacted'] === true || isRedacted(element, walk.redactedDepth > 0)) {
-    // What the user entered goes, along with what was published under it: a component
-    // must not be able to reinstate through its children what the engine withheld.
-    const withheld = withoutValues(described);
-    described = { ...withheld, state: { ...withheld.state, redacted: true } };
+  if (redacted || described.state?.['redacted'] === true) {
+    // What the user entered goes, along with the content the region shows: neither this
+    // node nor anything under it keeps it.
+    described = redactNode(described);
   }
 
   const pruned = pruneEmpty(described, foreign);
@@ -752,8 +799,8 @@ function finish(node: ClrComponentContext, element: Element, walk: Walk, deep = 
  * element behind it. A node that already has a ref, because it was finished once for
  * the element inside and is now being finished for the host that renders it, keeps the
  * ref and gains the host as a second way to find its binding. Nothing inside a frame, a
- * redacted region or a component that publishes its own mutator gets a ref: the engine
- * never writes there, so nothing should invite it to.
+ * redacted region or a component that owns its contents gets a ref: the engine never
+ * writes there, so nothing should invite it to.
  */
 function noteRef(node: ClrComponentContext, element: Element, walk: Walk): void {
   if (!walk.refs || walk.probing || walk.frameDepth > 0 || walk.redactedDepth > 0 || walk.mutatorDepth > 0) {
@@ -835,4 +882,9 @@ function pruneEmpty(context: ClrComponentContext, deep = false): ClrComponentCon
     pruned.children = deep ? context.children.map(child => pruneEmpty(child, true)) : context.children;
   }
   return pruned;
+}
+
+/** Whether an element is a component written to as one thing, whose rendered controls are its own internals. */
+function ownsContents(element: Element): boolean {
+  return CLR_ELEMENT_MUTATOR_PROPERTY in element && readElementMutator(element)?.ownsContents === true;
 }

@@ -6,8 +6,9 @@
  */
 
 import { withoutValues } from './dom/aria-state';
-import { ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
+import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 import { MAX_LIST_ENTRIES } from './snapshot-options';
+import { stripQueryAndFragment } from './url';
 
 /**
  * Snapshot budgets a caller the application does not control — an embedded frame, a
@@ -16,7 +17,7 @@ import { MAX_LIST_ENTRIES } from './snapshot-options';
  * Budgets are all a caller may influence. What a snapshot is allowed to contain is not
  * negotiable from the outside — see {@link withoutFormValues}.
  */
-export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions)[] = [
+export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[] = Object.freeze([
   'maxTextLength',
   'maxItemsPerCollection',
   'maxComponents',
@@ -29,7 +30,7 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: (keyof ClrContextSnapshotOptions
   'excludeRoles',
   'focus',
   'collectionItems',
-];
+] as const);
 
 /**
  * Reduces whatever an untrusted caller passed to the budgets it is allowed to set,
@@ -77,4 +78,52 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
  */
 export function withoutFormValues(context: ClrPageContext): ClrPageContext {
   return { ...context, components: context.components.map(withoutValues) };
+}
+
+/**
+ * The same context with only as much of the address as says which page this is: the
+ * route's pattern (`reset/:token`) rather than the path it matched (`reset/4f9c…`), no
+ * query string, fragment, route parameters or route data, and links without their
+ * query strings. Paths, parameters and queries routinely carry record identifiers,
+ * tenant identifiers and occasionally credentials — a reset token, an invitation code,
+ * a signed download — none of which a consumer the application does not control needs
+ * to know where the user is.
+ */
+export function withoutUrlDetails(context: ClrPageContext): ClrPageContext {
+  const shared: ClrPageContext = { ...context };
+  const pattern = context.route?.path;
+  if (typeof shared.url === 'string') {
+    shared.url = pattern !== undefined ? withPath(shared.url, pattern) : stripQueryAndFragment(shared.url);
+  }
+  if (context.route) {
+    shared.route = { url: pattern !== undefined ? `/${pattern}` : stripQueryAndFragment(context.route.url) };
+    if (pattern !== undefined) {
+      shared.route.path = pattern;
+    }
+  }
+  // The same reasoning applies to the page's links: a signed download, an invitation,
+  // a reset link all carry their secret in the query string.
+  shared.components = context.components.map(withoutLinkQueries);
+  return shared;
+}
+
+/** The URL's origin with `path` in place of its own path, query and fragment. */
+function withPath(url: string, path: string): string {
+  try {
+    return `${new URL(url).origin}/${path}`;
+  } catch {
+    return `/${path}`;
+  }
+}
+
+function withoutLinkQueries(node: ClrComponentContext): ClrComponentContext {
+  let result = node;
+  const href = node.state?.['href'];
+  if (typeof href === 'string') {
+    result = { ...result, state: { ...node.state, href: stripQueryAndFragment(href) } };
+  }
+  if (node.children?.length) {
+    result = { ...result, children: node.children.map(withoutLinkQueries) };
+  }
+  return result;
 }

@@ -11,6 +11,12 @@ import { Observable, Subject } from 'rxjs';
 import { ClrComponentContext, ClrContextProvider } from '../interfaces/context.interface';
 
 /**
+ * How a snapshot treats one annotation, decided from the element it sits on (or `null`
+ * when it did not say): reported, left out, or reported without its state.
+ */
+export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
+
+/**
  * Root registry of everything currently able to contribute context to a page snapshot.
  *
  * Providers register when they enter the page and unregister when they are destroyed,
@@ -28,6 +34,7 @@ export class ClrContextRegistryService {
   readonly changes$: Observable<void>;
 
   private readonly providers: ClrContextProvider[] = [];
+  private readonly elements = new WeakMap<ClrContextProvider, Element>();
   private readonly changesSubject = new Subject<void>();
 
   constructor() {
@@ -37,8 +44,15 @@ export class ClrContextRegistryService {
   /**
    * Registers a context provider. Call the returned function (or `unregister`) when the
    * provider leaves the page, typically from `ngOnDestroy`.
+   *
+   * `element` is where the annotation sits on the page. Given it, the annotation follows
+   * the rules the page's own elements follow: it is left out of a snapshot that would
+   * leave the element out, and reported without its state inside a redacted region.
    */
-  register(provider: ClrContextProvider): () => void {
+  register(provider: ClrContextProvider, element?: Element): () => void {
+    if (element) {
+      this.elements.set(provider, element);
+    }
     if (!this.providers.includes(provider)) {
       this.providers.push(provider);
       this.changesSubject.next();
@@ -61,15 +75,20 @@ export class ClrContextRegistryService {
 
   /**
    * Polls all live providers for their current context. Providers that return `null`
-   * or throw are skipped so a single faulty provider cannot break a snapshot.
+   * or throw are skipped so a single faulty provider cannot break a snapshot. `filter`
+   * decides, from where each annotation sits, whether it is reported at all.
    */
-  collect(): ClrComponentContext[] {
+  collect(filter?: ClrContextRegionFilter): ClrComponentContext[] {
     const contexts: ClrComponentContext[] = [];
     for (const provider of this.providers) {
       try {
+        const verdict = filter ? filter(this.elements.get(provider) ?? null) : 'keep';
+        if (verdict === 'drop') {
+          continue;
+        }
         const context = provider.getClrContext();
         if (context) {
-          contexts.push(context);
+          contexts.push(verdict === 'redact' ? withheldState(context) : context);
         }
       } catch {
         // A provider that fails to describe itself should not break the whole snapshot.
@@ -77,4 +96,13 @@ export class ClrContextRegistryService {
     }
     return contexts;
   }
+}
+
+/** An annotation reported from inside a redacted region: what it is, not what it holds. */
+function withheldState(context: ClrComponentContext): ClrComponentContext {
+  const reported: ClrComponentContext = { type: context.type, state: { redacted: true } };
+  if (context.label) {
+    reported.label = context.label;
+  }
+  return reported;
 }

@@ -38,12 +38,12 @@ export function isVisuallyHidden(element: Element): boolean {
 }
 
 /**
- * Whether an element contributes nothing to a name: hidden from assistive technology,
- * not rendered at all, or rendered out of sight. The same rule the walk applies when it
- * decides what to describe, so a control that keeps both variants of its label in the
- * DOM and shows one at a time is named by the visible one only.
+ * Whether an element contributes nothing to a name: hidden from assistive technology or
+ * not rendered at all, and — unless `includeClipped` — hidden from sight too. A control
+ * that keeps both variants of its label in the DOM and shows one at a time hides the
+ * other with `display: none`, and is named by the visible one.
  */
-function isExcludedFromName(element: Element): boolean {
+function isExcludedFromName(element: Element, includeClipped: boolean): boolean {
   if (element.getAttribute('aria-hidden') === 'true' || element.hasAttribute('hidden')) {
     return true;
   }
@@ -55,7 +55,7 @@ function isExcludedFromName(element: Element): boolean {
   if (style.display === 'none' || style.visibility === 'hidden') {
     return true;
   }
-  return isClipped(element, style);
+  return !includeClipped && isClipped(element, style);
 }
 
 function isClipped(element: Element, style: CSSStyleDeclaration): boolean {
@@ -76,12 +76,21 @@ function isClipped(element: Element, style: CSSStyleDeclaration): boolean {
 
 /**
  * An element's text as it should be read for a name: content hidden from the
- * accessibility tree, and content hidden from sight, are both left out.
+ * accessibility tree is left out, and so is content hidden only from sight — the
+ * `clr-sr-only` guidance a column header carries ("use left or right key to resize") is
+ * an instruction, not part of what the column is called. Where hidden-from-sight text is
+ * all an element has, though, it is the name: an icon button labelled by a `clr-sr-only`
+ * span is called what that span says, as assistive technology calls it.
  *
  * `exclude` leaves one descendant out — the control a wrapping `<label>` names, whose
  * own options or content are not part of its name.
  */
 export function accessibleText(element: Element, exclude?: Element): string {
+  const visible = textFor(element, exclude, false);
+  return visible.trim() ? visible : textFor(element, exclude, true);
+}
+
+function textFor(element: Element, exclude: Element | undefined, includeClipped: boolean): string {
   let text = '';
   for (const node of Array.from(element.childNodes)) {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -99,10 +108,10 @@ export function accessibleText(element: Element, exclude?: Element): string {
     if (!child.textContent?.trim()) {
       continue;
     }
-    if (isExcludedFromName(child)) {
+    if (isExcludedFromName(child, includeClipped)) {
       continue;
     }
-    text += accessibleText(child, exclude);
+    text += textFor(child, exclude, includeClipped);
   }
   return text;
 }
@@ -143,6 +152,11 @@ const UNREADABLE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}], [${CLR_CONTEXT_R
 function isUnrendered(element: Element): boolean {
   if (element.closest('[hidden]')) {
     return true;
+  }
+  const html = element as HTMLElement;
+  if (typeof html.checkVisibility === 'function') {
+    // Without options this is exactly "not rendered": display: none here or above.
+    return !html.checkVisibility();
   }
   const view = element.ownerDocument.defaultView;
   if (!view) {

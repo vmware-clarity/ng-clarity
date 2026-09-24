@@ -289,10 +289,11 @@ function numberAttribute(element: Element, attribute: string): number | undefine
 
 /**
  * The state keys that carry what the user entered or chose: what they typed, which
- * options they picked, whether they ticked a box. Withheld together wherever values are
- * withheld — a choice is as much the user's input as typed text is.
+ * options they picked, whether they ticked a box, which rows they selected. Withheld
+ * together wherever values are withheld — a choice is as much the user's input as typed
+ * text is.
  */
-export const VALUE_STATE_KEYS: readonly string[] = ['value', 'selected', 'checked'];
+export const VALUE_STATE_KEYS: readonly string[] = ['value', 'selected', 'checked', 'selection'];
 
 /** Whether an element is an editing host: `contenteditable` on, in any spelling but `false`. */
 export function isContentEditable(element: Element): boolean {
@@ -326,6 +327,75 @@ export function withoutValues(node: ClrComponentContext): ClrComponentContext {
     if (reduced.some((child, index) => child !== children[index])) {
       result = { ...result, children: reduced };
     }
+  }
+  return result;
+}
+
+/**
+ * State keys that list what a collection shows — its items, options, rows, tabs — as
+ * opposed to its shape. Inside a region the application keeps from agents they go with
+ * the values: the rows of a grid of account numbers are as sensitive as a typed one.
+ */
+const CONTENT_STATE_KEYS: readonly string[] = ['items', 'options', 'rows', 'tabs', 'activeTab', 'disabledOptions'];
+
+/**
+ * Nodes whose label is the content they show rather than a name an author gave them — a
+ * heading, a cell, a list item, a line of text. Inside a redacted region that content is
+ * withheld; a control keeps its label, which names the field rather than repeating it.
+ */
+const CONTENT_ROLES: ReadonlySet<string> = new Set([
+  'text',
+  'heading',
+  'cell',
+  'gridcell',
+  'row',
+  'rowheader',
+  'columnheader',
+  'listitem',
+  'caption',
+  'note',
+  'tooltip',
+  'term',
+  'definition',
+  'paragraph',
+  'blockquote',
+  'status',
+  'alert',
+  'log',
+  'marquee',
+  'option',
+]);
+
+/**
+ * The node as it may appear from inside a region the application marked
+ * `data-clr-context-redact`: no values anywhere below it, no collection contents, and no
+ * text shown as content — only the shape of the UI and the names of its controls. The
+ * node itself says it was withheld (`redacted: true`), so an agent can tell a field it may
+ * not see from one that is empty.
+ */
+export function redactNode(node: ClrComponentContext): ClrComponentContext {
+  const reduced = withoutContent(withoutValues(node));
+  return { ...reduced, state: { ...reduced.state, redacted: true } };
+}
+
+function withoutContent(node: ClrComponentContext): ClrComponentContext {
+  const result: ClrComponentContext = { ...node };
+  if (CONTENT_ROLES.has(node.type)) {
+    delete result.label;
+  }
+  if (node.state && CONTENT_STATE_KEYS.some(key => key in (node.state as object))) {
+    const state: Record<string, unknown> = { ...node.state };
+    for (const key of CONTENT_STATE_KEYS) {
+      delete state[key];
+    }
+    if (Object.keys(state).length) {
+      result.state = state;
+    } else {
+      delete result.state;
+    }
+  }
+  if (node.children?.length) {
+    result.children = node.children.map(withoutContent);
   }
   return result;
 }

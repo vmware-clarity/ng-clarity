@@ -11,8 +11,11 @@
  * configuration, a form control's value or errors — is put into a snapshot or a result,
  * where only plain values belong and a component reference or a factory would be useless
  * and potentially huge.
+ *
+ * Empty arrays and objects are dropped unless `keepEmpty` is set, which is what a
+ * reported value needs: an empty selection is `[]`, not "nothing to say".
  */
-export function jsonSafe(value: unknown, depth: number): unknown {
+export function jsonSafe(value: unknown, depth: number, keepEmpty = false): unknown {
   if (value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
     return value;
   }
@@ -20,18 +23,18 @@ export function jsonSafe(value: unknown, depth: number): unknown {
     return undefined;
   }
   if (Array.isArray(value)) {
-    const items = value.map(item => jsonSafe(item, depth - 1)).filter(item => item !== undefined);
-    return items.length ? items : undefined;
+    const items = value.map(item => jsonSafe(item, depth - 1, keepEmpty)).filter(item => item !== undefined);
+    return items.length || keepEmpty ? items : undefined;
   }
   if (typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype) {
     const result: Record<string, unknown> = {};
     for (const [key, entry] of Object.entries(value)) {
-      const serializable = jsonSafe(entry, depth - 1);
+      const serializable = jsonSafe(entry, depth - 1, keepEmpty);
       if (serializable !== undefined) {
         result[key] = serializable;
       }
     }
-    return Object.keys(result).length ? result : undefined;
+    return Object.keys(result).length || keepEmpty ? result : undefined;
   }
   return undefined;
 }

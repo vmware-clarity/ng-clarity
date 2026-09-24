@@ -5,15 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CLR_CONTEXT_DEFAULT_MAX_ITEMS } from '@clr/angular/utils';
+
 import { ClrContextCategory, ClrContextSnapshotOptions } from './interfaces/context.interface';
 
 /**
  * Default budgets applied while building a snapshot, tuned to keep snapshots compact
  * enough for an AI agent's context window.
  */
-export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = {
+export const CLR_CONTEXT_DEFAULT_OPTIONS: Readonly<Required<ClrContextSnapshotOptions>> = deepFreeze({
   maxTextLength: 100,
-  maxItemsPerCollection: 25,
+  maxItemsPerCollection: CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   maxComponents: 300,
   maxDepth: 0,
   includeDomComponents: true,
@@ -26,13 +28,13 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Required<ClrContextSnapshotOptions> = 
   focus: 'page',
   collectionItems: 'all',
   includeRoutes: false,
-};
+});
 
 /**
  * The roles each category stands for. `text` and `frames` are not roles but the
  * `includeText` and `includeFrames` switches, and are handled where options resolve.
  */
-export const CLR_CONTEXT_CATEGORIES: Record<ClrContextCategory, readonly string[]> = {
+export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonly string[]>> = deepFreeze({
   layout: ['navigation', 'banner', 'contentinfo', 'complementary'],
   actions: ['button', 'link', 'menu', 'menubar', 'menuitem', 'menuitemcheckbox', 'menuitemradio'],
   forms: [
@@ -55,7 +57,7 @@ export const CLR_CONTEXT_CATEGORIES: Record<ClrContextCategory, readonly string[
   images: ['img', 'figure'],
   text: [],
   frames: [],
-};
+});
 
 const CATEGORY_NAMES = Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[];
 
@@ -77,7 +79,7 @@ export type ClrContextPreset = 'full' | 'interactive' | 'minimal';
  *   counts and selection, shorter text, a lower component budget, and only the open
  *   modal while one is open.
  */
-export const CLR_CONTEXT_PRESETS: Record<ClrContextPreset, ClrContextSnapshotOptions> = {
+export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>> = deepFreeze({
   full: {},
   interactive: {
     excludeCategories: ['layout', 'text'],
@@ -90,14 +92,18 @@ export const CLR_CONTEXT_PRESETS: Record<ClrContextPreset, ClrContextSnapshotOpt
     maxComponents: 150,
     focus: 'modal',
   },
-};
+});
 
-/** A preset's options with the caller's overrides applied over them. */
+/** A preset's options with the caller's overrides applied over them, as a copy the caller may change. */
 export function clrContextPreset(
   preset: ClrContextPreset,
   overrides: ClrContextSnapshotOptions = {}
 ): ClrContextSnapshotOptions {
-  return { ...CLR_CONTEXT_PRESETS[preset], ...overrides };
+  const options = { ...CLR_CONTEXT_PRESETS[preset], ...overrides } as ClrContextSnapshotOptions;
+  if (options.excludeCategories) {
+    options.excludeCategories = [...options.excludeCategories];
+  }
+  return options;
 }
 
 type BudgetKey = 'maxTextLength' | 'maxItemsPerCollection' | 'maxComponents' | 'maxDepth';
@@ -247,4 +253,20 @@ function stringList(value: unknown[]): string[] {
 
 function clamp(value: number, range: { min: number; max: number }): number {
   return Math.min(range.max, Math.max(range.min, value));
+}
+
+/**
+ * The value, and every object and array inside it, made read-only. The exported option
+ * constants feed option resolution and the untrusted-caller allow-list: an application
+ * pushing into one of them would change what every snapshot, and every untrusted caller,
+ * is allowed.
+ */
+function deepFreeze<T>(value: T): T {
+  if (value && typeof value === 'object' && !Object.isFrozen(value)) {
+    Object.freeze(value);
+    for (const entry of Object.values(value as Record<string, unknown>)) {
+      deepFreeze(entry);
+    }
+  }
+  return value;
 }
