@@ -109,10 +109,9 @@
 </p>
 
 <p class="clr-mt-16px" cds-text="body">
-  <code cds-text="code">clrDropdownItem</code> cannot be used for this. Injection resolves from where a node is declared
-  rather than where it ends up rendered, so an item projected into the menu sits outside the injector of the dropdown in
-  that component's template and cannot reach it. <code cds-text="code">clrDgColumnAction</code> registers with the
-  component it is projected into instead, which does resolve, and lets that component hand it to the dropdown.
+  A plain <code cds-text="code">clrDropdownItem</code> works as well and gets the same arrow key order.
+  <code cds-text="code">clrDgColumnAction</code> adds re-anchoring the menu for an action that moves the column - see
+  <code cds-text="code">clrCanClosePopover</code> below.
 </p>
 
 <p class="clr-mt-16px" cds-text="body">

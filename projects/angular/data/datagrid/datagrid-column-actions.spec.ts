@@ -186,6 +186,27 @@ class RemovableFilterTest {
   filter = { isActive: () => false, accepts: () => true, changes: new Subject<any>() };
 }
 
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column [clrDgSortBy]="'x'">
+        First
+        <clr-dg-column-actions>
+          <button type="button" clrDgColumnAction>Custom</button>
+          <button type="button" clrDropdownItem>Plain</button>
+        </clr-dg-column-actions>
+      </clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class ArrowOrderTest {
+  items = [1, 2];
+}
+
 export default function (): void {
   describe('ClrDatagridColumnActions', function () {
     describe('rendering', function () {
@@ -911,6 +932,34 @@ export default function (): void {
 
         expect(itemLabelled(commonStrings.keys.filterColumn)).toBeTruthy();
         expect(element.querySelector('.datagrid-header .datagrid-filter-toggle')).toBeNull();
+      });
+    });
+
+    // The menu's own content query cannot see what is projected into it, so the projected items are
+    // added to the arrow key order separately - both kinds, after the built-in ones.
+    describe('arrow key order', function () {
+      // The dropdown moves focus from a zero delay timeout, so each step waits one out.
+      it('walks the built-in items and then the projected ones', async function () {
+        const context = this.create(ClrDatagrid, ArrowOrderTest);
+        const trigger = context.clarityElement.querySelector(TOGGLE) as HTMLButtonElement;
+        const press = async (target: Element) => {
+          target.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', code: 'ArrowDown', bubbles: true }));
+          context.detectChanges();
+          await new Promise(resolve => setTimeout(resolve));
+        };
+
+        trigger.focus();
+        await press(trigger);
+        const seen = [document.activeElement.textContent.trim()];
+        for (let i = 0; i < 4; i++) {
+          await press(document.activeElement);
+          seen.push(document.activeElement.textContent.trim());
+        }
+
+        expect(seen).toEqual(['Sort Ascending', 'Sort Descending', 'Custom', 'Plain', 'Sort Ascending']);
+
+        trigger.click();
+        context.detectChanges();
       });
     });
   });

@@ -24,6 +24,7 @@ import { CdkVirtualForOfContext } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
+import { DestroyRef } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -2462,13 +2463,11 @@ export class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrDa
 }
 
 // @public
-export class ClrDatagridColumnAction extends ClrDropdownItem implements OnDestroy {
+export class ClrDatagridColumnAction extends ClrDropdownItem {
     constructor(columnActions: ClrDatagridColumnActions, item: FocusableItem, dropdownService: RootDropdownService, el: ElementRef, renderer: Renderer2);
     canClosePopover: boolean;
     // (undocumented)
     static ngAcceptInputType_canClosePopover: unknown;
-    // (undocumented)
-    ngOnDestroy(): void;
     // (undocumented)
     protected onColumnActionClick(): void;
     protected onFocus(): void;
@@ -2478,10 +2477,10 @@ export class ClrDatagridColumnAction extends ClrDropdownItem implements OnDestro
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnAction, never>;
 }
 
-// @public
+// @public (undocumented)
 export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "ColumnActionsService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, keyNavigation: KeyNavigationGridController, filters: FiltersProvider, parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, dropdownService: RootDropdownService);
+    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, filters: FiltersProvider, parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, dropdownService: RootDropdownService);
     // (undocumented)
     protected get canClearSort(): boolean;
     closeMenu(): void;
@@ -2506,7 +2505,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     // (undocumented)
     ngOnDestroy(): void;
     protected openFilter(event: Event): void;
-    registerAction(item: FocusableItem): void;
     repositionMenu(): void;
     protected sort(descending: boolean): void;
     // (undocumented)
@@ -2514,11 +2512,9 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     protected togglePinned(): void;
     protected get triggerLabel(): string;
     // (undocumented)
-    unregisterAction(item: FocusableItem): void;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, ["projectedItems"], ["*"], false, never>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, never, ["*"], false, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, { skipSelf: true; }, null, null, { optional: true; }, { optional: true; }, { optional: true; skipSelf: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, { skipSelf: true; }, null, null, { optional: true; }, { optional: true; skipSelf: true; }, null, null, null]>;
 }
 
 // @public (undocumented)

@@ -25,6 +25,7 @@ import { ComponentFixture } from '@angular/core/testing';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { ControlValueAccessor } from '@angular/forms';
 import { DebugElement } from '@angular/core';
+import { DestroyRef } from '@angular/core';
 import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
