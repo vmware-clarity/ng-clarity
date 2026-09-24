@@ -67,10 +67,12 @@ describe('ClrCombobox required state', () => {
     expect(comboboxInput().hasAttribute('aria-required')).toBe(false);
   });
 
-  it('does not stamp a meaningless aria-required class on the host', () => {
-    // The host used to carry `class="aria-required"`, which no stylesheet defines and no
-    // assistive technology reads — a `[class.…]` binding where `[attr.…]` was intended.
-    expect(fixture.nativeElement.querySelector('clr-combobox').classList).not.toContain('aria-required');
+  it('keeps the deprecated aria-required host class for applications that relied on it, and reports the state as ARIA', () => {
+    // The class has never meant that a value is required; it stays until a major release
+    // so that styles or queries written against it do not break.
+    const host = fixture.nativeElement.querySelector('clr-combobox');
+    expect(host.classList).toContain('aria-required');
+    expect(host.hasAttribute('aria-required')).toBeFalse();
   });
 });
 

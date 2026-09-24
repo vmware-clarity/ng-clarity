@@ -6,7 +6,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Component, ContentChild, ElementRef, inject, Inject, Input, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { Component, ContentChild, ElementRef, Inject, Input, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
@@ -38,13 +38,14 @@ export class ClrTimelineStep implements OnDestroy {
 
   stepTitleText: string;
 
-  // Injected as a field rather than through the constructor, whose signature is public API.
-  private readonly hostElement = inject(ElementRef<HTMLElement>);
   private teardownElementContext?: () => void;
 
   constructor(
     private iconAttributeService: TimelineIconAttributeService,
-    @Inject(PLATFORM_ID) private platformId: any
+    @Inject(PLATFORM_ID) private platformId: any,
+    // Optional and last: existing `new ClrTimelineStep(...)` and `super(...)` calls keep
+    // working, and without a host there is simply nothing to publish on.
+    @Optional() private readonly hostElement?: ElementRef<HTMLElement>
   ) {}
 
   get iconAriaLabel(): string {
@@ -71,6 +72,9 @@ export class ClrTimelineStep implements OnDestroy {
     // The outcome is announced through the icon's accessible name, but a timeline is a
     // list and its steps are list items: page-context tooling summarises a list by item
     // name and never descends to the icon. Reported here so the outcome survives.
+    if (!this.hostElement) {
+      return;
+    }
     this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
       state: { status: this.state },
     }));

@@ -33,11 +33,11 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
    * validity and requirement would be announced once per radio. ARIA puts both on the
    * `radiogroup`, which is where `ClrRadioContainer` reports them.
    */
-  protected override get ariaInvalid(): true | null {
-    return null;
+  protected override reportsAriaInvalid(): boolean {
+    return false;
   }
 
-  protected override get ariaRequired(): true | null {
-    return null;
+  protected override reportsAriaRequired(): boolean {
+    return false;
   }
 }

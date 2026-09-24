@@ -280,7 +280,7 @@ export abstract class ClrDateInputBase
           // only update date value if not being set by user
           filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))
         )
-        .subscribe((value: string) => this.updateDate(this.dateIOService.getDateValueFromDateString(value)));
+        .subscribe((value: string) => this.updateDate(this.dateFromControlValue(value)));
     } else {
       return null;
     }
@@ -351,23 +351,55 @@ export abstract class ClrDateInputBase
   }
 
   private dateFromProposal(proposed: unknown): Date | null {
-    if (proposed instanceof Date) {
-      return Number.isNaN(proposed.getTime()) ? null : proposed;
+    // Tested by tag rather than `instanceof`, which fails for a Date made in another frame.
+    if (Object.prototype.toString.call(proposed) === '[object Date]') {
+      const date = proposed as Date;
+      return Number.isNaN(date.getTime()) ? null : date;
     }
     if (typeof proposed !== 'string') {
       return null;
     }
-    const iso = /^(\d{4})-(\d{2})-(\d{2})(?:T.*)?$/.exec(proposed.trim());
-    if (iso) {
-      // Read as a local date: `new Date('2026-03-06')` is UTC midnight, which is the
-      // evening before in half the world.
-      const date = new Date(+iso[1], +iso[2] - 1, +iso[3]);
-      return date.getMonth() === +iso[2] - 1 && date.getDate() === +iso[3] ? date : null;
+    const text = proposed.trim();
+    if (/^\d{4}-\d{2}-\d{2}T/.test(text)) {
+      // A moment in time: the day it falls on where the user is, offset and all.
+      const instant = new Date(text);
+      return Number.isNaN(instant.getTime())
+        ? null
+        : new Date(instant.getFullYear(), instant.getMonth(), instant.getDate());
     }
-    return this.dateIOService.getDateValueFromDateString(proposed);
+    return isoDate(text) ?? this.dateIOService.getDateValueFromDateString(text);
+  }
+
+  /**
+   * The date a form control's value stands for. The native picker's control holds an ISO
+   * date, which the locale's display-format parser would read as nonsense in most locales
+   * and blank the field with; the Clarity picker's holds the display format.
+   */
+  private dateFromControlValue(value: unknown): Date | null {
+    if (this.usingNativeDatepicker() && typeof value === 'string') {
+      const date = isoDate(value.trim());
+      if (date) {
+        return date;
+      }
+    }
+    return this.dateIOService.getDateValueFromDateString(value as string);
   }
 
   protected abstract updateDayModel(dayModel: DayModel): void;
+}
+
+/**
+ * An ISO calendar date (`2026-03-06`) as a local date, or `null` for anything else or an
+ * impossible date. Read as local: `new Date('2026-03-06')` is UTC midnight, which is the
+ * evening before in half the world.
+ */
+function isoDate(text: string): Date | null {
+  const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
+  if (!iso) {
+    return null;
+  }
+  const date = new Date(+iso[1], +iso[2] - 1, +iso[3]);
+  return date.getMonth() === +iso[2] - 1 && date.getDate() === +iso[3] ? date : null;
 }
 
 function isoDateString(date: Date): string {

@@ -13,7 +13,6 @@ import {
   ContentChildren,
   ElementRef,
   HostBinding,
-  inject,
   Inject,
   OnInit,
   Optional,
@@ -30,7 +29,7 @@ import {
   triggerAllFormControlValidation,
 } from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
-import { filter, map, pairwise, startWith, take, tap } from 'rxjs/operators';
+import { filter, map, pairwise, startWith, tap } from 'rxjs/operators';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
 import { StepperPanelModel } from './models/stepper-panel.model';
@@ -54,7 +53,6 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   readonly PanelStatus = StepperPanelStatus;
   override panel: Observable<StepperPanelModel>;
 
-  private readonly hostElement = inject(ElementRef<HTMLElement>);
   private teardownElementContext?: () => void;
   private subscriptions: Subscription[] = [];
 
@@ -65,7 +63,10 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     @Optional() private ngModelGroup: NgModelGroup,
     private stepperService: StepperService,
     ifExpandService: IfExpandService,
-    cdr: ChangeDetectorRef
+    cdr: ChangeDetectorRef,
+    // Optional and last: existing `super(...)` calls keep compiling, and without a host
+    // there is simply nothing to publish on.
+    @Optional() private readonly hostElement?: ElementRef<HTMLElement>
   ) {
     super(stepperService, ifExpandService, cdr);
   }
@@ -109,9 +110,11 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // started, or currently open, says nothing about itself. Read at snapshot time from
     // the service, which always holds the current model, rather than remembered from the
     // template's stream — which has not emitted yet between init and first render.
-    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
-      state: { status: this.currentStatus() },
-    }));
+    if (this.hostElement) {
+      this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
+        state: { status: this.currentStatus() },
+      }));
+    }
     this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));
     this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();
@@ -161,17 +164,9 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   }
 
   private currentStatus(): StepperPanelStatus {
-    let status = StepperPanelStatus.Inactive;
-    // Synchronous: the service's panel stream replays its current value on subscription.
-    this.stepperService
-      .getPanelChanges(this.id)
-      .pipe(take(1))
-      .subscribe(panel => {
-        if (panel) {
-          status = (panel as StepperPanelModel).status;
-        }
-      });
-    return status;
+    return (
+      (this.stepperService.getPanel(this.id) as StepperPanelModel | undefined)?.status ?? StepperPanelStatus.Inactive
+    );
   }
 
   private listenToFocusChanges() {

@@ -39,6 +39,7 @@ import {
   ClrPopoverType,
 } from '@clr/angular/popover/common';
 import {
+  CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   ClrCommonStringsService,
   ClrElementContextCallback,
   ClrElementMutation,
@@ -48,6 +49,7 @@ import {
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
+  normalizeContextText,
   publishElementContext,
   publishElementMutator,
 } from '@clr/angular/utils';
@@ -76,6 +78,10 @@ import { OptionSelectionService } from './providers/option-selection.service';
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
+    // Kept for applications that styled or queried it; it has never meant that a value is
+    // required. The state itself is `aria-required` on the combobox input.
+    // Deprecated: to be removed in a future major version.
+    '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
   },
@@ -288,7 +294,7 @@ export class ClrCombobox<T>
    * `required` attribute on a template-driven one, which Angular applies through a
    * directive rather than the validator function this could otherwise look for.
    */
-  get isRequired(): boolean {
+  protected get isRequired(): boolean {
     return hasRequiredValidator(this.control?.control) || this.comboboxHostElement.hasAttribute('required');
   }
 
@@ -298,21 +304,8 @@ export class ClrCombobox<T>
    * `WrappedFormControl`), so a required field is not announced as wrong before the user
    * has reached it.
    */
-  get isInvalid(): boolean {
+  protected get isInvalid(): boolean {
     return !!this.control?.invalid && !!this.control?.touched;
-  }
-
-  /**
-   * Suppressed on the host: this component reports both on the element carrying
-   * `role="combobox"` (see the template), which is where ARIA requires them. The host is
-   * a role-less wrapper, so the same attributes there would be meaningless noise.
-   */
-  protected override get ariaInvalid(): true | null {
-    return null;
-  }
-
-  protected override get ariaRequired(): true | null {
-    return null;
   }
 
   private get disabled() {
@@ -487,6 +480,19 @@ export class ClrCombobox<T>
     }
   }
 
+  /**
+   * Suppressed on the host: this component reports both on the element carrying
+   * `role="combobox"` (see the template), which is where ARIA requires them. The host is
+   * a role-less wrapper, so the same attributes there would be meaningless noise.
+   */
+  protected override reportsAriaInvalid(): boolean {
+    return false;
+  }
+
+  protected override reportsAriaRequired(): boolean {
+    return false;
+  }
+
   private initialiseObserver() {
     const container = this.container ? this.container.el.nativeElement : this.el.nativeElement.parentElement;
     this.containerWidth = container.offsetWidth;
@@ -645,7 +651,7 @@ export class ClrCombobox<T>
     const describe: ClrElementContextCallback = snapshotOptions => {
       // The contract is a plain element property that any page tooling may call, not
       // only the engine that passes budgets, so a missing argument must not throw.
-      const maxItems = snapshotOptions?.maxItemsPerCollection ?? 25;
+      const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
       const state: Record<string, unknown> = { multiSelect: this.multiSelect };
       const items = this.options?.items;
       if (items?.length) {
@@ -659,16 +665,7 @@ export class ClrCombobox<T>
         // Async comboboxes have no option list until a search loads one.
         state.optionsAvailable = false;
       }
-      const model = this.optionSelectionService.selectionModel?.model;
-      if (model === null || model === undefined) {
-        state.value = null;
-      } else {
-        // What the user sees: the option's label when the value matches an option, the
-        // display field otherwise, the value itself as a last resort.
-        const values = Array.isArray(model) ? model : [model];
-        const names = values.map(value => this.selectedValueLabel(value));
-        state.value = this.multiSelect ? names : (names[0] ?? null);
-      }
+      state.value = this.selectedLabels();
       return { type: 'combobox', state };
     };
 
@@ -685,6 +682,8 @@ export class ClrCombobox<T>
    */
   private publishMutator(host: HTMLElement) {
     this.teardownElementMutator = publishElementMutator(host, {
+      // The search input inside carries a form binding of its own, which is not the value.
+      ownsContents: true,
       coerce: (proposed: unknown): ClrElementMutation => {
         if (proposed === null || proposed === undefined || proposed === '') {
           return { value: this.multiSelect ? [] : null };
@@ -694,45 +693,57 @@ export class ClrCombobox<T>
           return { refused: 'The combobox takes one option.' };
         }
         const items = this.options?.items?.toArray() ?? [];
-        if (!items.length) {
-          return { refused: 'No options are loaded: the combobox loads them as the user types.' };
-        }
         const values: T[] = [];
         for (const proposal of proposals) {
           const option = items.find(candidate => this.optionMatches(candidate, proposal));
-          if (!option) {
-            const labels = items.slice(0, 25).map(candidate => `"${this.optionLabel(candidate)}"`);
+          if (option) {
+            values.push(option.value);
+          } else if (this.editable && typeof proposal === 'string' && proposal.trim()) {
+            // An editable combobox takes what the user types, as it would from the keyboard.
+            values.push(this.optionSelectionService.editableResolver(proposal.trim()));
+          } else if (!items.length) {
+            return { refused: 'No options are loaded: the combobox loads them as the user types.' };
+          } else {
+            const labels = items
+              .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
+              .map(candidate => `"${this.optionLabel(candidate)}"`);
             return { refused: `No such option. The options are: ${labels.join(', ')}.` };
           }
-          values.push(option.value);
         }
         return { value: this.multiSelect ? values : values[0] };
       },
-      read: () => {
-        const model = this.optionSelectionService.selectionModel?.model;
-        if (model === null || model === undefined) {
-          return this.multiSelect ? [] : null;
-        }
-        const names = (Array.isArray(model) ? model : [model]).map(value => this.selectedValueLabel(value));
-        return this.multiSelect ? names : (names[0] ?? null);
-      },
+      read: () => this.selectedLabels(),
     });
+  }
+
+  /**
+   * The selection as the user sees it: the option's label when the value matches an
+   * option, the display field otherwise, the value itself as a last resort. `[]` or
+   * `null` when nothing is selected, as the combobox is multi- or single-select.
+   */
+  private selectedLabels(): unknown {
+    const model = this.optionSelectionService.selectionModel?.model;
+    if (model === null || model === undefined) {
+      return this.multiSelect ? [] : null;
+    }
+    const names = (Array.isArray(model) ? model : [model]).map(value => this.selectedValueLabel(value));
+    return this.multiSelect ? names : (names[0] ?? null);
   }
 
   private optionMatches(option: ClrOption<T>, proposal: unknown): boolean {
     if (typeof proposal !== 'string') {
       return proposal === option.value;
     }
-    const wanted = proposal.replace(/\s+/g, ' ').trim().toLowerCase();
-    if (this.optionLabel(option).toLowerCase() === wanted) {
+    const wanted = normalizeContextText(proposal);
+    if (normalizeContextText(this.optionLabel(option)) === wanted) {
       return true;
     }
     const value = option.value;
     if (typeof value === 'string' || typeof value === 'number') {
-      return String(value).toLowerCase() === wanted;
+      return normalizeContextText(String(value)) === wanted;
     }
     const display = this.selectedValueLabel(value);
-    return typeof display === 'string' && display.toLowerCase() === wanted;
+    return typeof display === 'string' && normalizeContextText(display) === wanted;
   }
 
   /** An option's visible label, without screen-reader-only additions such as "Selected". */
@@ -746,7 +757,7 @@ export class ClrCombobox<T>
         text += node.textContent ?? '';
       }
     });
-    return text.replace(/\s+/g, ' ').trim() || String(option.value);
+    return normalizeContextText(text, false) || String(option.value);
   }
 
   private selectedValueLabel(value: T): unknown {

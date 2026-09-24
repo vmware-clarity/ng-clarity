@@ -51,8 +51,8 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
   }
 
   /** Suppressed: a file input is exposed as a `button`, which does not support `aria-required`. */
-  protected override get ariaRequired(): true | null {
-    return null;
+  protected override reportsAriaRequired(): boolean {
+    return false;
   }
 
   @HostListener('change')

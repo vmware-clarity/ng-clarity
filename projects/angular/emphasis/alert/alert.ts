@@ -64,20 +64,6 @@ export class ClrAlert implements OnInit, OnDestroy {
     this.configAlertType(this._origAlertType);
   }
 
-  /**
-   * How this alert should be announced. An app-level danger or warning describes
-   * something the user has to deal with now, so it interrupts; everything else — an
-   * informational alert, and any alert placed inline in the content, where several may
-   * render at once — is reported politely and waits its turn.
-   *
-   * Without a role an alert is announced by nothing at all, and its severity lives only
-   * in a CSS class, which neither assistive technology nor page-context tooling can read.
-   */
-  get ariaRole(): 'alert' | 'status' {
-    const urgent = this.alertType === 'danger' || this.alertType === 'warning';
-    return urgent && this.isAppLevel ? 'alert' : 'status';
-  }
-
   @Input('clrAlertType')
   get alertType(): string {
     return this.iconService.alertType;
@@ -121,6 +107,32 @@ export class ClrAlert implements OnInit, OnDestroy {
       }
       this.cdr.detectChanges();
     }
+  }
+
+  /**
+   * How this alert should be announced. An app-level danger or warning describes
+   * something the user has to deal with now, so it interrupts; everything else — an
+   * informational alert, and any alert placed inline in the content, where several may
+   * render at once — is reported politely and waits its turn.
+   *
+   * Without a role an alert is announced by nothing at all, and its severity lives only
+   * in a CSS class, which neither assistive technology nor page-context tooling can read.
+   *
+   * A `status` region is atomic by default, which would re-read the whole alert — its
+   * buttons included — whenever any part of it changed; see {@link ariaAtomic}.
+   */
+  protected get ariaRole(): 'alert' | 'status' {
+    const urgent = this.alertType === 'danger' || this.alertType === 'warning';
+    return urgent && this.isAppLevel ? 'alert' : 'status';
+  }
+
+  /**
+   * A polite alert announces what changed in it, not the whole alert again: `status` is
+   * atomic by default, and an inline alert typically holds action buttons whose names
+   * would be read out with every update.
+   */
+  protected get ariaAtomic(): 'false' | null {
+    return this.ariaRole === 'status' ? 'false' : null;
   }
 
   ngOnInit() {

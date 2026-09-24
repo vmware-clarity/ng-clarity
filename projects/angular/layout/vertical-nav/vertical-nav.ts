@@ -5,8 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, OnInit, Output } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnDestroy,
+  OnInit,
+  Optional,
+  Output,
+} from '@angular/core';
+import { ClrCommonStringsService, ClrHostAttribute, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
@@ -33,36 +43,22 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
   @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
 
   private _sub: Subscription;
-  private _role: string | null = 'navigation';
-  private roleSetByAuthor = false;
+  private readonly roleAttribute: ClrHostAttribute;
+  private insideLandmark = false;
 
   constructor(
     private _navService: VerticalNavService,
     private _navIconService: VerticalNavIconService,
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
     public commonStrings: ClrCommonStringsService,
-    private readonly el: ElementRef<HTMLElement>
+    // Optional and last, so that subclasses calling `super()` with the arguments they
+    // passed before keep compiling.
+    @Optional() private readonly el?: ElementRef<HTMLElement>
   ) {
+    this.roleAttribute = new ClrHostAttribute(el?.nativeElement, 'role');
     this._sub = _navService.collapsedChanged.subscribe(value => {
       this._collapsedChanged.emit(value);
     });
-  }
-
-  /**
-   * The vertical nav is a navigation landmark, the same way the header is a banner: it
-   * lets assistive technology jump to or past it, and lets page-context tooling leave it
-   * out as layout. Left off when the nav already sits inside a landmark (a `<nav>`, an
-   * element with `role="navigation"`), so a page does not end up with two nested ones.
-   * Set `role` on the element to decide either way.
-   */
-  @Input()
-  @HostBinding('attr.role')
-  get role(): string | null {
-    return this._role;
-  }
-  set role(value: string | null) {
-    this._role = value;
-    this.roleSetByAuthor = true;
   }
 
   @Input('clrVerticalNavCollapsible')
@@ -96,10 +92,20 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
     return !this.collapsed ? 'true' : 'false';
   }
 
+  /**
+   * The vertical nav is a navigation landmark, the same way the header is a banner: it
+   * lets assistive technology jump to or past it, and lets page-context tooling leave it
+   * out as layout. Left off when the nav already sits inside a landmark (a `<nav>`, an
+   * element with `role="navigation"`), so a page does not end up with two nested ones. A
+   * `role` the application writes or binds on the element is kept either way.
+   */
+  @HostBinding('attr.role')
+  private get hostRole(): string | null {
+    return this.roleAttribute.value(this.insideLandmark ? null : 'navigation');
+  }
+
   ngOnInit() {
-    if (!this.roleSetByAuthor && this.el.nativeElement.parentElement?.closest('nav, [role="navigation"]')) {
-      this._role = null;
-    }
+    this.insideLandmark = !!this.el?.nativeElement.parentElement?.closest('nav, [role="navigation"]');
   }
 
   ngOnDestroy() {
