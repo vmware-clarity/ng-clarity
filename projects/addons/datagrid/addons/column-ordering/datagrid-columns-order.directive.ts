@@ -31,8 +31,8 @@ import { ColumnDefinition } from '../../shared/column/column-definitions';
 
 /**
  * `left`/`right` move the column one step, the same as the arrow keys while it is grabbed.
- * `start`/`end` jump it to either edge. Every direction is resolved inside the column's own group of
- * pinned or scrollable columns, because that is the order the user sees.
+ * `start`/`end` jump it to either edge. Every direction is resolved among the scrollable columns,
+ * because that is the order the user sees; a pinned column cannot be moved at all.
  */
 export type ColumnMoveDirection = 'left' | 'right' | 'start' | 'end';
 
@@ -46,8 +46,8 @@ export type ColumnMoveDirection = 'left' | 'right' | 'start' | 'end';
  * reconciliation relocate a column against a reference node that lives in the other container, and
  * the DOM insert throws - which leaves the header short of columns, because change detection gives
  * up half way through. Rebuilding gives the reconciliation nothing to relocate, which is what makes
- * every move within a column's own group renderable, including reordering the pinned columns with
- * each other. See `rebuildColumnViews` in DatagridComponent.
+ * every move among the scrollable columns renderable while a column is pinned. See
+ * `rebuildColumnViews` in DatagridComponent. Pinned columns themselves are never moved.
  */
 @Directive({
   selector: 'clr-datagrid[appfxDgColumnsOrder]',
@@ -201,8 +201,8 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
 
   /**
    * Whether a move resolved by `computeTargetIndices` is worth applying at all: it has to have a
-   * target, and that target has to be a different column. Nothing else can refuse it, because the
-   * target is always inside the moved column's own group and the host rebuilds the column views.
+   * target, and that target has to be a different column. A pinned column never has a target, and a
+   * loose one's target is always another loose column, so nothing else can refuse it.
    */
   private isMoveApplicable(indices: { previousIndex: number; currentIndex: number }): boolean {
     if (indices.previousIndex < 0 || indices.currentIndex < 0) {
@@ -244,16 +244,21 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
    * Resolves a direction relative to `previousColumnIndex` (an index into the *visible* columns)
    * into absolute previous/current indices into `dgColumnsOrderColumns`.
    *
-   * The target is looked up within the moved column's own group - pinned columns are rendered in the
-   * sticky container and the rest in the scrollable one, so those are the neighbours the user
-   * actually sees. Reading the neighbour off the full list instead picks a column from the other
-   * container whenever a pinned column sits between them in the array, which is both the wrong
-   * target and a move that cannot be rendered.
+   * Only a loose column can be moved, and its target is looked up among the loose columns - they are
+   * the ones rendered together in the scrollable container, so those are the neighbours the user
+   * actually sees. Reading the neighbour off the full list instead picks a pinned column whenever
+   * one sits between them in the array, which is both the wrong target and a move that cannot be
+   * rendered. A pinned column resolves to no target at all.
    */
   private computeTargetIndices(previousColumnIndex: number, direction: ColumnMoveDirection) {
     const visibleColumns = this.dgColumnsOrderColumns.filter(column => !column.hidden);
     const previousColumn = visibleColumns[previousColumnIndex];
-    const group = visibleColumns.filter(column => !!column.pinned === !!previousColumn?.pinned);
+
+    if (!previousColumn || previousColumn.pinned) {
+      return { previousIndex: -1, currentIndex: -1 };
+    }
+
+    const group = visibleColumns.filter(column => !column.pinned);
     const groupIndex = group.indexOf(previousColumn);
     const lastGroupIndex = group.length - 1;
 

@@ -1206,8 +1206,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * other container, and the DOM insert throws - which leaves the header short of columns, since
    * change detection gives up half way through. Emptying `visibleColumns` first destroys every
    * column view, so the reconciliation has nothing left to relocate and the new order is rendered
-   * from scratch. That is what makes reordering work with a pinned column anywhere in the list, and
-   * it is also the only way the pinned columns can be reordered with each other.
+   * from scratch. That is what makes reordering the scrollable columns work with a pinned column
+   * anywhere in the list. Pinned columns themselves are never moved.
    *
    * Column state that has to survive this lives on the column definitions - `defaultSortOrder`,
    * `defaultFilterValue` and `width` - so the rebuilt views bind it straight back.

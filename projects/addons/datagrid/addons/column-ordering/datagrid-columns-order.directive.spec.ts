@@ -334,26 +334,24 @@ describe('DatagridColumnsOrderDirective', () => {
         expect(directive.canMoveColumn(0, 'right')).toBeFalse();
       });
 
-      // Both pinned columns are rendered in the sticky container, so they are each other's
-      // neighbours there and can change places. That only renders because the host rebuilds the
-      // column views - relocating them inside the sticky container throws.
-      it('reorders two pinned columns with each other', function (this: any) {
+      // A pinned column cannot be moved at all, not even inside the sticky container next to another
+      // pinned one - the only way to change where it sits is to unpin it.
+      it('never moves a pinned column, even next to another pinned one', function (this: any) {
         this.datagridHostComponent.columns[2].pinned = true;
         this.fixture.detectChanges();
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
-        // Both really are in the sticky container, which is what makes this a reorder inside it
-        // rather than an ordinary one.
         expect(pinnedHeaders.call(this)).toEqual(['Name', 'State']);
 
         const directive = this.datagridHostComponent.dgColumnsOrderDirective;
-        expect(directive.canMoveColumn(1, 'left')).toBeTrue();
-        expect(directive.canMoveColumn(0, 'right')).toBeTrue();
+        (['left', 'right', 'start', 'end'] as const).forEach(direction => {
+          expect(directive.canMoveColumn(0, direction)).withContext(`Name ${direction}`).toBeFalse();
+          expect(directive.canMoveColumn(1, direction)).withContext(`State ${direction}`).toBeFalse();
+        });
 
-        directive.moveColumnTo(1, 'left');
+        expect(directive.moveColumnTo(1, 'left')).toBeFalse();
         this.fixture.detectChanges();
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
-        expect(pinnedHeaders.call(this)).toEqual(['State', 'Name']);
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+        expect(pinnedHeaders.call(this)).toEqual(['Name', 'State']);
       });
 
       // Status is the only column left in the scrollable container, so it has nothing to step past

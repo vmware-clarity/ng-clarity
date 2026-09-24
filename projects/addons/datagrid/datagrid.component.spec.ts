@@ -1085,13 +1085,13 @@ describe('DatagridComponent', () => {
         expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C4', 'C5']);
       });
 
-      // Each column steps within its own rendered group, so only the real edges are disabled. The
+      // A loose column steps within the scrollable group, so only its real edges are disabled. The
       // regression was that C2 had both directions disabled and C4 had Move Left disabled, because
-      // any move spanning a pinned column was refused.
-      it('only disables a move at the edges of its own group', function (this: DatagridSpecContext) {
+      // any move spanning a pinned column was refused. A pinned column cannot be moved at all.
+      it('disables both moves on a pinned column, and only the edges on a loose one', function (this: DatagridSpecContext) {
         // Sticky container: C1 C3.
-        expect(disabledStateOf(this.fixture, 0)).toEqual({ left: 'true', right: 'false' });
-        expect(disabledStateOf(this.fixture, 1)).toEqual({ left: 'false', right: 'true' });
+        expect(disabledStateOf(this.fixture, 0)).toEqual({ left: 'true', right: 'true' });
+        expect(disabledStateOf(this.fixture, 1)).toEqual({ left: 'true', right: 'true' });
         // Scrollable container: C2 C4 C5.
         expect(disabledStateOf(this.fixture, 2)).toEqual({ left: 'true', right: 'false' });
         expect(disabledStateOf(this.fixture, 3)).toEqual({ left: 'false', right: 'false' });
@@ -1114,10 +1114,15 @@ describe('DatagridComponent', () => {
         expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C5', 'C2', 'C4']);
       });
 
-      it('reorders the two pinned columns with each other', function (this: DatagridSpecContext) {
+      // The menu item is only marked disabled, not natively disabled, so it still receives the click -
+      // which must not move the column either.
+      it('does not move a pinned column when its move action is clicked anyway', function (this: DatagridSpecContext) {
+        spyOn(this.component, 'onColumnOrderChange');
+
         clickMove(this.fixture, 0, 'Move Right');
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C3', 'C1', 'C2', 'C4', 'C5']);
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C4', 'C5']);
+        expect(this.component.onColumnOrderChange).not.toHaveBeenCalled();
       });
 
       // Rebuilding the column views throws the ClrDatagridColumn instances away, so anything the
@@ -1286,10 +1291,10 @@ describe('DatagridComponent', () => {
         expect(pinnedHeaders()).toEqual(['C1', 'C3']);
 
         clickMove(this.fixture, 2, 'Move Right');
-        clickMove(this.fixture, 0, 'Move Right');
+        clickMove(this.fixture, 3, 'Move Right');
 
-        expect(pinnedHeaders()).toEqual(['C3', 'C1']);
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C3', 'C1', 'C4', 'C2', 'C5']);
+        expect(pinnedHeaders()).toEqual(['C1', 'C3']);
+        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C5', 'C2']);
       });
     });
 

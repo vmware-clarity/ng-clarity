@@ -34,12 +34,12 @@
 </p>
 
 <clr-datagrid>
-  <clr-dg-column [clrDgField]="'id'" (clrDgSortOrderChange)="reportSort('User ID', $event)">
-    User ID
+  <clr-dg-column [clrDgField]="'id'" [clrDgPinnable]="true" (clrDgSortOrderChange)="reportSort('User ID', $event)">
+    <ng-container *clrDgHideableColumn> User ID </ng-container>
     <clr-dg-column-actions></clr-dg-column-actions>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'" (clrDgSortOrderChange)="reportSort('Name', $event)">
-    Name
+  <clr-dg-column [clrDgField]="'name'" [clrDgPinnable]="true" (clrDgSortOrderChange)="reportSort('Name', $event)">
+    <ng-container *clrDgHideableColumn> Name </ng-container>
     <clr-dg-column-actions></clr-dg-column-actions>
   </clr-dg-column>
   <clr-dg-column
@@ -50,11 +50,19 @@
     Creation date
     <clr-dg-column-actions></clr-dg-column-actions>
   </clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon'">
+    <ng-container *clrDgHideableColumn>Pokemon</ng-container>
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
 
   <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+    <clr-dg-cell>
+      {{user.pokemon.name}}
+      <span class="badge badge-5">#{{user.pokemon.number}}</span>
+    </clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
