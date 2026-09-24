@@ -574,6 +574,11 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     if (children.length) {
       node.children = children;
     }
+  } else if (summarised) {
+    const controls = describeCellControls(element, walk);
+    if (controls.length) {
+      node.children = controls;
+    }
   }
 
   const described = finish(node, element, walk);
@@ -586,6 +591,47 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     return described.children ?? [];
   }
   return [described];
+}
+
+const CELL_SELECTOR = '[role="gridcell"], [role="cell"], td';
+const VALUE_CONTROL_SELECTOR = [
+  'input',
+  'select',
+  'textarea',
+  '[contenteditable]',
+  ...Array.from(WRITABLE_ROLES, role => `[role="${role}"]`),
+].join(', ');
+
+/**
+ * The controls an application put in the cells of a summarised collection — a quantity
+ * in each row, a status to pick — described cell by cell. The summary says what the
+ * collection holds but nothing about what the user can change in it, and these controls
+ * belong to the application, not to the collection. The cells are walked like any other
+ * content, so a custom control in a cell is described as a whole; text is left out, the
+ * summary already carries it. Controls the collection renders for itself, such as a
+ * datagrid's row selection, sit in cells marked `data-clr-context-ignore` and add nothing.
+ */
+function describeCellControls(collection: Element, walk: Walk): ClrComponentContext[] {
+  if (walk.options.collectionItems === 'summary') {
+    return [];
+  }
+  const cells = new Set<Element>();
+  for (const control of Array.from(collection.querySelectorAll(VALUE_CONTROL_SELECTOR))) {
+    const role = resolveRole(control);
+    const cell = role && WRITABLE_ROLES.has(role) ? control.closest(CELL_SELECTOR) : null;
+    if (cell && collection.contains(cell)) {
+      cells.add(cell);
+      if (cells.size >= walk.options.maxItemsPerCollection) {
+        break;
+      }
+    }
+  }
+  walk.textDepth++;
+  try {
+    return Array.from(cells).flatMap(cell => describeNested(cell, walk, null));
+  } finally {
+    walk.textDepth--;
+  }
 }
 
 /**

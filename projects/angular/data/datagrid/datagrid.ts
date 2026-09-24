@@ -766,7 +766,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       if ('refused' in found) {
         return { refused: found.refused };
       }
-      if (this.selection.isLocked(found.row.item)) {
+      // Naming a locked row that is already selected changes nothing, so writing back the
+      // value a write returned is not refused.
+      if (this.selection.isLocked(found.row.item) && !this.selection.isSelected(found.row.item)) {
         return { refused: `The row "${this.rowLabel(found.row)}" is locked and cannot be selected or deselected.` };
       }
       rows.push(found.row);
