@@ -8,11 +8,16 @@ For every scenario of [`animation-scenarios.ts`](./animation-scenarios.ts) (open
 accordion panel, a tree node, a datagrid row...), the recorder opens the Storybook story, triggers the animation and
 records, from the trigger:
 
-- the **rendered frames**, with the Chrome DevTools screencast (about 60 frames per second),
+- the **rendered frames**, with Playwright's [screencast](https://playwright.dev/docs/api/class-screencast): every
+  frame the browser paints (about 60 per second), with its timestamp,
+- a **video** of the same time span (`video.webm`, from the screencast as well),
 - the **geometry, opacity and transform** of the tracked elements, sampled on every animation frame,
 - the **animations and transitions** that ran (CSS animations and transitions, Web Animations API, Angular
-  animations) with their duration, delay, easing and keyframes,
-- a **video** of the whole test (Playwright video).
+  animations) with their duration, delay, easing and keyframes.
+
+The report plays the frames rather than the videos: a video is encoded at a fixed frame rate, which leaves 5 frames to
+a 200 ms animation, and cannot be lined up with another recording to the millisecond. The
+[test videos](https://playwright.dev/docs/videos) are only kept for the scenarios that fail, to see why.
 
 Nothing is slowed down or paused while recording: the page runs its animations like it does for users. Slow motion is
 only applied when playing the recordings back in the report.

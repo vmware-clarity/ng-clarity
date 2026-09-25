@@ -40,7 +40,9 @@ export default defineConfig({
     viewport: { width: 1280, height: 800 },
     deviceScaleFactor: 1,
     actionTimeout: 10 * 1000,
-    video: { mode: 'on', size: { width: 1280, height: 800 } },
+    // The recordings make their own videos of the animations (`page.screencast`). The test videos are only kept to
+    // see why a scenario failed.
+    video: 'retain-on-failure',
   },
   webServer: {
     command: `npm run ts-node -- ./scripts/start-static-server.ts ${storybookDir} ${port}`,

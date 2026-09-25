@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CDPSession, Page } from '@playwright/test';
+import { Page } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -84,6 +84,8 @@ declare global {
 
 /** Frames recorded before the trigger, to show the state the animation starts from. */
 const LEAD_TIME = 100;
+/** Video of the recording (from the lead time to the end of the recording). */
+const VIDEO_FILE = 'video.webm';
 
 export async function runSteps(page: Page, story: string, steps: ScenarioStep[]) {
   for (const step of steps) {
@@ -110,7 +112,8 @@ export async function runSteps(page: Page, story: string, steps: ScenarioStep[])
  *
  * - the geometry, opacity and transform of the tracked elements on every animation frame,
  * - every animation and transition that runs, with its timing and keyframes,
- * - the rendered frames (Chrome DevTools screencast, about 60 frames per second).
+ * - the rendered frames (`page.screencast`: every frame the browser paints, about 60 per second), also saved as
+ *   `video.webm`.
  *
  * Nothing in the page is slowed down or paused: the recording shows the animations as users see them.
  */
@@ -120,13 +123,21 @@ export async function recordAnimation(
   duration: number,
   outputDir: string,
   trigger: () => Promise<void>
-): Promise<Pick<AnimationRecording, 'samples' | 'animations' | 'frames' | 'duration'>> {
+): Promise<Pick<AnimationRecording, 'samples' | 'animations' | 'frames' | 'duration' | 'video'>> {
   const framesDir = path.join(outputDir, 'frames');
   fs.rmSync(framesDir, { recursive: true, force: true });
   fs.mkdirSync(framesDir, { recursive: true });
 
-  const cdp = await page.context().newCDPSession(page);
-  const screencast = await startScreencast(cdp);
+  // Frames are kept with their timestamps (epoch milliseconds), to be aligned with the trigger afterwards.
+  const rawFrames: { data: Buffer; timestamp: number }[] = [];
+  await page.screencast.start({
+    path: path.join(outputDir, VIDEO_FILE),
+    size: page.viewportSize() ?? undefined,
+    quality: 70,
+    onFrame: ({ data, timestamp }) => {
+      rawFrames.push({ data, timestamp });
+    },
+  });
   await page.evaluate(installTrace, track);
   await page.waitForTimeout(LEAD_TIME);
 
@@ -134,20 +145,26 @@ export async function recordAnimation(
   await page.waitForTimeout(duration);
 
   const trace = await page.evaluate(() => window.__clrAnimationTrace.stop());
-  const rawFrames = await screencast.stop();
-  await cdp.detach();
+  await page.screencast.stop();
 
-  const frames: ScreencastFrame[] = rawFrames
+  // Frames are only sent when the page repaints: the last one before the lead time shows the state the page is in
+  // when the lead time starts.
+  const timedFrames = rawFrames
     .map(frame => ({ ...frame, t: Math.round(frame.timestamp - trace.triggerTime) }))
-    .filter(frame => frame.t >= -LEAD_TIME && frame.t <= duration)
-    .sort((a, b) => a.t - b.t)
+    .filter(frame => frame.t <= duration)
+    .sort((a, b) => a.t - b.t);
+  const firstInLeadTime = timedFrames.findIndex(frame => frame.t >= -LEAD_TIME);
+  const start = firstInLeadTime === -1 ? timedFrames.length - 1 : Math.max(0, firstInLeadTime - 1);
+  const frames: ScreencastFrame[] = timedFrames
+    .slice(start)
+    .map(frame => ({ ...frame, t: Math.max(frame.t, -LEAD_TIME) }))
     .map((frame, i) => {
       const file = `frames/${String(i).padStart(4, '0')}.jpg`;
-      fs.writeFileSync(path.join(outputDir, file), Buffer.from(frame.data, 'base64'));
+      fs.writeFileSync(path.join(outputDir, file), frame.data);
       return { t: frame.t, file };
     });
 
-  return { duration, samples: trace.samples, animations: trace.animations, frames };
+  return { duration, samples: trace.samples, animations: trace.animations, frames, video: VIDEO_FILE };
 }
 
 function locate(page: Page, query: ElementQuery) {
@@ -161,22 +178,6 @@ function locate(page: Page, query: ElementQuery) {
 
 function escapeRegExp(text: string) {
   return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-}
-
-async function startScreencast(cdp: CDPSession) {
-  const frames: { data: string; timestamp: number }[] = [];
-  cdp.on('Page.screencastFrame', frame => {
-    // Screencast timestamps are in seconds since the epoch.
-    frames.push({ data: frame.data, timestamp: frame.metadata.timestamp * 1000 });
-    cdp.send('Page.screencastFrameAck', { sessionId: frame.sessionId }).catch(() => undefined);
-  });
-  await cdp.send('Page.startScreencast', { format: 'jpeg', quality: 70, everyNthFrame: 1 });
-  return {
-    async stop() {
-      await cdp.send('Page.stopScreencast');
-      return frames;
-    },
-  };
 }
 
 /** Runs in the page: samples the tracked elements and the running animations on every animation frame. */

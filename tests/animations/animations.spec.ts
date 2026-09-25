@@ -34,12 +34,6 @@ for (const scenario of animationScenarios) {
       () => runSteps(page, scenario.story, scenario.trigger)
     );
 
-    const video = page.video();
-    await page.close();
-    if (video) {
-      await video.saveAs(path.join(outputDir, 'video.webm'));
-    }
-
     const result: AnimationRecording = {
       scenario: scenario.name,
       story: scenario.story,
@@ -47,7 +41,6 @@ for (const scenario of animationScenarios) {
       recordedAt: new Date().toISOString(),
       userAgent: `${browserName} ${page.context().browser()?.version() ?? ''}`.trim(),
       ...recording,
-      video: video ? 'video.webm' : undefined,
     };
     fs.writeFileSync(path.join(outputDir, 'recording.json'), JSON.stringify(result, null, 1));
   });

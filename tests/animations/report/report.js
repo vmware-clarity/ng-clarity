@@ -31,7 +31,7 @@
       el(
         'span',
         {},
-        'Frames are the rendered page (Chrome screencast, about 60 fps); charts are sampled on every animation frame. ' +
+        'Frames are the rendered page (Playwright screencast, every painted frame); charts are sampled on every animation frame. ' +
           'Time 0 is the trigger. Nothing is slowed down while recording: slow motion is applied on playback only.'
       ),
     ]),
