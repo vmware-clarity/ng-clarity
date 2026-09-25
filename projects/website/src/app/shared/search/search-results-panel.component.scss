@@ -1,0 +1,63 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:host {
+  display: block;
+  min-width: 320px;
+  max-width: 720px;
+}
+
+.search-results-list {
+  margin: 0;
+  padding: var(--clr-base-vertical-offset-s) 0;
+  list-style: none;
+  max-height: 60vh;
+  overflow-y: auto;
+  background-color: var(--clr-signpost-content-bg-color);
+  color: var(--clr-signpost-content-color);
+  border: var(--cds-alias-object-border-width-100) solid var(--clr-signpost-content-border-color);
+  border-radius: var(--clr-signpost-border-radius);
+}
+
+.search-result-row {
+  display: block;
+  padding: var(--clr-base-vertical-offset-m) var(--clr-base-horizontal-offset-l);
+  text-decoration: none;
+  color: inherit;
+  overflow: hidden;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: var(--cds-alias-object-interaction-background-hover);
+  }
+
+  &:active {
+    background-color: var(--cds-alias-object-interaction-background-active);
+  }
+
+  &.focused {
+    outline-color: Highlight;
+    outline-color: -webkit-focus-ring-color;
+    outline-style: auto;
+    outline-offset: calc(-1 * var(--cds-global-space-2));
+  }
+}
+
+.search-result-category {
+  display: block;
+  text-transform: uppercase;
+}
+
+.search-result-breadcrumb {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.search-result-empty {
+  padding: var(--clr-base-vertical-offset-m) var(--clr-base-horizontal-offset-l);
+}

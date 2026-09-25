@@ -11,6 +11,7 @@ import { ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
 
 import { getFeatureFlags } from './feature-flags';
 import { DensityToggleComponent } from './shared/density-toggle/density-toggle.component';
+import { SearchBoxComponent } from './shared/search/search-box.component';
 import { SkipLinkComponent } from './shared/skip-link/skip-link.component';
 import { ThemeToggleComponent } from './shared/theme-toggle/theme-toggle.component';
 import { VersionSelectComponent } from './shared/version-select/version-select.component';
@@ -34,6 +35,7 @@ import { VersionSelectComponent } from './shared/version-select/version-select.c
     ThemeToggleComponent,
     DensityToggleComponent,
     VersionSelectComponent,
+    SearchBoxComponent,
   ],
 })
 export class AppComponent {
