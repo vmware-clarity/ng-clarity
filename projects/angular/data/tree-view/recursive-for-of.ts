@@ -6,7 +6,7 @@
  */
 
 import { ChangeDetectorRef, Directive, Input, OnChanges, OnDestroy, TemplateRef } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { asapScheduler, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 import { AsyncArray } from './models/async-array';
@@ -47,9 +47,13 @@ export class ClrRecursiveForOf<T> implements OnChanges, OnDestroy {
       wrapped = [new RecursiveTreeNodeModel(this.nodes, null, this.getChildren, this.featuresService)];
     }
     if (!this.childrenFetchSubscription) {
-      this.childrenFetchSubscription = this.featuresService.childrenFetched.pipe(debounceTime(0)).subscribe(() => {
-        this.cdr.detectChanges();
-      });
+      // Children fetched synchronously while the tree renders are picked up once, in a microtask,
+      // instead of one macrotask timer (and its own change detection pass) per node.
+      this.childrenFetchSubscription = this.featuresService.childrenFetched
+        .pipe(debounceTime(0, asapScheduler))
+        .subscribe(() => {
+          this.cdr.detectChanges();
+        });
     }
 
     this.featuresService.recursion = {

@@ -73,8 +73,8 @@
 <div
   class="clr-treenode-children"
   [@toggleChildrenAnim]="expandService.expanded ? 'expanded' : 'collapsed'"
-  [attr.role]="isExpandable() && !featuresService.recursion ? 'group' : null"
-  [attr.inert]="expandService.expanded ? null : ''"
+  [attr.role]="isExpandable() && expandService.expanded && !featuresService.recursion ? 'group' : null"
+  [style.content-visibility]="expandService.expanded ? null : 'hidden'"
 >
   <ng-content select="clr-tree-node"></ng-content>
   <ng-content select="[clrIfExpanded]"></ng-content>

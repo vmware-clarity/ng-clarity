@@ -35,8 +35,8 @@ import {
   preventArrowKeyScroll,
   uniqueIdFactory,
 } from '@clr/angular/utils';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { asapScheduler, Subject, Subscription } from 'rxjs';
+import { debounceTime, filter, skip } from 'rxjs/operators';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
@@ -213,8 +213,15 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       })
     );
 
+    // The loading state can flip in the middle of a change detection pass (a lazy fetch starts when the template
+    // reads the children), so it is applied in a microtask rather than synchronously. Using a macrotask timer here
+    // would schedule one timer per node when a large tree gets created, and one extra change detection pass per
+    // fetched node in lazy trees. The current value is read directly instead of debouncing the replayed initial one.
+    this.isModelLoading = this._model.loading;
     this.subscriptions.push(
-      this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading))
+      this._model.loading$
+        .pipe(skip(1), debounceTime(0, asapScheduler))
+        .subscribe(isLoading => (this.isModelLoading = isLoading))
     );
   }
 
