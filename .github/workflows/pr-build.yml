@@ -96,6 +96,61 @@ jobs:
           name: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
           path: visual-snapshot-changes-${{matrix.browser}}-${{matrix.theme}}-${{matrix.density}}-${{matrix.shard}}.diff
 
+  pr-animation-recordings:
+    name: PR Animation Recordings
+    timeout-minutes: 40
+    # Same image as the visual regression tests: an updated image could record animations differently.
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps chromium
+      - name: Cache Storybook Build
+        id: storybook-cache
+        uses: actions/cache@v4
+        with:
+          path: dist/docs
+          key: animation-recordings-storybook-build-${{hashFiles('package-lock.json', 'projects/angular/**', 'projects/addons/**', 'projects/ui/**', '.storybook/**', 'angular.json')}}
+      - name: Build Storybook
+        if: steps.storybook-cache.outputs.cache-hit != 'true'
+        run: npm run _build:storybook
+      # Records the animations and updates the recordings of tests/animations/recordings that changed, like the visual
+      # snapshots: the PR Visual Snapshot Update Bot offers the changes as a commit to cherry-pick.
+      - name: Update Animation Recordings
+        run: npm run animations:update
+      - name: Collect Changes
+        id: animation-changes
+        run: |
+          git add tests/animations/recordings
+          git diff --cached --binary > visual-snapshot-changes-animations.diff
+          if [ -s visual-snapshot-changes-animations.diff ]; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      # Only when there are changes: the bot cannot apply an empty patch.
+      - name: Upload Changes
+        if: ${{ steps.animation-changes.outputs.changed == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: visual-snapshot-changes-animations.diff
+          path: visual-snapshot-changes-animations.diff
+      - name: Summarize
+        if: ${{ hashFiles('dist/animation-recordings/baseline-vs-current.md') != '' }}
+        run: cat dist/animation-recordings/baseline-vs-current.md >> "$GITHUB_STEP_SUMMARY"
+      - name: Upload Animation Report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: animation-report
+          path: dist/animation-recordings/
+
   pr-website-visual-regression-test:
     name: PR Website Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}})
     timeout-minutes: 40

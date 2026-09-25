@@ -1,8 +1,8 @@
 # Animation recordings
 
 The visual regression tests take their screenshots with animations disabled, so they cannot tell whether an
-animation changed. These recordings show how the components animate, and compare two versions of the library (for
-example `main` and a branch that changes animations).
+animation changed. The animation recordings work like them for animations: a recording of every scenario is committed
+in [`recordings`](./recordings), and pull requests that change how a component animates update the recordings.
 
 For every scenario of [`animation-scenarios.ts`](./animation-scenarios.ts) (open / close a modal, expand / collapse an
 accordion panel, a tree node, a datagrid row...), the recorder opens the Storybook story, triggers the animation and
@@ -22,7 +22,35 @@ a 200 ms animation, and cannot be lined up with another recording to the millise
 Nothing is slowed down or paused while recording: the page runs its animations like it does for users. Slow motion is
 only applied when playing the recordings back in the report.
 
-## Comparing two versions locally
+## In pull requests
+
+The **PR Animation Recordings** job of the PR Build records the animations of the pull request and compares them with
+the committed recordings, like the visual regression tests do with the screenshots:
+
+- when a scenario animates differently, its new recording (`recording.json`, the frames and `video.webm`) is offered by
+  the **PR Visual Snapshot Update Bot**, in the same commit as the screenshot changes, to cherry-pick into the pull
+  request (like for the screenshots, the bot check fails until it is); the bot comment links to the animation report,
+- the job summary lists the scenarios that changed and how,
+- the `animation-report` artifact contains the report (`baseline-vs-current.html`) and the recordings: unzip it and
+  open the report to watch them side by side.
+
+A scenario that still animates the same keeps its committed recording: small timing differences between runs do not
+produce changes.
+
+## Updating the recordings locally
+
+```bash
+npm run _build:storybook
+npm run animations:update
+```
+
+This records the scenarios, compares them with the committed recordings, updates the recordings that changed in
+`tests/animations/recordings` and writes the report to `dist/animation-recordings/baseline-vs-current.html`. Playwright
+options are passed on, for example `npm run animations:update -- -g modal` (removed scenarios are only cleaned up by a
+full run). The recordings committed in the repository come from CI; recordings made on another machine can differ
+slightly.
+
+## Comparing any two versions
 
 Record each version from its own Storybook build, then compare the recordings:
 
@@ -42,32 +70,14 @@ npm run animations:compare -- main my-branch
 ```
 
 Then open `dist/animation-recordings/main-vs-my-branch.html` in a browser (the recording directories next to it must
-stay where they are).
-
-The recorder runs from the current checkout, so the scenarios can be recorded for any Storybook build: point
-`CLARITY_STORYBOOK_DIR` to another build (for example a second git worktree) to record it without switching branches.
+stay where they are). Point `CLARITY_STORYBOOK_DIR` to another build (for example in a second git worktree) to record
+it without switching branches.
 
 | Environment variable       | Default            | Description                                  |
 | -------------------------- | ------------------ | -------------------------------------------- |
 | `CLARITY_ANIMATIONS_LABEL` | current git branch | Name of the recording (its output directory) |
 | `CLARITY_STORYBOOK_DIR`    | `./dist/docs`      | Storybook build to record                    |
 | `CLARITY_STORYBOOK_PORT`   | `8080`             | Port the Storybook build is served on        |
-
-## Comparing in CI
-
-The **Animation Recordings** workflow runs on every pull request, like the visual regression tests: it records the
-base branch and the pull request (merged into the base branch, so only the changes of the pull request show), and
-compares them. The Storybook builds are cached, so a version that was already recorded is not built again.
-
-- When animations differ, the **PR Animation Recordings Bot** comments on the pull request with the scenarios that
-  changed and a link to the report. It updates the same comment on later pushes, and does not comment on pull requests
-  whose animations match the base branch.
-- The job summary of the workflow run lists the differences too.
-- The `animation-report` artifact contains the report (`base-vs-head.html`) and the recordings: unzip it and open the
-  report.
-
-Differences do not fail the pull request: they are for the author and the reviewers to judge. The workflow can also be
-run from the Actions tab to compare any two git refs.
 
 ## Reading the report
 

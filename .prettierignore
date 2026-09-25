@@ -5,3 +5,4 @@
 /projects/**/*.api.md
 /documentation.json
 /projects/website/src/compiled-content
+/tests/animations/recordings

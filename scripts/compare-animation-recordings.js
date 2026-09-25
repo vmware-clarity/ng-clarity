@@ -59,11 +59,11 @@ const report = {
 
 const reportFile = path.join(recordingsDir, `${base}-vs-${head}.html`);
 fs.writeFileSync(reportFile, renderReport(report));
-// Summary for pull request comments and job summaries, and verdict counts for scripts.
+// Summary for job summaries, and the verdicts for scripts (see update-animation-recordings.js).
 fs.writeFileSync(path.join(recordingsDir, `${base}-vs-${head}.md`), renderMarkdownSummary(report));
 fs.writeFileSync(
   path.join(recordingsDir, `${base}-vs-${head}.json`),
-  JSON.stringify(countVerdicts(report.scenarios), null, 2)
+  JSON.stringify(summarizeVerdicts(report.scenarios), null, 2)
 );
 
 for (const scenario of report.scenarios) {
@@ -353,10 +353,14 @@ function summarizeKeyframes(keyframes) {
   });
 }
 
-function countVerdicts(scenarios) {
-  const counts = { same: 0, changed: 0, differs: 0 };
-  scenarios.forEach(scenario => counts[scenario.verdict]++);
-  return counts;
+/** Verdict counts, and the verdict of each scenario. */
+function summarizeVerdicts(scenarios) {
+  const summary = { same: 0, changed: 0, differs: 0, scenarios: {} };
+  for (const scenario of scenarios) {
+    summary[scenario.verdict]++;
+    summary.scenarios[scenario.name] = scenario.verdict;
+  }
+  return summary;
 }
 
 function renderMarkdownSummary(data) {
