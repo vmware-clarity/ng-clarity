@@ -55,9 +55,19 @@ The recorder runs from the current checkout, so the scenarios can be recorded fo
 
 ## Comparing in CI
 
-Run the **Animation Recordings** workflow from the Actions tab with the two git refs to compare, or add the
-`animation-recordings` label to a pull request to compare it with its base branch. The job summary lists the
-differences; the `animation-report` artifact contains the report (`base-vs-head.html`) and the recordings.
+The **Animation Recordings** workflow runs on every pull request, like the visual regression tests: it records the
+base branch and the pull request (merged into the base branch, so only the changes of the pull request show), and
+compares them. The Storybook builds are cached, so a version that was already recorded is not built again.
+
+- When animations differ, the **PR Animation Recordings Bot** comments on the pull request with the scenarios that
+  changed and a link to the report. It updates the same comment on later pushes, and does not comment on pull requests
+  whose animations match the base branch.
+- The job summary of the workflow run lists the differences too.
+- The `animation-report` artifact contains the report (`base-vs-head.html`) and the recordings: unzip it and open the
+  report.
+
+Differences do not fail the pull request: they are for the author and the reviewers to judge. The workflow can also be
+run from the Actions tab to compare any two git refs.
 
 ## Reading the report
 

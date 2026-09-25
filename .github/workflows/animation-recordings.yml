@@ -1,7 +1,10 @@
 name: Animation Recordings
 # Records the animations of the components (tests/animations) for two versions of the library and compares them.
-# Run it from the Actions tab, or add the `animation-recordings` label to a pull request to compare it with its base.
+# On pull requests, it compares the pull request (merged into its base branch) with the base branch, and the
+# "PR Animation Recordings Bot" workflow comments on the pull request when animations differ.
+# It can also be run from the Actions tab to compare any two git refs.
 on:
+  pull_request:
   workflow_dispatch:
     inputs:
       base:
@@ -11,22 +14,14 @@ on:
       head:
         description: Git ref compared with the baseline (branch, tag or SHA)
         required: true
-  pull_request:
-    types: [labeled, synchronize, reopened]
+concurrency:
+  group: animation-recordings-${{ github.event.pull_request.number || github.run_id }}
+  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
   record:
     name: Record Animations
-    # On pull requests: when the label is added, then on every push while it is there (adding other labels is ignored).
-    if: >-
-      github.event_name == 'workflow_dispatch' ||
-      (contains(github.event.pull_request.labels.*.name, 'animation-recordings') &&
-      (github.event.action != 'labeled' || github.event.label.name == 'animation-recordings'))
-    # Job level, so that the skipped runs of other pull request events do not cancel a recording in progress.
-    concurrency:
-      group: animation-recordings-${{ github.event.pull_request.number || github.run_id }}-${{ matrix.side }}
-      cancel-in-progress: true
     timeout-minutes: 40
     runs-on: ubuntu-24.04
     strategy:
@@ -39,11 +34,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           path: recorder
+      # On pull requests, `head` is the merge commit: the comparison shows the changes of the pull request only.
       - name: Checkout ${{ matrix.side }}
         uses: actions/checkout@v4
         with:
           path: app
-          ref: ${{ matrix.side == 'base' && (inputs.base || github.event.pull_request.base.sha) || (inputs.head || github.event.pull_request.head.sha) }}
+          ref: ${{ matrix.side == 'base' && (inputs.base || github.event.pull_request.base.sha) || (inputs.head || github.sha) }}
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
@@ -52,7 +48,14 @@ jobs:
           cache-dependency-path: |
             recorder/package-lock.json
             app/package-lock.json
+      - name: Cache Storybook Build
+        id: storybook-cache
+        uses: actions/cache@v4
+        with:
+          path: app/dist/docs
+          key: animation-recordings-storybook-${{ hashFiles('app/package-lock.json', 'app/angular.json', 'app/projects/angular/**', 'app/projects/addons/**', 'app/projects/ui/**', 'app/.storybook/**') }}
       - name: Build Storybook (${{ matrix.side }})
+        if: steps.storybook-cache.outputs.cache-hit != 'true'
         working-directory: app
         run: |
           npm ci --ignore-scripts
@@ -97,16 +100,18 @@ jobs:
           path: dist/animation-recordings/head
       - name: Compare
         run: |
-          node ./scripts/compare-animation-recordings.js base head | tee comparison.txt
-          {
-            echo '## Animation recordings: base vs head'
-            echo 'Download the `animation-report` artifact and open `base-vs-head.html` to watch and compare the animations.'
-            echo '```'
-            cat comparison.txt
-            echo '```'
-          } >> "$GITHUB_STEP_SUMMARY"
+          node ./scripts/compare-animation-recordings.js base head
+          cat dist/animation-recordings/base-vs-head.md >> "$GITHUB_STEP_SUMMARY"
+          echo 'Download the `animation-report` artifact and open `base-vs-head.html` to watch the animations.' >> "$GITHUB_STEP_SUMMARY"
       - name: Upload Report
         uses: actions/upload-artifact@v4
         with:
           name: animation-report
           path: dist/animation-recordings/
+      - name: Upload Summary
+        uses: actions/upload-artifact@v4
+        with:
+          name: animation-summary
+          path: |
+            dist/animation-recordings/base-vs-head.md
+            dist/animation-recordings/base-vs-head.json

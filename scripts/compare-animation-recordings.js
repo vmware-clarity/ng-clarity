@@ -59,6 +59,12 @@ const report = {
 
 const reportFile = path.join(recordingsDir, `${base}-vs-${head}.html`);
 fs.writeFileSync(reportFile, renderReport(report));
+// Summary for pull request comments and job summaries, and verdict counts for scripts.
+fs.writeFileSync(path.join(recordingsDir, `${base}-vs-${head}.md`), renderMarkdownSummary(report));
+fs.writeFileSync(
+  path.join(recordingsDir, `${base}-vs-${head}.json`),
+  JSON.stringify(countVerdicts(report.scenarios), null, 2)
+);
 
 for (const scenario of report.scenarios) {
   console.log(
@@ -345,6 +351,33 @@ function summarizeKeyframes(keyframes) {
       ...properties,
     };
   });
+}
+
+function countVerdicts(scenarios) {
+  const counts = { same: 0, changed: 0, differs: 0 };
+  scenarios.forEach(scenario => counts[scenario.verdict]++);
+  return counts;
+}
+
+function renderMarkdownSummary(data) {
+  const different = data.scenarios.filter(scenario => scenario.verdict !== 'same');
+  const lines = ['### Animation recordings', ''];
+  if (!different.length) {
+    lines.push(`The animations of the ${data.scenarios.length} recorded scenarios match \`${data.base}\`.`);
+    return lines.join('\n') + '\n';
+  }
+  lines.push(
+    `${different.length} of ${data.scenarios.length} recorded scenarios animate differently from \`${data.base}\`. ` +
+      'Open the report to watch them side by side.',
+    '',
+    '| Scenario | Verdict | Differences |',
+    '| --- | --- | --- |',
+    ...different.map(
+      scenario =>
+        `| ${scenario.name} | ${scenario.verdict} | ${scenario.notes.map(note => note.replace(/\|/g, '\\|')).join('<br>')} |`
+    )
+  );
+  return lines.join('\n') + '\n';
 }
 
 function renderReport(data) {
