@@ -12,8 +12,9 @@ import { createVrtConfig } from './tests/helpers/create-vrt-config';
  */
 export default createVrtConfig({
   testDir: './tests',
-  // The website visual tests live in tests/website and run with playwright-website.config.ts.
-  testIgnore: '**/website/**',
+  // The website visual tests live in tests/website and run with playwright-website.config.ts,
+  // the animation recordings live in tests/animations and run with playwright.animations.config.ts.
+  testIgnore: '**/{website,animations}/**',
   timeout: 30 * 1000,
   expectTimeout: 5000,
   webServerCommand: 'npm run ts-node -- ./scripts/start-static-server.ts ./dist/docs 8080',

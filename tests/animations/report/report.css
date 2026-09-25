@@ -1,0 +1,311 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:root {
+  color-scheme: light dark;
+
+  --bg: #fafafa;
+  --surface: #fff;
+  --text: #21333b;
+  --muted: #5b6b73;
+  --border: #d7dde0;
+  --base: #8c9ba5;
+  --head: #0072a3;
+  --same: #3c8500;
+  --changed: #b25f00;
+  --differs: #c21d00;
+  --chip-text: #fff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #17242b;
+    --surface: #1b2a32;
+    --text: #e9ecef;
+    --muted: #acbac3;
+    --border: #3e4f59;
+    --base: #8c9ba5;
+    --head: #49afd9;
+    --same: #5eb715;
+    --changed: #ffb92e;
+    --differs: #f76060;
+    --chip-text: #17242b;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font:
+    14px/1.45 system-ui,
+    -apple-system,
+    'Segoe UI',
+    sans-serif;
+}
+
+main {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px 16px 64px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 22px;
+}
+
+h2 {
+  margin: 0;
+  font-size: 17px;
+}
+
+a {
+  color: var(--head);
+}
+
+code {
+  font:
+    12px/1.4 ui-monospace,
+    SFMono-Regular,
+    Menlo,
+    monospace;
+}
+
+.subtitle,
+.muted {
+  color: var(--muted);
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin: 12px 0 20px;
+  color: var(--muted);
+}
+
+.swatch {
+  display: inline-block;
+  width: 22px;
+  margin-right: 6px;
+  vertical-align: middle;
+  border-top: 2px solid var(--head);
+}
+
+.swatch.base {
+  border-top: 2px dashed var(--base);
+}
+
+.card {
+  margin-bottom: 20px;
+  padding: 16px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.filters {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.filters button,
+.controls button,
+.controls select {
+  padding: 4px 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  cursor: pointer;
+}
+
+.filters button[aria-pressed='true'] {
+  border-color: var(--head);
+  color: var(--head);
+  font-weight: 600;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th,
+td {
+  padding: 6px 8px;
+  border-bottom: 1px solid var(--border);
+  text-align: left;
+  vertical-align: top;
+}
+
+th {
+  color: var(--muted);
+  font-weight: 600;
+}
+
+.chip {
+  display: inline-block;
+  padding: 1px 8px;
+  border-radius: 10px;
+  color: var(--chip-text);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chip.same {
+  background: var(--same);
+}
+
+.chip.changed {
+  background: var(--changed);
+}
+
+.chip.differs {
+  background: var(--differs);
+}
+
+.scenario-header {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.notes {
+  margin: 0 0 12px;
+  padding-left: 20px;
+}
+
+.players {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+}
+
+.player figcaption {
+  margin-bottom: 4px;
+  color: var(--muted);
+}
+
+.viewport {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: #000;
+}
+
+.viewport video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  transform-origin: 0 0;
+}
+
+.controls {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+  margin: 10px 0 16px;
+}
+
+.controls input[type='range'] {
+  flex: 1 1 240px;
+}
+
+.time {
+  min-width: 72px;
+  font-variant-numeric: tabular-nums;
+}
+
+.charts {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.chart {
+  padding: 8px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+}
+
+.chart-title {
+  margin-bottom: 4px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart .axis {
+  fill: var(--muted);
+  font-size: 9px;
+}
+
+.chart .grid {
+  stroke: var(--border);
+  stroke-width: 0.5;
+}
+
+.chart .base {
+  fill: none;
+  stroke: var(--base);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+}
+
+.chart .head {
+  fill: none;
+  stroke: var(--head);
+  stroke-width: 1.5;
+}
+
+.chart .cursor {
+  stroke: var(--changed);
+  stroke-width: 1;
+}
+
+details {
+  margin-top: 8px;
+}
+
+summary {
+  cursor: pointer;
+  color: var(--muted);
+}
+
+.animations {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.animations td {
+  font-size: 12px;
+}
+
+.table-scroll {
+  overflow-x: auto;
+}

@@ -7,6 +7,9 @@
     "npm": ">=11.0.0"
   },
   "scripts": {
+    "animations:compare": "node ./scripts/compare-animation-recordings.js",
+    "animations:record": "playwright test -c playwright.animations.config.ts",
+    "animations:update": "node ./scripts/update-animation-recordings.js",
     "build": "npm-run-all _build:angular _build:addons _build:ui _build:storybook _build:demo _build:website",
     "build:ci": "npm-run-all clean lint build test public-api:check",
     "clean": "rimraf dist",
