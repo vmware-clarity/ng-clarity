@@ -983,15 +983,16 @@ describe('DatagridComponent', () => {
         expect(warn.calls.allArgs().some(args => String(args[0]).includes('NG0955'))).toBeFalse();
       });
 
-      // Custom actions do not move the column, and they stay open the same as the built-in items.
-      it('keeps the menu open after an action is clicked', function (this: DatagridSpecContext) {
+      // Custom actions leave clrCanClosePopover at its default, so unlike the move actions, which are
+      // meant to be repeated, they close the menu once picked.
+      it('closes the menu after an action is clicked', function (this: DatagridSpecContext) {
         toggleMenu(this.fixture, 1);
         menuItem('Reset State').click();
         this.fixture.detectChanges();
 
         const trigger = this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[1].nativeElement;
-        expect(trigger.getAttribute('aria-expanded')).toBe('true');
-        expect(menuItem('Reset State')).toBeTruthy();
+        expect(trigger.getAttribute('aria-expanded')).toBe('false');
+        expect(menuItem('Reset State')).toBeUndefined();
       });
 
       describe('with children', () => {

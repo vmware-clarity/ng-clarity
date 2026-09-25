@@ -135,8 +135,8 @@
             <div class="dropdown-divider" role="separator"></div>
             <!--
               Application actions come last, so the built-in ones keep the same place in every menu
-              whatever a column adds. They leave clrCanClosePopover at its default: they do not move
-              the column, so the menu has nothing to re-anchor, and it stays open like the built-in items.
+              whatever a column adds. clrCanClosePopover is left at its default, so these close the
+              menu on click - unlike the move actions, they are not expected to be repeated.
             -->
             @for (action of customColumnActions; track action) {
               <!-- An action with children opens them as a nested menu, the same as in the action bar. -->
