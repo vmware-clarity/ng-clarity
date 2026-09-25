@@ -74,7 +74,7 @@
   class="clr-treenode-children"
   [@toggleChildrenAnim]="expandService.expanded ? 'expanded' : 'collapsed'"
   [class.clr-treenode-children-collapsed]="!expandService.expanded"
-  [attr.role]="isExpandable() && !featuresService.recursion ? 'group' : null"
+  [attr.role]="isExpandable() && expandService.expanded && !featuresService.recursion ? 'group' : null"
   [attr.inert]="inertWhenCollapsed && !expandService.expanded ? '' : null"
 >
   <ng-content select="clr-tree-node"></ng-content>
