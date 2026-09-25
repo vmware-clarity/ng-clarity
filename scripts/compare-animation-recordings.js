@@ -374,10 +374,15 @@ function renderMarkdownSummary(data) {
     '| --- | --- | --- |',
     ...different.map(
       scenario =>
-        `| ${scenario.name} | ${scenario.verdict} | ${scenario.notes.map(note => note.replace(/\|/g, '\\|')).join('<br>')} |`
+        `| ${markdownCell(scenario.name)} | ${scenario.verdict} | ${scenario.notes.map(markdownCell).join('<br>')} |`
     )
   );
   return lines.join('\n') + '\n';
+}
+
+/** Escapes text for a Markdown table cell: backslashes first, then the column separators; no line breaks. */
+function markdownCell(text) {
+  return text.replace(/\\/g, '\\\\').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
 }
 
 function renderReport(data) {
