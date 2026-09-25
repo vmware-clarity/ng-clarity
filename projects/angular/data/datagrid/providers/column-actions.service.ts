@@ -33,13 +33,20 @@ export interface ColumnFilterHandle {
 @Injectable()
 export class ColumnActionsService {
   /**
-   * Whether the column has an actions menu. While it does, the filter drops its own toggle and is
-   * opened from the menu instead, so the header keeps a single control per column.
+   * Whether the filter keeps its own toggle in the column header. An actions menu turns this off and
+   * opens the filter itself, so the header keeps a single control per column - unless
+   * `clrDgKeepFilterInHeader` asks to keep the toggle.
    *
    * A signal rather than a plain flag because the menu and the filter are siblings: either can be
    * created first, and the filter has to react whenever the answer changes.
    */
-  readonly present = signal(false);
+  readonly filterInHeader = signal(true);
+
+  /**
+   * Whether the column has an actions menu at all, whatever it does with the filter. While it does,
+   * the column drops its own pin toggle, because the menu offers Pin Column instead.
+   */
+  readonly menuPresent = signal(false);
 
   /** The filter rendered for this column, if it has one. */
   readonly filter = signal<ColumnFilterHandle | null>(null);

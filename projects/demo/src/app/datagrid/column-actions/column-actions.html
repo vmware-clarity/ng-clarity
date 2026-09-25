@@ -71,10 +71,11 @@
 <h3>Custom column actions</h3>
 
 <p>
-  Items projected into <code class="clr-code">clr-dg-column-actions</code> are appended after the built-in ones and have
-  to carry <code class="clr-code">clrDgColumnAction</code>. That directive is what joins them to the menu's arrow key
-  order and closes the menu when one is picked. <code class="clr-code">clrDropdownItem</code> cannot be used here: it
-  resolves its dropdown from where it is declared, which is outside the menu in the component's own template.
+  Items projected into <code class="clr-code">clr-dg-column-actions</code> are appended after the built-in ones and join
+  the menu's arrow key order. <code class="clr-code">clrDgColumnAction</code> closes the menu when one is picked, unless
+  <code class="clr-code">[clrCanClosePopover]="false"</code> asks it to stay open. A plain
+  <code class="clr-code">clrDropdownItem</code> or a nested <code class="clr-code">clr-dropdown</code> works too, as
+  long as it is projected directly.
 </p>
 
 <p>

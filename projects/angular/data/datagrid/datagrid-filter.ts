@@ -42,7 +42,7 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
       opening this filter. Nothing else here changes: the popover is still driven through the
       column's ClrPopoverService, the menu just points its origin at its own trigger instead.
     -->
-    @if (!columnActions?.present()) {
+    @if (columnActions?.filterInHeader() ?? true) {
       <button
         class="datagrid-filter-toggle"
         type="button"
@@ -110,6 +110,12 @@ export class ClrDatagridFilter<T = any>
       popoverService.openChange.subscribe(change => {
         this.ariaExpanded = change;
         this.openChange.emit(change);
+
+        // Set here rather than in the open setter, so it applies however the filter is opened - its
+        // own toggle, clrDgFilterOpen, or the column actions menu.
+        if (keyNavigation) {
+          keyNavigation.skipItemFocus = change;
+        }
       })
     );
 
@@ -125,10 +131,6 @@ export class ClrDatagridFilter<T = any>
     if (this.popoverService.open !== open) {
       this.popoverService.open = open;
       this.openChange.emit(open);
-
-      if (this.keyNavigation) {
-        this.keyNavigation.skipItemFocus = open;
-      }
     }
   }
 

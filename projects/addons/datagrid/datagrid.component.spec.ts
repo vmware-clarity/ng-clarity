@@ -1041,6 +1041,31 @@ describe('DatagridComponent', () => {
           expect(received[0].context).toBe(this.columnsDefs[1]);
         });
 
+        it('reaches the action with children by the arrow keys', async function (this: DatagridSpecContext) {
+          const settle = async () => {
+            this.fixture.detectChanges();
+            // The menu moves focus to its first item from a timeout of its own.
+            await new Promise(resolve => setTimeout(resolve));
+            this.fixture.detectChanges();
+          };
+          const focusedLabel = () => (document.activeElement as HTMLElement)?.textContent.trim();
+
+          const trigger = this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[1]
+            .nativeElement;
+          trigger.focus();
+          trigger.click();
+          await settle();
+
+          const order = [focusedLabel()];
+          for (let i = 0; i < 5; i++) {
+            document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+            await settle();
+            order.push(focusedLabel());
+          }
+
+          expect(order).toEqual(['Move Left', 'Move Right', 'Copy values', 'About column', 'More', 'Move Left']);
+        });
+
         it('does not report a disabled child', function (this: DatagridSpecContext) {
           const received: ActionClickEvent[] = [];
           this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) =>

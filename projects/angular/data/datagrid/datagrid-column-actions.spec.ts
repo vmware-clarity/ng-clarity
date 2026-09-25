@@ -87,6 +87,7 @@ class ColumnActionsTest {
       <clr-dg-column>
         First
         <clr-dg-column-actions>
+          <button type="button" clrDgColumnAction [clrCanClosePopover]="false">Keep open</button>
           <button type="button" clrDgColumnAction [clrDisabled]="customDisabled" class="custom-action">Custom</button>
         </clr-dg-column-actions>
       </clr-dg-column>
@@ -100,6 +101,33 @@ class ColumnActionsTest {
 class ProjectedActionTest {
   items = [1];
   customDisabled = false;
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column [clrDgSortBy]="'x'">
+        First
+        <clr-dg-column-actions>
+          <button type="button" clrDgColumnAction>Custom</button>
+          <button type="button" clrDropdownItem>Plain</button>
+          <clr-dropdown>
+            <button type="button" clrDropdownTrigger>More</button>
+            <clr-dropdown-menu *clrIfOpen>
+              <button type="button" clrDropdownItem>Child</button>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+        </clr-dg-column-actions>
+      </clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class ProjectedOrderTest {
+  items = [1];
 }
 
 @Component({
@@ -373,9 +401,6 @@ export default function (): void {
         expect(actions.injector.get(ClrPopoverService)).toBe(actions.componentInstance.popoverService);
       });
 
-      // The whole point of clrDgColumnAction over a plain button: ClrDropdownMenu collects its items
-      // through @ContentChildren, which never sees projected content, so the directive has to hand
-      // itself to the dropdown's focus handler to take part in arrow key navigation.
       it('joins a projected action to the arrow key order', function () {
         openMenu();
 
@@ -383,14 +408,22 @@ export default function (): void {
         expect(itemLabelled('Custom').getAttribute('id')).toBeTruthy();
       });
 
-      // The menu sets isMenuClosable to false, so a built-in item like Sort Ascending does not close
-      // it either. closeMenu() checks that same flag, the way clrDropdownItem does, so a projected
-      // action follows suit rather than closing on its own.
-      it('leaves the menu open when a projected action is picked', function () {
+      // clrCanClosePopover defaults to true. The menu keeps isMenuClosable false for its built-in
+      // items, and closeMenu() does not read that flag, so the input is what decides.
+      it('closes the menu when a projected action is picked', function () {
         openMenu();
-        expect(menuItems().length).toBeGreaterThan(0);
 
         itemLabelled('Custom').click();
+        context.detectChanges();
+
+        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('false');
+        expect(menuIsOpen()).toBeFalse();
+      });
+
+      it('leaves the menu open for an action with clrCanClosePopover false', function () {
+        openMenu();
+
+        itemLabelled('Keep open').click();
         context.detectChanges();
 
         expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
@@ -410,6 +443,80 @@ export default function (): void {
         context.detectChanges();
 
         expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
+      });
+    });
+
+    // Projected items are found through the menu's own content query rather than registering
+    // themselves, so anything directly projected joins the arrow key order - a clrDgColumnAction, a
+    // plain clrDropdownItem, and a nested clr-dropdown through its trigger - while the nested
+    // dropdown's items stay in its own menu.
+    describe('arrow key order of projected items', function () {
+      let context: TestContext<ClrDatagrid, ProjectedOrderTest>;
+      let commonStrings: ClrCommonStringsService;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, ProjectedOrderTest);
+        commonStrings = TestBed.inject(ClrCommonStringsService);
+      });
+
+      afterEach(function () {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => menu.remove());
+      });
+
+      async function settle() {
+        context.detectChanges();
+        // The menu moves focus to its first item from a timeout of its own.
+        await new Promise(resolve => setTimeout(resolve));
+        context.detectChanges();
+      }
+
+      function focusedLabel(): string {
+        return (document.activeElement as HTMLElement)?.textContent.trim();
+      }
+
+      async function press(key: string) {
+        document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+        await settle();
+      }
+
+      async function openByKeyboard() {
+        const trigger: HTMLButtonElement = context.clarityElement.querySelector(TOGGLE);
+        trigger.focus();
+        trigger.click();
+        await settle();
+      }
+
+      it('walks the built-in items, then every directly projected one, and wraps', async function () {
+        await openByKeyboard();
+
+        const order = [focusedLabel()];
+        for (let i = 0; i < 5; i++) {
+          await press('ArrowDown');
+          order.push(focusedLabel());
+        }
+
+        expect(order).toEqual([
+          commonStrings.keys.sortColumnAscending,
+          commonStrings.keys.sortColumnDescending,
+          'Custom',
+          'Plain',
+          'More',
+          commonStrings.keys.sortColumnAscending,
+        ]);
+      });
+
+      it('opens a nested dropdown with ArrowRight and keeps its items out of the menu order', async function () {
+        await openByKeyboard();
+        for (let i = 0; i < 4; i++) {
+          await press('ArrowDown');
+        }
+        expect(focusedLabel()).toBe('More');
+
+        await press('ArrowRight');
+        expect(focusedLabel()).toBe('Child');
+
+        await press('ArrowLeft');
+        expect(focusedLabel()).toBe('More');
       });
     });
 

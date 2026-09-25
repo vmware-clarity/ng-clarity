@@ -12,19 +12,20 @@ import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
+  ContentChildren,
   ElementRef,
+  inject,
   Injector,
   Input,
   OnDestroy,
   Optional,
+  QueryList,
   SkipSelf,
   ViewChild,
 } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import {
   ClrDropdown,
-  ClrDropdownMenu,
-  DROPDOWN_FOCUS_HANDLER_PROVIDER,
   DropdownFocusHandler,
   ROOT_DROPDOWN_PROVIDER,
   RootDropdownService,
@@ -34,9 +35,9 @@ import { Subscription } from 'rxjs';
 
 import { ClrDatagridColumn } from './datagrid-column';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
+import { ColumnActionsFocusHandler } from './providers/column-actions-focus-handler.service';
 import { ColumnActionsService } from './providers/column-actions.service';
 import { FiltersProvider } from './providers/filters';
-import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 /**
  * Groups the actions of a single column behind one menu in the column header. It only gathers
@@ -54,9 +55,10 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
  * `clrDgKeepFilterInHeader` opts back into the toggle, and then the menu drops the filter action in
  * exchange: a column offers one way to reach its filter, never both at once.
  *
- * Projected items should carry `clrDgColumnAction`, which is the dropdown item with the menu's own
- * registration on top - a plain `clrDropdownItem` is styled and clickable, but the menu cannot find
- * it to put it in the arrow key order.
+ * Projected items can be `clrDgColumnAction`s, plain `clrDropdownItem`s, or a nested `clr-dropdown`.
+ * They join the arrow key order after the built-in items as long as they are projected directly -
+ * an item wrapped in an element of its own is not found. A nested dropdown's own items stay in its
+ * own menu.
  *
  * The component is the dropdown itself rather than wrapping one, so that a projected item can reach
  * it: injection resolves from where a node is declared, and an item declared outside this component
@@ -167,7 +169,9 @@ import { KeyNavigationGridController } from './utils/key-navigation-grid.control
   providers: [
     ROOT_DROPDOWN_PROVIDER,
     FOCUS_SERVICE_PROVIDER,
-    DROPDOWN_FOCUS_HANDLER_PROVIDER,
+    ColumnActionsFocusHandler,
+    { provide: DropdownFocusHandler, useExisting: ColumnActionsFocusHandler },
+    { provide: FocusableItem, useExisting: ColumnActionsFocusHandler },
     { provide: ClrDropdown, useExisting: ClrDatagridColumnActions },
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -181,13 +185,10 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
 
   @ViewChild('trigger', { read: ElementRef }) private trigger: ElementRef<HTMLButtonElement>;
 
-  private menuInstance: ClrDropdownMenu;
-
   // Named for this component rather than inherited: ClrDropdown keeps its own private list.
   private subs: Subscription[] = [];
-  private menuItemsSubscription: Subscription;
-  private projectedActions: FocusableItem[] = [];
-  private viewReady = false;
+  private projectedItemsSubscription: Subscription;
+  private readonly columnActionsFocusHandler = inject(ColumnActionsFocusHandler);
 
   constructor(
     protected column: ClrDatagridColumn,
@@ -199,7 +200,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     @SkipSelf() private columnPopover: ClrPopoverService,
     private changeDetectorRef: ChangeDetectorRef,
     private injector: Injector,
-    @Optional() private keyNavigation: KeyNavigationGridController,
     @Optional() private filters: FiltersProvider,
     @SkipSelf() @Optional() parent: ClrDropdown,
     popoverService: ClrPopoverService,
@@ -214,7 +214,9 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     // unless clrDgKeepFilterInHeader asked to keep both. Reading the backing field rather than the
     // getter covers the default: Angular only invokes the setter above when the input is actually
     // bound, and by then the field initializer has already run.
-    columnActions.present.set(!this._keepFilterInHeader);
+    columnActions.filterInHeader.set(this._keepFilterInHeader);
+    // Tells the column to drop its pin toggle, since Pin Column is offered here instead.
+    columnActions.menuPresent.set(true);
   }
 
   /**
@@ -228,7 +230,7 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   }
   set keepFilterInHeader(value: boolean) {
     this._keepFilterInHeader = value;
-    this.columnActions.present.set(!value);
+    this.columnActions.filterInHeader.set(value);
   }
 
   /**
@@ -281,39 +283,22 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   }
 
   /**
-   * clrIfOpen destroys the menu on close and builds a fresh one on open, so this runs with a new
-   * instance every time and its items have to be picked up again.
+   * The items projected into the menu. The menu's own content query cannot see them, so they are
+   * handed to the focus handler from here.
    *
-   * A setter rather than the clrIfOpenChange output: that output fires the moment ClrIfOpen creates
-   * the view, which is before Angular refreshes this query, so the instance is not reachable from it
-   * yet. A query setter runs exactly when the result changes.
-   *
-   * ClrDropdownMenu registers only the items declared in this template, and re-registers them
-   * whenever they change, so the full list including the projected ones has to be applied after it.
+   * Only direct children are queried, not descendants: a nested `clr-dropdown` is one item here - its
+   * focus handler - and the items inside it belong to its own menu, not to this one.
    */
-  @ViewChild(ClrDropdownMenu)
-  private set menu(menu: ClrDropdownMenu) {
-    this.menuInstance = menu;
-    this.menuItemsSubscription?.unsubscribe();
-
-    if (menu) {
-      this.menuItemsSubscription = menu.items.changes.subscribe(() => this.linkMenuItems());
-    }
-
-    this.linkMenuItems();
+  @ContentChildren(FocusableItem)
+  private set projectedItems(items: QueryList<FocusableItem>) {
+    this.projectedItemsSubscription?.unsubscribe();
+    this.projectedItemsSubscription = items.changes.subscribe(() =>
+      this.columnActionsFocusHandler.setProjectedItems(items.toArray())
+    );
+    this.columnActionsFocusHandler.setProjectedItems(items.toArray());
   }
 
   ngAfterViewInit() {
-    // The grid owns arrow key handling for the header, so it has to stand down while either overlay
-    // has focus - the menu, or the filter this menu opens. ClrDatagridFilter normally does the second
-    // half itself, but only when it is opened through its own input, which is no longer the path.
-    if (this.keyNavigation) {
-      this.subs.push(
-        this.popoverService.openChange.subscribe(() => this.updateSkipItemFocus()),
-        this.columnPopover.openChange.subscribe(() => this.updateSkipItemFocus())
-      );
-    }
-
     // The trigger and the filter action show whether the column is filtered, and this component is
     // OnPush, so it has to be told when a filter value changes.
     if (this.filters) {
@@ -324,50 +309,23 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     // template and refreshes the view on its own, but closing it does not - that is an outside click
     // or an escape key handled by the overlay, and the item would be left announcing itself expanded.
     this.subs.push(this.columnPopover.openChange.subscribe(() => this.changeDetectorRef.markForCheck()));
-
-    // The menu is rebuilt on every open, and clrIfOpenChange is what reports that.
-    this.viewReady = true;
   }
 
   override ngOnDestroy() {
     super.ngOnDestroy();
     this.subs.forEach(sub => sub.unsubscribe());
-    this.menuItemsSubscription?.unsubscribe();
-    // Hands the filter back its own toggle, in case the menu is removed while the column stays.
-    this.columnActions.present.set(false);
-  }
-
-  /**
-   * Called by the projected `clrDgColumnAction` items, which the menu cannot find on its own: its
-   * content query only sees what is declared in this template, not what is projected into it.
-   */
-  registerAction(item: FocusableItem) {
-    this.projectedActions.push(item);
-    this.linkMenuItems();
-  }
-
-  unregisterAction(item: FocusableItem) {
-    const index = this.projectedActions.indexOf(item);
-
-    if (index > -1) {
-      this.projectedActions.splice(index, 1);
-      this.linkMenuItems();
-    }
+    this.projectedItemsSubscription?.unsubscribe();
+    // Hands the filter and the pin their own toggles back, in case the menu is removed while the
+    // column stays.
+    this.columnActions.filterInHeader.set(true);
+    this.columnActions.menuPresent.set(false);
   }
 
   /**
    * Returns focus to the trigger before closing, the same order `clrDropdownItem` uses - moving focus
    * first means it lands correctly even when the action opens a modal.
-   *
-   * Checks `isMenuClosable` for the same reason `clrDropdownItem` does on its own click handler:
-   * without it a projected item would close the menu on click while a built-in one, which this
-   * component keeps open, would not.
    */
   closeMenu() {
-    if (!this.isMenuClosable) {
-      return;
-    }
-
     this.focusHandler.focus();
     this.popoverService.open = false;
   }
@@ -447,19 +405,5 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     // that opened it. Without this, the very click on this menu item would close the filter again.
     this.columnPopover.openEvent = event;
     this.columnPopover.open = true;
-  }
-
-  private updateSkipItemFocus() {
-    this.keyNavigation.skipItemFocus = this.popoverService.open || this.columnPopover.open;
-  }
-
-  private linkMenuItems() {
-    // The projected items register from their own constructor, which runs while the view is still
-    // being created, and the menu itself only exists while it is open.
-    if (!this.viewReady || !this.menuInstance) {
-      return;
-    }
-
-    this.focusHandler.addChildren([...this.menuInstance.items.toArray(), ...this.projectedActions]);
   }
 }

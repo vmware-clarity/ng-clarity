@@ -305,7 +305,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           type: 'boolean',
           defaultValue: 'false',
           description:
-            'Offers Pin Column in the column actions menu, letting the user pin and unpin the column from within the datagrid. It only adds the control - the pinned state itself stays on [clrDgPinned] - and it needs a clr-dg-column-actions in the column to render the menu.',
+            'Lets the user pin and unpin the column from within the datagrid, through a pin toggle in the column header - or through Pin Column in the column actions menu, when the column has a clr-dg-column-actions, which then replaces the toggle. It only adds the control - the pinned state itself stays on [clrDgPinned].',
         },
         {
           name: '[clrFilterNumberMaxPlaceholder]',

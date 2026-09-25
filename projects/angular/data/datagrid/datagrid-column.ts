@@ -14,6 +14,7 @@ import {
   ElementRef,
   EventEmitter,
   Inject,
+  inject,
   Injector,
   Input,
   OnChanges,
@@ -101,6 +102,17 @@ import { WrappedColumn } from './wrapped-column';
       -->
       <ng-content select="clr-dg-column-actions"></ng-content>
 
+      @if (pinnable && !columnActions.menuPresent()) {
+        <button
+          class="datagrid-column-pin"
+          type="button"
+          [attr.aria-label]="pinned ? commonStrings.keys.unpinColumn : commonStrings.keys.pinColumn"
+          (click)="onPinToggleClick($event)"
+        >
+          <cds-icon [size]="'12'" [shape]="pinned ? 'unpin' : 'pin'" solid aria-hidden="true"></cds-icon>
+        </button>
+      }
+
       @if (showSeparator) {
         <clr-dg-column-separator></clr-dg-column-separator>
       }
@@ -127,9 +139,10 @@ export class ClrDatagridColumn<T = any>
   @Input('clrDgDisableUnsort') disableUnsort = false;
 
   /**
-   * Lets the user pin and unpin the column from within the datagrid, through the pin action in
-   * `clr-dg-column-actions`. It only offers the control - the pinned state itself stays on
-   * `clrDgPinned`.
+   * Lets the user pin and unpin the column from within the datagrid. It only offers the control - the
+   * pinned state itself stays on `clrDgPinned`.
+   * The control is a pin toggle in the column header, or Pin Column in the column's
+   * `clr-dg-column-actions` when it has one - never both, so the header keeps one control per action.
    */
   @Input({ alias: 'clrDgPinnable', transform: booleanAttribute }) pinnable = false;
 
@@ -143,6 +156,9 @@ export class ClrDatagridColumn<T = any>
    * A custom filter for this column that can be provided in the projected content
    */
   customFilter = false;
+
+  // Provided by this column itself, and shared with its actions menu and filter.
+  protected readonly columnActions = inject(ColumnActionsService);
 
   /*
    * What type is this column?  This defaults to STRING, but can also be
@@ -472,6 +488,13 @@ export class ClrDatagridColumn<T = any>
   togglePinned() {
     this.pinned = !this.pinned;
     this.pinnedChange.emit(this.pinned);
+  }
+
+  protected onPinToggleClick(event: MouseEvent) {
+    // The header is a drop target for the column ordering addon and a click target for the sort
+    // button next to the toggle, so the toggle keeps its click to itself.
+    event.stopPropagation();
+    this.togglePinned();
   }
 
   private listenForDetailPaneChanges() {
