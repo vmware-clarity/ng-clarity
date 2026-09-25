@@ -256,17 +256,11 @@
     will-change: height;
     overflow-y: hidden;
 
-    // Collapsed subtrees are skipped from rendering entirely, which also removes them from the focus order and
-    // the accessibility tree. The discrete transition delays it until the collapse animation (200ms) is over,
-    // and lets the subtree render again right away when the node expands.
-    transition-property: content-visibility;
-    transition-duration: 0s;
-    transition-behavior: allow-discrete;
-
-    &.clr-treenode-children-collapsed {
-      content-visibility: hidden;
-      transition-delay: 0.2s;
-    }
+    // Collapsed subtrees are skipped from rendering with content-visibility (set by the component), which takes
+    // their whole content out of the focus order and the accessibility tree too. Remembering their last rendered
+    // size keeps the collapse animation: the box still shrinks from its full height, just without painting the
+    // content that is already hidden.
+    contain-intrinsic-block-size: auto 0;
   }
 
   .clr-treenode-link {

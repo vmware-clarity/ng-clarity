@@ -47,15 +47,6 @@ import { ClrTreeNodeLink } from './tree-node-link';
 
 const LVIEW_CONTEXT_INDEX = 8;
 
-/*
- * Collapsed children containers are hidden with `content-visibility: hidden` (see the .clr-treenode-children-collapsed
- * styles), which skips their rendering entirely and removes them from the focus order and the accessibility tree.
- * Browsers without support fall back to `inert`, which achieves the same for focus and assistive technologies
- * but forces a style recalculation of the whole subtree every time a node gets toggled.
- */
-const SUPPORTS_CONTENT_VISIBILITY =
-  typeof CSS !== 'undefined' && typeof CSS.supports === 'function' && CSS.supports('content-visibility', 'hidden');
-
 // If the user types multiple keys without allowing 200ms to pass between them,
 // then those keys are sent together in one request.
 const TREE_TYPE_AHEAD_TIMEOUT = 200;
@@ -87,7 +78,6 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   @Output('clrExpandedChange') expandedChange = new EventEmitter<boolean>();
 
   STATES = ClrSelectedState;
-  inertWhenCollapsed = !SUPPORTS_CONTENT_VISIBILITY;
   isModelLoading = false;
   nodeId = uniqueIdFactory();
   contentContainerTabindex = -1;
