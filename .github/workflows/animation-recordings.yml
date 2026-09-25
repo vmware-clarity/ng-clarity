@@ -13,15 +13,20 @@ on:
         required: true
   pull_request:
     types: [labeled, synchronize, reopened]
-concurrency:
-  group: animation-recordings-${{ github.event.pull_request.number || github.run_id }}
-  cancel-in-progress: true
 permissions:
   contents: read
 jobs:
   record:
-    name: Record Animations (${{ matrix.side }})
-    if: github.event_name == 'workflow_dispatch' || contains(github.event.pull_request.labels.*.name, 'animation-recordings')
+    name: Record Animations
+    # On pull requests: when the label is added, then on every push while it is there (adding other labels is ignored).
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      (contains(github.event.pull_request.labels.*.name, 'animation-recordings') &&
+      (github.event.action != 'labeled' || github.event.label.name == 'animation-recordings'))
+    # Job level, so that the skipped runs of other pull request events do not cancel a recording in progress.
+    concurrency:
+      group: animation-recordings-${{ github.event.pull_request.number || github.run_id }}-${{ matrix.side }}
+      cancel-in-progress: true
     timeout-minutes: 40
     runs-on: ubuntu-24.04
     strategy:
