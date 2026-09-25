@@ -8,16 +8,18 @@ For every scenario of [`animation-scenarios.ts`](./animation-scenarios.ts) (open
 accordion panel, a tree node, a datagrid row...), the recorder opens the Storybook story, triggers the animation and
 records, from the trigger:
 
-- the **rendered frames**, with Playwright's [screencast](https://playwright.dev/docs/api/class-screencast): every
-  frame the browser paints (about 60 per second), with its timestamp,
-- a **video** of the same time span (`video.webm`, from the screencast as well),
+- a **video** (`video.webm`) at 60 frames per second: every frame the browser paints is captured with Playwright's
+  [screencast](https://playwright.dev/docs/api/class-screencast), with its timestamp, and encoded so that the video
+  frame at a time shows the page at that time (from 100 ms before the trigger),
 - the **geometry, opacity and transform** of the tracked elements, sampled on every animation frame,
 - the **animations and transitions** that ran (CSS animations and transitions, Web Animations API, Angular
   animations) with their duration, delay, easing and keyframes.
 
-The report plays the frames rather than the videos: a video is encoded at a fixed frame rate, which leaves 5 frames to
-a 200 ms animation, and cannot be lined up with another recording to the millisecond. The
-[test videos](https://playwright.dev/docs/videos) are only kept for the scenarios that fail, to see why.
+A recording is `recording.json` (the measurements) and `video.webm`. The report shows any frame of the videos by
+seeking in them. Playwright's own [test videos](https://playwright.dev/docs/videos) are recorded at 25 frames per
+second, which leaves 5 frames to a 200 ms animation: they are only kept for the scenarios that fail, to see why. The
+videos are encoded with the ffmpeg build Playwright uses for its videos (`npx playwright install ffmpeg`; set
+`CLARITY_FFMPEG` to use another ffmpeg).
 
 Nothing is slowed down or paused while recording: the page runs its animations like it does for users. Slow motion is
 only applied when playing the recordings back in the report.
@@ -27,7 +29,7 @@ only applied when playing the recordings back in the report.
 The **PR Animation Recordings** job of the PR Build records the animations of the pull request and compares them with
 the committed recordings, like the visual regression tests do with the screenshots:
 
-- when a scenario animates differently, its new recording (`recording.json`, the frames and `video.webm`) is offered by
+- when a scenario animates differently, its new recording (`recording.json` and `video.webm`) is offered by
   the **PR Visual Snapshot Update Bot**, in the same commit as the screenshot changes, to cherry-pick into the pull
   request (like for the screenshots, the bot check fails until it is); the bot comment links to the animation report,
 - the job summary lists the scenarios that changed and how,
@@ -83,13 +85,15 @@ it without switching branches.
 
 Each scenario gets a verdict:
 
-- **same**: the tracked elements start from and end in the same state, are animated (or not) in both versions, end
-  their animations within 40 ms of each other and follow similar easing curves,
+- **same**: the tracked elements start from and end in the same state, are animated (or not) in both versions and
+  end their animations within 40 ms of each other, and the same animations run with the same timing,
 - **changed**: an element is animated in one version and changes at once in the other, its animation ends more than
-  40 ms earlier or later, or its progress curve is more than 12% away from the other version's (different easing;
-  a start up to 10 ms apart, less than a frame, is tolerated),
+  40 ms earlier or later, or the animations that run differ: another duration or delay (more than 10 ms apart), another
+  easing, other animated properties, an animation added or removed,
 - **differs**: an element starts from or ends in a different state (size, position, opacity, rendered or not).
 
+The timing of the animations is compared as the browser declares it, not measured from the frames: measured
+progress curves vary by a frame or two from run to run, which is as much as a change of easing.
 The thresholds are in [`compare-animation-recordings.js`](../../scripts/compare-animation-recordings.js). The verdicts
 point at what to look at; the recordings are what to judge.
 

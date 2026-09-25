@@ -31,10 +31,8 @@ const PROPERTIES = {
 const TIMING_TOLERANCE = 40;
 /** An element that goes through at least this many intermediate states is animated, not just updated. */
 const MIN_ANIMATED_CHANGES = 3;
-/** Two animations whose progress curves are further apart than this (0 to 1) have visibly different easings. */
-const EASING_TOLERANCE = 0.12;
-/** Start latency tolerated when comparing progress curves: animations may start one frame apart. */
-const FRAME_TOLERANCE = 10;
+/** Animation durations and delays within this many milliseconds of each other are the same. */
+const DURATION_TOLERANCE = 10;
 
 const [base, head] = process.argv.slice(2);
 if (!base || !head) {
@@ -99,12 +97,12 @@ function compareScenario(name) {
     const baseAnalysis = analyzeElement(runs.base.samples, label);
     const headAnalysis = analyzeElement(runs.head.samples, label);
     const notes = compareElement(label, baseAnalysis, headAnalysis);
-    if (baseAnalysis.animated && headAnalysis.animated) {
-      notes.push(...compareEasing(label, runs.base.samples, runs.head.samples));
-    }
     return { label, base: baseAnalysis, head: headAnalysis, notes };
   });
-  const notes = elements.flatMap(element => element.notes.map(note => note.text));
+  const notes = [
+    ...elements.flatMap(element => element.notes.map(note => note.text)),
+    ...compareAnimations(runs.base.animations, runs.head.animations),
+  ];
   const verdict = elements.some(element => element.notes.some(note => note.level === 'differs'))
     ? 'differs'
     : notes.length
@@ -131,8 +129,7 @@ function loadRun(label, scenario) {
     duration: recording.duration,
     userAgent: recording.userAgent,
     recordedAt: recording.recordedAt,
-    video: recording.video ? `${dir}/${recording.video}` : null,
-    frames: recording.frames.map(frame => ({ t: frame.t, src: `${dir}/${frame.file}` })),
+    video: { src: `${dir}/${recording.video.file}`, fps: recording.video.fps, start: recording.video.start },
     samples: recording.samples.map(sample => ({
       t: sample.t,
       values: Object.fromEntries(Object.entries(sample.values).map(([label, value]) => [label, metrics(value)])),
@@ -232,93 +229,89 @@ function compareElement(label, baseAnalysis, headAnalysis) {
 }
 
 /**
- * Compares how both animations progress over time, on the property of the element that changes the most: the
- * easing (and the start delay) shows as a gap between the two progress curves.
+ * Compares the animations and transitions that ran, as the browser declares them: duration, delay, easing, animated
+ * properties. Unlike the measured values, they do not vary from run to run, so they show a change of easing or
+ * duration reliably (durations within `DURATION_TOLERANCE` match: an interrupted transition is shortened by a few
+ * milliseconds).
  */
-function compareEasing(label, baseSamples, headSamples) {
-  const property = mainProperty(label, [baseSamples, headSamples]);
-  if (!property) {
-    return [];
-  }
-  const baseProgress = progress(baseSamples, label, property);
-  const headProgress = progress(headSamples, label, property);
-  if (!baseProgress || !headProgress) {
-    return [];
-  }
-  const end = Math.max(baseProgress.end, headProgress.end);
-  let gap = 0;
-  let gapTime = 0;
-  for (let t = 0; t <= end; t += 5) {
-    let difference = Infinity;
-    for (let shift = -FRAME_TOLERANCE; shift <= FRAME_TOLERANCE; shift += 2) {
-      difference = Math.min(difference, Math.abs(baseProgress.at(t) - headProgress.at(t + shift)));
-    }
-    if (difference > gap) {
-      gap = difference;
-      gapTime = t;
+function compareAnimations(baseAnimations, headAnimations) {
+  const unmatched = [...headAnimations];
+  const removed = [];
+  for (const animation of baseAnimations) {
+    const match = unmatched.findIndex(candidate => sameAnimation(animation, candidate));
+    if (match === -1) {
+      removed.push(animation);
+    } else {
+      unmatched.splice(match, 1);
     }
   }
-  if (gap <= EASING_TOLERANCE) {
-    return [];
+  const notes = [];
+  for (const animation of removed) {
+    // The same animation with another timing, rather than an animation replaced by another one.
+    const changed = unmatched.findIndex(
+      candidate => animationSubject(candidate) === animationSubject(animation) && candidate.kind === animation.kind
+    );
+    if (changed === -1) {
+      notes.push(`${describeAnimation(animation)}: runs in ${base} only`);
+    } else {
+      notes.push(`${describeAnimation(animation)} in ${base}, ${animationTiming(unmatched[changed])} in ${head}`);
+      unmatched.splice(changed, 1);
+    }
   }
+  notes.push(...unmatched.map(animation => `${describeAnimation(animation)}: runs in ${head} only`));
+  // The same difference on several elements (the buttons of a group, for instance) is listed once.
+  const counts = new Map();
+  notes.forEach(note => counts.set(note, (counts.get(note) || 0) + 1));
+  return [...counts].map(([note, count]) => (count > 1 ? `${note} (×${count})` : note));
+}
+
+function sameAnimation(a, b) {
+  return (
+    animationKey(a) === animationKey(b) &&
+    closeTo(a.duration, b.duration, DURATION_TOLERANCE) &&
+    closeTo(a.delay, b.delay, DURATION_TOLERANCE)
+  );
+}
+
+function animationKey(animation) {
   return [
-    {
-      level: 'changed',
-      text:
-        `${label}: different easing, the ${property} progress curves are up to ${Math.round(gap * 100)}% apart ` +
-        `(at ${gapTime} ms: ${base} ${Math.round(baseProgress.at(gapTime) * 100)}%, ` +
-        `${head} ${Math.round(headProgress.at(gapTime) * 100)}%)`,
-    },
-  ];
+    animationSubject(animation),
+    animation.kind,
+    animation.easing,
+    animation.iterations,
+    animation.keyframes.map(keyframe => keyframe.easing || 'linear').join('/'),
+  ].join('|');
 }
 
-function mainProperty(label, runs) {
-  let best = null;
-  let bestRange = 0;
-  for (const property of Object.keys(PROPERTIES)) {
-    for (const samples of runs) {
-      const values = samples.map(sample => sample.values[label]?.[property]).filter(value => value !== undefined);
-      const range = values.length ? Math.max(...values) - Math.min(...values) : 0;
-      const normalized = property === 'opacity' || property === 'scale' ? range * 100 : range;
-      if (normalized > bestRange) {
-        best = property;
-        bestRange = normalized;
-      }
-    }
-  }
-  return best;
+/** What is animated: the element (tag name) and the animation name or the animated properties. */
+function animationSubject(animation) {
+  const properties = [
+    ...new Set(
+      animation.keyframes.flatMap(keyframe => Object.keys(keyframe).filter(key => key !== 'offset' && key !== 'easing'))
+    ),
+  ].sort();
+  return `${animation.name || properties.join(', ') || animation.kind} on ${animation.target.split('.')[0]}`;
 }
 
-/** Progress (0 to 1) of a property from its value at the trigger to its final value, as a function of time. */
-function progress(samples, label, property) {
-  const points = samples
-    .filter(sample => sample.t >= 0 && sample.values[label])
-    .map(sample => ({ t: sample.t, value: sample.values[label][property] }));
-  if (points.length < 2) {
-    return null;
-  }
-  const from = points[0].value;
-  const to = points[points.length - 1].value;
-  if (Math.abs(to - from) <= PROPERTIES[property]) {
-    return null;
-  }
-  const normalized = points.map(point => ({ t: point.t, p: (point.value - from) / (to - from) }));
-  const settled = normalized.findIndex((point, i) => normalized.slice(i).every(next => Math.abs(next.p - 1) < 0.01));
-  return {
-    end: normalized[settled]?.t ?? normalized[normalized.length - 1].t,
-    at(t) {
-      if (t <= normalized[0].t) {
-        return 0;
-      }
-      const next = normalized.findIndex(point => point.t >= t);
-      if (next === -1) {
-        return 1;
-      }
-      const previous = normalized[next - 1];
-      const ratio = (t - previous.t) / (normalized[next].t - previous.t || 1);
-      return previous.p + (normalized[next].p - previous.p) * ratio;
-    },
-  };
+function describeAnimation(animation) {
+  return `${animationSubject(animation)} (${animationTiming(animation)})`;
+}
+
+function animationTiming(animation) {
+  const keyframeEasings = [...new Set(animation.keyframes.map(keyframe => keyframe.easing).filter(Boolean))];
+  return [
+    typeof animation.duration === 'number' ? ms(animation.duration) : animation.duration,
+    animation.delay ? `after ${ms(animation.delay)}` : null,
+    animation.easing,
+    keyframeEasings.length ? `keyframes ${keyframeEasings.join(', ')}` : null,
+    animation.iterations === null ? 'infinite' : null,
+  ]
+    .filter(Boolean)
+    .join(', ');
+}
+
+function closeTo(a, b, tolerance) {
+  return typeof a === 'number' && typeof b === 'number' ? Math.abs(a - b) <= tolerance : a === b;
 }
 
 function describeInstantChange(analysis) {

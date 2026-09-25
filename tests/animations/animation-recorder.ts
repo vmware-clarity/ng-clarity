@@ -10,6 +10,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 import { ElementQuery, ScenarioStep, TrackedElement } from './animation-scenarios';
+import { encodeVideo, VIDEO_FPS } from './animation-video';
 
 /**
  * State of a tracked element on one animation frame; `null` when it is not in the DOM. `x` and `y` are the viewport
@@ -46,10 +47,12 @@ export interface RecordedAnimation {
   keyframes: Record<string, unknown>[];
 }
 
-export interface ScreencastFrame {
-  /** Milliseconds since the trigger. */
-  t: number;
+/** Video of the page, with a constant frame rate, from the lead time before the trigger to the end of the recording. */
+export interface RecordingVideo {
   file: string;
+  fps: number;
+  /** Milliseconds since the trigger at the start of the video: the page at a time `t` is at `(t - start) / 1000` s. */
+  start: number;
 }
 
 export interface AnimationRecording {
@@ -61,8 +64,7 @@ export interface AnimationRecording {
   duration: number;
   samples: FrameSample[];
   animations: RecordedAnimation[];
-  frames: ScreencastFrame[];
-  video?: string;
+  video: RecordingVideo;
 }
 
 interface PageTraceResult {
@@ -82,9 +84,8 @@ declare global {
   }
 }
 
-/** Frames recorded before the trigger, to show the state the animation starts from. */
+/** Time recorded before the trigger, to show the state the animation starts from. */
 const LEAD_TIME = 100;
-/** Video of the recording (from the lead time to the end of the recording). */
 const VIDEO_FILE = 'video.webm';
 
 export async function runSteps(page: Page, story: string, steps: ScenarioStep[]) {
@@ -112,8 +113,8 @@ export async function runSteps(page: Page, story: string, steps: ScenarioStep[])
  *
  * - the geometry, opacity and transform of the tracked elements on every animation frame,
  * - every animation and transition that runs, with its timing and keyframes,
- * - the rendered frames (`page.screencast`: every frame the browser paints, about 60 per second), also saved as
- *   `video.webm`.
+ * - the rendered frames (`page.screencast`: every frame the browser paints, about 60 per second), saved as a 60 fps
+ *   video.
  *
  * Nothing in the page is slowed down or paused: the recording shows the animations as users see them.
  */
@@ -123,17 +124,15 @@ export async function recordAnimation(
   duration: number,
   outputDir: string,
   trigger: () => Promise<void>
-): Promise<Pick<AnimationRecording, 'samples' | 'animations' | 'frames' | 'duration' | 'video'>> {
-  const framesDir = path.join(outputDir, 'frames');
-  fs.rmSync(framesDir, { recursive: true, force: true });
-  fs.mkdirSync(framesDir, { recursive: true });
+): Promise<Pick<AnimationRecording, 'samples' | 'animations' | 'duration' | 'video'>> {
+  fs.rmSync(outputDir, { recursive: true, force: true });
+  fs.mkdirSync(outputDir, { recursive: true });
 
   // Frames are kept with their timestamps (epoch milliseconds), to be aligned with the trigger afterwards.
   const rawFrames: { data: Buffer; timestamp: number }[] = [];
   await page.screencast.start({
-    path: path.join(outputDir, VIDEO_FILE),
     size: page.viewportSize() ?? undefined,
-    quality: 70,
+    quality: 80,
     onFrame: ({ data, timestamp }) => {
       rawFrames.push({ data, timestamp });
     },
@@ -147,24 +146,19 @@ export async function recordAnimation(
   const trace = await page.evaluate(() => window.__clrAnimationTrace.stop());
   await page.screencast.stop();
 
-  // Frames are only sent when the page repaints: the last one before the lead time shows the state the page is in
-  // when the lead time starts.
-  const timedFrames = rawFrames
-    .map(frame => ({ ...frame, t: Math.round(frame.timestamp - trace.triggerTime) }))
-    .filter(frame => frame.t <= duration)
-    .sort((a, b) => a.t - b.t);
-  const firstInLeadTime = timedFrames.findIndex(frame => frame.t >= -LEAD_TIME);
-  const start = firstInLeadTime === -1 ? timedFrames.length - 1 : Math.max(0, firstInLeadTime - 1);
-  const frames: ScreencastFrame[] = timedFrames
-    .slice(start)
-    .map(frame => ({ ...frame, t: Math.max(frame.t, -LEAD_TIME) }))
-    .map((frame, i) => {
-      const file = `frames/${String(i).padStart(4, '0')}.jpg`;
-      fs.writeFileSync(path.join(outputDir, file), frame.data);
-      return { t: frame.t, file };
-    });
+  // Frames are only sent when the page repaints: the frames painted before the lead time show the page at its start.
+  const frames = rawFrames.map(frame => ({ data: frame.data, t: frame.timestamp - trace.triggerTime }));
+  if (!frames.length) {
+    throw new Error('No frame was recorded');
+  }
+  encodeVideo(frames, -LEAD_TIME, duration, path.join(outputDir, VIDEO_FILE));
 
-  return { duration, samples: trace.samples, animations: trace.animations, frames, video: VIDEO_FILE };
+  return {
+    duration,
+    samples: trace.samples,
+    animations: trace.animations,
+    video: { file: VIDEO_FILE, fps: VIDEO_FPS, start: -LEAD_TIME },
+  };
 }
 
 function locate(page: Page, query: ElementQuery) {

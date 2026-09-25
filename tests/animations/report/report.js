@@ -11,7 +11,7 @@
   'use strict';
 
   const report = ANIMATION_REPORT;
-  const LEAD_TIME = 100; // frames recorded before the trigger
+  const LEAD_TIME = 100; // recorded before the trigger
   const VIEWPORT = { width: 1280, height: 800 };
   const PROPERTIES = ['height', 'width', 'y', 'x', 'opacity', 'translateX', 'translateY', 'scale'];
   const SPEEDS = [1, 0.5, 0.25, 0.1];
@@ -31,7 +31,7 @@
       el(
         'span',
         {},
-        'Frames are the rendered page (Playwright screencast, every painted frame); charts are sampled on every animation frame. ' +
+        'The videos show the rendered page at 60 frames per second (Playwright screencast); charts are sampled on every animation frame. ' +
           'Time 0 is the trigger. Nothing is slowed down while recording: slow motion is applied on playback only.'
       ),
     ]),
@@ -93,22 +93,29 @@
     let focused = false;
     let lastFrameTime = null;
 
+    // The videos are not played: they are paused and moved to the frame of the current time, so that both versions
+    // stay in sync at any speed.
     const players = runs.map(run => {
-      const image = el('img', { alt: `${run.label} at the current time`, loading: 'lazy' });
-      const viewport = el('div', { class: 'viewport' }, image);
+      const media = el('video', {
+        src: run.video.src,
+        muted: true,
+        playsinline: true,
+        preload: 'auto',
+        'aria-label': `${run.label} at the current time`,
+      });
+      const viewport = el('div', { class: 'viewport' }, media);
       return {
         run,
-        image,
+        media,
         viewport,
+        frame: null,
         element: el('figure', { class: 'player' }, [
-          el('figcaption', {}, [
-            el('strong', {}, run.label),
-            run.video ? [' · ', el('a', { href: run.video }, 'video (webm)')] : [],
-          ]),
+          el('figcaption', {}, [el('strong', {}, run.label), ' · ', el('a', { href: run.video.src }, 'video (webm)')]),
           viewport,
         ]),
       };
     });
+    const frameDuration = 1000 / runs[0].video.fps;
 
     const slider = el('input', {
       type: 'range',
@@ -137,7 +144,7 @@
           title: delta < 0 ? 'Previous frame' : 'Next frame',
           onclick: () => {
             pause();
-            setTime(nextFrameTime(runs, time, delta));
+            setTime(time + delta * frameDuration);
           },
         },
         delta < 0 ? '◀' : '▶'
@@ -201,8 +208,8 @@
         const width = player.viewport.clientWidth || 600;
         const scale = width / area.width;
         player.viewport.style.height = `${Math.round(area.height * scale)}px`;
-        player.image.style.width = `${VIEWPORT.width}px`;
-        player.image.style.transform = `scale(${scale}) translate(${-area.x}px, ${-area.y}px)`;
+        player.media.style.width = `${VIEWPORT.width}px`;
+        player.media.style.transform = `scale(${scale}) translate(${-area.x}px, ${-area.y}px)`;
       }
     }
 
@@ -211,9 +218,12 @@
       slider.value = String(Math.round(time));
       timeLabel.textContent = `${Math.round(time)} ms`;
       for (const player of players) {
-        const frame = frameAt(player.run.frames, time);
-        if (frame && player.image.getAttribute('src') !== frame.src) {
-          player.image.setAttribute('src', frame.src);
+        const { fps, start } = player.run.video;
+        const frame = Math.max(0, Math.floor(((time - start) * fps) / 1000));
+        if (frame !== player.frame) {
+          player.frame = frame;
+          // The middle of the frame, so that rounding cannot land on the previous one.
+          player.media.currentTime = (frame + 0.5) / fps;
         }
       }
       charts.setTime(time);
@@ -453,31 +463,6 @@
       width: Math.min(VIEWPORT.width, right + margin) - x,
       height: Math.min(VIEWPORT.height, bottom + margin) - y,
     };
-  }
-
-  function frameAt(frames, time) {
-    let low = 0;
-    let high = frames.length - 1;
-    let found = frames[0];
-    while (low <= high) {
-      const middle = (low + high) >> 1;
-      if (frames[middle].t <= time) {
-        found = frames[middle];
-        low = middle + 1;
-      } else {
-        high = middle - 1;
-      }
-    }
-    return found;
-  }
-
-  function nextFrameTime(runs, time, direction) {
-    const times = runs.flatMap(run => run.frames.map(frame => frame.t));
-    const candidates = direction > 0 ? times.filter(t => t > time) : times.filter(t => t < time);
-    if (!candidates.length) {
-      return time;
-    }
-    return direction > 0 ? Math.min(...candidates) : Math.max(...candidates);
   }
 
   function chip(verdict) {
