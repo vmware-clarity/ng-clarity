@@ -1,0 +1,1983 @@
+{
+ "scenario": "card-hide",
+ "story": "addons-card-container--default",
+ "label": "current",
+ "recordedAt": "2026-09-25T07:15:10.631Z",
+ "userAgent": "chromium 153.0.8010.12",
+ "duration": 1000,
+ "samples": [
+  {
+   "t": -128.9,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": -120.2,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": -103.6,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": -87,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": -70.3,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": -53.6,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": -37,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": -20.3,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": -3.6,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": 13.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": {
+     "x": 19,
+     "y": 330,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4 content": {
+     "x": 19,
+     "y": 337,
+     "width": 276,
+     "height": 292,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    }
+   }
+  },
+  {
+   "t": 30,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 47.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 63.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 79.8,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 96.5,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 113.1,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 129.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 146.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 163.1,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 179.8,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 196.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 213.8,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 229.8,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 246.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 263,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 279.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 296.3,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 313,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 329.6,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 346.3,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 363,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 379.6,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 396.3,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 413,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 429.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 446.3,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 463,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 479.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 496.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 513.2,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 529.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 546.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 563,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 579.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 596.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 613,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 629.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 646.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 663.1,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 679.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 696.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 713,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 729.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 746.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 763,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 779.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 796.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 813.1,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 829.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 846.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 863,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 879.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 896.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 913.1,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 929.8,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 946.3,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 963.1,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 979.7,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  },
+  {
+   "t": 996.4,
+   "values": {
+    "card 1": {
+     "x": 19,
+     "y": 24,
+     "width": 552,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 3": {
+     "x": 847,
+     "y": 24,
+     "width": 276,
+     "height": 306,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "card 4": null,
+    "card 4 content": null
+   }
+  }
+ ],
+ "animations": [
+  {
+   "t": 13,
+   "kind": "CSSTransition",
+   "name": "border-left-color",
+   "target": "div.dropdown-item",
+   "duration": 200,
+   "delay": 0,
+   "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+   "iterations": 1,
+   "fill": "backwards",
+   "keyframes": [
+    {
+     "offset": 0,
+     "easing": "linear",
+     "composite": "auto",
+     "borderLeftColor": "rgba(0, 0, 0, 0)",
+     "computedOffset": 0
+    },
+    {
+     "offset": 1,
+     "easing": "linear",
+     "composite": "auto",
+     "borderLeftColor": "rgb(0, 121, 173)",
+     "computedOffset": 1
+    }
+   ]
+  }
+ ],
+ "frames": [
+  {
+   "t": -100,
+   "file": "frames/0000.jpg"
+  },
+  {
+   "t": 24,
+   "file": "frames/0001.jpg"
+  },
+  {
+   "t": 43,
+   "file": "frames/0002.jpg"
+  },
+  {
+   "t": 62,
+   "file": "frames/0003.jpg"
+  },
+  {
+   "t": 74,
+   "file": "frames/0004.jpg"
+  },
+  {
+   "t": 88,
+   "file": "frames/0005.jpg"
+  },
+  {
+   "t": 105,
+   "file": "frames/0006.jpg"
+  },
+  {
+   "t": 124,
+   "file": "frames/0007.jpg"
+  },
+  {
+   "t": 138,
+   "file": "frames/0008.jpg"
+  },
+  {
+   "t": 157,
+   "file": "frames/0009.jpg"
+  },
+  {
+   "t": 170,
+   "file": "frames/0010.jpg"
+  },
+  {
+   "t": 187,
+   "file": "frames/0011.jpg"
+  },
+  {
+   "t": 207,
+   "file": "frames/0012.jpg"
+  },
+  {
+   "t": 221,
+   "file": "frames/0013.jpg"
+  }
+ ],
+ "video": "video.webm"
+}

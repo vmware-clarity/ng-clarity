@@ -1,0 +1,613 @@
+{
+ "scenario": "side-panel-close",
+ "story": "modal-side-panel--side-panel",
+ "label": "current",
+ "recordedAt": "2026-09-25T07:14:04.550Z",
+ "userAgent": "chromium 153.0.8010.12",
+ "duration": 1000,
+ "samples": [
+  {
+   "t": -136.5,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": -120.4,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": -103.8,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": -87.2,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": -70.5,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": -53.8,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": -37.1,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": -20.5,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": -3.9,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": 13,
+   "values": {
+    "dialog": {
+     "x": 680,
+     "y": 24,
+     "width": 576,
+     "height": 800,
+     "opacity": 1,
+     "transform": "none",
+     "visibility": "visible"
+    },
+    "backdrop": null
+   }
+  },
+  {
+   "t": 29.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 46.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 62.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 79.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 96.1,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 112.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 129.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 146.1,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 162.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 179.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 196.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 212.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 229.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 246.1,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 262.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 279.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 296.1,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 312.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 329.6,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 346.1,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 362.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 379.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 396.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 412.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 429.6,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 446.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 462.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 479.6,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 496.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 512.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 529.6,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 546.1,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 562.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 579.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 596.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 612.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 629.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 646.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 662.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 679.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 696.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 712.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 729.6,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 746.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 762.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 779.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 796.1,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 812.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 829.6,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 846.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 862.9,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 879.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 896.1,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 912.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 929.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 946.1,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 962.8,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 979.5,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  },
+  {
+   "t": 996.2,
+   "values": {
+    "dialog": null,
+    "backdrop": null
+   }
+  }
+ ],
+ "animations": [
+  {
+   "t": 13,
+   "kind": "CSSTransition",
+   "name": "color",
+   "target": "button.close",
+   "duration": 200,
+   "delay": 0,
+   "easing": "linear",
+   "iterations": 1,
+   "fill": "backwards",
+   "keyframes": [
+    {
+     "offset": 0,
+     "easing": "linear",
+     "composite": "auto",
+     "color": "rgb(58, 77, 85)",
+     "computedOffset": 0
+    },
+    {
+     "offset": 1,
+     "easing": "linear",
+     "composite": "auto",
+     "color": "rgb(27, 43, 50)",
+     "computedOffset": 1
+    }
+   ]
+  }
+ ],
+ "frames": [
+  {
+   "t": -100,
+   "file": "frames/0000.jpg"
+  },
+  {
+   "t": 25,
+   "file": "frames/0001.jpg"
+  }
+ ],
+ "video": "video.webm"
+}
