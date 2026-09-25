@@ -16,7 +16,7 @@ export interface PageSearchEntry {
 export interface HeadingSearchEntry {
   kind: 'heading';
   url: string;
-  fragment: string;
+  fragment?: string;
   title: string;
   category: string;
   section?: string;

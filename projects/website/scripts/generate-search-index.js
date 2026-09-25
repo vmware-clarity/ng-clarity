@@ -105,9 +105,91 @@ function buildDocumentationEntries(categoryMap) {
       const tabUrl = tab === 'overview' ? url : `${url}/${tab}`;
       entries.push(...buildHeadingEntries(html, tabUrl, title, category));
     }
+
+    for (const { routePath, demoName } of readCodeSubPages(folder)) {
+      entries.push({ kind: 'heading', url: `${url}/code/${routePath}`, title, category, heading: demoName });
+    }
   }
 
   return entries;
+}
+
+// Some components (e.g. Datagrid, Vertical Nav) split their Code tab into separate child-route
+// pages, labeled via `data: { demoName }` in the demo module's routes. Returns each such page's
+// route path and label.
+function readCodeSubPages(folder) {
+  const folderPath = path.join(WEBSITE_ROOT, 'src/app/documentation/demos', folder);
+  const pages = [];
+
+  let files;
+
+  try {
+    files = fs.readdirSync(folderPath).filter(file => file.endsWith('.module.ts'));
+  } catch {
+    return pages;
+  }
+
+  const demoNameRegex = /demoName:\s*'([^']+)'/g;
+
+  for (const file of files) {
+    const text = fs.readFileSync(path.join(folderPath, file), 'utf8');
+    let match;
+
+    while ((match = demoNameRegex.exec(text))) {
+      const routePath = findEnclosingRoutePath(text, match.index);
+
+      if (routePath) {
+        pages.push({ routePath, demoName: match[1] });
+      }
+    }
+  }
+
+  return pages;
+}
+
+// Walks back from a `demoName` to the start of the route object containing it, then reads that
+// object's own `path:` — skipping nested `children` objects, whose paths belong to sub-routes.
+function findEnclosingRoutePath(text, index) {
+  let depth = 0;
+  let start = -1;
+
+  // The first `{` back from demoName opens `data: {`; the one after that opens the route object.
+  for (let i = index; i >= 0; i--) {
+    if (text[i] === '}') {
+      depth++;
+    } else if (text[i] === '{') {
+      if (depth === 0) {
+        if (start === -2) {
+          start = i;
+          break;
+        }
+        start = -2;
+      } else {
+        depth--;
+      }
+    }
+  }
+
+  if (start < 0) {
+    return null;
+  }
+
+  let ownProperties = '';
+  depth = 0;
+
+  for (let i = start + 1; i < text.length && depth >= 0; i++) {
+    const char = text[i];
+
+    if (char === '{' || char === '[') {
+      depth++;
+    } else if (char === '}' || char === ']') {
+      depth--;
+    } else if (depth === 0) {
+      ownProperties += char;
+    }
+  }
+
+  return /\bpath:\s*'([^']+)'/.exec(ownProperties)?.[1] ?? null;
 }
 
 // Maps a component's route (e.g. "checkbox") to its demos folder (e.g. "checkboxes") by reading
