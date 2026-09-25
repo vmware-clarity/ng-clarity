@@ -13,6 +13,7 @@ import { ClarityModule } from '@clr/angular';
 
 import { AdvancedDatagridDemo } from './advanced-datagrid.demo';
 import { ClientSideDatagridDemoComponent } from './ng/client-side';
+import { ColumnActionsGridDemoComponent } from './ng/column-actions';
 import { CustomColumnDefinitionsDemoComponent } from './ng/custom-column-definitions';
 import { DetailPaneGridDemoComponent } from './ng/detail-pane';
 import { DragDropGridDemoComponent } from './ng/drag-drop';
@@ -41,6 +42,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     StackblitzExampleComponent,
     LinkCardsComponent,
     ClientSideDatagridDemoComponent,
+    ColumnActionsGridDemoComponent,
     CustomColumnDefinitionsDemoComponent,
     DetailPaneGridDemoComponent,
     DragDropGridDemoComponent,

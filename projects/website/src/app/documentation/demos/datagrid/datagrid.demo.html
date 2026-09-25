@@ -459,20 +459,17 @@
         Arrow key navigation follows the columns in the order they appear on screen, so pinning a column also moves it
         in the keyboard order.
       </li>
-      <!--
-        Disabled with clrDgPinnable:
-
-        <li>
-          The pin toggle is a button in the header, so it takes focus and is reachable with the keyboard. Its accessible
-          name comes from the <code cds-text="code">pinColumn</code> and <code cds-text="code">unpinColumn</code> common
-          strings - see the <a routerLink="/documentation/internationalization">internationalization documentation</a> for
-          how to translate them.
-        </li>
-        <li>
-          A pinnable column keeps its toggle while the detail pane is open, even though pinning itself is suspended for as
-          long as the pane shows a single column.
-        </li>
-      -->
+      <li>
+        Pin Column is an item in the column actions menu, so it takes focus and is reachable with the keyboard along
+        with the rest of the menu. Its accessible name comes from the <code cds-text="code">pinColumn</code> and
+        <code cds-text="code">unpinColumn</code> common strings - see the
+        <a routerLink="/documentation/internationalization">internationalization documentation</a> for how to translate
+        them.
+      </li>
+      <li>
+        A pinnable column keeps offering Pin Column while the detail pane is open, even though pinning itself is
+        suspended for as long as the pane shows a single column.
+      </li>
     </ul>
     <div class="clr-mt-16px">
       <clr-datagrid>

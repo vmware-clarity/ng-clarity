@@ -23,6 +23,7 @@ import { RouterModule } from '@angular/router';
       <li><a [routerLink]="['./custom-column-definitions']" routerLinkActive="active">Custom Column Definitions</a></li>
       <li><a [routerLink]="['./persistance']" routerLinkActive="active">Persistence</a></li>
       <li><a [routerLink]="['./pinnable-columns']" routerLinkActive="active">Pinnable Columns</a></li>
+      <li><a [routerLink]="['./column-actions']" routerLinkActive="active">Column Actions</a></li>
     </ul>
 
     <router-outlet></router-outlet>

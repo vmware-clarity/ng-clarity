@@ -18,7 +18,7 @@ import {
   wrapObservable,
 } from '@clr/angular/utils';
 import { Observable, of, ReplaySubject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 @Injectable()
 export class DropdownFocusHandler implements OnDestroy, FocusableItem {
   id = uniqueIdFactory();
@@ -81,6 +81,8 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     // All containers are registered to the focus service.
     this.focusService.registerContainer(el);
 
+    this._unlistenFuncs.push(this.renderer.listen(el, 'focusout', () => this.recoverFocusIfLost()));
+
     if (this.parent) {
       // if it's a nested container, pressing escape has the same effect as pressing left key, which closes the current
       // popup and moves up to its parent. Here, we stop propagation so that the parent container
@@ -140,6 +142,24 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
     }
   }
 
+  /**
+   * Makes `item` the one the menu's keyboard handling acts on, and focuses it.
+   *
+   * Space and enter activate whatever the focus service considers current, not whatever the browser
+   * has focused - see `FocusService.registerContainer`. So moving focus to a menu item without going
+   * through here leaves the two disagreeing, and the keys then fire a different item than the one the
+   * user can see is focused.
+   */
+  moveTo(item: FocusableItem) {
+    // Opening the menu already moves to its first item, which focuses it, which is reported back
+    // here by the item itself. Without this the same move would be applied twice.
+    if (this.focusService.current === item) {
+      return;
+    }
+
+    this.focusService.moveTo(item);
+  }
+
   resetChildren() {
     this.children = new ReplaySubject<FocusableItem[]>(1);
     if (this.parent) {
@@ -156,6 +176,18 @@ export class DropdownFocusHandler implements OnDestroy, FocusableItem {
       Linkers.linkParent(children, this.closeAndGetThis(), ArrowKeyDirection.LEFT);
     }
     this.children.next(children);
+  }
+
+  private recoverFocusIfLost() {
+    setTimeout(() => {
+      if (!this.popoverService.open || document.activeElement !== document.body) {
+        return;
+      }
+
+      const firstItem = this.parent ? this.right : this.down;
+
+      firstItem?.pipe(take(1)).subscribe(item => item && this.focusService.moveTo(item));
+    });
   }
 
   private openAndGetChildren() {

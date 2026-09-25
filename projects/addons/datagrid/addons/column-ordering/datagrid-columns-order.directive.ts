@@ -25,6 +25,22 @@ import { DatagridColumnsOrderService } from './datagrid-columns-order.service';
 import { ColumnOrderChanged } from '../../interfaces/column-state';
 import { ColumnDefinition } from '../../shared/column/column-definitions';
 
+/**
+ * The direction of a one step column move, the same as the arrow keys while a column is grabbed.
+ */
+export enum ColumnMoveDirection {
+  Left = 'left',
+  Right = 'right',
+}
+
+/**
+ * Reorders the columns of a datagrid through drag and drop, the arrow keys, or `moveColumnTo`.
+ *
+ * Pinned columns are not moved. The datagrid renders them in its sticky container and the rest in
+ * the scrollable one, so a single declared list of columns is split across two DOM parents, and
+ * reordering pinned columns makes Angular's `@for` relocate a column against a reference node in the
+ * other container - the DOM insert throws. Moves between the scrollable columns are not affected.
+ */
 @Directive({
   selector: 'clr-datagrid[appfxDgColumnsOrder]',
   providers: [DatagridColumnsOrderService],
@@ -62,22 +78,44 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
         })
     );
 
+    // The arrow keys go through moveColumnTo() as well, so the keyboard and the column actions menu
+    // can never disagree about which move is possible.
     this.subs.add(
-      this.columnOrderingService.moveVisibleColumn
-        .pipe(
-          map(visibleColumnIndices => {
-            return this.getColumnIndices(visibleColumnIndices.moveLeft, visibleColumnIndices.visibleColumnIndex);
-          }),
-          filter(columnIndices => {
-            return columnIndices.previousIndex !== columnIndices.currentIndex;
-          }),
-          filter(columnIndices => this.isReorderAllowed(columnIndices))
-        )
-        .subscribe(columnIndices => {
-          this.reorderColumn(columnIndices);
+      this.columnOrderingService.moveVisibleColumn.subscribe(visibleColumnIndices => {
+        const moved = this.moveColumnTo(
+          visibleColumnIndices.visibleColumnIndex,
+          visibleColumnIndices.moveLeft ? ColumnMoveDirection.Left : ColumnMoveDirection.Right
+        );
+
+        if (moved) {
           this.columnOrderingService.focusGrabbedColumn.next();
-        })
+        }
+      })
     );
+  }
+
+  /**
+   * Whether `moveColumnTo` would actually apply for this column and direction, so a menu action can
+   * disable itself instead of letting the user attempt a move that does nothing. A pinned column, or
+   * one at either edge of the scrollable columns, has no move to make.
+   */
+  canMoveColumn(visibleColumnIndex: number, direction: ColumnMoveDirection): boolean {
+    return !!this.computeTargetIndices(visibleColumnIndex, direction);
+  }
+
+  /**
+   * Moves the column at `visibleColumnIndex` in the given direction. Returns whether it actually
+   * moved, so the keyboard path knows whether to put focus back on the column.
+   */
+  moveColumnTo(visibleColumnIndex: number, direction: ColumnMoveDirection): boolean {
+    const indices = this.computeTargetIndices(visibleColumnIndex, direction);
+
+    if (!indices) {
+      return false;
+    }
+
+    this.reorderColumn(indices);
+    return true;
   }
 
   setDgColumnsContainer(): void {
@@ -115,11 +153,13 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
   }
 
   /**
-   * A pinned column is rendered in the datagrid's sticky container while the others are rendered in
-   * the scrollable one. Changing the relative order of the two groups cannot be re-rendered: the
-   * column elements are moved against a sibling that now lives in the other container, and the DOM
-   * insert throws. Until the datagrid can render that, a reorder that would cross a pinned column is
-   * refused rather than applied.
+   * Guards the drag and drop path, where a drop can target any column and so is not confined to the
+   * dragged column's own group. Dropping a loose column among the pinned ones does not pin it, it
+   * only changes where it sits in the list, so the column would stay in the scrollable container and
+   * land somewhere the user did not aim for. A drop that spans a pinned column is refused instead.
+   *
+   * `moveColumnTo` does not need this: it always resolves a target inside the moved column's own
+   * group, so it can never cross the boundary in the first place.
    */
   private isReorderAllowed(indices: { previousIndex: number; currentIndex: number }): boolean {
     if (indices.previousIndex < 0 || indices.currentIndex < 0) {
@@ -140,14 +180,25 @@ export class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChang
     this.dgColumnsOrderChange.emit({ ...indices, columns: this.dgColumnsOrderColumns });
   }
 
-  private getColumnIndices(moveLeft: boolean, previousColumnIndex: number) {
-    const visibleColumns = this.dgColumnsOrderColumns.filter(column => !column.hidden);
-    const newVisibleColumnIndex = moveLeft ? previousColumnIndex - 1 : previousColumnIndex + 1;
-    let currenColumnIndex = newVisibleColumnIndex >= 0 ? newVisibleColumnIndex : 0;
-    currenColumnIndex = currenColumnIndex < visibleColumns.length - 1 ? currenColumnIndex : visibleColumns.length - 1;
-    const previousColumn = visibleColumns[previousColumnIndex];
-    const currentColumn = visibleColumns[currenColumnIndex];
-    return this.createColumnIndices(previousColumn, currentColumn);
+  /**
+   * Resolves a one step move of the column at `visibleColumnIndex` (an index into the visible columns)
+   * into indices into `dgColumnsOrderColumns`, or `null` when there is no move to make.
+   *
+   * The neighbour is taken among the scrollable columns, because those are the ones the user sees side
+   * by side - a pinned column between them in the array is rendered in the other container. A pinned
+   * column itself is not moved, see the class comment.
+   */
+  private computeTargetIndices(visibleColumnIndex: number, direction: ColumnMoveDirection) {
+    const column = this.dgColumnsOrderColumns.filter(other => !other.hidden)[visibleColumnIndex];
+    const scrollableColumns = this.dgColumnsOrderColumns.filter(other => !other.hidden && !other.pinned);
+    const index = scrollableColumns.indexOf(column);
+    const target = scrollableColumns[index + (direction === ColumnMoveDirection.Left ? -1 : 1)];
+
+    if (index < 0 || !target) {
+      return null;
+    }
+
+    return this.createColumnIndices(column, target);
   }
 
   private findColumnIndices(previousColumn: ColumnDefinition<any>, currentDroppedItemIndex: number) {
