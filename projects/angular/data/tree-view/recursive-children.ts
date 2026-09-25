@@ -78,7 +78,13 @@ export class RecursiveChildren<T> {
   getContext(node: TreeNodeModel<T>): ClrRecursiveForOfContext<T> {
     let context = this.contexts.get(node);
     if (!context) {
-      context = { $implicit: node.model, clrModel: node };
+      context = {
+        // Read through, so the context keeps following the node if its model gets reassigned.
+        get $implicit() {
+          return node.model;
+        },
+        clrModel: node,
+      };
       this.contexts.set(node, context);
     }
     return context;
