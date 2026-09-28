@@ -5388,6 +5388,11 @@ class ClrDatagrid {
         this._virtualScrollSubscriptions.forEach((sub) => sub.unsubscribe());
         this.resizeObserver.disconnect();
         this.rowControlsObserver.disconnect();
+        // If the detail pane is left open, close it so the DetailService unregisters itself from the
+        // root ModalStackService instead of staying referenced there after this datagrid is gone.
+        if (this.detailService.isOpen) {
+            this.detailService.close();
+        }
     }
     toggleAllSelected($event) {
         $event.preventDefault();
