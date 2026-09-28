@@ -190,6 +190,30 @@ class KeepFilterInHeaderTest {
   keepInHeader = true;
 }
 
+// Tall and narrow enough for the datagrid to scroll both ways, which moves the column actions trigger.
+@Component({
+  template: `
+    <clr-datagrid style="height: 300px; width: 500px">
+      <clr-dg-column clrDgField="name" style="width: 300px">
+        Filtered
+        @if (withMenu) {
+          <clr-dg-column-actions></clr-dg-column-actions>
+        }
+      </clr-dg-column>
+      <clr-dg-column clrDgField="other" style="width: 400px">Other</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.other }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class ScrollingFilterTest {
+  withMenu = true;
+  items = Array.from({ length: 60 }, (_, index) => ({ name: `name ${index}`, other: `other ${index}` }));
+}
+
 export default function (): void {
   describe('ClrDatagridColumnActions', function () {
     describe('rendering', function () {
@@ -887,6 +911,142 @@ export default function (): void {
 
         const filterIcon = itemLabelled(commonStrings.keys.filterColumn)?.querySelector('cds-icon');
         expect(filterIcon.getAttribute('shape')).toContain('filter-grid-circle');
+      });
+    });
+
+    // The filter is anchored to the menu item that opened it, which lives in the menu's overlay rather
+    // than in the datagrid, and the menu closes on scroll.
+    describe('filter opened from the menu in a scrolling datagrid', function () {
+      let context: TestContext<ClrDatagrid, ScrollingFilterTest>;
+      let filterPopover: ClrPopoverService;
+
+      const settle = async (ms = 50) => {
+        context.detectChanges();
+        await new Promise(resolve => setTimeout(resolve, ms));
+        context.detectChanges();
+      };
+
+      const trigger = () => (context.clarityElement as HTMLElement).querySelector<HTMLElement>(TOGGLE);
+      const filterPanel = () => document.querySelector<HTMLElement>('.datagrid-filter');
+      const left = (element: HTMLElement) => Math.round(element.getBoundingClientRect().left);
+
+      async function openFilterFromMenu() {
+        trigger().click();
+        await settle();
+        itemLabelled(new ClrCommonStringsService().keys.filterColumn).click();
+        await settle();
+      }
+
+      async function scrollDatagrid(byX: number, byY: number) {
+        const scrollable = (context.clarityElement as HTMLElement).querySelector<HTMLElement>('.datagrid');
+        scrollable.scrollLeft += byX;
+        scrollable.scrollTop += byY;
+        scrollable.dispatchEvent(new Event('scroll'));
+        await settle(100);
+      }
+
+      beforeEach(async function () {
+        context = this.create(ClrDatagrid, ScrollingFilterTest);
+        filterPopover = context.fixture.debugElement
+          .query(By.directive(ClrDatagridColumn))
+          .injector.get(ClrPopoverService);
+        await settle();
+      });
+
+      afterEach(function () {
+        // Both overlays live outside the fixture, so neither may leak into the next test.
+        filterPopover.open = false;
+        context.detectChanges();
+        if (menuIsOpen()) {
+          trigger()?.click();
+          context.detectChanges();
+        }
+      });
+
+      it('stays open when the datagrid scrolls, and moves over to the menu trigger', async function () {
+        await openFilterFromMenu();
+        expect(filterPanel()).not.toBeNull();
+
+        await scrollDatagrid(0, 80);
+
+        // The menu closes on scroll, and the item the filter was anchored to goes with it.
+        expect(menuIsOpen()).toBeFalse();
+        expect(filterPanel()).not.toBeNull();
+        expect(filterPopover.originElement.nativeElement).toBe(trigger());
+        expect(filterPopover.parent).toBeNull();
+      });
+
+      it('follows the column once it has moved over to the menu trigger', async function () {
+        await openFilterFromMenu();
+        await scrollDatagrid(0, 80);
+        const offset = left(filterPanel()) - left(trigger());
+
+        await scrollDatagrid(40, 0);
+
+        expect(filterPanel()).not.toBeNull();
+        expect(left(filterPanel()) - left(trigger())).toBe(offset);
+      });
+
+      it('opens anchored to the menu trigger when opened directly after the menu opened it', async function () {
+        await openFilterFromMenu();
+        filterPopover.open = false;
+        await settle();
+        // The item it was anchored to goes with the menu.
+        trigger().click();
+        await settle();
+        expect(filterPopover.parent).toBeNull();
+
+        filterPopover.open = true;
+        await settle();
+
+        expect(filterPanel()).not.toBeNull();
+        expect(filterPopover.originElement.nativeElement).toBe(trigger());
+      });
+
+      it('returns focus to the filter item when the filter is dismissed with the menu still open', async function () {
+        await openFilterFromMenu();
+        const filterItem = itemLabelled(new ClrCommonStringsService().keys.filterColumn);
+        const input = filterPanel().querySelector('input');
+        input.focus();
+
+        input.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+        await settle();
+
+        expect(filterPanel()).toBeNull();
+        expect(menuIsOpen()).toBeTrue();
+        expect(document.activeElement).toBe(filterItem);
+      });
+
+      it('returns focus to the filter item when the filter is closed with its close button', async function () {
+        await openFilterFromMenu();
+        const filterItem = itemLabelled(new ClrCommonStringsService().keys.filterColumn);
+
+        filterPanel().querySelector<HTMLElement>('.close').click();
+        await settle();
+
+        expect(filterPanel()).toBeNull();
+        expect(menuIsOpen()).toBeTrue();
+        expect(document.activeElement).toBe(filterItem);
+      });
+
+      it('closes with the menu when the menu is removed, and leaves the header toggle working', async function () {
+        await openFilterFromMenu();
+
+        context.testComponent.withMenu = false;
+        await settle();
+
+        expect(filterPanel()).toBeNull();
+        expect(filterPopover.parent).toBeNull();
+
+        const toggle = (context.clarityElement as HTMLElement).querySelector<HTMLElement>('.datagrid-filter-toggle');
+        toggle.click();
+        await settle();
+        const offset = left(filterPanel()) - left(toggle);
+
+        await scrollDatagrid(40, 0);
+
+        expect(filterPopover.originElement.nativeElement).toBe(toggle);
+        expect(left(filterPanel()) - left(toggle)).toBe(offset);
       });
     });
 

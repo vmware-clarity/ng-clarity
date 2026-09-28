@@ -337,6 +337,7 @@ export class ClrPopoverService {
     get originPoint(): ClrPopoverPoint | null;
     // (undocumented)
     panelClass: string[];
+    parent: ClrPopoverContent | null;
     // (undocumented)
     pointTargetElement: HTMLElement | undefined;
     // (undocumented)

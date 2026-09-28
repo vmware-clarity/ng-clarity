@@ -10,6 +10,7 @@ import { ElementRef, Injectable } from '@angular/core';
 import { preventArrowKeyScroll } from '@clr/angular/utils';
 import { Observable, Subject } from 'rxjs';
 
+import type { ClrPopoverContent } from '../popover-content';
 import { ClrPopoverPosition } from '../utils/popover-positions';
 
 export interface ClrPopoverPoint {
@@ -25,13 +26,15 @@ export class ClrPopoverService {
   panelClass: string[] = [];
 
   /**
-   * The popover this one was opened from, when that cannot be known from where it is declared - for
-   * example a popover opened by an item of a menu it is not declared in. It makes the two behave as
-   * nested: this one tracks the scroll containers of the root popover's origin, and when the parent
-   * closes while this one is still open, this one moves over to the parent's origin instead of being
-   * left anchored to an element that is no longer there.
+   * The popover this one is opened from, when it is not declared inside it - for example a filter
+   * opened by an item of a menu. Set it before opening, together with an `origin` inside that popover.
+   *
+   * The two then behave as nested popovers do: this one follows the scroll containers of the
+   * outermost popover's origin, and when the parent closes first, this one moves over to the parent's
+   * origin. The link only holds for one opening - `ClrPopoverContent` clears it when this popover
+   * closes, and a later opening whose origin went away with the parent falls back on the parent's.
    */
-  parent: ClrPopoverService | null = null;
+  parent: ClrPopoverContent | null = null;
 
   private _open = false;
   private _openChange = new Subject<boolean>();

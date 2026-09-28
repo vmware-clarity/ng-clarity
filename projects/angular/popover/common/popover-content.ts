@@ -32,7 +32,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Keys } from '@clr/angular/utils';
-import { filter, fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
+import { fromEvent, merge, Subject, Subscription, switchMap, timer } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
 import { getCrossWindowOriginContext, resolveCrossWindowOrigin } from './utils/cross-window-origin';
@@ -59,6 +59,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private _position = ClrPopoverPosition.BOTTOM_LEFT;
 
   private subscriptions: Subscription[] = [];
+  private parentSubscription: Subscription | null = null;
+  // The origin of the popover this one was last opened from, for an opening that does not go through it.
+  private fallbackOrigin: FlexibleConnectedPositionStrategyOrigin | null = null;
+  // Emits once this popover's overlay is gone, for the popovers opened from inside it.
+  private readonly overlayRemoved = new Subject<void>();
   private openCloseSubscription: Subscription;
   private domPortal: DomPortal;
   private preferredPositionIsSet = false;
@@ -199,6 +204,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   ngOnDestroy() {
     this.removeOverlay();
     this.openCloseSubscription?.unsubscribe();
+    this.overlayRemoved.complete();
   }
 
   private _createOverlayRef() {
@@ -227,30 +233,79 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         : this.createElementBasedOutsideClickSubscription()
     );
 
-    if (this.popoverService.parent) {
-      this.subscriptions.push(this.createParentCloseSubscription(this.popoverService.parent));
-    }
+    this.followParent();
   }
 
   /**
-   * A popover opened from inside another one is anchored to an element of that one, which goes away
-   * when the parent closes - for example on a scroll, since menus close on scroll. This one stays open,
-   * so it moves over to the parent's own origin, which is still in place, and keeps following it.
+   * A popover opened from inside another one (`ClrPopoverService.parent`) is anchored to an element of
+   * that one's overlay, so it cannot stay anchored there once that overlay is gone - which happens
+   * whenever the parent closes, and menus for instance close on scroll.
    */
-  private createParentCloseSubscription(parent: ClrPopoverService): Subscription {
-    return parent.openChange.pipe(filter(open => !open)).subscribe(() => {
-      if (!this.popoverService.open) {
-        return;
-      }
+  private followParent() {
+    this.parentSubscription?.unsubscribe();
 
-      this.popoverService.origin = parent.origin;
-      this.popoverService.parent = parent.parent;
+    const parent = this.popoverService.parent;
+    this.parentSubscription = parent?.overlayRemoved.subscribe(() => this.moveToParentOrigin(parent)) ?? null;
+  }
 
-      this.intersectionObserver?.disconnect();
-      this.intersectionObserver = null;
-      this.setupIntersectionObserver();
-      this.resetPosition();
-    });
+  /**
+   * Moves this popover over to the origin of the popover it was opened from, which is still in place
+   * after that one closed, and nests it in whatever that one was nested in. If that origin went away as
+   * well - the parent was destroyed along with it - there is nothing left to anchor to, and this one
+   * closes.
+   *
+   * The scroll listeners stay as they are: they follow the outermost popover's origin, and that is
+   * the same one before and after the move.
+   */
+  private moveToParentOrigin(parent: ClrPopoverContent) {
+    const origin = parent.popoverService.origin;
+
+    if (!isAttached(origin)) {
+      this.closePopover();
+      return;
+    }
+
+    this.popoverService.origin = origin;
+    this.popoverService.parent = parent.parent ?? parent.popoverService.parent;
+    this.followParent();
+
+    this.intersectionObserver?.disconnect();
+    this.intersectionObserver = null;
+    this.setupIntersectionObserver();
+    this.resetPosition();
+  }
+
+  /**
+   * Ends the link to the popover this one was opened from, once this one closes. The origin is left
+   * alone - focus goes back to it on close - but it sits inside the parent, and goes away with it. The
+   * parent's own origin is kept instead, for the next opening to fall back on, see `adoptFallbackOrigin`.
+   */
+  private leaveParent() {
+    this.parentSubscription?.unsubscribe();
+    this.parentSubscription = null;
+
+    const parent = this.popoverService.parent;
+
+    if (!parent) {
+      return;
+    }
+
+    this.popoverService.parent = null;
+    this.fallbackOrigin = parent.popoverService.origin;
+  }
+
+  /**
+   * An opening that does not go through the popover this one was last opened from would otherwise be
+   * anchored to the element it had inside that one, which is gone by then. It is anchored to that
+   * popover's own origin instead, as long as that one is still there. An origin set in the meantime,
+   * for example by the next opening from inside the parent, takes precedence.
+   */
+  private adoptFallbackOrigin() {
+    if (this.fallbackOrigin && !isAttached(this.popoverService.origin) && isAttached(this.fallbackOrigin)) {
+      this.popoverService.origin = this.fallbackOrigin;
+    }
+
+    this.fallbackOrigin = null;
   }
 
   /**
@@ -474,6 +529,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
   private showOverlay() {
     if (!this.overlayRef) {
+      this.adoptFallbackOrigin();
       this._createOverlayRef();
     }
 
@@ -514,6 +570,8 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private removeOverlay(): void {
+    const hadOverlay = !!this.overlayRef;
+
     this.subscriptions.forEach(s => s.unsubscribe());
     this.subscriptions = [];
 
@@ -539,6 +597,13 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     this.intersectionObserver?.disconnect();
     this.intersectionObserver = null;
+
+    if (hadOverlay) {
+      // The popovers opened from inside this one go first, while this one's own link is still there
+      // for them to carry on nesting in.
+      this.overlayRemoved.next();
+      this.leaveParent();
+    }
   }
 
   /**
@@ -627,7 +692,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     const originEl = this.popoverService.originPoint
       ? this.popoverService.pointTargetElement
-      : this.getRootOriginElement();
+      : this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
 
     this.listenToScrollForElementOrigin(originEl);
   }
@@ -651,27 +716,33 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   /**
-   * The origin of the outermost popover, whose scroll containers are the ones that move this one. A
-   * nested popover is found either from where it is declared, or through the parent it was given at
-   * runtime.
+   * The outermost popover this one is nested in. A popover is nested either where it is declared, in
+   * the injected parent, or at runtime, in the popover it was opened from (`ClrPopoverService.parent`).
+   * The walk carries on from either one, so a chain can mix the two.
    */
-  private getRootOriginElement(): HTMLElement | undefined {
-    let service = this.getRootPopover(this)?.popoverService;
-
-    while (service?.parent) {
-      service = service.parent;
-    }
-
-    return service?.originElement?.nativeElement ?? this.popoverService.originElement?.nativeElement;
-  }
-
   private getRootPopover(popover: ClrPopoverContent): ClrPopoverContent {
-    if (popover && popover.parent) {
-      return this.getRootPopover(popover.parent);
+    const visited = new Set<ClrPopoverContent>([popover]);
+    let root = popover;
+    let next = root.parent ?? root.popoverService.parent;
+
+    // The runtime link is set from outside, so a cycle is guarded against rather than assumed away.
+    while (next && !visited.has(next)) {
+      visited.add(next);
+      root = next;
+      next = root.parent ?? root.popoverService.parent;
     }
 
-    return popover;
+    return root;
   }
+}
+
+/** Whether an origin is still there to anchor to: a point always is, an element only while attached. */
+function isAttached(origin: FlexibleConnectedPositionStrategyOrigin | undefined): boolean {
+  if (!origin) {
+    return false;
+  }
+
+  return origin instanceof ElementRef ? !!origin.nativeElement?.isConnected : true;
 }
 
 function isEscapeKey(event: KeyboardEvent): boolean {

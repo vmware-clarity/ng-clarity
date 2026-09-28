@@ -8,6 +8,7 @@
 import IfOpenDirectiveSpecs from './if-open.directive.spec';
 import ClrPopoverCloseButtonSpec from './popover-close-button.spec';
 import ClrPopoverContentSpec from './popover-content.spec';
+import ClrPopoverNestingSpec from './popover-nesting.spec';
 import ClrPopoverOpenCloseButtonSpec from './popover-open-close-button.spec';
 import ClrPopoverOriginSpec from './popover-origin.spec';
 import PopoverServiceSpec from './providers/popover.service.spec';
@@ -24,6 +25,7 @@ describe('ClrPopover', () => {
     ClrPopoverOpenCloseButtonSpec();
     ClrPopoverCloseButtonSpec();
     ClrPopoverContentSpec();
+    ClrPopoverNestingSpec();
     ClrStopEscapePropagationDirectiveSpec();
   });
 
