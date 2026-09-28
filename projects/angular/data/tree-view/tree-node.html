@@ -72,7 +72,7 @@
 </div>
 <div
   class="clr-treenode-children"
-  [@toggleChildrenAnim]="expandService.expanded ? 'expanded' : 'collapsed'"
+  [@toggleChildrenAnim]="childrenAnimationState"
   [attr.role]="isExpandable() && !featuresService.recursion ? 'group' : null"
   [attr.inert]="expandService.expanded ? null : ''"
 >
