@@ -148,7 +148,7 @@ export class ClrContextEngineService implements OnDestroy {
 
 // @public
 export class ClrContextFrameHost {
-    constructor(getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext, hostWindow: Window, options?: ClrContextFrameHostOptions);
+    constructor(getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext, hostWindow: Window, options?: ClrContextFrameHostOptions, routePattern?: (path: string) => string | null);
     // (undocumented)
     start(): void;
     // (undocumented)
@@ -195,7 +195,7 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
     shareFullUrl?: boolean;
 }
 
-// @public (undocumented)
+// @public
 export class ClrContextModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextModule, never>;

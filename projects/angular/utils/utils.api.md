@@ -315,6 +315,7 @@ export interface ClrCommonStrings {
     unknown: string;
     // (undocumented)
     unselectedTreeNode: string;
+    verticalNavLabel: string;
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
@@ -378,6 +379,9 @@ export interface ClrContextSnapshotOptions {
     maxTextLength?: number;
     rootSelector?: string;
 }
+
+// @public
+export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string;
 
 // @public
 export class ClrDestroyService extends Subject<void> implements OnDestroy {
@@ -484,6 +488,9 @@ export class ClrFocusOnViewInitModule {
 
 // @public (undocumented)
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
+
+// @public
+export function clrHasRequiredValidator(control: AbstractControl | null | undefined): boolean;
 
 // @public
 export class ClrHostAttribute {
@@ -649,6 +656,9 @@ export enum ClrLoadingState {
     // (undocumented)
     SUCCESS = 2
 }
+
+// @public
+export function clrNormalizeContextText(text: string, lowercase?: boolean): string;
 
 // @public (undocumented)
 export class ClrOutsideClickModule {
@@ -847,9 +857,6 @@ export class FocusService {
     static ɵprov: i0.ɵɵInjectableDeclaration<FocusService>;
 }
 
-// @public
-export function hasRequiredValidator(control: AbstractControl | null | undefined): boolean;
-
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
@@ -1019,9 +1026,6 @@ export class MockFocusableItem implements FocusableItem {
     up?: FocusableItem | Observable<FocusableItem>;
 }
 
-// @public
-export function normalizeContextText(text: string, lowercase?: boolean): string;
-
 // @public (undocumented)
 export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
     protected constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
@@ -1063,9 +1067,6 @@ export function publishElementContext(host: Element, callback: ClrElementContext
 
 // @public
 export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
-
-// @public
-export function readElementMutator(element: Element): ClrElementMutator | null;
 
 // @public (undocumented)
 export class ScrollingService {

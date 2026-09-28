@@ -1131,7 +1131,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     get alertType(): string;
     set alertType(val: string);
     protected get ariaAtomic(): 'false' | null;
-    protected get ariaRole(): 'alert' | 'status';
+    protected get ariaRole(): 'alert' | 'status' | null;
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -1156,6 +1156,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     set isLightweight(val: boolean);
     // (undocumented)
     isSmall: boolean;
+    liveRole: 'alert' | 'status' | null | undefined;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -1163,7 +1164,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "liveRole": { "alias": "clrAlertRole"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null, null, null]>;
 }
@@ -2083,6 +2084,7 @@ export interface ClrCommonStrings {
     unknown: string;
     // (undocumented)
     unselectedTreeNode: string;
+    verticalNavLabel: string;
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
@@ -2146,6 +2148,9 @@ export interface ClrContextSnapshotOptions {
     maxTextLength?: number;
     rootSelector?: string;
 }
+
+// @public
+export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string;
 
 // @public (undocumented)
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
@@ -3939,6 +3944,9 @@ export class ClrFormsModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i2.CommonModule], [typeof i6.ClrCommonFormsModule, typeof i43.ClrCheckboxModule, typeof i4_2.ClrComboboxModule, typeof i5_2.ClrDatepickerModule, typeof i6_3.ClrFileInputModule, typeof i41.ClrInputModule, typeof i8_2.ClrPasswordModule, typeof i42.ClrRadioModule, typeof i45.ClrSelectModule, typeof i11.ClrTextareaModule, typeof i12.ClrRangeModule, typeof i13.ClrDatalistModule, typeof i44.ClrNumberInputModule]>;
 }
 
+// @public
+export function clrHasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
 // @public (undocumented)
 export class ClrHeader implements OnDestroy {
     constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
@@ -4638,6 +4646,9 @@ export class ClrNavLevel implements OnInit {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }
+
+// @public
+export function clrNormalizeContextText(text: string, lowercase?: boolean): string;
 
 // @public (undocumented)
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
@@ -8136,9 +8147,6 @@ export const hashtagIcon: IconShapeTuple;
 // @public (undocumented)
 export const hashtagIconName = "hashtag";
 
-// @public
-export function hasRequiredValidator(control: AbstractControl | null | undefined): boolean;
-
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
@@ -8903,9 +8911,6 @@ export const nodesIcon: IconShapeTuple;
 // @public (undocumented)
 export const nodesIconName = "nodes";
 
-// @public
-export function normalizeContextText(text: string, lowercase?: boolean): string;
-
 // @public (undocumented)
 export const noteIcon: IconShapeTuple;
 
@@ -9169,9 +9174,6 @@ export const radarIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const radarIconName = "radar";
-
-// @public
-export function readElementMutator(element: Element): ClrElementMutator | null;
 
 // @public (undocumented)
 export class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
