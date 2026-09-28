@@ -38,6 +38,12 @@ class TreeFeaturesService {
         this.selectable = false;
         this.eager = true;
         this.childrenFetched = new Subject();
+        /*
+         * Internal. Whether a bulk expansion is currently in effect for the whole tree, so that nodes created
+         * afterwards (lazy-loaded children, dynamic nodes) come in expanded. See `ClrTree.expandAll()`.
+         * Cleared as soon as any node of the tree is collapsed on its own.
+         */
+        this._allExpanded = false;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: TreeFeaturesService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
     static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: TreeFeaturesService }); }
@@ -257,6 +263,18 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.23", ngImpo
  */
 class TreeNodeModel {
     constructor() {
+        /*
+         * Internal. Whether a bulk expansion is currently in effect for this node's subtree, so that descendants
+         * created afterwards (lazy-loaded children, dynamic nodes) come in expanded.
+         * Cleared as soon as any node of the subtree is collapsed on its own.
+         */
+        this._descendantsExpanded = false;
+        /*
+         * Internal, the node rendering this model. Bulk operations walk the model tree and need the node itself,
+         * for its expandable state and its animation.
+         * Imported as a type only, so the models pull in nothing from the components at runtime.
+         */
+        this._node = null;
         this.loading$ = new BehaviorSubject(false);
         this.selected = new BehaviorSubject(ClrSelectedState.UNSELECTED);
         /*
@@ -273,6 +291,12 @@ class TreeNodeModel {
         this._loading = isLoading;
         this.loading$.next(isLoading);
     }
+    /*
+     * Internal. The children that are already known, without triggering a lazy fetch.
+     */
+    get _loadedChildren() {
+        return this.children;
+    }
     get disabled() {
         // when both parameters are undefined, double negative is needed to cast to false, otherwise will return undefined.
         return !!(this._disabled || this.parent?.disabled);
@@ -281,8 +305,36 @@ class TreeNodeModel {
         this._disabled = value;
     }
     destroy() {
+        this._node = null;
         // Just to be safe
         this.selected.complete();
+    }
+    /*
+     * Internal. Expands or collapses this node and every descendant that is already known.
+     * Disabled branches are left untouched and excluded, the same way selection excludes them.
+     */
+    _setExpandedRecursive(expanded) {
+        if (this.disabled) {
+            return;
+        }
+        if (this._node) {
+            this._node._setExpandedInBulk(expanded);
+        }
+        for (const child of this._loadedChildren) {
+            child._setExpandedRecursive(expanded);
+        }
+        this._descendantsExpanded = expanded;
+    }
+    /*
+     * Internal. Whether this node, or one of its ancestors, expects all of its descendants to be expanded.
+     */
+    _isInExpandedSubtree() {
+        for (let current = this; current; current = current.parent) {
+            if (current._descendantsExpanded) {
+                return true;
+            }
+        }
+        return false;
     }
     // Propagate by default when eager, don't propagate in the lazy-loaded tree.
     setSelected(state, propagateUp, propagateDown) {
@@ -310,6 +362,15 @@ class TreeNodeModel {
         // NOTE: we always propagate selection up in this method because it is only called when the user takes an action.
         // It should never be called from lifecycle hooks or app-provided inputs.
         this.setSelected(newState, true, propagate);
+    }
+    /*
+     * Internal, called when this node is collapsed on its own. No ancestor can still expect its whole subtree
+     * to be expanded, so nodes created afterwards must not keep cascading open.
+     */
+    _clearExpandedSubtree() {
+        for (let current = this; current; current = current.parent) {
+            current._descendantsExpanded = false;
+        }
     }
     /*
      * Internal, but needs to be called by other nodes
@@ -543,6 +604,8 @@ class ClrTreeNode {
         this.isModelLoading = false;
         this.nodeId = uniqueIdFactory();
         this.contentContainerTabindex = -1;
+        this.bulkChange = false;
+        this.skipAnimation = false;
         this.skipEmitChange = false;
         this.typeAheadKeyBuffer = '';
         this.typeAheadKeyEvent = new Subject();
@@ -565,6 +628,7 @@ class ClrTreeNode {
             this._model = new DeclarativeTreeNodeModel(parent ? parent._model : null);
         }
         this._model.nodeId = this.nodeId;
+        this._model._node = this;
     }
     get disabled() {
         return this._model.disabled;
@@ -618,6 +682,12 @@ class ClrTreeNode {
     get treeNodeLink() {
         return this.treeNodeLinkList && this.treeNodeLinkList.first;
     }
+    get childrenAnimationState() {
+        if (this.expandService.expanded) {
+            return this.skipAnimation ? 'expandedInstant' : 'expanded';
+        }
+        return this.skipAnimation ? 'collapsedInstant' : 'collapsed';
+    }
     get isParent() {
         return this._model.children && this._model.children.length > 0;
     }
@@ -628,8 +698,15 @@ class ClrTreeNode {
             this.selectedChange.emit(value);
         }));
         this.subscriptions.push(this.expandService.expandChange.subscribe(value => {
+            this.skipAnimation = this.bulkChange;
             this.expandedChange.emit(value);
             this._model.expanded = value;
+            if (!this.bulkChange && !value) {
+                // Collapsed on its own, so nothing above can still expect its whole subtree to be expanded and
+                // nodes created afterwards must not keep cascading open.
+                this._model._clearExpandedSubtree();
+                this.featuresService._allExpanded = false;
+            }
         }));
         this.subscriptions.push(this.focusManager.focusRequest.subscribe(nodeId => {
             if (this.nodeId === nodeId) {
@@ -641,6 +718,17 @@ class ClrTreeNode {
         this.subscriptions.push(this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading)));
     }
     ngAfterContentInit() {
+        // Nodes created while everything above them is expected to be expanded (lazy-loaded children, dynamic
+        // nodes) come in expanded. Children are only known at this point, not in ngOnInit, which is why the check
+        // happens here. This is a continuation of the bulk operation, not a toggle of its own, so it goes through
+        // the same path: no animation, and the cascade keeps going for this node's own descendants.
+        if (!this.expanded &&
+            (this.featuresService._allExpanded || this._model._isInExpandedSubtree()) &&
+            !this.disabled &&
+            this.isExpandable()) {
+            this._setExpandedInBulk(true);
+            this._model._descendantsExpanded = true;
+        }
         this.subscriptions.push(this.typeAheadKeyEvent.pipe(debounceTime(TREE_TYPE_AHEAD_TIMEOUT)).subscribe((bufferedKeys) => {
             this.focusManager.focusNodeStartsWith(bufferedKeys, this._model);
             // reset once bufferedKeys are used
@@ -664,6 +752,46 @@ class ClrTreeNode {
     }
     isSelectable() {
         return this.featuresService.selectable;
+    }
+    /**
+     * Expands this node and every expandable node below it, without animation. Disabled nodes are left untouched.
+     * Descendants added afterwards, including lazy-loaded children, come in expanded until any node of the subtree
+     * gets collapsed.
+     */
+    expandDescendants() {
+        this._model._setExpandedRecursive(true);
+    }
+    /**
+     * Collapses this node and every node below it, without animation. Disabled nodes are left untouched.
+     */
+    collapseDescendants() {
+        this._model._setExpandedRecursive(false);
+        this.reclaimTabStop();
+    }
+    /*
+     * Internal, called while the model tree is walked during a bulk operation.
+     */
+    _setExpandedInBulk(expanded) {
+        // Leaves are left alone when expanding, so that they don't emit a meaningless clrExpandedChange.
+        if (expanded && !this.isExpandable()) {
+            return;
+        }
+        this.bulkChange = true;
+        try {
+            // Consumers run synchronously on clrExpandedChange from here, so the flag is restored even if they throw.
+            this.expandService.expanded = expanded;
+        }
+        finally {
+            this.bulkChange = false;
+        }
+    }
+    /*
+     * Internal. Takes over the tree's single tab stop without moving focus, so that a collapse cannot leave it
+     * on a node that is now hidden.
+     */
+    _takeTabStop() {
+        this.setTabIndex(0);
+        this.focusManager.broadcastFocusedNode(this.nodeId);
     }
     focusTreeNode() {
         if (!isPlatformBrowser(this.platformId)) {
@@ -728,6 +856,17 @@ class ClrTreeNode {
         // if non-letter keys are pressed, do reset.
         this.typeAheadKeyBuffer = '';
     }
+    /*
+     * A collapsed subtree is made inert, so the tree's single tab stop must not be left inside the one that was
+     * just collapsed: the tree host gives up its own tabindex the first time it is focused, which would leave the
+     * whole tree unreachable by keyboard. This node is still visible, so it takes the tab stop over.
+     */
+    reclaimTabStop() {
+        const stranded = this.elementRef.nativeElement.querySelector('.clr-treenode-children .clr-tree-node-content-container[tabindex="0"]');
+        if (stranded) {
+            this._takeTabStop();
+        }
+    }
     setTabIndex(value) {
         this.contentContainerTabindex = value;
         this.contentContainer.nativeElement.setAttribute('tabindex', value.toString());
@@ -788,12 +927,20 @@ class ClrTreeNode {
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: ClrTreeNode, deps: [{ token: PLATFORM_ID }, { token: ClrTreeNode, optional: true, skipSelf: true }, { token: TreeFeaturesService }, { token: i2.IfExpandService }, { token: i2.ClrCommonStringsService }, { token: TreeFocusManagerService }, { token: i0.ElementRef }, { token: i0.Injector }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.23", type: ClrTreeNode, isStandalone: false, selector: "clr-tree-node", inputs: { expandable: ["clrExpandable", "expandable"], disabled: ["clrDisabled", "disabled"], selected: ["clrSelected", "selected"], expanded: ["clrExpanded", "expanded"], clrForTypeAhead: "clrForTypeAhead" }, outputs: { selectedChange: "clrSelectedChange", expandedChange: "clrExpandedChange" }, host: { properties: { "class.clr-tree-node": "true", "class.disabled": "this._model.disabled" } }, providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }], queries: [{ propertyName: "treeNodeLinkList", predicate: ClrTreeNodeLink }], viewQueries: [{ propertyName: "contentContainer", first: true, predicate: ["contentContainer"], descendants: true, read: ElementRef, static: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n  #contentContainer\n  role=\"treeitem\"\n  class=\"clr-tree-node-content-container\"\n  tabindex=\"-1\"\n  [class.clr-form-control-disabled]=\"disabled\"\n  [attr.aria-disabled]=\"disabled\"\n  [attr.aria-expanded]=\"isExpandable() ? expanded : null\"\n  [attr.aria-selected]=\"ariaSelected\"\n  (keydown)=\"onKeyDown($event)\"\n  (focus)=\"broadcastFocusOnContainer()\"\n>\n  @if (isExpandable() && !isModelLoading && !expandService.loading) {\n  <button\n    aria-hidden=\"true\"\n    type=\"button\"\n    tabindex=\"-1\"\n    class=\"clr-treenode-caret\"\n    (click)=\"expandService.toggle();\"\n    (focus)=\"focusTreeNode()\"\n    [disabled]=\"disabled\"\n  >\n    <cds-icon\n      class=\"clr-treenode-caret-icon\"\n      shape=\"angle\"\n      [direction]=\"expandService.expanded ? 'down' : 'right'\"\n    ></cds-icon>\n  </button>\n  } @if (expandService.loading || isModelLoading) {\n  <div class=\"clr-treenode-spinner-container\">\n    <span class=\"clr-treenode-spinner spinner\"></span>\n  </div>\n  } @if (featuresService.selectable) {\n  <div class=\"clr-checkbox-wrapper clr-treenode-checkbox\">\n    <input\n      aria-hidden=\"true\"\n      type=\"checkbox\"\n      [id]=\"nodeId + '-check'\"\n      class=\"clr-checkbox\"\n      [disabled]=\"disabled\"\n      [checked]=\"_model.selected.value === STATES.SELECTED\"\n      [indeterminate]=\"_model.selected.value === STATES.INDETERMINATE\"\n      (change)=\"_model.toggleSelection(featuresService.eager)\"\n      (focus)=\"focusTreeNode()\"\n      tabindex=\"-1\"\n    />\n    <label [for]=\"nodeId + '-check'\" class=\"clr-control-label\">\n      <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n    </label>\n  </div>\n  } @if (!featuresService.selectable) {\n  <div class=\"clr-treenode-content\" (mouseup)=\"focusTreeNode()\">\n    <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n  </div>\n  }\n\n  <ng-template #treenodeContent>\n    <ng-content></ng-content>\n    @if (featuresService.selectable || ariaSelected) {\n    <div class=\"clr-sr-only\">\n      <span> {{ariaSelected ? commonStrings.keys.selectedTreeNode : commonStrings.keys.unselectedTreeNode}}</span>\n    </div>\n    }\n  </ng-template>\n</div>\n<div\n  class=\"clr-treenode-children\"\n  [@toggleChildrenAnim]=\"expandService.expanded ? 'expanded' : 'collapsed'\"\n  [attr.role]=\"isExpandable() && !featuresService.recursion ? 'group' : null\"\n  [attr.inert]=\"expandService.expanded ? null : ''\"\n>\n  <ng-content select=\"clr-tree-node\"></ng-content>\n  <ng-content select=\"[clrIfExpanded]\"></ng-content>\n  <clr-recursive-children [parent]=\"_model\"></clr-recursive-children>\n</div>\n", dependencies: [{ kind: "directive", type: i3.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "component", type: RecursiveChildren, selector: "clr-recursive-children", inputs: ["parent", "children"] }], animations: [
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.23", type: ClrTreeNode, isStandalone: false, selector: "clr-tree-node", inputs: { expandable: ["clrExpandable", "expandable"], disabled: ["clrDisabled", "disabled"], selected: ["clrSelected", "selected"], expanded: ["clrExpanded", "expanded"], clrForTypeAhead: "clrForTypeAhead" }, outputs: { selectedChange: "clrSelectedChange", expandedChange: "clrExpandedChange" }, host: { properties: { "class.clr-tree-node": "true", "class.disabled": "this._model.disabled" } }, providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }], queries: [{ propertyName: "treeNodeLinkList", predicate: ClrTreeNodeLink }], viewQueries: [{ propertyName: "contentContainer", first: true, predicate: ["contentContainer"], descendants: true, read: ElementRef, static: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n  #contentContainer\n  role=\"treeitem\"\n  class=\"clr-tree-node-content-container\"\n  tabindex=\"-1\"\n  [class.clr-form-control-disabled]=\"disabled\"\n  [attr.aria-disabled]=\"disabled\"\n  [attr.aria-expanded]=\"isExpandable() ? expanded : null\"\n  [attr.aria-selected]=\"ariaSelected\"\n  (keydown)=\"onKeyDown($event)\"\n  (focus)=\"broadcastFocusOnContainer()\"\n>\n  @if (isExpandable() && !isModelLoading && !expandService.loading) {\n  <button\n    aria-hidden=\"true\"\n    type=\"button\"\n    tabindex=\"-1\"\n    class=\"clr-treenode-caret\"\n    (click)=\"expandService.toggle();\"\n    (focus)=\"focusTreeNode()\"\n    [disabled]=\"disabled\"\n  >\n    <cds-icon\n      class=\"clr-treenode-caret-icon\"\n      shape=\"angle\"\n      [direction]=\"expandService.expanded ? 'down' : 'right'\"\n    ></cds-icon>\n  </button>\n  } @if (expandService.loading || isModelLoading) {\n  <div class=\"clr-treenode-spinner-container\">\n    <span class=\"clr-treenode-spinner spinner\"></span>\n  </div>\n  } @if (featuresService.selectable) {\n  <div class=\"clr-checkbox-wrapper clr-treenode-checkbox\">\n    <input\n      aria-hidden=\"true\"\n      type=\"checkbox\"\n      [id]=\"nodeId + '-check'\"\n      class=\"clr-checkbox\"\n      [disabled]=\"disabled\"\n      [checked]=\"_model.selected.value === STATES.SELECTED\"\n      [indeterminate]=\"_model.selected.value === STATES.INDETERMINATE\"\n      (change)=\"_model.toggleSelection(featuresService.eager)\"\n      (focus)=\"focusTreeNode()\"\n      tabindex=\"-1\"\n    />\n    <label [for]=\"nodeId + '-check'\" class=\"clr-control-label\">\n      <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n    </label>\n  </div>\n  } @if (!featuresService.selectable) {\n  <div class=\"clr-treenode-content\" (mouseup)=\"focusTreeNode()\">\n    <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n  </div>\n  }\n\n  <ng-template #treenodeContent>\n    <ng-content></ng-content>\n    @if (featuresService.selectable || ariaSelected) {\n    <div class=\"clr-sr-only\">\n      <span> {{ariaSelected ? commonStrings.keys.selectedTreeNode : commonStrings.keys.unselectedTreeNode}}</span>\n    </div>\n    }\n  </ng-template>\n</div>\n<div\n  class=\"clr-treenode-children\"\n  [@toggleChildrenAnim]=\"childrenAnimationState\"\n  [attr.role]=\"isExpandable() && !featuresService.recursion ? 'group' : null\"\n  [attr.inert]=\"expandService.expanded ? null : ''\"\n>\n  <ng-content select=\"clr-tree-node\"></ng-content>\n  <ng-content select=\"[clrIfExpanded]\"></ng-content>\n  <clr-recursive-children [parent]=\"_model\"></clr-recursive-children>\n</div>\n", dependencies: [{ kind: "directive", type: i3.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "component", type: RecursiveChildren, selector: "clr-recursive-children", inputs: ["parent", "children"] }], animations: [
             trigger('toggleChildrenAnim', [
-                transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
-                transition('expanded => collapsed', [style({ height: '*' }), animate(200, style({ height: 0 }))]),
-                state('expanded', style({ height: '*', 'overflow-y': 'visible' })),
-                state('collapsed', style({ height: 0 })),
+                // The "instant" states are used by bulk operations (expand all, expand descendants): they have the same
+                // styles but no transition leads to them, so hundreds of nested containers don't animate at once.
+                transition('collapsed => expanded, collapsedInstant => expanded', [
+                    style({ height: 0 }),
+                    animate(200, style({ height: '*' })),
+                ]),
+                transition('expanded => collapsed, expandedInstant => collapsed', [
+                    style({ height: '*' }),
+                    animate(200, style({ height: 0 })),
+                ]),
+                state('expanded, expandedInstant', style({ height: '*', 'overflow-y': 'visible' })),
+                state('collapsed, collapsedInstant', style({ height: 0 })),
             ]),
         ] }); }
 }
@@ -801,15 +948,23 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.23", ngImpo
             type: Component,
             args: [{ selector: 'clr-tree-node', providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }], animations: [
                         trigger('toggleChildrenAnim', [
-                            transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
-                            transition('expanded => collapsed', [style({ height: '*' }), animate(200, style({ height: 0 }))]),
-                            state('expanded', style({ height: '*', 'overflow-y': 'visible' })),
-                            state('collapsed', style({ height: 0 })),
+                            // The "instant" states are used by bulk operations (expand all, expand descendants): they have the same
+                            // styles but no transition leads to them, so hundreds of nested containers don't animate at once.
+                            transition('collapsed => expanded, collapsedInstant => expanded', [
+                                style({ height: 0 }),
+                                animate(200, style({ height: '*' })),
+                            ]),
+                            transition('expanded => collapsed, expandedInstant => collapsed', [
+                                style({ height: '*' }),
+                                animate(200, style({ height: 0 })),
+                            ]),
+                            state('expanded, expandedInstant', style({ height: '*', 'overflow-y': 'visible' })),
+                            state('collapsed, collapsedInstant', style({ height: 0 })),
                         ]),
                     ], host: {
                         '[class.clr-tree-node]': 'true',
                         '[class.disabled]': 'this._model.disabled',
-                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n  #contentContainer\n  role=\"treeitem\"\n  class=\"clr-tree-node-content-container\"\n  tabindex=\"-1\"\n  [class.clr-form-control-disabled]=\"disabled\"\n  [attr.aria-disabled]=\"disabled\"\n  [attr.aria-expanded]=\"isExpandable() ? expanded : null\"\n  [attr.aria-selected]=\"ariaSelected\"\n  (keydown)=\"onKeyDown($event)\"\n  (focus)=\"broadcastFocusOnContainer()\"\n>\n  @if (isExpandable() && !isModelLoading && !expandService.loading) {\n  <button\n    aria-hidden=\"true\"\n    type=\"button\"\n    tabindex=\"-1\"\n    class=\"clr-treenode-caret\"\n    (click)=\"expandService.toggle();\"\n    (focus)=\"focusTreeNode()\"\n    [disabled]=\"disabled\"\n  >\n    <cds-icon\n      class=\"clr-treenode-caret-icon\"\n      shape=\"angle\"\n      [direction]=\"expandService.expanded ? 'down' : 'right'\"\n    ></cds-icon>\n  </button>\n  } @if (expandService.loading || isModelLoading) {\n  <div class=\"clr-treenode-spinner-container\">\n    <span class=\"clr-treenode-spinner spinner\"></span>\n  </div>\n  } @if (featuresService.selectable) {\n  <div class=\"clr-checkbox-wrapper clr-treenode-checkbox\">\n    <input\n      aria-hidden=\"true\"\n      type=\"checkbox\"\n      [id]=\"nodeId + '-check'\"\n      class=\"clr-checkbox\"\n      [disabled]=\"disabled\"\n      [checked]=\"_model.selected.value === STATES.SELECTED\"\n      [indeterminate]=\"_model.selected.value === STATES.INDETERMINATE\"\n      (change)=\"_model.toggleSelection(featuresService.eager)\"\n      (focus)=\"focusTreeNode()\"\n      tabindex=\"-1\"\n    />\n    <label [for]=\"nodeId + '-check'\" class=\"clr-control-label\">\n      <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n    </label>\n  </div>\n  } @if (!featuresService.selectable) {\n  <div class=\"clr-treenode-content\" (mouseup)=\"focusTreeNode()\">\n    <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n  </div>\n  }\n\n  <ng-template #treenodeContent>\n    <ng-content></ng-content>\n    @if (featuresService.selectable || ariaSelected) {\n    <div class=\"clr-sr-only\">\n      <span> {{ariaSelected ? commonStrings.keys.selectedTreeNode : commonStrings.keys.unselectedTreeNode}}</span>\n    </div>\n    }\n  </ng-template>\n</div>\n<div\n  class=\"clr-treenode-children\"\n  [@toggleChildrenAnim]=\"expandService.expanded ? 'expanded' : 'collapsed'\"\n  [attr.role]=\"isExpandable() && !featuresService.recursion ? 'group' : null\"\n  [attr.inert]=\"expandService.expanded ? null : ''\"\n>\n  <ng-content select=\"clr-tree-node\"></ng-content>\n  <ng-content select=\"[clrIfExpanded]\"></ng-content>\n  <clr-recursive-children [parent]=\"_model\"></clr-recursive-children>\n</div>\n" }]
+                    }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div\n  #contentContainer\n  role=\"treeitem\"\n  class=\"clr-tree-node-content-container\"\n  tabindex=\"-1\"\n  [class.clr-form-control-disabled]=\"disabled\"\n  [attr.aria-disabled]=\"disabled\"\n  [attr.aria-expanded]=\"isExpandable() ? expanded : null\"\n  [attr.aria-selected]=\"ariaSelected\"\n  (keydown)=\"onKeyDown($event)\"\n  (focus)=\"broadcastFocusOnContainer()\"\n>\n  @if (isExpandable() && !isModelLoading && !expandService.loading) {\n  <button\n    aria-hidden=\"true\"\n    type=\"button\"\n    tabindex=\"-1\"\n    class=\"clr-treenode-caret\"\n    (click)=\"expandService.toggle();\"\n    (focus)=\"focusTreeNode()\"\n    [disabled]=\"disabled\"\n  >\n    <cds-icon\n      class=\"clr-treenode-caret-icon\"\n      shape=\"angle\"\n      [direction]=\"expandService.expanded ? 'down' : 'right'\"\n    ></cds-icon>\n  </button>\n  } @if (expandService.loading || isModelLoading) {\n  <div class=\"clr-treenode-spinner-container\">\n    <span class=\"clr-treenode-spinner spinner\"></span>\n  </div>\n  } @if (featuresService.selectable) {\n  <div class=\"clr-checkbox-wrapper clr-treenode-checkbox\">\n    <input\n      aria-hidden=\"true\"\n      type=\"checkbox\"\n      [id]=\"nodeId + '-check'\"\n      class=\"clr-checkbox\"\n      [disabled]=\"disabled\"\n      [checked]=\"_model.selected.value === STATES.SELECTED\"\n      [indeterminate]=\"_model.selected.value === STATES.INDETERMINATE\"\n      (change)=\"_model.toggleSelection(featuresService.eager)\"\n      (focus)=\"focusTreeNode()\"\n      tabindex=\"-1\"\n    />\n    <label [for]=\"nodeId + '-check'\" class=\"clr-control-label\">\n      <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n    </label>\n  </div>\n  } @if (!featuresService.selectable) {\n  <div class=\"clr-treenode-content\" (mouseup)=\"focusTreeNode()\">\n    <ng-container [ngTemplateOutlet]=\"treenodeContent\"></ng-container>\n  </div>\n  }\n\n  <ng-template #treenodeContent>\n    <ng-content></ng-content>\n    @if (featuresService.selectable || ariaSelected) {\n    <div class=\"clr-sr-only\">\n      <span> {{ariaSelected ? commonStrings.keys.selectedTreeNode : commonStrings.keys.unselectedTreeNode}}</span>\n    </div>\n    }\n  </ng-template>\n</div>\n<div\n  class=\"clr-treenode-children\"\n  [@toggleChildrenAnim]=\"childrenAnimationState\"\n  [attr.role]=\"isExpandable() && !featuresService.recursion ? 'group' : null\"\n  [attr.inert]=\"expandService.expanded ? null : ''\"\n>\n  <ng-content select=\"clr-tree-node\"></ng-content>\n  <ng-content select=\"[clrIfExpanded]\"></ng-content>\n  <clr-recursive-children [parent]=\"_model\"></clr-recursive-children>\n</div>\n" }]
         }], ctorParameters: () => [{ type: undefined, decorators: [{
                     type: Inject,
                     args: [PLATFORM_ID]
@@ -861,6 +1016,7 @@ class ClrTree {
         this.focusManagerService = focusManagerService;
         this.renderer = renderer;
         this.el = el;
+        this.rootModels = [];
         this.subscriptions = [];
         this._isMultiSelectable = false;
         const subscription = ngZone.runOutsideAngular(() => fromEvent(el.nativeElement, 'focusin').subscribe((event) => {
@@ -891,6 +1047,40 @@ class ClrTree {
     ngOnDestroy() {
         this.subscriptions.forEach(sub => sub.unsubscribe());
     }
+    /**
+     * Expands every expandable node of the tree, without animation. Disabled nodes are left untouched.
+     * Nodes added to the tree afterwards, including lazy-loaded children, come in expanded until any node gets collapsed.
+     */
+    expandAll() {
+        this.setAllExpanded(true);
+    }
+    /**
+     * Collapses every node of the tree, without animation. Disabled nodes are left untouched.
+     */
+    collapseAll() {
+        this.setAllExpanded(false);
+    }
+    setAllExpanded(expanded) {
+        this.featuresService._allExpanded = expanded;
+        this.rootModels.forEach(model => model._setExpandedRecursive(expanded));
+        if (!expanded) {
+            this.reclaimTabStop();
+        }
+    }
+    /*
+     * A collapsed subtree is made inert, so the tree's single tab stop must not be left inside one: the host
+     * gives up its own tabindex the first time it is focused, which would leave the whole tree unreachable by
+     * keyboard. Only the roots stay visible after a collapse, so the first one takes the tab stop over.
+     */
+    reclaimTabStop() {
+        const stranded = this.el.nativeElement.querySelector('.clr-treenode-children .clr-tree-node-content-container[tabindex="0"]');
+        if (stranded) {
+            const firstRoot = this.rootNodes.find(node => !node._model.parent);
+            if (firstRoot) {
+                firstRoot._takeTabStop();
+            }
+        }
+    }
     setMultiSelectable() {
         if (this.featuresService.selectable && this.rootNodes.length > 0) {
             this._isMultiSelectable = true;
@@ -905,7 +1095,8 @@ class ClrTree {
         // if node has no parent, it's a root node
         // for recursive tree, this.rootNodes registers also nested children
         // so we have to use filter to extract the ones that are truly root nodes
-        this.focusManagerService.rootNodeModels = this.rootNodes.map(node => node._model).filter(node => !node.parent);
+        this.rootModels = this.rootNodes.map(node => node._model).filter(node => !node.parent);
+        this.focusManagerService.rootNodeModels = this.rootModels;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: ClrTree, deps: [{ token: TreeFeaturesService }, { token: TreeFocusManagerService }, { token: i0.Renderer2 }, { token: i0.ElementRef }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.23", type: ClrTree, isStandalone: false, selector: "clr-tree", inputs: { lazy: ["clrLazy", "lazy"] }, host: { attributes: { "tabindex": "0" }, properties: { "attr.role": "\"tree\"" } }, providers: [TREE_FEATURES_PROVIDER, TreeFocusManagerService], queries: [{ propertyName: "rootNodes", predicate: ClrTreeNode }], ngImport: i0, template: `
@@ -978,6 +1169,9 @@ class RecursiveTreeNodeModel extends TreeNodeModel {
     set children(value) {
         this._children = value;
     }
+    get _loadedChildren() {
+        return this._children || [];
+    }
     destroy() {
         if (this.subscription) {
             this.subscription.unsubscribe();
@@ -1021,7 +1215,7 @@ class RecursiveTreeNodeModel extends TreeNodeModel {
         }
     }
     wrapChildren(rawModels) {
-        return rawModels.map(m => new RecursiveTreeNodeModel(m, this, this.getChildren, this.featuresService));
+        return (rawModels || []).map(m => new RecursiveTreeNodeModel(m, this, this.getChildren, this.featuresService));
     }
 }
 
