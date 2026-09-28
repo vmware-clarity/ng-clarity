@@ -47,6 +47,13 @@ export default {
       description: 'Renders the alert in a compact, smaller view',
       control: { type: 'boolean' },
     },
+    clrAlertRole: {
+      description:
+        'The live-region role of the alert: `alert` interrupts, `status` waits its turn, `none` renders no live region. Left at Default, the alert chooses.',
+      control: { type: 'radio' },
+      options: ['Default', 'alert', 'status', 'none'],
+      mapping: { Default: undefined, none: null },
+    },
     // outputs
     clrAlertClosedChange: { control: { disable: true } },
     // methods

@@ -12,13 +12,10 @@
 .context-inspector-toolbar {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.5rem;
+  gap: var(--cds-global-space-5);
+  margin-bottom: var(--cds-global-space-5);
 }
 
 .context-inspector-json {
   max-height: none;
-  overflow: auto;
-  font-size: 0.7rem;
-  line-height: 1.4;
 }

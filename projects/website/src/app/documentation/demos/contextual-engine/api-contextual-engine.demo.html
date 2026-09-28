@@ -75,7 +75,8 @@
         ticked boxes, selected rows — is withheld unless <code cds-text="code">shareFormValues</code> is set, and the
         page's address is reduced to its route pattern — links to the application to the pattern they match, links
         elsewhere and frames to their origin, <code cds-text="code">mailto:</code> links to their scheme — unless
-        <code cds-text="code">shareFullUrl</code> is set.
+        <code cds-text="code">shareFullUrl</code> is set. Descriptions — helper and validation text — are still shared:
+        keep what they say free of the value, or mark the field <code cds-text="code">data-clr-context-redact</code>.
       </td>
     </tr>
     <tr>
@@ -124,7 +125,10 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">
         Takes a snapshot immediately, then watches the DOM for changes and <code cds-text="code">input</code> /
-        <code cds-text="code">change</code> for typing. Calling it again restarts with the new options.
+        <code cds-text="code">change</code> for typing. Calling it again restarts with the new options. Each snapshot
+        walks the page, taken once the page has been quiet for <code cds-text="code">debounceMs</code> and at most every
+        <code cds-text="code">maxWaitMs</code> while it keeps changing; on a large page, narrow it with
+        <code cds-text="code">rootSelector</code> or a smaller preset.
       </td>
     </tr>
     <tr>
@@ -207,7 +211,8 @@
         Gives the control a value, in the agent's terms: text, a number, <code cds-text="code">true</code> or
         <code cds-text="code">false</code>, an option's label (or one per item for a multi-select), a date or ISO
         string, the rows to select. The <code cds-text="code">description</code> is the node's label as the agent knows
-        it, and is checked against the node before anything is written.
+        it, and is checked against the node before anything is written: it may add filler ("the … field") and a few
+        words, but not words that make it about something else ("the wrong email", "not the name").
       </td>
     </tr>
     <tr>
@@ -332,6 +337,16 @@
       </td>
     </tr>
     <tr>
+      <td class="left"><b cds-text="medium">confirmTimeoutMs</b></td>
+      <td class="left clr-hidden-xs-down">Number</td>
+      <td class="left">
+        Optional. How long <code cds-text="code">confirm</code> may take before the operation is refused as
+        <code cds-text="code">declined</code>, since calls to <code cds-text="code">apply()</code> run one at a time and
+        an unanswered question would hold up every later call. Defaults to two minutes;
+        <code cds-text="code">0</code> waits indefinitely.
+      </td>
+    </tr>
+    <tr>
       <td class="left"><b cds-text="medium">announce(report)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">
@@ -438,7 +453,17 @@
         The control, or every control in the region, is still described — label, type, what it permits — but its value
         is never reported, never written, and the text the region shows is left out. A component inside publishes only
         that it is redacted: a datagrid reports neither its rows nor its selection. An annotation inside is reported
-        without its state. Exported as <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
+        without its state. Addresses count as content: a link or frame inside keeps its name but not where it points.
+        Exported as <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_HIDDEN_SELECTOR</b></td>
+      <td class="left">
+        What the engine treats as not on the page — <code cds-text="code">hidden</code>,
+        <code cds-text="code">aria-hidden="true"</code>, <code cds-text="code">inert</code> or
+        <code cds-text="code">data-clr-context-ignore</code>, and everything inside — as one selector, for a component
+        that publishes context and must agree with the engine about what an agent may see.
       </td>
     </tr>
   </tbody>
@@ -607,7 +632,10 @@
     <tr>
       <td class="left"><b cds-text="medium">url</b></td>
       <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">The current URL. Frames receive it without its query string or fragment.</td>
+      <td class="left">
+        The current URL. Frames and the global accessor receive only the origin and the route pattern, unless the
+        application sets <code cds-text="code">shareFullUrl</code>.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">route</b></td>
@@ -731,7 +759,7 @@
   </thead>
   <tbody>
     <tr>
-      <td class="left"><b cds-text="medium">publishElementContext(host, callback)</b></td>
+      <td class="left"><b cds-text="medium">clrPublishElementContext(host, callback)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
         Publishes a callback on the host element, returning the teardown to run on destroy. The teardown removes only
@@ -740,7 +768,7 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">publishElementMutator(host, mutator)</b></td>
+      <td class="left"><b cds-text="medium">clrPublishElementMutator(host, mutator)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
         Says how the component is written to, for the mutation engine. <code cds-text="code">coerce(proposed)</code>
@@ -760,7 +788,9 @@
         <code cds-text="code">aria-invalid</code>, <code cds-text="code">role</code> — without overriding the
         application: an attribute written in the template is kept, and once the application binds its own value, that
         value wins. <code cds-text="code">new ClrHostAttribute(element, 'aria-invalid').value(computed)</code> from the
-        host binding getter.
+        host binding getter. A binding to <code cds-text="code">null</code> from the first render cannot be told apart
+        from no binding, so it does not remove the component's attribute; bind a value, or use the component's own input
+        where it has one (such as <code cds-text="code">clrAlertRole</code>).
       </td>
     </tr>
     <tr>

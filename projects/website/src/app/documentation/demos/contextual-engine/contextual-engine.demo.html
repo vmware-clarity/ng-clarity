@@ -159,8 +159,8 @@
     <p class="clr-mt-16px" cds-text="body">
       Some state lives only inside component instances — a combobox's options render in a popover, yet the component
       always knows them. Any component can publish that truth with
-      <code cds-text="code">publishElementContext</code> from <code cds-text="code">&#64;clr/angular/utils</code>. The
-      collector calls it while scraping and merges the result over what the DOM showed.
+      <code cds-text="code">clrPublishElementContext</code> from <code cds-text="code">&#64;clr/angular/utils</code>.
+      The collector calls it while scraping and merges the result over what the DOM showed.
       <code cds-text="code">ClrCombobox</code> ships this built in, and so does
       <code cds-text="code">ClrDatagrid</code> for its total row count while paginated.
     </p>
@@ -431,9 +431,9 @@
     </ul>
     <p class="clr-mt-16px" cds-text="body">
       A component whose value is not what an agent sees, or whose state is not a form control at all, says how it is
-      written to with <code cds-text="code">publishElementMutator</code> from
+      written to with <code cds-text="code">clrPublishElementMutator</code> from
       <code cds-text="code">&#64;clr/angular/utils</code> — the mirror of
-      <code cds-text="code">publishElementContext</code>. <code cds-text="code">ClrCombobox</code>,
+      <code cds-text="code">clrPublishElementContext</code>. <code cds-text="code">ClrCombobox</code>,
       <code cds-text="code">ClrDateInput</code> and <code cds-text="code">ClrDatagrid</code> ship this built in.
     </p>
     <div class="clr-mt-16px">

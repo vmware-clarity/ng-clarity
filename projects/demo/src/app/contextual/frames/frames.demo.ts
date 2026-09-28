@@ -108,6 +108,8 @@ export class ContextualFramesDemo implements OnInit, OnDestroy {
   thirdPartyProbed = false;
   readonly servedLocally = servedFromLoopback();
 
+  private destroyed = false;
+
   constructor(
     private contextEngine: ClrContextEngineService,
     private changeDetectorRef: ChangeDetectorRef,
@@ -124,6 +126,7 @@ export class ContextualFramesDemo implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroyed = true;
     this.contextEngine.disableFrameBridge();
   }
 
@@ -134,7 +137,13 @@ export class ContextualFramesDemo implements OnInit, OnDestroy {
       return;
     }
     for (const candidate of alternateOrigins()) {
-      if (await reachable(candidate.href)) {
+      const found = await reachable(candidate.href);
+      // The page may have been left while the probe waited; a bridge opened now would
+      // outlive it and keep answering frames.
+      if (this.destroyed) {
+        return;
+      }
+      if (found) {
         this.thirdPartyOrigin = candidate.origin;
         this.thirdPartyPluginUrl = this.sanitizer.bypassSecurityTrustResourceUrl(candidate.href);
         // The bridge serves only origins it is told about: name the plugin's.

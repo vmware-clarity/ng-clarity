@@ -7,7 +7,8 @@
       "@clr/angular": ["../angular/index.ts"],
       "@clr/angular/*": ["../angular/*"],
       "@clr/addons": ["../addons/index.ts"],
-      "@clr/addons/*": ["../addons/*"]
+      "@clr/addons/*": ["../addons/*"],
+      "@clr/website/*": ["../website/src/app/*"]
     }
   },
   "exclude": ["dist", "node_modules"]

@@ -7,9 +7,10 @@
 
 import { Component } from '@angular/core';
 import { ClrContextModule } from '@clr/angular/ai';
+// One playground for the demo and the website: the website's component is the source,
+// reached through the demo's `@clr/website/*` path alias.
+import { ContextPlaygroundComponent } from '@clr/website/documentation/demos/contextual-engine/context-playground.component';
 
-// One playground for the demo and the website: the website's copy is the source.
-import { ContextPlaygroundComponent } from '../../../../../website/src/app/documentation/demos/contextual-engine/context-playground.component';
 import { ContextInventoryComponent } from '../inventory/inventory.component';
 
 @Component({

@@ -10,24 +10,24 @@
 }
 
 .playground-controls {
-  padding-right: 1rem;
+  padding-right: var(--cds-global-space-7);
 }
 
 .playground-summary {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.25rem;
+  gap: var(--cds-global-space-3);
   align-items: center;
-  margin-bottom: 0.5rem;
+  margin-bottom: var(--cds-global-space-5);
 }
 
 .playground-change {
   margin-top: 0;
-  font-size: 0.7rem;
+  font-size: var(--cds-alias-typography-font-size-1);
 }
 
 .playground-json {
-  font-size: 0.7rem;
+  font-size: var(--cds-alias-typography-font-size-1);
   line-height: 1.4;
   overflow: auto;
   max-height: 20rem;
@@ -39,5 +39,5 @@
 
 .playground-covers {
   color: var(--cds-alias-typography-color-300);
-  font-size: 0.7rem;
+  font-size: var(--cds-alias-typography-font-size-1);
 }

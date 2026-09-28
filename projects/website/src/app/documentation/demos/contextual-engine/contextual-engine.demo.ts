@@ -105,10 +105,10 @@ export class AppModule {}
 `;
 
 const ELEMENT_CONTEXT_EXAMPLE = `
-import { publishElementContext } from '@clr/angular/utils';
+import { clrPublishElementContext } from '@clr/angular/utils';
 
 // In the component that knows more than its markup shows:
-this.teardown = publishElementContext(hostElement, () => ({
+this.teardown = clrPublishElementContext(hostElement, () => ({
   type: 'combobox',
   state: {
     options: this.choices.map(choice => choice.label),
@@ -355,10 +355,10 @@ report.results[0];
 `;
 
 const ELEMENT_MUTATOR_EXAMPLE = `
-import { publishElementMutator } from '@clr/angular/utils';
+import { clrPublishElementMutator } from '@clr/angular/utils';
 
 // A component whose form control takes something other than what an agent sees.
-this.teardown = publishElementMutator(this.host.nativeElement, {
+this.teardown = clrPublishElementMutator(this.host.nativeElement, {
   // Turn the agent's proposal into what the control takes, or refuse with what would do.
   coerce: proposed => {
     const option = this.options.find(option => option.label === proposed);
@@ -369,7 +369,7 @@ this.teardown = publishElementMutator(this.host.nativeElement, {
 });
 
 // A component whose state is not a form control at all writes it itself.
-publishElementMutator(host, {
+clrPublishElementMutator(host, {
   write: rows => { this.select(rows); return { value: this.selectedRowLabels() }; },
   read: () => this.selectedRowLabels(),
 });

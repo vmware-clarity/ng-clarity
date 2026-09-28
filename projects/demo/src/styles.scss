@@ -84,3 +84,11 @@
   border: none;
   cursor: pointer;
 }
+
+// A readout of JSON — a snapshot, a result — shared by the contextual demo pages and the
+// context inspector; each sets its own max-height.
+.context-json {
+  overflow: auto;
+  font-size: var(--cds-alias-typography-font-size-1);
+  line-height: 1.4;
+}
