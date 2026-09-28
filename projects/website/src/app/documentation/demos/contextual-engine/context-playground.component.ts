@@ -40,9 +40,7 @@ const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
  * shown with its size — so the effect of each option is visible on the page it is on.
  * The playground itself is marked `data-clr-context-ignore` so it never describes itself.
  *
- * The demo app and the website each build this component from their own copy, kept
- * identical. The other copy is in
- * `projects/demo/src/app/contextual/`; change both.
+ * The demo app's playground page uses this same component.
  */
 @Component({
   selector: 'clr-context-playground',

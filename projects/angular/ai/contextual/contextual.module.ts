@@ -13,10 +13,10 @@ import { ClrContext } from './context.directive';
 /** The directives {@link ClrContextModule} declares and exports. */
 export const CLR_CONTEXT_DIRECTIVES: Type<any>[] = [ClrContext];
 
+/** Declares the `clrContext` directive for applications that use NgModules. */
 @NgModule({
   imports: [CommonModule],
   declarations: [CLR_CONTEXT_DIRECTIVES],
   exports: [CLR_CONTEXT_DIRECTIVES],
 })
-/** Declares the `clrContext` directive for applications that use NgModules. */
 export class ClrContextModule {}

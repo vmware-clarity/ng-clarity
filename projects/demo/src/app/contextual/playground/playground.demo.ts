@@ -8,7 +8,8 @@
 import { Component } from '@angular/core';
 import { ClrContextModule } from '@clr/angular/ai';
 
-import { ContextPlaygroundComponent } from '../context-playground.component';
+// One playground for the demo and the website: the website's copy is the source.
+import { ContextPlaygroundComponent } from '../../../../../website/src/app/documentation/demos/contextual-engine/context-playground.component';
 import { ContextInventoryComponent } from '../inventory/inventory.component';
 
 @Component({

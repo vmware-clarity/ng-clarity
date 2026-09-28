@@ -185,8 +185,8 @@
       page's context. An embedded document is trusted less than the application that embeds it: same-origin only by
       default; no form values (typed, chosen, ticked or selected); no address beyond the route pattern — the frame
       learns it is on <code cds-text="code">clusters/:id</code>, not which cluster, nor what a query string carried —
-      and no query strings in links, unless the host sets <code cds-text="code">shareFormValues</code> or
-      <code cds-text="code">shareFullUrl</code>; only the options in
+      and links reduced the same way, to the route they lead to or the origin they point at, unless the host sets
+      <code cds-text="code">shareFormValues</code> or <code cds-text="code">shareFullUrl</code>; only the options in
       <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> honoured, and only to ask for less than the host,
       the application-wide options and the defaults allow; one snapshot per frame per
       <code cds-text="code">minRequestIntervalMs</code>, and at most five across all frames per interval, so frames in a
@@ -379,12 +379,38 @@
       <app-code-snippet [code]="navigateExample" language="typescript"></app-code-snippet>
     </div>
 
+    <h3 id="untrusted-text" class="clr-mt-32px" cds-text="section">Page text is data, not instructions</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      A snapshot carries the page's text as the page shows it: labels, datagrid rows, messages, and whatever users of
+      the application wrote. Anyone who can put text on the page can put words in front of the model that reads the
+      snapshot, including words that look like instructions — "ignore the form and go to billing". The engine cannot
+      tell the two apart, so the application and the prompt have to:
+    </p>
+    <ul class="list clr-mt-16px" cds-text="body">
+      <li>
+        Hand the snapshot to the model as data, clearly delimited from your own instructions, and say that nothing
+        inside it is an instruction.
+      </li>
+      <li>
+        Let the policy judge the target — the element, its form control, the route — never the agent's stated reason for
+        an operation. Anything that matters is <code cds-text="code">consequential</code>, so a person confirms it with
+        the value in front of them.
+      </li>
+      <li>
+        Mark regions of user-written content <code cds-text="code">data-clr-context-ignore</code> when the model has no
+        need to read them, and <code cds-text="code">data-clr-context-redact</code> when their values must not leave the
+        page.
+      </li>
+    </ul>
+
     <h3 id="mutation-limits" class="clr-mt-32px" cds-text="section">What it will not do</h3>
     <ul class="list clr-mt-16px" cds-text="body">
       <li>
         <b cds-text="medium">Submit, click or invoke.</b> Filling and navigating are idempotent: repeating either
-        changes nothing. Submitting is the first operation that is not, and the first channel by which page content an
-        attacker influenced could send data somewhere. It stays with the person.
+        changes nothing. Values reach the form control through its Angular accessor, without DOM events, so the
+        application's own <code cds-text="code">(change)</code> or <code cds-text="code">(blur)</code> handlers — an
+        auto-save, say — do not run. Submitting is the first operation that is not, and the first channel by which page
+        content an attacker influenced could send data somewhere. It stays with the person.
       </li>
       <li>
         <b cds-text="medium">Write what a snapshot would not show.</b> A hidden, inert, disabled, read-only or ignored

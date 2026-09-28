@@ -41,7 +41,8 @@
       <td class="left">
         Starts answering context requests from embedded frames. Same-origin only unless told otherwise. A frame receives
         neither form values nor the page's address — only the route pattern, such as
-        <code cds-text="code">clusters/:id</code>, and links without their query strings — unless the host sets
+        <code cds-text="code">clusters/:id</code>; links to the application as the route pattern they match (and none
+        when they match no route), links elsewhere and frames as their origin — unless the host sets
         <code cds-text="code">shareFormValues</code> or <code cds-text="code">shareFullUrl</code>. A frame's budgets are
         capped at the host's own <code cds-text="code">snapshot</code> budgets, and at the defaults wherever the host
         set none.
@@ -72,7 +73,8 @@
         defaults wherever neither says: a caller cannot turn on <code cds-text="code">includeRoutes</code> or raise
         <code cds-text="code">maxComponents</code> past them. What the user entered — typed values, chosen options,
         ticked boxes, selected rows — is withheld unless <code cds-text="code">shareFormValues</code> is set, and the
-        page's address is reduced to its route pattern, with links losing their query strings, unless
+        page's address is reduced to its route pattern — links to the application to the pattern they match, links
+        elsewhere and frames to their origin, <code cds-text="code">mailto:</code> links to their scheme — unless
         <code cds-text="code">shareFullUrl</code> is set.
       </td>
     </tr>
@@ -226,7 +228,9 @@
         parameters filled in. Each parameter fills one path segment literally — a slash or a space stays part of the
         value — and <code cds-text="code">.</code> or <code cds-text="code">..</code> is refused. Guards run; the
         outcome is read from the router's events. A route whose module has not loaded yet is listed as
-        <code cds-text="code">lazy</code>, and its own routes once it has.
+        <code cds-text="code">lazy</code>, and its own routes once it has. A route matched by a custom
+        <code cds-text="code">matcher</code> has no pattern to navigate by and is not listed; the current route reports
+        the segments a matcher consumed as <code cds-text="code">*</code>.
       </td>
     </tr>
   </tbody>
@@ -311,10 +315,11 @@
       </td>
       <td class="left">
         Declares what an operation would do, given its resolved target: the node's ref, label, type and element, the
-        <code cds-text="code">value</code> about to be written in the agent's terms (an option's label, not its bound
-        object, which is in <code cds-text="code">modelValue</code>), or the route, URL and query parameters. The engine
-        never infers this; a policy that throws or answers anything else forbids. Judge the element or the form control
-        rather than the label: a label is translated, and can repeat.
+        <code cds-text="code">value</code> about to be written in the agent's terms (a radio's label, not its value,
+        which is in <code cds-text="code">modelValue</code>; a native select maps its options to model values inside
+        Angular's accessor, so it has no <code cds-text="code">modelValue</code>), or the route, URL and query
+        parameters. The engine never infers this; a policy that throws or answers anything else forbids. Judge the
+        element or the form control rather than the label: a label is translated, and can repeat.
       </td>
     </tr>
     <tr>
@@ -569,7 +574,8 @@
   <code cds-text="code">'full'</code> (the defaults), <code cds-text="code">'interactive'</code> (no prose, no
   navigation/banner/footer) and <code cds-text="code">'minimal'</code> (no prose or layout, summary collections, shorter
   text, a lower budget, modal focus). <code cds-text="code">clrContextPreset(name, overrides?)</code> returns a preset
-  with overrides for a single call.
+  with overrides for a single call; exclusion lists in the overrides add to the preset's, so an override can only narrow
+  it further.
 </p>
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Context shape</h2>
@@ -755,6 +761,23 @@
         application: an attribute written in the template is kept, and once the application binds its own value, that
         value wins. <code cds-text="code">new ClrHostAttribute(element, 'aria-invalid').value(computed)</code> from the
         host binding getter.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContextText(element, skip?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        The text an element shows, as a publisher may report it: text inside a redacted or ignored descendant, and text
+        hidden from assistive technology, is left out. Use it to label rows or options from their content, so a value
+        the application withheld never reaches a label.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrNormalizeContextText(text, lowercase?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        Text as the engine compares it — whitespace collapsed, and lowercased unless told otherwise — so a publisher and
+        the engine agree on whether two labels are the same.
       </td>
     </tr>
   </tbody>
