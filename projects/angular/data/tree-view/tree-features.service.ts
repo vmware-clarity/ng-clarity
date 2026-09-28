@@ -20,6 +20,13 @@ export class TreeFeaturesService<T> {
     root: RecursiveTreeNodeModel<T>[];
   };
   childrenFetched = new Subject<void>();
+
+  /*
+   * Internal. Whether a bulk expansion is currently in effect for the whole tree, so that nodes created
+   * afterwards (lazy-loaded children, dynamic nodes) come in expanded. See `ClrTree.expandAll()`.
+   * Cleared as soon as any node of the tree is collapsed on its own.
+   */
+  _allExpanded = false;
 }
 
 export function treeFeaturesFactory<T>(existing: TreeFeaturesService<T>) {

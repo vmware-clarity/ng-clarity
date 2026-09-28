@@ -5,17 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
-import { ClrTree } from '@clr/angular';
+import {
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  NgZone,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren,
+} from '@angular/core';
+import { ClrTree, ClrTreeNode } from '@clr/angular';
 
 interface PerfNode {
   name: string;
   children?: PerfNode[];
-  /**
-   * Bound to [(clrExpanded)] on the node. Today this is the only way to expand a whole tree: the application
-   * keeps the expansion state in its own model and binds every node to it.
-   */
-  expanded?: boolean;
 }
 
 interface SizePreset {
@@ -58,6 +62,7 @@ const MAX_NODES = 250_000;
 })
 export class ExpandAllPerformanceDemo implements OnInit {
   @ViewChild(ClrTree) tree: ClrTree<PerfNode>;
+  @ViewChildren(ClrTreeNode) nodes: QueryList<ClrTreeNode<PerfNode>>;
 
   presets: SizePreset[] = [
     { roots: 10, branching: 10, depth: 3 }, // 1,110 nodes
@@ -155,19 +160,19 @@ export class ExpandAllPerformanceDemo implements OnInit {
   }
 
   expandAll() {
-    this.measure('[clrExpanded]=true, whole tree', () => setExpanded(this.data, true));
+    this.measure('tree.expandAll()', () => this.tree.expandAll());
   }
 
   collapseAll() {
-    this.measure('[clrExpanded]=false, whole tree', () => setExpanded(this.data, false));
+    this.measure('tree.collapseAll()', () => this.tree.collapseAll());
   }
 
   expandFirstRoot() {
-    this.measure('[clrExpanded]=true, first root subtree', () => setExpanded(this.data.slice(0, 1), true));
+    this.measure('firstRoot.expandDescendants()', () => this.nodes.first.expandDescendants());
   }
 
   collapseFirstRoot() {
-    this.measure('[clrExpanded]=false, first root subtree', () => setExpanded(this.data.slice(0, 1), false));
+    this.measure('firstRoot.collapseDescendants()', () => this.nodes.first.collapseDescendants());
   }
 
   clearMeasurements() {
@@ -176,12 +181,9 @@ export class ExpandAllPerformanceDemo implements OnInit {
 
   /**
    * Measures three things for an operation:
-   * - the synchronous cost of the call itself, which here is only flipping the flags the nodes are bound to,
+   * - the synchronous cost of the call itself (model walk, expand services, output emissions),
    * - the time until the first frame is painted (change detection, style and layout of the whole tree),
    * - the time until the DOM stops changing, which matters for lazy trees loading level after level.
-   *
-   * With bindings almost all of the work lands in change detection rather than in the call, so "first frame"
-   * and "settled" are the columns to compare against any other way of expanding the tree.
    */
   private measure(operation: string, action: () => void) {
     if (this.running) {
@@ -282,19 +284,6 @@ function clamp(value: number, min: number, max: number): number {
     return min;
   }
   return Math.min(max, Math.max(min, number));
-}
-
-/**
- * Walks the generated data and flips the flag every node is bound to. Leaves are skipped: a leaf has nothing
- * to expand and binding true on one would only make it emit a meaningless clrExpandedChange.
- */
-function setExpanded(nodes: PerfNode[], expanded: boolean) {
-  for (const node of nodes) {
-    if (node.children && node.children.length) {
-      node.expanded = expanded;
-      setExpanded(node.children, expanded);
-    }
-  }
 }
 
 function countNodes(nodes: PerfNode[]): number {
