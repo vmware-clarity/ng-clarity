@@ -8,7 +8,6 @@
 import {
   ChangeDetectorRef,
   Component,
-  ComponentFactoryResolver,
   Input,
   OnChanges,
   OnDestroy,
@@ -37,7 +36,6 @@ export class PropertyViewPropertyValueContainerComponent<T> implements OnInit, O
   #pageComponent?: PropertyViewPropertyValueComponent<T>;
 
   constructor(
-    private componentFactoryResolver: ComponentFactoryResolver,
     private cdRef: ChangeDetectorRef,
     private viewContainer: ViewContainerRef
   ) {}
@@ -69,8 +67,7 @@ export class PropertyViewPropertyValueContainerComponent<T> implements OnInit, O
       return;
     }
 
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.componentType);
-    const componentRef = this.viewContainer.createComponent(componentFactory);
+    const componentRef = this.viewContainer.createComponent(this.componentType);
     this.#pageComponent = componentRef.instance;
     this.#pageComponent.model = this.componentModel;
     this.cdRef.detectChanges();
