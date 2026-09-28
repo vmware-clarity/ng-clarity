@@ -49,7 +49,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     get alertType(): string;
     set alertType(val: string);
     protected get ariaAtomic(): 'false' | null;
-    protected get ariaRole(): 'alert' | 'status';
+    protected get ariaRole(): 'alert' | 'status' | null;
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -74,6 +74,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     set isLightweight(val: boolean);
     // (undocumented)
     isSmall: boolean;
+    liveRole: 'alert' | 'status' | null | undefined;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -81,7 +82,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "liveRole": { "alias": "clrAlertRole"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null, null, null]>;
 }

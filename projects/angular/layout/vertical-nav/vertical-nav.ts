@@ -44,6 +44,7 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
 
   private _sub: Subscription;
   private readonly roleAttribute: ClrHostAttribute;
+  private readonly labelAttribute: ClrHostAttribute;
   private insideLandmark = false;
 
   constructor(
@@ -56,6 +57,7 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
     @Optional() private readonly el?: ElementRef<HTMLElement>
   ) {
     this.roleAttribute = new ClrHostAttribute(el?.nativeElement, 'role');
+    this.labelAttribute = new ClrHostAttribute(el?.nativeElement, 'aria-label');
     this._sub = _navService.collapsedChanged.subscribe(value => {
       this._collapsedChanged.emit(value);
     });
@@ -102,6 +104,17 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
   @HostBinding('attr.role')
   private get hostRole(): string | null {
     return this.roleAttribute.value(this.insideLandmark ? null : 'navigation');
+  }
+
+  /**
+   * A navigation landmark is named, so that it can be told apart from the header's: an
+   * `aria-label` or `aria-labelledby` the application gives the element wins, and the
+   * translatable `verticalNavLabel` string is used otherwise, while the nav is a landmark.
+   */
+  @HostBinding('attr.aria-label')
+  private get hostLabel(): string | null {
+    const landmark = this.hostRole === 'navigation' && !this.el?.nativeElement.hasAttribute('aria-labelledby');
+    return this.labelAttribute.value(landmark ? this.commonStrings.keys.verticalNavLabel : null);
   }
 
   ngOnInit() {

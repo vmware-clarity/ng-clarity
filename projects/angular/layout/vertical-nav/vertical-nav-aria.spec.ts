@@ -44,6 +44,13 @@ import { ClrVerticalNavModule } from './vertical-nav.module';
     <clr-vertical-nav [attr.role]="boundRole" class="bound">
       <a clrVerticalNavLink href="#/clusters">Clusters</a>
     </clr-vertical-nav>
+    <clr-vertical-nav aria-label="Inventory" class="named">
+      <a clrVerticalNavLink href="#/inventory">Inventory</a>
+    </clr-vertical-nav>
+    <span id="admin-heading">Administration</span>
+    <clr-vertical-nav aria-labelledby="admin-heading" class="labelledby">
+      <a clrVerticalNavLink href="#/admin">Admin</a>
+    </clr-vertical-nav>
   `,
   standalone: false,
 })
@@ -71,6 +78,20 @@ describe('Vertical nav, as assistive technology sees it', () => {
 
   it('is a navigation landmark', () => {
     expect(nav('').getAttribute('role')).toBe('navigation');
+  });
+
+  it('names its landmark, so it can be told apart from the header’s', () => {
+    expect(nav('').getAttribute('aria-label')).toBe(TestBed.inject(ClrCommonStringsService).keys.verticalNavLabel);
+  });
+
+  it('keeps the name the application gives it, and adds none when it is labelled by another element', () => {
+    expect(nav('.named').getAttribute('aria-label')).toBe('Inventory');
+    expect(nav('.labelledby').hasAttribute('aria-label')).toBe(false);
+  });
+
+  it('names nothing that is not a landmark', () => {
+    expect(nav('.inside-nav').hasAttribute('aria-label')).toBe(false);
+    expect(nav('.wrapped').hasAttribute('aria-label')).toBe(false);
   });
 
   it('lets the application override the role', () => {

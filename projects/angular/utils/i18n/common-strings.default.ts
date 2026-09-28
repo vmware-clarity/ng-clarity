@@ -91,6 +91,7 @@ export const commonStringsDefault: ClrCommonStrings = {
   responsiveNavOverflowClose: 'Close navigation overflow menu',
   //Vertical Nav
   verticalNavToggle: 'Toggle vertical navigation',
+  verticalNavLabel: 'Vertical navigation',
   // Timeline steps
   timelineStepNotStarted: 'Not started',
   timelineStepCurrent: 'Current',

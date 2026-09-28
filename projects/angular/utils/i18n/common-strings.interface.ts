@@ -279,6 +279,10 @@ export interface ClrCommonStrings {
   // Vertical Nav
   verticalNavToggle: string;
   /**
+   * The name of the vertical nav's navigation landmark, when the application gives none.
+   */
+  verticalNavLabel: string;
+  /**
    * Timeline Steps
    */
   timelineStepNotStarted: string;

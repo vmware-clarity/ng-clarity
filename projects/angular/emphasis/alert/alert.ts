@@ -23,6 +23,9 @@ import { Subscription } from 'rxjs';
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
 
+/** An ancestor that already announces what changes inside it. */
+const LIVE_REGION_SELECTOR = '[aria-live]:not([aria-live="off"]), [role="alert"], [role="status"], [role="log"]';
+
 @Component({
   selector: 'clr-alert',
   providers: [AlertIconAndTypesService],
@@ -34,6 +37,12 @@ export class ClrAlert implements OnInit, OnDestroy {
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
   @Input() clrCloseButtonAriaLabel: string = this.commonStrings.keys.alertCloseButtonAriaLabel;
+  /**
+   * The live-region role of the alert's content: `'alert'` interrupts, `'status'` waits its
+   * turn, and `null` renders none, for an application that announces the message itself.
+   * Left unset, the alert chooses (see {@link ariaRole}).
+   */
+  @Input('clrAlertRole') liveRole: 'alert' | 'status' | null | undefined = undefined;
 
   @Output('clrAlertClosedChange') _closedChanged = new EventEmitter<boolean>(false);
 
@@ -44,6 +53,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   private _isLightweight = false;
   private _origAlertType: string;
   private teardownElementContext?: () => void;
+  private insideLiveRegion = false;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -118,10 +128,20 @@ export class ClrAlert implements OnInit, OnDestroy {
    * Without a role an alert is announced by nothing at all, and its severity lives only
    * in a CSS class, which neither assistive technology nor page-context tooling can read.
    *
+   * An alert placed inside a live region the application already has is announced by
+   * that region, so it adds none of its own, which would announce it twice; the
+   * `clrAlertRole` input overrides either choice.
+   *
    * A `status` region is atomic by default, which would re-read the whole alert — its
    * buttons included — whenever any part of it changed; see {@link ariaAtomic}.
    */
-  protected get ariaRole(): 'alert' | 'status' {
+  protected get ariaRole(): 'alert' | 'status' | null {
+    if (this.liveRole !== undefined) {
+      return this.liveRole;
+    }
+    if (this.insideLiveRegion) {
+      return null;
+    }
     const urgent = this.alertType === 'danger' || this.alertType === 'warning';
     return urgent && this.isAppLevel ? 'alert' : 'status';
   }
@@ -136,6 +156,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    this.insideLiveRegion = !!this.hostElement.nativeElement.parentElement?.closest(LIVE_REGION_SELECTOR);
     // role="alert" versus role="status" only says important versus informational. Which
     // of danger, warning, success, info or neutral this is lives in a CSS class, which
     // nothing can read semantically, so the component reports it directly.

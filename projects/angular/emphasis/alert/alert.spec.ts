@@ -23,6 +23,7 @@ const CLOSE_ARIA_LABEL = 'Close Test Alert';
       [(clrAlertClosed)]="closed"
       [clrAlertAppLevel]="isAppLevel"
       [clrCloseButtonAriaLabel]="closeAriaLabel"
+      [clrAlertRole]="role"
     >
       <div class="alert-item">
         <span class="alert-text">{{ alertMsg }}</span>
@@ -41,9 +42,20 @@ class TestComponent {
   closed = false;
   isAppLevel = false;
   closeAriaLabel: string = CLOSE_ARIA_LABEL;
+  role: 'alert' | 'status' | null | undefined = undefined;
 
   alertMsg = 'This is an alert!';
 }
+
+@Component({
+  template: `
+    <div aria-live="polite">
+      <clr-alert clrAlertType="info"><div class="alert-item">Saved.</div></clr-alert>
+    </div>
+  `,
+  standalone: false,
+})
+class LiveRegionTestComponent {}
 
 export default function (): void {
   describe('Alert', () => {
@@ -51,7 +63,10 @@ export default function (): void {
     let compiled: any;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({ imports: [ClrAlertModule], declarations: [TestComponent] });
+      TestBed.configureTestingModule({
+        imports: [ClrAlertModule],
+        declarations: [TestComponent, LiveRegionTestComponent],
+      });
 
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -135,6 +150,26 @@ export default function (): void {
       fixture.componentInstance.type = 'warning';
       fixture.detectChanges();
       expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
+    });
+
+    it('takes the role the application asks for, including none', () => {
+      fixture.componentInstance.type = 'info';
+      fixture.componentInstance.role = 'alert';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
+
+      fixture.componentInstance.role = null;
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').hasAttribute('role')).toBe(false);
+      expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
+    });
+
+    it('adds no live region of its own inside one the application already has', () => {
+      const live = TestBed.createComponent(LiveRegionTestComponent);
+      live.detectChanges();
+
+      expect(live.nativeElement.querySelector('.alert').hasAttribute('role')).toBe(false);
+      live.destroy();
     });
 
     it('projects content', () => {
