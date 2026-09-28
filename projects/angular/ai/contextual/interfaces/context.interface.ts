@@ -74,7 +74,8 @@ export interface ClrPageContext {
   components: ClrComponentContext[];
   /**
    * Present and `true` when the component budget (`maxComponents`) ran out before the
-   * whole page was described, so whatever comes last in the document is missing. Raise
+   * whole page was described, so whatever comes last in the document is missing — or when
+   * a grid holds controls in more cells than `maxItemsPerCollection` lets it list. Raise
    * the budget, or narrow what is asked for, rather than treat the tree as complete.
    */
   truncated?: boolean;

@@ -7,7 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
-import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
+import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
 import { ClrContextRegistryService } from './context-registry.service';
@@ -34,7 +34,6 @@ export interface ClrContextTrackingOptions {
 
 const DEFAULT_DEBOUNCE_MS = 300;
 const DEFAULT_MAX_WAIT_MS = 2000;
-const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
 
 /**
  * Maintains the current page context as a stream by watching the DOM itself: a
@@ -45,7 +44,7 @@ const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
  * describing what the user currently sees, without polling and without any coupling to
  * the router or the rendering framework.
  *
- * Mutations inside elements marked with {@link CLR_CONTEXT_IGNORE_ATTRIBUTE} are
+ * Mutations inside elements marked with `data-clr-context-ignore` are
  * ignored (and the collector never describes those elements), so UI that renders the
  * context — the chat panel itself — neither triggers feedback loops nor describes
  * itself into the page context.
@@ -362,7 +361,7 @@ function isInsideIgnoredRegion(node: Node): boolean {
   // By node type rather than `instanceof Element`: a node inside a frame's document is
   // an instance of that window's Element, not this one's.
   const element = node.nodeType === Node.ELEMENT_NODE ? (node as Element) : node.parentElement;
-  return !!element?.closest(IGNORE_SELECTOR);
+  return !!element?.closest(CLR_CONTEXT_IGNORE_SELECTOR);
 }
 
 /** The snapshot as text, without the timestamp that differs on every take; `null` when it cannot be serialised. */

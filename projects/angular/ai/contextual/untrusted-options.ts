@@ -8,7 +8,6 @@
 import { withoutValues } from './dom/aria-state';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 import { MAX_LIST_ENTRIES } from './snapshot-options';
-import { stripQueryAndFragment } from './url';
 
 /**
  * Snapshot budgets a caller the application does not control — an embedded frame, a
@@ -84,31 +83,51 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
  * The same context with only as much of the address as says which page this is: the
  * route's pattern (`reset/:token`) rather than the path it matched (`reset/4f9c…`), no
  * query string, fragment, route parameters or route data; links to the application as
- * the route pattern they match, and links elsewhere and frames as their origin. Paths, parameters and queries routinely carry record identifiers,
- * tenant identifiers and occasionally credentials — a reset token, an invitation code,
- * a signed download — none of which a consumer the application does not control needs
- * to know where the user is.
+ * the route pattern they match, and links elsewhere and frames as their origin. Paths,
+ * parameters and queries routinely carry record identifiers, tenant identifiers and
+ * occasionally credentials — a reset token, an invitation code, a signed download — none
+ * of which a consumer the application does not control needs to know where the user is.
+ *
+ * A page that matches no configured route — or an application without a router — has no
+ * pattern to stand for its path, so only the origin is left of its address.
+ *
+ * `baseUrl` is what the page's relative links resolve against — the document's base URI,
+ * which a `<base href>` moves away from the page's own address. It defaults to the page's
+ * address.
  */
 export function withoutUrlDetails(
   context: ClrPageContext,
-  routePattern?: (path: string) => string | null
+  routePattern?: (path: string) => string | null,
+  baseUrl: string | undefined = context.url
 ): ClrPageContext {
   const shared: ClrPageContext = { ...context };
   const pattern = context.route?.path;
   if (typeof shared.url === 'string') {
-    shared.url = pattern !== undefined ? withPath(shared.url, pattern) : stripQueryAndFragment(shared.url);
+    shared.url = withPath(shared.url, pattern ?? '');
   }
-  if (context.route) {
-    shared.route = { url: pattern !== undefined ? `/${pattern}` : stripQueryAndFragment(context.route.url) };
-    if (pattern !== undefined) {
-      shared.route.path = pattern;
-    }
+  if (pattern !== undefined) {
+    shared.route = { url: `/${pattern}`, path: pattern };
+  } else {
+    delete shared.route;
   }
   // The same reasoning applies to the page's links and frames: an invitation, a reset
   // link, a record's page carry their secret in the path as often as in the query.
-  const base = originOf(context.url);
-  shared.components = context.components.map(node => withoutAddressDetails(node, base, routePattern));
+  const origin = originOf(context.url);
+  // A base on another origin is not this page's: relative links resolve against the page.
+  const resolveAgainst = baseUrl && originOf(baseUrl) === origin ? baseUrl : (context.url ?? null);
+  shared.components = context.components.map(node =>
+    withoutAddressDetails(node, { origin, resolveAgainst, routePattern })
+  );
   return shared;
+}
+
+/** What reducing an address needs to know about the page it is on. */
+interface AddressScope {
+  /** The page's origin: a link elsewhere keeps only its own. */
+  origin: string | null;
+  /** What a relative address resolves against. */
+  resolveAgainst: string | null;
+  routePattern?: (path: string) => string | null;
 }
 
 /** The URL's origin with `path` in place of its own path, query and fragment. */
@@ -134,18 +153,14 @@ function originOf(url: string | undefined): string | null {
  * elsewhere, and a frame, keep only their origin; a `mailto:` or `tel:` link keeps only
  * its scheme.
  */
-function withoutAddressDetails(
-  node: ClrComponentContext,
-  base: string | null,
-  routePattern?: (path: string) => string | null
-): ClrComponentContext {
+function withoutAddressDetails(node: ClrComponentContext, scope: AddressScope): ClrComponentContext {
   let result = node;
   const state = node.state;
   if (state && (typeof state['href'] === 'string' || typeof state['url'] === 'string')) {
     const reduced: Record<string, unknown> = { ...state };
     for (const key of ['href', 'url']) {
       if (typeof reduced[key] === 'string') {
-        const address = reducedAddress(reduced[key] as string, key === 'href', base, routePattern);
+        const address = reducedAddress(reduced[key] as string, key === 'href', scope);
         if (address === null) {
           delete reduced[key];
         } else {
@@ -159,29 +174,24 @@ function withoutAddressDetails(
     }
   }
   if (node.children?.length) {
-    result = { ...result, children: node.children.map(child => withoutAddressDetails(child, base, routePattern)) };
+    result = { ...result, children: node.children.map(child => withoutAddressDetails(child, scope)) };
   }
   return result;
 }
 
-function reducedAddress(
-  address: string,
-  isLink: boolean,
-  base: string | null,
-  routePattern?: (path: string) => string | null
-): string | null {
+function reducedAddress(address: string, isLink: boolean, scope: AddressScope): string | null {
   let url: URL;
   try {
-    url = new URL(address, base ?? undefined);
+    url = new URL(address, scope.resolveAgainst ?? undefined);
   } catch {
     return null;
   }
   if (url.protocol !== 'http:' && url.protocol !== 'https:') {
     return url.protocol;
   }
-  if (!isLink || url.origin !== base) {
+  if (!isLink || url.origin !== scope.origin) {
     return `${url.origin}/`;
   }
-  const pattern = routePattern?.(url.pathname) ?? null;
+  const pattern = scope.routePattern?.(url.pathname) ?? null;
   return pattern === null ? null : `/${pattern}`;
 }

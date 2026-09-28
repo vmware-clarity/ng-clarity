@@ -8,7 +8,9 @@
 import {
   CLR_CONTEXT_HIDDEN_SELECTOR,
   CLR_CONTEXT_IGNORE_ATTRIBUTE,
+  CLR_CONTEXT_IGNORE_SELECTOR,
   CLR_CONTEXT_REDACT_ATTRIBUTE,
+  CLR_CONTEXT_REDACT_SELECTOR,
   CLR_ELEMENT_CONTEXT_PROPERTY,
   CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
@@ -19,7 +21,14 @@ import { accessibleName } from './accessible-name';
 import { ariaState, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, publishedNode } from './element-context';
 import { readElementMutator } from './element-mutator';
-import { isLeafRole, isNameFromContents, isPresentationalRole, mayContainControls, resolveRole } from './roles';
+import {
+  isLeafRole,
+  isNameFromContents,
+  isPresentationalRole,
+  mayContainControls,
+  resolveRole,
+  roleCandidateSelector,
+} from './roles';
 import { summarizeRole } from './summarizers';
 import { accessibleText, isVisuallyHidden, truncate } from './text';
 import { stripQueryAndFragment } from '../url';
@@ -72,9 +81,6 @@ export const WRITABLE_ROLES: ReadonlySet<string> = new Set([
 /** Elements that never carry meaning for an agent. */
 const SKIPPED_TAGS = new Set(['script', 'style', 'template', 'link', 'meta', 'noscript', 'head']);
 
-const IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
-const REDACT_SELECTOR = `[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`;
-
 /**
  * Anything a user could act on. A described-by target containing one of these is real
  * content — a dialog body described by its `aria-describedby`, say — and is walked like
@@ -125,6 +131,8 @@ interface Walk {
   readonly extractors: ClrContextDomExtractor[];
   /** Roles whose subtrees are left out. */
   readonly excludeRoles: ReadonlySet<string>;
+  /** Selector for the elements that could carry one of `excludeRoles`, or `''` for none. */
+  readonly excludeRoleCandidates: string;
   /** Selector for elements left out with their subtrees, or `''` for none. */
   readonly excludeSelector: string;
   /** Ids of elements that exist only to describe another element, in the current document. */
@@ -176,11 +184,13 @@ export function collectContextTreeWithin(
   extractors: ClrContextDomExtractor[] = [],
   refs: ClrContextRefSink | null = null
 ): ClrContextTreeResult {
+  const excludeRoles = new Set(options.excludeRoles);
   const walk: Walk = {
     options,
     // An extractor whose selector the document rejects would throw on every element.
     extractors: extractors.filter(extractor => usableSelector(root, extractor.selector)),
-    excludeRoles: new Set(options.excludeRoles),
+    excludeRoles,
+    excludeRoleCandidates: roleCandidateSelector(excludeRoles),
     // Validated one by one, so a single bad entry does not silently drop every exclusion.
     excludeSelector: options.excludeSelectors.filter(selector => usableSelector(root, selector)).join(', '),
     describedByIds: new Set(),
@@ -256,9 +266,9 @@ export function engineScope(root: ParentNode, options: Required<ClrContextSnapsh
     // element: it must not silently widen the snapshot to the whole page.
     const selector = usableSelector(root, options.rootSelector);
     const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
-    // A root inside an ignored region is still ignored: the region is inert to the
-    // engine however the walk is pointed at it.
-    return { roots: roots.filter(element => !element.closest(IGNORE_SELECTOR)) };
+    // A root inside a hidden, inert, ignored or excluded region is still left out: what
+    // keeps a region from the engine holds however the walk is pointed at it.
+    return { roots: roots.filter(element => !isHiddenFromEngine(element, excludeSelector)) };
   }
   return { roots: null };
 }
@@ -335,7 +345,7 @@ function withinComponent<T>(element: Element, walk: Walk, describe: () => T): T 
 
 function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () => T): T {
   const ancestor = node.nodeType === Node.ELEMENT_NODE ? (node as Element).parentElement : null;
-  if (!ancestor?.closest(REDACT_SELECTOR)) {
+  if (!ancestor?.closest(CLR_CONTEXT_REDACT_SELECTOR)) {
     return describe();
   }
   walk.redactedDepth++;
@@ -379,7 +389,7 @@ function usableSelector(root: ParentNode, selector: string): string {
 function collectReferencedIds(root: ParentNode, walk: Walk): void {
   const collect = (attribute: string, into: Set<string>) => {
     for (const element of Array.from(root.querySelectorAll(`[${attribute}]`))) {
-      if (element.closest(IGNORE_SELECTOR)) {
+      if (element.closest(CLR_CONTEXT_IGNORE_SELECTOR)) {
         continue;
       }
       for (const id of (element.getAttribute(attribute) ?? '').trim().split(/\s+/)) {
@@ -464,7 +474,12 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   }
 
   const isCustomElement = tagName.includes('-');
-  const label = accessibleName(element, role, walk.options.maxTextLength);
+  // Inside a region the application keeps from agents, a name is only what an author
+  // gave the element — a label, `aria-label`, a title. A name taken from the content is
+  // that content: a link that reads as the account number it opens, a button that
+  // repeats the record it deletes.
+  const redacted = walk.redactedDepth > 0;
+  const label = accessibleName(element, redacted ? null : role, walk.options.maxTextLength, walk.excludeSelector);
 
   if (!role && !label) {
     if (!isCustomElement) {
@@ -517,7 +532,10 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     // spacer. Such an element is not on the page as far as an agent is concerned. Nor is
     // one whose content was left out on purpose — a datagrid when grids are excluded —
     // which must not come back labelled with all the text it holds.
-    if (!accessibleText(element).trim() && !(CLR_ELEMENT_CONTEXT_PROPERTY in element)) {
+    if (
+      !accessibleText(element, undefined, walk.excludeSelector).trim() &&
+      !(CLR_ELEMENT_CONTEXT_PROPERTY in element)
+    ) {
       return [];
     }
     if (holdsExcludedRole(element, walk)) {
@@ -532,9 +550,11 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
 
   // An anonymous custom element has no role to describe it and no name of its own, so
   // what it renders is the only thing it can say — a `clr-dg-footer` reporting "2 items",
-  // for instance.
+  // for instance. That is content, so a redacted region keeps it.
   const fallbackLabel =
-    !role && !label && isCustomElement ? truncate(accessibleText(element), walk.options.maxTextLength) : label;
+    !role && !label && isCustomElement && !redacted
+      ? truncate(accessibleText(element, undefined, walk.excludeSelector), walk.options.maxTextLength)
+      : label;
 
   const node: ClrComponentContext = { type: role ?? (isCustomElement ? tagName : 'group') };
   const attribution = isCustomElement ? tagName : owner?.tagName.toLowerCase();
@@ -546,8 +566,8 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   }
   // A collection role is described by aggregating its subtree rather than listing it,
   // which is what keeps a ten-thousand-row grid from producing ten thousand nodes.
-  const summary = summarizeRole(element, role, walk.options);
-  const state = { ...ariaState(element, walk.options, walk.redactedDepth > 0), ...summary };
+  const summary = summarizeRole(element, role, walk.options, walk.excludeSelector);
+  const state = { ...ariaState(element, walk.options, redacted, walk.excludeSelector), ...summary };
   if (Object.keys(state).length) {
     node.state = state;
   }
@@ -641,13 +661,18 @@ function describeCellControls(collection: Element, walk: Walk): ClrComponentCont
     if (path.some(element => shouldSkipSubtree(element, walk))) {
       continue;
     }
+    if (cells.size >= walk.options.maxItemsPerCollection) {
+      // One more cell the budget leaves out: the snapshot is cut off, as when the
+      // component budget runs out.
+      if (!walk.probing) {
+        walk.truncated = true;
+      }
+      break;
+    }
     cells.set(
       cell,
       path.some(element => element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE))
     );
-    if (cells.size >= walk.options.maxItemsPerCollection) {
-      break;
-    }
   }
   const nodes: ClrComponentContext[] = [];
   walk.textDepth++;
@@ -711,7 +736,7 @@ function describeTextBlock(element: Element, walk: Walk, owner: Element | null):
   if (owner) {
     node.element = owner.tagName.toLowerCase();
   }
-  const label = truncate(accessibleText(element), walk.options.maxTextLength);
+  const label = truncate(accessibleText(element, undefined, walk.excludeSelector), walk.options.maxTextLength);
   if (label) {
     node.label = label;
   }
@@ -740,7 +765,8 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
   const node: ClrComponentContext = { type: 'frame', element: frame.tagName.toLowerCase() };
   const state: Record<string, unknown> = {};
   const contents = frameDocument(frame);
-  const label = accessibleName(frame, null, walk.options.maxTextLength) || (contents?.title ?? '');
+  const label =
+    accessibleName(frame, null, walk.options.maxTextLength, walk.excludeSelector) || (contents?.title ?? '');
   if (label) {
     node.label = truncate(label, walk.options.maxTextLength);
   }
@@ -893,12 +919,15 @@ function listOf(node: ClrComponentContext | null): ClrComponentContext[] {
   return node ? [node] : [];
 }
 
-/** Whether anything inside the element has a role this walk leaves out. */
+/**
+ * Whether anything inside the element has a role this walk leaves out. Only the elements
+ * that could carry one of those roles are looked at, not every descendant.
+ */
 function holdsExcludedRole(element: Element, walk: Walk): boolean {
-  if (!walk.excludeRoles.size) {
+  if (!walk.excludeRoleCandidates) {
     return false;
   }
-  for (const descendant of Array.from(element.querySelectorAll('*'))) {
+  for (const descendant of Array.from(element.querySelectorAll(walk.excludeRoleCandidates))) {
     const role = resolveRole(descendant);
     if (role && walk.excludeRoles.has(role)) {
       return true;
@@ -966,6 +995,12 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
  * Whether the element is rendered and can be seen, as assistive technology judges it:
  * `display: none`, `visibility: hidden`, `content-visibility: hidden` and full
  * transparency all hide it. `checkVisibility` without options only covers the first.
+ *
+ * Geometry is deliberately not judged. A control clipped to nothing, sized to zero or
+ * moved off screen is still in the accessibility tree — and that is how custom checkboxes,
+ * radios and toggles, Clarity's among them, draw their own box over a native input that is
+ * visually hidden but is what a screen reader and the form binding use. What an
+ * application wants kept from agents it marks `data-clr-context-ignore`.
  */
 export function isVisible(element: HTMLElement): boolean {
   // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.

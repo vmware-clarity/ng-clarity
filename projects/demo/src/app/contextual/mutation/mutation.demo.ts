@@ -66,6 +66,8 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
   });
 
   private trackingSubscription: Subscription | null = null;
+  /** Whether this page started the tracker, and so stops it when it goes. */
+  private startedTracking = false;
 
   constructor(
     private contextTracker: ClrContextTrackerService,
@@ -82,11 +84,16 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
         this.targetRef = this.writableTargets[0]?.ref ?? '';
       }
     });
+    this.startedTracking = !this.contextTracker.isTracking;
     this.contextTracker.start({ snapshot: { maxComponents: 500 } });
   }
 
   ngOnDestroy(): void {
     this.trackingSubscription?.unsubscribe();
+    // The tracker is shared with the app-shell inspector; only a tracker this page started stops here.
+    if (this.startedTracking) {
+      this.contextTracker.stop();
+    }
   }
 
   setValue(): void {

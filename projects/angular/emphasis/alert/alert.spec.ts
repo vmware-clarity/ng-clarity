@@ -52,6 +52,7 @@ class TestComponent {
     <div aria-live="polite">
       <clr-alert clrAlertType="info"><div class="alert-item">Saved.</div></clr-alert>
     </div>
+    <clr-alert id="own" aria-live="polite" clrAlertType="info"><div class="alert-item">Synced.</div></clr-alert>
   `,
   standalone: false,
 })
@@ -169,6 +170,8 @@ export default function (): void {
       live.detectChanges();
 
       expect(live.nativeElement.querySelector('.alert').hasAttribute('role')).toBe(false);
+      // Nor when the application made the alert itself the live region.
+      expect(live.nativeElement.querySelector('#own .alert').hasAttribute('role')).toBe(false);
       live.destroy();
     });
 

@@ -39,6 +39,8 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
   profile: ClrContextPreset = 'full';
 
   private trackingSubscription: Subscription | null = null;
+  /** Whether this panel started the tracker, and so stops it when it goes. */
+  private startedTracking = false;
 
   constructor(private readonly contextTracker: ClrContextTrackerService) {}
 
@@ -54,13 +56,18 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    // The tracker is a singleton the app-shell inspector shares; only this panel's use of it ends here.
+    // The tracker is a singleton the app-shell inspector shares: it is stopped only when
+    // this panel started it, and otherwise left to whoever did.
     this.trackingSubscription?.unsubscribe();
+    if (this.startedTracking) {
+      this.contextTracker.stop();
+    }
   }
 
   /** Restarts tracking with a preset, so the same page can be compared under each. */
   setProfile(profile: ClrContextPreset): void {
     this.profile = profile;
+    this.startedTracking ||= !this.contextTracker.isTracking;
     this.contextTracker.start({ snapshot: clrContextPreset(profile, { maxComponents: this.maxComponents }) });
   }
 

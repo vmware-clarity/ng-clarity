@@ -398,8 +398,10 @@ function isoDate(text: string): Date | null {
   if (!iso) {
     return null;
   }
-  const date = new Date(+iso[1], +iso[2] - 1, +iso[3]);
-  return date.getMonth() === +iso[2] - 1 && date.getDate() === +iso[3] ? date : null;
+  // Set through `setFullYear`: the `Date` constructor reads the years 0 to 99 as 1900 to 1999.
+  const date = new Date(2000, 0, 1);
+  date.setFullYear(+iso[1], +iso[2] - 1, +iso[3]);
+  return date.getFullYear() === +iso[1] && date.getMonth() === +iso[2] - 1 && date.getDate() === +iso[3] ? date : null;
 }
 
 function isoDateString(date: Date): string {

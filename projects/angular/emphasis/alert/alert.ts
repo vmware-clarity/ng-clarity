@@ -23,7 +23,7 @@ import { Subscription } from 'rxjs';
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
 
-/** An ancestor that already announces what changes inside it. */
+/** An element, the alert's host or above it, that already announces what changes inside it. */
 const LIVE_REGION_SELECTOR = '[aria-live]:not([aria-live="off"]), [role="alert"], [role="status"], [role="log"]';
 
 @Component({
@@ -138,8 +138,10 @@ export class ClrAlert implements OnInit, OnDestroy {
     if (this.liveRole !== undefined) {
       return this.liveRole;
     }
-    // Checked each time rather than once: an alert can be moved into a live region.
-    if (this.hostElement.nativeElement.parentElement?.closest(LIVE_REGION_SELECTOR)) {
+    // Checked each time rather than once: an alert can be moved into a live region. The
+    // host counts too, for an application that put `aria-live` on the `clr-alert` itself;
+    // the role this renders is on an element inside it.
+    if (this.hostElement.nativeElement.closest(LIVE_REGION_SELECTOR)) {
       return null;
     }
     const urgent = this.alertType === 'danger' || this.alertType === 'warning';

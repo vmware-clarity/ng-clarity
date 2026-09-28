@@ -106,13 +106,25 @@ describe('Context frame bridge', () => {
     it('only forwards known snapshot options from the embedded frame', () => {
       dispatchRequest(frameRequest('request-2', { maxComponents: 5, includeDomComponents: false, injected: 'nope' }));
 
-      expect(getSnapshot).toHaveBeenCalledWith({ maxComponents: 5, includeDomComponents: false });
+      const requested = getSnapshot.calls.mostRecent().args[0];
+      expect(requested).toEqual(jasmine.objectContaining({ maxComponents: 5, includeDomComponents: false }));
+      expect('injected' in requested).toBe(false);
     });
 
     it('discards anything in the request that is not a budget', () => {
       dispatchRequest(frameRequest('request-2b', { shareFormValues: true, shareFullUrl: true }));
 
-      expect(getSnapshot).toHaveBeenCalledWith({});
+      const requested = getSnapshot.calls.mostRecent().args[0];
+      expect('shareFormValues' in requested).toBe(false);
+      expect('shareFullUrl' in requested).toBe(false);
+    });
+
+    it('holds a frame to the default budgets and switches when the host sets no ceiling', () => {
+      dispatchRequest(frameRequest('request-2c', { maxComponents: 100_000, includeRoutes: true }));
+
+      expect(getSnapshot.calls.mostRecent().args[0]).toEqual(
+        jasmine.objectContaining({ maxComponents: 300, includeRoutes: false })
+      );
     });
 
     it('ignores requests from origins that are not allowed', () => {
@@ -259,6 +271,32 @@ describe('Context frame bridge', () => {
         expect(plugin.state?.['url']).toBe('https://app.example/');
         const json = JSON.stringify(servedContext(frame));
         ['secret', '42', 'abc', 'someone', 'plugins/7'].forEach(detail => expect(json).not.toContain(detail));
+      });
+
+      it('serves only the origin of a page that matches no route, and resolves relative links against the page', () => {
+        host.stop();
+        host = new ClrContextFrameHost(
+          () => ({
+            title: 'Host page',
+            url: 'https://app.example/reset/4f9c-token',
+            regions: [],
+            components: [{ type: 'link', label: 'Edit', state: { href: 'edit' } }],
+            collectedAt: new Date(0).toISOString(),
+          }),
+          window,
+          { minRequestIntervalMs: 0 },
+          path => (path === '/reset/edit' ? 'reset/edit' : null)
+        );
+        host.start();
+
+        dispatchRequest(frameRequest('request-no-route'));
+
+        const served = servedContext(frame);
+        expect(served.url).toBe('https://app.example/');
+        expect(served.route).toBeUndefined();
+        // `edit` on /reset/4f9c-token is /reset/edit, not /edit.
+        expect(served.components[0].state?.['href']).toBe('/reset/edit');
+        expect(JSON.stringify(served)).not.toContain('4f9c');
       });
 
       it('still describes the fields and what they permit', () => {
@@ -533,10 +571,10 @@ describe('Context frame bridge, what the host stays in charge of', () => {
     host.start();
 
     dispatchRequest(frameRequest('big', { maxComponents: 5000 }), { postMessage: jasmine.createSpy() });
-    expect(getSnapshot).toHaveBeenCalledWith({ maxComponents: 20 });
+    expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(20);
 
     dispatchRequest(frameRequest('small', { maxComponents: 3 }), { postMessage: jasmine.createSpy() });
-    expect(getSnapshot).toHaveBeenCalledWith({ maxComponents: 3 });
+    expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(3);
   });
 
   it('drops a budget that is not a finite number rather than walking without bound', () => {
@@ -545,7 +583,8 @@ describe('Context frame bridge, what the host stays in charge of', () => {
 
     dispatchRequest(frameRequest('nan', { maxComponents: Number.NaN }), { postMessage: jasmine.createSpy() });
 
-    expect(getSnapshot).toHaveBeenCalledWith({});
+    // Dropped, so the default ceiling applies.
+    expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(300);
   });
 
   it('refuses a configuration that would serve nobody, rather than doing so silently', () => {

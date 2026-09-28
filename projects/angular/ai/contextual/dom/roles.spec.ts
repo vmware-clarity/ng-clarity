@@ -5,7 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { isLeafRole, isNameFromContents, isPresentationalRole, mayContainControls, resolveRole } from './roles';
+import {
+  isLeafRole,
+  isNameFromContents,
+  isPresentationalRole,
+  mayContainControls,
+  resolveRole,
+  roleCandidateSelector,
+} from './roles';
 
 describe('resolveRole', () => {
   function roleOf(html: string): string | null {
@@ -156,5 +163,46 @@ describe('resolveRole, beyond HTML-AAM where an agent needs it', () => {
   it('only treats a page-level header or footer as a landmark', () => {
     expect(roleOf('<header>top</header>', 'header')).toBe('banner');
     expect(roleOf('<article><footer>meta</footer></article>', 'footer')).toBeNull();
+  });
+});
+
+describe('roleCandidateSelector', () => {
+  const html = `
+    <div role="grid"></div><table></table><nav></nav><input type="checkbox" /><select></select>
+    <a href="/x">x</a><a>placeholder</a><th></th><header></header><div contenteditable="true"></div><span></span>`;
+
+  function candidates(roles: string[]): Element[] {
+    const container = document.createElement('div');
+    container.innerHTML = html;
+    const selector = roleCandidateSelector(new Set(roles));
+    return selector ? Array.from(container.querySelectorAll(selector)) : [];
+  }
+
+  it('matches nothing for no roles', () => {
+    expect(candidates([])).toEqual([]);
+  });
+
+  it('matches every element that resolves to one of the roles, and few that do not', () => {
+    for (const roles of [
+      ['grid'],
+      ['table'],
+      ['navigation'],
+      ['checkbox'],
+      ['combobox'],
+      ['link'],
+      ['columnheader'],
+      ['banner'],
+      ['textbox'],
+    ]) {
+      const container = document.createElement('div');
+      container.innerHTML = html;
+      const expected = Array.from(container.querySelectorAll('*')).filter(element =>
+        roles.includes(resolveRole(element) ?? '')
+      );
+      const found = candidates(roles).map(element => element.outerHTML);
+      expected.forEach(element => expect(found).withContext(roles[0]).toContain(element.outerHTML));
+    }
+    // A plain span can carry none of these roles and is never looked at.
+    expect(candidates(['table']).some(element => element.tagName === 'SPAN')).toBe(false);
   });
 });

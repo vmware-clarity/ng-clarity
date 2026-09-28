@@ -25,10 +25,24 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = 'data-clr-context-redact';
  */
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = 'data-clr-context-ignore';
 
+/** Matches an element marked {@link CLR_CONTEXT_REDACT_ATTRIBUTE}; with `closest`, one inside a redacted region. */
+export const CLR_CONTEXT_REDACT_SELECTOR = `[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`;
+
+/** Matches an element marked {@link CLR_CONTEXT_IGNORE_ATTRIBUTE}; with `closest`, one inside an ignored region. */
+export const CLR_CONTEXT_IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
+
 /**
  * What page-context tooling treats as not on the page: hidden, hidden from assistive
  * technology, inert, or marked ignored — along with everything inside it. The contextual
  * engine and the components that publish context to it test against this one selector,
  * so they never disagree about what an agent may see.
  */
-export const CLR_CONTEXT_HIDDEN_SELECTOR = `[hidden], [aria-hidden="true"], [inert], [${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
+export const CLR_CONTEXT_HIDDEN_SELECTOR = `[hidden], [aria-hidden="true"], [inert], ${CLR_CONTEXT_IGNORE_SELECTOR}`;
+
+/**
+ * What page-context tooling never reads text from: everything
+ * {@link CLR_CONTEXT_HIDDEN_SELECTOR} matches, and regions marked
+ * `data-clr-context-redact`. A component that labels something from its content — a row
+ * by its cells, an option by its text — leaves out every descendant this matches.
+ */
+export const CLR_CONTEXT_WITHHELD_SELECTOR = `${CLR_CONTEXT_HIDDEN_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}`;

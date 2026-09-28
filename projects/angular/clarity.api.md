@@ -919,7 +919,16 @@ export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [i
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
+export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
+
+// @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+
+// @public
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact]";
 
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
@@ -3732,6 +3741,8 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     // (undocumented)
     protected get multiple(): boolean;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrFileInputContainer, "clr-file-input-container", never, { "customButtonLabel": { "alias": "clrButtonLabel"; "required": false; }; }, {}, ["fileInput", "fileList", "fileSuccessComponent", "fileErrorComponent"], ["label", "[clrFileInput]", "clr-control-helper", "clr-control-error", "clr-control-success", "clr-file-list"], false, never>;
@@ -4463,6 +4474,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
+    ariaModal: boolean;
     // (undocumented)
     get backdrop(): boolean;
     // (undocumented)
@@ -4513,7 +4525,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     title: ElementRef<HTMLElement>;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "ariaModal": { "alias": "clrModalAriaModal"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
 }

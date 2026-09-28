@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
+
 import { isNameFromContents } from './roles';
 import { accessibleText, referencedText, truncate } from './text';
 
@@ -22,9 +24,12 @@ const LABELABLE = new Set(['button', 'input', 'meter', 'output', 'progress', 'se
  *
  * That last restriction is what keeps the result useful: without it a `region` or `form`
  * would take the whole page's prose as its label.
+ *
+ * `withheld` is a selector for elements whose text is never read into a name (see
+ * `accessibleText`).
  */
-export function accessibleName(element: Element, role: string | null, maxTextLength: number): string {
-  const referenced = labelledByText(element);
+export function accessibleName(element: Element, role: string | null, maxTextLength: number, withheld = ''): string {
+  const referenced = referencedText(element, 'aria-labelledby', withheld);
   if (referenced) {
     return truncate(referenced, maxTextLength);
   }
@@ -34,7 +39,7 @@ export function accessibleName(element: Element, role: string | null, maxTextLen
     return truncate(label, maxTextLength);
   }
 
-  const native = nativeName(element);
+  const native = nativeName(element, withheld);
   if (native?.trim()) {
     return truncate(native, maxTextLength);
   }
@@ -52,43 +57,38 @@ export function accessibleName(element: Element, role: string | null, maxTextLen
   }
 
   if (role && isNameFromContents(role)) {
-    return truncate(accessibleText(element), maxTextLength);
+    return truncate(accessibleText(element, undefined, withheld), maxTextLength);
   }
 
   return '';
 }
 
-/** The joined text of every element `aria-labelledby` points at. */
-function labelledByText(element: Element): string {
-  return referencedText(element, 'aria-labelledby');
-}
-
 /** The name HTML itself supplies for this element, or `null` when it supplies none. */
-function nativeName(element: Element): string | null {
+function nativeName(element: Element, withheld: string): string | null {
   const tagName = element.tagName.toLowerCase();
 
   if (tagName === 'img' || tagName === 'area') {
     return element.getAttribute('alt');
   }
   if (tagName === 'fieldset') {
-    return scopedText(element, 'legend');
+    return scopedText(element, 'legend', withheld);
   }
   if (tagName === 'table') {
-    return scopedText(element, 'caption');
+    return scopedText(element, 'caption', withheld);
   }
   if (tagName === 'figure') {
-    return scopedText(element, 'figcaption');
+    return scopedText(element, 'figcaption', withheld);
   }
   if (LABELABLE.has(tagName)) {
-    return labelText(element);
+    return labelText(element, withheld);
   }
   return null;
 }
 
 /** Text of a direct child matching `selector`, the only place these names may come from. */
-function scopedText(element: Element, selector: string): string | null {
+function scopedText(element: Element, selector: string, withheld: string): string | null {
   const child = element.querySelector(`:scope > ${selector}`);
-  return child ? accessibleText(child) : null;
+  return child && !(withheld && child.matches(withheld)) ? accessibleText(child, undefined, withheld) : null;
 }
 
 /**
@@ -99,13 +99,15 @@ function scopedText(element: Element, selector: string): string | null {
  * form is the difference between a linear and a quadratic scrape. A wrapping label's
  * name leaves the control itself out: a `<select>`'s options are not part of its name.
  */
-function labelText(control: Element): string | null {
+function labelText(control: Element, withheld: string): string | null {
   // The browser keeps the association for labelable elements; only an element that
   // cannot be labelled (a custom textbox) falls back to a label wrapped around it.
   const labels = (control as HTMLInputElement).labels;
-  if (labels) {
-    return labels[0] ? accessibleText(labels[0], control) : null;
+  const label = labels ? labels[0] : control.closest('label');
+  // A label in a region the engine may not read names nothing: its text is withheld
+  // like any other there.
+  if (!label || label.closest(CLR_CONTEXT_IGNORE_SELECTOR) || (withheld && label.closest(withheld))) {
+    return null;
   }
-  const wrapping = control.closest('label');
-  return wrapping ? accessibleText(wrapping, control) : null;
+  return accessibleText(label, control, withheld);
 }

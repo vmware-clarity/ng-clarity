@@ -162,6 +162,69 @@ describe('summarizeRole', () => {
 
     expect(summarizeRole(input, 'combobox', budgets())?.options).toEqual(['Gold', 'Silver']);
   });
+
+  describe('what the application keeps from agents', () => {
+    it('counts a redacted item but withholds what it says', () => {
+      const list = summarize(
+        '<ul><li>Public</li><li data-clr-context-redact>ACC-1234</li><li><span data-clr-context-redact>ACC-9</span></li></ul>',
+        'list'
+      );
+      expect(list?.itemCount).toBe(3);
+      // The third item is listed, but the only thing it says is withheld.
+      expect(list?.items).toEqual(['Public', '']);
+      expect(JSON.stringify(list)).not.toContain('ACC');
+    });
+
+    it('withholds a redacted tab, option and column header, and what is selected among them', () => {
+      const tabs = summarize(
+        '<div role="tablist"><button role="tab">Summary</button><button role="tab" aria-selected="true" data-clr-context-redact>ACC-1234</button></div>',
+        'tablist'
+      );
+      expect(tabs?.tabs).toEqual(['Summary']);
+      expect('activeTab' in (tabs ?? {})).toBe(false);
+
+      const options = summarize(
+        '<div role="listbox"><div role="option">Gold</div><div role="option" aria-selected="true" data-clr-context-redact>ACC-1234</div></div>',
+        'listbox'
+      );
+      expect(options?.optionCount).toBe(2);
+      expect(options?.options).toEqual(['Gold']);
+      expect('selected' in (options ?? {})).toBe(false);
+
+      const grid = summarize(
+        `<table><thead><tr><th>Name</th><th aria-sort="ascending" data-clr-context-redact>ACC-1234</th></tr></thead>
+         <tbody><tr><td>a</td><td>b</td></tr></tbody></table>`,
+        'table'
+      );
+      expect(grid?.columns).toEqual(['Name']);
+      expect('sort' in (grid ?? {})).toBe(false);
+    });
+
+    it('keeps column names when the whole grid is redacted, for the walk to reduce', () => {
+      container.innerHTML =
+        '<div data-clr-context-redact><table><tr><th>Account</th></tr><tr><td>ACC-1</td></tr></table></div>';
+      const table = container.querySelector('table') as HTMLElement;
+      expect(summarizeRole(table, 'table', budgets())?.columns).toEqual(['Account']);
+    });
+
+    it('leaves out excluded items, and excluded text inside an item’s name', () => {
+      container.innerHTML = '<ul><li>Keep <span class="secret">ACC-1</span></li><li class="secret">ACC-2</li></ul>';
+      const list = summarizeRole(container.firstElementChild as HTMLElement, 'list', budgets(), '.secret');
+      expect(list?.itemCount).toBe(1);
+      expect(list?.items).toEqual(['Keep']);
+    });
+
+    it('leaves out ignored and hidden options of a datalist', () => {
+      container.innerHTML = `
+        <div>
+          <input role="combobox" list="codes" />
+          <datalist id="codes"><option>Gold</option><option data-clr-context-ignore>Internal</option><option hidden>Old</option></datalist>
+        </div>
+      `;
+      const input = container.querySelector('[role="combobox"]') as HTMLElement;
+      expect(summarizeRole(input, 'combobox', budgets())?.options).toEqual(['Gold']);
+    });
+  });
 });
 
 describe('summarizeRole, collections the first version misread', () => {

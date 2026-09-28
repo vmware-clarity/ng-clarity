@@ -283,10 +283,27 @@ export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
         return { value: '', display: '' };
       }
       if (typeof proposed === 'string' || typeof proposed === 'number' || typeof proposed === 'boolean') {
-        return { value: String(proposed), display: String(proposed) };
+        const text = String(proposed);
+        // A person typing stops at the field's `maxlength`; the model must not hold more
+        // than the field would have let them enter. Counted as the browser counts it.
+        const limit = maxLengthOf(target.element);
+        if (limit !== null && text.length > limit) {
+          return { refused: `The text must be at most ${limit} characters.` };
+        }
+        return { value: text, display: text };
       }
       return { refused: 'Text is expected.' };
   }
+}
+
+/** A text field's `maxlength`, or `null` when it sets none. */
+function maxLengthOf(element: Element): number | null {
+  const tagName = element.tagName.toLowerCase();
+  if (tagName !== 'input' && tagName !== 'textarea') {
+    return null;
+  }
+  const limit = (element as HTMLInputElement | HTMLTextAreaElement).maxLength;
+  return limit >= 0 ? limit : null;
 }
 
 /**

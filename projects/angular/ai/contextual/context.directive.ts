@@ -6,7 +6,7 @@
  */
 
 import { Directive, DoCheck, ElementRef, inject, Input, OnDestroy, OnInit } from '@angular/core';
-import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
+import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
 
 import { ClrComponentContext, ClrContextProvider } from './interfaces/context.interface';
 import { ClrContextRegistryService } from './providers/context-registry.service';
@@ -52,7 +52,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
   ngDoCheck(): void {
     // An annotation inside an ignored region never reaches a snapshot, so its changes are
     // no reason to take one: a chat panel marked ignore must not re-trigger tracking.
-    if (this.host?.nativeElement.closest?.(`[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`)) {
+    if (this.host?.nativeElement.closest?.(CLR_CONTEXT_IGNORE_SELECTOR)) {
       return;
     }
     // Serialised on every check to notice a state object edited in place. The state an

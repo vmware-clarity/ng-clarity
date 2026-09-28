@@ -127,6 +127,7 @@ function loadedChildren(entry: Route): Route[] | null {
   if (!entry.loadChildren) {
     return null;
   }
+  // TODO: read loaded children through a public accessor once the router offers one.
   // `_loadedRoutes` is not public API; the route listing spec for lazy modules fails if
   // the router stops keeping loaded children there.
   const loaded = (entry as Route & { _loadedRoutes?: unknown })._loadedRoutes;

@@ -31,7 +31,7 @@ import {
 } from '@angular/core';
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
-  CLR_CONTEXT_REDACT_ATTRIBUTE,
+  CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   clrContextText,
   ClrElementMutation,
@@ -170,6 +170,14 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   private teardownElementContext?: () => void;
   private teardownElementMutator?: () => void;
+  /**
+   * The elements the latest snapshot left out (its `excludeSelectors`), as one selector.
+   * Matching an agent's words and quoting rows back in a refusal use the labels that
+   * snapshot published. The mutation engine takes a snapshot of its own, with the
+   * application's options, before it writes, so it is the application's exclusions that
+   * hold for writes.
+   */
+  private contextExcluded = '';
   private contentInitialized = false;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
@@ -318,6 +326,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // mislead a screen reader.
     this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions => {
       const state: Record<string, unknown> = {};
+      this.contextExcluded = usableSelector(this.el.nativeElement, snapshotOptions?.excludeSelectors ?? []);
 
       // Named apart from the `rowCount` the engine reads off the grid (the rows on this
       // page, or `aria-rowcount`), which is a different number for a paginated grid.
@@ -866,17 +875,50 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   /**
    * The row's content cells, as the user sees them: not the selection or action cells the
-   * grid adds, not hidden columns, and not a cell the application keeps from agents.
+   * grid adds, not hidden columns, and not a cell the application keeps from agents or the
+   * snapshot left out. Only what lies between a cell and its row counts: the grid itself is
+   * hidden from assistive technology while a detail pane is open, and its rows still have
+   * the same content.
    */
   private rowCells(row: ClrDatagridRow<T>): string[] {
-    return Array.from(row.el.nativeElement.querySelectorAll('clr-dg-cell'))
+    const host: HTMLElement = row.el.nativeElement;
+    const excluded = this.contextExcluded;
+    const withheld = (element: Element) =>
+      element.matches(CLR_CONTEXT_WITHHELD_SELECTOR) || (!!excluded && element.matches(excluded));
+    return Array.from(host.querySelectorAll('clr-dg-cell'))
       .filter(
         cell =>
-          cell.closest('clr-dg-row') === row.el.nativeElement &&
+          cell.closest('clr-dg-row') === host &&
           !cell.classList.contains(HIDDEN_COLUMN_CLASS) &&
-          !cell.closest(`[${CLR_CONTEXT_REDACT_ATTRIBUTE}], [hidden], [aria-hidden="true"]`)
+          !withinRow(cell, host).some(withheld)
       )
-      .map(cell => clrNormalizeContextText(clrContextText(cell), false))
+      .map(cell => clrNormalizeContextText(clrContextText(cell, withheld), false))
       .filter(Boolean);
   }
+}
+
+/** The element and its ancestors up to and including `row`. */
+function withinRow(element: Element, row: Element): Element[] {
+  const path: Element[] = [];
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    path.push(current);
+    if (current === row) {
+      break;
+    }
+  }
+  return path;
+}
+
+/** The selectors the document accepts, joined into one, or `''` for none. */
+function usableSelector(root: Element, selectors: readonly string[]): string {
+  return selectors
+    .filter(selector => {
+      try {
+        root.matches(selector);
+        return !!selector;
+      } catch {
+        return false;
+      }
+    })
+    .join(', ');
 }

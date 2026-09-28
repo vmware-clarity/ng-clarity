@@ -78,6 +78,13 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @Input('clrModalLabelledById') labelledBy: string;
 
+  /**
+   * Whether the dialog keeps the user from the page behind it, as `aria-modal` tells
+   * assistive technology and page-context tooling. A pinned side panel sits beside a page
+   * that stays in use, so it is not modal while pinned.
+   */
+  @Input('clrModalAriaModal') ariaModal = true;
+
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;
 

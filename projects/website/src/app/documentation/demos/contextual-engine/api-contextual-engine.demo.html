@@ -453,8 +453,11 @@
         The control, or every control in the region, is still described — label, type, what it permits — but its value
         is never reported, never written, and the text the region shows is left out. A component inside publishes only
         that it is redacted: a datagrid reports neither its rows nor its selection. An annotation inside is reported
-        without its state. Addresses count as content: a link or frame inside keeps its name but not where it points.
-        Exported as <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
+        without its state. Addresses count as content: a link or frame inside keeps its name but not where it points. A
+        name taken from what an element shows is content too, so inside the region a link or button is named only by
+        what its author gave it — a label, <code cds-text="code">aria-label</code>, a title. An item inside a list, tab
+        list, menu or grid that is otherwise readable is counted, but its name is withheld. Exported as
+        <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
       </td>
     </tr>
     <tr>
@@ -464,6 +467,16 @@
         <code cds-text="code">aria-hidden="true"</code>, <code cds-text="code">inert</code> or
         <code cds-text="code">data-clr-context-ignore</code>, and everything inside — as one selector, for a component
         that publishes context and must agree with the engine about what an agent may see.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_WITHHELD_SELECTOR</b></td>
+      <td class="left">
+        Everything <code cds-text="code">CLR_CONTEXT_HIDDEN_SELECTOR</code> matches, and regions marked
+        <code cds-text="code">data-clr-context-redact</code>: what a component that labels something from its content —
+        a row by its cells, an option by its text — leaves out of that label.
+        <code cds-text="code">CLR_CONTEXT_IGNORE_SELECTOR</code> and
+        <code cds-text="code">CLR_CONTEXT_REDACT_SELECTOR</code> match the two attributes on their own.
       </td>
     </tr>
   </tbody>
@@ -557,7 +570,12 @@
     <tr>
       <td class="left"><b cds-text="medium">excludeSelectors</b></td>
       <td class="left clr-hidden-xs-down">[]</td>
-      <td class="left">CSS selectors for elements to leave out with their subtree.</td>
+      <td class="left">
+        CSS selectors for elements to leave out with their subtree. Their text is also kept out of other elements'
+        names, descriptions and summaries. Use them to make snapshots relevant. To keep content from agents, mark it
+        <code cds-text="code">data-clr-context-ignore</code> or <code cds-text="code">data-clr-context-redact</code>: a
+        caller the application does not control cannot set selectors.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">rootSelector</b></td>

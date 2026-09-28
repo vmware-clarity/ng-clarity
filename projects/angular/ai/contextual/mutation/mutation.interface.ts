@@ -102,7 +102,10 @@ export interface ClrMutationTarget {
   path?: string;
   /** The URL the navigation would go to, query string included. */
   url?: string;
-  /** The query parameters the navigation would add, for navigation. */
+  /**
+   * The query parameters the navigation would add, for navigation. The agent chose them;
+   * nothing about the route constrains them.
+   */
   queryParams?: Record<string, string>;
   /**
    * The value about to be written, in the terms an agent and a person use: the option's
@@ -131,7 +134,13 @@ export interface ClrMutationPolicy {
    * would hold up every later call. Defaults to two minutes; `0` waits indefinitely.
    */
   confirmTimeoutMs?: number;
-  /** Declares what each operation would do. See {@link ClrMutationConsequence}. */
+  /**
+   * Declares what each operation would do. See {@link ClrMutationConsequence}.
+   *
+   * For a navigation, judge the whole `url`, not only the `path`: an agent chooses the
+   * query parameters freely, and a route that acts on one — `returnUrl`, `action`,
+   * `confirm=true` — does what the parameter says as soon as it loads.
+   */
   classify(target: ClrMutationTarget): ClrMutationConsequence;
   /**
    * Asked before a `consequential` operation is applied; resolving `false` refuses it.
@@ -155,8 +164,10 @@ export interface ClrMutationPolicy {
 export const CLR_MUTATION_POLICY = new InjectionToken<ClrMutationPolicy>('CLR_MUTATION_POLICY');
 
 /**
- * Enables the mutation engine with the application's policy. Application-level only
- * (`bootstrapApplication` or the root `providers`), which the return type enforces.
+ * Enables the mutation engine with the application's policy. Provide it at application
+ * level (`bootstrapApplication` or the root module's `providers`). The return type keeps it
+ * out of a component's `providers`, but not out of a lazy route's, where the root-provided
+ * engine would not see it.
  *
  * ```ts
  * provideClrMutationPolicy({

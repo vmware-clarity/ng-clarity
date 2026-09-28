@@ -6,7 +6,7 @@
  */
 
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
-import { capSnapshotOptions } from '../snapshot-options';
+import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 /**
@@ -157,7 +157,7 @@ export class ClrContextFrameHost {
   private readonly allowAnyOrigin: boolean;
   private readonly shareFullUrl: boolean;
   private readonly shareFormValues: boolean;
-  private readonly snapshotCeiling: ClrContextSnapshotOptions | undefined;
+  private readonly snapshotCeiling: ClrContextSnapshotOptions;
   private readonly minRequestIntervalMs: number;
   private readonly lastServedAt = new WeakMap<object, number>();
   private readonly messageListener = this.onMessage.bind(this);
@@ -184,7 +184,10 @@ export class ClrContextFrameHost {
     }
     this.shareFullUrl = options.shareFullUrl === true;
     this.shareFormValues = options.shareFormValues === true;
-    this.snapshotCeiling = options.snapshot;
+    // Resolved, so a budget or switch the host left unset is the default rather than
+    // "whatever a frame asks for": a frame cannot turn on `includeRoutes` or raise
+    // `maxComponents` past what the engine would give anyone by default.
+    this.snapshotCeiling = resolveSnapshotOptions(options.snapshot);
     const interval = options.minRequestIntervalMs;
     this.minRequestIntervalMs =
       typeof interval === 'number' && Number.isFinite(interval) && interval >= 0
@@ -298,7 +301,7 @@ export class ClrContextFrameHost {
     if (this.shareFullUrl) {
       return shared;
     }
-    return withoutUrlDetails(shared, this.routePattern);
+    return withoutUrlDetails(shared, this.routePattern, this.hostWindow.document?.baseURI);
   }
 }
 

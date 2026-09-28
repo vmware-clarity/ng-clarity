@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
+import { CLR_CONTEXT_IGNORE_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
 
 /**
  * Normalizes whitespace and enforces a text budget, marking anything shortened with an
@@ -85,14 +85,16 @@ function isClipped(element: Element, style: CSSStyleDeclaration): boolean {
  * span is called what that span says, as assistive technology calls it.
  *
  * `exclude` leaves one descendant out — the control a wrapping `<label>` names, whose
- * own options or content are not part of its name.
+ * own options or content are not part of its name. `withheld` is a selector for further
+ * descendants whose text is never read — the elements a snapshot's `excludeSelectors`
+ * leave out, which must not come back as part of another element's name.
  */
-export function accessibleText(element: Element, exclude?: Element): string {
-  const visible = textFor(element, exclude, false);
-  return visible.trim() ? visible : textFor(element, exclude, true);
+export function accessibleText(element: Element, exclude?: Element, withheld = ''): string {
+  const visible = textFor(element, exclude, false, withheld);
+  return visible.trim() ? visible : textFor(element, exclude, true, withheld);
 }
 
-function textFor(element: Element, exclude: Element | undefined, includeClipped: boolean): string {
+function textFor(element: Element, exclude: Element | undefined, includeClipped: boolean, withheld: string): string {
   let text = '';
   for (const node of Array.from(element.childNodes)) {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -112,14 +114,14 @@ function textFor(element: Element, exclude: Element | undefined, includeClipped:
     }
     // Text the application keeps from agents is never borrowed into a name, a label or a
     // description, whatever element above it is being named.
-    if (child.matches(UNREADABLE_SELECTOR)) {
+    if (child.matches(UNREADABLE_SELECTOR) || (withheld && child.matches(withheld))) {
       continue;
     }
     const style = child.ownerDocument.defaultView?.getComputedStyle(child) ?? null;
     if (isExcludedFromName(child, style, includeClipped)) {
       continue;
     }
-    const inner = textFor(child, exclude, includeClipped);
+    const inner = textFor(child, exclude, includeClipped, withheld);
     // Block-level content reads as separate words, as it does when a browser names an
     // element: two cells or two lines never run together into one word.
     text += style && !style.display.startsWith('inline') && style.display !== 'contents' ? ` ${inner} ` : inner;
@@ -130,9 +132,9 @@ function textFor(element: Element, exclude: Element | undefined, includeClipped:
 /**
  * The joined text of every element an id-list attribute (`aria-labelledby`,
  * `aria-describedby`) points at, in the order the ids are given; missing and empty
- * targets are skipped.
+ * targets are skipped, and so are targets inside anything `withheld` selects.
  */
-export function referencedText(element: Element, attribute: string): string {
+export function referencedText(element: Element, attribute: string, withheld = ''): string {
   const ids = element.getAttribute(attribute)?.trim();
   if (!ids) {
     return '';
@@ -149,15 +151,18 @@ export function referencedText(element: Element, attribute: string): string {
       // clipped for screen readers, is still read, as intended.)
       .filter(
         (referenced): referenced is HTMLElement =>
-          !!referenced && !referenced.closest(UNREADABLE_SELECTOR) && !isUnrendered(referenced)
+          !!referenced &&
+          !referenced.closest(UNREADABLE_SELECTOR) &&
+          !(withheld && referenced.closest(withheld)) &&
+          !isUnrendered(referenced)
       )
-      .map(referenced => accessibleText(referenced).trim())
+      .map(referenced => accessibleText(referenced, undefined, withheld).trim())
       .filter(text => text)
       .join(' ')
   );
 }
 
-const UNREADABLE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}], [${CLR_CONTEXT_REDACT_ATTRIBUTE}]`;
+const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}`;
 
 /** Whether an element is not rendered: `hidden`, or `display: none` on it or an ancestor. */
 function isUnrendered(element: Element): boolean {

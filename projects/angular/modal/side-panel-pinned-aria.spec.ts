@@ -61,4 +61,18 @@ describe('ClrSidePanel pinned state, as assistive technology sees it', () => {
 
     expect(pinButton().getAttribute('aria-pressed')).toBe('true');
   });
+
+  it('is a modal dialog only while it is not pinned', () => {
+    const dialog = () => fixture.nativeElement.querySelector('[role="dialog"]') as HTMLElement;
+    expect(dialog().getAttribute('aria-modal')).toBe('true');
+
+    // Pinned, the panel sits beside a page that stays in use.
+    pinButton().click();
+    fixture.detectChanges();
+    expect(dialog().hasAttribute('aria-modal')).toBe(false);
+
+    pinButton().click();
+    fixture.detectChanges();
+    expect(dialog().getAttribute('aria-modal')).toBe('true');
+  });
 });

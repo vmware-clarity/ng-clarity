@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_HIDDEN_SELECTOR, CLR_CONTEXT_REDACT_ATTRIBUTE } from './attributes';
+import { CLR_CONTEXT_WITHHELD_SELECTOR } from './attributes';
 
 /**
  * How many items a published collection lists when the caller gives no budget: the
@@ -44,8 +44,6 @@ export function clrContextText(element: Element, skip?: (descendant: Element) =>
   return text;
 }
 
-const WITHHELD_SELECTOR = `${CLR_CONTEXT_HIDDEN_SELECTOR}, [${CLR_CONTEXT_REDACT_ATTRIBUTE}]`;
-
 function isWithheld(element: Element, skip?: (descendant: Element) => boolean): boolean {
-  return element.matches(WITHHELD_SELECTOR) || !!skip?.(element);
+  return element.matches(CLR_CONTEXT_WITHHELD_SELECTOR) || !!skip?.(element);
 }

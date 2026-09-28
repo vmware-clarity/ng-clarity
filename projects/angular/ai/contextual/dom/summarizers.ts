@@ -5,7 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_HIDDEN_SELECTOR, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import {
+  CLR_CONTEXT_HIDDEN_SELECTOR,
+  CLR_CONTEXT_REDACT_SELECTOR,
+  ClrContextSnapshotOptions,
+} from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
 import { resolveRole } from './roles';
@@ -22,10 +26,14 @@ import { resolveRole } from './roles';
  * Roles absent here are described by walking them, which is the right default: a dialog
  * or a form contains arbitrary content whose structure matters.
  */
-export type RoleSummarizer = (
-  element: Element,
-  options: Required<ClrContextSnapshotOptions>
-) => Record<string, unknown>;
+export type RoleSummarizer = (element: Element, scope: SummaryScope) => Record<string, unknown>;
+
+/** What a summary is taken with: the snapshot's options, and what it may not read. */
+interface SummaryScope {
+  readonly options: Required<ClrContextSnapshotOptions>;
+  /** Selector for elements the snapshot leaves out (its `excludeSelectors`), or `''`. */
+  readonly withheld: string;
+}
 
 /** Selectors matching a role explicitly or through the element's implicit role. */
 const ROLE_SELECTORS: Record<string, string> = {
@@ -56,28 +64,32 @@ const ROLE_SUMMARIZERS: Record<string, RoleSummarizer> = {
  * items it understands. In both cases the element should be walked instead: a `<div
  * role="list">` whose items are custom elements rather than list items still has
  * content, and a summary that says nothing must not make it disappear.
+ *
+ * `withheld` selects elements the snapshot leaves out: they are not items, and their
+ * text is not read into any item's name.
  */
 export function summarizeRole(
   element: Element,
   role: string | null,
-  options: Required<ClrContextSnapshotOptions>
+  options: Required<ClrContextSnapshotOptions>,
+  withheld = ''
 ): Record<string, unknown> | null {
   const summarizer = role ? ROLE_SUMMARIZERS[role] : undefined;
   if (!summarizer) {
     return null;
   }
-  const state = summarizer(element, options);
+  const state = summarizer(element, { options, withheld });
   return Object.keys(state).length ? state : null;
 }
 
-function summarizeGrid(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
+function summarizeGrid(element: Element, scope: SummaryScope): Record<string, unknown> {
   const state: Record<string, unknown> = {};
 
   // A header cell in a row that also holds data names that row, not a column.
-  const columns = queryRole(element, 'columnheader')
-    .filter(header => !header.closest('tr, [role="row"]')?.querySelector(DATA_CELL_SELECTOR))
-    .slice(0, options.maxItemsPerCollection)
-    .map(header => nameOf(header, options));
+  const headers = queryRole(element, 'columnheader', scope).filter(
+    header => !header.closest('tr, [role="row"]')?.querySelector(DATA_CELL_SELECTOR)
+  );
+  const columns = namesOf(headers, element, scope);
   if (columns.length) {
     state.columns = columns;
   }
@@ -90,17 +102,21 @@ function summarizeGrid(element: Element, options: Required<ClrContextSnapshotOpt
   // data rows, which is also what the fallback counts.
   const declared = element.getAttribute('aria-rowcount');
   const total = declared === null ? Number.NaN : Number(declared);
-  state.rowCount = Number.isFinite(total) && total >= 0 ? total : dataRows(element).length;
+  state.rowCount = Number.isFinite(total) && total >= 0 ? total : dataRows(element, scope).length;
 
   // Only rows, and only this table's: a selected tab or option inside a cell is not a row.
-  const selected = queryRole(element, 'row').filter(row => row.getAttribute('aria-selected') === 'true').length;
+  const selected = queryRole(element, 'row', scope).filter(row => row.getAttribute('aria-selected') === 'true').length;
   if (selected) {
     state.selectedRows = selected;
   }
 
-  const sorted = element.querySelector('[aria-sort]:not([aria-sort="none"])');
-  if (sorted) {
-    state.sort = { column: nameOf(sorted, options), direction: sorted.getAttribute('aria-sort') };
+  const sorted = headers.find(header => {
+    const direction = header.getAttribute('aria-sort');
+    return !!direction && direction !== 'none';
+  });
+  const sortedBy = sorted ? nameOf(sorted, element, scope) : null;
+  if (sorted && sortedBy !== null) {
+    state.sort = { column: sortedBy, direction: sorted.getAttribute('aria-sort') };
   }
 
   return state;
@@ -114,20 +130,21 @@ function listsItems(options: Required<ClrContextSnapshotOptions>): boolean {
   return options.collectionItems !== 'summary';
 }
 
-function summarizeTablist(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
-  const tabs = queryRole(element, 'tab');
+function summarizeTablist(element: Element, scope: SummaryScope): Record<string, unknown> {
+  const tabs = queryRole(element, 'tab', scope);
   if (!tabs.length) {
     return {};
   }
   const state: Record<string, unknown> = { tabCount: tabs.length };
-  if (listsItems(options)) {
-    state.tabs = tabs.slice(0, options.maxItemsPerCollection).map(tab => nameOf(tab, options));
+  if (listsItems(scope.options)) {
+    state.tabs = namesOf(tabs, element, scope);
   }
   // Looked for among all the tabs, not the reported few: the active one being past the
   // budget must not read as "nothing is selected".
   const active = tabs.find(tab => tab.getAttribute('aria-selected') === 'true');
-  if (active) {
-    state.activeTab = nameOf(active, options);
+  const activeName = active ? nameOf(active, element, scope) : null;
+  if (activeName !== null) {
+    state.activeTab = activeName;
   }
   return state;
 }
@@ -137,16 +154,16 @@ function summarizeTablist(element: Element, options: Required<ClrContextSnapshot
  * walked afterwards (see the walk): a navigation list's links are the point of it, and
  * the summary alone would lose where they go.
  */
-function summarizeList(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
+function summarizeList(element: Element, scope: SummaryScope): Record<string, unknown> {
   // Only this list's own items: a nested list is summarised when the walk reaches it,
   // and counting its items here would both inflate the count and name them twice.
-  const items = queryRole(element, 'listitem');
+  const items = queryRole(element, 'listitem', scope);
   if (!items.length) {
     return {};
   }
   const state: Record<string, unknown> = { itemCount: items.length };
-  if (listsItems(options)) {
-    state.items = items.slice(0, options.maxItemsPerCollection).map(item => nameOf(item, options));
+  if (listsItems(scope.options)) {
+    state.items = namesOf(items, element, scope);
   }
   return state;
 }
@@ -162,19 +179,19 @@ function summarizeList(element: Element, options: Required<ClrContextSnapshotOpt
  * Three shapes are covered: a native `<select>`, a combobox that owns a separate listbox
  * through `aria-owns`/`aria-controls`, and an input backed by a `<datalist>`.
  */
-function summarizeCombobox(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
-  const choices = comboboxChoices(element);
+function summarizeCombobox(element: Element, scope: SummaryScope): Record<string, unknown> {
+  const choices = comboboxChoices(element, scope);
   if (!choices.length) {
     return {};
   }
-  if (!listsItems(options)) {
+  if (!listsItems(scope.options)) {
     return { optionCount: choices.length };
   }
-  return { options: choices.slice(0, options.maxItemsPerCollection).map(choice => nameOf(choice, options)) };
+  return { options: namesOf(choices, element, scope) };
 }
 
-function comboboxChoices(element: Element): Element[] {
-  const own = queryRole(element, 'option');
+function comboboxChoices(element: Element, scope: SummaryScope): Element[] {
+  const own = queryRole(element, 'option', scope);
   if (own.length) {
     return own;
   }
@@ -185,14 +202,16 @@ function comboboxChoices(element: Element): Element[] {
   if (listId) {
     const datalist = document.getElementById(listId);
     if (datalist) {
-      return Array.from(datalist.querySelectorAll('option'));
+      // A datalist is never rendered, so only what keeps the list itself from the engine
+      // counts, not whether it shows.
+      return Array.from(datalist.querySelectorAll('option')).filter(option => readable(option, scope));
     }
   }
 
   const ownedIds = `${element.getAttribute('aria-owns') ?? ''} ${element.getAttribute('aria-controls') ?? ''}`.trim();
   for (const id of ownedIds.split(/\s+/).filter(Boolean)) {
     const owned = document.getElementById(id);
-    const listed = owned ? queryRole(owned, 'option') : [];
+    const listed = owned ? queryRole(owned, 'option', scope) : [];
     if (listed.length) {
       return listed;
     }
@@ -201,8 +220,8 @@ function comboboxChoices(element: Element): Element[] {
   return [];
 }
 
-function summarizeOptions(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
-  return summarizeChoices(queryRole(element, 'option'), isSelectedOption, options);
+function summarizeOptions(element: Element, scope: SummaryScope): Record<string, unknown> {
+  return summarizeChoices(element, queryRole(element, 'option', scope), isSelectedOption, scope);
 }
 
 /**
@@ -210,40 +229,40 @@ function summarizeOptions(element: Element, options: Required<ClrContextSnapshot
  * ARIA — so they need looking for by name; a menu summarised through the option
  * selector would report nothing and hide every command it offers.
  */
-function summarizeMenu(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
+function summarizeMenu(element: Element, scope: SummaryScope): Record<string, unknown> {
   return summarizeChoices(
-    queryRole(element, 'menuitem'),
+    element,
+    queryRole(element, 'menuitem', scope),
     item => item.getAttribute('aria-checked') === 'true',
-    options
+    scope
   );
 }
 
 function summarizeChoices(
+  collection: Element,
   entries: Element[],
   isSelected: (entry: Element) => boolean,
-  options: Required<ClrContextSnapshotOptions>
+  scope: SummaryScope
 ): Record<string, unknown> {
   if (!entries.length) {
     return {};
   }
   const state: Record<string, unknown> = { optionCount: entries.length };
-  if (listsItems(options)) {
-    state.options = entries.slice(0, options.maxItemsPerCollection).map(entry => nameOf(entry, options));
+  if (listsItems(scope.options)) {
+    state.options = namesOf(entries, collection, scope);
   }
-  const selected = entries
-    .filter(isSelected)
-    .slice(0, options.maxItemsPerCollection)
-    .map(entry => nameOf(entry, options));
+  const selected = namesOf(entries.filter(isSelected), collection, scope);
   if (selected.length) {
     state.selected = selected;
   }
   // A choice that cannot currently be taken is still listed, since it tells an agent
   // what the UI can do, but proposing it would fail.
-  const disabled = entries
-    .filter(entry => entry.getAttribute('aria-disabled') === 'true' || (entry as HTMLOptionElement).disabled === true)
-    .slice(0, options.maxItemsPerCollection)
-    .map(entry => nameOf(entry, options));
-  if (disabled.length && listsItems(options)) {
+  const disabled = namesOf(
+    entries.filter(entry => entry.getAttribute('aria-disabled') === 'true' || (entry as HTMLOptionElement).disabled),
+    collection,
+    scope
+  );
+  if (disabled.length && listsItems(scope.options)) {
     state.disabledOptions = disabled;
   }
   return state;
@@ -260,20 +279,21 @@ function isSelectedOption(entry: Element): boolean {
   return entry.getAttribute('aria-selected') === 'true';
 }
 
-function summarizeRadiogroup(element: Element, options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
-  const radios = queryRole(element, 'radio');
+function summarizeRadiogroup(element: Element, scope: SummaryScope): Record<string, unknown> {
+  const radios = queryRole(element, 'radio', scope);
   if (!radios.length) {
     return {};
   }
   const state: Record<string, unknown> = { optionCount: radios.length };
-  if (listsItems(options)) {
-    state.options = radios.slice(0, options.maxItemsPerCollection).map(radio => nameOf(radio, options));
+  if (listsItems(scope.options)) {
+    state.options = namesOf(radios, element, scope);
   }
   const chosen = radios.find(
     radio => (radio as HTMLInputElement).checked || radio.getAttribute('aria-checked') === 'true'
   );
-  if (chosen) {
-    state.value = nameOf(chosen, options);
+  const value = chosen ? nameOf(chosen, element, scope) : null;
+  if (value !== null) {
+    state.value = value;
   }
   return state;
 }
@@ -283,10 +303,10 @@ function summarizeRadiogroup(element: Element, options: Required<ClrContextSnaps
  * holding a record, and counting it would misreport the size of the data. A row header
  * (`<th scope="row">`) names its own row and does not make it a header row.
  */
-function dataRows(element: Element): Element[] {
+function dataRows(element: Element, scope: SummaryScope): Element[] {
   // A row of column headers names the columns; a row that also holds data cells is a
   // record whose first cell happens to be a header (`<th>` without `scope="row"`).
-  return queryRole(element, 'row').filter(
+  return queryRole(element, 'row', scope).filter(
     row => !row.querySelector(ROLE_SELECTORS.columnheader) || row.querySelector(DATA_CELL_SELECTOR)
   );
 }
@@ -310,18 +330,40 @@ const CONTAINER_SELECTORS: Record<string, string> = {
 
 /**
  * The elements of a role inside `element` that belong to it: not hidden, not in an
- * ignored region, and not part of a collection nested inside this one.
+ * ignored or excluded region, and not part of a collection nested inside this one.
  */
-function queryRole(element: Element, role: string): Element[] {
+function queryRole(element: Element, role: string, scope: SummaryScope): Element[] {
   const container = CONTAINER_SELECTORS[role];
   return Array.from(element.querySelectorAll(ROLE_SELECTORS[role])).filter(
-    item => !item.closest(HIDDEN_ITEM_SELECTOR) && (!container || item.parentElement?.closest(container) === element)
+    item => readable(item, scope) && (!container || item.parentElement?.closest(container) === element)
   );
 }
 
-/** Items the user cannot see are not part of what a collection offers. */
-const HIDDEN_ITEM_SELECTOR = CLR_CONTEXT_HIDDEN_SELECTOR;
+/** Items the user cannot see, or the snapshot leaves out, are not part of what a collection offers. */
+function readable(item: Element, scope: SummaryScope): boolean {
+  return !item.closest(CLR_CONTEXT_HIDDEN_SELECTOR) && !(scope.withheld && item.closest(scope.withheld));
+}
 
-function nameOf(element: Element, options: Required<ClrContextSnapshotOptions>): string {
-  return accessibleName(element, resolveRole(element), options.maxTextLength);
+/**
+ * An item's name, or `null` when the item sits in a region the application marked
+ * `data-clr-context-redact` inside the collection — a list with one sensitive entry, a
+ * tab named after an account. Such an item still counts, as a redacted field is still
+ * described, but what it says is withheld. A region around the whole collection is not
+ * decided here: the walk redacts the collection's node, contents and all, while its
+ * column names — which name fields rather than show values — stay.
+ */
+function nameOf(item: Element, collection: Element, scope: SummaryScope): string | null {
+  const redacting = item.closest(CLR_CONTEXT_REDACT_SELECTOR);
+  if (redacting && !redacting.contains(collection)) {
+    return null;
+  }
+  return accessibleName(item, resolveRole(item), scope.options.maxTextLength, scope.withheld);
+}
+
+/** The names of the first items the budget allows, leaving out those withheld. */
+function namesOf(items: Element[], collection: Element, scope: SummaryScope): string[] {
+  return items
+    .slice(0, scope.options.maxItemsPerCollection)
+    .map(item => nameOf(item, collection, scope))
+    .filter((name): name is string => name !== null);
 }

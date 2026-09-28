@@ -14,6 +14,7 @@ import {
   ClrElementMutationResult,
   ClrMutationEngineService,
   ClrPageContext,
+  provideClrContextOptions,
   provideClrMutationPolicy,
 } from '@clr/angular/ai';
 import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrComponentContext } from '@clr/angular/utils';
@@ -192,6 +193,28 @@ class SecretCellHost {
   selected: { id: number; name: string; secret: string }[] = [this.items[0]];
 }
 
+@Component({
+  template: `
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
+      <clr-dg-column>Account</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell
+          >{{ item.name }} <span data-clr-context-ignore>ign-{{ item.id }}</span> <span inert>inert-{{ item.id }}</span>
+          <span class="internal">int-{{ item.id }}</span></clr-dg-cell
+        >
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class WithheldCellHost {
+  items = [
+    { id: 1, name: 'Checking' },
+    { id: 2, name: 'Savings' },
+  ];
+  selected: { id: number; name: string }[] = [];
+}
+
 function findNode(
   nodes: ClrComponentContext[],
   match: (node: ClrComponentContext) => boolean
@@ -237,6 +260,7 @@ describe('ClrDatagrid element mutator', () => {
         RedactedHost,
         HiddenColumnHost,
         SecretCellHost,
+        WithheldCellHost,
       ],
       providers: [provideClrMutationPolicy({ classify: () => 'reversible' })],
     });
@@ -290,6 +314,32 @@ describe('ClrDatagrid element mutator', () => {
       expect(result.refused).toBeDefined();
       expect(JSON.stringify(result)).not.toContain('4111');
       expect(JSON.stringify(result)).not.toContain('4222');
+    });
+
+    it('labels rows without ignored, inert or excluded text, in the snapshot and in refusals', async () => {
+      TestBed.configureTestingModule({ providers: [provideClrContextOptions({ excludeSelectors: ['.internal'] })] });
+      await create(WithheldCellHost);
+
+      const snapshot = contextEngine.getSnapshot();
+      expect(gridOf(snapshot).state?.['rows']).toEqual(['Checking', 'Savings']);
+      ['ign-', 'inert-', 'int-'].forEach(text => expect(JSON.stringify(snapshot)).not.toContain(text));
+
+      const refused = await select('Nowhere');
+      expect(refused.refused).toBe('invalid');
+      ['ign-', 'inert-', 'int-'].forEach(text => expect(JSON.stringify(refused)).not.toContain(text));
+    });
+
+    it('keeps labelling rows while a detail pane hides the grid from assistive technology', async () => {
+      const host = await create(MultiHost);
+      const ref = String(grid().ref);
+      // The detail pane marks the grid body aria-hidden while it is open; the rows are unchanged.
+      fixture.nativeElement.querySelector('.datagrid').setAttribute('aria-hidden', 'true');
+
+      const result = await write(ref, 'esx-02');
+
+      expect(result.applied).toBeTrue();
+      expect(result.value).toEqual(['esx-02 | Running']);
+      expect(names(host.selected)).toEqual(['esx-02']);
     });
   });
 
@@ -469,6 +519,13 @@ describe('ClrDatagrid element mutator', () => {
   });
 
   describe('publishing', () => {
+    it('reports only the application’s columns, not the grid’s own selection column', async () => {
+      await create(SingleHost);
+      const table = findNode(contextEngine.getSnapshot().components, node => node.type === 'grid');
+
+      expect(table?.state?.['columns']).toEqual(['Name']);
+    });
+
     it('publishes no mutator, and so no ref, while the grid offers no selection', async () => {
       const host = await create(ToggleHost);
       const element: HTMLElement = fixture.nativeElement.querySelector('clr-datagrid');

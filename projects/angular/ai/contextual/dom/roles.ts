@@ -217,6 +217,50 @@ export function isPresentationalRole(role: string): boolean {
   return PRESENTATIONAL_ROLES.has(role);
 }
 
+/**
+ * A selector matching every element that may resolve to one of `roles` — any explicit
+ * role, and the elements whose implicit role could be one of them — or `''` for no roles.
+ * Checking {@link resolveRole} on what it matches, rather than on every element, is what
+ * keeps a search for a role proportional to the elements that could have it.
+ */
+export function roleCandidateSelector(roles: ReadonlySet<string>): string {
+  if (!roles.size) {
+    return '';
+  }
+  const selectors = new Set(['[role]']);
+  for (const [tagName, role] of Object.entries(IMPLICIT_ROLES_BY_TAG)) {
+    if (roles.has(role)) {
+      selectors.add(tagName);
+    }
+  }
+  const anyOf = (...candidates: string[]) => candidates.some(role => roles.has(role));
+  if (anyOf('textbox')) {
+    selectors.add('[contenteditable]');
+  }
+  if (anyOf(...Object.values(INPUT_ROLES_BY_TYPE))) {
+    selectors.add('input');
+  }
+  if (anyOf('combobox', 'listbox')) {
+    selectors.add('select');
+  }
+  if (anyOf('link')) {
+    selectors.add('a[href]').add('area[href]');
+  }
+  if (anyOf('img', 'presentation')) {
+    selectors.add('img');
+  }
+  if (anyOf('columnheader', 'rowheader')) {
+    selectors.add('th');
+  }
+  if (anyOf('banner')) {
+    selectors.add('header');
+  }
+  if (anyOf('contentinfo')) {
+    selectors.add('footer');
+  }
+  return Array.from(selectors).join(', ');
+}
+
 function implicitRole(element: Element): string | null {
   const tagName = element.tagName.toLowerCase();
 

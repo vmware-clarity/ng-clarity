@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
 
 import { ClrContext } from './context.directive';
@@ -15,7 +14,6 @@ export const CLR_CONTEXT_DIRECTIVES: Type<any>[] = [ClrContext];
 
 /** Declares the `clrContext` directive for applications that use NgModules. */
 @NgModule({
-  imports: [CommonModule],
   declarations: [CLR_CONTEXT_DIRECTIVES],
   exports: [CLR_CONTEXT_DIRECTIVES],
 })

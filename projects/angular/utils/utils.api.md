@@ -153,7 +153,16 @@ export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [i
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
+export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
+
+// @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+
+// @public
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact]";
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";

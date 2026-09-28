@@ -155,6 +155,8 @@ class AppBroken implements ControlValueAccessor {
       <input id="volume" type="range" min="0" max="10" step="2" formControlName="volume" />
       <label for="locked">Locked</label>
       <input id="locked" formControlName="locked" />
+      <label for="code">Code</label>
+      <input id="code" maxlength="4" formControlName="code" />
     </form>
     @if (modalOpen) {
       <div role="dialog" aria-modal="true" aria-label="Confirm">
@@ -178,6 +180,7 @@ class Host {
     due: new FormControl(''),
     volume: new FormControl(4),
     locked: new FormControl({ value: 'fixed', disabled: true }),
+    code: new FormControl(''),
   });
   inside = new FormControl('');
   colourEvents = 0;
@@ -366,6 +369,16 @@ describe('ClrMutationEngineService write path', () => {
       expect((await set('Volume', 3)).detail).toContain('multiple of 2');
       expect((await set('Volume', 8)).applied).toBeTrue();
       expect(host.form.value.volume).toBe(8);
+    });
+
+    it('refuses text longer than the field lets a person type', async () => {
+      const long = await set('Code', 'ABCDE');
+      expect(long.refused).toBe('invalid');
+      expect(long.detail).toContain('at most 4 characters');
+      expect(host.form.value.code).toBe('');
+
+      expect((await set('Code', 'ABCD')).applied).toBeTrue();
+      expect(host.form.value.code).toBe('ABCD');
     });
   });
 

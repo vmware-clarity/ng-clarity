@@ -219,6 +219,11 @@ describe('ClrDateInput element mutator', () => {
         expect(coerce('  2026-03-05 ')).toEqual({ value: '03/05/2026' });
       });
 
+      it('keeps an ISO year before 100 in its own century', () => {
+        // The Date constructor would read year 50 as 1950.
+        expect(JSON.stringify(coerce('0050-03-05'))).not.toContain('1950');
+      });
+
       it('takes null and the empty string as clearing', async () => {
         await write('2026-03-05');
 

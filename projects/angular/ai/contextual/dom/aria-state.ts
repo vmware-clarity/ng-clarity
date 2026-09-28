@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_REDACT_ATTRIBUTE, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { CLR_CONTEXT_REDACT_SELECTOR, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { accessibleText, referencedText, truncate } from './text';
 
@@ -83,12 +83,14 @@ const REDACTED_AUTOCOMPLETE_TOKENS = new Set([
  * here.
  *
  * `insideRedactedRegion` is what the walk already knows about the element's ancestry;
- * when it is omitted the ancestry is checked here.
+ * when it is omitted the ancestry is checked here. `withheld` selects elements whose
+ * text never becomes a description (see `accessibleText`).
  */
 export function ariaState(
   element: Element,
   options: Required<ClrContextSnapshotOptions>,
-  insideRedactedRegion?: boolean
+  insideRedactedRegion?: boolean,
+  withheld = ''
 ): Record<string, unknown> {
   const state: Record<string, unknown> = {};
 
@@ -123,7 +125,7 @@ export function ariaState(
   // aria-describedby, which is where an agent should read them from too — otherwise they
   // surface as unattached nodes beside the field and it has to guess which one they
   // belong to.
-  const description = describedByText(element, options);
+  const description = truncate(referencedText(element, 'aria-describedby', withheld), options.maxTextLength);
   if (description) {
     state.description = description;
   }
@@ -251,12 +253,6 @@ function assignValueState(
   }
 }
 
-/** The joined text of every element that describes this one. */
-function describedByText(element: Element, options: Required<ClrContextSnapshotOptions>): string {
-  const described = referencedText(element, 'aria-describedby');
-  return truncate(described, options.maxTextLength);
-}
-
 /**
  * Whether this control's value must be withheld. Independent of what the caller asked
  * for: some values have no business being in a snapshot at all.
@@ -265,7 +261,7 @@ function describedByText(element: Element, options: Required<ClrContextSnapshotO
  * the caller already knows; the ancestry is only searched when it does not.
  */
 export function isRedacted(element: Element, insideRedactedRegion?: boolean): boolean {
-  if (insideRedactedRegion ?? !!element.closest(`[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`)) {
+  if (insideRedactedRegion ?? !!element.closest(CLR_CONTEXT_REDACT_SELECTOR)) {
     return true;
   }
   const type = element.getAttribute('type')?.toLowerCase();

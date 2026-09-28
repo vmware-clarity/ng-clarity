@@ -8,7 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
+import { CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
 
 import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
@@ -163,7 +163,7 @@ export class ClrContextEngineService implements OnDestroy {
       // The caller may ask for less than the application allows, never for more.
       const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), false);
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
-      return shareFullUrl ? shared : withoutUrlDetails(shared, path => this.routePattern(path));
+      return shareFullUrl ? shared : withoutUrlDetails(shared, path => this.routePattern(path), this.document.baseURI);
     };
   }
 
@@ -278,7 +278,7 @@ export class ClrContextEngineService implements OnDestroy {
       if (scope.roots && !scope.roots.some(root => root.contains(element) || element.contains(root))) {
         return 'drop';
       }
-      return element.closest(`[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`) ? 'redact' : 'keep';
+      return element.closest(CLR_CONTEXT_REDACT_SELECTOR) ? 'redact' : 'keep';
     };
   }
 
@@ -315,9 +315,26 @@ export class ClrContextEngineService implements OnDestroy {
     return this.router?.url;
   }
 
-  /** The configured pattern an application path matches, or `null`; see `routePatternFor`. */
+  /**
+   * The configured pattern a path on this origin matches, or `null`; see `routePatternFor`.
+   * Routes are relative to the document's base: under `<base href="/app/">` the path
+   * `/app/hosts` is the route `hosts`, and a path outside `/app/` is no route at all.
+   */
   private routePattern(path: string): string | null {
-    return this.router && this.router.config.length ? routePatternFor(this.router.config, path) : null;
+    if (!this.router || !this.router.config.length) {
+      return null;
+    }
+    const base = this.basePath();
+    return path.startsWith(base) ? routePatternFor(this.router.config, path.slice(base.length - 1)) : null;
+  }
+
+  /** The path the document's base URI names, ending in `/`. */
+  private basePath(): string {
+    try {
+      return new URL('.', this.document.baseURI).pathname;
+    } catch {
+      return '/';
+    }
   }
 
   private routeContext(): ClrRouteContext | undefined {

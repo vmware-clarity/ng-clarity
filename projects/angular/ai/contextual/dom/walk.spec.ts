@@ -139,6 +139,23 @@ describe('collectContextTree', () => {
     expect(JSON.stringify(link)).not.toContain('4111');
   });
 
+  it('names a link or button in a redacted region only by what an author gave it, never by its content', () => {
+    const nodes = collect(
+      `<div data-clr-context-redact>
+         <a href="/a">ACC-4111</a>
+         <button>Delete ACC-4222</button>
+         <button aria-label="Copy account number">ACC-4333</button>
+         <clr-anon-widget>ACC-4444</clr-anon-widget>
+         <label>Owner <input value="x" /></label>
+       </div>`
+    );
+    const json = JSON.stringify(nodes);
+
+    expect(json).not.toContain('ACC-');
+    expect(json).toContain('Copy account number');
+    expect(json).toContain('Owner');
+  });
+
   it('walks into a summarised grid’s cells only where the walk itself would go', () => {
     const nodes = collect(
       `<div role="grid" aria-label="Accounts">
@@ -811,6 +828,30 @@ describe('collectContextTree, choosing what to collect', () => {
     expect(json).toContain('"redacted":true');
   });
 
+  it('does not let a root selector reach into a region hidden from assistive technology or inert', () => {
+    const html = `${PAGE}<div aria-hidden="true"><form class="x"><button>Behind</button></form></div><div inert><form class="x"><button>Inert</button></form></div>`;
+    expect(collect(html, { rootSelector: 'form.x' }).components).toEqual([]);
+  });
+
+  it('does not let a root selector reach into an excluded region', () => {
+    const html = `${PAGE}<aside><form class="x"><button>Aside</button></form></aside>`;
+    expect(collect(html, { rootSelector: 'form.x', excludeSelectors: ['aside'] }).components).toEqual([]);
+  });
+
+  it('never reads excluded text into a name, a description or a summary', () => {
+    const { components } = collect(
+      `<button aria-labelledby="l">Go</button><span id="l">Pay <span class="secret">ACC-1</span></span>
+       <input aria-label="Amount" aria-describedby="d" /><div id="d">Limit <b class="secret">ACC-2</b></div>
+       <ul><li>One <i class="secret">ACC-3</i></li></ul>
+       <clr-anon><span>Shown</span><span class="secret">ACC-4</span></clr-anon>`,
+      { excludeSelectors: ['.secret'] }
+    );
+    const json = JSON.stringify(components);
+    expect(json).not.toContain('ACC-');
+    expect(json).toContain('Pay');
+    expect(json).toContain('Limit');
+  });
+
   it('describes nothing for a root selector the document rejects, rather than the whole page', () => {
     expect(collect(PAGE, { rootSelector: '[[[' }).components).toEqual([]);
     expect(collect(PAGE, { rootSelector: 'aside' }).components).toEqual([]);
@@ -830,6 +871,19 @@ describe('collectContextTree, choosing what to collect', () => {
     expect(types(components)).toEqual(['dialog']);
     expect(json).not.toContain('4111');
     expect(json).toContain('"redacted":true');
+  });
+
+  it('says the snapshot is cut off when a grid has more cells with controls than the collection budget', () => {
+    const grid = (count: number) =>
+      `<div role="grid" aria-label="Hosts">${Array.from(
+        { length: count },
+        (_, i) => `<div role="row"><div role="gridcell"><input aria-label="Note ${i}" /></div></div>`
+      ).join('')}</div>`;
+
+    expect(collect(grid(2), { maxItemsPerCollection: 2 }).truncated).toBe(false);
+    const capped = collect(grid(3), { maxItemsPerCollection: 2 });
+    expect(capped.truncated).toBe(true);
+    expect(capped.components[0].children?.length).toBe(2);
   });
 
   it('caps nesting depth, counting only nodes that appear in the snapshot', () => {

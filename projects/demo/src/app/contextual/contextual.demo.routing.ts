@@ -12,7 +12,6 @@ import { ContextualDemo } from './contextual.demo';
 import { ContextualFramesDemo } from './frames/frames.demo';
 import { ContextualLiveDemo } from './inventory/live.demo';
 import { ContextualMutationDemo } from './mutation/mutation.demo';
-import { ContextualPlaygroundDemo } from './playground/playground.demo';
 
 const ROUTES: Routes = [
   {
@@ -22,7 +21,6 @@ const ROUTES: Routes = [
       { path: '', redirectTo: 'live', pathMatch: 'full' },
       { path: 'live', component: ContextualLiveDemo },
       { path: 'frames', component: ContextualFramesDemo },
-      { path: 'playground', component: ContextualPlaygroundDemo },
       { path: 'mutation', component: ContextualMutationDemo },
     ],
   },

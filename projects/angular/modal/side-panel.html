@@ -16,6 +16,7 @@
   [clrModalClosable]="closable"
   (clrModalAlternateClose)="altClose.emit($event)"
   [clrModalOverrideScrollService]="true"
+  [clrModalAriaModal]="!pinned"
 >
   @if (clrSidePanelPinnable) {
   <button

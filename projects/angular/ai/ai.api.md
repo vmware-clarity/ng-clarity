@@ -7,7 +7,6 @@
 import { DoCheck } from '@angular/core';
 import { EnvironmentProviders } from '@angular/core';
 import * as i0 from '@angular/core';
-import * as i2 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
@@ -198,7 +197,7 @@ export class ClrContextModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrContextModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextModule, [typeof ClrContext], [typeof i2.CommonModule], [typeof ClrContext]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextModule, [typeof ClrContext], never, [typeof ClrContext]>;
 }
 
 // @public
