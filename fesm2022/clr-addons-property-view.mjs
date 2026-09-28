@@ -737,8 +737,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.23", ngImpo
  */
 class PropertyViewPropertyValueContainerComponent {
     #pageComponent;
-    constructor(componentFactoryResolver, cdRef, viewContainer) {
-        this.componentFactoryResolver = componentFactoryResolver;
+    constructor(cdRef, viewContainer) {
         this.cdRef = cdRef;
         this.viewContainer = viewContainer;
     }
@@ -767,8 +766,7 @@ class PropertyViewPropertyValueContainerComponent {
         if (!this.componentType) {
             return;
         }
-        const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.componentType);
-        const componentRef = this.viewContainer.createComponent(componentFactory);
+        const componentRef = this.viewContainer.createComponent(this.componentType);
         this.#pageComponent = componentRef.instance;
         this.#pageComponent.model = this.componentModel;
         this.cdRef.detectChanges();
@@ -777,7 +775,7 @@ class PropertyViewPropertyValueContainerComponent {
         this.viewContainer.clear();
         this.#pageComponent = undefined;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: PropertyViewPropertyValueContainerComponent, deps: [{ token: i0.ComponentFactoryResolver }, { token: i0.ChangeDetectorRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: PropertyViewPropertyValueContainerComponent, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.ViewContainerRef }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.23", type: PropertyViewPropertyValueContainerComponent, isStandalone: false, selector: "appfx-property-view-property-value-component", inputs: { componentType: "componentType", componentModel: "componentModel" }, usesOnChanges: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: PropertyViewPropertyValueContainerComponent, decorators: [{
@@ -787,7 +785,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.23", ngImpo
                     standalone: false,
                     template: '',
                 }]
-        }], ctorParameters: () => [{ type: i0.ComponentFactoryResolver }, { type: i0.ChangeDetectorRef }, { type: i0.ViewContainerRef }], propDecorators: { componentType: [{
+        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: i0.ViewContainerRef }], propDecorators: { componentType: [{
                 type: Input
             }], componentModel: [{
                 type: Input

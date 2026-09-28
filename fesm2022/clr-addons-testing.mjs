@@ -523,19 +523,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.23", ngImpo
  * Component for unit testing purposes to provide a template for rendering datagrid cell content.
  */
 class MockDatagridCellContainerComponent {
-    constructor(componentFactoryResolver) {
-        this.componentFactoryResolver = componentFactoryResolver;
-    }
     ngOnInit() {
         if (this.column.columnRenderer) {
-            const factory = this.componentFactoryResolver.resolveComponentFactory(this.column.columnRenderer);
-            this.componentRef = this.container.createComponent(factory);
+            this.componentRef = this.container.createComponent(this.column.columnRenderer);
             this.instance = this.componentRef?.instance;
             this.instance.item = this.item;
             this.instance.column = this.column;
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: MockDatagridCellContainerComponent, deps: [{ token: i0.ComponentFactoryResolver }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: MockDatagridCellContainerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.23", type: MockDatagridCellContainerComponent, isStandalone: false, selector: "appfx-dg-cell-container", inputs: { column: "column", item: "item" }, viewQueries: [{ propertyName: "container", first: true, predicate: ["cellContainer"], descendants: true, read: ViewContainerRef, static: true }], ngImport: i0, template: `
     @if (!column.columnRenderer) {
       {{ item?.[column.field] }}
@@ -555,7 +551,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.23", ngImpo
     <ng-template #cellContainer></ng-template>
   `,
                 }]
-        }], ctorParameters: () => [{ type: i0.ComponentFactoryResolver }], propDecorators: { column: [{
+        }], propDecorators: { column: [{
                 type: Input
             }], item: [{
                 type: Input

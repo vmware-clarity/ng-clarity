@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Type, DoCheck, QueryList, ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges, ComponentFactoryResolver, ChangeDetectorRef, ViewContainerRef, EventEmitter } from '@angular/core';
+import { Type, DoCheck, QueryList, ElementRef, OnInit, OnChanges, OnDestroy, SimpleChanges, ChangeDetectorRef, ViewContainerRef, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { ZoomLevelService } from '@clr/addons/a11y';
 import * as i7 from '@clr/angular/popover/dropdown';
@@ -333,12 +333,11 @@ declare class PropertyViewPropertyComponent implements OnInit, OnChanges, OnDest
  */
 declare class PropertyViewPropertyValueContainerComponent<T> implements OnInit, OnChanges, OnDestroy {
     #private;
-    private componentFactoryResolver;
     private cdRef;
     private viewContainer;
     componentType?: Type<PropertyViewPropertyValueComponent<T>> | null;
     componentModel?: T | null;
-    constructor(componentFactoryResolver: ComponentFactoryResolver, cdRef: ChangeDetectorRef, viewContainer: ViewContainerRef);
+    constructor(cdRef: ChangeDetectorRef, viewContainer: ViewContainerRef);
     ngOnInit(): void;
     ngOnChanges(changes: SimpleChanges): void;
     ngOnDestroy(): void;
