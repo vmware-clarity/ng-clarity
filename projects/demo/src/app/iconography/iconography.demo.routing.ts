@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { IconColorsDemo } from './icon-colors';
 import { IconInverseColorDemo } from './icon-inverse-color';
+import { IconOptionsDemo } from './icon-options';
 import { IconOrientationDemo } from './icon-orientation';
 import { IconSelectionDemo } from './icon-selection';
 import { IconSizeDemo } from './icon-size';
@@ -30,6 +31,7 @@ const ROUTES: Routes = [
       { path: 'orientation', component: IconOrientationDemo },
       { path: 'variants', component: IconVariantsDemo },
       { path: 'view-box-test', component: IconsViewBoxTestDemo },
+      { path: 'options', component: IconOptionsDemo },
     ],
   },
 ];
