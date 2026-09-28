@@ -18,6 +18,10 @@
  * the application's binding owns it from then on.
  *
  * Call {@link value} from the host binding getter with what the component would report.
+ *
+ * An application binding of `null` from the first render cannot be told apart from no
+ * binding at all, so it does not remove the component's attribute; a component that
+ * must be switched off offers an input for it.
  */
 export class ClrHostAttribute {
   private readonly authored: string | null;
@@ -31,6 +35,15 @@ export class ClrHostAttribute {
     // Static attributes are set before the directive is created, so what the author
     // wrote is readable here and is not yet overwritten by the host binding.
     this.authored = element?.getAttribute?.(name) ?? null;
+  }
+
+  /**
+   * What the attribute holds as of the last {@link value} call: the authored value, the
+   * application's, or the component's. Lets a second binding that depends on this one —
+   * a landmark's name on its role — read the outcome without evaluating it twice.
+   */
+  get current(): string | null {
+    return this.authored ?? this.reported ?? null;
   }
 
   /** What the host binding should return, given what the component would report. */

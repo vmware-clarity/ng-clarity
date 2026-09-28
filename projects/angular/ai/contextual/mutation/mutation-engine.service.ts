@@ -39,6 +39,9 @@ import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
 import { ClrContextEngineService } from '../providers/contextual-engine.service';
 import { availableRoutes } from '../routes';
 
+/** How long a `confirm` hook may take by default before the operation is declined. */
+const CONFIRM_TIMEOUT_MS = 120_000;
+
 /**
  * The write half of the contextual engine: gives form controls values and navigates,
  * on behalf of an AI agent, from the refs and routes the read half's snapshots carry.
@@ -124,6 +127,35 @@ export class ClrMutationEngineService {
     return report;
   }
 
+  /**
+   * Asks the policy's `confirm` hook, for at most `confirmTimeoutMs`. A hook that throws,
+   * or answers anything but `true`, declines; one that does not answer in time is
+   * reported as such. The timer runs outside the Angular zone, so a pending question does
+   * not keep the application from becoming stable.
+   */
+  private async confirm(target: ClrMutationTarget): Promise<boolean | 'timeout'> {
+    const limit = this.policy?.confirmTimeoutMs;
+    const timeoutMs = typeof limit === 'number' && Number.isFinite(limit) && limit >= 0 ? limit : CONFIRM_TIMEOUT_MS;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const answer = Promise.resolve()
+      .then(() => this.policy?.confirm?.(target))
+      .then(
+        confirmed => confirmed === true,
+        () => false
+      );
+    const expiry =
+      timeoutMs > 0
+        ? new Promise<'timeout'>(resolve => {
+            this.zone.runOutsideAngular(() => (timer = setTimeout(() => resolve('timeout'), timeoutMs)));
+          })
+        : null;
+    try {
+      return await (expiry ? Promise.race([answer, expiry]) : answer);
+    } finally {
+      clearTimeout(timer);
+    }
+  }
+
   private async applyOne(operation: ClrMutationOperation): Promise<ClrMutationResult> {
     let prepared = this.prepare(operation);
     if ('refused' in prepared) {
@@ -134,14 +166,15 @@ export class ClrMutationEngineService {
       return refusal(operation, blocked.refused, blocked.detail);
     }
     if (prepared.consequence === 'consequential') {
-      let confirmed = false;
-      try {
-        confirmed = (await this.policy?.confirm?.(prepared.target)) === true;
-      } catch {
-        confirmed = false;
-      }
-      if (!confirmed) {
-        return refusal(operation, 'declined', 'The application declined the operation.');
+      const confirmed = await this.confirm(prepared.target);
+      if (confirmed !== true) {
+        return refusal(
+          operation,
+          'declined',
+          confirmed === 'timeout'
+            ? 'The confirmation was not answered in time.'
+            : 'The application declined the operation.'
+        );
       }
       // The person agreed to what they were shown. The page may have moved on while they
       // looked — the field disabled, hidden, re-rendered — so it is checked again, and

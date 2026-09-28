@@ -338,7 +338,18 @@ export function withoutValues(node: ClrComponentContext): ClrComponentContext {
  * opposed to its shape. Inside a region the application keeps from agents they go with
  * the values: the rows of a grid of account numbers are as sensitive as a typed one.
  */
-const CONTENT_STATE_KEYS: readonly string[] = ['items', 'options', 'rows', 'tabs', 'activeTab', 'disabledOptions'];
+// Addresses count as content: a link's or a frame's path carries the account number,
+// the token or the record the region was marked to withhold.
+const CONTENT_STATE_KEYS: readonly string[] = [
+  'items',
+  'options',
+  'rows',
+  'tabs',
+  'activeTab',
+  'disabledOptions',
+  'href',
+  'url',
+];
 
 /**
  * Nodes whose label is the content they show rather than a name an author gave them — a

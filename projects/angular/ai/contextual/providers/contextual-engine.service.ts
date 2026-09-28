@@ -167,6 +167,7 @@ export class ClrContextEngineService implements OnDestroy {
     };
   }
 
+  /** Removes the global accessor, if this engine installed it. */
   disableGlobalAccess(): void {
     const window = this.browserWindow();
     if (window && this.globalProperty) {
@@ -201,6 +202,7 @@ export class ClrContextEngineService implements OnDestroy {
     this.frameHost.start();
   }
 
+  /** Stops answering embedded frames. */
   disableFrameBridge(): void {
     this.frameHost?.stop();
     this.frameHost = null;

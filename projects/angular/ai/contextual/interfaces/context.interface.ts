@@ -10,7 +10,7 @@ import { ClrComponentContext } from '@clr/angular/utils';
 /**
  * Re-exported so `@clr/angular/ai` remains a complete public surface. The shared context
  * contracts live in `@clr/angular/utils` because components publish through them and must
- * not depend on this entry point — see `publishElementContext`.
+ * not depend on this entry point — see `clrPublishElementContext`.
  */
 export type { ClrComponentContext, ClrContextCategory, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
@@ -96,5 +96,6 @@ export interface ClrPageContext {
  * have nothing useful to report, which keeps snapshots free of noise.
  */
 export interface ClrContextProvider {
+  /** The provider's context as it is now, or `null` when it has nothing to report. */
   getClrContext(): ClrComponentContext | null;
 }

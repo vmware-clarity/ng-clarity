@@ -157,4 +157,22 @@ describe('accessibleName, sources the first version missed', () => {
       ).toBe('Name');
     });
   });
+
+  it('reads block-level content as separate words', () => {
+    expect(nameOf('<div role="row" id="r"><div>Name</div><div>esx-01</div></div>', '#r')).toBe('Name esx-01');
+    expect(nameOf('<button id="b">Save <b>now</b></button>', '#b')).toBe('Save now');
+  });
+
+  it('leaves inert content out of a name', () => {
+    expect(nameOf('<button id="b">Go <span inert>away</span></button>', '#b')).toBe('Go');
+  });
+
+  it('reads a reference to an element that only lays out its children', () => {
+    expect(
+      nameOf(
+        '<div id="t" style="display: contents"><span>Cluster name</span></div><input aria-labelledby="t" id="i" />',
+        '#i'
+      )
+    ).toBe('Cluster name');
+  });
 });

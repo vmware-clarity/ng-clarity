@@ -415,6 +415,21 @@ describe('ClrContextEngineService, configured once for the application', () => {
       engine.disableGlobalAccess();
     }
   });
+
+  it('keeps the application exclusions when an untrusted caller sends as many of its own as a list may hold', () => {
+    const engine = engineWith(provideClrContextOptions({ excludeRoles: ['navigation'], rootSelector: 'main, nav' }));
+    engine.enableGlobalAccess('testClrContextPadding', { excludeCategories: ['dialogs'] });
+    try {
+      const accessor = (window as unknown as Record<string, (options?: unknown) => ClrPageContext>)[
+        'testClrContextPadding'
+      ];
+      const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
+
+      expect(types(accessor({ excludeRoles: junk, excludeCategories: junk }))).toEqual(['main']);
+    } finally {
+      engine.disableGlobalAccess();
+    }
+  });
 });
 
 describe('ClrContextEngineService, the routes an application can navigate to', () => {

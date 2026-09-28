@@ -37,7 +37,6 @@ import { VerticalNavService } from './providers/vertical-nav.service';
 })
 export class ClrVerticalNav implements OnInit, OnDestroy {
   @Input('clrVerticalNavToggleLabel') toggleLabel: string;
-
   contentId = uniqueIdFactory();
 
   @Output('clrVerticalNavCollapsedChange') private _collapsedChanged = new EventEmitter<boolean>(true);
@@ -113,7 +112,9 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
    */
   @HostBinding('attr.aria-label')
   private get hostLabel(): string | null {
-    const landmark = this.hostRole === 'navigation' && !this.el?.nativeElement.hasAttribute('aria-labelledby');
+    // Host bindings are evaluated in declaration order, so the role above is settled.
+    const landmark =
+      this.roleAttribute.current === 'navigation' && !this.el?.nativeElement.hasAttribute('aria-labelledby');
     return this.labelAttribute.value(landmark ? this.commonStrings.keys.verticalNavLabel : null);
   }
 

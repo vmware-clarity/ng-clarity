@@ -47,12 +47,12 @@ import {
   clrHasRequiredValidator,
   ClrLoadingState,
   clrNormalizeContextText,
+  clrPublishElementContext,
+  clrPublishElementMutator,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
-  publishElementContext,
-  publishElementMutator,
 } from '@clr/angular/utils';
 import { debounceTime, Subject } from 'rxjs';
 
@@ -490,6 +490,7 @@ export class ClrCombobox<T>
     return false;
   }
 
+  /** Suppressed on the host for the same reason; the combobox input reports it. */
   protected override reportsAriaRequired(): boolean {
     return false;
   }
@@ -670,7 +671,7 @@ export class ClrCombobox<T>
       return { type: 'combobox', state };
     };
 
-    this.teardownElementContext = publishElementContext(host, describe);
+    this.teardownElementContext = clrPublishElementContext(host, describe);
   }
 
   /**
@@ -682,7 +683,7 @@ export class ClrCombobox<T>
    * accept silently never reaches the model. Read back, the selection is labels again.
    */
   private publishMutator(host: HTMLElement) {
-    this.teardownElementMutator = publishElementMutator(host, {
+    this.teardownElementMutator = clrPublishElementMutator(host, {
       // The search input inside carries a form binding of its own, which is not the value.
       ownsContents: true,
       coerce: (proposed: unknown): ClrElementMutation => {

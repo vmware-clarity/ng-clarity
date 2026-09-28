@@ -533,6 +533,16 @@ describe('ClrDatagrid element mutator', () => {
       expect(host.notes[0].value).toBe('');
       expect(host.selected).toEqual([]);
     });
+
+    it('does not offer the grid’s own selection checkboxes as controls of their own', async () => {
+      await create(InputHost);
+      const checkboxes = findNode(
+        contextEngine.getSnapshot().components,
+        node => node.type === 'checkbox' || node.label === 'Select'
+      );
+
+      expect(checkboxes).toBeNull();
+    });
   });
 
   describe('redaction', () => {

@@ -24,8 +24,8 @@ import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
 import {
   ClrCommonStringsService,
+  clrPublishElementContext,
   IfExpandService,
-  publishElementContext,
   triggerAllFormControlValidation,
 } from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
@@ -49,7 +49,6 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   @ViewChild('headerButton') headerButton: ElementRef<HTMLButtonElement>;
   @ContentChildren(ClrStepDescription) stepDescription: QueryList<ClrStepDescription>;
   @HostBinding('class.clr-stepper-panel-disabled') disabled = false;
-
   readonly PanelStatus = StepperPanelStatus;
   override panel: Observable<StepperPanelModel>;
 
@@ -111,7 +110,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // the service, which always holds the current model, rather than remembered from the
     // template's stream — which has not emitted yet between init and first render.
     if (this.hostElement) {
-      this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
+      this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
         state: { status: this.currentStatus() },
       }));
     }

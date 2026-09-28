@@ -6,6 +6,7 @@
  */
 
 import {
+  CLR_CONTEXT_HIDDEN_SELECTOR,
   CLR_CONTEXT_IGNORE_ATTRIBUTE,
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_ELEMENT_CONTEXT_PROPERTY,
@@ -16,7 +17,7 @@ import {
 
 import { accessibleName } from './accessible-name';
 import { ariaState, isRedacted, redactNode } from './aria-state';
-import { mergeElementContext, withoutRefs } from './element-context';
+import { mergeElementContext, publishedNode } from './element-context';
 import { readElementMutator } from './element-mutator';
 import { isLeafRole, isNameFromContents, isPresentationalRole, mayContainControls, resolveRole } from './roles';
 import { summarizeRole } from './summarizers';
@@ -106,6 +107,7 @@ const CONTROL_SELECTOR = [
   '[role="grid"]',
   '[role="table"]',
   '[role="dialog"]',
+  '[role="alertdialog"]',
 ].join(', ');
 
 /**
@@ -159,7 +161,9 @@ interface Walk {
 
 /** The result of a walk, and whether it ran out of budget before it ran out of page. */
 export interface ClrContextTreeResult {
+  /** What was described, as a tree. */
   components: ClrComponentContext[];
+  /** Whether a budget ran out before the page did. */
   truncated: boolean;
   /** Present when the walk was narrowed to the open modal dialog. */
   focus?: 'modal';
@@ -206,7 +210,7 @@ export function collectContextTreeWithin(
  * Everything that keeps an element, and whatever is inside it, out of what the engine
  * describes: hidden from assistive technology, inert, or marked to be ignored.
  */
-export const ENGINE_HIDDEN_SELECTOR = `[hidden], [aria-hidden="true"], [inert], ${IGNORE_SELECTOR}`;
+export const ENGINE_HIDDEN_SELECTOR = CLR_CONTEXT_HIDDEN_SELECTOR;
 
 /**
  * Whether the engine would leave this element out of a snapshot, judged from the element
@@ -433,7 +437,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   if (extractor) {
     const extracted = extractSafely(extractor, element as HTMLElement, walk);
     // Only the walk hands out refs: an extractor's node cannot claim another node's.
-    const described = extracted ? withoutRefs(extracted) : null;
+    const described = extracted ? publishedNode(extracted, walk.options) : null;
     if (!described) {
       // The extractor owns this element: when it declines to describe it, the element is
       // not described generically either, but its contents may still be interesting.
@@ -443,7 +447,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       return [];
     }
     walk.remaining--;
-    return [finish(described, element, walk, true)];
+    return listOf(finish(described, element, walk, true));
   }
 
   const tagName = element.tagName.toLowerCase();
@@ -487,9 +491,9 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       // Text is all this element renders: it is the element's own label, the same way a
       // `clr-dg-footer` with bare text is labelled by it, rather than a text node inside.
       if (only.type === 'text' && !only.children && !only.state) {
-        return [finish({ type: tagName, element: tagName, label: only.label }, element, walk)];
+        return listOf(finish({ type: tagName, element: tagName, label: only.label }, element, walk));
       }
-      return [finish(only, element, walk)];
+      return listOf(finish(only, element, walk));
     }
     if (rendered.length > 1) {
       if (walk.remaining <= 0) {
@@ -507,11 +511,16 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
           wrapper.label = named.label;
         }
       }
-      return [finish(wrapper, element, walk)];
+      return listOf(finish(wrapper, element, walk));
     }
     // Nothing rendered, nothing said, nothing published: a closed modal, an icon, a
-    // spacer. Such an element is not on the page as far as an agent is concerned.
+    // spacer. Such an element is not on the page as far as an agent is concerned. Nor is
+    // one whose content was left out on purpose — a datagrid when grids are excluded —
+    // which must not come back labelled with all the text it holds.
     if (!accessibleText(element).trim() && !(CLR_ELEMENT_CONTEXT_PROPERTY in element)) {
+      return [];
+    }
+    if (holdsExcludedRole(element, walk)) {
       return [];
     }
   }
@@ -581,6 +590,9 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   }
 
   const described = finish(node, element, walk);
+  if (!described) {
+    return [];
+  }
 
   // A list item's text is already in its list's summary, so it earns a node of its own
   // only when it has state to add — what its component published, say. Otherwise the
@@ -614,23 +626,57 @@ function describeCellControls(collection: Element, walk: Walk): ClrComponentCont
   if (walk.options.collectionItems === 'summary') {
     return [];
   }
-  const cells = new Set<Element>();
+  // Each cell with whether something between it and the collection redacts it. A cell
+  // that is itself, or sits inside, something hidden, inert, ignored or excluded is not
+  // described, exactly as the walk would not reach it: the grid's own selection cells
+  // are marked ignored, and a redacted row keeps its values.
+  const cells = new Map<Element, boolean>();
   for (const control of Array.from(collection.querySelectorAll(VALUE_CONTROL_SELECTOR))) {
     const role = resolveRole(control);
     const cell = role && WRITABLE_ROLES.has(role) ? control.closest(CELL_SELECTOR) : null;
-    if (cell && collection.contains(cell)) {
-      cells.add(cell);
-      if (cells.size >= walk.options.maxItemsPerCollection) {
-        break;
-      }
+    if (!cell || cells.has(cell) || !collection.contains(cell)) {
+      continue;
+    }
+    const path = ancestryUntil(cell, collection);
+    if (path.some(element => shouldSkipSubtree(element, walk))) {
+      continue;
+    }
+    cells.set(
+      cell,
+      path.some(element => element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE))
+    );
+    if (cells.size >= walk.options.maxItemsPerCollection) {
+      break;
     }
   }
+  const nodes: ClrComponentContext[] = [];
   walk.textDepth++;
   try {
-    return Array.from(cells).flatMap(cell => describeNested(cell, walk, null));
+    for (const [cell, redacted] of cells) {
+      if (redacted) {
+        walk.redactedDepth++;
+      }
+      try {
+        nodes.push(...describeNested(cell, walk, null));
+      } finally {
+        if (redacted) {
+          walk.redactedDepth--;
+        }
+      }
+    }
   } finally {
     walk.textDepth--;
   }
+  return nodes;
+}
+
+/** The element and its ancestors up to, but not including, `boundary`. */
+function ancestryUntil(element: Element, boundary: Element): Element[] {
+  const path: Element[] = [];
+  for (let current: Element | null = element; current && current !== boundary; current = current.parentElement) {
+    path.push(current);
+  }
+  return path;
 }
 
 /**
@@ -675,7 +721,7 @@ function describeTextBlock(element: Element, walk: Walk, owner: Element | null):
   if (children.length) {
     node.children = children;
   }
-  return [finish(node, element, walk)];
+  return listOf(finish(node, element, walk));
 }
 
 /**
@@ -734,7 +780,7 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
   if (Object.keys(state).length) {
     node.state = state;
   }
-  return [finish(node, frame, walk)];
+  return listOf(finish(node, frame, walk));
 }
 
 /**
@@ -818,12 +864,17 @@ function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null)
  * extractor's result: an extractor is application code, but the element it describes
  * may sit inside a region the application marked as sensitive.
  */
-function finish(node: ClrComponentContext, element: Element, walk: Walk, deep = false): ClrComponentContext {
+function finish(node: ClrComponentContext, element: Element, walk: Walk, deep = false): ClrComponentContext | null {
   const redacted = isRedacted(element, walk.redactedDepth > 0);
   // Inside a region the application keeps from agents, what a component publishes about
   // itself is not merged at all: a publisher reports its own state — a grid's rows and
   // selection, a combobox's value — and would otherwise carry it straight out.
   let described = redacted ? node : mergeElementContext(node, element, walk.options);
+  // A component that says it is something the caller excluded is left out like any
+  // element with that role, whatever the DOM said about it.
+  if (walk.excludeRoles.has(described.type)) {
+    return null;
+  }
   // Anything published or extracted arrives unpruned and may carry children of its own.
   const foreign = deep || described !== node;
 
@@ -836,6 +887,24 @@ function finish(node: ClrComponentContext, element: Element, walk: Walk, deep = 
   const pruned = pruneEmpty(described, foreign);
   noteRef(pruned, element, walk);
   return pruned;
+}
+
+function listOf(node: ClrComponentContext | null): ClrComponentContext[] {
+  return node ? [node] : [];
+}
+
+/** Whether anything inside the element has a role this walk leaves out. */
+function holdsExcludedRole(element: Element, walk: Walk): boolean {
+  if (!walk.excludeRoles.size) {
+    return false;
+  }
+  for (const descendant of Array.from(element.querySelectorAll('*'))) {
+    const role = resolveRole(descendant);
+    if (role && walk.excludeRoles.has(role)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
@@ -899,11 +968,14 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
  * transparency all hide it. `checkVisibility` without options only covers the first.
  */
 export function isVisible(element: HTMLElement): boolean {
-  if (typeof element.checkVisibility === 'function') {
-    // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.
-    return element.checkVisibility({ visibilityProperty: true, opacityProperty: true });
+  // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.
+  if (element.checkVisibility({ visibilityProperty: true, opacityProperty: true })) {
+    return true;
   }
-  return element.getClientRects().length > 0;
+  // An element with `display: contents` has no box of its own, so it never reads as
+  // visible, but it hides nothing: its children render in its place and are judged on
+  // their own. Hidden ancestors still hide them, since those are checked as well.
+  return element.ownerDocument.defaultView?.getComputedStyle(element).display === 'contents';
 }
 
 /** Removes empty labels, states and children so snapshots stay minimal. */

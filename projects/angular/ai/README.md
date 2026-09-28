@@ -13,7 +13,7 @@ the same entry point.
 The engine describes UI by reading the **accessibility tree** rather than Clarity-specific
 selectors, so it covers Clarity Angular components, `@clr/ui` CSS-only markup, other component
 libraries and plain semantic HTML with one implementation. Components publish only the state ARIA
-cannot express, through `publishElementContext` from `@clr/angular/utils` — which is why a
+cannot express, through `clrPublishElementContext` from `@clr/angular/utils` — which is why a
 component that publishes context does not depend on this entry point.
 
 Through custom extractors and a framework-agnostic `postMessage` protocol it also reaches other UI
@@ -28,7 +28,7 @@ routes the snapshot listed, addressing controls by the `ref` each snapshot node 
 and stable for an element while it is on the page. It never submits, clicks or invokes; never
 writes what a snapshot would not show; and does nothing at all until the application provides a `ClrMutationPolicy` classifying what each operation would do.
 Components whose value is not what an agent sees — the combobox, the date input, the datagrid's row
-selection — say how they are written to through `publishElementMutator` from `@clr/angular/utils`.
+selection — say how they are written to through `clrPublishElementMutator` from `@clr/angular/utils`.
 
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
 model, never instructions: delimit it in prompts, and let the policy judge each operation's target

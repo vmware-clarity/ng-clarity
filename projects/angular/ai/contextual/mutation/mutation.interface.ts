@@ -19,6 +19,7 @@ import { ClrPageContext } from '../interfaces/context.interface';
  * turns it into what the control takes.
  */
 export interface ClrSetValueOperation {
+  /** Gives a control a value. */
   operation: 'setValue';
   /** The `ref` of the node to write to, from the latest snapshot. */
   ref: string;
@@ -28,6 +29,7 @@ export interface ClrSetValueOperation {
    * element is caught rather than silently written to.
    */
   description: string;
+  /** The value, in the agent's terms: text, a number, `true`, an option's label, a date. */
   value: unknown;
 }
 
@@ -36,8 +38,11 @@ export interface ClrSetValueOperation {
  * deliberately, rather than either inventing one or leaving a stale one in place.
  */
 export interface ClrClearOperation {
+  /** Empties a control. */
   operation: 'clear';
+  /** The `ref` of the node to clear, from the latest snapshot. */
   ref: string;
+  /** What the node is, in the agent's words; checked as for `setValue`. */
   description: string;
 }
 
@@ -46,6 +51,7 @@ export interface ClrClearOperation {
  * every guard the application configured runs.
  */
 export interface ClrNavigateOperation {
+  /** Goes to a route. */
   operation: 'navigate';
   /** The route's path pattern exactly as `availableRoutes` listed it, e.g. `clusters/:id`. */
   path: string;
@@ -82,6 +88,7 @@ export type ClrMutationConsequence = 'reversible' | 'consequential' | 'forbidden
 
 /** What an operation is about to do, as given to the policy. */
 export interface ClrMutationTarget {
+  /** The operation being judged. */
   operation: ClrMutationOperation['operation'];
   /** The node's `ref`, for element operations. */
   ref?: string;
@@ -118,6 +125,12 @@ export interface ClrMutationTarget {
  * as `unclassified`.
  */
 export interface ClrMutationPolicy {
+  /**
+   * How long `confirm` may take, in milliseconds, before the operation is refused as
+   * `declined`. Calls to `apply()` run one at a time, so a confirmation left unanswered
+   * would hold up every later call. Defaults to two minutes; `0` waits indefinitely.
+   */
+  confirmTimeoutMs?: number;
   /** Declares what each operation would do. See {@link ClrMutationConsequence}. */
   classify(target: ClrMutationTarget): ClrMutationConsequence;
   /**
@@ -213,6 +226,7 @@ export interface ClrElementMutationResult {
   status?: string;
   /** The form control's validation errors after the write, when it has any. */
   errors?: Record<string, unknown>;
+  /** Why the operation was not applied, when it was not. */
   refused?: ClrMutationRefusal;
   /** What an agent should do about a refusal, or what the control would have accepted. */
   detail?: string;
@@ -240,10 +254,13 @@ export interface ClrNavigationMutationResult {
   path: string;
   /** Whether the page moved, or was already where it was asked to go. */
   applied: boolean;
+  /** What the navigation led to, when it ran. */
   outcome?: ClrNavigationOutcome;
   /** The router URL now. */
   url?: string;
+  /** Why the operation was not run, when it was not. */
   refused?: ClrMutationRefusal;
+  /** What went wrong, or what to do about a refusal. */
   detail?: string;
 }
 
@@ -263,6 +280,7 @@ export type ClrMutationChanges = Omit<ClrContextChange, 'previous' | 'current'>;
  * nothing before it proceeds to step four.
  */
 export interface ClrMutationReport {
+  /** What each operation did, in the order given. */
   results: ClrMutationResult[];
   /** The page after the operations, taken with the options given to `apply()`. */
   snapshot: ClrPageContext;
@@ -275,9 +293,14 @@ export interface ClrMutationReport {
  * classification, and the value that would be written, or the refusal it would meet.
  */
 export interface ClrMutationPlanEntry {
+  /** The operation this entry is for. */
   operation: ClrMutationOperation;
+  /** How the policy classified it, when it could be resolved. */
   consequence?: ClrMutationConsequence;
+  /** What it would write to, and with what, when it could be resolved. */
   target?: ClrMutationTarget;
+  /** The refusal it would meet, if any. */
   refused?: ClrMutationRefusal;
+  /** What to do about that refusal. */
   detail?: string;
 }

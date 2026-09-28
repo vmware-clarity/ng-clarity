@@ -7,7 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { Component, ContentChild, ElementRef, Inject, Input, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
-import { publishElementContext } from '@clr/angular/utils';
+import { clrPublishElementContext } from '@clr/angular/utils';
 
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';
@@ -75,7 +75,7 @@ export class ClrTimelineStep implements OnDestroy {
     if (!this.hostElement) {
       return;
     }
-    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
+    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
       state: { status: this.state },
     }));
   }

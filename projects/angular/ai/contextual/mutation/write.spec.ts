@@ -31,6 +31,7 @@ import {
   ClrMutationTarget,
   provideClrMutationPolicy,
 } from './mutation.interface';
+import { descriptionMatches } from './write';
 import { ClrPageContext } from '../interfaces/context.interface';
 import { ClrContextEngineService } from '../providers/contextual-engine.service';
 
@@ -236,6 +237,7 @@ describe('ClrMutationEngineService write path', () => {
           classify: target => classify(target),
           confirm: target => confirm(target),
           announce: report => announce(report),
+          confirmTimeoutMs: 200,
         }),
       ],
     });
@@ -277,7 +279,7 @@ describe('ClrMutationEngineService write path', () => {
       const result = await set('Rating', 5);
 
       expect(result.refused).toBe('unsupported');
-      expect(result.detail).toContain('publishElementMutator');
+      expect(result.detail).toContain('clrPublishElementMutator');
       expect(host.form.value.rating).toBe(3);
     });
 
@@ -297,6 +299,9 @@ describe('ClrMutationEngineService write path', () => {
       );
       expect(report.results[1].applied).toBeTrue();
       expect(host.form.value.name).toBe('Ada');
+      // The refused write leaves the control as the user left it.
+      expect(host.form.controls.broken.touched).toBeFalse();
+      expect(host.form.controls.broken.dirty).toBeFalse();
     });
   });
 
@@ -388,6 +393,17 @@ describe('ClrMutationEngineService write path', () => {
       expect((await set('Name', 'Ada', 'the name field')).applied).toBeTrue();
       expect((await set('Name', 'Bob', 'e')).refused).toBe('mismatch');
       expect((await set('Name', 'Bob', '')).refused).toBe('mismatch');
+    });
+
+    it('refuses a description that warns it is about something else', async () => {
+      expect((await set('Name', 'Ada', 'the wrong name')).refused).toBe('mismatch');
+      expect((await set('Name', 'Ada', 'no name')).refused).toBe('mismatch');
+      expect((await set('Name', 'Ada', 'the name input field')).applied).toBeTrue();
+    });
+
+    it('matches a label the snapshot cut short on the words it kept', () => {
+      expect(descriptionMatches('Street address of the head office', 'Street address of…')).toBeTrue();
+      expect(descriptionMatches('Phone number', 'Street address of…')).toBeFalse();
     });
 
     it('refuses a description that only mentions the label among other words', async () => {
@@ -511,6 +527,25 @@ describe('ClrMutationEngineService write path', () => {
 
       classify.and.returnValue('maybe' as never);
       expect((await set('Name', 'x')).refused).toBe('forbidden');
+      expect(host.form.value.name).toBe('');
+    });
+
+    it('declines an operation whose confirmation is not answered in time, and goes on with the next call', async () => {
+      classify.and.callFake(target => (target.label === 'Name' ? 'consequential' : 'reversible'));
+      confirm.and.returnValue(new Promise<boolean>(() => undefined));
+      const page = contextEngine.getSnapshot();
+
+      const stuck = engine.apply([
+        { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name', value: 'x' },
+      ]);
+      const next = engine.apply([
+        { operation: 'setValue', ref: refOf(page, 'Enabled'), description: 'Enabled', value: false },
+      ]);
+
+      const declined = (await stuck).results[0];
+      expect(declined.refused).toBe('declined');
+      expect(declined.detail).toContain('not answered in time');
+      expect((await next).results[0].applied).toBeTrue();
       expect(host.form.value.name).toBe('');
     });
 

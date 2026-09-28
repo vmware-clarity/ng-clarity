@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrElementMutator, publishElementMutator } from './element-mutator';
+import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrElementMutator, clrPublishElementMutator } from './element-mutator';
 
 function readElementMutator(element: Element): ClrElementMutator | null {
   return ((element as Element & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] as ClrElementMutator) ?? null;
 }
 
-describe('publishElementMutator', () => {
+describe('clrPublishElementMutator', () => {
   let host: HTMLElement;
 
   beforeEach(() => {
@@ -21,13 +21,13 @@ describe('publishElementMutator', () => {
   it('makes the mutator discoverable on the host element', () => {
     const mutator = { coerce: (proposed: unknown) => ({ value: proposed }) };
 
-    publishElementMutator(host, mutator);
+    clrPublishElementMutator(host, mutator);
 
     expect(readElementMutator(host)).toBe(mutator);
   });
 
   it('removes the mutator when the returned teardown runs', () => {
-    const teardown = publishElementMutator(host, { read: () => null });
+    const teardown = clrPublishElementMutator(host, { read: () => null });
 
     teardown();
 
@@ -36,9 +36,9 @@ describe('publishElementMutator', () => {
   });
 
   it('does not let a stale teardown remove a newer mutator', () => {
-    const staleTeardown = publishElementMutator(host, { read: () => 'old' });
+    const staleTeardown = clrPublishElementMutator(host, { read: () => 'old' });
     const newer = { read: () => 'new' };
-    publishElementMutator(host, newer);
+    clrPublishElementMutator(host, newer);
 
     staleTeardown();
 

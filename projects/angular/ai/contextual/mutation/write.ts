@@ -136,7 +136,7 @@ export function resolveWriteTarget(ref: ContextRefTarget, application: Applicati
       return {
         refused: 'unsupported',
         detail:
-          'This custom control does not say how it is written to. It can publish a mutator (publishElementMutator from @clr/angular/utils).',
+          'This custom control does not say how it is written to. It can publish a mutator (clrPublishElementMutator from @clr/angular/utils).',
       };
     }
     if (kind === 'select' && bound.updateOn === 'submit') {
@@ -167,28 +167,62 @@ export function resolveWriteTarget(ref: ContextRefTarget, application: Applicati
 
 /**
  * Whether the description an agent gave names the node: every word of one is a word of
- * the other ("the name field" names "Name"; "e" does not), with at most a couple of words
- * more than the label has — "not email, the password" does not name "Email". A node
- * without a name can only be described by nothing, or by what it is ("grid").
+ * the other ("the name field" names "Name"; "e" does not). Filler — articles, "field",
+ * the node's type — does not count; beyond it, a description may add at most as many
+ * words as the label has, and none that turns it into a warning: "the wrong email" and
+ * "not email, the password" do not name "Email". A label the snapshot cut short (ending
+ * in "…") is matched on the words it kept. A node without a name can only be described
+ * by nothing, or by what it is ("grid").
  */
 export function descriptionMatches(description: unknown, label: string, type = ''): boolean {
   if (typeof description !== 'string') {
     return false;
   }
+  const typeWords = words(type);
   const given = words(description);
   if (!label) {
-    return !given.length || given.every(word => words(type).includes(word));
+    return !given.length || given.every(word => typeWords.includes(word));
   }
-  const actual = words(label);
-  if (!given.length) {
+  if (!given.length || given.some(word => NEGATING_WORDS.has(word))) {
     return false;
   }
-  if (given.every(word => actual.includes(word))) {
+  const cut = label.trimEnd().endsWith('…');
+  const labelWords = words(label);
+  // The last word of a cut label may itself be cut; only whole words are compared.
+  const actual = cut ? labelWords.slice(0, -1) : labelWords;
+  if (!cut && given.every(word => actual.includes(word))) {
     return true;
   }
-  const extra = given.filter(word => !actual.includes(word)).length;
-  return actual.every(word => given.includes(word)) && extra <= Math.max(2, actual.length);
+  if (!actual.every(word => given.includes(word))) {
+    return false;
+  }
+  if (cut) {
+    return true;
+  }
+  const extra = given.filter(word => !actual.includes(word) && !FILLER_WORDS.has(word) && !typeWords.includes(word));
+  return extra.length <= actual.length;
 }
+
+/** Words that describe the node rather than name it, and so do not count as extra. */
+const FILLER_WORDS: ReadonlySet<string> = new Set([
+  'the',
+  'a',
+  'an',
+  'field',
+  'input',
+  'box',
+  'control',
+  'value',
+  'option',
+  'dropdown',
+  'select',
+  'textbox',
+  'checkbox',
+  'toggle',
+]);
+
+/** Words that turn a description into one of something else. */
+const NEGATING_WORDS: ReadonlySet<string> = new Set(['not', 'no', 'wrong', 'other', 'except', 'instead', 'never']);
 
 /**
  * What the form control will receive for a coerced value, where that is known before
@@ -279,35 +313,56 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
   if (!control) {
     return { applied: false, refused: 'unbound', detail: UNBOUND_DETAIL };
   }
+  const accessor = target.ngControl?.valueAccessor as SelectAccessor | null | undefined;
+  if (target.kind === 'select' && typeof accessor?.onChange !== 'function') {
+    return { applied: false, refused: 'unsupported', detail: UNSUPPORTED_SELECT_DETAIL, previous };
+  }
   const modelBefore = serialized(control.value);
+  // A write that is refused or throws leaves the control as the user left it: neither
+  // dirty nor touched unless it was, and a select showing the choice its model holds.
+  const wasDirty = control.dirty;
+  const wasTouched = control.touched;
+  const rollback = (bound: AbstractControl) => {
+    if (!wasDirty) {
+      bound.markAsPristine();
+    }
+    if (!wasTouched) {
+      bound.markAsUntouched();
+    }
+  };
   control.markAsDirty();
   control.markAsTouched();
-  if (target.kind === 'radiogroup') {
-    control.setValue(coerced.value === null ? null : radioValue(coerced.value as HTMLInputElement));
-  } else if (target.kind === 'select') {
-    const select = target.element as HTMLSelectElement;
-    const chosen = Array.isArray(coerced.value) ? (coerced.value as HTMLOptionElement[]) : [];
-    const accessor = target.ngControl?.valueAccessor as SelectAccessor | null | undefined;
-    if (typeof accessor?.onChange !== 'function') {
-      return { applied: false, refused: 'unsupported', detail: UNSUPPORTED_SELECT_DETAIL, previous };
+  try {
+    if (target.kind === 'radiogroup') {
+      control.setValue(coerced.value === null ? null : radioValue(coerced.value as HTMLInputElement));
+    } else if (target.kind === 'select' && accessor?.onChange) {
+      const select = target.element as HTMLSelectElement;
+      const chosen = Array.isArray(coerced.value) ? (coerced.value as HTMLOptionElement[]) : [];
+      const shown = Array.from(select.options).map(option => option.selected);
+      for (const option of Array.from(select.options)) {
+        option.selected = chosen.includes(option);
+      }
+      // Handed to the accessor the way its own `change` listener would hand it over, so
+      // it maps the option back to the bound value — without dispatching DOM events,
+      // which would also run whatever `(change)` or `(blur)` handler the application
+      // attached. A control that updates on blur takes the value when it is told the
+      // field was left.
+      accessor.onChange(select.multiple ? select : select.value);
+      if (control.updateOn === 'blur') {
+        accessor.onTouched?.();
+      }
+      const moved = JSON.stringify(plain(previous)) !== JSON.stringify(plain(coerced.display));
+      if (moved && serialized(control.value) === modelBefore) {
+        Array.from(select.options).forEach((option, index) => (option.selected = shown[index]));
+        rollback(control);
+        return { applied: false, refused: 'invalid', detail: 'The form control did not take the value.', previous };
+      }
+    } else {
+      control.setValue(coerced.value);
     }
-    for (const option of Array.from(select.options)) {
-      option.selected = chosen.includes(option);
-    }
-    // Handed to the accessor the way its own `change` listener would hand it over, so it
-    // maps the option back to the bound value — without dispatching DOM events, which
-    // would also run whatever `(change)` or `(blur)` handler the application attached. A
-    // control that updates on blur takes the value when it is told the field was left.
-    accessor.onChange(select.multiple ? select : select.value);
-    if (control.updateOn === 'blur') {
-      accessor.onTouched?.();
-    }
-    const moved = JSON.stringify(plain(previous)) !== JSON.stringify(plain(coerced.display));
-    if (moved && serialized(control.value) === modelBefore) {
-      return { applied: false, refused: 'invalid', detail: 'The form control did not take the value.', previous };
-    }
-  } else {
-    control.setValue(coerced.value);
+  } catch (error) {
+    rollback(control);
+    throw error;
   }
 
   const outcome: WriteOutcome = { applied: true, value: readValue(target), previous, status: control.status };

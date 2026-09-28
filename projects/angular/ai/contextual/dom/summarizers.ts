@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_IGNORE_ATTRIBUTE, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { CLR_CONTEXT_HIDDEN_SELECTOR, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
 import { resolveRole } from './roles';
@@ -320,7 +320,7 @@ function queryRole(element: Element, role: string): Element[] {
 }
 
 /** Items the user cannot see are not part of what a collection offers. */
-const HIDDEN_ITEM_SELECTOR = `[hidden], [aria-hidden="true"], [${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
+const HIDDEN_ITEM_SELECTOR = CLR_CONTEXT_HIDDEN_SELECTOR;
 
 function nameOf(element: Element, options: Required<ClrContextSnapshotOptions>): string {
   return accessibleName(element, resolveRole(element), options.maxTextLength);

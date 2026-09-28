@@ -94,6 +94,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     return this.role && clrHasRequiredValidator(this.control?.control) ? true : null;
   }
 
+  /** Whether the group's choice is invalid, once the user has had a chance to make one. */
   protected get ariaInvalid(): true | null {
     return this.role && this.showInvalid ? true : null;
   }

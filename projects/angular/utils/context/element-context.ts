@@ -43,6 +43,6 @@ export type ClrElementContextCallback = (
  * (for example after its host element is re-created) can therefore let a stale teardown
  * run without silently unpublishing the newer callback.
  */
-export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void {
+export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void {
   return publishOnElement(host, CLR_ELEMENT_CONTEXT_PROPERTY, callback);
 }

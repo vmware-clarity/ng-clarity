@@ -17,7 +17,7 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
-import { ClrCommonStringsService, publishElementContext } from '@clr/angular/utils';
+import { ClrCommonStringsService, clrPublishElementContext } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
@@ -53,7 +53,6 @@ export class ClrAlert implements OnInit, OnDestroy {
   private _isLightweight = false;
   private _origAlertType: string;
   private teardownElementContext?: () => void;
-  private insideLiveRegion = false;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -139,7 +138,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     if (this.liveRole !== undefined) {
       return this.liveRole;
     }
-    if (this.insideLiveRegion) {
+    // Checked each time rather than once: an alert can be moved into a live region.
+    if (this.hostElement.nativeElement.parentElement?.closest(LIVE_REGION_SELECTOR)) {
       return null;
     }
     const urgent = this.alertType === 'danger' || this.alertType === 'warning';
@@ -156,11 +156,10 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.insideLiveRegion = !!this.hostElement.nativeElement.parentElement?.closest(LIVE_REGION_SELECTOR);
     // role="alert" versus role="status" only says important versus informational. Which
     // of danger, warning, success, info or neutral this is lives in a CSS class, which
     // nothing can read semantically, so the component reports it directly.
-    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
+    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
       state: { severity: this.alertType },
     }));
 

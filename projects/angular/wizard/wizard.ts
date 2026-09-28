@@ -23,7 +23,7 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import { ClrCommonStringsService, publishElementContext, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, clrPublishElementContext, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -155,7 +155,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   @ViewChild('pageTitle') pageTitle: ElementRef<HTMLElement>;
   @ContentChildren(ClrWizardPage) pages: QueryList<ClrWizardPage>;
-
   @ContentChildren(ClrWizardButton, { descendants: false }) wizardButtons: QueryList<ClrWizardButton>;
   @ContentChildren(ClrWizardHeaderAction) headerActions: QueryList<ClrWizardHeaderAction>;
 
@@ -334,7 +333,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // The icon there does carry an accessible name for it, but the icon sits inside a
     // button, and a button is described as a leaf — so nothing reaches it. The step
     // titles are in the DOM and readable; these facts are not.
-    this.teardownElementContext = publishElementContext(this.elementRef.nativeElement, () => {
+    this.teardownElementContext = clrPublishElementContext(this.elementRef.nativeElement, () => {
       const pages = this.pages?.toArray() ?? [];
       if (!pages.length) {
         return null;

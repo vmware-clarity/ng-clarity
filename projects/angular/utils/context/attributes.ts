@@ -24,3 +24,11 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = 'data-clr-context-redact';
  * neither describes itself into the page context nor triggers tracking feedback loops.
  */
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = 'data-clr-context-ignore';
+
+/**
+ * What page-context tooling treats as not on the page: hidden, hidden from assistive
+ * technology, inert, or marked ignored — along with everything inside it. The contextual
+ * engine and the components that publish context to it test against this one selector,
+ * so they never disagree about what an agent may see.
+ */
+export const CLR_CONTEXT_HIDDEN_SELECTOR = `[hidden], [aria-hidden="true"], [inert], [${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;

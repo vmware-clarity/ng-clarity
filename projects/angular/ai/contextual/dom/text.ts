@@ -43,15 +43,17 @@ export function isVisuallyHidden(element: Element): boolean {
  * that keeps both variants of its label in the DOM and shows one at a time hides the
  * other with `display: none`, and is named by the visible one.
  */
-function isExcludedFromName(element: Element, includeClipped: boolean): boolean {
-  if (element.getAttribute('aria-hidden') === 'true' || element.hasAttribute('hidden')) {
+function isExcludedFromName(element: Element, style: CSSStyleDeclaration | null, includeClipped: boolean): boolean {
+  if (
+    element.getAttribute('aria-hidden') === 'true' ||
+    element.hasAttribute('hidden') ||
+    element.hasAttribute('inert')
+  ) {
     return true;
   }
-  const view = element.ownerDocument.defaultView;
-  if (!view) {
+  if (!style) {
     return false;
   }
-  const style = view.getComputedStyle(element);
   if (style.display === 'none' || style.visibility === 'hidden') {
     return true;
   }
@@ -110,10 +112,17 @@ function textFor(element: Element, exclude: Element | undefined, includeClipped:
     }
     // Text the application keeps from agents is never borrowed into a name, a label or a
     // description, whatever element above it is being named.
-    if (child.matches(UNREADABLE_SELECTOR) || isExcludedFromName(child, includeClipped)) {
+    if (child.matches(UNREADABLE_SELECTOR)) {
       continue;
     }
-    text += textFor(child, exclude, includeClipped);
+    const style = child.ownerDocument.defaultView?.getComputedStyle(child) ?? null;
+    if (isExcludedFromName(child, style, includeClipped)) {
+      continue;
+    }
+    const inner = textFor(child, exclude, includeClipped);
+    // Block-level content reads as separate words, as it does when a browser names an
+    // element: two cells or two lines never run together into one word.
+    text += style && !style.display.startsWith('inline') && style.display !== 'contents' ? ` ${inner} ` : inner;
   }
   return text;
 }
@@ -155,19 +164,14 @@ function isUnrendered(element: Element): boolean {
   if (element.closest('[hidden]')) {
     return true;
   }
-  const html = element as HTMLElement;
-  if (typeof html.checkVisibility === 'function') {
-    // Without options this is exactly "not rendered": display: none here or above.
-    return !html.checkVisibility();
-  }
-  const view = element.ownerDocument.defaultView;
-  if (!view) {
+  // Without options this is exactly "not rendered": display: none here or above — or
+  // `display: contents`, which has no box but renders its children in its place.
+  if ((element as HTMLElement).checkVisibility()) {
     return false;
   }
-  for (let current: Element | null = element; current; current = current.parentElement) {
-    if (view.getComputedStyle(current).display === 'none') {
-      return true;
-    }
+  if (element.ownerDocument.defaultView?.getComputedStyle(element).display !== 'contents') {
+    return true;
   }
-  return false;
+  const parent = element.parentElement;
+  return parent ? isUnrendered(parent) : false;
 }

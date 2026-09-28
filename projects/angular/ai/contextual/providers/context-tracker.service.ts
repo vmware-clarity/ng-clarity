@@ -216,10 +216,15 @@ export class ClrContextTrackerService implements OnDestroy {
     if (this.quietTimer !== null) {
       clearTimeout(this.quietTimer);
     }
-    this.quietTimer = setTimeout(() => this.scrape(), this.trackingOptions.debounceMs ?? DEFAULT_DEBOUNCE_MS);
-    if (this.maxWaitTimer === null) {
-      this.maxWaitTimer = setTimeout(() => this.scrape(), this.trackingOptions.maxWaitMs ?? DEFAULT_MAX_WAIT_MS);
-    }
+    // Scheduled outside the zone whoever asked: an annotation's change arrives from change
+    // detection, inside the zone, and a scrape run from there would run change detection
+    // for the whole application again, on every change.
+    this.zone.runOutsideAngular(() => {
+      this.quietTimer = setTimeout(() => this.scrape(), this.trackingOptions.debounceMs ?? DEFAULT_DEBOUNCE_MS);
+      if (this.maxWaitTimer === null) {
+        this.maxWaitTimer = setTimeout(() => this.scrape(), this.trackingOptions.maxWaitMs ?? DEFAULT_MAX_WAIT_MS);
+      }
+    });
   }
 
   /** Scrapes the page and emits only if the context actually changed. */

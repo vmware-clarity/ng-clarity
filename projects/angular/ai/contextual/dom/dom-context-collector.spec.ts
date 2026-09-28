@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
-import { ClrComponentContext, publishElementContext } from '@clr/angular/utils';
+import { ClrComponentContext, clrPublishElementContext } from '@clr/angular/utils';
 
 import { collectClrDomContexts } from './dom-context-collector';
 
@@ -398,21 +398,6 @@ describe('DOM context collector - hand-authored markup', () => {
     expect(JSON.stringify(collectClrDomContexts(root))).toContain('esx-prod-04');
   });
 
-  it('falls back to element geometry when checkVisibility is unavailable', () => {
-    root.innerHTML = '<div role="grid" style="display:none"></div>';
-    const element = root.firstElementChild as HTMLElement & { checkVisibility?: unknown };
-    const original = element.checkVisibility;
-    element.checkVisibility = undefined;
-
-    try {
-      // An element that is not rendered has no client rects, which is the only signal
-      // available without checkVisibility.
-      expect(collectClrDomContexts(root)).toEqual([]);
-    } finally {
-      element.checkVisibility = original;
-    }
-  });
-
   it('never describes elements inside ignore-marked regions', () => {
     root.innerHTML = `
       <div data-clr-context-ignore>
@@ -453,7 +438,7 @@ describe('DOM context collector - component-published context', () => {
 
   it('merges what a component publishes over what the DOM shows', () => {
     root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
-    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       label: 'Component label',
       state: { options: ['a', 'b', 'c'], loaded: true },
     }));
@@ -467,7 +452,7 @@ describe('DOM context collector - component-published context', () => {
 
   it('lets a publisher supply the options a closed popover does not render', () => {
     root.innerHTML = '<label for="f">Fruit</label><fake-combobox><input id="f" role="combobox" /></fake-combobox>';
-    publishElementContext(root.querySelector('fake-combobox') as Element, () => ({
+    clrPublishElementContext(root.querySelector('fake-combobox') as Element, () => ({
       state: { options: ['Apple', 'Pear'], value: 'Apple' },
     }));
 
@@ -480,7 +465,7 @@ describe('DOM context collector - component-published context', () => {
 
   it('treats a publisher that throws as having nothing to add', () => {
     root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
-    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => {
+    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => {
       throw new Error('broken publisher');
     });
 
@@ -491,7 +476,7 @@ describe('DOM context collector - component-published context', () => {
 
   it('never lets a publisher hand out a ref, which only the engine may mint', () => {
     root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
-    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       ref: 'e-forged',
       children: [{ type: 'button', label: 'Delete', ref: 'e-other' }],
     }));
@@ -503,11 +488,49 @@ describe('DOM context collector - component-published context', () => {
     expect(json).not.toContain('e-other');
   });
 
+  it('reduces published children to plain data, with string type and label only', () => {
+    root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
+    const host = root.querySelector('clr-fake-widget') as Element;
+    const circular: Record<string, unknown> = {};
+    circular['self'] = circular;
+    clrPublishElementContext(host, () => ({
+      children: [
+        { type: 'option', label: 'A', state: { node: host, fn: () => 1, circular, name: 'x'.repeat(500) } },
+        { type: 42, label: 'no type' } as never,
+        { type: 'option', label: { nested: true } } as never,
+      ],
+      extra: circular,
+    }));
+
+    const widget = collectClrDomContexts(root, { maxTextLength: 50 })[0];
+
+    expect(() => JSON.stringify(widget)).not.toThrow();
+    expect(widget.children?.length).toBe(2);
+    expect(widget.children?.[0].state?.['node']).toBeUndefined();
+    expect(widget.children?.[0].state?.['fn']).toBeUndefined();
+    expect((widget.children?.[0].state?.['name'] as string).length).toBeLessThanOrEqual(50);
+    expect(widget.children?.[1].label).toBeUndefined();
+    expect('extra' in widget).toBe(false);
+  });
+
+  it('holds published labels and strings to the text budget', () => {
+    root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
+    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+      label: 'L'.repeat(300),
+      state: { rows: ['R'.repeat(300)] },
+    }));
+
+    const widget = collectClrDomContexts(root, { maxTextLength: 40 })[0];
+
+    expect((widget.label as string).length).toBeLessThanOrEqual(40);
+    expect((widget.state?.['rows'] as string[])[0].length).toBeLessThanOrEqual(40);
+  });
+
   it('keeps a publisher from breaking the snapshot with state that cannot be serialised', () => {
     root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
     const circular: Record<string, unknown> = { name: 'loop' };
     circular['self'] = circular;
-    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       state: { model: circular, count: 2 },
     }));
 
@@ -517,10 +540,27 @@ describe('DOM context collector - component-published context', () => {
     expect(widget.state?.['count']).toBe(2);
   });
 
+  it('leaves out a component that publishes an excluded role, and one whose content was excluded', () => {
+    root.innerHTML =
+      '<fake-combobox><input role="combobox" aria-label="Fruit" /></fake-combobox>' +
+      '<fake-grid><div role="grid" aria-label="Hosts"><div role="row"><div role="gridcell">secret-host-01</div></div></div></fake-grid>';
+    clrPublishElementContext(root.querySelector('fake-combobox') as Element, () => ({
+      type: 'combobox',
+      state: { options: ['Apple', 'Pear'] },
+    }));
+    clrPublishElementContext(root.querySelector('fake-grid') as Element, () => ({ state: { totalRows: 2 } }));
+
+    const json = JSON.stringify(collectClrDomContexts(root, { excludeCategories: ['collections', 'forms'] }));
+
+    expect(json).not.toContain('combobox');
+    expect(json).not.toContain('Apple');
+    expect(json).not.toContain('secret-host-01');
+  });
+
   it('publishes nothing but the redaction from inside a redacted region', () => {
     root.innerHTML =
       '<div data-clr-context-redact><clr-fake-widget aria-label="Payment card">content</clr-fake-widget></div>';
-    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       label: 'Visa ending 4111',
       state: { value: '4111 1111 1111 1111', options: ['4111 1111 1111 1111'] },
     }));

@@ -121,14 +121,33 @@ describe('Context frame bridge', () => {
       expect(frame.postMessage).not.toHaveBeenCalled();
     });
 
-    it('refuses an opaque origin, which cannot be answered safely, even when it is listed', () => {
-      host.stop();
-      host = new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: ['null'], minRequestIntervalMs: 0 });
-      host.start();
+    it('refuses an opaque origin, which cannot be answered safely: listing one is a configuration error', () => {
+      expect(() => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: ['null'] })).toThrowError(
+        /not an origin/
+      );
 
       dispatchRequest(frameRequest('request-opaque'), 'null');
 
       expect(frame.postMessage).not.toHaveBeenCalled();
+    });
+
+    it('serves an origin listed with a trailing slash, a path or capitals, as the browser reports it', () => {
+      host.stop();
+      host = new ClrContextFrameHost(getSnapshot, window, {
+        allowedOrigins: ['HTTPS://Chat.Example/assistant/'],
+        minRequestIntervalMs: 0,
+      });
+      host.start();
+
+      dispatchRequest(frameRequest('request-normalised'), 'https://chat.example');
+
+      expect(frame.postMessage).toHaveBeenCalled();
+    });
+
+    it('refuses an entry that is not an origin at all', () => {
+      expect(() => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: ['/relative'] })).toThrowError(
+        /not an origin/
+      );
     });
 
     it('does not honour a wildcard origin on its own', () => {

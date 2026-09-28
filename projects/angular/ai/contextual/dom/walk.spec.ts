@@ -124,6 +124,42 @@ describe('collectContextTree', () => {
     expect(json).toContain('Call us');
   });
 
+  it('describes what an element that only lays out its children contains', () => {
+    const nodes = collect('<div style="display: contents"><button>Inside</button></div>');
+
+    expect(nodes.map(node => node.label)).toEqual(['Inside']);
+  });
+
+  it('withholds the address of a link inside a redacted region', () => {
+    const [link] = collect(
+      '<div data-clr-context-redact><a href="/accounts/4111/statement?token=abc">View statement</a></div>'
+    );
+
+    expect(link.state?.['redacted']).toBe(true);
+    expect(JSON.stringify(link)).not.toContain('4111');
+  });
+
+  it('walks into a summarised grid’s cells only where the walk itself would go', () => {
+    const nodes = collect(
+      `<div role="grid" aria-label="Accounts">
+         <div role="row" data-clr-context-redact><div role="gridcell"><input aria-label="Secret" value="x-redacted" /></div></div>
+         <div role="row" aria-hidden="true"><div role="gridcell"><input aria-label="Hidden" value="x-hidden" /></div></div>
+         <div role="row" inert><div role="gridcell"><input aria-label="Inert" value="x-inert" /></div></div>
+         <div role="row"><div role="gridcell" data-clr-context-ignore><input type="checkbox" aria-label="Select" /></div></div>
+         <div role="row"><div role="gridcell"><input aria-label="Note" value="x-visible" /></div></div>
+       </div>`,
+      { shareFormValues: true } as never
+    );
+    const json = JSON.stringify(nodes);
+
+    ['x-redacted', 'x-hidden', 'x-inert', 'Hidden', 'Inert', 'Select'].forEach(text =>
+      expect(json).not.toContain(text)
+    );
+    expect(json).toContain('Secret');
+    expect(json).toContain('"redacted":true');
+    expect(json).toContain('Note');
+  });
+
   it('reads a reference to text hidden only visually, but not to text that is not rendered at all', () => {
     const nodes = collect(
       `<style>.sr-only{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}</style>

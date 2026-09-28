@@ -37,6 +37,7 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     return false;
   }
 
+  /** Suppressed for the same reason: the group reports whether a choice is required. */
   protected override reportsAriaRequired(): boolean {
     return false;
   }

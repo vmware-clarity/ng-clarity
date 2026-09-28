@@ -36,8 +36,8 @@ import {
   clrContextText,
   ClrElementMutation,
   clrNormalizeContextText,
-  publishElementContext,
-  publishElementMutator,
+  clrPublishElementContext,
+  clrPublishElementMutator,
   uniqueIdFactory,
 } from '@clr/angular/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
@@ -316,7 +316,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // for it, but it is only meaningful alongside aria-rowindex on every row, which
     // Clarity does not set — so reporting it here avoids half-implemented ARIA that would
     // mislead a screen reader.
-    this.teardownElementContext = publishElementContext(this.el.nativeElement, snapshotOptions => {
+    this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions => {
       const state: Record<string, unknown> = {};
 
       // Named apart from the `rowCount` the engine reads off the grid (the rows on this
@@ -746,7 +746,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     if (this.teardownElementMutator) {
       return;
     }
-    this.teardownElementMutator = publishElementMutator(this.el.nativeElement, {
+    this.teardownElementMutator = clrPublishElementMutator(this.el.nativeElement, {
       write: (proposed: unknown): ClrElementMutation => this.writeSelection(proposed),
       read: () => this.readSelection(),
     });

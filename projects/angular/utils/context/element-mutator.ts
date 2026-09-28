@@ -70,6 +70,6 @@ export interface ClrElementMutator {
  * on destroy. The teardown only removes the mutator it published, so a stale teardown
  * cannot unpublish a newer one.
  */
-export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void {
+export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void {
   return publishOnElement(host, CLR_ELEMENT_MUTATOR_PROPERTY, mutator);
 }

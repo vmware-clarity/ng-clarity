@@ -60,6 +60,7 @@ export class ClrContextRegistryService {
     return () => this.unregister(provider);
   }
 
+  /** Removes a provider, typically from `ngOnDestroy`. */
   unregister(provider: ClrContextProvider): void {
     const index = this.providers.indexOf(provider);
     if (index > -1) {

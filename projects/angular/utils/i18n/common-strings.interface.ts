@@ -280,6 +280,7 @@ export interface ClrCommonStrings {
   verticalNavToggle: string;
   /**
    * The name of the vertical nav's navigation landmark, when the application gives none.
+   * Screen readers announce the role after it, so it does not repeat "navigation".
    */
   verticalNavLabel: string;
   /**

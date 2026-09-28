@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
 import { FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
-import { ClrElementMutation, isBooleanAttributeSet, publishElementMutator } from '@clr/angular/utils';
+import { ClrElementMutation, clrPublishElementMutator, isBooleanAttributeSet } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -332,7 +332,7 @@ export abstract class ClrDateInputBase
    * else is refused with the accepted forms named.
    */
   private publishMutator() {
-    this.teardownElementMutator = publishElementMutator(this.el.nativeElement, {
+    this.teardownElementMutator = clrPublishElementMutator(this.el.nativeElement, {
       coerce: (proposed: unknown): ClrElementMutation => {
         if (proposed === null || proposed === '') {
           return { value: '' };

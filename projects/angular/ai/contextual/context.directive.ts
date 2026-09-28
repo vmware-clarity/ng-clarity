@@ -55,6 +55,9 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     if (this.host?.nativeElement.closest?.(`[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`)) {
       return;
     }
+    // Serialised on every check to notice a state object edited in place. The state an
+    // annotation carries is meant to be small — a few fields — so this stays cheap; an
+    // application that annotates a large object should hand over a new one instead.
     const current = this.serialized();
     if (current !== this.lastReported) {
       this.lastReported = current;

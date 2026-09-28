@@ -135,7 +135,7 @@ describe('snapshot options, choosing what to collect', () => {
       { excludeRoles: ['banner'], maxDepth: 5, focus: 'page', collectionItems: 'all', rootSelector: 'body' },
       { excludeRoles: ['navigation'], maxDepth: 3, focus: 'modal', collectionItems: 'summary', rootSelector: 'main' }
     );
-    expect(capped.excludeRoles).toEqual(['banner', 'navigation']);
+    expect(capped.excludeRoles).toEqual(['navigation', 'banner']);
     expect(capped.maxDepth).toBe(3);
     expect(capped.focus).toBe('modal');
     expect(capped.collectionItems).toBe('summary');
@@ -191,7 +191,7 @@ describe('snapshot options, categories', () => {
   it('adds a ceiling’s categories to the caller’s', () => {
     expect(
       capSnapshotOptions({ excludeCategories: ['actions'] }, { excludeCategories: ['layout'] }).excludeCategories
-    ).toEqual(['actions', 'layout']);
+    ).toEqual(['layout', 'actions']);
   });
 
   it('is what the presets are built from', () => {
@@ -217,6 +217,18 @@ describe('snapshot options, the exported constants', () => {
       'images',
     ]);
     expect(clrContextPreset('interactive', { excludeRoles: ['tree'] }).excludeRoles).toEqual(['tree']);
+  });
+
+  it('never lets a requester push the ceiling’s exclusions out of a bounded list', () => {
+    const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
+    const capped = capSnapshotOptions(
+      { excludeRoles: junk, excludeCategories: junk as never[] },
+      { excludeRoles: ['navigation'], excludeCategories: ['layout'] }
+    );
+    const resolved = resolveSnapshotOptions(capped);
+
+    expect(resolved.excludeRoles).toContain('navigation');
+    expect(resolved.excludeCategories).toEqual(['layout']);
   });
 
   it('hands out presets as copies the caller may change', () => {

@@ -173,7 +173,9 @@ export class ClrContextFrameHost {
   ) {
     // A wildcard in the list is dropped rather than honoured, so a configuration copied
     // from somewhere permissive cannot quietly open the page up.
-    this.allowedOrigins = (options.allowedOrigins || [hostWindow.location.origin]).filter(origin => origin !== '*');
+    this.allowedOrigins = (options.allowedOrigins || [hostWindow.location.origin])
+      .filter(origin => origin !== '*')
+      .map(normalizedOrigin);
     this.allowAnyOrigin = options.allowAnyOrigin === true;
     if (!this.allowAnyOrigin && !this.allowedOrigins.length) {
       throw new Error(
@@ -190,6 +192,7 @@ export class ClrContextFrameHost {
         : DEFAULT_MIN_REQUEST_INTERVAL_MS;
   }
 
+  /** Starts listening for requests from embedded frames. */
   start(): void {
     if (!this.listening) {
       this.hostWindow.addEventListener('message', this.messageListener);
@@ -197,6 +200,7 @@ export class ClrContextFrameHost {
     }
   }
 
+  /** Stops listening; requests that arrive afterwards go unanswered. */
   stop(): void {
     if (this.listening) {
       this.hostWindow.removeEventListener('message', this.messageListener);
@@ -442,4 +446,25 @@ function embedderOrigin(): string {
 function ownOrigin(): string {
   const origin = window.location.origin;
   return origin && origin !== 'null' ? origin : '*';
+}
+
+/**
+ * An allowed origin as a browser reports one: `https://chat.example/` or
+ * `https://Chat.Example` would otherwise never equal the `https://chat.example` a message
+ * carries, and the frame would silently go unserved. Anything that is not an origin — a
+ * relative path, `null`, a typo — is refused when the host is created.
+ */
+function normalizedOrigin(entry: string): string {
+  let origin = 'null';
+  try {
+    origin = new URL(entry).origin;
+  } catch {
+    // Reported below.
+  }
+  if (origin === 'null') {
+    throw new Error(
+      `ClrContextFrameHost: "${entry}" in allowedOrigins is not an origin, such as https://chat.example.`
+    );
+  }
+  return origin;
 }

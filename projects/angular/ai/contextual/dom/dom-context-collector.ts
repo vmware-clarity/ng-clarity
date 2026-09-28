@@ -19,7 +19,7 @@ export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
  * Clarity components, `@clr/ui` CSS-only markup, other component libraries and plain
  * semantic HTML are all described by the same code: a role means the same thing wherever
  * it appears. Components contribute only what a role cannot express, by publishing
- * through `publishElementContext`.
+ * through `clrPublishElementContext`.
  *
  * A button or link is reported wherever it actually is in the tree — inside the dialog,
  * the heading, the alert that owns it — never pulled out into a separate flattened list.

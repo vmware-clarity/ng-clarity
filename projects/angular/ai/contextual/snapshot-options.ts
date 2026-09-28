@@ -173,9 +173,11 @@ export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Req
     }
   }
   if (Array.isArray(options.excludeCategories)) {
-    resolved.excludeCategories = stringList(options.excludeCategories).filter((name): name is ClrContextCategory =>
-      CATEGORY_NAMES.includes(name as ClrContextCategory)
-    );
+    // Validated before the list is bounded, so entries that name nothing cannot push
+    // real categories out of it.
+    resolved.excludeCategories = stringList(
+      options.excludeCategories.filter(name => CATEGORY_NAMES.includes(name as ClrContextCategory))
+    ) as ClrContextCategory[];
   }
   // A category is a name for roles, or for a switch: both are applied here, so the walk
   // only ever sees roles and switches.
@@ -234,15 +236,17 @@ export function capSnapshotOptions(
       capped[key] = false;
     }
   }
+  // The ceiling's exclusions come first: lists are bounded when they are resolved, and
+  // only what the requester added may be cut, never what the ceiling requires.
   for (const key of LIST_KEYS) {
     const limit = ceiling[key];
     if (Array.isArray(limit) && limit.length) {
-      capped[key] = [...new Set([...stringList(capped[key] ?? []), ...stringList(limit)])];
+      capped[key] = [...new Set([...stringList(limit), ...stringList(capped[key] ?? [])])];
     }
   }
   if (Array.isArray(ceiling.excludeCategories) && ceiling.excludeCategories.length) {
     capped.excludeCategories = [
-      ...new Set([...(capped.excludeCategories ?? []), ...ceiling.excludeCategories]),
+      ...new Set([...ceiling.excludeCategories, ...(capped.excludeCategories ?? [])]),
     ] as ClrContextCategory[];
   }
   if (ceiling.rootSelector) {
