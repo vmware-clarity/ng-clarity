@@ -47,7 +47,7 @@
   <clr-datagrid>
     <clr-dg-column [clrDgPinned]="pinId" [style.width.px]="120">User ID</clr-dg-column>
     <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="200">Name</clr-dg-column>
-    <clr-dg-column [style.width.px]="220">Creation date</clr-dg-column>
+    <clr-dg-column clrDgPinnable [style.width.px]="220">Creation date</clr-dg-column>
     <clr-dg-column [clrDgPinned]="pinPokemon" [style.width.px]="1200">Pokemon</clr-dg-column>
     <clr-dg-column [clrDgPinned]="pinColor" [style.width.px]="1200">Favorite color</clr-dg-column>
 
@@ -100,13 +100,21 @@
       <input type="checkbox" clrCheckbox name="remove-row-detail" [(ngModel)]="removeRowDetail" />
       <label>Remove Row Detail</label>
     </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="show-column-actions" [(ngModel)]="useColumnActions" />
+      <label>Use Column Actions</label>
+    </clr-checkbox-wrapper>
   </clr-checkbox-container>
 </form>
 
 <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
   <clr-dg-column>User ID</clr-dg-column>
   <clr-dg-column clrDgPinned [clrDgField]="'name'">Name</clr-dg-column>
-  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
+  <clr-dg-column clrDgPinnable [clrDgField]="'creation'">
+    Creation date @if (useColumnActions) {
+    <clr-dg-column-actions></clr-dg-column-actions>
+    }
+  </clr-dg-column>
   <clr-dg-column [clrDgField]="'pokemon.name'">Pokemon</clr-dg-column>
   <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
 

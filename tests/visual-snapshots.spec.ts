@@ -10,15 +10,8 @@ import { StoryIndex, StoryIndexV3 } from '@storybook/types';
 import * as fs from 'fs';
 import * as path from 'path';
 
+import { density, matrixKey, screenshotExpectOptions, screenshotPathFor, theme } from './helpers/vrt';
 import { screenshotOptions } from './screenshot-options';
-
-const browser = process.env['CLARITY_VRT_BROWSER'];
-const theme = process.env['CLARITY_VRT_THEME'];
-const density = process.env['CLARITY_VRT_DENSITY'];
-const shard = process.env['CLARITY_VRT_SHARD'];
-// The used-screenshot-paths file only needs to be unique per CI job; shard is appended so
-// parallel shards of the same browser/theme/density combo don't write the same filename.
-const matrixKey = shard ? `${browser}-${theme}-${density}-${shard}` : `${browser}-${theme}-${density}`;
 
 const usedScreenshotPaths: string[] = [];
 const indexFilePath = path.join('.', 'dist', 'docs', 'index.json');
@@ -32,11 +25,14 @@ for (const story of stories) {
   const storyId = story.id;
   const componentParsed = component.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
   const storyName = storyId.replace(`${componentParsed}-`, '');
-  if (story.id.endsWith('--docs') || !component || excludeTakingScreenshot(componentParsed, storyName)) {
+  // Component-level options apply to all of the component's stories; a story-level entry
+  // fills in what the component entry doesn't set.
+  const options = { ...screenshotOptions[storyName], ...screenshotOptions[componentParsed] };
+  if (story.id.endsWith('--docs') || !component || options.exclude) {
     continue;
   }
 
-  const screenshotPath = path.join(browser, componentParsed, `${storyName}-${theme}-${density}.png`);
+  const screenshotPath = screenshotPathFor(componentParsed, storyName);
   usedScreenshotPaths.push(screenshotPath);
 
   test(screenshotPath, async ({ page }) => {
@@ -47,35 +43,25 @@ for (const story of stories) {
       viewMode: 'story',
     });
 
-    const viewport = getPageViewPort(componentParsed, storyName);
-    if (viewport) {
-      page.setViewportSize(viewport);
+    if (options.viewport) {
+      await page.setViewportSize(options.viewport);
     }
 
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-    const fullPage = takeFullPageScreenshot(componentParsed, storyName);
+    for (const selector of options.waitForSelectors ?? []) {
+      await page.locator(selector).waitFor();
+    }
+
+    const fullPage = options.fullPageScreenshot ?? false;
     const screenshotTarget = fullPage ? page : page.locator('body');
 
     await expect(screenshotTarget).toHaveScreenshot(screenshotPath.split(path.sep), {
       fullPage,
-      animations: 'disabled',
-      caret: 'hide',
-      threshold: 0.01,
+      ...screenshotExpectOptions,
+      mask: (options.maskSelectors ?? []).map(selector => page.locator(selector)),
     });
   });
-}
-
-function excludeTakingScreenshot(component: string, storyName: string) {
-  return screenshotOptions[component]?.exclude || screenshotOptions[storyName]?.exclude;
-}
-
-function takeFullPageScreenshot(component: string, storyName: string) {
-  return screenshotOptions[component]?.fullPageScreenshot || screenshotOptions[storyName]?.fullPageScreenshot;
-}
-
-function getPageViewPort(component: string, storyName: string) {
-  return screenshotOptions[component]?.viewport || screenshotOptions[storyName]?.viewport;
 }
 
 function convertToIndexV3(index: StoryIndex): StoryIndexV3 {

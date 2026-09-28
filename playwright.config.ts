@@ -5,38 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { defineConfig, devices } from '@playwright/test';
-
-const browser = process.env['CLARITY_VRT_BROWSER'];
-
-const deviceMap = {
-  chromium: { ...devices['Desktop Chrome'], channel: 'chromium' },
-  firefox: { ...devices['Desktop Firefox'] },
-};
+import { createVrtConfig } from './tests/helpers/create-vrt-config';
 
 /**
- * See https://playwright.dev/docs/test-configuration.
+ * Visual regression tests for Storybook.
  */
-export default defineConfig({
+export default createVrtConfig({
   testDir: './tests',
-  snapshotPathTemplate: './tests/snapshots/{arg}{ext}',
+  // The website visual tests live in tests/website and run with playwright-website.config.ts.
+  testIgnore: '**/website/**',
   timeout: 30 * 1000,
-  expect: {
-    timeout: 5000,
-  },
-  fullyParallel: true,
-  forbidOnly: true,
-  retries: 2,
-  workers: '95%',
-  reporter: 'html',
-  projects: [
-    {
-      name: browser,
-      use: deviceMap[browser],
-    },
-  ],
-  webServer: {
-    command: 'npm run ts-node -- ./scripts/start-storybook-server.ts',
-    port: 8080,
-  },
+  expectTimeout: 5000,
+  webServerCommand: 'npm run ts-node -- ./scripts/start-static-server.ts ./dist/docs 8080',
+  webServerPort: 8080,
 });

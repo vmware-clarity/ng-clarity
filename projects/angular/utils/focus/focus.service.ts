@@ -7,6 +7,7 @@
 
 import { FactoryProvider, Injectable, Optional, Renderer2, SkipSelf } from '@angular/core';
 import { isObservable, of } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 import { ArrowKeyDirection } from './arrow-key-direction.enum';
 import { FocusableItem } from './focusable-item/focusable-item';
@@ -53,15 +54,11 @@ export class FocusService {
       return;
     }
 
-    // Recorded before the focus moves: a focus listener on the item that reports back through
-    // moveTo() then finds it already current and stops, rather than moving to it a second time.
-    const previous = this._current;
-    this._current = item;
-
-    if (previous) {
-      previous.blur();
+    if (this.current) {
+      this.current.blur();
     }
     item.focus();
+    this._current = item;
   }
 
   move(direction: ArrowKeyDirection): boolean {
@@ -72,7 +69,10 @@ export class FocusService {
         // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
         // If performance ever matters for this, we can refactor using additional private methods.
         const nextObs = isObservable(next) ? next : of(next);
-        nextObs.subscribe(item => {
+        // take(1) unsubscribes once this move has its item, rather than leaving the subscription open.
+        // Left subscribed, every later emission would call moveTo() again with whatever is the first
+        // item at that point and focus back to it.
+        nextObs.pipe(take(1)).subscribe(item => {
           if (item) {
             this.moveTo(item);
             moved = true;

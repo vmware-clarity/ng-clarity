@@ -7,11 +7,10 @@
 
 import { Component, Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
 import { delay, TestContext } from '@clr/angular/testing';
-import { ClrLoading, ClrLoadingState } from '@clr/angular/utils';
-// import { ClrCommonStringsService } from '@clr/angular/utils'; // used by the disabled inline pin toggle suite
+import { ClrCommonStringsService, ClrLoading, ClrLoadingState } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
-// import { ClrDatagridSortOrder } from './enums/sort-order.enum'; // used by the disabled inline pin toggle suite
+import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 import { ColumnsService } from './providers/columns.service';
 import { DetailService } from './providers/detail.service';
 import { HIDDEN_COLUMN_CLASS, PINNED_COLUMN_CLASS } from './render/constants';
@@ -148,25 +147,31 @@ class PinnedNotFirstWithDetailTest {
   pinThird = true;
 }
 
-// Fixture for the 'Header pin toggle' suite below, disabled along with the inline pin toggle.
-// @Component({
-//   template: `
-//     <clr-datagrid>
-//       <clr-dg-column [clrDgPinnable]="pinnable" [(clrDgPinned)]="firstPinned" [clrDgSortBy]="'x'">First</clr-dg-column>
-//       <clr-dg-column>Second</clr-dg-column>
-//       <clr-dg-row *clrDgItems="let item of items">
-//         <clr-dg-cell>{{ item }}</clr-dg-cell>
-//         <clr-dg-cell>{{ item * 2 }}</clr-dg-cell>
-//       </clr-dg-row>
-//     </clr-datagrid>
-//   `,
-//   standalone: false,
-// })
-// class PinToggleTest {
-//   items = [1, 2, 3];
-//   pinnable = true;
-//   firstPinned = false;
-// }
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column [clrDgPinnable]="pinnable" [(clrDgPinned)]="firstPinned" [clrDgField]="'x'">
+        First
+        @if (hasActions) {
+          <clr-dg-column-actions [clrDgKeepFilterInHeader]="keepFilterInHeader"></clr-dg-column-actions>
+        }
+      </clr-dg-column>
+      <clr-dg-column>Second</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+        <clr-dg-cell>{{ item * 2 }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class PinToggleTest {
+  items = [1, 2, 3];
+  pinnable = true;
+  firstPinned = false;
+  hasActions = false;
+  keepFilterInHeader = false;
+}
 
 @Component({
   template: `
@@ -614,105 +619,124 @@ export default function (): void {
       });
     });
 
-    // Disabled along with the inline .datagrid-column-pin toggle. clrDgPinnable itself is live -
-    // pinning is reached through clr-dg-column-actions now, and datagrid-column-actions.spec.ts
-    // covers it there. Restoring the inline toggle also needs the PinToggleTest fixture above and
-    // the ClrCommonStringsService / ClrDatagridSortOrder imports at the top of the file.
-    // describe('Header pin toggle', function () {
-    //   let context: TestContext<ClrDatagrid, PinToggleTest>;
-    //   let element: HTMLElement;
-    //
-    //   function pinToggle(): HTMLButtonElement {
-    //     return element.querySelector('.datagrid-header .datagrid-column-pin');
-    //   }
-    //
-    //   function pinIconShape(): string {
-    //     return pinToggle().querySelector('cds-icon').getAttribute('shape');
-    //   }
-    //
-    //   beforeEach(function () {
-    //     context = this.create(ClrDatagrid, PinToggleTest);
-    //     element = context.clarityElement;
-    //   });
-    //
-    //   it('only renders the toggle on columns that are pinnable', function () {
-    //     expect(queryAll(element, '.datagrid-header .datagrid-column-pin').length).toBe(1);
-    //
-    //     context.testComponent.pinnable = false;
-    //     context.detectChanges();
-    //
-    //     expect(pinToggle()).toBeNull();
-    //   });
-    //
-    //   it('renders the toggle in front of the column title', function () {
-    //     const headerCell = element.querySelector('.datagrid-header clr-dg-column .datagrid-column-flex');
-    //     const children = Array.from(headerCell.children);
-    //
-    //     expect(children[0].classList).toContain('datagrid-column-pin');
-    //     expect(children[1].classList).toContain('datagrid-column-title');
-    //   });
-    //
-    //   it('shows the pin shape while unpinned and the unpin shape once pinned', function () {
-    //     expect(pinIconShape()).toBe('pin');
-    //
-    //     pinToggle().click();
-    //     context.detectChanges();
-    //
-    //     expect(pinIconShape()).toBe('unpin');
-    //   });
-    //
-    //   it('pins and unpins the column when the toggle is clicked', function () {
-    //     expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
-    //
-    //     pinToggle().click();
-    //     context.detectChanges();
-    //     expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
-    //
-    //     pinToggle().click();
-    //     context.detectChanges();
-    //     expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
-    //     expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Second']);
-    //   });
-    //
-    //   it('writes the new state back through the two-way binding', function () {
-    //     pinToggle().click();
-    //     context.detectChanges();
-    //     expect(context.testComponent.firstPinned).toBeTrue();
-    //
-    //     pinToggle().click();
-    //     context.detectChanges();
-    //     expect(context.testComponent.firstPinned).toBeFalse();
-    //   });
-    //
-    //   it('follows the binding when the application pins the column itself', function () {
-    //     context.testComponent.firstPinned = true;
-    //     context.detectChanges();
-    //
-    //     expect(pinIconShape()).toBe('unpin');
-    //     expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
-    //   });
-    //
-    //   it('does not sort the column when the toggle is clicked', function () {
-    //     const column = context.clarityDirective.columns.first;
-    //     expect(column.sortable).toBeTrue();
-    //
-    //     pinToggle().click();
-    //     context.detectChanges();
-    //
-    //     expect(column.sortOrder).toBe(ClrDatagridSortOrder.UNSORTED);
-    //   });
-    //
-    //   it('labels the toggle with the action it performs', function () {
-    //     const commonStrings = new ClrCommonStringsService();
-    //
-    //     expect(pinToggle().getAttribute('aria-label')).toBe(commonStrings.keys.pinColumn);
-    //
-    //     pinToggle().click();
-    //     context.detectChanges();
-    //
-    //     expect(pinToggle().getAttribute('aria-label')).toBe(commonStrings.keys.unpinColumn);
-    //   });
-    // });
+    describe('Header pin toggle', function () {
+      let context: TestContext<ClrDatagrid, PinToggleTest>;
+      let element: HTMLElement;
+
+      function pinToggle(): HTMLButtonElement {
+        return element.querySelector('.datagrid-header .datagrid-column-pin');
+      }
+
+      function pinIconShape(): string {
+        return pinToggle().querySelector('cds-icon').getAttribute('shape');
+      }
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, PinToggleTest);
+        element = context.clarityElement;
+      });
+
+      it('only renders the toggle on columns that are pinnable', function () {
+        expect(queryAll(element, '.datagrid-header .datagrid-column-pin').length).toBe(1);
+
+        context.testComponent.pinnable = false;
+        context.detectChanges();
+
+        expect(pinToggle()).toBeNull();
+      });
+
+      it('renders the toggle last in the header, after the title and the filter', function () {
+        const headerCell = element.querySelector('.datagrid-header clr-dg-column .datagrid-column-flex');
+        const children = Array.from(headerCell.children);
+        const indexOf = (selector: string) => children.findIndex(child => child.matches(selector));
+
+        expect(indexOf('.datagrid-column-pin')).toBeGreaterThan(indexOf('.datagrid-column-title'));
+        expect(indexOf('.datagrid-column-pin')).toBeGreaterThan(indexOf('clr-dg-string-filter'));
+        // Only the resize handle, which sits on the edge of the column, comes after it.
+        expect(children[indexOf('.datagrid-column-pin') + 1].tagName.toLowerCase()).toBe('clr-dg-column-separator');
+      });
+
+      it('shows the pin shape while unpinned and the unpin shape once pinned', function () {
+        expect(pinIconShape()).toBe('pin');
+
+        pinToggle().click();
+        context.detectChanges();
+
+        expect(pinIconShape()).toBe('unpin');
+      });
+
+      it('pins and unpins the column when the toggle is clicked', function () {
+        expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
+
+        pinToggle().click();
+        context.detectChanges();
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
+
+        pinToggle().click();
+        context.detectChanges();
+        expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
+        expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Second']);
+      });
+
+      it('writes the new state back through the two-way binding', function () {
+        pinToggle().click();
+        context.detectChanges();
+        expect(context.testComponent.firstPinned).toBeTrue();
+
+        pinToggle().click();
+        context.detectChanges();
+        expect(context.testComponent.firstPinned).toBeFalse();
+      });
+
+      it('follows the binding when the application pins the column itself', function () {
+        context.testComponent.firstPinned = true;
+        context.detectChanges();
+
+        expect(pinIconShape()).toBe('unpin');
+        expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
+      });
+
+      it('does not sort the column when the toggle is clicked', function () {
+        const column = context.clarityDirective.columns.first;
+        expect(column.sortable).toBeTrue();
+
+        pinToggle().click();
+        context.detectChanges();
+
+        expect(column.sortOrder).toBe(ClrDatagridSortOrder.UNSORTED);
+      });
+
+      it('labels the toggle with the action it performs', function () {
+        const commonStrings = new ClrCommonStringsService();
+
+        expect(pinToggle().getAttribute('aria-label')).toBe(commonStrings.keys.pinColumn);
+
+        pinToggle().click();
+        context.detectChanges();
+
+        expect(pinToggle().getAttribute('aria-label')).toBe(commonStrings.keys.unpinColumn);
+      });
+
+      // The actions menu offers Pin Column, so the header keeps one pin control rather than two.
+      it('drops the toggle while the column has an actions menu, and brings it back without one', function () {
+        context.testComponent.hasActions = true;
+        context.detectChanges();
+        expect(pinToggle()).toBeNull();
+
+        context.testComponent.hasActions = false;
+        context.detectChanges();
+        expect(pinToggle()).not.toBeNull();
+      });
+
+      // clrDgKeepFilterInHeader only keeps the filter toggle - the menu still offers Pin Column.
+      it('drops the toggle even when the menu keeps the filter in the header', function () {
+        context.testComponent.keepFilterInHeader = true;
+        context.testComponent.hasActions = true;
+        context.detectChanges();
+
+        expect(pinToggle()).toBeNull();
+      });
+    });
 
     describe('Offset of the static container', function () {
       let context: TestContext<ClrDatagrid, PinnedWithRowControlsTest>;

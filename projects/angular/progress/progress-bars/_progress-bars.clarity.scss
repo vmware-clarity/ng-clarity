@@ -8,7 +8,7 @@
 @use 'sass:meta';
 @use 'utils/mixins.clarity';
 @use '../../styles/mixins' as utils-mixins;
-@use '../../layout/variables.card' as card-variables;
+@use '../../card/variables.card' as card-variables;
 @use 'variables.progress-bars' as progress-bars-variables;
 @use '../../styles/variables/variables.density' as density;
 @use '../../styles/core/tokens/variables.tokens' as tokens;

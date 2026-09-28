@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, HostListener, Input, Optional, Renderer2 } from '@angular/core';
-import { BASIC_FOCUSABLE_ITEM_PROVIDER, FocusableItem, FocusService } from '@clr/angular/utils';
+import { Directive, ElementRef, HostListener, Input, Renderer2 } from '@angular/core';
+import { BASIC_FOCUSABLE_ITEM_PROVIDER, FocusableItem } from '@clr/angular/utils';
 
 import { ClrDropdown } from './dropdown';
 import { RootDropdownService } from './providers/dropdown.service';
@@ -25,13 +25,6 @@ import { RootDropdownService } from './providers/dropdown.service';
 })
 export class ClrDropdownItem {
   /**
-   * Whether activating this item closes the menu. Left unset, the item follows the dropdown's
-   * `clrCloseMenuOnItemClick`. Set it per item for a menu where most items close but a few have to
-   * stay open, such as a toggle whose next action is the one that undoes it.
-   */
-  @Input('clrCloseMenuOnClick') closeMenuOnClick: boolean | undefined;
-
-  /**
    * The role of the item, `menuitem` unless the item says otherwise.
    *
    * An item that represents a setting rather than a command needs one of the checkable menu roles -
@@ -44,10 +37,7 @@ export class ClrDropdownItem {
   constructor(
     private dropdown: ClrDropdown,
     private _dropdownService: RootDropdownService,
-    private focusableItem: FocusableItem,
-    // Optional only for tests that stand the item up against a bare ClrDropdown stub; a real dropdown
-    // always provides it.
-    @Optional() private focusService: FocusService | null,
+    protected focusableItem: FocusableItem,
     private el: ElementRef,
     private renderer: Renderer2
   ) {}
@@ -72,15 +62,11 @@ export class ClrDropdownItem {
     this.focusableItem.id = value;
   }
 
-  private get closesMenu(): boolean {
-    return this.closeMenuOnClick ?? this.dropdown.isMenuClosable;
-  }
-
   @HostListener('click')
   private onDropdownItemClick(): void {
     // Move focus back to the root dropdown trigger.
     // This is done BEFORE the dropdown is closed so that focus gets moved properly if a modal is opened.
-    if (this.closesMenu && !this.disabled && this.dropdown.popoverService.open) {
+    if (this.dropdown.isMenuClosable && !this.disabled && this.dropdown.popoverService.open) {
       const rootDropdown = this.findRootDropdown();
 
       rootDropdown.focusHandler.focus();
@@ -88,22 +74,10 @@ export class ClrDropdownItem {
 
     // Ensure that the dropdown is closed after custom dropdown item click event handlers have run.
     setTimeout(() => {
-      if (this.closesMenu && !this.disabled) {
+      if (this.dropdown.isMenuClosable && !this.disabled) {
         this._dropdownService.closeMenus();
       }
     });
-  }
-
-  /**
-   * Space and enter act on the item the focus service considers current, not on whatever the browser
-   * has focused. Focus can arrive from outside the arrow key handling - a plain `focus()` from an
-   * application, say - so it is reported back here to keep the two in step.
-   */
-  @HostListener('focus')
-  private onFocus(): void {
-    if (this.focusService && this.focusService.current !== this.focusableItem) {
-      this.focusService.moveTo(this.focusableItem);
-    }
   }
 
   @HostListener('keydown.space', ['$event'])

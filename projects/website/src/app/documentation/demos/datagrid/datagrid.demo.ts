@@ -305,7 +305,7 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           type: 'boolean',
           defaultValue: 'false',
           description:
-            'Offers Pin Column in the column actions menu, letting the user pin and unpin the column from within the datagrid. It only adds the control - the pinned state itself stays on [clrDgPinned] - and it needs a clr-dg-column-actions in the column to render the menu.',
+            'Lets the user pin and unpin the column from within the datagrid, through a pin toggle in the column header - or through Pin Column in the column actions menu, when the column has a clr-dg-column-actions, which then replaces the toggle. It only adds the control - the pinned state itself stays on [clrDgPinned].',
         },
         {
           name: '[clrFilterNumberMaxPlaceholder]',
@@ -375,7 +375,14 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           type: 'void',
           defaultValue: 'n/a',
           description:
-            'Method. Re-anchors the open menu to its trigger, for an action that moved the column the menu belongs to. Called for you by a clrDgColumnAction with [clrCloseMenuOnClick]="false", so an application only needs it when it moves a column by some other means.',
+            'Method. Re-anchors the open menu to its trigger, for an action that moved the column the menu belongs to. Called for you by an item with [clrCanClosePopover]="false", so an application only needs it when it moves a column by some other means.',
+        },
+        {
+          name: 'focusAction(item)',
+          type: 'void',
+          defaultValue: 'n/a',
+          description:
+            'Method. Moves focus to one of the projected actions, keeping the keyboard in step with it - space and enter act on the item the menu considers current, not on whatever the browser has focused. Called for you when a clrDgColumnAction takes focus, so focusing an item by any means, including a plain focus() from outside, stays consistent.',
         },
       ],
     },
@@ -388,14 +395,14 @@ export class DatagridDemo extends ClarityDocComponent implements OnInit, OnDestr
           type: 'boolean',
           defaultValue: 'false',
           description:
-            'Disables the item. It stays in the menu, announced as disabled and skipped by activation, rather than being hidden. Inherited from clrDropdownItem.',
+            'Disables the item. It stays in the menu, announced as disabled and skipped by activation, rather than being hidden.',
         },
         {
-          name: '[clrCloseMenuOnClick]',
+          name: '[clrCanClosePopover]',
           type: 'boolean',
           defaultValue: 'true',
           description:
-            'Whether activating the item closes the menu. Inherited from clrDropdownItem. Set it to false for an action that moves the column the menu belongs to: the menu is anchored to a trigger that travels with the column, so it is re-anchored to the trigger in its new place instead of being left behind. This is what the built-in Pin Column action does.',
+            'Whether activating the item closes the menu. Set it to false for an action that moves the column the menu belongs to: the menu is anchored to a trigger that travels with the column, so it is re-anchored to the trigger in its new place instead of being left behind. This is what the built-in Pin Column action does.',
         },
       ],
     },

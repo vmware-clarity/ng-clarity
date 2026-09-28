@@ -11,6 +11,6 @@ export * from './dropdown-trigger';
 export * from './dropdown-item';
 export * from './menu-positions';
 export * from './dropdown.module';
-// Exported for clr-dg-column-actions, which is a dropdown of its own and provides these itself.
-export { DropdownFocusHandler } from './providers/dropdown-focus-handler.service';
-export { RootDropdownService } from './providers/dropdown.service';
+// Needed by anything that is a dropdown without being a clr-dropdown, such as clr-dg-column-actions.
+export * from './providers/dropdown-focus-handler.service';
+export * from './providers/dropdown.service';

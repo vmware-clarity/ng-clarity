@@ -5,13 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-type ScreenshotOptions = {
-  [componentOrStoryName: string]: {
-    fullPageScreenshot?: boolean;
-    viewport?: { width: number; height: number };
-    exclude?: boolean;
-  };
-};
+import { ScreenshotOptions } from './helpers/screenshot-options.interface';
 
 /**
  * This config is a rudimentary method of changing how the screenshots are taken for specific stories.
@@ -28,6 +22,11 @@ type ScreenshotOptions = {
  * If a component name is used, all stories under that component name will use the options specified.
  */
 export const screenshotOptions: ScreenshotOptions = {
+  'popover--popover': {
+    // The popover overlay attaches asynchronously after the story renders; on slow machines
+    // the screenshot occasionally caught the story before the overlay appeared.
+    waitForSelectors: ['#hello_world'],
+  },
   'dialog--default': {
     fullPageScreenshot: true,
   },

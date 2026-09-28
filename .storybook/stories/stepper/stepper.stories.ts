@@ -107,6 +107,53 @@ export const StepperAlignmentTest: StoryObj = {
   },
 };
 
+const StepperSingleDescriptionTemplate: StoryFn = args => ({
+  template: `
+    <form clrStepper [formGroup]="form">
+      <clr-stepper-panel formGroupName="step1">
+        <clr-step-title>Step 1: A really long title that will wrap if any step has a description.</clr-step-title>
+        <clr-step-content *clrIfExpanded>
+          <button clrStepButton="next">next</button>
+        </clr-step-content>
+      </clr-stepper-panel>
+
+      <clr-stepper-panel formGroupName="step2">
+        <clr-step-title>Step 2 (can have a description)</clr-step-title>
+        @if (showDescriptions) {
+          <clr-step-description>Description of step 2.</clr-step-description>
+        }
+        <clr-step-content *clrIfExpanded>
+          <button clrStepButton="previous">previous</button>
+          <button clrStepButton="next">next</button>
+        </clr-step-content>
+      </clr-stepper-panel>
+
+      <clr-stepper-panel formGroupName="step3">
+        <clr-step-title>Step 3</clr-step-title>
+        <clr-step-content *clrIfExpanded>
+          <button clrStepButton="previous">previous</button>
+          <button clrStepButton="submit">submit</button>
+        </clr-step-content>
+      </clr-stepper-panel>
+    </form>
+  `,
+  props: { ...args },
+});
+
+export const StepperLongTitleWithDescriptions: StoryObj = {
+  render: StepperSingleDescriptionTemplate,
+  args: {
+    showDescriptions: true,
+  },
+};
+
+export const StepperLongTitleWithoutDescriptions: StoryObj = {
+  render: StepperSingleDescriptionTemplate,
+  args: {
+    showDescriptions: false,
+  },
+};
+
 const nestedFormMappingKey = 'nested-form-mapping-key';
 
 function getNestedForm() {

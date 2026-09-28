@@ -166,14 +166,4 @@ export class DatagridStrings {
    * Label of the "move column right" action in a column's actions menu.
    */
   moveColumnRight = 'Move Right';
-
-  /**
-   * Label of the "move column to the start" action in a column's actions menu.
-   */
-  moveColumnToStart = 'Move to Start';
-
-  /**
-   * Label of the "move column to the end" action in a column's actions menu.
-   */
-  moveColumnToEnd = 'Move to End';
 }

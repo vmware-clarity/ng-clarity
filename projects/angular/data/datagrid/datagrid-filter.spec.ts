@@ -18,6 +18,7 @@ import { CustomFilter } from './providers/custom-filter';
 import { FiltersProvider } from './providers/filters';
 import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
+import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
 function cleanPopoverDOM(component: ClrDatagridFilter) {
   const popoverContent = document.querySelectorAll('.datagrid-filter');
@@ -73,6 +74,47 @@ export default function (): void {
         expect(component.active).toEqual(true);
         filter.active = false;
         expect(component.active).toEqual(false);
+      });
+    });
+
+    // The grid's key navigation has to stand down while the filter is open, however it was opened -
+    // its own toggle and the column actions menu drive the popover directly, not the open input.
+    describe('key navigation', function () {
+      let popoverService: ClrPopoverService;
+      let keyNavigation: KeyNavigationGridController;
+      let component: ClrDatagridFilter<number>;
+
+      beforeEach(function () {
+        const stateDebouncer = new StateDebouncer();
+        popoverService = new ClrPopoverService();
+        keyNavigation = { skipItemFocus: false } as KeyNavigationGridController;
+        component = new ClrDatagridFilter(
+          new FiltersProvider(new Page(stateDebouncer), stateDebouncer),
+          new ClrCommonStringsService(),
+          popoverService,
+          keyNavigation,
+          undefined
+        );
+      });
+
+      afterEach(function () {
+        cleanPopoverDOM(component);
+      });
+
+      it('skips item focus while the popover is open, even when opened directly', function () {
+        popoverService.open = true;
+        expect(keyNavigation.skipItemFocus).toBeTrue();
+
+        popoverService.open = false;
+        expect(keyNavigation.skipItemFocus).toBeFalse();
+      });
+
+      it('skips item focus when opened through the open input', function () {
+        component.open = true;
+        expect(keyNavigation.skipItemFocus).toBeTrue();
+
+        component.open = false;
+        expect(keyNavigation.skipItemFocus).toBeFalse();
       });
     });
 

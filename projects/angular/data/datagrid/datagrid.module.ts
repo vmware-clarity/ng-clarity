@@ -160,14 +160,7 @@ const CLR_DATAGRID_SHARED_DIRECTIVES = [ClrIfExpanded];
     CLR_DATAGRID_SHARED_DIRECTIVES,
   ],
   declarations: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_INTERNAL_DIRECTIVES],
-  // ClrDropdownModule is re-exported so that items projected into clr-dg-column-actions can use
-  // clrDropdownItem without a separate import.
-  exports: [
-    CLR_DATAGRID_DIRECTIVES,
-    CLR_DATAGRID_STANDALONE_DIRECTIVES,
-    CLR_DATAGRID_SHARED_DIRECTIVES,
-    ClrDropdownModule,
-  ],
+  exports: [CLR_DATAGRID_DIRECTIVES, CLR_DATAGRID_STANDALONE_DIRECTIVES, CLR_DATAGRID_SHARED_DIRECTIVES],
 })
 export class ClrDatagridModule {
   constructor() {

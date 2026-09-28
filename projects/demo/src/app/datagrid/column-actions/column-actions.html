@@ -34,12 +34,12 @@
 </p>
 
 <clr-datagrid>
-  <clr-dg-column [clrDgField]="'id'" (clrDgSortOrderChange)="reportSort('User ID', $event)">
-    User ID
+  <clr-dg-column [clrDgField]="'id'" [clrDgPinnable]="true" (clrDgSortOrderChange)="reportSort('User ID', $event)">
+    <ng-container *clrDgHideableColumn> User ID </ng-container>
     <clr-dg-column-actions></clr-dg-column-actions>
   </clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'" (clrDgSortOrderChange)="reportSort('Name', $event)">
-    Name
+  <clr-dg-column [clrDgField]="'name'" [clrDgPinnable]="true" (clrDgSortOrderChange)="reportSort('Name', $event)">
+    <ng-container *clrDgHideableColumn> Name </ng-container>
     <clr-dg-column-actions></clr-dg-column-actions>
   </clr-dg-column>
   <clr-dg-column
@@ -50,11 +50,19 @@
     Creation date
     <clr-dg-column-actions></clr-dg-column-actions>
   </clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon'">
+    <ng-container *clrDgHideableColumn>Pokemon</ng-container>
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
 
   <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
     <clr-dg-cell>{{user.id}}</clr-dg-cell>
     <clr-dg-cell>{{user.name}}</clr-dg-cell>
     <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+    <clr-dg-cell>
+      {{user.pokemon.name}}
+      <span class="badge badge-5">#{{user.pokemon.number}}</span>
+    </clr-dg-cell>
   </clr-dg-row>
 
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
@@ -63,10 +71,11 @@
 <h3>Custom column actions</h3>
 
 <p>
-  Items projected into <code class="clr-code">clr-dg-column-actions</code> are appended after the built-in ones and
-  carry <code class="clr-code">clrDgColumnAction</code>. It is a <code class="clr-code">clrDropdownItem</code> - same
-  inputs, arrow key order and close on click - that additionally re-anchors the menu after an action that keeps it open.
-  A plain <code class="clr-code">clrDropdownItem</code> works as well, since the component is itself the dropdown.
+  Items projected into <code class="clr-code">clr-dg-column-actions</code> are appended after the built-in ones and join
+  the menu's arrow key order. <code class="clr-code">clrDgColumnAction</code> closes the menu when one is picked, unless
+  <code class="clr-code">[clrCanClosePopover]="false"</code> asks it to stay open. A plain
+  <code class="clr-code">clrDropdownItem</code> or a nested <code class="clr-code">clr-dropdown</code> works too, as
+  long as it is projected directly.
 </p>
 
 <p>

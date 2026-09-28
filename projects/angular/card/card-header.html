@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+@if (card?.collapsible) {
+<button
+  type="button"
+  class="card-header-toggle"
+  (click)="card.toggle()"
+  [attr.aria-controls]="card.contentId"
+  [attr.aria-expanded]="card.expanded"
+  [attr.aria-label]="card.expanded ? commonStrings.keys.collapseCardAriaLabel : commonStrings.keys.expandCardAriaLabel"
+  [attr.aria-describedby]="card.headerContentId"
+>
+  <cds-icon shape="angle" direction="right" class="card-header-icon"></cds-icon>
+</button>
+}
+<div
+  class="clr-card-header-content"
+  [attr.id]="card?.headerContentId"
+  [attr.role]="explicitHeadingLevel ? 'heading' : null"
+  [attr.aria-level]="explicitHeadingLevel ? explicitHeadingLevel : null"
+>
+  <ng-content></ng-content>
+</div>

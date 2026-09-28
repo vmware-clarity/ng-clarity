@@ -5,15 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component } from '@angular/core';
+import { ApplicationRef, Component, getDebugNode } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
+import { ClrDropdown, ClrDropdownItem } from '@clr/angular/popover/dropdown';
 import { TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
 import { ClrDatagridColumn } from './datagrid-column';
+import { ClrDatagridColumnAction } from './datagrid-column-action';
 import { ClrDatagridColumnActions } from './datagrid-column-actions';
 import { ClrDatagridSortOrder } from './enums/sort-order.enum';
 
@@ -48,11 +50,6 @@ function itemLabelled(label: string): HTMLElement {
 
 function menuIsOpen(): boolean {
   return menuItems().length > 0;
-}
-
-// clrDropdownItem closes the menu from a zero delay timeout, so a test has to let that run.
-function settle(): Promise<void> {
-  return new Promise(resolve => setTimeout(resolve));
 }
 
 @Component({
@@ -90,9 +87,8 @@ class ColumnActionsTest {
       <clr-dg-column>
         First
         <clr-dg-column-actions>
+          <button type="button" clrDgColumnAction [clrCanClosePopover]="false">Keep open</button>
           <button type="button" clrDgColumnAction [clrDisabled]="customDisabled" class="custom-action">Custom</button>
-          <button type="button" clrDgColumnAction [clrCloseMenuOnClick]="false" class="sticky-action">Sticky</button>
-          <button type="button" clrDropdownItem class="plain-action">Plain</button>
         </clr-dg-column-actions>
       </clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items">
@@ -105,6 +101,33 @@ class ColumnActionsTest {
 class ProjectedActionTest {
   items = [1];
   customDisabled = false;
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column [clrDgSortBy]="'x'">
+        First
+        <clr-dg-column-actions>
+          <button type="button" clrDgColumnAction>Custom</button>
+          <button type="button" clrDropdownItem>Plain</button>
+          <clr-dropdown>
+            <button type="button" clrDropdownTrigger>More</button>
+            <clr-dropdown-menu *clrIfOpen>
+              <button type="button" clrDropdownItem>Child</button>
+            </clr-dropdown-menu>
+          </clr-dropdown>
+        </clr-dg-column-actions>
+      </clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items">
+        <clr-dg-cell>{{ item }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class ProjectedOrderTest {
+  items = [1];
 }
 
 @Component({
@@ -338,7 +361,8 @@ export default function (): void {
         openMenu();
 
         const labels = menuItemLabels();
-        expect(labels.slice(-3)).toEqual(['Custom', 'Sticky', 'Plain']);
+        expect(labels).toContain('Custom');
+        expect(labels.indexOf('Custom')).toBe(labels.length - 1);
       });
 
       it('styles a projected action as a menu item', function () {
@@ -349,71 +373,60 @@ export default function (): void {
         expect(custom.getAttribute('role')).toBe('menuitem');
       });
 
-      // ClrDropdownMenu collects its items through @ContentChildren, which never sees projected
-      // content, so the component gathers the projected ones itself and hands them to the dropdown's
-      // focus handler to take part in arrow key navigation.
+      // What lets clrDgColumnAction be a clrDropdownItem at all. A projected item is declared outside
+      // this component, so it can only resolve ClrDropdown because the component is the dropdown and
+      // provides itself under that token - a clr-dropdown inside its template would be out of reach.
+      it('is the dropdown a projected action injects', function () {
+        // The item is only rendered while the menu is open, and then it sits in the overlay rather
+        // than in the fixture, which is why it is reached through its element.
+        openMenu();
+
+        const actions = context.fixture.debugElement.query(By.directive(ClrDatagridColumnActions));
+        const action = getDebugNode(document.querySelector('.custom-action'));
+
+        expect(action.injector.get(ClrDatagridColumnAction)).toBeInstanceOf(ClrDropdownItem);
+        expect(action.injector.get(ClrDropdown)).toBe(actions.componentInstance);
+        expect(actions.injector.get(ClrDropdown)).toBe(actions.componentInstance);
+        expect(actions.nativeElement.classList).toContain('dropdown');
+      });
+
+      // The menu is anchored with its own popover service; the column's, which its filter uses, is a
+      // different one. Being the dropdown is what brings the second service - without it the menu
+      // would be driving the same overlay as the filter.
+      it('keeps the menu overlay apart from the column one', function () {
+        const actions = context.fixture.debugElement.query(By.directive(ClrDatagridColumnActions));
+        const column = context.fixture.debugElement.query(By.directive(ClrDatagridColumn));
+
+        expect(actions.injector.get(ClrPopoverService)).not.toBe(column.injector.get(ClrPopoverService));
+        expect(actions.injector.get(ClrPopoverService)).toBe(actions.componentInstance.popoverService);
+      });
+
       it('joins a projected action to the arrow key order', function () {
         openMenu();
 
         expect(itemLabelled('Custom').getAttribute('tabindex')).toBe('-1');
         expect(itemLabelled('Custom').getAttribute('id')).toBeTruthy();
-        // A plain clrDropdownItem is projected the same way.
-        expect(itemLabelled('Plain').getAttribute('tabindex')).toBe('-1');
       });
 
-      // clrDgColumnAction is a clrDropdownItem, so it has to be its own focusable item rather than
-      // resolving the menu's focus handler through the FocusableItem token.
-      it('gives each projected action its own id', function () {
+      // clrCanClosePopover defaults to true. The menu keeps isMenuClosable false for its built-in
+      // items, and closeMenu() does not read that flag, so the input is what decides.
+      it('closes the menu when a projected action is picked', function () {
         openMenu();
-
-        const ids = ['Custom', 'Sticky', 'Plain'].map(label => itemLabelled(label).getAttribute('id'));
-        expect(new Set(ids).size).toBe(3);
-      });
-
-      // clrDgColumnAction is a clrDropdownItem, so it closes the menu on click the way any dropdown
-      // item does - on a timer, after the application's own click handler has run.
-      it('closes the menu when a projected action is picked', async () => {
-        openMenu();
-        expect(menuItems().length).toBeGreaterThan(0);
 
         itemLabelled('Custom').click();
         context.detectChanges();
-        await settle();
-        context.detectChanges();
 
-        expect(menuIsOpen()).toBeFalse();
         expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('false');
+        expect(menuIsOpen()).toBeFalse();
       });
 
-      // An action that moves the column it belongs to opts out per item, the way the built-in pin
-      // action does, so the menu can be re-anchored rather than closed.
-      it('leaves the menu open for an item with clrCloseMenuOnClick false', async () => {
+      it('leaves the menu open for an action with clrCanClosePopover false', function () {
         openMenu();
 
-        itemLabelled('Sticky').click();
-        context.detectChanges();
-        await settle();
+        itemLabelled('Keep open').click();
         context.detectChanges();
 
-        expect(menuIsOpen()).toBeTrue();
-      });
-
-      // The one thing clrDgColumnAction adds over clrDropdownItem: an item that keeps the menu open
-      // is assumed to have moved the column, so the menu is re-anchored to the trigger.
-      it('re-anchors the menu after an action that keeps it open', function () {
-        const columnActions: ClrDatagridColumnActions = context.fixture.debugElement.query(
-          By.directive(ClrDatagridColumnActions)
-        ).componentInstance;
-        const repositionMenu = spyOn(columnActions, 'repositionMenu').and.callThrough();
-
-        openMenu();
-        itemLabelled('Sticky').click();
-        context.detectChanges();
-        expect(repositionMenu).toHaveBeenCalledTimes(1);
-
-        itemLabelled('Custom').click();
-        context.detectChanges();
-        expect(repositionMenu).toHaveBeenCalledTimes(1);
+        expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
       });
 
       it('marks a disabled projected action and leaves the menu open', function () {
@@ -430,6 +443,80 @@ export default function (): void {
         context.detectChanges();
 
         expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
+      });
+    });
+
+    // Projected items are found through the menu's own content query rather than registering
+    // themselves, so anything directly projected joins the arrow key order - a clrDgColumnAction, a
+    // plain clrDropdownItem, and a nested clr-dropdown through its trigger - while the nested
+    // dropdown's items stay in its own menu.
+    describe('arrow key order of projected items', function () {
+      let context: TestContext<ClrDatagrid, ProjectedOrderTest>;
+      let commonStrings: ClrCommonStringsService;
+
+      beforeEach(function () {
+        context = this.create(ClrDatagrid, ProjectedOrderTest);
+        commonStrings = TestBed.inject(ClrCommonStringsService);
+      });
+
+      afterEach(function () {
+        document.querySelectorAll('.dropdown-menu').forEach(menu => menu.remove());
+      });
+
+      async function settle() {
+        context.detectChanges();
+        // The menu moves focus to its first item from a timeout of its own.
+        await new Promise(resolve => setTimeout(resolve));
+        context.detectChanges();
+      }
+
+      function focusedLabel(): string {
+        return (document.activeElement as HTMLElement)?.textContent.trim();
+      }
+
+      async function press(key: string) {
+        document.activeElement.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+        await settle();
+      }
+
+      async function openByKeyboard() {
+        const trigger: HTMLButtonElement = context.clarityElement.querySelector(TOGGLE);
+        trigger.focus();
+        trigger.click();
+        await settle();
+      }
+
+      it('walks the built-in items, then every directly projected one, and wraps', async function () {
+        await openByKeyboard();
+
+        const order = [focusedLabel()];
+        for (let i = 0; i < 5; i++) {
+          await press('ArrowDown');
+          order.push(focusedLabel());
+        }
+
+        expect(order).toEqual([
+          commonStrings.keys.sortColumnAscending,
+          commonStrings.keys.sortColumnDescending,
+          'Custom',
+          'Plain',
+          'More',
+          commonStrings.keys.sortColumnAscending,
+        ]);
+      });
+
+      it('opens a nested dropdown with ArrowRight and keeps its items out of the menu order', async function () {
+        await openByKeyboard();
+        for (let i = 0; i < 4; i++) {
+          await press('ArrowDown');
+        }
+        expect(focusedLabel()).toBe('More');
+
+        await press('ArrowRight');
+        expect(focusedLabel()).toBe('Child');
+
+        await press('ArrowLeft');
+        expect(focusedLabel()).toBe('More');
       });
     });
 
@@ -458,9 +545,8 @@ export default function (): void {
         openMenu();
         itemLabelled(label).click();
         context.detectChanges();
-        // clrDropdownItem closes the menu in a setTimeout, which a synchronous test never reaches, and
-        // the pin and filter items keep it open on purpose, so the next invoke() would otherwise start
-        // from an already open menu.
+        // clrDropdownItem closes the menu in a setTimeout, which a synchronous test never reaches, so
+        // the next invoke() would otherwise start from an already open menu.
         closeMenu();
       }
 
@@ -472,6 +558,37 @@ export default function (): void {
 
       afterEach(function () {
         closeMenu();
+      });
+
+      it('keeps focus on the item that was clicked, rather than snapping back to the first one', async () => {
+        context.fixture.autoDetectChanges(true);
+        openMenu();
+        await context.fixture.whenStable();
+
+        const descendingButton = itemLabelled(commonStrings.keys.sortColumnDescending);
+        descendingButton.focus();
+        descendingButton.click();
+        await context.fixture.whenStable();
+
+        expect(document.activeElement).toBe(descendingButton);
+      });
+
+      it('moves focus to the first item once the focused one removes itself', async () => {
+        context.fixture.autoDetectChanges(true);
+        openMenu();
+        await context.fixture.whenStable();
+
+        const ascendingButton = itemLabelled(commonStrings.keys.sortColumnAscending);
+        ascendingButton.focus();
+        ascendingButton.click();
+        await context.fixture.whenStable();
+
+        const clearButton = itemLabelled(commonStrings.keys.clearColumnSort);
+        clearButton.focus();
+        clearButton.click();
+        await context.fixture.whenStable();
+
+        expect(document.activeElement).toBe(ascendingButton);
       });
 
       it('sorts ascending and descending', function () {
@@ -573,9 +690,10 @@ export default function (): void {
       // column used to be. The relocation happens on the render cycle the pin schedules, which is
       // why the hook runs after it rather than during the click.
       it('re-anchors the open menu after pinning moves the column', function () {
-        // The component is the dropdown, so the menu's popover service is its own.
+        // The menu is its own dropdown, so this is the popover service the menu is anchored with -
+        // the column's, which its filter uses, is a separate one from the parent injector.
         const popoverService = context.fixture.debugElement
-          .query(By.directive(ClrDatagridColumnActions))
+          .query(By.css('clr-dg-column-actions'))
           .injector.get(ClrPopoverService);
         const updatePosition = spyOn(popoverService, 'updatePosition').and.callThrough();
 
@@ -687,9 +805,9 @@ export default function (): void {
         context.detectChanges();
         expect(filterPanel()).not.toBeNull();
 
-        // The filter item keeps the menu open, since the filter popover is anchored to it. Closing
-        // and reopening covers the same ground: the trigger click is the outside click that dismisses
-        // the filter.
+        // clrDropdownItem closes the menu on a timer that a synchronous test never reaches, so the
+        // menu is still open here where the user would find it closed. Closing and reopening covers
+        // the same ground: the trigger click is the outside click that dismisses the filter.
         closeMenu();
         openMenu();
 
@@ -758,18 +876,14 @@ export default function (): void {
         expect(filterItem.getAttribute('aria-expanded')).toBe('false');
       });
 
-      // The filter item itself carries no highlight: the trigger is what shows the filtered state,
-      // through its class and the icon it switches to.
-      it('marks the trigger once the column is filtered', function () {
+      it('marks the trigger and the action once the column is filtered', function () {
         const filter: any = context.clarityDirective.columns.first.filter;
         filter.value = 'aaa';
         context.detectChanges();
 
         expect(element.querySelector(TOGGLE).classList).toContain('datagrid-column-actions-filtered');
-        expect(element.querySelector(TOGGLE + ' cds-icon').getAttribute('shape')).toBe('ellipsis-grid-circle');
 
         openMenu();
-        expect(itemLabelled(commonStrings.keys.filterColumn).classList).not.toContain('active');
 
         const filterIcon = itemLabelled(commonStrings.keys.filterColumn)?.querySelector('cds-icon');
         expect(filterIcon.getAttribute('shape')).toContain('filter-grid-circle');
