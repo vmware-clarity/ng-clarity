@@ -626,8 +626,14 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   private getRootPopover(popover: ClrPopoverContent): ClrPopoverContent {
-    if (popover && popover.parent) {
-      return this.getRootPopover(popover.parent);
+    const parent = popover?.parent
+      ? popover.parent
+      : popover.popoverService.parent
+        ? popover.popoverService.parent
+        : null;
+
+    if (parent) {
+      return this.getRootPopover(parent);
     }
 
     return popover;

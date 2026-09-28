@@ -2508,6 +2508,8 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    protected openDropdown(): void;
     protected openFilter(event: Event): void;
     repositionMenu(): void;
     protected sort(descending: boolean): void;
@@ -3533,6 +3535,8 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    popoverContent: ClrPopoverContent;
     // (undocumented)
     set position(position: string | ClrPopoverPosition);
     // (undocumented)
@@ -5047,6 +5051,8 @@ export class ClrPopoverService {
     get originPoint(): ClrPopoverPoint | null;
     // (undocumented)
     panelClass: string[];
+    // (undocumented)
+    parent: ClrPopoverContent;
     // (undocumented)
     pointTargetElement: HTMLElement | undefined;
     // (undocumented)
