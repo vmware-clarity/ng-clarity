@@ -5,14 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { normalizeContextText } from './text';
+import { clrNormalizeContextText } from './text';
 
-describe('normalizeContextText', () => {
+describe('clrNormalizeContextText', () => {
   it('collapses and trims whitespace and lowercases', () => {
-    expect(normalizeContextText('  Beta \n  Cluster ')).toBe('beta cluster');
+    expect(clrNormalizeContextText('  Beta \n  Cluster ')).toBe('beta cluster');
   });
 
   it('keeps the case when asked to', () => {
-    expect(normalizeContextText('  Beta \t Cluster', false)).toBe('Beta Cluster');
+    expect(clrNormalizeContextText('  Beta \t Cluster', false)).toBe('Beta Cluster');
   });
 });

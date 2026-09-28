@@ -7,12 +7,12 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
 import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrContextChange, diffClrContext } from '../diff';
-import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 
 /** How the tracker paces its snapshots and what each one collects; see `start`. */

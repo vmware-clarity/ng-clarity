@@ -5,7 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_ELEMENT_MUTATOR_PROPERTY, publishElementMutator, readElementMutator } from './element-mutator';
+import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrElementMutator, publishElementMutator } from './element-mutator';
+
+function readElementMutator(element: Element): ClrElementMutator | null {
+  return ((element as Element & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] as ClrElementMutator) ?? null;
+}
 
 describe('publishElementMutator', () => {
   let host: HTMLElement;
@@ -39,11 +43,5 @@ describe('publishElementMutator', () => {
     staleTeardown();
 
     expect(readElementMutator(host)).toBe(newer);
-  });
-
-  it('reads nothing from an element that publishes nothing, or something that is not a mutator', () => {
-    expect(readElementMutator(host)).toBeNull();
-    (host as HTMLElement & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] = 'not a mutator';
-    expect(readElementMutator(host)).toBeNull();
   });
 });

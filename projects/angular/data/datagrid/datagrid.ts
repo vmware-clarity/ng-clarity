@@ -33,8 +33,9 @@ import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   ClrCommonStringsService,
+  clrContextText,
   ClrElementMutation,
-  normalizeContextText,
+  clrNormalizeContextText,
   publishElementContext,
   publishElementMutator,
   uniqueIdFactory,
@@ -815,14 +816,14 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   private findRow(label: unknown): { row: ClrDatagridRow<T> } | { refused: string } {
     const rows = this.rows.toArray();
-    const wanted = typeof label === 'string' ? normalizeContextText(label) : '';
+    const wanted = typeof label === 'string' ? clrNormalizeContextText(label) : '';
     if (!wanted) {
       return { refused: 'A row is named by its content, as the published rows list it.' };
     }
-    const byLabel = rows.filter(row => normalizeContextText(this.rowLabel(row)) === wanted);
+    const byLabel = rows.filter(row => clrNormalizeContextText(this.rowLabel(row)) === wanted);
     const matches = byLabel.length
       ? byLabel
-      : rows.filter(row => this.rowCells(row).some(cell => normalizeContextText(cell) === wanted));
+      : rows.filter(row => this.rowCells(row).some(cell => clrNormalizeContextText(cell) === wanted));
     if (matches.length === 1) {
       return { row: matches[0] };
     }
@@ -875,7 +876,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           !cell.classList.contains(HIDDEN_COLUMN_CLASS) &&
           !cell.closest(`[${CLR_CONTEXT_REDACT_ATTRIBUTE}], [hidden], [aria-hidden="true"]`)
       )
-      .map(cell => normalizeContextText(cell.textContent ?? '', false))
+      .map(cell => clrNormalizeContextText(clrContextText(cell), false))
       .filter(Boolean);
   }
 }

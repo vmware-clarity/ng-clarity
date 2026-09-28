@@ -13,7 +13,7 @@ import {
   LayoutService,
   NgControlService,
 } from '@clr/angular/forms/common';
-import { hasRequiredValidator, uniqueIdFactory } from '@clr/angular/utils';
+import { clrHasRequiredValidator, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrRadio } from './radio';
 
@@ -91,7 +91,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
    * where ARIA puts them — rather than on each radio, all of which share one control.
    */
   protected get ariaRequired(): true | null {
-    return this.role && hasRequiredValidator(this.control?.control) ? true : null;
+    return this.role && clrHasRequiredValidator(this.control?.control) ? true : null;
   }
 
   protected get ariaInvalid(): true | null {

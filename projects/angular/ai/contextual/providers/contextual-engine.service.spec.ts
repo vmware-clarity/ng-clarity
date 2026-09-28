@@ -461,6 +461,48 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
     expect(more.availableRoutes?.length).toBe(60);
   });
 
+  it('leaves out routes matched by a custom matcher, which have no pattern to navigate by, and lists each path once', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          {
+            path: 'docs',
+            children: [
+              { matcher: segments => (segments.length ? { consumed: segments } : null), component: RoutedComponent },
+              { matcher: () => null, loadChildren: () => Promise.resolve([]) },
+              { path: 'intro', component: RoutedComponent },
+            ],
+          },
+          { path: 'hosts', component: RoutedComponent },
+          { path: 'hosts', component: RoutedComponent, title: 'Duplicate' },
+        ]),
+      ],
+    });
+    const engine = TestBed.inject(ClrContextEngineService);
+
+    const routes = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
+
+    expect(routes).toEqual([{ path: 'docs/intro' }, { path: 'hosts' }]);
+  });
+
+  it('reports the segments a custom matcher consumed as wildcards, never as the values they held', async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          {
+            path: 'docs',
+            children: [{ matcher: segments => ({ consumed: segments }), component: RoutedComponent }],
+          },
+        ]),
+      ],
+    });
+    const engine = TestBed.inject(ClrContextEngineService);
+
+    await TestBed.inject(Router).navigateByUrl('/docs/contextual-engine/code');
+
+    expect(engine.getSnapshot({ includeDomComponents: false }).route?.path).toBe('docs/*/*');
+  });
+
   it('lists nothing unless asked', () => {
     TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
     const engine = TestBed.inject(ClrContextEngineService);
@@ -495,7 +537,9 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
     });
     engine = TestBed.inject(ClrContextEngineService);
     page = document.createElement('div');
-    page.innerHTML = '<a href="/download?signature=s3cr3t#part">Download</a>';
+    page.innerHTML =
+      '<a href="/download?signature=s3cr3t#part">Download</a><a href="/clusters/7?token=s3cr3t">Cluster seven</a>' +
+      '<a href="/billing/invoices/2026-s3cr3t">Invoice</a>';
     document.body.appendChild(page);
     await TestBed.inject(Router).navigateByUrl('/clusters/42?token=s3cr3t');
   });
@@ -505,16 +549,20 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
     page.remove();
   });
 
-  it('reports the route pattern instead of the address, and links without their query', () => {
+  it('reports the route pattern instead of the address, and links as the route they lead to', () => {
     engine.enableGlobalAccess('testClrContext');
 
     const snapshot = accessor()();
 
     expect(snapshot.route).toEqual({ url: '/clusters/:id', path: 'clusters/:id' });
     expect(snapshot.url).toBe(`${location.origin}/clusters/:id`);
-    expect(find(snapshot.components, node => node.type === 'link')[0].state?.['href']).not.toContain('?');
+    expect(find(snapshot.components, node => node.type === 'link').map(link => link.state?.['href'])).toEqual([
+      undefined,
+      '/clusters/:id',
+      '/billing/*/*',
+    ]);
     expect(JSON.stringify(snapshot)).not.toContain('s3cr3t');
-    expect(JSON.stringify(snapshot)).not.toContain('42');
+    expect(JSON.stringify({ url: snapshot.url, route: snapshot.route })).not.toContain('42');
   });
 
   it('shares the full address only when the application says so', () => {

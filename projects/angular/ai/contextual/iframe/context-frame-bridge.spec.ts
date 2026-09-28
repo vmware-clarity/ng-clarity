@@ -204,26 +204,42 @@ describe('Context frame bridge', () => {
         expect(json).not.toContain('"value"');
       });
 
-      it('withholds the query string of the page’s links too, for the same reason', () => {
+      it('withholds the addresses of the page’s links and frames too, for the same reason', () => {
         host.stop();
         host = new ClrContextFrameHost(
           () => ({
             ...pageContext,
             components: [
               { type: 'link', label: 'Download', state: { href: '/files/report.pdf?sig=secret#page=2' } },
-              { type: 'main', children: [{ type: 'link', label: 'Invite', state: { href: '/join?token=abc' } }] },
+              {
+                type: 'main',
+                children: [
+                  { type: 'link', label: 'Profile', state: { href: '/users/42?token=abc' } },
+                  { type: 'link', label: 'Partner', state: { href: 'https://partner.example/invite/abc' } },
+                  { type: 'link', label: 'Mail', state: { href: 'mailto:someone@example.test' } },
+                ],
+              },
+              { type: 'frame', label: 'Plugin', state: { url: 'https://app.example/plugins/7' } },
             ],
           }),
           window,
-          { minRequestIntervalMs: 0 }
+          { minRequestIntervalMs: 0 },
+          path => (/^\/users\/[^/]+$/.test(path) ? 'users/:id' : null)
         );
         host.start();
 
         dispatchRequest(frameRequest('request-links'));
 
-        const [download, main] = servedContext(frame).components;
-        expect(download.state?.href).toBe('/files/report.pdf');
-        expect(main.children?.[0].state?.href).toBe('/join');
+        const [download, main, plugin] = servedContext(frame).components;
+        expect(download.state?.['href']).toBeUndefined();
+        expect(main.children?.map(link => link.state?.['href'])).toEqual([
+          '/users/:id',
+          'https://partner.example/',
+          'mailto:',
+        ]);
+        expect(plugin.state?.['url']).toBe('https://app.example/');
+        const json = JSON.stringify(servedContext(frame));
+        ['secret', '42', 'abc', 'someone', 'plugins/7'].forEach(detail => expect(json).not.toContain(detail));
       });
 
       it('still describes the fields and what they permit', () => {

@@ -11,8 +11,6 @@ import { ClrContextDomExtractor, ClrContextTreeResult, collectContextTreeWithin 
 import { resolveSnapshotOptions } from '../snapshot-options';
 
 export { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
-export { CLR_CONTEXT_REDACT_ATTRIBUTE } from './aria-state';
-export { CLR_CONTEXT_IGNORE_ATTRIBUTE } from './walk';
 export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
 
 /**

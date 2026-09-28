@@ -32,6 +32,9 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapsh
   'collectionItems',
 ] as const);
 
+/** The longest an enumeration value — `focus`, `collectionItems`, a role or category name — may be. */
+const MAX_ENUM_LENGTH = 32;
+
 /**
  * Reduces whatever an untrusted caller passed to the budgets it is allowed to set,
  * discarding everything else. Anything that is not a finite number, a boolean, a short
@@ -40,9 +43,6 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapsh
  * exhausted. What survives is still held to its range when the snapshot is built.
  * Selectors are not accepted from an untrusted caller at all.
  */
-/** The longest an enumeration value — `focus`, `collectionItems`, a role or category name — may be. */
-const MAX_ENUM_LENGTH = 32;
-
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
   if (!options || typeof options !== 'object') {
     return undefined;
@@ -83,13 +83,16 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
 /**
  * The same context with only as much of the address as says which page this is: the
  * route's pattern (`reset/:token`) rather than the path it matched (`reset/4f9c…`), no
- * query string, fragment, route parameters or route data, and links without their
- * query strings. Paths, parameters and queries routinely carry record identifiers,
+ * query string, fragment, route parameters or route data; links to the application as
+ * the route pattern they match, and links elsewhere and frames as their origin. Paths, parameters and queries routinely carry record identifiers,
  * tenant identifiers and occasionally credentials — a reset token, an invitation code,
  * a signed download — none of which a consumer the application does not control needs
  * to know where the user is.
  */
-export function withoutUrlDetails(context: ClrPageContext): ClrPageContext {
+export function withoutUrlDetails(
+  context: ClrPageContext,
+  routePattern?: (path: string) => string | null
+): ClrPageContext {
   const shared: ClrPageContext = { ...context };
   const pattern = context.route?.path;
   if (typeof shared.url === 'string') {
@@ -101,9 +104,10 @@ export function withoutUrlDetails(context: ClrPageContext): ClrPageContext {
       shared.route.path = pattern;
     }
   }
-  // The same reasoning applies to the page's links: a signed download, an invitation,
-  // a reset link all carry their secret in the query string.
-  shared.components = context.components.map(withoutLinkQueries);
+  // The same reasoning applies to the page's links and frames: an invitation, a reset
+  // link, a record's page carry their secret in the path as often as in the query.
+  const base = originOf(context.url);
+  shared.components = context.components.map(node => withoutAddressDetails(node, base, routePattern));
   return shared;
 }
 
@@ -116,14 +120,68 @@ function withPath(url: string, path: string): string {
   }
 }
 
-function withoutLinkQueries(node: ClrComponentContext): ClrComponentContext {
+function originOf(url: string | undefined): string | null {
+  try {
+    return url ? new URL(url).origin : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * A node's addresses as an untrusted caller may see them. A link to this application
+ * becomes the route pattern it matches, and is dropped when it matches none; a link
+ * elsewhere, and a frame, keep only their origin; a `mailto:` or `tel:` link keeps only
+ * its scheme.
+ */
+function withoutAddressDetails(
+  node: ClrComponentContext,
+  base: string | null,
+  routePattern?: (path: string) => string | null
+): ClrComponentContext {
   let result = node;
-  const href = node.state?.['href'];
-  if (typeof href === 'string') {
-    result = { ...result, state: { ...node.state, href: stripQueryAndFragment(href) } };
+  const state = node.state;
+  if (state && (typeof state['href'] === 'string' || typeof state['url'] === 'string')) {
+    const reduced: Record<string, unknown> = { ...state };
+    for (const key of ['href', 'url']) {
+      if (typeof reduced[key] === 'string') {
+        const address = reducedAddress(reduced[key] as string, key === 'href', base, routePattern);
+        if (address === null) {
+          delete reduced[key];
+        } else {
+          reduced[key] = address;
+        }
+      }
+    }
+    result = { ...result, state: reduced };
+    if (!Object.keys(reduced).length) {
+      delete result.state;
+    }
   }
   if (node.children?.length) {
-    result = { ...result, children: node.children.map(withoutLinkQueries) };
+    result = { ...result, children: node.children.map(child => withoutAddressDetails(child, base, routePattern)) };
   }
   return result;
+}
+
+function reducedAddress(
+  address: string,
+  isLink: boolean,
+  base: string | null,
+  routePattern?: (path: string) => string | null
+): string | null {
+  let url: URL;
+  try {
+    url = new URL(address, base ?? undefined);
+  } catch {
+    return null;
+  }
+  if (url.protocol !== 'http:' && url.protocol !== 'https:') {
+    return url.protocol;
+  }
+  if (!isLink || url.origin !== base) {
+    return `${url.origin}/`;
+  }
+  const pattern = routePattern?.(url.pathname) ?? null;
+  return pattern === null ? null : `/${pattern}`;
 }

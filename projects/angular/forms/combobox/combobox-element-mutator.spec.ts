@@ -17,9 +17,18 @@ import {
   provideClrMutationPolicy,
 } from '@clr/angular/ai';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
-import { ClrComponentContext, ClrElementMutation, readElementMutator } from '@clr/angular/utils';
+import {
+  CLR_ELEMENT_MUTATOR_PROPERTY,
+  ClrComponentContext,
+  ClrElementMutation,
+  ClrElementMutator,
+} from '@clr/angular/utils';
 
 import { ClrComboboxModule } from './combobox.module';
+
+function readElementMutator(element: Element): ClrElementMutator | null {
+  return ((element as Element & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] as ClrElementMutator) ?? null;
+}
 
 type ElementContextCallback = (options: { maxItemsPerCollection?: number }) => {
   type: string;

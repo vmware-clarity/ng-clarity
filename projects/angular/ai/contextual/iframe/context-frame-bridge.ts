@@ -168,7 +168,8 @@ export class ClrContextFrameHost {
   constructor(
     private readonly getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext,
     private readonly hostWindow: Window,
-    options: ClrContextFrameHostOptions = {}
+    options: ClrContextFrameHostOptions = {},
+    private readonly routePattern?: (path: string) => string | null
   ) {
     // A wildcard in the list is dropped rather than honoured, so a configuration copied
     // from somewhere permissive cannot quietly open the page up.
@@ -293,7 +294,7 @@ export class ClrContextFrameHost {
     if (this.shareFullUrl) {
       return shared;
     }
-    return withoutUrlDetails(shared);
+    return withoutUrlDetails(shared, this.routePattern);
   }
 }
 

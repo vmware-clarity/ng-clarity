@@ -8,10 +8,10 @@
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 
 import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
-import { CLR_CONTEXT_REDACT_ATTRIBUTE } from '../dom/aria-state';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
 import {
@@ -24,7 +24,7 @@ import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../i
 import { jsonSafe } from '../json-safe';
 import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
 import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
-import { availableRoutes } from '../routes';
+import { availableRoutes, routePatternFor } from '../routes';
 import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
@@ -163,7 +163,7 @@ export class ClrContextEngineService implements OnDestroy {
       // The caller may ask for less than the application allows, never for more.
       const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), false);
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
-      return shareFullUrl ? shared : withoutUrlDetails(shared);
+      return shareFullUrl ? shared : withoutUrlDetails(shared, path => this.routePattern(path));
     };
   }
 
@@ -195,7 +195,8 @@ export class ClrContextEngineService implements OnDestroy {
     this.frameHost = new ClrContextFrameHost(
       snapshotOptions => this.snapshot(capSnapshotOptions(snapshotOptions, ceiling), false),
       window,
-      options
+      options,
+      path => this.routePattern(path)
     );
     this.frameHost.start();
   }
@@ -312,6 +313,11 @@ export class ClrContextEngineService implements OnDestroy {
     return this.router?.url;
   }
 
+  /** The configured pattern an application path matches, or `null`; see `routePatternFor`. */
+  private routePattern(path: string): string | null {
+    return this.router && this.router.config.length ? routePatternFor(this.router.config, path) : null;
+  }
+
   private routeContext(): ClrRouteContext | undefined {
     // The router is root-provided even in applications that never configure routing;
     // an unconfigured router would only contribute a misleading `/` route.
@@ -325,6 +331,10 @@ export class ClrContextEngineService implements OnDestroy {
     while (route) {
       if (route.routeConfig?.path) {
         pathSegments.push(route.routeConfig.path);
+      } else if (route.routeConfig?.matcher) {
+        // A custom matcher has no pattern: the segments it consumed are reported as `*`,
+        // never as the values they held.
+        pathSegments.push(...route.url.map(() => '*'));
       }
       Object.assign(params, route.params);
       // Only the route's static configuration: `route.data` on the activated snapshot

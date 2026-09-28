@@ -239,4 +239,12 @@ describe('ariaState, native values as an agent should read them', () => {
     expect(state.redacted).toBe(true);
     expect('value' in state).toBe(false);
   });
+
+  it('withholds every part of a payment card the autocomplete attribute names', () => {
+    for (const token of ['cc-name', 'cc-given-name', 'cc-additional-name', 'cc-family-name', 'cc-type']) {
+      const state = stateOf(`<input autocomplete="${token}" value="Ada Lovelace" />`);
+      expect(state.value).withContext(token).toBeUndefined();
+      expect(state.redacted).withContext(token).toBe(true);
+    }
+  });
 });

@@ -20,7 +20,8 @@ export {
 } from './snapshot-options';
 export type { ClrContextPreset } from './snapshot-options';
 export { CLR_ELEMENT_CONTEXT_PROPERTY, publishElementContext } from './dom/element-context';
-export type { ClrElementContextCallback } from './dom/element-context';
+export type { ClrElementContextCallback } from '@clr/angular/utils';
+export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 export * from './iframe/context-frame-bridge';
 export * from './context.directive';
 export * from './contextual.module';

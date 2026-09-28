@@ -108,7 +108,9 @@ function textFor(element: Element, exclude: Element | undefined, includeClipped:
     if (!child.textContent?.trim()) {
       continue;
     }
-    if (isExcludedFromName(child, includeClipped)) {
+    // Text the application keeps from agents is never borrowed into a name, a label or a
+    // description, whatever element above it is being named.
+    if (child.matches(UNREADABLE_SELECTOR) || isExcludedFromName(child, includeClipped)) {
       continue;
     }
     text += textFor(child, exclude, includeClipped);

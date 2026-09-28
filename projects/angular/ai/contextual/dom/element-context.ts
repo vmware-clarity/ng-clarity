@@ -15,7 +15,6 @@ import { jsonSafe } from '../json-safe';
  * from `@clr/angular/utils` instead, which keeps them free of this entry point.
  */
 export { CLR_ELEMENT_CONTEXT_PROPERTY, publishElementContext } from '@clr/angular/utils';
-export type { ClrElementContextCallback } from '@clr/angular/utils';
 
 /**
  * Reads an element's published context, if any. A callback that throws is treated as

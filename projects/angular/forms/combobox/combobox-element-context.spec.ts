@@ -155,3 +155,46 @@ describe('ClrCombobox element context, other shapes', () => {
     expect('options' in context.state).toBe(false);
   });
 });
+
+@Component({
+  template: `
+    <clr-combobox name="card" [(ngModel)]="selection">
+      <clr-options>
+        <clr-option clrValue="visa">Visa <span data-clr-context-redact>4111 1111</span></clr-option>
+        <clr-option clrValue="amex">Amex <span data-clr-context-redact>3782 8224</span></clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class SecretOptionTestComponent {
+  selection: string | null = 'visa';
+}
+
+describe('ClrCombobox element context, withheld option text', () => {
+  let fixture: ComponentFixture<SecretOptionTestComponent>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      declarations: [SecretOptionTestComponent],
+    });
+    fixture = TestBed.createComponent(SecretOptionTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('labels options and the selection without the text of a redacted element inside them', () => {
+    const host = fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
+      clrElementContext?: ElementContextCallback;
+    };
+    const context = host.clrElementContext?.({});
+
+    expect(context?.state['value']).toBe('Visa');
+    expect(JSON.stringify(context)).not.toContain('4111');
+    expect(JSON.stringify(context)).not.toContain('3782');
+  });
+});

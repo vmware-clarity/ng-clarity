@@ -73,9 +73,3 @@ export interface ClrElementMutator {
 export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void {
   return publishOnElement(host, CLR_ELEMENT_MUTATOR_PROPERTY, mutator);
 }
-
-/** The mutator an element publishes, if any. */
-export function readElementMutator(element: Element): ClrElementMutator | null {
-  const mutator = (element as Element & { [CLR_ELEMENT_MUTATOR_PROPERTY]?: unknown })[CLR_ELEMENT_MUTATOR_PROPERTY];
-  return mutator && typeof mutator === 'object' ? (mutator as ClrElementMutator) : null;
-}

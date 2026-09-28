@@ -107,6 +107,23 @@ describe('collectContextTree', () => {
     expect(JSON.stringify(nodes)).not.toContain('4111');
   });
 
+  it('never borrows text from a redacted or ignored element inside what it names', () => {
+    const nodes = collect(
+      `<p>Your IBAN is <span data-clr-context-redact>DE89370400440532013000</span></p>
+       <h2>Account <span data-clr-context-redact>sk-heading</span></h2>
+       <ul><li>Key <span data-clr-context-redact>sk-item</span></li><li>Other</li></ul>
+       <button>Copy <span data-clr-context-ignore>x-button</span></button>
+       <span id="help">Call us <span data-clr-context-redact>555-0100</span></span>
+       <input aria-label="Phone" aria-describedby="help" />`
+    );
+    const json = JSON.stringify(nodes);
+
+    ['DE89', 'sk-heading', 'sk-item', 'x-button', '555-0100'].forEach(secret => expect(json).not.toContain(secret));
+    expect(json).toContain('Your IBAN is');
+    expect(json).toContain('Copy');
+    expect(json).toContain('Call us');
+  });
+
   it('reads a reference to text hidden only visually, but not to text that is not rendered at all', () => {
     const nodes = collect(
       `<style>.sr-only{position:absolute;clip-path:inset(50%);width:1px;height:1px;overflow:hidden}</style>

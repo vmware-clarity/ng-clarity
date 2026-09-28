@@ -41,15 +41,16 @@ import {
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   ClrCommonStringsService,
+  clrContextText,
   ClrElementContextCallback,
   ClrElementMutation,
+  clrHasRequiredValidator,
   ClrLoadingState,
+  clrNormalizeContextText,
   FOCUS_SERVICE_PROVIDER,
-  hasRequiredValidator,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
-  normalizeContextText,
   publishElementContext,
   publishElementMutator,
 } from '@clr/angular/utils';
@@ -80,7 +81,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
   host: {
     // Kept for applications that styled or queried it; it has never meant that a value is
     // required. The state itself is `aria-required` on the combobox input.
-    // Deprecated: to be removed in a future major version.
+    // @deprecated since v18, remove in v19: select on `aria-required` on the input instead.
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
@@ -295,7 +296,7 @@ export class ClrCombobox<T>
    * directive rather than the validator function this could otherwise look for.
    */
   protected get isRequired(): boolean {
-    return hasRequiredValidator(this.control?.control) || this.comboboxHostElement.hasAttribute('required');
+    return clrHasRequiredValidator(this.control?.control) || this.comboboxHostElement.hasAttribute('required');
   }
 
   /**
@@ -734,30 +735,22 @@ export class ClrCombobox<T>
     if (typeof proposal !== 'string') {
       return proposal === option.value;
     }
-    const wanted = normalizeContextText(proposal);
-    if (normalizeContextText(this.optionLabel(option)) === wanted) {
+    const wanted = clrNormalizeContextText(proposal);
+    if (clrNormalizeContextText(this.optionLabel(option)) === wanted) {
       return true;
     }
     const value = option.value;
     if (typeof value === 'string' || typeof value === 'number') {
-      return normalizeContextText(String(value)) === wanted;
+      return clrNormalizeContextText(String(value)) === wanted;
     }
     const display = this.selectedValueLabel(value);
-    return typeof display === 'string' && normalizeContextText(display) === wanted;
+    return typeof display === 'string' && clrNormalizeContextText(display) === wanted;
   }
 
   /** An option's visible label, without screen-reader-only additions such as "Selected". */
   private optionLabel(option: ClrOption<T>): string {
-    let text = '';
-    option.elRef.nativeElement.childNodes.forEach(node => {
-      const isPlainText = node.nodeType === Node.TEXT_NODE;
-      const isVisibleElement =
-        node.nodeType === Node.ELEMENT_NODE && !(node as Element).classList.contains('clr-sr-only');
-      if (isPlainText || isVisibleElement) {
-        text += node.textContent ?? '';
-      }
-    });
-    return normalizeContextText(text, false) || String(option.value);
+    const text = clrContextText(option.elRef.nativeElement, element => element.classList.contains('clr-sr-only'));
+    return clrNormalizeContextText(text, false) || String(option.value);
   }
 
   private selectedValueLabel(value: T): unknown {

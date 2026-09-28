@@ -8,11 +8,11 @@
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextTrackerService } from './context-tracker.service';
 import { ClrContextChange } from '../diff';
-import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '../dom/dom-context-collector';
 import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
 
 @Component({ template: '' })

@@ -45,8 +45,6 @@ const ENUM_ATTRIBUTES: { attribute: string; key: string; empty: string }[] = [
   { attribute: 'aria-invalid', key: 'invalid', empty: 'false' },
 ];
 
-export { CLR_CONTEXT_REDACT_ATTRIBUTE };
-
 /** Input types whose value is never reported, whatever the caller asked for. */
 const REDACTED_INPUT_TYPES = new Set(['password', 'file']);
 
@@ -65,6 +63,10 @@ const REDACTED_AUTOCOMPLETE_TOKENS = new Set([
   'cc-exp-year',
   'cc-csc',
   'cc-name',
+  'cc-given-name',
+  'cc-additional-name',
+  'cc-family-name',
+  'cc-type',
 ]);
 
 /**

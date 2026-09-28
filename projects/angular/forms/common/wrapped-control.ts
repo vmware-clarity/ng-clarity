@@ -23,7 +23,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { NgControl } from '@angular/forms';
-import { ClrHostAttribute, hasRequiredValidator, HostWrapper } from '@clr/angular/utils';
+import { clrHasRequiredValidator, ClrHostAttribute, HostWrapper } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { CONTROL_SUFFIX } from './abstract-control';
@@ -119,7 +119,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
    */
   @HostBinding('attr.aria-required')
   private get hostAriaRequired(): string | null {
-    const required = this.reportsAriaRequired() && hasRequiredValidator(this.ngControl?.control);
+    const required = this.reportsAriaRequired() && clrHasRequiredValidator(this.ngControl?.control);
     return this.ariaRequiredAttribute.value(required);
   }
 

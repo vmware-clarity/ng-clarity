@@ -171,6 +171,27 @@ class HiddenColumnHost {
   selected: Server[] = [];
 }
 
+@Component({
+  template: `
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
+      <clr-dg-column>Account</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell
+          >{{ item.name }} <span data-clr-context-redact>{{ item.secret }}</span></clr-dg-cell
+        >
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class SecretCellHost {
+  items = [
+    { id: 1, name: 'Checking', secret: '4111-1111' },
+    { id: 2, name: 'Savings', secret: '4222-2222' },
+  ];
+  selected: { id: number; name: string; secret: string }[] = [this.items[0]];
+}
+
 function findNode(
   nodes: ClrComponentContext[],
   match: (node: ClrComponentContext) => boolean
@@ -207,7 +228,16 @@ describe('ClrDatagrid element mutator', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrDatagridModule, NoopAnimationsModule, ReactiveFormsModule],
-      declarations: [MultiHost, SingleHost, PagedHost, ToggleHost, InputHost, RedactedHost, HiddenColumnHost],
+      declarations: [
+        MultiHost,
+        SingleHost,
+        PagedHost,
+        ToggleHost,
+        InputHost,
+        RedactedHost,
+        HiddenColumnHost,
+        SecretCellHost,
+      ],
       providers: [provideClrMutationPolicy({ classify: () => 'reversible' })],
     });
   });
@@ -241,6 +271,27 @@ describe('ClrDatagrid element mutator', () => {
   async function select(value: unknown): Promise<ClrElementMutationResult> {
     return write(String(grid().ref), value);
   }
+
+  describe('withheld content', () => {
+    it('labels rows without the text of a redacted element inside a cell', async () => {
+      await create(SecretCellHost);
+
+      const state = grid().state;
+
+      expect(state?.['rows']).toEqual(['Checking', 'Savings']);
+      expect(JSON.stringify(contextEngine.getSnapshot())).not.toContain('4111');
+    });
+
+    it('never names withheld text in a refusal', async () => {
+      await create(SecretCellHost);
+
+      const result = await select('Nowhere');
+
+      expect(result.refused).toBeDefined();
+      expect(JSON.stringify(result)).not.toContain('4111');
+      expect(JSON.stringify(result)).not.toContain('4222');
+    });
+  });
 
   describe('row matching', () => {
     it('refuses a value that fits more than one row, and leaves the selection as it was', async () => {

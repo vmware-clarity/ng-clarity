@@ -29,7 +29,7 @@ export function triggerAllFormControlValidation(formGroup: FormGroup) {
  * directive, which registers its own bound method instead, so they are found by asking
  * the composed validator what it makes of an empty value.
  */
-export function hasRequiredValidator(control: AbstractControl | null | undefined): boolean {
+export function clrHasRequiredValidator(control: AbstractControl | null | undefined): boolean {
   if (!control) {
     return false;
   }

@@ -7,22 +7,21 @@
 
 import {
   CLR_CONTEXT_IGNORE_ATTRIBUTE,
+  CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_ELEMENT_CONTEXT_PROPERTY,
   CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
-  readElementMutator,
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
-import { ariaState, CLR_CONTEXT_REDACT_ATTRIBUTE, isRedacted, redactNode } from './aria-state';
+import { ariaState, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, withoutRefs } from './element-context';
+import { readElementMutator } from './element-mutator';
 import { isLeafRole, isNameFromContents, isPresentationalRole, mayContainControls, resolveRole } from './roles';
 import { summarizeRole } from './summarizers';
 import { accessibleText, isVisuallyHidden, truncate } from './text';
 import { stripQueryAndFragment } from '../url';
-
-export { CLR_CONTEXT_IGNORE_ATTRIBUTE };
 
 /**
  * Teaches the collector how to describe one kind of element it would otherwise skip.
