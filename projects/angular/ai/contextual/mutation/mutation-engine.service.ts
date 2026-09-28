@@ -28,6 +28,7 @@ import {
   coerceValue,
   descriptionMatches,
   markViewForCheck,
+  modelValueOf,
   resolveWriteTarget,
   WriteOutcome,
   WriteTarget,
@@ -223,8 +224,11 @@ export class ClrMutationEngineService {
       type: write.type,
       element: write.element,
       value: coerced.display,
-      modelValue: coerced.value,
     };
+    const modelValue = modelValueOf(write, coerced.value);
+    if (modelValue !== undefined) {
+      target.modelValue = modelValue;
+    }
     return {
       target,
       consequence: this.classify(target),
@@ -332,8 +336,25 @@ function sameOperation(confirmed: Prepared, now: Prepared): boolean {
     confirmed.consequence === now.consequence &&
     confirmed.target.element === now.target.element &&
     confirmed.target.url === now.target.url &&
-    JSON.stringify(confirmed.target.value ?? null) === JSON.stringify(now.target.value ?? null)
+    JSON.stringify(confirmed.target.value ?? null) === JSON.stringify(now.target.value ?? null) &&
+    sameValue(confirmed.coerced?.value, now.coerced?.value)
   );
+}
+
+/**
+ * Whether two coerced values are the same: the same object — the bound option, the chosen
+ * radio — or equal plain data. Two options with the same label are different choices.
+ */
+function sameValue(a: unknown, b: unknown): boolean {
+  if (Array.isArray(a) && Array.isArray(b)) {
+    return a.length === b.length && a.every((entry, index) => sameValue(entry, b[index]));
+  }
+  if (Object.is(a, b)) {
+    return true;
+  }
+  const plainData = (value: unknown) =>
+    value === null || typeof value !== 'object' || Object.getPrototypeOf(value) === Object.prototype;
+  return plainData(a) && plainData(b) && JSON.stringify(a) === JSON.stringify(b);
 }
 
 function refusal(operation: ClrMutationOperation, refused: ClrMutationRefusal, detail: string): ClrMutationResult {

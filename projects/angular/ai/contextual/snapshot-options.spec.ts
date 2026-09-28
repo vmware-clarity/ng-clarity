@@ -210,6 +210,15 @@ describe('snapshot options, the exported constants', () => {
     expect(CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents).toBe(300);
   });
 
+  it('adds an override’s exclusions to the preset’s rather than replacing them', () => {
+    expect(clrContextPreset('interactive', { excludeCategories: ['images', 'layout'] }).excludeCategories).toEqual([
+      'layout',
+      'text',
+      'images',
+    ]);
+    expect(clrContextPreset('interactive', { excludeRoles: ['tree'] }).excludeRoles).toEqual(['tree']);
+  });
+
   it('hands out presets as copies the caller may change', () => {
     const preset = clrContextPreset('minimal');
     preset.excludeCategories?.push('dialogs');

@@ -11,14 +11,14 @@ import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   ClrElementMutation,
   ClrElementMutator,
-  normalizeContextText,
-  readElementMutator,
+  clrNormalizeContextText,
 } from '@clr/angular/utils';
 
 import { ContextRefTarget } from './context-ref-registry.service';
 import { ClrMutationRefusal } from './mutation.interface';
 import { writeObstacle } from './writability';
 import { accessibleName } from '../dom/accessible-name';
+import { readElementMutator } from '../dom/element-mutator';
 import { resolveRole } from '../dom/roles';
 import { jsonSafe } from '../json-safe';
 
@@ -80,6 +80,15 @@ export interface WriteOutcome {
   refused?: ClrMutationRefusal;
   detail?: string;
 }
+
+/** What Angular's select accessors expose to their own `change` and `blur` listeners. */
+interface SelectAccessor {
+  onChange?: (value: unknown) => void;
+  onTouched?: () => void;
+}
+
+const UNSUPPORTED_SELECT_DETAIL =
+  'The select is bound through an accessor the engine cannot hand a choice to. Publish a mutator for it.';
 
 const UNBOUND_DETAIL =
   'The control has no Angular form binding (formControlName, formControl or ngModel), which is required.';
@@ -158,8 +167,9 @@ export function resolveWriteTarget(ref: ContextRefTarget, application: Applicati
 
 /**
  * Whether the description an agent gave names the node: every word of one is a word of
- * the other ("the name field" names "Name"; "e" does not). A node without a name can
- * only be described by nothing, or by what it is ("grid").
+ * the other ("the name field" names "Name"; "e" does not), with at most a couple of words
+ * more than the label has — "not email, the password" does not name "Email". A node
+ * without a name can only be described by nothing, or by what it is ("grid").
  */
 export function descriptionMatches(description: unknown, label: string, type = ''): boolean {
   if (typeof description !== 'string') {
@@ -173,7 +183,23 @@ export function descriptionMatches(description: unknown, label: string, type = '
   if (!given.length) {
     return false;
   }
-  return given.every(word => actual.includes(word)) || actual.every(word => given.includes(word));
+  if (given.every(word => actual.includes(word))) {
+    return true;
+  }
+  const extra = given.filter(word => !actual.includes(word)).length;
+  return actual.every(word => given.includes(word)) && extra <= Math.max(2, actual.length);
+}
+
+/**
+ * What the form control will receive for a coerced value, where that is known before
+ * writing: a radio group takes the chosen radio's value. A native select maps its options
+ * to model values inside Angular's accessor, so its model value is only known once written.
+ */
+export function modelValueOf(target: WriteTarget, value: unknown): unknown {
+  if (target.kind === 'radiogroup') {
+    return value === null ? null : radioValue(value as HTMLInputElement);
+  }
+  return target.kind === 'select' ? undefined : value;
 }
 
 /**
@@ -261,14 +287,20 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
   } else if (target.kind === 'select') {
     const select = target.element as HTMLSelectElement;
     const chosen = Array.isArray(coerced.value) ? (coerced.value as HTMLOptionElement[]) : [];
+    const accessor = target.ngControl?.valueAccessor as SelectAccessor | null | undefined;
+    if (typeof accessor?.onChange !== 'function') {
+      return { applied: false, refused: 'unsupported', detail: UNSUPPORTED_SELECT_DETAIL, previous };
+    }
     for (const option of Array.from(select.options)) {
       option.selected = chosen.includes(option);
     }
-    // The accessor listens for `change` and maps the option back to the bound value; a
-    // control that updates on blur takes it when the field is left, as it would be.
-    select.dispatchEvent(new Event('change', { bubbles: true }));
+    // Handed to the accessor the way its own `change` listener would hand it over, so it
+    // maps the option back to the bound value — without dispatching DOM events, which
+    // would also run whatever `(change)` or `(blur)` handler the application attached. A
+    // control that updates on blur takes the value when it is told the field was left.
+    accessor.onChange(select.multiple ? select : select.value);
     if (control.updateOn === 'blur') {
-      select.dispatchEvent(new FocusEvent('blur'));
+      accessor.onTouched?.();
     }
     const moved = JSON.stringify(plain(previous)) !== JSON.stringify(plain(coerced.display));
     if (moved && serialized(control.value) === modelBefore) {
@@ -472,7 +504,8 @@ function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
   const radios = radiosOf(target.element);
   const usable = radios.filter(radio => !writeObstacle(radio));
   const chosen = radios.find(
-    radio => typeof proposed === 'string' && normalizeContextText(radioLabel(radio)) === normalizeContextText(proposed)
+    radio =>
+      typeof proposed === 'string' && clrNormalizeContextText(radioLabel(radio)) === clrNormalizeContextText(proposed)
   );
   if (!chosen) {
     return { refused: `No such option. The options are: ${listLabels(usable.map(radioLabel))}.` };
@@ -521,8 +554,8 @@ function optionMatches(option: HTMLOptionElement, proposed: unknown): boolean {
   if (typeof proposed !== 'string') {
     return false;
   }
-  const wanted = normalizeContextText(proposed);
-  return normalizeContextText(optionLabel(option)) === wanted || normalizeContextText(option.value) === wanted;
+  const wanted = clrNormalizeContextText(proposed);
+  return clrNormalizeContextText(optionLabel(option)) === wanted || clrNormalizeContextText(option.value) === wanted;
 }
 
 function optionLabel(option: HTMLOptionElement): string {

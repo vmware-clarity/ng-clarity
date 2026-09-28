@@ -120,7 +120,12 @@ class AppBroken implements ControlValueAccessor {
       </clr-select-container>
       <clr-select-container>
         <label>Colour</label>
-        <select clrSelect formControlName="colour">
+        <select
+          clrSelect
+          formControlName="colour"
+          (change)="colourEvents = colourEvents + 1"
+          (blur)="colourEvents = colourEvents + 1"
+        >
           <option value="red">Red</option>
           <option value="blue">Blue</option>
         </select>
@@ -174,6 +179,7 @@ class Host {
     locked: new FormControl({ value: 'fixed', disabled: true }),
   });
   inside = new FormControl('');
+  colourEvents = 0;
   modalOpen = false;
 }
 
@@ -326,6 +332,14 @@ describe('ClrMutationEngineService write path', () => {
       expect(host.form.value.colour).toBe('blue');
     });
 
+    it('writes a select without running the application’s own change or blur handlers', async () => {
+      expect((await set('Colour', 'Blue')).applied).toBeTrue();
+      expect((await set('Plan', 'Team')).applied).toBeTrue();
+
+      expect(host.colourEvents).toBe(0);
+      expect(host.form.value.plan).toBe('team');
+    });
+
     it('refuses a select that applies its value only on submit', async () => {
       const result = await set('Region', 'Americas');
 
@@ -374,6 +388,11 @@ describe('ClrMutationEngineService write path', () => {
       expect((await set('Name', 'Ada', 'the name field')).applied).toBeTrue();
       expect((await set('Name', 'Bob', 'e')).refused).toBe('mismatch');
       expect((await set('Name', 'Bob', '')).refused).toBe('mismatch');
+    });
+
+    it('refuses a description that only mentions the label among other words', async () => {
+      expect((await set('Name', 'Ada', 'not the name, the password')).refused).toBe('mismatch');
+      expect((await set('Name', 'Ada', 'the name textbox')).applied).toBeTrue();
     });
   });
 
@@ -425,11 +444,39 @@ describe('ClrMutationEngineService write path', () => {
       await set('Plan', 'Team');
 
       expect(classify).toHaveBeenCalledWith(jasmine.objectContaining({ value: 'Team', label: 'Plan' }));
-      const target = classify.calls.mostRecent().args[0];
-      expect(Array.isArray(target.modelValue)).toBeTrue();
+      // A native select's model value is only known once Angular's accessor maps the option.
+      expect('modelValue' in classify.calls.mostRecent().args[0]).toBeFalse();
+
+      await set('Tier', 'Basic');
+      expect(classify.calls.mostRecent().args[0]).toEqual(
+        jasmine.objectContaining({ value: 'Basic', modelValue: 'basic' })
+      );
+    });
+
+    it('refuses as stale a choice whose option was replaced by another with the same label while confirming', async () => {
+      classify.and.returnValue('consequential');
+      let answer: (value: boolean) => void = () => undefined;
+      confirm.and.returnValue(new Promise<boolean>(resolve => (answer = resolve)));
+      const ref = refOf(contextEngine.getSnapshot(), 'Plan');
+
+      const pending = engine.apply([{ operation: 'setValue', ref, description: 'Plan', value: 'Team' }]);
+      await new Promise(resolve => setTimeout(resolve));
+      const select = fixture.nativeElement.querySelector('select[formControlName="plan"]') as HTMLSelectElement;
+      const impostor = document.createElement('option');
+      impostor.value = 'enterprise';
+      impostor.textContent = 'Team';
+      select.replaceChild(
+        impostor,
+        Array.from(select.options).find(option => option.value === 'team') as HTMLOptionElement
+      );
+      answer(true);
+
+      expect((await pending).results[0].refused).toBe('stale');
+      expect(host.form.value.plan).toBe('free');
     });
 
     it('refuses a consequential operation when the policy cannot confirm, in plan() and apply() alike', async () => {
+      fixture.destroy();
       TestBed.resetTestingModule();
       TestBed.configureTestingModule({
         imports: [

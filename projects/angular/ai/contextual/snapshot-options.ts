@@ -60,6 +60,7 @@ export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonl
 });
 
 const CATEGORY_NAMES = Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[];
+const EXCLUSION_KEYS = ['excludeCategories', 'excludeRoles', 'excludeSelectors'] as const;
 
 /** The roles a set of categories leaves out, for the categories that are roles. */
 export function clrContextCategoryRoles(categories: readonly ClrContextCategory[]): string[] {
@@ -94,14 +95,27 @@ export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<Clr
   },
 });
 
-/** A preset's options with the caller's overrides applied over them, as a copy the caller may change. */
+/**
+ * A preset's options with the caller's overrides applied over them, as a copy the caller
+ * may change. The exclusion lists add to the preset's rather than replace them —
+ * `clrContextPreset('interactive', { excludeCategories: ['images'] })` leaves out layout,
+ * prose and images — so an override can only narrow a preset further; to start from no
+ * exclusions, pass options rather than a preset.
+ */
 export function clrContextPreset(
   preset: ClrContextPreset,
   overrides: ClrContextSnapshotOptions = {}
 ): ClrContextSnapshotOptions {
-  const options = { ...CLR_CONTEXT_PRESETS[preset], ...overrides } as ClrContextSnapshotOptions;
-  if (options.excludeCategories) {
-    options.excludeCategories = [...options.excludeCategories];
+  const base = CLR_CONTEXT_PRESETS[preset];
+  const options = { ...base, ...overrides } as ClrContextSnapshotOptions;
+  for (const key of EXCLUSION_KEYS) {
+    const combined = [
+      ...((base[key] as string[] | undefined) ?? []),
+      ...((overrides[key] as string[] | undefined) ?? []),
+    ];
+    if (combined.length) {
+      (options as Record<string, unknown>)[key] = [...new Set(combined)];
+    }
   }
   return options;
 }

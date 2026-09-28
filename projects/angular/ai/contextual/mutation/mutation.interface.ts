@@ -105,8 +105,9 @@ export interface ClrMutationTarget {
    */
   value?: unknown;
   /**
-   * The value the form control will receive, which may be an option's bound object or a
-   * locale string rather than anything a person would recognise. For inspection only.
+   * The value the form control will receive, which may be a radio's value or a locale
+   * string rather than anything a person would recognise. For inspection only. Absent
+   * for a native select, whose options map to model values inside Angular's accessor.
    */
   modelValue?: unknown;
 }
