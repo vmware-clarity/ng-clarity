@@ -913,6 +913,9 @@ export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
 
 // @public
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+
+// @public
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
@@ -1845,7 +1848,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     protected renderer: Renderer2;
     protected reportsAriaInvalid(): boolean;
-    // (undocumented)
     protected reportsAriaRequired(): boolean;
     // (undocumented)
     get searchText(): string;
@@ -3987,6 +3989,7 @@ export class ClrHeader implements OnDestroy {
 // @public
 export class ClrHostAttribute {
     constructor(element: Element | null | undefined, name: string);
+    get current(): string | null;
     value(computed: string | boolean | null): string | null;
 }
 
@@ -5196,11 +5199,16 @@ export class ClrProgressBarModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof ClrProgressBar], [typeof i2.CommonModule], [typeof ClrProgressBar]>;
 }
 
+// @public
+export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
+
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
     protected reportsAriaInvalid(): boolean;
-    // (undocumented)
     protected reportsAriaRequired(): boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
@@ -5211,7 +5219,6 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 // @public (undocumented)
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
-    // (undocumented)
     protected get ariaInvalid(): true | null;
     // (undocumented)
     ariaLabelledBy: string;
@@ -9160,12 +9167,6 @@ export const processOnVmIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const processOnVmIconName = "process-on-vm";
-
-// @public
-export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
-
-// @public
-export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export const qrCodeIcon: IconShapeTuple;

@@ -147,6 +147,9 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
 export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
 
 // @public
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+
+// @public
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
@@ -495,6 +498,7 @@ export function clrHasRequiredValidator(control: AbstractControl | null | undefi
 // @public
 export class ClrHostAttribute {
     constructor(element: Element | null | undefined, name: string);
+    get current(): string | null;
     value(computed: string | boolean | null): string | null;
 }
 
@@ -697,6 +701,12 @@ export enum ClrPosition {
     // (undocumented)
     TOP_RIGHT = 2
 }
+
+// @public
+export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export class ClrRovingTabindex extends ClrKeyFocus {
@@ -1061,12 +1071,6 @@ export class OutsideClick implements OnDestroy {
 
 // @public (undocumented)
 export function preventArrowKeyScroll(event: KeyboardEvent): void;
-
-// @public
-export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
-
-// @public
-export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export class ScrollingService {
