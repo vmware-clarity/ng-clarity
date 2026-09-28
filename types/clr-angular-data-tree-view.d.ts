@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { OnChanges, OnDestroy, TemplateRef, ChangeDetectorRef, AfterContentInit, Renderer2, ElementRef, NgZone, OnInit, AfterViewInit, EventEmitter, Injector, Type } from '@angular/core';
+import { ElementRef, OnInit, AfterContentInit, AfterViewInit, OnDestroy, EventEmitter, Injector, OnChanges, TemplateRef, ChangeDetectorRef, Renderer2, NgZone, Type } from '@angular/core';
 import { Observable, BehaviorSubject, Subject, Subscription } from 'rxjs';
 import * as i8 from '@clr/angular/utils';
 import { IfExpandService, ClrCommonStringsService } from '@clr/angular/utils';
@@ -14,9 +14,118 @@ declare enum ClrSelectedState {
 
 type AsyncArray<T> = T[] | null | undefined | Promise<T[] | null | undefined> | Observable<T[] | null | undefined>;
 
+declare class TreeFocusManagerService<T> {
+    rootNodeModels: TreeNodeModel<T>[];
+    private focusedNodeId;
+    private _focusRequest;
+    private _focusChange;
+    get focusRequest(): Observable<string>;
+    get focusChange(): Observable<string>;
+    focusNode(model: TreeNodeModel<T>): void;
+    broadcastFocusedNode(nodeId: string): void;
+    focusParent(model: TreeNodeModel<T>): void;
+    focusFirstVisibleNode(): void;
+    focusLastVisibleNode(): void;
+    focusNodeAbove(model: TreeNodeModel<T>): void;
+    focusNodeBelow(model: TreeNodeModel<T>): void;
+    focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void;
+    private findSiblings;
+    private findLastVisibleInNode;
+    private findNextFocusable;
+    private findLastVisibleInTree;
+    private findNodeAbove;
+    private findNodeBelow;
+    private findDescendentNodeStartsWith;
+    private findSiblingNodeStartsWith;
+    private findRootNodeStartsWith;
+    private findNodeStartsWith;
+    private findClosestNodeStartsWith;
+    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFocusManagerService<any>, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFocusManagerService<any>>;
+}
+
+declare class ClrTreeNodeLink {
+    private el;
+    tabindex: number;
+    constructor(el: ElementRef<HTMLElement>);
+    get active(): boolean;
+    activate(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNodeLink, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never, never, false, never>;
+}
+
+declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
+    private platformId;
+    featuresService: TreeFeaturesService<T>;
+    expandService: IfExpandService;
+    commonStrings: ClrCommonStringsService;
+    private focusManager;
+    private elementRef;
+    expandable: boolean | undefined;
+    selectedChange: EventEmitter<ClrSelectedState>;
+    expandedChange: EventEmitter<boolean>;
+    STATES: typeof ClrSelectedState;
+    isModelLoading: boolean;
+    nodeId: string;
+    contentContainerTabindex: number;
+    _model: TreeNodeModel<T>;
+    private bulkChange;
+    private skipAnimation;
+    private skipEmitChange;
+    private typeAheadKeyBuffer;
+    private typeAheadKeyEvent;
+    private subscriptions;
+    private contentContainer;
+    private treeNodeLinkList;
+    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
+    get disabled(): boolean;
+    set disabled(value: boolean);
+    get selected(): ClrSelectedState | boolean;
+    set selected(value: ClrSelectedState | boolean);
+    get expanded(): boolean;
+    set expanded(value: boolean);
+    set clrForTypeAhead(value: string);
+    get ariaSelected(): boolean;
+    get treeNodeLink(): ClrTreeNodeLink;
+    get childrenAnimationState(): string;
+    private get isParent();
+    ngOnInit(): void;
+    ngAfterContentInit(): void;
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    isExpandable(): boolean;
+    isSelectable(): boolean;
+    /**
+     * Expands this node and every expandable node below it, without animation. Disabled nodes are left untouched.
+     * Descendants added afterwards, including lazy-loaded children, come in expanded until any node of the subtree
+     * gets collapsed.
+     */
+    expandDescendants(): void;
+    /**
+     * Collapses this node and every node below it, without animation. Disabled nodes are left untouched.
+     */
+    collapseDescendants(): void;
+    _setExpandedInBulk(expanded: boolean): void;
+    _takeTabStop(): void;
+    focusTreeNode(): void;
+    broadcastFocusOnContainer(): void;
+    onKeyDown(event: KeyboardEvent): void;
+    private reclaimTabStop;
+    private setTabIndex;
+    private checkTabIndex;
+    private toggleExpandOrTriggerDefault;
+    private expandOrFocusFirstChild;
+    private collapseOrFocusParent;
+    private triggerDefaultAction;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
+}
+
 declare abstract class TreeNodeModel<T> {
     nodeId: string;
     expanded: boolean;
+    _descendantsExpanded: boolean;
+    _node: ClrTreeNode<T> | null;
     model: T | null;
     textContent: string;
     loading$: BehaviorSubject<boolean>;
@@ -27,11 +136,15 @@ declare abstract class TreeNodeModel<T> {
     abstract children: TreeNodeModel<T>[];
     get loading(): boolean;
     set loading(isLoading: boolean);
+    get _loadedChildren(): TreeNodeModel<T>[];
     get disabled(): boolean;
     set disabled(value: boolean);
     destroy(): void;
+    _setExpandedRecursive(expanded: boolean): void;
+    _isInExpandedSubtree(): boolean;
     setSelected(state: ClrSelectedState, propagateUp: boolean, propagateDown: boolean): void;
     toggleSelection(propagate: boolean): void;
+    _clearExpandedSubtree(): void;
     _updateSelectionFromChildren(): void;
     private computeSelectionStateFromChildren;
 }
@@ -46,6 +159,7 @@ declare class RecursiveTreeNodeModel<T> extends TreeNodeModel<T> {
     constructor(model: T, parent: RecursiveTreeNodeModel<T> | null, getChildren: (node: T) => AsyncArray<T> | undefined, featuresService: TreeFeaturesService<T> | undefined);
     get children(): RecursiveTreeNodeModel<T>[];
     set children(value: RecursiveTreeNodeModel<T>[]);
+    get _loadedChildren(): RecursiveTreeNodeModel<T>[];
     destroy(): void;
     clearChildren(): void;
     fetchChildren(): void;
@@ -78,38 +192,9 @@ declare class TreeFeaturesService<T> {
         root: RecursiveTreeNodeModel<T>[];
     };
     childrenFetched: Subject<void>;
+    _allExpanded: boolean;
     static ɵfac: i0.ɵɵFactoryDeclaration<TreeFeaturesService<any>, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<TreeFeaturesService<any>>;
-}
-
-declare class TreeFocusManagerService<T> {
-    rootNodeModels: TreeNodeModel<T>[];
-    private focusedNodeId;
-    private _focusRequest;
-    private _focusChange;
-    get focusRequest(): Observable<string>;
-    get focusChange(): Observable<string>;
-    focusNode(model: TreeNodeModel<T>): void;
-    broadcastFocusedNode(nodeId: string): void;
-    focusParent(model: TreeNodeModel<T>): void;
-    focusFirstVisibleNode(): void;
-    focusLastVisibleNode(): void;
-    focusNodeAbove(model: TreeNodeModel<T>): void;
-    focusNodeBelow(model: TreeNodeModel<T>): void;
-    focusNodeStartsWith(searchString: string, model: TreeNodeModel<T>): void;
-    private findSiblings;
-    private findLastVisibleInNode;
-    private findNextFocusable;
-    private findLastVisibleInTree;
-    private findNodeAbove;
-    private findNodeBelow;
-    private findDescendentNodeStartsWith;
-    private findSiblingNodeStartsWith;
-    private findRootNodeStartsWith;
-    private findNodeStartsWith;
-    private findClosestNodeStartsWith;
-    static ɵfac: i0.ɵɵFactoryDeclaration<TreeFocusManagerService<any>, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<TreeFocusManagerService<any>>;
 }
 
 declare class ClrTree<T> implements AfterContentInit, OnDestroy {
@@ -118,6 +203,7 @@ declare class ClrTree<T> implements AfterContentInit, OnDestroy {
     private renderer;
     private el;
     private rootNodes;
+    private rootModels;
     private subscriptions;
     private _isMultiSelectable;
     constructor(featuresService: TreeFeaturesService<T>, focusManagerService: TreeFocusManagerService<T>, renderer: Renderer2, el: ElementRef<HTMLElement>, ngZone: NgZone);
@@ -125,71 +211,21 @@ declare class ClrTree<T> implements AfterContentInit, OnDestroy {
     get isMultiSelectable(): boolean;
     ngAfterContentInit(): void;
     ngOnDestroy(): void;
+    /**
+     * Expands every expandable node of the tree, without animation. Disabled nodes are left untouched.
+     * Nodes added to the tree afterwards, including lazy-loaded children, come in expanded until any node gets collapsed.
+     */
+    expandAll(): void;
+    /**
+     * Collapses every node of the tree, without animation. Disabled nodes are left untouched.
+     */
+    collapseAll(): void;
+    private setAllExpanded;
+    private reclaimTabStop;
     private setMultiSelectable;
     private setRootNodes;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTree<any>, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTree<any>, "clr-tree", never, { "lazy": { "alias": "clrLazy"; "required": false; }; }, {}, ["rootNodes"], ["*"], false, never>;
-}
-
-declare class ClrTreeNodeLink {
-    private el;
-    tabindex: number;
-    constructor(el: ElementRef<HTMLElement>);
-    get active(): boolean;
-    activate(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNodeLink, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTreeNodeLink, ".clr-treenode-link", never, {}, {}, never, never, false, never>;
-}
-
-declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
-    private platformId;
-    featuresService: TreeFeaturesService<T>;
-    expandService: IfExpandService;
-    commonStrings: ClrCommonStringsService;
-    private focusManager;
-    private elementRef;
-    expandable: boolean | undefined;
-    selectedChange: EventEmitter<ClrSelectedState>;
-    expandedChange: EventEmitter<boolean>;
-    STATES: typeof ClrSelectedState;
-    isModelLoading: boolean;
-    nodeId: string;
-    contentContainerTabindex: number;
-    _model: TreeNodeModel<T>;
-    private skipEmitChange;
-    private typeAheadKeyBuffer;
-    private typeAheadKeyEvent;
-    private subscriptions;
-    private contentContainer;
-    private treeNodeLinkList;
-    constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
-    get disabled(): boolean;
-    set disabled(value: boolean);
-    get selected(): ClrSelectedState | boolean;
-    set selected(value: ClrSelectedState | boolean);
-    get expanded(): boolean;
-    set expanded(value: boolean);
-    set clrForTypeAhead(value: string);
-    get ariaSelected(): boolean;
-    get treeNodeLink(): ClrTreeNodeLink;
-    private get isParent();
-    ngOnInit(): void;
-    ngAfterContentInit(): void;
-    ngAfterViewInit(): void;
-    ngOnDestroy(): void;
-    isExpandable(): boolean;
-    isSelectable(): boolean;
-    focusTreeNode(): void;
-    broadcastFocusOnContainer(): void;
-    onKeyDown(event: KeyboardEvent): void;
-    private setTabIndex;
-    private checkTabIndex;
-    private toggleExpandOrTriggerDefault;
-    private expandOrFocusFirstChild;
-    private collapseOrFocusParent;
-    private triggerDefaultAction;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
 }
 
 declare class RecursiveChildren<T> {
