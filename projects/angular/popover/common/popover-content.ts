@@ -32,7 +32,7 @@ import {
   ViewContainerRef,
 } from '@angular/core';
 import { Keys } from '@clr/angular/utils';
-import { fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
+import { filter, fromEvent, merge, Subscription, switchMap, timer } from 'rxjs';
 
 import { ClrPopoverService } from './providers/popover.service';
 import { getCrossWindowOriginContext, resolveCrossWindowOrigin } from './utils/cross-window-origin';
@@ -226,6 +226,31 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         ? this.createPointBasedOutsideClickSubscription()
         : this.createElementBasedOutsideClickSubscription()
     );
+
+    if (this.popoverService.parent) {
+      this.subscriptions.push(this.createParentCloseSubscription(this.popoverService.parent));
+    }
+  }
+
+  /**
+   * A popover opened from inside another one is anchored to an element of that one, which goes away
+   * when the parent closes - for example on a scroll, since menus close on scroll. This one stays open,
+   * so it moves over to the parent's own origin, which is still in place, and keeps following it.
+   */
+  private createParentCloseSubscription(parent: ClrPopoverService): Subscription {
+    return parent.openChange.pipe(filter(open => !open)).subscribe(() => {
+      if (!this.popoverService.open) {
+        return;
+      }
+
+      this.popoverService.origin = parent.origin;
+      this.popoverService.parent = parent.parent;
+
+      this.intersectionObserver?.disconnect();
+      this.intersectionObserver = null;
+      this.setupIntersectionObserver();
+      this.resetPosition();
+    });
   }
 
   /**
@@ -602,7 +627,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
 
     const originEl = this.popoverService.originPoint
       ? this.popoverService.pointTargetElement
-      : this.getRootPopover(this)?.popoverService?.originElement?.nativeElement;
+      : this.getRootOriginElement();
 
     this.listenToScrollForElementOrigin(originEl);
   }
@@ -623,6 +648,21 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
         })
       );
     });
+  }
+
+  /**
+   * The origin of the outermost popover, whose scroll containers are the ones that move this one. A
+   * nested popover is found either from where it is declared, or through the parent it was given at
+   * runtime.
+   */
+  private getRootOriginElement(): HTMLElement | undefined {
+    let service = this.getRootPopover(this)?.popoverService;
+
+    while (service?.parent) {
+      service = service.parent;
+    }
+
+    return service?.originElement?.nativeElement ?? this.popoverService.originElement?.nativeElement;
   }
 
   private getRootPopover(popover: ClrPopoverContent): ClrPopoverContent {

@@ -308,7 +308,15 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     // Same for the filter action reporting whether the filter is open: opening it goes through this
     // template and refreshes the view on its own, but closing it does not - that is an outside click
     // or an escape key handled by the overlay, and the item would be left announcing itself expanded.
-    this.subs.push(this.columnPopover.openChange.subscribe(() => this.changeDetectorRef.markForCheck()));
+    this.subs.push(
+      this.columnPopover.openChange.subscribe(open => {
+        // The link to the menu only holds for the one opening that went through it.
+        if (!open) {
+          this.columnPopover.parent = null;
+        }
+        this.changeDetectorRef.markForCheck();
+      })
+    );
   }
 
   override ngOnDestroy() {
@@ -400,6 +408,9 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
    */
   protected openFilter(event: Event) {
     this.columnPopover.origin = this.trigger;
+    // The filter now opens from inside this menu, so it is nested in it: it follows the datagrid's
+    // scroll containers, and when the menu closes it moves over to this menu's trigger.
+    this.columnPopover.parent = this.popoverService;
 
     // The popover closes on an outside click, and ignores exactly one event while doing so: the one
     // that opened it. Without this, the very click on this menu item would close the filter again.

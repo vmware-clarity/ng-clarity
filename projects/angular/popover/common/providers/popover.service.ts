@@ -24,6 +24,15 @@ export class ClrPopoverService {
   closeButtonRef: ElementRef;
   panelClass: string[] = [];
 
+  /**
+   * The popover this one was opened from, when that cannot be known from where it is declared - for
+   * example a popover opened by an item of a menu it is not declared in. It makes the two behave as
+   * nested: this one tracks the scroll containers of the root popover's origin, and when the parent
+   * closes while this one is still open, this one moves over to the parent's origin instead of being
+   * left anchored to an element that is no longer there.
+   */
+  parent: ClrPopoverService | null = null;
+
   private _open = false;
   private _openChange = new Subject<boolean>();
   private _openEvent: Event;
