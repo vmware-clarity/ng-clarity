@@ -334,9 +334,11 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
   if (target.kind === 'select' && typeof accessor?.onChange !== 'function') {
     return { applied: false, refused: 'unsupported', detail: UNSUPPORTED_SELECT_DETAIL, previous };
   }
-  const modelBefore = serialized(control.value);
-  // A write that is refused or throws leaves the control as the user left it: neither
-  // dirty nor touched unless it was, and a select showing the choice its model holds.
+  const valueBefore: unknown = control.value;
+  const modelBefore = serialized(valueBefore);
+  // A write that is refused or throws leaves the control as the user left it: its value,
+  // neither dirty nor touched unless it was, and a select showing the choice its model holds.
+  let restoreOptions: (() => void) | null = null;
   const wasDirty = control.dirty;
   const wasTouched = control.touched;
   const rollback = (bound: AbstractControl) => {
@@ -356,6 +358,7 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
       const select = target.element as HTMLSelectElement;
       const chosen = Array.isArray(coerced.value) ? (coerced.value as HTMLOptionElement[]) : [];
       const shown = Array.from(select.options).map(option => option.selected);
+      restoreOptions = () => Array.from(select.options).forEach((option, index) => (option.selected = shown[index]));
       for (const option of Array.from(select.options)) {
         option.selected = chosen.includes(option);
       }
@@ -370,7 +373,7 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
       }
       const moved = JSON.stringify(plain(previous)) !== JSON.stringify(plain(coerced.display));
       if (moved && serialized(control.value) === modelBefore) {
-        Array.from(select.options).forEach((option, index) => (option.selected = shown[index]));
+        restoreOptions();
         rollback(control);
         return { applied: false, refused: 'invalid', detail: 'The form control did not take the value.', previous };
       }
@@ -378,6 +381,11 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
       control.setValue(coerced.value);
     }
   } catch (error) {
+    restoreOptions?.();
+    // `setValue` stores the value before it hands it to the value accessor, so a throwing
+    // accessor would leave the model holding what the view refused. Put it back quietly:
+    // no change was announced, and the accessor that threw is not asked again.
+    control.setValue(valueBefore, { emitModelToViewChange: false, emitEvent: false });
     rollback(control);
     throw error;
   }

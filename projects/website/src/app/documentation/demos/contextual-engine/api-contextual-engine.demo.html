@@ -39,8 +39,9 @@
       <td class="left"><b cds-text="medium">enableFrameBridge(options?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
       <td class="left">
-        Starts answering context requests from embedded frames. Same-origin only unless told otherwise. A frame receives
-        neither form values nor the page's address — only the route pattern, such as
+        Starts answering context requests from frames embedded in the page, and from nothing else — not a popup, another
+        tab or an opener, whatever its origin. Same-origin only unless told otherwise. A frame receives neither form
+        values nor the page's address — only the route pattern, such as
         <code cds-text="code">clusters/:id</code>; links to the application as the route pattern they match (and none
         when they match no route), links elsewhere and frames as their origin — unless the host sets
         <code cds-text="code">shareFormValues</code> or <code cds-text="code">shareFullUrl</code>. A frame's budgets are

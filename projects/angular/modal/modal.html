@@ -9,7 +9,7 @@
 <div class="modal" [class.modal-full-screen]="size == 'full-screen'">
   <!--fixme: revisit when ngClass works with exit animation-->
   <div
-    cdkTrapFocus
+    [cdkTrapFocus]="ariaModal"
     [cdkTrapFocusAutoCapture]="true"
     [@fadeMove]="fadeMove"
     (@fadeMove.done)="fadeDone($event)"

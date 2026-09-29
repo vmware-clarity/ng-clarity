@@ -15,6 +15,7 @@ import {
   CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
+  clrUsableSelectors,
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
@@ -31,6 +32,7 @@ import {
 } from './roles';
 import { summarizeRole } from './summarizers';
 import { accessibleText, isVisuallyHidden, truncate } from './text';
+import { isVisible } from './visibility';
 import { stripQueryAndFragment } from '../url';
 
 /**
@@ -123,8 +125,18 @@ const CONTROL_SELECTOR = [
  */
 const NAMING_TAGS = new Set(['label', 'legend', 'caption', 'figcaption', 'option', 'optgroup', 'datalist', 'title']);
 
-/** A modal dialog, explicit or implicit — what has the user's attention while it is open. */
-const MODAL_SELECTOR = '[role="dialog"][aria-modal="true"], [role="alertdialog"], dialog[open]';
+/**
+ * A modal dialog — what has the user's attention while it is open. Only a dialog that
+ * says it is modal counts: a `<dialog>` opened with `showModal()` (`:modal`), or an ARIA
+ * dialog or alert dialog with `aria-modal="true"`. A dialog beside a page that stays in
+ * use — a `<dialog>` opened with `show()`, a pinned side panel, an inline wizard — does
+ * not take the page away from the user, and so neither from an agent.
+ */
+const MODAL_SELECTOR = '[role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"], dialog:modal';
+
+/** {@link MODAL_SELECTOR} for a browser that does not know `:modal`, where any open `<dialog>` is taken as modal. */
+const LEGACY_MODAL_SELECTOR =
+  '[role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"], dialog[open]';
 
 interface Walk {
   readonly options: Required<ClrContextSnapshotOptions>;
@@ -188,11 +200,11 @@ export function collectContextTreeWithin(
   const walk: Walk = {
     options,
     // An extractor whose selector the document rejects would throw on every element.
-    extractors: extractors.filter(extractor => usableSelector(root, extractor.selector)),
+    extractors: extractors.filter(extractor => clrUsableSelectors(root, [extractor.selector])),
     excludeRoles,
     excludeRoleCandidates: roleCandidateSelector(excludeRoles),
     // Validated one by one, so a single bad entry does not silently drop every exclusion.
-    excludeSelector: options.excludeSelectors.filter(selector => usableSelector(root, selector)).join(', '),
+    excludeSelector: clrUsableSelectors(root, options.excludeSelectors),
     describedByIds: new Set(),
     labelIds: new Set(),
     remaining: options.maxComponents,
@@ -217,12 +229,6 @@ export function collectContextTreeWithin(
 }
 
 /**
- * Everything that keeps an element, and whatever is inside it, out of what the engine
- * describes: hidden from assistive technology, inert, or marked to be ignored.
- */
-export const ENGINE_HIDDEN_SELECTOR = CLR_CONTEXT_HIDDEN_SELECTOR;
-
-/**
  * Whether the engine would leave this element out of a snapshot, judged from the element
  * and its ancestry: not in the document, inside something hidden, inert, ignored or
  * excluded, or not rendered visibly. Used wherever something must follow the walk's
@@ -230,13 +236,13 @@ export const ENGINE_HIDDEN_SELECTOR = CLR_CONTEXT_HIDDEN_SELECTOR;
  * sit on an element.
  */
 export function isHiddenFromEngine(element: Element, excludeSelector = ''): boolean {
-  if (!element.isConnected || element.closest(ENGINE_HIDDEN_SELECTOR)) {
+  if (!element.isConnected || element.closest(CLR_CONTEXT_HIDDEN_SELECTOR)) {
     return true;
   }
   if (excludeSelector && element.closest(excludeSelector)) {
     return true;
   }
-  return !isVisible(element as HTMLElement);
+  return !isVisible(element);
 }
 
 /** The part of the page a snapshot describes, when that is not the whole page. */
@@ -254,7 +260,7 @@ export interface ClrContextScope {
  * is what an agent no longer needs, so it is left out entirely rather than budgeted down.
  */
 export function engineScope(root: ParentNode, options: Required<ClrContextSnapshotOptions>): ClrContextScope {
-  const excludeSelector = options.excludeSelectors.filter(selector => usableSelector(root, selector)).join(', ');
+  const excludeSelector = clrUsableSelectors(root, options.excludeSelectors);
   if (options.focus === 'modal') {
     const dialog = topmostModal(root, excludeSelector);
     if (dialog) {
@@ -264,7 +270,7 @@ export function engineScope(root: ParentNode, options: Required<ClrContextSnapsh
   if (options.rootSelector) {
     // A selector the document rejects matches nothing, the same as one that matches no
     // element: it must not silently widen the snapshot to the whole page.
-    const selector = usableSelector(root, options.rootSelector);
+    const selector = clrUsableSelectors(root, [options.rootSelector]);
     const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
     // A root inside a hidden, inert, ignored or excluded region is still left out: what
     // keeps a region from the engine holds however the walk is pointed at it.
@@ -275,10 +281,16 @@ export function engineScope(root: ParentNode, options: Required<ClrContextSnapsh
 
 /** The open modal dialog the user is looking at, if any: the last one the engine would describe. */
 export function topmostModal(root: ParentNode, excludeSelector = ''): Element | null {
-  const dialogs = Array.from(root.querySelectorAll(MODAL_SELECTOR)).filter(
-    dialog => !isHiddenFromEngine(dialog, excludeSelector)
-  );
+  const dialogs = Array.from(modalDialogs(root)).filter(dialog => !isHiddenFromEngine(dialog, excludeSelector));
   return dialogs.length ? dialogs[dialogs.length - 1] : null;
+}
+
+function modalDialogs(root: ParentNode): NodeListOf<Element> {
+  try {
+    return root.querySelectorAll(MODAL_SELECTOR);
+  } catch {
+    return root.querySelectorAll(LEGACY_MODAL_SELECTOR);
+  }
 }
 
 function scopeOf(root: ParentNode, walk: Walk): { roots: ParentNode | Element[]; focus?: 'modal' } {
@@ -353,19 +365,6 @@ function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () =>
     return describe();
   } finally {
     walk.redactedDepth--;
-  }
-}
-
-/** A selector the document accepts, or `''` for none or an invalid one. */
-function usableSelector(root: ParentNode, selector: string): string {
-  if (!selector) {
-    return '';
-  }
-  try {
-    root.querySelector(selector);
-    return selector;
-  } catch {
-    return '';
   }
 }
 
@@ -532,13 +531,15 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     // spacer. Such an element is not on the page as far as an agent is concerned. Nor is
     // one whose content was left out on purpose — a datagrid when grids are excluded —
     // which must not come back labelled with all the text it holds.
-    if (
-      !accessibleText(element, undefined, walk.excludeSelector).trim() &&
-      !(CLR_ELEMENT_CONTEXT_PROPERTY in element)
-    ) {
+    // The role check first: it looks only at the elements that could carry an excluded
+    // role, while the text check reads the style of everything with text.
+    if (holdsExcludedRole(element, walk)) {
       return [];
     }
-    if (holdsExcludedRole(element, walk)) {
+    if (
+      !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+      !accessibleText(element, undefined, walk.excludeSelector).trim()
+    ) {
       return [];
     }
   }
@@ -765,8 +766,10 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
   const node: ClrComponentContext = { type: 'frame', element: frame.tagName.toLowerCase() };
   const state: Record<string, unknown> = {};
   const contents = frameDocument(frame);
-  const label =
-    accessibleName(frame, null, walk.options.maxTextLength, walk.excludeSelector) || (contents?.title ?? '');
+  // A document's title is what it shows, so a frame in a redacted region is named only
+  // by what its author gave the frame element.
+  const title = walk.redactedDepth > 0 ? '' : (contents?.title ?? '');
+  const label = accessibleName(frame, null, walk.options.maxTextLength, walk.excludeSelector) || title;
   if (label) {
     node.label = truncate(label, walk.options.maxTextLength);
   }
@@ -988,29 +991,7 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
   ) {
     return true;
   }
-  return !isVisible(element as HTMLElement);
-}
-
-/**
- * Whether the element is rendered and can be seen, as assistive technology judges it:
- * `display: none`, `visibility: hidden`, `content-visibility: hidden` and full
- * transparency all hide it. `checkVisibility` without options only covers the first.
- *
- * Geometry is deliberately not judged. A control clipped to nothing, sized to zero or
- * moved off screen is still in the accessibility tree — and that is how custom checkboxes,
- * radios and toggles, Clarity's among them, draw their own box over a native input that is
- * visually hidden but is what a screen reader and the form binding use. What an
- * application wants kept from agents it marks `data-clr-context-ignore`.
- */
-export function isVisible(element: HTMLElement): boolean {
-  // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.
-  if (element.checkVisibility({ visibilityProperty: true, opacityProperty: true })) {
-    return true;
-  }
-  // An element with `display: contents` has no box of its own, so it never reads as
-  // visible, but it hides nothing: its children render in its place and are judged on
-  // their own. Hidden ancestors still hide them, since those are checked as well.
-  return element.ownerDocument.defaultView?.getComputedStyle(element).display === 'contents';
+  return !isVisible(element);
 }
 
 /** Removes empty labels, states and children so snapshots stay minimal. */

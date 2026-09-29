@@ -6410,6 +6410,9 @@ export class ClrTreeViewModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i5.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
 }
 
+// @public
+export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string;
+
 // @public (undocumented)
 export class ClrVerticalNav implements OnInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular.d.ts
@@ -7099,7 +7102,6 @@ export class CollapsiblePanelService {
     disablePanel(panelId: string, disabled?: boolean): void;
     // (undocumented)
     protected emitUpdatedPanels(): void;
-    getPanel(panelId: string): CollapsiblePanelModel | undefined;
     // (undocumented)
     getPanelChanges(panelId: string): Observable<CollapsiblePanelModel>;
     // (undocumented)

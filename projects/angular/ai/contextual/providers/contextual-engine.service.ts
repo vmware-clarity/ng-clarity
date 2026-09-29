@@ -8,7 +8,7 @@
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
+import { CLR_CONTEXT_REDACT_SELECTOR, clrUsableSelectors } from '@clr/angular/utils';
 
 import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
@@ -266,7 +266,7 @@ export class ClrContextEngineService implements OnDestroy {
       return () => 'keep';
     }
     const scope = engineScope(this.document, options);
-    const excludeSelector = options.excludeSelectors.filter(usableSelector(this.document)).join(', ');
+    const excludeSelector = clrUsableSelectors(this.document, options.excludeSelectors);
     return element => {
       if (!element) {
         return 'keep';
@@ -383,13 +383,3 @@ export class ClrContextEngineService implements OnDestroy {
 }
 
 /** A predicate for `Array.filter`: whether the document accepts the selector. */
-function usableSelector(document: Document): (selector: string) => boolean {
-  return selector => {
-    try {
-      document.querySelector(selector);
-      return true;
-    } catch {
-      return false;
-    }
-  };
-}

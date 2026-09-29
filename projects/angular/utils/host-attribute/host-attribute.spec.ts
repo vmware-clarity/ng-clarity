@@ -81,6 +81,15 @@ describe('ClrHostAttribute', () => {
     expect(bind(attribute, true)).toBe('spelling');
   });
 
+  it('keeps following the component after hydration, when the server rendered what it reports', () => {
+    // A server-rendered page arrives with the component's own attribute already on it.
+    element.setAttribute('aria-invalid', 'true');
+    const attribute = new ClrHostAttribute(element, 'aria-invalid');
+    expect(bind(attribute, true)).toBe('true');
+    expect(bind(attribute, null)).toBeNull();
+    expect(bind(attribute, true)).toBe('true');
+  });
+
   it('turns true and false into what ARIA expects', () => {
     const attribute = new ClrHostAttribute(element, 'aria-invalid');
     expect(bind(attribute, true)).toBe('true');

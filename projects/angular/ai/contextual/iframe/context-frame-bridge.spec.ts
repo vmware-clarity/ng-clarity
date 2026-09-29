@@ -14,13 +14,17 @@ import {
 } from './context-frame-bridge';
 import { ClrPageContext } from '../interfaces/context.interface';
 
-/** A stand-in for a frame's window: enough surface for the bridge, and a spy to assert on. */
+/**
+ * A stand-in for a frame's window: enough surface for the bridge, and a spy to assert on.
+ * It is a frame of this window, as the bridge requires of anything it serves.
+ */
 interface FakeWindow {
   postMessage: jasmine.Spy;
+  parent: unknown;
 }
 
-function fakeWindow(): FakeWindow {
-  return { postMessage: jasmine.createSpy('postMessage') };
+function fakeWindow(parent: unknown = window): FakeWindow {
+  return { postMessage: jasmine.createSpy('postMessage'), parent };
 }
 
 /**
@@ -131,6 +135,26 @@ describe('Context frame bridge', () => {
       dispatchRequest(frameRequest('request-3'), 'https://evil.example');
 
       expect(frame.postMessage).not.toHaveBeenCalled();
+    });
+
+    it('answers only frames embedded in the page, not a popup, a tab or an opener from an allowed origin', () => {
+      host.stop();
+      host = new ClrContextFrameHost(getSnapshot, window, { allowAnyOrigin: true, minRequestIntervalMs: 0 });
+      host.start();
+      const popup = fakeWindow();
+      popup.parent = popup;
+      const detached = fakeWindow(null);
+
+      dispatchRequest(frameRequest('popup'), 'https://evil.example', popup);
+      dispatchRequest(frameRequest('detached'), window.location.origin, detached);
+      dispatchRequest(frameRequest('itself'), window.location.origin, window);
+
+      expect(getSnapshot).not.toHaveBeenCalled();
+      expect(popup.postMessage).not.toHaveBeenCalled();
+      expect(detached.postMessage).not.toHaveBeenCalled();
+
+      dispatchRequest(frameRequest('embedded'), 'https://plugin.example', frame);
+      expect(frame.postMessage).toHaveBeenCalledTimes(1);
     });
 
     it('refuses an opaque origin, which cannot be answered safely: listing one is a configuration error', () => {
@@ -364,9 +388,7 @@ describe('Context frame bridge', () => {
       });
 
       it('lets frames a frame nests share its allowance, so spawning frames buys nothing', () => {
-        const nested = fakeWindow();
-        (nested as unknown as { parent: unknown }).parent = frame;
-        (frame as unknown as { parent: unknown }).parent = window;
+        const nested = fakeWindow(frame);
 
         dispatchRequest(frameRequest('outer'), window.location.origin, frame);
         dispatchRequest(frameRequest('inner'), window.location.origin, nested);
@@ -570,10 +592,10 @@ describe('Context frame bridge, what the host stays in charge of', () => {
     host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0, snapshot: { maxComponents: 20 } });
     host.start();
 
-    dispatchRequest(frameRequest('big', { maxComponents: 5000 }), { postMessage: jasmine.createSpy() });
+    dispatchRequest(frameRequest('big', { maxComponents: 5000 }), fakeWindow());
     expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(20);
 
-    dispatchRequest(frameRequest('small', { maxComponents: 3 }), { postMessage: jasmine.createSpy() });
+    dispatchRequest(frameRequest('small', { maxComponents: 3 }), fakeWindow());
     expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(3);
   });
 
@@ -581,7 +603,7 @@ describe('Context frame bridge, what the host stays in charge of', () => {
     host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0 });
     host.start();
 
-    dispatchRequest(frameRequest('nan', { maxComponents: Number.NaN }), { postMessage: jasmine.createSpy() });
+    dispatchRequest(frameRequest('nan', { maxComponents: Number.NaN }), fakeWindow());
 
     // Dropped, so the default ceiling applies.
     expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(300);
@@ -597,7 +619,7 @@ describe('Context frame bridge, what the host stays in charge of', () => {
   it('keeps the default throttle when given an interval that is not a number', () => {
     host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: Number.NaN });
     host.start();
-    const frame = { postMessage: jasmine.createSpy() };
+    const frame = fakeWindow();
 
     dispatchRequest(frameRequest('first'), frame);
     dispatchRequest(frameRequest('second'), frame);
@@ -610,7 +632,7 @@ describe('Context frame bridge, what the host stays in charge of', () => {
     host.start();
 
     for (let index = 0; index < 25; index++) {
-      dispatchRequest(frameRequest(`frame-${index}`), { postMessage: jasmine.createSpy() });
+      dispatchRequest(frameRequest(`frame-${index}`), fakeWindow());
     }
 
     expect(getSnapshot.calls.count()).toBe(5);
@@ -625,7 +647,7 @@ describe('Context frame bridge, what the host stays in charge of', () => {
     });
     host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0 });
     host.start();
-    const frame = { postMessage: jasmine.createSpy() };
+    const frame = fakeWindow();
 
     expect(() => dispatchRequest(frameRequest('first'), frame)).not.toThrow();
     dispatchRequest(frameRequest('second'), frame);
@@ -634,7 +656,7 @@ describe('Context frame bridge, what the host stays in charge of', () => {
   });
 
   it('ignores an answer from the right window but an origin other than the one it asked', async () => {
-    const target = { postMessage: jasmine.createSpy() };
+    const target = fakeWindow();
     target.postMessage.and.callFake((message: ClrContextFrameRequest) => {
       setTimeout(() => {
         const event = new Event('message') as Event & { data: unknown; origin: string; source: unknown };

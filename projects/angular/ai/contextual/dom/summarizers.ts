@@ -13,6 +13,7 @@ import {
 
 import { accessibleName } from './accessible-name';
 import { resolveRole } from './roles';
+import { isVisible } from './visibility';
 
 /**
  * Produces a compact description of a whole subtree, keyed on ARIA role.
@@ -334,10 +335,23 @@ const CONTAINER_SELECTORS: Record<string, string> = {
  */
 function queryRole(element: Element, role: string, scope: SummaryScope): Element[] {
   const container = CONTAINER_SELECTORS[role];
+  const judgesStyle = STYLE_JUDGED_ROLES.has(role);
   return Array.from(element.querySelectorAll(ROLE_SELECTORS[role])).filter(
-    item => readable(item, scope) && (!container || item.parentElement?.closest(container) === element)
+    item =>
+      readable(item, scope) &&
+      (!container || item.parentElement?.closest(container) === element) &&
+      (!judgesStyle || isVisible(item))
   );
 }
+
+/**
+ * Roles whose items are left out when a style hides them — a datagrid column hidden with
+ * `display: none`, a tab or list item a stylesheet removed — as well as when an attribute
+ * does. Not rows, which are counted, and where a style check per row would be a layout
+ * read per record; nor options and radios, which are never rendered in a closed dropdown
+ * or are drawn over by a custom control, and are what the collection offers all the same.
+ */
+const STYLE_JUDGED_ROLES = new Set(['columnheader', 'tab', 'listitem', 'menuitem']);
 
 /** Items the user cannot see, or the snapshot leaves out, are not part of what a collection offers. */
 function readable(item: Element, scope: SummaryScope): boolean {

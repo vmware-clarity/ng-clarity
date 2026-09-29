@@ -75,4 +75,18 @@ describe('ClrSidePanel pinned state, as assistive technology sees it', () => {
     fixture.detectChanges();
     expect(dialog().getAttribute('aria-modal')).toBe('true');
   });
+
+  it('keeps focus inside only while it is not pinned, so the page beside a pinned panel can be reached', () => {
+    // A focus trap is a pair of focusable anchors around the dialog; switched off, they
+    // are taken out of the tab order.
+    const anchorsFocusable = () =>
+      Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.cdk-focus-trap-anchor')).map(anchor =>
+        anchor.hasAttribute('tabindex')
+      );
+    expect(anchorsFocusable()).toEqual([true, true]);
+
+    pinButton().click();
+    fixture.detectChanges();
+    expect(anchorsFocusable()).toEqual([false, false]);
+  });
 });

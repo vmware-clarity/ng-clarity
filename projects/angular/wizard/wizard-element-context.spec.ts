@@ -110,3 +110,41 @@ describe('ClrWizard element context', () => {
     expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(false);
   });
 });
+
+@Component({
+  template: `
+    <clr-wizard class="clr-wizard--inline" [clrWizardOpen]="true">
+      <clr-wizard-title>Inline</clr-wizard-title>
+      <clr-wizard-page>
+        <ng-template clrPageTitle>Only</ng-template>
+      </clr-wizard-page>
+    </clr-wizard>
+    <clr-wizard [clrWizardOpen]="true">
+      <clr-wizard-title>Modal</clr-wizard-title>
+      <clr-wizard-page>
+        <ng-template clrPageTitle>Only</ng-template>
+      </clr-wizard-page>
+    </clr-wizard>
+  `,
+  standalone: false,
+})
+class InlineTestComponent {}
+
+describe('ClrWizard, as a modal or inline', () => {
+  it('is a modal dialog only when it is not inline, since an inline wizard leaves the page in use', () => {
+    TestBed.configureTestingModule({
+      imports: [ClrWizardModule, NoopAnimationsModule],
+      declarations: [InlineTestComponent],
+    });
+    const fixture = TestBed.createComponent(InlineTestComponent);
+    fixture.detectChanges();
+
+    const [inline, modal] = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('clr-wizard')).map(
+      wizard => wizard.querySelector('[role="dialog"]') as HTMLElement
+    );
+    expect(inline.hasAttribute('aria-modal')).toBe(false);
+    expect(modal.getAttribute('aria-modal')).toBe('true');
+
+    fixture.destroy();
+  });
+});

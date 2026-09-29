@@ -162,6 +162,7 @@ describe('ClrCombobox element context, other shapes', () => {
       <clr-options>
         <clr-option clrValue="visa">Visa <span data-clr-context-redact>4111 1111</span></clr-option>
         <clr-option clrValue="amex">Amex <span data-clr-context-redact>3782 8224</span></clr-option>
+        <clr-option clrValue="6011 0000"><span data-clr-context-redact>6011 0000</span></clr-option>
       </clr-options>
     </clr-combobox>
   `,
@@ -196,5 +197,7 @@ describe('ClrCombobox element context, withheld option text', () => {
     expect(context?.state['value']).toBe('Visa');
     expect(JSON.stringify(context)).not.toContain('4111');
     expect(JSON.stringify(context)).not.toContain('3782');
+    // Nor by its value when all its text is withheld: the value is often the same secret.
+    expect(JSON.stringify(context)).not.toContain('6011');
   });
 });

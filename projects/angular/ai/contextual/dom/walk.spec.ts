@@ -7,7 +7,7 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
-import { collectContextTreeWithin } from './walk';
+import { collectContextTreeWithin, topmostModal } from './walk';
 import { resolveSnapshotOptions } from '../snapshot-options';
 
 describe('collectContextTree', () => {
@@ -543,14 +543,18 @@ describe('collectContextTree, text and frames', () => {
     return (nodes ?? []).map(node => node.type);
   }
 
-  function frameWith(html: string, attributes: Record<string, string> = {}): Promise<HTMLIFrameElement> {
+  function frameWith(
+    html: string,
+    attributes: Record<string, string> = {},
+    parent: Element = container
+  ): Promise<HTMLIFrameElement> {
     const frame = document.createElement('iframe');
     for (const [name, value] of Object.entries(attributes)) {
       frame.setAttribute(name, value);
     }
     const loaded = new Promise<HTMLIFrameElement>(resolve => frame.addEventListener('load', () => resolve(frame)));
     frame.srcdoc = html;
-    container.appendChild(frame);
+    parent.appendChild(frame);
     return loaded;
   }
 
@@ -638,10 +642,22 @@ describe('collectContextTree, text and frames', () => {
       expect(frame.label).toBe('Billing');
     });
 
+    it('does not take a name from the document title of a frame in a redacted region', async () => {
+      const region = document.createElement('div');
+      region.setAttribute('data-clr-context-redact', '');
+      container.appendChild(region);
+      await frameWith('<title>Statement 4111-2222</title><p>Balance</p>', {}, region);
+
+      expect(JSON.stringify(collectContextTreeWithin(container, budgets()).components)).not.toContain('4111');
+    });
+
     it('walks frames inside frames', async () => {
-      await frameWith('<iframe title="Inner" srcdoc="<button>Deep</button>"></iframe>');
-      // The inner frame loads after the outer one; give it a turn.
-      await new Promise(resolve => setTimeout(resolve, 50));
+      const frame = await frameWith('<iframe title="Inner" srcdoc="<button>Deep</button>"></iframe>');
+      // The inner frame loads after the outer one: wait for it unless it already has.
+      const inner = frame.contentDocument?.querySelector('iframe') as HTMLIFrameElement;
+      if (!inner.contentDocument?.querySelector('button')) {
+        await new Promise(resolve => inner.addEventListener('load', resolve, { once: true }));
+      }
       const [outer] = collectContextTreeWithin(container, budgets()).components;
 
       expect(types(outer.children)).toEqual(['frame']);
@@ -912,6 +928,24 @@ describe('collectContextTree, choosing what to collect', () => {
       { focus: 'modal' }
     );
     expect(result.components.map(node => node.label)).toEqual(['Second']);
+  });
+
+  it('takes only a dialog that says it is modal for the open modal', () => {
+    container.innerHTML = `${PAGE}<dialog aria-label="Tip"><button>OK</button></dialog><div role="alertdialog" aria-label="Saved"></div>`;
+    const dialog = container.querySelector('dialog') as HTMLDialogElement;
+    // A dialog opened with show(), and an alert dialog that does not say it is modal,
+    // leave the page in use.
+    dialog.show();
+    expect(topmostModal(container)).toBeNull();
+    expect(collectContextTreeWithin(container, resolveSnapshotOptions({ focus: 'modal' })).focus).toBeUndefined();
+
+    dialog.close();
+    dialog.showModal();
+    try {
+      expect(topmostModal(container)).toBe(dialog);
+    } finally {
+      dialog.close();
+    }
   });
 
   it('describes the whole page under modal focus while no modal is open', () => {

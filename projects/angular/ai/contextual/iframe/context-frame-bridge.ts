@@ -81,7 +81,8 @@ export interface ClrContextFrameHostOptions {
   /**
    * Serve any origin that asks. Only set this when snapshots are known to contain
    * nothing an arbitrary embedded document should not see — the whole page context,
-   * including every visible label, is handed over.
+   * including every visible label, is handed over. Only frames embedded in this page
+   * are served, whatever their origin: never a popup, another tab or an opener.
    */
   allowAnyOrigin?: boolean;
 
@@ -219,7 +220,7 @@ export class ClrContextFrameHost {
       return;
     }
     const source = event.source as Window | null;
-    if (!source) {
+    if (!source || !this.isEmbedded(source)) {
       return;
     }
     if (this.isThrottled(source)) {
@@ -253,6 +254,20 @@ export class ClrContextFrameHost {
       return false;
     }
     return this.allowAnyOrigin || this.allowedOrigins.includes(origin);
+  }
+
+  /**
+   * Whether `source` is a frame inside this window, at any depth. The bridge serves the
+   * UI a page embeds, never a window that merely shares an allowed origin — a popup
+   * opened on this page, another tab, or a page that opened this one — which could
+   * otherwise read the signed-in user's context by posting a request.
+   */
+  private isEmbedded(source: Window): boolean {
+    try {
+      return source !== this.hostWindow && this.topLevelFrameOf(source).parent === this.hostWindow;
+    } catch {
+      return false;
+    }
   }
 
   private isThrottled(source: Window): boolean {

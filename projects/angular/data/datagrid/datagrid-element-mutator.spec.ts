@@ -8,6 +8,7 @@
 import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import {
   ClrContextEngineService,
@@ -19,6 +20,7 @@ import {
 } from '@clr/angular/ai';
 import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrComponentContext } from '@clr/angular/utils';
 
+import { ClrDatagrid } from './datagrid';
 import { ClrDatagridModule } from './datagrid.module';
 
 interface Server {
@@ -367,6 +369,20 @@ describe('ClrDatagrid element mutator', () => {
 
       expect(result.refused).toBe('invalid');
       expect(host.selected).toEqual([]);
+    });
+
+    it('does not tell the application the selection changed when a write repeats it', async () => {
+      await create(MultiHost);
+      const datagrid = fixture.debugElement.query(By.directive(ClrDatagrid)).componentInstance as ClrDatagrid<Server>;
+      const changes = jasmine.createSpy('clrDgSelectedChange');
+      const subscription = datagrid.selectedChanged.subscribe(changes);
+
+      expect((await select(['esx-02'])).applied).toBeTrue();
+      const afterFirst = changes.calls.count();
+      expect(afterFirst).toBeGreaterThan(0);
+      expect((await select(['esx-02'])).applied).toBeTrue();
+      expect(changes.calls.count()).toBe(afterFirst);
+      subscription.unsubscribe();
     });
 
     it('takes a value that fits one row by more of its content', async () => {

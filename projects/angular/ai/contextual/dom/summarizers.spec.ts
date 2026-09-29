@@ -214,6 +214,28 @@ describe('summarizeRole', () => {
       expect(list?.items).toEqual(['Keep']);
     });
 
+    it('leaves out headers, tabs and list items a style hides, and keeps options a closed dropdown never renders', () => {
+      const list = summarize('<ul><li>Visible</li><li style="display: none">Hidden item</li></ul>', 'list');
+      expect(list?.itemCount).toBe(1);
+      expect(list?.items).toEqual(['Visible']);
+
+      const table = summarize(
+        `<table><thead><tr><th>Name</th><th style="display: none">Salary</th></tr></thead>
+         <tbody><tr><td>a</td><td style="display: none">1</td></tr></tbody></table>`,
+        'table'
+      );
+      expect(table?.columns).toEqual(['Name']);
+
+      const tabs = summarize(
+        '<div role="tablist"><button role="tab">One</button><button role="tab" style="visibility: hidden">Two</button></div>',
+        'tablist'
+      );
+      expect(tabs?.tabs).toEqual(['One']);
+
+      const select = summarize('<select><option>Alpha</option><option>Beta</option></select>', 'combobox');
+      expect(select?.options).toEqual(['Alpha', 'Beta']);
+    });
+
     it('leaves out ignored and hidden options of a datalist', () => {
       container.innerHTML = `
         <div>

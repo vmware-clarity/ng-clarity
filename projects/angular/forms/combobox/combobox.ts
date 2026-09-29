@@ -40,6 +40,7 @@ import {
 } from '@clr/angular/popover/common';
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   clrContextText,
   ClrElementContextCallback,
@@ -748,10 +749,22 @@ export class ClrCombobox<T>
     return typeof display === 'string' && clrNormalizeContextText(display) === wanted;
   }
 
-  /** An option's visible label, without screen-reader-only additions such as "Selected". */
+  /**
+   * An option's visible label, without screen-reader-only additions such as "Selected".
+   * An option that shows no text is named by its value — but not one whose text was
+   * withheld: its value is as often the very thing withheld, an account number shown in a
+   * redacted span.
+   */
   private optionLabel(option: ClrOption<T>): string {
-    const text = clrContextText(option.elRef.nativeElement, element => element.classList.contains('clr-sr-only'));
-    return clrNormalizeContextText(text, false) || String(option.value);
+    const element: HTMLElement = option.elRef.nativeElement;
+    const text = clrNormalizeContextText(
+      clrContextText(element, descendant => descendant.classList.contains('clr-sr-only')),
+      false
+    );
+    if (text || element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)) {
+      return text;
+    }
+    return String(option.value);
   }
 
   private selectedValueLabel(value: T): unknown {

@@ -38,6 +38,7 @@ import {
   clrNormalizeContextText,
   clrPublishElementContext,
   clrPublishElementMutator,
+  clrUsableSelectors,
   uniqueIdFactory,
 } from '@clr/angular/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
@@ -173,9 +174,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /**
    * The elements the latest snapshot left out (its `excludeSelectors`), as one selector.
    * Matching an agent's words and quoting rows back in a refusal use the labels that
-   * snapshot published. The mutation engine takes a snapshot of its own, with the
-   * application's options, before it writes, so it is the application's exclusions that
-   * hold for writes.
+   * snapshot published. `apply()` takes a snapshot of its own before it writes — with the
+   * application's options and any it was given — so those are the exclusions that hold
+   * for a write. `plan()` takes none, and matches as the latest snapshot labelled.
    */
   private contextExcluded = '';
   private contentInitialized = false;
@@ -326,7 +327,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // mislead a screen reader.
     this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions => {
       const state: Record<string, unknown> = {};
-      this.contextExcluded = usableSelector(this.el.nativeElement, snapshotOptions?.excludeSelectors ?? []);
+      this.contextExcluded = clrUsableSelectors(this.el.nativeElement, snapshotOptions?.excludeSelectors ?? []);
 
       // Named apart from the `rowCount` the engine reads off the grid (the rows on this
       // page, or `aria-rowcount`), which is a different number for a paginated grid.
@@ -796,6 +797,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       if (replacing && this.selection.isLocked(current)) {
         return { refused: 'The selected row is locked and cannot be deselected.' };
       }
+      const unchanged = rows.length
+        ? current !== undefined && current !== null && !replacing
+        : current === undefined || current === null;
+      // Repeating a write changes nothing, so it does not tell the application it did.
+      if (unchanged) {
+        return { value: this.readSelection() };
+      }
       if (rows.length) {
         this.selection.setSelected(rows[0].item, true);
       } else {
@@ -814,7 +822,12 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           next.push(row.item);
         }
       }
-      this.selection.current = next;
+      // Repeating a write changes nothing, so it does not tell the application it did.
+      const current = this.selection.current ?? [];
+      const selected = new Set(current.map(identify));
+      if (next.length !== current.length || next.some(item => !selected.has(identify(item)))) {
+        this.selection.current = next;
+      }
     }
     return { value: this.readSelection() };
   }
@@ -907,18 +920,4 @@ function withinRow(element: Element, row: Element): Element[] {
     }
   }
   return path;
-}
-
-/** The selectors the document accepts, joined into one, or `''` for none. */
-function usableSelector(root: Element, selectors: readonly string[]): string {
-  return selectors
-    .filter(selector => {
-      try {
-        root.matches(selector);
-        return !!selector;
-      } catch {
-        return false;
-      }
-    })
-    .join(', ');
 }

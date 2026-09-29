@@ -29,7 +29,7 @@ import {
   triggerAllFormControlValidation,
 } from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
-import { filter, map, pairwise, startWith, tap } from 'rxjs/operators';
+import { filter, map, pairwise, startWith, take, tap } from 'rxjs/operators';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
 import { StepperPanelModel } from './models/stepper-panel.model';
@@ -162,10 +162,14 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
   }
 
+  /** The step's status now: the service's panels are held in a subject that replays them at once. */
   private currentStatus(): StepperPanelStatus {
-    return (
-      (this.stepperService.getPanel(this.id) as StepperPanelModel | undefined)?.status ?? StepperPanelStatus.Inactive
-    );
+    let status = StepperPanelStatus.Inactive;
+    this.stepperService
+      .getPanelChanges(this.id)
+      .pipe(take(1))
+      .subscribe(panel => (status = (panel as StepperPanelModel | undefined)?.status ?? status));
+    return status;
   }
 
   private listenToFocusChanges() {

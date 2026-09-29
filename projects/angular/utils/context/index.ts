@@ -10,3 +10,4 @@ export * from './interfaces';
 export * from './element-context';
 export * from './element-mutator';
 export * from './text';
+export * from './selectors';

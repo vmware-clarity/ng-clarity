@@ -24,7 +24,10 @@
  * must be switched off offers an input for it.
  */
 export class ClrHostAttribute {
-  private readonly authored: string | null;
+  /** What the element held when the directive was created. */
+  private readonly initial: string | null;
+  /** The value the author wrote, `null` for none, `undefined` until the first {@link value} call decides. */
+  private authored: string | null | undefined = undefined;
   private reported: string | null | undefined = undefined;
   private yielded = false;
 
@@ -33,8 +36,10 @@ export class ClrHostAttribute {
     private readonly name: string
   ) {
     // Static attributes are set before the directive is created, so what the author
-    // wrote is readable here and is not yet overwritten by the host binding.
-    this.authored = element?.getAttribute?.(name) ?? null;
+    // wrote is readable here and is not yet overwritten by the host binding. So is what
+    // the server rendered for the component itself, on a page being hydrated: which of
+    // the two it is is decided on the first `value` call.
+    this.initial = element?.getAttribute?.(name) ?? null;
   }
 
   /**
@@ -48,11 +53,17 @@ export class ClrHostAttribute {
 
   /** What the host binding should return, given what the component would report. */
   value(computed: string | boolean | null): string | null {
+    const next = computed === null || computed === false ? null : String(computed);
+    if (this.authored === undefined) {
+      // A value the component would report itself is taken as the component's — what a
+      // server rendered for it — so that it keeps following the component after
+      // hydration. Anything else there from the start is the author's, and stays.
+      this.authored = this.initial !== null && this.initial !== next ? this.initial : null;
+    }
     if (this.authored !== null) {
       return this.authored;
     }
     const current = this.element?.getAttribute?.(this.name) ?? null;
-    const next = computed === null || computed === false ? null : String(computed);
     // The application's bindings run before the component's host bindings, so on the
     // first pass a value already on the element that is not the component's was bound
     // by the application. One equal to the component's is taken as its own, as it is

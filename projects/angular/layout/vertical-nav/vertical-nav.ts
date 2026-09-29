@@ -23,6 +23,9 @@ import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-gr
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 
+/** A navigation landmark, explicit or implicit. */
+const LANDMARK_SELECTOR = 'nav, [role="navigation"]';
+
 @Component({
   selector: 'clr-vertical-nav',
   templateUrl: './vertical-nav.html',
@@ -97,8 +100,9 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
    * The vertical nav is a navigation landmark, the same way the header is a banner: it
    * lets assistive technology jump to or past it, and lets page-context tooling leave it
    * out as layout. Left off when the nav already sits inside a landmark (a `<nav>`, an
-   * element with `role="navigation"`), so a page does not end up with two nested ones. A
-   * `role` the application writes or binds on the element is kept either way.
+   * element with `role="navigation"`), or holds one the application put in it, so a page
+   * does not end up with two nested ones. A `role` the application writes or binds on the
+   * element is kept either way.
    */
   @HostBinding('attr.role')
   private get hostRole(): string | null {
@@ -119,7 +123,10 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.insideLandmark = !!this.el?.nativeElement.parentElement?.closest('nav, [role="navigation"]');
+    // Projected content is in place by now: the component's view, and what it projects,
+    // is created before any lifecycle hook runs.
+    const host = this.el?.nativeElement;
+    this.insideLandmark = !!host?.parentElement?.closest(LANDMARK_SELECTOR) || !!host?.querySelector(LANDMARK_SELECTOR);
   }
 
   ngOnDestroy() {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { InjectionToken, Provider } from '@angular/core';
+import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders } from '@angular/core';
 
 import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
 import { clrContextPreset, ClrContextPreset } from '../snapshot-options';
@@ -27,11 +27,15 @@ export const CLR_CONTEXT_OPTIONS = new InjectionToken<ClrContextSnapshotOptions>
  *
  * A preset name gives a starting bundle (see `CLR_CONTEXT_PRESETS`); explicit options,
  * or the overrides after a preset, are applied over it.
+ *
+ * Provide it at application level (`bootstrapApplication` or the root module's
+ * `providers`): the engine is root-provided and reads the root injector only. The return
+ * type keeps it out of a component's `providers`, where it would be silently ignored.
  */
 export function provideClrContextOptions(
   options: ClrContextPreset | ClrContextSnapshotOptions,
   overrides: ClrContextSnapshotOptions = {}
-): Provider[] {
+): EnvironmentProviders {
   const resolved = typeof options === 'string' ? clrContextPreset(options, overrides) : { ...options, ...overrides };
-  return [{ provide: CLR_CONTEXT_OPTIONS, useValue: resolved }];
+  return makeEnvironmentProviders([{ provide: CLR_CONTEXT_OPTIONS, useValue: resolved }]);
 }

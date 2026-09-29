@@ -12,7 +12,6 @@ import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
-import { Provider } from '@angular/core';
 import { Router } from '@angular/router';
 import { Type } from '@angular/core';
 
@@ -445,7 +444,7 @@ export function diffClrContext(previous: ClrPageContext | null, current: ClrPage
 export function isEmptyClrContextChange(change: ClrContextChange): boolean;
 
 // @public
-export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): Provider[];
+export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): EnvironmentProviders;
 
 // @public
 export function provideClrMutationPolicy(policy: ClrMutationPolicy): EnvironmentProviders;

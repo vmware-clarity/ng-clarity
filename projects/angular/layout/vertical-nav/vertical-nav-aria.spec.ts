@@ -47,6 +47,9 @@ import { ClrVerticalNavModule } from './vertical-nav.module';
     <clr-vertical-nav aria-label="Inventory" class="named">
       <a clrVerticalNavLink href="#/inventory">Inventory</a>
     </clr-vertical-nav>
+    <clr-vertical-nav class="holds-nav">
+      <nav aria-label="Projects"><a clrVerticalNavLink href="#/projects">Projects</a></nav>
+    </clr-vertical-nav>
     <span id="admin-heading">Administration</span>
     <clr-vertical-nav aria-labelledby="admin-heading" class="labelledby">
       <a clrVerticalNavLink href="#/admin">Admin</a>
@@ -107,6 +110,11 @@ describe('Vertical nav, as assistive technology sees it', () => {
 
   it('adds no landmark of its own inside an existing one, so the page does not get two nested', () => {
     expect(nav('.inside-nav').hasAttribute('role')).toBe(false);
+  });
+
+  it('adds no landmark of its own around one the application put inside it', () => {
+    expect(nav('.holds-nav').hasAttribute('role')).toBe(false);
+    expect(nav('.holds-nav').hasAttribute('aria-label')).toBe(false);
   });
 
   it('treats an ancestor with role="navigation" as an existing landmark, too', () => {

@@ -302,7 +302,9 @@ describe('ClrMutationEngineService write path', () => {
       );
       expect(report.results[1].applied).toBeTrue();
       expect(host.form.value.name).toBe('Ada');
-      // The refused write leaves the control as the user left it.
+      // The refused write leaves the control as the user left it, value included.
+      expect(host.form.controls.broken.value).toBe('');
+      expect(host.form.getRawValue().broken).toBe('');
       expect(host.form.controls.broken.touched).toBeFalse();
       expect(host.form.controls.broken.dirty).toBeFalse();
     });

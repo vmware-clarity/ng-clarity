@@ -756,6 +756,9 @@ export class ClrTemplateRefModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2.CommonModule], [typeof TemplateRefContainer]>;
 }
 
+// @public
+export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string;
+
 // @public (undocumented)
 export function collapse(): AnimationMetadata[];
 

@@ -7,6 +7,8 @@
 
 import { CLR_CONTEXT_IGNORE_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
 
+import { checkVisibility } from './visibility';
+
 /**
  * Normalizes whitespace and enforces a text budget, marking anything shortened with an
  * ellipsis so a reader can tell truncated text from a genuinely short value. The result
@@ -171,7 +173,7 @@ function isUnrendered(element: Element): boolean {
   }
   // Without options this is exactly "not rendered": display: none here or above — or
   // `display: contents`, which has no box but renders its children in its place.
-  if ((element as HTMLElement).checkVisibility()) {
+  if (checkVisibility(element, false)) {
     return false;
   }
   if (element.ownerDocument.defaultView?.getComputedStyle(element).display !== 'contents') {
