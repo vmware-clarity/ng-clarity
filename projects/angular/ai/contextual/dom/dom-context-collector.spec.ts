@@ -151,6 +151,20 @@ describe('DOM context collector - Clarity Angular components', () => {
     expect(alert?.label).toBe('Disk almost full');
   });
 
+  it('does not describe a component that renders nothing and has nothing to publish right now', () => {
+    const host = document.createElement('div');
+    const closed = document.createElement('clr-closed-widget');
+    host.appendChild(closed);
+    document.body.appendChild(host);
+    const teardown = clrPublishElementContext(closed, () => null);
+    try {
+      expect(clrCollectDomContexts(host)).toEqual([]);
+    } finally {
+      teardown();
+      host.remove();
+    }
+  });
+
   it("reports an alert's exact severity, which no ARIA attribute can express", () => {
     // role="alert" only distinguishes important from informational; danger from warning
     // is something only the component knows, so it publishes it.

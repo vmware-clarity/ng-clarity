@@ -44,7 +44,14 @@ export function mergeElementContext(
   if (!published) {
     return base;
   }
-  const own = publishedParts(published, options, PUBLISHED_DEPTH);
+  let own: Partial<ClrComponentContext>;
+  try {
+    own = publishedParts(published, options, PUBLISHED_DEPTH);
+  } catch {
+    // Reading what was published can throw too — a getter in its state — and counts as
+    // having published nothing.
+    return base;
+  }
   const merged: ClrComponentContext = { ...base, state: { ...base.state, ...own.state } };
   if (own.type) {
     merged.type = own.type;
@@ -78,7 +85,12 @@ export function publishedNode(
   options: Required<ClrContextSnapshotOptions>,
   depth = PUBLISHED_DEPTH
 ): ClrComponentContext | null {
-  const parts = publishedParts(value, options, depth);
+  let parts: Partial<ClrComponentContext>;
+  try {
+    parts = publishedParts(value, options, depth);
+  } catch {
+    return null;
+  }
   if (!parts.type) {
     return null;
   }

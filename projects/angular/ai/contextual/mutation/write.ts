@@ -88,7 +88,13 @@ export interface WriteOutcome {
   detail?: string;
 }
 
-/** What Angular's select accessors expose to their own `change` and `blur` listeners. */
+/**
+ * What Angular's select accessors (`SelectControlValueAccessor` and
+ * `SelectMultipleControlValueAccessor`) keep for their own `change` and `blur` listeners.
+ * These are implementation fields, not documented API — verified against
+ * `@angular/forms` 21.2 — and a spec (write.spec.ts, "Angular's select accessors") fails
+ * should they be renamed; until then every select write would be refused as unsupported.
+ */
 interface SelectAccessor {
   onChange?: (value: unknown) => void;
   onTouched?: () => void;
@@ -178,15 +184,16 @@ export function resolveWriteTarget(
 }
 
 /**
- * Whether the description an agent gave names the node. It may leave words of the label
- * out ("email" names "Email address") and add filler — articles, "field", the node's
- * type — but nothing else: "last name" does not name "Name", "email" does not name
- * "Confirm email", and "the wrong email" or "not email, the password" do not name "Email".
- * A word that tells a field from its pair ("confirm", "billing", "other") is required
- * wherever the label has one; a negating word is allowed only where the label itself says
- * it ("Other income"). A label the snapshot cut short (ending in "…") is matched on the
- * words it kept, and the description may go on where the label was cut. A node without a
- * name can only be described by nothing, or by what it is ("grid").
+ * Whether the description an agent gave names the node. It must say every word of the
+ * label, and may add filler — articles, "field", the node's type — but nothing else:
+ * "email" does not name "Email address" nor "Confirm email", "last name" does not name
+ * "Name", and "the wrong email" or "not email, the password" do not name "Email". Every
+ * word being required is what tells a field from its pair in any language ("E-Mail
+ * bestätigen", "Nouveau mot de passe"); the English lists below add what word order
+ * cannot: a negating word is allowed only where the label itself says it ("Other
+ * income"). A label the snapshot cut short (ending in "…") is matched on the words it
+ * kept, and the description may go on where the label was cut. A node without a name can
+ * only be described by nothing, or by what it is ("grid").
  */
 export function descriptionMatches(description: unknown, label: string, type = ''): boolean {
   if (typeof description !== 'string') {
@@ -207,12 +214,12 @@ export function descriptionMatches(description: unknown, label: string, type = '
   if (actual.some(word => (DISTINGUISHING_WORDS.has(word) || NEGATING_WORDS.has(word)) && !given.includes(word))) {
     return false;
   }
+  const said = actual.every(word => given.includes(word) || FILLER_WORDS.has(word) || typeWords.includes(word));
   if (cut) {
-    return actual.every(word => given.includes(word));
+    return said;
   }
-  const named = given.some(word => actual.includes(word));
   const extra = given.some(word => !actual.includes(word) && !FILLER_WORDS.has(word) && !typeWords.includes(word));
-  return named && !extra;
+  return said && given.some(word => actual.includes(word)) && !extra;
 }
 
 /** Words that describe the node rather than name it, and so do not count as extra. */
@@ -434,10 +441,15 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
     }
   } catch (error) {
     restoreOptions?.();
-    // `setValue` stores the value before it hands it to the value accessor, so a throwing
-    // accessor would leave the model holding what the view refused. Put it back quietly:
-    // no change was announced, and the accessor that threw is not asked again.
-    control.setValue(valueBefore, { emitModelToViewChange: false, emitEvent: false });
+    // `setValue` stores the value and hands it to the view before it validates, so a
+    // throwing accessor or validator would leave the model, the view or both holding the
+    // refused value. Both are put back quietly — no change was announced — the view
+    // through the accessor; should that throw again, the model alone.
+    try {
+      control.setValue(valueBefore, { emitEvent: false });
+    } catch {
+      control.setValue(valueBefore, { emitModelToViewChange: false, emitEvent: false });
+    }
     rollback(control);
     throw error;
   }

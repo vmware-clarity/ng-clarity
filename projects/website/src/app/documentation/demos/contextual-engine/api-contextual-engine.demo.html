@@ -76,7 +76,8 @@
         ticked boxes, selected rows — is withheld unless <code cds-text="code">shareFormValues</code> is set, and the
         page's address is reduced to its route pattern — links to the application to the pattern they match, links
         elsewhere and frames to their origin, <code cds-text="code">mailto:</code> links to their scheme — and the
-        document title withheld, unless <code cds-text="code">shareFullUrl</code> is set. The application's own
+        document title withheld — the page's, and a frame's <code cds-text="code">state.title</code> — unless
+        <code cds-text="code">shareFullUrl</code> is set. The application's own
         <code cds-text="code">clrContext</code> annotations are shared as they are. Descriptions — helper and validation
         text — are still shared: keep what they say free of the value, or mark the field
         <code cds-text="code">data-clr-context-redact</code>.
@@ -225,9 +226,9 @@
         Gives the control a value, in the agent's terms: text, a number, <code cds-text="code">true</code> or
         <code cds-text="code">false</code>, an option's label (or one per item for a multi-select), a date or ISO
         string, the rows to select. The <code cds-text="code">description</code> is the node's label as the agent knows
-        it, and is checked against the node before anything is written: it may leave words out and add filler ("the …
-        field"), but no other words — "last name" does not name "Name", nor "email" "Confirm email", nor "the wrong
-        email" "Email".
+        it, and is checked against the node before anything is written: it must say every word of the label and may add
+        filler ("the … field"), but no other words — "last name" does not name "Name", nor "email" "Confirm email", nor
+        "the wrong email" "Email". Requiring every word is what tells a field from its pair in any language.
       </td>
     </tr>
     <tr>

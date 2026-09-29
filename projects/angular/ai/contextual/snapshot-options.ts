@@ -140,14 +140,18 @@ const BUDGET_KEYS = Object.keys(BUDGET_RANGES) as BudgetKey[];
 const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames', 'includeRoutes'] as const;
 const LIST_KEYS = ['excludeRoles', 'excludeSelectors'] as const;
 
-/** Most entries a selector or role list may hold, and the longest any entry may be. */
+/**
+ * Most entries an untrusted caller's selector or role list may hold. The application's
+ * own lists are never cut: an exclusion dropped for length is content that leaks.
+ */
 export const MAX_LIST_ENTRIES = 50;
+/** The longest any list entry may be. */
 const MAX_ENTRY_LENGTH = 500;
 
 /**
  * The budgets a snapshot is actually built with: the caller's options over the defaults,
- * with every budget a finite integer inside its range, every list a bounded list of
- * strings, and every enumeration one of its values. Anything else falls back to the
+ * with every budget a finite integer inside its range, every list a list of strings, and
+ * every enumeration one of its values. Anything else falls back to the
  * default rather than to "unbounded".
  */
 export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Required<ClrContextSnapshotOptions> {
@@ -237,8 +241,8 @@ export function capSnapshotOptions(
       capped[key] = false;
     }
   }
-  // The ceiling's exclusions come first: lists are bounded when they are resolved, and
-  // only what the requester added may be cut, never what the ceiling requires.
+  // Exclusions add up. A requester's list was bounded when it was sanitized; the
+  // ceiling's is kept whole.
   for (const key of LIST_KEYS) {
     const limit = ceiling[key];
     if (Array.isArray(limit) && limit.length) {
@@ -266,8 +270,7 @@ function stringList(value: unknown[]): string[] {
   return value
     .filter((entry): entry is string => typeof entry === 'string')
     .map(entry => entry.trim().slice(0, MAX_ENTRY_LENGTH))
-    .filter(entry => entry.length > 0)
-    .slice(0, MAX_LIST_ENTRIES);
+    .filter(entry => entry.length > 0);
 }
 
 function clamp(value: number, range: { min: number; max: number }): number {

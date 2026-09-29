@@ -13,7 +13,11 @@ import {
   clrContextPreset,
   resolveSnapshotOptions,
 } from './snapshot-options';
-import { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS, sanitizeUntrustedSnapshotOptions } from './untrusted-options';
+import {
+  CLR_CONTEXT_UNTRUSTED_OPTION_KEYS,
+  sanitizeUntrustedSnapshotOptions,
+  withoutUrlDetails,
+} from './untrusted-options';
 
 describe('snapshot options', () => {
   describe('resolveSnapshotOptions', () => {
@@ -122,9 +126,10 @@ describe('snapshot options, choosing what to collect', () => {
     expect(resolved.collectionItems).toBe('all');
   });
 
-  it('bounds the lists an untrusted caller may send', () => {
+  it('bounds the lists an untrusted caller may send, and never cuts the application’s own', () => {
     const many = Array.from({ length: 80 }, (_, index) => `role-${index}`);
-    expect(resolveSnapshotOptions({ excludeRoles: many }).excludeRoles.length).toBe(50);
+    expect(resolveSnapshotOptions({ excludeRoles: many }).excludeRoles.length).toBe(80);
+    expect(resolveSnapshotOptions({ excludeSelectors: many }).excludeSelectors).toEqual(many);
     expect(sanitizeUntrustedSnapshotOptions({ excludeRoles: many, excludeSelectors: ['x'] })).toEqual({
       excludeRoles: many.slice(0, 50),
     });
@@ -238,5 +243,23 @@ describe('snapshot options, the exported constants', () => {
 
     expect(CLR_CONTEXT_PRESETS.minimal.excludeCategories).toEqual(['layout', 'text']);
     expect(CLR_CONTEXT_PRESETS.minimal.maxComponents).toBe(150);
+  });
+});
+
+describe('withoutUrlDetails', () => {
+  it('drops the page title and a frame’s document title with the address', () => {
+    const shared = withoutUrlDetails({
+      title: 'Statement for ACC-1',
+      url: 'https://app.example/statements/1',
+      regions: [],
+      components: [
+        { type: 'frame', element: 'iframe', state: { title: 'Statement for ACC-2', url: 'https://plugin.example/x' } },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.title).toBe('');
+    expect(JSON.stringify(shared)).not.toContain('ACC-');
+    expect(shared.components[0].state).toEqual({ url: 'https://plugin.example/' });
   });
 });

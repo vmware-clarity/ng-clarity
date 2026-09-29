@@ -700,11 +700,12 @@ describe('collectContextTree, text and frames', () => {
       expect(types(frame.children)).toEqual(['heading', 'button']);
     });
 
-    it('takes the frame’s name from its document title when the frame itself has none', async () => {
+    it('reports the frame’s document title apart from its name, when the frame itself has none', async () => {
       await frameWith('<title>Billing</title><p>Invoices</p>');
       const [frame] = collectContextTreeWithin(container, budgets()).components;
 
-      expect(frame.label).toBe('Billing');
+      expect(frame.label).toBeUndefined();
+      expect(frame.state?.title).toBe('Billing');
     });
 
     it('does not take a name from the document title of a frame in a redacted region', async () => {
@@ -1173,6 +1174,14 @@ describe('collectContextTree, markup it did not expect', () => {
     expect(result.truncated).toBe(true);
   });
 
+  it('stops after looking at as many elements as a walk may, and says the snapshot was cut off', () => {
+    container.innerHTML = '<div></div>'.repeat(25_100) + '<button>Late</button>';
+    const result = collectContextTreeWithin(container, options());
+
+    expect(result.components).toEqual([]);
+    expect(result.truncated).toBe(true);
+  });
+
   it('reads no description or name from an element hidden from assistive technology or inert', () => {
     const { components } = collect(
       `<input aria-label="Code" aria-describedby="h i v" />
@@ -1193,6 +1202,28 @@ describe('collectContextTree, markup it did not expect', () => {
     expect(item.type).toBe('treeitem');
     expect(item.label).toBe('Hosts');
     expect(item.children?.map(child => child.type)).toEqual(['link']);
+  });
+
+  it('takes no name from a label, legend or caption nobody sees', () => {
+    const { components } = collect(
+      `<label for="a" hidden>SMUGGLED-1</label><input id="a" />
+       <label for="b" aria-hidden="true">SMUGGLED-2</label><input id="b" />
+       <label for="c" style="display: none">SMUGGLED-3</label><input id="c" />
+       <fieldset><legend hidden>SMUGGLED-4</legend><input aria-label="Inside" /></fieldset>
+       <table><caption style="display: none">SMUGGLED-5</caption><tr><td>1</td></tr></table>
+       <label for="d" class="clr-sr-only" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Search</label><input id="d" />`
+    );
+    const json = JSON.stringify(components);
+    expect(json).not.toContain('SMUGGLED');
+    // A label clipped for screen readers is seen by them, and still names its field.
+    expect(json).toContain('"label":"Search"');
+  });
+
+  it('leaves out a list item that a display: contents wrapper sits in a hidden parent of', () => {
+    const { components } = collect(
+      '<ul><div style="display: none"><li style="display: contents">HIDDEN-LI</li></div><li>Shown</li></ul>'
+    );
+    expect(JSON.stringify(components)).not.toContain('HIDDEN-LI');
   });
 
   it('shortens a name without splitting a character in two', () => {

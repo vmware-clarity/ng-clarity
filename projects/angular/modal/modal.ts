@@ -83,7 +83,8 @@ export class ClrModal implements OnChanges, OnDestroy {
    * Whether the dialog keeps the user from the page behind it: it says so to assistive
    * technology and page-context tooling with `aria-modal`, and keeps keyboard focus
    * inside. A pinned side panel or an inline wizard sits beside a page that stays in use,
-   * so it is not modal.
+   * so it is not modal. Despite its name, `false` also turns off the focus trap: the user
+   * can tab between the dialog and the page.
    */
   @Input({ alias: 'clrModalAriaModal', transform: booleanAttribute }) ariaModal = true;
 

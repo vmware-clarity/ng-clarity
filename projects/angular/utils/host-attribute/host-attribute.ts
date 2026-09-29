@@ -59,11 +59,12 @@ export class ClrHostAttribute {
     // On a page a server rendered — Angular marks its root with `ng-server-context` — a
     // value equal to the component's own is what the server rendered for the component,
     // and keeps following it after hydration. Anywhere else, a value already there is
-    // the application's, whatever it says.
-    this.serverRendered ??= !!this.element?.ownerDocument?.querySelector?.('[ng-server-context]');
-    const ownIfEqual = this.serverRendered;
+    // the application's, whatever it says. Asked only when such a value is there, which
+    // on most pages is never, since asking searches the document.
+    const ownIfEqual = () =>
+      (this.serverRendered ??= !!this.element?.ownerDocument?.querySelector?.('[ng-server-context]'));
     if (this.authored === undefined) {
-      this.authored = this.initial !== null && (this.initial !== next || !ownIfEqual) ? this.initial : null;
+      this.authored = this.initial !== null && (this.initial !== next || !ownIfEqual()) ? this.initial : null;
     }
     if (this.authored !== null) {
       return this.authored;
@@ -73,7 +74,7 @@ export class ClrHostAttribute {
     // first pass a value already on the element was bound by the application — even one
     // equal to what the component would say, unless a server rendered it.
     const applicationSet =
-      this.reported === undefined ? current !== null && (current !== next || !ownIfEqual) : current !== this.reported;
+      this.reported === undefined ? current !== null && (current !== next || !ownIfEqual()) : current !== this.reported;
     if (this.yielded || applicationSet) {
       this.yielded = true;
       this.reported = current;

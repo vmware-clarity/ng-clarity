@@ -10,7 +10,6 @@ import {
   CLR_CONTEXT_IGNORE_ATTRIBUTE,
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_CONTEXT_REDACT_SELECTOR,
-  CLR_ELEMENT_CONTEXT_PROPERTY,
   CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
@@ -19,7 +18,7 @@ import {
 
 import { accessibleName } from './accessible-name';
 import { ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
-import { mergeElementContext, publishedNode } from './element-context';
+import { mergeElementContext, publishedNode, readClrElementContext } from './element-context';
 import { readElementMutator } from './element-mutator';
 import {
   isLeafRole,
@@ -85,6 +84,14 @@ export const WRITABLE_ROLES: ReadonlySet<string> = new Set([
  * left out, and the snapshot says it was cut off, rather than the stack running out.
  */
 const MAX_ELEMENT_DEPTH = 512;
+
+/**
+ * How many elements one walk looks at. The component budget bounds what a snapshot says,
+ * not how much of the page is read to say it: a page of wrappers around nothing would be
+ * read end to end for an empty snapshot. What lies beyond is left out, and the snapshot
+ * says it was cut off.
+ */
+const MAX_ELEMENTS_VISITED = 25_000;
 
 /** Elements that never carry meaning for an agent. */
 const SKIPPED_TAGS = new Set(['script', 'style', 'template', 'link', 'meta', 'noscript', 'head']);
@@ -176,6 +183,8 @@ interface Walk {
   depth: number;
   /** How many elements are above the current one, described or not. */
   elementDepth: number;
+  /** How many elements the walk has looked at. Shared across the whole walk. */
+  visited: { count: number };
   /** Greater than zero while inside an embedded frame's document. */
   frameDepth: number;
   /**
@@ -223,6 +232,7 @@ export function collectContextTreeWithin(
     textDepth: 0,
     depth: 0,
     elementDepth: 0,
+    visited: { count: 0 },
     frameDepth: 0,
     mutatorDepth: 0,
     refs,
@@ -474,12 +484,13 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
   if (shouldSkipSubtree(element, walk)) {
     return [];
   }
-  if (walk.elementDepth >= MAX_ELEMENT_DEPTH) {
+  if (walk.elementDepth >= MAX_ELEMENT_DEPTH || walk.visited.count >= MAX_ELEMENTS_VISITED) {
     if (!walk.probing) {
       walk.truncated = true;
     }
     return [];
   }
+  walk.visited.count++;
   walk.elementDepth++;
   try {
     return describeAtDepth(element, walk, owner);
@@ -601,7 +612,8 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       return listOf(finish(wrapper, element, walk));
     }
     // Nothing rendered, nothing said, nothing published: a closed modal, an icon, a
-    // spacer. Such an element is not on the page as far as an agent is concerned. Nor is
+    // spacer, a dismissed alert. Such an element is not on the page as far as an agent is
+    // concerned: a publisher that has nothing to say right now counts as none. Nor is
     // one whose content was left out on purpose — a datagrid when grids are excluded —
     // which must not come back labelled with all the text it holds.
     // The role check first: it looks only at the elements that could carry an excluded
@@ -610,7 +622,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       return [];
     }
     if (
-      !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+      !readClrElementContext(element, walk.options) &&
       !accessibleText(element, undefined, walk.excludeSelector).trim()
     ) {
       return [];
@@ -839,12 +851,17 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
   const node: ClrComponentContext = { type: 'frame', element: frame.tagName.toLowerCase() };
   const state: Record<string, unknown> = {};
   const contents = frameDocument(frame);
-  // A document's title is what it shows, so a frame in a redacted region is named only
-  // by what its author gave the frame element.
-  const title = walk.redactedDepth > 0 ? '' : (contents?.title ?? '');
-  const label = accessibleName(frame, null, walk.options.maxTextLength, walk.excludeSelector) || title;
+  // A frame is named by what its author gave the frame element. Its document's title is
+  // what that document shows — a record's name as often as a page's — so it is kept
+  // apart, as the frame's `title`, where a caller given less than the full address does
+  // not get it; and a frame in a redacted region reports none.
+  const label = accessibleName(frame, null, walk.options.maxTextLength, walk.excludeSelector);
   if (label) {
     node.label = truncate(label, walk.options.maxTextLength);
+  }
+  const title = walk.redactedDepth > 0 ? '' : (contents?.title ?? '');
+  if (!label && title.trim()) {
+    state.title = truncate(title, walk.options.maxTextLength);
   }
 
   const location = contents ? contents.location.href : (frame.getAttribute('src') ?? '');

@@ -8,10 +8,10 @@
 import {
   ChangeDetectorRef,
   Component,
-  DoCheck,
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
@@ -33,17 +33,19 @@ const LIVE_REGION_SELECTOR = '[aria-live]:not([aria-live="off"]), [role="alert"]
   templateUrl: './alert.html',
   standalone: false,
 })
-export class ClrAlert implements OnInit, DoCheck, OnDestroy {
+export class ClrAlert implements OnInit, OnChanges, OnDestroy {
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
   @Input() clrCloseButtonAriaLabel: string = this.commonStrings.keys.alertCloseButtonAriaLabel;
   /**
    * The live-region role of the alert's content: `'alert'` interrupts, `'status'` waits its
-   * turn, and `null` renders none, for an application that announces the message itself.
-   * Left unset, the alert chooses (see {@link ariaRole}).
+   * turn, and `null` (or `'none'`) renders none, for an application that announces the
+   * message itself. Left unset — or given anything else, such as the bare attribute — the
+   * alert chooses (see {@link ariaRole}).
    */
-  @Input('clrAlertRole') liveRole: 'alert' | 'status' | null | undefined = undefined;
+  @Input({ alias: 'clrAlertRole', transform: liveRoleAttribute }) liveRole: 'alert' | 'status' | null | undefined =
+    undefined;
 
   @Output('clrAlertClosedChange') _closedChanged = new EventEmitter<boolean>(false);
 
@@ -54,7 +56,7 @@ export class ClrAlert implements OnInit, DoCheck, OnDestroy {
   private _isLightweight = false;
   private _origAlertType: string;
   private teardownElementContext?: () => void;
-  /** The role chosen for this check; see {@link ariaRole}. */
+  /** The role chosen from the inputs and where the alert sits; see {@link ariaRole}. */
   private renderedRole: 'alert' | 'status' | null = null;
 
   constructor(
@@ -137,7 +139,8 @@ export class ClrAlert implements OnInit, DoCheck, OnDestroy {
    * A `status` region is atomic by default, which would re-read the whole alert — its
    * buttons included — whenever any part of it changed; see {@link ariaAtomic}.
    *
-   * Chosen once per check, in `ngDoCheck`, before the template reads it.
+   * Chosen when the alert initialises and whenever an input changes, not on every check:
+   * an alert moved into a live region later says so with `clrAlertRole`.
    */
   protected get ariaRole(): 'alert' | 'status' | null {
     return this.renderedRole;
@@ -153,12 +156,15 @@ export class ClrAlert implements OnInit, DoCheck, OnDestroy {
   }
 
   ngOnInit() {
+    this.renderedRole = this.chooseRole();
+
     // role="alert" versus role="status" only says important versus informational. Which
     // of danger, warning, success, info or neutral this is lives in a CSS class, which
     // nothing can read semantically, so the component reports it directly.
-    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
-      state: { severity: this.alertType },
-    }));
+    // A dismissed alert is no longer on the page, so it says nothing.
+    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () =>
+      this._closed ? null : { state: { severity: this.alertType } }
+    );
 
     if (this.multiAlertService) {
       this.subscriptions.push(
@@ -169,8 +175,7 @@ export class ClrAlert implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  ngDoCheck() {
-    // Checked each time rather than once: an alert can be moved into a live region.
+  ngOnChanges() {
     this.renderedRole = this.chooseRole();
   }
 
@@ -215,4 +220,12 @@ export class ClrAlert implements OnInit, DoCheck, OnDestroy {
     const urgent = this.alertType === 'danger' || this.alertType === 'warning';
     return urgent && this.isAppLevel ? 'alert' : 'status';
   }
+}
+
+/** `clrAlertRole` as the alert understands it: `'none'` is `null`, anything unknown is unset. */
+function liveRoleAttribute(value: unknown): 'alert' | 'status' | null | undefined {
+  if (value === 'alert' || value === 'status') {
+    return value;
+  }
+  return value === null || value === 'none' ? null : undefined;
 }

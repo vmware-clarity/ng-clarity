@@ -68,9 +68,10 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
 
   private inline = false;
   private _generatedId = uniqueIdFactory();
+  private readonly host: HTMLElement = inject(ElementRef).nativeElement;
   // What the application writes or binds on the group itself is kept: see ClrHostAttribute.
-  private readonly ariaRequiredAttribute = new ClrHostAttribute(inject(ElementRef).nativeElement, 'aria-required');
-  private readonly ariaInvalidAttribute = new ClrHostAttribute(inject(ElementRef).nativeElement, 'aria-invalid');
+  private readonly ariaRequiredAttribute = new ClrHostAttribute(this.host, 'aria-required');
+  private readonly ariaInvalidAttribute = new ClrHostAttribute(this.host, 'aria-invalid');
 
   constructor(
     @Optional() protected override layoutService: LayoutService,

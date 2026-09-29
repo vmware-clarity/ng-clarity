@@ -767,15 +767,18 @@ export class ClrCombobox<T>
     return String(option.value);
   }
 
-  private selectedValueLabel(value: T): unknown {
+  /**
+   * What a selected value is called: its option's label, its `displayField`, or the value
+   * itself when it is plain text or a number. Never the model object itself — it holds
+   * fields the user never sees — so an object without either reads as `null`.
+   */
+  private selectedValueLabel(value: T): string | null {
     const option = this.options?.items?.find(candidate => candidate.value === value);
     if (option) {
       return this.optionLabel(option);
     }
-    if (this.displayField && value) {
-      return (value as Record<string, unknown>)[this.displayField];
-    }
-    return value;
+    const shown = this.displayField && value ? (value as Record<string, unknown>)[this.displayField] : value;
+    return typeof shown === 'string' || typeof shown === 'number' || typeof shown === 'boolean' ? String(shown) : null;
   }
 
   private getDisplayNames(model: T | T[]) {

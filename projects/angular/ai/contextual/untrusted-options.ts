@@ -153,13 +153,22 @@ function originOf(url: string | undefined): string | null {
  * A node's addresses as an untrusted caller may see them. A link to this application
  * becomes the route pattern it matches, and is dropped when it matches none; a link
  * elsewhere, and a frame, keep only their origin; a `mailto:` or `tel:` link keeps only
- * its scheme.
+ * its scheme. A frame's document title is dropped.
  */
 function withoutAddressDetails(node: ClrComponentContext, scope: AddressScope): ClrComponentContext {
   let result = node;
   const state = node.state;
-  if (state && (typeof state['href'] === 'string' || typeof state['url'] === 'string')) {
+  if (
+    state &&
+    (typeof state['href'] === 'string' ||
+      typeof state['url'] === 'string' ||
+      (node.type === 'frame' && 'title' in state))
+  ) {
     const reduced: Record<string, unknown> = { ...state };
+    // A frame's document title goes with the page's own.
+    if (node.type === 'frame') {
+      delete reduced['title'];
+    }
     for (const key of ['href', 'url']) {
       if (typeof reduced[key] === 'string') {
         const address = reducedAddress(reduced[key] as string, key === 'href', scope);

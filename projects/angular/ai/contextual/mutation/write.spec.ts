@@ -8,11 +8,13 @@
 import { Component, forwardRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
+  AbstractControl,
   ControlValueAccessor,
   FormControl,
   FormGroup,
   FormsModule,
   NG_VALUE_ACCESSOR,
+  NgControl,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
@@ -165,6 +167,8 @@ class AppBroken implements ControlValueAccessor {
       <input id="locked" formControlName="locked" />
       <label for="code">Code</label>
       <input id="code" maxlength="4" formControlName="code" />
+      <label for="strict">Strict</label>
+      <input id="strict" formControlName="strict" />
     </form>
     @if (modalOpen) {
       <div role="dialog" aria-modal="true" aria-label="Confirm">
@@ -190,6 +194,12 @@ class Host {
     volume: new FormControl(4),
     locked: new FormControl({ value: 'fixed', disabled: true }),
     code: new FormControl(''),
+    strict: new FormControl('', (control: AbstractControl) => {
+      if (control.value === 'boom') {
+        throw new Error('The validator exploded.');
+      }
+      return null;
+    }),
   });
   inside = new FormControl('');
   colourEvents = 0;
@@ -317,6 +327,14 @@ describe('ClrMutationEngineService write path', () => {
       expect(host.form.controls.broken.touched).toBeFalse();
       expect(host.form.controls.broken.dirty).toBeFalse();
     });
+
+    it('puts the view back too when a validator throws on the value', async () => {
+      const result = await set('Strict', 'boom');
+
+      expect(result).toEqual(jasmine.objectContaining({ applied: false, refused: 'invalid' }));
+      expect(host.form.controls.strict.value).toBe('');
+      expect((fixture.nativeElement.querySelector('#strict') as HTMLInputElement).value).toBe('');
+    });
   });
 
   describe('choices', () => {
@@ -367,6 +385,18 @@ describe('ClrMutationEngineService write path', () => {
 
       expect(host.colourEvents).toBe(0);
       expect(host.form.value.plan).toBe('team');
+    });
+
+    it("relies on Angular's select accessors keeping onChange and onTouched", () => {
+      // Not documented API: should Angular rename them, every select write is refused as
+      // unsupported, and this says why.
+      const select = fixture.debugElement.query(
+        debug => debug.nativeElement.getAttribute?.('formControlName') === 'plan'
+      );
+      const accessor = select.injector.get(NgControl).valueAccessor as unknown as Record<string, unknown>;
+
+      expect(typeof accessor['onChange']).toBe('function');
+      expect(typeof accessor['onTouched']).toBe('function');
     });
 
     it('refuses a select that applies its value only on submit', async () => {
@@ -436,7 +466,8 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('tells a field from its pair, and writes to a field whose own name negates', () => {
-      expect(descriptionMatches('email', 'Email address')).toBeTrue();
+      expect(descriptionMatches('email', 'Email address')).toBeFalse();
+      expect(descriptionMatches('the email address field', 'Email address')).toBeTrue();
       expect(descriptionMatches('Confirm email', 'Email')).toBeFalse();
       expect(descriptionMatches('email', 'Confirm email')).toBeFalse();
       expect(descriptionMatches('the confirm email field', 'Confirm email')).toBeTrue();
@@ -446,6 +477,14 @@ describe('ClrMutationEngineService write path', () => {
       expect(descriptionMatches('No. of seats', 'No. of seats')).toBeTrue();
       expect(descriptionMatches('Never expires', 'Never expires')).toBeTrue();
       expect(descriptionMatches('not the other income', 'Other income')).toBeFalse();
+    });
+
+    it('tells a field from its pair in a language the word lists do not know', () => {
+      expect(descriptionMatches('E-Mail', 'E-Mail bestätigen')).toBeFalse();
+      expect(descriptionMatches('Mot de passe', 'Nouveau mot de passe')).toBeFalse();
+      expect(descriptionMatches('Парола', 'Потвърди парола')).toBeFalse();
+      expect(descriptionMatches('E-Mail bestätigen', 'E-Mail bestätigen')).toBeTrue();
+      expect(descriptionMatches('nouveau mot de passe', 'Nouveau mot de passe')).toBeTrue();
     });
 
     it('matches a label the snapshot cut short on the words it kept', () => {

@@ -7,12 +7,12 @@
 
 import {
   CLR_CONTEXT_EDITING_HOST_SELECTOR,
-  CLR_CONTEXT_IGNORE_SELECTOR,
+  CLR_CONTEXT_HIDDEN_SELECTOR,
   CLR_CONTEXT_REDACT_SELECTOR,
 } from '@clr/angular/utils';
 
 import { isNameFromContents } from './roles';
-import { accessibleText, referencedText, truncate } from './text';
+import { accessibleText, isUnrendered, referencedText, truncate } from './text';
 
 /** Elements whose name a `<label>` may supply. */
 const LABELABLE = new Set(['button', 'input', 'meter', 'output', 'progress', 'select', 'textarea']);
@@ -97,13 +97,19 @@ function scopedText(element: Element, selector: string, withheld: string): strin
 
 /**
  * Whether a label, legend or caption may name `named`. Not when it is in a region the
- * engine may not read, or excluded, or in an editor; and not when a redacted region holds
- * it without holding what it names — a label marked `data-clr-context-redact` shows
- * something sensitive, not a field's name. A label inside the same redacted region as its
- * field still names it: a region withholds values and content, not what fields are called.
+ * engine may not read, or excluded, or in an editor; not when it is hidden — `hidden`,
+ * `aria-hidden`, inert, or not rendered — since text nobody sees must not name what they
+ * do (text clipped for screen readers is seen, and still names); and not when a redacted
+ * region holds it without holding what it names — a label marked `data-clr-context-redact`
+ * shows something sensitive, not a field's name. A label inside the same redacted region
+ * as its field still names it: a region withholds values and content, not what fields
+ * are called.
  */
 function readableNameSource(source: Element, named: Element, withheld: string): boolean {
-  if (source.closest(CLR_CONTEXT_IGNORE_SELECTOR) || source.closest(CLR_CONTEXT_EDITING_HOST_SELECTOR)) {
+  if (source.closest(CLR_CONTEXT_HIDDEN_SELECTOR) || source.closest(CLR_CONTEXT_EDITING_HOST_SELECTOR)) {
+    return false;
+  }
+  if (isUnrendered(source)) {
     return false;
   }
   if (withheld && source.closest(withheld)) {

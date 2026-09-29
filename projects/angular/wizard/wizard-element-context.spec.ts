@@ -103,6 +103,16 @@ describe('ClrWizard element context', () => {
     expect(steps.map(step => step.navigable)).toEqual([true, false, false]);
   });
 
+  it('publishes nothing while the wizard is closed, which is not on the page', () => {
+    fixture.componentInstance.open = false;
+    fixture.detectChanges();
+    const callback = (wizard() as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback })[
+      CLR_ELEMENT_CONTEXT_PROPERTY
+    ];
+
+    expect(callback?.(BUDGETS)).toBeNull();
+  });
+
   it('stops publishing once the wizard is destroyed', () => {
     const host = wizard();
     fixture.destroy();

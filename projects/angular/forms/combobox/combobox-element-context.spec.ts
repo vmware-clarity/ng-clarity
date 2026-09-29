@@ -128,12 +128,14 @@ describe('ClrCombobox element context', () => {
       </clr-options>
     </clr-combobox>
     <clr-combobox name="async" [(ngModel)]="asyncSelection" class="async"></clr-combobox>
+    <clr-combobox name="account" [(ngModel)]="account" class="object"></clr-combobox>
   `,
   standalone: false,
 })
 class MoreShapesTestComponent {
   selection: string[] = ['apple', 'plum'];
   asyncSelection: string | null = null;
+  account: object | null = { id: 42, email: 'hidden@example.com', internalNote: 'do not show' };
 }
 
 describe('ClrCombobox element context, other shapes', () => {
@@ -173,6 +175,14 @@ describe('ClrCombobox element context, other shapes', () => {
     const context = publishedOn('clr-combobox.async');
     expect(context.state.optionsAvailable).toBe(false);
     expect('options' in context.state).toBe(false);
+  });
+
+  it('never publishes a model object it has no label for', async () => {
+    await fixture.whenStable();
+    const context = publishedOn('clr-combobox.object');
+
+    expect(context.state.value).toBeNull();
+    expect(JSON.stringify(context)).not.toContain('hidden@example.com');
   });
 });
 

@@ -335,7 +335,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     // titles are in the DOM and readable; these facts are not.
     this.teardownElementContext = clrPublishElementContext(this.elementRef.nativeElement, () => {
       const pages = this.pages?.toArray() ?? [];
-      if (!pages.length) {
+      // A closed wizard is not on the page, so its steps are not either.
+      if (!pages.length || !this._open) {
         return null;
       }
       const currentStepIndex = pages.findIndex(page => page.current);

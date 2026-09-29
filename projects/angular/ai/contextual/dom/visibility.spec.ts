@@ -28,6 +28,11 @@ describe('visibility', () => {
     ['visibility: hidden', '<span id="target" style="visibility: hidden">x</span>', false],
     ['inside a transparent ancestor', '<div style="opacity: 0"><span id="target">x</span></div>', false],
     ['a display: contents wrapper', '<div id="target" style="display: contents"><span>x</span></div>', true],
+    [
+      'a display: contents wrapper inside display: none',
+      '<div style="display: none"><div id="target" style="display: contents"><span>x</span></div></div>',
+      false,
+    ],
   ];
 
   it('judges visibility the same way with and without Element.checkVisibility', () => {

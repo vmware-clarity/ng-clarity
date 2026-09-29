@@ -42,7 +42,7 @@ class TestComponent {
   closed = false;
   isAppLevel = false;
   closeAriaLabel: string = CLOSE_ARIA_LABEL;
-  role: 'alert' | 'status' | null | undefined = undefined;
+  role: string | null | undefined = undefined;
 
   alertMsg = 'This is an alert!';
 }
@@ -163,6 +163,30 @@ export default function (): void {
       fixture.detectChanges();
       expect(compiled.querySelector('.alert').hasAttribute('role')).toBe(false);
       expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
+    });
+
+    it("takes clrAlertRole 'none' as no live region, and anything unknown as unset", () => {
+      fixture.componentInstance.type = 'danger';
+      fixture.componentInstance.isAppLevel = true;
+      fixture.componentInstance.role = 'none';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').hasAttribute('role')).toBe(false);
+
+      fixture.componentInstance.role = '';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
+    });
+
+    it('publishes nothing about itself once dismissed', () => {
+      const host = compiled.querySelector('clr-alert') as Element & {
+        clrElementContext?: () => unknown;
+      };
+      expect(host.clrElementContext?.()).toEqual({ state: { severity: 'info' } });
+
+      fixture.componentInstance.isClosable = true;
+      fixture.componentInstance.closed = true;
+      fixture.detectChanges();
+      expect(host.clrElementContext?.()).toBeNull();
     });
 
     it('adds no live region of its own inside one the application already has', () => {

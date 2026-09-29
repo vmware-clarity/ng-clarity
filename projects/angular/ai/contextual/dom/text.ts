@@ -42,11 +42,28 @@ export function truncate(text: string, maxLength: number): string {
  * component is called, so it is left out of names.
  */
 export function isVisuallyHidden(element: Element): boolean {
-  const view = element.ownerDocument.defaultView;
-  if (!view) {
-    return false;
+  const style = computedStyle(element);
+  return !!style && isClipped(element, style);
+}
+
+/**
+ * Each element's computed style, asked for once. The declaration a browser hands out is
+ * live — it always reflects the element's current style — so keeping it is safe, and
+ * spares the walk one lookup per element for every name, description and text block that
+ * reads it.
+ */
+const STYLES = new WeakMap<Element, CSSStyleDeclaration>();
+
+function computedStyle(element: Element): CSSStyleDeclaration | null {
+  let style = STYLES.get(element);
+  if (!style) {
+    style = element.ownerDocument.defaultView?.getComputedStyle(element);
+    if (!style) {
+      return null;
+    }
+    STYLES.set(element, style);
   }
-  return isClipped(element, view.getComputedStyle(element));
+  return style;
 }
 
 /**
@@ -130,7 +147,7 @@ function textFor(element: Element, exclude: Element | undefined, includeClipped:
     if (child.matches(UNREADABLE_SELECTOR) || (withheld && child.matches(withheld))) {
       continue;
     }
-    const style = child.ownerDocument.defaultView?.getComputedStyle(child) ?? null;
+    const style = computedStyle(child);
     if (isExcludedFromName(child, style, includeClipped)) {
       continue;
     }
@@ -189,7 +206,7 @@ export const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEX
  * or full transparency on it or an ancestor — the same judgement the walk makes of what
  * it describes. Text clipped for screen readers is visible in this sense, and still read.
  */
-function isUnrendered(element: Element): boolean {
+export function isUnrendered(element: Element): boolean {
   if (element.closest('[hidden]')) {
     return true;
   }

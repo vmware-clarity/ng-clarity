@@ -22,9 +22,13 @@ export function isVisible(element: Element): boolean {
     return true;
   }
   // An element with `display: contents` has no box of its own, so it never reads as
-  // visible, but it hides nothing: its children render in its place and are judged on
-  // their own. Hidden ancestors still hide them, since those are checked as well.
-  return element.ownerDocument.defaultView?.getComputedStyle(element).display === 'contents';
+  // visible, but it hides nothing itself: its children render in its place. It shows
+  // exactly when its parent does.
+  if (element.ownerDocument.defaultView?.getComputedStyle(element).display !== 'contents') {
+    return false;
+  }
+  const parent = element.parentElement;
+  return parent ? isVisible(parent) : true;
 }
 
 /**
