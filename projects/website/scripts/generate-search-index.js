@@ -256,7 +256,7 @@ function buildHeadingEntries(html, url, title, category) {
       continue;
     }
 
-    const label = decodeHtmlEntities(match[3].replace(/<[^>]+>/g, ''))
+    const label = decodeHtmlEntities(match[3].replace(/<[^>]*>?/g, ''))
       .replace(/\s+/g, ' ')
       .trim();
 
