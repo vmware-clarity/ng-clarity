@@ -58,7 +58,8 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   animations: [
     trigger('toggleChildrenAnim', [
       transition('collapsed => expanded', [style({ height: 0 }), animate(200, style({ height: '*' }))]),
-      transition('expanded => collapsed', [style({ height: '*' }), animate(200, style({ height: 0 }))]),
+      // No collapse animation: a collapsing subtree gets content-visibility: hidden at once (see the template), so
+      // that it leaves the focus order and the accessibility tree immediately, and it has no height left to animate.
       state('expanded', style({ height: '*', 'overflow-y': 'visible' })),
       state('collapsed', style({ height: 0 })),
     ]),
