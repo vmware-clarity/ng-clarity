@@ -138,6 +138,13 @@ class ApiIndexer extends BaseIndexer {
       const tabMatches = content.split(/<app-doc-tab tab="([^"]+)">/);
 
       if (tabMatches.length === 1) {
+        // Some demos (e.g. Datagrid) render their API tab from an `apis` array in the component class,
+        // so terms defined there belong to the API tab rather than the default one.
+        const apisBlock = filePath.endsWith('.ts') ? /\bapis\s*=\s*\[[\s\S]*?\n\s*\];/.exec(content) : null;
+        if (apisBlock) {
+          processContent(apisBlock[0], 'api');
+        }
+
         // No tabs found, assume 'code' for sub-components/examples, or '' for main files
         const defaultTab = filePath.endsWith('.demo.html') && !path.basename(filePath).includes('-') ? '' : 'code';
         processContent(content, defaultTab);
