@@ -451,7 +451,7 @@ export default function (): void {
       this.testComponent.tree.collapseAll();
       this.detectChanges();
 
-      // A collapsed subtree cannot be focused, so a tab stop left inside one makes the tree unreachable by keyboard
+      // A collapsed subtree is inert, so a tab stop left inside one makes the tree unreachable by keyboard
       const stops = tabStops(this);
       expect(stops.length).toBe(1);
       expect(stops[0].closest('.clr-treenode-children')).toBeNull();

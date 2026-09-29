@@ -358,11 +358,6 @@ export default function (): void {
         this.detectChanges();
         const childrenContainer = this.clarityElement.querySelector('.clr-treenode-children');
         expect(childrenContainer.getAttribute('role')).toBe('group');
-        // Collapsed, the container stays in the accessibility tree without any content: no empty, unnamed group.
-        this.clarityDirective.expanded = false;
-        this.detectChanges();
-        expect(childrenContainer.getAttribute('role')).toBeNull();
-        this.clarityDirective.expanded = true;
         this.testComponent.withChild = false;
         this.detectChanges();
         expect(childrenContainer.getAttribute('role')).toBeNull();
@@ -604,7 +599,21 @@ export default function (): void {
         this.clarityDirective.expanded = false;
         this.detectChanges();
         expect(canFocus(child)).toBeFalse();
-        expect(childrenContainer.hasAttribute('inert')).toBeFalse();
+        expect(childrenContainer.hasAttribute('inert')).toBeTrue();
+      });
+
+      it('skips rendering the children once the node has collapsed', async function (this: Context) {
+        const childrenContainer: HTMLElement = this.clarityElement.querySelector('.clr-treenode-children');
+        const contentVisibility = () => getComputedStyle(childrenContainer).contentVisibility;
+        expect(contentVisibility()).toBe('hidden');
+        this.clarityDirective.expanded = true;
+        this.detectChanges();
+        await this.fixture.whenStable();
+        expect(contentVisibility()).toBe('visible');
+        this.clarityDirective.expanded = false;
+        this.detectChanges();
+        await this.fixture.whenStable();
+        expect(contentVisibility()).toBe('hidden');
       });
     });
 

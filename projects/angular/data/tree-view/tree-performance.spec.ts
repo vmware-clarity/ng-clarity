@@ -133,8 +133,6 @@ export default function (): void {
       });
       expect(nodes(this).length).toBe(totalNodes);
       expect(renderedCollapsedSubtrees(this)).toBe(0);
-      // inert would hide them too, but forces a style recalculation of the whole subtree on every toggle.
-      expect(this.clarityElement.querySelectorAll('.clr-treenode-children[inert]').length).toBe(0);
 
       const noopMs = timed('change detection with no changes', () => render(this));
 

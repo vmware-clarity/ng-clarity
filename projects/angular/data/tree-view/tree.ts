@@ -116,7 +116,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
   }
 
   /*
-   * A collapsed subtree cannot be focused, so the tree's single tab stop must not be left inside one: the host
+   * A collapsed subtree is made inert, so the tree's single tab stop must not be left inside one: the host
    * gives up its own tabindex the first time it is focused, which would leave the whole tree unreachable by
    * keyboard. Only the roots stay visible after a collapse, so the first one takes the tab stop over.
    */
