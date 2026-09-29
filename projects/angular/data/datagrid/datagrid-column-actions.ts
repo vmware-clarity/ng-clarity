@@ -342,6 +342,9 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     // column stays.
     this.columnActions.filterInHeader.set(true);
     this.columnActions.menuPresent.set(false);
+
+    // doesn't really matter who the current column popover parent is. The original value is null returning it to that.
+    this.columnPopover.parent = null;
   }
 
   /**

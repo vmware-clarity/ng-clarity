@@ -163,3 +163,46 @@
 
   <clr-dg-footer>{{users.length}} users</clr-dg-footer>
 </clr-datagrid>
+
+<h3>Reopening the filter after a menu session</h3>
+
+<p>
+  Repro: open the kebab menu and click <em>Filter Column</em> - the filter opens next to the menu item. Click anywhere
+  outside so both the filter and the menu close. Then click the button below, which only sets
+  <code class="clr-code">clrDgFilterOpen</code> to <code class="clr-code">true</code> - nothing appears, even though the
+  filter reports itself open.
+</p>
+
+<button type="button" class="btn btn-primary" (click)="filterOpen = !filterOpen">Open Name filter</button>
+
+<clr-datagrid>
+  <clr-dg-column [clrDgField]="'id'">User ID</clr-dg-column>
+  <clr-dg-column>
+    Name
+    <clr-dg-column-actions [clrDgKeepFilterInHeader]="false"></clr-dg-column-actions>
+    <clr-dg-filter [clrDgFilter]="nameFilter" [(clrDgFilterOpen)]="filterOpen">
+      <input type="text" [(ngModel)]="nameFilter.value" (ngModelChange)="nameFilter.changes.next($event)" />
+    </clr-dg-filter>
+  </clr-dg-column>
+  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon.name'">Pokemon</clr-dg-column>
+  <clr-dg-column [clrDgField]="'pokemon.number'" clrDgColType="number">Pokemon number</clr-dg-column>
+  <clr-dg-column>
+    Favorite color
+    <clr-dg-column-actions></clr-dg-column-actions>
+    <clr-dg-filter [clrDgFilter]="colorFilter">
+      <clr-datagrid-color-filter-demo #colorFilter class="color-filter"></clr-datagrid-color-filter-demo>
+    </clr-dg-filter>
+  </clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{user.id}}</clr-dg-cell>
+    <clr-dg-cell>{{user.name}}</clr-dg-cell>
+    <clr-dg-cell>{{user.creation | date}}</clr-dg-cell>
+    <clr-dg-cell>{{user.pokemon.name}}</clr-dg-cell>
+    <clr-dg-cell>{{user.pokemon.number}}</clr-dg-cell>
+    <clr-dg-cell><span class="color-square" [style.backgroundColor]="user.color"></span></clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{users.length}} users</clr-dg-footer>
+</clr-datagrid>

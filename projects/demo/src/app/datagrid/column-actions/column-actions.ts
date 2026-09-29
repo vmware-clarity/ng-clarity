@@ -6,10 +6,29 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrDatagridSortOrder } from '@clr/angular';
+import { ClrDatagridFilterInterface, ClrDatagridSortOrder } from '@clr/angular';
+import { Subject } from 'rxjs';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
+
+/**
+ * A minimal filter to reproduce a bug: reopening the filter through `clrDgFilterOpen` after a menu
+ * session (Filter Column, then an outside click) shows nothing, because the popover origin the menu
+ * set is torn down along with it.
+ */
+class NameFilter implements ClrDatagridFilterInterface<User> {
+  value = '';
+  changes = new Subject<string>();
+
+  isActive(): boolean {
+    return !!this.value;
+  }
+
+  accepts(user: User): boolean {
+    return user.name.toLowerCase().includes(this.value.toLowerCase());
+  }
+}
 
 @Component({
   selector: 'clr-datagrid-column-actions-demo',
@@ -30,6 +49,9 @@ export class DatagridColumnActionsDemo {
 
   exported: string[] = [];
   copied = 'nothing yet';
+
+  nameFilter = new NameFilter();
+  filterOpen = true;
 
   constructor(inventory: Inventory) {
     inventory.size = 10;
