@@ -384,6 +384,23 @@ export default function (): void {
         expect(this.popoverService.open).toBe(false);
       });
 
+      it('closes when a visible origin is scrolled to less than 80% visible', async function (this: Context) {
+        // With a 0 threshold in the list, the browser reports isIntersecting: true for any partially
+        // visible origin, so closing must be decided on intersectionRatio instead.
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+        await nextFrames();
+        expect(this.popoverService.open).toBe(true);
+
+        const origin = this.popoverService.originElement.nativeElement as HTMLElement;
+        const rect = origin.getBoundingClientRect();
+        // scroll the top 40% of the origin above the viewport - 60% stays visible
+        window.scrollTo(0, window.scrollY + rect.top + rect.height * 0.4);
+        await nextFrames();
+
+        expect(this.popoverService.open).toBe(false);
+      });
+
       it('opens with a partially clipped origin and closes once it is scrolled out of view', async function (this: Context) {
         // the origin button is wider than its clipping container, so it is never 80% visible
         const host = this.fixture.nativeElement as HTMLElement;
