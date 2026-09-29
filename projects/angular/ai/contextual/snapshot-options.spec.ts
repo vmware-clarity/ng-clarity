@@ -135,6 +135,12 @@ describe('snapshot options, choosing what to collect', () => {
     });
   });
 
+  it('never shortens the application’s own selectors', () => {
+    const long = `${Array.from({ length: 60 }, (_, index) => `.pad-${index}`).join(', ')}, .account-number`;
+    expect(resolveSnapshotOptions({ excludeSelectors: [long], rootSelector: long }).excludeSelectors).toEqual([long]);
+    expect(resolveSnapshotOptions({ rootSelector: long }).rootSelector).toBe(long);
+  });
+
   it('adds exclusions up and keeps a narrowing the ceiling chose', () => {
     const capped = capSnapshotOptions(
       { excludeRoles: ['banner'], maxDepth: 5, focus: 'page', collectionItems: 'all', rootSelector: 'body' },

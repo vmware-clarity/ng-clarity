@@ -169,6 +169,25 @@ class AppBroken implements ControlValueAccessor {
       <input id="code" maxlength="4" formControlName="code" />
       <label for="strict">Strict</label>
       <input id="strict" formControlName="strict" />
+      <clr-radio-container>
+        <label>Card</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio formControlName="card" value="visa" />
+          <label>Visa <span class="secret">4111</span></label>
+        </clr-radio-wrapper>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio formControlName="card" value="amex" />
+          <label>Amex <span class="secret">3782</span></label>
+        </clr-radio-wrapper>
+      </clr-radio-container>
+      <clr-select-container>
+        <label>Seats</label>
+        <select clrSelect multiple formControlName="seats">
+          <option value="free">Free</option>
+          <option value="staff" class="secret">Internal staff plan</option>
+          <option value="team">Team</option>
+        </select>
+      </clr-select-container>
     </form>
     @if (modalOpen) {
       <div role="dialog" aria-modal="true" aria-label="Confirm">
@@ -194,6 +213,8 @@ class Host {
     volume: new FormControl(4),
     locked: new FormControl({ value: 'fixed', disabled: true }),
     code: new FormControl(''),
+    card: new FormControl<string | null>(null),
+    seats: new FormControl<string[]>(['staff']),
     strict: new FormControl('', (control: AbstractControl) => {
       if (control.value === 'boom') {
         throw new Error('The validator exploded.');
@@ -495,6 +516,40 @@ describe('ClrMutationEngineService write path', () => {
     it('refuses a description that only mentions the label among other words', async () => {
       expect((await set('Name', 'Ada', 'not the name, the password')).refused).toBe('mismatch');
       expect((await set('Name', 'Ada', 'the name textbox')).applied).toBeTrue();
+    });
+  });
+
+  describe('choices the snapshot leaves out', () => {
+    const options = { excludeSelectors: ['.secret'] };
+
+    async function setWith(label: string, value: unknown): Promise<ClrElementMutationResult> {
+      const ref = refOf(contextEngine.getSnapshot(options), label);
+      const report = await engine.apply([{ operation: 'setValue', ref, description: label, value }], options);
+      await settle();
+      return report.results[0] as ClrElementMutationResult;
+    }
+
+    it('takes a radio by the label the snapshot showed, and quotes nothing it left out', async () => {
+      const refused = await setWith('Card', 'Diners');
+      expect(refused.detail).toContain('"Visa", "Amex"');
+      expect(JSON.stringify(refused)).not.toContain('4111');
+
+      const result = await setWith('Card', 'Visa');
+      expect(result.applied).toBeTrue();
+      expect(JSON.stringify(result)).not.toContain('4111');
+      expect(host.form.value.card).toBe('visa');
+    });
+
+    it('neither lists nor takes an excluded option, and keeps it selected', async () => {
+      const refused = await setWith('Seats', ['Gold']);
+      expect(refused.detail).toContain('"Free", "Team"');
+      expect(refused.detail).not.toContain('staff');
+      expect((await setWith('Seats', ['Internal staff plan'])).refused).toBe('invalid');
+
+      const result = await setWith('Seats', ['Team']);
+      expect(result.applied).toBeTrue();
+      expect(result.value).toEqual(['Team']);
+      expect(host.form.value.seats).toEqual(['staff', 'team']);
     });
   });
 

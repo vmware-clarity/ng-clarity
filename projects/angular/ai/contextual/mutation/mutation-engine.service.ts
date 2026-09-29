@@ -273,7 +273,9 @@ export class ClrMutationEngineService {
     const write: WriteTarget = resolution.target;
     // A ref outlives the snapshot that handed it out, and a snapshot may have been taken
     // with wider options than these: what these would leave out is not written either.
-    if (isOutsideSnapshot(write.element, options)) {
+    // A component's type may be what it published rather than any DOM role: a combobox
+    // host says it is one.
+    if (isOutsideSnapshot(write.element, options) || options.excludeRoles.includes(write.type)) {
       return { refused: 'hidden', detail: 'The control is outside what snapshots with these options describe.' };
     }
     if (!descriptionMatches(operation.description, write.label, write.type)) {
@@ -316,7 +318,7 @@ export class ClrMutationEngineService {
     if (typeof operation.path !== 'string' || !routes.some(route => route.path === operation.path)) {
       return {
         refused: 'noRoute',
-        detail: 'The path is not one of the routes the snapshot listed under availableRoutes.',
+        detail: 'The path is not a route of this application. Use a path as availableRoutes lists it.',
       };
     }
     const filled = fillRoutePath(operation.path, plainStrings(operation.params));

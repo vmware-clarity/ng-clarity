@@ -506,6 +506,29 @@ describe('ClrMutationEngineService', () => {
         expect(refused.detail).toContain('"esx-01 | Running"');
       });
 
+      it('writes nothing to a component whose role the options exclude, published or rendered', async () => {
+        const page = snapshot();
+        const grid = nodeOf(
+          page,
+          node => node.element === 'clr-datagrid' && node.state?.['selectionMode'] === 'multi',
+          'multi grid'
+        );
+        const cluster = refOf(page, 'Cluster');
+
+        const report = await engine.apply(
+          [
+            { operation: 'setValue', ref: String(grid.ref), description: '', value: ['esx-02'] },
+            { operation: 'setValue', ref: cluster, description: 'Cluster', value: 'Beta cluster' },
+          ],
+          { excludeRoles: ['grid', 'combobox'] }
+        );
+        await settle();
+
+        expect(report.results.map(result => result.refused)).toEqual(['hidden', 'hidden']);
+        expect(host.selectedHosts).toEqual([]);
+        expect(host.form.value.cluster).not.toBe('beta');
+      });
+
       it('selects one datagrid row where one is all the grid takes', async () => {
         const page = snapshot();
         const grid = nodeOf(

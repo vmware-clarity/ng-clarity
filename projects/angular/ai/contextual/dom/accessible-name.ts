@@ -103,7 +103,7 @@ function scopedText(element: Element, selector: string, withheld: string): strin
  * region holds it without holding what it names — a label marked `data-clr-context-redact`
  * shows something sensitive, not a field's name. A label inside the same redacted region
  * as its field still names it: a region withholds values and content, not what fields
- * are called.
+ * are called. A label that carries the mark itself does not.
  */
 function readableNameSource(source: Element, named: Element, withheld: string): boolean {
   if (source.closest(CLR_CONTEXT_HIDDEN_SELECTOR) || source.closest(CLR_CONTEXT_EDITING_HOST_SELECTOR)) {
@@ -113,6 +113,11 @@ function readableNameSource(source: Element, named: Element, withheld: string): 
     return false;
   }
   if (withheld && source.closest(withheld)) {
+    return false;
+  }
+  // A label marked redacted itself shows something sensitive, even wrapped around its
+  // field: the mark is on what it says.
+  if (source.matches(CLR_CONTEXT_REDACT_SELECTOR)) {
     return false;
   }
   const redacting = source.closest(CLR_CONTEXT_REDACT_SELECTOR);

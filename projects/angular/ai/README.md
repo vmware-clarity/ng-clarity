@@ -35,4 +35,4 @@ model, never instructions: delimit it in prompts, and let the policy judge each 
 rather than the agent's stated reason. The website guide has a section on this.
 
 The full guide, option reference and a live playground are on the Clarity website under "Contextual Engine"
-(`projects/website/src/app/documentation/demos/contextual-engine`).
+(`/documentation/contextual-engine`).

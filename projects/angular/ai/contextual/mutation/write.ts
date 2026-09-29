@@ -9,6 +9,8 @@ import { ApplicationRef, ChangeDetectorRef, getDebugNode } from '@angular/core';
 import { AbstractControl, NgControl } from '@angular/forms';
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  CLR_CONTEXT_REDACT_SELECTOR,
+  CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrContextSnapshotOptions,
   ClrElementMutation,
   ClrElementMutator,
@@ -177,7 +179,19 @@ export function resolveWriteTarget(
       if (ngControl?.control?.disabled) {
         return { refused: 'disabled', detail: OBSTACLE_DETAILS.disabled };
       }
-      return { target: { element: control, control, label, type, kind: 'radiogroup', ngControl, mutator: null } };
+      return {
+        target: {
+          element: control,
+          control,
+          label,
+          type,
+          kind: 'radiogroup',
+          ngControl,
+          mutator: null,
+          options,
+          knownModals,
+        },
+      };
     }
   }
   return { refused: 'unbound', detail: UNBOUND_DETAIL };
@@ -474,14 +488,16 @@ export function readValue(target: WriteTarget): unknown {
   switch (target.kind) {
     case 'select': {
       const select = target.element as HTMLSelectElement;
-      const labels = Array.from(select.selectedOptions).map(option => optionLabel(option));
+      const labels = Array.from(select.selectedOptions)
+        .filter(option => choiceShown(option, target))
+        .map(option => optionLabel(option));
       return select.multiple ? labels : (labels[0] ?? null);
     }
     case 'checkbox':
     case 'radio':
       return (target.element as HTMLInputElement).checked;
     case 'radiogroup': {
-      const chosen = radiosOf(target.element).find(radio => radio.checked);
+      const chosen = radiosOf(target.element).find(radio => radio.checked && choiceShown(radio, target));
       return chosen ? radioLabelWithin(chosen, withheldBy(target.element, target.options)) : null;
     }
     default:
@@ -617,14 +633,17 @@ function coerceTyped(target: WriteTarget, proposed: unknown): Coerced {
 
 function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {
   const select = target.element as HTMLSelectElement;
+  // Only the options the snapshot named can be chosen, or named in a refusal; an option
+  // it left out that is selected stays selected, cleared or not.
+  const kept = select.multiple ? Array.from(select.selectedOptions).filter(option => !choiceShown(option, target)) : [];
   if (proposed === null) {
-    return { value: [], display: select.multiple ? [] : null };
+    return { value: kept, display: select.multiple ? [] : null };
   }
   if (!select.multiple && Array.isArray(proposed)) {
     return { refused: 'The select takes one option.' };
   }
   const wanted = Array.isArray(proposed) ? proposed : [proposed];
-  const all = Array.from(select.options);
+  const all = Array.from(select.options).filter(option => choiceShown(option, target));
   const usable = all.filter(option => optionUsable(option));
   const options: HTMLOptionElement[] = [];
   for (const entry of wanted) {
@@ -649,14 +668,14 @@ function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {
     options.push(option);
   }
   const labels = options.map(optionLabel);
-  return { value: options, display: select.multiple ? labels : labels[0] };
+  return { value: [...kept, ...options], display: select.multiple ? labels : labels[0] };
 }
 
 function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
   if (proposed === null) {
     return { value: null, display: null };
   }
-  const radios = radiosOf(target.element);
+  const radios = radiosOf(target.element).filter(radio => choiceShown(radio, target));
   const withheld = withheldBy(target.element, target.options);
   const radioLabel = (radio: HTMLInputElement) => radioLabelWithin(radio, withheld);
   const usable = radios.filter(radio => !writeObstacle(radio, target.knownModals));
@@ -671,6 +690,28 @@ function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
     return { refused: `The option "${radioLabel(chosen)}" cannot be chosen right now.` };
   }
   return { value: chosen, display: radioLabel(chosen) };
+}
+
+/**
+ * Whether a snapshot names this choice — an option or a radio — so that an agent may pick
+ * it, and a refusal may list it: not in what the snapshot options exclude, and not
+ * redacted itself. The control around it was judged already.
+ */
+function choiceShown(choice: Element, target: WriteTarget): boolean {
+  const excluded = withheldBy(choice, target.options);
+  if (excluded && choice.closest(excluded)) {
+    return false;
+  }
+  const control = target.control;
+  for (let current: Element | null = choice; current && current !== control; current = current.parentElement) {
+    if (
+      current.matches(CLR_CONTEXT_REDACT_SELECTOR) ||
+      (current === choice && current.matches(CLR_CONTEXT_WITHHELD_SELECTOR))
+    ) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /** Whether a person could pick this option: not disabled, alone or through its group, and shown. */

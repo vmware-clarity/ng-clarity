@@ -177,6 +177,26 @@ class HiddenColumnHost {
 @Component({
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-row
+        *clrDgItems="let item of items"
+        [clrDgItem]="item"
+        [attr.data-clr-context-redact]="item.id === 2 ? '' : null"
+      >
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class WithheldRowHost {
+  items = servers().slice(0, 2);
+  selected: Server[] = [this.items[1]];
+}
+
+@Component({
+  template: `
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Account</clr-dg-column>
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell
@@ -264,6 +284,7 @@ describe('ClrDatagrid element mutator', () => {
         HiddenColumnHost,
         SecretCellHost,
         WithheldCellHost,
+        WithheldRowHost,
       ],
       providers: [provideClrMutationPolicy({ classify: () => 'reversible' })],
     });
@@ -307,6 +328,18 @@ describe('ClrDatagrid element mutator', () => {
 
       expect(state?.['rows']).toEqual(['Checking', 'Savings']);
       expect(JSON.stringify(contextEngine.getSnapshot())).not.toContain('4111');
+    });
+
+    it('lists no row whose every cell is withheld, and keeps it selected through a write', async () => {
+      const host = await create(WithheldRowHost);
+
+      expect(grid().state?.['rows']).toEqual(['esx-01']);
+      expect(grid().state?.['selection']).toBeUndefined();
+
+      const result = await select(['esx-01']);
+      expect(result.applied).toBeTrue();
+      expect(result.value).toEqual(['esx-01']);
+      expect(names(host.selected).sort()).toEqual(['esx-01', 'esx-02']);
     });
 
     it('never names withheld text in a refusal', async () => {

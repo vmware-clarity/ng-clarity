@@ -631,4 +631,14 @@ describe('ClrContextTrackerService, reporting what changed', () => {
     expect(latest.added).toEqual([{ type: 'button', label: 'Provision' }]);
     expect(latest.removed).toEqual([]);
   });
+
+  it('lists everything as added again after a restart', () => {
+    tracker.start({ debounceMs: 10 });
+    tracker.stop();
+    tracker.start({ debounceMs: 10 });
+
+    const restarted = changes[changes.length - 1];
+    expect(restarted.previous).toBeNull();
+    expect(restarted.added.length).toBe(restarted.current.components.length);
+  });
 });

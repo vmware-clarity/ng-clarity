@@ -86,3 +86,37 @@ describe('ClrDatagrid selection, as assistive technology sees it', () => {
     expect(dataRows().every(row => !row.hasAttribute('aria-selected'))).toBe(true);
   });
 });
+
+@Component({
+  template: `
+    <clr-datagrid [(clrDgSelected)]="single" [clrDgSelectionType]="'single'">
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class SingleTestComponent {
+  items: Node[] = [{ name: 'node-1' }, { name: 'node-2' }];
+  single: Node[] = [];
+}
+
+describe('ClrDatagrid single selection, as assistive technology sees it', () => {
+  it('reports which row is selected, and does not claim several may be', () => {
+    TestBed.configureTestingModule({
+      imports: [ClrDatagridModule, NoopAnimationsModule],
+      declarations: [SingleTestComponent],
+    });
+    const fixture = TestBed.createComponent(SingleTestComponent);
+    fixture.detectChanges();
+    fixture.componentInstance.single = [fixture.componentInstance.items[1]];
+    fixture.detectChanges();
+
+    const rows = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('clr-dg-row [role="row"]'));
+    expect(rows.map(row => row.getAttribute('aria-selected'))).toEqual(['false', 'true']);
+    expect(fixture.nativeElement.querySelector('[role="grid"]').hasAttribute('aria-multiselectable')).toBe(false);
+    fixture.destroy();
+  });
+});

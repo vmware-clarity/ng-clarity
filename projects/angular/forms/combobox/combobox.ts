@@ -40,8 +40,10 @@ import {
 } from '@clr/angular/popover/common';
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  CLR_CONTEXT_REDACT_SELECTOR,
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
+  ClrContextSnapshotOptions,
   clrContextText,
   ClrElementContextCallback,
   ClrElementMutation,
@@ -50,6 +52,7 @@ import {
   clrNormalizeContextText,
   clrPublishElementContext,
   clrPublishElementMutator,
+  clrUsableSelectors,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
@@ -655,20 +658,24 @@ export class ClrCombobox<T>
       // The contract is a plain element property that any page tooling may call, not
       // only the engine that passes budgets, so a missing argument must not throw.
       const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
+      const excluded = this.excludedBy(snapshotOptions);
       const state: Record<string, unknown> = { multiSelect: this.multiSelect };
       const items = this.options?.items;
       if (items?.length) {
         // Option content children exist even while the popover is closed, so the
-        // choices are available regardless of what the DOM currently shows.
-        state.options = items
-          .toArray()
-          .slice(0, maxItems)
-          .map(option => this.optionLabel(option));
+        // choices are available regardless of what the DOM currently shows. An option
+        // the snapshot excludes is not one; a redacted one counts, unnamed.
+        const listed = items.toArray().filter(option => this.optionShown(option, excluded) !== 'excluded');
+        const named = listed.filter(option => this.optionShown(option, excluded) === 'shown');
+        state.options = named.slice(0, maxItems).map(option => this.optionLabel(option));
+        if (named.length < listed.length) {
+          state.redactedOptions = listed.length - named.length;
+        }
       } else {
         // Async comboboxes have no option list until a search loads one.
         state.optionsAvailable = false;
       }
-      state.value = this.selectedLabels();
+      state.value = this.selectedLabels(excluded);
       return { type: 'combobox', state };
     };
 
@@ -687,16 +694,24 @@ export class ClrCombobox<T>
     this.teardownElementMutator = clrPublishElementMutator(host, {
       // The search input inside carries a form binding of its own, which is not the value.
       ownsContents: true,
-      coerce: (proposed: unknown): ClrElementMutation => {
+      coerce: (proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation => {
+        const excluded = this.excludedBy(options);
+        // A selection the agent was never shown stays as it is.
+        const kept = this.multiSelect
+          ? this.selectedValues().filter(value => this.valueShown(value, excluded) !== 'shown')
+          : [];
         if (proposed === null || proposed === undefined || proposed === '') {
-          return { value: this.multiSelect ? [] : null };
+          return { value: this.multiSelect ? kept : null };
         }
         const proposals = Array.isArray(proposed) ? proposed : [proposed];
         if (!this.multiSelect && proposals.length > 1) {
           return { refused: 'The combobox takes one option.' };
         }
-        const items = this.options?.items?.toArray() ?? [];
-        const values: T[] = [];
+        // Only the options the snapshot named can be chosen, or named in a refusal.
+        const items = (this.options?.items?.toArray() ?? []).filter(
+          option => this.optionShown(option, excluded) === 'shown'
+        );
+        const values: T[] = [...kept];
         for (const proposal of proposals) {
           const option = items.find(candidate => this.optionMatches(candidate, proposal));
           if (option) {
@@ -715,8 +730,54 @@ export class ClrCombobox<T>
         }
         return { value: this.multiSelect ? values : values[0] };
       },
-      read: () => this.selectedLabels(),
+      read: (options?: Required<ClrContextSnapshotOptions>) => this.selectedLabels(this.excludedBy(options)),
     });
+  }
+
+  /** The selector for what the snapshot options exclude, on this page. */
+  private excludedBy(options?: ClrContextSnapshotOptions): string {
+    return clrUsableSelectors(this.el.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
+  }
+
+  /**
+   * Whether an option is shown to page-context tooling: `'excluded'` when the snapshot
+   * options leave it out, `'withheld'` when it, or a group around it, is redacted — it is
+   * counted, but not named — and `'shown'` otherwise. Judged within the option list only:
+   * the list's overlay is ignored as a whole, since this component publishes it.
+   */
+  private optionShown(option: ClrOption<T>, excluded: string): 'shown' | 'withheld' | 'excluded' {
+    const element: Element = option.elRef.nativeElement;
+    const list = element.closest('clr-options');
+    let verdict: 'shown' | 'withheld' = 'shown';
+    for (let current: Element | null = element; current; current = current.parentElement) {
+      if (excluded && current.matches(excluded)) {
+        return 'excluded';
+      }
+      if (
+        current.matches(CLR_CONTEXT_REDACT_SELECTOR) ||
+        (current === element && current.matches(CLR_CONTEXT_WITHHELD_SELECTOR))
+      ) {
+        verdict = 'withheld';
+      }
+      if (current === list) {
+        break;
+      }
+    }
+    return verdict;
+  }
+
+  /** {@link optionShown} for a selected value: a value no option holds is shown by its own label. */
+  private valueShown(value: T, excluded: string): 'shown' | 'withheld' | 'excluded' {
+    const option = this.options?.items?.find(candidate => candidate.value === value);
+    return option ? this.optionShown(option, excluded) : 'shown';
+  }
+
+  private selectedValues(): T[] {
+    const model = this.optionSelectionService.selectionModel?.model;
+    if (model === null || model === undefined) {
+      return [];
+    }
+    return Array.isArray(model) ? model : [model];
   }
 
   /**
@@ -724,12 +785,16 @@ export class ClrCombobox<T>
    * option, the display field otherwise, the value itself as a last resort. `[]` or
    * `null` when nothing is selected, as the combobox is multi- or single-select.
    */
-  private selectedLabels(): unknown {
+  private selectedLabels(excluded = ''): unknown {
     const model = this.optionSelectionService.selectionModel?.model;
     if (model === null || model === undefined) {
       return this.multiSelect ? [] : null;
     }
-    const names = (Array.isArray(model) ? model : [model]).map(value => this.selectedValueLabel(value));
+    // A selected option the snapshot excludes is not reported; a redacted one, unnamed.
+    const names = (Array.isArray(model) ? model : [model])
+      .map(value => ({ value, shown: this.valueShown(value, excluded) }))
+      .filter(entry => entry.shown !== 'excluded')
+      .map(entry => (entry.shown === 'shown' ? this.selectedValueLabel(entry.value) : null));
     return this.multiSelect ? names : (names[0] ?? null);
   }
 

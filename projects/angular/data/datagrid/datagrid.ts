@@ -337,10 +337,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
         const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
         if (snapshotOptions?.collectionItems !== 'summary') {
-          state.rows = this.rows
-            .toArray()
-            .slice(0, maxItems)
-            .map(row => this.rowLabel(row, excluded));
+          // A row whose every cell is withheld or excluded is not listed at all: an empty
+          // name would still say it is there.
+          state.rows = this.shownRowLabels(this.rows.toArray(), excluded, maxItems);
         }
         const selected = this.selectedRowLabels(excluded, maxItems);
         if (selected.length) {
@@ -750,12 +749,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
     this.teardownElementMutator = clrPublishElementMutator(this.el.nativeElement, {
       // Rows are named as the snapshot the write is judged against names them.
-      write: (proposed, options): ClrElementMutation => this.writeSelection(proposed, this.excludedBy(options)),
-      read: options => this.readSelection(this.excludedBy(options)),
+      write: (proposed, options): ClrElementMutation =>
+        this.writeSelection(proposed, this.excludedBy(options), this.budgetOf(options)),
+      read: options => this.readSelection(this.excludedBy(options), this.budgetOf(options)),
     });
   }
 
-  private writeSelection(proposed: unknown, excluded: string): ClrElementMutation {
+  private writeSelection(proposed: unknown, excluded: string, limit: number): ClrElementMutation {
     if (!this.selection.selectable) {
       return { refused: 'The datagrid does not offer row selection.' };
     }
@@ -792,12 +792,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       if (replacing && this.selection.isLocked(current)) {
         return { refused: 'The selected row is locked and cannot be deselected.' };
       }
+      if (replacing && this.isWithheldRow(current, excluded)) {
+        return { refused: 'The selected row is kept from agents, and cannot be deselected by one.' };
+      }
       const unchanged = rows.length
         ? current !== undefined && current !== null && !replacing
         : current === undefined || current === null;
       // Repeating a write changes nothing, so it does not tell the application it did.
       if (unchanged) {
-        return { value: this.readSelection(excluded) };
+        return { value: this.readSelection(excluded, limit) };
       }
       if (rows.length) {
         this.selection.setSelected(rows[0].item, true);
@@ -807,9 +810,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     } else {
       const onPage = new Set(this.rows.map(row => identify(row.item)));
       // What the agent cannot see or change stays as it is: selections on other pages,
-      // and locked rows, which the user cannot deselect either.
+      // rows kept from agents, and locked rows, which the user cannot deselect either.
       const kept = (this.selection.current ?? []).filter(
-        item => !onPage.has(identify(item)) || this.selection.isLocked(item)
+        item => !onPage.has(identify(item)) || this.selection.isLocked(item) || this.isWithheldRow(item, excluded)
       );
       const next = [...kept];
       for (const row of rows) {
@@ -824,7 +827,34 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.selection.current = next;
       }
     }
-    return { value: this.readSelection(excluded) };
+    return { value: this.readSelection(excluded, limit) };
+  }
+
+  /** The collection budget of the snapshot options a write or read is judged against. */
+  private budgetOf(options: { maxItemsPerCollection?: number } | null | undefined): number {
+    return options?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
+  }
+
+  /** Whether a row on this page is one whose every cell is withheld or excluded. */
+  private isWithheldRow(item: T, excluded: string): boolean {
+    const identify = (candidate: T) => this.items.identifyBy(candidate);
+    const row = this.rows.find(candidate => identify(candidate.item) === identify(item));
+    return !!row && !this.rowLabel(row, excluded);
+  }
+
+  /** The labels of the first `limit` rows that have one. */
+  private shownRowLabels(rows: ClrDatagridRow<T>[], excluded: string, limit: number): string[] {
+    const labels: string[] = [];
+    for (const row of rows) {
+      if (labels.length >= limit) {
+        break;
+      }
+      const label = this.rowLabel(row, excluded);
+      if (label) {
+        labels.push(label);
+      }
+    }
+    return labels;
   }
 
   /**
@@ -832,7 +862,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * when the words fit more than one row, rather than taking the first that fits.
    */
   private findRow(label: unknown, excluded: string): { row: ClrDatagridRow<T> } | { refused: string } {
-    const rows = this.rows.toArray();
+    // Only rows the snapshot shows can be named, or quoted.
+    const rows = this.rows.toArray().filter(row => !!this.rowLabel(row, excluded));
     const wanted = typeof label === 'string' ? clrNormalizeContextText(label) : '';
     if (!wanted) {
       return { refused: 'A row is named by its content, as the published rows list it.' };
@@ -857,8 +888,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return { refused: `No such row on this page. The rows are: ${quote(rows)}.` };
   }
 
-  private readSelection(excluded: string): string | string[] | null {
-    const selected = this.selectedRowLabels(excluded);
+  private readSelection(excluded: string, limit = CLR_CONTEXT_DEFAULT_MAX_ITEMS): string | string[] | null {
+    const selected = this.selectedRowLabels(excluded, limit);
     return this.selection.selectionType === SelectionType.Single ? (selected[0] ?? null) : selected;
   }
 
@@ -870,7 +901,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         break;
       }
       if (this.selection.isSelected(row.item)) {
-        labels.push(this.rowLabel(row, excluded));
+        const label = this.rowLabel(row, excluded);
+        if (label) {
+          labels.push(label);
+        }
       }
     }
     return labels;

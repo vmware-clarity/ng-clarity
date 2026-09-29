@@ -162,7 +162,7 @@ export class ClrContextFrameHost {
   private readonly minRequestIntervalMs: number;
   private readonly lastServedAt = new WeakMap<object, number>();
   private readonly messageListener = this.onMessage.bind(this);
-  private intervalStartedAt = 0;
+  private intervalStartedAt = Number.NEGATIVE_INFINITY;
   private servedInInterval = 0;
   private listening = false;
 
@@ -279,7 +279,8 @@ export class ClrContextFrameHost {
     if (this.minRequestIntervalMs <= 0) {
       return false;
     }
-    const now = Date.now();
+    // A monotonic clock: a wall clock set back would throttle every frame until it caught up.
+    const now = performance.now();
     // Keyed by the top-level embedded frame: frames a frame nests share its allowance,
     // so spawning frames buys no more snapshots than one frame gets.
     const key = this.topLevelFrameOf(source);

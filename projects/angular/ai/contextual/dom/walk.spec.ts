@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { ClrComponentContext, ClrContextSnapshotOptions, clrPublishElementContext } from '@clr/angular/utils';
 
 import { withoutValues } from './aria-state';
 import { collectContextTreeWithin, topmostModal } from './walk';
@@ -1217,6 +1217,45 @@ describe('collectContextTree, markup it did not expect', () => {
     expect(json).not.toContain('SMUGGLED');
     // A label clipped for screen readers is seen by them, and still names its field.
     expect(json).toContain('"label":"Search"');
+  });
+
+  it('says nothing a component publishes about content the caller excluded, through what is left of it', () => {
+    container.innerHTML = `
+      <x-grid><div class="wrap"><div role="grid"><div role="row"><div role="gridcell">a</div></div></div></div>
+        <x-grid-footer>2 rows</x-grid-footer></x-grid>
+      <x-tabs><x-panel><div role="grid"><div role="row"><div role="gridcell">b</div></div></div></x-panel>
+        <div role="tablist"><div role="tab">Overview</div></div></x-tabs>`;
+    const teardowns = [
+      clrPublishElementContext(container.querySelector('x-grid') as Element, () => ({
+        state: { rows: ['secret-row-1'], selection: ['secret-row-1'] },
+      })),
+      clrPublishElementContext(container.querySelector('x-tabs') as Element, () => ({ state: { panels: 2 } })),
+    ];
+    try {
+      const json = JSON.stringify(collectContextTreeWithin(container, options()).components);
+      expect(json).toContain('secret-row-1');
+
+      const excluded = JSON.stringify(
+        collectContextTreeWithin(container, resolveSnapshotOptions({ maxComponents: 100, excludeRoles: ['grid'] }))
+          .components
+      );
+      expect(excluded).not.toContain('secret-row');
+      // A component that holds the excluded role only inside another component still speaks.
+      expect(excluded).toContain('"panels":2');
+    } finally {
+      teardowns.forEach(teardown => teardown());
+    }
+  });
+
+  it('takes no name from a label that is itself marked redacted, even wrapped around its field', () => {
+    const { components } = collect(
+      `<label data-clr-context-redact><input type="checkbox" /> Account 4111-SECRET</label>
+       <div data-clr-context-redact><label for="x">Card holder</label><input id="x" /></div>`
+    );
+    const json = JSON.stringify(components);
+    expect(json).not.toContain('4111');
+    // A label inside the same redacted region as its field still names it.
+    expect(json).toContain('Card holder');
   });
 
   it('leaves out a list item that a display: contents wrapper sits in a hidden parent of', () => {

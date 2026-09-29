@@ -390,9 +390,19 @@ describe('Context frame bridge', () => {
       });
 
       it('serves a frame again once the interval has passed', () => {
-        const now = spyOn(Date, 'now').and.returnValue(1_000_000);
+        const now = spyOn(performance, 'now').and.returnValue(1_000_000);
         dispatchRequest(frameRequest('first'));
         dispatchRequest(frameRequest('too-soon'));
+        now.and.returnValue(1_000_000 + 10_001);
+        dispatchRequest(frameRequest('later'));
+
+        expect(getSnapshot).toHaveBeenCalledTimes(2);
+      });
+
+      it('is not stopped by a wall clock set back', () => {
+        spyOn(Date, 'now').and.returnValue(0);
+        const now = spyOn(performance, 'now').and.returnValue(1_000_000);
+        dispatchRequest(frameRequest('first'));
         now.and.returnValue(1_000_000 + 10_001);
         dispatchRequest(frameRequest('later'));
 

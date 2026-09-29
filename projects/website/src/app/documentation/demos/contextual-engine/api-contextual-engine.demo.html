@@ -495,6 +495,14 @@
         <code cds-text="code">CLR_CONTEXT_REDACT_SELECTOR</code> match the two attributes on their own.
       </td>
     </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_EDITING_HOST_SELECTOR</b></td>
+      <td class="left">
+        An editing host — <code cds-text="code">contenteditable</code> in any spelling but
+        <code cds-text="code">false</code>. What it holds was typed by the user, a value, so it is part of
+        <code cds-text="code">CLR_CONTEXT_WITHHELD_SELECTOR</code> and never read into a label.
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -834,9 +842,10 @@
       <td class="left"><b cds-text="medium">clrContextText(element, skip?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
       <td class="left">
-        The text an element shows, as a publisher may report it: text inside a redacted or ignored descendant, and text
-        hidden from assistive technology, is left out. Use it to label rows or options from their content, so a value
-        the application withheld never reaches a label.
+        The text an element shows, as a publisher may report it: text inside a redacted or ignored descendant, text
+        hidden from assistive technology and text hidden by style are left out, and block-level parts read as separate
+        words. Use it to label rows or options from their content, so a value the application withheld never reaches a
+        label.
       </td>
     </tr>
     <tr>
@@ -846,6 +855,80 @@
         Text as the engine compares it — whitespace collapsed, and lowercased unless told otherwise — so a publisher and
         the engine agree on whether two labels are the same.
       </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrUsableSelectors(root, selectors)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        The selectors <code cds-text="code">root</code>'s document accepts, joined into one, or
+        <code cds-text="code">''</code>. A publisher given <code cds-text="code">excludeSelectors</code> uses it so that
+        one invalid entry does not throw, nor drop the others.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrHasRequiredValidator(control)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">boolean</code></td>
+      <td class="left">
+        Whether a form control requires a value, whatever validator says so — what a component reports as
+        <code cds-text="code">aria-required</code>, which the DOM does not show for a reactive
+        <code cds-text="code">Validators.required</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">CLR_ELEMENT_CONTEXT_PROPERTY, CLR_ELEMENT_MUTATOR_PROPERTY</b>
+      </td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        The element properties the two publishing functions set, for tooling other than this engine that reads them.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_DEFAULT_MAX_ITEMS</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">number</code></td>
+      <td class="left">
+        How many items a publisher lists when the caller gives no budget: the engine's default
+        <code cds-text="code">maxItemsPerCollection</code>, 25.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">clrCollectDomContextTree(root, options?, extractors?)</b>,
+        <b cds-text="medium">clrCollectDomContexts(…)</b>
+      </td>
+      <td class="left">
+        The walk the engine runs, over any part of a page and without refs: the tree with whether a budget ran out, or
+        only its nodes. For tests and tooling that describe markup outside an application.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContextCategoryRoles(categories)</b></td>
+      <td class="left">The roles a list of <code cds-text="code">excludeCategories</code> stands for.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ClrContextFrameHost</b></td>
+      <td class="left">
+        The frame bridge that <code cds-text="code">enableFrameBridge()</code> starts, for an application that wires it
+        to its own snapshot function:
+        <code cds-text="code">new ClrContextFrameHost(getSnapshot, window, options)</code>, then
+        <code cds-text="code">start()</code> and <code cds-text="code">stop()</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_DIRECTIVES</b></td>
+      <td class="left">The directives <code cds-text="code">ClrContextModule</code> declares and exports.</td>
     </tr>
   </tbody>
 </table>

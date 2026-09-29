@@ -143,6 +143,10 @@ export class ClrContextTrackerService implements OnDestroy {
     this.stop();
     this.tracking = true;
     this.trackingOptions = options;
+    // Each start is compared against nothing: its first change lists everything as added,
+    // whatever an earlier start saw.
+    this.latest = null;
+    this.latestSerialized = null;
     // Observers first: should the first snapshot throw — an extractor, a publisher — the
     // page is still watched, and the next change tries again.
     // Created outside the Angular zone: zone.js patches MutationObserver, and an

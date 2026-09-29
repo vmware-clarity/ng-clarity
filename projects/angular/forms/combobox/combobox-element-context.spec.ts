@@ -231,3 +231,69 @@ describe('ClrCombobox element context, withheld option text', () => {
     expect(JSON.stringify(context)).not.toContain('6011');
   });
 });
+
+@Component({
+  template: `
+    <clr-combobox name="account" [(ngModel)]="selection" clrMulti="true">
+      <clr-options>
+        <clr-option clrValue="checking">Checking</clr-option>
+        <clr-option clrValue="acct" data-clr-context-redact>Acct 998877</clr-option>
+        <clr-option clrValue="trust" class="secret">Hidden trust fund</clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class MarkedOptionTestComponent {
+  selection: string[] = ['acct', 'trust'];
+}
+
+describe('ClrCombobox element context, options marked or excluded themselves', () => {
+  let fixture: ComponentFixture<MarkedOptionTestComponent>;
+  const options = { excludeSelectors: ['.secret'], maxItemsPerCollection: 25 };
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      declarations: [MarkedOptionTestComponent],
+    });
+    fixture = TestBed.createComponent(MarkedOptionTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  function host() {
+    return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
+      clrElementContext?: ElementContextCallback;
+      clrElementMutator?: {
+        coerce: (proposed: unknown, options?: unknown) => { value?: unknown; refused?: string };
+        read: (options?: unknown) => unknown;
+      };
+    };
+  }
+
+  it('counts a redacted option without naming it, and leaves an excluded one out', () => {
+    const context = host().clrElementContext?.(options);
+
+    expect(context?.state['options']).toEqual(['Checking']);
+    expect(context?.state['redactedOptions']).toBe(1);
+    expect(context?.state['value']).toEqual([null]);
+    expect(JSON.stringify(context)).not.toContain('998877');
+    expect(JSON.stringify(context)).not.toContain('trust fund');
+  });
+
+  it('neither lists nor takes them in a write, and keeps them selected', () => {
+    const mutator = host().clrElementMutator;
+    const refused = mutator?.coerce('Nope', options);
+    expect(refused?.refused).toContain('"Checking"');
+    expect(refused?.refused).not.toContain('998877');
+    expect(refused?.refused).not.toContain('trust fund');
+    expect(mutator?.coerce('Hidden trust fund', options).refused).toBeDefined();
+
+    expect(mutator?.coerce('Checking', options).value).toEqual(['acct', 'trust', 'checking']);
+    expect(mutator?.coerce(null, options).value).toEqual(['acct', 'trust']);
+  });
+});

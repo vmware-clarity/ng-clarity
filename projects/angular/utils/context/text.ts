@@ -42,16 +42,24 @@ export function clrContextText(element: Element, skip?: (descendant: Element) =>
   element.childNodes.forEach(node => {
     if (node.nodeType === Node.TEXT_NODE) {
       text += node.textContent ?? '';
-    } else if (node.nodeType === Node.ELEMENT_NODE && !isWithheld(node as Element, skip)) {
-      const inner = clrContextText(node as Element, skip);
-      text += isBlock(node as Element) ? ` ${inner} ` : inner;
+      return;
     }
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return;
+    }
+    const child = node as Element;
+    if (child.matches(CLR_CONTEXT_WITHHELD_SELECTOR) || skip?.(child)) {
+      return;
+    }
+    // Read once: a computed style costs a style lookup, and every descendant needs it.
+    const style = renderedStyle(child);
+    if (style && isStyleHidden(child, style)) {
+      return;
+    }
+    const inner = clrContextText(child, skip);
+    text += isBlock(child, style) ? ` ${inner} ` : inner;
   });
   return text;
-}
-
-function isWithheld(element: Element, skip?: (descendant: Element) => boolean): boolean {
-  return element.matches(CLR_CONTEXT_WITHHELD_SELECTOR) || !!skip?.(element) || isStyleHidden(element);
 }
 
 /** Elements that start a new line when nothing says otherwise. */
@@ -92,10 +100,11 @@ const BLOCK_TAGS = new Set([
   'ul',
 ]);
 
-function isBlock(element: Element): boolean {
-  const style = renderedStyle(element);
-  if (!style) {
-    return BLOCK_TAGS.has(element.tagName.toLowerCase());
+/** Whether an element's text stands apart from its neighbours'. A line break always does. */
+function isBlock(element: Element, style: CSSStyleDeclaration | null): boolean {
+  const tagName = element.tagName.toLowerCase();
+  if (!style || tagName === 'br') {
+    return BLOCK_TAGS.has(tagName);
   }
   return !style.display.startsWith('inline') && style.display !== 'contents';
 }
@@ -106,11 +115,7 @@ function isBlock(element: Element): boolean {
  * `visibility` where the browser has it. A descendant that sets `visibility: visible`
  * again inside a hidden one is left out with it.
  */
-function isStyleHidden(element: Element): boolean {
-  const style = renderedStyle(element);
-  if (!style) {
-    return false;
-  }
+function isStyleHidden(element: Element, style: CSSStyleDeclaration): boolean {
   if (style.display === 'none' || style.opacity === '0') {
     return true;
   }

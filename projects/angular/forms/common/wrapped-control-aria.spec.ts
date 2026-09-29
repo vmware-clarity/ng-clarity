@@ -11,6 +11,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrInputModule } from '../input/input.module';
+import { ClrRangeModule } from '../range/range.module';
 
 @Component({
   template: `
@@ -148,5 +149,38 @@ describe('Wrapped form control, as assistive technology sees it', () => {
     fixture.detectChanges();
     expect(input('host').hasAttribute('aria-invalid')).toBe(false);
     expect(input('host').hasAttribute('aria-required')).toBe(false);
+  });
+});
+
+@Component({
+  template: `
+    <clr-range-container>
+      <label>Volume</label>
+      <input type="range" clrRange [formControl]="volume" />
+    </clr-range-container>
+  `,
+  standalone: false,
+})
+class RangeTestComponent {
+  volume = new FormControl<number | null>(null, Validators.required);
+}
+
+describe('Range, as assistive technology sees it', () => {
+  it('reports no aria-required, which a slider does not support, and aria-invalid once touched', () => {
+    TestBed.configureTestingModule({
+      imports: [ClrRangeModule, ReactiveFormsModule, NoopAnimationsModule],
+      declarations: [RangeTestComponent],
+    });
+    const fixture = TestBed.createComponent(RangeTestComponent);
+    fixture.detectChanges();
+    const range = fixture.nativeElement.querySelector('input[type="range"]') as HTMLInputElement;
+
+    expect(range.hasAttribute('aria-required')).toBe(false);
+
+    fixture.componentInstance.volume.markAsTouched();
+    fixture.componentInstance.volume.setValue(null);
+    fixture.detectChanges();
+    expect(range.getAttribute('aria-invalid')).toBe('true');
+    fixture.destroy();
   });
 });

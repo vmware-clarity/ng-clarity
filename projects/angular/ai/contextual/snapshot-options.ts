@@ -141,12 +141,11 @@ const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames', 'in
 const LIST_KEYS = ['excludeRoles', 'excludeSelectors'] as const;
 
 /**
- * Most entries an untrusted caller's selector or role list may hold. The application's
- * own lists are never cut: an exclusion dropped for length is content that leaks.
+ * Most entries an untrusted caller's role list may hold; an untrusted caller cannot send
+ * selectors at all. The application's own lists and selectors are never cut: an exclusion
+ * dropped or shortened for length is content that leaks.
  */
 export const MAX_LIST_ENTRIES = 50;
-/** The longest any list entry may be. */
-const MAX_ENTRY_LENGTH = 500;
 
 /**
  * The budgets a snapshot is actually built with: the caller's options over the defaults,
@@ -196,7 +195,7 @@ export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Req
     resolved.includeFrames = false;
   }
   if (typeof options.rootSelector === 'string') {
-    resolved.rootSelector = options.rootSelector.trim().slice(0, MAX_ENTRY_LENGTH);
+    resolved.rootSelector = options.rootSelector.trim();
   }
   if (options.focus === 'page' || options.focus === 'modal') {
     resolved.focus = options.focus;
@@ -269,7 +268,7 @@ export function capSnapshotOptions(
 function stringList(value: unknown[]): string[] {
   return value
     .filter((entry): entry is string => typeof entry === 'string')
-    .map(entry => entry.trim().slice(0, MAX_ENTRY_LENGTH))
+    .map(entry => entry.trim())
     .filter(entry => entry.length > 0);
 }
 

@@ -267,7 +267,8 @@ export function isHiddenFromEngine(element: Element, excludeSelector = ''): bool
 /**
  * Whether a snapshot with these options leaves the element out on purpose: it matches or
  * sits in one of the `excludeSelectors`, in or under an excluded role (a category is a
- * set of roles), or outside every `rootSelector` root. What is hidden, inert, ignored or
+ * set of roles), holds one — a datagrid host renders the grid it is written through —
+ * or lies outside every `rootSelector` root. What is hidden, inert, ignored or
  * behind a modal is judged separately, by {@link isHiddenFromEngine} and the modal check.
  * The mutation engine uses this so that it never writes what such a snapshot would not
  * show, whatever snapshot the ref came from.
@@ -284,6 +285,13 @@ export function isOutsideSnapshot(element: Element, options: Required<ClrContext
       if (role && excluded.has(role)) {
         return true;
       }
+    }
+    const candidates = roleCandidateSelector(excluded);
+    if (
+      candidates &&
+      Array.from(element.querySelectorAll(candidates)).some(inner => excluded.has(resolveRole(inner) ?? ''))
+    ) {
+      return true;
     }
   }
   if (options.rootSelector) {
@@ -584,14 +592,18 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     // unrelated-looking siblings, so they are wrapped instead: nesting survives exactly
     // as it is in the DOM, the wrapper counts against the budget like any other node,
     // and it is the wrapper that carries what this element publishes.
+    // A component whose own content was excluded — a datagrid when grids are — says
+    // nothing about itself through what is left of it, a footer, and is not written to
+    // through it either.
+    const published = !rendered.length || !rendersExcludedRole(element, walk);
     if (rendered.length === 1) {
       const only = rendered[0];
       // Text is all this element renders: it is the element's own label, the same way a
       // `clr-dg-footer` with bare text is labelled by it, rather than a text node inside.
       if (only.type === 'text' && !only.children && !only.state) {
-        return listOf(finish({ type: tagName, element: tagName, label: only.label }, element, walk));
+        return listOf(finish({ type: tagName, element: tagName, label: only.label }, element, walk, false, published));
       }
-      return listOf(finish(only, element, walk));
+      return listOf(finish(only, element, walk, false, published));
     }
     if (rendered.length > 1) {
       if (walk.remaining <= 0) {
@@ -609,7 +621,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
           wrapper.label = named.label;
         }
       }
-      return listOf(finish(wrapper, element, walk));
+      return listOf(finish(wrapper, element, walk, false, published));
     }
     // Nothing rendered, nothing said, nothing published: a closed modal, an icon, a
     // spacer, a dismissed alert. Such an element is not on the page as far as an agent is
@@ -1000,15 +1012,24 @@ function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null)
  * extractor's result: an extractor is application code, but the element it describes
  * may sit inside a region the application marked as sensitive.
  */
-function finish(node: ClrComponentContext, element: Element, walk: Walk, deep = false): ClrComponentContext | null {
+function finish(
+  node: ClrComponentContext,
+  element: Element,
+  walk: Walk,
+  deep = false,
+  published = true
+): ClrComponentContext | null {
   const redacted = isRedacted(element, walk.redactedDepth > 0);
   // Inside a region the application keeps from agents, what a component publishes about
   // itself is not merged at all: a publisher reports its own state — a grid's rows and
-  // selection, a combobox's value — and would otherwise carry it straight out.
-  let described = redacted ? node : mergeElementContext(node, element, walk.options);
+  // selection, a combobox's value — and would otherwise carry it straight out. Nor is it
+  // when the caller excluded what the component renders (see `rendersExcludedRole`).
+  let described = redacted || !published ? node : mergeElementContext(node, element, walk.options);
   // A component that says it is something the caller excluded is left out like any
-  // element with that role, whatever the DOM said about it.
+  // element with that role, whatever the DOM said about it. The node was counted against
+  // the budget, which it no longer uses.
   if (walk.excludeRoles.has(described.type)) {
+    walk.remaining++;
     return null;
   }
   // Anything published or extracted arrives unpruned and may carry children of its own.
@@ -1021,7 +1042,9 @@ function finish(node: ClrComponentContext, element: Element, walk: Walk, deep = 
   }
 
   const pruned = pruneEmpty(described, foreign);
-  noteRef(pruned, element, walk);
+  if (published) {
+    noteRef(pruned, element, walk);
+  }
   return pruned;
 }
 
@@ -1033,6 +1056,32 @@ function listOf(node: ClrComponentContext | null): ClrComponentContext[] {
  * Whether anything inside the element has a role this walk leaves out. Only the elements
  * that could carry one of those roles are looked at, not every descendant.
  */
+/**
+ * Whether a component renders, in its own template, an element with an excluded role —
+ * the grid inside a `clr-datagrid` — rather than holding one inside another component it
+ * contains, such as a datagrid in a tab panel. What the component publishes describes
+ * that content, so it is left out with it.
+ */
+function rendersExcludedRole(element: Element, walk: Walk): boolean {
+  if (!walk.excludeRoleCandidates) {
+    return false;
+  }
+  for (const descendant of Array.from(element.querySelectorAll(walk.excludeRoleCandidates))) {
+    const role = resolveRole(descendant);
+    if (!role || !walk.excludeRoles.has(role)) {
+      continue;
+    }
+    let owner: Element | null = descendant.parentElement;
+    while (owner && owner !== element && !isCustomElementTag(owner)) {
+      owner = owner.parentElement;
+    }
+    if (owner === element) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function holdsExcludedRole(element: Element, walk: Walk): boolean {
   if (!walk.excludeRoleCandidates) {
     return false;

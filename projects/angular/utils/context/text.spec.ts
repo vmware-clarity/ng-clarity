@@ -43,6 +43,7 @@ describe('clrContextText', () => {
 
   it('reads block-level parts as separate words, and inline parts as one', () => {
     expect(read('<div>Alpha</div><div>Beta</div><b>Gam</b>ma')).toBe('Alpha Beta Gamma');
+    expect(read('Line1<br>Line2')).toBe('Line1 Line2');
   });
 
   it('reads markup that is not on the page, judging no style', () => {
