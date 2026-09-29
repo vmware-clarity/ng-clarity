@@ -37,6 +37,34 @@ class TestComponent {
   });
 }
 
+@Component({
+  template: `
+    <form clrForm [formGroup]="form">
+      <clr-radio-container aria-required="true" aria-invalid="false">
+        <label>Plan</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio formControlName="plan" value="monthly" />
+          <label>Monthly</label>
+        </clr-radio-wrapper>
+      </clr-radio-container>
+      <clr-radio-container>
+        <label>Region</label>
+        <clr-radio-wrapper>
+          <input type="radio" clrRadio formControlName="region" value="eu" />
+          <label>EU</label>
+        </clr-radio-wrapper>
+      </clr-radio-container>
+    </form>
+  `,
+  standalone: false,
+})
+class AuthoredComponent {
+  form = new FormGroup({
+    plan: new FormControl<string | null>(null),
+    region: new FormControl<string | null>(null, Validators.required),
+  });
+}
+
 describe('Radio group, as assistive technology sees it', () => {
   let fixture: ComponentFixture<TestComponent>;
 
@@ -76,5 +104,26 @@ describe('Radio group, as assistive technology sees it', () => {
 
     expect(group().getAttribute('aria-invalid')).toBe('true');
     expect(radios().every(radio => !radio.hasAttribute('aria-invalid'))).toBe(true);
+  });
+});
+
+describe('Radio group ARIA the application wrote', () => {
+  it('keeps aria-required and aria-invalid written on the group, and reports invalid without an error message', () => {
+    TestBed.configureTestingModule({
+      imports: [ClrRadioModule, ReactiveFormsModule, NoopAnimationsModule],
+      declarations: [AuthoredComponent],
+    });
+    const fixture = TestBed.createComponent(AuthoredComponent);
+    fixture.detectChanges();
+    const [authored, region] = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('clr-radio-container'));
+
+    expect(authored.getAttribute('aria-required')).toBe('true');
+    expect(authored.getAttribute('aria-invalid')).toBe('false');
+
+    // No clr-control-error is projected: the group is still invalid once touched.
+    fixture.componentInstance.form.controls.region.markAsTouched();
+    fixture.detectChanges();
+    expect(region.getAttribute('aria-invalid')).toBe('true');
+    fixture.destroy();
   });
 });

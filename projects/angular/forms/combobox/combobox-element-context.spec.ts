@@ -9,6 +9,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ClrContextEngineService } from '@clr/angular/ai';
+import { ClrComponentContext } from '@clr/angular/utils';
 
 import { ClrComboboxModule } from './combobox.module';
 
@@ -85,6 +87,24 @@ describe('ClrCombobox element context', () => {
     const context = publishedContext({ maxItemsPerCollection: 25 });
 
     expect(context.state.options).toEqual(['Apple', 'Pear']);
+  });
+
+  it('is described once while open, not again as the list in its overlay', () => {
+    fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
+    fixture.detectChanges();
+
+    const types: string[] = [];
+    const visit = (nodes: ClrComponentContext[]) =>
+      nodes.forEach(node => {
+        types.push(node.type);
+        visit(node.children ?? []);
+      });
+    visit(TestBed.inject(ClrContextEngineService).getSnapshot().components);
+
+    expect(document.querySelector('[role="listbox"]')).not.toBeNull();
+    expect(types).toContain('combobox');
+    expect(types).not.toContain('listbox');
+    expect(types).not.toContain('dialog');
   });
 
   it('caps the option list to the collection budget', () => {

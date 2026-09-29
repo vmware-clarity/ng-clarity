@@ -173,14 +173,19 @@ export class ClrContextFrameHost {
     private readonly routePattern?: (path: string) => string | null
   ) {
     // A wildcard in the list is dropped rather than honoured, so a configuration copied
-    // from somewhere permissive cannot quietly open the page up.
-    this.allowedOrigins = (options.allowedOrigins || [hostWindow.location.origin])
+    // from somewhere permissive cannot quietly open the page up. Without a list, frames
+    // from the page's own origin are served — unless it has none, as a `file://` or
+    // sandboxed page does, when there is nothing to default to.
+    const ownOrigin = hostWindow.location.origin;
+    this.allowedOrigins = (options.allowedOrigins || (ownOrigin === 'null' ? [] : [ownOrigin]))
       .filter(origin => origin !== '*')
       .map(normalizedOrigin);
     this.allowAnyOrigin = options.allowAnyOrigin === true;
     if (!this.allowAnyOrigin && !this.allowedOrigins.length) {
       throw new Error(
-        'ClrContextFrameHost: allowedOrigins names no origin to serve. List the embedding origins, or set allowAnyOrigin to serve every origin deliberately.'
+        options.allowedOrigins
+          ? 'ClrContextFrameHost: allowedOrigins names no origin to serve. List the embedding origins, or set allowAnyOrigin to serve every origin deliberately.'
+          : 'ClrContextFrameHost: this page has no origin of its own (a file:// or sandboxed page) to serve frames from. List the origins to serve in allowedOrigins.'
       );
     }
     this.shareFullUrl = options.shareFullUrl === true;
@@ -333,7 +338,7 @@ export class ClrContextFrameHost {
  * context could be fed to whatever consumes it. The origin check covers the other way
  * round: the right window having navigated somewhere else in between.
  */
-export function requestClrContextFromHost(options: ClrContextFrameRequestOptions = {}): Promise<ClrPageContext | null> {
+export function clrRequestHostContext(options: ClrContextFrameRequestOptions = {}): Promise<ClrPageContext | null> {
   const targetWindow = options.targetWindow || window.parent;
   if (!targetWindow || targetWindow === window) {
     return Promise.resolve(null);

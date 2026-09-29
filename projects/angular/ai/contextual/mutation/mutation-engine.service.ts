@@ -34,8 +34,8 @@ import {
   WriteTarget,
   writeValue,
 } from './write';
-import { ClrContextChange, diffClrContext } from '../diff';
-import { isOutsideSnapshot } from '../dom/walk';
+import { ClrContextChange, clrDiffContext } from '../diff';
+import { isOutsideSnapshot, openModalDialogs } from '../dom/walk';
 import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
 import { CLR_CONTEXT_OPTIONS } from '../providers/context-options';
 import { ClrContextEngineService } from '../providers/contextual-engine.service';
@@ -74,10 +74,11 @@ export class ClrMutationEngineService {
 
   /**
    * What applying the operations would do, without doing any of it: each target
-   * resolved, classified and its value translated, or the refusal it would meet.
+   * resolved, classified and its value translated, or the refusal it would meet. Pass the
+   * `snapshotOptions` `apply()` will get, so that both judge against the same options.
    */
-  plan(operations: ClrMutationOperation[]): ClrMutationPlanEntry[] {
-    const options = this.scopeOptions();
+  plan(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): ClrMutationPlanEntry[] {
+    const options = this.scopeOptions(snapshotOptions);
     return operations.map(operation => {
       const prepared = this.prepare(operation, options);
       if ('refused' in prepared) {
@@ -118,12 +119,12 @@ export class ClrMutationEngineService {
     // or a write made from outside the zone, would otherwise show the old one — then
     // lets whatever the application schedules itself run before the page is read back.
     this.zone.run(() => this.application.tick());
-    await settle();
+    await settle(this.zone);
     const snapshot = this.contextEngine.getSnapshot(snapshotOptions);
     const report: ClrMutationReport = {
       results,
       snapshot,
-      changes: withoutSnapshots(diffClrContext(before, snapshot)),
+      changes: withoutSnapshots(clrDiffContext(before, snapshot)),
     };
     try {
       this.policy?.announce?.(report);
@@ -175,6 +176,11 @@ export class ClrMutationEngineService {
       return refusal(operation, blocked.refused, blocked.detail);
     }
     if (prepared.consequence === 'consequential') {
+      // The modal dialogs open now are the ones that stand between an agent and the page.
+      // One the application opens to ask the person is not: it is still open, or on its
+      // way out, when the answer arrives.
+      const document = prepared.write?.control.ownerDocument;
+      const knownModals = new Set(document ? openModalDialogs(document) : []);
       const confirmed = await this.confirm(prepared.target);
       if (confirmed !== true) {
         return refusal(
@@ -187,8 +193,11 @@ export class ClrMutationEngineService {
       }
       // The person agreed to what they were shown. The page may have moved on while they
       // looked — the field disabled, hidden, re-rendered — so it is checked again, and
-      // written only if it is still exactly what they agreed to.
-      const again = this.prepare(operation, options);
+      // written only if it is still exactly what they agreed to, once the application has
+      // caught up with the answer.
+      this.zone.run(() => this.application.tick());
+      await settle(this.zone);
+      const again = this.prepare(operation, options, knownModals);
       if ('refused' in again) {
         return refusal(operation, again.refused, again.detail);
       }
@@ -233,7 +242,11 @@ export class ClrMutationEngineService {
   }
 
   /** Everything up to, but not including, the write: the target, the value, the verdict. */
-  private prepare(operation: ClrMutationOperation, options: Required<ClrContextSnapshotOptions>): Prepared | Refused {
+  private prepare(
+    operation: ClrMutationOperation,
+    options: Required<ClrContextSnapshotOptions>,
+    knownModals?: ReadonlySet<Element>
+  ): Prepared | Refused {
     if (!this.policy) {
       return { refused: 'unclassified', detail: 'The application has not provided a mutation policy.' };
     }
@@ -253,11 +266,11 @@ export class ClrMutationEngineService {
         detail: 'The ref does not name anything on the page. Take a new snapshot and use its refs.',
       };
     }
-    const resolution = resolveWriteTarget(ref, this.application);
+    const resolution = resolveWriteTarget(ref, this.application, options, knownModals);
     if ('refused' in resolution) {
       return resolution;
     }
-    const write: WriteTarget = { ...resolution.target, options };
+    const write: WriteTarget = resolution.target;
     // A ref outlives the snapshot that handed it out, and a snapshot may have been taken
     // with wider options than these: what these would leave out is not written either.
     if (isOutsideSnapshot(write.element, options)) {
@@ -446,8 +459,8 @@ function plainStrings(value: unknown): Record<string, string> {
  * Lets the application catch up with what was written before anything is read back for
  * the report: whatever it scheduled itself — the `ngModel` inside a component's
  * template, which writes its view in a resolved promise — runs within two turns of the
- * event loop.
+ * event loop. The timers run outside the Angular zone: waiting is not work for it to check.
  */
-function settle(): Promise<void> {
-  return new Promise(resolve => setTimeout(() => setTimeout(resolve)));
+function settle(zone: NgZone): Promise<void> {
+  return new Promise(resolve => zone.runOutsideAngular(() => setTimeout(() => setTimeout(resolve))));
 }

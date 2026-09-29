@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions } from './interfaces';
+import { ClrComponentContext, ClrContextSnapshotOptions } from './context.interface';
 import { publishOnElement } from './publish';
 
 /**

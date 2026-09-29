@@ -7,7 +7,7 @@
 
 import { NgModule, Type } from '@angular/core';
 
-import { ClrContext } from './context.directive';
+import { ClrContext } from './context';
 
 /** The directives {@link ClrContextModule} declares and exports. */
 export const CLR_CONTEXT_DIRECTIVES: Type<any>[] = [ClrContext];

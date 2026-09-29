@@ -8,11 +8,11 @@
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
-import { Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { defer, EMPTY, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
-import { ClrContextChange, diffClrContext } from '../diff';
+import { ClrContextChange, clrDiffContext } from '../diff';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 
 /** How the tracker paces its snapshots and what each one collects; see `start`. */
@@ -64,7 +64,10 @@ const DEFAULT_MAX_WAIT_MS = 2000;
  */
 @Injectable({ providedIn: 'root' })
 export class ClrContextTrackerService implements OnDestroy {
-  /** Emits the latest page context; replays the most recent snapshot to new subscribers. */
+  /**
+   * Emits the latest page context; replays the most recent snapshot to new subscribers
+   * until the service is destroyed.
+   */
   readonly context$: Observable<ClrPageContext>;
   /**
    * Emits, alongside every {@link context$} emission, what changed since the previous one
@@ -87,6 +90,11 @@ export class ClrContextTrackerService implements OnDestroy {
   private latest: ClrPageContext | null = null;
   /** `latest` serialised once at emission, for the change check on the next scrape. */
   private latestSerialized: string | null = null;
+  private destroyed = false;
+  /** How many subscriptions to {@link track} are open. */
+  private sharedUsers = 0;
+  /** Whether the first of those started tracking, so the last of them stops it. */
+  private sharedStarted = false;
 
   constructor(
     @Inject(PLATFORM_ID) private readonly platformId: unknown,
@@ -95,7 +103,8 @@ export class ClrContextTrackerService implements OnDestroy {
     private readonly contextRegistry: ClrContextRegistryService,
     private readonly zone: NgZone
   ) {
-    this.context$ = this.contextSubject.asObservable();
+    // A completed ReplaySubject still replays: once destroyed, a new subscriber gets nothing.
+    this.context$ = defer(() => (this.destroyed ? EMPTY : this.contextSubject.asObservable()));
     this.changes$ = this.changesSubject.asObservable();
   }
 
@@ -113,6 +122,7 @@ export class ClrContextTrackerService implements OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.destroyed = true;
     this.stop();
     // Nothing outlives the injector that owned this service; the snapshot it was
     // holding — a description of the whole page — should not either.
@@ -154,6 +164,35 @@ export class ClrContextTrackerService implements OnDestroy {
     this.refresh();
   }
 
+  /**
+   * The page context, tracked for as long as anyone subscribes: the first subscription
+   * starts tracking when nothing else has, and the last one to end stops it, so consumers
+   * that come and go — a chat panel, an inspector, a page — share one tracker without
+   * stopping each other's. With `options`, tracking is (re)started with them, as with
+   * {@link start}; without, tracking already running is joined as it is.
+   *
+   * Tracking started with {@link start} before the first subscription is left running
+   * when the last one ends; {@link stop} stops tracking for everyone.
+   */
+  track(options?: ClrContextTrackingOptions): Observable<ClrPageContext> {
+    return new Observable<ClrPageContext>(subscriber => {
+      if (this.sharedUsers++ === 0) {
+        this.sharedStarted = !this.tracking;
+      }
+      if (options || !this.tracking) {
+        this.start(options);
+      }
+      const subscription = this.context$.subscribe(subscriber);
+      return () => {
+        subscription.unsubscribe();
+        if (--this.sharedUsers === 0 && this.sharedStarted) {
+          this.sharedStarted = false;
+          this.stop();
+        }
+      };
+    });
+  }
+
   /** Stops tracking. The last emitted context stays available to subscribers. */
   stop(): void {
     this.tracking = false;
@@ -185,12 +224,12 @@ export class ClrContextTrackerService implements OnDestroy {
     this.contextSubject.next(snapshot);
     // A diff is only computed for someone; it is the costlier of the two emissions.
     if (this.changesSubject.observed) {
-      this.changesSubject.next(diffClrContext(previous, snapshot));
+      this.changesSubject.next(clrDiffContext(previous, snapshot));
     }
   }
 
   private onMutations(records: MutationRecord[]): void {
-    if (records.every(record => isInsideIgnoredRegion(record.target))) {
+    if (records.every(record => isInsideIgnoredRegion(record.target) || isPlacementOnly(record))) {
       return;
     }
     this.scheduleScrape();
@@ -252,7 +291,13 @@ export class ClrContextTrackerService implements OnDestroy {
 
   private observeDocument(target: Document): MutationObserver {
     const observer = new MutationObserver(records => this.onMutations(records));
-    observer.observe(target.body, { childList: true, subtree: true, attributes: true, characterData: true });
+    observer.observe(target.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeOldValue: true,
+      characterData: true,
+    });
     return observer;
   }
 
@@ -362,6 +407,27 @@ function isInsideIgnoredRegion(node: Node): boolean {
   // an instance of that window's Element, not this one's.
   const element = node.nodeType === Node.ELEMENT_NODE ? (node as Element) : node.parentElement;
   return !!element?.closest(CLR_CONTEXT_IGNORE_SELECTOR);
+}
+
+/** The declarations of an inline style that decide whether an element shows at all. */
+const VISIBILITY_DECLARATIONS = /(?:^|;)\s*(?:display|visibility|opacity|content-visibility)\s*:[^;]*/gi;
+
+/**
+ * Whether a mutation only moved or resized something: an inline style changed, but not
+ * whether anything shows. A popover repositioning on scroll, a column being resized or a
+ * progress bar filling would otherwise re-scrape the page all the time, for a snapshot
+ * that never says where things are.
+ */
+function isPlacementOnly(record: MutationRecord): boolean {
+  if (record.type !== 'attributes' || record.attributeName !== 'style') {
+    return false;
+  }
+  const visibility = (style: string | null) =>
+    (style?.match(VISIBILITY_DECLARATIONS) ?? [])
+      .join(';')
+      .replace(/[\s;]+/g, ' ')
+      .trim();
+  return visibility(record.oldValue) === visibility((record.target as Element).getAttribute('style'));
 }
 
 /** The snapshot as text, without the timestamp that differs on every take; `null` when it cannot be serialised. */

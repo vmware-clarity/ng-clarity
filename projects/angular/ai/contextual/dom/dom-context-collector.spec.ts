@@ -12,7 +12,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
 import { ClrComponentContext, clrPublishElementContext } from '@clr/angular/utils';
 
-import { collectClrDomContexts } from './dom-context-collector';
+import { clrCollectDomContexts } from './dom-context-collector';
 
 /**
  * A component that renders more than one reportable part (e.g. a datagrid's grid and its
@@ -114,7 +114,7 @@ describe('DOM context collector - Clarity Angular components', () => {
   let root: HTMLElement;
 
   function contextOfType(type: string): ClrComponentContext | undefined {
-    return findContext(collectClrDomContexts(root), context => context.type === type);
+    return findContext(clrCollectDomContexts(root), context => context.type === type);
   }
 
   beforeEach(() => {
@@ -192,7 +192,7 @@ describe('DOM context collector - Clarity Angular components', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    const select = collectClrDomContexts(root)
+    const select = clrCollectDomContexts(root)
       .find(context => context.type === 'form')
       ?.children?.find(child => child.element === 'clr-select-container');
 
@@ -204,7 +204,7 @@ describe('DOM context collector - Clarity Angular components', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(JSON.stringify(collectClrDomContexts(root))).toContain('top-secret-value');
+    expect(JSON.stringify(clrCollectDomContexts(root))).toContain('top-secret-value');
   });
 
   it('does not describe a closed modal', () => {
@@ -242,7 +242,7 @@ describe('DOM context collector - equivalence across rendering surfaces', () => 
 
   /** The claim under test is about what is described, not which element rendered it. */
   function shapeOf(root: ParentNode): unknown {
-    const grid = findContext(collectClrDomContexts(root), context => context.type === 'grid');
+    const grid = findContext(clrCollectDomContexts(root), context => context.type === 'grid');
     return { type: grid?.type, columns: grid?.state?.columns, rowCount: grid?.state?.rowCount };
   }
 
@@ -300,7 +300,7 @@ describe('DOM context collector - equivalence across rendering surfaces', () => 
   });
 
   it('distinguishes the surfaces only by which element rendered them', () => {
-    const gridOf = (root: ParentNode) => findContext(collectClrDomContexts(root), context => context.type === 'grid');
+    const gridOf = (root: ParentNode) => findContext(clrCollectDomContexts(root), context => context.type === 'grid');
 
     expect(gridOf(fixture.nativeElement)?.element).toBe('clr-datagrid');
     expect(gridOf(cssOnly)?.element).toBeUndefined();
@@ -325,7 +325,7 @@ describe('DOM context collector - controls nested inside content leaves', () => 
     // merely folded into the heading's label.
     root.innerHTML = '<h2>Combobox <button class="btn btn-sm btn-primary">Toggle Disabled</button></h2>';
 
-    const heading = collectClrDomContexts(root).find(c => c.type === 'heading');
+    const heading = clrCollectDomContexts(root).find(c => c.type === 'heading');
     const button = heading?.children?.find(c => c.type === 'button');
 
     expect(heading?.label).toBe('Combobox Toggle Disabled');
@@ -346,7 +346,7 @@ describe('DOM context collector - hand-authored markup', () => {
   it('reports nothing for elements that currently render no content', () => {
     root.innerHTML = '<div class="card"></div><span></span>';
 
-    expect(collectClrDomContexts(root)).toEqual([]);
+    expect(clrCollectDomContexts(root)).toEqual([]);
   });
 
   it('describes a native dialog and a details element from their own semantics', () => {
@@ -354,7 +354,7 @@ describe('DOM context collector - hand-authored markup', () => {
       <dialog open aria-label="Native dialog"></dialog>
       <details open><summary>More</summary>body</details>
     `;
-    const contexts = collectClrDomContexts(root);
+    const contexts = clrCollectDomContexts(root);
 
     expect(contexts.find(c => c.type === 'dialog')?.state?.open).toBe(true);
     expect(contexts.find(c => c.type === 'group')?.state?.open).toBe(true);
@@ -362,7 +362,7 @@ describe('DOM context collector - hand-authored markup', () => {
 
   it('reports a field as invalid when the markup says so', () => {
     root.innerHTML = '<label for="h">Host</label><input id="h" aria-invalid="true" required disabled />';
-    const field = collectClrDomContexts(root).find(c => c.type === 'textbox');
+    const field = clrCollectDomContexts(root).find(c => c.type === 'textbox');
 
     expect(field?.state).toEqual({ invalid: true, disabled: true, required: true, value: '' });
   });
@@ -373,7 +373,7 @@ describe('DOM context collector - hand-authored markup', () => {
       <input id="h" aria-invalid="true" aria-describedby="h-err" />
       <span id="h-err">Name is already taken</span>
     `;
-    const field = collectClrDomContexts(root).find(c => c.type === 'textbox');
+    const field = clrCollectDomContexts(root).find(c => c.type === 'textbox');
 
     expect(field?.state?.invalid).toBe(true);
     expect(field?.state?.description).toBe('Name is already taken');
@@ -385,7 +385,7 @@ describe('DOM context collector - hand-authored markup', () => {
       <label for="t">API token</label><input id="t" data-clr-context-redact value="tok_live_abc123" />
       <label for="h">Host</label><input id="h" value="esx-prod-04" />
     `;
-    const json = JSON.stringify(collectClrDomContexts(root));
+    const json = JSON.stringify(clrCollectDomContexts(root));
 
     expect(json).not.toContain('hunter2');
     expect(json).not.toContain('tok_live_abc123');
@@ -395,7 +395,7 @@ describe('DOM context collector - hand-authored markup', () => {
   it('collects control values', () => {
     root.innerHTML = '<label for="h">Host name</label><input id="h" name="hostName" value="esx-prod-04" />';
 
-    expect(JSON.stringify(collectClrDomContexts(root))).toContain('esx-prod-04');
+    expect(JSON.stringify(clrCollectDomContexts(root))).toContain('esx-prod-04');
   });
 
   it('never describes elements inside ignore-marked regions', () => {
@@ -406,7 +406,7 @@ describe('DOM context collector - hand-authored markup', () => {
       </div>
       <div role="grid" aria-label="Page grid"></div>
     `;
-    const contexts = collectClrDomContexts(root);
+    const contexts = clrCollectDomContexts(root);
 
     // Ignored means ignored end to end: neither the dialog nor its button contributes
     // anything, at the top level or nested inside anything else.
@@ -416,13 +416,13 @@ describe('DOM context collector - hand-authored markup', () => {
   it('applies the component budget', () => {
     root.innerHTML = '<div role="grid"></div><div role="grid"></div><div role="grid"></div>';
 
-    expect(collectClrDomContexts(root, { maxComponents: 2 }).length).toBe(2);
+    expect(clrCollectDomContexts(root, { maxComponents: 2 }).length).toBe(2);
   });
 
   it('truncates long text to the configured budget', () => {
     root.innerHTML = `<button>${'x'.repeat(200)}</button>`;
 
-    expect(collectClrDomContexts(root, { maxTextLength: 10 })[0].label?.length).toBe(10);
+    expect(clrCollectDomContexts(root, { maxTextLength: 10 })[0].label?.length).toBe(10);
   });
 });
 
@@ -443,7 +443,7 @@ describe('DOM context collector - component-published context', () => {
       state: { options: ['a', 'b', 'c'], loaded: true },
     }));
 
-    const widget = collectClrDomContexts(root, { maxItemsPerCollection: 2 })[0];
+    const widget = clrCollectDomContexts(root, { maxItemsPerCollection: 2 })[0];
 
     expect(widget.label).toBe('Component label');
     expect(widget.state?.loaded).toBe(true);
@@ -456,7 +456,7 @@ describe('DOM context collector - component-published context', () => {
       state: { options: ['Apple', 'Pear'], value: 'Apple' },
     }));
 
-    const combobox = collectClrDomContexts(root).find(c => c.type === 'combobox');
+    const combobox = clrCollectDomContexts(root).find(c => c.type === 'combobox');
 
     expect(combobox?.label).toBe('Fruit');
     expect(combobox?.state?.options).toEqual(['Apple', 'Pear']);
@@ -469,7 +469,7 @@ describe('DOM context collector - component-published context', () => {
       throw new Error('broken publisher');
     });
 
-    expect(collectClrDomContexts(root)).toEqual([
+    expect(clrCollectDomContexts(root)).toEqual([
       { type: 'clr-fake-widget', element: 'clr-fake-widget', label: 'DOM label' },
     ]);
   });
@@ -481,7 +481,7 @@ describe('DOM context collector - component-published context', () => {
       children: [{ type: 'button', label: 'Delete', ref: 'e-other' }],
     }));
 
-    const json = JSON.stringify(collectClrDomContexts(root));
+    const json = JSON.stringify(clrCollectDomContexts(root));
 
     expect(json).toContain('Delete');
     expect(json).not.toContain('e-forged');
@@ -502,7 +502,7 @@ describe('DOM context collector - component-published context', () => {
       extra: circular,
     }));
 
-    const widget = collectClrDomContexts(root, { maxTextLength: 50 })[0];
+    const widget = clrCollectDomContexts(root, { maxTextLength: 50 })[0];
 
     expect(() => JSON.stringify(widget)).not.toThrow();
     expect(widget.children?.length).toBe(2);
@@ -520,7 +520,7 @@ describe('DOM context collector - component-published context', () => {
       state: { rows: ['R'.repeat(300)] },
     }));
 
-    const widget = collectClrDomContexts(root, { maxTextLength: 40 })[0];
+    const widget = clrCollectDomContexts(root, { maxTextLength: 40 })[0];
 
     expect((widget.label as string).length).toBeLessThanOrEqual(40);
     expect((widget.state?.['rows'] as string[])[0].length).toBeLessThanOrEqual(40);
@@ -534,7 +534,7 @@ describe('DOM context collector - component-published context', () => {
       state: { model: circular, count: 2 },
     }));
 
-    const widget = collectClrDomContexts(root)[0];
+    const widget = clrCollectDomContexts(root)[0];
 
     expect(() => JSON.stringify(widget)).not.toThrow();
     expect(widget.state?.['count']).toBe(2);
@@ -550,7 +550,7 @@ describe('DOM context collector - component-published context', () => {
     }));
     clrPublishElementContext(root.querySelector('fake-grid') as Element, () => ({ state: { totalRows: 2 } }));
 
-    const json = JSON.stringify(collectClrDomContexts(root, { excludeCategories: ['collections', 'forms'] }));
+    const json = JSON.stringify(clrCollectDomContexts(root, { excludeCategories: ['collections', 'forms'] }));
 
     expect(json).not.toContain('combobox');
     expect(json).not.toContain('Apple');
@@ -565,7 +565,7 @@ describe('DOM context collector - component-published context', () => {
       state: { value: '4111 1111 1111 1111', options: ['4111 1111 1111 1111'] },
     }));
 
-    const json = JSON.stringify(collectClrDomContexts(root));
+    const json = JSON.stringify(clrCollectDomContexts(root));
 
     expect(json).not.toContain('4111');
     expect(json).toContain('"redacted":true');

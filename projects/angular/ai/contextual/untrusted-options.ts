@@ -72,8 +72,9 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
  * Fields keep their label, type, constraints and validation state, so such a consumer
  * still learns the shape of a form; it just does not learn its contents.
  *
- * Regions are left as they are: those come from the application's own `clrContext`
- * annotations, so whatever is in them was put there deliberately.
+ * Regions are left as they are, state included: those come from the application's own
+ * `clrContext` annotations, so whatever is in them was put there deliberately, for every
+ * consumer.
  */
 export function withoutFormValues(context: ClrPageContext): ClrPageContext {
   return { ...context, components: context.components.map(withoutValues) };
@@ -87,6 +88,7 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
  * parameters and queries routinely carry record identifiers, tenant identifiers and
  * occasionally credentials — a reset token, an invitation code, a signed download — none
  * of which a consumer the application does not control needs to know where the user is.
+ * The document title goes too: it names the record on screen as often as the page.
  *
  * A page that matches no configured route — or an application without a router — has no
  * pattern to stand for its path, so only the origin is left of its address.
@@ -100,7 +102,7 @@ export function withoutUrlDetails(
   routePattern?: (path: string) => string | null,
   baseUrl: string | undefined = context.url
 ): ClrPageContext {
-  const shared: ClrPageContext = { ...context };
+  const shared: ClrPageContext = { ...context, title: '' };
   const pattern = context.route?.path;
   if (typeof shared.url === 'string') {
     shared.url = withPath(shared.url, pattern ?? '');

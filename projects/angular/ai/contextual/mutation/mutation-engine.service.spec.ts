@@ -654,6 +654,48 @@ describe('ClrMutationEngineService', () => {
         expect(confirm).toHaveBeenCalledWith(jasmine.objectContaining({ ref, value: 'Ada' }));
       });
 
+      it('writes what the person confirmed in a modal dialog of the application, while that dialog is still leaving', async () => {
+        classify.and.returnValue('consequential');
+        const ref = refOf(snapshot(), 'Name');
+        const dialog = document.createElement('div');
+        dialog.setAttribute('role', 'dialog');
+        dialog.setAttribute('aria-modal', 'true');
+        dialog.textContent = 'Change the name?';
+        // The application asks in its own modal, and answers before the dialog is gone.
+        confirm.and.callFake(() => {
+          document.body.appendChild(dialog);
+          return Promise.resolve(true);
+        });
+        try {
+          const result = await set(ref, 'Name', 'Ada');
+          expect(result.applied).toBeTrue();
+          expect(host.form.value.name).toBe('Ada');
+        } finally {
+          dialog.remove();
+        }
+      });
+
+      it('still refuses a write behind a modal dialog that was open before the question', async () => {
+        classify.and.returnValue('consequential');
+        const ref = refOf(snapshot(), 'Name');
+        const dialog = document.createElement('div');
+        dialog.setAttribute('role', 'dialog');
+        dialog.setAttribute('aria-modal', 'true');
+        dialog.textContent = 'Session expiring';
+        let asked = false;
+        confirm.and.callFake(() => {
+          asked = true;
+          return true;
+        });
+        document.body.appendChild(dialog);
+        try {
+          expect((await set(ref, 'Name', 'Ada')).refused).toBe('hidden');
+          expect(asked).toBeFalse();
+        } finally {
+          dialog.remove();
+        }
+      });
+
       it('treats a policy that throws as forbidding', async () => {
         classify.and.throwError('boom');
         expect((await set(refOf(snapshot(), 'Name'), 'Name', 'x')).refused).toBe('forbidden');
@@ -677,6 +719,14 @@ describe('ClrMutationEngineService', () => {
         expect(plan[2].refused).toBe('invalid');
         expect(host.form.value.name).toBe('seed');
         expect(host.form.value.agree).toBeFalse();
+      });
+
+      it('judges against the snapshot options apply() will get', () => {
+        const ref = refOf(snapshot(), 'Name');
+        const operation = { operation: 'setValue' as const, ref, description: 'Name', value: 'Ada' };
+
+        expect(engine.plan([operation])[0].refused).toBeUndefined();
+        expect(engine.plan([operation], { excludeSelectors: ['form'] })[0].refused).toBe('hidden');
       });
     });
 

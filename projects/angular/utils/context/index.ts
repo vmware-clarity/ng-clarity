@@ -6,7 +6,7 @@
  */
 
 export * from './attributes';
-export * from './interfaces';
+export * from './context.interface';
 export * from './element-context';
 export * from './element-mutator';
 export * from './text';

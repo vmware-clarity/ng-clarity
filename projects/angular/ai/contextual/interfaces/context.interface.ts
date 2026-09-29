@@ -46,7 +46,7 @@ export interface ClrAvailableRoute {
  * information about UI that no longer exists.
  */
 export interface ClrPageContext {
-  /** The document title. */
+  /** The document title; empty for a caller the application does not control, unless it shares the full URL. */
   title: string;
   /** The current URL (browser location, or router URL when available). */
   url?: string;

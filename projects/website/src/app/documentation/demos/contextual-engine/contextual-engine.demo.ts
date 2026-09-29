@@ -68,26 +68,17 @@ import { ClrContextTrackerService } from '@clr/angular/ai';
 @Component({
   // ...
 })
-export class AssistantPanelComponent implements OnInit, OnDestroy {
+export class AssistantPanelComponent implements OnInit {
   private readonly tracker = inject(ClrContextTrackerService);
   private readonly destroyRef = inject(DestroyRef);
-  private startedTracking = false;
 
   ngOnInit() {
-    this.tracker.context$
+    // The tracker is shared: track() starts it if nobody has, and stops it once the
+    // last consumer that asked for it is gone.
+    this.tracker
+      .track({ snapshot: { maxComponents: 50 } })
       .pipe(takeUntilDestroyed(this.destroyRef))
       .subscribe(context => this.setPageContext(context));
-    // The tracker is shared: start it only if nobody has, and stop only what you started.
-    if (!this.tracker.isTracking) {
-      this.tracker.start({ snapshot: { maxComponents: 50 } });
-      this.startedTracking = true;
-    }
-  }
-
-  ngOnDestroy() {
-    if (this.startedTracking) {
-      this.tracker.stop();
-    }
   }
 }
 `;
@@ -154,7 +145,7 @@ this.contextEngine.enableFrameBridge({
 
 const FRAME_CLIENT_EXAMPLE = `
 // Inside the iframe: any framework, no Clarity required — plain postMessage.
-const hostOrigin = new URL(document.referrer).origin; // the embedder, disclosed by the referrer
+const hostOrigin = 'https://app.example'; // the application this frame is built for, never read from the page
 const requestId = crypto.randomUUID(); // unguessable, so no other frame can answer for the host
 
 window.addEventListener('message', event => {
@@ -242,13 +233,13 @@ this.contextTracker.changes$.subscribe(change => {
   // change.removed — nodes that are gone
   // change.changed — nodes whose own state differs: { before, after }
   // change.routeChanged / titleChanged / regionsChanged
-  if (!isEmptyClrContextChange(change)) {
+  if (!clrIsEmptyContextChange(change)) {
     assistant.send({ pageChanged: change });
   }
 });
 
 // The same comparison for snapshots obtained any other way:
-const change = diffClrContext(previousSnapshot, currentSnapshot);
+const change = clrDiffContext(previousSnapshot, currentSnapshot);
 `;
 
 const BUDGETS_EXAMPLE = `
@@ -305,7 +296,7 @@ const report = await this.mutationEngine.apply([
 // What each operation did, then the page as it is now and what changed.
 report.results; // ClrMutationResult[]
 report.snapshot; // a fresh ClrPageContext, with refs to continue from
-report.changes; // diffClrContext(before, after)
+report.changes; // clrDiffContext(before, after)
 
 // plan() resolves, classifies and coerces without writing anything.
 const plan = this.mutationEngine.plan(operations);

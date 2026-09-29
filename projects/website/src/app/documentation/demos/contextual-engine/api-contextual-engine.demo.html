@@ -75,9 +75,11 @@
         <code cds-text="code">maxComponents</code> past them. What the user entered — typed values, chosen options,
         ticked boxes, selected rows — is withheld unless <code cds-text="code">shareFormValues</code> is set, and the
         page's address is reduced to its route pattern — links to the application to the pattern they match, links
-        elsewhere and frames to their origin, <code cds-text="code">mailto:</code> links to their scheme — unless
-        <code cds-text="code">shareFullUrl</code> is set. Descriptions — helper and validation text — are still shared:
-        keep what they say free of the value, or mark the field <code cds-text="code">data-clr-context-redact</code>.
+        elsewhere and frames to their origin, <code cds-text="code">mailto:</code> links to their scheme — and the
+        document title withheld, unless <code cds-text="code">shareFullUrl</code> is set. The application's own
+        <code cds-text="code">clrContext</code> annotations are shared as they are. Descriptions — helper and validation
+        text — are still shared: keep what they say free of the value, or mark the field
+        <code cds-text="code">data-clr-context-redact</code>.
       </td>
     </tr>
     <tr>
@@ -105,7 +107,8 @@
       <td class="left"><b cds-text="medium">context$</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrPageContext&gt;</code></td>
       <td class="left">
-        Emits whenever the page context actually changes, replaying the most recent snapshot to new subscribers.
+        Emits whenever the page context actually changes, replaying the most recent snapshot to new subscribers until
+        the service is destroyed.
       </td>
     </tr>
     <tr>
@@ -119,6 +122,15 @@
       <td class="left">
         Whether the tracker is watching the page. The tracker is shared: a consumer that only wants to look can check
         this and leave starting and stopping to whoever owns tracking.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">track(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrPageContext&gt;</code></td>
+      <td class="left">
+        The page context, tracked for as long as anyone subscribes: the first subscription starts tracking when nothing
+        else has, and the last one to end stops it, so consumers that come and go share one tracker without stopping
+        each other's. With options, tracking restarts with them; without, running tracking is joined as it is.
       </td>
     </tr>
     <tr>
@@ -148,7 +160,7 @@
       <td class="left">
         Emits, alongside every <code cds-text="code">context$</code> emission, what changed since the previous one —
         nodes added, removed and changed, and whether the route, title or annotations moved — so a conversation can send
-        the difference rather than the whole page. <code cds-text="code">diffClrContext(previous, current)</code> is the
+        the difference rather than the whole page. <code cds-text="code">clrDiffContext(previous, current)</code> is the
         same comparison as a function.
       </td>
     </tr>
@@ -183,11 +195,12 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">plan(operations)</b></td>
+      <td class="left"><b cds-text="medium">plan(operations, snapshotOptions?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">ClrMutationPlanEntry[]</code></td>
       <td class="left">
         What applying the operations would do, without doing it: each target resolved, classified and its value
-        translated, or the refusal it would meet.
+        translated, or the refusal it would meet. Pass the <code cds-text="code">snapshotOptions</code>
+        <code cds-text="code">apply()</code> will get, so both judge against the same options.
       </td>
     </tr>
   </tbody>
@@ -638,7 +651,10 @@
     <tr>
       <td class="left"><b cds-text="medium">title</b></td>
       <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">The document title.</td>
+      <td class="left">
+        The document title. Frames and the global accessor receive an empty title, unless the application sets
+        <code cds-text="code">shareFullUrl</code>.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">availableRoutes</b></td>

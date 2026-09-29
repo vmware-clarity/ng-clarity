@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
@@ -17,7 +17,6 @@ import {
 } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
-import { SharedContextTracking } from '../../context-inspector/shared-tracking';
 import { DEMO_HOSTS, DemoHost } from '../hosts';
 
 /** A node in the page's snapshot that the mutation engine could write to. */
@@ -67,7 +66,6 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
   });
 
   private trackingSubscription: Subscription | null = null;
-  private readonly sharedTracking = inject(SharedContextTracking);
 
   constructor(
     private contextTracker: ClrContextTrackerService,
@@ -77,20 +75,19 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     // The refs an agent can use come from the latest snapshot, which the tracker keeps
-    // current as the page changes.
-    this.trackingSubscription = this.contextTracker.context$.subscribe(snapshot => {
+    // current as the page changes. The tracker is shared with the app-shell inspector: it
+    // stops once neither needs it.
+    const tracking = this.contextTracker.track({ snapshot: { maxComponents: 500 } });
+    this.trackingSubscription = tracking.subscribe(snapshot => {
       this.writableTargets = writableTargets(snapshot.components);
       if (!this.writableTargets.some(target => target.ref === this.targetRef)) {
         this.targetRef = this.writableTargets[0]?.ref ?? '';
       }
     });
-    this.sharedTracking.acquire({ snapshot: { maxComponents: 500 } });
   }
 
   ngOnDestroy(): void {
     this.trackingSubscription?.unsubscribe();
-    // The tracker is shared with the app-shell inspector: it stops once neither needs it.
-    this.sharedTracking.release();
   }
 
   setValue(): void {

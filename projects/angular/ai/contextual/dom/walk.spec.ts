@@ -1074,3 +1074,131 @@ describe('collectContextTree, leaving out whole kinds of content', () => {
     expect(collect(PAGE, { excludeCategories: ['text'] })).not.toContain('text');
   });
 });
+
+describe('collectContextTree, markup it did not expect', () => {
+  let container: HTMLElement;
+  const options = () => resolveSnapshotOptions({ maxComponents: 100 });
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => container.remove());
+
+  function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}) {
+    container.innerHTML = html;
+    return collectContextTreeWithin(container, resolveSnapshotOptions({ maxComponents: 100, ...overrides }));
+  }
+
+  it('describes an element whose role or type names something every object has', () => {
+    for (const name of [
+      'hasOwnProperty',
+      'valueOf',
+      'isPrototypeOf',
+      'propertyIsEnumerable',
+      'toLocaleString',
+      '__defineGetter__',
+      '__lookupGetter__',
+      'toString',
+      'constructor',
+      '__proto__',
+    ]) {
+      const { components } = collect(
+        `<div role="${name}">x</div><select role="${name}"><option>a</option></select><input type="${name}" aria-label="F" /><button>ok</button>`
+      );
+      expect(components.some(node => node.type === 'button'))
+        .withContext(name)
+        .toBe(true);
+      expect(() => structuredClone(components))
+        .withContext(name)
+        .not.toThrow();
+    }
+  });
+
+  it('reads an editing host as a text field whatever role it claims', () => {
+    const { components } = collect(
+      `<div contenteditable role="document" aria-label="Notes editor"><p>typed secret alpha</p></div>
+       <h2 contenteditable>typed secret beta</h2>
+       <div contenteditable role="presentation"><p>typed secret gamma</p></div>
+       <div contenteditable role="searchbox" aria-label="Search">query</div>`
+    );
+    expect(components.map(node => node.type)).toEqual(['textbox', 'textbox', 'textbox', 'searchbox']);
+    const labels = JSON.stringify(components.map(node => ({ ...node, state: undefined })));
+    expect(labels).not.toContain('typed secret');
+  });
+
+  it('reads a frame whose document is being edited as one text field', async () => {
+    const frame = document.createElement('iframe');
+    frame.title = 'Rich text area';
+    const loaded = new Promise(resolve => frame.addEventListener('load', resolve, { once: true }));
+    frame.srcdoc = '<body contenteditable="true"><p>typed secret delta</p></body>';
+    container.appendChild(frame);
+    await loaded;
+
+    const [node] = collectContextTreeWithin(container, options()).components;
+    expect(node.type).toBe('textbox');
+    expect(node.label).toBe('Rich text area');
+    expect(node.state?.value).toBe('typed secret delta');
+    expect(node.children).toBeUndefined();
+
+    const contents = frame.contentDocument as Document;
+    contents.body.removeAttribute('contenteditable');
+    contents.designMode = 'on';
+    const [designed] = collectContextTreeWithin(container, options()).components;
+    expect(designed.type).toBe('textbox');
+    expect(designed.children).toBeUndefined();
+  });
+
+  it('describes a root that sits inside another root once', () => {
+    const { components } = collect(
+      '<section class="root"><section class="root" aria-label="Inner"><button>Save</button></section></section>',
+      { rootSelector: '.root' }
+    );
+    expect(JSON.stringify(components).match(/"Save"/g)?.length).toBe(1);
+  });
+
+  it('stops at a depth the stack can hold, and says the snapshot was cut off', () => {
+    let innermost: Element = container;
+    for (let level = 0; level < 700; level++) {
+      innermost = innermost.appendChild(document.createElement('div'));
+    }
+    innermost.innerHTML = '<button>Deep</button>';
+    const shallow = document.createElement('button');
+    shallow.textContent = 'Shallow';
+    container.appendChild(shallow);
+
+    const result = collectContextTreeWithin(container, options());
+    expect(result.components.map(node => node.label)).toEqual(['Shallow']);
+    expect(result.truncated).toBe(true);
+  });
+
+  it('reads no description or name from an element hidden from assistive technology or inert', () => {
+    const { components } = collect(
+      `<input aria-label="Code" aria-describedby="h i v" />
+       <span id="h" aria-hidden="true">HIDDEN-TEXT</span><span id="i" inert>INERT-TEXT</span><span id="v">Six digits</span>
+       <button aria-labelledby="l">Go</button><span id="l" aria-hidden="true">HIDDEN-NAME</span>`
+    );
+    const json = JSON.stringify(components);
+    expect(json).not.toContain('HIDDEN-');
+    expect(json).not.toContain('INERT-');
+    expect(json).toContain('Six digits');
+  });
+
+  it('reports the link a tree item holds', () => {
+    const { components } = collect(
+      '<div role="tree"><div role="treeitem" aria-expanded="false"><a href="/hosts">Hosts</a></div></div>'
+    );
+    const [item] = components[0].children ?? [];
+    expect(item.type).toBe('treeitem');
+    expect(item.label).toBe('Hosts');
+    expect(item.children?.map(child => child.type)).toEqual(['link']);
+  });
+
+  it('shortens a name without splitting a character in two', () => {
+    const { components } = collect(`<button>${'a'.repeat(98)}😀 tail</button>`);
+    const label = components[0].label as string;
+    expect(label.endsWith('…')).toBe(true);
+    expect(/[\ud800-\udbff]…$/.test(label)).toBe(false);
+  });
+});

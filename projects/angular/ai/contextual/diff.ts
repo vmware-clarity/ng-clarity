@@ -46,7 +46,7 @@ export interface ClrContextChange {
  * level that read alike are counted as the same node in order of appearance, which is
  * what a reader would do too.
  */
-export function diffClrContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange {
+export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange {
   const change: ClrContextChange = {
     previous,
     current,
@@ -62,7 +62,7 @@ export function diffClrContext(previous: ClrPageContext | null, current: ClrPage
 }
 
 /** Whether a change carries anything at all. */
-export function isEmptyClrContextChange(change: ClrContextChange): boolean {
+export function clrIsEmptyContextChange(change: ClrContextChange): boolean {
   return (
     !change.added.length &&
     !change.removed.length &&

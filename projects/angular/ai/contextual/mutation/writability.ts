@@ -6,7 +6,7 @@
  */
 
 import { isRedacted } from '../dom/aria-state';
-import { isHiddenFromEngine, topmostModal } from '../dom/walk';
+import { isHiddenFromEngine, openModalDialogs } from '../dom/walk';
 
 /** Why an element that a ref points at must not be written to right now. */
 export type ClrWriteObstacle = 'hidden' | 'redacted' | 'disabled' | 'readOnly';
@@ -19,12 +19,17 @@ export type ClrWriteObstacle = 'hidden' | 'redacted' | 'disabled' | 'readOnly';
  * field behind an open modal dialog is refused too: the person cannot reach it. A
  * disabled or read-only control is refused for the same reason a user could not type
  * into it.
+ *
+ * `knownModals`, when given, are the only modal dialogs that count: those open before the
+ * application was asked to confirm. The dialog it asked in may still be open, or leaving,
+ * when the answer arrives, and must not stand in the way of what the person just agreed to.
  */
-export function writeObstacle(element: Element): ClrWriteObstacle | null {
+export function writeObstacle(element: Element, knownModals?: ReadonlySet<Element>): ClrWriteObstacle | null {
   if (isHiddenFromEngine(element)) {
     return 'hidden';
   }
-  const modal = topmostModal(element.ownerDocument);
+  const modals = openModalDialogs(element.ownerDocument).filter(dialog => !knownModals || knownModals.has(dialog));
+  const modal = modals[modals.length - 1];
   if (modal && !modal.contains(element)) {
     return 'hidden';
   }

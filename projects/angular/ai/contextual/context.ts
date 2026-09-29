@@ -46,13 +46,13 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 
   ngOnInit(): void {
     this.lastReported = this.serialized();
-    this.contextRegistry.register(this, this.host?.nativeElement);
+    this.contextRegistry.register(this, this.anchor() ?? undefined);
   }
 
   ngDoCheck(): void {
     // An annotation inside an ignored region never reaches a snapshot, so its changes are
     // no reason to take one: a chat panel marked ignore must not re-trigger tracking.
-    if (this.host?.nativeElement.closest?.(CLR_CONTEXT_IGNORE_SELECTOR)) {
+    if (this.anchor()?.closest(CLR_CONTEXT_IGNORE_SELECTOR)) {
       return;
     }
     // Serialised on every check to notice a state object edited in place. The state an
@@ -101,5 +101,15 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
       // A state that cannot be serialised cannot appear in a snapshot either.
       return '';
     }
+  }
+
+  /**
+   * The element the annotation sits on. On an `<ng-container>`, which renders no element
+   * of its own, that is the element it sits in, so the annotation still follows the rules
+   * of the page around it: left out where that is hidden, stripped where it is redacted.
+   */
+  private anchor(): Element | null {
+    const node: Node | undefined = this.host?.nativeElement;
+    return node?.nodeType === Node.ELEMENT_NODE ? (node as Element) : (node?.parentElement ?? null);
   }
 }

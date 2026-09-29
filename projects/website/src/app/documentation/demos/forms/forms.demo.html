@@ -223,11 +223,12 @@
     </p>
     <p class="clr-mt-24px" cds-text="body">
       Clarity form controls also tell assistive technology what the form model knows. A control sets
-      <code cds-text="code">aria-invalid="true"</code> once the user has touched it and it is invalid, the same moment
-      its error message appears. It sets <code cds-text="code">aria-required="true"</code> when the form control has a
-      <code cds-text="code">Validators.required</code> validator, which the DOM does not otherwise show. If you set
-      <code cds-text="code">aria-invalid</code> or <code cds-text="code">aria-required</code> on the control yourself,
-      as an attribute or a binding, your value takes precedence.
+      <code cds-text="code">aria-invalid="true"</code> once the user has touched it and it is invalid, when its error
+      message, if it has one, appears. It sets <code cds-text="code">aria-required="true"</code> when the form control
+      has a <code cds-text="code">Validators.required</code> validator, which the DOM does not otherwise show. A radio
+      group reports both once, on the group. If you set <code cds-text="code">aria-invalid</code> or
+      <code cds-text="code">aria-required</code> on the control or the radio group yourself, as an attribute or a
+      binding, your value takes precedence.
     </p>
 
     <h2 id="helper-and-validation-messages" cds-text="title" class="clr-mt-48px">Helper and validation messages</h2>

@@ -6,6 +6,7 @@
  */
 
 import { isContentEditable } from './aria-state';
+import { ownEntry } from '../lookup';
 
 /**
  * Mapping from HTML element to the ARIA role it carries implicitly, following HTML-AAM.
@@ -176,15 +177,33 @@ const LEAF_ROLES = new Set([
  * A heading's, an alert's or a status's accessible name subsumes all descendant text —
  * that is correct, unlike-role computation — but ordinary markup routinely nests a
  * genuinely separate, independently focusable control inside one anyway: a heading with
- * a button, an alert with a dismiss action, a status with an undo action. That control
- * keeps its own role and state regardless of its container's, so the walk must still
- * find it. A widget leaf (`button`, `link`, `checkbox`, ...) has no such exception:
+ * a button, an alert with a dismiss action, a status with an undo action, a tree item
+ * with its link. That control keeps its own role and state regardless of its
+ * container's, so the walk must still find it. A widget leaf (`button`, `link`, `checkbox`, ...) has no such exception:
  * nothing inside it has independent semantics, so it stays fully terminal.
  */
-const CONTENT_LEAF_ROLES = new Set(['heading', 'status', 'alert', 'term', 'caption', 'definition', 'tooltip']);
+const CONTENT_LEAF_ROLES = new Set([
+  'heading',
+  'status',
+  'alert',
+  'term',
+  'caption',
+  'definition',
+  'tooltip',
+  // A tree item names itself from its text, but holds the link it navigates by and the
+  // items nested under it.
+  'treeitem',
+]);
 
 /** Longer than the longest ARIA role, `menuitemcheckbox`, with room for DPUB and graphics roles. */
 const MAX_ROLE_LENGTH = 32;
+
+/**
+ * Roles an editing host may keep: those of a field the user types into. Any other role on
+ * one — `document`, `heading`, `presentation` — would have what the user typed read as
+ * prose or as a name.
+ */
+const TEXT_ENTRY_ROLES = new Set(['textbox', 'searchbox', 'combobox']);
 
 /** The two spellings of "this element carries no semantics of its own". */
 const PRESENTATIONAL_ROLES = new Set(['presentation', 'none']);
@@ -192,14 +211,19 @@ const PRESENTATIONAL_ROLES = new Set(['presentation', 'none']);
 /**
  * The ARIA role an element carries, explicit or implicit, or `null` when it has none.
  *
- * An explicit `role` always wins. Because `role` accepts a fallback list, only the first
- * token is honored — the same way assistive technology resolves it.
+ * An explicit `role` wins, except on an editing host, which is a text field whatever else
+ * it says it is. Because `role` accepts a fallback list, only the first token is honored —
+ * the same way assistive technology resolves it.
  */
 export function resolveRole(element: Element): string | null {
   // A token longer than any ARIA role is not one, and page markup must not be able to
   // inflate a snapshot through it: the element falls back to its implicit role.
   const explicit = element.getAttribute('role')?.trim().split(/\s+/)[0];
-  if (explicit && explicit.length <= MAX_ROLE_LENGTH) {
+  if (
+    explicit &&
+    explicit.length <= MAX_ROLE_LENGTH &&
+    (TEXT_ENTRY_ROLES.has(explicit) || !isContentEditable(element))
+  ) {
     return explicit;
   }
   return implicitRole(element);
@@ -297,7 +321,9 @@ function implicitRole(element: Element): string | null {
     case 'aside':
       // A generic landmark only earns its role once it is named, otherwise every
       // wrapper section would surface as an indistinguishable region.
-      return tagName === 'aside' || hasNameAttribute(element) ? IMPLICIT_ROLES_BY_TAG[tagName] : null;
+      return tagName === 'aside' || hasNameAttribute(element)
+        ? (ownEntry(IMPLICIT_ROLES_BY_TAG, tagName) ?? null)
+        : null;
     case 'th': {
       // A header cell at the start of a row names that row, not a column.
       const scope = element.getAttribute('scope')?.toLowerCase();
@@ -308,7 +334,7 @@ function implicitRole(element: Element): string | null {
     case 'footer':
       return element.parentElement?.closest(SECTIONING_SELECTOR) ? null : 'contentinfo';
     default:
-      return IMPLICIT_ROLES_BY_TAG[tagName] ?? null;
+      return ownEntry(IMPLICIT_ROLES_BY_TAG, tagName) ?? null;
   }
 }
 
@@ -324,7 +350,7 @@ function inputRole(input: HTMLInputElement): string | null {
   }
   // Date and time inputs have no agreed ARIA role; treat anything unlisted as a textbox,
   // which is how they behave for a user typing into them.
-  return INPUT_ROLES_BY_TYPE[type] ?? 'textbox';
+  return ownEntry(INPUT_ROLES_BY_TYPE, type) ?? 'textbox';
 }
 
 /**

@@ -149,6 +149,12 @@ describe('ClrContext directive, announcing its changes', () => {
       <div clrContext="Chat" [clrContextState]="chat"></div>
     </aside>
     <footer><div clrContext="Footer notes"></div></footer>
+    <div id="plain">
+      <ng-container clrContext="Inside a container" [clrContextState]="{ open: true }"></ng-container>
+    </div>
+    <div data-clr-context-redact>
+      <ng-container clrContext="Redacted container" [clrContextState]="{ card: '5500' }"></ng-container>
+    </div>
   `,
   standalone: false,
 })
@@ -175,6 +181,14 @@ describe('ClrContext directive, following the element it annotates', () => {
     expect(regions).toContain(jasmine.objectContaining({ label: 'Visible', state: { step: 1 } }));
     expect(regions).toContain({ type: 'region', label: 'Payment', state: { redacted: true } });
     expect(JSON.stringify(regions)).not.toContain('4111');
+  });
+
+  it('follows the element an annotation on an <ng-container> sits in', () => {
+    const regions = engine.getSnapshot().regions;
+
+    expect(regions).toContain(jasmine.objectContaining({ label: 'Inside a container', state: { open: true } }));
+    expect(regions).toContain({ type: 'region', label: 'Redacted container', state: { redacted: true } });
+    expect(JSON.stringify(regions)).not.toContain('5500');
   });
 
   it('leaves out an annotation inside an ignored region', () => {

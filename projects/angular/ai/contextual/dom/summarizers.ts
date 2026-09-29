@@ -15,6 +15,7 @@ import { accessibleName } from './accessible-name';
 import { ariaEnumValue } from './aria-state';
 import { resolveRole } from './roles';
 import { isVisible } from './visibility';
+import { ownEntry } from '../lookup';
 
 /**
  * Produces a compact description of a whole subtree, keyed on ARIA role.
@@ -76,7 +77,7 @@ export function summarizeRole(
   options: Required<ClrContextSnapshotOptions>,
   withheld = ''
 ): Record<string, unknown> | null {
-  const summarizer = role ? ROLE_SUMMARIZERS[role] : undefined;
+  const summarizer = role ? ownEntry(ROLE_SUMMARIZERS, role) : undefined;
   if (!summarizer) {
     return null;
   }

@@ -279,7 +279,7 @@ export interface ClrNavigationMutationResult {
 export type ClrMutationResult = ClrElementMutationResult | ClrNavigationMutationResult;
 
 /**
- * What a batch of operations changed on the page, as {@link diffClrContext} reports it,
+ * What a batch of operations changed on the page, as {@link clrDiffContext} reports it,
  * without the two full snapshots: the report already carries the one after.
  */
 export type ClrMutationChanges = Omit<ClrContextChange, 'previous' | 'current'>;

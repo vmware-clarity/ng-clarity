@@ -10,7 +10,7 @@ import {
   ClrContextFrameHost,
   ClrContextFrameRequest,
   ClrContextFrameResponse,
-  requestClrContextFromHost,
+  clrRequestHostContext,
 } from './context-frame-bridge';
 import { ClrPageContext } from '../interfaces/context.interface';
 
@@ -98,7 +98,9 @@ describe('Context frame bridge', () => {
       dispatchRequest(frameRequest('request-1'));
 
       expect(getSnapshot).toHaveBeenCalled();
-      expect(servedContext(frame).title).toBe('Host page');
+      expect(servedContext(frame).components[0].type).toBe('form');
+      // The title names what is on screen as often as the page: it goes with the address.
+      expect(servedContext(frame).title).toBe('');
     });
 
     it('answers only the origin that asked, never every origin', () => {
@@ -178,6 +180,15 @@ describe('Context frame bridge', () => {
       dispatchRequest(frameRequest('request-normalised'), 'https://chat.example');
 
       expect(frame.postMessage).toHaveBeenCalled();
+    });
+
+    it('asks for a list on a page with no origin of its own, rather than defaulting to "null"', () => {
+      const originless = { location: { origin: 'null' } } as unknown as Window;
+
+      expect(() => new ClrContextFrameHost(getSnapshot, originless)).toThrowError(/no origin of its own/);
+      expect(
+        () => new ClrContextFrameHost(getSnapshot, originless, { allowedOrigins: ['https://chat.example'] })
+      ).not.toThrow();
     });
 
     it('refuses an entry that is not an origin at all', () => {
@@ -349,6 +360,7 @@ describe('Context frame bridge', () => {
         dispatchRequest(frameRequest('request-full-url'));
 
         expect(servedContext(frame).url).toBe(pageContext.url);
+        expect(servedContext(frame).title).toBe('Host page');
       });
 
       it('does not alter the snapshot it was given', () => {
@@ -410,7 +422,7 @@ describe('Context frame bridge', () => {
     });
   });
 
-  describe('requestClrContextFromHost', () => {
+  describe('clrRequestHostContext', () => {
     function answering(context: ClrPageContext, overrides: Partial<ClrContextFrameResponse> = {}): FakeWindow {
       const target = fakeWindow();
       target.postMessage.and.callFake((message: ClrContextFrameRequest) => {
@@ -433,13 +445,13 @@ describe('Context frame bridge', () => {
     it('resolves with the host context', async () => {
       const target = answering(pageContext);
 
-      expect(await requestClrContextFromHost({ targetWindow: target as unknown as Window })).toEqual(pageContext);
+      expect(await clrRequestHostContext({ targetWindow: target as unknown as Window })).toEqual(pageContext);
     });
 
     it('asks only the host origin, rather than announcing itself to any origin', async () => {
       const target = answering(pageContext);
 
-      await requestClrContextFromHost({ targetWindow: target as unknown as Window });
+      await clrRequestHostContext({ targetWindow: target as unknown as Window });
 
       expect(target.postMessage.calls.mostRecent().args[1]).toEqual({ targetOrigin: window.location.origin });
     });
@@ -447,9 +459,9 @@ describe('Context frame bridge', () => {
     it('uses an unguessable request id, so a response cannot be forged by guessing it', async () => {
       const target = answering(pageContext);
 
-      await requestClrContextFromHost({ targetWindow: target as unknown as Window });
+      await clrRequestHostContext({ targetWindow: target as unknown as Window });
       const first = (target.postMessage.calls.mostRecent().args[0] as ClrContextFrameRequest).requestId;
-      await requestClrContextFromHost({ targetWindow: target as unknown as Window });
+      await clrRequestHostContext({ targetWindow: target as unknown as Window });
       const second = (target.postMessage.calls.mostRecent().args[0] as ClrContextFrameRequest).requestId;
 
       expect(first).not.toBe(second);
@@ -474,7 +486,7 @@ describe('Context frame bridge', () => {
         );
       });
 
-      const context = await requestClrContextFromHost({ targetWindow: target as unknown as Window, timeoutMs: 40 });
+      const context = await clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 40 });
 
       expect(context).toBeNull();
     });
@@ -496,7 +508,7 @@ describe('Context frame bridge', () => {
         );
       });
 
-      const context = await requestClrContextFromHost({
+      const context = await clrRequestHostContext({
         targetWindow: target as unknown as Window,
         hostOrigin: window.location.origin,
         timeoutMs: 40,
@@ -508,7 +520,7 @@ describe('Context frame bridge', () => {
     it('ignores a response that carries no context', async () => {
       const target = answering(pageContext, { context: undefined as unknown as ClrPageContext });
 
-      const context = await requestClrContextFromHost({ targetWindow: target as unknown as Window, timeoutMs: 40 });
+      const context = await clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 40 });
 
       expect(context).toBeNull();
     });
@@ -538,13 +550,13 @@ describe('Context frame bridge', () => {
         });
       });
 
-      const context = await requestClrContextFromHost({ targetWindow: target as unknown as Window });
+      const context = await clrRequestHostContext({ targetWindow: target as unknown as Window });
 
       expect(context?.title).toBe('Host page');
     });
 
     it('resolves with null when the host never answers', async () => {
-      const context = await requestClrContextFromHost({
+      const context = await clrRequestHostContext({
         targetWindow: fakeWindow() as unknown as Window,
         timeoutMs: 10,
       });
@@ -553,7 +565,7 @@ describe('Context frame bridge', () => {
     });
 
     it('resolves with null when there is no separate host window', async () => {
-      expect(await requestClrContextFromHost({ targetWindow: window })).toBeNull();
+      expect(await clrRequestHostContext({ targetWindow: window })).toBeNull();
     });
   });
 });
@@ -673,6 +685,6 @@ describe('Context frame bridge, what the host stays in charge of', () => {
     });
 
     // No hostOrigin given: the origin the request was addressed to is still the one required.
-    expect(await requestClrContextFromHost({ targetWindow: target as unknown as Window, timeoutMs: 50 })).toBeNull();
+    expect(await clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 50 })).toBeNull();
   });
 });

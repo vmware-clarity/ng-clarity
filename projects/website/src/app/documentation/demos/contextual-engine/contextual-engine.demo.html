@@ -191,12 +191,14 @@
       popup, another tab, an opener — never is. An embedded document is trusted less than the application that embeds
       it: same-origin only by default; no form values (typed, chosen, ticked or selected); no address beyond the route
       pattern — the frame learns it is on <code cds-text="code">clusters/:id</code>, not which cluster, nor what a query
-      string carried — and links reduced the same way, to the route they lead to or the origin they point at, unless the
-      host sets <code cds-text="code">shareFormValues</code> or <code cds-text="code">shareFullUrl</code>; only the
-      options in <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> honoured, and only to ask for less than
-      the host, the application-wide options and the defaults allow; one snapshot per frame per
+      string carried — links reduced the same way, to the route they lead to or the origin they point at, and no
+      document title, which names the record on screen as often as the page, unless the host sets
+      <code cds-text="code">shareFormValues</code> or <code cds-text="code">shareFullUrl</code>; only the options in
+      <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> honoured, and only to ask for less than the host,
+      the application-wide options and the defaults allow; one snapshot per frame per
       <code cds-text="code">minRequestIntervalMs</code>, and at most five across all frames per interval, so frames in a
-      loop cannot keep the host's main thread busy.
+      loop cannot keep the host's main thread busy. The application's own <code cds-text="code">clrContext</code>
+      annotations are shared as they are, state included: what they say was written for every consumer.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="frameHostExample" language="typescript"></app-code-snippet>
@@ -285,7 +287,7 @@
       <code cds-text="code">ClrContextTrackerService.changes$</code> emits alongside every
       <code cds-text="code">context$</code> emission: nodes added (with their subtrees), removed, and changed in their
       own state, plus whether the route, title or annotations moved. The first emission after
-      <code cds-text="code">start()</code> lists everything as added. <code cds-text="code">diffClrContext()</code> is
+      <code cds-text="code">start()</code> lists everything as added. <code cds-text="code">clrDiffContext()</code> is
       the same comparison as a plain function.
     </p>
     <div class="clr-mt-16px">
@@ -421,8 +423,12 @@
       <li>
         <b cds-text="medium">Write what a snapshot would not show.</b> A hidden, inert, disabled, read-only or ignored
         control is refused, and so is anything behind an open modal or in a redacted region — the agent is not the thing
-        that types a password. Form fields hidden from the user are a documented attack on form-filling agents, and the
-        visibility rules are the defence.
+        that types a password. The visibility rules follow what hides an element — <code cds-text="code">hidden</code>,
+        <code cds-text="code">display</code>, <code cds-text="code">visibility</code>, full transparency — not geometry:
+        a field moved off-screen or shrunk to nothing is still offered, because a visually hidden native input is also
+        how custom checkboxes are built. Fields hidden from the user are a documented attack on form-filling agents;
+        what protects against one is that only Angular-bound controls are written, and that the mutation policy judges
+        every write.
       </li>
       <li>
         <b cds-text="medium">Write an unbound control.</b> A control without an Angular form binding — plain HTML the

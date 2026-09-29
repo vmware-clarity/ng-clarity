@@ -7,6 +7,7 @@
 
 import {
   CLR_CONTEXT_EDITING_HOST_SELECTOR,
+  CLR_CONTEXT_HIDDEN_SELECTOR,
   CLR_CONTEXT_IGNORE_SELECTOR,
   CLR_CONTEXT_REDACT_SELECTOR,
 } from '@clr/angular/utils';
@@ -20,7 +21,12 @@ import { checkVisibility } from './visibility';
  */
 export function truncate(text: string, maxLength: number): string {
   const normalized = text.replace(/\s+/g, ' ').trim();
-  return normalized.length > maxLength ? `${normalized.slice(0, maxLength - 1)}…` : normalized;
+  if (normalized.length <= maxLength) {
+    return normalized;
+  }
+  // A cut between the two halves of a surrogate pair would leave half a character, which
+  // does not survive encoding: the whole character goes.
+  return `${normalized.slice(0, maxLength - 1).replace(/[\ud800-\udbff]$/, '')}…`;
 }
 
 /**
@@ -152,14 +158,16 @@ export function referencedText(element: Element, attribute: string, withheld = '
       .split(/\s+/)
       .map(id => document.getElementById(id))
       // A reference must not reach into a region the engine may not read, nor into an
-      // element that is not rendered at all: page content can point an `aria-describedby`
-      // at anything with an id. (ARIA would include an unrendered target; for an agent
-      // consumer that is a way to smuggle in text nobody sees. Text hidden only visually,
-      // clipped for screen readers, is still read, as intended.)
+      // element it would not describe — hidden, `aria-hidden`, inert, or not rendered at
+      // all: page content can point an `aria-describedby` at anything with an id. (ARIA
+      // would include such a target; for an agent consumer that is a way to smuggle in
+      // text nobody sees. Text hidden only visually, clipped for screen readers, is still
+      // read, as intended.)
       .filter(
         (referenced): referenced is HTMLElement =>
           !!referenced &&
           !referenced.closest(UNREADABLE_SELECTOR) &&
+          !referenced.closest(CLR_CONTEXT_HIDDEN_SELECTOR) &&
           !(withheld && referenced.closest(withheld)) &&
           !isUnrendered(referenced)
       )

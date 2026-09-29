@@ -82,7 +82,8 @@ describe('ClrContextEngineService', () => {
         options?: unknown
       ) => { title: string };
       expect(typeof globalAccessor).toBe('function');
-      expect(globalAccessor().title).toBe(document.title);
+      // Withheld with the address unless the application shares the full URL.
+      expect(globalAccessor().title).toBe('');
 
       engine.disableGlobalAccess();
       expect((window as unknown as Record<string, unknown>)['testClrContext']).toBeUndefined();
@@ -593,6 +594,7 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
 
     expect(snapshot.route?.url).toBe('/clusters/42?token=s3cr3t');
     expect(JSON.stringify(snapshot.components)).toContain('signature=s3cr3t');
+    expect(snapshot.title).toBe(document.title);
   });
 
   it('withholds a selection as much as a typed value', () => {

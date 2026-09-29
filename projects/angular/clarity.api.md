@@ -1134,7 +1134,7 @@ export class ClrAccordionTitle {
 }
 
 // @public (undocumented)
-export class ClrAlert implements OnInit, OnDestroy {
+export class ClrAlert implements OnInit, DoCheck, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService" needs to be exported by the entry point clr-angular.d.ts
     constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
@@ -1172,6 +1172,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     isSmall: boolean;
     liveRole: 'alert' | 'status' | null | undefined;
+    // (undocumented)
+    ngDoCheck(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -5236,10 +5238,10 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 // @public (undocumented)
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
-    protected get ariaInvalid(): true | null;
+    protected get ariaInvalid(): string | null;
     // (undocumented)
     ariaLabelledBy: string;
-    protected get ariaRequired(): true | null;
+    protected get ariaRequired(): string | null;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);

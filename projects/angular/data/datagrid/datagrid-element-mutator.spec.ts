@@ -591,9 +591,6 @@ describe('ClrDatagrid element mutator', () => {
   });
 
   describe('contents', () => {
-    // Pending: the walk summarises a grid and does not descend into it (walk.ts, `terminal`
-    // for a summarised role), so a control in a cell never reaches the snapshot and gets no
-    // ref, although ClrElementMutator.ownsContents says a datagrid's cells are the application's.
     it('gives an input in a cell a ref of its own, and writes it', async () => {
       const host = await create(InputHost);
       const page = contextEngine.getSnapshot();

@@ -13,6 +13,7 @@ import {
   ClrElementMutation,
   ClrElementMutator,
   clrNormalizeContextText,
+  clrUsableSelectors,
 } from '@clr/angular/utils';
 
 import { ContextRefTarget } from './context-ref-registry.service';
@@ -22,6 +23,7 @@ import { accessibleName } from '../dom/accessible-name';
 import { readElementMutator } from '../dom/element-mutator';
 import { resolveRole } from '../dom/roles';
 import { jsonSafe } from '../json-safe';
+import { ownEntry } from '../lookup';
 
 /** The longest a label in a result or a refusal may be. */
 const MAX_LABEL_LENGTH = 100;
@@ -65,6 +67,8 @@ export interface WriteTarget {
   mutator: ClrElementMutator | null;
   /** The snapshot options the write is judged against, handed to the element's mutator. */
   options?: Required<ClrContextSnapshotOptions>;
+  /** The only modal dialogs that count as obstacles, when not all open ones do (see `writeObstacle`). */
+  knownModals?: ReadonlySet<Element>;
 }
 
 export type TargetResolution = { target: WriteTarget } | { refused: ClrMutationRefusal; detail: string };
@@ -109,14 +113,19 @@ const OBSTACLE_DETAILS = {
  * `application` is the Angular application the engine belongs to: a control another
  * application on the same page owns is that application's to fill, under its own policy.
  */
-export function resolveWriteTarget(ref: ContextRefTarget, application: ApplicationRef | null): TargetResolution {
+export function resolveWriteTarget(
+  ref: ContextRefTarget,
+  application: ApplicationRef | null,
+  options?: Required<ClrContextSnapshotOptions>,
+  knownModals?: ReadonlySet<Element>
+): TargetResolution {
   const { elements, type } = ref;
   const control = elements[elements.length - 1];
-  const obstacle = writeObstacle(control);
+  const obstacle = writeObstacle(control, knownModals);
   if (obstacle) {
     return { refused: obstacle, detail: OBSTACLE_DETAILS[obstacle] };
   }
-  const label = ref.label ?? labelOf(elements);
+  const label = ref.label ?? labelOf(elements, withheldBy(control, options));
 
   for (const element of elements) {
     const mutator = readElementMutator(element);
@@ -128,7 +137,7 @@ export function resolveWriteTarget(ref: ContextRefTarget, application: Applicati
       return { refused: 'unbound', detail: 'The control belongs to another Angular application on this page.' };
     }
     if (mutator?.write) {
-      return { target: { element, control, label, type, kind: 'custom', ngControl, mutator } };
+      return { target: { element, control, label, type, kind: 'custom', ngControl, mutator, options, knownModals } };
     }
     const bound = ngControl?.control as AbstractControl;
     if (bound.disabled) {
@@ -148,7 +157,7 @@ export function resolveWriteTarget(ref: ContextRefTarget, application: Applicati
         detail: 'This select applies its value only when its form is submitted, which the engine never does.',
       };
     }
-    return { target: { element, control, label, type, kind, ngControl, mutator } };
+    return { target: { element, control, label, type, kind, ngControl, mutator, options, knownModals } };
   }
   // A radio group is summarised rather than walked, so its ref is the group's; the
   // binding is on the radios inside it.
@@ -461,7 +470,7 @@ export function readValue(target: WriteTarget): unknown {
       return (target.element as HTMLInputElement).checked;
     case 'radiogroup': {
       const chosen = radiosOf(target.element).find(radio => radio.checked);
-      return chosen ? radioLabel(chosen) : null;
+      return chosen ? radioLabelWithin(chosen, withheldBy(target.element, target.options)) : null;
     }
     default:
       return plain(target.ngControl?.control?.value);
@@ -525,7 +534,7 @@ function kindFor(bound: Element, rendered: Element, type: string): ControlKind |
     if (inputType === 'number' || inputType === 'range') {
       return 'number';
     }
-    return inputType in TYPED_INPUTS ? 'typed' : 'text';
+    return ownEntry(TYPED_INPUTS, inputType) ? 'typed' : 'text';
   }
   switch (resolveRole(rendered) ?? type) {
     case 'checkbox':
@@ -579,7 +588,7 @@ function coerceTyped(target: WriteTarget, proposed: unknown): Coerced {
     return { value: '', display: '' };
   }
   const input = target.element as HTMLInputElement;
-  const format = TYPED_INPUTS[input.type] ?? '';
+  const format = ownEntry(TYPED_INPUTS, input.type) ?? '';
   if (typeof proposed !== 'string') {
     return { refused: `A value in the form ${format} is expected.` };
   }
@@ -607,7 +616,18 @@ function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {
   const usable = all.filter(option => optionUsable(option));
   const options: HTMLOptionElement[] = [];
   for (const entry of wanted) {
-    const option = all.find(candidate => optionMatches(candidate, entry));
+    const matches = all.filter(candidate => optionMatches(candidate, entry));
+    // Two options can read the same: only a value naming exactly one of them tells which.
+    const byValue = matches.filter(
+      candidate =>
+        typeof entry === 'string' && clrNormalizeContextText(candidate.value) === clrNormalizeContextText(entry)
+    );
+    const option = matches.length > 1 ? (byValue.length === 1 ? byValue[0] : undefined) : matches[0];
+    if (matches.length > 1 && !option) {
+      return {
+        refused: `Several options read "${String(entry)}", and nothing tells which one is meant. Leave this choice to the user.`,
+      };
+    }
     if (!option) {
       return { refused: `No such option. The options are: ${listLabels(usable.map(optionLabel))}.` };
     }
@@ -625,7 +645,9 @@ function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
     return { value: null, display: null };
   }
   const radios = radiosOf(target.element);
-  const usable = radios.filter(radio => !writeObstacle(radio));
+  const withheld = withheldBy(target.element, target.options);
+  const radioLabel = (radio: HTMLInputElement) => radioLabelWithin(radio, withheld);
+  const usable = radios.filter(radio => !writeObstacle(radio, target.knownModals));
   const chosen = radios.find(
     radio =>
       typeof proposed === 'string' && clrNormalizeContextText(radioLabel(radio)) === clrNormalizeContextText(proposed)
@@ -654,18 +676,23 @@ function radiosOf(group: Element): HTMLInputElement[] {
   return Array.from(group.querySelectorAll('input[type="radio"]'));
 }
 
-function radioLabel(radio: HTMLInputElement): string {
-  return accessibleName(radio, 'radio', MAX_LABEL_LENGTH) || radio.value;
+function radioLabelWithin(radio: HTMLInputElement, withheld = ''): string {
+  return accessibleName(radio, 'radio', MAX_LABEL_LENGTH, withheld) || radio.value;
+}
+
+/** Selects what the options leave out, so that no label read here quotes it. */
+function withheldBy(element: Element, options?: Required<ClrContextSnapshotOptions>): string {
+  return options ? clrUsableSelectors(element.ownerDocument, options.excludeSelectors) : '';
 }
 
 /**
  * The name a node is known by when the snapshot gave it none: the accessible name of
  * the element carrying the role, or of the host that renders it.
  */
-function labelOf(elements: Element[]): string {
+function labelOf(elements: Element[], withheld: string): string {
   for (let index = elements.length - 1; index >= 0; index--) {
     const element = elements[index];
-    const name = accessibleName(element, resolveRole(element), MAX_LABEL_LENGTH);
+    const name = accessibleName(element, resolveRole(element), MAX_LABEL_LENGTH, withheld);
     if (name) {
       return name;
     }

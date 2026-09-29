@@ -18,7 +18,7 @@ import {
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
-import { ariaState, isRedacted, redactNode } from './aria-state';
+import { ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, publishedNode } from './element-context';
 import { readElementMutator } from './element-mutator';
 import {
@@ -78,6 +78,13 @@ export const WRITABLE_ROLES: ReadonlySet<string> = new Set([
   'spinbutton',
   'radiogroup',
 ]);
+
+/**
+ * How deeply nested an element the walk still looks at. The HTML parser nests no deeper
+ * than 512, but script can, and the walk recurses once per level: what lies deeper is
+ * left out, and the snapshot says it was cut off, rather than the stack running out.
+ */
+const MAX_ELEMENT_DEPTH = 512;
 
 /** Elements that never carry meaning for an agent. */
 const SKIPPED_TAGS = new Set(['script', 'style', 'template', 'link', 'meta', 'noscript', 'head']);
@@ -167,6 +174,8 @@ interface Walk {
   textDepth: number;
   /** How many described nodes are above the current one. */
   depth: number;
+  /** How many elements are above the current one, described or not. */
+  elementDepth: number;
   /** Greater than zero while inside an embedded frame's document. */
   frameDepth: number;
   /**
@@ -213,6 +222,7 @@ export function collectContextTreeWithin(
     summarizedListDepth: 0,
     textDepth: 0,
     depth: 0,
+    elementDepth: 0,
     frameDepth: 0,
     mutatorDepth: 0,
     refs,
@@ -303,16 +313,28 @@ export function engineScope(root: ParentNode, options: Required<ClrContextSnapsh
     const selector = clrUsableSelectors(root, [options.rootSelector]);
     const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
     // A root inside a hidden, inert, ignored or excluded region is still left out: what
-    // keeps a region from the engine holds however the walk is pointed at it.
-    return { roots: roots.filter(element => !isHiddenFromEngine(element, excludeSelector)) };
+    // keeps a region from the engine holds however the walk is pointed at it. A root
+    // inside another is already described with it.
+    return {
+      roots: roots.filter(
+        element =>
+          !isHiddenFromEngine(element, excludeSelector) &&
+          !roots.some(other => other !== element && other.contains(element))
+      ),
+    };
   }
   return { roots: null };
 }
 
 /** The open modal dialog the user is looking at, if any: the last one the engine would describe. */
 export function topmostModal(root: ParentNode, excludeSelector = ''): Element | null {
-  const dialogs = Array.from(modalDialogs(root)).filter(dialog => !isHiddenFromEngine(dialog, excludeSelector));
+  const dialogs = openModalDialogs(root, excludeSelector);
   return dialogs.length ? dialogs[dialogs.length - 1] : null;
+}
+
+/** The open modal dialogs the engine would describe, in document order. */
+export function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
+  return Array.from(modalDialogs(root)).filter(dialog => !isHiddenFromEngine(dialog, excludeSelector));
 }
 
 function modalDialogs(root: ParentNode): NodeListOf<Element> {
@@ -452,6 +474,21 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
   if (shouldSkipSubtree(element, walk)) {
     return [];
   }
+  if (walk.elementDepth >= MAX_ELEMENT_DEPTH) {
+    if (!walk.probing) {
+      walk.truncated = true;
+    }
+    return [];
+  }
+  walk.elementDepth++;
+  try {
+    return describeAtDepth(element, walk, owner);
+  } finally {
+    walk.elementDepth--;
+  }
+}
+
+function describeAtDepth(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
   const redacts = element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE);
   // A described-by target that is walked for the controls it holds still had its text
   // reported as the description of whatever it describes.
@@ -603,7 +640,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   }
   // A collection role is described by aggregating its subtree rather than listing it,
   // which is what keeps a ten-thousand-row grid from producing ten thousand nodes.
-  const summary = summarizeRole(element, role, walk.options, walk.excludeSelector);
+  const summary = summarizeSafely(element, role, walk);
   const state = { ...ariaState(element, walk.options, redacted, walk.excludeSelector), ...summary };
   if (Object.keys(state).length) {
     node.state = state;
@@ -821,6 +858,11 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     state.loading = true;
   } else if (isStillNavigating(frame, contents)) {
     state.loading = true;
+  } else if (contents.designMode === 'on' || contents.body.isContentEditable || isContentEditable(contents.body)) {
+    // A document the user types into — how classic rich-text editors are built — is one
+    // text field, and what it holds is a value, never prose.
+    node.type = 'textbox';
+    state.value = truncate(accessibleText(contents.body), walk.options.maxTextLength);
   } else {
     // Ids are scoped to a document: the frame's references must not skip or fold the
     // host's elements that happen to share an id, nor the other way round.
@@ -870,6 +912,18 @@ function extractSafely(
 ): ClrComponentContext | null {
   try {
     return extractor.extract(element, walk.options);
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * The collection summary for an element, or `null` when summarising it throws: markup
+ * the summarizers did not foresee must cost one node its summary, not the whole snapshot.
+ */
+function summarizeSafely(element: Element, role: string | null, walk: Walk): Record<string, unknown> | null {
+  try {
+    return summarizeRole(element, role, walk.options, walk.excludeSelector);
   } catch {
     return null;
   }

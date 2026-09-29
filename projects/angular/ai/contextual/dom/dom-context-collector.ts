@@ -30,19 +30,19 @@ export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
  * `customExtractors` cover the remainder — markup carrying neither a role nor an
  * accessible name, such as a bare `<div class="card">`.
  */
-export function collectClrDomContexts(
+export function clrCollectDomContexts(
   root: ParentNode,
   options?: ClrContextSnapshotOptions,
   customExtractors: ClrContextDomExtractor[] = []
 ): ClrComponentContext[] {
-  return collectClrDomContextTree(root, options, customExtractors).components;
+  return clrCollectDomContextTree(root, options, customExtractors).components;
 }
 
 /**
- * {@link collectClrDomContexts}, also reporting whether the component budget ran out
+ * {@link clrCollectDomContexts}, also reporting whether the component budget ran out
  * before the whole page was described.
  */
-export function collectClrDomContextTree(
+export function clrCollectDomContextTree(
   root: ParentNode,
   options?: ClrContextSnapshotOptions,
   customExtractors: ClrContextDomExtractor[] = []

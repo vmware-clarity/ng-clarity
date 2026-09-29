@@ -5,11 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, inject, OnDestroy } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ClrContextTrackerService, ClrPageContext } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
-
-import { SharedContextTracking } from './shared-tracking';
 
 /**
  * Global "what does the AI context engine see right now" panel, mounted once in the app
@@ -30,8 +28,6 @@ export class ContextInspectorComponent implements OnDestroy {
   snapshotCount = 0;
 
   private subscription?: Subscription;
-  private tracking = false;
-  private readonly sharedTracking = inject(SharedContextTracking);
 
   constructor(private contextTracker: ClrContextTrackerService) {}
 
@@ -46,19 +42,11 @@ export class ContextInspectorComponent implements OnDestroy {
   setOpen(open: boolean): void {
     this.open = open;
     this.subscription?.unsubscribe();
-    if (open && !this.tracking) {
-      // The tracker is shared with the demo pages: the panel keeps whatever options a page
-      // is tracking with, and only starts tracking when nobody is.
-      this.sharedTracking.acquire();
-      this.tracking = true;
-    } else if (!open && this.tracking) {
-      // Nothing here consumes the context while the panel is closed; tracking stops once
-      // no page needs it either.
-      this.sharedTracking.release();
-      this.tracking = false;
-    }
+    this.subscription = undefined;
+    // The tracker is shared with the demo pages: the panel joins whatever tracking a page
+    // runs with its own options, and tracking stops once neither needs it.
     if (open) {
-      this.subscription = this.contextTracker.context$.subscribe(snapshot => this.render(snapshot));
+      this.subscription = this.contextTracker.track().subscribe(snapshot => this.render(snapshot));
     }
   }
 
@@ -68,9 +56,6 @@ export class ContextInspectorComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
-    if (this.tracking) {
-      this.sharedTracking.release();
-    }
   }
 
   private render(snapshot: ClrPageContext): void {

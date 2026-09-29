@@ -1512,10 +1512,10 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 // @public (undocumented)
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
-    protected get ariaInvalid(): true | null;
+    protected get ariaInvalid(): string | null;
     // (undocumented)
     ariaLabelledBy: string;
-    protected get ariaRequired(): true | null;
+    protected get ariaRequired(): string | null;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);

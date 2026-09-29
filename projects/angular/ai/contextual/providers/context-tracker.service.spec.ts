@@ -12,6 +12,7 @@ import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextTrackerService } from './context-tracker.service';
+import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrContextChange } from '../diff';
 import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
 
@@ -219,6 +220,22 @@ describe('ClrContextTrackerService', () => {
     expect(widgetLabels(tracker.currentContext)).toEqual([]);
   });
 
+  it('does not re-scrape when a style only moves or resizes something, and does when it hides it', async () => {
+    const widget = addWidget('Popover');
+    tracker.start({ debounceMs: 20 });
+    const scrapes = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.callThrough();
+
+    (widget as HTMLElement).style.left = '10px';
+    (widget as HTMLElement).style.width = '120px';
+    await elapse(5000);
+    expect(scrapes).not.toHaveBeenCalled();
+
+    (widget as HTMLElement).style.display = 'none';
+    await elapse(20);
+    expect(scrapes).toHaveBeenCalledTimes(1);
+    expect(widgetLabels(tracker.currentContext)).toEqual([]);
+  });
+
   it('still scrapes at the max-wait bound when the page never goes quiet', async () => {
     tracker.start({ debounceMs: 200, maxWaitMs: 500 });
     const countAfterStart = emitted.length;
@@ -269,6 +286,57 @@ describe('ClrContextTrackerService', () => {
     await elapse(20);
 
     expect(tracker.currentContext?.components).toEqual([]);
+  });
+
+  it('replays nothing once destroyed', () => {
+    tracker.start();
+    tracker.ngOnDestroy();
+
+    const late: ClrPageContext[] = [];
+    tracker.context$.subscribe(context => late.push(context));
+
+    expect(late).toEqual([]);
+  });
+
+  describe('shared through track()', () => {
+    it('tracks while anyone subscribes, and stops when the last one leaves', () => {
+      const first = tracker.track().subscribe();
+      const second = tracker.track().subscribe();
+      expect(tracker.isTracking).toBeTrue();
+
+      first.unsubscribe();
+      expect(tracker.isTracking).toBeTrue();
+      second.unsubscribe();
+      expect(tracker.isTracking).toBeFalse();
+    });
+
+    it('delivers the page context to each subscriber', () => {
+      const seen: ClrPageContext[] = [];
+      const subscription = tracker.track().subscribe(context => seen.push(context));
+
+      expect(seen.length).toBe(1);
+      expect(seen[0]).toBe(tracker.currentContext as ClrPageContext);
+      subscription.unsubscribe();
+    });
+
+    it('leaves running the tracking someone started before', () => {
+      tracker.start();
+      tracker.track().subscribe().unsubscribe();
+
+      expect(tracker.isTracking).toBeTrue();
+    });
+
+    it('restarts with the options it is given, and joins as it is without', async () => {
+      const first = tracker.track({ debounceMs: 20, snapshot: { includeDomComponents: false } }).subscribe();
+      const second = tracker.track().subscribe();
+
+      addWidget('Ignored by the first options');
+      await elapse(20);
+      expect(tracker.currentContext?.components).toEqual([]);
+
+      first.unsubscribe();
+      second.unsubscribe();
+    });
   });
 
   it('emits fresh snapshots on manual refresh', () => {

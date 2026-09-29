@@ -18,7 +18,7 @@ import {
   ClrContextFrameHost,
   ClrContextFrameHostOptions,
   ClrContextFrameRequestOptions,
-  requestClrContextFromHost,
+  clrRequestHostContext,
 } from '../iframe/context-frame-bridge';
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
 import { jsonSafe } from '../json-safe';
@@ -51,10 +51,11 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
    */
   shareFormValues?: boolean;
   /**
-   * Include the full URL — path, query string and fragment — and the route's parameters,
-   * query parameters and data. Off by default, when a caller learns only the route's
-   * pattern (`reset/:token`): addresses routinely carry identifiers and occasionally
-   * credentials, and any script on the page can call the accessor.
+   * Include the full URL — path, query string and fragment — the route's parameters,
+   * query parameters and data, and the document title. Off by default, when a caller
+   * learns only the route's pattern (`reset/:token`) and an empty title: addresses and
+   * titles routinely carry identifiers and occasionally credentials, and any script on
+   * the page can call the accessor.
    */
   shareFullUrl?: boolean;
 }
@@ -221,7 +222,7 @@ export class ClrContextEngineService implements OnDestroy {
     if (!this.browserWindow()) {
       return Promise.resolve(null);
     }
-    return requestClrContextFromHost(options);
+    return clrRequestHostContext(options);
   }
 
   private snapshot(options: ClrContextSnapshotOptions | undefined, withRefs: boolean): ClrPageContext {

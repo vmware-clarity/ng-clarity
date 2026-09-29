@@ -138,6 +138,14 @@ class AppBroken implements ControlValueAccessor {
           <option value="us">Americas</option>
         </select>
       </clr-select-container>
+      <clr-select-container>
+        <label>Office</label>
+        <select clrSelect formControlName="office">
+          <option value="lon">Main</option>
+          <option value="par">Main</option>
+          <option value="ber">Berlin</option>
+        </select>
+      </clr-select-container>
       <clr-radio-container>
         <label>Tier</label>
         <clr-radio-wrapper>
@@ -176,6 +184,7 @@ class Host {
     plan: new FormControl('free'),
     colour: new FormControl('red', { updateOn: 'blur' }),
     region: new FormControl('eu', { updateOn: 'submit' }),
+    office: new FormControl('ber'),
     tier: new FormControl('basic'),
     due: new FormControl(''),
     volume: new FormControl(4),
@@ -319,6 +328,16 @@ describe('ClrMutationEngineService write path', () => {
       const unknown = await set('Plan', 'Platinum');
       expect(unknown.detail).toContain('"Free", "Team"');
       expect(unknown.detail).not.toContain('Gold');
+    });
+
+    it('refuses an option label several options share, unless a value names one of them', async () => {
+      const ambiguous = await set('Office', 'Main');
+      expect(ambiguous.refused).toBe('invalid');
+      expect(ambiguous.detail).toContain('Several options read "Main"');
+      expect(host.form.value.office).toBe('ber');
+
+      expect((await set('Office', 'par')).applied).toBeTrue();
+      expect(host.form.value.office).toBe('par');
     });
 
     it('refuses a disabled radio in a group', async () => {

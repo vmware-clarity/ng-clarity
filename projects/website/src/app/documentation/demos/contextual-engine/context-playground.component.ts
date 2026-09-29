@@ -13,11 +13,11 @@ import {
   ClrContextCategory,
   ClrContextChange,
   ClrContextEngineService,
-  ClrContextPreset,
   clrContextPreset,
+  ClrContextPreset,
   ClrContextSnapshotOptions,
+  clrDiffContext,
   ClrPageContext,
-  diffClrContext,
 } from '@clr/angular/ai';
 
 /** Every category, with what it stands for, in the order the controls show them. */
@@ -168,7 +168,7 @@ export class ContextPlaygroundComponent implements OnInit {
     this.truncated = snapshot.truncated === true;
     this.routes = snapshot.availableRoutes?.length ?? 0;
     this.focus = snapshot.focus ?? null;
-    this.change = this.previous ? diffClrContext(this.previous, snapshot) : null;
+    this.change = this.previous ? clrDiffContext(this.previous, snapshot) : null;
     this.previous = snapshot;
   }
 

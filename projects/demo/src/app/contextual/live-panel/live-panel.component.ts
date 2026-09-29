@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
@@ -15,8 +15,6 @@ import {
   ClrContextTrackingOptions,
 } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
-
-import { SharedContextTracking } from '../../context-inspector/shared-tracking';
 
 /**
  * The live snapshot of the page, updating as the page changes. The tracker watches the
@@ -46,25 +44,22 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
   profile: ClrContextPreset = 'full';
 
   private trackingSubscription: Subscription | null = null;
-  private readonly sharedTracking = inject(SharedContextTracking);
 
   constructor(private readonly contextTracker: ClrContextTrackerService) {}
 
   ngOnInit(): void {
-    this.trackingSubscription = this.contextTracker.context$.subscribe(snapshot => {
+    // The tracker is shared with the app-shell inspector: it stops once neither needs it.
+    this.trackingSubscription = this.contextTracker.track(this.trackingOptions()).subscribe(snapshot => {
       this.snapshotCount++;
       this.snapshotTruncated = snapshot.truncated === true;
       this.snapshotFocus = snapshot.focus ?? null;
       this.snapshotBytes = JSON.stringify(snapshot).length;
       this.snapshotJson = JSON.stringify(snapshot, null, 2);
     });
-    this.sharedTracking.acquire(this.trackingOptions());
   }
 
   ngOnDestroy(): void {
-    // The tracker is shared with the app-shell inspector: it stops once neither needs it.
     this.trackingSubscription?.unsubscribe();
-    this.sharedTracking.release();
   }
 
   /** Restarts tracking with a preset, so the same page can be compared under each. */

@@ -8,6 +8,7 @@
 import {
   ChangeDetectorRef,
   Component,
+  DoCheck,
   ElementRef,
   EventEmitter,
   Input,
@@ -32,7 +33,7 @@ const LIVE_REGION_SELECTOR = '[aria-live]:not([aria-live="off"]), [role="alert"]
   templateUrl: './alert.html',
   standalone: false,
 })
-export class ClrAlert implements OnInit, OnDestroy {
+export class ClrAlert implements OnInit, DoCheck, OnDestroy {
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
@@ -53,7 +54,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   private _isLightweight = false;
   private _origAlertType: string;
   private teardownElementContext?: () => void;
-  /** The role last bound; see {@link ariaAtomic}. */
+  /** The role chosen for this check; see {@link ariaRole}. */
   private renderedRole: 'alert' | 'status' | null = null;
 
   constructor(
@@ -135,9 +136,10 @@ export class ClrAlert implements OnInit, OnDestroy {
    *
    * A `status` region is atomic by default, which would re-read the whole alert — its
    * buttons included — whenever any part of it changed; see {@link ariaAtomic}.
+   *
+   * Chosen once per check, in `ngDoCheck`, before the template reads it.
    */
   protected get ariaRole(): 'alert' | 'status' | null {
-    this.renderedRole = this.chooseRole();
     return this.renderedRole;
   }
 
@@ -147,7 +149,6 @@ export class ClrAlert implements OnInit, OnDestroy {
    * would be read out with every update.
    */
   protected get ariaAtomic(): 'false' | null {
-    // Bound right after the role, from the role just chosen: choosing it looks up the DOM.
     return this.renderedRole === 'status' ? 'false' : null;
   }
 
@@ -166,6 +167,11 @@ export class ClrAlert implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  ngDoCheck() {
+    // Checked each time rather than once: an alert can be moved into a live region.
+    this.renderedRole = this.chooseRole();
   }
 
   ngOnDestroy() {
@@ -201,9 +207,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     if (this.liveRole !== undefined) {
       return this.liveRole;
     }
-    // Checked each time rather than once: an alert can be moved into a live region. The
-    // host counts too, for an application that put `aria-live` on the `clr-alert` itself;
-    // the role this renders is on an element inside it.
+    // The host counts too, for an application that put `aria-live` on the `clr-alert`
+    // itself; the role this renders is on an element inside it.
     if (this.hostElement.nativeElement.closest(LIVE_REGION_SELECTOR)) {
       return null;
     }

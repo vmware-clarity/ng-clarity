@@ -66,6 +66,12 @@ export interface ClrClearOperation {
 }
 
 // @public
+export function clrCollectDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];
+
+// @public
+export function clrCollectDomContextTree(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrContextTreeResult;
+
+// @public
 export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
@@ -257,6 +263,7 @@ export class ClrContextTrackerService implements OnDestroy {
     refresh(): void;
     start(options?: ClrContextTrackingOptions): void;
     stop(): void;
+    track(options?: ClrContextTrackingOptions): Observable<ClrPageContext>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextTrackerService, never>;
     // (undocumented)
@@ -276,6 +283,9 @@ export interface ClrContextTreeResult {
     focus?: 'modal';
     truncated: boolean;
 }
+
+// @public
+export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
 
 // @public
 export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
@@ -311,6 +321,9 @@ export interface ClrElementMutator {
 }
 
 // @public
+export function clrIsEmptyContextChange(change: ClrContextChange): boolean;
+
+// @public
 export type ClrMutationChanges = Omit<ClrContextChange, 'previous' | 'current'>;
 
 // @public
@@ -319,7 +332,7 @@ export type ClrMutationConsequence = 'reversible' | 'consequential' | 'forbidden
 // @public
 export class ClrMutationEngineService {
     apply(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): Promise<ClrMutationReport>;
-    plan(operations: ClrMutationOperation[]): ClrMutationPlanEntry[];
+    plan(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): ClrMutationPlanEntry[];
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrMutationEngineService, never>;
     // (undocumented)
@@ -415,6 +428,9 @@ export function clrPublishElementContext(host: Element, callback: ClrElementCont
 export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public
+export function clrRequestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
+
+// @public
 export interface ClrRouteContext {
     data?: Record<string, unknown>;
     params?: Record<string, string>;
@@ -432,25 +448,10 @@ export interface ClrSetValueOperation {
 }
 
 // @public
-export function collectClrDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];
-
-// @public
-export function collectClrDomContextTree(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrContextTreeResult;
-
-// @public
-export function diffClrContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
-
-// @public
-export function isEmptyClrContextChange(change: ClrContextChange): boolean;
-
-// @public
 export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): EnvironmentProviders;
 
 // @public
 export function provideClrMutationPolicy(policy: ClrMutationPolicy): EnvironmentProviders;
-
-// @public
-export function requestClrContextFromHost(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
 
 // (No @packageDocumentation comment for this package)
 

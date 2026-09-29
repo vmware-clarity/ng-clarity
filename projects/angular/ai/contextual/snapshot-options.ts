@@ -8,6 +8,7 @@
 import { CLR_CONTEXT_DEFAULT_MAX_ITEMS } from '@clr/angular/utils';
 
 import { ClrContextCategory, ClrContextSnapshotOptions } from './interfaces/context.interface';
+import { ownEntry } from './lookup';
 
 /**
  * Default budgets applied while building a snapshot, tuned to keep snapshots compact
@@ -64,7 +65,7 @@ const EXCLUSION_KEYS = ['excludeCategories', 'excludeRoles', 'excludeSelectors']
 
 /** The roles a set of categories leaves out, for the categories that are roles. */
 export function clrContextCategoryRoles(categories: readonly ClrContextCategory[]): string[] {
-  return [...new Set(categories.flatMap(category => CLR_CONTEXT_CATEGORIES[category] ?? []))];
+  return [...new Set(categories.flatMap(category => ownEntry(CLR_CONTEXT_CATEGORIES, category) ?? []))];
 }
 
 /** Named bundles of options for the common ways of consuming context. */
@@ -106,7 +107,7 @@ export function clrContextPreset(
   preset: ClrContextPreset,
   overrides: ClrContextSnapshotOptions = {}
 ): ClrContextSnapshotOptions {
-  const base = CLR_CONTEXT_PRESETS[preset];
+  const base: Readonly<ClrContextSnapshotOptions> = ownEntry(CLR_CONTEXT_PRESETS, preset) ?? {};
   const options = { ...base, ...overrides } as ClrContextSnapshotOptions;
   for (const key of EXCLUSION_KEYS) {
     const combined = [
