@@ -293,6 +293,64 @@ export default function (): void {
       });
     });
 
+    describe('closing when the origin leaves the screen (real IntersectionObserver)', function (this: Context) {
+      let spacer: HTMLElement;
+
+      // IntersectionObserver delivers entries asynchronously, after layout.
+      async function nextFrames() {
+        for (let i = 0; i < 3; i++) {
+          await new Promise(resolve => requestAnimationFrame(resolve));
+        }
+      }
+
+      beforeEach(function (this: Context) {
+        spacer = document.createElement('div');
+        spacer.style.height = '10000px';
+        document.body.appendChild(spacer);
+
+        // isolate the observer from the scrollToClose scroll listener
+        this.testComponent.closeScroll = false;
+      });
+
+      afterEach(function () {
+        spacer.remove();
+        window.scrollTo(0, 0);
+      });
+
+      it('closes when the origin is scrolled out of view', async function (this: Context) {
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+        await nextFrames();
+        expect(this.popoverService.open).toBe(true);
+
+        const origin = this.popoverService.originElement.nativeElement as HTMLElement;
+        window.scrollTo(0, window.scrollY + origin.getBoundingClientRect().bottom + window.innerHeight);
+        await nextFrames();
+
+        expect(this.popoverService.open).toBe(false);
+      });
+
+      it('opens with a hidden origin and still closes once it is shown and scrolled out of view', async function (this: Context) {
+        const host = this.fixture.nativeElement as HTMLElement;
+        host.style.display = 'none';
+
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+        await nextFrames();
+        expect(this.popoverService.open).toBe(true);
+
+        host.style.display = '';
+        await nextFrames();
+        expect(this.popoverService.open).toBe(true);
+
+        const origin = this.popoverService.originElement.nativeElement as HTMLElement;
+        window.scrollTo(0, window.scrollY + origin.getBoundingClientRect().bottom + window.innerHeight);
+        await nextFrames();
+
+        expect(this.popoverService.open).toBe(false);
+      });
+    });
+
     describe('outside click toggle-button detection', function (this: Context) {
       it('does not throw when openEvent.target is null, and does not treat the click as a toggle re-click', function (this: Context) {
         // Regression: found via a real production repro where clicking outside a popover
