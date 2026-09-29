@@ -42,8 +42,8 @@ export * from '@clr/angular/collapsible-panel';
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClarityModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: ClarityModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.23", ngImport: i0, type: ClarityModule, imports: [ClrIcon], exports: [ClrEmphasisModule,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClarityModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.24", ngImport: i0, type: ClarityModule, imports: [ClrIcon], exports: [ClrEmphasisModule,
             ClrDataModule,
             ClrIcon,
             ClrIconModule,
@@ -64,7 +64,7 @@ class ClarityModule {
             ClrProgressBarModule,
             ClrPopoverModuleNext,
             ClrTimelineModule] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: ClarityModule, imports: [ClrIcon, ClrEmphasisModule,
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClarityModule, imports: [ClrIcon, ClrEmphasisModule,
             ClrDataModule,
             ClrIconModule,
             ClrModalModule,
@@ -85,7 +85,7 @@ class ClarityModule {
             ClrPopoverModuleNext,
             ClrTimelineModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.23", ngImport: i0, type: ClarityModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClarityModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [ClrIcon],
