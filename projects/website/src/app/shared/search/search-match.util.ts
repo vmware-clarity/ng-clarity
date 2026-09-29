@@ -7,8 +7,6 @@
 
 import { HighlightSegment, SearchIndexEntry, SearchResult } from './search-index.model';
 
-const MAX_RESULTS = 20;
-
 export function searchIndex(entries: SearchIndexEntry[], query: string): SearchResult[] {
   const results: SearchResult[] = [];
 
@@ -81,12 +79,10 @@ function matchEntry(entry: SearchIndexEntry, query: string): SearchResult | null
 }
 
 function rankResults(results: SearchResult[]): SearchResult[] {
-  return results
-    .sort(
-      (a, b) =>
-        a.tier - b.tier ||
-        Number(!a.matchStartsWith) - Number(!b.matchStartsWith) ||
-        a.entry.title.localeCompare(b.entry.title)
-    )
-    .slice(0, MAX_RESULTS);
+  return results.sort(
+    (a, b) =>
+      a.tier - b.tier ||
+      Number(!a.matchStartsWith) - Number(!b.matchStartsWith) ||
+      a.entry.title.localeCompare(b.entry.title)
+  );
 }

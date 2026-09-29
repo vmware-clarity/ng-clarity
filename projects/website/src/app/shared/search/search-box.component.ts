@@ -22,7 +22,7 @@ import { SearchIndexService } from './search-index.service';
 import { searchIndex } from './search-match.util';
 import { SearchResultsPanelComponent } from './search-results-panel.component';
 
-const MIN_QUERY_LENGTH = 2;
+const MIN_QUERY_LENGTH = 3;
 const DEBOUNCE_MS = 150;
 
 // Built on the same ClrPopoverHostDirective/clrPopoverOrigin/*clrPopoverContent primitives

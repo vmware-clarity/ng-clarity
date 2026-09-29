@@ -14,40 +14,38 @@ import { SearchIndexEntry, SearchResult } from './search-index.model';
 @Component({
   selector: 'app-search-results-panel',
   template: `
-    <ul id="site-search-listbox" class="search-results-list" role="listbox" aria-label="Search results">
+    <div id="site-search-listbox" class="dropdown-menu search-results-list" role="listbox" aria-label="Search results">
       @if (!results().length) {
-        <li class="search-result-empty">No results found for "{{ query() }}"</li>
+        <div class="search-result-empty">No results found for "{{ query() }}"</div>
       }
       @for (result of results(); track result.entry.url + '#' + (result.entry.fragment ?? ''); let i = $index) {
-        <li>
-          <a
-            class="search-result-row"
-            role="option"
-            [id]="'search-result-' + i"
-            [class.focused]="i === activeIndex()"
-            [attr.aria-selected]="i === activeIndex()"
-            [routerLink]="[result.entry.url]"
-            [fragment]="result.entry.fragment"
-            (click)="resultSelected.emit(result.entry)"
-          >
-            <div cds-text="bold uppercase">
-              <app-search-highlight [text]="result.entry.category" [query]="query()" />
-            </div>
-            <span class="search-result-breadcrumb">
-              <app-search-highlight [text]="result.entry.title" [query]="query()" />
-              @if (result.entry.kind === 'heading') {
-                @if (result.entry.section) {
-                  <span class="search-result-separator"> › </span>
-                  <app-search-highlight [text]="result.entry.section" [query]="query()" />
-                }
+        <a
+          class="dropdown-item search-result-row"
+          role="option"
+          [id]="'search-result-' + i"
+          [class.focused]="i === activeIndex()"
+          [attr.aria-selected]="i === activeIndex()"
+          [routerLink]="[result.entry.url]"
+          [fragment]="result.entry.fragment"
+          (click)="resultSelected.emit(result.entry)"
+        >
+          <div cds-text="bold uppercase">
+            <app-search-highlight [text]="result.entry.category" [query]="query()" />
+          </div>
+          <span class="search-result-breadcrumb">
+            <app-search-highlight [text]="result.entry.title" [query]="query()" />
+            @if (result.entry.kind === 'heading') {
+              @if (result.entry.section) {
                 <span class="search-result-separator"> › </span>
-                <app-search-highlight [text]="result.entry.heading" [query]="query()" />
+                <app-search-highlight [text]="result.entry.section" [query]="query()" />
               }
-            </span>
-          </a>
-        </li>
+              <span class="search-result-separator"> › </span>
+              <app-search-highlight [text]="result.entry.heading" [query]="query()" />
+            }
+          </span>
+        </a>
       }
-    </ul>
+    </div>
   `,
   styleUrl: './search-results-panel.component.scss',
   imports: [RouterModule, SearchHighlightComponent],
