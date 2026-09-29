@@ -245,18 +245,31 @@ export default function (): void {
     });
 
     describe('closing when the origin leaves the screen', function (this: Context) {
+      const viewport = { width: 1280, height: 720 } as DOMRectReadOnly;
+      const collapsedViewport = { width: 1, height: 1 } as DOMRectReadOnly;
+
       let observerCallback: IntersectionObserverCallback;
+      let observerOptions: IntersectionObserverInit;
       let originalIntersectionObserver: typeof IntersectionObserver;
 
-      function notify(isIntersecting: boolean) {
-        observerCallback([{ isIntersecting } as IntersectionObserverEntry], null);
+      // Delivers one callback with an entry per given visible ratio of the origin. isIntersecting
+      // mirrors what Chromium reports for a single 0.8 threshold.
+      function notify(visibleRatios: number[], rootBounds = viewport) {
+        observerCallback(
+          visibleRatios.map(
+            intersectionRatio =>
+              ({ intersectionRatio, isIntersecting: intersectionRatio >= 0.8, rootBounds }) as IntersectionObserverEntry
+          ),
+          null
+        );
       }
 
       beforeEach(function (this: Context) {
         originalIntersectionObserver = window.IntersectionObserver;
         window.IntersectionObserver = class {
-          constructor(callback: IntersectionObserverCallback) {
+          constructor(callback: IntersectionObserverCallback, options: IntersectionObserverInit) {
             observerCallback = callback;
+            observerOptions = options;
           }
           observe() {
             // entries are delivered manually through notify()
@@ -274,21 +287,62 @@ export default function (): void {
         window.IntersectionObserver = originalIntersectionObserver;
       });
 
+      it('closes once a visible origin drops below 80% visible', function (this: Context) {
+        notify([1]);
+        expect(this.popoverService.open).toBe(true);
+
+        notify([0.7]);
+        expect(this.popoverService.open).toBe(false);
+      });
+
       it('stays open when the origin has not been rendered visible yet', function (this: Context) {
-        // Regression: the observer's initial entry reports a not-yet-visible origin (e.g. one
-        // inside a container that is still display: none) as not intersecting, which used to
-        // close the popover immediately - the cause of the flaky popover visual snapshot,
-        // since Storybook hides the story root while it is still preparing the story.
-        notify(false);
+        // The observer's initial entry reports a not-yet-visible origin (e.g. one inside a
+        // container that is still display: none) as not intersecting, which used to close
+        // the popover immediately.
+        notify([0]);
 
         expect(this.popoverService.open).toBe(true);
       });
 
-      it('closes once a visible origin leaves the screen', function (this: Context) {
-        notify(true);
+      it('stays open for a partially visible origin until it is completely out of view', function (this: Context) {
+        // An origin clipped below 80% when the popover opens (e.g. horizontally on a narrow
+        // screen) used to close the popover immediately. It must stay open, and still close
+        // once the origin is scrolled out of view - which the 0 threshold reports.
+        expect(observerOptions.threshold).toContain(0);
+
+        notify([0.5]);
         expect(this.popoverService.open).toBe(true);
 
-        notify(false);
+        notify([0]);
+        expect(this.popoverService.open).toBe(false);
+      });
+
+      it('ignores entries reported against a collapsed viewport', function (this: Context) {
+        // Regression: the cause of the flaky popover visual snapshots. While Playwright captures a
+        // screenshot of an element taller than the viewport, it briefly resizes the window to 1x1,
+        // and the observer reports the origin as not intersecting in between.
+        notify([1]);
+
+        notify([0], collapsedViewport);
+
+        expect(this.popoverService.open).toBe(true);
+      });
+
+      it('still closes when the viewport bounds are not reported (cross-origin iframe)', function (this: Context) {
+        notify([1], null);
+
+        notify([0], null);
+
+        expect(this.popoverService.open).toBe(false);
+      });
+
+      it('acts on the latest entry of a batched callback', function (this: Context) {
+        notify([1]);
+
+        notify([0, 1]);
+        expect(this.popoverService.open).toBe(true);
+
+        notify([1, 0]);
         expect(this.popoverService.open).toBe(false);
       });
     });
@@ -318,6 +372,25 @@ export default function (): void {
       });
 
       it('closes when the origin is scrolled out of view', async function (this: Context) {
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+        await nextFrames();
+        expect(this.popoverService.open).toBe(true);
+
+        const origin = this.popoverService.originElement.nativeElement as HTMLElement;
+        window.scrollTo(0, window.scrollY + origin.getBoundingClientRect().bottom + window.innerHeight);
+        await nextFrames();
+
+        expect(this.popoverService.open).toBe(false);
+      });
+
+      it('opens with a partially clipped origin and closes once it is scrolled out of view', async function (this: Context) {
+        // the origin button is wider than its clipping container, so it is never 80% visible
+        const host = this.fixture.nativeElement as HTMLElement;
+        host.style.display = 'block';
+        host.style.width = '30px';
+        host.style.overflow = 'hidden';
+
         this.testComponent.openState = true;
         this.fixture.detectChanges();
         await nextFrames();
