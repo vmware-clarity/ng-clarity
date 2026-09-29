@@ -244,6 +244,55 @@ export default function (): void {
       });
     });
 
+    describe('closing when the origin leaves the screen', function (this: Context) {
+      let observerCallback: IntersectionObserverCallback;
+      let originalIntersectionObserver: typeof IntersectionObserver;
+
+      function notify(isIntersecting: boolean) {
+        observerCallback([{ isIntersecting } as IntersectionObserverEntry], null);
+      }
+
+      beforeEach(function (this: Context) {
+        originalIntersectionObserver = window.IntersectionObserver;
+        window.IntersectionObserver = class {
+          constructor(callback: IntersectionObserverCallback) {
+            observerCallback = callback;
+          }
+          observe() {
+            // entries are delivered manually through notify()
+          }
+          disconnect() {
+            // nothing to clean up
+          }
+        } as unknown as typeof IntersectionObserver;
+
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+      });
+
+      afterEach(function () {
+        window.IntersectionObserver = originalIntersectionObserver;
+      });
+
+      it('stays open when the origin has not been rendered visible yet', function (this: Context) {
+        // Regression: the observer's initial entry reports a not-yet-visible origin (e.g. one
+        // inside a container that is still display: none) as not intersecting, which used to
+        // close the popover immediately - the cause of the flaky popover visual snapshot,
+        // since Storybook hides the story root while it is still preparing the story.
+        notify(false);
+
+        expect(this.popoverService.open).toBe(true);
+      });
+
+      it('closes once a visible origin leaves the screen', function (this: Context) {
+        notify(true);
+        expect(this.popoverService.open).toBe(true);
+
+        notify(false);
+        expect(this.popoverService.open).toBe(false);
+      });
+    });
+
     describe('outside click toggle-button detection', function (this: Context) {
       it('does not throw when openEvent.target is null, and does not treat the click as a toggle re-click', function (this: Context) {
         // Regression: found via a real production repro where clicking outside a popover

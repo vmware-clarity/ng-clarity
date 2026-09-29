@@ -574,17 +574,31 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   /**
    * Uses IntersectionObserver to detect when the origin element leaves the screen.
    * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
+   *
+   * Only a visible -> hidden transition closes the popover. The observer always delivers
+   * an initial entry right after observe(), and when the popover opens while its origin
+   * is not rendered yet (e.g. inside a container that is still display: none, which is
+   * how Storybook hides a story while it is being prepared) that first entry reports
+   * the origin as not intersecting, even though it never left the screen - closing on it
+   * tears down a popover that was meant to be open as soon as its origin appears.
    */
   private setupIntersectionObserver() {
     if (!this.popoverService.originElement || this.intersectionObserver) {
       return;
     }
 
+    let originWasVisible = false;
+
     this.intersectionObserver = new IntersectionObserver(
       entries => {
         entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            originWasVisible = true;
+            return;
+          }
+
           // If the origin is no longer visible (scrolled out of view)
-          if (!entry.isIntersecting && this.popoverService.open) {
+          if (originWasVisible && this.popoverService.open) {
             this.zone.run(() => this.closePopover());
           }
         });
