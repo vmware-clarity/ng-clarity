@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+const domino = require('domino');
+
 /**
  * Base class for all content indexers
  * Provides common interface and utilities for extracting searchable documents
@@ -51,11 +53,7 @@ class BaseIndexer {
       return '';
     }
 
-    return content
-      .replace(/<[^>]*>/g, '') // Remove HTML tags
-      .replace(/\s+/g, ' ') // Normalize whitespace
-      .trim()
-      .substring(0, 15000); // Limit content length reasonably to allow rich search
+    return this.htmlToText(content).substring(0, 15000); // Limit content length reasonably to allow rich search
   }
 
   /**
@@ -64,12 +62,19 @@ class BaseIndexer {
    * @returns {string} Plain text content
    */
   htmlToText(html) {
-    return html
-      .replace(/<script[^>]*>[\s\S]*?<\/script>/gi, '') // Remove scripts
-      .replace(/<style[^>]*>[\s\S]*?<\/style>/gi, '') // Remove styles
-      .replace(/<[^>]*>/g, '') // Remove HTML tags
-      .replace(/\s+/g, ' ') // Normalize whitespace
-      .trim();
+    if (!html) {
+      return '';
+    }
+
+    // Parse with a real DOM (as compile-content.js does) instead of regex-stripping tags: regexes
+    // can't reliably match malformed/nested markup, which can leave script/style content behind.
+    const document = domino.createDocument(html);
+
+    for (const element of Array.from(document.querySelectorAll('script, style'))) {
+      element.remove();
+    }
+
+    return document.body.textContent.replace(/\s+/g, ' ').trim();
   }
 
   /**
