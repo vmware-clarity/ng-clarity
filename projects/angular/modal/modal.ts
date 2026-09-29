@@ -7,6 +7,7 @@
 
 import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
 import {
+  booleanAttribute,
   Component,
   ContentChild,
   ElementRef,
@@ -84,7 +85,7 @@ export class ClrModal implements OnChanges, OnDestroy {
    * inside. A pinned side panel or an inline wizard sits beside a page that stays in use,
    * so it is not modal.
    */
-  @Input('clrModalAriaModal') ariaModal = true;
+  @Input({ alias: 'clrModalAriaModal', transform: booleanAttribute }) ariaModal = true;
 
   // presently this is only used by inline wizards
   @Input('clrModalOverrideScrollService') bypassScrollService = false;

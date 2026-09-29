@@ -8,7 +8,6 @@
 import {
   CLR_CONTEXT_HIDDEN_SELECTOR,
   CLR_CONTEXT_IGNORE_ATTRIBUTE,
-  CLR_CONTEXT_IGNORE_SELECTOR,
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_CONTEXT_REDACT_SELECTOR,
   CLR_ELEMENT_CONTEXT_PROPERTY,
@@ -245,6 +244,37 @@ export function isHiddenFromEngine(element: Element, excludeSelector = ''): bool
   return !isVisible(element);
 }
 
+/**
+ * Whether a snapshot with these options leaves the element out on purpose: it matches or
+ * sits in one of the `excludeSelectors`, in or under an excluded role (a category is a
+ * set of roles), or outside every `rootSelector` root. What is hidden, inert, ignored or
+ * behind a modal is judged separately, by {@link isHiddenFromEngine} and the modal check.
+ * The mutation engine uses this so that it never writes what such a snapshot would not
+ * show, whatever snapshot the ref came from.
+ */
+export function isOutsideSnapshot(element: Element, options: Required<ClrContextSnapshotOptions>): boolean {
+  const excludeSelector = clrUsableSelectors(element.ownerDocument, options.excludeSelectors);
+  if (excludeSelector && element.closest(excludeSelector)) {
+    return true;
+  }
+  if (options.excludeRoles.length) {
+    const excluded = new Set(options.excludeRoles);
+    for (let current: Element | null = element; current; current = current.parentElement) {
+      const role = resolveRole(current);
+      if (role && excluded.has(role)) {
+        return true;
+      }
+    }
+  }
+  if (options.rootSelector) {
+    const { roots } = engineScope(element.ownerDocument, { ...options, focus: 'page' });
+    if (roots && !roots.some(root => root.contains(element))) {
+      return true;
+    }
+  }
+  return false;
+}
+
 /** The part of the page a snapshot describes, when that is not the whole page. */
 export interface ClrContextScope {
   /** The elements the snapshot is limited to, or `null` for the whole page. */
@@ -381,14 +411,15 @@ function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () =>
  * that also names a dialog, so they are still described — but not as free-standing
  * text, which would repeat the name they already supply.
  *
- * An ignored region is inert to the engine, so what it says about the rest of the page
- * does not count: a panel marked ignore that describes itself against the page heading
- * must not make that heading disappear.
+ * Only what the walk reports counts: an element hidden, inert, ignored or excluded says
+ * nothing about the rest of the page, and neither does a role-less element pointing
+ * `aria-describedby` at text, since no description is reported for it. Otherwise page
+ * content — a hidden span a sanitiser let through — could make visible text disappear.
  */
 function collectReferencedIds(root: ParentNode, walk: Walk): void {
-  const collect = (attribute: string, into: Set<string>) => {
+  const collect = (attribute: string, into: Set<string>, reports: (element: Element) => boolean) => {
     for (const element of Array.from(root.querySelectorAll(`[${attribute}]`))) {
-      if (element.closest(CLR_CONTEXT_IGNORE_SELECTOR)) {
+      if (isHiddenFromEngine(element, walk.excludeSelector) || !reports(element)) {
         continue;
       }
       for (const id of (element.getAttribute(attribute) ?? '').trim().split(/\s+/)) {
@@ -398,8 +429,13 @@ function collectReferencedIds(root: ParentNode, walk: Walk): void {
       }
     }
   };
-  collect('aria-describedby', walk.describedByIds);
-  collect('aria-labelledby', walk.labelIds);
+  collect('aria-describedby', walk.describedByIds, element => !!resolveRole(element) || isCustomElementTag(element));
+  collect('aria-labelledby', walk.labelIds, () => true);
+}
+
+/** Whether an element is a custom element, which the walk describes as a component. */
+function isCustomElementTag(element: Element): boolean {
+  return element.tagName.includes('-');
 }
 
 /**

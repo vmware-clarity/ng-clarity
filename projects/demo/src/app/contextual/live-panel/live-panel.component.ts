@@ -5,11 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { ClrContextPreset, clrContextPreset, ClrContextTrackerService } from '@clr/angular/ai';
+import {
+  ClrContextPreset,
+  clrContextPreset,
+  ClrContextTrackerService,
+  ClrContextTrackingOptions,
+} from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
+
+import { SharedContextTracking } from '../../context-inspector/shared-tracking';
 
 /**
  * The live snapshot of the page, updating as the page changes. The tracker watches the
@@ -39,8 +46,7 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
   profile: ClrContextPreset = 'full';
 
   private trackingSubscription: Subscription | null = null;
-  /** Whether this panel started the tracker, and so stops it when it goes. */
-  private startedTracking = false;
+  private readonly sharedTracking = inject(SharedContextTracking);
 
   constructor(private readonly contextTracker: ClrContextTrackerService) {}
 
@@ -52,26 +58,26 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
       this.snapshotBytes = JSON.stringify(snapshot).length;
       this.snapshotJson = JSON.stringify(snapshot, null, 2);
     });
-    this.setProfile(this.profile);
+    this.sharedTracking.acquire(this.trackingOptions());
   }
 
   ngOnDestroy(): void {
-    // The tracker is a singleton the app-shell inspector shares: it is stopped only when
-    // this panel started it, and otherwise left to whoever did.
+    // The tracker is shared with the app-shell inspector: it stops once neither needs it.
     this.trackingSubscription?.unsubscribe();
-    if (this.startedTracking) {
-      this.contextTracker.stop();
-    }
+    this.sharedTracking.release();
   }
 
   /** Restarts tracking with a preset, so the same page can be compared under each. */
   setProfile(profile: ClrContextPreset): void {
     this.profile = profile;
-    this.startedTracking ||= !this.contextTracker.isTracking;
-    this.contextTracker.start({ snapshot: clrContextPreset(profile, { maxComponents: this.maxComponents }) });
+    this.contextTracker.start(this.trackingOptions());
   }
 
   refreshNow(): void {
     this.contextTracker.refresh();
+  }
+
+  private trackingOptions(): ClrContextTrackingOptions {
+    return { snapshot: clrContextPreset(this.profile, { maxComponents: this.maxComponents }) };
   }
 }

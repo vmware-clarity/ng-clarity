@@ -12,6 +12,7 @@ import {
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
+import { ariaEnumValue } from './aria-state';
 import { resolveRole } from './roles';
 import { isVisible } from './visibility';
 
@@ -111,13 +112,10 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
     state.selectedRows = selected;
   }
 
-  const sorted = headers.find(header => {
-    const direction = header.getAttribute('aria-sort');
-    return !!direction && direction !== 'none';
-  });
+  const sorted = headers.find(header => ariaEnumValue(header, 'aria-sort') !== null);
   const sortedBy = sorted ? nameOf(sorted, element, scope) : null;
   if (sorted && sortedBy !== null) {
-    state.sort = { column: sortedBy, direction: sorted.getAttribute('aria-sort') };
+    state.sort = { column: sortedBy, direction: ariaEnumValue(sorted, 'aria-sort') };
   }
 
   return state;

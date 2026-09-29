@@ -34,16 +34,40 @@ const TRISTATE_ATTRIBUTES: Record<string, string> = {
 };
 
 /**
- * ARIA attributes carrying an enumerated value, with the value that means "nothing to
- * report" and is therefore omitted.
+ * ARIA attributes carrying an enumerated value: the value that means "nothing to report"
+ * and is therefore omitted, the values ARIA defines, and what any other value means — for
+ * some attributes `true`, for others nothing. Page markup can put anything in an
+ * attribute, and only a value ARIA knows is reported, so a snapshot's size stays bounded.
  */
-const ENUM_ATTRIBUTES: { attribute: string; key: string; empty: string }[] = [
-  { attribute: 'aria-sort', key: 'sort', empty: 'none' },
-  { attribute: 'aria-current', key: 'current', empty: 'false' },
-  { attribute: 'aria-live', key: 'live', empty: 'off' },
-  { attribute: 'aria-haspopup', key: 'hasPopup', empty: 'false' },
-  { attribute: 'aria-invalid', key: 'invalid', empty: 'false' },
+const ENUM_ATTRIBUTES: { attribute: string; key: string; empty: string; values: string[]; other: string | null }[] = [
+  { attribute: 'aria-sort', key: 'sort', empty: 'none', values: ['ascending', 'descending', 'other'], other: null },
+  {
+    attribute: 'aria-current',
+    key: 'current',
+    empty: 'false',
+    values: ['page', 'step', 'location', 'date', 'time', 'true'],
+    other: 'true',
+  },
+  { attribute: 'aria-live', key: 'live', empty: 'off', values: ['polite', 'assertive'], other: null },
+  {
+    attribute: 'aria-haspopup',
+    key: 'hasPopup',
+    empty: 'false',
+    values: ['true', 'menu', 'listbox', 'tree', 'grid', 'dialog'],
+    other: 'true',
+  },
+  { attribute: 'aria-invalid', key: 'invalid', empty: 'false', values: [], other: 'true' },
 ];
+
+/** The value an enumerated ARIA attribute reports, or `null` for none; see {@link ENUM_ATTRIBUTES}. */
+export function ariaEnumValue(element: Element, attribute: string): string | null {
+  const definition = ENUM_ATTRIBUTES.find(candidate => candidate.attribute === attribute);
+  const raw = element.getAttribute(attribute)?.trim().toLowerCase();
+  if (!definition || !raw || raw === definition.empty) {
+    return null;
+  }
+  return definition.values.includes(raw) ? raw : definition.other;
+}
 
 /** Input types whose value is never reported, whatever the caller asked for. */
 const REDACTED_INPUT_TYPES = new Set(['password', 'file']);
@@ -109,10 +133,10 @@ export function ariaState(
     }
   }
 
-  for (const { attribute, key, empty } of ENUM_ATTRIBUTES) {
-    const raw = element.getAttribute(attribute)?.trim();
-    if (raw && raw !== empty) {
-      state[key] = key === 'invalid' ? true : raw;
+  for (const { attribute, key } of ENUM_ATTRIBUTES) {
+    const value = ariaEnumValue(element, attribute);
+    if (value !== null) {
+      state[key] = key === 'invalid' ? true : value;
     }
   }
 
@@ -186,9 +210,8 @@ const VALUELESS_INPUT_TYPES = new Set(['button', 'submit', 'reset', 'image', 'ch
  * The element's current value, unless it is one that must never be reported.
  *
  * A native checked state is reported as `checked`, the same key `aria-checked` uses, so
- * a native and an ARIA checkbox read alike — and so that a consumer served without form
- * values still sees whether a box is ticked, which is UI state rather than something
- * typed.
+ * a native and an ARIA checkbox read alike. `checked` is one of the value keys, so it is
+ * withheld from a consumer served without form values, like any other choice.
  */
 function assignValueState(
   element: Element,

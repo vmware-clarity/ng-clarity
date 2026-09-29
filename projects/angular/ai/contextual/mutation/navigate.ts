@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { NgZone } from '@angular/core';
 import {
   NavigationCancel,
   NavigationCancellationCode,
@@ -88,7 +89,7 @@ export interface ClrNavigationReport {
  * The events can, and a redirect is followed to wherever it ends up so the reported URL
  * is the one the user is looking at.
  */
-export function navigateAndReport(router: Router, target: UrlTree): Promise<ClrNavigationReport> {
+export function navigateAndReport(router: Router, target: UrlTree, zone?: NgZone): Promise<ClrNavigationReport> {
   const requested = router.serializeUrl(target);
   return new Promise<ClrNavigationReport>(resolve => {
     let id: number | null = null;
@@ -156,16 +157,19 @@ export function navigateAndReport(router: Router, target: UrlTree): Promise<ClrN
     });
 
     // A guard waiting on the user can hold a navigation indefinitely; the agent is told it
-    // has not settled rather than left waiting for good.
-    timer = setTimeout(
-      () =>
-        settle({
-          outcome: 'failed',
-          url: router.url,
-          detail: 'The navigation had not settled after a minute; it may still complete.',
-        }),
-      NAVIGATION_TIMEOUT_MS
-    );
+    // has not settled rather than left waiting for good. Timed outside the zone, so the
+    // pending timer does not keep the application from being stable meanwhile.
+    const expire = () =>
+      setTimeout(
+        () =>
+          settle({
+            outcome: 'failed',
+            url: router.url,
+            detail: 'The navigation had not settled after a minute; it may still complete.',
+          }),
+        NAVIGATION_TIMEOUT_MS
+      );
+    timer = zone ? zone.runOutsideAngular(expire) : expire();
 
     router.navigateByUrl(target).then(
       () => {

@@ -61,21 +61,33 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
 // button is nested under it, above — never pulled into a separate flat list.
 
 const TRACKER_EXAMPLE = `
+import { DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ClrContextTrackerService } from '@clr/angular/ai';
 
 @Component({
   // ...
 })
 export class AssistantPanelComponent implements OnInit, OnDestroy {
-  constructor(private tracker: ClrContextTrackerService) {}
+  private readonly tracker = inject(ClrContextTrackerService);
+  private readonly destroyRef = inject(DestroyRef);
+  private startedTracking = false;
 
   ngOnInit() {
-    this.tracker.context$.subscribe(context => this.setPageContext(context));
-    this.tracker.start({ snapshot: { maxComponents: 50 } });
+    this.tracker.context$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(context => this.setPageContext(context));
+    // The tracker is shared: start it only if nobody has, and stop only what you started.
+    if (!this.tracker.isTracking) {
+      this.tracker.start({ snapshot: { maxComponents: 50 } });
+      this.startedTracking = true;
+    }
   }
 
   ngOnDestroy() {
-    this.tracker.stop();
+    if (this.startedTracking) {
+      this.tracker.stop();
+    }
   }
 }
 `;

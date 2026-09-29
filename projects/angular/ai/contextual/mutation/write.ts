@@ -9,6 +9,7 @@ import { ApplicationRef, ChangeDetectorRef, getDebugNode } from '@angular/core';
 import { AbstractControl, NgControl } from '@angular/forms';
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  ClrContextSnapshotOptions,
   ClrElementMutation,
   ClrElementMutator,
   clrNormalizeContextText,
@@ -62,6 +63,8 @@ export interface WriteTarget {
   kind: ControlKind;
   ngControl: NgControl | null;
   mutator: ClrElementMutator | null;
+  /** The snapshot options the write is judged against, handed to the element's mutator. */
+  options?: Required<ClrContextSnapshotOptions>;
 }
 
 export type TargetResolution = { target: WriteTarget } | { refused: ClrMutationRefusal; detail: string };
@@ -166,13 +169,15 @@ export function resolveWriteTarget(ref: ContextRefTarget, application: Applicati
 }
 
 /**
- * Whether the description an agent gave names the node: every word of one is a word of
- * the other ("the name field" names "Name"; "e" does not). Filler — articles, "field",
- * the node's type — does not count; beyond it, a description may add at most as many
- * words as the label has, and none that turns it into a warning: "the wrong email" and
- * "not email, the password" do not name "Email". A label the snapshot cut short (ending
- * in "…") is matched on the words it kept. A node without a name can only be described
- * by nothing, or by what it is ("grid").
+ * Whether the description an agent gave names the node. It may leave words of the label
+ * out ("email" names "Email address") and add filler — articles, "field", the node's
+ * type — but nothing else: "last name" does not name "Name", "email" does not name
+ * "Confirm email", and "the wrong email" or "not email, the password" do not name "Email".
+ * A word that tells a field from its pair ("confirm", "billing", "other") is required
+ * wherever the label has one; a negating word is allowed only where the label itself says
+ * it ("Other income"). A label the snapshot cut short (ending in "…") is matched on the
+ * words it kept, and the description may go on where the label was cut. A node without a
+ * name can only be described by nothing, or by what it is ("grid").
  */
 export function descriptionMatches(description: unknown, label: string, type = ''): boolean {
   if (typeof description !== 'string') {
@@ -183,24 +188,22 @@ export function descriptionMatches(description: unknown, label: string, type = '
   if (!label) {
     return !given.length || given.every(word => typeWords.includes(word));
   }
-  if (!given.length || given.some(word => NEGATING_WORDS.has(word))) {
+  const labelWords = words(label);
+  if (!given.length || given.some(word => NEGATING_WORDS.has(word) && !labelWords.includes(word))) {
     return false;
   }
   const cut = label.trimEnd().endsWith('…');
-  const labelWords = words(label);
   // The last word of a cut label may itself be cut; only whole words are compared.
   const actual = cut ? labelWords.slice(0, -1) : labelWords;
-  if (!cut && given.every(word => actual.includes(word))) {
-    return true;
-  }
-  if (!actual.every(word => given.includes(word))) {
+  if (actual.some(word => (DISTINGUISHING_WORDS.has(word) || NEGATING_WORDS.has(word)) && !given.includes(word))) {
     return false;
   }
   if (cut) {
-    return true;
+    return actual.every(word => given.includes(word));
   }
-  const extra = given.filter(word => !actual.includes(word) && !FILLER_WORDS.has(word) && !typeWords.includes(word));
-  return extra.length <= actual.length;
+  const named = given.some(word => actual.includes(word));
+  const extra = given.some(word => !actual.includes(word) && !FILLER_WORDS.has(word) && !typeWords.includes(word));
+  return named && !extra;
 }
 
 /** Words that describe the node rather than name it, and so do not count as extra. */
@@ -219,6 +222,46 @@ const FILLER_WORDS: ReadonlySet<string> = new Set([
   'textbox',
   'checkbox',
   'toggle',
+  'of',
+  'for',
+  'in',
+  'on',
+  'my',
+  'this',
+  'that',
+]);
+
+/**
+ * Words that tell a field from its pair — "Email" and "Confirm email", "Name" and "Last
+ * name", a billing and a shipping address. Where a label has one, a description must too.
+ */
+const DISTINGUISHING_WORDS: ReadonlySet<string> = new Set([
+  'confirm',
+  'confirmation',
+  'repeat',
+  'retype',
+  'new',
+  'old',
+  'current',
+  'previous',
+  'first',
+  'middle',
+  'last',
+  'billing',
+  'shipping',
+  'primary',
+  'secondary',
+  'home',
+  'work',
+  'mobile',
+  'start',
+  'end',
+  'from',
+  'to',
+  'min',
+  'max',
+  'minimum',
+  'maximum',
 ]);
 
 /** Words that turn a description into one of something else. */
@@ -244,7 +287,7 @@ export function modelValueOf(target: WriteTarget, value: unknown): unknown {
 export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
   const mutator = target.mutator;
   if (mutator?.coerce && target.kind !== 'custom') {
-    const coerced = safely(() => mutator.coerce?.(proposed));
+    const coerced = safely(() => mutator.coerce?.(proposed, target.options));
     if (coerced.refused !== undefined) {
       return { refused: coerced.refused };
     }
@@ -316,7 +359,7 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
   const previous = readValue(target);
   const mutator = target.mutator;
   if (target.kind === 'custom') {
-    const written = safely(() => mutator?.write?.(coerced.value));
+    const written = safely(() => mutator?.write?.(coerced.value, target.options));
     if (written.refused !== undefined) {
       return { applied: false, refused: 'invalid', detail: written.refused };
     }
@@ -402,7 +445,7 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
 export function readValue(target: WriteTarget): unknown {
   if (target.mutator?.read) {
     try {
-      return plain(target.mutator.read());
+      return plain(target.mutator.read(target.options));
     } catch {
       return null;
     }

@@ -212,8 +212,9 @@
         Gives the control a value, in the agent's terms: text, a number, <code cds-text="code">true</code> or
         <code cds-text="code">false</code>, an option's label (or one per item for a multi-select), a date or ISO
         string, the rows to select. The <code cds-text="code">description</code> is the node's label as the agent knows
-        it, and is checked against the node before anything is written: it may add filler ("the … field") and a few
-        words, but not words that make it about something else ("the wrong email", "not the name").
+        it, and is checked against the node before anything is written: it may leave words out and add filler ("the …
+        field"), but no other words — "last name" does not name "Name", nor "email" "Confirm email", nor "the wrong
+        email" "Email".
       </td>
     </tr>
     <tr>

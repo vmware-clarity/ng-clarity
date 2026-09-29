@@ -204,10 +204,6 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature
-  // We need to figure out why this fails for the ClrToggle scenario but works for Date picker...
-  // To see the error, remove the try/catch here and run the ClrToggle suite to see issues getting the container
-  // injector in time, and this ONLY HAPPENS in tests and not in dev/prod mode.
   /**
    * Whether this control reports `aria-invalid` on its host. A control whose host is not
    * where ARIA expects the state — a radio, whose group reports it once — says no.
@@ -221,6 +217,10 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     return true;
   }
 
+  // @TODO This method has a try/catch due to an unknown issue that came when building the clrToggle feature
+  // We need to figure out why this fails for the ClrToggle scenario but works for Date picker...
+  // To see the error, remove the try/catch here and run the ClrToggle suite to see issues getting the container
+  // injector in time, and this ONLY HAPPENS in tests and not in dev/prod mode.
   protected getProviderFromContainer<T>(token: Type<T> | InjectionToken<T>, notFoundValue?: T): T {
     try {
       return this._containerInjector.get(token, notFoundValue);

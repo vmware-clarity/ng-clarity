@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, inject, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
@@ -17,6 +17,7 @@ import {
 } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
+import { SharedContextTracking } from '../../context-inspector/shared-tracking';
 import { DEMO_HOSTS, DemoHost } from '../hosts';
 
 /** A node in the page's snapshot that the mutation engine could write to. */
@@ -66,8 +67,7 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
   });
 
   private trackingSubscription: Subscription | null = null;
-  /** Whether this page started the tracker, and so stops it when it goes. */
-  private startedTracking = false;
+  private readonly sharedTracking = inject(SharedContextTracking);
 
   constructor(
     private contextTracker: ClrContextTrackerService,
@@ -84,16 +84,13 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
         this.targetRef = this.writableTargets[0]?.ref ?? '';
       }
     });
-    this.startedTracking = !this.contextTracker.isTracking;
-    this.contextTracker.start({ snapshot: { maxComponents: 500 } });
+    this.sharedTracking.acquire({ snapshot: { maxComponents: 500 } });
   }
 
   ngOnDestroy(): void {
     this.trackingSubscription?.unsubscribe();
-    // The tracker is shared with the app-shell inspector; only a tracker this page started stops here.
-    if (this.startedTracking) {
-      this.contextTracker.stop();
-    }
+    // The tracker is shared with the app-shell inspector: it stops once neither needs it.
+    this.sharedTracking.release();
   }
 
   setValue(): void {

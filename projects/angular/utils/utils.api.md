@@ -147,6 +147,9 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
 export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
 
 // @public
+export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
 export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
 
 // @public
@@ -162,7 +165,7 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
 
 // @public
-export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact]";
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
@@ -419,10 +422,10 @@ export type ClrElementMutation = {
 
 // @public
 export interface ClrElementMutator {
-    coerce?(proposed: unknown): ClrElementMutation;
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
     ownsContents?: boolean;
-    read?(): unknown;
-    write?(proposed: unknown): ClrElementMutation;
+    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
 }
 
 // @public (undocumented)

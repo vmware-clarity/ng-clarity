@@ -47,6 +47,16 @@ describe('ariaState', () => {
     expect('sort' in stateOf('<div role="columnheader" aria-sort="none"></div>')).toBe(false);
   });
 
+  it('reports only the values ARIA defines for an enumerated attribute, whatever the markup holds', () => {
+    const long = 'x'.repeat(5000);
+    expect(stateOf(`<a href="/" aria-current="${long}">x</a>`).current).toBe('true');
+    expect(stateOf('<a href="/" aria-current="page">x</a>').current).toBe('page');
+    expect(stateOf(`<button aria-haspopup="${long}">x</button>`).hasPopup).toBe('true');
+    expect(stateOf('<button aria-haspopup="menu">x</button>').hasPopup).toBe('menu');
+    expect('live' in stateOf(`<div aria-live="${long}">x</div>`)).toBe(false);
+    expect('sort' in stateOf(`<div role="columnheader" aria-sort="${long}"></div>`)).toBe(false);
+  });
+
   it('reports disabled only when the element actually is', () => {
     expect(stateOf('<button aria-disabled="true">x</button>').disabled).toBe(true);
     expect('disabled' in stateOf('<button aria-disabled="false">x</button>')).toBe(false);

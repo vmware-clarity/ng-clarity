@@ -6,7 +6,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, inject, Inject, Injectable, NgZone, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_REDACT_SELECTOR, clrUsableSelectors } from '@clr/angular/utils';
 
@@ -85,6 +85,7 @@ export class ClrContextEngineService implements OnDestroy {
   // write pay nothing for them.
   private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
   private readonly refs = inject(ContextRefRegistryService);
+  private readonly zone = inject(NgZone);
   private frameHost: ClrContextFrameHost | null = null;
   private globalProperty: string | null = null;
 
@@ -199,7 +200,10 @@ export class ClrContextEngineService implements OnDestroy {
       options,
       path => this.routePattern(path)
     );
-    this.frameHost.start();
+    // Outside the zone: every `message` on the page reaches the listener, and answering
+    // one changes nothing the application renders, so none should check the application.
+    const frameHost = this.frameHost;
+    this.zone.runOutsideAngular(() => frameHost.start());
   }
 
   /** Stops answering embedded frames. */
@@ -381,5 +385,3 @@ export class ClrContextEngineService implements OnDestroy {
     return context;
   }
 }
-
-/** A predicate for `Array.filter`: whether the document accepts the selector. */

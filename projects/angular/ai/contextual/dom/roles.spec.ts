@@ -21,6 +21,16 @@ describe('resolveRole', () => {
     return resolveRole(container.firstElementChild as HTMLElement);
   }
 
+  it('resolves a text field with a list of suggestions to a combobox', () => {
+    expect(roleOf('<input list="tiers" />')).toBe('combobox');
+    expect(roleOf('<input type="email" list="tiers" />')).toBe('combobox');
+    expect(roleOf('<input type="number" list="tiers" />')).toBe('spinbutton');
+  });
+
+  it('does not take a token longer than any ARIA role for a role', () => {
+    expect(roleOf(`<nav role="${'x'.repeat(5000)}"></nav>`)).toBe('navigation');
+  });
+
   it('prefers an explicit role over the implicit one', () => {
     expect(roleOf('<table role="presentation"></table>')).toBe('presentation');
   });

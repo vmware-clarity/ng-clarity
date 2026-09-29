@@ -416,6 +416,19 @@ describe('ClrMutationEngineService write path', () => {
       expect((await set('Name', 'Ada', 'the name input field')).applied).toBeTrue();
     });
 
+    it('tells a field from its pair, and writes to a field whose own name negates', () => {
+      expect(descriptionMatches('email', 'Email address')).toBeTrue();
+      expect(descriptionMatches('Confirm email', 'Email')).toBeFalse();
+      expect(descriptionMatches('email', 'Confirm email')).toBeFalse();
+      expect(descriptionMatches('the confirm email field', 'Confirm email')).toBeTrue();
+      expect(descriptionMatches('last name', 'Name')).toBeFalse();
+      expect(descriptionMatches('Other income', 'Other income')).toBeTrue();
+      expect(descriptionMatches('income', 'Other income')).toBeFalse();
+      expect(descriptionMatches('No. of seats', 'No. of seats')).toBeTrue();
+      expect(descriptionMatches('Never expires', 'Never expires')).toBeTrue();
+      expect(descriptionMatches('not the other income', 'Other income')).toBeFalse();
+    });
+
     it('matches a label the snapshot cut short on the words it kept', () => {
       expect(descriptionMatches('Street address of the head office', 'Street address of…')).toBeTrue();
       expect(descriptionMatches('Phone number', 'Street address of…')).toBeFalse();
@@ -428,6 +441,21 @@ describe('ClrMutationEngineService write path', () => {
   });
 
   describe('scope', () => {
+    it('does not write what a snapshot with the options of the write would leave out, whatever snapshot the ref came from', async () => {
+      const ref = refOf(contextEngine.getSnapshot(), 'Name');
+      const write = async (snapshotOptions: object) =>
+        (await engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'Ada' }], snapshotOptions))
+          .results[0];
+
+      expect((await write({ excludeSelectors: ['clr-input-container'] })).refused).toBe('hidden');
+      expect((await write({ excludeRoles: ['form'] })).refused).toBe('hidden');
+      expect((await write({ rootSelector: 'clr-select-container' })).refused).toBe('hidden');
+      expect(host.form.value.name).toBe('');
+
+      expect((await write({})).applied).toBeTrue();
+      expect(host.form.value.name).toBe('Ada');
+    });
+
     it('refuses a field behind an open modal dialog, and writes the one inside it', async () => {
       const page = contextEngine.getSnapshot();
       const behind = refOf(page, 'Name');

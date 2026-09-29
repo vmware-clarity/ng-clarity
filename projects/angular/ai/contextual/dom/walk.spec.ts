@@ -7,6 +7,7 @@
 
 import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
+import { withoutValues } from './aria-state';
 import { collectContextTreeWithin, topmostModal } from './walk';
 import { resolveSnapshotOptions } from '../snapshot-options';
 
@@ -137,6 +138,70 @@ describe('collectContextTree', () => {
 
     expect(link.state?.['redacted']).toBe(true);
     expect(JSON.stringify(link)).not.toContain('4111');
+  });
+
+  it('reports the suggestions of a text field backed by a datalist, without an explicit role', () => {
+    const [field] = collect(
+      '<input aria-label="Tier" list="tiers" /><datalist id="tiers"><option>Gold</option><option>Silver</option></datalist>'
+    );
+    expect(field.type).toBe('combobox');
+    expect(field.state?.options).toEqual(['Gold', 'Silver']);
+  });
+
+  it('does not let a hidden or role-less element make visible text disappear by pointing at it', () => {
+    const nodes = collect(
+      `<p id="warn">Danger: this deletes everything</p>
+       <span hidden aria-describedby="warn"></span>
+       <span aria-hidden="true" aria-labelledby="warn"></span>
+       <span aria-describedby="warn">hi</span>
+       <button>Delete</button>`
+    );
+
+    expect(JSON.stringify(nodes)).toContain('Danger: this deletes everything');
+  });
+
+  it('never reads what the user typed into an editor as a label or a description', () => {
+    const nodes = collect(
+      `<p>Notes: <span contenteditable="true" aria-label="Note">TYPED-1</span></p>
+       <input aria-label="Name" aria-describedby="d" /><div id="d" contenteditable>TYPED-2</div>
+       <div contenteditable="false"><p>Plain prose</p></div>`
+    );
+    // An editor's text is its value, and only its value: once values are withheld, as
+    // they are for a caller the application does not control, none of it is left.
+    const withheld = JSON.stringify(nodes.map(withoutValues));
+    expect(withheld).not.toContain('TYPED');
+    expect(withheld).toContain('Notes:');
+    expect(withheld).toContain('Plain prose');
+  });
+
+  it('does not name a control by a label, legend or caption the application redacted', () => {
+    const nodes = collect(
+      `<div data-clr-context-redact><label for="a">Account 4111</label></div><input id="a" />
+       <label data-clr-context-redact for="b">Account 4222</label><input id="b" />
+       <fieldset><legend data-clr-context-redact>Account 4333</legend><input aria-label="x" /></fieldset>
+       <table><caption data-clr-context-redact>Account 4444</caption><tr><td>1</td></tr></table>
+       <figure><figcaption data-clr-context-redact>Account 4555</figcaption><img alt="" src="" /></figure>
+       <div data-clr-context-redact><label>Owner <input value="x" /></label></div>`
+    );
+    const json = JSON.stringify(nodes);
+
+    ['4111', '4222', '4333', '4444', '4555'].forEach(secret => expect(json).not.toContain(secret));
+    // A label inside the same redacted region as its field still says what the field is.
+    expect(json).toContain('Owner');
+  });
+
+  it('borrows no invisible text into a name or a description, as it describes none', () => {
+    const nodes = collect(
+      `<p>Visible words <span style="opacity: 0">INVISIBLE-OPACITY</span></p>
+       <input aria-label="Amount" aria-describedby="h" /><div id="h" style="visibility: hidden">HIDDEN-DESC</div>
+       <button><span class="clr-sr-only" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Close</span></button>`
+    );
+    const json = JSON.stringify(nodes);
+
+    expect(json).not.toContain('INVISIBLE-OPACITY');
+    expect(json).not.toContain('HIDDEN-DESC');
+    // Text clipped for screen readers still names what it labels.
+    expect(json).toContain('Close');
   });
 
   it('names a link or button in a redacted region only by what an author gave it, never by its content', () => {

@@ -304,10 +304,10 @@ export interface ClrElementMutationResult {
 
 // @public
 export interface ClrElementMutator {
-    coerce?(proposed: unknown): ClrElementMutation;
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
     ownsContents?: boolean;
-    read?(): unknown;
-    write?(proposed: unknown): ClrElementMutation;
+    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
 }
 
 // @public

@@ -5,7 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
+import {
+  CLR_CONTEXT_EDITING_HOST_SELECTOR,
+  CLR_CONTEXT_IGNORE_SELECTOR,
+  CLR_CONTEXT_REDACT_SELECTOR,
+} from '@clr/angular/utils';
 
 import { isNameFromContents } from './roles';
 import { accessibleText, referencedText, truncate } from './text';
@@ -88,7 +92,25 @@ function nativeName(element: Element, withheld: string): string | null {
 /** Text of a direct child matching `selector`, the only place these names may come from. */
 function scopedText(element: Element, selector: string, withheld: string): string | null {
   const child = element.querySelector(`:scope > ${selector}`);
-  return child && !(withheld && child.matches(withheld)) ? accessibleText(child, undefined, withheld) : null;
+  return child && readableNameSource(child, element, withheld) ? accessibleText(child, undefined, withheld) : null;
+}
+
+/**
+ * Whether a label, legend or caption may name `named`. Not when it is in a region the
+ * engine may not read, or excluded, or in an editor; and not when a redacted region holds
+ * it without holding what it names — a label marked `data-clr-context-redact` shows
+ * something sensitive, not a field's name. A label inside the same redacted region as its
+ * field still names it: a region withholds values and content, not what fields are called.
+ */
+function readableNameSource(source: Element, named: Element, withheld: string): boolean {
+  if (source.closest(CLR_CONTEXT_IGNORE_SELECTOR) || source.closest(CLR_CONTEXT_EDITING_HOST_SELECTOR)) {
+    return false;
+  }
+  if (withheld && source.closest(withheld)) {
+    return false;
+  }
+  const redacting = source.closest(CLR_CONTEXT_REDACT_SELECTOR);
+  return !redacting || redacting.contains(named);
 }
 
 /**
@@ -104,9 +126,7 @@ function labelText(control: Element, withheld: string): string | null {
   // cannot be labelled (a custom textbox) falls back to a label wrapped around it.
   const labels = (control as HTMLInputElement).labels;
   const label = labels ? labels[0] : control.closest('label');
-  // A label in a region the engine may not read names nothing: its text is withheld
-  // like any other there.
-  if (!label || label.closest(CLR_CONTEXT_IGNORE_SELECTOR) || (withheld && label.closest(withheld))) {
+  if (!label || !readableNameSource(label, control, withheld)) {
     return null;
   }
   return accessibleText(label, control, withheld);

@@ -5,9 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { ClrContextTrackerService, ClrPageContext } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
+
+import { SharedContextTracking } from './shared-tracking';
 
 /**
  * Global "what does the AI context engine see right now" panel, mounted once in the app
@@ -28,7 +30,8 @@ export class ContextInspectorComponent implements OnDestroy {
   snapshotCount = 0;
 
   private subscription?: Subscription;
-  private startedTracking = false;
+  private tracking = false;
+  private readonly sharedTracking = inject(SharedContextTracking);
 
   constructor(private contextTracker: ClrContextTrackerService) {}
 
@@ -43,20 +46,19 @@ export class ContextInspectorComponent implements OnDestroy {
   setOpen(open: boolean): void {
     this.open = open;
     this.subscription?.unsubscribe();
+    if (open && !this.tracking) {
+      // The tracker is shared with the demo pages: the panel keeps whatever options a page
+      // is tracking with, and only starts tracking when nobody is.
+      this.sharedTracking.acquire();
+      this.tracking = true;
+    } else if (!open && this.tracking) {
+      // Nothing here consumes the context while the panel is closed; tracking stops once
+      // no page needs it either.
+      this.sharedTracking.release();
+      this.tracking = false;
+    }
     if (open) {
-      // The tracker is shared: a demo page may already be tracking with options of its
-      // own, which restarting here would replace. The panel only starts tracking when
-      // nobody else is, and only then stops it again.
-      if (!this.contextTracker.isTracking) {
-        this.contextTracker.start();
-        this.startedTracking = true;
-      }
       this.subscription = this.contextTracker.context$.subscribe(snapshot => this.render(snapshot));
-    } else if (this.startedTracking) {
-      // Nothing consumes the context while the panel is closed, and tracking walks the
-      // whole document on every DOM change; it is not left running for nobody.
-      this.contextTracker.stop();
-      this.startedTracking = false;
     }
   }
 
@@ -66,6 +68,9 @@ export class ContextInspectorComponent implements OnDestroy {
 
   ngOnDestroy(): void {
     this.subscription?.unsubscribe();
+    if (this.tracking) {
+      this.sharedTracking.release();
+    }
   }
 
   private render(snapshot: ClrPageContext): void {

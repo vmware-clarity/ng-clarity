@@ -6,6 +6,8 @@
  */
 
 import {
+  AfterViewChecked,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   EventEmitter,
@@ -38,7 +40,7 @@ const LANDMARK_SELECTOR = 'nav, [role="navigation"]';
   },
   standalone: false,
 })
-export class ClrVerticalNav implements OnInit, OnDestroy {
+export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
   @Input('clrVerticalNavToggleLabel') toggleLabel: string;
   contentId = uniqueIdFactory();
 
@@ -47,7 +49,8 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
   private _sub: Subscription;
   private readonly roleAttribute: ClrHostAttribute;
   private readonly labelAttribute: ClrHostAttribute;
-  private insideLandmark = false;
+  /** Whether a navigation landmark is around the nav or inside it; see {@link hostRole}. */
+  private landmarkNearby = false;
 
   constructor(
     private _navService: VerticalNavService,
@@ -56,7 +59,8 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
     public commonStrings: ClrCommonStringsService,
     // Optional and last, so that subclasses calling `super()` with the arguments they
     // passed before keep compiling.
-    @Optional() private readonly el?: ElementRef<HTMLElement>
+    @Optional() private readonly el?: ElementRef<HTMLElement>,
+    @Optional() private readonly changeDetector?: ChangeDetectorRef
   ) {
     this.roleAttribute = new ClrHostAttribute(el?.nativeElement, 'role');
     this.labelAttribute = new ClrHostAttribute(el?.nativeElement, 'aria-label');
@@ -106,7 +110,7 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
    */
   @HostBinding('attr.role')
   private get hostRole(): string | null {
-    return this.roleAttribute.value(this.insideLandmark ? null : 'navigation');
+    return this.roleAttribute.value(this.landmarkNearby ? null : 'navigation');
   }
 
   /**
@@ -123,10 +127,28 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Projected content is in place by now: the component's view, and what it projects,
-    // is created before any lifecycle hook runs.
-    const host = this.el?.nativeElement;
-    this.insideLandmark = !!host?.parentElement?.closest(LANDMARK_SELECTOR) || !!host?.querySelector(LANDMARK_SELECTOR);
+    this.landmarkNearby = this.nearLandmark();
+  }
+
+  /**
+   * A `<nav>` the application projects under an `@if` or a loop comes and goes after the
+   * role is bound, so the nav looks again once each check is done. What it finds is
+   * applied on the next turn: changing a host binding within the check that bound it
+   * would be an expression changed after it was checked.
+   */
+  ngAfterViewChecked() {
+    if (this.nearLandmark() === this.landmarkNearby) {
+      return;
+    }
+    // A promise rather than `queueMicrotask`, so that under zone.js the change lands in
+    // the zone and the application checks again once it has.
+    Promise.resolve().then(() => {
+      const nearby = this.nearLandmark();
+      if (nearby !== this.landmarkNearby) {
+        this.landmarkNearby = nearby;
+        this.changeDetector?.markForCheck();
+      }
+    });
   }
 
   ngOnDestroy() {
@@ -135,5 +157,11 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
 
   toggleByButton() {
     this.collapsed = !this.collapsed;
+  }
+
+  /** Whether a navigation landmark is around the nav or inside it. */
+  private nearLandmark(): boolean {
+    const host = this.el?.nativeElement;
+    return !!host?.parentElement?.closest(LANDMARK_SELECTOR) || !!host?.querySelector(LANDMARK_SELECTOR);
   }
 }

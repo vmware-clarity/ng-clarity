@@ -93,6 +93,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     // (undocumented)
     modalId: string;
     // (undocumented)
+    static ngAcceptInputType_ariaModal: unknown;
+    // (undocumented)
     ngOnChanges(changes: {
         [propName: string]: SimpleChange;
     }): void;

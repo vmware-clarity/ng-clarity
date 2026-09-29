@@ -35,9 +35,12 @@ import {
   writeValue,
 } from './write';
 import { ClrContextChange, diffClrContext } from '../diff';
+import { isOutsideSnapshot } from '../dom/walk';
 import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
+import { CLR_CONTEXT_OPTIONS } from '../providers/context-options';
 import { ClrContextEngineService } from '../providers/contextual-engine.service';
 import { availableRoutes } from '../routes';
+import { resolveSnapshotOptions } from '../snapshot-options';
 
 /** How long a `confirm` hook may take by default before the operation is declined. */
 const CONFIRM_TIMEOUT_MS = 120_000;
@@ -64,6 +67,7 @@ export class ClrMutationEngineService {
   private readonly router = inject(Router, { optional: true });
   private readonly zone = inject(NgZone);
   private readonly application = inject(ApplicationRef);
+  private readonly contextOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
   // Batches run one after another: a second agent turn must not interleave its writes
   // with the first, nor measure its changes against a page the first is still changing.
   private queue: Promise<unknown> = Promise.resolve();
@@ -73,8 +77,9 @@ export class ClrMutationEngineService {
    * resolved, classified and its value translated, or the refusal it would meet.
    */
   plan(operations: ClrMutationOperation[]): ClrMutationPlanEntry[] {
+    const options = this.scopeOptions();
     return operations.map(operation => {
-      const prepared = this.prepare(operation);
+      const prepared = this.prepare(operation, options);
       if ('refused' in prepared) {
         return { operation, refused: prepared.refused, detail: prepared.detail };
       }
@@ -104,9 +109,10 @@ export class ClrMutationEngineService {
     snapshotOptions?: ClrContextSnapshotOptions
   ): Promise<ClrMutationReport> {
     const before = this.contextEngine.getSnapshot(snapshotOptions);
+    const options = this.scopeOptions(snapshotOptions);
     const results: ClrMutationResult[] = [];
     for (const operation of Array.isArray(operations) ? operations : []) {
-      results.push(await this.applyOne(operation));
+      results.push(await this.applyOne(operation, options));
     }
     // Brings every view that shows a written value up to date — a zoneless application,
     // or a write made from outside the zone, would otherwise show the old one — then
@@ -156,8 +162,11 @@ export class ClrMutationEngineService {
     }
   }
 
-  private async applyOne(operation: ClrMutationOperation): Promise<ClrMutationResult> {
-    let prepared = this.prepare(operation);
+  private async applyOne(
+    operation: ClrMutationOperation,
+    options: Required<ClrContextSnapshotOptions>
+  ): Promise<ClrMutationResult> {
+    let prepared = this.prepare(operation, options);
     if ('refused' in prepared) {
       return refusal(operation, prepared.refused, prepared.detail);
     }
@@ -179,7 +188,7 @@ export class ClrMutationEngineService {
       // The person agreed to what they were shown. The page may have moved on while they
       // looked — the field disabled, hidden, re-rendered — so it is checked again, and
       // written only if it is still exactly what they agreed to.
-      const again = this.prepare(operation);
+      const again = this.prepare(operation, options);
       if ('refused' in again) {
         return refusal(operation, again.refused, again.detail);
       }
@@ -212,8 +221,19 @@ export class ClrMutationEngineService {
     return { operation: operation.operation, ref: operation.ref, ...outcome };
   }
 
+  /** The options a write is judged against: the application's, with the call's over them. */
+  private scopeOptions(snapshotOptions?: ClrContextSnapshotOptions): Required<ClrContextSnapshotOptions> {
+    const effective: ClrContextSnapshotOptions = { ...this.contextOptions };
+    for (const [key, value] of Object.entries(snapshotOptions ?? {})) {
+      if (value !== undefined) {
+        (effective as Record<string, unknown>)[key] = value;
+      }
+    }
+    return resolveSnapshotOptions(effective);
+  }
+
   /** Everything up to, but not including, the write: the target, the value, the verdict. */
-  private prepare(operation: ClrMutationOperation): Prepared | Refused {
+  private prepare(operation: ClrMutationOperation, options: Required<ClrContextSnapshotOptions>): Prepared | Refused {
     if (!this.policy) {
       return { refused: 'unclassified', detail: 'The application has not provided a mutation policy.' };
     }
@@ -237,7 +257,12 @@ export class ClrMutationEngineService {
     if ('refused' in resolution) {
       return resolution;
     }
-    const write = resolution.target;
+    const write: WriteTarget = { ...resolution.target, options };
+    // A ref outlives the snapshot that handed it out, and a snapshot may have been taken
+    // with wider options than these: what these would leave out is not written either.
+    if (isOutsideSnapshot(write.element, options)) {
+      return { refused: 'hidden', detail: 'The control is outside what snapshots with these options describe.' };
+    }
     if (!descriptionMatches(operation.description, write.label, write.type)) {
       return {
         refused: 'mismatch',
@@ -300,7 +325,7 @@ export class ClrMutationEngineService {
       return refusal(operation, 'noRoute', 'The application has no routes.') as ClrNavigationMutationResult;
     }
     const tree = urlTreeFor(prepared.segments, prepared.target.queryParams);
-    const report = await this.zone.run(() => navigateAndReport(router, tree));
+    const report = await this.zone.run(() => navigateAndReport(router, tree, this.zone));
     const result: ClrNavigationMutationResult = {
       operation: 'navigate',
       path: operation.path,

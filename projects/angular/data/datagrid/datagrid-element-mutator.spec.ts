@@ -202,7 +202,8 @@ class SecretCellHost {
       <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
         <clr-dg-cell
           >{{ item.name }} <span data-clr-context-ignore>ign-{{ item.id }}</span> <span inert>inert-{{ item.id }}</span>
-          <span class="internal">int-{{ item.id }}</span></clr-dg-cell
+          <span class="internal">int-{{ item.id }}</span>
+          <span contenteditable="true">typed-{{ item.id }}</span></clr-dg-cell
         >
       </clr-dg-row>
     </clr-datagrid>
@@ -325,10 +326,12 @@ describe('ClrDatagrid element mutator', () => {
       const snapshot = contextEngine.getSnapshot();
       expect(gridOf(snapshot).state?.['rows']).toEqual(['Checking', 'Savings']);
       ['ign-', 'inert-', 'int-'].forEach(text => expect(JSON.stringify(snapshot)).not.toContain(text));
+      // An editor in a cell is a field of its own, reported with its value; it is not part of the row's label.
+      expect(JSON.stringify(gridOf(snapshot).state)).not.toContain('typed-');
 
       const refused = await select('Nowhere');
       expect(refused.refused).toBe('invalid');
-      ['ign-', 'inert-', 'int-'].forEach(text => expect(JSON.stringify(refused)).not.toContain(text));
+      ['ign-', 'inert-', 'int-', 'typed-'].forEach(text => expect(JSON.stringify(refused)).not.toContain(text));
     });
 
     it('keeps labelling rows while a detail pane hides the grid from assistive technology', async () => {

@@ -913,6 +913,9 @@ export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
 
 // @public
+export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
 export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
 
 // @public
@@ -928,7 +931,7 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
 
 // @public
-export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact]";
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
 
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
@@ -3573,10 +3576,10 @@ export type ClrElementMutation = {
 
 // @public
 export interface ClrElementMutator {
-    coerce?(proposed: unknown): ClrElementMutation;
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
     ownsContents?: boolean;
-    read?(): unknown;
-    write?(proposed: unknown): ClrElementMutation;
+    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
 }
 
 // @public (undocumented)
@@ -4500,6 +4503,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     protected readonly modalContentTemplate: TemplateRef<any>;
     // (undocumented)
     modalId: string;
+    // (undocumented)
+    static ngAcceptInputType_ariaModal: unknown;
     // (undocumented)
     ngOnChanges(changes: {
         [propName: string]: SimpleChange;
@@ -6414,11 +6419,11 @@ export class ClrTreeViewModule {
 export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
-export class ClrVerticalNav implements OnInit, OnDestroy {
+export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavIconService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupRegistrationService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService, el?: ElementRef<HTMLElement>);
+    constructor(_navService: VerticalNavService, _navIconService: VerticalNavIconService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, commonStrings: ClrCommonStringsService, el?: ElementRef<HTMLElement>, changeDetector?: ChangeDetectorRef);
     // (undocumented)
     get ariaExpanded(): string;
     // (undocumented)
@@ -6435,6 +6440,7 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
     get hasIcons(): boolean;
     // (undocumented)
     get hasNavGroups(): boolean;
+    ngAfterViewChecked(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -6446,7 +6452,7 @@ export class ClrVerticalNav implements OnInit, OnDestroy {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNav, "clr-vertical-nav", never, { "toggleLabel": { "alias": "clrVerticalNavToggleLabel"; "required": false; }; "collapsible": { "alias": "clrVerticalNavCollapsible"; "required": false; }; "collapsed": { "alias": "clrVerticalNavCollapsed"; "required": false; }; }, { "_collapsedChanged": "clrVerticalNavCollapsedChange"; }, never, ["*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, [null, null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNav, [null, null, null, null, { optional: true; }, { optional: true; }]>;
 }
 
 // @public (undocumented)

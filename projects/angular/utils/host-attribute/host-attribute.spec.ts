@@ -82,12 +82,34 @@ describe('ClrHostAttribute', () => {
   });
 
   it('keeps following the component after hydration, when the server rendered what it reports', () => {
-    // A server-rendered page arrives with the component's own attribute already on it.
+    // A server-rendered page arrives with the component's own attribute already on it,
+    // and Angular marks the application's root.
+    const root = document.createElement('app-root');
+    root.setAttribute('ng-server-context', 'ssr');
+    document.body.appendChild(root);
+    root.appendChild(element);
+    try {
+      element.setAttribute('aria-invalid', 'true');
+      const attribute = new ClrHostAttribute(element, 'aria-invalid');
+      expect(bind(attribute, true)).toBe('true');
+      expect(bind(attribute, null)).toBeNull();
+      expect(bind(attribute, true)).toBe('true');
+    } finally {
+      root.remove();
+    }
+  });
+
+  it('keeps what the application wrote or binds even when it equals what the component would say', () => {
     element.setAttribute('aria-invalid', 'true');
-    const attribute = new ClrHostAttribute(element, 'aria-invalid');
-    expect(bind(attribute, true)).toBe('true');
-    expect(bind(attribute, null)).toBeNull();
-    expect(bind(attribute, true)).toBe('true');
+    const written = new ClrHostAttribute(element, 'aria-invalid');
+    expect(bind(written, true)).toBe('true');
+    expect(bind(written, null)).toBe('true');
+
+    const other = document.createElement('input');
+    const bound = new ClrHostAttribute(other, 'aria-required');
+    other.setAttribute('aria-required', 'true'); // the application's binding, applied first
+    other.setAttribute('aria-required', bound.value(true) as string);
+    expect(bound.value(null)).toBe('true');
   });
 
   it('turns true and false into what ARIA expects', () => {

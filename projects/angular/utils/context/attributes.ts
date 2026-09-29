@@ -40,9 +40,17 @@ export const CLR_CONTEXT_IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
 export const CLR_CONTEXT_HIDDEN_SELECTOR = `[hidden], [aria-hidden="true"], [inert], ${CLR_CONTEXT_IGNORE_SELECTOR}`;
 
 /**
- * What page-context tooling never reads text from: everything
- * {@link CLR_CONTEXT_HIDDEN_SELECTOR} matches, and regions marked
- * `data-clr-context-redact`. A component that labels something from its content — a row
- * by its cells, an option by its text — leaves out every descendant this matches.
+ * An editing host: an element with `contenteditable` in any spelling but `false`. What
+ * it holds was typed by the user — a value, like a text field's — never text to read into
+ * a label, a name or a description.
  */
-export const CLR_CONTEXT_WITHHELD_SELECTOR = `${CLR_CONTEXT_HIDDEN_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}`;
+export const CLR_CONTEXT_EDITING_HOST_SELECTOR = '[contenteditable]:not([contenteditable="false" i])';
+
+/**
+ * What page-context tooling never reads text from: everything
+ * {@link CLR_CONTEXT_HIDDEN_SELECTOR} matches, regions marked `data-clr-context-redact`,
+ * and editing hosts, whose text is what the user typed. A component that labels something
+ * from its content — a row by its cells, an option by its text — leaves out every
+ * descendant this matches.
+ */
+export const CLR_CONTEXT_WITHHELD_SELECTOR = `${CLR_CONTEXT_HIDDEN_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_EDITING_HOST_SELECTOR}`;

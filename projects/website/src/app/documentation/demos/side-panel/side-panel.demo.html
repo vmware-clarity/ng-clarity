@@ -43,7 +43,9 @@
       achieved through the <code cds-text="code">clrSidePanelPinnable</code> input. Currently, the side panel pinning
       also depends on the <code cds-text="code">clrSidePanelSize</code> input to work properly. When pinned, all normal
       ways to close the panel are blocked and it's displayed side by side with the content, instead of overlapping it. A
-      pinnable container can also be inline. Pinning is also supported for bottom-positioned panels.
+      pinnable container can also be inline. Pinning is also supported for bottom-positioned panels. A pinned panel sits
+      beside a page that stays in use, so it is not a modal dialog: it drops <code cds-text="code">aria-modal</code> and
+      no longer keeps keyboard focus inside, and the user can tab between the panel and the page.
     </p>
     <clr-side-panel-angular-pinnable-demo [showCode]="false"></clr-side-panel-angular-pinnable-demo>
 

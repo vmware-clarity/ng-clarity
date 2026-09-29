@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ClrContextSnapshotOptions } from './interfaces';
 import { publishOnElement } from './publish';
 
 /**
@@ -34,6 +35,11 @@ export type ClrElementMutation = { value: unknown; refused?: never } | { refused
 /**
  * What a component publishes through {@link CLR_ELEMENT_MUTATOR_PROPERTY}. Every member
  * is optional; a component publishes only what its form control cannot do on its own.
+ *
+ * Each call receives the snapshot options the write is judged against — the
+ * application's, with any the caller gave over them — so a component that names what an
+ * agent may pick from its content, a datagrid's rows, leaves out what those options
+ * exclude, as the snapshot did.
  */
 export interface ClrElementMutator {
   /**
@@ -50,19 +56,19 @@ export interface ClrElementMutator {
    * control and is passed through so the component can say what "empty" is for it.
    * The engine then writes the result through the form control as usual.
    */
-  coerce?(proposed: unknown): ClrElementMutation;
+  coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
   /**
    * Writes the proposal directly, for state that no form control holds — a datagrid's
    * row selection. Returns what is now true, in the terms an agent sees. When present,
    * the engine writes through this rather than through a form control.
    */
-  write?(proposed: unknown): ClrElementMutation;
+  write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
   /**
    * The element's current value in the terms an agent sees — labels rather than option
    * values — for reading back after a write. Without it the engine reads the form
    * control's value.
    */
-  read?(): unknown;
+  read?(options?: Required<ClrContextSnapshotOptions>): unknown;
 }
 
 /**

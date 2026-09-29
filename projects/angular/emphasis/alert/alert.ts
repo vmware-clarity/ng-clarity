@@ -53,6 +53,8 @@ export class ClrAlert implements OnInit, OnDestroy {
   private _isLightweight = false;
   private _origAlertType: string;
   private teardownElementContext?: () => void;
+  /** The role last bound; see {@link ariaAtomic}. */
+  private renderedRole: 'alert' | 'status' | null = null;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -135,17 +137,8 @@ export class ClrAlert implements OnInit, OnDestroy {
    * buttons included — whenever any part of it changed; see {@link ariaAtomic}.
    */
   protected get ariaRole(): 'alert' | 'status' | null {
-    if (this.liveRole !== undefined) {
-      return this.liveRole;
-    }
-    // Checked each time rather than once: an alert can be moved into a live region. The
-    // host counts too, for an application that put `aria-live` on the `clr-alert` itself;
-    // the role this renders is on an element inside it.
-    if (this.hostElement.nativeElement.closest(LIVE_REGION_SELECTOR)) {
-      return null;
-    }
-    const urgent = this.alertType === 'danger' || this.alertType === 'warning';
-    return urgent && this.isAppLevel ? 'alert' : 'status';
+    this.renderedRole = this.chooseRole();
+    return this.renderedRole;
   }
 
   /**
@@ -154,7 +147,8 @@ export class ClrAlert implements OnInit, OnDestroy {
    * would be read out with every update.
    */
   protected get ariaAtomic(): 'false' | null {
-    return this.ariaRole === 'status' ? 'false' : null;
+    // Bound right after the role, from the role just chosen: choosing it looks up the DOM.
+    return this.renderedRole === 'status' ? 'false' : null;
   }
 
   ngOnInit() {
@@ -201,5 +195,19 @@ export class ClrAlert implements OnInit, OnDestroy {
       this.multiAlertService.close(isCurrentAlert);
     }
     this._closedChanged.emit(true);
+  }
+
+  private chooseRole(): 'alert' | 'status' | null {
+    if (this.liveRole !== undefined) {
+      return this.liveRole;
+    }
+    // Checked each time rather than once: an alert can be moved into a live region. The
+    // host counts too, for an application that put `aria-live` on the `clr-alert` itself;
+    // the role this renders is on an element inside it.
+    if (this.hostElement.nativeElement.closest(LIVE_REGION_SELECTOR)) {
+      return null;
+    }
+    const urgent = this.alertType === 'danger' || this.alertType === 'warning';
+    return urgent && this.isAppLevel ? 'alert' : 'status';
   }
 }

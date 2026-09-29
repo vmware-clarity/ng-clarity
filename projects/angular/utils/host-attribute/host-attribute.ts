@@ -30,6 +30,8 @@ export class ClrHostAttribute {
   private authored: string | null | undefined = undefined;
   private reported: string | null | undefined = undefined;
   private yielded = false;
+  /** Whether the page was server-rendered; looked up on the first {@link value} call. */
+  private serverRendered?: boolean;
 
   constructor(
     private readonly element: Element | null | undefined,
@@ -54,22 +56,24 @@ export class ClrHostAttribute {
   /** What the host binding should return, given what the component would report. */
   value(computed: string | boolean | null): string | null {
     const next = computed === null || computed === false ? null : String(computed);
+    // On a page a server rendered — Angular marks its root with `ng-server-context` — a
+    // value equal to the component's own is what the server rendered for the component,
+    // and keeps following it after hydration. Anywhere else, a value already there is
+    // the application's, whatever it says.
+    this.serverRendered ??= !!this.element?.ownerDocument?.querySelector?.('[ng-server-context]');
+    const ownIfEqual = this.serverRendered;
     if (this.authored === undefined) {
-      // A value the component would report itself is taken as the component's — what a
-      // server rendered for it — so that it keeps following the component after
-      // hydration. Anything else there from the start is the author's, and stays.
-      this.authored = this.initial !== null && this.initial !== next ? this.initial : null;
+      this.authored = this.initial !== null && (this.initial !== next || !ownIfEqual) ? this.initial : null;
     }
     if (this.authored !== null) {
       return this.authored;
     }
     const current = this.element?.getAttribute?.(this.name) ?? null;
     // The application's bindings run before the component's host bindings, so on the
-    // first pass a value already on the element that is not the component's was bound
-    // by the application. One equal to the component's is taken as its own, as it is
-    // when a server-rendered page is hydrated.
+    // first pass a value already on the element was bound by the application — even one
+    // equal to what the component would say, unless a server rendered it.
     const applicationSet =
-      this.reported === undefined ? current !== null && current !== next : current !== this.reported;
+      this.reported === undefined ? current !== null && (current !== next || !ownIfEqual) : current !== this.reported;
     if (this.yielded || applicationSet) {
       this.yielded = true;
       this.reported = current;

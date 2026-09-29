@@ -50,6 +50,11 @@ import { ClrVerticalNavModule } from './vertical-nav.module';
     <clr-vertical-nav class="holds-nav">
       <nav aria-label="Projects"><a clrVerticalNavLink href="#/projects">Projects</a></nav>
     </clr-vertical-nav>
+    <clr-vertical-nav class="holds-nav-later">
+      @if (showNav) {
+        <nav aria-label="Later"><a clrVerticalNavLink href="#/later">Later</a></nav>
+      }
+    </clr-vertical-nav>
     <span id="admin-heading">Administration</span>
     <clr-vertical-nav aria-labelledby="admin-heading" class="labelledby">
       <a clrVerticalNavLink href="#/admin">Admin</a>
@@ -59,6 +64,7 @@ import { ClrVerticalNavModule } from './vertical-nav.module';
 })
 class TestComponent {
   boundRole: string | null = 'region';
+  showNav = true;
 }
 
 describe('Vertical nav, as assistive technology sees it', () => {
@@ -117,6 +123,26 @@ describe('Vertical nav, as assistive technology sees it', () => {
     expect(nav('.holds-nav').hasAttribute('aria-label')).toBe(false);
   });
 
+  it('notices a landmark the application projects conditionally, whenever it appears', async () => {
+    // The nav notices the change once the DOM has settled — a removed view leaves the DOM
+    // at the end of the check — and is checked again then, as the zone would check it.
+    const toggle = async (show: boolean) => {
+      fixture.componentInstance.showNav = show;
+      for (let pass = 0; pass < 3; pass++) {
+        fixture.detectChanges();
+        await fixture.whenStable();
+      }
+    };
+    await toggle(true);
+    expect(nav('.holds-nav-later').hasAttribute('role')).toBe(false);
+
+    await toggle(false);
+    expect(nav('.holds-nav-later').getAttribute('role')).toBe('navigation');
+
+    await toggle(true);
+    expect(nav('.holds-nav-later').hasAttribute('role')).toBe(false);
+  });
+
   it('treats an ancestor with role="navigation" as an existing landmark, too', () => {
     expect(nav('.inside-role-navigation').hasAttribute('role')).toBe(false);
   });
@@ -165,7 +191,6 @@ describe('Vertical nav, constructed without its element', () => {
 
   it('still reports itself as a navigation landmark', () => {
     const verticalNav = construct();
-    verticalNav.ngOnInit();
 
     expect(verticalNav['hostRole']).toBe('navigation');
     verticalNav.ngOnDestroy();

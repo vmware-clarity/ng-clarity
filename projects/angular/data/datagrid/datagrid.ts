@@ -171,14 +171,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   private teardownElementContext?: () => void;
   private teardownElementMutator?: () => void;
-  /**
-   * The elements the latest snapshot left out (its `excludeSelectors`), as one selector.
-   * Matching an agent's words and quoting rows back in a refusal use the labels that
-   * snapshot published. `apply()` takes a snapshot of its own before it writes — with the
-   * application's options and any it was given — so those are the exclusions that hold
-   * for a write. `plan()` takes none, and matches as the latest snapshot labelled.
-   */
-  private contextExcluded = '';
   private contentInitialized = false;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
@@ -327,7 +319,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     // mislead a screen reader.
     this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions => {
       const state: Record<string, unknown> = {};
-      this.contextExcluded = clrUsableSelectors(this.el.nativeElement, snapshotOptions?.excludeSelectors ?? []);
+      const excluded = this.excludedBy(snapshotOptions);
 
       // Named apart from the `rowCount` the engine reads off the grid (the rows on this
       // page, or `aria-rowcount`), which is a different number for a paginated grid.
@@ -348,9 +340,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           state.rows = this.rows
             .toArray()
             .slice(0, maxItems)
-            .map(row => this.rowLabel(row));
+            .map(row => this.rowLabel(row, excluded));
         }
-        const selected = this.selectedRowLabels(maxItems);
+        const selected = this.selectedRowLabels(excluded, maxItems);
         if (selected.length) {
           state.selection = selected;
         }
@@ -757,12 +749,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       return;
     }
     this.teardownElementMutator = clrPublishElementMutator(this.el.nativeElement, {
-      write: (proposed: unknown): ClrElementMutation => this.writeSelection(proposed),
-      read: () => this.readSelection(),
+      // Rows are named as the snapshot the write is judged against names them.
+      write: (proposed, options): ClrElementMutation => this.writeSelection(proposed, this.excludedBy(options)),
+      read: options => this.readSelection(this.excludedBy(options)),
     });
   }
 
-  private writeSelection(proposed: unknown): ClrElementMutation {
+  private writeSelection(proposed: unknown, excluded: string): ClrElementMutation {
     if (!this.selection.selectable) {
       return { refused: 'The datagrid does not offer row selection.' };
     }
@@ -778,14 +771,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
     const rows: ClrDatagridRow<T>[] = [];
     for (const label of wanted) {
-      const found = this.findRow(label);
+      const found = this.findRow(label, excluded);
       if ('refused' in found) {
         return { refused: found.refused };
       }
       // Naming a locked row that is already selected changes nothing, so writing back the
       // value a write returned is not refused.
       if (this.selection.isLocked(found.row.item) && !this.selection.isSelected(found.row.item)) {
-        return { refused: `The row "${this.rowLabel(found.row)}" is locked and cannot be selected or deselected.` };
+        return {
+          refused: `The row "${this.rowLabel(found.row, excluded)}" is locked and cannot be selected or deselected.`,
+        };
       }
       rows.push(found.row);
     }
@@ -802,7 +797,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         : current === undefined || current === null;
       // Repeating a write changes nothing, so it does not tell the application it did.
       if (unchanged) {
-        return { value: this.readSelection() };
+        return { value: this.readSelection(excluded) };
       }
       if (rows.length) {
         this.selection.setSelected(rows[0].item, true);
@@ -829,30 +824,30 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.selection.current = next;
       }
     }
-    return { value: this.readSelection() };
+    return { value: this.readSelection(excluded) };
   }
 
   /**
    * The row an agent named: by its whole label, else by any one cell of it — refused
    * when the words fit more than one row, rather than taking the first that fits.
    */
-  private findRow(label: unknown): { row: ClrDatagridRow<T> } | { refused: string } {
+  private findRow(label: unknown, excluded: string): { row: ClrDatagridRow<T> } | { refused: string } {
     const rows = this.rows.toArray();
     const wanted = typeof label === 'string' ? clrNormalizeContextText(label) : '';
     if (!wanted) {
       return { refused: 'A row is named by its content, as the published rows list it.' };
     }
-    const byLabel = rows.filter(row => clrNormalizeContextText(this.rowLabel(row)) === wanted);
+    const byLabel = rows.filter(row => clrNormalizeContextText(this.rowLabel(row, excluded)) === wanted);
     const matches = byLabel.length
       ? byLabel
-      : rows.filter(row => this.rowCells(row).some(cell => clrNormalizeContextText(cell) === wanted));
+      : rows.filter(row => this.rowCells(row, excluded).some(cell => clrNormalizeContextText(cell) === wanted));
     if (matches.length === 1) {
       return { row: matches[0] };
     }
     const quote = (candidates: ClrDatagridRow<T>[]) =>
       candidates
         .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
-        .map(row => `"${this.rowLabel(row)}"`)
+        .map(row => `"${this.rowLabel(row, excluded)}"`)
         .join(', ');
     if (matches.length > 1) {
       return {
@@ -862,28 +857,33 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return { refused: `No such row on this page. The rows are: ${quote(rows)}.` };
   }
 
-  private readSelection(): string | string[] | null {
-    const selected = this.selectedRowLabels();
+  private readSelection(excluded: string): string | string[] | null {
+    const selected = this.selectedRowLabels(excluded);
     return this.selection.selectionType === SelectionType.Single ? (selected[0] ?? null) : selected;
   }
 
   /** The selected rows by content, stopping at `limit`: labelling a row costs a DOM query. */
-  private selectedRowLabels(limit = Infinity): string[] {
+  private selectedRowLabels(excluded: string, limit = Infinity): string[] {
     const labels: string[] = [];
     for (const row of this.rows.toArray()) {
       if (labels.length >= limit) {
         break;
       }
       if (this.selection.isSelected(row.item)) {
-        labels.push(this.rowLabel(row));
+        labels.push(this.rowLabel(row, excluded));
       }
     }
     return labels;
   }
 
   /** A row by its content: the text of its cells, in order. */
-  private rowLabel(row: ClrDatagridRow<T>): string {
-    return this.rowCells(row).join(' | ');
+  private rowLabel(row: ClrDatagridRow<T>, excluded: string): string {
+    return this.rowCells(row, excluded).join(' | ');
+  }
+
+  /** The elements a snapshot with these options leaves out, as one selector, or `''`. */
+  private excludedBy(options: { excludeSelectors?: readonly string[] } | null | undefined): string {
+    return clrUsableSelectors(this.el.nativeElement, options?.excludeSelectors ?? []);
   }
 
   /**
@@ -893,9 +893,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * hidden from assistive technology while a detail pane is open, and its rows still have
    * the same content.
    */
-  private rowCells(row: ClrDatagridRow<T>): string[] {
+  private rowCells(row: ClrDatagridRow<T>, excluded: string): string[] {
     const host: HTMLElement = row.el.nativeElement;
-    const excluded = this.contextExcluded;
     const withheld = (element: Element) =>
       element.matches(CLR_CONTEXT_WITHHELD_SELECTOR) || (!!excluded && element.matches(excluded));
     return Array.from(host.querySelectorAll('clr-dg-cell'))

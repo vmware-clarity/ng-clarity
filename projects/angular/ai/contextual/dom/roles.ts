@@ -90,6 +90,9 @@ const INPUT_ROLES_BY_TYPE: Record<string, string> = {
   url: 'textbox',
 };
 
+/** `<input>` types that are a combobox when they have a `list` of suggestions. */
+const SUGGESTING_INPUT_TYPES = new Set(['text', 'search', 'url', 'tel', 'email']);
+
 /** `<input>` types that deliberately have no role: they expose no useful semantics. */
 const ROLELESS_INPUT_TYPES = new Set(['hidden', 'color']);
 
@@ -180,6 +183,9 @@ const LEAF_ROLES = new Set([
  */
 const CONTENT_LEAF_ROLES = new Set(['heading', 'status', 'alert', 'term', 'caption', 'definition', 'tooltip']);
 
+/** Longer than the longest ARIA role, `menuitemcheckbox`, with room for DPUB and graphics roles. */
+const MAX_ROLE_LENGTH = 32;
+
 /** The two spellings of "this element carries no semantics of its own". */
 const PRESENTATIONAL_ROLES = new Set(['presentation', 'none']);
 
@@ -190,8 +196,10 @@ const PRESENTATIONAL_ROLES = new Set(['presentation', 'none']);
  * token is honored — the same way assistive technology resolves it.
  */
 export function resolveRole(element: Element): string | null {
+  // A token longer than any ARIA role is not one, and page markup must not be able to
+  // inflate a snapshot through it: the element falls back to its implicit role.
   const explicit = element.getAttribute('role')?.trim().split(/\s+/)[0];
-  if (explicit) {
+  if (explicit && explicit.length <= MAX_ROLE_LENGTH) {
     return explicit;
   }
   return implicitRole(element);
@@ -308,6 +316,11 @@ function inputRole(input: HTMLInputElement): string | null {
   const type = (input.getAttribute('type') || 'text').toLowerCase();
   if (ROLELESS_INPUT_TYPES.has(type)) {
     return null;
+  }
+  // A text field offering suggestions from a `<datalist>` is a combobox (HTML-AAM), and
+  // is summarised with the options it offers.
+  if (input.hasAttribute('list') && SUGGESTING_INPUT_TYPES.has(type)) {
+    return 'combobox';
   }
   // Date and time inputs have no agreed ARIA role; treat anything unlisted as a textbox,
   // which is how they behave for a user typing into them.

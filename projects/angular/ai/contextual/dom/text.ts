@@ -5,7 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_IGNORE_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
+import {
+  CLR_CONTEXT_EDITING_HOST_SELECTOR,
+  CLR_CONTEXT_IGNORE_SELECTOR,
+  CLR_CONTEXT_REDACT_SELECTOR,
+} from '@clr/angular/utils';
 
 import { checkVisibility } from './visibility';
 
@@ -56,7 +60,8 @@ function isExcludedFromName(element: Element, style: CSSStyleDeclaration | null,
   if (!style) {
     return false;
   }
-  if (style.display === 'none' || style.visibility === 'hidden') {
+  // The walk skips what is invisible, so no name borrows it either.
+  if (style.display === 'none' || style.visibility === 'hidden' || style.opacity === '0') {
     return true;
   }
   return !includeClipped && isClipped(element, style);
@@ -164,16 +169,25 @@ export function referencedText(element: Element, attribute: string, withheld = '
   );
 }
 
-const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}`;
+/**
+ * What is never read into a name, a label or a description: regions kept from agents,
+ * and editing hosts, whose text is what the user typed — a value, withheld wherever
+ * values are.
+ */
+export const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_EDITING_HOST_SELECTOR}`;
 
-/** Whether an element is not rendered: `hidden`, or `display: none` on it or an ancestor. */
+/**
+ * Whether an element cannot be seen: `hidden`, or `display: none`, `visibility: hidden`
+ * or full transparency on it or an ancestor — the same judgement the walk makes of what
+ * it describes. Text clipped for screen readers is visible in this sense, and still read.
+ */
 function isUnrendered(element: Element): boolean {
   if (element.closest('[hidden]')) {
     return true;
   }
-  // Without options this is exactly "not rendered": display: none here or above — or
-  // `display: contents`, which has no box but renders its children in its place.
-  if (checkVisibility(element, false)) {
+  // An element with `display: contents` has no box of its own, but renders its children
+  // in its place, so it is judged by its parent.
+  if (checkVisibility(element, true)) {
     return false;
   }
   if (element.ownerDocument.defaultView?.getComputedStyle(element).display !== 'contents') {
