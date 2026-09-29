@@ -1134,7 +1134,7 @@ export class ClrAccordionTitle {
 }
 
 // @public (undocumented)
-export class ClrAlert implements OnInit, DoCheck, OnDestroy {
+export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService" needs to be exported by the entry point clr-angular.d.ts
     constructor(iconService: AlertIconAndTypesService, cdr: ChangeDetectorRef, multiAlertService: MultiAlertService, commonStrings: ClrCommonStringsService, renderer: Renderer2, hostElement: ElementRef<HTMLElement>);
@@ -1173,7 +1173,9 @@ export class ClrAlert implements OnInit, DoCheck, OnDestroy {
     isSmall: boolean;
     liveRole: 'alert' | 'status' | null | undefined;
     // (undocumented)
-    ngDoCheck(): void;
+    static ngAcceptInputType_liveRole: unknown;
+    // (undocumented)
+    ngOnChanges(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)

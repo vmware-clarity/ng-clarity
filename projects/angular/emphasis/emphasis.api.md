@@ -8,7 +8,6 @@ import { AfterContentInit } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import { ChangeDetectorRef } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
@@ -18,6 +17,7 @@ import * as i6 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
+import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
@@ -37,7 +37,7 @@ export const ALERT_TYPES: string[];
 export const CLR_ALERT_DIRECTIVES: Type_2<any>[];
 
 // @public (undocumented)
-export class ClrAlert implements OnInit, DoCheck, OnDestroy {
+export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService" needs to be exported by the entry point clr-angular-emphasis.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService" needs to be exported by the entry point clr-angular-emphasis.d.ts
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-emphasis.d.ts
@@ -77,7 +77,9 @@ export class ClrAlert implements OnInit, DoCheck, OnDestroy {
     isSmall: boolean;
     liveRole: 'alert' | 'status' | null | undefined;
     // (undocumented)
-    ngDoCheck(): void;
+    static ngAcceptInputType_liveRole: unknown;
+    // (undocumented)
+    ngOnChanges(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
