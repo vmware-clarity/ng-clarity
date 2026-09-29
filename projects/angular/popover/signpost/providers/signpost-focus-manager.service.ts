@@ -17,7 +17,9 @@ export class SignpostFocusManager {
 
   focusTrigger() {
     if (this._triggerEl) {
-      this._triggerEl.focus();
+      // The signpost also closes when its trigger is scrolled out of view - scrolling it back
+      // into view to focus it would undo the user's scroll.
+      this._triggerEl.focus({ preventScroll: true });
     }
   }
 }
