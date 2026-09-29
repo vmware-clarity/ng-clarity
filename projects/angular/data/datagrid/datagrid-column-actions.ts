@@ -23,7 +23,7 @@ import {
   SkipSelf,
   ViewChild,
 } from '@angular/core';
-import { ClrPopoverService } from '@clr/angular/popover/common';
+import { ClrPopoverContent, ClrPopoverService } from '@clr/angular/popover/common';
 import {
   ClrDropdown,
   ClrDropdownMenu,
@@ -74,7 +74,6 @@ import { FiltersProvider } from './providers/filters';
       clrDropdownTrigger
       [class.datagrid-column-actions-filtered]="filterActive"
       [attr.aria-label]="triggerLabel"
-      (click)="openDropdown()"
     >
       <cds-icon
         [size]="filterActive ? '16' : '12'"
@@ -84,7 +83,7 @@ import { FiltersProvider } from './providers/filters';
       />
     </button>
 
-    <clr-dropdown-menu #dropdownMenu *clrIfOpen clrPosition="bottom-right">
+    <clr-dropdown-menu *clrIfOpen clrPosition="bottom-right">
       @if (column.sortable) {
         <!--
           The two directions are one exclusive setting rather than two commands, so they are radio
@@ -184,9 +183,9 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
   protected readonly ClrDatagridSortOrder = ClrDatagridSortOrder;
 
   private _keepFilterInHeader = false;
+  private _menuPopoverContent: ClrPopoverContent | undefined;
 
   @ViewChild('trigger', { read: ElementRef }) private trigger: ElementRef<HTMLButtonElement>;
-  @ViewChild('dropdownMenu', { read: ClrDropdownMenu }) private dropdownMenu: ClrDropdownMenu;
 
   // Named for this component rather than inherited: ClrDropdown keeps its own private list.
   private subs: Subscription[] = [];
@@ -197,7 +196,9 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     protected column: ClrDatagridColumn,
     protected commonStrings: ClrCommonStringsService,
     private columnActions: ColumnActionsService,
-    // The column's own popover service, shared with filter.
+    // The column's own popover service, shared with its filter. This component brings its own for
+    // the menu, so the menu and the filter never fight over one overlay - which is also why this one
+    // has to be resolved from the column rather than from here.
     @SkipSelf() private columnPopover: ClrPopoverService,
     private changeDetectorRef: ChangeDetectorRef,
     private injector: Injector,
@@ -299,6 +300,17 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     this.columnActionsFocusHandler.setProjectedItems(items.toArray());
   }
 
+  @ViewChild(ClrDropdownMenu, { read: ClrPopoverContent })
+  private set menuPopoverContent(popoverContent: ClrPopoverContent | undefined) {
+    this._menuPopoverContent = popoverContent;
+
+    // A dropdown menu closes on scroll by default. This one stays open so that pinning or
+    // reordering a column - which can itself move the page under the menu - does not also close it.
+    if (popoverContent) {
+      popoverContent.scrollToClose = false;
+    }
+  }
+
   ngAfterViewInit() {
     // The trigger and the filter action show whether the column is filtered, and this component is
     // OnPush, so it has to be told when a filter value changes.
@@ -309,7 +321,17 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     // Same for the filter action reporting whether the filter is open: opening it goes through this
     // template and refreshes the view on its own, but closing it does not - that is an outside click
     // or an escape key handled by the overlay, and the item would be left announcing itself expanded.
-    this.subs.push(this.columnPopover.openChange.subscribe(() => this.changeDetectorRef.markForCheck()));
+    this.subs.push(
+      this.columnPopover.openChange.subscribe(open => {
+        this.changeDetectorRef.markForCheck();
+
+        // openFilter() links the filter's popover to this menu's so they scroll together.
+        // Clearing it here keeps the link scoped to one filter opening.
+        if (!open) {
+          this.columnPopover.parent = null;
+        }
+      })
+    );
   }
 
   override ngOnDestroy() {
@@ -372,12 +394,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     }
   }
 
-  protected openDropdown() {
-    setTimeout(() => {
-      this.dropdownMenu.popoverContent.scrollToClose = false;
-    }, 1);
-  }
-
   /**
    * Pins or unpins the column, then re-anchors this menu to the trigger.
    *
@@ -404,11 +420,15 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
    * projected clr-dg-filter, and the string and numeric filters the column builds for clrDgField,
    * all share this service. Setting `origin` is all it takes to re-anchor it: `clrPopoverOrigin` is
    * itself only an assignment to that property, and with the toggle gone nothing else claims it.
+   *
+   * `parent` links the filter's popover to this menu's, so that scrolling while both are open closes
+   * or repositions them together rather than leaving one behind. It is cleared again once the filter
+   * closes, in the `openChange` subscription below, so it never outlives the menu session that set it.
    */
   protected openFilter(event: Event) {
-    // reroute filter popover origin to column actions trigger and set dropdown menu as parent.
+    // reroute filter popover origin to filter trigger and set dropdown menu as parent.
     this.columnPopover.origin = this.trigger;
-    this.columnPopover.parent = this.dropdownMenu.popoverContent;
+    this.columnPopover.parent = this._menuPopoverContent;
 
     // The popover closes on an outside click, and ignores exactly one event while doing so: the one
     // that opened it. Without this, the very click on this menu item would close the filter again.

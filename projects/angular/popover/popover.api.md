@@ -114,8 +114,6 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
-    popoverContent: ClrPopoverContent;
-    // (undocumented)
     set position(position: string | ClrPopoverPosition);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDropdownMenu, "clr-dropdown-menu", never, { "position": { "alias": "clrPosition"; "required": false; }; }, {}, ["items"], ["*"], false, [{ directive: typeof i1_2.ClrPopoverContent; inputs: {}; outputs: {}; }]>;

@@ -421,8 +421,6 @@ export class ClrDatagridColumnActions extends ClrDropdown implements AfterViewIn
     ngAfterViewInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
-    // (undocumented)
-    protected openDropdown(): void;
     protected openFilter(event: Event): void;
     repositionMenu(): void;
     protected sort(descending: boolean): void;

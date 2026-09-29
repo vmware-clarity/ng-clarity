@@ -53,7 +53,7 @@ export class ClrDropdownMenu implements AfterContentInit, OnDestroy {
     private focusHandler: DropdownFocusHandler,
     private elementRef: ElementRef,
     private popoverService: ClrPopoverService,
-    public popoverContent: ClrPopoverContent
+    private popoverContent: ClrPopoverContent
   ) {
     if (!parentHost) {
       throw new Error('clr-dropdown-menu should only be used inside of a clr-dropdown');
