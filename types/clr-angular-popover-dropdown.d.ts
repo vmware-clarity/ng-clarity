@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { OnDestroy, Renderer2, ChangeDetectorRef, AfterContentInit, QueryList, ElementRef, Type } from '@angular/core';
+import { OnDestroy, Renderer2, Optional, ChangeDetectorRef, AfterContentInit, QueryList, ElementRef, Type } from '@angular/core';
 import * as i1 from '@clr/angular/popover/common';
 import { ClrPopoverService, ClrPopoverPoint, ClrPopoverContent, ClrPopoverPosition } from '@clr/angular/popover/common';
 import { FocusableItem, FocusService } from '@clr/angular/utils';
@@ -34,13 +34,27 @@ declare class DropdownFocusHandler implements OnDestroy, FocusableItem {
     focus(): void;
     blur(): void;
     activate(): void;
+    /**
+     * Makes `item` the one the menu's keyboard handling acts on, and focuses it.
+     *
+     * Space and enter activate whatever the focus service considers current, not whatever the browser
+     * has focused - see `FocusService.registerContainer`. So moving focus to a menu item without going
+     * through here leaves the two disagreeing, and the keys then fire a different item than the one the
+     * user can see is focused.
+     */
+    moveTo(item: FocusableItem): void;
     resetChildren(): void;
     addChildren(children: FocusableItem[]): void;
+    private recoverFocusIfLost;
     private openAndGetChildren;
     private closeAndGetThis;
     static ɵfac: i0.ɵɵFactoryDeclaration<DropdownFocusHandler, [null, { optional: true; skipSelf: true; }, null, null, null]>;
     static ɵprov: i0.ɵɵInjectableDeclaration<DropdownFocusHandler>;
 }
+declare const DROPDOWN_FOCUS_HANDLER_PROVIDER: (i0.Type<DropdownFocusHandler> | {
+    provide: typeof FocusableItem;
+    useExisting: i0.Type<DropdownFocusHandler>;
+})[];
 
 declare class RootDropdownService {
     private _changes;
@@ -49,6 +63,12 @@ declare class RootDropdownService {
     static ɵfac: i0.ɵɵFactoryDeclaration<RootDropdownService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<RootDropdownService>;
 }
+declare function clrRootDropdownFactory(existing: RootDropdownService): RootDropdownService;
+declare const ROOT_DROPDOWN_PROVIDER: {
+    provide: typeof RootDropdownService;
+    useFactory: typeof clrRootDropdownFactory;
+    deps: Optional[][];
+};
 
 declare class ClrDropdown implements OnDestroy {
     parent: ClrDropdown;
@@ -91,9 +111,18 @@ declare class ClrDropdownTrigger {
 declare class ClrDropdownItem {
     private dropdown;
     private _dropdownService;
-    private focusableItem;
+    protected focusableItem: FocusableItem;
     private el;
     private renderer;
+    /**
+     * The role of the item, `menuitem` unless the item says otherwise.
+     *
+     * An item that represents a setting rather than a command needs one of the checkable menu roles -
+     * `menuitemradio` for one of several exclusive settings, `menuitemcheckbox` for an independent one -
+     * so that assistive technology can announce which of them is applied. Writing the role as a plain
+     * attribute on the item is not enough: the host binding above would win over it.
+     */
+    role: string;
     constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem, el: ElementRef, renderer: Renderer2);
     get disabled(): boolean | string;
     set disabled(value: boolean | string);
@@ -108,7 +137,7 @@ declare class ClrDropdownItem {
     private stopImmediatePropagationIfDisabled;
     private findRootDropdown;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "role": { "alias": "role"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
 }
 
 declare const CLR_MENU_POSITIONS: string[];
@@ -120,4 +149,4 @@ declare class ClrDropdownModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDropdownModule>;
 }
 
-export { CLR_DROPDOWN_DIRECTIVES, CLR_MENU_POSITIONS, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger };
+export { CLR_DROPDOWN_DIRECTIVES, CLR_MENU_POSITIONS, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler, ROOT_DROPDOWN_PROVIDER, RootDropdownService, clrRootDropdownFactory };

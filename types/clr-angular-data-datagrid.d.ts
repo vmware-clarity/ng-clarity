@@ -1,12 +1,12 @@
 import * as i0 from '@angular/core';
-import { TemplateRef, OnDestroy, OnInit, OnChanges, EventEmitter, ElementRef, ViewContainerRef, ChangeDetectorRef, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, QueryList, AfterContentInit, AfterViewInit, Renderer2, NgZone, EnvironmentInjector, AfterViewChecked, EmbeddedViewRef, Type } from '@angular/core';
-import * as i39 from '@clr/angular/utils';
-import { ClrCommonStringsService, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, DomAdapter, WillyWonka, OompaLoompa } from '@clr/angular/utils';
+import { TemplateRef, OnDestroy, OnInit, OnChanges, EventEmitter, ElementRef, ViewContainerRef, ChangeDetectorRef, SimpleChanges, DoCheck, IterableDiffers, TrackByFunction, QueryList, AfterContentInit, AfterViewInit, Renderer2, NgZone, EnvironmentInjector, Injector, AfterViewChecked, EmbeddedViewRef, Type } from '@angular/core';
+import * as i41 from '@clr/angular/utils';
+import { ClrCommonStringsService, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, FocusableItem, DomAdapter, WillyWonka, OompaLoompa } from '@clr/angular/utils';
 import { Observable, BehaviorSubject, Subject, ReplaySubject } from 'rxjs';
 import { ModalStackService } from '@clr/angular/modal';
 import * as i1 from '@clr/angular/popover/common';
 import { ClrPopoverPosition, ClrPopoverService, ClrPopoverType } from '@clr/angular/popover/common';
-import * as i38 from '@angular/common';
+import * as i40 from '@angular/common';
 import { NgForOfContext } from '@angular/common';
 import * as _clr_angular_data_datagrid from '@clr/angular/data/datagrid';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
@@ -14,16 +14,18 @@ import { Directionality } from '@angular/cdk/bidi';
 import { ListRange } from '@angular/cdk/collections';
 import { CdkVirtualForOfContext, ScrollDispatcher, ViewportRuler, CdkVirtualForOf, CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
+import * as i51 from '@clr/angular/popover/dropdown';
+import { ClrDropdown, DropdownFocusHandler, RootDropdownService, ClrDropdownItem } from '@clr/angular/popover/dropdown';
 import { ClrControlLabel } from '@clr/angular/forms/common';
-import * as i40 from '@clr/angular/icon';
-import * as i41 from '@clr/angular/forms/input';
-import * as i42 from '@clr/angular/forms/radio';
-import * as i43 from '@clr/angular/forms/checkbox';
-import * as i44 from '@clr/angular/forms/number-input';
-import * as i45 from '@clr/angular/forms/select';
-import * as i46 from '@angular/forms';
+import * as i42 from '@clr/angular/icon';
+import * as i43 from '@clr/angular/forms/input';
+import * as i44 from '@clr/angular/forms/radio';
+import * as i45 from '@clr/angular/forms/checkbox';
+import * as i46 from '@clr/angular/forms/number-input';
+import * as i47 from '@clr/angular/forms/select';
+import * as i48 from '@angular/forms';
 import { ControlValueAccessor } from '@angular/forms';
-import * as i47 from '@clr/angular/progress/spinner';
+import * as i49 from '@clr/angular/progress/spinner';
 
 /**
  * Enumeration representing the sorting order of a datagrid column. It is a constant Enum,
@@ -74,6 +76,48 @@ interface ClrDatagridFilterInterface<T, S = any> {
     isActive(): boolean;
     accepts(item: T): boolean;
     equals?(other: ClrDatagridFilterInterface<T, any>): boolean;
+}
+
+/**
+ * The part of a filter that the actions menu needs. Declared here rather than importing
+ * ClrDatagridFilter, which would close an import cycle back through this service.
+ */
+interface ColumnFilterHandle {
+    readonly active: boolean;
+    /**
+     * The id of the popover the filter renders its content into, for the menu item that opens it to
+     * point `aria-controls` at. Optional because it only exists once the filter has an element to
+     * label - a handle can register before then.
+     */
+    readonly popoverId?: string;
+}
+/**
+ * Lets `clr-dg-column-actions` and the filter of the same column find each other without either
+ * importing the other, and without depending on the order they are declared in.
+ *
+ * It is provided by `ClrDatagridColumn`, so every filter flavour resolves the same instance - a
+ * projected `clr-dg-filter` is a content child of the column, and the `clr-dg-string-filter` and
+ * `clr-dg-numeric-filter` the column creates for `clrDgField` live in its view.
+ */
+declare class ColumnActionsService {
+    /**
+     * Whether the filter keeps its own toggle in the column header. An actions menu turns this off and
+     * opens the filter itself, so the header keeps a single control per column - unless
+     * `clrDgKeepFilterInHeader` asks to keep the toggle.
+     *
+     * A signal rather than a plain flag because the menu and the filter are siblings: either can be
+     * created first, and the filter has to react whenever the answer changes.
+     */
+    readonly filterInHeader: i0.WritableSignal<boolean>;
+    /**
+     * Whether the column has an actions menu at all, whatever it does with the filter. While it does,
+     * the column drops its own pin toggle, because the menu offers Pin Column instead.
+     */
+    readonly menuPresent: i0.WritableSignal<boolean>;
+    /** The filter rendered for this column, if it has one. */
+    readonly filter: i0.WritableSignal<ColumnFilterHandle>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnActionsService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<ColumnActionsService>;
 }
 
 declare class ColumnsService {
@@ -308,13 +352,22 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
     filterNumberMaxPlaceholder: string;
     filterNumberMinPlaceholder: string;
     disableUnsort: boolean;
+    /**
+     * Lets the user pin and unpin the column from within the datagrid. It only offers the control - the
+     * pinned state itself stays on `clrDgPinned`.
+     * The control is a pin toggle in the column header, or Pin Column in the column's
+     * `clr-dg-column-actions` when it has one - never both, so the header keeps one control per action.
+     */
+    pinnable: boolean;
     sortOrderChange: EventEmitter<ClrDatagridSortOrder>;
+    pinnedChange: EventEmitter<boolean>;
     filterValueChange: EventEmitter<any>;
     titleContainer: ElementRef<HTMLElement>;
     /**
      * A custom filter for this column that can be provided in the projected content
      */
     customFilter: boolean;
+    protected readonly columnActions: ColumnActionsService;
     private _colType;
     private _field;
     /**
@@ -386,12 +439,25 @@ declare class ClrDatagridColumn<T = any> extends DatagridFilterRegistrar<T, ClrD
      * Sorts the datagrid based on this column
      */
     sort(reverse?: boolean): void;
+    /**
+     * Returns the datagrid to its unsorted state. Both the tri-state title button and the sort actions
+     * in `clr-dg-column-actions` go through here, so the two cannot drift apart.
+     */
+    clearSort(): void;
+    /**
+     * Pins or unpins the column. Going through the `pinned` setter keeps the rendering in sync, and the
+     * output lets the application follow a change it did not initiate - without it a one-way
+     * [clrDgPinned] binding would write the old value straight back.
+     */
+    togglePinned(): void;
+    protected onPinToggleClick(event: MouseEvent): void;
     private listenForDetailPaneChanges;
     private setFilterToggleAriaLabel;
     private listenForSortingChanges;
     private setupDefaultFilter;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumn<any>, [null, null, null, null, null, null, null, null, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumn<any>, "clr-dg-column", never, { "filterStringPlaceholder": { "alias": "clrFilterStringPlaceholder"; "required": false; }; "filterNumberMaxPlaceholder": { "alias": "clrFilterNumberMaxPlaceholder"; "required": false; }; "filterNumberMinPlaceholder": { "alias": "clrFilterNumberMinPlaceholder"; "required": false; }; "disableUnsort": { "alias": "clrDgDisableUnsort"; "required": false; }; "pinnable": { "alias": "clrDgPinnable"; "required": false; }; "pinned": { "alias": "clrDgPinned"; "required": false; }; "colType": { "alias": "clrDgColType"; "required": false; }; "field": { "alias": "clrDgField"; "required": false; }; "sortBy": { "alias": "clrDgSortBy"; "required": false; }; "sortOrder": { "alias": "clrDgSortOrder"; "required": false; }; "updateFilterValue": { "alias": "clrFilterValue"; "required": false; }; }, { "sortOrderChange": "clrDgSortOrderChange"; "pinnedChange": "clrDgPinnedChange"; "filterValueChange": "clrFilterValueChange"; }, ["projectedFilter"], ["clr-dg-filter, clr-dg-string-filter, clr-dg-numeric-filter", "*", "clr-dg-column-actions"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ngAcceptInputType_pinnable: unknown;
     static ngAcceptInputType_pinned: unknown;
 }
 
@@ -1188,6 +1254,179 @@ declare class ClrDatagridActionOverflow implements OnDestroy {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridActionOverflow, "clr-dg-action-overflow", never, { "buttonLabel": { "alias": "clrDgActionOverflowButtonLabel"; "required": false; }; "open": { "alias": "clrDgActionOverflowOpen"; "required": false; }; }, { "openChange": "clrDgActionOverflowOpenChange"; }, never, ["*"], false, [{ directive: typeof i1.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
 }
 
+/**
+ * Groups the actions of a single column behind one menu in the column header. It only gathers
+ * controls that already exist on the column - the behavior itself stays on `ClrDatagridColumn`,
+ * so the menu and the header controls can never drift apart.
+ *
+ * Each item is rendered only when the column can actually perform it, so the menu never offers a
+ * dead option - that covers both what the column can never do, such as sorting when it is not
+ * sortable, and what it cannot do right now, such as clearing a sort while nothing is sorted.
+ * Anything projected into the component is appended after the built-in items.
+ *
+ * A column that has a filter gets a filter action automatically, and the filter drops its own toggle
+ * for as long as this menu is present - the header keeps one control per column rather than two. The
+ * trigger also takes over showing that the column is filtered, which the toggle used to do.
+ * `clrDgKeepFilterInHeader` opts back into the toggle, and then the menu drops the filter action in
+ * exchange: a column offers one way to reach its filter, never both at once.
+ *
+ * Projected items can be `clrDgColumnAction`s, plain `clrDropdownItem`s, or a nested `clr-dropdown`.
+ * They join the arrow key order after the built-in items as long as they are projected directly -
+ * an item wrapped in an element of its own is not found. A nested dropdown's own items stay in its
+ * own menu.
+ *
+ * The component is the dropdown itself rather than wrapping one, so that a projected item can reach
+ * it: injection resolves from where a node is declared, and an item declared outside this component
+ * would sit outside the injector of any `clr-dropdown` in its template.
+ */
+declare class ClrDatagridColumnActions extends ClrDropdown implements AfterViewInit, OnDestroy {
+    protected column: ClrDatagridColumn;
+    protected commonStrings: ClrCommonStringsService;
+    private columnActions;
+    private columnPopover;
+    private changeDetectorRef;
+    private injector;
+    private filters;
+    protected readonly ClrDatagridSortOrder: typeof ClrDatagridSortOrder;
+    private _keepFilterInHeader;
+    private _menuPopoverContent;
+    private trigger;
+    private subs;
+    private projectedItemsSubscription;
+    private readonly columnActionsFocusHandler;
+    constructor(column: ClrDatagridColumn, commonStrings: ClrCommonStringsService, columnActions: ColumnActionsService, columnPopover: ClrPopoverService, changeDetectorRef: ChangeDetectorRef, injector: Injector, filters: FiltersProvider, parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, dropdownService: RootDropdownService);
+    /**
+     * Keeps the filter's own toggle in the column header instead of moving it into this menu, and the
+     * menu drops its filter action in exchange - a column offers one way to reach its filter at a
+     * time, never two.
+     */
+    get keepFilterInHeader(): boolean;
+    set keepFilterInHeader(value: boolean);
+    /**
+     * The menu is a live view of the column, so the label has to be read at render time rather than
+     * cached - the column title can change, and so can the sort state it reports.
+     */
+    protected get triggerLabel(): string;
+    protected get sortOrder(): ClrDatagridSortOrder;
+    protected get canClearSort(): boolean;
+    protected get hasFilter(): boolean;
+    /**
+     * Hiding the filter toggle also hides the only sign that a column is filtered, so the trigger and
+     * the filter action carry that state instead.
+     */
+    protected get filterActive(): boolean;
+    /**
+     * Whether the filter this menu opens is open, for the filter action to report the same way the
+     * toggle it replaced did. Read from the column's popover service rather than from the filter,
+     * because that service is what the action opens.
+     */
+    protected get filterOpen(): boolean;
+    /**
+     * The popover the filter action opens, so it can point at what it controls - again the same thing
+     * the replaced toggle pointed at.
+     */
+    protected get filterPopoverId(): string | null;
+    /**
+     * The items projected into the menu. The menu's own content query cannot see them, so they are
+     * handed to the focus handler from here.
+     *
+     * Only direct children are queried, not descendants: a nested `clr-dropdown` is one item here - its
+     * focus handler - and the items inside it belong to its own menu, not to this one.
+     */
+    private set projectedItems(value);
+    private set menuPopoverContent(value);
+    ngAfterViewInit(): void;
+    ngOnDestroy(): void;
+    /**
+     * Returns focus to the trigger before closing, the same order `clrDropdownItem` uses - moving focus
+     * first means it lands correctly even when the action opens a modal.
+     */
+    closeMenu(): void;
+    /**
+     * Re-anchors the open menu to the trigger, for an action that moves the column it belongs to
+     * instead of closing the menu behind it.
+     *
+     * Deferred to after the next render rather than run straight away, because the action that asked
+     * for this has only just been clicked - the column is relocated by the change detection that
+     * follows, so measuring the trigger now would re-anchor the menu to where it already is.
+     */
+    repositionMenu(): void;
+    /**
+     * Moves focus to one of the projected actions, keeping the menu's keyboard handling in step with
+     * it.
+     *
+     * Called by `clrDgColumnAction` when the item takes focus, so that focusing an item by any means -
+     * including a plain `focus()` from outside, after an action rebuilt the menu - leaves space and
+     * enter acting on that same item rather than on whatever the menu focused when it opened.
+     */
+    focusAction(item: FocusableItem): void;
+    /**
+     * The menu states a direction rather than cycling through them, so asking for the direction the
+     * column already has is a no-op.
+     *
+     * The guard is needed because `Sort.toggle()` reads `forceReverse: false` as "toggle" rather than
+     * "ascending" - `forceReverse || !this._reverse` falls through to the toggle for a falsy value - so
+     * `sort(false)` on an already ascending column would flip it to descending. The tri-state title
+     * button never hits that path, because it always calls `sort()` without an argument.
+     */
+    protected sort(descending: boolean): void;
+    /**
+     * Pins or unpins the column, then re-anchors this menu to the trigger.
+     *
+     * Pinning moves the column between the datagrid's static and scrollable containers, and the
+     * trigger this menu is anchored to travels with it - far enough that the menu would otherwise be
+     * left hanging next to where the column used to be. The menu stays open on purpose, so the action
+     * it now offers is the one that undoes the pin the user just applied.
+     *
+     * The columns are relocated on the render cycle the pinned state change schedules, not while this
+     * runs, so the overlay can only be re-anchored once that has happened - which `repositionMenu`
+     * takes care of.
+     */
+    protected togglePinned(): void;
+    /**
+     * Opens the filter of this column, anchored to the "Filter Column" menu item itself (`#trigger`
+     * above), so the popover positions off the item that was actually clicked rather than the kebab.
+     *
+     * The popover is driven through the column's ClrPopoverService rather than through
+     * `ClrDatagridFilter.open`, because that is the one thing every filter flavour has in common - a
+     * projected clr-dg-filter, and the string and numeric filters the column builds for clrDgField,
+     * all share this service. Setting `origin` is all it takes to re-anchor it: `clrPopoverOrigin` is
+     * itself only an assignment to that property, and with the toggle gone nothing else claims it.
+     *
+     * `parent` links the filter's popover to this menu's, so that scrolling while both are open closes
+     * or repositions them together rather than leaving one behind. It is cleared again once the filter
+     * closes, in the `openChange` subscription below, so it never outlives the menu session that set it.
+     */
+    protected openFilter(event: Event): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnActions, [null, null, null, { skipSelf: true; }, null, null, { optional: true; }, { optional: true; skipSelf: true; }, null, null, null]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridColumnActions, "clr-dg-column-actions", never, { "keepFilterInHeader": { "alias": "clrDgKeepFilterInHeader"; "required": false; }; }, {}, ["projectedItems"], ["*"], false, never>;
+    static ngAcceptInputType_keepFilterInHeader: unknown;
+}
+
+/**
+ * An application provided item in a `clr-dg-column-actions` menu. It is the dropdown item - same
+ * inputs, styling and arrow key order - with what a column action needs on top: it closes the menu
+ * when picked, or re-anchors it after an action that leaves it open.
+ */
+declare class ClrDatagridColumnAction extends ClrDropdownItem {
+    private columnActions;
+    /**
+     * Whether activating this item should close the menu.
+     */
+    canClosePopover: boolean;
+    constructor(columnActions: ClrDatagridColumnActions, item: FocusableItem, dropdownService: RootDropdownService, el: ElementRef, renderer: Renderer2);
+    protected onColumnActionClick(): void;
+    /**
+     * Focus can arrive from anywhere - the arrow keys, or a plain `focus()` from an application that
+     * moved the column this action belongs to and rebuilt the menu. Reporting it keeps space and enter
+     * acting on this item rather than on whatever the menu focused when it opened.
+     */
+    protected onFocus(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridColumnAction, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridColumnAction, "[clrDgColumnAction]", never, { "canClosePopover": { "alias": "clrCanClosePopover"; "required": false; }; }, {}, never, never, false, never>;
+    static ngAcceptInputType_canClosePopover: unknown;
+}
+
 declare class ClrDatagridColumnToggle implements OnDestroy {
     commonStrings: ClrCommonStringsService;
     private columnsService;
@@ -1375,6 +1614,7 @@ declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrD
     commonStrings: ClrCommonStringsService;
     private popoverService;
     private keyNavigation;
+    protected columnActions: ColumnActionsService;
     openChange: EventEmitter<boolean>;
     ariaExpanded: boolean;
     popoverId: string;
@@ -1382,7 +1622,7 @@ declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrD
     popoverType: ClrPopoverType;
     anchor: ElementRef<HTMLButtonElement>;
     private subs;
-    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, keyNavigation: KeyNavigationGridController);
+    constructor(_filters: FiltersProvider<T>, commonStrings: ClrCommonStringsService, popoverService: ClrPopoverService, keyNavigation: KeyNavigationGridController, columnActions: ColumnActionsService);
     get open(): boolean;
     set open(open: boolean);
     set customFilter(filter: ClrDatagridFilterInterface<T> | RegisteredFilter<T, ClrDatagridFilterInterface<T>>);
@@ -1391,7 +1631,7 @@ declare class ClrDatagridFilter<T = any> extends DatagridFilterRegistrar<T, ClrD
      */
     get active(): boolean;
     ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridFilter<any>, [null, null, null, { optional: true; }, { optional: true; }]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrDatagridFilter<any>, "clr-dg-filter", never, { "open": { "alias": "clrDgFilterOpen"; "required": false; }; "customFilter": { "alias": "clrDgFilter"; "required": false; }; }, { "openChange": "clrDgFilterOpenChange"; }, never, ["*"], false, never>;
     static ngAcceptInputType_open: unknown;
 }
@@ -1965,9 +2205,9 @@ declare const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 declare class ClrDatagridModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i38.CommonModule, typeof i39.CdkDragModule, typeof i39.CdkTrapFocusModule, typeof i40.ClrIcon, typeof i41.ClrInputModule, typeof i42.ClrRadioModule, typeof i43.ClrCheckboxModule, typeof i44.ClrNumberInputModule, typeof i45.ClrSelectModule, typeof i46.FormsModule, typeof i39.ClrLoadingModule, typeof i39.ClrConditionalModule, typeof i39.ClrOutsideClickModule, typeof i39.ClrExpandableAnimationModule, typeof i47.ClrSpinnerModule, typeof i1.ClrPopoverModuleNext, typeof i39.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i39.ClrIfExpanded]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDatagridModule, [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridColumnToggle, typeof ClrDatagridColumnToggleButton], [typeof i40.CommonModule, typeof i41.CdkDragModule, typeof i41.CdkTrapFocusModule, typeof i42.ClrIcon, typeof i43.ClrInputModule, typeof i44.ClrRadioModule, typeof i45.ClrCheckboxModule, typeof i46.ClrNumberInputModule, typeof i47.ClrSelectModule, typeof i48.FormsModule, typeof i41.ClrLoadingModule, typeof i41.ClrConditionalModule, typeof i41.ClrOutsideClickModule, typeof i41.ClrExpandableAnimationModule, typeof i49.ClrSpinnerModule, typeof i1.ClrPopoverModuleNext, typeof i51.ClrDropdownModule, typeof i41.ClrKeyFocusModule, typeof ClrDatagridSingleSelectionValueAccessor, typeof i41.ClrIfExpanded], [typeof ClrDatagrid, typeof ClrDatagridActionBar, typeof ClrDatagridActionOverflow, typeof ClrDatagridCell, typeof ClrDatagridColumn, typeof ClrDatagridColumnAction, typeof ClrDatagridColumnActions, typeof ClrDatagridColumnSeparator, typeof ClrDatagridDetail, typeof ClrDatagridDetailBody, typeof ClrDatagridDetailHeader, typeof ClrDatagridFilter, typeof ClrDatagridFooter, typeof ClrDatagridHideableColumn, typeof ClrDatagridItems, typeof ClrDatagridPageSize, typeof ClrDatagridPagination, typeof ClrDatagridPlaceholder, typeof ClrDatagridRow, typeof ClrDatagridRowDetail, typeof ClrDatagridSelectionCellDirective, typeof ClrDatagridVirtualScrollDirective, typeof ClrIfDetail, typeof DatagridDetailRegisterer, typeof WrappedCell, typeof WrappedColumn, typeof WrappedRow, typeof DatagridCellRenderer, typeof DatagridHeaderRenderer, typeof DatagridMainRenderer, typeof DatagridRowDetailRenderer, typeof DatagridRowRenderer, typeof ActionableOompaLoompa, typeof DatagridWillyWonka, typeof ExpandableOompaLoompa, typeof DatagridNumericFilter, typeof DatagridStringFilter, typeof ClrDatagridSingleSelectionValueAccessor, typeof i41.ClrIfExpanded]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDatagridModule>;
 }
 
-export { ActionableOompaLoompa, CLR_DATAGRID_DIRECTIVES, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor, ClrDatagridSortOrder, ClrDatagridVirtualScrollDirective, ClrIfDetail, DatagridCellRenderer, DatagridDetailRegisterer, DatagridHeaderRenderer, DatagridMainRenderer, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridRowDetailRenderer, DatagridRowRenderer, DatagridStringFilter, DatagridWillyWonka, ExpandableOompaLoompa, Selection, SelectionType, WrappedCell, WrappedColumn, WrappedRow, selectionTypeAttribute };
+export { ActionableOompaLoompa, CLR_DATAGRID_DIRECTIVES, ClrDatagrid, ClrDatagridActionBar, ClrDatagridActionOverflow, ClrDatagridAriaSortOrder, ClrDatagridCell, ClrDatagridColumn, ClrDatagridColumnAction, ClrDatagridColumnActions, ClrDatagridColumnSeparator, ClrDatagridColumnToggle, ClrDatagridColumnToggleButton, ClrDatagridDetail, ClrDatagridDetailBody, ClrDatagridDetailHeader, ClrDatagridFilter, ClrDatagridFooter, ClrDatagridHideableColumn, ClrDatagridItems, ClrDatagridModule, ClrDatagridPageSize, ClrDatagridPagination, ClrDatagridPlaceholder, ClrDatagridRow, ClrDatagridRowDetail, ClrDatagridSelectionCellDirective, ClrDatagridSingleSelectionValueAccessor, ClrDatagridSortOrder, ClrDatagridVirtualScrollDirective, ClrIfDetail, DatagridCellRenderer, DatagridDetailRegisterer, DatagridHeaderRenderer, DatagridMainRenderer, DatagridNumericFilter, DatagridPropertyComparator, DatagridPropertyNumericFilter, DatagridPropertyStringFilter, DatagridRowDetailRenderer, DatagridRowRenderer, DatagridStringFilter, DatagridWillyWonka, ExpandableOompaLoompa, Selection, SelectionType, WrappedCell, WrappedColumn, WrappedRow, selectionTypeAttribute };
 export type { ClrDatagridComparatorInterface, ClrDatagridFilterInterface, ClrDatagridItemsIdentityFunction, ClrDatagridNumericFilterInterface, ClrDatagridStateInterface, ClrDatagridStringFilterInterface, ClrDatagridVirtualScrollRangeInterface };

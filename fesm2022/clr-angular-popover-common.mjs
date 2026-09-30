@@ -11,6 +11,8 @@ import { filter } from 'rxjs/operators';
 
 class ClrPopoverService {
     constructor() {
+        // use to connect 2 unrelated (not nested) Popovers to make them nested
+        this.parent = null;
         this.panelClass = [];
         this._open = false;
         this._openChange = new Subject();
@@ -1018,9 +1020,17 @@ class ClrPopoverContent {
             }));
         });
     }
-    getRootPopover(popover) {
-        if (popover && popover.parent) {
-            return this.getRootPopover(popover.parent);
+    getRootPopover(popover, seen = new Set()) {
+        const parent = popover?.parent
+            ? popover.parent
+            : popover.popoverService.parent
+                ? popover.popoverService.parent
+                : null;
+        // `popoverService.parent` is set manually to link otherwise-unrelated popovers together, so
+        // nothing stops two of them pointing at each other - which would otherwise recurse forever.
+        if (parent && !seen.has(popover)) {
+            seen.add(popover);
+            return this.getRootPopover(parent, seen);
         }
         return popover;
     }
