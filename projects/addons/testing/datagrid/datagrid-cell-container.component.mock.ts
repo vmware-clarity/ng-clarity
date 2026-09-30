@@ -5,15 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  Component,
-  ComponentFactoryResolver,
-  ComponentRef,
-  Input,
-  OnInit,
-  ViewChild,
-  ViewContainerRef,
-} from '@angular/core';
+import { Component, ComponentRef, Input, OnInit, ViewChild, ViewContainerRef } from '@angular/core';
 
 /**
  * Component for unit testing purposes to provide a template for rendering datagrid cell content.
@@ -37,12 +29,9 @@ export class MockDatagridCellContainerComponent implements OnInit {
   private componentRef: ComponentRef<any> | null;
   private instance: any;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
-
   ngOnInit(): void {
     if (this.column.columnRenderer) {
-      const factory = this.componentFactoryResolver.resolveComponentFactory(this.column.columnRenderer);
-      this.componentRef = this.container.createComponent(factory);
+      this.componentRef = this.container.createComponent(this.column.columnRenderer);
       this.instance = <any>this.componentRef?.instance;
       this.instance.item = this.item;
       this.instance.column = this.column;

@@ -8,16 +8,26 @@
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrSelectedState } from './selected-state.enum';
+import type { ClrTreeNode } from '../tree-node';
 import { TreeNodeModel } from './tree-node.model';
 
 class TestModel extends TreeNodeModel<string> {
-  children: TestModel[];
+  children: TestModel[] = [];
   parent: TestModel | null;
 
   constructor(name: string, parent: TestModel) {
     super();
     this.model = name;
     this.parent = parent;
+  }
+}
+
+/* Stands in for the rendered node: the model only ever calls this one. */
+class FakeTreeNode {
+  expanded = false;
+
+  _setExpandedInBulk(expanded: boolean) {
+    this.expanded = expanded;
   }
 }
 
@@ -167,6 +177,92 @@ export default function (): void {
       root.disabled = false;
       expect(root.disabled).toBeFalse();
       expect(child.disabled).toBeTrue();
+    });
+
+    it('knows whether a node is inside a subtree expected to be expanded', function () {
+      expect(child.children[0]._isInExpandedSubtree()).toBeFalse();
+      child._descendantsExpanded = true;
+      expect(child._isInExpandedSubtree()).toBeTrue();
+      expect(child.children[0]._isInExpandedSubtree()).toBeTrue();
+      expect(root._isInExpandedSubtree()).toBeFalse();
+      expect(root.children[1]._isInExpandedSubtree()).toBeFalse();
+    });
+
+    it('exposes the children it already knows about', function () {
+      expect(root._loadedChildren).toBe(root.children);
+    });
+
+    describe('bulk expansion', function () {
+      let nodes: Map<TestModel, FakeTreeNode>;
+
+      beforeEach(function () {
+        nodes = new Map();
+        [root, child, ...root.children, ...child.children].forEach(model => {
+          const node = new FakeTreeNode();
+          nodes.set(model, node);
+          model._node = node as unknown as ClrTreeNode<string>;
+        });
+      });
+
+      it('expands or collapses a node and every descendant it already knows about', function () {
+        root._setExpandedRecursive(true);
+        nodes.forEach(node => expect(node.expanded).toBeTrue());
+
+        child._setExpandedRecursive(false);
+        expect(nodes.get(root).expanded).toBeTrue();
+        expect(nodes.get(child).expanded).toBeFalse();
+        child.children.forEach(c => expect(nodes.get(c).expanded).toBeFalse());
+      });
+
+      it('leaves disabled nodes and their descendants untouched', function () {
+        child.disabled = true;
+        root._setExpandedRecursive(true);
+        expect(nodes.get(root).expanded).toBeTrue();
+        expect(nodes.get(child).expanded).toBeFalse();
+        child.children.forEach(c => expect(nodes.get(c).expanded).toBeFalse());
+      });
+
+      it('does nothing for a node that is not rendered', function () {
+        const orphan = new TestModel('X', null);
+        expect(() => orphan._setExpandedRecursive(true)).not.toThrow();
+      });
+
+      it('records the cascade flag on every node it walks', function () {
+        root._setExpandedRecursive(true);
+        expect(root._descendantsExpanded).toBeTrue();
+        expect(child._descendantsExpanded).toBeTrue();
+
+        root._setExpandedRecursive(false);
+        expect(root._descendantsExpanded).toBeFalse();
+        expect(child._descendantsExpanded).toBeFalse();
+      });
+
+      it('leaves the cascade flag of a disabled branch alone', function () {
+        child.disabled = true;
+        root._setExpandedRecursive(true);
+        expect(root._descendantsExpanded).toBeTrue();
+        expect(child._descendantsExpanded).toBeFalse();
+      });
+
+      it('stops the cascade for every ancestor when a node is collapsed on its own', function () {
+        root._setExpandedRecursive(true);
+        expect(root._descendantsExpanded).toBeTrue();
+
+        child.children[0]._clearExpandedSubtree();
+
+        expect(root._descendantsExpanded).toBeFalse();
+        expect(child._descendantsExpanded).toBeFalse();
+        expect(child.children[0]._descendantsExpanded).toBeFalse();
+        // Siblings outside the chain keep theirs, they are still fully expanded
+        expect(root.children[1]._descendantsExpanded).toBeTrue();
+      });
+
+      it('drops its reference to the node on destroy', function () {
+        const model = new TestModel('Y', null);
+        model._node = new FakeTreeNode() as unknown as ClrTreeNode<string>;
+        model.destroy();
+        expect(model._node).toBeNull();
+      });
     });
   });
 }

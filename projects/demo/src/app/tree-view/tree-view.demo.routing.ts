@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { EagerDeclarativeTreeDemo } from './eager-declarative-tree/eager-declarative-tree';
 import { EagerRecursiveTreeDemo } from './eager-recursive-tree/eager-recursive-tree';
+import { ExpandAllPerformanceDemo } from './expand-all-performance/expand-all-performance';
 import { LazyDeclarativeTreeDemo } from './lazy-declarative-tree/lazy-declarative-tree';
 import { LazyRecursiveTreeDemo } from './lazy-recursive-tree/lazy-recursive-tree';
 import { NodesWithIconsDemo } from './nodes-with-icons/nodes-with-icons';
@@ -41,6 +42,7 @@ const ROUTES: Routes = [
         ],
       },
       { path: 'pre-selection', component: PreSelectionDemo },
+      { path: 'expand-all-performance', component: ExpandAllPerformanceDemo },
     ],
   },
 ];

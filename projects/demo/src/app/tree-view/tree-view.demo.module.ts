@@ -7,11 +7,13 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 
 import { UtilsDemoModule } from '../_utils/utils.module';
 import { EagerDeclarativeTreeDemo } from './eager-declarative-tree/eager-declarative-tree';
 import { EagerRecursiveTreeDemo } from './eager-recursive-tree/eager-recursive-tree';
+import { ExpandAllPerformanceDemo } from './expand-all-performance/expand-all-performance';
 import { LazyDeclarativeTreeDemo } from './lazy-declarative-tree/lazy-declarative-tree';
 import { LazyRecursiveTreeDemo } from './lazy-recursive-tree/lazy-recursive-tree';
 import { NodesWithIconsDemo } from './nodes-with-icons/nodes-with-icons';
@@ -24,11 +26,12 @@ import { TreeViewDemo } from './tree-view.demo';
 import { ROUTING } from './tree-view.demo.routing';
 
 @NgModule({
-  imports: [CommonModule, ClarityModule, ROUTING, UtilsDemoModule],
+  imports: [CommonModule, FormsModule, ClarityModule, ROUTING, UtilsDemoModule],
   declarations: [
     TreeViewDemo,
     EagerDeclarativeTreeDemo,
     EagerRecursiveTreeDemo,
+    ExpandAllPerformanceDemo,
     LazyDeclarativeTreeDemo,
     LazyRecursiveTreeDemo,
     NodesWithIconsDemo,

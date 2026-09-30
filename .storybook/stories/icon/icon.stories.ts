@@ -5,12 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { arrowIcon, ClarityIcons, ClrIcon, homeIcon, imageIcon, userIcon } from '@clr/angular';
+import {
+  arrowIcon,
+  checkCircleIcon,
+  ClarityIcons,
+  ClrIcon,
+  exclamationCircleIcon,
+  homeIcon,
+  imageIcon,
+  userIcon,
+} from '@clr/angular';
 import { moduleMetadata, StoryFn, StoryObj } from '@storybook/angular';
 
 import { CommonModules } from '../../helpers/common';
 
-ClarityIcons.addIcons(userIcon, imageIcon, homeIcon, arrowIcon);
+ClarityIcons.addIcons(userIcon, imageIcon, homeIcon, arrowIcon, exclamationCircleIcon, checkCircleIcon);
 
 export default {
   title: 'Icon/Icon',
@@ -295,6 +304,71 @@ const InverseTemplate: StoryFn = () => ({
 });
 
 export const Inverse: StoryObj = { render: InverseTemplate };
+
+// ─── Inner Offset ─────────────────────────────────────────────────────────────
+
+const InnerOffsetTemplate: StoryFn = args => ({
+  // ClrIcon's `size` input is a string (it parses t-shirt sizes or numeric strings), but the
+  // Storybook number control produces a real number, so it's coerced here before binding.
+  props: { ...args, size: String(args.size) },
+  template: `
+    <style>
+      .icon-box {
+        width: 300px;
+        justify-content: space-between;
+      }
+
+      .icon-offset-box {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: var(--cds-alias-object-border-width-100) solid var(--cds-alias-object-border-color);
+        border-radius: var(--cds-alias-object-border-radius-100);
+        background-color: var(--cds-alias-status-warning-tint);
+      }
+    </style>
+    <div cds-layout="vertical gap:md align:center">
+      <div class="icon-box" cds-layout="horizontal gap:md align:center">
+        Default
+        <span class="icon-offset-box" [style.width.px]="size" [style.height.px]="size">
+          <cds-icon [shape]="shape" [size]="size"></cds-icon>
+        </span>
+      </div>
+      <div class="icon-box" cds-layout="horizontal gap:md align:center">
+        Inner offset changed
+        <span class="icon-offset-box" [style.width.px]="size" [style.height.px]="size">
+          <cds-icon [shape]="shape" [size]="size" [innerOffset]="offset"></cds-icon>
+        </span>
+      </div>
+    </div>
+  `,
+});
+
+export const InnerOffset: StoryObj = {
+  render: InnerOffsetTemplate,
+  argTypes: {
+    shape: {
+      control: 'select',
+      options: [
+        'exclamation-circle',
+        'check-circle',
+        'info-circle',
+        'exclamation-triangle',
+        'user',
+        'home',
+        'image',
+        'arrow',
+      ],
+    },
+    size: { control: { type: 'number', min: 8, max: 100, step: 1 } },
+    offset: { control: { type: 'number', min: 0, max: 100, step: 1 } },
+  },
+  args: {
+    shape: 'exclamation-circle',
+    size: 32,
+    offset: 12,
+  },
+};
 
 // ─── Custom Styles ────────────────────────────────────────────────────────────
 
