@@ -1,0 +1,72 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Column actions</h2>
+
+<p>
+  Setting <code class="clr-code">enableColumnActions</code> on an <code class="clr-code">appfx-datagrid</code> puts a
+  kebab menu in every column header, offering <em>Move Left</em> and <em>Move Right</em>. The menu is off by default -
+  the toggle below drives that input, so turning it off takes the kebab out of every header again.
+</p>
+
+<p>
+  A column that is sortable or filterable gets <em>Sort Ascending</em> / <em>Sort Descending</em> and
+  <em>Filter Column</em> in the same menu automatically, alongside the existing column title and filter icon. Adding
+  <code class="clr-code">pinnable</code> to a column definition adds <em>Pin Column</em> / <em>Unpin Column</em> too.
+</p>
+
+<p>
+  A pinned column is rendered in the sticky container and the rest in the scrollable one, so
+  <em>Move Left</em> / <em>Move Right</em> step a column within its own group and never across the boundary. Pin VM Name
+  and State, and they can be reordered with each other while the loose columns keep stepping among themselves.
+</p>
+
+<p>
+  An application can add its own items after the built-in ones, from either level of the configuration.
+  <code class="clr-code">columnActions</code> on the grid applies to every column - <em>Copy column values</em> and the
+  disabled <em>Column details</em> below - while <code class="clr-code">actions</code> on a single column definition
+  applies only to that one, which is how <em>Show as relative time</em> appears on Creation date alone. Column actions
+  are appended after the grid ones, and both are reported through the grid's
+  <code class="clr-code">actionClick</code> output with the column definition as the event context. An action naming an
+  <code class="clr-code">icon</code> shape needs that shape registered by the application.
+</p>
+
+<!--
+  A bare clr-toggle-wrapper rather than a clr-toggle-container: the container is a form field wrapper
+  and expects a <form clrForm> around it, which this page has no other use for.
+-->
+<div class="clr-mb-24px">
+  <clr-toggle-wrapper>
+    <input type="checkbox" clrToggle [(ngModel)]="enableColumnActions" />
+    <label>Enable column actions</label>
+  </clr-toggle-wrapper>
+</div>
+
+<div class="card card-block">
+  <p class="card-text">Last pin change: {{ lastPinnedChange || 'none yet' }}</p>
+  <p class="card-text">Last order change: {{ lastOrderChange || 'none yet' }}</p>
+  <p class="card-text">Last action: {{ lastActionClick || 'none yet' }}</p>
+</div>
+
+<hr />
+
+<appfx-datagrid
+  [gridItems]="vms"
+  [columns]="columns"
+  [selectedItems]="selectedVms"
+  [selectionType]="SelectionType.Multi"
+  [layoutModel]="{ stretchToParentHeight: false }"
+  [footerModel]="{ showFooter: true }"
+  [pageSize]="10"
+  [enableColumnActions]="enableColumnActions"
+  [columnActions]="columnActions"
+  (selectedItemsChange)="onSelectedItemsChange($event)"
+  (columnPinnedChange)="onColumnPinnedChange($event)"
+  (columnOrderChange)="onColumnOrderChange($event)"
+  (actionClick)="onActionClick($event)"
+>
+</appfx-datagrid>
