@@ -42,6 +42,7 @@ import {
 import { Subject, Subscription } from 'rxjs';
 import { filter, takeUntil } from 'rxjs/operators';
 
+import { ColumnMoveDirection } from './addons/column-ordering/datagrid-columns-order.directive';
 import { ExportProviderService } from './addons/export/export-provider.service';
 import { ClientSideExportConfig, DatagridItemSet, ExportStatus } from './addons/export/export.interface';
 import { DatagridStrings } from './i18n/datagrid-strings.service';
@@ -50,7 +51,7 @@ import {
   ColumnFilterChange,
   ColumnHiddenState,
   ColumnOrderChanged,
-  // ColumnPinnedState, // disabled with clrDgPinnable
+  ColumnPinnedState,
   ColumnResize,
   ColumnSortOrder,
 } from './interfaces/column-state';
@@ -367,6 +368,30 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   @Input() disableUnsort = true;
 
   /**
+   * Adds a column actions menu to the header of every column in the grid.
+   *
+   * The menu gathers actions the column can already perform: sorting and filtering when the column
+   * is sortable/filterable, Pin Column when it is {@link ColumnDefinition.pinnable}, and moving the
+   * column left or right.
+   *
+   * @default false - the menu is opt-in.
+   */
+  @Input() enableColumnActions = false;
+
+  /**
+   * Application actions to offer in the actions menu of every column, after the built-in ones.
+   *
+   * The same list is used for all columns, so these are the actions that apply to whichever column
+   * they are invoked from - "Copy column values", say. Clicking one reports it through
+   * {@link actionClick} with the {@link ColumnDefinition} it was invoked from as the event's context,
+   * which is how the handler knows the column. For an action that only belongs on one column, use
+   * {@link ColumnDefinition.actions} instead; those are appended after these.
+   *
+   * Requires {@link enableColumnActions}, which is what renders the menu in the first place.
+   */
+  @Input() columnActions: ActionDefinition[] | null;
+
+  /**
    * Input for providing data when virtual scrolling is enabled.
    * <code>gridItems</code> should not be used in this case.
    */
@@ -435,15 +460,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    */
   @Output() columnHiddenStateChange: EventEmitter<ColumnHiddenState> = new EventEmitter<ColumnHiddenState>();
 
-  // Disabled for now: only the clrDgPinnable header toggle could ever raise this, so it is
-  // commented out along with the toggle, onPinnedChange() below and the ColumnPinnedState
-  // interface. Kept as a line comment rather than a doc comment, so api-extractor does not attach
-  // it to the next output.
-  //
-  // /**
-  //  * Event emitter to tell hosting view that the user pinned or unpinned a column.
-  //  */
-  // @Output() columnPinnedChange: EventEmitter<ColumnPinnedState> = new EventEmitter<ColumnPinnedState>();
+  /**
+   * Event emitter to tell hosting view that the user pinned or unpinned a column.
+   */
+  @Output() columnPinnedChange: EventEmitter<ColumnPinnedState> = new EventEmitter<ColumnPinnedState>();
 
   /**
    * Event emitter to tell hosting view that column filtering has changed.
@@ -497,6 +517,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     hideColumnToggle: false,
     enableCustomExport: false,
   };
+  protected readonly ColumnMoveDirection = ColumnMoveDirection;
   protected readonly defaultUnsetValue: string = undefined as unknown as string;
   protected readonly defaultUnsortedOrder: ClrDatagridSortOrder = ClrDatagridSortOrder.UNSORTED;
   protected readonly dgStrings: DatagridStrings;
@@ -604,7 +625,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   set columns(columns: ColumnDefinition<T>[]) {
     this.#dgColumns = columns;
     if (columns) {
-      this.visibleColumns = columns.filter((column: ColumnDefinition<T>) => !column.hidden);
+      const visibleColumns = columns.filter((column: ColumnDefinition<T>) => !column.hidden);
+      if (this.needsColumnViewsRebuild(visibleColumns)) {
+        this.rebuildColumnViews(visibleColumns);
+      } else {
+        this.visibleColumns = visibleColumns;
+      }
       this.columnDefsChange.emit(this.#dgColumns);
     }
 
@@ -797,11 +823,13 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
 
   onColumnOrderChange(data: ColumnOrderChanged) {
     this.columns = data.columns;
+
     this.visibleColumns = this.columns.filter((column: ColumnDefinition<T>) => !column.hidden);
     this.cdr.detectChanges();
     //Without resize when the grid is empty and column is moved
     //the columns are not displayed correctly
     this.resize();
+
     this.columnOrderChange.emit(data);
   }
 
@@ -947,16 +975,18 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   protected onColumnResize(columnSize: number, column: ColumnDefinition<T>): void {
+    // Kept on the definition so a rebuild of the column views binds it back, see rebuildColumnViews.
+    // Otherwise showing a column while another one is pinned would reset the widths of the others.
+    column.width = `${columnSize}px`;
     this.columnResize.emit({ columnSize: columnSize, column: column });
   }
 
-  // Disabled along with clrDgPinnable, which was the only thing that called this.
-  // protected onPinnedChange(pinned: boolean, column: ColumnDefinition<T>): void {
-  //   // The column definition is the source of truth for the binding, so it has to be updated or the
-  //   // next change detection would push the previous value back onto the column.
-  //   column.pinned = pinned;
-  //   this.columnPinnedChange.emit({ pinned: pinned, column: column });
-  // }
+  protected onPinnedChange(pinned: boolean, column: ColumnDefinition<T>): void {
+    // The column definition is the source of truth for the binding, so it has to be updated or the
+    // next change detection would push the previous value back onto the column.
+    column.pinned = pinned;
+    this.columnPinnedChange.emit({ pinned: pinned, column: column });
+  }
 
   protected onSortOrderChange(sortOrder: ClrDatagridSortOrder, column: ColumnDefinition<T>): void {
     const columnSortOrder = {
@@ -1011,6 +1041,9 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
 
   protected onFilterChange(filterValue: unknown, column: ColumnDefinition<T>): void {
+    // Kept on the definition so a rebuild of the column views binds it back, see rebuildColumnViews.
+    // Otherwise showing a column while another one is pinned would drop the filters of the others.
+    column.defaultFilterValue = filterValue;
     this.columnFilterChange.emit({
       filterValue: filterValue,
       column: column,
@@ -1065,6 +1098,35 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         datagridItemSet
       );
     }
+  }
+
+  /**
+   * The actions to offer in one column's menu: the grid-wide ones first, then the column's own, so a
+   * column adds to the shared set rather than reordering it.
+   */
+  protected getColumnActions(column: ColumnDefinition<T>): ActionDefinition[] {
+    const actions = [...(this.columnActions ?? [])];
+    if (column.actions?.length) {
+      actions.push(...column.actions);
+    }
+    return actions;
+  }
+
+  /**
+   * Reported through the same output as the action bar and row actions, with the column as the
+   * context - the menu is per column, so that is what identifies where the action was invoked.
+   *
+   * Kept separate from `onActionClick` because that one falls back to the selected items when it has
+   * no context, which is not a sensible default for a column.
+   */
+  protected onColumnActionClick(action: ActionDefinition, column: ColumnDefinition<T>): void {
+    // A disabled menu item is styled and announced as disabled but still receives the click - it is
+    // not a disabled button - so every handler in this menu turns the click away itself.
+    if (!action.enabled) {
+      return;
+    }
+
+    this.actionClick.emit({ action: action, context: column });
   }
 
   protected onActionClick(action: ActionDefinition, context?: T | T[]): void {
@@ -1132,6 +1194,38 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   }
   protected dropGroup(group: string): CdkDropList[] {
     return (this.groupService?.getGroupItems(group) || []) as CdkDropList[];
+  }
+
+  /**
+   * Whether showing `visibleColumns` would make the `@for` loops create a column or cell in front of a
+   * rendered pinned one. Clarity moves pinned cells into the row's pinned container, out of the parent
+   * the cells are projected into, so inserting in front of one throws `NotFoundError` from
+   * `insertBefore` and the new column never renders. This happens when a column is shown again, or when
+   * the column definitions are replaced by new objects, while a column is pinned. Moves and hides only
+   * reuse or remove views, so they never need it.
+   */
+  private needsColumnViewsRebuild(visibleColumns: ColumnDefinition<T>[]): boolean {
+    const rendered = this.visibleColumns || [];
+    return (
+      !!this.clrDatagrid?.columns &&
+      rendered.some((column: ColumnDefinition<T>) => column.pinned) &&
+      visibleColumns.some((column: ColumnDefinition<T>) => !rendered.includes(column))
+    );
+  }
+
+  /**
+   * Renders `visibleColumns` by destroying every column and cell view first, so the `@for` loops have
+   * nothing to insert in front of. Column state that has to survive this is kept on the column
+   * definitions - `defaultSortOrder`, `defaultFilterValue` and `width` - so the new views bind it back.
+   */
+  private rebuildColumnViews(visibleColumns: ColumnDefinition<T>[]): void {
+    this.visibleColumns = [];
+    this.cdr.detectChanges();
+    this.visibleColumns = visibleColumns;
+    this.cdr.detectChanges();
+    // The columns are measured from scratch, and this also covers an empty grid, where the datagrid
+    // does not re-render the columns on its own.
+    this.resize();
   }
 
   private hasExpandableRows(item: T): boolean {

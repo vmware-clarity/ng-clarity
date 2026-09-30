@@ -91,19 +91,21 @@ export class ExampleComponent {
 }
 `;
 
-/*
- * Disabled along with clrDgPinnable, together with the 'Letting the User Pin Columns' section of
- * pinnable-columns.html that these two examples belong to.
- *
 const pinnableExample = `
 <p>
-  Pinned from the header:
+  Pinned from the menu:
   <b>{{ pinnedColumns || 'none' }}</b>
 </p>
 
 <clr-datagrid>
-  <clr-dg-column clrDgPinnable [(clrDgPinned)]="idPinned" [style.width.px]="140">User ID</clr-dg-column>
-  <clr-dg-column clrDgPinnable [(clrDgPinned)]="namePinned" [style.width.px]="240">Name</clr-dg-column>
+  <clr-dg-column clrDgPinnable [(clrDgPinned)]="idPinned" [style.width.px]="140">
+    User ID
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
+  <clr-dg-column clrDgPinnable [(clrDgPinned)]="namePinned" [style.width.px]="240">
+    Name
+    <clr-dg-column-actions></clr-dg-column-actions>
+  </clr-dg-column>
   <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
   <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
@@ -157,13 +159,11 @@ export class ExampleComponent {
   }
 }
 `;
- */
 
 export const EXAMPLES = {
   basicExample,
   runtimeExample,
   runtimeComponentTS,
-  // Disabled with clrDgPinnable, along with the two constants above.
-  // pinnableExample,
-  // pinnableComponentTS,
+  pinnableExample,
+  pinnableComponentTS,
 };

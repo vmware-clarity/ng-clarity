@@ -37,6 +37,7 @@ import { Observer } from 'rxjs';
 import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
+import { Optional } from '@angular/core';
 import { Overlay } from '@angular/cdk/overlay';
 import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
@@ -64,10 +65,7 @@ export const CLR_TOOLTIP_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export class ClrDropdown implements OnDestroy {
-    // Warning: (ae-forgotten-export) The symbol "RootDropdownService" needs to be exported by the entry point clr-angular-popover.d.ts
     constructor(parent: ClrDropdown, popoverService: ClrPopoverService, focusHandler: DropdownFocusHandler, cdr: ChangeDetectorRef, dropdownService: RootDropdownService);
-    // Warning: (ae-forgotten-export) The symbol "DropdownFocusHandler" needs to be exported by the entry point clr-angular-popover.d.ts
-    //
     // (undocumented)
     focusHandler: DropdownFocusHandler;
     // (undocumented)
@@ -88,15 +86,19 @@ export class ClrDropdown implements OnDestroy {
 
 // @public (undocumented)
 export class ClrDropdownItem {
-    // Warning: (ae-forgotten-export) The symbol "FocusableItem" needs to be exported by the entry point clr-angular-popover.d.ts
     constructor(dropdown: ClrDropdown, _dropdownService: RootDropdownService, focusableItem: FocusableItem, el: ElementRef, renderer: Renderer2);
     // (undocumented)
     get disabled(): boolean | string;
     set disabled(value: boolean | string);
     get dropdownItemId(): string;
     set dropdownItemId(value: string);
+    // Warning: (ae-forgotten-export) The symbol "FocusableItem" needs to be exported by the entry point clr-angular-popover.d.ts
+    //
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
+    protected focusableItem: FocusableItem;
+    role: string;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDropdownItem, "[clrDropdownItem]", never, { "role": { "alias": "role"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "dropdownItemId": { "alias": "id"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownItem, never>;
 }
@@ -337,6 +339,8 @@ export class ClrPopoverService {
     // (undocumented)
     panelClass: string[];
     // (undocumented)
+    parent: ClrPopoverContent;
+    // (undocumented)
     pointTargetElement: HTMLElement | undefined;
     // (undocumented)
     get popoverVisible(): Observable<boolean>;
@@ -370,6 +374,9 @@ export enum ClrPopoverType {
     // (undocumented)
     TOOLTIP = 1
 }
+
+// @public (undocumented)
+export function clrRootDropdownFactory(existing: RootDropdownService): RootDropdownService;
 
 // @public (undocumented)
 export class ClrSignpost {
@@ -539,7 +546,51 @@ export class ClrTooltipTrigger {
 }
 
 // @public (undocumented)
+export const DROPDOWN_FOCUS_HANDLER_PROVIDER: (i0.Type<DropdownFocusHandler> | {
+    provide: typeof FocusableItem;
+    useExisting: i0.Type<DropdownFocusHandler>;
+})[];
+
+// @public (undocumented)
 export const DROPDOWN_POSITIONS: ClrPopoverPosition[];
+
+// @public (undocumented)
+export class DropdownFocusHandler implements OnDestroy, FocusableItem {
+    // Warning: (ae-forgotten-export) The symbol "FocusService" needs to be exported by the entry point clr-angular-popover.d.ts
+    constructor(renderer: Renderer2, parent: DropdownFocusHandler, popoverService: ClrPopoverService, focusService: FocusService, platformId: any);
+    // (undocumented)
+    activate(): void;
+    // (undocumented)
+    addChildren(children: FocusableItem[]): void;
+    // (undocumented)
+    blur(): void;
+    // (undocumented)
+    get container(): HTMLElement;
+    set container(el: HTMLElement);
+    // (undocumented)
+    down?: Observable<FocusableItem>;
+    // (undocumented)
+    focus(): void;
+    // (undocumented)
+    id: string;
+    moveTo(item: FocusableItem): void;
+    moveToFirstItemWhenOpen(): void;
+    // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
+    resetChildren(): void;
+    // (undocumented)
+    right?: Observable<FocusableItem>;
+    // (undocumented)
+    get trigger(): HTMLElement;
+    set trigger(el: HTMLElement);
+    // (undocumented)
+    up?: Observable<FocusableItem>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<DropdownFocusHandler, [null, { optional: true; skipSelf: true; }, null, null, null]>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<DropdownFocusHandler>;
+}
 
 // @public (undocumented)
 export function getConnectedPositions(type: ClrPopoverType): ConnectedPosition[];
@@ -562,6 +613,25 @@ export function mapPopoverKeyToPosition(key: ClrPopoverPosition, type: ClrPopove
 export const POPOVER_HOST_ORIGIN: InjectionToken<ElementRef<any>>;
 
 // @public (undocumented)
+export const ROOT_DROPDOWN_PROVIDER: {
+    provide: typeof RootDropdownService;
+    useFactory: typeof clrRootDropdownFactory;
+    deps: Optional[][];
+};
+
+// @public (undocumented)
+export class RootDropdownService {
+    // (undocumented)
+    get changes(): Observable<boolean>;
+    // (undocumented)
+    closeMenus(): void;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<RootDropdownService, never>;
+    // (undocumented)
+    static ɵprov: i0.ɵɵInjectableDeclaration<RootDropdownService>;
+}
+
+// @public (undocumented)
 export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
 
 // @public (undocumented)
@@ -569,7 +639,7 @@ export const TOOLTIP_POSITIONS: ClrPopoverPosition[];
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-popover-dropdown.d.ts:63:191 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-popover.d.ts
+// dist/clr-angular/types/clr-angular-popover-dropdown.d.ts:83:191 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-popover.d.ts
 
 // (No @packageDocumentation comment for this package)
 

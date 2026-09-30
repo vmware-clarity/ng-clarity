@@ -625,9 +625,18 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     });
   }
 
-  private getRootPopover(popover: ClrPopoverContent): ClrPopoverContent {
-    if (popover && popover.parent) {
-      return this.getRootPopover(popover.parent);
+  private getRootPopover(popover: ClrPopoverContent, seen = new Set<ClrPopoverContent>()): ClrPopoverContent {
+    const parent = popover?.parent
+      ? popover.parent
+      : popover.popoverService.parent
+        ? popover.popoverService.parent
+        : null;
+
+    // `popoverService.parent` is set manually to link otherwise-unrelated popovers together, so
+    // nothing stops two of them pointing at each other - which would otherwise recurse forever.
+    if (parent && !seen.has(popover)) {
+      seen.add(popover);
+      return this.getRootPopover(parent, seen);
     }
 
     return popover;
