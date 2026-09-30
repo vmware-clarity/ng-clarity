@@ -86,6 +86,7 @@ released.
 - Angular 17 is supported as of v16.4.0.
 - Angular 18 is supported as of v17.3.0.
 - Angular 19 is supported as of v17.5.0.
+- Angular 21 is supported as of v18.0.0.
 - Angular 22 is supported as of v18.4.0.
 
 ## Deprecation Policy
