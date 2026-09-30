@@ -1,16 +1,16 @@
 import * as rxjs from 'rxjs';
-import { BehaviorSubject, Observable, Subject } from 'rxjs';
+import { BehaviorSubject, Subject, Observable } from 'rxjs';
 import * as i0 from '@angular/core';
 import { OnInit, OnChanges, AfterViewInit, OnDestroy, QueryList, ElementRef, EventEmitter, ChangeDetectorRef, SimpleChanges, Type, InjectionToken, Renderer2, TrackByFunction, TemplateRef, ViewContainerRef, PipeTransform, ModuleWithProviders } from '@angular/core';
 import * as i13 from '@clr/addons/a11y';
 import { ElementResizeService, ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
 import { ListRange } from '@angular/cdk/collections';
-import * as i5 from '@angular/cdk/drag-drop';
+import * as i6 from '@angular/cdk/drag-drop';
 import { CdkDropList, CdkDrag } from '@angular/cdk/drag-drop';
 import * as i14 from '@clr/addons/datagrid-filters';
 import { FilterablePropertyDefinition, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
-import * as i3 from '@clr/angular/data/datagrid';
+import * as i4 from '@clr/angular/data/datagrid';
 import { ClrDatagridFilterInterface, ClrDatagridStringFilterInterface, ClrDatagridComparatorInterface, ClrDatagridSortOrder, SelectionType, ClrDatagridPagination, ClrDatagridVirtualScrollRangeInterface, ClrDatagridStateInterface, ClrDatagridFilter, ClrDatagrid } from '@clr/angular/data/datagrid';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import * as i17 from '@angular/cdk/overlay';
@@ -20,7 +20,7 @@ import * as i18 from '@clr/angular/forms';
 import * as i20 from '@clr/angular/popover/dropdown';
 import * as i21 from '@clr/angular/icon';
 import * as i22 from '@clr/angular/utils/loading';
-import * as i4 from '@angular/common';
+import * as i5 from '@angular/common';
 import * as i25 from '@angular/forms';
 
 /**
@@ -40,6 +40,13 @@ interface ActionDefinition<T = string> {
     ariaLabel?: string;
     enabled: boolean;
     tooltip?: T;
+    /**
+     * Name of a registered Clarity icon shape to lead the action with.
+     * @note Applicable only for column actions, where the built-in items all carry an icon and a
+     * label-only entry would not line up with them. The shape has to be registered by the application,
+     * the same way it would be for a `cds-icon` of its own.
+     */
+    icon?: string;
     /**
      * Specify style class to be applied.
      * @note Applicable only for ActionBar actions.
@@ -96,16 +103,6 @@ declare class DatagridActionBarComponent implements OnInit, OnChanges, AfterView
     static ɵcmp: i0.ɵɵComponentDeclaration<DatagridActionBarComponent, "appfx-datagrid-action-bar", never, { "actions": { "alias": "actions"; "required": false; }; "btnLayout": { "alias": "btnLayout"; "required": false; }; "dropdownOrientation": { "alias": "dropdownOrientation"; "required": false; }; }, { "invokeAction": "invokeAction"; }, never, never, false, never>;
 }
 
-/**
- * Defining the three export types, selected export option is passed to Datagrid Export Component
- * @type {{ALL: string; SELECTED_ONLY: string; MATCHING_FILTERS: string}}
- */
-declare enum ExportType {
-    ALL = "ALL",
-    SELECTED_ONLY = "SELECTED_ONLY",
-    MATCHING_FILTERS = "MATCHING_FILTERS"
-}
-
 interface ColumnFilter<T> extends ClrDatagridFilterInterface<T> {
     /**
      * Initial filter value provided from defaultFilterValue
@@ -153,6 +150,23 @@ interface ColumnDefinition<T> {
      */
     pinned?: boolean;
     /**
+     * Determines whether the user can pin and unpin the column from a control in its header. It only
+     * adds the control - the pinned state itself is held by `pinned`, which is kept up to date when
+     * the user toggles it.
+     *
+     * @default false - Columns cannot be pinned by the user by default.
+     */
+    pinnable?: boolean;
+    /**
+     * Application actions to offer in this column's actions menu, after the built-in ones and after
+     * any actions given to the grid as a whole through `columnActions`. Use these for something that
+     * only applies to this column - anything that applies to every column belongs on the grid instead.
+     *
+     * Clicking one reports it through the grid's `actionClick` output, with this column definition as
+     * the event's context. Requires `enableColumnActions` on the grid, which is what renders the menu.
+     */
+    actions?: ActionDefinition[];
+    /**
      * Defines string filter for data in this column.
      */
     stringFilter?: ClrDatagridStringFilterInterface<T>;
@@ -161,7 +175,8 @@ interface ColumnDefinition<T> {
      */
     filter?: Type<ColumnFilter<T>>;
     /**
-     * Default filter value for the column's filter.
+     * Default filter value for the column's filter. It is kept up to date when the user changes the
+     * filter, so it also holds the currently applied value.
      */
     defaultFilterValue?: any;
     /**
@@ -224,6 +239,31 @@ interface ColumnRenderer<T> {
     onChange?(item: T, column?: ColumnDefinition<T>): void;
 }
 
+/**
+ * Provides subjects for communication between appfxDgColumnsOrder and appfxColumnOrder
+ * directives.
+ */
+declare class DatagridColumnsOrderService {
+    /**
+     * Emits the column which should be marked as grabbed. If the column is null all columns are
+     * marked as not grabbed
+     */
+    readonly grabbedColumn: BehaviorSubject<ColumnDefinition<any>>;
+    /**
+     * Emits when the column should be moved as result of left or right arrow key press.
+     */
+    readonly moveVisibleColumn: Subject<{
+        visibleColumnIndex: number;
+        moveLeft: boolean;
+    }>;
+    /**
+     * Event emitter to tell the dragged column to set focus
+     */
+    readonly focusGrabbedColumn: Subject<void>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridColumnsOrderService, never>;
+    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridColumnsOrderService>;
+}
+
 interface ColumnState {
     column: ColumnDefinition<any>;
 }
@@ -236,6 +276,9 @@ interface ColumnSortOrder extends ColumnState {
 interface ColumnHiddenState extends ColumnState {
     hidden: boolean;
 }
+interface ColumnPinnedState extends ColumnState {
+    pinned: boolean;
+}
 interface ColumnFilterChange extends ColumnState {
     filterValue: any;
 }
@@ -243,6 +286,82 @@ interface ColumnOrderChanged {
     previousIndex: number;
     currentIndex: number;
     columns: ColumnDefinition<any>[];
+}
+
+/**
+ * The direction of a one step column move, the same as the arrow keys while a column is grabbed.
+ */
+declare enum ColumnMoveDirection {
+    Left = "left",
+    Right = "right"
+}
+/**
+ * Reorders the columns of a datagrid through drag and drop, the arrow keys, or `moveColumnTo`.
+ *
+ * Pinned columns are not moved. The datagrid renders them in its sticky container and the rest in
+ * the scrollable one, so a single declared list of columns is split across two DOM parents, and
+ * reordering pinned columns makes Angular's `@for` relocate a column against a reference node in the
+ * other container - the DOM insert throws. Moves between the scrollable columns are not affected.
+ */
+declare class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChanges {
+    private readonly elementRef;
+    private readonly cdkDropList;
+    private readonly columnOrderingService;
+    dgColumnsOrderColumns: ColumnDefinition<any>[];
+    dgColumnsVirtualScrolling: boolean;
+    dgColumnsOrderChange: EventEmitter<ColumnOrderChanged>;
+    private subs;
+    constructor(elementRef: ElementRef<HTMLElement>, cdkDropList: CdkDropList, columnOrderingService: DatagridColumnsOrderService);
+    ngOnInit(): void;
+    /**
+     * Whether `moveColumnTo` would actually apply for this column and direction, so a menu action can
+     * disable itself instead of letting the user attempt a move that does nothing. A pinned column, or
+     * one at either edge of the scrollable columns, has no move to make.
+     */
+    canMoveColumn(visibleColumnIndex: number, direction: ColumnMoveDirection): boolean;
+    /**
+     * Moves the column at `visibleColumnIndex` in the given direction. Returns whether it actually
+     * moved, so the keyboard path knows whether to put focus back on the column.
+     */
+    moveColumnTo(visibleColumnIndex: number, direction: ColumnMoveDirection): boolean;
+    setDgColumnsContainer(): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    ngOnDestroy(): void;
+    /**
+     * Guards the drag and drop path, where a drop can target any column and so is not confined to the
+     * dragged column's own group. Dropping a loose column among the pinned ones does not pin it, it
+     * only changes where it sits in the list, so the column would stay in the scrollable container and
+     * land somewhere the user did not aim for. A drop that spans a pinned column is refused instead.
+     *
+     * `moveColumnTo` does not need this: it always resolves a target inside the moved column's own
+     * group, so it can never cross the boundary in the first place.
+     */
+    private isReorderAllowed;
+    private reorderColumn;
+    /**
+     * Resolves a one step move of the column at `visibleColumnIndex` (an index into the visible columns)
+     * into indices into `dgColumnsOrderColumns`, or `null` when there is no move to make.
+     *
+     * The neighbour is taken among the scrollable columns, because those are the ones the user sees side
+     * by side - a pinned column between them in the array is rendered in the other container. A pinned
+     * column itself is not moved, see the class comment.
+     */
+    private computeTargetIndices;
+    private findColumnIndices;
+    private createColumnIndices;
+    private findColumnIndex;
+    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridColumnsOrderDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridColumnsOrderDirective, "clr-datagrid[appfxDgColumnsOrder]", never, { "dgColumnsOrderColumns": { "alias": "dgColumnsOrderColumns"; "required": false; }; "dgColumnsVirtualScrolling": { "alias": "dgColumnsVirtualScrolling"; "required": false; }; }, { "dgColumnsOrderChange": "dgColumnsOrderChange"; }, never, never, false, never>;
+}
+
+/**
+ * Defining the three export types, selected export option is passed to Datagrid Export Component
+ * @type {{ALL: string; SELECTED_ONLY: string; MATCHING_FILTERS: string}}
+ */
+declare enum ExportType {
+    ALL = "ALL",
+    SELECTED_ONLY = "SELECTED_ONLY",
+    MATCHING_FILTERS = "MATCHING_FILTERS"
 }
 
 interface DatagridItemSet {
@@ -470,6 +589,14 @@ declare class DatagridStrings {
      * @example "Filter items"
      */
     filterPlaceholder: string;
+    /**
+     * Label of the "move column left" action in a column's actions menu.
+     */
+    moveColumnLeft: string;
+    /**
+     * Label of the "move column right" action in a column's actions menu.
+     */
+    moveColumnRight: string;
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridStrings, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<DatagridStrings>;
 }
@@ -887,6 +1014,28 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
      */
     disableUnsort: boolean;
     /**
+     * Adds a column actions menu to the header of every column in the grid.
+     *
+     * The menu gathers actions the column can already perform: sorting and filtering when the column
+     * is sortable/filterable, Pin Column when it is {@link ColumnDefinition.pinnable}, and moving the
+     * column left or right.
+     *
+     * @default false - the menu is opt-in.
+     */
+    enableColumnActions: boolean;
+    /**
+     * Application actions to offer in the actions menu of every column, after the built-in ones.
+     *
+     * The same list is used for all columns, so these are the actions that apply to whichever column
+     * they are invoked from - "Copy column values", say. Clicking one reports it through
+     * {@link actionClick} with the {@link ColumnDefinition} it was invoked from as the event's context,
+     * which is how the handler knows the column. For an action that only belongs on one column, use
+     * {@link ColumnDefinition.actions} instead; those are appended after these.
+     *
+     * Requires {@link enableColumnActions}, which is what renders the menu in the first place.
+     */
+    columnActions: ActionDefinition[] | null;
+    /**
      * Input for providing data when virtual scrolling is enabled.
      * <code>gridItems</code> should not be used in this case.
      */
@@ -940,6 +1089,10 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
      */
     columnHiddenStateChange: EventEmitter<ColumnHiddenState>;
     /**
+     * Event emitter to tell hosting view that the user pinned or unpinned a column.
+     */
+    columnPinnedChange: EventEmitter<ColumnPinnedState>;
+    /**
      * Event emitter to tell hosting view that column filtering has changed.
      */
     columnFilterChange: EventEmitter<ColumnFilterChange>;
@@ -974,6 +1127,7 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
     protected zoomLevel: ZoomLevel;
     protected gridLayoutModel: GridLayoutModel;
     protected gridFooterModel: GridFooterModel;
+    protected readonly ColumnMoveDirection: typeof ColumnMoveDirection;
     protected readonly defaultUnsetValue: string;
     protected readonly defaultUnsortedOrder: ClrDatagridSortOrder;
     protected readonly dgStrings: DatagridStrings;
@@ -1096,6 +1250,7 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
     protected getExpandDetailsLabel(item: T): string;
     protected getCollapseDetailsLabel(item: T): string;
     protected onColumnResize(columnSize: number, column: ColumnDefinition<T>): void;
+    protected onPinnedChange(pinned: boolean, column: ColumnDefinition<T>): void;
     protected onSortOrderChange(sortOrder: ClrDatagridSortOrder, column: ColumnDefinition<T>): void;
     protected onDeselectAllClick(): void;
     protected onSelectAllInVirtualGrid(isSelect: boolean): void;
@@ -1105,6 +1260,19 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
     protected onColumnHiddenStateChange(value: ColumnHiddenState): void;
     protected refreshGrid(state: ClrDatagridStateInterface): void;
     protected onExportEvent(exportStatus: ExportStatus): void;
+    /**
+     * The actions to offer in one column's menu: the grid-wide ones first, then the column's own, so a
+     * column adds to the shared set rather than reordering it.
+     */
+    protected getColumnActions(column: ColumnDefinition<T>): ActionDefinition[];
+    /**
+     * Reported through the same output as the action bar and row actions, with the column as the
+     * context - the menu is per column, so that is what identifies where the action was invoked.
+     *
+     * Kept separate from `onActionClick` because that one falls back to the selected items when it has
+     * no context, which is not a sensible default for a column.
+     */
+    protected onColumnActionClick(action: ActionDefinition, column: ColumnDefinition<T>): void;
     protected onActionClick(action: ActionDefinition, context?: T | T[]): void;
     protected onRowActionOverflowOpen(open: boolean, actions: ActionDefinition[] | null, item: T): void;
     protected onAdvancedSearchTermChange(searchTerm: string): void;
@@ -1122,6 +1290,21 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
     protected trackByFn(index: number, gridItem: T): T;
     protected isItemSelected(item: T): boolean;
     protected dropGroup(group: string): CdkDropList[];
+    /**
+     * Whether showing `visibleColumns` would make the `@for` loops create a column or cell in front of a
+     * rendered pinned one. Clarity moves pinned cells into the row's pinned container, out of the parent
+     * the cells are projected into, so inserting in front of one throws `NotFoundError` from
+     * `insertBefore` and the new column never renders. This happens when a column is shown again, or when
+     * the column definitions are replaced by new objects, while a column is pinned. Moves and hides only
+     * reuse or remove views, so they never need it.
+     */
+    private needsColumnViewsRebuild;
+    /**
+     * Renders `visibleColumns` by destroying every column and cell view first, so the `@for` loops have
+     * nothing to insert in front of. Column state that has to survive this is kept on the column
+     * definitions - `defaultSortOrder`, `defaultFilterValue` and `width` - so the new views bind it back.
+     */
+    private rebuildColumnViews;
     private hasExpandableRows;
     private preselectDetail;
     private setDraggedItems;
@@ -1139,7 +1322,7 @@ declare class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, 
     private initTotalItemsCount;
     private interpolateMessage;
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridComponent<any>, [null, null, null, null, { optional: true; }, { optional: true; }]>;
-    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, { "loading": { "alias": "loading"; "required": false; }; "loadingMoreItems": { "alias": "loadingMoreItems"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "showCustomPagination": { "alias": "showCustomPagination"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "dragConfig": { "alias": "dragConfig"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "preserveExistingSelectionOnFilter": { "alias": "preserveExistingSelectionOnFilter"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "disableUnsort": { "alias": "disableUnsort"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; "gridItems": { "alias": "gridItems"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; }, { "detailStateChange": "detailStateChange"; "pageSizeChange": "pageSizeChange"; "gridItemsChange": "gridItemsChange"; "advancedFilterChange": "advancedFilterChange"; "columnDefsChange": "columnDefsChange"; "selectedItemsChange": "selectedItemsChange"; "exportDataEvent": "exportDataEvent"; "searchTermChange": "searchTermChange"; "columnResize": "columnResize"; "columnSortOrderChange": "columnSortOrderChange"; "columnHiddenStateChange": "columnHiddenStateChange"; "columnFilterChange": "columnFilterChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "openContextMenu": "openContextMenu"; "columnOrderChange": "columnOrderChange"; }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<DatagridComponent<any>, "appfx-datagrid", never, { "loading": { "alias": "loading"; "required": false; }; "loadingMoreItems": { "alias": "loadingMoreItems"; "required": false; }; "preSelectFirstItem": { "alias": "preSelectFirstItem"; "required": false; }; "pageSizeOptions": { "alias": "pageSizeOptions"; "required": false; }; "totalItems": { "alias": "totalItems"; "required": false; }; "showCustomPagination": { "alias": "showCustomPagination"; "required": false; }; "serverDrivenDatagrid": { "alias": "serverDrivenDatagrid"; "required": false; }; "listItemsCount": { "alias": "listItemsCount"; "required": false; }; "rowDetailContent": { "alias": "rowDetailContent"; "required": false; }; "rowsExpandedByDefault": { "alias": "rowsExpandedByDefault"; "required": false; }; "trackByFunction": { "alias": "trackByFunction"; "required": false; }; "trackByGridItemProperty": { "alias": "trackByGridItemProperty"; "required": false; }; "detailHeader": { "alias": "detailHeader"; "required": false; }; "detailBody": { "alias": "detailBody"; "required": false; }; "detailState": { "alias": "detailState"; "required": false; }; "isRowLocked": { "alias": "isRowLocked"; "required": false; }; "dragConfig": { "alias": "dragConfig"; "required": false; }; "filterableProperties": { "alias": "filterableProperties"; "required": false; }; "filterMode": { "alias": "filterMode"; "required": false; }; "singleRowActions": { "alias": "singleRowActions"; "required": false; }; "preserveExistingSelectionOnFilter": { "alias": "preserveExistingSelectionOnFilter"; "required": false; }; "virtualScrolling": { "alias": "virtualScrolling"; "required": false; }; "disableUnsort": { "alias": "disableUnsort"; "required": false; }; "enableColumnActions": { "alias": "enableColumnActions"; "required": false; }; "columnActions": { "alias": "columnActions"; "required": false; }; "dataRange": { "alias": "dataRange"; "required": false; }; "gridItems": { "alias": "gridItems"; "required": false; }; "layoutModel": { "alias": "layoutModel"; "required": false; }; "footerModel": { "alias": "footerModel"; "required": false; }; "columns": { "alias": "columns"; "required": false; }; "selectionType": { "alias": "selectionType"; "required": false; }; "selectedItems": { "alias": "selectedItems"; "required": false; }; "rowSelectionMode": { "alias": "rowSelectionMode"; "required": false; }; "actionBarActions": { "alias": "actionBarActions"; "required": false; }; "pageSize": { "alias": "pageSize"; "required": false; }; "datagridLabels": { "alias": "datagridLabels"; "required": false; }; }, { "detailStateChange": "detailStateChange"; "pageSizeChange": "pageSizeChange"; "gridItemsChange": "gridItemsChange"; "advancedFilterChange": "advancedFilterChange"; "columnDefsChange": "columnDefsChange"; "selectedItemsChange": "selectedItemsChange"; "exportDataEvent": "exportDataEvent"; "searchTermChange": "searchTermChange"; "columnResize": "columnResize"; "columnSortOrderChange": "columnSortOrderChange"; "columnHiddenStateChange": "columnHiddenStateChange"; "columnPinnedChange": "columnPinnedChange"; "columnFilterChange": "columnFilterChange"; "refreshGridData": "refreshGridData"; "refreshVirtualGridData": "refreshVirtualGridData"; "actionClick": "actionClick"; "rowActionMenuOpenChange": "rowActionMenuOpenChange"; "openContextMenu": "openContextMenu"; "columnOrderChange": "columnOrderChange"; }, never, [".custom-placeholder-content", ".custom-footer-content", "*"], false, never>;
 }
 
 /**
@@ -1420,28 +1603,27 @@ declare class IsRowSelectablePipe implements PipeTransform {
 }
 
 /**
- * Provides subjects for communication between appfxDgColumnsOrder and appfxColumnOrder
- * directives.
+ * Moves this column one step left or right, meant for a `clrDgColumnAction` item inside a column's
+ * `clr-dg-column-actions` menu.
+ *
+ * The move itself, and whether it is even possible right now, both live on
+ * `DatagridColumnsOrderDirective` - the same place the mouse and keyboard reordering already go
+ * through, so a menu action can never apply a move those paths would refuse. This directive only
+ * connects a menu item's index and direction to that.
+ *
+ * `DatagridColumnsOrderDirective` is injected rather than `DatagridColumnsOrderService`, because
+ * the column order array (`dgColumnsOrderColumns`) that resolves the move lives on the directive,
+ * not the service.
  */
-declare class DatagridColumnsOrderService {
-    /**
-     * Emits the column which should be marked as grabbed. If the column is null all columns are
-     * marked as not grabbed
-     */
-    readonly grabbedColumn: BehaviorSubject<ColumnDefinition<any>>;
-    /**
-     * Emits when the column should be moved as result of left or right arrow key press.
-     */
-    readonly moveVisibleColumn: Subject<{
-        visibleColumnIndex: number;
-        moveLeft: boolean;
-    }>;
-    /**
-     * Event emitter to tell the dragged column to set focus
-     */
-    readonly focusGrabbedColumn: Subject<void>;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridColumnsOrderService, never>;
-    static ɵprov: i0.ɵɵInjectableDeclaration<DatagridColumnsOrderService>;
+declare class ColumnMoveActionDirective {
+    private readonly columnsOrderDirective;
+    direction: ColumnMoveDirection;
+    columnIndex: number;
+    constructor(columnsOrderDirective: DatagridColumnsOrderDirective);
+    get disabled(): boolean;
+    protected onClick(): void;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ColumnMoveActionDirective, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ColumnMoveActionDirective, "[appfxColumnMoveAction]", ["appfxColumnMoveAction"], { "direction": { "alias": "appfxColumnMoveAction"; "required": false; }; "columnIndex": { "alias": "columnIndex"; "required": false; }; }, {}, never, never, false, never>;
 }
 
 declare class ColumnOrderDirective implements OnDestroy, OnInit {
@@ -1465,39 +1647,9 @@ declare class ColumnOrderDirective implements OnDestroy, OnInit {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ColumnOrderDirective, "clr-dg-column[appfxColumnOrder]", never, { "columnData": { "alias": "columnData"; "required": false; }; "columnIndex": { "alias": "columnIndex"; "required": false; }; }, {}, never, never, false, never>;
 }
 
-declare class DatagridColumnsOrderDirective implements OnInit, OnDestroy, OnChanges {
-    private readonly elementRef;
-    private readonly cdkDropList;
-    private readonly columnOrderingService;
-    dgColumnsOrderColumns: ColumnDefinition<any>[];
-    dgColumnsVirtualScrolling: boolean;
-    dgColumnsOrderChange: EventEmitter<ColumnOrderChanged>;
-    private subs;
-    constructor(elementRef: ElementRef<HTMLElement>, cdkDropList: CdkDropList, columnOrderingService: DatagridColumnsOrderService);
-    ngOnInit(): void;
-    setDgColumnsContainer(): void;
-    ngOnChanges(changes: SimpleChanges): void;
-    ngOnDestroy(): void;
-    /**
-     * A pinned column is rendered in the datagrid's sticky container while the others are rendered in
-     * the scrollable one. Changing the relative order of the two groups cannot be re-rendered: the
-     * column elements are moved against a sibling that now lives in the other container, and the DOM
-     * insert throws. Until the datagrid can render that, a reorder that would cross a pinned column is
-     * refused rather than applied.
-     */
-    private isReorderAllowed;
-    private reorderColumn;
-    private getColumnIndices;
-    private findColumnIndices;
-    private createColumnIndices;
-    private findColumnIndex;
-    static ɵfac: i0.ɵɵFactoryDeclaration<DatagridColumnsOrderDirective, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<DatagridColumnsOrderDirective, "clr-datagrid[appfxDgColumnsOrder]", never, { "dgColumnsOrderColumns": { "alias": "dgColumnsOrderColumns"; "required": false; }; "dgColumnsVirtualScrolling": { "alias": "dgColumnsVirtualScrolling"; "required": false; }; }, { "dgColumnsOrderChange": "dgColumnsOrderChange"; }, never, never, false, never>;
-}
-
 declare class DatagridColumnsOrderModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<DatagridColumnsOrderModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<DatagridColumnsOrderModule, [typeof ColumnOrderDirective, typeof DatagridColumnsOrderDirective], [typeof i3.ClrDatagridModule, typeof i4.CommonModule, typeof i5.DragDropModule], [typeof ColumnOrderDirective, typeof DatagridColumnsOrderDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<DatagridColumnsOrderModule, [typeof ColumnMoveActionDirective, typeof ColumnOrderDirective, typeof DatagridColumnsOrderDirective], [typeof i4.ClrDatagridModule, typeof i5.CommonModule, typeof i6.DragDropModule], [typeof ColumnMoveActionDirective, typeof ColumnOrderDirective, typeof DatagridColumnsOrderDirective]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<DatagridColumnsOrderModule>;
 }
 
@@ -1505,7 +1657,7 @@ declare class AppfxDatagridModule {
     constructor();
     static forRoot(errorNotifiableService: Type<ErrorNotifiable>): ModuleWithProviders<AppfxDatagridModule>;
     static ɵfac: i0.ɵɵFactoryDeclaration<AppfxDatagridModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i13.AppfxA11yModule, typeof i14.AppfxDatagridFiltersModule, typeof i15.A11yModule, typeof i5.DragDropModule, typeof i17.OverlayModule, typeof i18.ClrCheckboxModule, typeof i3.ClrDatagridModule, typeof i20.ClrDropdownModule, typeof i21.ClrIcon, typeof i18.ClrInputModule, typeof i22.ClrLoadingModule, typeof i4.CommonModule, typeof DatagridColumnsOrderModule, typeof i25.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<AppfxDatagridModule, [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective, typeof DatagridCellContainerComponent, typeof DatagridColumnToggleComponent, typeof DatagridFilterContainerComponent, typeof ExportDatagridComponent, typeof IsRowSelectablePipe], [typeof i13.AppfxA11yModule, typeof i14.AppfxDatagridFiltersModule, typeof i15.A11yModule, typeof i6.DragDropModule, typeof i17.OverlayModule, typeof i18.ClrCheckboxModule, typeof i4.ClrDatagridModule, typeof i20.ClrDropdownModule, typeof i21.ClrIcon, typeof i18.ClrInputModule, typeof i22.ClrLoadingModule, typeof i5.CommonModule, typeof DatagridColumnsOrderModule, typeof i25.FormsModule], [typeof DatagridComponent, typeof DatagridActionBarComponent, typeof DatagridFilterComponent, typeof DatagridPageDirective, typeof DatagridPersistSettingsDirective, typeof DatagridPreserveSelectionDirective, typeof DatagridContentNoWrapDirective]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<AppfxDatagridModule>;
 }
 
@@ -1525,4 +1677,4 @@ declare class CaseInsensitiveContainsStringFilter implements ClrDatagridStringFi
 }
 
 export { ActionBarLayout, AppfxDatagridModule, CaseInsensitiveContainsStringFilter, CsvHelperService, DatagridActionBarComponent, DatagridComponent, DatagridContentNoWrapDirective, DatagridFeatureStates, DatagridFilterComponent, DatagridPageDirective, DatagridPersistSettingsDirective, DatagridPreserveSelectionDirective, DatagridStrings, ExportProviderService, ExportType, FieldComparator, ListComparator, SimpleNumericComparator, appfxDatagridErrorNotifiableToken, appfxDatagridPersistSettingsToken, appfxDatagridUserPreferencesToken, appfxPreselectableComponentToken };
-export type { ActionClickEvent, ActionDefinition, ClientSideExportConfig, ColumnDefinition, ColumnFilter, ColumnFilterChange, ColumnHiddenState, ColumnOrderChanged, ColumnRenderer, ColumnResize, ColumnSortOrder, ContextMenuEvent, DatagridDragConfig, DatagridItemSet, DatagridUserPreferencesService, ErrorNotifiable, ExportColumnDefinition, ExportStatus, ExportValueCallbackParams, GridFooterModel, GridLayoutModel, PersistDatagridSettingsService, PreselectableComponent, SingleRowActionOpen };
+export type { ActionClickEvent, ActionDefinition, ClientSideExportConfig, ColumnDefinition, ColumnFilter, ColumnFilterChange, ColumnHiddenState, ColumnOrderChanged, ColumnPinnedState, ColumnRenderer, ColumnResize, ColumnSortOrder, ContextMenuEvent, DatagridDragConfig, DatagridItemSet, DatagridUserPreferencesService, ErrorNotifiable, ExportColumnDefinition, ExportStatus, ExportValueCallbackParams, GridFooterModel, GridLayoutModel, PersistDatagridSettingsService, PreselectableComponent, SingleRowActionOpen };
