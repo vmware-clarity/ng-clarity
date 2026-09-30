@@ -79,8 +79,8 @@ export class ClrMutationEngineService {
    */
   plan(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): ClrMutationPlanEntry[] {
     const options = this.scopeOptions(snapshotOptions);
-    return operations.map(operation => {
-      const prepared = this.prepare(operation, options);
+    return (Array.isArray(operations) ? operations : []).map(operation => {
+      const prepared = this.prepareSafely(operation, options);
       if ('refused' in prepared) {
         return { operation, refused: prepared.refused, detail: prepared.detail };
       }
@@ -113,7 +113,13 @@ export class ClrMutationEngineService {
     const options = this.scopeOptions(snapshotOptions);
     const results: ClrMutationResult[] = [];
     for (const operation of Array.isArray(operations) ? operations : []) {
-      results.push(await this.applyOne(operation, options));
+      try {
+        results.push(await this.applyOne(operation, options));
+      } catch (error) {
+        // Something unforeseen — page markup, a component — failed this operation: it is
+        // reported as refused, and the ones after it still run and are announced.
+        results.push(refusal(operation, 'unsupported', unforeseen(error)));
+      }
     }
     // Brings every view that shows a written value up to date — a zoneless application,
     // or a write made from outside the zone, would otherwise show the old one — then
@@ -230,6 +236,18 @@ export class ClrMutationEngineService {
     return { operation: operation.operation, ref: operation.ref, ...outcome };
   }
 
+  /** {@link prepare}, with anything unforeseen it throws reported as a refusal. */
+  private prepareSafely(
+    operation: ClrMutationOperation,
+    options: Required<ClrContextSnapshotOptions>
+  ): Prepared | Refused {
+    try {
+      return this.prepare(operation, options);
+    } catch (error) {
+      return { refused: 'unsupported', detail: unforeseen(error) };
+    }
+  }
+
   /** The options a write is judged against: the application's, with the call's over them. */
   private scopeOptions(snapshotOptions?: ClrContextSnapshotOptions): Required<ClrContextSnapshotOptions> {
     const effective: ClrContextSnapshotOptions = { ...this.contextOptions };
@@ -273,9 +291,15 @@ export class ClrMutationEngineService {
     const write: WriteTarget = resolution.target;
     // A ref outlives the snapshot that handed it out, and a snapshot may have been taken
     // with wider options than these: what these would leave out is not written either.
-    // A component's type may be what it published rather than any DOM role: a combobox
-    // host says it is one.
-    if (isOutsideSnapshot(write.element, options) || options.excludeRoles.includes(write.type)) {
+    // Judged on both the element carrying the binding and the one the snapshot described —
+    // a custom control's host and the input it renders — since either may be what the
+    // options leave out. A component's type may be what it published rather than any DOM
+    // role: a combobox host says it is one.
+    if (
+      isOutsideSnapshot(write.element, options) ||
+      (write.control !== write.element && isOutsideSnapshot(write.control, options)) ||
+      options.excludeRoles.includes(write.type)
+    ) {
       return { refused: 'hidden', detail: 'The control is outside what snapshots with these options describe.' };
     }
     if (!descriptionMatches(operation.description, write.label, write.type)) {
@@ -393,6 +417,11 @@ interface Prepared {
 interface Refused {
   refused: ClrMutationRefusal;
   detail: string;
+}
+
+/** What an operation that failed unforeseen reports. */
+function unforeseen(error: unknown): string {
+  return `The operation could not be carried out: ${error instanceof Error ? error.message : 'an unexpected error'}.`;
 }
 
 /** A change without the two snapshots it compared: the report already carries the later one. */

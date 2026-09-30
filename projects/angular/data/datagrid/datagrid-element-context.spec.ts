@@ -97,7 +97,8 @@ describe('ClrDatagrid element context', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(published()?.state?.filteredColumns).toEqual(['name']);
+    // Named as the grid's summary names its columns: by header text.
+    expect(published()?.state?.filteredColumns).toEqual(['Name']);
   });
 
   it('publishes nothing about filters while none are applied', () => {
@@ -107,7 +108,7 @@ describe('ClrDatagrid element context', () => {
   it('publishes which columns are hidden, which the DOM cannot show', () => {
     fixture.componentInstance.hideStatus = true;
     fixture.detectChanges();
-    expect(published()?.state?.hiddenColumns).toEqual(['status']);
+    expect(published()?.state?.hiddenColumns).toEqual(['Status']);
   });
 
   it('publishes nothing about hidden columns while every column is shown', () => {

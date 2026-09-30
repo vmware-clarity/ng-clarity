@@ -5,7 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_CONTEXT_REDACT_SELECTOR, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import {
+  CLR_CONTEXT_HIDDEN_SELECTOR,
+  CLR_CONTEXT_REDACT_SELECTOR,
+  ClrComponentContext,
+  ClrContextSnapshotOptions,
+} from '@clr/angular/utils';
 
 import { accessibleText, referencedText, truncate } from './text';
 
@@ -155,7 +160,7 @@ export function ariaState(
   }
 
   assignNativeState(element, state, options);
-  assignValueState(element, state, options, insideRedactedRegion);
+  assignValueState(element, state, options, insideRedactedRegion, withheld);
 
   return state;
 }
@@ -217,7 +222,8 @@ function assignValueState(
   element: Element,
   state: Record<string, unknown>,
   options: Required<ClrContextSnapshotOptions>,
-  insideRedactedRegion?: boolean
+  insideRedactedRegion?: boolean,
+  withheld = ''
 ): void {
   // Reported as withheld rather than left out, so an agent can tell a field it may not
   // see from one that happens to be empty — and does not go looking for it elsewhere.
@@ -259,21 +265,39 @@ function assignValueState(
   if (isContentEditable(element)) {
     // A rich-text editor holds what the user typed the same way a textarea does; it is
     // a value, so that redaction and value-withholding apply to it.
-    state.value = truncate(accessibleText(element), options.maxTextLength);
+    state.value = truncate(accessibleText(element, undefined, withheld), options.maxTextLength);
     return;
   }
   if (tagName === 'select') {
     // What the user sees is the option's text; its `value` may be an internal key — an
     // Angular `[ngValue]` binding renders as "3: Object" — that means nothing to an agent.
-    const chosen = Array.from((element as HTMLSelectElement).selectedOptions).map(option =>
-      truncate(option.label || option.text, options.maxTextLength)
-    );
+    // Only what the option list itself would name: an option hidden, redacted or excluded
+    // is not the value either, however it is chosen.
+    const chosen = Array.from((element as HTMLSelectElement).selectedOptions)
+      .filter(option => optionReadable(option, element, withheld))
+      .map(option => truncate(option.label || option.text, options.maxTextLength));
     if ((element as HTMLSelectElement).multiple) {
       state.value = chosen.slice(0, options.maxItemsPerCollection);
     } else if (chosen.length) {
       state.value = chosen[0];
     }
   }
+}
+
+/**
+ * Whether an option of `select` may be named: not hidden, not excluded, and neither it nor
+ * a group inside the select redacted — the same options the select's summary lists.
+ */
+function optionReadable(option: Element, select: Element, withheld: string): boolean {
+  if (option.closest(CLR_CONTEXT_HIDDEN_SELECTOR) || (withheld && option.closest(withheld))) {
+    return false;
+  }
+  for (let current: Element | null = option; current && current !== select; current = current.parentElement) {
+    if (current.matches(CLR_CONTEXT_REDACT_SELECTOR)) {
+      return false;
+    }
+  }
+  return true;
 }
 
 /**

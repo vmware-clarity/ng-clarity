@@ -103,12 +103,14 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
   // The declared count is reported as declared: ARIA says it includes header rows, but
   // the producers that actually set it (Clarity's virtual scroll among them) declare the
   // data rows, which is also what the fallback counts.
+  // Only rows, and only this table's: a selected tab or option inside a cell is not a row.
+  // Read once, for both counts.
+  const rows = queryRole(element, 'row', scope);
   const declared = element.getAttribute('aria-rowcount');
   const total = declared === null ? Number.NaN : Number(declared);
-  state.rowCount = Number.isFinite(total) && total >= 0 ? total : dataRows(element, scope).length;
+  state.rowCount = Number.isFinite(total) && total >= 0 ? total : dataRows(rows).length;
 
-  // Only rows, and only this table's: a selected tab or option inside a cell is not a row.
-  const selected = queryRole(element, 'row', scope).filter(row => row.getAttribute('aria-selected') === 'true').length;
+  const selected = rows.filter(row => row.getAttribute('aria-selected') === 'true').length;
   if (selected) {
     state.selectedRows = selected;
   }
@@ -303,12 +305,10 @@ function summarizeRadiogroup(element: Element, scope: SummaryScope): Record<stri
  * holding a record, and counting it would misreport the size of the data. A row header
  * (`<th scope="row">`) names its own row and does not make it a header row.
  */
-function dataRows(element: Element, scope: SummaryScope): Element[] {
+function dataRows(rows: Element[]): Element[] {
   // A row of column headers names the columns; a row that also holds data cells is a
   // record whose first cell happens to be a header (`<th>` without `scope="row"`).
-  return queryRole(element, 'row', scope).filter(
-    row => !row.querySelector(ROLE_SELECTORS.columnheader) || row.querySelector(DATA_CELL_SELECTOR)
-  );
+  return rows.filter(row => !row.querySelector(ROLE_SELECTORS.columnheader) || row.querySelector(DATA_CELL_SELECTOR));
 }
 
 const DATA_CELL_SELECTOR = 'td, [role="cell"], [role="gridcell"]';

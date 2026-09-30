@@ -16,6 +16,7 @@ import {
 import {
   CLR_CONTEXT_UNTRUSTED_OPTION_KEYS,
   sanitizeUntrustedSnapshotOptions,
+  withoutFormValues,
   withoutUrlDetails,
 } from './untrusted-options';
 
@@ -267,5 +268,24 @@ describe('withoutUrlDetails', () => {
     expect(shared.title).toBe('');
     expect(JSON.stringify(shared)).not.toContain('ACC-');
     expect(shared.components[0].state).toEqual({ url: 'https://plugin.example/' });
+  });
+});
+
+describe('withoutFormValues', () => {
+  it('withholds the rows a selectable grid lists along with its selection', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        {
+          type: 'grid',
+          element: 'clr-datagrid',
+          state: { rowCount: 2, rows: ['Alice | CONFIDENTIAL-1', 'Bob'], selection: ['Bob'], selectionMode: 'multi' },
+        },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components[0].state).toEqual({ rowCount: 2, selectionMode: 'multi' });
   });
 });

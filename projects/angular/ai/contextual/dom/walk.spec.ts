@@ -1174,6 +1174,17 @@ describe('collectContextTree, markup it did not expect', () => {
     expect(result.truncated).toBe(true);
   });
 
+  it('does not read the plain items of a summarised list, whatever its length', () => {
+    const items = Array.from({ length: 3000 }, (_, index) => `<li><span>Item ${index}</span></li>`).join('');
+    const result = collect(`<ul aria-label="Many">${items}<li><a href="/x">Link</a></li></ul><button>After</button>`);
+
+    expect(result.truncated).toBe(false);
+    const [list, button] = result.components;
+    expect(list.state?.['itemCount']).toBe(3001);
+    expect(list.children?.map(child => child.type)).toEqual(['link']);
+    expect(button.label).toBe('After');
+  });
+
   it('stops after looking at as many elements as a walk may, and says the snapshot was cut off', () => {
     container.innerHTML = '<div></div>'.repeat(25_100) + '<button>Late</button>';
     const result = collectContextTreeWithin(container, options());
@@ -1245,6 +1256,22 @@ describe('collectContextTree, markup it did not expect', () => {
     } finally {
       teardowns.forEach(teardown => teardown());
     }
+  });
+
+  it('never names a hidden, redacted or excluded selected option as a select’s value', () => {
+    const { components } = collect(
+      `<select aria-label="Account"><option data-clr-context-redact selected>ACC-1234</option><option>Other</option></select>
+       <select aria-label="Plan"><option class="x" selected>Gold</option><option>Basic</option></select>
+       <select aria-label="Tier"><optgroup data-clr-context-redact><option selected>SECRET-TIER</option></optgroup><option>Open</option></select>
+       <select aria-label="Pick"><option hidden selected value="">HIDDEN-PLACEHOLDER</option><option>One</option></select>
+       <div contenteditable aria-label="Notes">Visible <span class="x">EXCLUDED-NOTE</span></div>`,
+      { excludeSelectors: ['.x'] }
+    );
+    const json = JSON.stringify(components);
+    for (const secret of ['ACC-1234', 'Gold', 'SECRET-TIER', 'HIDDEN-PLACEHOLDER', 'EXCLUDED-NOTE']) {
+      expect(json).withContext(secret).not.toContain(secret);
+    }
+    expect(json).toContain('"value":"Visible"');
   });
 
   it('takes no name from a label that is itself marked redacted, even wrapped around its field', () => {

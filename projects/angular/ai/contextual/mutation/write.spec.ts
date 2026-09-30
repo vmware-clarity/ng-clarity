@@ -181,6 +181,14 @@ class AppBroken implements ControlValueAccessor {
         </clr-radio-wrapper>
       </clr-radio-container>
       <clr-select-container>
+        <label>Grade</label>
+        <select clrSelect formControlName="grade">
+          <option value="" hidden>Choose</option>
+          <option value="basic">Basic</option>
+          <option value="gold" class="secret">Gold</option>
+        </select>
+      </clr-select-container>
+      <clr-select-container>
         <label>Seats</label>
         <select clrSelect multiple formControlName="seats">
           <option value="free">Free</option>
@@ -215,6 +223,7 @@ class Host {
     code: new FormControl(''),
     card: new FormControl<string | null>(null),
     seats: new FormControl<string[]>(['staff']),
+    grade: new FormControl('gold'),
     strict: new FormControl('', (control: AbstractControl) => {
       if (control.value === 'boom') {
         throw new Error('The validator exploded.');
@@ -540,6 +549,18 @@ describe('ClrMutationEngineService write path', () => {
       expect(host.form.value.card).toBe('visa');
     });
 
+    it('does not replace a single choice the snapshot left out, and does replace a hidden placeholder', async () => {
+      const refused = await setWith('Grade', 'Basic');
+      expect(refused.refused).toBe('invalid');
+      expect(refused.detail).toContain('kept from agents');
+      expect(host.form.value.grade).toBe('gold');
+
+      host.form.controls.grade.setValue('');
+      await settle();
+      expect((await setWith('Grade', 'Basic')).applied).toBeTrue();
+      expect(host.form.value.grade).toBe('basic');
+    });
+
     it('neither lists nor takes an excluded option, and keeps it selected', async () => {
       const refused = await setWith('Seats', ['Gold']);
       expect(refused.detail).toContain('"Free", "Team"');
@@ -567,6 +588,20 @@ describe('ClrMutationEngineService write path', () => {
 
       expect((await write({})).applied).toBeTrue();
       expect(host.form.value.name).toBe('Ada');
+    });
+
+    it('does not write a custom control whose rendered input the options leave out', async () => {
+      const ref = refOf(contextEngine.getSnapshot(), 'Enabled');
+      const options = { excludeSelectors: ['input[role="switch"]'] };
+
+      expect(JSON.stringify(contextEngine.getSnapshot(options).components)).not.toContain('Enabled');
+      const report = await engine.apply(
+        [{ operation: 'setValue', ref, description: 'Enabled', value: false }],
+        options
+      );
+
+      expect(report.results[0].refused).toBe('hidden');
+      expect(host.form.value.enabled).toBeTrue();
     });
 
     it('refuses a field behind an open modal dialog, and writes the one inside it', async () => {

@@ -173,13 +173,20 @@ export function navigateAndReport(router: Router, target: UrlTree, zone?: NgZone
 
     router.navigateByUrl(target).then(
       () => {
-        // The events normally settle this first; should none have, the URL decides.
-        setTimeout(() => {
-          if (!subscription.closed) {
-            const url = router.url;
-            settle(url === requested ? { outcome: 'navigated', url } : { outcome: 'failed', url });
-          }
-        });
+        // The events normally settle this first; should none have, the URL decides. Outside
+        // the zone, as the expiry is: waiting is not work for change detection.
+        const fallback = () =>
+          setTimeout(() => {
+            if (!subscription.closed) {
+              const url = router.url;
+              settle(url === requested ? { outcome: 'navigated', url } : { outcome: 'failed', url });
+            }
+          });
+        if (zone) {
+          zone.runOutsideAngular(fallback);
+        } else {
+          fallback();
+        }
       },
       error => settle({ outcome: 'failed', url: router.url, detail: errorMessage(error) })
     );

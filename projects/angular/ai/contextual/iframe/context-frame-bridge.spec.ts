@@ -698,3 +698,42 @@ describe('Context frame bridge, what the host stays in charge of', () => {
     expect(await clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 50 })).toBeNull();
   });
 });
+
+describe('Context frame bridge, with a real embedded frame', () => {
+  it('answers a request a same-origin frame posts itself, and only that frame', async () => {
+    const getSnapshot = jasmine.createSpy('getSnapshot').and.returnValue({
+      title: 'Host page',
+      regions: [],
+      components: [{ type: 'button', label: 'Save' }],
+      collectedAt: '',
+    } as ClrPageContext);
+    const host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0 });
+    host.start();
+    const frame = document.createElement('iframe');
+    const request = JSON.stringify({ protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId: 'real-1' });
+    frame.srcdoc = `<script>
+      window.addEventListener('message', event => {
+        if (event.source === parent && event.data && event.data.kind === 'context-response') {
+          window.served = event.data;
+        }
+      });
+      parent.postMessage(${request}, '*');
+    <\/script>`;
+    const loaded = new Promise(resolve => frame.addEventListener('load', resolve, { once: true }));
+    document.body.appendChild(frame);
+    try {
+      await loaded;
+      const frameWindow = frame.contentWindow as Window & { served?: ClrContextFrameResponse };
+      for (let attempt = 0; attempt < 50 && !frameWindow.served; attempt++) {
+        await new Promise(resolve => setTimeout(resolve, 10));
+      }
+
+      expect(frameWindow.served?.requestId).toBe('real-1');
+      expect(frameWindow.served?.context.components).toEqual([{ type: 'button', label: 'Save' }]);
+      expect(getSnapshot).toHaveBeenCalledTimes(1);
+    } finally {
+      host.stop();
+      frame.remove();
+    }
+  });
+});

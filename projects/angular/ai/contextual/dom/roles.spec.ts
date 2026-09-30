@@ -179,7 +179,8 @@ describe('resolveRole, beyond HTML-AAM where an agent needs it', () => {
 describe('roleCandidateSelector', () => {
   const html = `
     <div role="grid"></div><table></table><nav></nav><input type="checkbox" /><select></select>
-    <a href="/x">x</a><a>placeholder</a><th></th><header></header><div contenteditable="true"></div><span></span>`;
+    <a href="/x">x</a><a>placeholder</a><th></th><header></header><div contenteditable="true"></div><span></span>
+    <input type="email" list="suggestions" />`;
 
   function candidates(roles: string[]): Element[] {
     const container = document.createElement('div');

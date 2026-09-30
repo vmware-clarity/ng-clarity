@@ -275,6 +275,10 @@ export function roleCandidateSelector(roles: ReadonlySet<string>): string {
   if (anyOf('combobox', 'listbox')) {
     selectors.add('select');
   }
+  if (anyOf('combobox')) {
+    // A text field with a list of suggestions.
+    selectors.add('input[list]');
+  }
   if (anyOf('link')) {
     selectors.add('a[href]').add('area[href]');
   }

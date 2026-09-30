@@ -414,11 +414,13 @@
     <h3 id="mutation-limits" class="clr-mt-32px" cds-text="section">What it will not do</h3>
     <ul class="list clr-mt-16px" cds-text="body">
       <li>
-        <b cds-text="medium">Submit, click or invoke.</b> Filling and navigating are idempotent: repeating either
-        changes nothing. Values reach the form control through its Angular accessor, without DOM events, so the
-        application's own <code cds-text="code">(change)</code> or <code cds-text="code">(blur)</code> handlers — an
-        auto-save, say — do not run. Submitting is the first operation that is not, and the first channel by which page
-        content an attacker influenced could send data somewhere. It stays with the person.
+        <b cds-text="medium">Submit, click or invoke.</b> Filling and navigating leave the same state when repeated.
+        Values reach the form control through its Angular accessor, without DOM events, so the application's own
+        <code cds-text="code">(change)</code> or <code cds-text="code">(blur)</code> handlers do not run; the form
+        control's <code cds-text="code">valueChanges</code> and <code cds-text="code">ngModelChange</code> do, as they
+        would for any programmatic write, so an auto-save driven by them saves what the agent wrote. Submitting is the
+        first operation that does more than fill, and the first channel by which page content an attacker influenced
+        could send data somewhere. It stays with the person.
       </li>
       <li>
         <b cds-text="medium">Write what a snapshot would not show.</b> A hidden, inert, disabled, read-only or ignored

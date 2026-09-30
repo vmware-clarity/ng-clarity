@@ -709,8 +709,10 @@
       <td class="left"><b cds-text="medium">truncated</b></td>
       <td class="left clr-hidden-xs-down">Boolean</td>
       <td class="left">
-        Present and <code cds-text="code">true</code> when <code cds-text="code">maxComponents</code> ran out before the
-        whole page was described.
+        Present and <code cds-text="code">true</code> when something was left out for size: the
+        <code cds-text="code">maxComponents</code> budget ran out, a grid holds controls in more cells than
+        <code cds-text="code">maxItemsPerCollection</code> lists, or the page nests deeper than 512 elements or holds
+        more than 25,000 for one walk to read.
       </td>
     </tr>
     <tr>

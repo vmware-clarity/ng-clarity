@@ -636,6 +636,11 @@ function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {
   // Only the options the snapshot named can be chosen, or named in a refusal; an option
   // it left out that is selected stays selected, cleared or not.
   const kept = select.multiple ? Array.from(select.selectedOptions).filter(option => !choiceShown(option, target)) : [];
+  // One choice at a time: replacing one the agent was never shown would change what it
+  // cannot see, and could not undo.
+  if (!select.multiple && Array.from(select.selectedOptions).some(option => choiceKept(option, target))) {
+    return { refused: KEPT_CHOICE_DETAIL };
+  }
   if (proposed === null) {
     return { value: kept, display: select.multiple ? [] : null };
   }
@@ -672,6 +677,9 @@ function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {
 }
 
 function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
+  if (radiosOf(target.element).some(radio => radio.checked && choiceKept(radio, target))) {
+    return { refused: KEPT_CHOICE_DETAIL };
+  }
   if (proposed === null) {
     return { value: null, display: null };
   }
@@ -697,6 +705,26 @@ function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
  * it, and a refusal may list it: not in what the snapshot options exclude, and not
  * redacted itself. The control around it was judged already.
  */
+const KEPT_CHOICE_DETAIL = 'The current choice is kept from agents, and cannot be changed by one.';
+
+/**
+ * Whether a choice is kept from agents — excluded, or redacted — as opposed to merely
+ * not shown: a hidden placeholder option ("Choose…") is no secret, and a write may
+ * replace it.
+ */
+function choiceKept(choice: Element, target: WriteTarget): boolean {
+  const excluded = withheldBy(choice, target.options);
+  if (excluded && choice.closest(excluded)) {
+    return true;
+  }
+  for (let current: Element | null = choice; current && current !== target.control; current = current.parentElement) {
+    if (current.matches(CLR_CONTEXT_REDACT_SELECTOR)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 function choiceShown(choice: Element, target: WriteTarget): boolean {
   const excluded = withheldBy(choice, target.options);
   if (excluded && choice.closest(excluded)) {

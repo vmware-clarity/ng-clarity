@@ -700,6 +700,11 @@ export class ClrCombobox<T>
         const kept = this.multiSelect
           ? this.selectedValues().filter(value => this.valueShown(value, excluded) !== 'shown')
           : [];
+        // One choice at a time: replacing one the agent was never shown would change what
+        // it cannot see, and could not undo.
+        if (!this.multiSelect && this.selectedValues().some(value => this.valueShown(value, excluded) !== 'shown')) {
+          return { refused: 'The current choice is kept from agents, and cannot be changed by one.' };
+        }
         if (proposed === null || proposed === undefined || proposed === '') {
           return { value: this.multiSelect ? kept : null };
         }

@@ -10,6 +10,7 @@ import {
   CLR_CONTEXT_IGNORE_ATTRIBUTE,
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_CONTEXT_REDACT_SELECTOR,
+  CLR_ELEMENT_CONTEXT_PROPERTY,
   CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
@@ -563,6 +564,18 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   if (role && isPresentationalRole(role)) {
     return describeChildren(element, walk, owner);
   }
+  // An item of a summarised list is already named in the summary. One with nothing to act
+  // on, no state of its own and nothing published adds no node, so it is not read at all:
+  // a list of thousands costs what its controls do.
+  if (
+    role === 'listitem' &&
+    walk.summarizedListDepth > 0 &&
+    !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !Array.from(element.attributes).some(attribute => attribute.name.startsWith('aria-')) &&
+    !element.querySelector(CONTROL_SELECTOR)
+  ) {
+    return [];
+  }
 
   const isCustomElement = tagName.includes('-');
   // Inside a region the application keeps from agents, a name is only what an author
@@ -891,7 +904,7 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     // A document the user types into — how classic rich-text editors are built — is one
     // text field, and what it holds is a value, never prose.
     node.type = 'textbox';
-    state.value = truncate(accessibleText(contents.body), walk.options.maxTextLength);
+    state.value = truncate(accessibleText(contents.body, undefined, walk.excludeSelector), walk.options.maxTextLength);
   } else {
     // Ids are scoped to a document: the frame's references must not skip or fold the
     // host's elements that happen to share an id, nor the other way round.
@@ -1053,10 +1066,6 @@ function listOf(node: ClrComponentContext | null): ClrComponentContext[] {
 }
 
 /**
- * Whether anything inside the element has a role this walk leaves out. Only the elements
- * that could carry one of those roles are looked at, not every descendant.
- */
-/**
  * Whether a component renders, in its own template, an element with an excluded role —
  * the grid inside a `clr-datagrid` — rather than holding one inside another component it
  * contains, such as a datagrid in a tab panel. What the component publishes describes
@@ -1082,6 +1091,10 @@ function rendersExcludedRole(element: Element, walk: Walk): boolean {
   return false;
 }
 
+/**
+ * Whether anything inside the element has a role this walk leaves out. Only the elements
+ * that could carry one of those roles are looked at, not every descendant.
+ */
 function holdsExcludedRole(element: Element, walk: Walk): boolean {
   if (!walk.excludeRoleCandidates) {
     return false;

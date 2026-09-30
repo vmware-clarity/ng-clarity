@@ -744,6 +744,11 @@ describe('ClrMutationEngineService', () => {
         expect(host.form.value.agree).toBeFalse();
       });
 
+      it('tolerates what is not a list of operations, as apply() does', async () => {
+        expect(engine.plan('nope' as unknown as [])).toEqual([]);
+        expect((await engine.apply('nope' as unknown as [])).results).toEqual([]);
+      });
+
       it('judges against the snapshot options apply() will get', () => {
         const ref = refOf(snapshot(), 'Name');
         const operation = { operation: 'setValue' as const, ref, description: 'Name', value: 'Ada' };
