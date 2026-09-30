@@ -6,53 +6,15 @@ concurrency:
   cancel-in-progress: true
 jobs:
   pr-build:
-    name: PR Build
-    timeout-minutes: 30
-    runs-on: ubuntu-latest
-    env:
-      GH_TOKEN: ${{ github.token }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
-      - name: Install Dependencies
-        run: npm ci --ignore-scripts
-      - name: Lint
-        run: npm run lint
-      - name: Build
-        run: npm run build
-      - name: Test
-        run: npm run test
-      - name: Public Api Check
-        run: npm run public-api:check
-      - name: Upload Docs Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: docs
-          path: dist/docs/
-      - name: Upload Website Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: website
-          path: dist/website/
-      - name: Upload Coverage Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: coverage
-          path: coverage/
-
-  pr-build-angular-next:
     name: PR Build (${{matrix.angular}})
     timeout-minutes: 30
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        angular: ['Angular v22']
+        angular: ['Angular v21', 'Angular v22']
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -68,12 +30,36 @@ jobs:
         run: |
           npx ng update @angular/core@22 @angular/cli@22 @angular/cdk@22 --allow-dirty --force
           npm install @angular-builders/custom-esbuild@22 --ignore-scripts --force
-      # The update migrations rewrite the sources, so lint and the public API report are only checked by the
-      # PR Build job, against the Angular version the repository is developed with.
+      # The update migrations rewrite the sources, so lint and the public API report only apply to the Angular version
+      # the repository is developed with.
+      - name: Lint
+        if: ${{matrix.angular == 'Angular v21'}}
+        run: npm run lint
       - name: Build
         run: npm run build
       - name: Test
         run: npm run test
+      - name: Public Api Check
+        if: ${{matrix.angular == 'Angular v21'}}
+        run: npm run public-api:check
+      - name: Upload Docs Artifact
+        if: ${{matrix.angular == 'Angular v21'}}
+        uses: actions/upload-artifact@v4
+        with:
+          name: docs
+          path: dist/docs/
+      - name: Upload Website Artifact
+        if: ${{matrix.angular == 'Angular v21'}}
+        uses: actions/upload-artifact@v4
+        with:
+          name: website
+          path: dist/website/
+      - name: Upload Coverage Artifact
+        if: ${{matrix.angular == 'Angular v21'}}
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage
+          path: coverage/
 
   pr-visual-regression-test:
     name: PR Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}}, shard ${{matrix.shard}}/2)
