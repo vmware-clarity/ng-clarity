@@ -44,9 +44,6 @@ import {
   mapPopoverKeyToPosition,
 } from './utils/popover-positions';
 
-/** How much of the origin has to stay visible for its popover to stay open. */
-const ORIGIN_VISIBLE_RATIO = 0.8;
-
 /** @dynamic */
 @Directive({
   selector: '[clrPopoverContent]',
@@ -578,46 +575,35 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * Uses IntersectionObserver to detect when the origin element leaves the screen.
    * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
    *
-   * The popover closes once the origin is no longer sufficiently visible, relative to the
-   * most it has been visible while the popover was open:
-   * - an origin that has been at least 80% visible closes the popover once it drops below 80%;
-   * - an origin that has only been partially visible (e.g. clipped horizontally on a narrow
-   *   screen) closes it once it is completely out of view - the 0 threshold is what reports
-   *   that moment, since such an origin never crosses 0.8;
-   * - an origin that has not been visible at all yet (e.g. inside a container that is still
-   *   display: none when the popover opens) never closes it, since it did not leave the screen.
-   *
-   * Only the latest entry of a callback reflects the origin's current state, and entries
-   * reported against a collapsed viewport are ignored: screenshot tools (e.g. Playwright
-   * capturing an element taller than the viewport) briefly resize the window to 1x1, which
-   * reports the origin as not intersecting although it never moved.
+   * Closes once the origin is less visible than 80%, or than the most it has been visible if that
+   * is less: an origin clipped on a narrow screen closes it once completely out of view (reported
+   * by the 0 threshold), an origin that has not been rendered yet never does.
    */
   private setupIntersectionObserver() {
     if (!this.popoverService.originElement || this.intersectionObserver) {
       return;
     }
 
+    const minVisibleRatio = 0.8;
     let maxVisibleRatio = 0;
 
     this.intersectionObserver = new IntersectionObserver(
       entries => {
+        // isIntersecting is not used: with the 0 threshold it is true for any partially visible origin
         const { rootBounds, intersectionRatio } = entries[entries.length - 1];
 
-        // rootBounds is null when the page is embedded in a cross-origin iframe - keep closing there
+        // Screenshot tools briefly resize the window to 1x1. rootBounds is null in a cross-origin iframe.
         if (rootBounds && (rootBounds.width <= 1 || rootBounds.height <= 1)) {
           return;
         }
 
         maxVisibleRatio = Math.max(maxVisibleRatio, intersectionRatio);
 
-        const scrolledOutOfView =
-          maxVisibleRatio >= ORIGIN_VISIBLE_RATIO ? intersectionRatio < ORIGIN_VISIBLE_RATIO : intersectionRatio === 0;
-
-        if (maxVisibleRatio > 0 && scrolledOutOfView && this.popoverService.open) {
+        if (intersectionRatio < Math.min(maxVisibleRatio, minVisibleRatio) && this.popoverService.open) {
           this.zone.run(() => this.closePopover());
         }
       },
-      { root: null, threshold: [0, ORIGIN_VISIBLE_RATIO] }
+      { root: null, threshold: [0, minVisibleRatio] }
     );
 
     this.intersectionObserver.observe(this.popoverService.originElement.nativeElement);
