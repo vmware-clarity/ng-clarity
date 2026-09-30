@@ -71,7 +71,7 @@ released.
 
 | Clarity Version | Angular Version | Status             |
 | --------------- | --------------- | ------------------ |
-| v18             | v21             | Actively supported |
+| v18             | v21 - v22\*     | Actively supported |
 | v17             | v15 - v19\*     | Out of support     |
 | v16             | v15 - v17\*     | Out of support     |
 | v15             | v15 - v16       | Out of support     |
@@ -86,6 +86,7 @@ released.
 - Angular 17 is supported as of v16.4.0.
 - Angular 18 is supported as of v17.3.0.
 - Angular 19 is supported as of v17.5.0.
+- Angular 22 is supported as of v18.4.0.
 
 ## Deprecation Policy
 
