@@ -782,9 +782,12 @@ describe('ClrMutationEngineService', () => {
     let engine: ClrMutationEngineService;
     let router: Router;
     let classify: jasmine.Spy<(target: ClrMutationTarget) => ClrMutationConsequence>;
+    let releaseSlowGuard: (allowed: boolean) => void;
+    let slowGuard: Promise<boolean>;
 
     beforeEach(async () => {
       classify = jasmine.createSpy('classify').and.returnValue('reversible');
+      slowGuard = new Promise(resolve => (releaseSlowGuard = resolve));
       TestBed.configureTestingModule({
         providers: [
           provideClrMutationPolicy({ classify: target => classify(target) }),
@@ -795,6 +798,16 @@ describe('ClrMutationEngineService', () => {
             { path: 'billing', loadChildren: () => Promise.resolve([{ path: '', component: Routed }]) },
             { path: 'legacy', component: Routed, canActivate: [() => TestBed.inject(Router).parseUrl('/hosts')] },
             { path: 'admin', component: Routed, canActivate: [() => false] },
+            { path: 'slow', component: Routed, canActivate: [() => slowGuard] },
+            {
+              path: 'broken',
+              component: Routed,
+              resolve: {
+                data: () => {
+                  throw new Error('resolver broke');
+                },
+              },
+            },
             { path: '**', redirectTo: '' },
           ]),
         ],
@@ -870,6 +883,24 @@ describe('ClrMutationEngineService', () => {
       const result = await navigate('admin');
 
       expect(result).toEqual(jasmine.objectContaining({ applied: false, outcome: 'rejected', url: '/' }));
+    });
+
+    it('reports a navigation another one overtook', async () => {
+      const pending = navigate('slow');
+      await new Promise(resolve => setTimeout(resolve));
+      await router.navigateByUrl('/hosts');
+      releaseSlowGuard(true);
+
+      expect(await pending).toEqual(jasmine.objectContaining({ applied: false, outcome: 'superseded' }));
+      expect(router.url).toBe('/hosts');
+    });
+
+    it('reports a navigation that failed, with the router’s reason', async () => {
+      const result = await navigate('broken');
+
+      expect(result).toEqual(
+        jasmine.objectContaining({ applied: false, outcome: 'failed', detail: 'resolver broke', url: '/' })
+      );
     });
 
     it('reports staying put', async () => {

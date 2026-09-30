@@ -12,6 +12,7 @@ import {
   CLR_CONTEXT_PRESETS,
   clrContextPreset,
   resolveSnapshotOptions,
+  withCallOptions,
 } from './snapshot-options';
 import {
   CLR_CONTEXT_UNTRUSTED_OPTION_KEYS,
@@ -92,6 +93,38 @@ describe('snapshot options', () => {
         maxTextLength: 10,
       });
       expect(sanitizeUntrustedSnapshotOptions({ maxComponents: Number.POSITIVE_INFINITY })).toEqual({});
+    });
+
+    it('drops a list entry longer than any role or category name', () => {
+      expect(sanitizeUntrustedSnapshotOptions({ excludeRoles: ['button', 'x'.repeat(33)] })).toEqual({
+        excludeRoles: ['button'],
+      });
+    });
+  });
+
+  describe('withCallOptions', () => {
+    it('lets a call set budgets and switches over the application’s', () => {
+      expect(withCallOptions({ maxComponents: 10, includeText: false }, { includeText: true })).toEqual({
+        maxComponents: 10,
+        includeText: true,
+      });
+    });
+
+    it('ignores what a call left undefined', () => {
+      expect(withCallOptions({ maxComponents: 10 }, { maxComponents: undefined })).toEqual({ maxComponents: 10 });
+    });
+
+    it('adds a call’s exclusions to the application’s, so an empty list removes none', () => {
+      const application = {
+        excludeSelectors: ['.billing'],
+        excludeRoles: ['img'],
+        excludeCategories: ['text' as const],
+      };
+      expect(withCallOptions(application, { excludeSelectors: [], excludeRoles: ['img', 'link'] })).toEqual({
+        excludeSelectors: ['.billing'],
+        excludeRoles: ['img', 'link'],
+        excludeCategories: ['text'],
+      });
     });
   });
 });

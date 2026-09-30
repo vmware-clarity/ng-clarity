@@ -131,7 +131,8 @@
       <td class="left">
         The page context, tracked for as long as anyone subscribes: the first subscription starts tracking when nothing
         else has, and the last one to end stops it, so consumers that come and go share one tracker without stopping
-        each other's. With options, tracking restarts with them; without, running tracking is joined as it is.
+        each other's. With options, tracking restarts with them; without, running tracking is joined as it is. There is
+        one tracker, so its options apply to every consumer.
       </td>
     </tr>
     <tr>
@@ -245,10 +246,11 @@
         <code cds-text="code">queryParams?</code>
       </td>
       <td class="left">
-        Goes to a route from <code cds-text="code">availableRoutes</code> through the router, with the pattern's
-        parameters filled in. Each parameter fills one path segment literally — a slash or a space stays part of the
-        value — and <code cds-text="code">.</code> or <code cds-text="code">..</code> is refused. Guards run; the
-        outcome is read from the router's events. A route whose module has not loaded yet is listed as
+        Goes to a route of the router configuration — the ones <code cds-text="code">availableRoutes</code> lists, and
+        any other configured route the policy allows — through the router, with the pattern's parameters filled in. Each
+        parameter fills one path segment literally — a slash or a space stays part of the value — and
+        <code cds-text="code">.</code> or <code cds-text="code">..</code> is refused. Guards run; the outcome is read
+        from the router's events. A route whose module has not loaded yet is listed as
         <code cds-text="code">lazy</code>, and its own routes once it has. A route matched by a custom
         <code cds-text="code">matcher</code> has no pattern to navigate by and is not listed; the current route reports
         the segments a matcher consumed as <code cds-text="code">*</code>.
@@ -913,6 +915,37 @@
       <td class="left">
         The walk the engine runs, over any part of a page and without refs: the tree with whether a budget ran out, or
         only its nodes. For tests and tooling that describe markup outside an application.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ClrContextTreeResult</b></td>
+      <td class="left">
+        What <code cds-text="code">clrCollectDomContextTree</code> returns: the <code cds-text="code">components</code>,
+        whether a budget ran out (<code cds-text="code">truncated</code>), and <code cds-text="code">focus</code> when
+        the walk was narrowed to the open modal.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrRequestHostContext(options?)</b></td>
+      <td class="left">
+        What <code cds-text="code">requestHostContext()</code> does, without the service: for a page inside a frame that
+        is not an Angular application, or not one that injects the engine. Resolves to the host's snapshot, or
+        <code cds-text="code">null</code> when there is no host or it does not answer in time.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ClrContextRegionFilter</b></td>
+      <td class="left">
+        The filter <code cds-text="code">ClrContextRegistryService.collect(filter?)</code> takes: for the element a
+        region is anchored to (or <code cds-text="code">null</code>), whether to <code cds-text="code">keep</code> it,
+        <code cds-text="code">drop</code> it or <code cds-text="code">redact</code> its state.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_MUTATION_POLICY</b></td>
+      <td class="left">
+        The injection token <code cds-text="code">provideClrMutationPolicy(policy)</code> provides; inject it to read
+        the policy in effect. Provide it through the function, which keeps it out of a component's providers.
       </td>
     </tr>
     <tr>

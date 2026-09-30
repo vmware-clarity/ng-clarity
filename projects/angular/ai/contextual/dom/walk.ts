@@ -583,7 +583,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   // that content: a link that reads as the account number it opens, a button that
   // repeats the record it deletes.
   const redacted = walk.redactedDepth > 0;
-  const label = accessibleName(element, redacted ? null : role, walk.options.maxTextLength, walk.excludeSelector);
+  const label = nameSafely(element, redacted ? null : role, walk);
 
   if (!role && !label) {
     if (!isCustomElement) {
@@ -876,15 +876,19 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
   const node: ClrComponentContext = { type: 'frame', element: frame.tagName.toLowerCase() };
   const state: Record<string, unknown> = {};
   const contents = frameDocument(frame);
+  // A frame's page marks itself as a host page marks a region: on its root or its body.
+  const roots = contents ? [contents.documentElement, contents.body].filter(root => !!root) : [];
+  const ignored = roots.some(root => hidesDocument(root, walk));
+  const redacted = walk.redactedDepth > 0 || roots.some(root => root.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE));
   // A frame is named by what its author gave the frame element. Its document's title is
   // what that document shows — a record's name as often as a page's — so it is kept
   // apart, as the frame's `title`, where a caller given less than the full address does
   // not get it; and a frame in a redacted region reports none.
-  const label = accessibleName(frame, null, walk.options.maxTextLength, walk.excludeSelector);
+  const label = nameSafely(frame, null, walk);
   if (label) {
     node.label = truncate(label, walk.options.maxTextLength);
   }
-  const title = walk.redactedDepth > 0 ? '' : (contents?.title ?? '');
+  const title = redacted || ignored ? '' : (contents?.title ?? '');
   if (!label && title.trim()) {
     state.title = truncate(title, walk.options.maxTextLength);
   }
@@ -900,11 +904,20 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     state.loading = true;
   } else if (isStillNavigating(frame, contents)) {
     state.loading = true;
+  } else if (ignored) {
+    // The page keeps itself from agents: it is there, and that is all that is said.
   } else if (contents.designMode === 'on' || contents.body.isContentEditable || isContentEditable(contents.body)) {
     // A document the user types into — how classic rich-text editors are built — is one
     // text field, and what it holds is a value, never prose.
     node.type = 'textbox';
-    state.value = truncate(accessibleText(contents.body, undefined, walk.excludeSelector), walk.options.maxTextLength);
+    if (redacted) {
+      state.redacted = true;
+    } else {
+      state.value = truncate(
+        accessibleText(contents.body, undefined, walk.excludeSelector),
+        walk.options.maxTextLength
+      );
+    }
   } else {
     // Ids are scoped to a document: the frame's references must not skip or fold the
     // host's elements that happen to share an id, nor the other way round.
@@ -913,6 +926,10 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     walk.describedByIds = new Set();
     walk.labelIds = new Set();
     walk.frameDepth++;
+    const redactedRoot = redacted && walk.redactedDepth === 0;
+    if (redactedRoot) {
+      walk.redactedDepth++;
+    }
     try {
       collectReferencedIds(contents, walk);
       const children = describeNested(contents.body, walk, null);
@@ -920,6 +937,9 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
         node.children = children;
       }
     } finally {
+      if (redactedRoot) {
+        walk.redactedDepth--;
+      }
       walk.frameDepth--;
       walk.describedByIds = hostDescribedByIds;
       walk.labelIds = hostLabelIds;
@@ -930,6 +950,17 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     node.state = state;
   }
   return listOf(finish(node, frame, walk));
+}
+
+/** Whether a frame document's root or body keeps the whole page from the engine. */
+function hidesDocument(root: Element, walk: Walk): boolean {
+  return (
+    root.hasAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE) ||
+    root.getAttribute('aria-hidden') === 'true' ||
+    root.hasAttribute('hidden') ||
+    root.hasAttribute('inert') ||
+    (!!walk.excludeSelector && root.matches(walk.excludeSelector))
+  );
 }
 
 /**
@@ -968,6 +999,20 @@ function summarizeSafely(element: Element, role: string | null, walk: Walk): Rec
     return summarizeRole(element, role, walk.options, walk.excludeSelector);
   } catch {
     return null;
+  }
+}
+
+/**
+ * An element's name, or none when naming it fails — markup no browser would build, a
+ * component that throws — so one element cannot fail the whole snapshot. The snapshot
+ * then says something was left out.
+ */
+function nameSafely(element: Element, role: string | null, walk: Walk): string {
+  try {
+    return accessibleName(element, role, walk.options.maxTextLength, walk.excludeSelector);
+  } catch {
+    walk.truncated = true;
+    return '';
   }
 }
 

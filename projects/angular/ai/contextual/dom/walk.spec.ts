@@ -546,6 +546,17 @@ describe('collectContextTree, what a summary must not hide', () => {
     expect(widget.children?.[1].state).toBeUndefined();
   });
 
+  it('leaves out what a component fails to publish, and says so on the console in development', () => {
+    const warn = spyOn(console, 'warn');
+    container.innerHTML = '<my-widget aria-label="Widget"><button>Go</button></my-widget>';
+    clrPublishElementContext(container.querySelector('my-widget') as Element, () => {
+      throw new Error('publisher broke');
+    });
+
+    expect(collectContextTreeWithin(container, budgets()).components.map(node => node.type)).toEqual(['my-widget']);
+    expect(warn).toHaveBeenCalledWith(jasmine.stringContaining('<my-widget>'), jasmine.any(Error));
+  });
+
   it('gives what a single-part component publishes to the part that stands in for it', () => {
     container.innerHTML = '<my-picker><input role="combobox" aria-label="Cluster" /></my-picker>';
     (container.querySelector('my-picker') as HTMLElement & { clrElementContext?: unknown }).clrElementContext = () => ({
@@ -715,6 +726,35 @@ describe('collectContextTree, text and frames', () => {
       await frameWith('<title>Statement 4111-2222</title><p>Balance</p>', {}, region);
 
       expect(JSON.stringify(collectContextTreeWithin(container, budgets()).components)).not.toContain('4111');
+    });
+
+    it('honours a redaction marked on a frame document’s body or root', async () => {
+      await frameWith(
+        '<title>Account ACC-T</title><body data-clr-context-redact><label>Account <input value="ACC-1" /></label><p>ACC-P</p></body>'
+      );
+      await frameWith('<html data-clr-context-redact><body><input aria-label="Code" value="ACC-2" /></body></html>');
+      const described = collectContextTreeWithin(container, budgets()).components;
+
+      expect(JSON.stringify(described)).not.toContain('ACC-');
+      expect(described.map(frame => types(frame.children))).toEqual([['textbox'], ['textbox']]);
+      expect(described[0].children?.[0].state).toEqual({ redacted: true });
+    });
+
+    it('reports nothing inside a frame whose document ignores itself', async () => {
+      await frameWith('<body data-clr-context-ignore><p>chat transcript</p><button>Send</button></body>');
+      await frameWith('<html data-clr-context-ignore><title>Chat</title><body><p>chat transcript</p></body></html>');
+      const described = collectContextTreeWithin(container, budgets()).components;
+
+      expect(JSON.stringify(described)).not.toContain('chat');
+      expect(described.map(frame => frame.children)).toEqual([undefined, undefined]);
+    });
+
+    it('withholds the value of an editable frame whose document is redacted', async () => {
+      await frameWith('<body contenteditable data-clr-context-redact>Dear ACC-3</body>');
+      const [frame] = collectContextTreeWithin(container, budgets()).components;
+
+      expect(frame.type).toBe('textbox');
+      expect(frame.state).toEqual({ redacted: true });
     });
 
     it('walks frames inside frames', async () => {
@@ -1172,6 +1212,19 @@ describe('collectContextTree, markup it did not expect', () => {
     const result = collectContextTreeWithin(container, options());
     expect(result.components.map(node => node.label)).toEqual(['Shallow']);
     expect(result.truncated).toBe(true);
+  });
+
+  it('names an element whose content nests deeper than the stack holds, from what it can read', () => {
+    const button = container.appendChild(document.createElement('button'));
+    button.append('Deep ');
+    let innermost: Element = button;
+    for (let level = 0; level < 5000; level++) {
+      innermost = innermost.appendChild(document.createElement('span'));
+    }
+    innermost.textContent = 'leaf';
+
+    const result = collectContextTreeWithin(container, options());
+    expect(result.components.map(node => node.label)).toEqual(['Deep']);
   });
 
   it('does not read the plain items of a summarised list, whatever its length', () => {

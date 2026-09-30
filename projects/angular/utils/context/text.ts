@@ -38,6 +38,20 @@ export function clrNormalizeContextText(text: string, lowercase = true): string 
  * not rendered right now — the options of a closed combobox — is read from its markup.
  */
 export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string {
+  return textWithin(element, skip, 0);
+}
+
+/**
+ * How deep text is read. The HTML parser nests no deeper than 512, but script can, and
+ * reading recurses once per level: what lies deeper is left out rather than the stack
+ * running out.
+ */
+const MAX_TEXT_DEPTH = 512;
+
+function textWithin(element: Element, skip: ((descendant: Element) => boolean) | undefined, depth: number): string {
+  if (depth >= MAX_TEXT_DEPTH) {
+    return '';
+  }
   let text = '';
   element.childNodes.forEach(node => {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -56,7 +70,7 @@ export function clrContextText(element: Element, skip?: (descendant: Element) =>
     if (style && isStyleHidden(child, style)) {
       return;
     }
-    const inner = clrContextText(child, skip);
+    const inner = textWithin(child, skip, depth + 1);
     text += isBlock(child, style) ? ` ${inner} ` : inner;
   });
   return text;

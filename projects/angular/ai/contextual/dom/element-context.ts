@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isDevMode } from '@angular/core';
 import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { truncate } from './text';
@@ -12,7 +13,8 @@ import { jsonSafe } from '../json-safe';
 
 /**
  * Reads an element's published context, if any. A callback that throws is treated as
- * having nothing to say — one broken publisher must not break the snapshot.
+ * having nothing to say — one broken publisher must not break the snapshot — and in
+ * development says so on the console, so the component's author hears of it.
  */
 export function readClrElementContext(
   element: Element,
@@ -25,8 +27,19 @@ export function readClrElementContext(
   try {
     const published = callback(options);
     return published && typeof published === 'object' ? (published as Partial<ClrComponentContext>) : null;
-  } catch {
+  } catch (error) {
+    warnLeftOut(element, error);
     return null;
+  }
+}
+
+/** In development, says on the console that what an element published was left out, and why. */
+function warnLeftOut(element: Element, error: unknown): void {
+  if (isDevMode()) {
+    console.warn(
+      `The context <${element.tagName.toLowerCase()}> published could not be read and was left out of the snapshot.`,
+      error
+    );
   }
 }
 
@@ -47,9 +60,10 @@ export function mergeElementContext(
   let own: Partial<ClrComponentContext>;
   try {
     own = publishedParts(published, options, PUBLISHED_DEPTH);
-  } catch {
+  } catch (error) {
     // Reading what was published can throw too — a getter in its state — and counts as
     // having published nothing.
+    warnLeftOut(element, error);
     return base;
   }
   const merged: ClrComponentContext = { ...base, state: { ...base.state, ...own.state } };

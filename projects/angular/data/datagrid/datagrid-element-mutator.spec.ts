@@ -238,6 +238,25 @@ class WithheldCellHost {
   selected: { id: number; name: string }[] = [];
 }
 
+@Component({
+  template: `
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+        <clr-dg-row-detail *clrIfExpanded="true">
+          <clr-dg-cell>detail-{{ item.name }}</clr-dg-cell>
+        </clr-dg-row-detail>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class ExpandedDetailHost {
+  items = servers().slice(0, 2);
+  selected: Server[] = [];
+}
+
 function findNode(
   nodes: ClrComponentContext[],
   match: (node: ClrComponentContext) => boolean
@@ -285,6 +304,7 @@ describe('ClrDatagrid element mutator', () => {
         SecretCellHost,
         WithheldCellHost,
         WithheldRowHost,
+        ExpandedDetailHost,
       ],
       providers: [provideClrMutationPolicy({ classify: () => 'reversible' })],
     });
@@ -365,6 +385,15 @@ describe('ClrDatagrid element mutator', () => {
       const refused = await select('Nowhere');
       expect(refused.refused).toBe('invalid');
       ['ign-', 'inert-', 'int-', 'typed-'].forEach(text => expect(JSON.stringify(refused)).not.toContain(text));
+    });
+
+    it('labels a row by its own cells, not those of its expanded detail', async () => {
+      const host = await create(ExpandedDetailHost);
+      expect(fixture.nativeElement.textContent).toContain('detail-esx-01');
+
+      expect(grid().state?.['rows']).toEqual(['esx-01', 'esx-02']);
+      expect((await select('esx-02')).applied).toBeTrue();
+      expect(names(host.selected)).toEqual(['esx-02']);
     });
 
     it('keeps labelling rows while a detail pane hides the grid from assistive technology', async () => {

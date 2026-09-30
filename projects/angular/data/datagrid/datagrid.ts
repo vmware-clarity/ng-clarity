@@ -965,8 +965,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   /**
    * The row's content cells, as the user sees them: not the selection or action cells the
-   * grid adds, not hidden columns, and not a cell the application keeps from agents or the
-   * snapshot left out. Only what lies between a cell and its row counts: the grid itself is
+   * grid adds, not hidden columns, not the cells of its expanded detail, and not a cell the
+   * application keeps from agents or the snapshot left out. Only what lies between a cell and its row counts: the grid itself is
    * hidden from assistive technology while a detail pane is open, and its rows still have
    * the same content.
    */
@@ -1001,12 +1001,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     const host: HTMLElement = row.el.nativeElement;
     const withheld = (element: Element) =>
       element.matches(CLR_CONTEXT_WITHHELD_SELECTOR) || (!!excluded && element.matches(excluded));
+    const leftOut = (element: Element) => element.tagName.toLowerCase() === 'clr-dg-row-detail' || withheld(element);
     return Array.from(host.querySelectorAll('clr-dg-cell'))
       .filter(
         cell =>
           cell.closest('clr-dg-row') === host &&
           !cell.classList.contains(HIDDEN_COLUMN_CLASS) &&
-          !withinRow(cell, host).some(withheld)
+          !withinRow(cell, host).some(leftOut)
       )
       .map(cell => clrNormalizeContextText(clrContextText(cell, withheld), false))
       .filter(Boolean);

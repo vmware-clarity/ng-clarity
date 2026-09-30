@@ -25,7 +25,10 @@ const EMBEDDED_CHAT_PAGE = `
         // What a hand-written client must do: an unguessable request id, an answer
         // accepted only from the window that was asked and only from its origin, and a
         // request addressed to that origin rather than broadcast.
-        var hostOrigin = window.location.origin;
+        // This page is a srcdoc of the host, so it shares the host's origin; its address,
+        // about:srcdoc, has none (location.origin is "null"), so the origin is read from
+        // the window. A page served on its own would name its host's origin as a constant.
+        var hostOrigin = window.origin;
         var requestId = crypto.randomUUID();
         window.addEventListener('message', function (event) {
           var message = event.data;

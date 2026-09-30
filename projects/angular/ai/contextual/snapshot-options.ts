@@ -121,6 +121,31 @@ export function clrContextPreset(
   return options;
 }
 
+/**
+ * One call's options over the application's, ignoring what the call left undefined. The
+ * exclusion lists add to the application's rather than replace them: what the application
+ * keeps from agents stays kept whatever a call passes — a call can only leave out more.
+ */
+export function withCallOptions(
+  application: ClrContextSnapshotOptions | null | undefined,
+  call: ClrContextSnapshotOptions | undefined
+): ClrContextSnapshotOptions {
+  const effective: ClrContextSnapshotOptions = { ...application };
+  for (const [key, value] of Object.entries(call ?? {})) {
+    if (value !== undefined) {
+      (effective as Record<string, unknown>)[key] = value;
+    }
+  }
+  for (const key of EXCLUSION_KEYS) {
+    const kept = application?.[key];
+    const added = call?.[key];
+    if (Array.isArray(kept) && kept.length && Array.isArray(added)) {
+      (effective as Record<string, unknown>)[key] = [...new Set([...kept, ...added])];
+    }
+  }
+  return effective;
+}
+
 type BudgetKey = 'maxTextLength' | 'maxItemsPerCollection' | 'maxComponents' | 'maxDepth';
 
 /**

@@ -58,7 +58,8 @@
     <h4 id="mutation-result-heading">Result</h4>
     <!-- A live region, so the outcome of each operation is announced as it arrives. -->
     <div role="status" aria-labelledby="mutation-result-heading">
-      <pre class="mutation-result context-json">{{ mutationResult || 'Nothing applied yet.' }}</pre>
+      <pre class="mutation-result context-json" tabindex="0" aria-label="Mutation result">
+{{ mutationResult || 'Nothing applied yet.' }}</pre>
     </div>
   </div>
 
@@ -194,7 +195,7 @@
     <div class="card mutation-readout" data-clr-context-ignore>
       <div class="card-header">What the application sees</div>
       <div class="card-block">
-        <pre class="mutation-readout-json context-json">{{ readout() }}</pre>
+        <pre class="mutation-readout-json context-json" tabindex="0" aria-label="Form readout">{{ readout() }}</pre>
       </div>
     </div>
   </div>

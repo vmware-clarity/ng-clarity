@@ -124,7 +124,23 @@ export function accessibleText(element: Element, exclude?: Element, withheld = '
   return visible.trim() ? visible : textFor(element, exclude, true, withheld);
 }
 
-function textFor(element: Element, exclude: Element | undefined, includeClipped: boolean, withheld: string): string {
+/**
+ * How deep a name is read. The HTML parser nests no deeper than 512, but script can, and
+ * reading recurses once per level: what lies deeper is left out of the name rather than
+ * the stack running out.
+ */
+const MAX_TEXT_DEPTH = 512;
+
+function textFor(
+  element: Element,
+  exclude: Element | undefined,
+  includeClipped: boolean,
+  withheld: string,
+  depth = 0
+): string {
+  if (depth >= MAX_TEXT_DEPTH) {
+    return '';
+  }
   let text = '';
   for (const node of Array.from(element.childNodes)) {
     if (node.nodeType === Node.TEXT_NODE) {
@@ -137,21 +153,21 @@ function textFor(element: Element, exclude: Element | undefined, includeClipped:
       continue;
     }
     const child = node as Element;
-    // Nothing to contribute, and checking style for an empty element would be a layout
-    // read for no reason.
-    if (!child.textContent?.trim()) {
-      continue;
-    }
     // Text the application keeps from agents is never borrowed into a name, a label or a
     // description, whatever element above it is being named.
     if (child.matches(UNREADABLE_SELECTOR) || (withheld && child.matches(withheld))) {
+      continue;
+    }
+    const inner = textFor(child, exclude, includeClipped, withheld, depth + 1);
+    // Nothing to contribute, and checking style for an empty element would be a layout
+    // read for no reason.
+    if (!inner.trim()) {
       continue;
     }
     const style = computedStyle(child);
     if (isExcludedFromName(child, style, includeClipped)) {
       continue;
     }
-    const inner = textFor(child, exclude, includeClipped, withheld);
     // Block-level content reads as separate words, as it does when a browser names an
     // element: two cells or two lines never run together into one word.
     text += style && !style.display.startsWith('inline') && style.display !== 'contents' ? ` ${inner} ` : inner;
@@ -199,7 +215,7 @@ export function referencedText(element: Element, attribute: string, withheld = '
  * and editing hosts, whose text is what the user typed — a value, withheld wherever
  * values are.
  */
-export const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_EDITING_HOST_SELECTOR}`;
+const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_EDITING_HOST_SELECTOR}`;
 
 /**
  * Whether an element cannot be seen: `hidden`, or `display: none`, `visibility: hidden`
@@ -212,12 +228,13 @@ export function isUnrendered(element: Element): boolean {
   }
   // An element with `display: contents` has no box of its own, but renders its children
   // in its place, so it is judged by its parent.
-  if (checkVisibility(element, true)) {
-    return false;
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    if (checkVisibility(current, true)) {
+      return false;
+    }
+    if (current.ownerDocument.defaultView?.getComputedStyle(current).display !== 'contents') {
+      return true;
+    }
   }
-  if (element.ownerDocument.defaultView?.getComputedStyle(element).display !== 'contents') {
-    return true;
-  }
-  const parent = element.parentElement;
-  return parent ? isUnrendered(parent) : false;
+  return false;
 }

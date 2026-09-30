@@ -382,9 +382,18 @@ describe('ClrContextEngineService, configured once for the application', () => {
     expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
   });
 
-  it('lets a call override the application options', () => {
-    const engine = engineWith(provideClrContextOptions('interactive', { rootSelector: 'main, nav' }));
-    expect(types(engine.getSnapshot({ excludeCategories: [] }))).toEqual(['navigation', 'main']);
+  it('lets a call override the application’s budgets and switches', () => {
+    const engine = engineWith(provideClrContextOptions({ rootSelector: 'main', includeText: false }));
+    const [main] = engine.getSnapshot({ includeText: true }).components;
+    expect(main.children?.map(node => node.type)).toEqual(['text', 'button']);
+  });
+
+  it('adds a call’s exclusions to the application’s rather than replacing them', () => {
+    const engine = engineWith(
+      provideClrContextOptions('interactive', { rootSelector: 'main, nav', excludeSelectors: ['nav'] })
+    );
+    expect(types(engine.getSnapshot({ excludeCategories: [], excludeSelectors: [] }))).toEqual(['main']);
+    expect(engine.getSnapshot({ excludeRoles: ['button'] }).components[0].children).toBeUndefined();
   });
 
   it('narrows to the open modal and says so', () => {

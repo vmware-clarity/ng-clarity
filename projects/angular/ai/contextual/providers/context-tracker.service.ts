@@ -6,7 +6,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { DOCUMENT, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, ErrorHandler, inject, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
 import { defer, EMPTY, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
@@ -77,6 +77,7 @@ export class ClrContextTrackerService implements OnDestroy {
    */
   readonly changes$: Observable<ClrContextChange>;
 
+  private readonly errorHandler = inject(ErrorHandler);
   private readonly contextSubject = new ReplaySubject<ClrPageContext>(1);
   private readonly changesSubject = new Subject<ClrContextChange>();
   private trackingOptions: ClrContextTrackingOptions = {};
@@ -173,7 +174,10 @@ export class ClrContextTrackerService implements OnDestroy {
    * starts tracking when nothing else has, and the last one to end stops it, so consumers
    * that come and go — a chat panel, an inspector, a page — share one tracker without
    * stopping each other's. With `options`, tracking is (re)started with them, as with
-   * {@link start}; without, tracking already running is joined as it is.
+   * {@link start}; without, tracking already running is joined as it is. There is one
+   * tracker, so options apply to every consumer: a consumer that passes its own changes
+   * what every other one receives. Consumers that need different snapshots take them
+   * from `ClrContextEngineService` when {@link changes$} says something changed.
    *
    * Tracking started with {@link start} before the first subscription is left running
    * when the last one ends; {@link stop} stops tracking for everyone.
@@ -286,9 +290,13 @@ export class ClrContextTrackerService implements OnDestroy {
         // Re-enter the zone for the emission so subscribers' views update normally.
         this.zone.run(() => this.emit(snapshot, serialized));
       }
+    } catch (error) {
+      // Thrown from a timer, an error would reach nobody who could act on it: it goes
+      // where the application's other errors go, and tracking carries on.
+      this.errorHandler.handleError(error);
     } finally {
       // A frame that arrived with this change is watched from now on, even when this
-      // snapshot failed: the error surfaces, tracking does not stop.
+      // snapshot failed.
       this.zone.runOutsideAngular(() => this.observeFrames());
     }
   }
@@ -386,6 +394,11 @@ interface TrackedFrame {
 function allFrames(root: Document): HTMLIFrameElement[] {
   const frames: HTMLIFrameElement[] = [];
   for (const frame of Array.from(root.querySelectorAll('iframe'))) {
+    // What happens inside a frame the engine is told not to look at — a chat streaming
+    // its answer — changes no snapshot, so it is not watched at all.
+    if (frame.closest(CLR_CONTEXT_IGNORE_SELECTOR)) {
+      continue;
+    }
     frames.push(frame);
     const contents = readableDocument(frame);
     if (contents) {

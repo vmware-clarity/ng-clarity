@@ -361,11 +361,11 @@ export abstract class ClrDateInputBase
     }
     const text = proposed.trim();
     if (/^\d{4}-\d{2}-\d{2}T/.test(text)) {
-      // A moment in time: the day it falls on where the user is, offset and all.
-      const instant = new Date(text);
-      return Number.isNaN(instant.getTime())
-        ? null
-        : new Date(instant.getFullYear(), instant.getMonth(), instant.getDate());
+      // A date-time given for a date names its day as written: models send midnight UTC
+      // (`2026-03-06T00:00:00Z`) meaning the 6th, which would be the 5th anywhere west of
+      // Greenwich if the instant were placed in the user's time zone. The rest must still
+      // be a valid moment.
+      return Number.isNaN(new Date(text).getTime()) ? null : isoDate(text.slice(0, 10));
     }
     return isoDate(text) ?? this.dateIOService.getDateValueFromDateString(text);
   }

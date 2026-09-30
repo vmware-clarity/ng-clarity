@@ -17,18 +17,19 @@
  * application wants kept from agents it marks `data-clr-context-ignore`.
  */
 export function isVisible(element: Element): boolean {
-  // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.
-  if (checkVisibility(element, true)) {
-    return true;
-  }
   // An element with `display: contents` has no box of its own, so it never reads as
   // visible, but it hides nothing itself: its children render in its place. It shows
-  // exactly when its parent does.
-  if (element.ownerDocument.defaultView?.getComputedStyle(element).display !== 'contents') {
-    return false;
+  // exactly when its parent does — a loop rather than recursion, however deep they nest.
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.
+    if (checkVisibility(current, true)) {
+      return true;
+    }
+    if (current.ownerDocument.defaultView?.getComputedStyle(current).display !== 'contents') {
+      return false;
+    }
   }
-  const parent = element.parentElement;
-  return parent ? isVisible(parent) : true;
+  return true;
 }
 
 /**

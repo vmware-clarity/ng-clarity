@@ -56,8 +56,9 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
       // Enumerations; anything that is not one of the values is dropped when resolved.
       (sanitized as Record<string, unknown>)[key] = value;
     } else if (Array.isArray(value)) {
+      // Roles and categories; a selector is not accepted from here at all.
       (sanitized as Record<string, unknown>)[key] = value
-        .filter(entry => typeof entry === 'string')
+        .filter(entry => typeof entry === 'string' && entry.length <= MAX_ENUM_LENGTH)
         .slice(0, MAX_LIST_ENTRIES);
     }
   }

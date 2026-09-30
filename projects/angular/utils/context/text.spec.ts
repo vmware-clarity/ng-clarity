@@ -32,6 +32,16 @@ describe('clrContextText', () => {
     return clrNormalizeContextText(clrContextText(host), false);
   };
 
+  it('reads what it can of content nested deeper than the stack holds', () => {
+    host.append('Top ');
+    let innermost: Element = host;
+    for (let level = 0; level < 5000; level++) {
+      innermost = innermost.appendChild(document.createElement('span'));
+    }
+    innermost.textContent = 'leaf';
+    expect(clrNormalizeContextText(clrContextText(host), false)).toBe('Top');
+  });
+
   it('leaves out text hidden by style as well as by attribute', () => {
     expect(
       read(

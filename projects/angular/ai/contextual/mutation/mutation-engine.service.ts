@@ -40,7 +40,7 @@ import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
 import { CLR_CONTEXT_OPTIONS } from '../providers/context-options';
 import { ClrContextEngineService } from '../providers/contextual-engine.service';
 import { availableRoutes } from '../routes';
-import { resolveSnapshotOptions } from '../snapshot-options';
+import { resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
 
 /** How long a `confirm` hook may take by default before the operation is declined. */
 const CONFIRM_TIMEOUT_MS = 120_000;
@@ -250,13 +250,7 @@ export class ClrMutationEngineService {
 
   /** The options a write is judged against: the application's, with the call's over them. */
   private scopeOptions(snapshotOptions?: ClrContextSnapshotOptions): Required<ClrContextSnapshotOptions> {
-    const effective: ClrContextSnapshotOptions = { ...this.contextOptions };
-    for (const [key, value] of Object.entries(snapshotOptions ?? {})) {
-      if (value !== undefined) {
-        (effective as Record<string, unknown>)[key] = value;
-      }
-    }
-    return resolveSnapshotOptions(effective);
+    return resolveSnapshotOptions(withCallOptions(this.contextOptions, snapshotOptions));
   }
 
   /** Everything up to, but not including, the write: the target, the value, the verdict. */

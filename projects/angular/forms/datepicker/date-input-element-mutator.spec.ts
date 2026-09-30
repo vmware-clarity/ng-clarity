@@ -108,10 +108,6 @@ function displayOf(date: Date): string {
   return `${pad(date.getMonth() + 1)}/${pad(date.getDate())}/${date.getFullYear()}`;
 }
 
-function isoOf(date: Date): string {
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`;
-}
-
 describe('ClrDateInput element mutator', () => {
   let fixture: ComponentFixture<DateHost | NativeDateHost>;
   let input: HTMLInputElement;
@@ -235,20 +231,16 @@ describe('ClrDateInput element mutator', () => {
     });
 
     describe('moments in time', () => {
-      it('resolves an ISO date-time with an offset to the local calendar day of that instant', async () => {
-        // 23:30 at UTC-5 is 04:30 UTC on the 6th; the day it is where the user is may be either.
-        const instant = new Date(Date.UTC(2026, 2, 6, 4, 30));
-
+      it('takes the calendar day an ISO date-time names, whatever its offset', async () => {
         const result = await write('2026-03-05T23:30:00-05:00');
 
-        expect(result).toEqual({ value: displayOf(instant) });
-        expectSelectedDay(instant.getFullYear(), instant.getMonth(), instant.getDate());
+        expect(result).toEqual({ value: displayOf(new Date(2026, 2, 5)) });
+        expectSelectedDay(2026, 2, 5);
       });
 
-      it('resolves a UTC instant to the local calendar day of that instant', () => {
-        const instant = new Date(Date.UTC(2026, 11, 31, 23, 0));
-
-        expect(coerce('2026-12-31T23:00:00Z')).toEqual({ value: displayOf(instant) });
+      it('takes midnight UTC as the day it names, not the day before west of Greenwich', () => {
+        expect(coerce('2026-03-06T00:00:00Z')).toEqual({ value: displayOf(new Date(2026, 2, 6)) });
+        expect(coerce('2026-12-31T23:00:00Z')).toEqual({ value: displayOf(new Date(2026, 11, 31)) });
       });
 
       it('refuses a date-time that is not a moment', () => {
@@ -332,13 +324,11 @@ describe('ClrDateInput element mutator', () => {
         expectSelectedDay(2026, 2, 5);
       });
 
-      it('writes an instant with an offset as its local calendar day', async () => {
-        const instant = new Date(Date.UTC(2026, 2, 6, 4, 30));
-
+      it('writes the calendar day an ISO date-time names', async () => {
         const result = await set('2026-03-05T23:30:00-05:00');
 
         expect(result.applied).toBeTrue();
-        expect(control.value).toBe(displayOf(instant));
+        expect(control.value).toBe('03/05/2026');
       });
 
       it('refuses an impossible date with the accepted forms named, and keeps the value', async () => {
@@ -403,9 +393,7 @@ describe('ClrDateInput element mutator', () => {
       expect(coerce('2026-07-14')).toEqual({ value: '2026-07-14' });
       expect(coerce('07/14/2026')).toEqual({ value: '2026-07-14' });
       expect(coerce(new Date(2026, 6, 14, 23, 30))).toEqual({ value: '2026-07-14' });
-
-      const instant = new Date(Date.UTC(2026, 2, 6, 4, 30));
-      expect(coerce('2026-03-05T23:30:00-05:00')).toEqual({ value: isoOf(instant) });
+      expect(coerce('2026-03-05T23:30:00-05:00')).toEqual({ value: '2026-03-05' });
     });
 
     it('refuses an impossible date', () => {

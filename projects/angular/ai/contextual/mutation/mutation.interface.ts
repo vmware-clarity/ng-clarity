@@ -201,7 +201,8 @@ export function provideClrMutationPolicy(policy: ClrMutationPolicy): Environment
  *   custom control that does not say how it is written to, a select that applies its
  *   value only on submit.
  * - `invalid` — the value is not one the control can take; the detail says what would be.
- * - `noRoute` — the path is not one of the application's `availableRoutes`.
+ * - `noRoute` — the path is not a navigable route of the router configuration: wildcard,
+ *   redirect and custom-matcher routes are not navigable.
  */
 export type ClrMutationRefusal =
   | 'unclassified'

@@ -25,7 +25,7 @@ import { jsonSafe } from '../json-safe';
 import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
 import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
 import { availableRoutes, routePatternFor } from '../routes';
-import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
+import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
@@ -298,15 +298,9 @@ export class ClrContextEngineService implements OnDestroy {
     return resolveSnapshotOptions(capSnapshotOptions(hostCeiling, this.applicationOptions ?? undefined));
   }
 
-  /** The call's options over the application's, ignoring keys a caller left undefined. */
+  /** The call's options over the application's; see {@link withCallOptions}. */
   private effectiveOptions(options?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
-    const effective: ClrContextSnapshotOptions = { ...this.applicationOptions };
-    for (const [key, value] of Object.entries(options ?? {})) {
-      if (value !== undefined) {
-        (effective as Record<string, unknown>)[key] = value;
-      }
-    }
-    return effective;
+    return withCallOptions(this.applicationOptions, options);
   }
 
   private browserWindow(): Window | null {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, ErrorHandler } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
@@ -546,6 +546,35 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     await elapse(10);
 
     expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Run', 'Stop']);
+  });
+
+  it('does not watch a frame the engine is told to ignore', async () => {
+    frame.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
+    await loadFrame('<p>Streaming</p>');
+    tracker.start({ debounceMs: 10 });
+    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.callThrough();
+
+    addFrameButton('Token');
+    frameBody().ownerDocument.querySelector('p')?.append(' more');
+    await elapse(10);
+
+    expect(getSnapshot).not.toHaveBeenCalled();
+  });
+
+  it('hands a snapshot that fails to the application’s error handler, and carries on', async () => {
+    await loadFrame('<button>Run</button>');
+    tracker.start({ debounceMs: 10 });
+    const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
+    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.throwError('boom');
+
+    addFrameButton('Stop');
+    await elapse(10);
+    expect(handleError).toHaveBeenCalledWith(jasmine.objectContaining({ message: 'boom' }));
+
+    getSnapshot.and.callThrough();
+    addFrameButton('Again');
+    await elapse(10);
+    expect(frameButtons(emitted[emitted.length - 1])).toEqual(['Run', 'Stop', 'Again']);
   });
 
   it('picks a frame up once it loads, and again when it navigates', async () => {
