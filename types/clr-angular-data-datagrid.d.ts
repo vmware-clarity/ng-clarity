@@ -766,6 +766,13 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
     private _rowSelectionLabel;
     private wrappedInjector;
     private subscriptions;
+    /**
+     * The placeholder cells we create from `fixedCellTemplate` for the calculate pass. Unlike the
+     * cell views, which belong to their `WrappedCell`, these are created here on every pass, so
+     * they are ours to destroy. Detaching them from the container only unlinks them - the views
+     * themselves would stay alive and keep the whole row, and the datagrid with it, in memory.
+     */
+    private fixedCellViews;
     private _selectable;
     constructor(selection: Selection<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
     /**
@@ -808,6 +815,7 @@ declare class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit
      * @deprecated related to clrDgRowSelection, which is deprecated
      */
     protected selectRow(selected: boolean, $event: any): void;
+    private destroyFixedCellViews;
     /**
      * Projects the cells into the display containers. Cells of pinned columns go into their static
      * container so they stay visible during horizontal scroll; the rest stay scrollable. Cells are
@@ -856,6 +864,14 @@ declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     private cdkVirtualFor;
     private subscriptions;
     private topIndex;
+    /**
+     * Injectors for the CDK virtual scroll instances we create by hand, in the order they have to be
+     * destroyed. Destroying them is what runs the CDK teardown: their `ngOnDestroy` and, importantly,
+     * the `DestroyRef` cleanup `CdkVirtualScrollViewport` registers for the effect it creates on the
+     * application injector. Leaving them alive keeps that effect registered, which retains the
+     * viewport and the entire datagrid view tree for as long as the application lives.
+     */
+    private readonly cdkInjectors;
     private mutationChanges;
     private cdkVirtualForInputs;
     private _totalItems;
@@ -891,6 +907,18 @@ declare class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoC
     private updateAriaRowCount;
     private updateAriaRowIndexes;
     private createVirtualScrollViewportForDatagrid;
+    private createCdkVirtualScrollViewport;
+    /**
+     * `Directionality`, `ScrollDispatcher` and `ViewportRuler` belong to the application, not to us.
+     * Angular registers every value an injector hands out that has an `ngOnDestroy` - `useValue`
+     * providers included - and calls it from `injector.destroy()`, so putting them in an injector we
+     * destroy would end scroll, resize and text-direction notification for the whole application the
+     * first time a virtual scroll datagrid goes away. They live in this parent, which nothing destroys,
+     * so the viewport still resolves the very instances our host injector gave us - including a
+     * `Directionality` overridden by an ancestor `[dir]`.
+     */
+    private createApplicationInjector;
+    private createCdkVirtualForOfDirective;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDatagridVirtualScrollDirective<any>, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridVirtualScrollDirective<any>, "[clrVirtualScroll],[ClrVirtualScroll]", never, { "persistItems": { "alias": "clrVirtualPersistItems"; "required": false; }; "cdkVirtualForOf": { "alias": "clrVirtualRowsOf"; "required": false; }; "cdkVirtualForTrackBy": { "alias": "clrVirtualRowsTrackBy"; "required": false; }; "cdkVirtualForTemplate": { "alias": "clrVirtualRowsTemplate"; "required": false; }; "cdkVirtualForTemplateCacheSize": { "alias": "clrVirtualRowsTemplateCacheSize"; "required": false; }; "itemSize": { "alias": "clrVirtualRowsItemSize"; "required": false; }; "minBufferPx": { "alias": "clrVirtualRowsMinBufferPx"; "required": false; }; "maxBufferPx": { "alias": "clrVirtualRowsMaxBufferPx"; "required": false; }; "dataRange": { "alias": "clrVirtualDataRange"; "required": false; }; }, { "renderedRangeChange": "renderedRangeChange"; }, never, never, false, never>;
 }
@@ -1035,6 +1063,13 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
      */
     private _subscriptions;
     private _virtualScrollSubscriptions;
+    /**
+     * The placeholder columns we create from `fixedColumnTemplate` for the calculate pass. Unlike
+     * the column views, which belong to their `WrappedColumn`, these are created here on every
+     * pass, so they are ours to destroy. Detaching them from the container only unlinks them - the
+     * views themselves would stay alive and keep the whole datagrid in memory.
+     */
+    private fixedColumnViews;
     private cachedRowsHeight;
     private cachedContentHeight;
     private resizeObserver;
@@ -1096,6 +1131,7 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
      * Public method to re-trigger the computation of displayed items manually
      */
     dataChanged(): void;
+    private destroyFixedColumnViews;
     private toggleVirtualScrollSubscriptions;
     /**
      * Publishes the width of the row controls - the static container holding the select, action and

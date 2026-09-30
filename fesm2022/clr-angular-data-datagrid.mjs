@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { InjectionToken, Injectable, Directive, ViewChild, Component, PLATFORM_ID, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ChangeDetectionStrategy, ContentChildren, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, Injector, ChangeDetectorRef, NgZone, Renderer2, inject, EnvironmentInjector, TemplateRef, IterableDiffers, afterNextRender, RendererStyleFlags2, ViewChildren, NgModule } from '@angular/core';
+import { InjectionToken, Injectable, Directive, ViewChild, Component, PLATFORM_ID, Inject, DOCUMENT, EventEmitter, ElementRef, booleanAttribute, Input, Output, Optional, ContentChild, ChangeDetectionStrategy, ContentChildren, forwardRef, HostListener, ViewContainerRef, runInInjectionContext, createEnvironmentInjector, ChangeDetectorRef, NgZone, Renderer2, inject, EnvironmentInjector, TemplateRef, IterableDiffers, afterNextRender, RendererStyleFlags2, ViewChildren, NgModule } from '@angular/core';
 import * as i2 from '@clr/angular/utils';
 import { uniqueIdFactory, Keys, HostWrapper, IfExpandService, ClrLoadingState, ClrExpandableAnimationDirective, LoadingListener, WillyWonka, OompaLoompa, ClrKeyFocus, DomAdapter, ClrIfExpanded, CdkDragModule, CdkTrapFocusModule, ClrLoadingModule, ClrConditionalModule, ClrOutsideClickModule, ClrExpandableAnimationModule, ClrKeyFocusModule } from '@clr/angular/utils';
 import * as i12 from 'rxjs';
@@ -29,7 +29,7 @@ import * as i2$1 from '@angular/cdk/bidi';
 import { Directionality } from '@angular/cdk/bidi';
 import { coerceNumberProperty } from '@angular/cdk/coercion';
 import * as i3$1 from '@angular/cdk/scrolling';
-import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY, ScrollDispatcher, ViewportRuler, CdkVirtualScrollable, CdkVirtualScrollViewport, CDK_VIRTUAL_SCROLL_VIEWPORT, CdkVirtualForOf } from '@angular/cdk/scrolling';
+import { FixedSizeVirtualScrollStrategy, VIRTUAL_SCROLL_STRATEGY, CdkVirtualScrollable, CdkVirtualScrollViewport, ScrollDispatcher, ViewportRuler, CDK_VIRTUAL_SCROLL_VIEWPORT, CdkVirtualForOf } from '@angular/cdk/scrolling';
 import * as i7 from '@clr/angular/forms/checkbox';
 import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
 import { ClrSelectModule } from '@clr/angular/forms/select';
@@ -4179,6 +4179,13 @@ class ClrDatagridRow {
         this._detailCloseLabel = '';
         this._rowSelectionLabel = '';
         this.subscriptions = [];
+        /**
+         * The placeholder cells we create from `fixedCellTemplate` for the calculate pass. Unlike the
+         * cell views, which belong to their `WrappedCell`, these are created here on every pass, so
+         * they are ours to destroy. Detaching them from the container only unlinks them - the views
+         * themselves would stay alive and keep the whole row, and the datagrid with it, in memory.
+         */
+        this.fixedCellViews = [];
         // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
         this._selectable = true;
         nbRow++;
@@ -4302,6 +4309,7 @@ class ClrDatagridRow {
                 this._pinnedCells.detach();
             }
             // remove cell views from calculated view
+            this.destroyFixedCellViews();
             for (let i = this._calculatedCells.length; i > 0; i--) {
                 this._calculatedCells.detach();
             }
@@ -4314,9 +4322,11 @@ class ClrDatagridRow {
                     this.globalExpandable.hasExpandableRow,
                     this.detailService.enabled,
                 ];
-                fixedCellConditions
-                    .filter(Boolean)
-                    .forEach(() => this._calculatedCells.insert(this._fixedCellTemplate.createEmbeddedView(null)));
+                fixedCellConditions.filter(Boolean).forEach(() => {
+                    const fixedCellView = this._fixedCellTemplate.createEmbeddedView(null);
+                    this.fixedCellViews.push(fixedCellView);
+                    this._calculatedCells.insert(fixedCellView);
+                });
                 this.dgCells.forEach(cell => {
                     if (!cell._view.destroyed) {
                         this._calculatedCells.insert(cell._view);
@@ -4332,6 +4342,7 @@ class ClrDatagridRow {
         }));
     }
     ngOnDestroy() {
+        this.destroyFixedCellViews();
         this.subscriptions.forEach((sub) => sub.unsubscribe());
     }
     toggle(selected = !this.selected) {
@@ -4381,6 +4392,16 @@ class ClrDatagridRow {
         else {
             this.toggle(selected);
         }
+    }
+    destroyFixedCellViews() {
+        // On teardown Angular has already destroyed the views in our container by the time it runs our
+        // `ngOnDestroy`, so only the calculate/display transition has live ones to release here.
+        this.fixedCellViews.forEach(view => {
+            if (!view.destroyed) {
+                view.destroy();
+            }
+        });
+        this.fixedCellViews = [];
     }
     /**
      * Projects the cells into the display containers. Cells of pinned columns go into their static
@@ -4530,6 +4551,14 @@ class ClrDatagridVirtualScrollDirective {
         this.shouldUpdateAriaRowIndexes = false;
         this.subscriptions = [];
         this.topIndex = 0;
+        /**
+         * Injectors for the CDK virtual scroll instances we create by hand, in the order they have to be
+         * destroyed. Destroying them is what runs the CDK teardown: their `ngOnDestroy` and, importantly,
+         * the `DestroyRef` cleanup `CdkVirtualScrollViewport` registers for the effect it creates on the
+         * application injector. Leaving them alive keeps that effect registered, which retains the
+         * viewport and the entire datagrid view tree for as long as the application lives.
+         */
+        this.cdkInjectors = [];
         // @deprecated remove the mutation observer when `datagrid-compact` class is deleted
         this.mutationChanges = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
@@ -4637,7 +4666,7 @@ class ClrDatagridVirtualScrollDirective {
     ngAfterViewInit() {
         runInInjectionContext(this.injector, () => {
             this.virtualScrollViewport = this.createVirtualScrollViewportForDatagrid(this.changeDetectorRef, this.ngZone, this.renderer2, this.directionality, this.scrollDispatcher, this.viewportRuler, this.datagridElementRef, this.virtualScrollStrategy);
-            this.cdkVirtualFor = createCdkVirtualForOfDirective(this.viewContainerRef, this.templateRef, this.iterableDiffers, this.virtualScrollViewport, this.ngZone);
+            this.cdkVirtualFor = this.createCdkVirtualForOfDirective(this.viewContainerRef, this.templateRef, this.iterableDiffers, this.virtualScrollViewport, this.ngZone);
             this.virtualScrollViewport.ngOnInit();
         });
         this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector('[role="grid"]');
@@ -4668,12 +4697,21 @@ class ClrDatagridVirtualScrollDirective {
         }
     }
     ngOnDestroy() {
-        this.cdkVirtualFor?.ngOnDestroy();
-        this.virtualScrollViewport?.ngOnDestroy();
+        // Ours first: CDK teardown emits on the streams we subscribe to, and third-party teardown that
+        // throws must not be able to leave our own observer and subscriptions behind.
         this.mutationChanges?.disconnect();
         this.subscriptions.forEach(subscription => {
             subscription.unsubscribe();
         });
+        try {
+            // Destroying the injectors calls `ngOnDestroy` on the CDK instances they created and runs the
+            // `DestroyRef` cleanup CDK registered for them, so we must not call those hooks ourselves.
+            this.cdkInjectors.forEach(injector => injector.destroy());
+        }
+        finally {
+            // An injector cannot be destroyed twice, so drop them even if one of them threw.
+            this.cdkInjectors.length = 0;
+        }
     }
     scrollUp(offset, behavior = 'auto') {
         this.scrollToIndex(this.topIndex - offset, behavior);
@@ -4729,8 +4767,57 @@ class ClrDatagridVirtualScrollDirective {
     createVirtualScrollViewportForDatagrid(changeDetectorRef, ngZone, renderer2, directionality, scrollDispatcher, viewportRuler, datagridElementRef, virtualScrollStrategy) {
         const datagridContentElement = datagridElementRef.nativeElement.querySelector('.datagrid-content');
         const datagridRowsElement = datagridElementRef.nativeElement.querySelector('.datagrid-rows');
-        const virtualScrollViewport = createCdkVirtualScrollViewport(new ElementRef(datagridContentElement), new ElementRef(datagridRowsElement), changeDetectorRef, ngZone, renderer2, virtualScrollStrategy, directionality, scrollDispatcher, viewportRuler, null);
+        return this.createCdkVirtualScrollViewport(new ElementRef(datagridContentElement), new ElementRef(datagridRowsElement), changeDetectorRef, ngZone, renderer2, virtualScrollStrategy, directionality, scrollDispatcher, viewportRuler, null);
+    }
+    createCdkVirtualScrollViewport(datagridDivElementRef, contentWrapper, changeDetectorRef, ngZone, renderer2, virtualScrollStrategy, directionality, scrollDispatcher, viewportRuler, scrollable) {
+        const injector = createEnvironmentInjector([
+            { provide: ElementRef, useValue: datagridDivElementRef },
+            { provide: ChangeDetectorRef, useValue: changeDetectorRef },
+            { provide: NgZone, useValue: ngZone },
+            { provide: Renderer2, useValue: renderer2 },
+            { provide: VIRTUAL_SCROLL_STRATEGY, useValue: virtualScrollStrategy },
+            { provide: CdkVirtualScrollable, useValue: scrollable },
+            { provide: CdkVirtualScrollViewport, useClass: CdkVirtualScrollViewport },
+        ], this.createApplicationInjector(directionality, scrollDispatcher, viewportRuler));
+        const virtualScrollViewport = injector.get(CdkVirtualScrollViewport);
+        virtualScrollViewport._contentWrapper = contentWrapper;
+        // Registered before the caller creates anything else, so a half-finished init still tears down
+        // what it did manage to create.
+        this.cdkInjectors.push(injector);
         return virtualScrollViewport;
+    }
+    /**
+     * `Directionality`, `ScrollDispatcher` and `ViewportRuler` belong to the application, not to us.
+     * Angular registers every value an injector hands out that has an `ngOnDestroy` - `useValue`
+     * providers included - and calls it from `injector.destroy()`, so putting them in an injector we
+     * destroy would end scroll, resize and text-direction notification for the whole application the
+     * first time a virtual scroll datagrid goes away. They live in this parent, which nothing destroys,
+     * so the viewport still resolves the very instances our host injector gave us - including a
+     * `Directionality` overridden by an ancestor `[dir]`.
+     */
+    createApplicationInjector(directionality, scrollDispatcher, viewportRuler) {
+        return createEnvironmentInjector([
+            { provide: Directionality, useValue: directionality },
+            { provide: ScrollDispatcher, useValue: scrollDispatcher },
+            { provide: ViewportRuler, useValue: viewportRuler },
+        ], inject(EnvironmentInjector));
+    }
+    createCdkVirtualForOfDirective(viewContainerRef, templateRef, iterableDiffers, virtualScrollViewport, ngZone) {
+        // `CdkVirtualForOf` resolves the viewport with `skipSelf`, so it has to come from a parent
+        // injector rather than the one that provides `CdkVirtualForOf` itself. That parent holds nothing
+        // but the value provider, and destroying it would run the viewport's `ngOnDestroy` a second time
+        // on top of the one its own injector already runs, so it is left to be garbage collected.
+        const virtualScrollViewportInjector = createEnvironmentInjector([{ provide: CDK_VIRTUAL_SCROLL_VIEWPORT, useValue: virtualScrollViewport }], inject(EnvironmentInjector));
+        const cdkVirtualForInjector = createEnvironmentInjector([
+            { provide: ViewContainerRef, useValue: viewContainerRef },
+            { provide: TemplateRef, useValue: templateRef },
+            { provide: IterableDiffers, useValue: iterableDiffers },
+            { provide: NgZone, useValue: ngZone },
+            { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
+        ], virtualScrollViewportInjector);
+        // `CdkVirtualForOf` reads from the viewport, so it has to go away first.
+        this.cdkInjectors.unshift(cdkVirtualForInjector);
+        return cdkVirtualForInjector.get(CdkVirtualForOf);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrDatagridVirtualScrollDirective, deps: [{ token: i0.ChangeDetectorRef }, { token: i0.IterableDiffers }, { token: Items }, { token: i0.NgZone }, { token: i0.Renderer2 }, { token: i0.TemplateRef }, { token: i0.ViewContainerRef }, { token: i2$1.Directionality }, { token: i3$1.ScrollDispatcher }, { token: i3$1.ViewportRuler }, { token: forwardRef(() => ClrDatagrid) }, { token: i0.EnvironmentInjector }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.24", type: ClrDatagridVirtualScrollDirective, isStandalone: false, selector: "[clrVirtualScroll],[ClrVirtualScroll]", inputs: { persistItems: ["clrVirtualPersistItems", "persistItems"], cdkVirtualForOf: ["clrVirtualRowsOf", "cdkVirtualForOf"], cdkVirtualForTrackBy: ["clrVirtualRowsTrackBy", "cdkVirtualForTrackBy"], cdkVirtualForTemplate: ["clrVirtualRowsTemplate", "cdkVirtualForTemplate"], cdkVirtualForTemplateCacheSize: ["clrVirtualRowsTemplateCacheSize", "cdkVirtualForTemplateCacheSize"], itemSize: ["clrVirtualRowsItemSize", "itemSize"], minBufferPx: ["clrVirtualRowsMinBufferPx", "minBufferPx"], maxBufferPx: ["clrVirtualRowsMaxBufferPx", "maxBufferPx"], dataRange: ["clrVirtualDataRange", "dataRange"] }, outputs: { renderedRangeChange: "renderedRangeChange" }, providers: [Items], ngImport: i0 }); }
@@ -4775,43 +4862,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
                 type: Input,
                 args: ['clrVirtualDataRange']
             }] } });
-function createCdkVirtualScrollViewport(datagridDivElementRef, contentWrapper, changeDetectorRef, ngZone, renderer2, virtualScrollStrategy, directionality, scrollDispatcher, viewportRuler, scrollable) {
-    const virtualScrollViewportInjector = Injector.create({
-        parent: inject(EnvironmentInjector),
-        providers: [
-            { provide: ElementRef, useValue: datagridDivElementRef },
-            { provide: ChangeDetectorRef, useValue: changeDetectorRef },
-            { provide: NgZone, useValue: ngZone },
-            { provide: Renderer2, useValue: renderer2 },
-            { provide: VIRTUAL_SCROLL_STRATEGY, useValue: virtualScrollStrategy },
-            { provide: Directionality, useValue: directionality },
-            { provide: ScrollDispatcher, useValue: scrollDispatcher },
-            { provide: ViewportRuler, useValue: viewportRuler },
-            { provide: CdkVirtualScrollable, useValue: scrollable },
-            { provide: CdkVirtualScrollViewport, useClass: CdkVirtualScrollViewport },
-        ],
-    });
-    const viewPort = virtualScrollViewportInjector.get(CdkVirtualScrollViewport);
-    viewPort._contentWrapper = contentWrapper;
-    return viewPort;
-}
-function createCdkVirtualForOfDirective(viewContainerRef, templateRef, iterableDiffers, virtualScrollViewport, ngZone) {
-    const virtualScrollViewportInjector = Injector.create({
-        parent: inject(EnvironmentInjector),
-        providers: [{ provide: CDK_VIRTUAL_SCROLL_VIEWPORT, useValue: virtualScrollViewport }],
-    });
-    const cdkVirtualForInjector = Injector.create({
-        parent: virtualScrollViewportInjector,
-        providers: [
-            { provide: ViewContainerRef, useValue: viewContainerRef },
-            { provide: TemplateRef, useValue: templateRef },
-            { provide: IterableDiffers, useValue: iterableDiffers },
-            { provide: NgZone, useValue: ngZone },
-            { provide: CdkVirtualForOf, useClass: CdkVirtualForOf },
-        ],
-    });
-    return cdkVirtualForInjector.get(CdkVirtualForOf);
-}
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -5142,6 +5192,13 @@ class ClrDatagrid {
          */
         this._subscriptions = [];
         this._virtualScrollSubscriptions = [];
+        /**
+         * The placeholder columns we create from `fixedColumnTemplate` for the calculate pass. Unlike
+         * the column views, which belong to their `WrappedColumn`, these are created here on every
+         * pass, so they are ours to destroy. Detaching them from the container only unlinks them - the
+         * views themselves would stay alive and keep the whole datagrid in memory.
+         */
+        this.fixedColumnViews = [];
         this.cachedRowsHeight = 0;
         this.cachedContentHeight = 0;
         this.resizeObserver = new ResizeObserver(entries => {
@@ -5311,6 +5368,7 @@ class ClrDatagrid {
                 this._projectedStickyColumns.detach();
             }
             // Remove any projected columns from the projectedCalculationColumns container
+            this.destroyFixedColumnViews();
             for (let i = this._projectedCalculationColumns.length; i > 0; i--) {
                 this._projectedCalculationColumns.detach();
             }
@@ -5350,9 +5408,11 @@ class ClrDatagrid {
                     this.selection.selectionType !== this.SELECTION_TYPE.None,
                     this.expandableRows.hasExpandableRow || this.detailService.enabled,
                 ];
-                fixedColumnConditions
-                    .filter(Boolean)
-                    .forEach(() => this._projectedCalculationColumns.insert(this._fixedColumnTemplate.createEmbeddedView(null)));
+                fixedColumnConditions.filter(Boolean).forEach(() => {
+                    const fixedColumnView = this._fixedColumnTemplate.createEmbeddedView(null);
+                    this.fixedColumnViews.push(fixedColumnView);
+                    this._projectedCalculationColumns.insert(fixedColumnView);
+                });
                 this.columns.forEach(column => {
                     this._projectedCalculationColumns.insert(column._view);
                 });
@@ -5384,6 +5444,7 @@ class ClrDatagrid {
         this.selection.checkForChanges();
     }
     ngOnDestroy() {
+        this.destroyFixedColumnViews();
         this._subscriptions.forEach((sub) => sub.unsubscribe());
         this._virtualScrollSubscriptions.forEach((sub) => sub.unsubscribe());
         this.resizeObserver.disconnect();
@@ -5429,6 +5490,16 @@ class ClrDatagrid {
      */
     dataChanged() {
         this.items.refresh();
+    }
+    destroyFixedColumnViews() {
+        // On teardown Angular has already destroyed the views in our container by the time it runs our
+        // `ngOnDestroy`, so only the calculate/display transition has live ones to release here.
+        this.fixedColumnViews.forEach(view => {
+            if (!view.destroyed) {
+                view.destroy();
+            }
+        });
+        this.fixedColumnViews = [];
     }
     toggleVirtualScrollSubscriptions() {
         const hasVirtualScroll = !!this.virtualScroll;
