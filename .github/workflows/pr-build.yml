@@ -45,6 +45,36 @@ jobs:
           name: coverage
           path: coverage/
 
+  pr-build-angular-next:
+    name: PR Build (${{matrix.angular}})
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        angular: ['Angular v22']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - name: Install Dependencies
+        run: npm ci --ignore-scripts
+      - name: Update to Angular v22
+        if: ${{matrix.angular == 'Angular v22'}}
+        run: |
+          npx ng update @angular/core@22 @angular/cli@22 @angular/cdk@22 --allow-dirty --force
+          npm install @angular-builders/custom-esbuild@22 --ignore-scripts --force
+      # The update migrations rewrite the sources, so lint and the public API report are only checked by the
+      # PR Build job, against the Angular version the repository is developed with.
+      - name: Build
+        run: npm run build
+      - name: Test
+        run: npm run test
+
   pr-visual-regression-test:
     name: PR Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}}, shard ${{matrix.shard}}/2)
     timeout-minutes: 40
