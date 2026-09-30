@@ -51,7 +51,7 @@ export class DatagridColumnActionsDemo {
   copied = 'nothing yet';
 
   nameFilter = new NameFilter();
-  filterOpen = true;
+  filterOpen = false;
 
   constructor(inventory: Inventory) {
     inventory.size = 10;
