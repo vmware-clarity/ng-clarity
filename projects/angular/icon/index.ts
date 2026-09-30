@@ -27,6 +27,7 @@ export { checkIcon, checkIconName } from './shapes/check';
 export { checkCircleIcon, checkCircleIconName } from './shapes/check-circle';
 export { cloudIcon, cloudIconName } from './shapes/cloud';
 export { cogIcon, cogIconName } from './shapes/cog';
+export { ellipsisGridCircleIcon, ellipsisGridCircleIconName } from './shapes/ellipsis-grid-circle';
 export { ellipsisHorizontalIcon, ellipsisHorizontalIconName } from './shapes/ellipsis-horizontal';
 export { ellipsisVerticalIcon, ellipsisVerticalIconName } from './shapes/ellipsis-vertical';
 export { errorStandardIcon, errorStandardIconName } from './shapes/error-standard';
