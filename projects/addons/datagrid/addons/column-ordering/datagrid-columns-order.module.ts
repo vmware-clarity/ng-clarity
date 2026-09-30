@@ -10,12 +10,13 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 
+import { ColumnMoveActionDirective } from './column-move-action.directive';
 import { ColumnOrderDirective } from './column-order.directive';
 import { DatagridColumnsOrderDirective } from './datagrid-columns-order.directive';
 
 @NgModule({
-  declarations: [ColumnOrderDirective, DatagridColumnsOrderDirective],
+  declarations: [ColumnMoveActionDirective, ColumnOrderDirective, DatagridColumnsOrderDirective],
   imports: [ClrDatagridModule, CommonModule, DragDropModule],
-  exports: [ColumnOrderDirective, DatagridColumnsOrderDirective],
+  exports: [ColumnMoveActionDirective, ColumnOrderDirective, DatagridColumnsOrderDirective],
 })
 export class DatagridColumnsOrderModule {}
