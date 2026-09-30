@@ -6,7 +6,7 @@ import * as i2$1 from '@clr/angular/utils';
 import { uniqueIdFactory, ArrowKeyDirection, Linkers, wrapObservable, customFocusableItemProvider, FOCUS_SERVICE_PROVIDER, FocusableItem, BASIC_FOCUSABLE_ITEM_PROVIDER } from '@clr/angular/utils';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ReplaySubject, of, Subject } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 import { ClrIcon } from '@clr/angular/icon';
 
 /*
@@ -49,6 +49,7 @@ class DropdownFocusHandler {
         this._unlistenFuncs.push(this.renderer.listen(el, 'keydown.tab', event => this.popoverService.toggleWithEvent(event)), this.renderer.listen(el, 'keydown.shift.tab', event => this.popoverService.toggleWithEvent(event)));
         // All containers are registered to the focus service.
         this.focusService.registerContainer(el);
+        this._unlistenFuncs.push(this.renderer.listen(el, 'focusout', () => this.recoverFocusIfLost()));
         if (this.parent) {
             // if it's a nested container, pressing escape has the same effect as pressing left key, which closes the current
             // popup and moves up to its parent. Here, we stop propagation so that the parent container
@@ -99,6 +100,22 @@ class DropdownFocusHandler {
             this.trigger.click();
         }
     }
+    /**
+     * Makes `item` the one the menu's keyboard handling acts on, and focuses it.
+     *
+     * Space and enter activate whatever the focus service considers current, not whatever the browser
+     * has focused - see `FocusService.registerContainer`. So moving focus to a menu item without going
+     * through here leaves the two disagreeing, and the keys then fire a different item than the one the
+     * user can see is focused.
+     */
+    moveTo(item) {
+        // Opening the menu already moves to its first item, which focuses it, which is reported back
+        // here by the item itself. Without this the same move would be applied twice.
+        if (this.focusService.current === item) {
+            return;
+        }
+        this.focusService.moveTo(item);
+    }
     resetChildren() {
         this.children = new ReplaySubject(1);
         if (this.parent) {
@@ -115,6 +132,15 @@ class DropdownFocusHandler {
             Linkers.linkParent(children, this.closeAndGetThis(), ArrowKeyDirection.LEFT);
         }
         this.children.next(children);
+    }
+    recoverFocusIfLost() {
+        setTimeout(() => {
+            if (!this.popoverService.open || document.activeElement !== document.body) {
+                return;
+            }
+            const firstItem = this.parent ? this.right : this.down;
+            firstItem?.pipe(take(1)).subscribe(item => item && this.focusService.moveTo(item));
+        });
     }
     openAndGetChildren() {
         return wrapObservable(this.children, () => (this.popoverService.open = true));
@@ -355,6 +381,15 @@ class ClrDropdownItem {
         this.focusableItem = focusableItem;
         this.el = el;
         this.renderer = renderer;
+        /**
+         * The role of the item, `menuitem` unless the item says otherwise.
+         *
+         * An item that represents a setting rather than a command needs one of the checkable menu roles -
+         * `menuitemradio` for one of several exclusive settings, `menuitemcheckbox` for an independent one -
+         * so that assistive technology can announce which of them is applied. Writing the role as a plain
+         * attribute on the item is not enough: the host binding above would win over it.
+         */
+        this.role = 'menuitem';
     }
     get disabled() {
         return this.focusableItem.disabled;
@@ -406,7 +441,7 @@ class ClrDropdownItem {
         return rootDropdown;
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrDropdownItem, deps: [{ token: ClrDropdown }, { token: RootDropdownService }, { token: i2$1.FocusableItem }, { token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.24", type: ClrDropdownItem, isStandalone: false, selector: "[clrDropdownItem]", inputs: { disabled: ["clrDisabled", "disabled"], dropdownItemId: ["id", "dropdownItemId"] }, host: { listeners: { "click": "onDropdownItemClick()", "keydown.space": "onSpaceKeydown($event)", "keydown.enter": "onEnterKeydown($event)" }, properties: { "class.disabled": "disabled", "class.dropdown-item": "true", "attr.role": "\"menuitem\"", "attr.aria-disabled": "disabled", "attr.id": "dropdownItemId" } }, providers: [BASIC_FOCUSABLE_ITEM_PROVIDER], ngImport: i0 }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.24", type: ClrDropdownItem, isStandalone: false, selector: "[clrDropdownItem]", inputs: { role: "role", disabled: ["clrDisabled", "disabled"], dropdownItemId: ["id", "dropdownItemId"] }, host: { listeners: { "click": "onDropdownItemClick()", "keydown.space": "onSpaceKeydown($event)", "keydown.enter": "onEnterKeydown($event)" }, properties: { "class.disabled": "disabled", "class.dropdown-item": "true", "attr.role": "role", "attr.aria-disabled": "disabled", "attr.id": "dropdownItemId" } }, providers: [BASIC_FOCUSABLE_ITEM_PROVIDER], ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrDropdownItem, decorators: [{
             type: Directive,
@@ -415,14 +450,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
                     host: {
                         '[class.disabled]': 'disabled',
                         '[class.dropdown-item]': 'true',
-                        '[attr.role]': '"menuitem"',
+                        '[attr.role]': 'role',
                         '[attr.aria-disabled]': 'disabled',
                         '[attr.id]': 'dropdownItemId',
                     },
                     providers: [BASIC_FOCUSABLE_ITEM_PROVIDER],
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: ClrDropdown }, { type: RootDropdownService }, { type: i2$1.FocusableItem }, { type: i0.ElementRef }, { type: i0.Renderer2 }], propDecorators: { disabled: [{
+        }], ctorParameters: () => [{ type: ClrDropdown }, { type: RootDropdownService }, { type: i2$1.FocusableItem }, { type: i0.ElementRef }, { type: i0.Renderer2 }], propDecorators: { role: [{
+                type: Input
+            }], disabled: [{
                 type: Input,
                 args: ['clrDisabled']
             }], dropdownItemId: [{
@@ -488,5 +525,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { CLR_DROPDOWN_DIRECTIVES, CLR_MENU_POSITIONS, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger };
+export { CLR_DROPDOWN_DIRECTIVES, CLR_MENU_POSITIONS, ClrDropdown, ClrDropdownItem, ClrDropdownMenu, ClrDropdownModule, ClrDropdownTrigger, DROPDOWN_FOCUS_HANDLER_PROVIDER, DropdownFocusHandler, ROOT_DROPDOWN_PROVIDER, RootDropdownService, clrRootDropdownFactory };
 //# sourceMappingURL=clr-angular-popover-dropdown.mjs.map

@@ -7,7 +7,7 @@ import { animation, style, animate, state, transition, trigger, useAnimation } f
 export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';
 import { Subject, fromEvent, Observable, isObservable, of } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
+import { takeUntil, take } from 'rxjs/operators';
 import * as i1 from '@angular/cdk/a11y';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import * as i2$1 from '@angular/cdk/drag-drop';
@@ -734,9 +734,14 @@ const commonStringsDefault = {
     pickColumns: 'Manage Columns',
     showColumns: 'Show Columns',
     sortColumn: 'Sort Column',
-    // Only the clrDgPinnable toggle used these, so they are disabled along with it.
-    // pinColumn: 'Pin Column',
-    // unpinColumn: 'Unpin Column',
+    sortColumnAscending: 'Sort Ascending',
+    sortColumnDescending: 'Sort Descending',
+    clearColumnSort: 'Clear Sort',
+    filterColumn: 'Filter Column',
+    columnActions: 'Column actions',
+    datagridColumnActionsAriaLabel: '{COLUMN} column actions',
+    pinColumn: 'Pin Column',
+    unpinColumn: 'Unpin Column',
     firstPage: 'First Page',
     lastPage: 'Last Page',
     nextPage: 'Next Page',
@@ -1715,7 +1720,10 @@ class FocusService {
                 // Turning the value into an Observable isn't great, but it's the fastest way to avoid code duplication.
                 // If performance ever matters for this, we can refactor using additional private methods.
                 const nextObs = isObservable(next) ? next : of(next);
-                nextObs.subscribe(item => {
+                // take(1) unsubscribes once this move has its item, rather than leaving the subscription open.
+                // Left subscribed, every later emission would call moveTo() again with whatever is the first
+                // item at that point and focus back to it.
+                nextObs.pipe(take(1)).subscribe(item => {
                     if (item) {
                         this.moveTo(item);
                         moved = true;

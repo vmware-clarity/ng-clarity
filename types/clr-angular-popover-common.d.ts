@@ -40,6 +40,7 @@ interface ClrPopoverPoint {
     y: number;
 }
 declare class ClrPopoverService {
+    parent: ClrPopoverContent;
     pointTargetElement: HTMLElement | undefined;
     origin: FlexibleConnectedPositionStrategyOrigin;
     closeButtonRef: ElementRef;
