@@ -380,8 +380,12 @@
 
       //Others
       cursor: pointer;
-      // Apply the max-width once the width transition ends: applied at once, it cuts the width
-      // transition from the expanded width, and the nav jumps to its max-width.
+      // The collapse animation: the transition of the state entered applies, so this one runs when the
+      // nav collapses, and the one of .clr-vertical-nav when it expands (the max-width is removed at once).
+      // - width: animated as when expanding (it replaces the whole transition, so it is repeated here).
+      // - max-width: switched only when the width animation ends (0s after a 0.2s delay). Applied at
+      //   once, it would cut the width animation: the nav would jump to its max-width.
+      // allow-discrete: max-width from `none` cannot be animated, so without it the switch ignores the delay.
       transition:
         width 0.2s ease-in-out,
         max-width 0s linear 0.2s;
