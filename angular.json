@@ -180,6 +180,11 @@
                 "input": "projects/website/src/settings/",
                 "output": "/"
               },
+              {
+                "glob": "search-index.json",
+                "input": "projects/website/src/compiled-content/",
+                "output": "/"
+              },
               "projects/website/src/assets"
             ],
             "styles": ["projects/angular/main.scss", "projects/website/src/styles/main.scss"],

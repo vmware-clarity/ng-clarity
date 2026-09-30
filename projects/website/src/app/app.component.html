@@ -16,6 +16,9 @@
         </a>
         <app-version-select></app-version-select>
       </div>
+      @if (header.openNavLevel !== 1) {
+        <app-search-box></app-search-box>
+      }
       <div class="header-actions">
         @if (header.openNavLevel !== 1) {
           <app-theme-toggle></app-theme-toggle>
