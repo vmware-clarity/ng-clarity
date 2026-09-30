@@ -380,6 +380,12 @@
 
       //Others
       cursor: pointer;
+      // Apply the max-width once the width transition ends: applied at once, it cuts the width
+      // transition from the expanded width, and the nav jumps to its max-width.
+      transition:
+        width 0.2s ease-in-out,
+        max-width 0s linear 0.2s;
+      transition-behavior: allow-discrete;
 
       .nav-icon {
         //Dims
