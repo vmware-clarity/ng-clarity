@@ -29,6 +29,7 @@ jobs:
         if: ${{matrix.angular == 'Angular v22'}}
         run: |
           npx ng update @angular/core@22 @angular/common@22 @angular/cli@22 @angular/cdk@22 --allow-dirty --force
+          npm install --save-dev @angular-builders/custom-esbuild@22 --force
       - name: Disable Storybook Build
         if: ${{matrix.angular != 'Angular v21'}}
         run: node ./scripts/clear-npm-script.js _build:storybook
