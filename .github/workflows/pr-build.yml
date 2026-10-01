@@ -10,6 +10,7 @@ jobs:
     timeout-minutes: 30
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         angular: ['Angular v21', 'Angular v22']
     env:
