@@ -295,13 +295,10 @@ export default function (): void {
         expect(this.popoverService.open).toBe(false);
       });
 
-      it('stays open when the origin has not been rendered visible yet', function (this: Context) {
-        // The observer's initial entry reports a not-yet-visible origin (e.g. one inside a
-        // container that is still display: none) as not intersecting, which used to close
-        // the popover immediately.
+      it('closes right away when the origin is completely hidden at open', function (this: Context) {
         notify([0]);
 
-        expect(this.popoverService.open).toBe(true);
+        expect(this.popoverService.open).toBe(false);
       });
 
       it('stays open for a partially visible origin until it is completely out of view', function (this: Context) {
@@ -328,15 +325,6 @@ export default function (): void {
         expect(this.popoverService.open).toBe(false);
       });
 
-      it('uses the 80% rule for an origin that was hidden at open and then shown fully', function (this: Context) {
-        notify([0]);
-        notify([1]);
-
-        notify([0.7]);
-
-        expect(this.popoverService.open).toBe(false);
-      });
-
       it('ignores entries reported against a collapsed viewport', function (this: Context) {
         // Regression: the cause of the flaky popover visual snapshots. While Playwright captures a
         // screenshot of an element taller than the viewport, it briefly resizes the window to 1x1,
@@ -348,6 +336,14 @@ export default function (): void {
         expect(this.popoverService.open).toBe(true);
       });
 
+      it('treats an empty viewport (display: none origin) as hidden, not as a collapsed viewport', function (this: Context) {
+        notify([1]);
+
+        notify([0], { width: 0, height: 0 } as DOMRectReadOnly);
+
+        expect(this.popoverService.open).toBe(false);
+      });
+
       it('still closes when the viewport bounds are not reported (cross-origin iframe)', function (this: Context) {
         notify([1], null);
 
@@ -356,13 +352,21 @@ export default function (): void {
         expect(this.popoverService.open).toBe(false);
       });
 
-      it('acts on the latest entry of a batched callback', function (this: Context) {
+      it('handles every entry of a batched callback', function (this: Context) {
         notify([1]);
 
-        notify([0, 1]);
+        // a collapsed-viewport entry batched with the recovering one is still ignored
+        observerCallback(
+          [
+            { intersectionRatio: 0, isIntersecting: false, rootBounds: collapsedViewport },
+            { intersectionRatio: 1, isIntersecting: true, rootBounds: viewport },
+          ] as IntersectionObserverEntry[],
+          null
+        );
         expect(this.popoverService.open).toBe(true);
 
-        notify([1, 0]);
+        // the origin dropped below 80% at some point, even if it is back by the time of the callback
+        notify([0.7, 1]);
         expect(this.popoverService.open).toBe(false);
       });
     });
@@ -440,24 +444,30 @@ export default function (): void {
         expect(this.popoverService.open).toBe(false);
       });
 
-      it('opens with a hidden origin and still closes once it is shown and scrolled out of view', async function (this: Context) {
+      it('closes when the origin is hidden with display: none while open', async function (this: Context) {
+        this.testComponent.openState = true;
+        this.fixture.detectChanges();
+        await nextFrames();
+        expect(this.popoverService.open).toBe(true);
+
+        const host = this.fixture.nativeElement as HTMLElement;
+        host.style.display = 'none';
+        await nextFrames();
+
+        expect(this.popoverService.open).toBe(false);
+        host.style.display = '';
+      });
+
+      it('closes right away when the origin is hidden at open', async function (this: Context) {
         const host = this.fixture.nativeElement as HTMLElement;
         host.style.display = 'none';
 
         this.testComponent.openState = true;
         this.fixture.detectChanges();
         await nextFrames();
-        expect(this.popoverService.open).toBe(true);
-
-        host.style.display = '';
-        await nextFrames();
-        expect(this.popoverService.open).toBe(true);
-
-        const origin = this.popoverService.originElement.nativeElement as HTMLElement;
-        window.scrollTo(0, window.scrollY + origin.getBoundingClientRect().bottom + window.innerHeight);
-        await nextFrames();
 
         expect(this.popoverService.open).toBe(false);
+        host.style.display = '';
       });
     });
 
