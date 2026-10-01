@@ -10,6 +10,7 @@ import { ElementRef, Injectable } from '@angular/core';
 import { preventArrowKeyScroll } from '@clr/angular/utils';
 import { Observable, Subject } from 'rxjs';
 
+import { ClrPopoverContent } from '../popover-content';
 import { ClrPopoverPosition } from '../utils/popover-positions';
 
 export interface ClrPopoverPoint {
@@ -19,6 +20,8 @@ export interface ClrPopoverPoint {
 
 @Injectable()
 export class ClrPopoverService {
+  // use to connect 2 unrelated (not nested) Popovers to make them nested
+  parent: ClrPopoverContent = null;
   pointTargetElement: HTMLElement | undefined;
   origin: FlexibleConnectedPositionStrategyOrigin;
   closeButtonRef: ElementRef;

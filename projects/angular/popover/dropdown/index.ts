@@ -11,3 +11,6 @@ export * from './dropdown-trigger';
 export * from './dropdown-item';
 export * from './menu-positions';
 export * from './dropdown.module';
+// Needed by anything that is a dropdown without being a clr-dropdown, such as clr-dg-column-actions.
+export * from './providers/dropdown-focus-handler.service';
+export * from './providers/dropdown.service';
