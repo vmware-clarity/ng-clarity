@@ -29,7 +29,8 @@ const DEPTH = 4;
 
 /*
  * Wall-clock bounds sit an order of magnitude above what a developer machine measures, so they only catch
- * catastrophic regressions and do not flake on shared CI runners.
+ * catastrophic regressions and do not flake on shared CI runners. The regression that actually matters here,
+ * collapsed subtrees being rendered again, is asserted directly rather than timed.
  */
 const MAX_BUILD_MS = 20000;
 const MAX_TOGGLE_MS = 3000;
@@ -111,13 +112,27 @@ export default function (): void {
       return context.fixture.debugElement.queryAll(By.directive(ClrTreeNode)).map(de => de.componentInstance);
     }
 
+    /*
+     * The children containers of collapsed nodes that the browser still renders. An eager tree keeps every node in
+     * the DOM, so these have to be skipped from rendering entirely for a large tree to stay fast.
+     */
+    function renderedCollapsedSubtrees(context: Context): number {
+      const collapsed = (context.clarityElement as HTMLElement).querySelectorAll<HTMLElement>(
+        '.clr-tree-node-content-container[aria-expanded="false"]'
+      );
+      return Array.from(collapsed).filter(
+        content => getComputedStyle(content.nextElementSibling).contentVisibility !== 'hidden'
+      ).length;
+    }
+
     // One test, so that the 4,000 nodes are only built once.
-    it('builds, expands, collapses and focuses a large tree', function (this: Context) {
+    it('builds, expands, collapses and focuses without rendering collapsed subtrees', function (this: Context) {
       const buildMs = timed(`build ${totalNodes} nodes`, () => {
         this.init();
         render(this);
       });
       expect(nodes(this).length).toBe(totalNodes);
+      expect(renderedCollapsedSubtrees(this)).toBe(0);
 
       const noopMs = timed('change detection with no changes', () => render(this));
 
@@ -127,6 +142,8 @@ export default function (): void {
         render(this);
       });
       expect(this.clarityElement.querySelectorAll('[aria-expanded="true"]').length).toBe(subtreeParents);
+      // Expanding one root does not start rendering the subtrees of the others.
+      expect(renderedCollapsedSubtrees(this)).toBe(0);
 
       const collapseMs = timed('collapse a root', () => {
         this.testComponent.expanded = {};

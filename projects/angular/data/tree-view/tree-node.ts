@@ -60,15 +60,19 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
       // The "instant" states are used by bulk operations (expand all, expand descendants): they have the same
       // styles but no transition leads to them, so hundreds of nested containers don't animate at once.
       transition('collapsed => expanded, collapsedInstant => expanded', [
-        style({ height: 0 }),
-        animate(200, style({ height: '*' })),
+        // The animation starts from the collapsed state's styles, so the children must be made visible explicitly.
+        style({ height: 0, 'content-visibility': 'visible' }),
+        animate(200, style({ height: '*', 'content-visibility': 'visible' })),
       ]),
       transition('expanded => collapsed, expandedInstant => collapsed', [
         style({ height: '*' }),
         animate(200, style({ height: 0 })),
       ]),
       state('expanded, expandedInstant', style({ height: '*', 'overflow-y': 'visible' })),
-      state('collapsed, collapsedInstant', style({ height: 0 })),
+      // Once collapsed, the browser skips the style, layout and paint of the whole subtree. The state style only
+      // applies when the collapse animation is over, so the children stay painted while they slide out; they are
+      // inert from the start (see the template), so they cannot be reached in the meantime.
+      state('collapsed, collapsedInstant', style({ height: 0, 'content-visibility': 'hidden' })),
     ]),
   ],
   host: {
