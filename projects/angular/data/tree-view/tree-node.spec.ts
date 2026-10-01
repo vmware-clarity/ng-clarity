@@ -52,21 +52,6 @@ class LinkTestComponent {
   active: boolean | undefined;
 }
 
-@Component({
-  template: `
-    <div class="shrink-to-fit" style="display: inline-block">
-      <clr-tree-node [(clrExpanded)]="expanded">
-        Parent
-        <clr-tree-node>A child label that is much wider than the label of its parent</clr-tree-node>
-      </clr-tree-node>
-    </div>
-  `,
-  standalone: false,
-})
-class ShrinkToFitTestComponent {
-  expanded = true;
-}
-
 interface TsApiContext {
   node: ClrTreeNode<void>;
   parent: ClrTreeNode<void>;
@@ -629,31 +614,6 @@ export default function (): void {
         this.detectChanges();
         await this.fixture.whenStable();
         expect(contentVisibility()).toBe('hidden');
-      });
-    });
-
-    describe('In a shrink-to-fit container', function () {
-      type Context = TestContext<ClrTreeNode<void>, ShrinkToFitTestComponent>;
-
-      spec(ClrTreeNode, ShrinkToFitTestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule],
-        providers: [TreeFocusManagerService],
-      });
-
-      it('keeps the width of its children once collapsed', async function (this: Context) {
-        const container: HTMLElement = this.fixture.nativeElement.querySelector('.shrink-to-fit');
-        await this.fixture.whenStable();
-        // The browser records the size of the children container once it has been rendered
-        await new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-        const expandedWidth = container.getBoundingClientRect().width;
-
-        this.testComponent.expanded = false;
-        this.detectChanges();
-        await this.fixture.whenStable();
-        expect(getComputedStyle(this.clarityElement.querySelector('.clr-treenode-children')).contentVisibility).toBe(
-          'hidden'
-        );
-        expect(container.getBoundingClientRect().width).toBe(expandedWidth);
       });
     });
 

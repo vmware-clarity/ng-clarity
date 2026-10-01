@@ -255,9 +255,6 @@
     margin-left: tree-view-variables.$clr-tree-node-children-margin;
     will-change: height;
     overflow-y: hidden;
-    // A collapsed subtree is not rendered (content-visibility: hidden), so it keeps the width it was last rendered
-    // with: collapsing a node does not make a shrink-to-fit tree narrower.
-    contain-intrinsic-inline-size: auto 0;
   }
 
   .clr-treenode-link {
