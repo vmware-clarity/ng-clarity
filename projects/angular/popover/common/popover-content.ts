@@ -575,9 +575,10 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
    * Uses IntersectionObserver to detect when the origin element leaves the screen.
    * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
    *
-   * Closes once the origin is less visible than 80%, or than the most it has been visible if that
-   * is less: an origin clipped on a narrow screen closes it once completely out of view (reported
-   * by the 0 threshold), an origin that has not been rendered yet never does.
+   * An origin that is fully visible when the popover opens closes it once less than 80% of it is
+   * visible. An origin that is only partially visible (e.g. clipped on a narrow screen) closes it
+   * once it is completely out of view - reported by the 0 threshold. An origin that is not rendered
+   * yet is ignored until it becomes visible.
    */
   private setupIntersectionObserver() {
     if (!this.popoverService.originElement || this.intersectionObserver) {
@@ -585,7 +586,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
 
     const minVisibleRatio = 0.8;
-    let maxVisibleRatio = 0;
+    let fullyVisibleAtOpen: boolean;
 
     this.intersectionObserver = new IntersectionObserver(
       entries => {
@@ -597,9 +598,16 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
           return;
         }
 
-        maxVisibleRatio = Math.max(maxVisibleRatio, intersectionRatio);
+        if (fullyVisibleAtOpen === undefined) {
+          if (intersectionRatio === 0) {
+            return;
+          }
+          fullyVisibleAtOpen = intersectionRatio === 1;
+        }
 
-        if (intersectionRatio < Math.min(maxVisibleRatio, minVisibleRatio) && this.popoverService.open) {
+        const outOfView = fullyVisibleAtOpen ? intersectionRatio < minVisibleRatio : intersectionRatio === 0;
+
+        if (outOfView && this.popoverService.open) {
           this.zone.run(() => this.closePopover());
         }
       },

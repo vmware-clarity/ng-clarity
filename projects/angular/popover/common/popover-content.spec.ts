@@ -317,6 +317,26 @@ export default function (): void {
         expect(this.popoverService.open).toBe(false);
       });
 
+      it('closes an origin that was partially visible at open only once it is completely out of view', function (this: Context) {
+        // Only an origin that is fully visible when the popover opens uses the 80% rule.
+        notify([0.9]);
+
+        notify([0.7]);
+        expect(this.popoverService.open).toBe(true);
+
+        notify([0]);
+        expect(this.popoverService.open).toBe(false);
+      });
+
+      it('uses the 80% rule for an origin that was hidden at open and then shown fully', function (this: Context) {
+        notify([0]);
+        notify([1]);
+
+        notify([0.7]);
+
+        expect(this.popoverService.open).toBe(false);
+      });
+
       it('ignores entries reported against a collapsed viewport', function (this: Context) {
         // Regression: the cause of the flaky popover visual snapshots. While Playwright captures a
         // screenshot of an element taller than the viewport, it briefly resizes the window to 1x1,
