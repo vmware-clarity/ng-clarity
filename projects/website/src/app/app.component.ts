@@ -11,6 +11,9 @@ import { ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
 
 import { getFeatureFlags } from './feature-flags';
 import { DensityToggleComponent } from './shared/density-toggle/density-toggle.component';
+import { SearchHighlightService } from './shared/search/search-highlight.service';
+import { SearchInputComponent } from './shared/search/search-input.component';
+import { SearchResult } from './shared/search/search.service';
 import { SkipLinkComponent } from './shared/skip-link/skip-link.component';
 import { ThemeToggleComponent } from './shared/theme-toggle/theme-toggle.component';
 import { VersionSelectComponent } from './shared/version-select/version-select.component';
@@ -34,8 +37,22 @@ import { VersionSelectComponent } from './shared/version-select/version-select.c
     ThemeToggleComponent,
     DensityToggleComponent,
     VersionSelectComponent,
+    SearchInputComponent,
   ],
 })
 export class AppComponent {
   protected readonly themeBuilderOnly = getFeatureFlags().themeBuilderOnly;
+
+  constructor(private highlightService: SearchHighlightService) {
+    highlightService.init();
+  }
+
+  /**
+   * Handle search result selection
+   */
+  onSearchResultSelected(result: SearchResult): void {
+    // Navigation is handled by the SearchInputComponent
+    // This method can be used for analytics or other side effects
+    console.log('Search result selected:', result);
+  }
 }

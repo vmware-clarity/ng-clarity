@@ -1,0 +1,79 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="search-results-container" *ngIf="results.length > 0">
+  <!-- Results Summary -->
+  <div class="search-results-summary" *ngIf="showResultCount">
+    <span class="results-count">{{ results.length }} result{{ results.length !== 1 ? 's' : '' }}</span>
+    <span class="search-query" *ngIf="query">for "{{ query }}"</span>
+  </div>
+
+  <!-- Grouped Results -->
+  <div class="search-results-groups">
+    <div *ngFor="let type of resultTypes; trackBy: trackByType" class="search-results-group">
+      <!-- Group Header -->
+      <div class="search-group-header" *ngIf="groupByType">
+        <clr-icon [shape]="getTypeIcon(type)" class="group-icon" [attr.aria-hidden]="true"> </clr-icon>
+        <h3 class="group-title">{{ getTypeDisplayName(type) }}</h3>
+        <span class="group-count">({{ groupedResults[type].length }})</span>
+      </div>
+
+      <!-- Results List -->
+      <div class="search-results-list">
+        <div
+          *ngFor="let result of groupedResults[type]; trackBy: trackByResult"
+          class="search-result-item"
+          (click)="onResultSelected(result)"
+        >
+          <div class="result-content">
+            <div class="result-header">
+              <clr-icon [shape]="getResultIcon(result)" class="result-icon" [attr.aria-hidden]="true"> </clr-icon>
+
+              <div class="result-title-section">
+                <h4 class="result-title" [innerHTML]="highlightSearchTerms(result.title)"></h4>
+
+                <div class="result-meta">
+                  <span class="result-type" *ngIf="!groupByType">{{ result.type }}</span>
+                  <span class="result-component" *ngIf="result.component"> Component: {{ result.component }} </span>
+                  <span class="result-url">{{ result.url }}</span>
+                </div>
+              </div>
+            </div>
+
+            <div
+              class="result-description"
+              *ngIf="result.content"
+              [innerHTML]="highlightSearchTerms(getTruncatedContent(result.content))"
+            ></div>
+
+            <div class="result-tags" *ngIf="result.tags && result.tags.length > 0">
+              <span
+                *ngFor="let tag of result.tags.slice(0, 5)"
+                class="result-tag"
+                [innerHTML]="highlightSearchTerms(tag)"
+              ></span>
+            </div>
+          </div>
+
+          <div class="result-actions">
+            <clr-icon shape="angle" class="result-arrow" [attr.aria-hidden]="true"> </clr-icon>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Empty State -->
+<div class="search-empty-state" *ngIf="results.length === 0 && query">
+  <clr-icon shape="search" class="empty-state-icon" [attr.aria-hidden]="true"> </clr-icon>
+  <h3 class="empty-state-title">No results found</h3>
+  <p class="empty-state-description">
+    Try searching for component names like "button", "modal", or "datagrid",<br />
+    or browse our documentation pages for guides and examples.
+  </p>
+</div>
