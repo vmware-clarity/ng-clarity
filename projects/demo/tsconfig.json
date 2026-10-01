@@ -2,7 +2,6 @@
   "compileOnSave": false,
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
     "paths": {
       "@clr/angular": ["../angular/index.ts"],
       "@clr/angular/*": ["../angular/*"],

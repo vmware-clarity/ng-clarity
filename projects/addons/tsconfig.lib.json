@@ -13,7 +13,6 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "useDefineForClassFields": false,
-    "baseUrl": ".",
     "paths": {
       "@clr/angular": ["../../dist/clr-angular"],
       "@clr/angular/*": ["../../dist/clr-angular/*"],
