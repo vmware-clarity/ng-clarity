@@ -37,6 +37,7 @@ import {
               {{ file.name }}
               <button
                 class="btn btn-sm btn-link-neutral btn-icon clr-file-clear-button"
+                data-clr-context-ignore
                 [attr.aria-label]="getClearFileLabel(file.name)"
                 (click)="clearFile(file)"
               >
@@ -58,6 +59,8 @@ import {
   host: {
     '[attr.role]': '"list"',
     '[class.clr-file-list]': 'true',
+    // Each entry is named after a file the user chose.
+    'data-clr-context-redact': '',
   },
   standalone: false,
 })

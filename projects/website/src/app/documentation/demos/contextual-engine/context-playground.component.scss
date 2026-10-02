@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+:host {
+  display: block;
+}
+
+.playground-controls {
+  padding-right: var(--cds-global-space-7);
+}
+
+.playground-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cds-global-space-3);
+  align-items: center;
+  margin-bottom: var(--cds-global-space-5);
+}
+
+.playground-change {
+  margin-top: 0;
+  font-size: var(--cds-alias-typography-font-size-1);
+}
+
+.playground-json {
+  font-size: var(--cds-alias-typography-font-size-1);
+  overflow: auto;
+  max-height: 20rem;
+}
+
+.playground-snapshot {
+  max-height: 36rem;
+}
+
+.playground-covers {
+  color: var(--cds-alias-typography-color-300);
+  font-size: var(--cds-alias-typography-font-size-1);
+}

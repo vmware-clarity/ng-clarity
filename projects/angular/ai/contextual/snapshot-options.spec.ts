@@ -1,0 +1,388 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import {
+  capSnapshotOptions,
+  CLR_CONTEXT_CATEGORIES,
+  CLR_CONTEXT_DEFAULT_OPTIONS,
+  CLR_CONTEXT_PRESETS,
+  clrContextPreset,
+  resolveSnapshotOptions,
+  withCallOptions,
+} from './snapshot-options';
+import {
+  CLR_CONTEXT_UNTRUSTED_OPTION_KEYS,
+  sanitizeUntrustedSnapshotOptions,
+  withoutFormValues,
+  withoutUrlDetails,
+} from './untrusted-options';
+
+describe('snapshot options', () => {
+  describe('resolveSnapshotOptions', () => {
+    it('applies the defaults when nothing was asked', () => {
+      expect(resolveSnapshotOptions()).toEqual(CLR_CONTEXT_DEFAULT_OPTIONS);
+      expect(resolveSnapshotOptions({})).toEqual(CLR_CONTEXT_DEFAULT_OPTIONS);
+    });
+
+    it('honours budgets inside their ranges', () => {
+      expect(resolveSnapshotOptions({ maxComponents: 7, maxTextLength: 20 })).toEqual({
+        ...CLR_CONTEXT_DEFAULT_OPTIONS,
+        maxComponents: 7,
+        maxTextLength: 20,
+      });
+    });
+
+    it('falls back to the default for a budget that is not a finite number, never to unbounded', () => {
+      expect(resolveSnapshotOptions({ maxComponents: Number.NaN }).maxComponents).toBe(
+        CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents
+      );
+      expect(resolveSnapshotOptions({ maxComponents: Number.POSITIVE_INFINITY }).maxComponents).toBe(
+        CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents
+      );
+      expect(resolveSnapshotOptions({ maxTextLength: '50' as unknown as number }).maxTextLength).toBe(
+        CLR_CONTEXT_DEFAULT_OPTIONS.maxTextLength
+      );
+    });
+
+    it('holds a budget to its range', () => {
+      expect(resolveSnapshotOptions({ maxComponents: -5 }).maxComponents).toBe(0);
+      expect(resolveSnapshotOptions({ maxTextLength: -5 }).maxTextLength).toBe(1);
+      expect(resolveSnapshotOptions({ maxComponents: 1e9 }).maxComponents).toBe(10_000);
+      expect(resolveSnapshotOptions({ maxItemsPerCollection: 2.9 }).maxItemsPerCollection).toBe(2);
+    });
+  });
+
+  describe('capSnapshotOptions', () => {
+    it('lets a caller ask for less than the ceiling', () => {
+      expect(capSnapshotOptions({ maxComponents: 5 }, { maxComponents: 50 })).toEqual({ maxComponents: 5 });
+    });
+
+    it('never lets a caller ask for more than the ceiling', () => {
+      expect(capSnapshotOptions({ maxComponents: 500 }, { maxComponents: 50 })).toEqual({ maxComponents: 50 });
+    });
+
+    it('applies the ceiling where the caller asked for nothing', () => {
+      expect(capSnapshotOptions(undefined, { maxComponents: 50, maxTextLength: 40 })).toEqual({
+        maxComponents: 50,
+        maxTextLength: 40,
+      });
+    });
+
+    it('leaves the request alone where there is no ceiling', () => {
+      expect(capSnapshotOptions({ maxComponents: 500 }, undefined)).toEqual({ maxComponents: 500 });
+      expect(capSnapshotOptions({ maxComponents: 500 }, { maxTextLength: 40 })).toEqual({
+        maxComponents: 500,
+        maxTextLength: 40,
+      });
+    });
+
+    it('cannot be talked into DOM collection the ceiling switched off', () => {
+      expect(capSnapshotOptions({ includeDomComponents: true }, { includeDomComponents: false })).toEqual({
+        includeDomComponents: false,
+      });
+    });
+  });
+
+  describe('sanitizeUntrustedSnapshotOptions', () => {
+    it('drops a budget that is not a finite number', () => {
+      expect(sanitizeUntrustedSnapshotOptions({ maxComponents: Number.NaN, maxTextLength: 10 })).toEqual({
+        maxTextLength: 10,
+      });
+      expect(sanitizeUntrustedSnapshotOptions({ maxComponents: Number.POSITIVE_INFINITY })).toEqual({});
+    });
+
+    it('drops a list entry longer than any role or category name', () => {
+      expect(sanitizeUntrustedSnapshotOptions({ excludeRoles: ['button', 'x'.repeat(33)] })).toEqual({
+        excludeRoles: ['button'],
+      });
+    });
+  });
+
+  describe('withCallOptions', () => {
+    it('lets a call set budgets and switches over the application’s', () => {
+      expect(withCallOptions({ maxComponents: 10, includeText: false }, { includeText: true })).toEqual({
+        maxComponents: 10,
+        includeText: true,
+      });
+    });
+
+    it('ignores what a call left undefined', () => {
+      expect(withCallOptions({ maxComponents: 10 }, { maxComponents: undefined })).toEqual({ maxComponents: 10 });
+    });
+
+    it('adds a call’s exclusions to the application’s, so an empty list removes none', () => {
+      const application = {
+        excludeSelectors: ['.billing'],
+        excludeRoles: ['img'],
+        excludeCategories: ['text' as const],
+      };
+      expect(withCallOptions(application, { excludeSelectors: [], excludeRoles: ['img', 'link'] })).toEqual({
+        excludeSelectors: ['.billing'],
+        excludeRoles: ['img', 'link'],
+        excludeCategories: ['text'],
+      });
+    });
+
+    it('ignores an exclusion list that is not a list, so the application’s stays', () => {
+      const application = {
+        excludeSelectors: ['.secret'],
+        excludeRoles: ['grid'],
+        excludeCategories: ['text' as const],
+      };
+      const call = { excludeSelectors: null, excludeRoles: 'img', excludeCategories: null } as unknown as Parameters<
+        typeof withCallOptions
+      >[1];
+      const resolved = resolveSnapshotOptions(withCallOptions(application, call));
+
+      expect(resolved.excludeSelectors).toEqual(['.secret']);
+      expect(resolved.excludeRoles).toContain('grid');
+      expect(resolved.excludeCategories).toEqual(['text']);
+    });
+  });
+});
+
+describe('snapshot option switches', () => {
+  it('default to describing text and frames', () => {
+    expect(resolveSnapshotOptions().includeText).toBe(true);
+    expect(resolveSnapshotOptions().includeFrames).toBe(true);
+  });
+
+  it('can be turned off by the caller, and stay off when the ceiling turned them off', () => {
+    expect(resolveSnapshotOptions({ includeText: false }).includeText).toBe(false);
+    expect(capSnapshotOptions({ includeFrames: true }, { includeFrames: false }).includeFrames).toBe(false);
+    expect(capSnapshotOptions({ includeFrames: false }, { includeFrames: true }).includeFrames).toBe(false);
+  });
+});
+
+describe('snapshot options, choosing what to collect', () => {
+  it('resolves lists, the root selector and the enumerations, dropping what is not usable', () => {
+    const resolved = resolveSnapshotOptions({
+      excludeRoles: ['navigation', 3 as unknown as string, ' banner '],
+      excludeSelectors: ['clr-header'],
+      rootSelector: ' main ',
+      maxDepth: 2.7,
+      focus: 'modal',
+      collectionItems: 'bogus' as 'all',
+    });
+    expect(resolved.excludeRoles).toEqual(['navigation', 'banner']);
+    expect(resolved.excludeSelectors).toEqual(['clr-header']);
+    expect(resolved.rootSelector).toBe('main');
+    expect(resolved.maxDepth).toBe(2);
+    expect(resolved.focus).toBe('modal');
+    expect(resolved.collectionItems).toBe('all');
+  });
+
+  it('bounds the lists an untrusted caller may send, and never cuts the application’s own', () => {
+    const many = Array.from({ length: 80 }, (_, index) => `role-${index}`);
+    expect(resolveSnapshotOptions({ excludeRoles: many }).excludeRoles.length).toBe(80);
+    expect(resolveSnapshotOptions({ excludeSelectors: many }).excludeSelectors).toEqual(many);
+    expect(sanitizeUntrustedSnapshotOptions({ excludeRoles: many, excludeSelectors: ['x'] })).toEqual({
+      excludeRoles: many.slice(0, 50),
+    });
+  });
+
+  it('never shortens the application’s own selectors', () => {
+    const long = `${Array.from({ length: 60 }, (_, index) => `.pad-${index}`).join(', ')}, .account-number`;
+    expect(resolveSnapshotOptions({ excludeSelectors: [long], rootSelector: long }).excludeSelectors).toEqual([long]);
+    expect(resolveSnapshotOptions({ rootSelector: long }).rootSelector).toBe(long);
+  });
+
+  it('adds exclusions up and keeps a narrowing the ceiling chose', () => {
+    const capped = capSnapshotOptions(
+      { excludeRoles: ['banner'], maxDepth: 5, focus: 'page', collectionItems: 'all', rootSelector: 'body' },
+      { excludeRoles: ['navigation'], maxDepth: 3, focus: 'modal', collectionItems: 'summary', rootSelector: 'main' }
+    );
+    expect(capped.excludeRoles).toEqual(['navigation', 'banner']);
+    expect(capped.maxDepth).toBe(3);
+    expect(capped.focus).toBe('modal');
+    expect(capped.collectionItems).toBe('summary');
+    expect(capped.rootSelector).toBe('main');
+  });
+
+  it('treats an unlimited depth ceiling as the largest, not the smallest', () => {
+    expect(capSnapshotOptions({ maxDepth: 4 }, { maxDepth: 0 }).maxDepth).toBe(4);
+    expect(capSnapshotOptions({ maxDepth: 0 }, { maxDepth: 3 }).maxDepth).toBe(3);
+  });
+
+  describe('presets', () => {
+    it('start from the full defaults and narrow from there', () => {
+      expect(clrContextPreset('full')).toEqual({});
+      expect(clrContextPreset('interactive').excludeCategories).toEqual(['layout', 'text']);
+      expect(resolveSnapshotOptions(clrContextPreset('interactive')).includeText).toBe(false);
+      expect(resolveSnapshotOptions(clrContextPreset('interactive')).excludeRoles).toContain('navigation');
+      expect(clrContextPreset('minimal').collectionItems).toBe('summary');
+      expect(clrContextPreset('minimal').focus).toBe('modal');
+    });
+
+    it('apply overrides over the preset', () => {
+      const overridden = resolveSnapshotOptions(clrContextPreset('minimal', { maxComponents: 500 }));
+      expect(overridden.maxComponents).toBe(500);
+      expect(overridden.includeText).toBe(false);
+    });
+
+    it('keep the preset’s exclusions when an override’s list is not a list', () => {
+      const overrides = { excludeCategories: null, excludeRoles: 'grid' } as unknown as Parameters<
+        typeof clrContextPreset
+      >[1];
+      const options = clrContextPreset('interactive', overrides);
+
+      expect(options.excludeCategories).toEqual(['layout', 'text']);
+      expect(options.excludeRoles).toEqual([]);
+    });
+  });
+});
+
+describe('snapshot options, categories', () => {
+  it('expands a category into the roles it stands for, on top of any roles given', () => {
+    const resolved = resolveSnapshotOptions({ excludeCategories: ['actions'], excludeRoles: ['heading'] });
+    expect(resolved.excludeRoles).toContain('button');
+    expect(resolved.excludeRoles).toContain('link');
+    expect(resolved.excludeRoles).toContain('menuitem');
+    expect(resolved.excludeRoles).toContain('heading');
+    expect(resolved.excludeCategories).toEqual(['actions']);
+  });
+
+  it('maps the text and frames categories onto their switches', () => {
+    const resolved = resolveSnapshotOptions({ excludeCategories: ['text', 'frames'] });
+    expect(resolved.includeText).toBe(false);
+    expect(resolved.includeFrames).toBe(false);
+    expect(resolved.excludeRoles).toEqual([]);
+  });
+
+  it('drops a category it does not know', () => {
+    expect(resolveSnapshotOptions({ excludeCategories: ['widgets' as never, 'layout'] }).excludeCategories).toEqual([
+      'layout',
+    ]);
+  });
+
+  it('adds a ceiling’s categories to the caller’s', () => {
+    expect(
+      capSnapshotOptions({ excludeCategories: ['actions'] }, { excludeCategories: ['layout'] }).excludeCategories
+    ).toEqual(['layout', 'actions']);
+  });
+
+  it('is what the presets are built from', () => {
+    expect(clrContextPreset('interactive').excludeCategories).toEqual(['layout', 'text']);
+    expect(resolveSnapshotOptions(clrContextPreset('interactive')).includeText).toBe(false);
+    expect(resolveSnapshotOptions(clrContextPreset('interactive')).excludeRoles).toContain('navigation');
+  });
+});
+
+describe('snapshot options, the exported constants', () => {
+  it('cannot be changed by an application, since they decide what every snapshot and caller gets', () => {
+    expect(() => ((CLR_CONTEXT_DEFAULT_OPTIONS as { maxComponents: number }).maxComponents = 1e6)).toThrow();
+    expect(() => (CLR_CONTEXT_CATEGORIES.forms as string[]).push('dialog')).toThrow();
+    expect(() => (CLR_CONTEXT_PRESETS.minimal.excludeCategories as string[]).pop()).toThrow();
+    expect(() => (CLR_CONTEXT_UNTRUSTED_OPTION_KEYS as string[]).push('rootSelector')).toThrow();
+    expect(CLR_CONTEXT_DEFAULT_OPTIONS.maxComponents).toBe(300);
+  });
+
+  it('adds an override’s exclusions to the preset’s rather than replacing them', () => {
+    expect(clrContextPreset('interactive', { excludeCategories: ['images', 'layout'] }).excludeCategories).toEqual([
+      'layout',
+      'text',
+      'images',
+    ]);
+    expect(clrContextPreset('interactive', { excludeRoles: ['tree'] }).excludeRoles).toEqual(['tree']);
+  });
+
+  it('never lets a requester push the ceiling’s exclusions out of a bounded list', () => {
+    const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
+    const capped = capSnapshotOptions(
+      { excludeRoles: junk, excludeCategories: junk as never[] },
+      { excludeRoles: ['navigation'], excludeCategories: ['layout'] }
+    );
+    const resolved = resolveSnapshotOptions(capped);
+
+    expect(resolved.excludeRoles).toContain('navigation');
+    expect(resolved.excludeCategories).toEqual(['layout']);
+  });
+
+  it('hands out presets as copies the caller may change', () => {
+    const preset = clrContextPreset('minimal');
+    preset.excludeCategories?.push('dialogs');
+    preset.maxComponents = 5;
+
+    expect(CLR_CONTEXT_PRESETS.minimal.excludeCategories).toEqual(['layout', 'text']);
+    expect(CLR_CONTEXT_PRESETS.minimal.maxComponents).toBe(150);
+  });
+});
+
+describe('withoutUrlDetails', () => {
+  it('drops the page title and a frame’s document title with the address', () => {
+    const shared = withoutUrlDetails({
+      title: 'Statement for ACC-1',
+      url: 'https://app.example/statements/1',
+      regions: [],
+      components: [
+        { type: 'frame', element: 'iframe', state: { title: 'Statement for ACC-2', url: 'https://plugin.example/x' } },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.title).toBe('');
+    expect(JSON.stringify(shared)).not.toContain('ACC-');
+    expect(shared.components[0].state).toEqual({ url: 'https://plugin.example/' });
+  });
+});
+
+describe('withoutFormValues', () => {
+  it('withholds the rows a selectable grid lists along with its selection', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        {
+          type: 'grid',
+          element: 'clr-datagrid',
+          state: { rowCount: 2, rows: ['Alice | CONFIDENTIAL-1', 'Bob'], selection: ['Bob'], selectionMode: 'multi' },
+        },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components[0].state).toEqual({ rowCount: 2, selectionMode: 'multi' });
+  });
+
+  it('withholds how many rows are selected, and keeps what a progress bar or meter shows', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        { type: 'grid', state: { rowCount: 2, selectedRows: 1 } },
+        { type: 'progressbar', label: 'Upload', state: { value: 40, max: 100 } },
+        { type: 'meter', label: 'Disk', state: { value: 0.7 } },
+        { type: 'slider', label: 'Volume', state: { value: 4, max: 10 } },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components.map(node => node.state)).toEqual([
+      { rowCount: 2 },
+      { value: 40, max: 100 },
+      { value: 0.7 },
+      { max: 10 },
+    ]);
+  });
+
+  it('withholds how many files a file input holds', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        {
+          type: 'clr-file-input-container',
+          label: 'Statement',
+          state: { fileCount: 2, redacted: true },
+        },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components[0].state).toEqual({ redacted: true });
+  });
+});

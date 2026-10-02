@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
 import { AfterContentChecked } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
@@ -141,6 +142,36 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, [null, null, { optional: true; }]>;
 }
+
+// @public
+export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
+
+// @public
+export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+
+// @public
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
+export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
+
+// @public
+export const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
 
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
@@ -307,6 +338,7 @@ export interface ClrCommonStrings {
     unpinColumn: string;
     // (undocumented)
     unselectedTreeNode: string;
+    verticalNavLabel: string;
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
@@ -330,6 +362,16 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
 }
 
+// @public
+export interface ClrComponentContext {
+    children?: ClrComponentContext[];
+    element?: string;
+    label?: string;
+    ref?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -341,6 +383,30 @@ export class ClrConditionalModule {
 }
 
 // @public
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export interface ClrContextSnapshotOptions {
+    collectionItems?: 'all' | 'summary';
+    excludeCategories?: ClrContextCategory[];
+    excludeRoles?: string[];
+    excludeSelectors?: string[];
+    focus?: 'page' | 'modal';
+    includeDomComponents?: boolean;
+    includeFrames?: boolean;
+    includeRoutes?: boolean;
+    includeText?: boolean;
+    maxComponents?: number;
+    maxDepth?: number;
+    maxItemsPerCollection?: number;
+    maxTextLength?: number;
+    rootSelector?: string;
+}
+
+// @public
+export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string;
+
+// @public
 export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
@@ -348,6 +414,26 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDestroyService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
+}
+
+// @public
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+
+// @public
+export type ClrElementMutation = {
+    value: unknown;
+    refused?: never;
+} | {
+    refused: string;
+    value?: never;
+};
+
+// @public
+export interface ClrElementMutator {
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+    ownsContents?: boolean;
+    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
 }
 
 // @public (undocumented)
@@ -425,6 +511,16 @@ export class ClrFocusOnViewInitModule {
 
 // @public (undocumented)
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
+
+// @public
+export function clrHasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
+// @public
+export class ClrHostAttribute {
+    constructor(element: Element | null | undefined, name: string);
+    get current(): string | null;
+    value(computed: string | boolean | null): string | null;
+}
 
 // @public
 export class ClrHostWrappingModule {
@@ -585,6 +681,9 @@ export enum ClrLoadingState {
     SUCCESS = 2
 }
 
+// @public
+export function clrNormalizeContextText(text: string, lowercase?: boolean): string;
+
 // @public (undocumented)
 export class ClrOutsideClickModule {
     // (undocumented)
@@ -622,6 +721,12 @@ export enum ClrPosition {
     // (undocumented)
     TOP_RIGHT = 2
 }
+
+// @public
+export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export class ClrRovingTabindex extends ClrKeyFocus {
@@ -661,6 +766,9 @@ export class ClrTemplateRefModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2.CommonModule], [typeof TemplateRefContainer]>;
 }
+
+// @public
+export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export function collapse(): AnimationMetadata[];

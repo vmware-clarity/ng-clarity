@@ -10,16 +10,25 @@
   <div class="datagrid-inner-wrapper">
     <div class="datagrid" #datagrid [attr.aria-hidden]="detailService.isOpen ? true : null">
       <div class="datagrid-table-wrapper">
-        <div role="grid" class="datagrid-table" tabindex="-1" #datagridTable>
+        <div
+          role="grid"
+          class="datagrid-table"
+          tabindex="-1"
+          [attr.aria-multiselectable]="selection.selectionType === SELECTION_TYPE.Multi ? true : null"
+          #datagridTable
+        >
           <div role="rowgroup" class="datagrid-header" #datagridHeader>
             <div role="row" class="datagrid-row">
               <div class="datagrid-row-master datagrid-row-flex">
                 <div class="datagrid-row-sticky" #rowControls>
+                  <!-- The grid's own control columns hold no data: page-context tooling ignores them, as it
+                       ignores their cells in each row, and learns about selection from the grid instead. -->
                   <!--header for datagrid where you can select multiple rows -->
                   @if (selection.selectionType === SELECTION_TYPE.Multi) {
                   <div
                     #stickyHeader
                     role="columnheader"
+                    data-clr-context-ignore
                     class="datagrid-column datagrid-select datagrid-fixed-column"
                     (keydown.space)="toggleAllSelected($event)"
                   >
@@ -47,7 +56,12 @@
                   }
                   <!-- header for datagrid where you can select one row only -->
                   @if (selection.selectionType === SELECTION_TYPE.Single) {
-                  <div #stickyHeader role="columnheader" class="datagrid-column datagrid-select datagrid-fixed-column">
+                  <div
+                    #stickyHeader
+                    role="columnheader"
+                    data-clr-context-ignore
+                    class="datagrid-column datagrid-select datagrid-fixed-column"
+                  >
                     <div class="clr-sr-only">{{clrDgSingleSelectionAriaLabel}}</div>
                     <div class="datagrid-column-separator"></div>
                   </div>
@@ -57,6 +71,7 @@
                   <div
                     #stickyHeader
                     role="columnheader"
+                    data-clr-context-ignore
                     class="datagrid-column datagrid-row-actions datagrid-fixed-column"
                   >
                     <div class="clr-sr-only">{{clrDgSingleActionableAriaLabel}}</div>
@@ -68,6 +83,7 @@
                   <div
                     #stickyHeader
                     role="columnheader"
+                    data-clr-context-ignore
                     class="datagrid-column datagrid-expandable-caret datagrid-fixed-column"
                   >
                     <div class="clr-sr-only">{{clrDetailExpandableAriaLabel}}</div>

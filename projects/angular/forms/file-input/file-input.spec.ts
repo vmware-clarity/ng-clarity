@@ -6,10 +6,12 @@
  */
 
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { TestBed } from '@angular/core/testing';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 import { ClrFileInput } from './file-input';
 import { ClrFileInputContainer } from './file-input-container';
+import { ClrFileInputModule } from './file-input.module';
 import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
 
 @Component({
@@ -50,4 +52,17 @@ describe('ClrFileInput', () => {
   ControlStandaloneSpec(StandaloneUseTest);
   ReactiveSpec(ClrFileInputContainer, ClrFileInput, ReactiveTest, 'clr-file-input');
   TemplateDrivenSpec(ClrFileInputContainer, ClrFileInput, TemplateDrivenTest, 'clr-file-input');
+});
+
+describe('ClrFileInput and aria-required', () => {
+  it('does not claim aria-required, which a file input — exposed as a button — does not support', () => {
+    TestBed.configureTestingModule({
+      imports: [ClrFileInputModule, ReactiveFormsModule],
+      declarations: [ReactiveTest],
+    });
+    const fixture = TestBed.createComponent(ReactiveTest);
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('input[type="file"]').hasAttribute('aria-required')).toBe(false);
+  });
 });
