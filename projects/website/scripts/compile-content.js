@@ -52,6 +52,7 @@ async function main() {
   writeJson('pages.json', await compilePages(aiFiles));
   writeJson('style-docs.json', await compileStyleDocs());
   writeJson('ai-docs.json', await compileAiDocs(aiFiles));
+  writeJson('ai-agents.json', await compileAiAgents(aiFiles));
   writeJson('stackblitz-example-template.json', await compileStackBlitzExampleTemplate());
 
   function writeJson(filename, data) {
@@ -157,8 +158,8 @@ function writeAiStaticFiles({ agents, skills }) {
 
 // Placeholders usable in content/pages/*.md:
 //   <!-- ai:skills:<lib> -->    table of the skills of one library
-//   <!-- ai:agents:<lib> -->    the AGENTS.md of one library, rendered inline
-function replaceAiPlaceholders(markdown, { agents, skills }) {
+//   <!-- ai:agents -->          accordion with the AGENTS.md of every library (see AiAgentsComponent)
+function replaceAiPlaceholders(markdown, { skills }) {
   return markdown
     .replace(/<!-- ai:skills:([a-z]+) -->/g, (placeholder, lib) => {
       const libSkills = skills.filter(s => s.lib === lib);
@@ -177,23 +178,33 @@ function replaceAiPlaceholders(markdown, { agents, skills }) {
         '</table>',
       ].join('\n');
     })
-    .replace(/<!-- ai:agents:([a-z]+) -->/g, (placeholder, lib) => {
-      const agentsFile = agents.find(a => a.lib === lib);
-      if (!agentsFile) {
-        throw new Error(`${placeholder}: no AGENTS.md found for "${lib}"`);
-      }
-      // render inline: drop the merge markers and nest headings one level below the page section
-      const agentsMarkdown = agentsFile.raw
-        .replace(/<!--[\s\S]*?-->/g, '')
-        .replace(/^(#{1,5}) /gm, '#$1 ')
-        .trim();
-      return [agentsMarkdown, '', `[Download AGENTS.md](${agentsFile.url})`].join('\n');
-    });
+    .replace(/<!-- ai:agents -->/g, '<app-ai-agents></app-ai-agents>');
 }
 
 function inlineMarkdownToHtml(text) {
   const escaped = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   return escaped.replace(/`([^`]+)`/g, '<code cds-text="code">$1</code>');
+}
+
+async function compileAiAgents({ agents }) {
+  const aiAgents = [];
+
+  for (const { lib, packageName, url, raw } of agents) {
+    // drop the merge markers and nest headings two levels below the page section (h4 and below)
+    const markdown = raw.replace(/<!--[\s\S]*?-->/g, '').trim();
+    aiAgents.push({
+      packageName,
+      url,
+      html: await compileMarkdown(markdown, [
+        leftAlignTables,
+        incrementHeadingLevels,
+        incrementHeadingLevels,
+        document => prefixHeadingIds(document, `agents-${lib}`),
+      ]),
+    });
+  }
+
+  return aiAgents;
 }
 
 async function compileAiDocs({ skills }) {

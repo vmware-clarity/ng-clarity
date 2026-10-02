@@ -55,13 +55,9 @@ Agents without skill support still find the guides: the `AGENTS.md` index points
 To set up by hand instead, add the `AGENTS.md` files below to your `AGENTS.md`, and for Claude
 Code copy `node_modules/@clr/*/ai/skills/*` into `.claude/skills/`.
 
-## AGENTS.md for @clr/angular
+## AGENTS.md
 
-<!-- ai:agents:angular -->
-
-## AGENTS.md for @clr/addons
-
-<!-- ai:agents:addons -->
+<!-- ai:agents -->
 
 ## Skills
 
