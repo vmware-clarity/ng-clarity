@@ -81,6 +81,17 @@ export default function (): void {
       });
     });
 
+    it('keeps one context object per node across change detection passes', function (this: Context) {
+      // A new object on every pass would make ngTemplateOutlet run ngOnChanges for every node on every pass.
+      expect(this.clarityDirective.getContext(TEST_ROOT)).toBe(this.clarityDirective.getContext(TEST_ROOT));
+    });
+
+    it('renders the current model of a node even after it gets reassigned', function (this: Context) {
+      TEST_ROOT.children[0].model = { name: 'Renamed' };
+      this.detectChanges();
+      expect(this.clarityElement.textContent).toMatch(/Renamed\s*B\s*C/);
+    });
+
     it('does not render anything if the tree is not recursive', function (this: Context) {
       delete this.featuresService.recursion;
       this.detectChanges();
