@@ -49,7 +49,9 @@ const CONFIRM_TIMEOUT_MS = 120_000;
  * The write half of the contextual engine: gives form controls values and navigates,
  * on behalf of an AI agent, from the refs and routes the read half's snapshots carry.
  *
- * It never writes anything a snapshot would not show, never a redacted control, never
+ * It never writes anything a snapshot would not show (an excluded or redacted control,
+ * option, radio or row; size budgets and summary mode shorten what a snapshot lists, not
+ * what can be written), never a redacted control, never
  * a control without an Angular form binding, and never without the application's
  * {@link ClrMutationPolicy}; and it only ever fills — it does not submit, click or
  * invoke, which stay with the user. Every result says what is true afterwards, so an
@@ -301,7 +303,7 @@ export class ClrMutationEngineService {
         refused: 'mismatch',
         detail: write.label
           ? `The node is "${write.label}", not "${String(operation.description)}". Take a new snapshot and use its refs.`
-          : 'The node has no name; describe it by what it is, or leave the description empty.',
+          : 'The node has no name; describe it by what it is, or give an empty string as the description.',
       };
     }
     const coerced = coerceValue(write, operation.operation === 'clear' ? null : operation.value);

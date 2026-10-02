@@ -956,7 +956,17 @@
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">clr-file-input-container</b></td>
-      <td class="left"><code cds-text="code">fileCount</code>; the files themselves are always redacted</td>
+      <td class="left">
+        <code cds-text="code">fileCount</code>, withheld from untrusted consumers; the files themselves are always
+        redacted
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-date-container</b></td>
+      <td class="left">
+        The calendar toggle's name without the selected date, which the date input reports as its
+        <code cds-text="code">value</code> (value); the open calendar is not described
+      </td>
     </tr>
   </tbody>
 </table>

@@ -13,7 +13,7 @@ import {
 } from '@clr/angular/utils';
 
 import { readScope } from './read-scope';
-import { checkVisibility } from './visibility';
+import { isVisible } from './visibility';
 
 /**
  * Normalizes whitespace and enforces a text budget, marking anything shortened with an
@@ -223,18 +223,5 @@ const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDAC
  * it describes. Text clipped for screen readers is visible in this sense, and still read.
  */
 export function isUnrendered(element: Element): boolean {
-  if (element.closest('[hidden]')) {
-    return true;
-  }
-  // An element with `display: contents` has no box of its own, but renders its children
-  // in its place, so it is judged by its parent.
-  for (let current: Element | null = element; current; current = current.parentElement) {
-    if (checkVisibility(current, true)) {
-      return false;
-    }
-    if (current.ownerDocument.defaultView?.getComputedStyle(current).display !== 'contents') {
-      return true;
-    }
-  }
-  return false;
+  return !!element.closest('[hidden]') || !isVisible(element);
 }

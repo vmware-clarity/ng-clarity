@@ -26,7 +26,8 @@ The engine's write half, the **mutation engine** (`ClrMutationEngineService`), l
 on what it read: fill Angular-bound form controls (reactive and template-driven) and navigate to
 any route of the application's router configuration (as `availableRoutes` lists them), addressing controls by the `ref` each snapshot node carries — random,
 and stable for an element while it is on the page. It never submits, clicks or invokes; never
-writes what a snapshot would not show; and does nothing at all until the application provides a `ClrMutationPolicy` classifying what each operation would do.
+writes what a snapshot would not show (an excluded or redacted control, option, radio or row; size budgets
+and summary mode shorten what a snapshot lists, not what can be written); and does nothing at all until the application provides a `ClrMutationPolicy` classifying what each operation would do.
 Components whose value is not what an agent sees — the combobox, the date input, the datagrid's row
 selection — say how they are written to through `clrPublishElementMutator` from `@clr/angular/utils`.
 

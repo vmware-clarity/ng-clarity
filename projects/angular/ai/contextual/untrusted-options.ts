@@ -72,31 +72,40 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
  *
  * Fields keep their label, type, constraints and validation state, so such a consumer
  * still learns the shape of a form; it just does not learn its contents. The rows a
- * selectable grid lists, which exist to name a selection, go with the selection.
+ * selectable grid lists, which exist to name a selection, go with the selection, and so
+ * does how many files a file input holds.
  *
  * Regions are left as they are, state included: those come from the application's own
  * `clrContext` annotations, so whatever is in them was put there deliberately, for every
  * consumer.
  */
 export function withoutFormValues(context: ClrPageContext): ClrPageContext {
-  return { ...context, components: context.components.map(node => withoutRowContents(withoutValues(node))) };
+  return { ...context, components: context.components.map(node => withoutUserContent(withoutValues(node))) };
 }
 
 /**
- * A node without the rows a selectable grid lists so that a row can be named for
- * selection: that is the grid's content, cell by cell, where any other grid tells such a
- * consumer only its columns and how many rows it has.
+ * State keys that are not values but still say what the user chose: the rows a selectable
+ * grid lists so that a row can be named for selection — the grid's content, cell by cell,
+ * where any other grid tells such a consumer only its columns and how many rows it has —
+ * and how many files a file input holds. Withheld only from untrusted consumers: the
+ * application's own code is told both.
  */
-function withoutRowContents(node: ClrComponentContext): ClrComponentContext {
+const UNTRUSTED_WITHHELD_STATE_KEYS = ['rows', 'fileCount'];
+
+/** A node without the {@link UNTRUSTED_WITHHELD_STATE_KEYS}, recursively. */
+function withoutUserContent(node: ClrComponentContext): ClrComponentContext {
   let result = node;
-  if (node.state && 'rows' in node.state) {
-    const kept: Record<string, unknown> = { ...node.state };
-    delete kept['rows'];
+  const state = node.state;
+  if (state && UNTRUSTED_WITHHELD_STATE_KEYS.some(key => key in state)) {
+    const kept: Record<string, unknown> = { ...state };
+    for (const key of UNTRUSTED_WITHHELD_STATE_KEYS) {
+      delete kept[key];
+    }
     result = { ...result, state: kept };
   }
   const children = node.children;
   if (children?.length) {
-    const reduced = children.map(withoutRowContents);
+    const reduced = children.map(withoutUserContent);
     if (reduced.some((child, index) => child !== children[index])) {
       result = { ...result, children: reduced };
     }

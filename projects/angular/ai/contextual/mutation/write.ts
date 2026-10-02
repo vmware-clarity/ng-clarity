@@ -26,9 +26,10 @@ import { readElementMutator } from '../dom/element-mutator';
 import { resolveRole } from '../dom/roles';
 import { jsonSafe, STATE_DEPTH } from '../json-safe';
 import { ownEntry } from '../lookup';
+import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 
-/** The longest a label in a result or a refusal may be. */
-const MAX_LABEL_LENGTH = 100;
+/** The longest a label in a result or a refusal may be: the default text budget. */
+const MAX_LABEL_LENGTH = CLR_CONTEXT_DEFAULT_OPTIONS.maxTextLength;
 
 /**
  * How a control takes a value once the engine has it:

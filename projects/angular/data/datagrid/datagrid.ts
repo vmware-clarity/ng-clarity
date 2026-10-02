@@ -741,12 +741,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   /**
    * The rows a proposal names, and whether the grid would take it — everything a write
-   * checks before it selects anything.
+   * checks before it selects anything. `replacing` says whether a single selection would
+   * give up the row it holds.
    */
   private resolveSelection(
     proposed: unknown,
     excluded: string
-  ): { rows: ClrDatagridRow<T>[]; single: boolean } | { refused: string } {
+  ): { rows: ClrDatagridRow<T>[]; single: boolean; replacing: boolean } | { refused: string } {
     if (!this.selection.selectable) {
       return { refused: 'The datagrid does not offer row selection.' };
     }
@@ -775,10 +776,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       }
       rows.push(found.row);
     }
+    let replacing = false;
     if (single) {
       const identify = (item: T) => this.items.identifyBy(item);
       const current = this.selection.currentSingle;
-      const replacing =
+      replacing =
         current !== undefined && current !== null && (!rows.length || identify(rows[0].item) !== identify(current));
       if (replacing && this.selection.isLocked(current)) {
         return { refused: 'The selected row is locked and cannot be deselected.' };
@@ -787,7 +789,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         return { refused: 'The selected row is kept from agents, and cannot be deselected by one.' };
       }
     }
-    return { rows, single };
+    return { rows, single, replacing };
   }
 
   private writeSelection(proposed: unknown, excluded: string, limit: number): ClrElementMutation {
@@ -795,12 +797,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     if ('refused' in resolved) {
       return resolved;
     }
-    const { rows, single } = resolved;
+    const { rows, single, replacing } = resolved;
     const identify = (item: T) => this.items.identifyBy(item);
     if (single) {
       const current = this.selection.currentSingle;
-      const replacing =
-        current !== undefined && current !== null && (!rows.length || identify(rows[0].item) !== identify(current));
       const unchanged = rows.length
         ? current !== undefined && current !== null && !replacing
         : current === undefined || current === null;

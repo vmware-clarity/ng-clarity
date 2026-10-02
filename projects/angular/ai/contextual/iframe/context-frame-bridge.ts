@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isDevMode } from '@angular/core';
+
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
@@ -327,6 +329,23 @@ export class ClrContextFrameHost {
   }
 }
 
+let warnedNoHostOrigin = false;
+
+/**
+ * In development, says once on the console that a request without `hostOrigin` trusts
+ * whichever page embeds the frame: any site that can embed it can answer with a context
+ * of its own making, and steer what consumes it.
+ */
+function warnNoHostOrigin(): void {
+  if (!warnedNoHostOrigin && isDevMode()) {
+    warnedNoHostOrigin = true;
+    console.warn(
+      'clrRequestHostContext: no hostOrigin was given, so the context is accepted from whichever page embeds this ' +
+        'frame. Pass the origin of the application expected to host it.'
+    );
+  }
+}
+
 /**
  * Requests the hosting page's context from inside an embedded frame. Resolves with
  * `null` when the host does not answer (e.g. it does not run a {@link ClrContextFrameHost},
@@ -352,6 +371,9 @@ export function clrRequestHostContext(options: ClrContextFrameRequestOptions = {
     return Promise.reject(
       new Error(`clrRequestHostContext: "${options.hostOrigin}" is not an origin, such as https://app.example.`)
     );
+  }
+  if (!hostOrigin) {
+    warnNoHostOrigin();
   }
   const targetOrigin = hostOrigin || embedderOrigin() || ownOrigin();
   const expectedOrigin = targetOrigin !== '*' ? targetOrigin : undefined;

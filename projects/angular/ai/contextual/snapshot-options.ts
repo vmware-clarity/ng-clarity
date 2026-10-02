@@ -63,6 +63,15 @@ export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonl
 const CATEGORY_NAMES = Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[];
 const EXCLUSION_KEYS = ['excludeCategories', 'excludeRoles', 'excludeSelectors'] as const;
 
+function isExclusionKey(key: string): key is (typeof EXCLUSION_KEYS)[number] {
+  return (EXCLUSION_KEYS as readonly string[]).includes(key);
+}
+
+/** An exclusion list as given, or no entries when what was given is not a list. */
+function listOrNothing(value: unknown): readonly unknown[] {
+  return Array.isArray(value) ? value : [];
+}
+
 /** The roles a set of categories leaves out, for the categories that are roles. */
 export function clrContextCategoryRoles(categories: readonly ClrContextCategory[]): string[] {
   return [...new Set(categories.flatMap(category => ownEntry(CLR_CONTEXT_CATEGORIES, category) ?? []))];
@@ -110,11 +119,8 @@ export function clrContextPreset(
   const base: Readonly<ClrContextSnapshotOptions> = ownEntry(CLR_CONTEXT_PRESETS, preset) ?? {};
   const options = { ...base, ...overrides } as ClrContextSnapshotOptions;
   for (const key of EXCLUSION_KEYS) {
-    const combined = [
-      ...((base[key] as string[] | undefined) ?? []),
-      ...((overrides[key] as string[] | undefined) ?? []),
-    ];
-    if (combined.length) {
+    const combined = [...listOrNothing(base[key]), ...listOrNothing(overrides[key])];
+    if (combined.length || (key in options && !Array.isArray(options[key]))) {
       (options as Record<string, unknown>)[key] = [...new Set(combined)];
     }
   }
@@ -132,7 +138,9 @@ export function withCallOptions(
 ): ClrContextSnapshotOptions {
   const effective: ClrContextSnapshotOptions = { ...application };
   for (const [key, value] of Object.entries(call ?? {})) {
-    if (value !== undefined) {
+    // An exclusion list that is not a list — `null`, a string — is ignored rather than
+    // put in place of the application's, which would then resolve to no exclusions.
+    if (value !== undefined && (!isExclusionKey(key) || Array.isArray(value))) {
       (effective as Record<string, unknown>)[key] = value;
     }
   }

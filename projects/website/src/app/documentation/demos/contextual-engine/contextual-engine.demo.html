@@ -430,9 +430,12 @@
         Values reach the form control through its Angular accessor, without DOM events, so the application's own
         <code cds-text="code">(change)</code> or <code cds-text="code">(blur)</code> handlers do not run; the form
         control's <code cds-text="code">valueChanges</code> and <code cds-text="code">ngModelChange</code> do, as they
-        would for any programmatic write, so an auto-save driven by them saves what the agent wrote. Submitting is the
-        first operation that does more than fill, and the first channel by which page content an attacker influenced
-        could send data somewhere. It stays with the person.
+        would for any programmatic write, so an auto-save driven by them saves what the agent wrote. A native
+        <code cds-text="code">&lt;select&gt;</code> is written through fields of Angular's select accessors that are not
+        public API, verified against <code cds-text="code">&#64;angular/forms</code> 21.2; should they change, select
+        writes are refused as <code cds-text="code">unsupported</code> rather than misapplied. Submitting is the first
+        operation that does more than fill, and the first channel by which page content an attacker influenced could
+        send data somewhere. It stays with the person.
       </li>
       <li>
         <b cds-text="medium">Write what a snapshot would not show.</b> A hidden, inert, disabled, read-only or ignored
@@ -442,7 +445,8 @@
         a field moved off-screen or shrunk to nothing is still offered, because a visually hidden native input is also
         how custom checkboxes are built. Fields hidden from the user are a documented attack on form-filling agents;
         what protects against one is that only Angular-bound controls are written, and that the mutation policy judges
-        every write.
+        every write. An excluded or redacted option, radio or row is refused the same way; size budgets and
+        <code cds-text="code">collectionItems: 'summary'</code> shorten what a snapshot lists, not what can be chosen.
       </li>
       <li>
         <b cds-text="medium">Write an unbound control.</b> A control without an Angular form binding — plain HTML the

@@ -178,6 +178,36 @@ describe('ClrDateInput element mutator', () => {
       expect(readElementMutator(input)).toBeNull();
     });
 
+    describe('as page-context tooling sees it', () => {
+      const accessorName = 'testDateClrContext';
+
+      afterEach(() => TestBed.inject(ClrContextEngineService).disableGlobalAccess());
+
+      /** Picks 6 March 1981 as the calendar does, which is what names the toggle by it. */
+      function pickDate() {
+        dateNavigationService.notifySelectedDayChanged(new DayModel(1981, 2, 6));
+        fixture.detectChanges();
+      }
+
+      it('names the toggle without the selected date, which the field reports as its value', () => {
+        pickDate();
+        const toggle = fixture.nativeElement.querySelector('button.clr-input-group-icon-action') as HTMLElement;
+        const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot();
+
+        expect(toggle.getAttribute('aria-label')).toContain('03/06/1981');
+        expect(findNode(snapshot.components, node => node.type === 'button')?.label).toBe('Choose date');
+        expect(findNode(snapshot.components, node => node.type === 'textbox')?.state?.['value']).toBe('03/06/1981');
+      });
+
+      it('keeps the selected date from untrusted consumers', () => {
+        pickDate();
+        TestBed.inject(ClrContextEngineService).enableGlobalAccess(accessorName);
+        const accessor = (window as unknown as Record<string, () => ClrPageContext>)[accessorName];
+
+        expect(JSON.stringify(accessor())).not.toContain('1981');
+      });
+    });
+
     describe('exact values', () => {
       it('writes an ISO date as exactly that day, with no time-zone shift', async () => {
         const result = await write('2026-03-05');

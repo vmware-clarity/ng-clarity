@@ -171,6 +171,21 @@ describe('ClrCombobox element context, other shapes', () => {
     expect(context.state.value).toEqual(['Apple', 'Plum']);
   });
 
+  it('is not described again through its selection pills, which would count the selection', () => {
+    const grids: ClrComponentContext[] = [];
+    const visit = (nodes: ClrComponentContext[]) =>
+      nodes.forEach(node => {
+        if (node.type === 'grid') {
+          grids.push(node);
+        }
+        visit(node.children ?? []);
+      });
+    visit(TestBed.inject(ClrContextEngineService).getSnapshot().components);
+
+    expect(fixture.nativeElement.querySelector('.clr-combobox-pills[role="grid"]')).not.toBeNull();
+    expect(grids).toEqual([]);
+  });
+
   it('says that an async combobox has no options until a search loads them', () => {
     const context = publishedOn('clr-combobox.async');
     expect(context.state.optionsAvailable).toBe(false);

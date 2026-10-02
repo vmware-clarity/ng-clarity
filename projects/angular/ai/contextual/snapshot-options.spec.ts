@@ -126,6 +126,22 @@ describe('snapshot options', () => {
         excludeCategories: ['text'],
       });
     });
+
+    it('ignores an exclusion list that is not a list, so the application’s stays', () => {
+      const application = {
+        excludeSelectors: ['.secret'],
+        excludeRoles: ['grid'],
+        excludeCategories: ['text' as const],
+      };
+      const call = { excludeSelectors: null, excludeRoles: 'img', excludeCategories: null } as unknown as Parameters<
+        typeof withCallOptions
+      >[1];
+      const resolved = resolveSnapshotOptions(withCallOptions(application, call));
+
+      expect(resolved.excludeSelectors).toEqual(['.secret']);
+      expect(resolved.excludeRoles).toContain('grid');
+      expect(resolved.excludeCategories).toEqual(['text']);
+    });
   });
 });
 
@@ -206,6 +222,16 @@ describe('snapshot options, choosing what to collect', () => {
       const overridden = resolveSnapshotOptions(clrContextPreset('minimal', { maxComponents: 500 }));
       expect(overridden.maxComponents).toBe(500);
       expect(overridden.includeText).toBe(false);
+    });
+
+    it('keep the preset’s exclusions when an override’s list is not a list', () => {
+      const overrides = { excludeCategories: null, excludeRoles: 'grid' } as unknown as Parameters<
+        typeof clrContextPreset
+      >[1];
+      const options = clrContextPreset('interactive', overrides);
+
+      expect(options.excludeCategories).toEqual(['layout', 'text']);
+      expect(options.excludeRoles).toEqual([]);
     });
   });
 });
@@ -341,5 +367,22 @@ describe('withoutFormValues', () => {
       { value: 0.7 },
       { max: 10 },
     ]);
+  });
+
+  it('withholds how many files a file input holds', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        {
+          type: 'clr-file-input-container',
+          label: 'Statement',
+          state: { fileCount: 2, redacted: true },
+        },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components[0].state).toEqual({ redacted: true });
   });
 });
