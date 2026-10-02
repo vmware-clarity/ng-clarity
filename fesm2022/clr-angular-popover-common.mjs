@@ -983,19 +983,44 @@ class ClrPopoverContent {
     /**
      * Uses IntersectionObserver to detect when the origin element leaves the screen.
      * This handles the "Close on Scroll" logic much cheaper than getBoundingClientRect.
+     *
+     * An origin that is fully visible when the popover opens closes it once less than 80% of it is
+     * visible. An origin that is only partially visible (e.g. clipped on a narrow screen) closes it
+     * once it is completely out of view - reported by the 0 threshold. An origin that is completely
+     * hidden when the popover opens closes it right away.
      */
     setupIntersectionObserver() {
         if (!this.popoverService.originElement || this.intersectionObserver) {
             return;
         }
+        const fullyVisibleAtOpenRatio = 0.8;
+        const notFullyVisibleAtOpenRatio = 0;
+        let fullyVisibleAtOpen;
         this.intersectionObserver = new IntersectionObserver(entries => {
+            // cycle through all possible entries, usually only one, but not to miss any by limiting to the first one.
             entries.forEach(entry => {
-                // If the origin is no longer visible (scrolled out of view)
-                if (!entry.isIntersecting && this.popoverService.open) {
+                // isIntersecting is not used: with the 0 threshold it is true for any partially visible origin
+                const { rootBounds, intersectionRatio } = entry;
+                // Screenshot tools briefly resize the window to 1x1. rootBounds is null in a cross-origin iframe
+                // and empty (0x0) for a display: none origin, which still counts as hidden.
+                if (rootBounds && rootBounds.width > 0 && (rootBounds.width <= 1 || rootBounds.height <= 1)) {
+                    return;
+                }
+                if (fullyVisibleAtOpen === undefined) {
+                    if (intersectionRatio === notFullyVisibleAtOpenRatio) {
+                        this.zone.run(() => this.closePopover());
+                        return;
+                    }
+                    fullyVisibleAtOpen = intersectionRatio === 1;
+                }
+                const outOfView = fullyVisibleAtOpen
+                    ? intersectionRatio < fullyVisibleAtOpenRatio
+                    : intersectionRatio === notFullyVisibleAtOpenRatio;
+                if (outOfView && this.popoverService.open) {
                     this.zone.run(() => this.closePopover());
                 }
             });
-        }, { root: null, threshold: 0.8 });
+        }, { root: null, threshold: [notFullyVisibleAtOpenRatio, fullyVisibleAtOpenRatio] });
         this.intersectionObserver.observe(this.popoverService.originElement.nativeElement);
     }
     listenToScrollEvents() {
