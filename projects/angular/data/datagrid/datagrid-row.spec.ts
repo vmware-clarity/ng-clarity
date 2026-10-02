@@ -6,7 +6,7 @@
  */
 
 import { AnimationBuilder } from '@angular/animations';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, EmbeddedViewRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, TestContext } from '@clr/angular/testing';
@@ -90,6 +90,34 @@ export default function (): void {
 
       it('provides a wrapped view for the content', function () {
         expect(context.clarityDirective._view).toBeDefined();
+      });
+
+      it('destroys the fixed cells it created when it leaves calculate mode', function () {
+        // a fixed cell is only rendered when the row has something in its fixed column
+        context.getClarityProvider(ExpandableRowsCount).register();
+        displayMode.updateView(DatagridDisplayMode.CALCULATE);
+
+        const fixedCellViews = [...getFixedCellViews(context.clarityDirective)];
+        expect(fixedCellViews.length).toBeGreaterThan(0);
+
+        displayMode.updateView(DatagridDisplayMode.DISPLAY);
+
+        // detaching them from the container is not enough - an undestroyed view keeps the row,
+        // and the whole datagrid with it, alive for as long as the application lives
+        expect(fixedCellViews.every(view => view.destroyed)).toBe(true);
+        expect(getFixedCellViews(context.clarityDirective).length).toBe(0);
+      });
+
+      it('destroys the fixed cells it created when the row is destroyed', function () {
+        context.getClarityProvider(ExpandableRowsCount).register();
+        displayMode.updateView(DatagridDisplayMode.CALCULATE);
+
+        const fixedCellViews = [...getFixedCellViews(context.clarityDirective)];
+        expect(fixedCellViews.length).toBeGreaterThan(0);
+
+        context.clarityDirective.ngOnDestroy();
+
+        expect(fixedCellViews.every(view => view.destroyed)).toBe(true);
       });
     });
 
@@ -762,6 +790,10 @@ export default function (): void {
       });
     });
   });
+}
+
+function getFixedCellViews(row: ClrDatagridRow): EmbeddedViewRef<void>[] {
+  return (row as unknown as { fixedCellViews: EmbeddedViewRef<void>[] }).fixedCellViews;
 }
 
 @Component({
