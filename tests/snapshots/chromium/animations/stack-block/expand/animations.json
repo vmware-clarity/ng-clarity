@@ -1,0 +1,48 @@
+[
+  {
+    "target": "div.stack-block-label",
+    "name": "background-color",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "ease-in-out",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "linear",
+        "composite": "auto",
+        "backgroundColor": "rgb(255, 255, 255)"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "backgroundColor": "rgb(224, 246, 255)"
+      }
+    ]
+  },
+  {
+    "target": "clr-expandable-animation.stack-children",
+    "name": "",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "linear",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "ease-in-out",
+        "composite": "auto",
+        "height": "0px"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "height": "32px"
+      }
+    ]
+  }
+]
