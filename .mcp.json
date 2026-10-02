@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "clarity": {
+      "command": "node",
+      "args": ["./tools/clarity-mcp/dist/index.js"],
+      "env": {
+        "CLARITY_REPO_ROOT": "."
+      }
+    }
+  }
+}
