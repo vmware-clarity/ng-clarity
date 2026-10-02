@@ -773,8 +773,33 @@ export class ClrCombobox<T>
 
   /** {@link optionShown} for a selected value: a value no option holds is shown by its own label. */
   private valueShown(value: T, excluded: string): 'shown' | 'withheld' | 'excluded' {
-    const option = this.options?.items?.find(candidate => candidate.value === value);
+    const option = this.optionFor(value);
     return option ? this.optionShown(option, excluded) : 'shown';
+  }
+
+  /**
+   * The option that holds a value, matched as the selection itself matches it: by
+   * `clrComboboxIdentityFn` as well as by reference, so a model loaded apart from the
+   * options — the same record, another object — is still that option, redaction and all.
+   */
+  private optionFor(value: unknown): ClrOption<T> | undefined {
+    return this.options?.items?.find(candidate => this.sameValue(candidate.value, value));
+  }
+
+  private sameValue(option: T, value: unknown): boolean {
+    if (option === value) {
+      return true;
+    }
+    if (option === null || option === undefined || value === null || value === undefined) {
+      return false;
+    }
+    try {
+      const identity = this.optionSelectionService.identityFn(option);
+      return identity !== undefined && identity === this.optionSelectionService.identityFn(value as T);
+    } catch {
+      // An identity function written for the model's shape may not take anything else.
+      return false;
+    }
   }
 
   private selectedValues(): T[] {
@@ -805,7 +830,7 @@ export class ClrCombobox<T>
 
   private optionMatches(option: ClrOption<T>, proposal: unknown): boolean {
     if (typeof proposal !== 'string') {
-      return proposal === option.value;
+      return this.sameValue(option.value, proposal);
     }
     const wanted = clrNormalizeContextText(proposal);
     if (clrNormalizeContextText(this.optionLabel(option)) === wanted) {
@@ -843,7 +868,7 @@ export class ClrCombobox<T>
    * fields the user never sees — so an object without either reads as `null`.
    */
   private selectedValueLabel(value: T): string | null {
-    const option = this.options?.items?.find(candidate => candidate.value === value);
+    const option = this.optionFor(value);
     if (option) {
       return this.optionLabel(option);
     }

@@ -527,6 +527,25 @@ describe('Context frame bridge', () => {
       expect(context).toBeNull();
     });
 
+    it('reads the host origin as an origin, whatever its case or trailing slash', async () => {
+      const target = answering(pageContext);
+      const hostOrigin = `${window.location.origin.toUpperCase()}/`;
+
+      expect(await clrRequestHostContext({ targetWindow: target as unknown as Window, hostOrigin })).toEqual(
+        pageContext
+      );
+      expect(target.postMessage).toHaveBeenCalledWith(jasmine.anything(), { targetOrigin: window.location.origin });
+    });
+
+    it('rejects a host origin that is not an origin', async () => {
+      const target = answering(pageContext);
+
+      await expectAsync(
+        clrRequestHostContext({ targetWindow: target as unknown as Window, hostOrigin: '/app' })
+      ).toBeRejectedWithError(/is not an origin/);
+      expect(target.postMessage).not.toHaveBeenCalled();
+    });
+
     it('ignores a response that carries no context', async () => {
       const target = answering(pageContext, { context: undefined as unknown as ClrPageContext });
 

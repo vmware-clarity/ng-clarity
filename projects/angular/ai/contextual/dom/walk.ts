@@ -8,6 +8,7 @@
 import {
   CLR_CONTEXT_HIDDEN_SELECTOR,
   CLR_CONTEXT_IGNORE_ATTRIBUTE,
+  CLR_CONTEXT_IGNORE_SELECTOR,
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_CONTEXT_REDACT_SELECTOR,
   CLR_ELEMENT_CONTEXT_PROPERTY,
@@ -21,6 +22,7 @@ import { accessibleName } from './accessible-name';
 import { ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, publishedNode, readClrElementContext } from './element-context';
 import { readElementMutator } from './element-mutator';
+import { withinReadScope } from './read-scope';
 import {
   isLeafRole,
   isNameFromContents,
@@ -238,14 +240,16 @@ export function collectContextTreeWithin(
     mutatorDepth: 0,
     refs,
   };
-  collectReferencedIds(root, walk);
-  const scope = scopeOf(root, walk);
-  const components = describeScope(scope.roots, walk);
-  const result: ClrContextTreeResult = { components, truncated: walk.truncated };
-  if (scope.focus) {
-    result.focus = scope.focus;
-  }
-  return result;
+  return withinReadScope(() => {
+    collectReferencedIds(root, walk);
+    const scope = scopeOf(root, walk);
+    const components = describeScope(scope.roots, walk);
+    const result: ClrContextTreeResult = { components, truncated: walk.truncated };
+    if (scope.focus) {
+      result.focus = scope.focus;
+    }
+    return result;
+  });
 }
 
 /**
@@ -290,7 +294,9 @@ export function isOutsideSnapshot(element: Element, options: Required<ClrContext
     const candidates = roleCandidateSelector(excluded);
     if (
       candidates &&
-      Array.from(element.querySelectorAll(candidates)).some(inner => excluded.has(resolveRole(inner) ?? ''))
+      Array.from(element.querySelectorAll(candidates)).some(
+        inner => excluded.has(resolveRole(inner) ?? '') && !isLeftOutAnyway(inner, excludeSelector)
+      )
     ) {
       return true;
     }
@@ -1122,7 +1128,7 @@ function rendersExcludedRole(element: Element, walk: Walk): boolean {
   }
   for (const descendant of Array.from(element.querySelectorAll(walk.excludeRoleCandidates))) {
     const role = resolveRole(descendant);
-    if (!role || !walk.excludeRoles.has(role)) {
+    if (!role || !walk.excludeRoles.has(role) || isLeftOutAnyway(descendant, walk.excludeSelector)) {
       continue;
     }
     let owner: Element | null = descendant.parentElement;
@@ -1146,11 +1152,21 @@ function holdsExcludedRole(element: Element, walk: Walk): boolean {
   }
   for (const descendant of Array.from(element.querySelectorAll(walk.excludeRoleCandidates))) {
     const role = resolveRole(descendant);
-    if (role && walk.excludeRoles.has(role)) {
+    if (role && walk.excludeRoles.has(role) && !isLeftOutAnyway(descendant, walk.excludeSelector)) {
       return true;
     }
   }
   return false;
+}
+
+/**
+ * Whether an element is in a region the engine is told not to look at — ignored, or
+ * matched by the snapshot's `excludeSelectors` — so its role decides nothing about the
+ * component around it: the select-all checkbox in a datagrid's ignored header does not
+ * make the grid a form when forms are excluded.
+ */
+function isLeftOutAnyway(element: Element, excludeSelector: string): boolean {
+  return !!element.closest(CLR_CONTEXT_IGNORE_SELECTOR) || (!!excludeSelector && !!element.closest(excludeSelector));
 }
 
 /**

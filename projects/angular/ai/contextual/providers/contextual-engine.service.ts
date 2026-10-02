@@ -239,12 +239,12 @@ export class ClrContextEngineService implements OnDestroy {
     if (route) {
       snapshot.route = route;
     }
-    if (effective.includeRoutes && this.router?.config.length) {
+    if (resolved.includeRoutes && this.router?.config.length) {
       // Bounded by the resolved budget, so an out-of-range request is clamped here too.
       const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
-    if (isPlatformBrowser(this.platformId) && effective.includeDomComponents !== false) {
+    if (isPlatformBrowser(this.platformId) && resolved.includeDomComponents) {
       const refs = withRefs ? this.refs.begin() : null;
       const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors, refs);
       refs?.commit();

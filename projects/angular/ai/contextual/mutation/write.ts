@@ -427,6 +427,15 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
   try {
     if (target.kind === 'radiogroup') {
       control.setValue(coerced.value === null ? null : radioValue(coerced.value as HTMLInputElement));
+    } else if (
+      target.kind === 'select' &&
+      !(target.element as HTMLSelectElement).multiple &&
+      coerced.display === null
+    ) {
+      // A one-line select with no option chosen chooses its first again — the browser
+      // does — so a cleared one is told through its control that it holds nothing: the
+      // accessor then shows no option, or the one bound to `null` if there is one.
+      control.setValue(null);
     } else if (target.kind === 'select' && accessor?.onChange) {
       const select = target.element as HTMLSelectElement;
       const chosen = Array.isArray(coerced.value) ? (coerced.value as HTMLOptionElement[]) : [];
@@ -625,10 +634,13 @@ function coerceTyped(target: WriteTarget, proposed: unknown): Coerced {
   const probe = input.ownerDocument.createElement('input');
   probe.type = input.type;
   probe.value = proposed;
-  if (probe.value !== proposed) {
+  // A colour is written in lower case whatever case it is given in: `#AABBCC` is valid,
+  // and the field shows `#aabbcc`, which is what the model then holds.
+  const sameValue = input.type === 'color' ? probe.value === proposed.toLowerCase() : probe.value === proposed;
+  if (!sameValue) {
     return { refused: `A value in the form ${format} is expected.` };
   }
-  return { value: proposed, display: proposed };
+  return { value: probe.value, display: probe.value };
 }
 
 function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {

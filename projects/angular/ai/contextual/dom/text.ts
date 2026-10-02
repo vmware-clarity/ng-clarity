@@ -12,6 +12,7 @@ import {
   CLR_CONTEXT_REDACT_SELECTOR,
 } from '@clr/angular/utils';
 
+import { readScope } from './read-scope';
 import { checkVisibility } from './visibility';
 
 /**
@@ -47,22 +48,21 @@ export function isVisuallyHidden(element: Element): boolean {
 }
 
 /**
- * Each element's computed style, asked for once. The declaration a browser hands out is
- * live — it always reflects the element's current style — so keeping it is safe, and
- * spares the walk one lookup per element for every name, description and text block that
- * reads it.
+ * An element's computed style, asked for once per walk (see {@link withinReadScope}),
+ * which spares the walk one lookup per element for every name, description and text
+ * block that reads it.
  */
-const STYLES = new WeakMap<Element, CSSStyleDeclaration>();
-
 function computedStyle(element: Element): CSSStyleDeclaration | null {
-  let style = STYLES.get(element);
-  if (!style) {
-    style = element.ownerDocument.defaultView?.getComputedStyle(element);
-    if (!style) {
-      return null;
-    }
-    STYLES.set(element, style);
+  const styles = readScope()?.styles;
+  const cached = styles?.get(element);
+  if (cached) {
+    return cached;
   }
+  const style = element.ownerDocument.defaultView?.getComputedStyle(element);
+  if (!style) {
+    return null;
+  }
+  styles?.set(element, style);
   return style;
 }
 

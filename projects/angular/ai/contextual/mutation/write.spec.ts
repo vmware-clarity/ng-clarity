@@ -161,6 +161,9 @@ class AppBroken implements ControlValueAccessor {
       </clr-radio-container>
       <label for="due">Due</label>
       <input id="due" type="date" formControlName="due" />
+      <label for="tint">Tint</label>
+      <!-- A colour input has no role of its own; one given a role is offered for writing. -->
+      <input id="tint" type="color" role="textbox" formControlName="tint" />
       <label for="volume">Volume</label>
       <input id="volume" type="range" min="0" max="10" step="2" formControlName="volume" />
       <label for="locked">Locked</label>
@@ -218,6 +221,7 @@ class Host {
     office: new FormControl('ber'),
     tier: new FormControl('basic'),
     due: new FormControl(''),
+    tint: new FormControl('#000000'),
     volume: new FormControl(4),
     locked: new FormControl({ value: 'fixed', disabled: true }),
     code: new FormControl(''),
@@ -429,6 +433,18 @@ describe('ClrMutationEngineService write path', () => {
       expect(typeof accessor['onTouched']).toBe('function');
     });
 
+    it('clears a select with no empty option to nothing, never to its first option', async () => {
+      const ref = refOf(contextEngine.getSnapshot(), 'Office');
+      const report = await engine.apply([{ operation: 'clear', ref, description: 'Office' }]);
+      await settle();
+      const result = report.results[0] as ClrElementMutationResult;
+
+      expect(result).toEqual(jasmine.objectContaining({ applied: true, value: null, previous: 'Berlin' }));
+      expect(classify).toHaveBeenCalledWith(jasmine.objectContaining({ label: 'Office', value: null }));
+      expect(host.form.value.office).toBeNull();
+      expect(fixture.nativeElement.querySelector('select[formControlName="office"]').selectedIndex).toBe(-1);
+    });
+
     it('refuses a select that applies its value only on submit', async () => {
       const result = await set('Region', 'Americas');
 
@@ -443,6 +459,14 @@ describe('ClrMutationEngineService write path', () => {
       expect(host.form.value.due).toBe('');
       expect((await set('Due', '2026-03-06')).applied).toBeTrue();
       expect(host.form.value.due).toBe('2026-03-06');
+    });
+
+    it('takes a colour in either case, as the lower-case value the field shows', async () => {
+      const result = await set('Tint', '#AABBCC');
+
+      expect(result).toEqual(jasmine.objectContaining({ applied: true, value: '#aabbcc' }));
+      expect(host.form.value.tint).toBe('#aabbcc');
+      expect((await set('Tint', 'teal')).refused).toBe('invalid');
     });
 
     it('refuses a number outside the input’s bounds or off its step', async () => {

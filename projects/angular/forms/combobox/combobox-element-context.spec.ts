@@ -297,3 +297,83 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
     expect(mutator?.coerce(null, options).value).toEqual(['acct', 'trust']);
   });
 });
+
+interface Account {
+  id: number;
+  label: string;
+}
+
+@Component({
+  template: `
+    <clr-combobox name="account" [(ngModel)]="selection" [clrComboboxIdentityFn]="byId">
+      <ng-container *clrOptionSelected="let selected">{{ selected?.label }}</ng-container>
+      <clr-options>
+        <clr-option
+          *clrOptionItems="let account of accounts; field: 'label'"
+          [clrValue]="account"
+          [attr.data-clr-context-redact]="account.id === 2 ? '' : null"
+        >
+          {{ account.label }}
+        </clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class IdentityTestComponent {
+  accounts: Account[] = [
+    { id: 1, label: 'Ops budget' },
+    { id: 2, label: 'Acct 998877' },
+  ];
+  // The same record as the redacted option, loaded apart from the options.
+  selection: Account | null = { id: 2, label: 'Acct 998877' };
+  byId = (account: Account) => account?.id;
+}
+
+describe('ClrCombobox element context, options matched by identity', () => {
+  let fixture: ComponentFixture<IdentityTestComponent>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      declarations: [IdentityTestComponent],
+    });
+    fixture = TestBed.createComponent(IdentityTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  function host() {
+    return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
+      clrElementContext?: ElementContextCallback;
+      clrElementMutator?: { coerce: (proposed: unknown, options?: unknown) => { value?: unknown; refused?: string } };
+    };
+  }
+
+  it('withholds a redacted selection matched by clrComboboxIdentityFn rather than by reference', () => {
+    const context = host().clrElementContext?.({ maxItemsPerCollection: 25 });
+
+    expect(context?.state['value']).toBeNull();
+    expect(context?.state['redactedOptions']).toBe(1);
+    expect(JSON.stringify(context)).not.toContain('998877');
+  });
+
+  it('refuses to replace that selection', () => {
+    expect(host().clrElementMutator?.coerce('Ops budget', {}).refused).toBe(
+      'The current choice is kept from agents, and cannot be changed by one.'
+    );
+  });
+
+  it('names a selection the agent may see when it matches an option by identity', async () => {
+    fixture.componentInstance.selection = { id: 1, label: 'Ops budget' };
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(host().clrElementContext?.({ maxItemsPerCollection: 25 })?.state['value']).toBe('Ops budget');
+    expect(host().clrElementMutator?.coerce({ id: 1 }, {}).value).toBe(fixture.componentInstance.accounts[0]);
+  });
+});

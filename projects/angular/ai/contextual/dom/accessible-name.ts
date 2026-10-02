@@ -11,6 +11,7 @@ import {
   CLR_CONTEXT_REDACT_SELECTOR,
 } from '@clr/angular/utils';
 
+import { readScope } from './read-scope';
 import { isNameFromContents } from './roles';
 import { accessibleText, isUnrendered, referencedText, truncate } from './text';
 
@@ -125,20 +126,44 @@ function readableNameSource(source: Element, named: Element, withheld: string): 
 }
 
 /**
- * The text of the `<label>` that names a form control, associated or wrapping.
- *
- * The browser already maintains the association as `labels`, so reading it is a
- * constant-time lookup rather than a document-wide query per field — which on a long
- * form is the difference between a linear and a quadratic scrape. A wrapping label's
- * name leaves the control itself out: a `<select>`'s options are not part of its name.
+ * The text of the `<label>` that names a form control, associated or wrapping. A wrapping
+ * label's name leaves the control itself out: a `<select>`'s options are not part of its
+ * name.
  */
 function labelText(control: Element, withheld: string): string | null {
-  // The browser keeps the association for labelable elements; only an element that
-  // cannot be labelled (a custom textbox) falls back to a label wrapped around it.
-  const labels = (control as HTMLInputElement).labels;
-  const label = labels ? labels[0] : control.closest('label');
+  const label = labelOf(control);
   if (!label || !readableNameSource(label, control, withheld)) {
     return null;
   }
   return accessibleText(label, control, withheld);
+}
+
+/**
+ * The first label of a control. The browser keeps the association for labelable
+ * elements as `labels`, but builds that list by searching the document each time it is
+ * read: on a long form, a lookup per field makes a walk quadratic. A walk instead maps
+ * every label of the document to its control once. An element that cannot be labelled
+ * (a custom textbox) falls back to a label wrapped around it.
+ */
+function labelOf(control: Element): Element | null {
+  if (!('labels' in control) || !(control as HTMLInputElement).labels) {
+    return control.closest('label');
+  }
+  const scope = readScope();
+  if (!scope) {
+    return (control as HTMLInputElement).labels?.[0] ?? null;
+  }
+  const document = control.ownerDocument;
+  let labels = scope.labels.get(document);
+  if (!labels) {
+    labels = new Map();
+    for (const label of Array.from(document.querySelectorAll('label'))) {
+      const labelled = label.control;
+      if (labelled && !labels.has(labelled)) {
+        labels.set(labelled, label);
+      }
+    }
+    scope.labels.set(document, labels);
+  }
+  return labels.get(control) ?? null;
 }

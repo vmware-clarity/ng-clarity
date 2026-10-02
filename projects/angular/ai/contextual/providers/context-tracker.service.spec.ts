@@ -310,6 +310,20 @@ describe('ClrContextTrackerService', () => {
       expect(tracker.isTracking).toBeFalse();
     });
 
+    it('stops when the last subscriber leaves, even when the first snapshot failed', () => {
+      const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
+      const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.throwError('boom');
+
+      const first = tracker.track().subscribe();
+      expect(handleError).toHaveBeenCalledWith(jasmine.objectContaining({ message: 'boom' }));
+      expect(tracker.isTracking).toBeTrue();
+
+      getSnapshot.and.callThrough();
+      tracker.track().subscribe().unsubscribe();
+      first.unsubscribe();
+      expect(tracker.isTracking).toBeFalse();
+    });
+
     it('delivers the page context to each subscriber', () => {
       const seen: ClrPageContext[] = [];
       const subscription = tracker.track().subscribe(context => seen.push(context));

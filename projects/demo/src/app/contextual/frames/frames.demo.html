@@ -42,7 +42,7 @@
       </p>
       <clr-tabs>
         <clr-tab>
-          <button clrTabLink>Inventory plugin</button>
+          <button type="button" clrTabLink>Inventory plugin</button>
           <clr-tab-content *clrIfActive>
             <iframe
               class="plugin-frame"
@@ -53,7 +53,7 @@
           </clr-tab-content>
         </clr-tab>
         <clr-tab>
-          <button clrTabLink>Monitoring plugin (nested frame)</button>
+          <button type="button" clrTabLink>Monitoring plugin (nested frame)</button>
           <clr-tab-content *clrIfActive>
             <iframe
               class="plugin-frame"
@@ -64,7 +64,7 @@
           </clr-tab-content>
         </clr-tab>
         <clr-tab>
-          <button clrTabLink>Third-party plugin (cross-origin)</button>
+          <button type="button" clrTabLink>Third-party plugin (cross-origin)</button>
           <clr-tab-content *clrIfActive>
             @if (thirdPartyPluginUrl) {
             <iframe

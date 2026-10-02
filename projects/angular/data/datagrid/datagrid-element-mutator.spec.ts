@@ -387,6 +387,23 @@ describe('ClrDatagrid element mutator', () => {
       ['ign-', 'inert-', 'int-', 'typed-'].forEach(text => expect(JSON.stringify(refused)).not.toContain(text));
     });
 
+    it('keeps its state and its selection writable when forms are excluded', async () => {
+      const host = await create(MultiHost);
+      const options = { excludeCategories: ['forms' as const] };
+      const node = gridOf(contextEngine.getSnapshot(options));
+
+      // The select-all checkbox is in the grid's ignored header: it is no form inside the grid.
+      expect(node.state?.['rows']).toEqual(['esx-01 | Running', 'esx-02 | Running', 'esx-03 | Stopped']);
+      const report = await engine.apply(
+        [{ operation: 'setValue', ref: String(node.ref), description: '', value: 'esx-02' }],
+        options
+      );
+      await settle();
+
+      expect(report.results[0].applied).toBeTrue();
+      expect(names(host.selected)).toEqual(['esx-02']);
+    });
+
     it('labels a row by its own cells, not those of its expanded detail', async () => {
       const host = await create(ExpandedDetailHost);
       expect(fixture.nativeElement.textContent).toContain('detail-esx-01');

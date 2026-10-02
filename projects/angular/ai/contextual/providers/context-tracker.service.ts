@@ -188,7 +188,13 @@ export class ClrContextTrackerService implements OnDestroy {
         this.sharedStarted = !this.tracking;
       }
       if (options || !this.tracking) {
-        this.start(options);
+        try {
+          this.start(options);
+        } catch (error) {
+          // The page is watched all the same (see `start`) and the next change tries
+          // again, so the subscription stands — and its end still stops tracking.
+          this.errorHandler.handleError(error);
+        }
       }
       const subscription = this.context$.subscribe(subscriber);
       return () => {

@@ -567,6 +567,9 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
       ],
     });
     engine = TestBed.inject(ClrContextEngineService);
+    // The accessor describes the whole page, and fixtures are not torn down after each
+    // spec here (`destroyAfterEach: false`): an earlier spec's root would be described too.
+    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
     page = document.createElement('div');
     page.innerHTML =
       '<a href="/download?signature=s3cr3t#part">Download</a><a href="/clusters/7?token=s3cr3t">Cluster seven</a>' +
@@ -631,6 +634,13 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
     engine.enableGlobalAccess('testClrContext', { includeRoutes: true });
 
     expect(accessor()({ includeRoutes: true }).availableRoutes?.length).toBeGreaterThan(0);
+  });
+
+  it('reads a switch only as a boolean', () => {
+    engine.enableGlobalAccess('testClrContext', { includeRoutes: true });
+
+    expect(accessor()({ includeRoutes: 'yes' }).availableRoutes).toBeUndefined();
+    expect(accessor()({ includeDomComponents: 0 }).components.length).toBeGreaterThan(0);
   });
 
   it('does not let a caller raise a budget past the default', () => {

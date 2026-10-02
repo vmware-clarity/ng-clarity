@@ -129,7 +129,8 @@ export interface ClrContextFrameRequestOptions {
    * The host page's origin: where the request is addressed, and the only origin an
    * answer is accepted from even when it arrives from the right window. Defaults to the
    * origin of the document that embedded this one (as the browser reports it, else its
-   * referrer), then to this document's own origin.
+   * referrer), then to this document's own origin. `https://App.example/` is read as
+   * `https://app.example`; anything that is not an origin rejects the request.
    *
    * Set it for any UI that can be embedded by more than one site. Without it, whatever
    * page embeds this one is the page trusted to answer — including one that answers with
@@ -344,7 +345,15 @@ export function clrRequestHostContext(options: ClrContextFrameRequestOptions = {
   if (!targetWindow || targetWindow === window) {
     return Promise.resolve(null);
   }
-  const targetOrigin = options.hostOrigin || embedderOrigin() || ownOrigin();
+  // Normalised as the host normalises its allow-list: `https://app.example/` would
+  // otherwise never equal the origin an answer carries, and every request would time out.
+  const hostOrigin = options.hostOrigin ? originOf(options.hostOrigin) : null;
+  if (options.hostOrigin && !hostOrigin) {
+    return Promise.reject(
+      new Error(`clrRequestHostContext: "${options.hostOrigin}" is not an origin, such as https://app.example.`)
+    );
+  }
+  const targetOrigin = hostOrigin || embedderOrigin() || ownOrigin();
   const expectedOrigin = targetOrigin !== '*' ? targetOrigin : undefined;
   const requestId = newRequestId();
   const request: ClrContextFrameRequest = {
@@ -479,16 +488,21 @@ function ownOrigin(): string {
  * relative path, `null`, a typo — is refused when the host is created.
  */
 function normalizedOrigin(entry: string): string {
-  let origin = 'null';
-  try {
-    origin = new URL(entry).origin;
-  } catch {
-    // Reported below.
-  }
-  if (origin === 'null') {
+  const origin = originOf(entry);
+  if (!origin) {
     throw new Error(
       `ClrContextFrameHost: "${entry}" in allowedOrigins is not an origin, such as https://chat.example.`
     );
   }
   return origin;
+}
+
+/** The origin an address names, or `null` when it names none: a path, `null`, a typo. */
+function originOf(entry: string): string | null {
+  try {
+    const origin = new URL(entry).origin;
+    return origin === 'null' ? null : origin;
+  } catch {
+    return null;
+  }
 }
