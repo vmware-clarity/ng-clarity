@@ -39,8 +39,20 @@ import {
   ClrPopoverType,
 } from '@clr/angular/popover/common';
 import {
+  CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  CLR_CONTEXT_REDACT_SELECTOR,
+  CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
+  ClrContextSnapshotOptions,
+  clrContextText,
+  ClrElementContextCallback,
+  ClrElementMutation,
+  clrHasRequiredValidator,
   ClrLoadingState,
+  clrNormalizeContextText,
+  clrPublishElementContext,
+  clrPublishElementMutator,
+  clrUsableSelectors,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
@@ -52,6 +64,7 @@ import { ClrComboboxContainer } from './combobox-container';
 import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel } from './model/combobox.model';
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
+import { ClrOption } from './option';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
@@ -70,6 +83,9 @@ import { OptionSelectionService } from './providers/option-selection.service';
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
+    // Kept for applications that styled or queried it; it has never meant that a value is
+    // required. The state itself is `aria-required` on the combobox input.
+    // @deprecated since v18, remove in v19: select on `aria-required` on the input instead.
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
@@ -116,9 +132,13 @@ export class ClrCombobox<T>
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
 
+  private teardownElementContext?: () => void;
+  private teardownElementMutator?: () => void;
+
   private _searchText = '';
   private onTouchedCallback: () => any;
   private onChangeCallback: (model: T | T[]) => any;
+  private readonly comboboxHostElement: HTMLElement;
 
   constructor(
     vcr: ViewContainerRef,
@@ -139,6 +159,9 @@ export class ClrCombobox<T>
     @Optional() @Host() private container: ClrComboboxContainer
   ) {
     super(vcr, ClrComboboxContainer, injector, control, renderer, el);
+    // Captured now because ngAfterViewInit reassigns `el` to the wrapped text input, and
+    // a template-driven `required` sits on the host.
+    this.comboboxHostElement = el.nativeElement;
     if (control) {
       control.valueAccessor = this;
     }
@@ -267,12 +290,37 @@ export class ClrCombobox<T>
     );
   }
 
+  /**
+   * Whether a value must be chosen. Reported on the element carrying `role="combobox"`,
+   * which is where ARIA requires it — the host used to carry a `class="aria-required"`
+   * instead, which no stylesheet defines and no assistive technology reads.
+   *
+   * Both spellings are honored: `Validators.required` on a reactive control, and a
+   * `required` attribute on a template-driven one, which Angular applies through a
+   * directive rather than the validator function this could otherwise look for.
+   */
+  protected get isRequired(): boolean {
+    return clrHasRequiredValidator(this.control?.control) || this.comboboxHostElement.hasAttribute('required');
+  }
+
+  /**
+   * Whether the field is in error, as assistive technology should hear it: gated on the
+   * control having been touched, like every other Clarity control (see
+   * `WrappedFormControl`), so a required field is not announced as wrong before the user
+   * has reached it.
+   */
+  protected get isInvalid(): boolean {
+    return !!this.control?.invalid && !!this.control?.touched;
+  }
+
   private get disabled() {
     return this.control?.disabled;
   }
 
   ngAfterContentInit() {
     this.initializeSubscriptions();
+    this.publishContext(this.comboboxHostElement);
+    this.publishMutator(this.comboboxHostElement);
 
     // Initialize with preselected value
     if (!this.optionSelectionService.selectionModel.isEmpty()) {
@@ -299,6 +347,8 @@ export class ClrCombobox<T>
 
   override ngOnDestroy(): void {
     super.ngOnDestroy();
+    this.teardownElementContext?.();
+    this.teardownElementMutator?.();
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -433,6 +483,20 @@ export class ClrCombobox<T>
     } else {
       this.containerWidthChange.next(this.containerWidth);
     }
+  }
+
+  /**
+   * Suppressed on the host: this component reports both on the element carrying
+   * `role="combobox"` (see the template), which is where ARIA requires them. The host is
+   * a role-less wrapper, so the same attributes there would be meaningless noise.
+   */
+  protected override reportsAriaInvalid(): boolean {
+    return false;
+  }
+
+  /** Suppressed on the host for the same reason; the combobox input reports it. */
+  protected override reportsAriaRequired(): boolean {
+    return false;
   }
 
   private initialiseObserver() {
@@ -580,6 +644,236 @@ export class ClrCombobox<T>
     if (this.onChangeCallback) {
       this.onChangeCallback(this.optionSelectionService.selectionModel.model);
     }
+  }
+
+  /**
+   * Publishes instance state the rendered DOM cannot show — the selection model and,
+   * while the options popover is instantiated, the option list — through the plain
+   * element context contract in `@clr/angular/utils`, where page-context tooling such as
+   * `@clr/angular/ai` discovers it. The contract lives in utils rather than in the engine
+   * so publishing costs this component nothing but one import.
+   */
+  private publishContext(host: HTMLElement) {
+    const describe: ClrElementContextCallback = snapshotOptions => {
+      // The contract is a plain element property that any page tooling may call, not
+      // only the engine that passes budgets, so a missing argument must not throw.
+      const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
+      const excluded = this.excludedBy(snapshotOptions);
+      const state: Record<string, unknown> = { multiSelect: this.multiSelect };
+      const items = this.options?.items;
+      if (items?.length) {
+        // Option content children exist even while the popover is closed, so the
+        // choices are available regardless of what the DOM currently shows. An option
+        // the snapshot excludes is not one; a redacted one counts, unnamed.
+        const listed = items.toArray().filter(option => this.optionShown(option, excluded) !== 'excluded');
+        const named = listed.filter(option => this.optionShown(option, excluded) === 'shown');
+        state.options = named.slice(0, maxItems).map(option => this.optionLabel(option));
+        if (named.length < listed.length) {
+          state.redactedOptions = listed.length - named.length;
+        }
+      } else {
+        // Async comboboxes have no option list until a search loads one.
+        state.optionsAvailable = false;
+      }
+      state.value = this.selectedLabels(excluded);
+      return { type: 'combobox', state };
+    };
+
+    this.teardownElementContext = clrPublishElementContext(host, describe);
+  }
+
+  /**
+   * Says how this combobox is written to: its form control holds an option's value,
+   * which may be an object, while an agent knows the option by the label it saw in the
+   * published context. Given a label (one per item for multi-select) this returns the
+   * option's value for the engine to write through the form control; a label no option
+   * has is refused with the options named, so a value the component would otherwise
+   * accept silently never reaches the model. Read back, the selection is labels again.
+   */
+  private publishMutator(host: HTMLElement) {
+    this.teardownElementMutator = clrPublishElementMutator(host, {
+      // The search input inside carries a form binding of its own, which is not the value.
+      ownsContents: true,
+      coerce: (proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation => {
+        const excluded = this.excludedBy(options);
+        // A selection the agent was never shown stays as it is.
+        const kept = this.multiSelect
+          ? this.selectedValues().filter(value => this.valueShown(value, excluded) !== 'shown')
+          : [];
+        // One choice at a time: replacing one the agent was never shown would change what
+        // it cannot see, and could not undo.
+        if (!this.multiSelect && this.selectedValues().some(value => this.valueShown(value, excluded) !== 'shown')) {
+          return { refused: 'The current choice is kept from agents, and cannot be changed by one.' };
+        }
+        if (proposed === null || proposed === undefined || proposed === '') {
+          return { value: this.multiSelect ? kept : null };
+        }
+        const proposals = Array.isArray(proposed) ? proposed : [proposed];
+        if (!this.multiSelect && proposals.length > 1) {
+          return { refused: 'The combobox takes one option.' };
+        }
+        // Only the options the snapshot named can be chosen, or named in a refusal.
+        const items = (this.options?.items?.toArray() ?? []).filter(
+          option => this.optionShown(option, excluded) === 'shown'
+        );
+        const values: T[] = [...kept];
+        for (const proposal of proposals) {
+          const option = items.find(candidate => this.optionMatches(candidate, proposal));
+          if (option) {
+            values.push(option.value);
+          } else if (this.editable && typeof proposal === 'string' && proposal.trim()) {
+            // An editable combobox takes what the user types, as it would from the keyboard.
+            values.push(this.optionSelectionService.editableResolver(proposal.trim()));
+          } else if (!items.length) {
+            return { refused: 'No options are loaded: the combobox loads them as the user types.' };
+          } else {
+            const labels = items
+              .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
+              .map(candidate => `"${this.optionLabel(candidate)}"`);
+            return { refused: `No such option. The options are: ${labels.join(', ')}.` };
+          }
+        }
+        return { value: this.multiSelect ? values : values[0] };
+      },
+      read: (options?: Required<ClrContextSnapshotOptions>) => this.selectedLabels(this.excludedBy(options)),
+    });
+  }
+
+  /** The selector for what the snapshot options exclude, on this page. */
+  private excludedBy(options?: ClrContextSnapshotOptions): string {
+    return clrUsableSelectors(this.el.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
+  }
+
+  /**
+   * Whether an option is shown to page-context tooling: `'excluded'` when the snapshot
+   * options leave it out, `'withheld'` when it, or a group around it, is redacted — it is
+   * counted, but not named — and `'shown'` otherwise. Judged within the option list only:
+   * the list's overlay is ignored as a whole, since this component publishes it.
+   */
+  private optionShown(option: ClrOption<T>, excluded: string): 'shown' | 'withheld' | 'excluded' {
+    const element: Element = option.elRef.nativeElement;
+    const list = element.closest('clr-options');
+    let verdict: 'shown' | 'withheld' = 'shown';
+    for (let current: Element | null = element; current; current = current.parentElement) {
+      if (excluded && current.matches(excluded)) {
+        return 'excluded';
+      }
+      if (
+        current.matches(CLR_CONTEXT_REDACT_SELECTOR) ||
+        (current === element && current.matches(CLR_CONTEXT_WITHHELD_SELECTOR))
+      ) {
+        verdict = 'withheld';
+      }
+      if (current === list) {
+        break;
+      }
+    }
+    return verdict;
+  }
+
+  /** {@link optionShown} for a selected value: a value no option holds is shown by its own label. */
+  private valueShown(value: T, excluded: string): 'shown' | 'withheld' | 'excluded' {
+    const option = this.optionFor(value);
+    return option ? this.optionShown(option, excluded) : 'shown';
+  }
+
+  /**
+   * The option that holds a value, matched as the selection itself matches it: by
+   * `clrComboboxIdentityFn` as well as by reference, so a model loaded apart from the
+   * options — the same record, another object — is still that option, redaction and all.
+   */
+  private optionFor(value: unknown): ClrOption<T> | undefined {
+    return this.options?.items?.find(candidate => this.sameValue(candidate.value, value));
+  }
+
+  private sameValue(option: T, value: unknown): boolean {
+    if (option === value) {
+      return true;
+    }
+    if (option === null || option === undefined || value === null || value === undefined) {
+      return false;
+    }
+    try {
+      const identity = this.optionSelectionService.identityFn(option);
+      return identity !== undefined && identity === this.optionSelectionService.identityFn(value as T);
+    } catch {
+      // An identity function written for the model's shape may not take anything else.
+      return false;
+    }
+  }
+
+  private selectedValues(): T[] {
+    const model = this.optionSelectionService.selectionModel?.model;
+    if (model === null || model === undefined) {
+      return [];
+    }
+    return Array.isArray(model) ? model : [model];
+  }
+
+  /**
+   * The selection as the user sees it: the option's label when the value matches an
+   * option, the display field otherwise, the value itself as a last resort. `[]` or
+   * `null` when nothing is selected, as the combobox is multi- or single-select.
+   */
+  private selectedLabels(excluded = ''): unknown {
+    const model = this.optionSelectionService.selectionModel?.model;
+    if (model === null || model === undefined) {
+      return this.multiSelect ? [] : null;
+    }
+    // A selected option the snapshot excludes is not reported; a redacted one, unnamed.
+    const names = (Array.isArray(model) ? model : [model])
+      .map(value => ({ value, shown: this.valueShown(value, excluded) }))
+      .filter(entry => entry.shown !== 'excluded')
+      .map(entry => (entry.shown === 'shown' ? this.selectedValueLabel(entry.value) : null));
+    return this.multiSelect ? names : (names[0] ?? null);
+  }
+
+  private optionMatches(option: ClrOption<T>, proposal: unknown): boolean {
+    if (typeof proposal !== 'string') {
+      return this.sameValue(option.value, proposal);
+    }
+    const wanted = clrNormalizeContextText(proposal);
+    if (clrNormalizeContextText(this.optionLabel(option)) === wanted) {
+      return true;
+    }
+    const value = option.value;
+    if (typeof value === 'string' || typeof value === 'number') {
+      return clrNormalizeContextText(String(value)) === wanted;
+    }
+    const display = this.selectedValueLabel(value);
+    return typeof display === 'string' && clrNormalizeContextText(display) === wanted;
+  }
+
+  /**
+   * An option's visible label, without screen-reader-only additions such as "Selected".
+   * An option that shows no text is named by its value — but not one whose text was
+   * withheld: its value is as often the very thing withheld, an account number shown in a
+   * redacted span.
+   */
+  private optionLabel(option: ClrOption<T>): string {
+    const element: HTMLElement = option.elRef.nativeElement;
+    const text = clrNormalizeContextText(
+      clrContextText(element, descendant => descendant.classList.contains('clr-sr-only')),
+      false
+    );
+    if (text || element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)) {
+      return text;
+    }
+    return String(option.value);
+  }
+
+  /**
+   * What a selected value is called: its option's label, its `displayField`, or the value
+   * itself when it is plain text or a number. Never the model object itself — it holds
+   * fields the user never sees — so an object without either reads as `null`.
+   */
+  private selectedValueLabel(value: T): string | null {
+    const option = this.optionFor(value);
+    if (option) {
+      return this.optionLabel(option);
+    }
+    const shown = this.displayField && value ? (value as Record<string, unknown>)[this.displayField] : value;
+    return typeof shown === 'string' || typeof shown === 'number' || typeof shown === 'boolean' ? String(shown) : null;
   }
 
   private getDisplayNames(model: T | T[]) {

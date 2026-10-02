@@ -11,17 +11,21 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
   Output,
   Renderer2,
 } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/utils';
+import { ClrCommonStringsService, clrPublishElementContext } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
+
+/** An element, the alert's host or above it, that already announces what changes inside it. */
+const LIVE_REGION_SELECTOR = '[aria-live]:not([aria-live="off"]), [role="alert"], [role="status"], [role="log"]';
 
 @Component({
   selector: 'clr-alert',
@@ -29,11 +33,19 @@ import { MultiAlertService } from './providers/multi-alert.service';
   templateUrl: './alert.html',
   standalone: false,
 })
-export class ClrAlert implements OnInit, OnDestroy {
+export class ClrAlert implements OnInit, OnChanges, OnDestroy {
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
   @Input() clrCloseButtonAriaLabel: string = this.commonStrings.keys.alertCloseButtonAriaLabel;
+  /**
+   * The live-region role of the alert's content: `'alert'` interrupts, `'status'` waits its
+   * turn, and `null` (or `'none'`) renders none, for an application that announces the
+   * message itself. Left unset — or given anything else, such as the bare attribute — the
+   * alert chooses (see {@link ariaRole}).
+   */
+  @Input({ alias: 'clrAlertRole', transform: liveRoleAttribute }) liveRole: 'alert' | 'status' | null | undefined =
+    undefined;
 
   @Output('clrAlertClosedChange') _closedChanged = new EventEmitter<boolean>(false);
 
@@ -43,6 +55,9 @@ export class ClrAlert implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private _isLightweight = false;
   private _origAlertType: string;
+  private teardownElementContext?: () => void;
+  /** The role chosen from the inputs and where the alert sits; see {@link ariaRole}. */
+  private renderedRole: 'alert' | 'status' | null = null;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -108,7 +123,49 @@ export class ClrAlert implements OnInit, OnDestroy {
     }
   }
 
+  /**
+   * How this alert should be announced. An app-level danger or warning describes
+   * something the user has to deal with now, so it interrupts; everything else — an
+   * informational alert, and any alert placed inline in the content, where several may
+   * render at once — is reported politely and waits its turn.
+   *
+   * Without a role an alert is announced by nothing at all, and its severity lives only
+   * in a CSS class, which neither assistive technology nor page-context tooling can read.
+   *
+   * An alert placed inside a live region the application already has is announced by
+   * that region, so it adds none of its own, which would announce it twice; the
+   * `clrAlertRole` input overrides either choice.
+   *
+   * A `status` region is atomic by default, which would re-read the whole alert — its
+   * buttons included — whenever any part of it changed; see {@link ariaAtomic}.
+   *
+   * Chosen when the alert initialises and whenever an input changes, not on every check:
+   * an alert moved into a live region later says so with `clrAlertRole`.
+   */
+  protected get ariaRole(): 'alert' | 'status' | null {
+    return this.renderedRole;
+  }
+
+  /**
+   * A polite alert announces what changed in it, not the whole alert again: `status` is
+   * atomic by default, and an inline alert typically holds action buttons whose names
+   * would be read out with every update.
+   */
+  protected get ariaAtomic(): 'false' | null {
+    return this.renderedRole === 'status' ? 'false' : null;
+  }
+
   ngOnInit() {
+    this.renderedRole = this.chooseRole();
+
+    // role="alert" versus role="status" only says important versus informational. Which
+    // of danger, warning, success, info or neutral this is lives in a CSS class, which
+    // nothing can read semantically, so the component reports it directly.
+    // A dismissed alert is no longer on the page, so it says nothing.
+    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () =>
+      this._closed ? null : { state: { severity: this.alertType } }
+    );
+
     if (this.multiAlertService) {
       this.subscriptions.push(
         this.multiAlertService.changes.subscribe(() => {
@@ -118,7 +175,12 @@ export class ClrAlert implements OnInit, OnDestroy {
     }
   }
 
+  ngOnChanges() {
+    this.renderedRole = this.chooseRole();
+  }
+
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
@@ -145,4 +207,25 @@ export class ClrAlert implements OnInit, OnDestroy {
     }
     this._closedChanged.emit(true);
   }
+
+  private chooseRole(): 'alert' | 'status' | null {
+    if (this.liveRole !== undefined) {
+      return this.liveRole;
+    }
+    // The host counts too, for an application that put `aria-live` on the `clr-alert`
+    // itself; the role this renders is on an element inside it.
+    if (this.hostElement.nativeElement.closest(LIVE_REGION_SELECTOR)) {
+      return null;
+    }
+    const urgent = this.alertType === 'danger' || this.alertType === 'warning';
+    return urgent && this.isAppLevel ? 'alert' : 'status';
+  }
+}
+
+/** `clrAlertRole` as the alert understands it: `'none'` is `null`, anything unknown is unset. */
+function liveRoleAttribute(value: unknown): 'alert' | 'status' | null | undefined {
+  if (value === 'alert' || value === 'status') {
+    return value;
+  }
+  return value === null || value === 'none' ? null : undefined;
 }

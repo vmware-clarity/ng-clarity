@@ -33,6 +33,11 @@ export const websiteScreenshotOptions: ScreenshotOptions = {
     // shell, observed consistently on the CI runners (issue #2680). Re-enable once fixed.
     exclude: true,
   },
+  'contextual-engine-code': {
+    // The playground snapshots the page it is on, live: the time each snapshot was taken and
+    // its size change between runs.
+    maskSelectors: ['clr-context-playground'],
+  },
   'datagrid-code-full': {
     // The full demo populates its rows through a simulated-latency fetch after the page has
     // loaded, so wait for a cell of the (deterministic) first row before capturing.

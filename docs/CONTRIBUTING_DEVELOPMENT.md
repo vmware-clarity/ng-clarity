@@ -103,6 +103,7 @@ Set scope of the commit if possible:
 
 - a11y
 - accordion
+- ai
 - alert
 - badge
 - build
