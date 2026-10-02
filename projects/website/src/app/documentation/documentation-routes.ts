@@ -457,7 +457,7 @@ function documentationRouteMatcher(
   return { consumed, posParams };
 }
 
-const tabs = ['overview', 'themes', 'usage', 'colors', 'code', 'api', 'accessibility', 'shapes', 'design'];
+const tabs = ['overview', 'themes', 'usage', 'colors', 'code', 'api', 'ai', 'accessibility', 'shapes', 'design'];
 
 function urlSegmentMatchesParam(paramName: string, currentUrlSegment: UrlSegment) {
   switch (paramName) {

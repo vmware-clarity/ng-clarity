@@ -30,6 +30,7 @@ export class DocTabComponent implements OnInit, OnDestroy {
     | 'shapes'
     | 'code'
     | 'api'
+    | 'ai'
     | 'accessibility'
     | 'design'
     | undefined

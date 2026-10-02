@@ -33,6 +33,7 @@ import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
 import { ColorFilter } from './utils/color-filter';
 import { PokemonComparator } from './utils/pokemon-comparator';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
@@ -67,6 +68,7 @@ type DemoRoute = Route & { data: { demoName: string } };
     RouterOutlet,
     ClrAccordionModule,
     StyleDocsComponent,
+    AiSkillComponent,
     DatagridDetailAccessibilityGuidance,
     DatagridBasicStructureDemo,
     DatePipe,
