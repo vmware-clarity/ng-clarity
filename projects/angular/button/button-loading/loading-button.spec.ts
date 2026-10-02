@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { delay } from '@clr/angular/testing';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
 
 import { ClrLoadingButton } from './loading-button';
@@ -19,7 +18,7 @@ describe('Loading Buttons', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrLoadingModule, ClrLoadingButtonModule, NoopAnimationsModule],
+      imports: [ClrLoadingModule, ClrLoadingButtonModule],
       declarations: [TestLoadingButtonComponent],
     });
 
@@ -111,12 +110,84 @@ describe('Loading Buttons', () => {
     expect(fixture.nativeElement.querySelector('.spinner')).toBeFalsy();
   });
 
+  it('returns to the DEFAULT state inside an OnPush host without any external change detection', async () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      imports: [ClrLoadingModule, ClrLoadingButtonModule],
+      declarations: [OnPushTestLoadingButtonComponent],
+    });
+    const onPushFixture = TestBed.createComponent(OnPushTestLoadingButtonComponent);
+    onPushFixture.detectChanges();
+
+    onPushFixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    onPushFixture.debugElement.injector.get(ChangeDetectorRef).markForCheck();
+    onPushFixture.detectChanges();
+    expect(onPushFixture.nativeElement.querySelector('.spinner-check')).toBeTruthy();
+
+    await delay();
+    onPushFixture.detectChanges();
+    expect(onPushFixture.nativeElement.querySelector('.spinner-check')).toBeNull();
+    expect(onPushFixture.nativeElement.querySelector('.clr-loading-btn-content')).toBeTruthy();
+    onPushFixture.destroy();
+  });
+
   it('has minimum width of 42px when loading', () => {
     fixture.componentInstance.buttonContent = '';
     fixture.detectChanges();
     fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('button').offsetWidth).toBe(42);
+  });
+});
+
+describe('Loading Buttons with animations', () => {
+  let fixture: ComponentFixture<TestLoadingButtonComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(async () => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [ClrLoadingModule, ClrLoadingButtonModule],
+      declarations: [TestLoadingButtonComponent],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestLoadingButtonComponent);
+    fixture.detectChanges();
+    await delay(); // the initial render is not animated
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function animationNames(element: Element): string[] {
+    return element.getAnimations().map(animation => (animation as CSSAnimation).animationName);
+  }
+
+  it('keeps the spinner rotating while it fades in', async () => {
+    fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
+    fixture.detectChanges();
+    await delay();
+
+    const spinner = fixture.nativeElement.querySelector('.spinner');
+    expect(spinner.classList).toContain('clr-loading-btn-enter');
+    expect(animationNames(spinner)).toEqual(['clr-fade-in', 'spin']);
+  });
+
+  it('goes back to its default state once the check mark animation is done', async () => {
+    fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    fixture.detectChanges();
+
+    const check = fixture.nativeElement.querySelector('.spinner-check');
+    expect(animationNames(check)).toEqual(['clr-loading-btn-check']);
+    await delay();
+    expect(fixture.componentInstance.buttonState).toBe(ClrLoadingState.SUCCESS);
+
+    finishAnimations(check);
+    await delay();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.buttonState as ClrLoadingState).toBe(ClrLoadingState.DEFAULT);
   });
 });
 
@@ -130,4 +201,13 @@ class TestLoadingButtonComponent {
   buttonState: ClrLoadingState = ClrLoadingState.DEFAULT;
   disabled = false;
   buttonContent = 'Test 1';
+}
+
+@Component({
+  template: `<button [clrLoading]="buttonState">Test</button>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class OnPushTestLoadingButtonComponent {
+  buttonState: ClrLoadingState = ClrLoadingState.DEFAULT;
 }

@@ -7,7 +7,6 @@
 
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrStackViewModule } from './stack-view.module';
 
@@ -29,7 +28,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrStackViewModule, NoopAnimationsModule],
+        imports: [ClrStackViewModule],
         declarations: [TestComponent],
       });
       fixture = TestBed.createComponent(TestComponent);

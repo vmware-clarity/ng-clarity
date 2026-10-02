@@ -10,7 +10,6 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { GridHelper } from '@clr/addons/testing';
 import { ClrDatagrid, ClrDatagridModule } from '@clr/angular/data/datagrid';
 
@@ -25,7 +24,7 @@ import { ColumnDefinition } from '../../shared/column/column-definitions';
 describe('ColumnMoveActionDirective', () => {
   beforeEach(function (this: any) {
     TestBed.configureTestingModule({
-      imports: [ClrDatagridModule, CommonModule, DragDropModule, NoopAnimationsModule, TestClrDatagridHostComponent],
+      imports: [ClrDatagridModule, CommonModule, DragDropModule, TestClrDatagridHostComponent],
     });
 
     this.fixture = TestBed.createComponent(TestClrDatagridHostComponent);

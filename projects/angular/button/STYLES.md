@@ -221,27 +221,31 @@
 
 ## CSS Classes
 
-| Class name          | Description                                            |
-| ------------------- | ------------------------------------------------------ |
-| btn                 | Button All of the following require this class as well |
-| btn-info            | Info button                                            |
-| btn-primary         | Primary button                                         |
-| btn-success         | Success button                                         |
-| btn-warning         | Warning button                                         |
-| btn-danger          | Danger button                                          |
-| btn-neutral         | Neutral button                                         |
-| btn-outline         | Outline button                                         |
-| btn-info-outline    | Outline info button                                    |
-| btn-success-outline | Outline success button                                 |
-| btn-warning-outline | Outline warning button                                 |
-| btn-danger-outline  | Outline danger button                                  |
-| btn-neutral-outline | Outline neutral button                                 |
-| btn-sm              | Small button                                           |
-| btn-block           | Block, full-width button                               |
-| btn-inverse         | Inverse button                                         |
-| btn-icon            | Icon button                                            |
-| btn-link            | Link button                                            |
-| btn-link-primary    | Link primary button                                    |
-| btn-link-success    | Link success button                                    |
-| btn-link-warning    | Link warning button                                    |
-| btn-link-danger     | Link danger button                                     |
+| Class name              | Description                                                     |
+| ----------------------- | --------------------------------------------------------------- |
+| btn                     | Button All of the following require this class as well          |
+| btn-info                | Info button                                                     |
+| btn-primary             | Primary button                                                  |
+| btn-success             | Success button                                                  |
+| btn-warning             | Warning button                                                  |
+| btn-danger              | Danger button                                                   |
+| btn-neutral             | Neutral button                                                  |
+| btn-outline             | Outline button                                                  |
+| btn-info-outline        | Outline info button                                             |
+| btn-success-outline     | Outline success button                                          |
+| btn-warning-outline     | Outline warning button                                          |
+| btn-danger-outline      | Outline danger button                                           |
+| btn-neutral-outline     | Outline neutral button                                          |
+| btn-sm                  | Small button                                                    |
+| btn-block               | Block, full-width button                                        |
+| btn-inverse             | Inverse button                                                  |
+| btn-icon                | Icon button                                                     |
+| btn-link                | Link button                                                     |
+| btn-link-primary        | Link primary button                                             |
+| btn-link-success        | Link success button                                             |
+| btn-link-warning        | Link warning button                                             |
+| btn-link-danger         | Link danger button                                              |
+| clr-loading-btn-content | Content of a loading button (`clrLoading`) in its default state |
+| clr-loading-btn-enter   | Animates the spinner or the content of a loading button in      |
+| clr-loading-btn-leave   | Animates the spinner or the check mark of a loading button out  |
+| clr-loading-btn-check   | Check mark of a loading button once the operation succeeded     |

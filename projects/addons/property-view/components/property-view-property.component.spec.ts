@@ -8,7 +8,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, SimpleChange, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import {
@@ -149,7 +148,7 @@ describe('PropertyViewPropertyComponent', function () {
     };
 
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, TestModule],
+      imports: [TestModule],
       declarations: [PropertyViewPropertyComponent, PropertyViewPropertyValueContainerMockComponent],
     });
 

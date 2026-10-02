@@ -23,18 +23,20 @@
 
 ## CSS Classes
 
-| Class Name                      | Description                                            |
-| ------------------------------- | ------------------------------------------------------ |
-| {prefix}-panel                  | Panel container element.                               |
-| {prefix}-header                 | Header section of a panel.                             |
-| {prefix}-header-button          | Clickable button within the panel header.              |
-| {prefix}-status                 | Status indicator within the panel header.              |
-| {prefix}-title                  | Title text within the panel header.                    |
-| {prefix}-header-has-description | Panel header that includes a description.              |
-| {prefix}-description            | Description text within the panel header.              |
-| {prefix}-content                | Content section of a panel.                            |
-| {prefix}-content-region         | Wrapper region for the panel content (animation host). |
-| {prefix}-inner-content          | Inner content section within the panel content.        |
-| {prefix}-angle                  | Chevron/angle indicator within the panel header.       |
-| {prefix}-panel-open             | State class for an open/expanded panel.                |
-| {prefix}-panel-disabled         | State class for a disabled panel.                      |
+| Class Name                       | Description                                                                                                               |
+| -------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| {prefix}-panel                   | Panel container element.                                                                                                  |
+| {prefix}-header                  | Header section of a panel.                                                                                                |
+| {prefix}-header-button           | Clickable button within the panel header.                                                                                 |
+| {prefix}-status                  | Status indicator within the panel header.                                                                                 |
+| {prefix}-title                   | Title text within the panel header.                                                                                       |
+| {prefix}-header-has-description  | Panel header that includes a description.                                                                                 |
+| {prefix}-description             | Description text within the panel header.                                                                                 |
+| {prefix}-content                 | Content section of a panel.                                                                                               |
+| clr-collapsible-panel-expanding  | State class of `{prefix}-content` while the panel content expands.                                                        |
+| clr-collapsible-panel-collapsing | State class of `{prefix}-content` while the panel content collapses; the content stays rendered until the animation ends. |
+| {prefix}-content-region          | Wrapper region for the panel content.                                                                                     |
+| {prefix}-inner-content           | Inner content section within the panel content.                                                                           |
+| {prefix}-angle                   | Chevron/angle indicator within the panel header.                                                                          |
+| {prefix}-panel-open              | State class for an open/expanded panel.                                                                                   |
+| {prefix}-panel-disabled          | State class for a disabled panel.                                                                                         |
