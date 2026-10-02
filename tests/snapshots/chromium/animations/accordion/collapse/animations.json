@@ -1,0 +1,48 @@
+[
+  {
+    "target": "div.clr-accordion-header",
+    "name": "background-color",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "linear",
+        "composite": "auto",
+        "backgroundColor": "rgb(224, 246, 255)"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "backgroundColor": "rgb(255, 255, 255)"
+      }
+    ]
+  },
+  {
+    "target": "cds-icon.clr-accordion-angle",
+    "name": "transform",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "linear",
+        "composite": "auto",
+        "transform": "rotate(180deg)"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "transform": "rotate(90deg)"
+      }
+    ]
+  }
+]

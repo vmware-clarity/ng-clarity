@@ -25,8 +25,8 @@ export const screenshotExpectOptions = {
 } as const;
 
 /**
- * The snapshot naming convention shared by both suites: {browser}/{group}/{name}-{theme}-{density}.png,
- * resolved against the snapshotPathTemplate in create-vrt-config.ts.
+ * The snapshot naming convention shared by the Storybook and website suites:
+ * {browser}/{group}/{name}-{theme}-{density}.png, resolved against the snapshotPathTemplate in playwright.config.ts.
  */
 export function screenshotPathFor(group: string, name: string) {
   return path.join(browser, group, `${name}-${theme}-${density}.png`);
