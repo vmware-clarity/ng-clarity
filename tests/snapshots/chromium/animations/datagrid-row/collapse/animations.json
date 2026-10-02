@@ -5,20 +5,20 @@
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
-    "easing": "linear",
+    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
     "iterations": 1,
     "keyframes": [
       {
-        "offset": 0,
-        "easing": "ease-in-out",
+        "offset": null,
+        "easing": "linear",
         "composite": "auto",
         "height": "210px"
       },
       {
-        "offset": 1,
+        "offset": null,
         "easing": "linear",
         "composite": "auto",
-        "height": "33.375px"
+        "height": "33px"
       }
     ]
   }

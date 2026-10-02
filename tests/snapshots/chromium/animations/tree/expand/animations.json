@@ -1,26 +1,47 @@
 [
   {
-    "target": "div.clr-treenode-children",
-    "name": "",
+    "target": "div.clr-treenode-children-wrapper",
+    "name": "grid-template-rows",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
-    "easing": "linear",
+    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
     "iterations": 1,
     "keyframes": [
       {
         "offset": 0,
         "easing": "linear",
         "composite": "auto",
-        "height": "224px",
-        "overflowY": "visible"
+        "gridTemplateRows": "0px"
       },
       {
         "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "height": "0px",
-        "overflowY": "visible"
+        "gridTemplateRows": "0px"
+      }
+    ]
+  },
+  {
+    "target": "div.clr-treenode-children",
+    "name": "content-visibility",
+    "startedAt": 0,
+    "duration": 0,
+    "delay": 200,
+    "easing": "ease",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "linear",
+        "composite": "auto",
+        "contentVisibility": "visible"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "contentVisibility": "hidden"
       }
     ]
   }
