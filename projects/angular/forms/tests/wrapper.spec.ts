@@ -19,7 +19,7 @@ export function WrapperNoLabelSpec(testContainer, testControl, testComponent): v
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testControl, testComponent],
-        providers: [NgControl, NgControlService, LayoutService],
+        providers: [{ provide: NgControl, useValue: {} }, NgControlService, LayoutService],
       });
       fixture = TestBed.createComponent(testComponent);
 
@@ -43,7 +43,7 @@ export function WrapperFullSpec(testContainer, testControl, testComponent, wrapp
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testControl, testComponent],
-        providers: [NgControl, NgControlService, LayoutService],
+        providers: [{ provide: NgControl, useValue: {} }, NgControlService, LayoutService],
       });
       fixture = TestBed.createComponent(testComponent);
 
@@ -82,7 +82,7 @@ export function WrapperContainerSpec(testContainer, testWrapper, testControl, te
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testWrapper, testControl, testComponent],
-        providers: [NgControl, NgControlService, LayoutService],
+        providers: [{ provide: NgControl, useValue: {} }, NgControlService, LayoutService],
       });
       fixture = TestBed.createComponent(testComponent);
 

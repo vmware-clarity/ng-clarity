@@ -119,7 +119,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrRadioContainer, ClrRadioWrapper, ClrRadio, testComponent],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [{ provide: NgControl, useValue: {} }, NgControlService, LayoutService],
         });
         const fixture = TestBed.createComponent(testComponent);
         const containerEl = fixture.debugElement.query(By.directive(ClrRadioContainer)).nativeElement;
@@ -161,7 +161,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrRadioContainer, ClrRadioWrapper, ClrRadio, TemplateDrivenTest],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [{ provide: NgControl, useValue: {} }, NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
 

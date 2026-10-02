@@ -55,7 +55,7 @@ export default function (): void {
       TestBed.configureTestingModule({
         imports: [ClrCommonFormsModule, FormsModule],
         declarations: [ClrCheckbox, TemplateDrivenTest],
-        providers: [NgControl, NgControlService],
+        providers: [{ provide: NgControl, useValue: {} }, NgControlService],
       });
 
       fixture = TestBed.createComponent(TemplateDrivenTest);
