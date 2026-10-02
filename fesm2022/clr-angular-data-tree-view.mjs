@@ -1,12 +1,12 @@
 import * as i0 from '@angular/core';
 import { Injectable, Optional, SkipSelf, HostBinding, Directive, Input, Component, EventEmitter, PLATFORM_ID, ElementRef, ContentChildren, ViewChild, Output, Inject, NgModule } from '@angular/core';
-import { Subject, BehaviorSubject, fromEvent, isObservable } from 'rxjs';
+import { Subject, BehaviorSubject, asapScheduler, fromEvent, isObservable } from 'rxjs';
 import { trigger, transition, style, animate, state } from '@angular/animations';
 import * as i3 from '@angular/common';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i2 from '@clr/angular/utils';
 import { uniqueIdFactory, preventArrowKeyScroll, isKeyEitherLetterOrNumber, Keys, IfExpandService, LoadingListener, ClrLoadingModule } from '@clr/angular/utils';
-import { filter, debounceTime } from 'rxjs/operators';
+import { filter, skip, debounceTime } from 'rxjs/operators';
 import * as i5 from '@clr/angular/icon';
 import { ClarityIcons, angleIcon, ClrIcon } from '@clr/angular/icon';
 
@@ -510,6 +510,9 @@ class RecursiveChildren {
     constructor(featuresService, expandService) {
         this.featuresService = featuresService;
         this.expandService = expandService;
+        // One context object per node: a new object on every change detection pass would make ngTemplateOutlet
+        // run ngOnChanges and rewrite the context of every node on every pass.
+        this.contexts = new WeakMap();
         if (expandService) {
             this.subscription = expandService.expandChange.subscribe(value => {
                 if (!value && this.parent && !featuresService.eager && featuresService.recursion) {
@@ -532,10 +535,18 @@ class RecursiveChildren {
             (this.featuresService.eager || !this.expandService || this.expandService.expanded));
     }
     getContext(node) {
-        return {
-            $implicit: node.model,
-            clrModel: node,
-        };
+        let context = this.contexts.get(node);
+        if (!context) {
+            context = {
+                // Read through, so the context keeps following the node if its model gets reassigned.
+                get $implicit() {
+                    return node.model;
+                },
+                clrModel: node,
+            };
+            this.contexts.set(node, context);
+        }
+        return context;
     }
     ngOnDestroy() {
         if (this.subscription) {
@@ -715,7 +726,14 @@ class ClrTreeNode {
         }), this.focusManager.focusChange.subscribe(nodeId => {
             this.checkTabIndex(nodeId);
         }));
-        this.subscriptions.push(this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading)));
+        // The loading state can flip in the middle of a change detection pass (a lazy fetch starts when the template
+        // reads the children), so it is applied in a microtask rather than synchronously. Using a macrotask timer here
+        // would schedule one timer per node when a large tree gets created, and one extra change detection pass per
+        // fetched node in lazy trees. The current value is read directly instead of debouncing the replayed initial one.
+        this.isModelLoading = this._model.loading;
+        this.subscriptions.push(this._model.loading$
+            .pipe(skip(1), debounceTime(0, asapScheduler))
+            .subscribe(isLoading => (this.isModelLoading = isLoading)));
     }
     ngAfterContentInit() {
         // Nodes created while everything above them is expected to be expanded (lazy-loaded children, dynamic
@@ -932,15 +950,19 @@ class ClrTreeNode {
                 // The "instant" states are used by bulk operations (expand all, expand descendants): they have the same
                 // styles but no transition leads to them, so hundreds of nested containers don't animate at once.
                 transition('collapsed => expanded, collapsedInstant => expanded', [
-                    style({ height: 0 }),
-                    animate(200, style({ height: '*' })),
+                    // The animation starts from the collapsed state's styles, so the children must be made visible explicitly.
+                    style({ height: 0, 'content-visibility': 'visible' }),
+                    animate(200, style({ height: '*', 'content-visibility': 'visible' })),
                 ]),
                 transition('expanded => collapsed, expandedInstant => collapsed', [
                     style({ height: '*' }),
                     animate(200, style({ height: 0 })),
                 ]),
                 state('expanded, expandedInstant', style({ height: '*', 'overflow-y': 'visible' })),
-                state('collapsed, collapsedInstant', style({ height: 0 })),
+                // Once collapsed, the browser skips the style, layout and paint of the whole subtree. The state style only
+                // applies when the collapse animation is over, so the children stay painted while they slide out; they are
+                // inert from the start (see the template), so they cannot be reached in the meantime.
+                state('collapsed, collapsedInstant', style({ height: 0, 'content-visibility': 'hidden' })),
             ]),
         ] }); }
 }
@@ -951,15 +973,19 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
                             // The "instant" states are used by bulk operations (expand all, expand descendants): they have the same
                             // styles but no transition leads to them, so hundreds of nested containers don't animate at once.
                             transition('collapsed => expanded, collapsedInstant => expanded', [
-                                style({ height: 0 }),
-                                animate(200, style({ height: '*' })),
+                                // The animation starts from the collapsed state's styles, so the children must be made visible explicitly.
+                                style({ height: 0, 'content-visibility': 'visible' }),
+                                animate(200, style({ height: '*', 'content-visibility': 'visible' })),
                             ]),
                             transition('expanded => collapsed, expandedInstant => collapsed', [
                                 style({ height: '*' }),
                                 animate(200, style({ height: 0 })),
                             ]),
                             state('expanded, expandedInstant', style({ height: '*', 'overflow-y': 'visible' })),
-                            state('collapsed, collapsedInstant', style({ height: 0 })),
+                            // Once collapsed, the browser skips the style, layout and paint of the whole subtree. The state style only
+                            // applies when the collapse animation is over, so the children stay painted while they slide out; they are
+                            // inert from the start (see the template), so they cannot be reached in the meantime.
+                            state('collapsed, collapsedInstant', style({ height: 0, 'content-visibility': 'hidden' })),
                         ]),
                     ], host: {
                         '[class.clr-tree-node]': 'true',
@@ -1241,7 +1267,11 @@ class ClrRecursiveForOf {
             wrapped = [new RecursiveTreeNodeModel(this.nodes, null, this.getChildren, this.featuresService)];
         }
         if (!this.childrenFetchSubscription) {
-            this.childrenFetchSubscription = this.featuresService.childrenFetched.pipe(debounceTime(0)).subscribe(() => {
+            // Children fetched synchronously while the tree renders are picked up once, in a microtask,
+            // instead of one macrotask timer (and its own change detection pass) per node.
+            this.childrenFetchSubscription = this.featuresService.childrenFetched
+                .pipe(debounceTime(0, asapScheduler))
+                .subscribe(() => {
                 this.cdr.detectChanges();
             });
         }
