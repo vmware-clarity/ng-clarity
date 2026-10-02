@@ -18,8 +18,8 @@ const testPresets: ThemePreset[] = [
   { name: 'Default', light: null, dark: null },
   {
     name: 'Custom',
-    light: { primary: new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)') },
-    dark: { primary: new Color('--cds-alias-primary', 'hsl(160deg 69% 53%)') },
+    light: { primary: [new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)')] },
+    dark: { primary: [new Color('--cds-alias-primary', 'hsl(160deg 69% 53%)')] },
   },
 ];
 
@@ -138,6 +138,50 @@ describe('ThemeBuilderComponent', () => {
     expect(lightPrimary.isOriginalColor).toBe(true);
   });
 
+  it('applies a preset that specifies a full set of variants for a group, not just the base', function (this: ThisTest) {
+    const fullVariantPreset: ThemePreset = {
+      name: 'Full variants',
+      light: {
+        primary: [
+          new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)'),
+          new Color('--cds-alias-primary-shade', 'hsl(200deg 50% 20%)'),
+        ],
+      },
+      dark: {},
+    };
+    this.fixture.detectChanges(false);
+
+    this.component.applyPreset(fullVariantPreset);
+
+    const primaryGroup = this.component.colorStruct['light']['primary'];
+    const base = primaryGroup.find(c => c.label === 'Base');
+    const shade = primaryGroup.find(c => c.label === 'Shade');
+    const tint = primaryGroup.find(c => c.label === 'Tint');
+
+    expect(base.hsl).toBe('hsl(160deg, 69%, 36%)');
+    // The preset's explicit shade overrides what colorBuilder would have derived from the base.
+    expect(shade.hsl).toBe('hsl(200deg, 50%, 20%)');
+    // Variants not specified by the preset are still derived from the base as usual.
+    expect(tint.color.h).toBe(base.color.h);
+  });
+
+  it('ignores a group override whose base token name has no match in that color group', function (this: ThisTest) {
+    // A malformed/stale preset: the "primary" group's override is tagged as a base
+    // token (its name is one of TOKEN_KEYS.baseTokens), but it's actually the "info"
+    // group's base token name, so it has no match inside colorStruct['light']['primary'].
+    const malformedPreset: ThemePreset = {
+      name: 'Malformed',
+      light: { primary: [new Color('--cds-alias-status-info', 'hsl(160deg 69% 36%)')] },
+      dark: {},
+    };
+    this.fixture.detectChanges(false);
+
+    expect(() => this.component.applyPreset(malformedPreset)).not.toThrow();
+
+    const base = this.component.colorStruct['light']['primary'].find(c => c.label === 'Base');
+    expect(base.isOriginalColor).toBe(true);
+  });
+
   it('resets an individual color back to its original value', function (this: ThisTest) {
     this.fixture.detectChanges(false);
 
@@ -175,6 +219,80 @@ describe('ThemeBuilderComponent', () => {
     this.component.onWarningTextOverrideChange();
 
     expect(this.component.generatedCss).not.toContain('--cds-alias-typography-color-black');
+  });
+
+  describe('importCSS', () => {
+    it('re-applies a color exported via generatedCss, deriving its variants', function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const primaryGroup = this.component.colorStruct['light']['primary'];
+      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      this.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
+
+      const css = this.component.generatedCss;
+
+      this.component.resetAllThemeColors('light');
+      expect(primaryBase.isOriginalColor).toBe(true);
+
+      this.component.importCSS(css);
+
+      const shade = primaryGroup.find(c => c.label === 'Shade');
+      expect(primaryBase.isOriginalColor).toBe(false);
+      expect(primaryBase.hex).toBe('#112233');
+      expect(shade.color.h).toBe(primaryBase.color.h);
+      expect(this.component.activePreset).toBeNull();
+    });
+
+    it('clears colors not present in the imported CSS', function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const primaryGroup = this.component.colorStruct['light']['primary'];
+      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      this.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
+
+      const infoGroup = this.component.colorStruct['light']['info'];
+      const infoBase = infoGroup.find(c => c.label === 'Base');
+      this.component.setCurrentColor(infoBase, '#332211', infoGroup);
+
+      // CSS mentioning only the primary change — info should be reset back to original.
+      const css = `[cds-theme~='light'] {\n  ${primaryBase.name}: ${primaryBase.hsl};\n}`;
+
+      this.component.importCSS(css);
+
+      expect(primaryBase.isOriginalColor).toBe(false);
+      expect(infoBase.isOriginalColor).toBe(true);
+    });
+  });
+
+  describe('presetSwatchColor', () => {
+    it("returns the preset's light primary base color as a hex string", function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const primaryColor = new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)');
+      const preset: ThemePreset = { name: 'Swatch test', light: { primary: [primaryColor] }, dark: {} };
+
+      expect(this.component.presetSwatchColor(preset)).toBe(primaryColor.hex);
+    });
+
+    it('returns undefined when the preset has no light colors (e.g. Clarity Default)', function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const preset: ThemePreset = { name: 'Clarity Default', light: null, dark: null };
+
+      expect(this.component.presetSwatchColor(preset)).toBeUndefined();
+    });
+
+    it("returns undefined when the preset's light colors don't include a primary group", function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const preset: ThemePreset = {
+        name: 'No primary',
+        light: { info: [new Color('--cds-alias-status-info', 'hsl(200deg 80% 50%)')] },
+        dark: {},
+      };
+
+      expect(this.component.presetSwatchColor(preset)).toBeUndefined();
+    });
   });
 });
 

@@ -73,10 +73,11 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
   constructor() {
     ClarityIcons.addIcons(moonIcon, sunIcon);
 
-    // Forces the light theme onto the page (without touching the user's stored preference)
-    // while app-theme-builder holds the lock, and restores the preferred theme once released.
+    // Forces the light theme onto the page (without touching the user's stored preference
+    // or `this.theme` itself) while app-theme-builder holds the lock, and restores the
+    // preferred theme once released.
     effect(() => {
-      this.setTheme(this.themeLockService.lightThemeLocked() ? 'light' : this.theme);
+      this.applyThemeToDom(this.themeLockService.lightThemeLocked() ? 'light' : this.theme);
     });
   }
 
@@ -101,9 +102,15 @@ export class ThemeToggleComponent implements OnInit, OnDestroy {
     this.toggleThemeOnSystemThemeChangeSubscription?.unsubscribe();
   }
 
+  /** Records `theme` as the user's actual preference, then applies it to the DOM. */
   private setTheme(theme: ThemeType) {
     this.theme = theme;
 
+    this.applyThemeToDom(theme);
+  }
+
+  /** Applies `theme` to the DOM only — doesn't touch `this.theme`, the remembered preference. */
+  private applyThemeToDom(theme: ThemeType) {
     document.body.setAttribute('cds-theme', theme);
   }
 

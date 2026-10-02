@@ -106,11 +106,11 @@ export class OKLabColor {
 }
 
 export interface ThemeColors {
-  primary?: Color;
-  info?: Color;
-  success?: Color;
-  warning?: Color;
-  danger?: Color;
+  primary?: Color[];
+  info?: Color[];
+  success?: Color[];
+  warning?: Color[];
+  danger?: Color[];
 }
 
 export interface ThemePreset {
