@@ -1,0 +1,48 @@
+[
+  {
+    "target": "clr-vertical-nav.clr-vertical-nav.has-icons",
+    "name": "width",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "linear",
+        "composite": "auto",
+        "width": "48px"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "width": "240px"
+      }
+    ]
+  },
+  {
+    "target": "cds-icon.nav-trigger-icon",
+    "name": "transform",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "ease-in-out",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "linear",
+        "composite": "auto",
+        "transform": "rotate(90deg)"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "transform": "rotate(270deg)"
+      }
+    ]
+  }
+]
