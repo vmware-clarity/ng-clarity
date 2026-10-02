@@ -1,0 +1,27 @@
+[
+  {
+    "target": "div.cdk-drop-list.appfx-card.droppable",
+    "name": "",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "linear",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "ease-in",
+        "composite": "auto",
+        "opacity": "0",
+        "transform": "translateX(-100%)"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "opacity": "1",
+        "transform": "translateX(0%)"
+      }
+    ]
+  }
+]
