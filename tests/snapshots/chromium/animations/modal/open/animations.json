@@ -1,7 +1,7 @@
 [
   {
     "target": "div.modal-dialog",
-    "name": "",
+    "name": "clr-fade-slide-down-in",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
@@ -10,15 +10,15 @@
     "keyframes": [
       {
         "offset": 0,
-        "easing": "ease-in-out",
+        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
         "composite": "auto",
         "opacity": "0",
         "transform": "translate(0px, -25%)"
       },
       {
         "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
+        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "composite": "replace",
         "opacity": "1",
         "transform": "none"
       }
@@ -26,7 +26,7 @@
   },
   {
     "target": "div.modal-backdrop",
-    "name": "",
+    "name": "clr-fade-in",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
@@ -35,15 +35,15 @@
     "keyframes": [
       {
         "offset": 0,
-        "easing": "ease-in-out",
+        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
         "composite": "auto",
         "opacity": "0"
       },
       {
         "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
-        "opacity": "0.85"
+        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "composite": "replace",
+        "opacity": "1"
       }
     ]
   }

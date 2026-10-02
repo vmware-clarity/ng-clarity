@@ -92,6 +92,9 @@ $card-container-selected-card-opacity: 0.4;
 }
 
 .droppable {
+  // Cards slide in over their whole width (see `--clr-slide-offset` in the Clarity animations)
+  --clr-slide-offset: 100%;
+
   margin: $card-container-card-margin 0;
   border: $card-container-card-border-width solid transparent;
 

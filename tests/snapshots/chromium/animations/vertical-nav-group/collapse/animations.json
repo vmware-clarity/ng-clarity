@@ -1,25 +1,46 @@
 [
   {
-    "target": "div.nav-group-children",
-    "name": "",
+    "target": "div.nav-group-children-wrapper",
+    "name": "grid-template-rows",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
-    "easing": "linear",
+    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
     "iterations": 1,
     "keyframes": [
       {
         "offset": 0,
-        "easing": "ease-in-out",
+        "easing": "linear",
         "composite": "auto",
-        "height": "192px",
+        "gridTemplateRows": "0px"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "gridTemplateRows": "0px"
+      }
+    ]
+  },
+  {
+    "target": "div.nav-group-children-wrapper",
+    "name": "visibility",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "ease",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "linear",
+        "composite": "auto",
         "visibility": "visible"
       },
       {
         "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "height": "0px",
         "visibility": "hidden"
       }
     ]

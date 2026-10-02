@@ -168,7 +168,7 @@ export class ClrButtonModule {
 }
 
 // @public (undocumented)
-export class ClrLoadingButton implements LoadingListener {
+export class ClrLoadingButton implements LoadingListener, AfterViewInit {
     constructor(el: ElementRef<HTMLButtonElement>, renderer: Renderer2);
     // (undocumented)
     buttonState: typeof ClrLoadingState;
@@ -178,10 +178,15 @@ export class ClrLoadingButton implements LoadingListener {
     disabled: boolean;
     // (undocumented)
     el: ElementRef<HTMLButtonElement>;
+    protected get enterClass(): string;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
+    ngAfterViewInit(): void;
+    // (undocumented)
     state: ClrLoadingState;
+    // (undocumented)
+    protected set validatedIcon(icon: ElementRef<HTMLElement> | undefined);
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": { "alias": "disabled"; "required": false; }; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"], false, never>;
     // (undocumented)
@@ -200,7 +205,7 @@ export class ClrLoadingButtonModule {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-button.d.ts:152:283 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
+// dist/clr-angular/types/clr-angular-button.d.ts:163:283 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -8,7 +8,6 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
 import { SelectionType } from '@clr/angular';
 import { delay, TestContext } from '@clr/angular/testing';
 
@@ -157,7 +156,7 @@ export default function (): void {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [BrowserAnimationsModule, ClrDatagridModule],
+          imports: [ClrDatagridModule],
           declarations: [RenderWidthTest],
           providers: DATAGRID_SPEC_PROVIDERS,
         });
@@ -209,7 +208,7 @@ export default function (): void {
 
       beforeEach(function () {
         TestBed.configureTestingModule({
-          imports: [BrowserAnimationsModule, ClrDatagridModule],
+          imports: [ClrDatagridModule],
           declarations: [DatagridHeightTest],
         });
         context = TestBed.createComponent(DatagridHeightTest);

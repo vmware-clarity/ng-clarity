@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, state, style, transition, trigger } from '@angular/animations';
 import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
@@ -55,26 +54,6 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
   selector: 'clr-tree-node',
   templateUrl: './tree-node.html',
   providers: [TREE_FEATURES_PROVIDER, IfExpandService, { provide: LoadingListener, useExisting: IfExpandService }],
-  animations: [
-    trigger('toggleChildrenAnim', [
-      // The "instant" states are used by bulk operations (expand all, expand descendants): they have the same
-      // styles but no transition leads to them, so hundreds of nested containers don't animate at once.
-      transition('collapsed => expanded, collapsedInstant => expanded', [
-        // The animation starts from the collapsed state's styles, so the children must be made visible explicitly.
-        style({ height: 0, 'content-visibility': 'visible' }),
-        animate(200, style({ height: '*', 'content-visibility': 'visible' })),
-      ]),
-      transition('expanded => collapsed, expandedInstant => collapsed', [
-        style({ height: '*' }),
-        animate(200, style({ height: 0 })),
-      ]),
-      state('expanded, expandedInstant', style({ height: '*', 'overflow-y': 'visible' })),
-      // Once collapsed, the browser skips the style, layout and paint of the whole subtree. The state style only
-      // applies when the collapse animation is over, so the children stay painted while they slide out; they are
-      // inert from the start (see the template), so they cannot be reached in the meantime.
-      state('collapsed, collapsedInstant', style({ height: 0, 'content-visibility': 'hidden' })),
-    ]),
-  ],
   host: {
     '[class.clr-tree-node]': 'true',
     '[class.disabled]': 'this._model.disabled',

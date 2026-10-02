@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+export * from './animation-metadata';
+export * from './animations.service';
 export * from './constants';
 export * from './collapse/index';
 export * from './expandable-animation/index';

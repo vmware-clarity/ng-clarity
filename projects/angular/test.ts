@@ -29,6 +29,16 @@ document.body.setAttribute('cds-theme', '');
 })
 export class ZoneConfigModule {}
 
+/**
+ * Clarity animates with native CSS animations and transitions. They are switched off for the test runs, so that
+ * specs can assert on the layout right after a change detection instead of waiting for a transition to complete
+ * (Angular's `TestBed` already disables its `animate.enter` / `animate.leave` and the Clarity animation callbacks).
+ */
+const noAnimationsStyle = document.createElement('style');
+noAnimationsStyle.id = 'clr-test-no-animations'; // see `enableCssAnimations()`
+noAnimationsStyle.textContent = `*, *::before, *::after { animation: none !important; transition: none !important; }`;
+document.head.appendChild(noAnimationsStyle);
+
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment([BrowserTestingModule, ZoneConfigModule], platformBrowserTesting(), {
   teardown: { destroyAfterEach: false },

@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
@@ -25,8 +24,13 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrVerticalNavModule, ClrIcon, NoopAnimationsModule],
-        declarations: [GroupInternalsTestComponent, IfExpandedTestComponent, TemplateAPITestComponent],
+        imports: [ClrVerticalNavModule, ClrIcon],
+        declarations: [
+          GroupInternalsTestComponent,
+          IfExpandedTestComponent,
+          TemplateAPITestComponent,
+          OnPushTestComponent,
+        ],
         providers: [VerticalNavService, VerticalNavGroupRegistrationService],
       });
     });
@@ -115,6 +119,26 @@ export default function (): void {
           expect(compiled.querySelector('.nav-group-children').children.length).toBeGreaterThan(0);
         }
       );
+    });
+
+    describe('Nav Group inside an OnPush host', () => {
+      it('refreshes the expanded class of the host once the group has collapsed', async () => {
+        fixture = TestBed.createComponent(OnPushTestComponent);
+        fixture.detectChanges();
+        compiled = fixture.nativeElement;
+        const host: HTMLElement = compiled.querySelector('clr-vertical-nav-group');
+        const trigger: HTMLButtonElement = compiled.querySelector('.nav-group-trigger');
+
+        trigger.click();
+        fixture.detectChanges();
+        expect(host.classList.contains('is-expanded')).toBe(true);
+
+        trigger.click();
+        fixture.detectChanges();
+        await delay();
+        fixture.detectChanges();
+        expect(host.classList.contains('is-expanded')).toBe(false);
+      });
     });
 
     describe('Nav Group Internals with clrIfExpanded', () => {
@@ -294,4 +318,20 @@ class TemplateAPITestComponent {
   updateExpanded(value: boolean) {
     this.expandedChange = value;
   }
+}
+
+@Component({
+  template: `
+    <clr-vertical-nav-group #group>
+      Group
+      <clr-vertical-nav-group-children>
+        <a href="#" clrVerticalNavLink>Link</a>
+      </clr-vertical-nav-group-children>
+    </clr-vertical-nav-group>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class OnPushTestComponent {
+  @ViewChild('group') navGroup: ClrVerticalNavGroup;
 }

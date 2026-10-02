@@ -1,1 +1,25 @@
-[]
+[
+  {
+    "target": "div.modal-dialog.clr-fade-slide-left-leave",
+    "name": "clr-fade-slide-left-out",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "linear",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "composite": "replace"
+      },
+      {
+        "offset": 1,
+        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "composite": "auto",
+        "opacity": "0",
+        "transform": "translate(var(--clr-slide-offset), 0)"
+      }
+    ]
+  }
+]

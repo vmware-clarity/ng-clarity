@@ -1,7 +1,7 @@
 [
   {
     "target": "div.cdk-drop-list.appfx-card.droppable",
-    "name": "",
+    "name": "clr-fade-slide-right-in",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
@@ -10,17 +10,17 @@
     "keyframes": [
       {
         "offset": 0,
-        "easing": "ease-in",
+        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
         "composite": "auto",
         "opacity": "0",
-        "transform": "translateX(-100%)"
+        "transform": "translate(-100%)"
       },
       {
         "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
+        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "composite": "replace",
         "opacity": "1",
-        "transform": "translateX(0%)"
+        "transform": "none"
       }
     ]
   }

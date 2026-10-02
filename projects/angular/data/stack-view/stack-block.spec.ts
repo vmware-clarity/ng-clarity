@@ -8,7 +8,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
 
@@ -136,7 +135,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrStackViewModule, NoopAnimationsModule, FormsModule],
+        imports: [ClrStackViewModule, FormsModule],
         declarations: [BasicBlock, DynamicBlock, DynamicBlockWithInput, NestedBlocks, BlocksWithIinteractiveElements],
         providers: [ClrStackView],
       });

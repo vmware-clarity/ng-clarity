@@ -5,12 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationBuilder, AnimationPlayer, useAnimation } from '@angular/animations';
-import { Directive, ElementRef, Input, OnChanges, OnDestroy, Renderer2, SimpleChanges } from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Inject,
+  InjectionToken,
+  Input,
+  OnChanges,
+  Optional,
+  Renderer2,
+  SimpleChanges,
+} from '@angular/core';
 
-import { DomAdapter } from '../../dom-adapter/dom-adapter';
-import { defaultExpandAnimation } from '../constants';
 import { BaseExpandableAnimation } from './base-expandable-animation';
+import { DomAdapter } from '../../dom-adapter/dom-adapter';
+
+/** Never provided: stands for the `AnimationBuilder` the directive used to be injected with. */
+const UNUSED_ANIMATION_BUILDER = new InjectionToken<unknown>('UNUSED_ANIMATION_BUILDER');
 
 @Directive({
   selector: '[clrExpandableAnimation]',
@@ -20,43 +31,25 @@ import { BaseExpandableAnimation } from './base-expandable-animation';
   },
   standalone: false,
 })
-export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
+export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges {
   @Input('clrExpandableAnimation') expanded = false;
 
-  private player: AnimationPlayer;
-
+  /**
+   * @param _builder Deprecated and ignored: the height is no longer animated with Angular animations. Kept so that
+   * subclasses passing an `AnimationBuilder` still compile.
+   */
   constructor(
     element: ElementRef<HTMLElement>,
     domAdapter: DomAdapter,
     renderer: Renderer2,
-    private builder: AnimationBuilder
+    @Optional() @Inject(UNUSED_ANIMATION_BUILDER) _builder?: unknown
   ) {
     super(element, domAdapter, renderer);
   }
 
   ngOnChanges(changes: SimpleChanges) {
     if (changes['expanded'] && !changes['expanded'].firstChange) {
-      Promise.resolve().then(() => this.playAnimation());
+      this.scheduleAnimation();
     }
-  }
-
-  ngOnDestroy() {
-    this.player?.destroy();
-  }
-
-  playAnimation() {
-    if (this.player) {
-      this.player.destroy();
-    }
-
-    this.player = this.builder
-      .build([useAnimation(defaultExpandAnimation, { params: { startHeight: this.startHeight } })])
-      .create(this.element.nativeElement);
-
-    this.player.onStart(() => this.initAnimationEffects());
-
-    this.player.onDone(() => this.cleanupAnimationEffects(true));
-
-    this.player.play();
   }
 }

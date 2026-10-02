@@ -17,11 +17,7 @@ import {
   QueryList,
   SimpleChanges,
 } from '@angular/core';
-import {
-  CollapsiblePanel,
-  collapsiblePanelExpandAnimation,
-  CollapsiblePanelModel,
-} from '@clr/angular/collapsible-panel';
+import { CollapsiblePanel, CollapsiblePanelModel } from '@clr/angular/collapsible-panel';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionDescription } from './accordion-description';
@@ -31,7 +27,6 @@ import { ClrAccordionDescription } from './accordion-description';
   templateUrl: './accordion-panel.html',
   host: { '[class.clr-accordion-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: collapsiblePanelExpandAnimation,
   providers: [IfExpandService],
   standalone: false,
 })
@@ -46,6 +41,9 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
   @Input('clrAccordionPanelHeadingLevel') explicitHeadingLevel: HeadingLevel;
 
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
+
+  // The accordion only animates the expansion of a panel (see the template).
+  protected override readonly animatesCollapse = false;
 
   ngOnChanges(changes: SimpleChanges) {
     this.handlePanelInputChanges(changes);
