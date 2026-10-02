@@ -6,7 +6,7 @@
  */
 
 import { Component, TemplateRef, ViewChild } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 
 import { RecursiveTreeNodeModel } from './models/recursive-tree-node.model';
 import { ClrRecursiveForOf, ClrRecursiveForOfContext } from './recursive-for-of';
@@ -93,6 +93,18 @@ export default function (): void {
         new RecursiveTreeNodeModel(TEST_ROOT.children[0], null, getChildren, this.featuresService),
       ]);
     });
+
+    it('refreshes the tree once per burst of fetched children, in a microtask', fakeAsync(function (this: Context) {
+      // Children fetched while the tree renders arrive in bursts, one notification per node.
+      const detectChanges = spyOn((this.clarityDirective as any).cdr, 'detectChanges');
+      for (let i = 0; i < 5; i++) {
+        this.featuresService.childrenFetched.next();
+      }
+      expect(detectChanges).not.toHaveBeenCalled();
+      // A microtask is enough: no timer, and so no separate change detection pass per burst.
+      flushMicrotasks();
+      expect(detectChanges).toHaveBeenCalledTimes(1);
+    }));
 
     it('accepts multiple roots', function (this: Context) {
       this.testComponent.root = [TEST_ROOT, TEST_ROOT];
