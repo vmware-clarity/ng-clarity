@@ -321,4 +321,25 @@ describe('withoutFormValues', () => {
 
     expect(shared.components[0].state).toEqual({ rowCount: 2, selectionMode: 'multi' });
   });
+
+  it('withholds how many rows are selected, and keeps what a progress bar or meter shows', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        { type: 'grid', state: { rowCount: 2, selectedRows: 1 } },
+        { type: 'progressbar', label: 'Upload', state: { value: 40, max: 100 } },
+        { type: 'meter', label: 'Disk', state: { value: 0.7 } },
+        { type: 'slider', label: 'Volume', state: { value: 4, max: 10 } },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components.map(node => node.state)).toEqual([
+      { rowCount: 2 },
+      { value: 40, max: 100 },
+      { value: 0.7 },
+      { max: 10 },
+    ]);
+  });
 });

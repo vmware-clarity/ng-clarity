@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { isPlatformBrowser } from '@angular/common';
+import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
 import { DOCUMENT, inject, Inject, Injectable, NgZone, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_REDACT_SELECTOR, clrUsableSelectors } from '@clr/angular/utils';
@@ -21,7 +21,7 @@ import {
   clrRequestHostContext,
 } from '../iframe/context-frame-bridge';
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
-import { jsonSafe } from '../json-safe';
+import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
 import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
 import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
 import { availableRoutes, routePatternFor } from '../routes';
@@ -86,6 +86,8 @@ export class ClrContextEngineService implements OnDestroy {
   // write pay nothing for them.
   private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
   private readonly refs = inject(ContextRefRegistryService);
+  /** How the router maps addresses to routes; there is none without a router. */
+  private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   private readonly zone = inject(NgZone);
   private frameHost: ClrContextFrameHost | null = null;
   private globalProperty: string | null = null;
@@ -165,7 +167,7 @@ export class ClrContextEngineService implements OnDestroy {
       // The caller may ask for less than the application allows, never for more.
       const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), false);
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
-      return shareFullUrl ? shared : withoutUrlDetails(shared, path => this.routePattern(path), this.document.baseURI);
+      return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
     };
   }
 
@@ -199,7 +201,7 @@ export class ClrContextEngineService implements OnDestroy {
       snapshotOptions => this.snapshot(capSnapshotOptions(snapshotOptions, ceiling), false),
       window,
       options,
-      path => this.routePattern(path)
+      url => this.routePattern(url)
     );
     // Outside the zone: every `message` on the page reaches the listener, and answering
     // one changes nothing the application renders, so none should check the application.
@@ -315,22 +317,37 @@ export class ClrContextEngineService implements OnDestroy {
   }
 
   /**
-   * The configured pattern a path on this origin matches, or `null`; see `routePatternFor`.
-   * Routes are relative to the document's base: under `<base href="/app/">` the path
-   * `/app/hosts` is the route `hosts`, and a path outside `/app/` is no route at all.
+   * The configured pattern an address on this origin leads to, or `null`; see
+   * `routePatternFor`. Routes are read as the router reads them: below the application's
+   * base href — under `/app/` the path `/app/hosts` is the route `hosts`, and a path
+   * outside `/app/` is no route at all — or, with hash routing, from the fragment of an
+   * address to this very page.
    */
-  private routePattern(path: string): string | null {
+  private routePattern(url: URL): string | null {
     if (!this.router || !this.router.config.length) {
       return null;
     }
+    if (this.locationStrategy instanceof HashLocationStrategy) {
+      const page = this.document.location?.pathname;
+      return page !== undefined && url.pathname === page && url.hash.startsWith('#/')
+        ? routePatternFor(this.router.config, url.hash.slice(1))
+        : null;
+    }
     const base = this.basePath();
-    return path.startsWith(base) ? routePatternFor(this.router.config, path.slice(base.length - 1)) : null;
+    return url.pathname.startsWith(base)
+      ? routePatternFor(this.router.config, url.pathname.slice(base.length - 1))
+      : null;
   }
 
-  /** The path the document's base URI names, ending in `/`. */
+  /**
+   * The path the application's base href names, ending in `/`: the router's own, which
+   * `APP_BASE_HREF` sets as well as a `<base>` element, or else the document's base.
+   */
   private basePath(): string {
     try {
-      return new URL('.', this.document.baseURI).pathname;
+      const href = this.locationStrategy?.getBaseHref() || new URL('.', this.document.baseURI).href;
+      const path = new URL(href, this.document.baseURI).pathname;
+      return path.endsWith('/') ? path : `${path}/`;
     } catch {
       return '/';
     }
@@ -359,7 +376,7 @@ export class ClrContextEngineService implements OnDestroy {
       // also carries what resolvers fetched — user records, entitlements, API payloads —
       // which is application data, not a description of the page.
       for (const [key, value] of Object.entries(route.routeConfig?.data ?? {})) {
-        const serializable = jsonSafe(value, 2);
+        const serializable = jsonSafe(value, ROUTE_DATA_DEPTH);
         if (serializable !== undefined) {
           data[key] = serializable;
         }

@@ -9,7 +9,7 @@ import { isDevMode } from '@angular/core';
 import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { truncate } from './text';
-import { jsonSafe } from '../json-safe';
+import { jsonSafe, STATE_DEPTH } from '../json-safe';
 
 /**
  * Reads an element's published context, if any. A callback that throws is treated as
@@ -146,7 +146,7 @@ function publishedParts(
   const state = source['state'];
   if (state && typeof state === 'object' && !Array.isArray(state)) {
     for (const [key, entry] of Object.entries(state)) {
-      const safe = bounded(jsonSafe(entry, 3, true), options);
+      const safe = bounded(jsonSafe(entry, STATE_DEPTH, true), options);
       if (safe !== undefined) {
         Object.defineProperty(parts.state, key, { value: safe, enumerable: true, writable: true, configurable: true });
       }

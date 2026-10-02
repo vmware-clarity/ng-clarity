@@ -290,7 +290,7 @@ describe('Context frame bridge', () => {
           }),
           window,
           { minRequestIntervalMs: 0 },
-          path => (/^\/users\/[^/]+$/.test(path) ? 'users/:id' : null)
+          url => (/^\/users\/[^/]+$/.test(url.pathname) ? 'users/:id' : null)
         );
         host.start();
 
@@ -320,7 +320,7 @@ describe('Context frame bridge', () => {
           }),
           window,
           { minRequestIntervalMs: 0 },
-          path => (path === '/reset/edit' ? 'reset/edit' : null)
+          url => (url.pathname === '/reset/edit' ? 'reset/edit' : null)
         );
         host.start();
 

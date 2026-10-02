@@ -8,7 +8,7 @@
 import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders } from '@angular/core';
 
 import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
-import { clrContextPreset, ClrContextPreset } from '../snapshot-options';
+import { clrContextPreset, ClrContextPreset, withCallOptions } from '../snapshot-options';
 
 /**
  * Application-wide snapshot options. Whatever is provided here is what every snapshot
@@ -25,8 +25,9 @@ export const CLR_CONTEXT_OPTIONS = new InjectionToken<ClrContextSnapshotOptions>
  * provideClrContextOptions({ maxComponents: 200, includeText: false });
  * ```
  *
- * A preset name gives a starting bundle (see `CLR_CONTEXT_PRESETS`); explicit options,
- * or the overrides after a preset, are applied over it.
+ * A preset name gives a starting bundle (see `CLR_CONTEXT_PRESETS`); the overrides are
+ * applied over it, or over explicit options, the way a call's options are: budgets and
+ * switches replace, exclusion lists add.
  *
  * Provide it at application level (`bootstrapApplication` or the root module's
  * `providers`): the engine is root-provided and reads the root injector only. The return
@@ -36,6 +37,7 @@ export function provideClrContextOptions(
   options: ClrContextPreset | ClrContextSnapshotOptions,
   overrides: ClrContextSnapshotOptions = {}
 ): EnvironmentProviders {
-  const resolved = typeof options === 'string' ? clrContextPreset(options, overrides) : { ...options, ...overrides };
+  const resolved =
+    typeof options === 'string' ? clrContextPreset(options, overrides) : withCallOptions(options, overrides);
   return makeEnvironmentProviders([{ provide: CLR_CONTEXT_OPTIONS, useValue: resolved }]);
 }

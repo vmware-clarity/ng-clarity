@@ -125,11 +125,11 @@ export function accessibleText(element: Element, exclude?: Element, withheld = '
 }
 
 /**
- * How deep a name is read. The HTML parser nests no deeper than 512, but script can, and
- * reading recurses once per level: what lies deeper is left out of the name rather than
- * the stack running out.
+ * How deeply nested an element the engine still reads, in a walk or a name. The HTML
+ * parser nests no deeper than 512, but script can, and reading recurses once per level:
+ * what lies deeper is left out rather than the stack running out.
  */
-const MAX_TEXT_DEPTH = 512;
+export const MAX_NESTING_DEPTH = 512;
 
 function textFor(
   element: Element,
@@ -138,7 +138,7 @@ function textFor(
   withheld: string,
   depth = 0
 ): string {
-  if (depth >= MAX_TEXT_DEPTH) {
+  if (depth >= MAX_NESTING_DEPTH) {
     return '';
   }
   let text = '';

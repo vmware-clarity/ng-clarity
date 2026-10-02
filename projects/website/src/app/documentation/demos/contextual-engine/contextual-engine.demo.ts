@@ -175,7 +175,7 @@ const context = contextEngine.getSnapshot();
 //   "element": "clr-select-container",
 //   "label": "Cluster",
 //   "state": {
-//     "value": "beta",
+//     "value": "Beta",
 //     "options": ["Alpha", "Beta"],
 //     "required": true,
 //     "description": "Pick a target cluster"

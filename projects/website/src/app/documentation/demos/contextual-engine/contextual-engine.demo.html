@@ -296,8 +296,10 @@
       <code cds-text="code">ClrContextTrackerService.changes$</code> emits alongside every
       <code cds-text="code">context$</code> emission: nodes added (with their subtrees), removed, and changed in their
       own state, plus whether the route, title or annotations moved. The first emission after
-      <code cds-text="code">start()</code> lists everything as added. <code cds-text="code">clrDiffContext()</code> is
-      the same comparison as a plain function.
+      <code cds-text="code">start()</code> lists everything as added; it is not replayed, so subscribe to
+      <code cds-text="code">changes$</code> before calling <code cds-text="code">start()</code> or
+      <code cds-text="code">track()</code>, or begin from <code cds-text="code">currentContext</code>.
+      <code cds-text="code">clrDiffContext()</code> is the same comparison as a plain function.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="changesExample" language="typescript"></app-code-snippet>

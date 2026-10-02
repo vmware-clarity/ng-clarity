@@ -73,7 +73,9 @@ export class ClrContextTrackerService implements OnDestroy {
    * Emits, alongside every {@link context$} emission, what changed since the previous one
    * — nodes added, removed and changed, and whether the route, title or annotations moved
    * — so a consumer in a conversation can send the difference rather than the whole page.
-   * The first emission after `start()` lists everything as added.
+   * The first emission after `start()` lists everything as added. It is not replayed: a
+   * consumer that needs it subscribes before calling `start()` or `track()`, or starts
+   * from {@link currentContext} and applies what changed after that.
    */
   readonly changes$: Observable<ClrContextChange>;
 

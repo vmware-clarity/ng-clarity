@@ -720,14 +720,33 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       return;
     }
     this.teardownElementMutator = clrPublishElementMutator(this.el.nativeElement, {
-      // Rows are named as the snapshot the write is judged against names them.
+      // Rows are named as the snapshot the write is judged against names them. `coerce`
+      // judges a write without making it, so a plan sees the refusal the write would meet,
+      // and hands the write the rows by their full labels.
+      coerce: (proposed, options): ClrElementMutation =>
+        this.withRowCells(() => {
+          const excluded = this.excludedBy(options);
+          const resolved = this.resolveSelection(proposed, excluded);
+          if ('refused' in resolved) {
+            return resolved;
+          }
+          const labels = resolved.rows.map(row => this.rowLabel(row, excluded));
+          return { value: resolved.single ? (labels[0] ?? null) : labels };
+        }),
       write: (proposed, options): ClrElementMutation =>
         this.withRowCells(() => this.writeSelection(proposed, this.excludedBy(options), this.budgetOf(options))),
       read: options => this.withRowCells(() => this.readSelection(this.excludedBy(options), this.budgetOf(options))),
     });
   }
 
-  private writeSelection(proposed: unknown, excluded: string, limit: number): ClrElementMutation {
+  /**
+   * The rows a proposal names, and whether the grid would take it — everything a write
+   * checks before it selects anything.
+   */
+  private resolveSelection(
+    proposed: unknown,
+    excluded: string
+  ): { rows: ClrDatagridRow<T>[]; single: boolean } | { refused: string } {
     if (!this.selection.selectable) {
       return { refused: 'The datagrid does not offer row selection.' };
     }
@@ -756,8 +775,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       }
       rows.push(found.row);
     }
-    const identify = (item: T) => this.items.identifyBy(item);
     if (single) {
+      const identify = (item: T) => this.items.identifyBy(item);
       const current = this.selection.currentSingle;
       const replacing =
         current !== undefined && current !== null && (!rows.length || identify(rows[0].item) !== identify(current));
@@ -767,6 +786,21 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       if (replacing && this.isWithheldRow(current, excluded)) {
         return { refused: 'The selected row is kept from agents, and cannot be deselected by one.' };
       }
+    }
+    return { rows, single };
+  }
+
+  private writeSelection(proposed: unknown, excluded: string, limit: number): ClrElementMutation {
+    const resolved = this.resolveSelection(proposed, excluded);
+    if ('refused' in resolved) {
+      return resolved;
+    }
+    const { rows, single } = resolved;
+    const identify = (item: T) => this.items.identifyBy(item);
+    if (single) {
+      const current = this.selection.currentSingle;
+      const replacing =
+        current !== undefined && current !== null && (!rows.length || identify(rows[0].item) !== identify(current));
       const unchanged = rows.length
         ? current !== undefined && current !== null && !replacing
         : current === undefined || current === null;
@@ -907,7 +941,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   private findRow(label: unknown, excluded: string): { row: ClrDatagridRow<T> } | { refused: string } {
     // Only rows the snapshot shows can be named, or quoted.
     const rows = this.rows.toArray().filter(row => !!this.rowLabel(row, excluded));
-    const wanted = typeof label === 'string' ? clrNormalizeContextText(label) : '';
+    // A number or a boolean is read as the text a cell would show for it: "42" for 42.
+    const wanted =
+      typeof label === 'string' || typeof label === 'number' || typeof label === 'boolean'
+        ? clrNormalizeContextText(String(label))
+        : '';
     if (!wanted) {
       return { refused: 'A row is named by its content, as the published rows list it.' };
     }

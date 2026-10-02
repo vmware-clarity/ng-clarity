@@ -32,7 +32,7 @@ import {
   roleCandidateSelector,
 } from './roles';
 import { summarizeRole } from './summarizers';
-import { accessibleText, isVisuallyHidden, truncate } from './text';
+import { accessibleText, isVisuallyHidden, MAX_NESTING_DEPTH, truncate } from './text';
 import { isVisible } from './visibility';
 import { stripQueryAndFragment } from '../url';
 
@@ -43,6 +43,10 @@ import { stripQueryAndFragment } from '../url';
  * accessibility tree, which Clarity components, `@clr/ui` CSS-only markup and plain HTML
  * all expose. Extractors exist for the remainder: markup that carries neither a role nor
  * an accessible name, such as a bare `<div class="card">`.
+ *
+ * What the user entered or chose is recognised by its state key — `value`, `selected`,
+ * `checked`, `selection`, `selectedRows` — and withheld from a consumer the application
+ * does not control; report it under one of those keys, or it is shared with everyone.
  */
 export interface ClrContextDomExtractor {
   /** CSS selector matching the elements this extractor understands. */
@@ -80,13 +84,6 @@ export const WRITABLE_ROLES: ReadonlySet<string> = new Set([
   'spinbutton',
   'radiogroup',
 ]);
-
-/**
- * How deeply nested an element the walk still looks at. The HTML parser nests no deeper
- * than 512, but script can, and the walk recurses once per level: what lies deeper is
- * left out, and the snapshot says it was cut off, rather than the stack running out.
- */
-const MAX_ELEMENT_DEPTH = 512;
 
 /**
  * How many elements one walk looks at. The component budget bounds what a snapshot says,
@@ -496,10 +493,19 @@ function isCustomElementTag(element: Element): boolean {
  * itself as a grid rendered by a datagrid.
  */
 function describeElement(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
+  // Past the element cap nothing more is looked at — not even whether it is hidden, which
+  // on a long flat list would still cost a style read per element. Too deep a level is
+  // left out too (see `MAX_NESTING_DEPTH`), and the snapshot says it was cut off.
+  if (walk.visited.count >= MAX_ELEMENTS_VISITED) {
+    if (!walk.probing) {
+      walk.truncated = true;
+    }
+    return [];
+  }
   if (shouldSkipSubtree(element, walk)) {
     return [];
   }
-  if (walk.elementDepth >= MAX_ELEMENT_DEPTH || walk.visited.count >= MAX_ELEMENTS_VISITED) {
+  if (walk.elementDepth >= MAX_NESTING_DEPTH) {
     if (!walk.probing) {
       walk.truncated = true;
     }

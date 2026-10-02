@@ -54,7 +54,9 @@ export interface ClrElementMutator {
    * Turns what an agent proposes — an option's label, a date in any form — into the
    * value the element's form control takes, or refuses. `null` proposes clearing the
    * control and is passed through so the component can say what "empty" is for it.
-   * The engine then writes the result through the form control as usual.
+   * The engine then writes the result through the form control as usual — or, for a
+   * component that also publishes {@link write}, hands it to `write`: there `coerce`
+   * judges a write without making it, so a plan sees the refusal the write would meet.
    */
   coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
   /**

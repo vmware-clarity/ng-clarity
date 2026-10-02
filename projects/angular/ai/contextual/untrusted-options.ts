@@ -123,7 +123,7 @@ function withoutRowContents(node: ClrComponentContext): ClrComponentContext {
  */
 export function withoutUrlDetails(
   context: ClrPageContext,
-  routePattern?: (path: string) => string | null,
+  routePattern?: (url: URL) => string | null,
   baseUrl: string | undefined = context.url
 ): ClrPageContext {
   const shared: ClrPageContext = { ...context, title: '' };
@@ -153,7 +153,8 @@ interface AddressScope {
   origin: string | null;
   /** What a relative address resolves against. */
   resolveAgainst: string | null;
-  routePattern?: (path: string) => string | null;
+  /** The configured pattern an address on this origin leads to, or `null`. */
+  routePattern?: (url: URL) => string | null;
 }
 
 /** The URL's origin with `path` in place of its own path, query and fragment. */
@@ -227,6 +228,6 @@ function reducedAddress(address: string, isLink: boolean, scope: AddressScope): 
   if (!isLink || url.origin !== scope.origin) {
     return `${url.origin}/`;
   }
-  const pattern = scope.routePattern?.(url.pathname) ?? null;
+  const pattern = scope.routePattern?.(url) ?? null;
   return pattern === null ? null : `/${pattern}`;
 }

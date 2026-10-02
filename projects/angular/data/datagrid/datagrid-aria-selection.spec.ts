@@ -13,6 +13,7 @@ import { ClrDatagridModule } from './datagrid.module';
 
 interface Node {
   name: string;
+  locked?: boolean;
 }
 
 @Component({
@@ -20,7 +21,7 @@ interface Node {
     @if (selectable) {
       <clr-datagrid clrDgSelectionType="multi" [(clrDgSelected)]="selected">
         <clr-dg-column>Name</clr-dg-column>
-        <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item" [clrDgSelectable]="!item.locked">
           <clr-dg-cell>{{ item.name }}</clr-dg-cell>
         </clr-dg-row>
       </clr-datagrid>
@@ -69,6 +70,18 @@ describe('ClrDatagrid selection, as assistive technology sees it', () => {
 
   it('reports every row as unselected before anything is chosen', () => {
     expect(dataRows().map(row => row.getAttribute('aria-selected'))).toEqual(['false', 'false']);
+  });
+
+  it('says nothing about selection on a locked row, unless it is selected', () => {
+    const [first, second] = fixture.componentInstance.items;
+    fixture.componentInstance.items = [
+      { ...first, locked: true },
+      { ...second, locked: true },
+    ];
+    fixture.componentInstance.selected = [fixture.componentInstance.items[1]];
+    fixture.detectChanges();
+
+    expect(dataRows().map(row => row.getAttribute('aria-selected'))).toEqual([null, 'true']);
   });
 
   it('reports a row as selected once it is chosen', () => {

@@ -3645,7 +3645,7 @@ export class ClrDropdownTrigger {
 }
 
 // @public
-export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
 
 // @public
 export type ClrElementMutation = {

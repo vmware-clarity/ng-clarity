@@ -20,4 +20,11 @@ describe('clrUsableSelectors', () => {
   it('checks against an element as well as a document', () => {
     expect(clrUsableSelectors(document.createElement('div'), ['li', ':not('])).toBe('li');
   });
+
+  it('checks the syntax without searching the page', () => {
+    const search = spyOn(document, 'querySelector').and.callThrough();
+
+    expect(clrUsableSelectors(document, ['header', '.secret'])).toBe('header, .secret');
+    expect(search).not.toHaveBeenCalled();
+  });
 });

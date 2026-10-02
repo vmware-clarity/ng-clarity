@@ -246,6 +246,14 @@ function assignValueState(
   }
 
   const tagName = element.tagName.toLowerCase();
+  if (tagName === 'progress' || tagName === 'meter') {
+    // How far along something is, as the bar shows it; its `max` is reported with the
+    // other constraints. A progress bar without a value is indeterminate, and has none.
+    if (tagName === 'meter' || element.hasAttribute('value')) {
+      state.value = (element as HTMLProgressElement | HTMLMeterElement).value;
+    }
+    return;
+  }
   if (tagName === 'input') {
     const input = element as HTMLInputElement;
     const type = (input.getAttribute('type') || 'text').toLowerCase();
@@ -334,11 +342,17 @@ function numberAttribute(element: Element, attribute: string): number | undefine
 
 /**
  * The state keys that carry what the user entered or chose: what they typed, which
- * options they picked, whether they ticked a box, which rows they selected. Withheld
- * together wherever values are withheld — a choice is as much the user's input as typed
- * text is.
+ * options they picked, whether they ticked a box, which rows they selected and how many.
+ * Withheld together wherever values are withheld — a choice is as much the user's input
+ * as typed text is.
  */
-export const VALUE_STATE_KEYS: readonly string[] = ['value', 'selected', 'checked', 'selection'];
+export const VALUE_STATE_KEYS: readonly string[] = ['value', 'selected', 'checked', 'selection', 'selectedRows'];
+
+/**
+ * Roles whose value is the application's output, not the user's input — how far an
+ * upload has got, how full a disk is — and is kept wherever values are withheld.
+ */
+const OUTPUT_VALUE_ROLES = new Set(['progressbar', 'meter']);
 
 /** Whether an element is an editing host: `contenteditable` on, in any spelling but `false`. */
 export function isContentEditable(element: Element): boolean {
@@ -354,9 +368,12 @@ export function isContentEditable(element: Element): boolean {
 export function withoutValues(node: ClrComponentContext): ClrComponentContext {
   let result = node;
   const state = node.state;
-  if (state && VALUE_STATE_KEYS.some(key => key in state)) {
+  const withheld = OUTPUT_VALUE_ROLES.has(node.type)
+    ? VALUE_STATE_KEYS.filter(key => key !== 'value')
+    : VALUE_STATE_KEYS;
+  if (state && withheld.some(key => key in state)) {
     const kept: Record<string, unknown> = { ...state };
-    for (const key of VALUE_STATE_KEYS) {
+    for (const key of withheld) {
       delete kept[key];
     }
     result = { ...result };

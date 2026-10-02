@@ -171,7 +171,7 @@ export class ClrContextFrameHost {
     private readonly getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext,
     private readonly hostWindow: Window,
     options: ClrContextFrameHostOptions = {},
-    private readonly routePattern?: (path: string) => string | null
+    private readonly routePattern?: (url: URL) => string | null
   ) {
     // A wildcard in the list is dropped rather than honoured, so a configuration copied
     // from somewhere permissive cannot quietly open the page up. Without a list, frames

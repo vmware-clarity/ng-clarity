@@ -96,6 +96,7 @@ class PagedHost {
 }
 
 @Component({
+  selector: 'clr-test-toggle-host',
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="mode">
       <clr-dg-column>Name</clr-dg-column>
@@ -175,6 +176,7 @@ class HiddenColumnHost {
 }
 
 @Component({
+  selector: 'clr-test-withheld-row-host',
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Name</clr-dg-column>
@@ -257,6 +259,25 @@ class ExpandedDetailHost {
   selected: Server[] = [];
 }
 
+@Component({
+  selector: 'clr-test-numbered-host',
+  template: `
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
+      <clr-dg-column>Rack</clr-dg-column>
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.id * 10 }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class NumberedHost {
+  items = servers().slice(0, 2);
+  selected: Server[] = [];
+}
+
 function findNode(
   nodes: ClrComponentContext[],
   match: (node: ClrComponentContext) => boolean
@@ -305,6 +326,7 @@ describe('ClrDatagrid element mutator', () => {
         WithheldCellHost,
         WithheldRowHost,
         ExpandedDetailHost,
+        NumberedHost,
       ],
       providers: [provideClrMutationPolicy({ classify: () => 'reversible' })],
     });
@@ -402,6 +424,27 @@ describe('ClrDatagrid element mutator', () => {
 
       expect(report.results[0].applied).toBeTrue();
       expect(names(host.selected)).toEqual(['esx-02']);
+    });
+
+    it('names a row by a number its cell shows', async () => {
+      const host = await create(NumberedHost);
+
+      expect((await select(20)).applied).toBeTrue();
+      expect(names(host.selected)).toEqual(['esx-02']);
+    });
+
+    it('lets a plan see the refusal a selection would meet, without selecting anything', async () => {
+      const host = await create(MultiHost);
+      const ref = String(grid().ref);
+
+      const [refused] = engine.plan([{ operation: 'setValue', ref, description: '', value: ['esx-09'] }]);
+      expect(refused.refused).toBe('invalid');
+      expect(refused.detail).toContain('No such row on this page');
+
+      const [planned] = engine.plan([{ operation: 'setValue', ref, description: '', value: ['esx-02'] }]);
+      expect(planned.refused).toBeUndefined();
+      expect(planned.target?.value).toEqual(['esx-02 | Running']);
+      expect(names(host.selected)).toEqual([]);
     });
 
     it('labels a row by its own cells, not those of its expanded detail', async () => {

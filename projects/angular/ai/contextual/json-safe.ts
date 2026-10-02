@@ -5,6 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+/** How deep a component's state, or a form control's value or errors, is kept. */
+export const STATE_DEPTH = 3;
+
+/** How deep a route's data is kept: a route says what it is in a level or two. */
+export const ROUTE_DATA_DEPTH = 2;
+
 /**
  * Reduces a value to its JSON-serializable subset, dropping functions, class instances
  * and anything nested deeper than `depth`. Used wherever application data — route

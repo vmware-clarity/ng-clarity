@@ -898,6 +898,69 @@
   </tbody>
 </table>
 
+<h2 id="published-state" cds-text="title" class="clr-mt-48px">What components publish</h2>
+<p class="clr-mt-16px" cds-text="body">
+  State a Clarity component adds to its node, beyond what the accessibility tree says. Keys marked as values —
+  <code cds-text="code">value</code>, <code cds-text="code">selection</code>, <code cds-text="code">rows</code> — are
+  withheld from embedded frames and the global accessor unless the application shares form values.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Component</th>
+      <th class="left">State</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-datagrid</b></td>
+      <td class="left">
+        <code cds-text="code">totalRows</code> (paginated total), <code cds-text="code">filteredColumns</code>,
+        <code cds-text="code">hiddenColumns</code>; when rows can be selected,
+        <code cds-text="code">selectionMode</code> (<code cds-text="code">single</code> or
+        <code cds-text="code">multi</code>), <code cds-text="code">rows</code> (each row's cells, the names a selection
+        is written with) and <code cds-text="code">selection</code> (value)
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-combobox</b></td>
+      <td class="left">
+        <code cds-text="code">multiSelect</code>, <code cds-text="code">options</code>,
+        <code cds-text="code">redactedOptions</code> (how many options are withheld),
+        <code cds-text="code">optionsAvailable</code> (<code cds-text="code">false</code> until a search loads them),
+        <code cds-text="code">value</code> (value)
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-wizard</b></td>
+      <td class="left">
+        <code cds-text="code">stepCount</code>, <code cds-text="code">currentStepIndex</code>,
+        <code cds-text="code">steps</code> (each with <code cds-text="code">current</code>,
+        <code cds-text="code">complete</code>, <code cds-text="code">error</code> and
+        <code cds-text="code">navigable</code>), while the wizard is open
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-stepper-panel</b>, <b cds-text="medium">clr-timeline-step</b></td>
+      <td class="left"><code cds-text="code">status</code></td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-tree-node</b></td>
+      <td class="left">
+        <code cds-text="code">expandable</code>, and <code cds-text="code">loading</code> while children load
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-alert</b></td>
+      <td class="left"><code cds-text="code">severity</code>, while the alert is shown</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-file-input-container</b></td>
+      <td class="left"><code cds-text="code">fileCount</code>; the files themselves are always redacted</td>
+    </tr>
+  </tbody>
+</table>
+
 <h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>
 <table class="table">
   <thead>

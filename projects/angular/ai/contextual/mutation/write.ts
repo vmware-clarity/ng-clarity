@@ -24,7 +24,7 @@ import { writeObstacle } from './writability';
 import { accessibleName } from '../dom/accessible-name';
 import { readElementMutator } from '../dom/element-mutator';
 import { resolveRole } from '../dom/roles';
-import { jsonSafe } from '../json-safe';
+import { jsonSafe, STATE_DEPTH } from '../json-safe';
 import { ownEntry } from '../lookup';
 
 /** The longest a label in a result or a refusal may be. */
@@ -316,12 +316,15 @@ export function modelValueOf(target: WriteTarget, value: unknown): unknown {
  */
 export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
   const mutator = target.mutator;
-  if (mutator?.coerce && target.kind !== 'custom') {
+  if (mutator?.coerce) {
     const coerced = safely(() => mutator.coerce?.(proposed, target.options));
     if (coerced.refused !== undefined) {
       return { refused: coerced.refused };
     }
-    return { value: coerced.value, display: proposed === null ? plain(coerced.value) : proposed };
+    // A component written through its own `write` translates in agent terms — a
+    // datagrid's rows by their full labels — and that is what the policy is shown.
+    const display = target.kind === 'custom' || proposed === null ? plain(coerced.value) : proposed;
+    return { value: coerced.value, display };
   }
   switch (target.kind) {
     case 'custom':
@@ -478,7 +481,7 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
   }
 
   const outcome: WriteOutcome = { applied: true, value: readValue(target), previous, status: control.status };
-  const errors = jsonSafe(control.errors, 3);
+  const errors = jsonSafe(control.errors, STATE_DEPTH);
   if (errors && typeof errors === 'object') {
     outcome.errors = errors as Record<string, unknown>;
   }
@@ -826,7 +829,7 @@ function plain(value: unknown): unknown {
   if (value === undefined || value === null) {
     return null;
   }
-  const safe = jsonSafe(value, 3, true);
+  const safe = jsonSafe(value, STATE_DEPTH, true);
   return safe === undefined ? String(value) : safe;
 }
 

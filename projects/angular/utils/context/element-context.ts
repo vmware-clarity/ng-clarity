@@ -24,15 +24,20 @@ export const CLR_ELEMENT_CONTEXT_PROPERTY = 'clrElementContext';
 
 /**
  * The callback a component assigns to its host element. It receives the resolved
- * snapshot budgets and returns the context to merge, or `null`/`undefined` when it
- * currently has nothing to add.
+ * snapshot options — the engine always passes them; a callback called without them
+ * should fall back to the defaults rather than throw — and returns the context to merge,
+ * or `null`/`undefined` when it currently has nothing to add.
  *
  * A callback may report the component's current value; which consumers see it is decided
- * by the boundary serving them, not here. A value the engine withheld as sensitive is
- * removed again after merging, so publishing cannot reinstate one.
+ * by the boundary serving them, not here. That boundary recognises what the user entered
+ * or chose by its state key — `value`, `selected`, `checked`, `selection`, `selectedRows`
+ * and a selectable grid's `rows` — and withholds those from a consumer the application
+ * does not control. Report user input under one of those keys: under any other, it is
+ * shared with everyone. A value the engine withheld as sensitive is removed again after
+ * merging, so publishing cannot reinstate one.
  */
 export type ClrElementContextCallback = (
-  options: Required<ClrContextSnapshotOptions>
+  options?: Required<ClrContextSnapshotOptions>
 ) => Partial<ClrComponentContext> | null | undefined;
 
 /**

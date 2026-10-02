@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { APP_BASE_HREF } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter, Router } from '@angular/router';
+import { provideRouter, Router, withHashLocation } from '@angular/router';
 
-import { provideClrContextOptions } from './context-options';
+import { CLR_CONTEXT_OPTIONS, provideClrContextOptions } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
@@ -388,6 +389,20 @@ describe('ClrContextEngineService, configured once for the application', () => {
     expect(main.children?.map(node => node.type)).toEqual(['text', 'button']);
   });
 
+  it('adds the overrides’ exclusions to explicit options, as it does to a preset', () => {
+    const engine = engineWith(
+      provideClrContextOptions({ rootSelector: 'main, nav', excludeSelectors: ['nav'] }, { excludeRoles: ['button'] })
+    );
+    expect(TestBed.inject(CLR_CONTEXT_OPTIONS)).toEqual(
+      jasmine.objectContaining({ excludeSelectors: ['nav'], excludeRoles: ['button'] })
+    );
+    expect(types(engine.getSnapshot())).toEqual(['main']);
+
+    TestBed.resetTestingModule();
+    engineWith(provideClrContextOptions({ excludeSelectors: ['nav'] }, { excludeSelectors: ['aside'] }));
+    expect(TestBed.inject(CLR_CONTEXT_OPTIONS).excludeSelectors).toEqual(['nav', 'aside']);
+  });
+
   it('adds a call’s exclusions to the application’s rather than replacing them', () => {
     const engine = engineWith(
       provideClrContextOptions('interactive', { rootSelector: 'main, nav', excludeSelectors: ['nav'] })
@@ -538,6 +553,47 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
     TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
     const engine = TestBed.inject(ClrContextEngineService);
     expect('availableRoutes' in engine.getSnapshot({ includeDomComponents: false })).toBe(false);
+  });
+});
+
+describe('ClrContextEngineService, links for the global accessor under other routing setups', () => {
+  type Accessor = (options?: unknown) => ClrPageContext;
+  let page: HTMLElement;
+
+  function hrefs(engine: ClrContextEngineService): unknown[] {
+    engine.enableGlobalAccess('testClrContext');
+    const snapshot = (window as unknown as Record<string, Accessor>)['testClrContext']();
+    engine.disableGlobalAccess();
+    return snapshot.components.filter(node => node.type === 'link').map(node => node.state?.['href']);
+  }
+
+  beforeEach(() => {
+    document.querySelectorAll('body > [ng-version]').forEach(root => root.remove());
+    page = document.createElement('div');
+    document.body.appendChild(page);
+  });
+
+  afterEach(() => page.remove());
+
+  it('reads routes below the base href the router uses, without a <base> element', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([{ path: 'clusters/:id', component: RoutedComponent }]),
+        { provide: APP_BASE_HREF, useValue: '/app/' },
+      ],
+    });
+    page.innerHTML = '<a href="/app/clusters/7?token=x">In the app</a><a href="/clusters/7">Outside it</a>';
+
+    expect(hrefs(TestBed.inject(ClrContextEngineService))).toEqual(['/clusters/:id', undefined]);
+  });
+
+  it('reads routes from the fragment with hash routing', () => {
+    TestBed.configureTestingModule({
+      providers: [provideRouter([{ path: 'clusters/:id', component: RoutedComponent }], withHashLocation())],
+    });
+    page.innerHTML = '<a href="#/clusters/7?token=x">Cluster</a><a href="#/nowhere/at/all">Nowhere</a>';
+
+    expect(hrefs(TestBed.inject(ClrContextEngineService))).toEqual(['/clusters/:id', undefined]);
   });
 });
 

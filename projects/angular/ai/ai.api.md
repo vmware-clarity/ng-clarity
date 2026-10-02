@@ -150,7 +150,7 @@ export class ClrContextEngineService implements OnDestroy {
 
 // @public
 export class ClrContextFrameHost {
-    constructor(getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext, hostWindow: Window, options?: ClrContextFrameHostOptions, routePattern?: (path: string) => string | null);
+    constructor(getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext, hostWindow: Window, options?: ClrContextFrameHostOptions, routePattern?: (url: URL) => string | null);
     start(): void;
     stop(): void;
 }
@@ -288,7 +288,7 @@ export interface ClrContextTreeResult {
 export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange;
 
 // @public
-export type ClrElementContextCallback = (options: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
 
 // @public
 export type ClrElementMutation = {

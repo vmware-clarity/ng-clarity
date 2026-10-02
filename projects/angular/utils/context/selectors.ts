@@ -13,13 +13,19 @@
  * context both use this, so they never disagree about which of a snapshot's selectors apply.
  */
 export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string {
+  // Checked against an empty fragment of the same document: the syntax is what is being
+  // tested, and searching the page itself for each one would cost a document walk per
+  // selector every time a component or an option is judged.
+  const document = (root as Node).ownerDocument ?? (root as Document);
+  const probe: ParentNode =
+    typeof document?.createDocumentFragment === 'function' ? document.createDocumentFragment() : root;
   return selectors
     .filter(selector => {
       if (typeof selector !== 'string' || !selector.trim()) {
         return false;
       }
       try {
-        root.querySelector(selector);
+        probe.querySelector(selector);
         return true;
       } catch {
         return false;

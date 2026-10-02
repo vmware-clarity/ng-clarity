@@ -24,7 +24,7 @@ address (only its route pattern) unless the application shares them.
 
 The engine's write half, the **mutation engine** (`ClrMutationEngineService`), lets an agent act
 on what it read: fill Angular-bound form controls (reactive and template-driven) and navigate to
-routes the snapshot listed, addressing controls by the `ref` each snapshot node carries — random,
+any route of the application's router configuration (as `availableRoutes` lists them), addressing controls by the `ref` each snapshot node carries — random,
 and stable for an element while it is on the page. It never submits, clicks or invokes; never
 writes what a snapshot would not show; and does nothing at all until the application provides a `ClrMutationPolicy` classifying what each operation would do.
 Components whose value is not what an agent sees — the combobox, the date input, the datagrid's row

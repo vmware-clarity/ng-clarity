@@ -1199,6 +1199,19 @@ describe('collectContextTree, markup it did not expect', () => {
     expect(JSON.stringify(components).match(/"Save"/g)?.length).toBe(1);
   });
 
+  it('reports how far a native progress bar or meter shows, and no value while indeterminate', () => {
+    const nodes = collect(
+      '<progress aria-label="Upload" value="40" max="100"></progress><progress aria-label="Waiting"></progress>' +
+        '<meter aria-label="Disk" min="0" max="1" value="0.7"></meter>'
+    );
+
+    expect(nodes.components.map(node => node.state)).toEqual([
+      { max: 100, value: 40 },
+      undefined,
+      { min: 0, max: 1, value: 0.7 },
+    ]);
+  });
+
   it('stops at a depth the stack can hold, and says the snapshot was cut off', () => {
     let innermost: Element = container;
     for (let level = 0; level < 700; level++) {
