@@ -46,7 +46,7 @@ export default function () {
     const DATEPICKER_PROVIDERS: any[] = [
       ControlClassService,
       NgControlService,
-      NgControl,
+      { provide: NgControl, useValue: {} },
       LayoutService,
       ClrPopoverService,
       DatepickerFocusService,

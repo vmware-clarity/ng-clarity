@@ -102,7 +102,13 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
           declarations: [ClrNumberInputContainer, NoInputTest],
-          providers: [NgControl, NgControlService, LayoutService, MarkControlService, ControlIdService],
+          providers: [
+            { provide: NgControl, useValue: {} },
+            NgControlService,
+            LayoutService,
+            MarkControlService,
+            ControlIdService,
+          ],
         });
         fixture = TestBed.createComponent(NoInputTest);
         containerEl = fixture.debugElement.query(By.directive(ClrNumberInputContainer)).nativeElement;
