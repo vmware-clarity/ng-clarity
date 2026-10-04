@@ -1,7 +1,6 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "baseUrl": ".",
     "declaration": false,
     "esModuleInterop": true,
     "experimentalDecorators": true,
@@ -13,16 +12,17 @@
     "noFallthroughCasesInSwitch": true,
     "noImplicitReturns": true,
     "outDir": "./dist/out-tsc",
+    "skipLibCheck": true,
     "sourceMap": true,
     "strict": false,
     "target": "es2022",
     "useDefineForClassFields": false,
     "paths": {
-      "@clr/angular": ["projects/angular/index.ts"],
-      "@clr/angular/*": ["projects/angular/*"],
-      "@clr/addons": ["projects/addons/index.ts"],
-      "@clr/addons/*": ["projects/addons/*"],
-      "@clr/angular/testing": ["projects/angular/utils/testing"]
+      "@clr/angular": ["./projects/angular/index.ts"],
+      "@clr/angular/*": ["./projects/angular/*"],
+      "@clr/addons": ["./projects/addons/index.ts"],
+      "@clr/addons/*": ["./projects/addons/*"],
+      "@clr/angular/testing": ["./projects/angular/utils/testing"]
     }
   },
   "angularCompilerOptions": {
