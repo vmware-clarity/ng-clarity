@@ -6,9 +6,13 @@ concurrency:
   cancel-in-progress: true
 jobs:
   pr-build:
-    name: PR Build
+    name: PR Build (${{matrix.angular}})
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        angular: ['Angular v21', 'Angular v22']
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -21,25 +25,49 @@ jobs:
           cache: 'npm'
       - name: Install Dependencies
         run: npm ci --ignore-scripts
+      - name: Build Clarity Library (Angular v21)
+        run: |
+          npm run _build:angular
+          npm run _build:addons
+          npm run _build:ui
+      - name: Prepare Consuming Infrastructure for Angular v22
+        if: ${{matrix.angular == 'Angular v22'}}
+        run: |
+          node ./scripts/use-dist-paths.js
+          npx ng update @angular/core@22 @angular/cli@22 @angular/cdk@22 --allow-dirty --force
+          npm install --save-dev @angular-builders/custom-esbuild@22 --force
+          git checkout projects/angular projects/addons
       - name: Lint
         run: npm run lint
-      - name: Build
-        run: npm run build
+      - name: Build Consuming Applications
+        run: |
+          npm run _build:demo
+          npm run _build:website
+          npm run _build:storybook
       - name: Test
-        run: npm run test
+        run: |
+          if [ "${{matrix.angular}}" = "Angular v21" ]; then
+            npm run test
+          else
+            npm run _test:schematics
+          fi
+        shell: bash
       - name: Public Api Check
         run: npm run public-api:check
       - name: Upload Docs Artifact
+        if: ${{matrix.angular == 'Angular v21'}}
         uses: actions/upload-artifact@v4
         with:
           name: docs
           path: dist/docs/
       - name: Upload Website Artifact
+        if: ${{matrix.angular == 'Angular v21'}}
         uses: actions/upload-artifact@v4
         with:
           name: website
           path: dist/website/
       - name: Upload Coverage Artifact
+        if: ${{matrix.angular == 'Angular v21'}}
         uses: actions/upload-artifact@v4
         with:
           name: coverage
