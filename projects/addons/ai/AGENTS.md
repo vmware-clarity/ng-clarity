@@ -19,7 +19,9 @@ AppFX builds on `@clr/angular`; the Clarity rules apply here too.
 | ---------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------ |
 | Column-definition tables: `<appfx-datagrid>`, `ColumnDefinition`, quick/advanced filters, export, action bar, saved settings | `node_modules/@clr/addons/ai/skills/appfx-datagrid/SKILL.md` |
 
-**Choosing a datagrid:** prefer `appfx-datagrid` for standard list views. Use `clr-datagrid`
-(`@clr/angular`) when each cell needs custom markup or the column model can't express the layout.
+**Choosing a datagrid:** use `clr-datagrid` (`@clr/angular`) by default. Use `appfx-datagrid` for
+complex, configuration-driven grids: columns defined as data (`ColumnDefinition[]`), plus several of
+advanced filters, export, action bar, persisted settings, or column ordering. Don't switch an
+existing `clr-datagrid` to `appfx-datagrid` unless asked.
 
 <!-- appfx:end -->

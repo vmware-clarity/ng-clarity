@@ -161,7 +161,7 @@ Give the grid a fixed height. No pagination with virtual scroll. Virtual scroll 
 - Use `@for (...; track ...)` / `@if` control flow, not `*ngFor` / `*ngIf`.
 - Always provide `trackBy` (`*clrDgItems`), `track` (`@for`), or `clrVirtualRowsTrackBy`.
 - Icon-only buttons in action bars and overflows need `aria-label`; localize `clrDgActionOverflowButtonLabel`, `clrDgSingleSelectionAriaLabel`, `clrDetailExpandableAriaLabel` where provided.
-- Prefer `appfx-datagrid` (`@clr/addons/datagrid`) when the app wants column definitions, advanced filters, export, or persisted settings out of the box.
+- `clr-datagrid` is the default. Use `appfx-datagrid` (`@clr/addons/datagrid`) only for complex, configuration-driven grids: columns defined as data, plus several of advanced filters, export, action bar, persisted settings, or column ordering.
 
 ## References
 

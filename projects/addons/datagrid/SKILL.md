@@ -9,7 +9,9 @@ metadata:
 
 ## When to use it vs `clr-datagrid`
 
-Use `appfx-datagrid` for standard list views: columns are data (`ColumnDefinition[]`), and filtering UI, export, column toggle, row actions, persistence, a11y, and l10n come built-in.
+Use `appfx-datagrid` for complex, configuration-driven grids: columns are data (`ColumnDefinition[]`), and the grid needs several of advanced filters, export, column toggle, action bar, row actions, persisted settings, or column ordering. These come built-in, along with a11y and l10n.
+
+For a simple list or table, `clr-datagrid` is the default. Don't switch an existing `clr-datagrid` to `appfx-datagrid` unless asked.
 
 Use plain `clr-datagrid` (see the clr-datagrid skill) when every cell needs custom markup or you need structures the column model can't express. The AppFX column-ordering, toggle, export, and cell/filter container pieces are internal — they cannot be used on a plain `clr-datagrid`.
 
