@@ -30,30 +30,21 @@ node_modules/@clr/addons/ai/
 
 ## Set up your project
 
-When you add Clarity, choose an AI option at the prompt:
+1. Add the `AGENTS.md` sections for the packages you use to the `AGENTS.md` file at the root of your
+   project. Copy them from `node_modules/@clr/*/ai/AGENTS.md`, or download them below.
+2. If you use Claude Code, also add a `CLAUDE.md` at the root that contains `@AGENTS.md`, and copy the
+   skill folders into `.claude/skills/`:
 
 ```bash
-ng add @clr/angular
+mkdir -p .claude/skills
+cp -r node_modules/@clr/angular/ai/skills/* .claude/skills/
+cp -r node_modules/@clr/addons/ai/skills/* .claude/skills/
 ```
 
-To set up or refresh the files later, for example after you update Clarity:
-
-```bash
-ng generate @clr/angular:ai-skills            # AGENTS.md only
-ng generate @clr/angular:ai-skills --claude   # also Claude Code skills
-```
-
-The schematic:
-
-- adds a section for `@clr/angular`, and for `@clr/addons` if it is installed, to the `AGENTS.md` at the
-  root of your project. It only changes its own sections, so your own content stays as it is.
-- with `--claude`, copies the skills to `.claude/skills/` and adds `@AGENTS.md` to `CLAUDE.md`.
+3. Repeat these steps after you update Clarity, so the files match the new version.
 
 Agents without skill support still find the guides: the `AGENTS.md` index points them at the files in
 `node_modules`.
-
-To set up by hand instead, add the `AGENTS.md` files below to your `AGENTS.md`, and for Claude
-Code copy `node_modules/@clr/*/ai/skills/*` into `.claude/skills/`.
 
 ## AGENTS.md
 

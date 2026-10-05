@@ -9,16 +9,6 @@
     "migrate-v18": {
       "description": "Applies automated @clr/angular v17→v18 source migrations (templates, imports, CSS). Run with: ng generate @clr/angular:migrate-v18",
       "factory": "./ng-update/index#migrate"
-    },
-    "ng-add": {
-      "description": "Adds @clr/angular to a project and optionally sets up AI coding agent files",
-      "factory": "./ng-add/index#ngAdd",
-      "schema": "./ng-add/schema.json"
-    },
-    "ai-skills": {
-      "description": "Adds Clarity AI agent files (AGENTS.md section, optional Claude Code skills). Run with: ng generate @clr/angular:ai-skills",
-      "factory": "./ai-skills/index#aiSkills",
-      "schema": "./ai-skills/schema.json"
     }
   }
 }
