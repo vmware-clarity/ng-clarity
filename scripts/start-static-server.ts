@@ -25,7 +25,12 @@ const app = express();
 app.use(express.static(rootPath));
 
 if (spaFallback) {
-  app.get('/{*splat}', (_request, response) => response.sendFile(path.join(rootPath, 'index.html')));
+  // Serve index.html for any path the static middleware did not find.
+  app.use((request, _response, next) => {
+    request.url = '/index.html';
+    next();
+  });
+  app.use(express.static(rootPath));
 }
 
 app.listen(Number(port));
