@@ -25,18 +25,30 @@ jobs:
           cache: 'npm'
       - name: Install Dependencies
         run: npm ci --ignore-scripts
+      # The libraries are always built with the Angular version the repository is developed with, as they are published.
+      - name: Build Libraries
+        run: |
+          npm run _build:angular
+          npm run _build:addons
+          npm run _build:ui
+      # The demo and website then build against the built libraries in dist/, like applications using the published
+      # packages. Storybook and the unit tests keep using the library sources, see scripts/use-dist-paths.js.
       - name: Update to Angular v22
         if: ${{matrix.angular == 'Angular v22'}}
         run: |
           npx ng update @angular/core@22 @angular/cli@22 @angular/cdk@22 --allow-dirty --force
           npm install @angular-builders/custom-esbuild@22 --ignore-scripts --force
+          node ./scripts/use-dist-paths.js
       # The update migrations rewrite the sources, so lint and the public API report only apply to the Angular version
       # the repository is developed with.
       - name: Lint
         if: ${{matrix.angular == 'Angular v21'}}
         run: npm run lint
-      - name: Build
-        run: npm run build
+      - name: Build Applications
+        run: |
+          npm run _build:storybook
+          npm run _build:demo
+          npm run _build:website
       - name: Test
         run: npm run test
       - name: Public Api Check
