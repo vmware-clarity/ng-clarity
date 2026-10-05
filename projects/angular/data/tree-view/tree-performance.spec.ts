@@ -119,9 +119,8 @@ export default function (): void {
       const collapsed = (context.clarityElement as HTMLElement).querySelectorAll<HTMLElement>(
         '.clr-tree-node-content-container[aria-expanded="false"]'
       );
-      // The content container is followed by the children wrapper, which holds the children container.
       return Array.from(collapsed).filter(
-        content => getComputedStyle(content.nextElementSibling.firstElementChild).contentVisibility !== 'hidden'
+        content => getComputedStyle(content.nextElementSibling).contentVisibility !== 'hidden'
       ).length;
     }
 

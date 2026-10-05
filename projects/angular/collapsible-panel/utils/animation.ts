@@ -17,7 +17,7 @@ import {
 
 /**
  * @deprecated Clarity panels animate with native CSS; see the `CollapsiblePanel` documentation for the expected
- * template and the `clr-collapsible-panel-expanding` / `clr-collapsible-panel-collapsing` classes.
+ * template and the `clr-collapsible-panel-collapsing` class.
  */
 export const skipInitialRenderTrigger: ClrAnimationTriggerMetadata = animationTrigger('skipInitialRender', [
   animationTransition(':enter', []),

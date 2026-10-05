@@ -55,9 +55,11 @@
       spin 1s linear infinite;
   }
 
-  // Check mark bouncing in once the operation succeeded
+  // Check mark bouncing in once the operation succeeded: it stays hidden for the first fifth, then grows past its size
+  // and settles.
   @keyframes clr-loading-btn-check {
-    0% {
+    0%,
+    20% {
       transform: scale(0, 0);
     }
 
@@ -75,7 +77,7 @@
   }
 
   .spinner.spinner-check.clr-loading-btn-check {
-    animation: clr-loading-btn-check calc(#{tokens.$cds-global-animation-duration-quick} * 3);
+    animation: clr-loading-btn-check calc(#{tokens.$cds-global-animation-duration-quick} * 3) linear;
 
     &.clr-loading-btn-leave {
       animation: $loading-btn-leave;

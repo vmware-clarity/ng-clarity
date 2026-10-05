@@ -18,15 +18,19 @@ import {
   SimpleChanges,
   ViewChild,
 } from '@angular/core';
-import { ClrAnimationsService, ClrInitialRenderState, IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
+import {
+  ClrAnimationsService,
+  ClrInitialRenderState,
+  HeightAnimation,
+  IfExpandService,
+  uniqueIdFactory,
+} from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
 import { CollapsiblePanelModel } from './models/collapsible-panel.model';
 import { CollapsiblePanelService } from './providers/collapsible-panel.service';
 
-/** Applied to the panel content while it expands, see `_mixins.collapsible-panel.scss`. */
-export const COLLAPSIBLE_PANEL_EXPANDING_CLASS = 'clr-collapsible-panel-expanding';
 /** Applied to the panel content while it collapses, see `_mixins.collapsible-panel.scss`. */
 export const COLLAPSIBLE_PANEL_COLLAPSING_CLASS = 'clr-collapsible-panel-collapsing';
 
@@ -34,15 +38,16 @@ export const COLLAPSIBLE_PANEL_COLLAPSING_CLASS = 'clr-collapsible-panel-collaps
  * Base class of the accordion and stepper panels.
  *
  * The template of a panel is expected to render its content while `panel.open || collapsing` is true, with the
- * `panelContent` template reference, the `collapsing` class and the enter animation bound to the content element:
+ * `panelContent` template reference and the `collapsing` class bound to the content element:
  *
  * ```html
  * @if (panel.open || collapsing) {
- *   <div #panelContent [animate.enter]="contentEnterClass" [class.clr-collapsible-panel-collapsing]="collapsing">
+ *   <div #panelContent [class.clr-collapsible-panel-collapsing]="collapsing">
  * ```
  *
- * Binding the `collapsing` class is what animates the collapse; a panel that only animates its expansion leaves it out
- * and sets `animatesCollapse` to `false`.
+ * The height of the content is animated when it expands and collapses. The `collapsing` class keeps the content
+ * displayed until it is collapsed; a panel that only animates its expansion leaves it out and sets `animatesCollapse`
+ * to `false`.
  */
 @Directive()
 export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
@@ -61,21 +66,24 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
   /** Whether the template animates the collapse of the content by binding the `collapsing` class. */
   protected readonly animatesCollapse: boolean = true;
 
-  @ViewChild('panelContent') private readonly panelContent: ElementRef<HTMLElement>;
-
   private _id = uniqueIdFactory();
   // ECMAScript private fields, so that they cannot clash with the members of existing subclasses.
   #initialRender: ClrInitialRenderState = { done: false };
   #destroyed = false;
   readonly #injector = inject(Injector);
   readonly #animations = inject(ClrAnimationsService);
+  readonly #heightAnimation = new HeightAnimation(this.#injector);
+  #content: HTMLElement | undefined;
 
   constructor(
     protected panelService: CollapsiblePanelService,
     protected ifExpandService: IfExpandService,
     protected cdr: ChangeDetectorRef
   ) {
-    inject(DestroyRef).onDestroy(() => (this.#destroyed = true));
+    inject(DestroyRef).onDestroy(() => {
+      this.#destroyed = true;
+      this.#heightAnimation.cancel();
+    });
   }
 
   get id(): string {
@@ -87,12 +95,14 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
 
   abstract get disabled(): boolean;
 
-  /**
-   * Class animating the expansion of the panel content, meant for its `animate.enter` binding.
-   * Content that is open when the panel is first rendered is not animated.
-   */
-  get contentEnterClass(): string {
-    return this.#initialRender.done ? COLLAPSIBLE_PANEL_EXPANDING_CLASS : '';
+  // Content that is open when the panel is first rendered is not animated.
+  @ViewChild('panelContent')
+  private set panelContent(content: ElementRef<HTMLElement> | undefined) {
+    const element = content?.nativeElement;
+    if (element && element !== this.#content && this.#initialRender.done) {
+      this.#heightAnimation.expand(() => element, 0);
+    }
+    this.#content = element;
   }
 
   ngOnInit() {
@@ -143,6 +153,10 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     }
 
     if (panel.open) {
+      if (this.collapsing) {
+        // Opened again while it collapses: expand back from where it is.
+        this.#heightAnimation.expand(() => this.#content);
+      }
       this.collapsing = false;
       this.ifExpandService.expanded = true;
     }
@@ -164,9 +178,10 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     }
 
     this.collapsing = true;
+    this.#heightAnimation.collapse(this.#content);
 
     this.#animations
-      .whenCompleteAfterRender(() => this.panelContent?.nativeElement, this.#injector)
+      .whenCompleteAfterRender(() => this.#content, this.#injector)
       .then(() => {
         if (!this.collapsing || this.#destroyed) {
           return; // the panel was opened again or destroyed in the meantime

@@ -37,7 +37,7 @@
     [attr.aria-labelledby]="getHeaderId(panel.templateId)"
   >
     @if (panel.open || collapsing) {
-    <div #panelContent [animate.enter]="contentEnterClass" class="clr-accordion-content">
+    <div #panelContent class="clr-accordion-content">
       <div class="clr-accordion-inner-content">
         <ng-content></ng-content>
       </div>

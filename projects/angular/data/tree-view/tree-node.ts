@@ -27,6 +27,7 @@ import {
 } from '@angular/core';
 import {
   ClrCommonStringsService,
+  HeightAnimation,
   IfExpandService,
   isKeyEitherLetterOrNumber,
   Keys,
@@ -82,6 +83,12 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   private subscriptions: Subscription[] = [];
 
   @ViewChild('contentContainer', { read: ElementRef, static: true }) private contentContainer: ElementRef<HTMLElement>;
+  @ViewChild('children', { static: true }) private childrenContainer: ElementRef<HTMLElement>;
+
+  private readonly nodeInjector: Injector;
+  // Created on the first animated toggle only, as trees can have thousands of nodes.
+  private heightAnimation: HeightAnimation | undefined;
+  private viewInitialized = false;
 
   // @ContentChild would have been more succinct
   // but it doesn't offer a way to query only an immediate child
@@ -99,6 +106,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     private elementRef: ElementRef<HTMLElement>,
     injector: Injector
   ) {
+    this.nodeInjector = injector;
     if (featuresService.recursion) {
       // I'm completely stuck, we have to hack into private properties until either
       // https://github.com/angular/angular/issues/14935 or https://github.com/angular/angular/issues/15998
@@ -200,6 +208,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     this.subscriptions.push(
       this.expandService.expandChange.subscribe(value => {
         this.skipAnimation = this.bulkChange;
+        this.animateChildren(value);
         this.expandedChange.emit(value);
         this._model.expanded = value;
         if (!this.bulkChange && !value) {
@@ -257,6 +266,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngAfterViewInit() {
+    this.viewInitialized = true;
     if (!this._model.textContent) {
       this._model.textContent = trimAndLowerCase(this.elementRef.nativeElement.textContent);
     }
@@ -265,6 +275,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   ngOnDestroy() {
     this._model.destroy();
     this.subscriptions.forEach(sub => sub.unsubscribe());
+    this.heightAnimation?.cancel();
   }
 
   isExpandable() {
@@ -400,6 +411,20 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     );
     if (stranded) {
       this._takeTabStop();
+    }
+  }
+
+  private animateChildren(expanded: boolean) {
+    if (!this.viewInitialized || this.bulkChange) {
+      this.heightAnimation?.cancel();
+      return;
+    }
+    // The tree used to animate its children at a constant speed.
+    this.heightAnimation ??= new HeightAnimation(this.nodeInjector, 'linear');
+    if (expanded) {
+      this.heightAnimation.expand(() => this.childrenContainer.nativeElement);
+    } else {
+      this.heightAnimation.collapse(this.childrenContainer.nativeElement);
     }
   }
 

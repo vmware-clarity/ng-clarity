@@ -101,29 +101,23 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
       }
     }
 
-    // The children of a group expand and collapse by transitioning the single row of this grid between 0 and 1
-    // fraction of the content height.
-    .nav-group-children-wrapper {
-      display: grid;
-      grid-template-rows: 0fr;
+    // The children of a group expand and collapse by animating their height (see `ClrVerticalNavGroup`). They stay
+    // visible until they are fully collapsed.
+    .nav-group-children {
+      overflow-y: hidden;
+      height: 0;
       visibility: hidden;
-      transition:
-        grid-template-rows tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out,
-        visibility tokens.$cds-global-animation-duration-quick;
+      transition: visibility 0s tokens.$cds-global-animation-duration-quick;
 
       &.is-expanded {
-        grid-template-rows: 1fr;
+        height: auto;
         visibility: visible;
+        transition-delay: 0s;
       }
 
       @media (prefers-reduced-motion: reduce) {
-        transition-duration: 0s;
+        transition-delay: 0s;
       }
-    }
-
-    .nav-group-children {
-      min-height: 0;
-      overflow-y: hidden;
     }
 
     .nav-trigger,

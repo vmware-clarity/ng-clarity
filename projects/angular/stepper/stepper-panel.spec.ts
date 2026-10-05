@@ -191,7 +191,8 @@ describe('ClrStep collapse animation', () => {
 
   it('keeps the content rendered while it collapses', async () => {
     emitStep(true);
-    expect(content().classList).toContain('clr-collapsible-panel-expanding');
+    await delay();
+    expect(content().getAnimations().length).toBe(1);
     finishAnimations(fixture.nativeElement);
     await delay();
 

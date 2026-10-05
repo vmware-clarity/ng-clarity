@@ -923,6 +923,14 @@ export class FocusService {
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
 
 // @public
+export class HeightAnimation {
+    constructor(injector: Injector, easing?: string);
+    cancel(): number;
+    collapse(element: HTMLElement | null | undefined): void;
+    expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
+}
+
+// @public
 export class HostWrapper<W> implements Injector {
     constructor(containerType: Type<W>, vcr: ViewContainerRef, index?: number);
     // (undocumented)

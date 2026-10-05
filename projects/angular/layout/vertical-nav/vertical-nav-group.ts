@@ -19,7 +19,13 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { ClrAnimationsService, ClrCommonStringsService, IfExpandService } from '@clr/angular/utils';
+import {
+  ClrAnimationsService,
+  ClrCommonStringsService,
+  ClrInitialRenderState,
+  HeightAnimation,
+  IfExpandService,
+} from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
@@ -48,6 +54,9 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   private readonly injector = inject(Injector);
   private readonly animations = inject(ClrAnimationsService);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly heightAnimation = new HeightAnimation(this.injector);
+  // The state the group is first rendered in is not animated.
+  private readonly initialRender: ClrInitialRenderState = this.animations.trackInitialRender(this.injector);
 
   constructor(
     private _itemExpand: IfExpandService,
@@ -129,6 +138,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   set expandAnimationState(value: string) {
     if (value !== this._expandAnimationState) {
       this._expandAnimationState = value;
+      this.animateChildren();
     }
   }
 
@@ -148,6 +158,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroyed = true;
+    this.heightAnimation.cancel();
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._navGroupRegistrationService.unregisterNavGroup();
   }
@@ -182,6 +193,17 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
       }
       // then expand the nav group
       this.expandGroup();
+    }
+  }
+
+  private animateChildren() {
+    if (!this.initialRender.done) {
+      return;
+    }
+    if (this.childrenExpanded) {
+      this.heightAnimation.expand(() => this.children?.nativeElement);
+    } else {
+      this.heightAnimation.collapse(this.children?.nativeElement);
     }
   }
 

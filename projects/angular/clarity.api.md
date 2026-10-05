@@ -7122,9 +7122,6 @@ export const collapseCardIconName = "collapse-card";
 export const COLLAPSIBLE_PANEL_COLLAPSING_CLASS = "clr-collapsible-panel-collapsing";
 
 // @public
-export const COLLAPSIBLE_PANEL_EXPANDING_CLASS = "clr-collapsible-panel-expanding";
-
-// @public
 export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     protected readonly animatesCollapse: boolean;
@@ -7133,7 +7130,6 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
     collapsing: boolean;
-    get contentEnterClass(): string;
     // (undocumented)
     abstract get disabled(): boolean;
     // (undocumented)
@@ -8373,6 +8369,14 @@ export const heatMapIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const heatMapIconName = "heat-map";
+
+// @public
+export class HeightAnimation {
+    constructor(injector: Injector, easing?: string);
+    cancel(): number;
+    collapse(element: HTMLElement | null | undefined): void;
+    expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
+}
 
 // @public (undocumented)
 export const helixIcon: IconShapeTuple;

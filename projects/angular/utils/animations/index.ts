@@ -12,4 +12,5 @@ export * from './collapse/index';
 export * from './expandable-animation/index';
 export * from './fade/index';
 export * from './fade-slide/index';
+export { HeightAnimation } from './height-animation';
 export * from './slide/index';

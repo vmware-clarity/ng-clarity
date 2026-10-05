@@ -434,17 +434,17 @@ export default function (): void {
 
     it('marks the children of bulk changes only as instant, so that they do not transition', function (this: ExpandAllContext) {
       const node = this.testComponent.california;
-      const wrapper = () =>
+      const children = () =>
         this.fixture.debugElement
           .queryAll(By.directive(ClrTreeNode))
           .find(de => de.componentInstance === node)
-          .query(By.css('.clr-treenode-children-wrapper')).nativeElement as HTMLElement;
+          .query(By.css('.clr-treenode-children')).nativeElement as HTMLElement;
       this.testComponent.tree.expandAll();
       this.detectChanges();
-      expect(wrapper().classList).toContain('is-instant');
+      expect(children().classList).toContain('is-instant');
       node.expandService.toggle();
       this.detectChanges();
-      expect(wrapper().classList).not.toContain('is-instant');
+      expect(children().classList).not.toContain('is-instant');
     });
 
     it('skips the animation for nodes added while the tree is expanded', function (this: ExpandAllContext) {

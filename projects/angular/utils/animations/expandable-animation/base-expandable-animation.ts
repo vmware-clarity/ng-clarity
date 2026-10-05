@@ -9,6 +9,7 @@ import { afterNextRender, Directive, ElementRef, inject, Injector, OnDestroy, Re
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { ClrAnimationsService } from '../animations.service';
+import { readAnimationTiming } from '../height-animation';
 
 /** Marks the host while its height is animated. */
 const ACTIVE_CLASS = 'clr-expandable-animation-active';
@@ -39,7 +40,7 @@ export class BaseExpandableAnimation implements OnDestroy {
   }
 
   updateStartHeight() {
-    this.startHeight = this.domAdapter.computedHeight(this.element.nativeElement) || 0;
+    this.startHeight = this.#height();
   }
 
   /**
@@ -124,11 +125,21 @@ export class BaseExpandableAnimation implements OnDestroy {
     return ++this.#animationId;
   }
 
+  /**
+   * The height of the host, with its fractional part: `DomAdapter.computedHeight` rounds it down, and animating to a
+   * rounded height makes the host jump by the remainder when the animation ends.
+   */
+  #height(): number {
+    const element = this.element.nativeElement;
+    const height = typeof getComputedStyle === 'function' ? parseFloat(getComputedStyle(element).height) : NaN;
+    return Number.isFinite(height) ? height : this.domAdapter.computedHeight(element) || 0;
+  }
+
   #measure(): ExpandAnimationStep {
     const element = this.element.nativeElement;
     return {
-      endHeight: this.domAdapter.computedHeight(element) || 0,
-      timing: this.#animations.disabled || typeof element.animate !== 'function' ? null : readTiming(element),
+      endHeight: this.#height(),
+      timing: this.#animations.disabled || typeof element.animate !== 'function' ? null : readAnimationTiming(element),
     };
   }
 
@@ -170,28 +181,4 @@ export class BaseExpandableAnimation implements OnDestroy {
       }
     );
   }
-}
-
-/**
- * Timing of the height animation, from the Clarity animation tokens. `null` when there is nothing to animate: the
- * duration is 0 (low motion theme) or the user prefers reduced motion.
- */
-function readTiming(element: HTMLElement): KeyframeAnimationOptions | null {
-  if (typeof matchMedia === 'function' && matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    return null;
-  }
-  const style = getComputedStyle(element);
-  const duration = parseDuration(style.getPropertyValue('--cds-global-animation-duration-quick'));
-  const easing = style.getPropertyValue('--cds-global-animation-easing-in-out').trim() || 'ease-in-out';
-  return duration > 0 ? { duration, easing } : null;
-}
-
-/** Parses a CSS time (`0.2s`, `200ms`) to milliseconds. */
-function parseDuration(value: string): number {
-  const time = value.trim();
-  const amount = parseFloat(time);
-  if (!Number.isFinite(amount)) {
-    return 0;
-  }
-  return time.endsWith('ms') ? amount : amount * 1000;
 }
