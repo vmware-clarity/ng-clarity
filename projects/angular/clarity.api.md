@@ -10389,6 +10389,38 @@ export const zoomOutIcon: IconShapeTuple;
 // @public (undocumented)
 export const zoomOutIconName = "zoom-out";
 
+// @public (undocumented)
+export class ɵGlobalStateService {
+    // (undocumented)
+    static getDetails(): {
+        state: {
+            iconRegistry: string[];
+        };
+    };
+    // (undocumented)
+    static getValue(key: keyof CDSState): Readonly<Record<string, unknown>>;
+    // (undocumented)
+    static initializeCDSGlobal(): void;
+    // (undocumented)
+    static intializeCDSStateProxy(): void;
+    // (undocumented)
+    static log(): void;
+    // (undocumented)
+    static logDetails(): void;
+    // (undocumented)
+    static resetCDSGlobal(): void;
+    // (undocumented)
+    static setupCDSGlobal(): void;
+    // (undocumented)
+    static setValue(key: keyof CDSState, val: CDSState[keyof CDSState]): void;
+    // Warning: (ae-forgotten-export) The symbol "CDSState" needs to be exported by the entry point clr-angular.d.ts
+    //
+    // (undocumented)
+    static get state(): CDSState;
+    // (undocumented)
+    static stateUpdates: rxjs.Observable<any>;
+}
+
 // (No @packageDocumentation comment for this package)
 
 ```

@@ -40,6 +40,7 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
+import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { SimpleChange } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
