@@ -36,7 +36,6 @@ jobs:
           node ./scripts/use-dist-paths.js
           npx ng update @angular/core@22 @angular/cli@22 @angular/cdk@22 --allow-dirty --force
           npm install --save-dev @angular-builders/custom-esbuild@22 --force
-          git checkout projects/angular projects/addons
       - name: Lint
         if: ${{matrix.angular == 'Angular v21'}}
         run: npm run lint
