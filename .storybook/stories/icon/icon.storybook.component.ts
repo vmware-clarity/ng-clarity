@@ -19,8 +19,8 @@ import {
   loadTechnologyIconSet,
   loadTextEditIconSet,
   loadTravelIconSet,
+  ɵGlobalStateService,
 } from '@clr/angular';
-import { GlobalStateService } from '@clr/angular/icon/services/global.service';
 
 const ICON_COLLECTIONS: { name: string; load: () => void }[] = [
   { name: 'core', load: loadCoreIconSet },
@@ -81,7 +81,7 @@ export class IconCollectionStorybookComponent implements OnInit {
 
   ngOnInit() {
     // Resets icon registry to default
-    GlobalStateService.resetCDSGlobal();
+    ɵGlobalStateService.resetCDSGlobal();
     const collection = ICON_COLLECTIONS.find(c => c.name === this.collectionName);
     collection?.load();
     this.icons = Object.keys(ClarityIcons.registry)

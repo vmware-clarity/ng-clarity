@@ -13,6 +13,7 @@ import * as i6 from '@angular/common';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { PipeTransform } from '@angular/core';
+import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { Type } from '@angular/core';
 

@@ -12,6 +12,8 @@ export * from './icon.component';
 export * from './icon.service';
 export * from './interfaces/icon.interfaces';
 export { renderIcon } from './icon.renderer';
+// Internal: not part of the public API. Exported for the Storybook icon stories only.
+export { GlobalStateService as ɵGlobalStateService } from './services/global.service';
 
 // SHAPES
 export { unknownIcon, unknownIconName } from './shapes/unknown';
