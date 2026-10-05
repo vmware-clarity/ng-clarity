@@ -108,7 +108,6 @@
     "@textlint/markdown-to-ast": "15.8.0",
     "@types/culori": "^4.0.1",
     "@types/jasmine": "6.0.0",
-    "@types/node-static": "0.7.12",
     "@types/prismjs": "1.26.6",
     "@typescript-eslint/eslint-plugin": "8.70.1",
     "@typescript-eslint/parser": "8.70.1",
@@ -150,7 +149,6 @@
     "marked-gfm-heading-id": "4.1.4",
     "marked-highlight": "2.2.4",
     "ng-packagr": "21.2.7",
-    "node-static": "0.7.11",
     "nodemon": "3.1.14",
     "npm-run-all": "4.1.5",
     "parse-url": "10.0.3",
@@ -182,5 +180,8 @@
     "yaml": "2.9.1",
     "yargs": "18.2.0",
     "zone.js": "0.16.3"
+  },
+  "overrides": {
+    "piscina": "^5.3.2"
   }
 }
