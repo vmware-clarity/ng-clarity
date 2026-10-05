@@ -38,6 +38,7 @@ jobs:
           npm install --save-dev @angular-builders/custom-esbuild@22 --force
           git checkout projects/angular projects/addons
       - name: Lint
+        if: ${{matrix.angular == 'Angular v21'}}
         run: npm run lint
       - name: Build Consuming Applications
         run: |
