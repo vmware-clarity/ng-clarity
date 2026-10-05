@@ -7448,6 +7448,14 @@ export class DatalistIdService {
 export const DATEPICKER_ENABLE_BREAKPOINT = 768;
 
 // @public (undocumented)
+export interface DateRangeOption {
+    // (undocumented)
+    label: string;
+    // (undocumented)
+    value: Date[];
+}
+
+// @public (undocumented)
 export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
     constructor(parent: DeclarativeTreeNodeModel<T> | null);
     // (undocumented)
