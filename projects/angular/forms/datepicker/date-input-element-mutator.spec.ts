@@ -219,11 +219,14 @@ describe('ClrDateInput element mutator', () => {
             types.push(node.type);
             visit(node.children ?? []);
           });
-        visit(TestBed.inject(ClrContextEngineService).getSnapshot().components);
+        const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot();
+        visit(snapshot.components);
 
         expect(document.querySelector('clr-datepicker-view-manager')).not.toBeNull();
         expect(types).not.toContain('dialog');
         expect(types).not.toContain('grid');
+        // The application is told the date as the field's value, not again as the month shown.
+        expect(JSON.stringify(snapshot)).not.toContain('March');
         expect(JSON.stringify(accessor())).not.toMatch(/1981|March/);
       });
     });

@@ -8,7 +8,7 @@
 import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders } from '@angular/core';
 
 import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
-import { clrContextPreset, ClrContextPreset, withCallOptions } from '../snapshot-options';
+import { clrContextPreset, ClrContextPreset, warnIfExclusionsAreNotLists, withCallOptions } from '../snapshot-options';
 
 /**
  * Application-wide snapshot options. Whatever is provided here is what every snapshot
@@ -37,6 +37,10 @@ export function provideClrContextOptions(
   options: ClrContextPreset | ClrContextSnapshotOptions,
   overrides: ClrContextSnapshotOptions = {}
 ): EnvironmentProviders {
+  if (typeof options !== 'string') {
+    // Overrides are checked as they are applied; the options they go over are not.
+    warnIfExclusionsAreNotLists(options);
+  }
   const resolved =
     typeof options === 'string' ? clrContextPreset(options, overrides) : withCallOptions(options, overrides);
   return makeEnvironmentProviders([{ provide: CLR_CONTEXT_OPTIONS, useValue: resolved }]);

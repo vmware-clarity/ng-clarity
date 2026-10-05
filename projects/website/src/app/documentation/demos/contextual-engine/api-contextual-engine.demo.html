@@ -902,9 +902,9 @@
 <p class="clr-mt-16px" cds-text="body">
   State a Clarity component adds to its node, beyond what the accessibility tree says. Keys marked as values —
   <code cds-text="code">value</code>, <code cds-text="code">selection</code>, <code cds-text="code">rows</code>,
-  <code cds-text="code">filteredColumns</code>, <code cds-text="code">hiddenColumns</code> and
-  <code cds-text="code">fileCount</code> — are withheld from embedded frames and the global accessor unless the
-  application shares form values.
+  <code cds-text="code">filteredColumns</code>, <code cds-text="code">hiddenColumns</code>,
+  <code cds-text="code">fileCount</code> and <code cds-text="code">matchingOptions</code> — are withheld from embedded
+  frames and the global accessor unless the application shares form values.
 </p>
 <table class="table">
   <thead>
@@ -929,8 +929,11 @@
       <td class="left">
         <code cds-text="code">multiSelect</code>, <code cds-text="code">options</code>,
         <code cds-text="code">redactedOptions</code> (how many options are withheld),
-        <code cds-text="code">optionsAvailable</code> (<code cds-text="code">false</code> until a search loads them),
-        <code cds-text="code">value</code> (value)
+        <code cds-text="code">matchingOptions</code> (value; in place of <code cds-text="code">options</code> while the
+        list is narrowed to what the user typed), <code cds-text="code">optionsAvailable</code> (<code cds-text="code"
+          >false</code
+        >
+        until a search loads them), <code cds-text="code">value</code> (value)
       </td>
     </tr>
     <tr>

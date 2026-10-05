@@ -80,8 +80,30 @@ function listOrNothing(value: unknown): readonly unknown[] {
  */
 function warnIfNotAList(key: string, value: unknown): void {
   if (value !== undefined && !Array.isArray(value) && isDevMode()) {
-    console.warn(`Clarity context options: ${key} must be a list, so ${JSON.stringify(value)} was ignored.`);
+    console.warn(`Clarity context options: ${key} must be a list, so ${describeValue(value)} was ignored.`);
   }
+}
+
+/**
+ * {@link warnIfNotAList} for every exclusion list in a set of options the application
+ * configured once — `provideClrContextOptions`, a frame host's ceiling — where nothing
+ * else would say that one was ignored.
+ */
+export function warnIfExclusionsAreNotLists(options: ClrContextSnapshotOptions | null | undefined): void {
+  for (const key of EXCLUSION_KEYS) {
+    warnIfNotAList(key, options?.[key]);
+  }
+}
+
+/** A string as written, anything else by its kind: a warning must not throw on a circular object or a BigInt. */
+function describeValue(value: unknown): string {
+  if (typeof value === 'string') {
+    return JSON.stringify(value);
+  }
+  if (value === null) {
+    return 'null';
+  }
+  return typeof value === 'object' ? 'an object' : `a ${typeof value}`;
 }
 
 /** The roles a set of categories leaves out, for the categories that are roles. */

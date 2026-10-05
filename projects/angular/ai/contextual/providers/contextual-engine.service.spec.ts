@@ -140,6 +140,19 @@ describe('ClrContextEngineService', () => {
         expect(json).toContain('"optionCount":2');
       });
 
+      it('withholds which toggle buttons the user pressed, a choice like a ticked box', () => {
+        form.innerHTML +=
+          '<button type="button" aria-pressed="true">Pay anonymously</button>' +
+          '<div role="group" aria-label="Billing"><button type="button" aria-pressed="false">Monthly</button>' +
+          '<button type="button" aria-pressed="true">Annual</button></div>';
+        engine.enableGlobalAccess('testClrContext');
+
+        const json = JSON.stringify(snapshotVia());
+        expect(json).toContain('Pay anonymously');
+        expect(json).not.toContain('"pressed"');
+        expect(JSON.stringify(engine.getSnapshot())).toContain('"pressed":true');
+      });
+
       it('shares what the user typed only when the application says so', () => {
         engine.enableGlobalAccess('testClrContext', { shareFormValues: true });
 
@@ -474,6 +487,35 @@ describe('ClrContextEngineService, configured once for the application', () => {
     } finally {
       engine.disableGlobalAccess();
     }
+  });
+
+  it('does not let an untrusted caller set off a warning about the application’s options', () => {
+    const engine = engineWith(provideClrContextOptions({ excludeRoles: ['navigation'], rootSelector: 'main, nav' }));
+    engine.enableGlobalAccess('testClrContextWrongKinds');
+    const warn = spyOn(console, 'warn');
+    try {
+      const accessor = (window as unknown as Record<string, (options?: unknown) => ClrPageContext>)[
+        'testClrContextWrongKinds'
+      ];
+
+      expect(types(accessor({ excludeRoles: 7, excludeCategories: true, excludeSelectors: 1 }))).toEqual(['main']);
+      expect(warn).not.toHaveBeenCalled();
+    } finally {
+      engine.disableGlobalAccess();
+    }
+  });
+
+  it('says when the global accessor’s own ceiling has an exclusion list that is not one', () => {
+    const engine = engineWith(provideClrContextOptions({}));
+    const warn = spyOn(console, 'warn');
+    engine.enableGlobalAccess('testClrContextBadCeiling', { excludeRoles: 'grid' } as unknown as Parameters<
+      typeof engine.enableGlobalAccess
+    >[1]);
+    engine.disableGlobalAccess();
+
+    expect(warn).toHaveBeenCalledOnceWith(
+      'Clarity context options: excludeRoles must be a list, so "grid" was ignored.'
+    );
   });
 });
 

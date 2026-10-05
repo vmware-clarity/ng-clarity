@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { provideClrContextOptions } from './providers/context-options';
 import {
   capSnapshotOptions,
   CLR_CONTEXT_CATEGORIES,
@@ -121,6 +122,21 @@ describe('snapshot options', () => {
         })
       ).toEqual({ collectionItems: 'summary' });
     });
+
+    it('takes a number only for a budget and a boolean only for a switch', () => {
+      expect(
+        sanitizeUntrustedSnapshotOptions({
+          excludeRoles: 7,
+          excludeCategories: true,
+          focus: 3,
+          collectionItems: false,
+          maxComponents: true,
+          includeText: 0,
+          maxDepth: 2,
+          includeFrames: false,
+        })
+      ).toEqual({ maxDepth: 2, includeFrames: false });
+    });
   });
 
   describe('withCallOptions', () => {
@@ -166,6 +182,42 @@ describe('snapshot options', () => {
       expect(resolved.excludeRoles).toContain('grid');
       expect(resolved.excludeCategories).toEqual(['text']);
     });
+
+    it('says a value it cannot print was ignored, rather than throwing while saying so', () => {
+      const circular: Record<string, unknown> = {};
+      circular['self'] = circular;
+      const call = { excludeSelectors: circular, excludeRoles: BigInt(1) } as unknown as Parameters<
+        typeof withCallOptions
+      >[1];
+      const warn = spyOn(console, 'warn');
+
+      expect(() => withCallOptions({}, call)).not.toThrow();
+      expect(warn.calls.allArgs().map(args => String(args[0]))).toEqual([
+        'Clarity context options: excludeSelectors must be a list, so an object was ignored.',
+        'Clarity context options: excludeRoles must be a list, so a bigint was ignored.',
+      ]);
+    });
+  });
+});
+
+describe('provideClrContextOptions', () => {
+  it('says that an exclusion list given as something else was ignored', () => {
+    const warn = spyOn(console, 'warn');
+    provideClrContextOptions({ excludeSelectors: '.secret', excludeRoles: 'grid' } as unknown as Parameters<
+      typeof provideClrContextOptions
+    >[0]);
+
+    expect(warn.calls.allArgs().map(args => String(args[0]))).toEqual([
+      'Clarity context options: excludeRoles must be a list, so "grid" was ignored.',
+      'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.',
+    ]);
+  });
+
+  it('says nothing about lists that are lists', () => {
+    const warn = spyOn(console, 'warn');
+    provideClrContextOptions({ excludeSelectors: ['.secret'] }, { excludeRoles: ['grid'] });
+
+    expect(warn).not.toHaveBeenCalled();
   });
 });
 

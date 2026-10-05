@@ -342,11 +342,19 @@ function numberAttribute(element: Element, attribute: string): number | undefine
 
 /**
  * The state keys that carry what the user entered or chose: what they typed, which
- * options they picked, whether they ticked a box, which rows they selected and how many.
+ * options they picked, whether they ticked a box or pressed a toggle button, which rows
+ * they selected and how many.
  * Withheld together wherever values are withheld — a choice is as much the user's input
  * as typed text is.
  */
-export const VALUE_STATE_KEYS: readonly string[] = ['value', 'selected', 'checked', 'selection', 'selectedRows'];
+export const VALUE_STATE_KEYS: readonly string[] = [
+  'value',
+  'selected',
+  'checked',
+  'pressed',
+  'selection',
+  'selectedRows',
+];
 
 /**
  * Roles whose value is the application's output, not the user's input — how far an

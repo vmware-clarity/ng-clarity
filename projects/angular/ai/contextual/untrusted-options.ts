@@ -34,6 +34,12 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapsh
 /** The longest an enumeration value — `focus`, `collectionItems`, a role or category name — may be. */
 const MAX_ENUM_LENGTH = 32;
 
+/** The options that take a number; any other option given a number drops it. */
+const BUDGET_KEYS: readonly string[] = ['maxTextLength', 'maxItemsPerCollection', 'maxComponents', 'maxDepth'];
+
+/** The options that take a boolean; any other option given a boolean drops it. */
+const SWITCH_KEYS: readonly string[] = ['includeDomComponents', 'includeText', 'includeFrames', 'includeRoutes'];
+
 /** The options that take one value from a fixed set; any other option given a string drops it. */
 const ENUM_KEYS: readonly string[] = ['focus', 'collectionItems'];
 
@@ -42,8 +48,9 @@ const UNTRUSTED_LIST_KEYS: readonly string[] = ['excludeCategories', 'excludeRol
 
 /**
  * Reduces whatever an untrusted caller passed to the budgets it is allowed to set,
- * discarding everything else. Anything that is not a finite number, a boolean, a short
- * string or a list of strings is dropped, so a caller cannot smuggle a getter or an
+ * discarding everything else. Each option keeps only the kind of value it takes — a
+ * finite number for a budget, a boolean for a switch, a short string for an enumeration,
+ * a list of strings for roles and categories — and anything else is dropped, so a caller cannot smuggle a getter or an
  * object through — nor a `NaN` or an `Infinity`, which a budget check would never see as
  * exhausted. What survives is still held to its range when the snapshot is built.
  * Selectors are not accepted from an untrusted caller at all.
@@ -56,7 +63,9 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
   const sanitized: ClrContextSnapshotOptions = {};
   for (const key of CLR_CONTEXT_UNTRUSTED_OPTION_KEYS) {
     const value = candidate[key];
-    if ((typeof value === 'number' && Number.isFinite(value)) || typeof value === 'boolean') {
+    if (typeof value === 'number' && Number.isFinite(value) && BUDGET_KEYS.includes(key)) {
+      (sanitized as Record<string, unknown>)[key] = value;
+    } else if (typeof value === 'boolean' && SWITCH_KEYS.includes(key)) {
       (sanitized as Record<string, unknown>)[key] = value;
     } else if (typeof value === 'string' && value.length <= MAX_ENUM_LENGTH && ENUM_KEYS.includes(key)) {
       // Enumerations; anything that is not one of the values is dropped when resolved.
@@ -79,7 +88,8 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
  * Fields keep their label, type, constraints and validation state, so such a consumer
  * still learns the shape of a form; it just does not learn its contents. The rows a
  * selectable grid lists, which exist to name a selection, go with the selection, and so do
- * a grid's filtered and hidden columns and how many files a file input holds.
+ * a grid's filtered and hidden columns, how many files a file input holds, and the
+ * options a combobox narrowed to what the user typed.
  *
  * Regions are left as they are, state included: those come from the application's own
  * `clrContext` annotations, so whatever is in them was put there deliberately, for every
@@ -93,7 +103,8 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
  * State keys that are not values but still say what the user chose: the rows a selectable
  * grid lists so that a row can be named for selection — the grid's content, cell by cell,
  * where any other grid tells such a consumer only its columns and how many rows it has —
- * which columns of a grid are filtered or hidden, and how many files a file input holds.
+ * which columns of a grid are filtered or hidden, how many files a file input holds, and
+ * the options a combobox lists while they are narrowed to what the user typed or picked.
  * Withheld, from any node, only from untrusted consumers: the application's own code is
  * told all of them.
  */
@@ -102,6 +113,7 @@ const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'filteredColumns',
   'hiddenColumns',
   'fileCount',
+  'matchingOptions',
 ]);
 
 /** A node without the {@link UNTRUSTED_WITHHELD_STATE_KEYS}, recursively. */

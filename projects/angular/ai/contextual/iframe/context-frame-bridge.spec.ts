@@ -13,7 +13,7 @@ import {
   clrRequestHostContext,
 } from './context-frame-bridge';
 import { resetNoHostOriginWarning } from './host-origin-warning';
-import { ClrPageContext } from '../interfaces/context.interface';
+import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 
 /**
  * A stand-in for a frame's window: enough surface for the bridge, and a spy to assert on.
@@ -160,6 +160,17 @@ describe('Context frame bridge', () => {
 
       dispatchRequest(frameRequest('embedded'), 'https://plugin.example', frame);
       expect(frame.postMessage).toHaveBeenCalledTimes(1);
+    });
+
+    it('says when its ceiling has an exclusion list that is not one', () => {
+      const warn = spyOn(console, 'warn');
+      new ClrContextFrameHost(getSnapshot, window, {
+        snapshot: { excludeSelectors: '.secret' } as unknown as ClrContextSnapshotOptions,
+      });
+
+      expect(warn).toHaveBeenCalledOnceWith(
+        'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.'
+      );
     });
 
     it('refuses an opaque origin, which cannot be answered safely: listing one is a configuration error', () => {
@@ -467,6 +478,26 @@ describe('Context frame bridge', () => {
       await clrRequestHostContext({ targetWindow: target as unknown as Window });
 
       expect(target.postMessage.calls.mostRecent().args[1]).toEqual({ targetOrigin: window.location.origin });
+    });
+
+    it('reaches a same-origin srcdoc frame, which reports no origin of its own but shares this one', async () => {
+      const frame = document.createElement('iframe');
+      frame.srcdoc = '<p>embedded</p>';
+      const loaded = new Promise(resolve => frame.addEventListener('load', resolve, { once: true }));
+      document.body.appendChild(frame);
+      try {
+        await loaded;
+        const target = frame.contentWindow as Window;
+        const received = new Promise<unknown>(resolve =>
+          target.addEventListener('message', event => resolve(event.data), { once: true })
+        );
+
+        await clrRequestHostContext({ targetWindow: target, timeoutMs: 20 });
+
+        expect(await received).toEqual(jasmine.objectContaining({ kind: 'context-request' }));
+      } finally {
+        frame.remove();
+      }
     });
 
     it('uses an unguessable request id, so a response cannot be forged by guessing it', async () => {

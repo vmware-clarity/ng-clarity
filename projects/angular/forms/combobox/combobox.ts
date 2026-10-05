@@ -667,9 +667,18 @@ export class ClrCombobox<T>
         // the snapshot excludes is not one; a redacted one counts, unnamed.
         const listed = items.toArray().filter(option => this.optionShown(option, excluded) !== 'excluded');
         const named = listed.filter(option => this.optionShown(option, excluded) === 'shown');
-        state.options = named.slice(0, maxItems).map(option => this.optionLabel(option));
-        if (named.length < listed.length) {
-          state.redactedOptions = listed.length - named.length;
+        const labels = named.slice(0, maxItems).map(option => this.optionLabel(option));
+        if (this.optionsNarrowed()) {
+          // The list holds only the options matching what the user typed, and after an
+          // editable combobox closes, only the one they picked. That says what they
+          // entered, so it goes under a key withheld from consumers the application does
+          // not control, and so does how many of the matches are redacted.
+          state.matchingOptions = labels;
+        } else {
+          state.options = labels;
+          if (named.length < listed.length) {
+            state.redactedOptions = listed.length - named.length;
+          }
         }
       } else {
         // Async comboboxes have no option list until a search loads one.
@@ -680,6 +689,11 @@ export class ClrCombobox<T>
     };
 
     this.teardownElementContext = clrPublishElementContext(host, describe);
+  }
+
+  /** Whether the rendered options are only those matching the text in the input. */
+  private optionsNarrowed(): boolean {
+    return !this.optionSelectionService.showAllOptions && !!this.optionSelectionService.currentInput;
   }
 
   /**

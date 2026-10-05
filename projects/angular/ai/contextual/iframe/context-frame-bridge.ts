@@ -6,7 +6,7 @@
  */
 
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
-import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
+import { capSnapshotOptions, resolveSnapshotOptions, warnIfExclusionsAreNotLists } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 import { warnNoHostOrigin } from './host-origin-warning';
 
@@ -198,6 +198,7 @@ export class ClrContextFrameHost {
     // Resolved, so a budget or switch the host left unset is the default rather than
     // "whatever a frame asks for": a frame cannot turn on `includeRoutes` or raise
     // `maxComponents` past what the engine would give anyone by default.
+    warnIfExclusionsAreNotLists(options.snapshot);
     this.snapshotCeiling = resolveSnapshotOptions(options.snapshot);
     const interval = options.minRequestIntervalMs;
     this.minRequestIntervalMs =
@@ -490,20 +491,27 @@ function embedderOrigin(): string {
 }
 
 /**
- * This document's origin, used to address the request. A sandboxed or `data:` document
- * has no origin to name; the request carries only budgets, so a wildcard is acceptable
- * there and is the only thing a browser will deliver.
+ * A window's origin where this document may read it — a same-origin window — or `null`.
+ * An `about:blank` or `srcdoc` frame reports no origin of its own but shares this
+ * document's, which reading its location proves, so it is addressed at this one.
  */
-/** A window's origin where this document may read it — a same-origin window — or `null`. */
 function readableOrigin(target: Window): string | null {
   try {
     const origin = target.location?.origin;
-    return origin && origin !== 'null' ? origin : null;
+    if (origin && origin !== 'null') {
+      return origin;
+    }
+    return target.location?.protocol === 'about:' ? ownOrigin() : null;
   } catch {
     return null;
   }
 }
 
+/**
+ * This document's origin, used to address the request. A sandboxed or `data:` document
+ * has no origin to name; the request carries only budgets, so a wildcard is acceptable
+ * there and is the only thing a browser will deliver.
+ */
 function ownOrigin(): string {
   const origin = window.location.origin;
   return origin && origin !== 'null' ? origin : '*';

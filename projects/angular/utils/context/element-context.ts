@@ -30,10 +30,10 @@ export const CLR_ELEMENT_CONTEXT_PROPERTY = 'clrElementContext';
  *
  * A callback may report the component's current value; which consumers see it is decided
  * by the boundary serving them, not here. That boundary recognises what the user entered
- * or chose by its state key — `value`, `selected`, `checked`, `selection`, `selectedRows`,
- * `rows`, `filteredColumns`, `hiddenColumns` and `fileCount`, on any node — and withholds
- * those from a consumer the application does not control. Report user input under one of
- * those keys: under any other, it is
+ * or chose by its state key — `value`, `selected`, `checked`, `pressed`, `selection`,
+ * `selectedRows`, `rows`, `filteredColumns`, `hiddenColumns`, `fileCount` and
+ * `matchingOptions`, on any node — and withholds those from a consumer the application
+ * does not control. Report user input under one of those keys: under any other, it is
  * shared with everyone. A value the engine withheld as sensitive is removed again after
  * merging, so publishing cannot reinstate one.
  */

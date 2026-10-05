@@ -392,3 +392,94 @@ describe('ClrCombobox element context, options matched by identity', () => {
     expect(host().clrElementMutator?.coerce({ id: 1 }, {}).value).toBe(fixture.componentInstance.accounts[0]);
   });
 });
+
+@Component({
+  template: `
+    <clr-combobox name="person" [(ngModel)]="selection" [clrEditable]="true">
+      <clr-options>
+        <clr-option *clrOptionItems="let person of people" [clrValue]="person">{{ person }}</clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class FilteredOptionsTestComponent {
+  people = ['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown'];
+  selection: string | null = null;
+}
+
+describe('ClrCombobox element context, options narrowed to what the user typed', () => {
+  const accessorName = 'testComboboxClrContext';
+  let fixture: ComponentFixture<FilteredOptionsTestComponent>;
+  let engine: ClrContextEngineService;
+
+  function published() {
+    const host = fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
+      clrElementContext?: ElementContextCallback;
+    };
+    if (!host.clrElementContext) {
+      throw new Error('expected the combobox to publish a clrElementContext callback');
+    }
+    return host.clrElementContext({ maxItemsPerCollection: 25 });
+  }
+
+  function shared(): string {
+    engine.enableGlobalAccess(accessorName);
+    return JSON.stringify((window as unknown as Record<string, () => unknown>)[accessorName]());
+  }
+
+  function type(text: string) {
+    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+    input.value = text;
+    input.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+  }
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      declarations: [FilteredOptionsTestComponent],
+    });
+    fixture = TestBed.createComponent(FilteredOptionsTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    engine = TestBed.inject(ClrContextEngineService);
+  });
+
+  afterEach(() => {
+    engine.disableGlobalAccess();
+    fixture.destroy();
+  });
+
+  it('lists every option to untrusted consumers before anything is typed', () => {
+    expect(published().state['options']).toEqual(['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown']);
+    expect(shared()).toContain('Carol Smith');
+  });
+
+  it('tells the application which options match the text typed, and untrusted consumers nothing', () => {
+    fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
+    fixture.detectChanges();
+    type('Smi');
+
+    expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published().state['options']).toBeUndefined();
+    expect(shared()).not.toMatch(/Smi/);
+  });
+
+  it('does not tell untrusted consumers the one option left after an editable combobox closes on a pick', async () => {
+    fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
+    fixture.detectChanges();
+    const bob = Array.from(document.querySelectorAll<HTMLElement>('clr-option')).find(option =>
+      option.textContent?.includes('Bob Jones')
+    );
+    bob?.click();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    expect(fixture.componentInstance.selection).toBe('Bob Jones');
+    expect(published().state['matchingOptions']).toEqual(['Bob Jones']);
+    expect(shared()).not.toContain('Bob');
+  });
+});

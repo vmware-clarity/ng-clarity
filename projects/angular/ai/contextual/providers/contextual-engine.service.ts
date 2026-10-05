@@ -25,7 +25,12 @@ import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
 import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
 import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
 import { availableRoutes, routePatternFor } from '../routes';
-import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
+import {
+  capSnapshotOptions,
+  resolveSnapshotOptions,
+  warnIfExclusionsAreNotLists,
+  withCallOptions,
+} from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
@@ -162,6 +167,8 @@ export class ClrContextEngineService implements OnDestroy {
     }
     this.disableGlobalAccess();
     this.globalProperty = propertyName;
+    // The frame host says so for its own ceiling; this one is checked here.
+    warnIfExclusionsAreNotLists(budgets);
     const ceiling = this.untrustedCeiling(budgets);
     host[propertyName] = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
