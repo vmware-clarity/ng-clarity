@@ -235,6 +235,7 @@ declare class RecursiveChildren<T> {
     children: TreeNodeModel<T>[];
     subscription: Subscription;
     role: string;
+    private contexts;
     constructor(featuresService: TreeFeaturesService<T>, expandService: IfExpandService);
     ngAfterContentInit(): void;
     shouldRender(): boolean;
