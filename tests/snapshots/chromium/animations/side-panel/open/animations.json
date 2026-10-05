@@ -1,7 +1,7 @@
 [
   {
     "target": "div.modal-dialog",
-    "name": "clr-fade-slide-left-in",
+    "name": "",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
@@ -10,15 +10,15 @@
     "keyframes": [
       {
         "offset": 0,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "easing": "ease-in-out",
         "composite": "auto",
         "opacity": "0",
-        "transform": "translate(25%)"
+        "transform": "translate(25%, 0px)"
       },
       {
         "offset": 1,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
-        "composite": "replace",
+        "easing": "linear",
+        "composite": "auto",
         "opacity": "1",
         "transform": "none"
       }

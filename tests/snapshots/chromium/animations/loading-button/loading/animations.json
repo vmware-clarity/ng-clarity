@@ -1,24 +1,24 @@
 [
   {
     "target": "span.spinner.spinner-inline",
-    "name": "clr-fade-in",
+    "name": "spin",
     "startedAt": 0,
-    "duration": 200,
-    "delay": 100,
+    "duration": 1000,
+    "delay": 0,
     "easing": "linear",
-    "iterations": 1,
+    "iterations": "infinite",
     "keyframes": [
       {
         "offset": 0,
-        "easing": "ease-in",
+        "easing": "linear",
         "composite": "auto",
-        "opacity": "0"
+        "transform": "rotate(0deg)"
       },
       {
         "offset": 1,
-        "easing": "ease-in",
-        "composite": "replace",
-        "opacity": "1"
+        "easing": "linear",
+        "composite": "auto",
+        "transform": "rotate(360deg)"
       }
     ]
   },
@@ -47,47 +47,59 @@
   },
   {
     "target": "span.spinner.spinner-inline",
-    "name": "clr-fade-in",
+    "name": "",
     "startedAt": 0,
-    "duration": 200,
-    "delay": 100,
+    "duration": 300,
+    "delay": 0,
     "easing": "linear",
     "iterations": 1,
     "keyframes": [
       {
         "offset": 0,
+        "easing": "linear",
+        "composite": "auto",
+        "opacity": "0"
+      },
+      {
+        "offset": 0.3333333333333333,
         "easing": "ease-in",
         "composite": "auto",
         "opacity": "0"
       },
       {
         "offset": 1,
-        "easing": "ease-in",
-        "composite": "replace",
+        "easing": "linear",
+        "composite": "auto",
         "opacity": "1"
       }
     ]
   },
   {
     "target": "span.spinner.spinner-inline",
-    "name": "spin",
+    "name": "",
     "startedAt": 0,
-    "duration": 1000,
+    "duration": 300,
     "delay": 0,
     "easing": "linear",
-    "iterations": "infinite",
+    "iterations": 1,
     "keyframes": [
       {
         "offset": 0,
         "easing": "linear",
         "composite": "auto",
-        "transform": "rotate(0deg)"
+        "opacity": "0"
+      },
+      {
+        "offset": 0.3333333333333333,
+        "easing": "ease-in",
+        "composite": "auto",
+        "opacity": "0"
       },
       {
         "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "transform": "rotate(360deg)"
+        "opacity": "1"
       }
     ]
   }

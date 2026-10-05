@@ -1,29 +1,6 @@
 [
   {
-    "target": "div.clr-treenode-children.is-expanded",
-    "name": "overflow-y",
-    "startedAt": 0,
-    "duration": 0,
-    "delay": 200,
-    "easing": "ease",
-    "iterations": 1,
-    "keyframes": [
-      {
-        "offset": 0,
-        "easing": "linear",
-        "composite": "auto",
-        "overflowY": "clip"
-      },
-      {
-        "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
-        "overflowY": "visible"
-      }
-    ]
-  },
-  {
-    "target": "div.clr-treenode-children.is-expanded",
+    "target": "div.clr-treenode-children",
     "name": "",
     "startedAt": 0,
     "duration": 200,
@@ -32,16 +9,18 @@
     "iterations": 1,
     "keyframes": [
       {
-        "offset": null,
+        "offset": 0,
         "easing": "linear",
         "composite": "auto",
-        "height": "0px"
+        "height": "0px",
+        "contentVisibility": "visible"
       },
       {
-        "offset": null,
+        "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "height": "224px"
+        "height": "224px",
+        "contentVisibility": "visible"
       }
     ]
   }

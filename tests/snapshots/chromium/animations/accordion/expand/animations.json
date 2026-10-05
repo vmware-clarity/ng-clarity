@@ -51,20 +51,22 @@
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
-    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+    "easing": "linear",
     "iterations": 1,
     "keyframes": [
       {
-        "offset": null,
-        "easing": "linear",
+        "offset": 0,
+        "easing": "ease-in-out",
         "composite": "auto",
-        "height": "0px"
+        "height": "0px",
+        "display": "block"
       },
       {
-        "offset": null,
+        "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "height": "33px"
+        "height": "33px",
+        "display": "block"
       }
     ]
   }

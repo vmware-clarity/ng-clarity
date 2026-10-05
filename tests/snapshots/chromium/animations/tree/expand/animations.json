@@ -1,29 +1,6 @@
 [
   {
     "target": "div.clr-treenode-children",
-    "name": "content-visibility",
-    "startedAt": 0,
-    "duration": 0,
-    "delay": 200,
-    "easing": "ease",
-    "iterations": 1,
-    "keyframes": [
-      {
-        "offset": 0,
-        "easing": "linear",
-        "composite": "auto",
-        "contentVisibility": "visible"
-      },
-      {
-        "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
-        "contentVisibility": "hidden"
-      }
-    ]
-  },
-  {
-    "target": "div.clr-treenode-children",
     "name": "",
     "startedAt": 0,
     "duration": 200,
@@ -32,16 +9,18 @@
     "iterations": 1,
     "keyframes": [
       {
-        "offset": null,
+        "offset": 0,
         "easing": "linear",
         "composite": "auto",
-        "height": "224px"
+        "height": "224px",
+        "overflowY": "visible"
       },
       {
-        "offset": null,
+        "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "height": "0px"
+        "height": "0px",
+        "overflowY": "visible"
       }
     ]
   }
