@@ -3,9 +3,18 @@ name: clr-datagrid
 description: Build tables with the Clarity Angular datagrid (`clr-datagrid` from `@clr/angular`). Use when adding or changing a `<clr-datagrid>` — sorting, filtering, pagination, selection, expandable rows, detail pane, virtual scroll, or server-driven data. For the column-definition based `<appfx-datagrid>` from `@clr/addons`, use the appfx-datagrid skill instead.
 metadata:
   docs: /documentation/datagrid
+  guidance: ['1008:2024-12-05', '1031:2024-10-30', '1004:2024-10-30']
 ---
 
 # Clarity datagrid (`clr-datagrid`)
+
+## When to use
+
+From the [datagrid design guidance](https://guidance.clarity.design/1008):
+
+- Use a datagrid for structured, homogeneous data (every row has the same attributes), and whenever users need to search, filter, sort, or run batch actions on it.
+- Use a plain `<table class="table">` instead for small static data that fits on one page (about 10 to 20 rows) ([table guidance](https://guidance.clarity.design/1031)).
+- Do not use a datagrid for name/value pairs; use `clr-stack-view`. For content mixing text, images, and charts, use cards.
 
 ## Setup
 
@@ -29,6 +38,8 @@ The datagrid components are NgModule-declared (not standalone) — always import
 | Virtual scroll | Very large in-memory lists, no paging | `ng-template ClrVirtualScroll` | The datagrid (rendering only) |
 
 Never use `*clrDgItems` on a server-driven grid — it re-sorts and re-pages an already-paged subset.
+
+Pagination or virtual scroll is also a UX choice: use pagination when users jump to specific pages and don't compare rows across pages; use virtual scroll when comparing rows across the whole set matters.
 
 ## Client-side
 
@@ -98,11 +109,13 @@ refresh(state: ClrDatagridStateInterface<User>) {
 - Every row needs `[clrDgItem]`.
 - Lock a row: `[clrDgSelectable]="false"` on `clr-dg-row`.
 - Keep selection across refetches: `[clrDgItemsIdentityFn]="(u) => u.id"` and `[clrDgPreserveSelection]="true"`.
-- Batch actions: `<clr-dg-action-bar>` with buttons above the columns, enabled from `selected.length`.
+- Batch actions: `<clr-dg-action-bar>` with buttons above the columns, enabled from `selected.length`. Use a flat button group (`btn-link`) there ([button group guidance](https://guidance.clarity.design/1004)).
 - Per-row actions: `<clr-dg-action-overflow>` inside `clr-dg-row` with `<button class="action-item">` children.
 - Do **not** use `clrDgRowSelection` (deprecated, accessibility issue). There is no `clrDgSingleSelected` input.
 
 ## Row details
+
+Use an expandable row for extra information that doesn't need to be visible all the time; use the detail pane to show a full record in a larger scrollable space.
 
 Expandable row (inline):
 
@@ -139,10 +152,12 @@ Add `[clrDgReplace]="true"` to replace the row cells with the detail. Detail pan
 </clr-datagrid>
 ```
 
-Give the grid a fixed height. No pagination with virtual scroll.
+Give the grid a fixed height. No pagination with virtual scroll. Virtual scroll is hard to use with a keyboard, so also offer the data as a downloadable file.
 
 ## Rules
 
+- Never nest a datagrid inside a cell or an expandable row (performance and complexity). A detail pane may contain a datagrid.
+- Keep column headers short (one or two words). Do not add your own buttons, links, or inputs to `clr-dg-column` content; use the built-in sort, filter, and column actions.
 - Use `@for (...; track ...)` / `@if` control flow, not `*ngFor` / `*ngIf`.
 - Always provide `trackBy` (`*clrDgItems`), `track` (`@for`), or `clrVirtualRowsTrackBy`.
 - Icon-only buttons in action bars and overflows need `aria-label`; localize `clrDgActionOverflowButtonLabel`, `clrDgSingleSelectionAriaLabel`, `clrDetailExpandableAriaLabel` where provided.
@@ -150,5 +165,6 @@ Give the grid a fixed height. No pagination with virtual scroll.
 
 ## References
 
+- Design guidance: https://guidance.clarity.design/1008
 - Public API: `projects/angular/clarity.api.md` (search `ClrDatagrid`)
 - Docs demos: `projects/website/src/app/documentation/demos/datagrid/`

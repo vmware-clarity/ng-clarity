@@ -25,7 +25,8 @@ function getAgentsFile(lib) {
   return fs.existsSync(file) ? { file, raw: fs.readFileSync(file, 'utf8') } : undefined;
 }
 
-// Returns { skills, errors }. Each skill: { lib, packageName, name, description, docs, file, raw, body }.
+// Returns { skills, errors }. Each skill: { lib, packageName, name, description, docs, guidance, file, raw, body }.
+// `guidance` lists the design guidance (https://guidance.clarity.design/<id>) the skill follows, as '<id>:<updated date>'.
 function collectSkills(lib) {
   const { packageName, prefix } = LIBS[lib];
   const skills = [];
@@ -49,7 +50,8 @@ function collectSkills(lib) {
       errors.push(`${relativeFile}: missing "description" in frontmatter`);
     } else {
       seen.set(name, relativeFile);
-      skills.push({ lib, packageName, name, description, docs: attributes.metadata?.docs, file, raw, body });
+      const { docs, guidance = [] } = attributes.metadata || {};
+      skills.push({ lib, packageName, name, description, docs, guidance, file, raw, body });
     }
   }
 

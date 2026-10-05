@@ -3,6 +3,7 @@ name: clr-button
 description: Use Clarity buttons correctly — `.btn` CSS classes and variants, icon buttons, loading buttons (`[clrLoading]`), and button groups with overflow menus (`clr-button-group` / `clr-button`) from `@clr/angular`. Use when adding or styling buttons, toolbars, or action groups in a Clarity app.
 metadata:
   docs: /documentation/button
+  guidance: ['1003:2024-10-30', '1004:2024-10-30']
 ---
 
 # Clarity buttons
@@ -29,6 +30,16 @@ metadata:
 - Use one primary button per view/section. Use `disabled`, not just a class.
 - Pick one outline spelling and use it consistently.
 
+## Choosing a button
+
+From the [button design guidance](https://guidance.clarity.design/1003):
+
+- Solid (`btn-primary`) for the primary action, outline (`btn-outline`) for secondary actions, and flat (`btn-link`) for tertiary or in-page actions. Use outline for several actions of equal importance.
+- Navigation to another page is a link (`<a>`), not a button.
+- Labels: three words or fewer, describing the action ("Save changes", not "OK").
+- `btn-sm` de-emphasizes actions, e.g. several actions of equal importance.
+- Badges go to the right of the label and show a count of related items.
+
 ## Icon buttons
 
 ```html
@@ -42,7 +53,8 @@ metadata:
 </button>
 ```
 
-Icon-only buttons **must** have an `aria-label`.
+- Icon-only buttons **must** have an `aria-label`. Prefer icon plus text when there is room.
+- At most one icon per button. Put it before the label for actions on the current page, and after the label for actions that take the user elsewhere.
 
 ## Loading button
 
@@ -70,6 +82,7 @@ export class SaveForm {
 - `ClrLoadingState`: `DEFAULT`, `LOADING` (spinner, button disabled), `SUCCESS` (check mark, then auto-returns to `DEFAULT`), `ERROR`.
 - `[clrLoading]` also accepts a boolean. It only works on `<button>` elements.
 - `(clrLoadingChange)` emits state changes.
+- Show `LOADING` while the request runs, then `SUCCESS` or `ERROR`. Don't start the same action again while it is loading.
 
 ## Button group (with overflow menu)
 
@@ -90,6 +103,10 @@ import { ClrButtonModule } from '@clr/angular'; // includes button group + loadi
 - `[clrInMenu]="true"` moves a button into the overflow menu. There is **no** `clrIfOverflow` input.
 - `clrMenuPosition`: `bottom-left` (default), `bottom-right`, `top-left`, `top-right`, `left-top`, `left-bottom`, `right-top`, `right-bottom`. Invalid values are silently ignored.
 - Localize `clrToggleButtonAriaLabel`.
+- Order: primary actions first, then secondary, with a destructive action last. The overflow menu sits at the far right, and its items always show text, even when the group shows icons only.
+- One style per group: never mix solid and outline buttons in the same group. Use a flat group (`btn-link`) for tertiary actions, in cards, and above datagrids.
+- Icon-only button groups use the default size, not `btn-sm`.
+- Design rules: [button group guidance](https://guidance.clarity.design/1004).
 - Static, CSS-only group: `<div class="btn-group">` with `.btn` children. The checkbox/radio toggle styling inside `.btn-group` is deprecated — use form controls instead.
 
 ## Imports
@@ -100,5 +117,6 @@ import { ClrButtonModule } from '@clr/angular'; // includes button group + loadi
 
 ## References
 
+- Design guidance: https://guidance.clarity.design/1003, https://guidance.clarity.design/1004
 - Styles: `projects/angular/button/_buttons.clarity.scss`, `projects/angular/button/STYLES.md`
 - Docs demos: `projects/website/src/app/documentation/demos/buttons/`, `.../demos/button-group/`
