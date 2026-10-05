@@ -12,6 +12,7 @@ import RecursiveChildrenSpecs from './recursive-children.spec';
 import RecursiveForOfSpecs from './recursive-for-of.spec';
 import TreeFocusManagerSpecs from './tree-focus-manager.service.spec';
 import TreeNodeSpec from './tree-node.spec';
+import TreePerformanceSpecs from './tree-performance.spec';
 import TreeSpecs from './tree.spec';
 
 describe('Tree View', () => {
@@ -24,6 +25,7 @@ describe('Tree View', () => {
   describe('Components', () => {
     TreeNodeSpec();
     TreeSpecs();
+    TreePerformanceSpecs();
     RecursiveForOfSpecs();
     RecursiveChildrenSpecs();
   });
