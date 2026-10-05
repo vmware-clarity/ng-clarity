@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import * as http from 'http';
-import * as nodeStatic from 'node-static';
+import * as express from 'express';
+import * as path from 'path';
 
 // Serves a built app directory for the visual regression tests.
 //
@@ -18,27 +18,14 @@ import * as nodeStatic from 'node-static';
 
 const [root, port, ...flags] = process.argv.slice(2);
 const spaFallback = flags.includes('--spa');
-const staticFileServer = new nodeStatic.Server(root);
+const rootPath = path.resolve(root);
 
-http
-  .createServer((request, response) => {
-    request
-      .addListener('end', () => {
-        staticFileServer.serve(request, response, error => {
-          if (!error) {
-            return;
-          }
+const app = express();
 
-          const { status, headers } = error as unknown as { status: number; headers: http.OutgoingHttpHeaders };
+app.use(express.static(rootPath));
 
-          if (spaFallback && status === 404) {
-            staticFileServer.serveFile('/index.html', 200, {}, request, response);
-          } else {
-            response.writeHead(status, headers);
-            response.end();
-          }
-        });
-      })
-      .resume();
-  })
-  .listen(Number(port));
+if (spaFallback) {
+  app.get('/{*splat}', (_request, response) => response.sendFile(path.join(rootPath, 'index.html')));
+}
+
+app.listen(Number(port));
