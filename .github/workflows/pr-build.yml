@@ -74,6 +74,20 @@ jobs:
           name: coverage
           path: coverage/
 
+  # Required status check: branch protection expects a single "PR Build" check.
+  pr-build-status:
+    name: PR Build
+    if: ${{ always() }}
+    needs: [pr-build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Angular matrix results
+        run: |
+          if [ "${{ needs.pr-build.result }}" != "success" ]; then
+            echo "PR Build matrix result: ${{ needs.pr-build.result }}"
+            exit 1
+          fi
+
   pr-visual-regression-test:
     name: PR Visual Regression Test (${{matrix.browser}}, ${{matrix.theme}}, ${{matrix.density}}, shard ${{matrix.shard}}/2)
     timeout-minutes: 40
