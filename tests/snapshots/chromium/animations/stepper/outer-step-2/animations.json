@@ -116,94 +116,47 @@
   },
   {
     "target": "div.clr-stepper-content.clr-collapsible-panel-collapsing",
-    "name": "clr-collapsible-panel-collapse",
+    "name": "",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
-    "easing": "linear",
+    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
     "iterations": 1,
     "keyframes": [
       {
-        "offset": 0,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
-        "composite": "replace"
+        "offset": null,
+        "easing": "linear",
+        "composite": "auto",
+        "height": "465px"
       },
       {
-        "offset": 1,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "offset": null,
+        "easing": "linear",
         "composite": "auto",
-        "gridTemplateRows": "0fr"
-      }
-    ]
-  },
-  {
-    "target": "div.clr-stepper-inner-content",
-    "name": "clr-collapsible-panel-collapse-padding",
-    "startedAt": 0,
-    "duration": 200,
-    "delay": 0,
-    "easing": "linear",
-    "iterations": 1,
-    "keyframes": [
-      {
-        "offset": 0,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
-        "composite": "replace"
-      },
-      {
-        "offset": 1,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
-        "composite": "auto",
-        "paddingBottom": "0px",
-        "paddingTop": "0px"
+        "height": "0px"
       }
     ]
   },
   {
     "target": "div.clr-stepper-content",
-    "name": "clr-collapsible-panel-expand",
+    "name": "",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
-    "easing": "linear",
+    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
     "iterations": 1,
     "keyframes": [
       {
-        "offset": 0,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "offset": null,
+        "easing": "linear",
         "composite": "auto",
-        "gridTemplateRows": "0fr"
+        "height": "0px"
       },
       {
-        "offset": 1,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
-        "composite": "replace",
-        "gridTemplateRows": "1fr"
-      }
-    ]
-  },
-  {
-    "target": "div.clr-stepper-inner-content",
-    "name": "clr-collapsible-panel-expand-padding",
-    "startedAt": 0,
-    "duration": 200,
-    "delay": 0,
-    "easing": "linear",
-    "iterations": 1,
-    "keyframes": [
-      {
-        "offset": 0,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "offset": null,
+        "easing": "linear",
         "composite": "auto",
-        "paddingBottom": "0px",
-        "paddingTop": "0px"
-      },
-      {
-        "offset": 1,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
-        "composite": "replace",
-        "paddingBottom": "24px",
-        "paddingTop": "24px"
+        "height": "145px"
       }
     ]
   }

@@ -12,13 +12,13 @@
         "offset": null,
         "easing": "linear",
         "composite": "auto",
-        "height": "210px"
+        "height": "210.375px"
       },
       {
         "offset": null,
         "easing": "linear",
         "composite": "auto",
-        "height": "33px"
+        "height": "33.375px"
       }
     ]
   }

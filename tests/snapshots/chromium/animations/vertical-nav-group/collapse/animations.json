@@ -1,33 +1,10 @@
 [
   {
-    "target": "div.nav-group-children-wrapper",
-    "name": "grid-template-rows",
-    "startedAt": 0,
-    "duration": 200,
-    "delay": 0,
-    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
-    "iterations": 1,
-    "keyframes": [
-      {
-        "offset": 0,
-        "easing": "linear",
-        "composite": "auto",
-        "gridTemplateRows": "0px"
-      },
-      {
-        "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
-        "gridTemplateRows": "0px"
-      }
-    ]
-  },
-  {
-    "target": "div.nav-group-children-wrapper",
+    "target": "div.nav-group-children",
     "name": "visibility",
     "startedAt": 0,
-    "duration": 200,
-    "delay": 0,
+    "duration": 0,
+    "delay": 200,
     "easing": "ease",
     "iterations": 1,
     "keyframes": [
@@ -42,6 +19,29 @@
         "easing": "linear",
         "composite": "auto",
         "visibility": "hidden"
+      }
+    ]
+  },
+  {
+    "target": "div.nav-group-children",
+    "name": "",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": null,
+        "easing": "linear",
+        "composite": "auto",
+        "height": "192px"
+      },
+      {
+        "offset": null,
+        "easing": "linear",
+        "composite": "auto",
+        "height": "0px"
       }
     ]
   },

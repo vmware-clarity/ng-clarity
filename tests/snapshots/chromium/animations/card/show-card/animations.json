@@ -10,14 +10,14 @@
     "keyframes": [
       {
         "offset": 0,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "easing": "ease-in",
         "composite": "auto",
         "opacity": "0",
         "transform": "translate(-100%)"
       },
       {
         "offset": 1,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "easing": "ease-in",
         "composite": "replace",
         "opacity": "1",
         "transform": "none"

@@ -10,12 +10,12 @@
     "keyframes": [
       {
         "offset": 0,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "easing": "ease-in",
         "composite": "replace"
       },
       {
         "offset": 1,
-        "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
+        "easing": "ease-in",
         "composite": "auto",
         "opacity": "0"
       }

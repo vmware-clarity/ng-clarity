@@ -1,28 +1,5 @@
 [
   {
-    "target": "div.clr-treenode-children-wrapper",
-    "name": "grid-template-rows",
-    "startedAt": 0,
-    "duration": 200,
-    "delay": 0,
-    "easing": "cubic-bezier(0.42, 0.01, 0.58, 1)",
-    "iterations": 1,
-    "keyframes": [
-      {
-        "offset": 0,
-        "easing": "linear",
-        "composite": "auto",
-        "gridTemplateRows": "0px"
-      },
-      {
-        "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
-        "gridTemplateRows": "0px"
-      }
-    ]
-  },
-  {
     "target": "div.clr-treenode-children",
     "name": "content-visibility",
     "startedAt": 0,
@@ -42,6 +19,29 @@
         "easing": "linear",
         "composite": "auto",
         "contentVisibility": "hidden"
+      }
+    ]
+  },
+  {
+    "target": "div.clr-treenode-children",
+    "name": "",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "linear",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": null,
+        "easing": "linear",
+        "composite": "auto",
+        "height": "224px"
+      },
+      {
+        "offset": null,
+        "easing": "linear",
+        "composite": "auto",
+        "height": "0px"
       }
     ]
   }

@@ -23,8 +23,8 @@
     ]
   },
   {
-    "target": "div.nav-group-children-wrapper.is-expanded",
-    "name": "grid-template-rows",
+    "target": "div.nav-group-children.is-expanded",
+    "name": "",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
@@ -32,39 +32,16 @@
     "iterations": 1,
     "keyframes": [
       {
-        "offset": 0,
+        "offset": null,
         "easing": "linear",
         "composite": "auto",
-        "gridTemplateRows": "192px"
+        "height": "0px"
       },
       {
-        "offset": 1,
+        "offset": null,
         "easing": "linear",
         "composite": "auto",
-        "gridTemplateRows": "192px"
-      }
-    ]
-  },
-  {
-    "target": "div.nav-group-children-wrapper.is-expanded",
-    "name": "visibility",
-    "startedAt": 0,
-    "duration": 200,
-    "delay": 0,
-    "easing": "ease",
-    "iterations": 1,
-    "keyframes": [
-      {
-        "offset": 0,
-        "easing": "linear",
-        "composite": "auto",
-        "visibility": "hidden"
-      },
-      {
-        "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
-        "visibility": "visible"
+        "height": "192px"
       }
     ]
   }
