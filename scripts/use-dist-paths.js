@@ -22,6 +22,8 @@ function updateJsonFile(filePath, updater) {
 // 1. Root tsconfig.json
 updateJsonFile('tsconfig.json', config => {
   config.compilerOptions = config.compilerOptions || {};
+  // Only on the Angular v22 leg: consuming apps compile against the dist/ typings with Angular 22.
+  config.compilerOptions.skipLibCheck = true;
   config.compilerOptions.paths = config.compilerOptions.paths || {};
   config.compilerOptions.paths['@clr/angular'] = ['./dist/clr-angular'];
   config.compilerOptions.paths['@clr/angular/*'] = ['./dist/clr-angular/*'];
