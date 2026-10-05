@@ -206,6 +206,26 @@ describe('ClrDateInput element mutator', () => {
 
         expect(JSON.stringify(accessor())).not.toContain('1981');
       });
+
+      it('does not describe the open calendar, which shows the picked month and year', async () => {
+        pickDate();
+        (fixture.nativeElement.querySelector('button.clr-input-group-icon-action') as HTMLElement).click();
+        await settle();
+        TestBed.inject(ClrContextEngineService).enableGlobalAccess(accessorName);
+        const accessor = (window as unknown as Record<string, () => ClrPageContext>)[accessorName];
+        const types: string[] = [];
+        const visit = (nodes: ClrComponentContext[]) =>
+          nodes.forEach(node => {
+            types.push(node.type);
+            visit(node.children ?? []);
+          });
+        visit(TestBed.inject(ClrContextEngineService).getSnapshot().components);
+
+        expect(document.querySelector('clr-datepicker-view-manager')).not.toBeNull();
+        expect(types).not.toContain('dialog');
+        expect(types).not.toContain('grid');
+        expect(JSON.stringify(accessor())).not.toMatch(/1981|March/);
+      });
     });
 
     describe('exact values', () => {

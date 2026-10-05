@@ -5,11 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { isDevMode } from '@angular/core';
-
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
+import { warnNoHostOrigin } from './host-origin-warning';
 
 /**
  * Identifier of the cross-frame context protocol. The protocol is plain,
@@ -136,7 +135,10 @@ export interface ClrContextFrameRequestOptions {
    *
    * Set it for any UI that can be embedded by more than one site. Without it, whatever
    * page embeds this one is the page trusted to answer — including one that answers with
-   * a made-up context to steer the agent reading it.
+   * a made-up context to steer the agent reading it — and in development the first such
+   * request says so on the console. A `targetWindow` other than the parent is asked at its
+   * own origin when this document can read it; otherwise `hostOrigin` is required, and the
+   * request is rejected without one.
    */
   hostOrigin?: string;
   /** How long to wait for an answer before resolving with `null`. Defaults to `2000`. */
@@ -329,23 +331,6 @@ export class ClrContextFrameHost {
   }
 }
 
-let warnedNoHostOrigin = false;
-
-/**
- * In development, says once on the console that a request without `hostOrigin` trusts
- * whichever page embeds the frame: any site that can embed it can answer with a context
- * of its own making, and steer what consumes it.
- */
-function warnNoHostOrigin(): void {
-  if (!warnedNoHostOrigin && isDevMode()) {
-    warnedNoHostOrigin = true;
-    console.warn(
-      'clrRequestHostContext: no hostOrigin was given, so the context is accepted from whichever page embeds this ' +
-        'frame. Pass the origin of the application expected to host it.'
-    );
-  }
-}
-
 /**
  * Requests the hosting page's context from inside an embedded frame. Resolves with
  * `null` when the host does not answer (e.g. it does not run a {@link ClrContextFrameHost},
@@ -372,10 +357,21 @@ export function clrRequestHostContext(options: ClrContextFrameRequestOptions = {
       new Error(`clrRequestHostContext: "${options.hostOrigin}" is not an origin, such as https://app.example.`)
     );
   }
-  if (!hostOrigin) {
-    warnNoHostOrigin();
+  let targetOrigin = hostOrigin;
+  if (!targetOrigin && options.targetWindow && options.targetWindow !== window.parent) {
+    // The embedder's origin says nothing about another window: a request addressed to it
+    // would be dropped by the browser, and the call would time out without saying why.
+    targetOrigin = readableOrigin(targetWindow);
+    if (!targetOrigin) {
+      return Promise.reject(
+        new Error('clrRequestHostContext: a targetWindow other than the parent needs a hostOrigin to be asked.')
+      );
+    }
   }
-  const targetOrigin = hostOrigin || embedderOrigin() || ownOrigin();
+  if (!targetOrigin) {
+    warnNoHostOrigin();
+    targetOrigin = embedderOrigin() || ownOrigin();
+  }
   const expectedOrigin = targetOrigin !== '*' ? targetOrigin : undefined;
   const requestId = newRequestId();
   const request: ClrContextFrameRequest = {
@@ -498,6 +494,16 @@ function embedderOrigin(): string {
  * has no origin to name; the request carries only budgets, so a wildcard is acceptable
  * there and is the only thing a browser will deliver.
  */
+/** A window's origin where this document may read it — a same-origin window — or `null`. */
+function readableOrigin(target: Window): string | null {
+  try {
+    const origin = target.location?.origin;
+    return origin && origin !== 'null' ? origin : null;
+  } catch {
+    return null;
+  }
+}
+
 function ownOrigin(): string {
   const origin = window.location.origin;
   return origin && origin !== 'null' ? origin : '*';

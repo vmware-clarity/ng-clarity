@@ -51,10 +51,9 @@ const CONFIRM_TIMEOUT_MS = 120_000;
  *
  * It never writes anything a snapshot would not show (an excluded or redacted control,
  * option, radio or row; size budgets and summary mode shorten what a snapshot lists, not
- * what can be written), never a redacted control, never
- * a control without an Angular form binding, and never without the application's
- * {@link ClrMutationPolicy}; and it only ever fills — it does not submit, click or
- * invoke, which stay with the user. Every result says what is true afterwards, so an
+ * what can be written), never a control without an Angular form binding, and never
+ * without the application's {@link ClrMutationPolicy}; and it only ever fills — it does
+ * not submit, click or invoke, which stay with the user. Every result says what is true afterwards, so an
  * agent learns of a rejected value or a redirected navigation from the operation
  * itself rather than from a later surprise.
  *

@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isDevMode } from '@angular/core';
 import { CLR_CONTEXT_DEFAULT_MAX_ITEMS } from '@clr/angular/utils';
 
 import { ClrContextCategory, ClrContextSnapshotOptions } from './interfaces/context.interface';
@@ -72,6 +73,17 @@ function listOrNothing(value: unknown): readonly unknown[] {
   return Array.isArray(value) ? value : [];
 }
 
+/**
+ * In development, says that an exclusion list the application gave was ignored for not
+ * being a list (`excludeSelectors: '.secret'` for `['.secret']`): the snapshot is then wider
+ * than the caller meant. Untrusted callers never get here; their options are sanitized.
+ */
+function warnIfNotAList(key: string, value: unknown): void {
+  if (value !== undefined && !Array.isArray(value) && isDevMode()) {
+    console.warn(`Clarity context options: ${key} must be a list, so ${JSON.stringify(value)} was ignored.`);
+  }
+}
+
 /** The roles a set of categories leaves out, for the categories that are roles. */
 export function clrContextCategoryRoles(categories: readonly ClrContextCategory[]): string[] {
   return [...new Set(categories.flatMap(category => ownEntry(CLR_CONTEXT_CATEGORIES, category) ?? []))];
@@ -119,6 +131,7 @@ export function clrContextPreset(
   const base: Readonly<ClrContextSnapshotOptions> = ownEntry(CLR_CONTEXT_PRESETS, preset) ?? {};
   const options = { ...base, ...overrides } as ClrContextSnapshotOptions;
   for (const key of EXCLUSION_KEYS) {
+    warnIfNotAList(key, overrides[key]);
     const combined = [...listOrNothing(base[key]), ...listOrNothing(overrides[key])];
     if (combined.length || (key in options && !Array.isArray(options[key]))) {
       (options as Record<string, unknown>)[key] = [...new Set(combined)];
@@ -140,6 +153,9 @@ export function withCallOptions(
   for (const [key, value] of Object.entries(call ?? {})) {
     // An exclusion list that is not a list — `null`, a string — is ignored rather than
     // put in place of the application's, which would then resolve to no exclusions.
+    if (isExclusionKey(key)) {
+      warnIfNotAList(key, value);
+    }
     if (value !== undefined && (!isExclusionKey(key) || Array.isArray(value))) {
       (effective as Record<string, unknown>)[key] = value;
     }
@@ -278,12 +294,12 @@ export function capSnapshotOptions(
   for (const key of LIST_KEYS) {
     const limit = ceiling[key];
     if (Array.isArray(limit) && limit.length) {
-      capped[key] = [...new Set([...stringList(limit), ...stringList(capped[key] ?? [])])];
+      capped[key] = [...new Set([...stringList(limit), ...stringList(listOrNothing(capped[key]))])];
     }
   }
   if (Array.isArray(ceiling.excludeCategories) && ceiling.excludeCategories.length) {
     capped.excludeCategories = [
-      ...new Set([...ceiling.excludeCategories, ...(capped.excludeCategories ?? [])]),
+      ...new Set([...ceiling.excludeCategories, ...listOrNothing(capped.excludeCategories)]),
     ] as ClrContextCategory[];
   }
   if (ceiling.rootSelector) {
@@ -298,7 +314,7 @@ export function capSnapshotOptions(
   return capped;
 }
 
-function stringList(value: unknown[]): string[] {
+function stringList(value: readonly unknown[]): string[] {
   return value
     .filter((entry): entry is string => typeof entry === 'string')
     .map(entry => entry.trim())

@@ -116,8 +116,9 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   private readonly hostElement = inject<ElementRef<HTMLElement>>(ElementRef);
 
   // What files are chosen is what the user entered, and their names are on the browse
-  // button, the clear buttons and the file list. Page-context tooling is told how many
-  // there are and nothing else, however it reads the rendered markup.
+  // button, the clear buttons and the file list. The application's own page-context
+  // tooling is told how many there are and nothing else, however it reads the rendered
+  // markup; consumers it does not control are not told the count either.
   private readonly teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => {
     const state: Record<string, unknown> = {
       fileCount: this.fileInput?.elementRef.nativeElement.files?.length ?? 0,
@@ -132,6 +133,9 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
       element: 'clr-file-input-container',
       label: label ? clrNormalizeContextText(clrContextText(label), false) : '',
       state,
+      // Replaces what the walk found inside, rather than adding to it: the file list would
+      // otherwise be summarised as a list with an `itemCount`, the same count under a key
+      // nothing withholds.
       children: [],
     };
   });

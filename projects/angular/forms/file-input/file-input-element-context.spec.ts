@@ -99,4 +99,19 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
     expect(JSON.stringify(components)).not.toContain('4111');
     expect(JSON.stringify(components)).not.toContain('4222');
   });
+
+  it('tells a consumer the application does not control neither the names nor how many', async () => {
+    await create(FileListTest, ['a-4111.pdf', 'b-4222.pdf']);
+    const engine = TestBed.inject(ClrContextEngineService);
+    engine.enableGlobalAccess('testFileClrContext');
+    try {
+      const accessor = (window as unknown as Record<string, () => unknown>)['testFileClrContext'];
+      const shared = JSON.stringify(accessor());
+
+      expect(shared).toContain('clr-file-input-container');
+      expect(shared).not.toMatch(/"(fileCount|itemCount)"|4111|4222/);
+    } finally {
+      engine.disableGlobalAccess();
+    }
+  });
 });

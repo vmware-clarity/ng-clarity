@@ -901,8 +901,10 @@
 <h2 id="published-state" cds-text="title" class="clr-mt-48px">What components publish</h2>
 <p class="clr-mt-16px" cds-text="body">
   State a Clarity component adds to its node, beyond what the accessibility tree says. Keys marked as values —
-  <code cds-text="code">value</code>, <code cds-text="code">selection</code>, <code cds-text="code">rows</code> — are
-  withheld from embedded frames and the global accessor unless the application shares form values.
+  <code cds-text="code">value</code>, <code cds-text="code">selection</code>, <code cds-text="code">rows</code>,
+  <code cds-text="code">filteredColumns</code>, <code cds-text="code">hiddenColumns</code> and
+  <code cds-text="code">fileCount</code> — are withheld from embedded frames and the global accessor unless the
+  application shares form values.
 </p>
 <table class="table">
   <thead>
@@ -915,8 +917,8 @@
     <tr>
       <td class="left"><b cds-text="medium">clr-datagrid</b></td>
       <td class="left">
-        <code cds-text="code">totalRows</code> (paginated total), <code cds-text="code">filteredColumns</code>,
-        <code cds-text="code">hiddenColumns</code>; when rows can be selected,
+        <code cds-text="code">totalRows</code> (paginated total), <code cds-text="code">filteredColumns</code> (value),
+        <code cds-text="code">hiddenColumns</code> (value); when rows can be selected,
         <code cds-text="code">selectionMode</code> (<code cds-text="code">single</code> or
         <code cds-text="code">multi</code>), <code cds-text="code">rows</code> (each row's cells, the names a selection
         is written with) and <code cds-text="code">selection</code> (value)
@@ -956,10 +958,7 @@
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">clr-file-input-container</b></td>
-      <td class="left">
-        <code cds-text="code">fileCount</code>, withheld from untrusted consumers; the files themselves are always
-        redacted
-      </td>
+      <td class="left"><code cds-text="code">fileCount</code> (value); the files themselves are always redacted</td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">clr-date-container</b></td>

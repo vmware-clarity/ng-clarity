@@ -80,6 +80,16 @@ describe('snapshot options', () => {
       });
     });
 
+    it('keeps the ceiling exclusions when the request carries a list that is not one', () => {
+      const request = { excludeRoles: 'grid', excludeCategories: 'text' } as unknown as Parameters<
+        typeof capSnapshotOptions
+      >[0];
+      expect(capSnapshotOptions(request, { excludeRoles: ['navigation'], excludeCategories: ['dialogs'] })).toEqual({
+        excludeRoles: ['navigation'],
+        excludeCategories: ['dialogs'],
+      });
+    });
+
     it('cannot be talked into DOM collection the ceiling switched off', () => {
       expect(capSnapshotOptions({ includeDomComponents: true }, { includeDomComponents: false })).toEqual({
         includeDomComponents: false,
@@ -99,6 +109,17 @@ describe('snapshot options', () => {
       expect(sanitizeUntrustedSnapshotOptions({ excludeRoles: ['button', 'x'.repeat(33)] })).toEqual({
         excludeRoles: ['button'],
       });
+    });
+
+    it('takes a list only where a list is expected, and a name only where a name is', () => {
+      expect(
+        sanitizeUntrustedSnapshotOptions({
+          excludeRoles: 'grid',
+          excludeCategories: 'text',
+          focus: ['modal'],
+          collectionItems: 'summary',
+        })
+      ).toEqual({ collectionItems: 'summary' });
     });
   });
 
@@ -136,8 +157,11 @@ describe('snapshot options', () => {
       const call = { excludeSelectors: null, excludeRoles: 'img', excludeCategories: null } as unknown as Parameters<
         typeof withCallOptions
       >[1];
+      const warn = spyOn(console, 'warn');
       const resolved = resolveSnapshotOptions(withCallOptions(application, call));
 
+      expect(warn).toHaveBeenCalledTimes(3);
+      expect(String(warn.calls.first().args[0])).toContain('must be a list');
       expect(resolved.excludeSelectors).toEqual(['.secret']);
       expect(resolved.excludeRoles).toContain('grid');
       expect(resolved.excludeCategories).toEqual(['text']);
@@ -228,8 +252,10 @@ describe('snapshot options, choosing what to collect', () => {
       const overrides = { excludeCategories: null, excludeRoles: 'grid' } as unknown as Parameters<
         typeof clrContextPreset
       >[1];
+      const warn = spyOn(console, 'warn');
       const options = clrContextPreset('interactive', overrides);
 
+      expect(warn).toHaveBeenCalledTimes(2);
       expect(options.excludeCategories).toEqual(['layout', 'text']);
       expect(options.excludeRoles).toEqual([]);
     });
@@ -367,6 +393,23 @@ describe('withoutFormValues', () => {
       { value: 0.7 },
       { max: 10 },
     ]);
+  });
+
+  it('withholds which columns of a grid the user filtered or hid', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        {
+          type: 'grid',
+          element: 'clr-datagrid',
+          state: { totalRows: 40, filteredColumns: ['Name'], hiddenColumns: ['Status'] },
+        },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components[0].state).toEqual({ totalRows: 40 });
   });
 
   it('withholds how many files a file input holds', () => {

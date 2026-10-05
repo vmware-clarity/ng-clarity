@@ -461,6 +461,20 @@ describe('ClrContextEngineService, configured once for the application', () => {
       engine.disableGlobalAccess();
     }
   });
+
+  it('ignores an exclusion list an untrusted caller sends as a string, rather than failing', () => {
+    const engine = engineWith(provideClrContextOptions({ excludeRoles: ['navigation'], rootSelector: 'main, nav' }));
+    engine.enableGlobalAccess('testClrContextStringList', { excludeCategories: ['dialogs'] });
+    try {
+      const accessor = (window as unknown as Record<string, (options?: unknown) => ClrPageContext>)[
+        'testClrContextStringList'
+      ];
+
+      expect(types(accessor({ excludeRoles: 'main', excludeCategories: 'text' }))).toEqual(['main']);
+    } finally {
+      engine.disableGlobalAccess();
+    }
+  });
 });
 
 describe('ClrContextEngineService, the routes an application can navigate to', () => {

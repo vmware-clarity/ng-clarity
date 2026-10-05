@@ -34,6 +34,12 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapsh
 /** The longest an enumeration value — `focus`, `collectionItems`, a role or category name — may be. */
 const MAX_ENUM_LENGTH = 32;
 
+/** The options that take one value from a fixed set; any other option given a string drops it. */
+const ENUM_KEYS: readonly string[] = ['focus', 'collectionItems'];
+
+/** The options that take a list; any other option given a list drops it, and these drop anything else. */
+const UNTRUSTED_LIST_KEYS: readonly string[] = ['excludeCategories', 'excludeRoles'];
+
 /**
  * Reduces whatever an untrusted caller passed to the budgets it is allowed to set,
  * discarding everything else. Anything that is not a finite number, a boolean, a short
@@ -52,10 +58,10 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
     const value = candidate[key];
     if ((typeof value === 'number' && Number.isFinite(value)) || typeof value === 'boolean') {
       (sanitized as Record<string, unknown>)[key] = value;
-    } else if (typeof value === 'string' && value.length <= MAX_ENUM_LENGTH) {
+    } else if (typeof value === 'string' && value.length <= MAX_ENUM_LENGTH && ENUM_KEYS.includes(key)) {
       // Enumerations; anything that is not one of the values is dropped when resolved.
       (sanitized as Record<string, unknown>)[key] = value;
-    } else if (Array.isArray(value)) {
+    } else if (Array.isArray(value) && UNTRUSTED_LIST_KEYS.includes(key)) {
       // Roles and categories; a selector is not accepted from here at all.
       (sanitized as Record<string, unknown>)[key] = value
         .filter(entry => typeof entry === 'string' && entry.length <= MAX_ENUM_LENGTH)
@@ -72,8 +78,8 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
  *
  * Fields keep their label, type, constraints and validation state, so such a consumer
  * still learns the shape of a form; it just does not learn its contents. The rows a
- * selectable grid lists, which exist to name a selection, go with the selection, and so
- * does how many files a file input holds.
+ * selectable grid lists, which exist to name a selection, go with the selection, and so do
+ * a grid's filtered and hidden columns and how many files a file input holds.
  *
  * Regions are left as they are, state included: those come from the application's own
  * `clrContext` annotations, so whatever is in them was put there deliberately, for every
@@ -87,10 +93,16 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
  * State keys that are not values but still say what the user chose: the rows a selectable
  * grid lists so that a row can be named for selection — the grid's content, cell by cell,
  * where any other grid tells such a consumer only its columns and how many rows it has —
- * and how many files a file input holds. Withheld only from untrusted consumers: the
- * application's own code is told both.
+ * which columns of a grid are filtered or hidden, and how many files a file input holds.
+ * Withheld, from any node, only from untrusted consumers: the application's own code is
+ * told all of them.
  */
-const UNTRUSTED_WITHHELD_STATE_KEYS = ['rows', 'fileCount'];
+const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
+  'rows',
+  'filteredColumns',
+  'hiddenColumns',
+  'fileCount',
+]);
 
 /** A node without the {@link UNTRUSTED_WITHHELD_STATE_KEYS}, recursively. */
 function withoutUserContent(node: ClrComponentContext): ClrComponentContext {

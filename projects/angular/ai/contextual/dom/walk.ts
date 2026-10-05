@@ -45,8 +45,9 @@ import { stripQueryAndFragment } from '../url';
  * an accessible name, such as a bare `<div class="card">`.
  *
  * What the user entered or chose is recognised by its state key — `value`, `selected`,
- * `checked`, `selection`, `selectedRows` — and withheld from a consumer the application
- * does not control; report it under one of those keys, or it is shared with everyone.
+ * `checked`, `selection`, `selectedRows`, `rows`, `filteredColumns`, `hiddenColumns`,
+ * `fileCount` — and withheld from a consumer the application does not control; report it
+ * under one of those keys, or it is shared with everyone.
  */
 export interface ClrContextDomExtractor {
   /** CSS selector matching the elements this extractor understands. */

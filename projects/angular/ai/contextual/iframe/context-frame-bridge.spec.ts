@@ -12,6 +12,7 @@ import {
   ClrContextFrameResponse,
   clrRequestHostContext,
 } from './context-frame-bridge';
+import { resetNoHostOriginWarning } from './host-origin-warning';
 import { ClrPageContext } from '../interfaces/context.interface';
 
 /**
@@ -21,10 +22,12 @@ import { ClrPageContext } from '../interfaces/context.interface';
 interface FakeWindow {
   postMessage: jasmine.Spy;
   parent: unknown;
+  location: { origin: string } | undefined;
 }
 
-function fakeWindow(parent: unknown = window): FakeWindow {
-  return { postMessage: jasmine.createSpy('postMessage'), parent };
+/** A same-origin window by default, whose origin a request can read; pass `null` for one it cannot. */
+function fakeWindow(parent: unknown = window, origin: string | null = window.location.origin): FakeWindow {
+  return { postMessage: jasmine.createSpy('postMessage'), parent, location: origin ? { origin } : undefined };
 }
 
 /**
@@ -595,6 +598,54 @@ describe('Context frame bridge', () => {
 
     it('resolves with null when there is no separate host window', async () => {
       expect(await clrRequestHostContext({ targetWindow: window })).toBeNull();
+    });
+
+    it('asks another window at its own origin, not the origin of the page embedding this one', async () => {
+      const target = fakeWindow(window, 'https://other.example');
+
+      await clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 10 });
+
+      expect(target.postMessage.calls.mostRecent().args[1]).toEqual({ targetOrigin: 'https://other.example' });
+    });
+
+    it('rejects asking another window whose origin it cannot read without a hostOrigin', async () => {
+      const target = fakeWindow(window, null);
+
+      await expectAsync(clrRequestHostContext({ targetWindow: target as unknown as Window })).toBeRejectedWithError(
+        /needs a hostOrigin/
+      );
+      expect(target.postMessage).not.toHaveBeenCalled();
+    });
+
+    describe('without a hostOrigin, in development', () => {
+      let warn: jasmine.Spy;
+
+      beforeEach(() => {
+        resetNoHostOriginWarning();
+        warn = spyOn(console, 'warn');
+      });
+
+      afterEach(() => resetNoHostOriginWarning());
+
+      it('warns once that whichever page embeds the frame is trusted to answer', async () => {
+        const target = fakeWindow();
+        spyOnProperty(window, 'parent').and.returnValue(target as unknown as Window);
+
+        await clrRequestHostContext({ timeoutMs: 10 });
+        await clrRequestHostContext({ timeoutMs: 10 });
+
+        expect(warn).toHaveBeenCalledTimes(1);
+        expect(String(warn.calls.mostRecent().args[0])).toContain('no hostOrigin');
+      });
+
+      it('does not warn when a hostOrigin is given', async () => {
+        const target = fakeWindow();
+        spyOnProperty(window, 'parent').and.returnValue(target as unknown as Window);
+
+        await clrRequestHostContext({ hostOrigin: window.location.origin, timeoutMs: 10 });
+
+        expect(warn).not.toHaveBeenCalled();
+      });
     });
   });
 });
