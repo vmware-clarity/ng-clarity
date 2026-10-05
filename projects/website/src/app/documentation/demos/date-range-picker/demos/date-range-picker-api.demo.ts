@@ -14,9 +14,13 @@ import {
   ClrPopoverHostDirective,
   ClrStopEscapePropagationDirective,
 } from '@clr/angular';
-import { DateRangeOption } from '@clr/angular/forms/datepicker/interfaces/date-range.interface';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
+
+interface DateRangeOption {
+  label: string;
+  value: Date[];
+}
 
 const BASIC_EXAMPLE = `
 <form clrForm>
@@ -95,8 +99,12 @@ const PREDEFINED_RANGE_OPTIONS = `
 const PREDEFINED_RANGE_OPTIONS_TS = `
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { DateRangeOption } from '@clr/angular/forms/datepicker/interfaces/date-range.interface';
 import { ClrFormsModule } from '@clr/angular';
+
+interface DateRangeOption {
+  label: string;
+  value: Date[];
+}
 
 @Component({
   selector: 'app-example',
