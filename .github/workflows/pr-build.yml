@@ -54,6 +54,7 @@ jobs:
           fi
         shell: bash
       - name: Public Api Check
+        if: ${{matrix.angular == 'Angular v21'}}
         run: npm run public-api:check
       - name: Upload Docs Artifact
         if: ${{matrix.angular == 'Angular v21'}}
