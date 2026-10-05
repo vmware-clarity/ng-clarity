@@ -198,13 +198,14 @@
       UI embedded in an iframe — such as a chat assistant built with a separate UI library — can receive the hosting
       page's context. Only frames embedded in the page are answered; a window that merely shares an allowed origin — a
       popup, another tab, an opener — never is. An embedded document is trusted less than the application that embeds
-      it: same-origin only by default; no form values (typed, chosen, ticked or selected); no address beyond the route
-      pattern — the frame learns it is on <code cds-text="code">clusters/:id</code>, not which cluster, nor what a query
-      string carried — links reduced the same way, to the route they lead to or the origin they point at, and no
-      document title — the page's, nor an embedded frame's — which names the record on screen as often as the page,
-      unless the host sets <code cds-text="code">shareFormValues</code> or <code cds-text="code">shareFullUrl</code>;
-      only the options in <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> honoured, and only to ask for
-      less than the host, the application-wide options and the defaults allow; one snapshot per frame per
+      it: same-origin only by default; no form values (typed, chosen, ticked, pressed or selected); no address beyond
+      the route pattern — the frame learns it is on <code cds-text="code">clusters/:id</code>, not which cluster, nor
+      what a query string carried — links reduced the same way, to the route they lead to or the origin they point at,
+      and no document title — the page's, nor an embedded frame's — which names the record on screen as often as the
+      page, unless the host sets <code cds-text="code">shareFormValues</code> or
+      <code cds-text="code">shareFullUrl</code>; only the options in
+      <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> honoured, and only to ask for less than the host,
+      the application-wide options and the defaults allow; one snapshot per frame per
       <code cds-text="code">minRequestIntervalMs</code>, and at most five across all frames per interval, so frames in a
       loop cannot keep the host's main thread busy. The application's own <code cds-text="code">clrContext</code>
       annotations are shared as they are, state included: what they say was written for every consumer.

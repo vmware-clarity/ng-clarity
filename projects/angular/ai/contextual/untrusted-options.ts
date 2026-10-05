@@ -7,7 +7,7 @@
 
 import { withoutValues } from './dom/aria-state';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
-import { MAX_LIST_ENTRIES } from './snapshot-options';
+import { BUDGET_KEYS, MAX_LIST_ENTRIES, SWITCH_KEYS } from './snapshot-options';
 
 /**
  * Snapshot budgets a caller the application does not control — an embedded frame, a
@@ -34,12 +34,6 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapsh
 /** The longest an enumeration value — `focus`, `collectionItems`, a role or category name — may be. */
 const MAX_ENUM_LENGTH = 32;
 
-/** The options that take a number; any other option given a number drops it. */
-const BUDGET_KEYS: readonly string[] = ['maxTextLength', 'maxItemsPerCollection', 'maxComponents', 'maxDepth'];
-
-/** The options that take a boolean; any other option given a boolean drops it. */
-const SWITCH_KEYS: readonly string[] = ['includeDomComponents', 'includeText', 'includeFrames', 'includeRoutes'];
-
 /** The options that take one value from a fixed set; any other option given a string drops it. */
 const ENUM_KEYS: readonly string[] = ['focus', 'collectionItems'];
 
@@ -63,9 +57,9 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
   const sanitized: ClrContextSnapshotOptions = {};
   for (const key of CLR_CONTEXT_UNTRUSTED_OPTION_KEYS) {
     const value = candidate[key];
-    if (typeof value === 'number' && Number.isFinite(value) && BUDGET_KEYS.includes(key)) {
+    if (typeof value === 'number' && Number.isFinite(value) && (BUDGET_KEYS as readonly string[]).includes(key)) {
       (sanitized as Record<string, unknown>)[key] = value;
-    } else if (typeof value === 'boolean' && SWITCH_KEYS.includes(key)) {
+    } else if (typeof value === 'boolean' && (SWITCH_KEYS as readonly string[]).includes(key)) {
       (sanitized as Record<string, unknown>)[key] = value;
     } else if (typeof value === 'string' && value.length <= MAX_ENUM_LENGTH && ENUM_KEYS.includes(key)) {
       // Enumerations; anything that is not one of the values is dropped when resolved.
@@ -104,7 +98,8 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
  * grid lists so that a row can be named for selection — the grid's content, cell by cell,
  * where any other grid tells such a consumer only its columns and how many rows it has —
  * which columns of a grid are filtered or hidden, how many files a file input holds, and
- * the options a combobox lists while they are narrowed to what the user typed or picked.
+ * the options a combobox lists, and how many of them are redacted, while they are narrowed
+ * to what the user typed or picked.
  * Withheld, from any node, only from untrusted consumers: the application's own code is
  * told all of them.
  */
@@ -114,6 +109,7 @@ const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'hiddenColumns',
   'fileCount',
   'matchingOptions',
+  'redactedMatchingOptions',
 ]);
 
 /** A node without the {@link UNTRUSTED_WITHHELD_STATE_KEYS}, recursively. */

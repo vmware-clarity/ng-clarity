@@ -397,14 +397,26 @@ describe('ClrCombobox element context, options matched by identity', () => {
   template: `
     <clr-combobox name="person" [(ngModel)]="selection" [clrEditable]="true">
       <clr-options>
-        <clr-option *clrOptionItems="let person of people" [clrValue]="person">{{ person }}</clr-option>
+        <clr-option
+          *clrOptionItems="let person of people"
+          [clrValue]="person"
+          [attr.data-clr-context-redact]="person === 'Eve Smithers' ? '' : null"
+          >{{ person }}</clr-option
+        >
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox name="fruit" class="static" [(ngModel)]="fruit">
+      <clr-options>
+        <clr-option clrValue="apple">Apple</clr-option>
+        <clr-option clrValue="pear">Pear</clr-option>
       </clr-options>
     </clr-combobox>
   `,
   standalone: false,
 })
 class FilteredOptionsTestComponent {
-  people = ['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown'];
+  fruit: string | null = null;
+  people = ['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown', 'Eve Smithers'];
   selection: string | null = null;
 }
 
@@ -413,8 +425,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
   let fixture: ComponentFixture<FilteredOptionsTestComponent>;
   let engine: ClrContextEngineService;
 
-  function published() {
-    const host = fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
+  function published(selector = 'clr-combobox') {
+    const host = fixture.nativeElement.querySelector(selector) as HTMLElement & {
       clrElementContext?: ElementContextCallback;
     };
     if (!host.clrElementContext) {
@@ -428,8 +440,13 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     return JSON.stringify((window as unknown as Record<string, () => unknown>)[accessorName]());
   }
 
-  function type(text: string) {
-    const input = fixture.nativeElement.querySelector('input') as HTMLInputElement;
+  function open(selector = 'clr-combobox') {
+    fixture.nativeElement.querySelector(`${selector} button.clr-combobox-trigger`).click();
+    fixture.detectChanges();
+  }
+
+  function type(text: string, selector = 'clr-combobox') {
+    const input = fixture.nativeElement.querySelector(`${selector} input`) as HTMLInputElement;
     input.value = text;
     input.dispatchEvent(new Event('input'));
     fixture.detectChanges();
@@ -454,6 +471,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
   it('lists every option to untrusted consumers before anything is typed', () => {
     expect(published().state['options']).toEqual(['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown']);
+    expect(published().state['redactedOptions']).toBe(1);
     expect(shared()).toContain('Carol Smith');
   });
 
@@ -463,8 +481,27 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     type('Smi');
 
     expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published().state['redactedMatchingOptions']).toBe(1);
     expect(published().state['options']).toBeUndefined();
-    expect(shared()).not.toMatch(/Smi/);
+    expect(shared()).not.toMatch(/Smi|"redactedMatchingOptions"/);
+  });
+
+  it('tells the application that nothing matches, and untrusted consumers nothing', () => {
+    open();
+    type('Zzq');
+
+    expect(published().state['matchingOptions']).toEqual([]);
+    expect(published().state['optionsAvailable']).toBeUndefined();
+    expect(shared()).not.toMatch(/Zzq|"optionsAvailable"|"matchingOptions"/);
+  });
+
+  it('keeps listing options written out one by one, which typing does not narrow', () => {
+    open('.static');
+    type('Pe', '.static');
+
+    expect(document.querySelectorAll('[role="listbox"] [role="option"]').length).toBe(2);
+    expect(published('.static').state['options']).toEqual(['Apple', 'Pear']);
+    expect(published('.static').state['matchingOptions']).toBeUndefined();
   });
 
   it('does not tell untrusted consumers the one option left after an editable combobox closes on a pick', async () => {

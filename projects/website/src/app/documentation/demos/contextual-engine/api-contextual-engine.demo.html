@@ -73,13 +73,13 @@
         <code cds-text="code">options</code> here and <code cds-text="code">provideClrContextOptions</code>, and to the
         defaults wherever neither says: a caller cannot turn on <code cds-text="code">includeRoutes</code> or raise
         <code cds-text="code">maxComponents</code> past them. What the user entered — typed values, chosen options,
-        ticked boxes, selected rows — is withheld unless <code cds-text="code">shareFormValues</code> is set, and the
-        page's address is reduced to its route pattern — links to the application to the pattern they match, links
-        elsewhere and frames to their origin, <code cds-text="code">mailto:</code> links to their scheme — and the
-        document title withheld — the page's, and a frame's <code cds-text="code">state.title</code> — unless
-        <code cds-text="code">shareFullUrl</code> is set. The application's own
-        <code cds-text="code">clrContext</code> annotations are shared as they are. Descriptions — helper and validation
-        text — are still shared: keep what they say free of the value, or mark the field
+        ticked boxes, pressed toggles, selected rows — is withheld unless
+        <code cds-text="code">shareFormValues</code> is set, and the page's address is reduced to its route pattern —
+        links to the application to the pattern they match, links elsewhere and frames to their origin,
+        <code cds-text="code">mailto:</code> links to their scheme — and the document title withheld — the page's, and a
+        frame's <code cds-text="code">state.title</code> — unless <code cds-text="code">shareFullUrl</code> is set. The
+        application's own <code cds-text="code">clrContext</code> annotations are shared as they are. Descriptions —
+        helper and validation text — are still shared: keep what they say free of the value, or mark the field
         <code cds-text="code">data-clr-context-redact</code>.
       </td>
     </tr>
@@ -903,8 +903,11 @@
   State a Clarity component adds to its node, beyond what the accessibility tree says. Keys marked as values —
   <code cds-text="code">value</code>, <code cds-text="code">selection</code>, <code cds-text="code">rows</code>,
   <code cds-text="code">filteredColumns</code>, <code cds-text="code">hiddenColumns</code>,
-  <code cds-text="code">fileCount</code> and <code cds-text="code">matchingOptions</code> — are withheld from embedded
-  frames and the global accessor unless the application shares form values.
+  <code cds-text="code">fileCount</code>, <code cds-text="code">matchingOptions</code> and
+  <code cds-text="code">redactedMatchingOptions</code> — are withheld from embedded frames and the global accessor
+  unless the application shares form values, and so is the state any node reads from the accessibility tree to say what
+  the user chose: <code cds-text="code">selected</code>, <code cds-text="code">checked</code>,
+  <code cds-text="code">pressed</code> and <code cds-text="code">selectedRows</code>.
 </p>
 <table class="table">
   <thead>
@@ -929,11 +932,11 @@
       <td class="left">
         <code cds-text="code">multiSelect</code>, <code cds-text="code">options</code>,
         <code cds-text="code">redactedOptions</code> (how many options are withheld),
-        <code cds-text="code">matchingOptions</code> (value; in place of <code cds-text="code">options</code> while the
-        list is narrowed to what the user typed), <code cds-text="code">optionsAvailable</code> (<code cds-text="code"
-          >false</code
-        >
-        until a search loads them), <code cds-text="code">value</code> (value)
+        <code cds-text="code">matchingOptions</code> and <code cds-text="code">redactedMatchingOptions</code> (values;
+        in place of <code cds-text="code">options</code> and <code cds-text="code">redactedOptions</code> while
+        <code cds-text="code">*clrOptionItems</code> narrows the list to what the user typed),
+        <code cds-text="code">optionsAvailable</code> (false until a search loads them),
+        <code cds-text="code">value</code> (value)
       </td>
     </tr>
     <tr>

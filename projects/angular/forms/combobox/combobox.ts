@@ -65,6 +65,7 @@ import { ClrComboboxIdentityFunction, ClrComboboxResolverFunction, ComboboxModel
 import { MultiSelectComboboxModel } from './model/multi-select-combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
 import { ClrOption } from './option';
+import { ClrOptionItems } from './option-items.directive';
 import { ClrOptionSelected } from './option-selected.directive';
 import { ClrOptions } from './options';
 import { ComboboxContainerService } from './providers/combobox-container.service';
@@ -131,6 +132,7 @@ export class ClrCombobox<T>
   private resizeObserver: ResizeObserver;
   private containerWidthChange = new Subject();
   @ContentChild(ClrOptions) private options: ClrOptions<T>;
+  @ContentChild(ClrOptionItems) private optionItems: ClrOptionItems<T> | undefined;
 
   private teardownElementContext?: () => void;
   private teardownElementMutator?: () => void;
@@ -661,19 +663,23 @@ export class ClrCombobox<T>
       const excluded = this.excludedBy(snapshotOptions);
       const state: Record<string, unknown> = { multiSelect: this.multiSelect };
       const items = this.options?.items;
-      if (items?.length) {
+      const narrowed = this.optionsNarrowed();
+      if (items?.length || narrowed) {
         // Option content children exist even while the popover is closed, so the
         // choices are available regardless of what the DOM currently shows. An option
         // the snapshot excludes is not one; a redacted one counts, unnamed.
-        const listed = items.toArray().filter(option => this.optionShown(option, excluded) !== 'excluded');
+        const listed = (items?.toArray() ?? []).filter(option => this.optionShown(option, excluded) !== 'excluded');
         const named = listed.filter(option => this.optionShown(option, excluded) === 'shown');
         const labels = named.slice(0, maxItems).map(option => this.optionLabel(option));
-        if (this.optionsNarrowed()) {
-          // The list holds only the options matching what the user typed, and after an
-          // editable combobox closes, only the one they picked. That says what they
-          // entered, so it goes under a key withheld from consumers the application does
-          // not control, and so does how many of the matches are redacted.
+        if (narrowed) {
+          // The list holds only the options matching what the user typed — none, when
+          // nothing matches — and after an editable combobox closes, only the one they
+          // picked. That says what they entered, so it goes under keys withheld from
+          // consumers the application does not control, the redacted matches' count too.
           state.matchingOptions = labels;
+          if (named.length < listed.length) {
+            state.redactedMatchingOptions = listed.length - named.length;
+          }
         } else {
           state.options = labels;
           if (named.length < listed.length) {
@@ -691,9 +697,15 @@ export class ClrCombobox<T>
     this.teardownElementContext = clrPublishElementContext(host, describe);
   }
 
-  /** Whether the rendered options are only those matching the text in the input. */
+  /**
+   * Whether the rendered options are only those matching the text in the input. Only
+   * `*clrOptionItems` filters by that text; options written out one by one are all
+   * rendered whatever was typed.
+   */
   private optionsNarrowed(): boolean {
-    return !this.optionSelectionService.showAllOptions && !!this.optionSelectionService.currentInput;
+    return (
+      !!this.optionItems && !this.optionSelectionService.showAllOptions && !!this.optionSelectionService.currentInput
+    );
   }
 
   /**

@@ -207,8 +207,10 @@ const BUDGET_RANGES: Record<BudgetKey, { min: number; max: number }> = {
   maxDepth: { min: 0, max: 100 },
 };
 
-const BUDGET_KEYS = Object.keys(BUDGET_RANGES) as BudgetKey[];
-const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames', 'includeRoutes'] as const;
+/** The options that take a number: the budgets. */
+export const BUDGET_KEYS = Object.keys(BUDGET_RANGES) as BudgetKey[];
+/** The options that take a boolean: the switches. */
+export const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames', 'includeRoutes'] as const;
 const LIST_KEYS = ['excludeRoles', 'excludeSelectors'] as const;
 
 /**
