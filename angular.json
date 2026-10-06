@@ -185,6 +185,11 @@
                 "input": "projects/website/src/compiled-content/",
                 "output": "/"
               },
+              {
+                "glob": "**/*.json",
+                "input": "projects/website/src/compiled-content/fulltext/",
+                "output": "/fulltext/"
+              },
               "projects/website/src/assets"
             ],
             "styles": ["projects/angular/main.scss", "projects/website/src/styles/main.scss"],

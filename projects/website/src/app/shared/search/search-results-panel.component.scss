@@ -21,6 +21,7 @@
   overflow: hidden;
   white-space: nowrap;
   min-height: var(--clr-base-row-height-m);
+  justify-content: space-between;
 
   &.focused {
     outline-color: Highlight;
@@ -43,4 +44,36 @@
 
 .search-result-empty {
   padding: var(--clr-base-vertical-offset-m) var(--clr-base-horizontal-offset-l);
+}
+
+.search-result-full-text-header {
+  flex-grow: 1;
+  flex-shrink: 0;
+}
+
+// Full-text rows wrap so the snippet can show its surrounding context.
+.search-result-full-text {
+  white-space: normal;
+  padding-top: var(--clr-base-vertical-offset-s);
+  padding-bottom: var(--clr-base-vertical-offset-s);
+  flex-direction: column;
+  flex-grow: 1;
+  flex-shrink: 0;
+
+  .search-result-heading {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+}
+
+.search-result-snippet {
+  display: block;
+  align-self: flex-start;
+  color: var(--cds-alias-object-interaction-color);
+
+  mark {
+    text-decoration: underline;
+    font-weight: var(--cds-alias-typography-font-weight-semibold);
+  }
 }

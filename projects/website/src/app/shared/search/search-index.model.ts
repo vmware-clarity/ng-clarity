@@ -31,6 +31,15 @@ export interface SearchResult {
   matchStartsWith: boolean;
 }
 
+export interface FullTextResult {
+  url: string;
+  fragment?: string;
+  title: string;
+  heading: string;
+  category: string;
+  snippet: HighlightSegment[];
+}
+
 export interface HighlightSegment {
   text: string;
   matched: boolean;

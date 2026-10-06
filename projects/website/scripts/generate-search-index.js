@@ -18,6 +18,13 @@ const path = require('path');
 const REPO_ROOT = path.resolve(__dirname, '../../..');
 const WEBSITE_ROOT = path.join(REPO_ROOT, 'projects/website');
 const OUTPUT_PATH = path.join(WEBSITE_ROOT, 'src/compiled-content/search-index.json');
+const FULL_TEXT_OUTPUT_PATH = path.join(WEBSITE_ROOT, 'src/compiled-content/fulltext');
+const FULL_TEXT_CHUNK_SIZE = 16;
+const FULL_TEXT_STOP_WORDS = new Set(
+  'the a an and or of to in is it for on with as by be this that are can you your from at use used when which not'.split(
+    ' '
+  )
+);
 
 const HTML_ENTITIES = {
   amp: '&',
@@ -42,6 +49,153 @@ function main() {
 
   fs.writeFileSync(OUTPUT_PATH, JSON.stringify(index, undefined, 2));
   console.log(`Wrote ${index.length} search-index entries to ${OUTPUT_PATH}`);
+
+  writeFullTextIndex(buildFullTextSections(categoryMap));
+}
+
+// Full-text fallback index (Pagefind-style, no dependencies), used by FullTextSearchService
+// for long/sentence queries the heading index above can't answer. Split into small files so a
+// query only downloads what it needs:
+//   meta.json          one row per section: [url, fragment, title, heading, category, headingWords, totalWords]
+//   words/<xx>.json    word -> [[sectionId, ...wordPositions]], sharded by the word's first 2 chars
+//   text/<n>.json      plain section text, FULL_TEXT_CHUNK_SIZE sections per file, for snippets
+// Tokenizing must stay in sync with tokenize() in full-text-search.service.ts.
+function writeFullTextIndex(sections) {
+  fs.rmSync(FULL_TEXT_OUTPUT_PATH, { recursive: true, force: true });
+  fs.mkdirSync(path.join(FULL_TEXT_OUTPUT_PATH, 'words'), { recursive: true });
+  fs.mkdirSync(path.join(FULL_TEXT_OUTPUT_PATH, 'text'));
+
+  const meta = sections.map(s => [
+    s.url,
+    s.fragment,
+    s.title,
+    s.heading,
+    s.category,
+    tokenize(s.heading).length,
+    tokenize(`${s.heading} ${s.text}`).length,
+  ]);
+
+  // Object.create(null) so words like "constructor" don't collide with Object.prototype.
+  const shards = Object.create(null);
+
+  sections.forEach((section, id) => {
+    tokenize(`${section.heading} ${section.text}`).forEach((word, position) => {
+      if (word.length < 2 || FULL_TEXT_STOP_WORDS.has(word)) {
+        return;
+      }
+
+      const shard = (shards[word.slice(0, 2)] ??= Object.create(null));
+      const postings = (shard[word] ??= []);
+      const last = postings[postings.length - 1];
+
+      if (last && last[0] === id) {
+        last.push(position);
+      } else {
+        postings.push([id, position]);
+      }
+    });
+  });
+
+  fs.writeFileSync(path.join(FULL_TEXT_OUTPUT_PATH, 'meta.json'), JSON.stringify(meta));
+
+  for (const [prefix, shard] of Object.entries(shards)) {
+    fs.writeFileSync(path.join(FULL_TEXT_OUTPUT_PATH, 'words', `${prefix}.json`), JSON.stringify(shard));
+  }
+
+  for (let i = 0; i < sections.length; i += FULL_TEXT_CHUNK_SIZE) {
+    const texts = sections.slice(i, i + FULL_TEXT_CHUNK_SIZE).map(s => s.text);
+    fs.writeFileSync(
+      path.join(FULL_TEXT_OUTPUT_PATH, 'text', `${i / FULL_TEXT_CHUNK_SIZE}.json`),
+      JSON.stringify(texts)
+    );
+  }
+
+  console.log(
+    `Wrote ${sections.length} full-text sections (${Object.keys(shards).length} word shards) to ${FULL_TEXT_OUTPUT_PATH}`
+  );
+}
+
+function tokenize(text) {
+  return text.toLowerCase().split(/[^a-z0-9-]+/);
+}
+
+// One page's HTML per URL (content pages + each documentation tab), split into sections at
+// every h2/h3 that has an id, so each section can link straight to its heading.
+function buildFullTextSections(categoryMap) {
+  const pages = new Map();
+  const addPage = (url, title, category, html) => {
+    const page = pages.get(url) ?? { url, title, category, html: '' };
+    page.html += html;
+    pages.set(url, page);
+  };
+
+  for (const [slug, page] of Object.entries(require(path.join(WEBSITE_ROOT, 'src/compiled-content/pages.json')))) {
+    const url = `/pages/${slug}`;
+    const navMeta = categoryMap.get(url);
+    addPage(url, navMeta?.title ?? page.title, navMeta?.category ?? 'Pages', page.html);
+  }
+
+  const components = require(path.join(WEBSITE_ROOT, 'src/settings/componentlist.json'));
+  const routeFolders = buildRouteFolderMap();
+
+  for (const component of components.list) {
+    const folder = routeFolders.get(component.url);
+
+    if (!folder) {
+      continue;
+    }
+
+    const url = `/documentation/${component.url}`;
+    const navMeta = categoryMap.get(url);
+    const title = navMeta?.title ?? component.text;
+    const category =
+      navMeta?.category ??
+      (component.type === 'component' ? 'Components' : component.type === 'addons' ? 'Addons' : 'Patterns');
+
+    for (const { tab, html } of readDemoTabs(folder)) {
+      addPage(tab === 'overview' ? url : `${url}/${tab}`, title, category, html);
+    }
+  }
+
+  const sections = [];
+
+  for (const { url, title, category, html } of pages.values()) {
+    const parts = cleanTemplate(html).split(/(<h[23]\b[^>]*\bid="[^"]*"[^>]*>[\s\S]*?<\/h[23]>)/);
+    let current = { url, fragment: null, title, category, heading: title, text: htmlToText(parts[0]) };
+
+    for (let i = 1; i < parts.length; i += 2) {
+      if (current.text) {
+        sections.push(current);
+      }
+
+      current = {
+        url,
+        fragment: /\bid="([^"]*)"/.exec(parts[i])[1],
+        title,
+        category,
+        heading: htmlToText(parts[i]),
+        text: htmlToText(parts[i + 1] ?? ''),
+      };
+    }
+
+    if (current.text) {
+      sections.push(current);
+    }
+  }
+
+  return sections;
+}
+
+// Drops Angular interpolations and app-/clr-/cds- element tags (keeping their text content).
+function cleanTemplate(html) {
+  return html.replace(/\{\{[\s\S]*?\}\}/g, '').replace(/<\/?(app-|clr-|cds-)[^>]*>/g, '');
+}
+
+// Code samples are left out on purpose: they'd roughly double the index for little search value.
+function htmlToText(html) {
+  return decodeHtmlEntities(html.replace(/<(script|style|pre|code)\b[\s\S]*?<\/\1>/gi, ' ').replace(/<[^>]*>/g, ' '))
+    .replace(/\s+/g, ' ')
+    .trim();
 }
 
 // Lookup of pathname -> {category, title} from the site's own compiled nav data, so entries are
