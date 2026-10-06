@@ -77,6 +77,7 @@ jobs:
   # Required status check: branch protection expects a single "PR Build" check.
   pr-build-status:
     name: PR Build
+    permissions: {}
     if: ${{ always() }}
     needs: [pr-build]
     runs-on: ubuntu-latest
