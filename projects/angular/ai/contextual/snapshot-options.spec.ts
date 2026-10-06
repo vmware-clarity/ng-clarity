@@ -409,6 +409,17 @@ describe('withoutUrlDetails', () => {
 });
 
 describe('withoutFormValues', () => {
+  it('leaves no empty state behind when every key a node published is withheld', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [{ type: 'grid', element: 'app-picker', state: { rows: ['Alice'] } }],
+      collectedAt: '',
+    });
+
+    expect('state' in shared.components[0]).toBe(false);
+  });
+
   it('withholds the rows a selectable grid lists along with its selection', () => {
     const shared = withoutFormValues({
       title: '',

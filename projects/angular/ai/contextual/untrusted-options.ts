@@ -98,8 +98,8 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
  * grid lists so that a row can be named for selection — the grid's content, cell by cell,
  * where any other grid tells such a consumer only its columns and how many rows it has —
  * which columns of a grid are filtered or hidden, how many files a file input holds, and
- * the options a combobox lists, and how many of them are redacted, while they are narrowed
- * to what the user typed or picked.
+ * the options a combobox lists, how many of them are redacted and whether they are still
+ * loading, while they are narrowed to what the user typed or picked.
  * Withheld, from any node, only from untrusted consumers: the application's own code is
  * told all of them.
  */
@@ -110,6 +110,7 @@ const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'fileCount',
   'matchingOptions',
   'redactedMatchingOptions',
+  'matchingOptionsPending',
 ]);
 
 /** A node without the {@link UNTRUSTED_WITHHELD_STATE_KEYS}, recursively. */
@@ -121,7 +122,12 @@ function withoutUserContent(node: ClrComponentContext): ClrComponentContext {
     for (const key of UNTRUSTED_WITHHELD_STATE_KEYS) {
       delete kept[key];
     }
-    result = { ...result, state: kept };
+    result = { ...result };
+    if (Object.keys(kept).length) {
+      result.state = kept;
+    } else {
+      delete result.state;
+    }
   }
   const children = node.children;
   if (children?.length) {

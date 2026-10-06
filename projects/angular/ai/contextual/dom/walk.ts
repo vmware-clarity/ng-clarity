@@ -46,9 +46,9 @@ import { stripQueryAndFragment } from '../url';
  *
  * What the user entered or chose is recognised by its state key — `value`, `selected`,
  * `checked`, `pressed`, `selection`, `selectedRows`, `rows`, `filteredColumns`,
- * `hiddenColumns`, `fileCount`, `matchingOptions`, `redactedMatchingOptions` — and withheld
- * from a consumer the application does not control; report it under one of those keys, or
- * it is shared with everyone.
+ * `hiddenColumns`, `fileCount`, `matchingOptions`, `redactedMatchingOptions`,
+ * `matchingOptionsPending` — and withheld from a consumer the application does not
+ * control; report it under one of those keys, or it is shared with everyone.
  */
 export interface ClrContextDomExtractor {
   /** CSS selector matching the elements this extractor understands. */

@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextEngineService } from '@clr/angular/ai';
-import { ClrComponentContext } from '@clr/angular/utils';
+import { ClrComponentContext, ClrLoadingModule } from '@clr/angular/utils';
 
 import { ClrComboboxModule } from './combobox.module';
 
@@ -395,7 +395,7 @@ describe('ClrCombobox element context, options matched by identity', () => {
 
 @Component({
   template: `
-    <clr-combobox name="person" [(ngModel)]="selection" [clrEditable]="true">
+    <clr-combobox name="person" [(ngModel)]="selection" [clrEditable]="true" [clrLoading]="loading">
       <clr-options>
         <clr-option
           *clrOptionItems="let person of people"
@@ -411,11 +411,20 @@ describe('ClrCombobox element context, options matched by identity', () => {
         <clr-option clrValue="pear">Pear</clr-option>
       </clr-options>
     </clr-combobox>
+    <clr-combobox name="city" class="mixed" [(ngModel)]="city">
+      <clr-options>
+        <clr-option clrValue="elsewhere">Somewhere else</clr-option>
+        <clr-option *clrOptionItems="let name of cities" [clrValue]="name">{{ name }}</clr-option>
+      </clr-options>
+    </clr-combobox>
   `,
   standalone: false,
 })
 class FilteredOptionsTestComponent {
   fruit: string | null = null;
+  city: string | null = null;
+  cities = ['Sofia', 'Plovdiv', 'Varna'];
+  loading = false;
   people = ['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown', 'Eve Smithers'];
   selection: string | null = null;
 }
@@ -433,6 +442,12 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
       throw new Error('expected the combobox to publish a clrElementContext callback');
     }
     return host.clrElementContext({ maxItemsPerCollection: 25 });
+  }
+
+  async function settle() {
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
   }
 
   function shared(): string {
@@ -454,7 +469,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      imports: [ClrComboboxModule, ClrLoadingModule, FormsModule, NoopAnimationsModule],
       declarations: [FilteredOptionsTestComponent],
     });
     fixture = TestBed.createComponent(FilteredOptionsTestComponent);
@@ -493,6 +508,41 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(published().state['matchingOptions']).toEqual([]);
     expect(published().state['optionsAvailable']).toBeUndefined();
     expect(shared()).not.toMatch(/Zzq|"optionsAvailable"|"matchingOptions"/);
+  });
+
+  it('says the matches are still loading while a search runs, rather than that none match', async () => {
+    fixture.componentInstance.loading = true;
+    await settle();
+    open();
+    type('Smi');
+
+    expect(published().state['matchingOptionsPending']).toBe(true);
+    expect(published().state['matchingOptions']).toBeUndefined();
+    expect(shared()).not.toMatch(/Smi|"matchingOptionsPending"/);
+
+    fixture.componentInstance.loading = false;
+    await settle();
+
+    expect(published().state['matchingOptionsPending']).toBeUndefined();
+    expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+  });
+
+  it('withholds every option of a list that mixes written-out options with *clrOptionItems', () => {
+    open('.mixed');
+    type('Var', '.mixed');
+
+    expect(published('.mixed').state['matchingOptions']).toEqual(['Somewhere else', 'Varna']);
+    expect(shared()).not.toMatch(/Var|Somewhere else/);
+  });
+
+  it('withholds the picked option when an editable combobox with a value is opened again', async () => {
+    fixture.componentInstance.selection = 'Bob Jones';
+    await settle();
+    open();
+    await settle();
+
+    expect(published().state['matchingOptions']).toEqual(['Bob Jones']);
+    expect(shared()).not.toContain('Bob');
   });
 
   it('keeps listing options written out one by one, which typing does not narrow', () => {

@@ -664,7 +664,12 @@ export class ClrCombobox<T>
       const state: Record<string, unknown> = { multiSelect: this.multiSelect };
       const items = this.options?.items;
       const narrowed = this.optionsNarrowed();
-      if (items?.length || narrowed) {
+      if (narrowed && this.optionSelectionService.loading) {
+        // A search for what the user typed is still loading (`clrLoading`): no list says
+        // yet what matches, and saying none does would be wrong. Withheld from consumers the
+        // application does not control, as the matches are.
+        state.matchingOptionsPending = true;
+      } else if (items?.length || narrowed) {
         // Option content children exist even while the popover is closed, so the
         // choices are available regardless of what the DOM currently shows. An option
         // the snapshot excludes is not one; a redacted one counts, unnamed.
