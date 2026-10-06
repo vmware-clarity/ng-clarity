@@ -1,15 +1,14 @@
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, AfterViewInit, QueryList, FactoryProvider, ChangeDetectorRef, AfterViewChecked, AfterContentChecked } from '@angular/core';
+import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, AfterViewInit, QueryList, FactoryProvider, AfterViewChecked, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
 import * as i2 from '@angular/common';
 import * as _angular_animations from '@angular/animations';
 import { AnimationMetadata, AnimationEvent, AnimationBuilder } from '@angular/animations';
 export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';
-import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { Subscription, Observable, Observer, Subject } from 'rxjs';
-import { Directionality } from '@angular/cdk/bidi';
-import { CdkDrag, DragDropConfig, DragDrop } from '@angular/cdk/drag-drop';
+import { CdkDrag } from '@angular/cdk/drag-drop';
 
 declare function triggerAllFormControlValidation(formGroup: FormGroup): void;
 
@@ -581,12 +580,12 @@ declare class ClrFocusOnViewInitModule {
 
 declare class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
     /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
+     * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+     * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+     * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
      */
-    constructor(elementRef: ElementRef<HTMLElement>, focusTrapFactory: FocusTrapFactory, document: any);
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, [null, null, { optional: true; }]>;
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
 }
 
@@ -778,12 +777,12 @@ declare class ScrollingService {
  */
 declare class CdkDragModule_CdkDrag extends CdkDrag {
     /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
+     * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+     * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+     * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
      */
-    constructor(elementRef: ElementRef<HTMLElement>, dropContainer: any, document: any, ngZone: NgZone, viewContainerRef: ViewContainerRef, config: DragDropConfig, dir: Directionality, dragDrop: DragDrop, changeDetectorRef: ChangeDetectorRef);
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule_CdkDrag, [null, { optional: true; }, { optional: true; }, null, null, { optional: true; }, null, null, null]>;
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule_CdkDrag, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdkDragModule_CdkDrag, "[cdkDrag]", never, {}, {}, never, never, false, never>;
 }
 /**
@@ -800,12 +799,12 @@ declare class CdkDragModule {
  */
 declare class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
     /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
+     * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+     * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+     * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
      */
-    constructor(elementRef: ElementRef<HTMLElement>, focusTrapFactory: FocusTrapFactory, document: any);
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, [null, null, { optional: true; }]>;
+    constructor();
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdkTrapFocusModule_CdkTrapFocus, "[cdkTrapFocus]", never, {}, {}, never, never, false, never>;
 }
 /**
