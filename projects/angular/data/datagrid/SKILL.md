@@ -105,7 +105,7 @@ refresh(state: ClrDatagridStateInterface<User>) {
 
 ## Selection
 
-- Grid: `[clrDgSelectionType]="'multi' | 'single' | 'none'"` + `[(clrDgSelected)]` (array for multi, single item for single). Any other selection type string throws.
+- Grid: `[clrDgSelectionType]="'multi' | 'single' | 'none'"` + `[(clrDgSelected)]` (array for multi and single). Any other selection type string throws.
 - Every row needs `[clrDgItem]`.
 - Lock a row: `[clrDgSelectable]="false"` on `clr-dg-row`.
 - Keep selection across refetches: `[clrDgItemsIdentityFn]="(u) => u.id"` and `[clrDgPreserveSelection]="true"`.
