@@ -34,6 +34,7 @@ import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
 import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
+import * as i1_2 from '@angular/platform-browser/animations';
 import * as i40 from '@angular/common';
 import * as i48 from '@angular/forms';
 import { InjectionToken } from '@angular/core';
@@ -861,7 +862,7 @@ export class MockWorkflowTestModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<MockWorkflowTestModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<MockWorkflowTestModule, [typeof InvalidMockComponent, typeof MockStepComponent], never, never>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<MockWorkflowTestModule, [typeof InvalidMockComponent, typeof MockStepComponent], [typeof i1_2.NoopAnimationsModule], never>;
 }
 
 // @public (undocumented)

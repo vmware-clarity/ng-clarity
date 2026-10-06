@@ -15,9 +15,6 @@ import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 
 // @public
-export const COLLAPSIBLE_PANEL_COLLAPSING_CLASS = "clr-collapsible-panel-collapsing";
-
-// @public
 export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     protected readonly animatesCollapse: boolean;

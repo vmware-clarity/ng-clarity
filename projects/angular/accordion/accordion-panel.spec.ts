@@ -346,16 +346,20 @@ describe('ClrAccordionPanel with animations', () => {
     return fixture.nativeElement.querySelector('.clr-accordion-content');
   }
 
+  function heightAnimations(element: HTMLElement): Animation[] {
+    return element.getAnimations().filter(animation => !(animation instanceof CSSTransition));
+  }
+
   it('animates the height of the content when it expands', async () => {
     fixture.componentInstance.open = true;
     fixture.detectChanges();
     await delay();
 
-    expect(content().getAnimations().length).toBe(1);
+    expect(heightAnimations(content()).length).toBe(1);
     finishAnimations(fixture.nativeElement);
   });
 
-  it('keeps the content rendered while it collapses, then removes it', async () => {
+  it('only animates the expansion: the content is removed as soon as the panel closes', async () => {
     fixture.componentInstance.open = true;
     fixture.detectChanges();
     await delay();
@@ -363,13 +367,6 @@ describe('ClrAccordionPanel with animations', () => {
     await delay();
 
     fixture.componentInstance.open = false;
-    fixture.detectChanges();
-
-    expect(content()).not.toBeNull();
-    expect(content().getAnimations().length).toBe(1);
-
-    finishAnimations(fixture.nativeElement);
-    await delay();
     fixture.detectChanges();
 
     expect(content()).toBeNull();

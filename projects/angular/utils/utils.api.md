@@ -37,28 +37,6 @@ import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 
-// @public @deprecated
-export function animationAnimate(timings: string | number, styles?: ClrAnimationStyleMetadata | null): ClrAnimationAnimateMetadata;
-
-// @public @deprecated
-export function animationReference(steps: ClrAnimationMetadata | ClrAnimationMetadata[], options?: ClrAnimationOptions | null): ClrAnimationReferenceMetadata;
-
-// @public @deprecated
-export function animationState(name: string, styles: ClrAnimationStyleMetadata, options?: {
-    params: {
-        [name: string]: any;
-    };
-}): ClrAnimationStateMetadata;
-
-// @public @deprecated
-export function animationStyle(styles: ClrAnimationStyles): ClrAnimationStyleMetadata;
-
-// @public @deprecated
-export function animationTransition(expr: string, steps: ClrAnimationMetadata | ClrAnimationMetadata[], options?: ClrAnimationOptions | null): ClrAnimationTransitionMetadata;
-
-// @public @deprecated
-export function animationTrigger(name: string, definitions: ClrAnimationMetadata[]): ClrAnimationTriggerMetadata;
-
 // @public (undocumented)
 export enum ArrowKeyDirection {
     // (undocumented)
@@ -75,7 +53,7 @@ export enum ArrowKeyDirection {
 export function assertNever(value: never): void;
 
 // @public (undocumented)
-export class BaseExpandableAnimation implements OnDestroy {
+export class BaseExpandableAnimation {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
     // @deprecated (undocumented)
     cleanupAnimationEffects(cancelAnimations?: boolean): void;
@@ -85,8 +63,6 @@ export class BaseExpandableAnimation implements OnDestroy {
     protected element: ElementRef<HTMLElement>;
     // (undocumented)
     initAnimationEffects(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     playAnimation(): void;
     // (undocumented)
     protected renderer: Renderer2;
@@ -557,6 +533,14 @@ export class ClrFocusOnViewInitModule {
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
 
 // @public
+export class ClrHeightAnimation {
+    constructor(injector: Injector, easing?: string);
+    cancel(): number;
+    collapse(element: HTMLElement | null | undefined): void;
+    expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
+}
+
+// @public
 export class ClrHostWrappingModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
@@ -818,10 +802,8 @@ export const DATEPICKER_ENABLE_BREAKPOINT = 768;
 // @public @deprecated (undocumented)
 export const defaultAnimationTiming = "0.2s ease-in-out";
 
-// Warning: (ae-forgotten-export) The symbol "_clr_angular_utils" needs to be exported by the entry point clr-angular-utils.d.ts
-//
 // @public @deprecated (undocumented)
-export const defaultExpandAnimation: _clr_angular_utils.ClrAnimationReferenceMetadata;
+export const defaultExpandAnimation: ClrAnimationReferenceMetadata;
 
 // @public (undocumented)
 export class DomAdapter {
@@ -921,14 +903,6 @@ export class FocusService {
 
 // @public (undocumented)
 export type HeadingLevel = 1 | 2 | 3 | 4 | 5 | 6 | '1' | '2' | '3' | '4' | '5' | '6';
-
-// @public
-export class HeightAnimation {
-    constructor(injector: Injector, easing?: string);
-    cancel(): number;
-    collapse(element: HTMLElement | null | undefined): void;
-    expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
-}
 
 // @public
 export class HostWrapper<W> implements Injector {

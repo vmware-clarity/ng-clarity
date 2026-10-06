@@ -272,33 +272,11 @@ export const angleIcon: IconShapeTuple;
 // @public (undocumented)
 export const angleIconName = "angle";
 
-// @public @deprecated
-export function animationAnimate(timings: string | number, styles?: ClrAnimationStyleMetadata | null): ClrAnimationAnimateMetadata;
-
 // @public (undocumented)
 export const animationIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const animationIconName = "animation";
-
-// @public @deprecated
-export function animationReference(steps: ClrAnimationMetadata | ClrAnimationMetadata[], options?: ClrAnimationOptions | null): ClrAnimationReferenceMetadata;
-
-// @public @deprecated
-export function animationState(name: string, styles: ClrAnimationStyleMetadata, options?: {
-    params: {
-        [name: string]: any;
-    };
-}): ClrAnimationStateMetadata;
-
-// @public @deprecated
-export function animationStyle(styles: ClrAnimationStyles): ClrAnimationStyleMetadata;
-
-// @public @deprecated
-export function animationTransition(expr: string, steps: ClrAnimationMetadata | ClrAnimationMetadata[], options?: ClrAnimationOptions | null): ClrAnimationTransitionMetadata;
-
-// @public @deprecated
-export function animationTrigger(name: string, definitions: ClrAnimationMetadata[]): ClrAnimationTriggerMetadata;
 
 // @public (undocumented)
 export const announcementIcon: IconShapeTuple;
@@ -418,7 +396,7 @@ export const barsIcon: IconShapeTuple;
 export const barsIconName = "bars";
 
 // @public (undocumented)
-export class BaseExpandableAnimation implements OnDestroy {
+export class BaseExpandableAnimation {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
     // @deprecated (undocumented)
     cleanupAnimationEffects(cancelAnimations?: boolean): void;
@@ -428,8 +406,6 @@ export class BaseExpandableAnimation implements OnDestroy {
     protected element: ElementRef<HTMLElement>;
     // (undocumented)
     initAnimationEffects(): void;
-    // (undocumented)
-    ngOnDestroy(): void;
     playAnimation(): void;
     // (undocumented)
     protected renderer: Renderer2;
@@ -4111,6 +4087,14 @@ export class ClrHeader implements OnDestroy {
 }
 
 // @public
+export class ClrHeightAnimation {
+    constructor(injector: Injector, easing?: string);
+    cancel(): number;
+    collapse(element: HTMLElement | null | undefined): void;
+    expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
+}
+
+// @public
 export class ClrHostWrappingModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
@@ -7119,9 +7103,6 @@ export const collapseCardIcon: IconShapeTuple;
 export const collapseCardIconName = "collapse-card";
 
 // @public
-export const COLLAPSIBLE_PANEL_COLLAPSING_CLASS = "clr-collapsible-panel-collapsing";
-
-// @public
 export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     protected readonly animatesCollapse: boolean;
@@ -7714,7 +7695,7 @@ export const DEFAULT_BUTTON_TYPES: any;
 export const defaultAnimationTiming = "0.2s ease-in-out";
 
 // @public @deprecated (undocumented)
-export const defaultExpandAnimation: i5.ClrAnimationReferenceMetadata;
+export const defaultExpandAnimation: ClrAnimationReferenceMetadata;
 
 // @public (undocumented)
 export const deployIcon: IconShapeTuple;
@@ -8369,14 +8350,6 @@ export const heatMapIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const heatMapIconName = "heat-map";
-
-// @public
-export class HeightAnimation {
-    constructor(injector: Injector, easing?: string);
-    cancel(): number;
-    collapse(element: HTMLElement | null | undefined): void;
-    expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
-}
 
 // @public (undocumented)
 export const helixIcon: IconShapeTuple;
