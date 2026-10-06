@@ -1799,6 +1799,14 @@ export class DatalistIdService {
 }
 
 // @public (undocumented)
+export interface DateRangeOption {
+    // (undocumented)
+    label: string;
+    // (undocumented)
+    value: Date[];
+}
+
+// @public (undocumented)
 export class FormsFocusService {
     // (undocumented)
     get focusChange(): Observable<boolean>;

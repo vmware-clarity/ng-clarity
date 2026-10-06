@@ -112,6 +112,7 @@ export class CdkDragModule {
 
 // @public
 export class CdkDragModule_CdkDrag extends CdkDrag {
+    constructor();
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdkDragModule_CdkDrag, "[cdkDrag]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -130,6 +131,7 @@ export class CdkTrapFocusModule {
 
 // @public
 export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
+    constructor();
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdkTrapFocusModule_CdkTrapFocus, "[cdkTrapFocus]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -639,6 +641,7 @@ export class ClrRovingTabindex extends ClrKeyFocus {
 
 // @public (undocumented)
 export class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
+    constructor();
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
     // (undocumented)

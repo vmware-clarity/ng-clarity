@@ -25,7 +25,6 @@ import { PipeTransform } from '@angular/core';
 import { QueryList } from '@angular/core';
 import { Renderer2 } from '@angular/core';
 import { RouterLinkActive } from '@angular/router';
-import * as rxjs from 'rxjs';
 import { SafeHtml } from '@angular/platform-browser';
 import { Subject } from 'rxjs';
 import { TemplateRef } from '@angular/core';

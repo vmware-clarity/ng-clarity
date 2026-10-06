@@ -685,6 +685,7 @@ export class CdkDragModule {
 
 // @public
 export class CdkDragModule_CdkDrag extends CdkDrag {
+    constructor();
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdkDragModule_CdkDrag, "[cdkDrag]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -703,6 +704,7 @@ export class CdkTrapFocusModule {
 
 // @public
 export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
+    constructor();
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdkTrapFocusModule_CdkTrapFocus, "[cdkTrapFocus]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -5686,6 +5688,7 @@ export class ClrStackViewModule {
 
 // @public (undocumented)
 export class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
+    constructor();
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
     // (undocumented)
@@ -7526,6 +7529,14 @@ export class DatalistIdService {
 
 // @public
 export const DATEPICKER_ENABLE_BREAKPOINT = 768;
+
+// @public (undocumented)
+export interface DateRangeOption {
+    // (undocumented)
+    label: string;
+    // (undocumented)
+    value: Date[];
+}
 
 // @public (undocumented)
 export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
@@ -10388,38 +10399,6 @@ export const zoomOutIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const zoomOutIconName = "zoom-out";
-
-// @public (undocumented)
-export class ɵGlobalStateService {
-    // (undocumented)
-    static getDetails(): {
-        state: {
-            iconRegistry: string[];
-        };
-    };
-    // (undocumented)
-    static getValue(key: keyof CDSState): Readonly<Record<string, unknown>>;
-    // (undocumented)
-    static initializeCDSGlobal(): void;
-    // (undocumented)
-    static intializeCDSStateProxy(): void;
-    // (undocumented)
-    static log(): void;
-    // (undocumented)
-    static logDetails(): void;
-    // (undocumented)
-    static resetCDSGlobal(): void;
-    // (undocumented)
-    static setupCDSGlobal(): void;
-    // (undocumented)
-    static setValue(key: keyof CDSState, val: CDSState[keyof CDSState]): void;
-    // Warning: (ae-forgotten-export) The symbol "CDSState" needs to be exported by the entry point clr-angular.d.ts
-    //
-    // (undocumented)
-    static get state(): CDSState;
-    // (undocumented)
-    static stateUpdates: rxjs.Observable<any>;
-}
 
 // (No @packageDocumentation comment for this package)
 
