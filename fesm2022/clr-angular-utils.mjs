@@ -1,6 +1,6 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import { Injectable, EventEmitter, Output, Input, Directive, NgModule, TemplateRef, ViewChild, Component, ElementRef, HostListener, HostBinding, InjectionToken, PLATFORM_ID, DOCUMENT, Inject, Optional, ContentChildren, SkipSelf, Renderer2 } from '@angular/core';
+import { Injectable, EventEmitter, Output, Input, Directive, NgModule, TemplateRef, ViewChild, Component, ElementRef, HostListener, HostBinding, InjectionToken, PLATFORM_ID, DOCUMENT, Inject, ContentChildren, Optional, SkipSelf, Renderer2 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import * as i2 from '@angular/animations';
 import { animation, style, animate, state, transition, trigger, useAnimation } from '@angular/animations';
@@ -8,11 +8,8 @@ export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';
 import { Subject, fromEvent, Observable, isObservable, of } from 'rxjs';
 import { takeUntil, take } from 'rxjs/operators';
-import * as i1 from '@angular/cdk/a11y';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
-import * as i2$1 from '@angular/cdk/drag-drop';
-import { CdkDrag, CDK_DROP_LIST, CDK_DRAG_CONFIG } from '@angular/cdk/drag-drop';
-import * as i1$1 from '@angular/cdk/bidi';
+import { CdkDrag } from '@angular/cdk/drag-drop';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -1051,14 +1048,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  */
 class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
     /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
+     * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+     * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+     * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
      */
-    constructor(elementRef, focusTrapFactory, document) {
-        super(elementRef, focusTrapFactory, document);
+    // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+    constructor() {
+        super();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStandaloneCdkTrapFocus, deps: [{ token: i0.ElementRef }, { token: i1.FocusTrapFactory }, { token: DOCUMENT, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStandaloneCdkTrapFocus, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrStandaloneCdkTrapFocus, isStandalone: true, usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStandaloneCdkTrapFocus, decorators: [{
@@ -1066,12 +1064,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
             args: [{
                     standalone: true,
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i1.FocusTrapFactory }, { type: undefined, decorators: [{
-                    type: Optional
-                }, {
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }] });
+        }], ctorParameters: () => [] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -1788,19 +1781,26 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     args: [DOCUMENT]
                 }] }] });
 
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 /**
  * This is just a copy of CdkDrag so it can be used independent of the rest of the CdkDragDropModule.
  */
 class CdkDragModule_CdkDrag extends CdkDrag {
     /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
+     * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+     * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+     * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
      */
-    constructor(elementRef, dropContainer, document, ngZone, viewContainerRef, config, dir, dragDrop, changeDetectorRef) {
-        super(elementRef, dropContainer, document, ngZone, viewContainerRef, config, dir, dragDrop, changeDetectorRef);
+    // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+    constructor() {
+        super();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkDragModule_CdkDrag, deps: [{ token: i0.ElementRef }, { token: CDK_DROP_LIST, optional: true }, { token: DOCUMENT, optional: true }, { token: i0.NgZone }, { token: i0.ViewContainerRef }, { token: CDK_DRAG_CONFIG, optional: true }, { token: i1$1.Directionality }, { token: i2$1.DragDrop }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkDragModule_CdkDrag, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: CdkDragModule_CdkDrag, isStandalone: false, selector: "[cdkDrag]", usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkDragModule_CdkDrag, decorators: [{
@@ -1809,22 +1809,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     selector: '[cdkDrag]',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: undefined, decorators: [{
-                    type: Optional
-                }, {
-                    type: Inject,
-                    args: [CDK_DROP_LIST]
-                }] }, { type: undefined, decorators: [{
-                    type: Optional
-                }, {
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }, { type: i0.NgZone }, { type: i0.ViewContainerRef }, { type: undefined, decorators: [{
-                    type: Optional
-                }, {
-                    type: Inject,
-                    args: [CDK_DRAG_CONFIG]
-                }] }, { type: i1$1.Directionality }, { type: i2$1.DragDrop }, { type: i0.ChangeDetectorRef }] });
+        }], ctorParameters: () => [] });
 /**
  * This module allows us to avoid importing all of CdkDragDropModule which results in a smaller application bundle.
  */
@@ -1852,14 +1837,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  */
 class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
     /**
-     * Include the constructor to forward all the dependencies to the base class
-     * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-     * https://github.com/storybookjs/storybook/issues/23534
+     * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+     * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+     * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
      */
-    constructor(elementRef, focusTrapFactory, document) {
-        super(elementRef, focusTrapFactory, document);
+    // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+    constructor() {
+        super();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, deps: [{ token: i0.ElementRef }, { token: i1.FocusTrapFactory }, { token: DOCUMENT, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: CdkTrapFocusModule_CdkTrapFocus, isStandalone: false, selector: "[cdkTrapFocus]", usesInheritance: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, decorators: [{
@@ -1868,12 +1854,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     selector: '[cdkTrapFocus]',
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i1.FocusTrapFactory }, { type: undefined, decorators: [{
-                    type: Optional
-                }, {
-                    type: Inject,
-                    args: [DOCUMENT]
-                }] }] });
+        }], ctorParameters: () => [] });
 /**
  * This module allows us to avoid importing all of A11yModule which results in a smaller application bundle.
  */

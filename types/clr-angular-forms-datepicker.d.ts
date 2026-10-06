@@ -983,4 +983,4 @@ declare class ClrDatepickerModule {
 }
 
 export { CLR_DATEPICKER_DIRECTIVES, ClrCalendar, ClrDateContainer, ClrDateInput, ClrDateInputBase, ClrDateInputValidator, ClrDatepickerActions, ClrDatepickerModule, ClrDatepickerViewManager, ClrDay, ClrDaypicker, ClrEndDateInput, ClrEndDateInputValidator, ClrMonthpicker, ClrStartDateInput, ClrStartDateInputValidator, ClrWeekday, ClrYearpicker };
-export type { ClrDayOfWeek };
+export type { ClrDayOfWeek, DateRangeOption };
