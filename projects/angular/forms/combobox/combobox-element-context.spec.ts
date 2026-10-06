@@ -441,11 +441,15 @@ class FilteredOptionsTestComponent {
   port: string | null = null;
   member: string | null = null;
   results: string[] = [];
+  ignoreEmptySearch = false;
   ports = ['Burgas', 'Ruse'];
   people = ['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown', 'Eve Smithers'];
   selection: string | null = null;
 
   search(text: string) {
+    if (!text && this.ignoreEmptySearch) {
+      return;
+    }
     this.results = this.people.filter(person => person.includes(text) && person !== 'Eve Smithers');
   }
 }
@@ -593,6 +597,38 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(published('.async-search').state['options']).toBeUndefined();
     expect(shared()).not.toMatch(/Smi"|"matchingOptions"/);
     expect(sharedState(3)).toEqual({ multiSelect: false });
+  });
+
+  it('withholds the previous results after the typed text is cleared, while the application has not replaced them', () => {
+    fixture.componentInstance.ignoreEmptySearch = true;
+    open('.async-search');
+    type('Smi', '.async-search');
+    type('', '.async-search');
+
+    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published('.async-search').state['options']).toBeUndefined();
+    expect(sharedState(3)).toEqual({ multiSelect: false });
+  });
+
+  it('does not reveal a pick through the results the application loads for its label', async () => {
+    open('.async-search');
+    type('Smi', '.async-search');
+    const alice = Array.from(document.querySelectorAll<HTMLElement>('clr-option')).find(option =>
+      option.textContent?.includes('Alice Smith')
+    );
+    alice?.click();
+    await settle();
+
+    expect(fixture.componentInstance.member).toBe('Alice Smith');
+    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith']);
+    expect(published('.async-search').state['options']).toBeUndefined();
+    expect(sharedState(3)).toEqual({ multiSelect: false });
+    expect(sharedState(3, { collectionItems: 'summary' })).toEqual({ multiSelect: false });
+  });
+
+  it('tells every consumer an application search has no results yet before anything is typed', () => {
+    expect(published('.async-search').state['optionsAvailable']).toBe(false);
+    expect(sharedState(3)).toEqual({ multiSelect: false, optionsAvailable: false });
   });
 
   it('counts the options rather than listing them in a summary snapshot', () => {

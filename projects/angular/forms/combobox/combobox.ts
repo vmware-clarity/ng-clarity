@@ -676,8 +676,9 @@ export class ClrCombobox<T>
         if (narrowed) {
           // The list holds only the options matching what the user typed — none, when
           // nothing matches — and after an editable combobox closes, only the one they
-          // picked. That says what they entered, so it goes under keys withheld from
-          // consumers the application does not control, the counts too.
+          // picked; or it is whatever the application last loaded for some text. That
+          // says what they entered, so it goes under keys withheld from consumers the
+          // application does not control, the counts too.
           if (summary) {
             state.matchingOptionCount = listed.length;
           } else {
@@ -686,7 +687,7 @@ export class ClrCombobox<T>
               state.redactedMatchingOptions = listed.length - named.length;
             }
           }
-          if (this.optionSelectionService.loading) {
+          if (this.optionSelectionService.loading && this.optionSelectionService.currentInput) {
             // A search for what the user typed is still running: these are the matches
             // shown so far, not yet all there are.
             state.matchingOptionsPending = true;
@@ -703,9 +704,10 @@ export class ClrCombobox<T>
         // Async comboboxes have no option list until a search loads one.
         state.optionsAvailable = false;
       }
-      if (!narrowed && this.optionSelectionService.loading) {
-        // A search started without typed text — on opening, say — is still running, so
-        // the options above are not final. Nothing typed, so nothing to withhold.
+      if (this.optionSelectionService.loading && !(narrowed && this.optionSelectionService.currentInput)) {
+        // A search is running with no typed text in the input — on opening, or after the
+        // text was cleared — so the options above are not final. That a search runs says
+        // nothing of what was typed; any list it replaces is withheld above.
         state.optionsPending = true;
       }
       state.value = this.selectedLabels(excluded);
@@ -716,17 +718,20 @@ export class ClrCombobox<T>
   }
 
   /**
-   * Whether the rendered options may be only those matching the text in the input:
-   * `*clrOptionItems` filters by that text, and an application listening to
-   * `clrInputChange` may load a list for it. Options written out one by one with no one
-   * listening are all rendered whatever was typed.
+   * Whether the rendered options may be only those matching some text the user entered.
+   * `*clrOptionItems` filters by the text in the input while the list is open. An
+   * application listening to `clrInputChange` loads its list for whatever text it was
+   * last given — the text before it was cleared, or a picked label after a close — and
+   * only it knows which, so any list it has loaded counts, or any typed text while none
+   * has. Options written out one by one with no one listening are all rendered whatever
+   * was typed.
    */
   private optionsNarrowed(): boolean {
-    return (
-      (!!this.optionItems || this.clrInputChange.observed) &&
-      !this.optionSelectionService.showAllOptions &&
-      !!this.optionSelectionService.currentInput
-    );
+    const typed = !!this.optionSelectionService.currentInput;
+    if (this.clrInputChange.observed) {
+      return typed || !!this.options?.items?.length;
+    }
+    return !!this.optionItems && !this.optionSelectionService.showAllOptions && typed;
   }
 
   /**
