@@ -33,13 +33,11 @@ class DisabledFocusTrap extends FocusTrap {
   }
 }
 
-// The FocusTrap constructor signature differs between CDK versions, so it is not typed here.
-const DisabledFocusTrapConstructor = DisabledFocusTrap as unknown as new (...args: unknown[]) => FocusTrap;
-
 @Injectable()
 class DisabledFocusTrapFactory extends FocusTrapFactory {
   override create(): FocusTrap {
-    return new DisabledFocusTrapConstructor(null, null, null, null, null);
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return new DisabledFocusTrap(null!, null!, null!, null!, false, null!);
   }
 }
 
