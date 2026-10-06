@@ -9,7 +9,6 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'clr-buttons-demo',
-  styleUrls: ['./buttons.demo.scss'],
   template: `
     <h2>Buttons</h2>
     <ul>

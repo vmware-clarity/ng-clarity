@@ -45,7 +45,8 @@ async function main() {
     const manifest = JSON.parse(fs.readFileSync(path.join(EXAMPLES_ROOT, manifestPath)).toString());
     const examples = manifest.examples.map(example => readExample(name, example));
 
-    outputs.set(path.join(EXAMPLES_ROOT, name, 'index.ts'), await format(buildIndex(name, examples), 'index.ts'));
+    const indexPath = path.join(EXAMPLES_ROOT, name, 'index.ts');
+    outputs.set(indexPath, await format(buildIndex(name, examples), indexPath));
 
     if (examples.some(example => example.targets.includes('storybook'))) {
       const storiesPath = path.join(STORIES_ROOT, `${name}.stories.ts`);
@@ -53,11 +54,11 @@ async function main() {
     }
   }
 
-  // Stories of components that no longer have Storybook examples.
+  // Generated stories of components that no longer have Storybook examples. Hand-written stories are left alone.
   const staleStories = glob
     .sync('*.stories.ts', { cwd: STORIES_ROOT, absolute: true })
     .map(filePath => path.normalize(filePath))
-    .filter(filePath => !outputs.has(filePath));
+    .filter(filePath => !outputs.has(filePath) && readFile(filePath).includes(GENERATED_NOTICE));
 
   const outdated = [...outputs].filter(([filePath, code]) => readFile(filePath) !== code);
 
@@ -187,7 +188,7 @@ async function format(code, filePath) {
 }
 
 function readFile(filePath) {
-  return fs.existsSync(filePath) ? fs.readFileSync(filePath).toString() : undefined;
+  return fs.existsSync(filePath) ? fs.readFileSync(filePath).toString().replace(/\r\n/g, '\n') : undefined;
 }
 
 function stripLicenseHeader(code) {

@@ -11,8 +11,10 @@ The apps import them from `@clr/examples/<component>`, compiled from source like
 ## Adding an example
 
 1. Add `<id>.example.ts` and `<id>.example.html` (and optionally `<id>.example.scss`) to the component's folder.
-   The component must be standalone and self-contained: import only from `@angular/*`, `@clr/angular`,
-   `@clr/addons` and files next to it, because the website opens it in StackBlitz as is.
+   The website opens these three files in StackBlitz as they are, so the example must be self-contained:
+   - The component is standalone and imports only from `@angular/*`, `@clr/angular` and `@clr/addons`.
+   - Styles use CSS custom properties such as `var(--cds-global-space-9)`, not `@use` or `@import` of Sass files
+     from this repository.
 2. Add an entry to the folder's `examples.json` with its `id`, `title` and `targets` (`website`, `demo`, `storybook`).
    Set `"showStyles": false` when the styles only frame the example and are not worth showing on the website.
 3. Run `npm run examples:generate`. It writes the folder's `index.ts` (components, metadata and source text) and the

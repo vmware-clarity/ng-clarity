@@ -24,19 +24,9 @@ export const Outline: StoryObj = exampleStory(BUTTON_EXAMPLES.outline);
 
 export const Flat: StoryObj = exampleStory(BUTTON_EXAMPLES.flat);
 
-export const StatusOutline: StoryObj = exampleStory(BUTTON_EXAMPLES.statusOutline);
-
-export const StatusSolid: StoryObj = exampleStory(BUTTON_EXAMPLES.statusSolid);
-
 export const StatusAll: StoryObj = exampleStory(BUTTON_EXAMPLES.statusAll);
 
-export const SizeNormal: StoryObj = exampleStory(BUTTON_EXAMPLES.sizeNormal);
-
 export const SizeSmall: StoryObj = exampleStory(BUTTON_EXAMPLES.sizeSmall);
-
-export const SizeFlatNormal: StoryObj = exampleStory(BUTTON_EXAMPLES.sizeFlatNormal);
-
-export const SizeFlatSmall: StoryObj = exampleStory(BUTTON_EXAMPLES.sizeFlatSmall);
 
 export const Block: StoryObj = exampleStory(BUTTON_EXAMPLES.block);
 
@@ -45,5 +35,3 @@ export const Inverse: StoryObj = exampleStory(BUTTON_EXAMPLES.inverse);
 export const Icon: StoryObj = exampleStory(BUTTON_EXAMPLES.icon);
 
 export const IconSizes: StoryObj = exampleStory(BUTTON_EXAMPLES.iconSizes);
-
-export const Loading: StoryObj = exampleStory(BUTTON_EXAMPLES.loading);

@@ -13,7 +13,8 @@ import { StackblitzExampleComponent } from '../stackblitz-example/stackblitz-exa
 
 /**
  * Renders a shared example from projects/examples followed by its code, so that the code shown and opened in
- * StackBlitz is always the code that renders the example.
+ * StackBlitz is always the code that renders the example. Examples without logic open in StackBlitz with the
+ * template's own component class, which imports all of Clarity, so that they can be extended there.
  */
 @Component({
   selector: 'app-doc-example',
@@ -28,7 +29,7 @@ import { StackblitzExampleComponent } from '../stackblitz-example/stackblitz-exa
     <app-stackblitz-example
       [name]="example().title"
       [componentTemplate]="example().source.html"
-      [componentClass]="example().source.ts"
+      [componentClass]="example().source.hasLogic ? example().source.ts : undefined"
       [showComponentClass]="example().source.hasLogic"
       [componentStyles]="example().source.scss"
       [showComponentStyles]="example().showStyles"

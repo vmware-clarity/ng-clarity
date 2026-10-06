@@ -19,7 +19,9 @@ import { Example } from '@clr/examples';
   template: `
     @for (example of examples; track example.id) {
       <h3>{{ example.title }}</h3>
-      <ng-container *ngComponentOutlet="example.component"></ng-container>
+      <div class="clr-example">
+        <ng-container *ngComponentOutlet="example.component"></ng-container>
+      </div>
     }
   `,
   imports: [NgComponentOutlet],

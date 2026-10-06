@@ -79,7 +79,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: dist/docs
-          key: storybook-build-${{hashFiles('package-lock.json', 'projects/angular/**', 'projects/ui/**', '.storybook/**', 'angular.json')}}
+          key: storybook-build-${{hashFiles('package-lock.json', 'projects/angular/**', 'projects/ui/**', 'projects/examples/**', '.storybook/**', 'angular.json')}}
       - name: Build Storybook
         if: steps.storybook-cache.outputs.cache-hit != 'true'
         run: npm run _build:storybook
@@ -126,7 +126,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: dist/docs
-          key: animation-storybook-build-${{hashFiles('package-lock.json', 'projects/angular/**', 'projects/addons/**', 'projects/ui/**', '.storybook/**', 'angular.json')}}
+          key: animation-storybook-build-${{hashFiles('package-lock.json', 'projects/angular/**', 'projects/addons/**', 'projects/ui/**', 'projects/examples/**', '.storybook/**', 'angular.json')}}
       - name: Build Storybook
         if: steps.storybook-cache.outputs.cache-hit != 'true'
         run: npm run _build:storybook
@@ -225,7 +225,7 @@ jobs:
         uses: actions/cache@v4
         with:
           path: dist/website
-          key: website-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'angular.json', 'tsconfig.json')}}
+          key: website-build-${{hashFiles('package-lock.json', 'projects/website/**', 'projects/angular/**', 'projects/ui/**', 'projects/addons/**', 'projects/examples/**', 'angular.json', 'tsconfig.json')}}
       - name: Build Website
         if: steps.website-cache.outputs.cache-hit != 'true'
         run: npm run _build:website

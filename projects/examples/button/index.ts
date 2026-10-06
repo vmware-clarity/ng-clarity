@@ -65,7 +65,7 @@ export const BUTTON_EXAMPLES = {
   statusOutline: {
     id: 'button/status-outline',
     title: 'Outline status buttons',
-    targets: ['website', 'demo', 'storybook'],
+    targets: ['website', 'demo'],
     component: ButtonStatusOutlineExample,
     showStyles: true,
     source: {
@@ -77,7 +77,7 @@ export const BUTTON_EXAMPLES = {
   statusSolid: {
     id: 'button/status-solid',
     title: 'Solid status buttons',
-    targets: ['website', 'demo', 'storybook'],
+    targets: ['website', 'demo'],
     component: ButtonStatusSolidExample,
     showStyles: true,
     source: {
@@ -101,7 +101,7 @@ export const BUTTON_EXAMPLES = {
   sizeNormal: {
     id: 'button/size-normal',
     title: 'Normal buttons',
-    targets: ['website', 'demo', 'storybook'],
+    targets: ['website', 'demo'],
     component: ButtonSizeNormalExample,
     showStyles: true,
     source: {
@@ -125,7 +125,7 @@ export const BUTTON_EXAMPLES = {
   sizeFlatNormal: {
     id: 'button/size-flat-normal',
     title: 'Normal flat buttons',
-    targets: ['website', 'demo', 'storybook'],
+    targets: ['website', 'demo'],
     component: ButtonSizeFlatNormalExample,
     showStyles: true,
     source: {
@@ -137,7 +137,7 @@ export const BUTTON_EXAMPLES = {
   sizeFlatSmall: {
     id: 'button/size-flat-small',
     title: 'Small flat buttons',
-    targets: ['website', 'demo', 'storybook'],
+    targets: ['website', 'demo'],
     component: ButtonSizeFlatSmallExample,
     showStyles: true,
     source: {
@@ -198,7 +198,7 @@ export const BUTTON_EXAMPLES = {
   loading: {
     id: 'button/loading',
     title: 'Loading buttons',
-    targets: ['website', 'demo', 'storybook'],
+    targets: ['website', 'demo'],
     component: ButtonLoadingExample,
     showStyles: true,
     source: {
