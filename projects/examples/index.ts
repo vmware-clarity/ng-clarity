@@ -5,12 +5,4 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
-
-@Component({
-  selector: 'clr-buttons-demo-inverse-button',
-  templateUrl: './inverse-button.html',
-  styleUrls: ['./buttons.demo.scss'],
-  standalone: false,
-})
-export class InverseButtonDemo {}
+export * from './example';

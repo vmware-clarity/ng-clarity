@@ -10,7 +10,6 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-buttons-demo-tertiary-button',
   templateUrl: './tertiary-button.html',
-  styleUrls: ['./buttons.demo.scss'],
   standalone: false,
 })
 export class TertiaryButtonDemo {}

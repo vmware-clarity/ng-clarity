@@ -7,37 +7,28 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BUTTON_EXAMPLES } from '@clr/examples/button';
 
-import { ButtonLoadingDemo } from './button-loading';
-import { ButtonSizesDemo } from './button-sizes';
-import { ButtonStatesDemo } from './button-states';
 import { ButtonsIconsDemo } from './buttons-icons';
 import { ButtonsTestDemo } from './buttons-test';
 import { ButtonsDemo } from './buttons.demo';
-import { IconButtonsDemo } from './icon-buttons';
-import { InverseButtonDemo } from './inverse-button';
 import { PrimaryButtonDemo } from './primary-button';
-import { RealButtonDemo } from './real-button';
 import { SecondaryButtonDemo } from './secondary-button';
 import { TertiaryButtonDemo } from './tertiary-button';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: ButtonsDemo,
     children: [
-      { path: '', redirectTo: 'real-button', pathMatch: 'full' },
-      { path: 'real-button', component: RealButtonDemo },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: BUTTON_EXAMPLES } },
       { path: 'primary-button', component: PrimaryButtonDemo },
       { path: 'secondary-button', component: SecondaryButtonDemo },
       { path: 'tertiary-button', component: TertiaryButtonDemo },
-      { path: 'inverse-button', component: InverseButtonDemo },
-      { path: 'button-states', component: ButtonStatesDemo },
-      { path: 'button-loading', component: ButtonLoadingDemo },
-      { path: 'button-sizes', component: ButtonSizesDemo },
       { path: 'buttons-test', component: ButtonsTestDemo },
       { path: 'icons', component: ButtonsIconsDemo },
-      { path: 'icon-buttons', component: IconButtonsDemo },
     ],
   },
 ];

@@ -1,0 +1,18 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button [clrLoading]="validateBtnState" class="btn btn-info-outline" (click)="validateDemo()">
+  Validate
+</button>
+<button
+  [clrLoading]="submitBtnState"
+  type="submit"
+  class="btn btn-success-outline"
+  (click)="submitDemo()"
+>
+  Submit
+</button>

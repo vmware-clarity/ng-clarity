@@ -4,7 +4,11 @@
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-.btn-example {
-  background: hsl(0deg 0% 19%);
-  padding: var(--cds-global-space-9);
-}
+
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'clr-button-block-example',
+  templateUrl: './block.example.html',
+})
+export class ButtonBlockExample {}

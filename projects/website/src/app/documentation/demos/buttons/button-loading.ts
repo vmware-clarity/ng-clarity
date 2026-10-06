@@ -6,83 +6,16 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
+import { BUTTON_EXAMPLES } from '@clr/examples/button';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const MAIN_TS_EXAMPLE = `
-import { Component } from '@angular/core';
-import { ClrButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
-
-@Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-
-  imports: [ClrButtonModule, ClrLoadingModule],
-})
-export class ExampleComponent {
-  validateBtnState: ClrLoadingState = ClrLoadingState.DEFAULT;
-  submitBtnState: ClrLoadingState = ClrLoadingState.DEFAULT;
-
-  validateDemo() {
-    this.validateBtnState = ClrLoadingState.LOADING;
-
-    // Use actual validation logic in a real application.
-    setTimeout(() => {
-      this.validateBtnState = ClrLoadingState.SUCCESS;
-    }, 1500);
-  }
-
-  submitDemo() {
-    this.submitBtnState = ClrLoadingState.LOADING;
-
-    // Use actual submit logic in a real application.
-    setTimeout(() => {
-      this.submitBtnState = ClrLoadingState.DEFAULT;
-    }, 1500);
-  }
-}
-`;
-
-const MAIN_HTML_EXAMPLE = `
-<button [clrLoading]="validateBtnState" class="btn btn-info-outline" (click)="validateDemo()">
-  Validate
-</button>
-<button
-  [clrLoading]="submitBtnState"
-  type="submit"
-  class="btn btn-success-outline"
-  (click)="submitDemo()"
->
-  Submit
-</button>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-buttons-demo-button-loading',
   templateUrl: './button-loading.html',
   styleUrl: './buttons.demo.scss',
-  imports: [ClrLoadingButtonModule, ClrLoadingModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class ButtonLoadingDemo {
-  mainTSExample = MAIN_TS_EXAMPLE;
-  mainHTMLExample = MAIN_HTML_EXAMPLE;
-
-  validateBtnState: ClrLoadingState = ClrLoadingState.DEFAULT;
-  submitBtnState: ClrLoadingState = ClrLoadingState.DEFAULT;
-
-  validateDemo() {
-    this.validateBtnState = ClrLoadingState.LOADING;
-    setTimeout(() => {
-      this.validateBtnState = ClrLoadingState.SUCCESS;
-    }, 1500);
-  }
-
-  submitDemo() {
-    this.submitBtnState = ClrLoadingState.LOADING;
-    setTimeout(() => {
-      this.submitBtnState = ClrLoadingState.DEFAULT;
-    }, 1500);
-  }
+  readonly examples = BUTTON_EXAMPLES;
 }

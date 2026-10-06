@@ -6,28 +6,16 @@
  */
 
 import { Component } from '@angular/core';
+import { BUTTON_EXAMPLES } from '@clr/examples/button';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `
-<button class="btn btn-inverse">Inverse</button>
-<button class="btn btn-inverse" disabled>Disabled Inverse</button>
-`;
-
-const CSS_EXAMPLE = `
-:host {
-  background: var(--cds-global-color-construction-900);
-  padding: var(--cds-global-space-9);
-}
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-buttons-demo-inverse-button',
   templateUrl: './inverse-button.html',
   styleUrl: './buttons.demo.scss',
-  imports: [StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class InverseButtonDemo {
-  htmlExample = HTML_EXAMPLE;
-  cssExample = CSS_EXAMPLE;
+  readonly examples = BUTTON_EXAMPLES;
 }
