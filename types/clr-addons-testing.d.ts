@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { ViewContainerRef, ElementRef, EmbeddedViewRef, TemplateRef, EventEmitter, OnInit, ComponentFactoryResolver, DebugElement, PipeTransform, Predicate } from '@angular/core';
+import { ViewContainerRef, ElementRef, EmbeddedViewRef, TemplateRef, EventEmitter, OnInit, DebugElement, PipeTransform, Predicate } from '@angular/core';
 import * as rxjs from 'rxjs';
 import { ReplaySubject, Observable } from 'rxjs';
 import { ZoomLevel } from '@clr/addons/a11y';
@@ -185,13 +185,11 @@ declare class MockDatagridActionBarComponent {
  * Component for unit testing purposes to provide a template for rendering datagrid cell content.
  */
 declare class MockDatagridCellContainerComponent implements OnInit {
-    private componentFactoryResolver;
     column: any;
     item: any;
     protected container: ViewContainerRef;
     private componentRef;
     private instance;
-    constructor(componentFactoryResolver: ComponentFactoryResolver);
     ngOnInit(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<MockDatagridCellContainerComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<MockDatagridCellContainerComponent, "appfx-dg-cell-container", never, { "column": { "alias": "column"; "required": false; }; "item": { "alias": "item"; "required": false; }; }, {}, never, never, false, never>;
