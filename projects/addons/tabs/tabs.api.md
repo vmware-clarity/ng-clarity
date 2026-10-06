@@ -16,7 +16,6 @@ import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
-import { ComponentFactoryResolver } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
