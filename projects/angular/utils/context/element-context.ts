@@ -35,8 +35,8 @@ export const CLR_ELEMENT_CONTEXT_PROPERTY = 'clrElementContext';
  * `matchingOptions`, `redactedMatchingOptions`, `matchingOptionsPending` and
  * `matchingOptionCount`, on any node — and withholds those from a consumer the
  * application does not control. Report user input under one of those keys: under any
- * other, it is shared with everyone. A value the engine withheld as sensitive is removed again after
- * merging, so publishing cannot reinstate one.
+ * other, it is shared with everyone. A value the engine withheld as sensitive is removed
+ * again after merging, so publishing cannot reinstate one.
  */
 export type ClrElementContextCallback = (
   options?: Required<ClrContextSnapshotOptions>

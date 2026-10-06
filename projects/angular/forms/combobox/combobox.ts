@@ -686,7 +686,7 @@ export class ClrCombobox<T>
               state.redactedMatchingOptions = listed.length - named.length;
             }
           }
-          if (this.optionsLoading()) {
+          if (this.optionSelectionService.loading) {
             // A search for what the user typed is still running: these are the matches
             // shown so far, not yet all there are.
             state.matchingOptionsPending = true;
@@ -703,6 +703,11 @@ export class ClrCombobox<T>
         // Async comboboxes have no option list until a search loads one.
         state.optionsAvailable = false;
       }
+      if (!narrowed && this.optionSelectionService.loading) {
+        // A search started without typed text — on opening, say — is still running, so
+        // the options above are not final. Nothing typed, so nothing to withhold.
+        state.optionsPending = true;
+      }
       state.value = this.selectedLabels(excluded);
       return { type: 'combobox', state };
     };
@@ -711,21 +716,16 @@ export class ClrCombobox<T>
   }
 
   /**
-   * Whether `clrLoading` says a search is running, on the combobox or on its options:
-   * only the combobox's drives the spinner, but either says the list is not final.
-   */
-  private optionsLoading(): boolean {
-    return this.optionSelectionService.loading || !!this.options?.loading;
-  }
-
-  /**
-   * Whether the rendered options are only those matching the text in the input. Only
-   * `*clrOptionItems` filters by that text; options written out one by one are all
-   * rendered whatever was typed.
+   * Whether the rendered options may be only those matching the text in the input:
+   * `*clrOptionItems` filters by that text, and an application listening to
+   * `clrInputChange` may load a list for it. Options written out one by one with no one
+   * listening are all rendered whatever was typed.
    */
   private optionsNarrowed(): boolean {
     return (
-      !!this.optionItems && !this.optionSelectionService.showAllOptions && !!this.optionSelectionService.currentInput
+      (!!this.optionItems || this.clrInputChange.observed) &&
+      !this.optionSelectionService.showAllOptions &&
+      !!this.optionSelectionService.currentInput
     );
   }
 

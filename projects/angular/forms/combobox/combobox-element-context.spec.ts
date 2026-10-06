@@ -416,6 +416,13 @@ describe('ClrCombobox element context, options matched by identity', () => {
         <clr-option *clrOptionItems="let name of ports" [clrValue]="name">{{ name }}</clr-option>
       </clr-options>
     </clr-combobox>
+    <clr-combobox name="member" class="async-search" [(ngModel)]="member" (clrInputChange)="search($event)">
+      <clr-options>
+        @for (name of results; track name) {
+          <clr-option [clrValue]="name">{{ name }}</clr-option>
+        }
+      </clr-options>
+    </clr-combobox>
     <clr-combobox name="city" class="mixed" [(ngModel)]="city">
       <clr-options>
         <clr-option clrValue="elsewhere">Somewhere else</clr-option>
@@ -432,9 +439,15 @@ class FilteredOptionsTestComponent {
   loading = false;
   optionsLoading = false;
   port: string | null = null;
+  member: string | null = null;
+  results: string[] = [];
   ports = ['Burgas', 'Ruse'];
   people = ['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown', 'Eve Smithers'];
   selection: string | null = null;
+
+  search(text: string) {
+    this.results = this.people.filter(person => person.includes(text) && person !== 'Eve Smithers');
+  }
 }
 
 describe('ClrCombobox element context, options narrowed to what the user typed', () => {
@@ -456,6 +469,11 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     fixture.detectChanges();
     await fixture.whenStable();
     fixture.detectChanges();
+  }
+
+  /** The state an untrusted consumer is told for the nth combobox of the fixture. */
+  function sharedState(index: number, options?: unknown): unknown {
+    return JSON.parse(shared(options)).components[index].state;
   }
 
   function shared(options?: unknown): string {
@@ -515,7 +533,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
     expect(published().state['matchingOptions']).toEqual([]);
     expect(published().state['optionsAvailable']).toBeUndefined();
-    expect(shared()).not.toMatch(/Zzq|"optionsAvailable"|"matchingOptions"/);
+    expect(shared()).not.toMatch(/Zzq|"matchingOptions"/);
+    expect(sharedState(0)).toEqual({ multiSelect: false });
   });
 
   it('says the matches are still loading while a search runs, rather than that none match', async () => {
@@ -543,17 +562,37 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     await settle();
 
     expect(published().state['matchingOptionsPending']).toBe(true);
+    expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(shared()).not.toContain('"matchingOptionsPending"');
   });
 
-  it('says the matches are pending when clrLoading is set on the options rather than the combobox', async () => {
+  it('reads clrLoading on the combobox only, where it drives what the user sees', async () => {
     fixture.componentInstance.optionsLoading = true;
     await settle();
     open('.options-loading');
     type('Bur', '.options-loading');
 
-    expect(published('.options-loading').state['matchingOptionsPending']).toBe(true);
+    expect(published('.options-loading').state['matchingOptionsPending']).toBeUndefined();
     expect(published('.options-loading').state['matchingOptions']).toEqual(['Burgas']);
+  });
+
+  it('says a search started before anything was typed is still running, to every consumer', async () => {
+    fixture.componentInstance.loading = true;
+    await settle();
+
+    expect(published().state['optionsPending']).toBe(true);
+    expect(published().state['options']).toBeDefined();
+    expect(shared()).toContain('"optionsPending":true');
+  });
+
+  it('withholds the results of a search the application runs for the typed text', () => {
+    open('.async-search');
+    type('Smi', '.async-search');
+
+    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published('.async-search').state['options']).toBeUndefined();
+    expect(shared()).not.toMatch(/Smi"|"matchingOptions"/);
+    expect(sharedState(3)).toEqual({ multiSelect: false });
   });
 
   it('counts the options rather than listing them in a summary snapshot', () => {
@@ -577,6 +616,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
       value: null,
     });
     expect(shared({ collectionItems: 'summary' })).not.toMatch(/Smi|"matchingOptionCount"/);
+    // Not the narrowed count under the other key either.
+    expect(sharedState(0, { collectionItems: 'summary' })).toEqual({ multiSelect: false });
   });
 
   it('withholds every option of a list that mixes written-out options with *clrOptionItems', () => {

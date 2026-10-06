@@ -934,15 +934,16 @@
         <code cds-text="code">multiSelect</code>, <code cds-text="code">options</code>,
         <code cds-text="code">redactedOptions</code> (how many options are withheld),
         <code cds-text="code">matchingOptions</code> and <code cds-text="code">redactedMatchingOptions</code> (values;
-        in place of <code cds-text="code">options</code> and <code cds-text="code">redactedOptions</code> while
-        <code cds-text="code">*clrOptionItems</code> narrows the list to what the user typed),
+        in place of <code cds-text="code">options</code> and <code cds-text="code">redactedOptions</code> while the list
+        is narrowed to what the user typed, by <code cds-text="code">*clrOptionItems</code> or by a search the
+        application runs on <code cds-text="code">clrInputChange</code>),
         <code cds-text="code">matchingOptionsPending</code> (value; alongside them while
-        <code cds-text="code">clrLoading</code>, on the combobox or its options, says a search for what the user typed
-        is still running), <code cds-text="code">optionCount</code>, or
-        <code cds-text="code">matchingOptionCount</code> (value) while narrowed, in place of the lists in a
-        <code cds-text="code">summary</code> snapshot, <code cds-text="code">optionsAvailable</code> (false while the
-        list is empty and not narrowed to typed text, as before a search loads it),
-        <code cds-text="code">value</code> (value)
+        <code cds-text="code">clrLoading</code> on the combobox says a search for what the user typed is still running),
+        <code cds-text="code">optionsPending</code> (while such a search runs with nothing typed, as on opening),
+        <code cds-text="code">optionCount</code>, or <code cds-text="code">matchingOptionCount</code> (value) while
+        narrowed, in place of the lists in a <code cds-text="code">summary</code> snapshot, counting redacted options
+        too, <code cds-text="code">optionsAvailable</code> (false while the list is empty and not narrowed to typed
+        text, as before a search loads it), <code cds-text="code">value</code> (value)
       </td>
     </tr>
     <tr>
