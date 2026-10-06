@@ -45,10 +45,10 @@ class ClrCard {
         this._expanded.set(!this._expanded());
         this.expandedChange.emit(this._expanded());
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCard, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.24", type: ClrCard, isStandalone: false, selector: "clr-card", inputs: { footerCollapsible: ["clrCardFooterCollapsible", "footerCollapsible", booleanAttribute], collapsible: ["clrCardCollapsible", "collapsible", booleanAttribute], expanded: ["clrCardExpanded", "expanded", booleanAttribute] }, outputs: { expandedChange: "clrCardExpandedChange" }, host: { properties: { "class.card": "true", "class.clr-card": "true", "class.card-collapsible": "collapsible", "class.card-collapsed": "collapsible && !expanded" } }, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<ng-content select=\"clr-card-header\"></ng-content>\n<ng-template #bodyContent>\n  <ng-content></ng-content>\n</ng-template>\n<ng-template #footerContent>\n  <ng-content select=\"clr-card-footer\"></ng-content>\n</ng-template>\n@if (collapsible) {\n<div\n  role=\"region\"\n  class=\"card-collapsible-content\"\n  [id]=\"contentId\"\n  [attr.aria-hidden]=\"!expanded\"\n  [attr.inert]=\"!expanded ? '' : null\"\n  [attr.aria-labelledby]=\"headerContentId\"\n>\n  <div class=\"card-collapsible-inner\">\n    <ng-container *ngTemplateOutlet=\"bodyContent\"></ng-container>\n    @if (footerCollapsible) {\n    <ng-container *ngTemplateOutlet=\"footerContent\"></ng-container>\n    }\n  </div>\n</div>\n@if (!footerCollapsible) {\n<ng-container *ngTemplateOutlet=\"footerContent\"></ng-container>\n} } @else {\n<ng-container *ngTemplateOutlet=\"bodyContent\"></ng-container>\n<ng-container *ngTemplateOutlet=\"footerContent\"></ng-container>\n}\n", dependencies: [{ kind: "directive", type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCard, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrCard, isStandalone: false, selector: "clr-card", inputs: { footerCollapsible: ["clrCardFooterCollapsible", "footerCollapsible", booleanAttribute], collapsible: ["clrCardCollapsible", "collapsible", booleanAttribute], expanded: ["clrCardExpanded", "expanded", booleanAttribute] }, outputs: { expandedChange: "clrCardExpandedChange" }, host: { properties: { "class.card": "true", "class.clr-card": "true", "class.card-collapsible": "collapsible", "class.card-collapsed": "collapsible && !expanded" } }, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n<ng-content select=\"clr-card-header\"></ng-content>\n<ng-template #bodyContent>\n  <ng-content></ng-content>\n</ng-template>\n<ng-template #footerContent>\n  <ng-content select=\"clr-card-footer\"></ng-content>\n</ng-template>\n@if (collapsible) {\n<div\n  role=\"region\"\n  class=\"card-collapsible-content\"\n  [id]=\"contentId\"\n  [attr.aria-hidden]=\"!expanded\"\n  [attr.inert]=\"!expanded ? '' : null\"\n  [attr.aria-labelledby]=\"headerContentId\"\n>\n  <div class=\"card-collapsible-inner\">\n    <ng-container *ngTemplateOutlet=\"bodyContent\"></ng-container>\n    @if (footerCollapsible) {\n    <ng-container *ngTemplateOutlet=\"footerContent\"></ng-container>\n    }\n  </div>\n</div>\n@if (!footerCollapsible) {\n<ng-container *ngTemplateOutlet=\"footerContent\"></ng-container>\n} } @else {\n<ng-container *ngTemplateOutlet=\"bodyContent\"></ng-container>\n<ng-container *ngTemplateOutlet=\"footerContent\"></ng-container>\n}\n", dependencies: [{ kind: "directive", type: i1.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCard, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCard, decorators: [{
             type: Component,
             args: [{ selector: 'clr-card', host: {
                         '[class.card]': 'true',
@@ -81,10 +81,10 @@ class ClrCardHeader {
         this.card = card;
         this.commonStrings = commonStrings;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardHeader, deps: [{ token: ClrCard, optional: true }, { token: i2.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.24", type: ClrCardHeader, isStandalone: false, selector: "clr-card-header", inputs: { explicitHeadingLevel: ["clrHeadingLevel", "explicitHeadingLevel"] }, host: { properties: { "class.card-header": "true", "class.clr-card-header": "true" } }, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (card?.collapsible) {\n<button\n  type=\"button\"\n  class=\"card-header-toggle\"\n  (click)=\"card.toggle()\"\n  [attr.aria-controls]=\"card.contentId\"\n  [attr.aria-expanded]=\"card.expanded\"\n  [attr.aria-label]=\"card.expanded ? commonStrings.keys.collapseCardAriaLabel : commonStrings.keys.expandCardAriaLabel\"\n  [attr.aria-describedby]=\"card.headerContentId\"\n>\n  <cds-icon shape=\"angle\" direction=\"right\" class=\"card-header-icon\"></cds-icon>\n</button>\n}\n<div\n  class=\"clr-card-header-content\"\n  [attr.id]=\"card?.headerContentId\"\n  [attr.role]=\"explicitHeadingLevel ? 'heading' : null\"\n  [attr.aria-level]=\"explicitHeadingLevel ? explicitHeadingLevel : null\"\n>\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardHeader, deps: [{ token: ClrCard, optional: true }, { token: i2.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrCardHeader, isStandalone: false, selector: "clr-card-header", inputs: { explicitHeadingLevel: ["clrHeadingLevel", "explicitHeadingLevel"] }, host: { properties: { "class.card-header": "true", "class.clr-card-header": "true" } }, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (card?.collapsible) {\n<button\n  type=\"button\"\n  class=\"card-header-toggle\"\n  (click)=\"card.toggle()\"\n  [attr.aria-controls]=\"card.contentId\"\n  [attr.aria-expanded]=\"card.expanded\"\n  [attr.aria-label]=\"card.expanded ? commonStrings.keys.collapseCardAriaLabel : commonStrings.keys.expandCardAriaLabel\"\n  [attr.aria-describedby]=\"card.headerContentId\"\n>\n  <cds-icon shape=\"angle\" direction=\"right\" class=\"card-header-icon\"></cds-icon>\n</button>\n}\n<div\n  class=\"clr-card-header-content\"\n  [attr.id]=\"card?.headerContentId\"\n  [attr.role]=\"explicitHeadingLevel ? 'heading' : null\"\n  [attr.aria-level]=\"explicitHeadingLevel ? explicitHeadingLevel : null\"\n>\n  <ng-content></ng-content>\n</div>\n", dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }], changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardHeader, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardHeader, decorators: [{
             type: Component,
             args: [{ selector: 'clr-card-header', host: {
                         '[class.card-header]': 'true',
@@ -104,10 +104,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardBody {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardBody, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardBody, isStandalone: false, selector: "clr-card-body", host: { properties: { "class.card-block": "true", "class.clr-card-body": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardBody, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardBody, isStandalone: false, selector: "clr-card-body", host: { properties: { "class.card-block": "true", "class.clr-card-body": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardBody, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardBody, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-card-body',
@@ -125,10 +125,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardBodyTitle {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardBodyTitle, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardBodyTitle, isStandalone: false, selector: "clr-card-body-title", inputs: { explicitHeadingLevel: ["clrHeadingLevel", "explicitHeadingLevel"] }, host: { properties: { "class.card-title": "true", "class.clr-card-body-title": "true", "attr.role": "explicitHeadingLevel ? \"heading\" : null", "attr.aria-level": "explicitHeadingLevel ? explicitHeadingLevel : null" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardBodyTitle, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardBodyTitle, isStandalone: false, selector: "clr-card-body-title", inputs: { explicitHeadingLevel: ["clrHeadingLevel", "explicitHeadingLevel"] }, host: { properties: { "class.card-title": "true", "class.clr-card-body-title": "true", "attr.role": "explicitHeadingLevel ? \"heading\" : null", "attr.aria-level": "explicitHeadingLevel ? explicitHeadingLevel : null" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardBodyTitle, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardBodyTitle, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-card-body-title',
@@ -154,10 +154,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardBodyText {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardBodyText, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardBodyText, isStandalone: false, selector: "clr-card-body-text", host: { properties: { "class.card-text": "true", "class.clr-card-body-text": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardBodyText, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardBodyText, isStandalone: false, selector: "clr-card-body-text", host: { properties: { "class.card-text": "true", "class.clr-card-body-text": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardBodyText, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardBodyText, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-card-body-text',
@@ -175,10 +175,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardFooter {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardFooter, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardFooter, isStandalone: false, selector: "clr-card-footer", host: { properties: { "class.card-footer": "true", "class.clr-card-footer": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardFooter, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardFooter, isStandalone: false, selector: "clr-card-footer", host: { properties: { "class.card-footer": "true", "class.clr-card-footer": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardFooter, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardFooter, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-card-footer',
@@ -196,10 +196,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardImage {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardImage, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardImage, isStandalone: false, selector: "clr-card-image", host: { properties: { "class.card-img": "true", "class.clr-card-image": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardImage, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardImage, isStandalone: false, selector: "clr-card-image", host: { properties: { "class.card-img": "true", "class.clr-card-image": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardImage, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardImage, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-card-image',
@@ -217,10 +217,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardDivider {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardDivider, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardDivider, isStandalone: false, selector: "clr-card-divider", host: { properties: { "class.card-divider": "true", "class.clr-card-divider": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardDivider, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardDivider, isStandalone: false, selector: "clr-card-divider", host: { properties: { "class.card-divider": "true", "class.clr-card-divider": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardDivider, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardDivider, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-card-divider',
@@ -241,10 +241,10 @@ class ClrCardMediaBlock {
     constructor() {
         this.clrCardMediaWrap = false;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaBlock, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "16.1.0", version: "21.2.24", type: ClrCardMediaBlock, isStandalone: false, selector: "clr-card-media-block", inputs: { clrCardMediaWrap: ["clrCardMediaWrap", "clrCardMediaWrap", booleanAttribute] }, host: { properties: { "class.card-media-block": "true", "class.clr-card-media-block": "true", "class.wrap": "clrCardMediaWrap" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaBlock, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "16.1.0", version: "21.2.25", type: ClrCardMediaBlock, isStandalone: false, selector: "clr-card-media-block", inputs: { clrCardMediaWrap: ["clrCardMediaWrap", "clrCardMediaWrap", booleanAttribute] }, host: { properties: { "class.card-media-block": "true", "class.clr-card-media-block": "true", "class.wrap": "clrCardMediaWrap" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaBlock, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaBlock, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-card-media-block',
@@ -269,10 +269,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardMediaDescription {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaDescription, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardMediaDescription, isStandalone: false, selector: "clr-card-media-description", host: { properties: { "class.card-media-description": "true", "class.clr-card-media-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaDescription, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardMediaDescription, isStandalone: false, selector: "clr-card-media-description", host: { properties: { "class.card-media-description": "true", "class.clr-card-media-description": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaDescription, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaDescription, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-card-media-description',
@@ -290,10 +290,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardMediaImage {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaImage, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardMediaImage, isStandalone: false, selector: "img[clrCardMediaImage]", host: { properties: { "class.card-media-image": "true" } }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaImage, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardMediaImage, isStandalone: false, selector: "img[clrCardMediaImage]", host: { properties: { "class.card-media-image": "true" } }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaImage, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaImage, decorators: [{
             type: Directive,
             args: [{
                     selector: 'img[clrCardMediaImage]',
@@ -309,10 +309,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardMediaTitle {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaTitle, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardMediaTitle, isStandalone: false, selector: "[clrCardMediaTitle]", host: { properties: { "class.card-media-title": "true" } }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaTitle, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardMediaTitle, isStandalone: false, selector: "[clrCardMediaTitle]", host: { properties: { "class.card-media-title": "true" } }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaTitle, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaTitle, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrCardMediaTitle]',
@@ -328,10 +328,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrCardMediaText {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaText, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.24", type: ClrCardMediaText, isStandalone: false, selector: "[clrCardMediaText]", host: { properties: { "class.card-media-text": "true" } }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaText, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrCardMediaText, isStandalone: false, selector: "[clrCardMediaText]", host: { properties: { "class.card-media-text": "true" } }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardMediaText, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardMediaText, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrCardMediaText]',
@@ -365,8 +365,8 @@ class ClrCardModule {
     constructor() {
         ClarityIcons.addIcons(angleIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.24", ngImport: i0, type: ClrCardModule, declarations: [ClrCard,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrCardModule, declarations: [ClrCard,
             ClrCardHeader,
             ClrCardBody,
             ClrCardBodyTitle,
@@ -391,9 +391,9 @@ class ClrCardModule {
             ClrCardMediaImage,
             ClrCardMediaTitle,
             ClrCardMediaText] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardModule, imports: [CommonModule, ClrIcon] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardModule, imports: [CommonModule, ClrIcon] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.24", ngImport: i0, type: ClrCardModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCardModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIcon],
