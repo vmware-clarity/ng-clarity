@@ -29,6 +29,8 @@ import { ClrDatagridModule, ClrDatagridStateInterface } from '@clr/angular';
 
 The datagrid components are NgModule-declared (not standalone) — always import `ClrDatagridModule` (or `ClarityModule`), never the individual component classes.
 
+The app must provide animations: `provideAnimationsAsync()` (from `@angular/platform-browser/animations/async`) in `app.config.ts` (or `BrowserAnimationsModule`). Rows use `@angular/animations`; without the provider the build passes but the grid throws at runtime.
+
 ## Pick the data mode first
 
 | Mode           | When                                  | Rows                           | Who sorts/filters/pages       |
@@ -65,6 +67,7 @@ Pagination or virtual scroll is also a UX choice: use pagination when users jump
 ```
 
 - `clrDgField` (property path, e.g. `'address.city'`) enables default sort **and** a string filter. `[clrDgColType]="'number'"` switches to a numeric range filter.
+- `clrDgField` filters on the raw value as text. For boolean or enum columns (e.g. shown as Yes/No), add a custom `clr-dg-filter` or leave the column unfiltered.
 - Custom sort: `[clrDgSortBy]="comparator"` (`ClrDatagridComparatorInterface<T>` → `compare(a, b): number`), initial order via `[(clrDgSortOrder)]` (`ClrDatagridSortOrder.ASC | DESC | UNSORTED`).
 - Custom filter: `<clr-dg-string-filter [clrDgStringFilter]="f">` (`accepts(item, search)`), `<clr-dg-numeric-filter [clrDgNumericFilter]="f">`, or fully custom `<clr-dg-filter [clrDgFilter]="f">` implementing `ClrDatagridFilterInterface<T>` (`accepts`, `changes`, `isActive`, optional `state`).
 
@@ -93,18 +96,24 @@ refresh(state: ClrDatagridStateInterface<User>) {
   const current = state.page?.current ?? 1;
   // state.sort: { by: string | comparator, reverse: boolean }
   // state.filters: each entry is the filter's `state` object, or the filter instance if it has none
-  this.api.fetch({ offset: size * (current - 1), size, sort: state.sort, filters: state.filters }).subscribe(r => {
-    this.users = r.items;
-    this.total = r.total;
-    this.loading = false;
+  this.api.fetch({ offset: size * (current - 1), size, sort: state.sort, filters: state.filters }).subscribe({
+    next: r => {
+      this.users = r.items;
+      this.total = r.total;
+      this.loading = false;
+    },
+    error: () => (this.loading = false),
   });
 }
 ```
+
+Clear `loading` on error too, or a failed request leaves the grid on the spinner.
 
 `[clrDgTotalItems]` is required, otherwise the page count is wrong. One `clrDgRefresh` fires for sort, filter, and page changes together — handle them in one request.
 
 ## Selection
 
+- Always set `clrDgSelectionType`. Binding `clrDgSelected` alone leaves selection off: no checkboxes, and nothing can be selected.
 - Grid: `[clrDgSelectionType]="'multi' | 'single' | 'none'"` + `[(clrDgSelected)]`. `clrDgSelected` is always a `T[]`: all selected items in `multi` mode, at most one item in `single` mode (`selected: User[] = []`, the pick is `selected[0]`). Any other selection type string throws.
 - Every row needs `[clrDgItem]`.
 - Lock a row: `[clrDgSelectable]="false"` on `clr-dg-row`.
@@ -112,6 +121,8 @@ refresh(state: ClrDatagridStateInterface<User>) {
 - Batch actions: `<clr-dg-action-bar>` with buttons above the columns, enabled from `selected.length`. Use a flat button group (`btn-link`) there ([button group guidance](https://guidance.clarity.design/1004)).
 - Per-row actions: `<clr-dg-action-overflow>` inside `clr-dg-row` with `<button class="action-item">` children.
 - Do **not** use `clrDgRowSelection` (deprecated, accessibility issue). There is no `clrDgSingleSelected` input.
+- For "click the row to select it", use the selection cell instead: `[clrDgSelectionType]="'single'"` gives a radio per row, `'multi'` a checkbox.
+- Do not add `(click)` handlers on `clr-dg-row` to emulate row-click selection; it brings back the accessibility problem.
 
 ## Row details
 
@@ -156,6 +167,7 @@ Give the grid a fixed height. No pagination with virtual scroll. Virtual scroll 
 
 ## Rules
 
+- Always include `<clr-dg-placeholder>` for the empty state.
 - Never nest a datagrid inside a cell or an expandable row (performance and complexity). A detail pane may contain a datagrid.
 - Keep column headers short (one or two words). Do not add your own buttons, links, or inputs to `clr-dg-column` content; use the built-in sort, filter, and column actions.
 - Use `@for (...; track ...)` / `@if` control flow, not `*ngFor` / `*ngIf`.
