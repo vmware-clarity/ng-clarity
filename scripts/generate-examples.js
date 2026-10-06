@@ -20,8 +20,6 @@ const glob = require('glob');
 const path = require('path');
 const prettier = require('prettier');
 
-const prettierConfig = require('../.prettierrc.js');
-
 const ROOT = path.resolve(__dirname, '..');
 const EXAMPLES_ROOT = path.join(ROOT, 'projects/examples');
 const STORIES_ROOT = path.join(ROOT, '.storybook/stories/examples');
@@ -183,8 +181,9 @@ ${stories.join('\n\n')}
 `;
 }
 
-function format(code, filePath) {
-  return prettier.format(code, { ...prettierConfig, filepath: filePath });
+async function format(code, filePath) {
+  const config = await prettier.resolveConfig(filePath);
+  return prettier.format(code, { ...config, filepath: filePath });
 }
 
 function readFile(filePath) {

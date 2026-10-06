@@ -31,10 +31,19 @@
   <clr-icon shape="home"></clr-icon>
   Validate
 </button>
-<button [clrLoading]="submitSmState" type="submit" class="btn btn-sm btn-success-outline" (click)="submitSmDemo()">
+<button
+  [clrLoading]="submitSmState"
+  type="submit"
+  class="btn btn-sm btn-success-outline"
+  (click)="submitSmDemo()"
+>
   <clr-icon shape="home"></clr-icon>
   Submit
 </button>
-<button [clrLoading]="validateFalsyState" class="btn btn-sm btn-info-outline" (click)="validateFalsyDemo()">
+<button
+  [clrLoading]="validateFalsyState"
+  class="btn btn-sm btn-info-outline"
+  (click)="validateFalsyDemo()"
+>
   Validate
 </button>
