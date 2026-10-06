@@ -98,8 +98,8 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
  * grid lists so that a row can be named for selection — the grid's content, cell by cell,
  * where any other grid tells such a consumer only its columns and how many rows it has —
  * which columns of a grid are filtered or hidden, how many files a file input holds, and
- * the options a combobox lists, how many of them are redacted and whether they are still
- * loading, while they are narrowed to what the user typed or picked.
+ * the options a combobox lists, how many there are or are redacted and whether more are
+ * still loading, while they are narrowed to what the user typed or picked.
  * Withheld, from any node, only from untrusted consumers: the application's own code is
  * told all of them.
  */
@@ -111,6 +111,7 @@ const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'matchingOptions',
   'redactedMatchingOptions',
   'matchingOptionsPending',
+  'matchingOptionCount',
 ]);
 
 /** A node without the {@link UNTRUSTED_WITHHELD_STATE_KEYS}, recursively. */

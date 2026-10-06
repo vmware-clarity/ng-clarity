@@ -904,11 +904,11 @@
   <code cds-text="code">value</code>, <code cds-text="code">selection</code>, <code cds-text="code">rows</code>,
   <code cds-text="code">filteredColumns</code>, <code cds-text="code">hiddenColumns</code>,
   <code cds-text="code">fileCount</code>, <code cds-text="code">matchingOptions</code>,
-  <code cds-text="code">redactedMatchingOptions</code> and <code cds-text="code">matchingOptionsPending</code> — are
-  withheld from embedded frames and the global accessor unless the application shares form values, and so is the state
-  any node reads from the accessibility tree to say what the user chose: <code cds-text="code">selected</code>,
-  <code cds-text="code">checked</code>, <code cds-text="code">pressed</code> and
-  <code cds-text="code">selectedRows</code>.
+  <code cds-text="code">redactedMatchingOptions</code>, <code cds-text="code">matchingOptionsPending</code> and
+  <code cds-text="code">matchingOptionCount</code> — are withheld from embedded frames and the global accessor unless
+  the application shares form values, and so is the state any node reads from the accessibility tree to say what the
+  user chose: <code cds-text="code">selected</code>, <code cds-text="code">checked</code>,
+  <code cds-text="code">pressed</code> and <code cds-text="code">selectedRows</code>.
 </p>
 <table class="table">
   <thead>
@@ -936,9 +936,12 @@
         <code cds-text="code">matchingOptions</code> and <code cds-text="code">redactedMatchingOptions</code> (values;
         in place of <code cds-text="code">options</code> and <code cds-text="code">redactedOptions</code> while
         <code cds-text="code">*clrOptionItems</code> narrows the list to what the user typed),
-        <code cds-text="code">matchingOptionsPending</code> (value; in their place while
-        <code cds-text="code">clrLoading</code> says the options for what the user typed are still loading),
-        <code cds-text="code">optionsAvailable</code> (false until a search loads them, before anything is typed),
+        <code cds-text="code">matchingOptionsPending</code> (value; alongside them while
+        <code cds-text="code">clrLoading</code>, on the combobox or its options, says a search for what the user typed
+        is still running), <code cds-text="code">optionCount</code>, or
+        <code cds-text="code">matchingOptionCount</code> (value) while narrowed, in place of the lists in a
+        <code cds-text="code">summary</code> snapshot, <code cds-text="code">optionsAvailable</code> (false while the
+        list is empty and not narrowed to typed text, as before a search loads it),
         <code cds-text="code">value</code> (value)
       </td>
     </tr>

@@ -14,7 +14,7 @@ import { ClrComponentContext, ClrLoadingModule } from '@clr/angular/utils';
 
 import { ClrComboboxModule } from './combobox.module';
 
-type ElementContextCallback = (options: { maxItemsPerCollection?: number }) => {
+type ElementContextCallback = (options: { maxItemsPerCollection?: number; collectionItems?: string }) => {
   type: string;
   state: Record<string, unknown>;
 };
@@ -411,6 +411,11 @@ describe('ClrCombobox element context, options matched by identity', () => {
         <clr-option clrValue="pear">Pear</clr-option>
       </clr-options>
     </clr-combobox>
+    <clr-combobox name="port" class="options-loading" [(ngModel)]="port">
+      <clr-options [clrLoading]="optionsLoading">
+        <clr-option *clrOptionItems="let name of ports" [clrValue]="name">{{ name }}</clr-option>
+      </clr-options>
+    </clr-combobox>
     <clr-combobox name="city" class="mixed" [(ngModel)]="city">
       <clr-options>
         <clr-option clrValue="elsewhere">Somewhere else</clr-option>
@@ -425,6 +430,9 @@ class FilteredOptionsTestComponent {
   city: string | null = null;
   cities = ['Sofia', 'Plovdiv', 'Varna'];
   loading = false;
+  optionsLoading = false;
+  port: string | null = null;
+  ports = ['Burgas', 'Ruse'];
   people = ['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown', 'Eve Smithers'];
   selection: string | null = null;
 }
@@ -434,14 +442,14 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
   let fixture: ComponentFixture<FilteredOptionsTestComponent>;
   let engine: ClrContextEngineService;
 
-  function published(selector = 'clr-combobox') {
+  function published(selector = 'clr-combobox', options: { collectionItems?: string } = {}) {
     const host = fixture.nativeElement.querySelector(selector) as HTMLElement & {
       clrElementContext?: ElementContextCallback;
     };
     if (!host.clrElementContext) {
       throw new Error('expected the combobox to publish a clrElementContext callback');
     }
-    return host.clrElementContext({ maxItemsPerCollection: 25 });
+    return host.clrElementContext({ maxItemsPerCollection: 25, ...options });
   }
 
   async function settle() {
@@ -450,9 +458,9 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     fixture.detectChanges();
   }
 
-  function shared(): string {
+  function shared(options?: unknown): string {
     engine.enableGlobalAccess(accessorName);
-    return JSON.stringify((window as unknown as Record<string, () => unknown>)[accessorName]());
+    return JSON.stringify((window as unknown as Record<string, (options?: unknown) => unknown>)[accessorName](options));
   }
 
   function open(selector = 'clr-combobox') {
@@ -516,8 +524,9 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     open();
     type('Smi');
 
+    // The matches shown so far stay listed: the user sees them, and an agent may pick one.
     expect(published().state['matchingOptionsPending']).toBe(true);
-    expect(published().state['matchingOptions']).toBeUndefined();
+    expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(shared()).not.toMatch(/Smi|"matchingOptionsPending"/);
 
     fixture.componentInstance.loading = false;
@@ -525,6 +534,49 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
     expect(published().state['matchingOptionsPending']).toBeUndefined();
     expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+  });
+
+  it('says the matches are pending when the search starts after the user typed', async () => {
+    open();
+    type('Smi');
+    fixture.componentInstance.loading = true;
+    await settle();
+
+    expect(published().state['matchingOptionsPending']).toBe(true);
+    expect(shared()).not.toContain('"matchingOptionsPending"');
+  });
+
+  it('says the matches are pending when clrLoading is set on the options rather than the combobox', async () => {
+    fixture.componentInstance.optionsLoading = true;
+    await settle();
+    open('.options-loading');
+    type('Bur', '.options-loading');
+
+    expect(published('.options-loading').state['matchingOptionsPending']).toBe(true);
+    expect(published('.options-loading').state['matchingOptions']).toEqual(['Burgas']);
+  });
+
+  it('counts the options rather than listing them in a summary snapshot', () => {
+    expect(published('clr-combobox', { collectionItems: 'summary' }).state).toEqual({
+      multiSelect: false,
+      optionCount: 5,
+      value: null,
+    });
+    const summary = shared({ collectionItems: 'summary' });
+    expect(summary).toContain('"optionCount":5');
+    expect(summary).not.toContain('Alice');
+  });
+
+  it('counts the matches in a summary snapshot, and tells untrusted consumers neither', () => {
+    open();
+    type('Smi');
+
+    expect(published('clr-combobox', { collectionItems: 'summary' }).state).toEqual({
+      multiSelect: false,
+      matchingOptionCount: 3,
+      value: null,
+    });
+    expect(shared({ collectionItems: 'summary' })).not.toMatch(/Smi|"matchingOptionCount"/);
   });
 
   it('withholds every option of a list that mixes written-out options with *clrOptionItems', () => {

@@ -664,12 +664,9 @@ export class ClrCombobox<T>
       const state: Record<string, unknown> = { multiSelect: this.multiSelect };
       const items = this.options?.items;
       const narrowed = this.optionsNarrowed();
-      if (narrowed && this.optionSelectionService.loading) {
-        // A search for what the user typed is still loading (`clrLoading`): no list says
-        // yet what matches, and saying none does would be wrong. Withheld from consumers the
-        // application does not control, as the matches are.
-        state.matchingOptionsPending = true;
-      } else if (items?.length || narrowed) {
+      // A summary snapshot counts collections rather than listing them.
+      const summary = snapshotOptions?.collectionItems === 'summary';
+      if (items?.length || narrowed) {
         // Option content children exist even while the popover is closed, so the
         // choices are available regardless of what the DOM currently shows. An option
         // the snapshot excludes is not one; a redacted one counts, unnamed.
@@ -680,11 +677,22 @@ export class ClrCombobox<T>
           // The list holds only the options matching what the user typed — none, when
           // nothing matches — and after an editable combobox closes, only the one they
           // picked. That says what they entered, so it goes under keys withheld from
-          // consumers the application does not control, the redacted matches' count too.
-          state.matchingOptions = labels;
-          if (named.length < listed.length) {
-            state.redactedMatchingOptions = listed.length - named.length;
+          // consumers the application does not control, the counts too.
+          if (summary) {
+            state.matchingOptionCount = listed.length;
+          } else {
+            state.matchingOptions = labels;
+            if (named.length < listed.length) {
+              state.redactedMatchingOptions = listed.length - named.length;
+            }
           }
+          if (this.optionsLoading()) {
+            // A search for what the user typed is still running: these are the matches
+            // shown so far, not yet all there are.
+            state.matchingOptionsPending = true;
+          }
+        } else if (summary) {
+          state.optionCount = listed.length;
         } else {
           state.options = labels;
           if (named.length < listed.length) {
@@ -700,6 +708,14 @@ export class ClrCombobox<T>
     };
 
     this.teardownElementContext = clrPublishElementContext(host, describe);
+  }
+
+  /**
+   * Whether `clrLoading` says a search is running, on the combobox or on its options:
+   * only the combobox's drives the spinner, but either says the list is not final.
+   */
+  private optionsLoading(): boolean {
+    return this.optionSelectionService.loading || !!this.options?.loading;
   }
 
   /**
