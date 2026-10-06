@@ -89,13 +89,13 @@ describe('Directive: IfTabActive', () => {
     const tab2 = tabHelper.getLinkList()[1];
     const toggleClass = 'activeTab';
 
-    component.activate = 'second';
+    fixture.componentRef.setInput('activate', 'second');
     fixture.detectChanges();
     expect(component.onTabActiveChange).toHaveBeenCalledWith(true);
     expect(tab1.nativeElement.className).not.toContain(toggleClass);
     expect(tab2.nativeElement.className).toContain(toggleClass);
 
-    component.activate = 'first';
+    fixture.componentRef.setInput('activate', 'first');
     fixture.detectChanges();
     expect(tab1.nativeElement.className).toContain(toggleClass);
     expect(tab2.nativeElement.className).not.toContain(toggleClass);

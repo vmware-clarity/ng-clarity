@@ -6,9 +6,20 @@ concurrency:
   cancel-in-progress: true
 jobs:
   pr-build:
-    name: PR Build
+    name: PR Build (${{matrix.angular}})
     timeout-minutes: 30
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        angular: ['Angular v21', 'Angular v22']
+        # The primary leg uses the Angular version the repository is developed with; it runs lint, the public API check
+        # and uploads the artifacts.
+        include:
+          - angular: 'Angular v21'
+            primary: true
+    permissions:
+      contents: read
     env:
       GH_TOKEN: ${{ github.token }}
     steps:
@@ -21,25 +32,48 @@ jobs:
           cache: 'npm'
       - name: Install Dependencies
         run: npm ci --ignore-scripts
+      # The libraries are always built with the Angular version the repository is developed with, as they are published.
+      - name: Build Clarity Library (Angular v21)
+        run: |
+          npm run _build:angular
+          npm run _build:addons
+          npm run _build:ui
+      # The demo and website then build against the built libraries in dist/, like applications using the published
+      # packages. Storybook and the unit tests keep using the library sources, see scripts/use-dist-paths.js.
+      - name: Prepare Consuming Infrastructure for Angular v22
+        if: ${{ !matrix.primary }}
+        run: |
+          npx ng update @angular/core@22 @angular/cli@22 @angular/cdk@22 --allow-dirty --force
+          npm install --save-dev @angular-builders/custom-esbuild@22 --ignore-scripts --force
+          node ./scripts/use-dist-paths.js
       - name: Lint
+        if: ${{ matrix.primary }}
         run: npm run lint
-      - name: Build
-        run: npm run build
+      # Storybook empties dist/docs before building, so it has to run before the demo (dist/docs/demo).
+      - name: Build Consuming Applications
+        run: |
+          npm run _build:storybook
+          npm run _build:demo
+          npm run _build:website
       - name: Test
         run: npm run test
       - name: Public Api Check
+        if: ${{ matrix.primary }}
         run: npm run public-api:check
       - name: Upload Docs Artifact
+        if: ${{ matrix.primary }}
         uses: actions/upload-artifact@v4
         with:
           name: docs
           path: dist/docs/
       - name: Upload Website Artifact
+        if: ${{ matrix.primary }}
         uses: actions/upload-artifact@v4
         with:
           name: website
           path: dist/website/
       - name: Upload Coverage Artifact
+        if: ${{ matrix.primary }}
         uses: actions/upload-artifact@v4
         with:
           name: coverage
