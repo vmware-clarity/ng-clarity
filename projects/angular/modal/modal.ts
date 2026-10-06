@@ -7,6 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import {
+  afterNextRender,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -162,10 +163,10 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    if (this._open || this.closeState === 'pending') {
-      // Destroyed while open or while animating out: notify the closing, like the leave animation callback of the
-      // dialog used to.
-      this._openChanged.emit(false);
+    if (this._open) {
+      // Destroyed while open: give the focus back, like the focus trap used to when it captured the focus.
+      this.focusReturnTarget?.focus();
+      this.focusReturnTarget = null;
     }
     this.destroyed = true;
     this._scrollingService.resumeScrolling();
@@ -216,23 +217,25 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   /** Resets the closing state when the modal (re)opens, possibly while it was still animating out. */
   private startOpening() {
-    const reopened = this.closing;
     this.closing = false;
     this.closeState = 'none';
     this.closeId++; // ignores the completion of a closing that was in progress
 
-    if (reopened) {
-      // The dialog was kept rendered, so the focus trap does not capture the focus again by itself.
-      this.animations
-        .whenCompleteAfterRender(() => null, this.injector)
-        .then(() => {
-          if (this._open) {
-            this.trapFocus?.focusTrap?.focusInitialElementWhenReady();
-          }
-        });
-    } else if (this.isBrowser) {
-      this.focusReturnTarget = document.activeElement as HTMLElement | null;
+    if (!this.isBrowser) {
+      return;
     }
+    // The modal owns the focus: it moves it into the dialog once rendered and gives it back when closing starts.
+    // (The focus trap does not capture it, as it would give the focus back a second time when the dialog is removed,
+    // after its leave animation, and does nothing when a dialog kept rendered while closing is opened again.)
+    this.focusReturnTarget = document.activeElement as HTMLElement | null;
+    afterNextRender(
+      () => {
+        if (this._open && !this.destroyed) {
+          this.trapFocus?.focusTrap?.focusInitialElementWhenReady();
+        }
+      },
+      { injector: this.injector }
+    );
   }
 
   /**

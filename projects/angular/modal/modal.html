@@ -10,7 +10,6 @@
   <div
     #dialog
     [cdkTrapFocus]="!closing"
-    [cdkTrapFocusAutoCapture]="true"
     [animate.enter]="dialogEnterClass"
     [class]="closing ? dialogLeaveClass : null"
     class="modal-dialog"

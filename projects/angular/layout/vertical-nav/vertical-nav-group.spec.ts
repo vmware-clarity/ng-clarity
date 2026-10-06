@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
-import { delay } from '@clr/angular/testing';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
@@ -259,6 +259,54 @@ export default function (): void {
       });
     });
   });
+
+  describe('Vertical Nav Group with animations', () => {
+    let fixture: ComponentFixture<AnimatedGroupTestComponent>;
+    let restoreAnimations: () => void;
+
+    beforeEach(async () => {
+      restoreAnimations = enableCssAnimations();
+      TestBed.configureTestingModule({
+        imports: [ClrVerticalNavModule, ClrIcon],
+        declarations: [AnimatedGroupTestComponent],
+        animationsEnabled: true,
+      });
+      fixture = TestBed.createComponent(AnimatedGroupTestComponent);
+      fixture.detectChanges();
+      await delay();
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+      restoreAnimations();
+    });
+
+    function children(): HTMLElement {
+      return fixture.nativeElement.querySelector('.nav-group-children');
+    }
+
+    it('animates the height of the children, and closes the group once they are collapsed', async () => {
+      const navGroup = fixture.componentInstance.navGroup;
+      navGroup.toggleExpand();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(children().getAnimations().length).toBe(1);
+      finishAnimations(fixture.nativeElement);
+      await delay();
+
+      navGroup.toggleExpand();
+      fixture.detectChanges();
+
+      expect(children().getAnimations().length).toBe(1);
+      expect(navGroup.expanded).toBeTrue(); // until the children are collapsed
+
+      finishAnimations(fixture.nativeElement);
+      await delay();
+
+      expect(navGroup.expanded).toBeFalse();
+    });
+  });
 }
 
 @Component({
@@ -333,5 +381,22 @@ class TemplateAPITestComponent {
   standalone: false,
 })
 class OnPushTestComponent {
+  @ViewChild('group') navGroup: ClrVerticalNavGroup;
+}
+
+@Component({
+  template: `
+    <clr-vertical-nav>
+      <clr-vertical-nav-group #group>
+        Group
+        <clr-vertical-nav-group-children>
+          <a href="#" clrVerticalNavLink>Link</a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
+    </clr-vertical-nav>
+  `,
+  standalone: false,
+})
+class AnimatedGroupTestComponent {
   @ViewChild('group') navGroup: ClrVerticalNavGroup;
 }

@@ -6,16 +6,24 @@
  */
 
 import { isPlatformServer } from '@angular/common';
+import * as angularCore from '@angular/core';
 import {
   afterNextRender,
   ANIMATION_MODULE_TYPE,
-  ɵANIMATIONS_DISABLED as ANIMATIONS_DISABLED,
   inject,
   Injectable,
   Injector,
   MAX_ANIMATION_TIMEOUT,
   PLATFORM_ID,
 } from '@angular/core';
+
+/**
+ * Angular's token disabling `animate.enter` / `animate.leave`. It is not public API, so it is read as a member of the
+ * module namespace rather than imported by name: bundlers fail on a named import that does not exist, whereas this
+ * member is then `undefined` (with a warning) and the check below is skipped. The member access is static, so it does
+ * not keep the rest of `@angular/core` from being tree-shaken.
+ */
+const ANIMATIONS_DISABLED = (angularCore as Partial<typeof angularCore>).ɵANIMATIONS_DISABLED;
 
 /** Extra time given to an animation past its computed end before `whenComplete()` stops waiting for it. */
 const COMPLETION_GRACE_PERIOD = 50;
@@ -46,7 +54,6 @@ export class ClrAnimationsService {
    */
   readonly disabled: boolean =
     inject(ANIMATION_MODULE_TYPE, { optional: true }) === 'NoopAnimations' ||
-    // `ANIMATIONS_DISABLED` is not public API: keep working if Angular stops exporting it.
     (!!ANIMATIONS_DISABLED && !!inject(ANIMATIONS_DISABLED, { optional: true })) ||
     isPlatformServer(inject(PLATFORM_ID));
 
@@ -76,12 +83,18 @@ export class ClrAnimationsService {
       return Promise.resolve();
     }
 
-    const finished = Promise.allSettled(animations.map(animation => animation.finished)).then(() => undefined);
-    const timeout = new Promise<void>(resolve =>
-      setTimeout(resolve, Math.min(this.remainingTime(animations) + COMPLETION_GRACE_PERIOD, this.maxAnimationTimeout))
-    );
-
-    return Promise.race([finished, timeout]);
+    return new Promise<void>(resolve => {
+      // The timer is cleared as soon as the animations finish, so that it does not keep the application unstable
+      // (or a `fakeAsync` test's timer queue busy) for no reason.
+      const timer = setTimeout(
+        resolve,
+        Math.min(this.remainingTime(animations) + COMPLETION_GRACE_PERIOD, this.maxAnimationTimeout)
+      );
+      Promise.allSettled(animations.map(animation => animation.finished)).then(() => {
+        clearTimeout(timer);
+        resolve();
+      });
+    });
   }
 
   /**

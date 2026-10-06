@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import {
   ClrCommonStringsService,
-  HeightAnimation,
+  ClrHeightAnimation,
   IfExpandService,
   isKeyEitherLetterOrNumber,
   Keys,
@@ -87,7 +87,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   private readonly nodeInjector: Injector;
   // Created on the first animated toggle only, as trees can have thousands of nodes.
-  private heightAnimation: HeightAnimation | undefined;
+  private heightAnimation: ClrHeightAnimation | undefined;
   private viewInitialized = false;
 
   // @ContentChild would have been more succinct
@@ -420,7 +420,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       return;
     }
     // The tree used to animate its children at a constant speed.
-    this.heightAnimation ??= new HeightAnimation(this.nodeInjector, 'linear');
+    this.heightAnimation ??= new ClrHeightAnimation(this.nodeInjector, 'linear');
     if (expanded) {
       this.heightAnimation.expand(() => this.childrenContainer.nativeElement);
     } else {

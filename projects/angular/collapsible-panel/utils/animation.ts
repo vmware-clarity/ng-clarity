@@ -6,43 +6,59 @@
  */
 
 import {
-  animationAnimate,
-  animationStyle,
-  animationTransition,
-  animationTrigger,
   ClrAnimationTransitionMetadata,
   ClrAnimationTriggerMetadata,
   defaultAnimationTiming,
 } from '@clr/angular/utils';
 
+// The objects below are the ones `trigger()`, `transition()`, `style()` and `animate()` of `@angular/animations`
+// return (see `ClrAnimationStyles`), written out so that Clarity does not need that package.
+
 /**
  * @deprecated Clarity panels animate with native CSS; see the `CollapsiblePanel` documentation for the expected
  * template and the `clr-collapsible-panel-collapsing` class.
  */
-export const skipInitialRenderTrigger: ClrAnimationTriggerMetadata = animationTrigger('skipInitialRender', [
-  animationTransition(':enter', []),
-]);
+export const skipInitialRenderTrigger: ClrAnimationTriggerMetadata = {
+  type: 7,
+  name: 'skipInitialRender',
+  definitions: [{ type: 1, expr: ':enter', animation: [], options: null }],
+  options: {},
+};
 
 /** @deprecated see {@link skipInitialRenderTrigger} */
-export const panelExpandTransition: ClrAnimationTransitionMetadata = animationTransition('void => *', [
-  animationStyle({ display: 'block', height: 0 }),
-  animationAnimate(defaultAnimationTiming, animationStyle({ height: '*' })),
-]);
+export const panelExpandTransition: ClrAnimationTransitionMetadata = {
+  type: 1,
+  expr: 'void => *',
+  animation: [
+    { type: 6, styles: { display: 'block', height: 0 }, offset: null },
+    { type: 4, timings: defaultAnimationTiming, styles: { type: 6, styles: { height: '*' }, offset: null } },
+  ],
+  options: null,
+};
 
 /** @deprecated see {@link skipInitialRenderTrigger} */
-export const panelCollapseTransition: ClrAnimationTransitionMetadata = animationTransition('* => void', [
-  animationStyle({ display: 'block' }),
-  animationAnimate(defaultAnimationTiming, animationStyle({ height: 0, display: 'none' })),
-]);
+export const panelCollapseTransition: ClrAnimationTransitionMetadata = {
+  type: 1,
+  expr: '* => void',
+  animation: [
+    { type: 6, styles: { display: 'block' }, offset: null },
+    {
+      type: 4,
+      timings: defaultAnimationTiming,
+      styles: { type: 6, styles: { height: 0, display: 'none' }, offset: null },
+    },
+  ],
+  options: null,
+};
 
 /** @deprecated see {@link skipInitialRenderTrigger} */
 export const collapsiblePanelExpandAnimation: ClrAnimationTriggerMetadata[] = [
   skipInitialRenderTrigger,
-  animationTrigger('toggle', [panelExpandTransition]),
+  { type: 7, name: 'toggle', definitions: [panelExpandTransition], options: {} },
 ];
 
 /** @deprecated see {@link skipInitialRenderTrigger} */
 export const collapsiblePanelAnimation: ClrAnimationTriggerMetadata[] = [
   skipInitialRenderTrigger,
-  animationTrigger('toggle', [panelExpandTransition, panelCollapseTransition]),
+  { type: 7, name: 'toggle', definitions: [panelExpandTransition, panelCollapseTransition], options: {} },
 ];

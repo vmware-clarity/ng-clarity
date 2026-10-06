@@ -76,8 +76,25 @@
     }
   }
 
+  // Without the bounce for users who prefer reduced motion: the check mark only fades in, at the same time.
+  @keyframes clr-loading-btn-check-reduced {
+    0%,
+    20% {
+      opacity: 0;
+    }
+
+    40%,
+    100% {
+      opacity: 1;
+    }
+  }
+
   .spinner.spinner-check.clr-loading-btn-check {
     animation: clr-loading-btn-check calc(#{tokens.$cds-global-animation-duration-quick} * 3) linear;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation-name: clr-loading-btn-check-reduced;
+    }
 
     &.clr-loading-btn-leave {
       animation: $loading-btn-leave;

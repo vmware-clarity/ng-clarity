@@ -17,7 +17,7 @@ import { ClrAnimationsService } from './animations.service';
  * its natural height when expanded): the animation only covers the way there and leaves no style behind. Since it is
  * a Web Animation of the element, `ClrAnimationsService.whenComplete()` waits for it.
  */
-export class HeightAnimation {
+export class ClrHeightAnimation {
   readonly #animations: ClrAnimationsService;
   #animation: Animation | null = null;
   #animationId = 0;

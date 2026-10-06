@@ -22,8 +22,8 @@ import {
 import {
   ClrAnimationsService,
   ClrCommonStringsService,
+  ClrHeightAnimation,
   ClrInitialRenderState,
-  HeightAnimation,
   IfExpandService,
 } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
@@ -54,7 +54,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   private readonly injector = inject(Injector);
   private readonly animations = inject(ClrAnimationsService);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly heightAnimation = new HeightAnimation(this.injector);
+  private readonly heightAnimation = new ClrHeightAnimation(this.injector);
   // The state the group is first rendered in is not animated.
   private readonly initialRender: ClrInitialRenderState = this.animations.trackInitialRender(this.injector);
 

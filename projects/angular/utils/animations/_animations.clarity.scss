@@ -76,105 +76,105 @@ $clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
 
   @keyframes clr-slide-up-in {
     from {
-      transform: translate(0, var(--clr-slide-offset));
+      transform: translate(0, var(--clr-slide-offset, 25%));
     }
   }
 
   @keyframes clr-slide-up-out {
     to {
-      transform: translate(0, var(--clr-slide-offset));
+      transform: translate(0, var(--clr-slide-offset, 25%));
     }
   }
 
   @keyframes clr-fade-slide-up-in {
     from {
       opacity: 0;
-      transform: translate(0, var(--clr-slide-offset));
+      transform: translate(0, var(--clr-slide-offset, 25%));
     }
   }
 
   @keyframes clr-fade-slide-up-out {
     to {
       opacity: 0;
-      transform: translate(0, var(--clr-slide-offset));
+      transform: translate(0, var(--clr-slide-offset, 25%));
     }
   }
 
   @keyframes clr-slide-down-in {
     from {
-      transform: translate(0, calc(-1 * var(--clr-slide-offset)));
+      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
     }
   }
 
   @keyframes clr-slide-down-out {
     to {
-      transform: translate(0, calc(-1 * var(--clr-slide-offset)));
+      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
     }
   }
 
   @keyframes clr-fade-slide-down-in {
     from {
       opacity: 0;
-      transform: translate(0, calc(-1 * var(--clr-slide-offset)));
+      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
     }
   }
 
   @keyframes clr-fade-slide-down-out {
     to {
       opacity: 0;
-      transform: translate(0, calc(-1 * var(--clr-slide-offset)));
+      transform: translate(0, calc(-1 * var(--clr-slide-offset, 25%)));
     }
   }
 
   @keyframes clr-slide-left-in {
     from {
-      transform: translate(var(--clr-slide-offset), 0);
+      transform: translate(var(--clr-slide-offset, 25%), 0);
     }
   }
 
   @keyframes clr-slide-left-out {
     to {
-      transform: translate(var(--clr-slide-offset), 0);
+      transform: translate(var(--clr-slide-offset, 25%), 0);
     }
   }
 
   @keyframes clr-fade-slide-left-in {
     from {
       opacity: 0;
-      transform: translate(var(--clr-slide-offset), 0);
+      transform: translate(var(--clr-slide-offset, 25%), 0);
     }
   }
 
   @keyframes clr-fade-slide-left-out {
     to {
       opacity: 0;
-      transform: translate(var(--clr-slide-offset), 0);
+      transform: translate(var(--clr-slide-offset, 25%), 0);
     }
   }
 
   @keyframes clr-slide-right-in {
     from {
-      transform: translate(calc(-1 * var(--clr-slide-offset)), 0);
+      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
     }
   }
 
   @keyframes clr-slide-right-out {
     to {
-      transform: translate(calc(-1 * var(--clr-slide-offset)), 0);
+      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
     }
   }
 
   @keyframes clr-fade-slide-right-in {
     from {
       opacity: 0;
-      transform: translate(calc(-1 * var(--clr-slide-offset)), 0);
+      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
     }
   }
 
   @keyframes clr-fade-slide-right-out {
     to {
       opacity: 0;
-      transform: translate(calc(-1 * var(--clr-slide-offset)), 0);
+      transform: translate(calc(-1 * var(--clr-slide-offset, 25%)), 0);
     }
   }
 

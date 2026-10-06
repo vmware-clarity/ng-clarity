@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionPanel } from './accordion-panel';
@@ -318,5 +319,59 @@ describe('ClrAccordionPanel', () => {
 
       expect(nestedPanelHeading).toBeNull();
     });
+  });
+});
+
+describe('ClrAccordionPanel with animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [ClrAccordionModule],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function content(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.clr-accordion-content');
+  }
+
+  it('animates the height of the content when it expands', async () => {
+    fixture.componentInstance.open = true;
+    fixture.detectChanges();
+    await delay();
+
+    expect(content().getAnimations().length).toBe(1);
+    finishAnimations(fixture.nativeElement);
+  });
+
+  it('keeps the content rendered while it collapses, then removes it', async () => {
+    fixture.componentInstance.open = true;
+    fixture.detectChanges();
+    await delay();
+    finishAnimations(fixture.nativeElement);
+    await delay();
+
+    fixture.componentInstance.open = false;
+    fixture.detectChanges();
+
+    expect(content()).not.toBeNull();
+    expect(content().getAnimations().length).toBe(1);
+
+    finishAnimations(fixture.nativeElement);
+    await delay();
+    fixture.detectChanges();
+
+    expect(content()).toBeNull();
   });
 });

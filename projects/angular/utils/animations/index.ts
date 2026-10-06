@@ -5,12 +5,22 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './animation-metadata';
+export type {
+  ClrAnimationAnimateMetadata,
+  ClrAnimationMetadata,
+  ClrAnimationOptions,
+  ClrAnimationReferenceMetadata,
+  ClrAnimationStateMetadata,
+  ClrAnimationStyleMetadata,
+  ClrAnimationStyles,
+  ClrAnimationTransitionMetadata,
+  ClrAnimationTriggerMetadata,
+} from './animation-metadata';
 export * from './animations.service';
 export * from './constants';
 export * from './collapse/index';
 export * from './expandable-animation/index';
 export * from './fade/index';
 export * from './fade-slide/index';
-export { HeightAnimation } from './height-animation';
+export { ClrHeightAnimation } from './height-animation';
 export * from './slide/index';

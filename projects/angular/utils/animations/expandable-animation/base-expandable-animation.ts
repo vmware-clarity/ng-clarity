@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { afterNextRender, Directive, ElementRef, inject, Injector, OnDestroy, Renderer2 } from '@angular/core';
+import { afterNextRender, DestroyRef, Directive, ElementRef, inject, Injector, Renderer2 } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { ClrAnimationsService } from '../animations.service';
@@ -20,7 +20,7 @@ interface ExpandAnimationStep {
 }
 
 @Directive()
-export class BaseExpandableAnimation implements OnDestroy {
+export class BaseExpandableAnimation {
   startHeight = 0;
 
   // ECMAScript private fields, so that they cannot clash with the members of existing subclasses.
@@ -33,10 +33,9 @@ export class BaseExpandableAnimation implements OnDestroy {
     protected element: ElementRef<HTMLElement>,
     protected domAdapter: DomAdapter,
     protected renderer: Renderer2
-  ) {}
-
-  ngOnDestroy() {
-    this.#stopAnimation();
+  ) {
+    // Not `ngOnDestroy()`, which a subclass could override without calling it.
+    inject(DestroyRef).onDestroy(() => this.#stopAnimation());
   }
 
   updateStartHeight() {

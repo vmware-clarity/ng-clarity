@@ -458,18 +458,59 @@ describe('Modal with animations', () => {
     await finishClosing();
   });
 
-  it('notifies the closing when destroyed while open', () => {
-    fixture.destroy();
-
-    expect(openChanges).toEqual([false]);
-  });
-
-  it('notifies the closing when destroyed while it animates out', () => {
+  it('gives the focus back once, when it starts closing', async () => {
     modal.close();
     fixture.detectChanges();
+    await finishClosing();
+
+    const opener: HTMLButtonElement = fixture.nativeElement.querySelector('.to-focus');
+    opener.focus();
+    modal.open();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('.modal-dialog').contains(document.activeElement)).toBeTrue();
+
+    modal.close();
+    fixture.detectChanges();
+    const elsewhere = document.createElement('button');
+    document.body.appendChild(elsewhere);
+    elsewhere.focus();
+    await finishClosing();
+
+    expect(modalElement()).toBeNull();
+    expect(document.activeElement).toBe(elsewhere);
+    elsewhere.remove();
+  });
+
+  it('gives the focus back when destroyed while open', async () => {
+    modal.close();
+    fixture.detectChanges();
+    await finishClosing();
+
+    const outside = document.createElement('button');
+    document.body.appendChild(outside);
+    outside.focus();
+    modal.open();
+    fixture.detectChanges();
+    await fixture.whenStable();
 
     fixture.destroy();
 
-    expect(openChanges).toEqual([false]);
+    expect(document.activeElement).toBe(outside);
+    outside.remove();
+  });
+
+  it('does not notify the closing from its destruction', () => {
+    fixture.destroy();
+
+    expect(openChanges).toEqual([]);
+  });
+
+  it('does not notify the closing from its destruction while it animates out', () => {
+    modal.close();
+    fixture.detectChanges();
+    fixture.destroy();
+
+    expect(openChanges).toEqual([]);
   });
 });

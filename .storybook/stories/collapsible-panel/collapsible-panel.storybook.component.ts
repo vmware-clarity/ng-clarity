@@ -58,7 +58,7 @@ import { startWith } from 'rxjs/operators';
           [attr.aria-labelledby]="getHeaderId(panel.templateId)"
         >
           @if (panel.open || collapsing) {
-            <div #panelContent [animate.enter]="contentEnterClass" class="clr-collapsible-content">
+            <div #panelContent class="clr-collapsible-content">
               <div class="clr-collapsible-inner-content">
                 <ng-content></ng-content>
               </div>

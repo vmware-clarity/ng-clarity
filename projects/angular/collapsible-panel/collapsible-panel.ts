@@ -20,8 +20,8 @@ import {
 } from '@angular/core';
 import {
   ClrAnimationsService,
+  ClrHeightAnimation,
   ClrInitialRenderState,
-  HeightAnimation,
   IfExpandService,
   uniqueIdFactory,
 } from '@clr/angular/utils';
@@ -30,9 +30,6 @@ import { filter, tap } from 'rxjs/operators';
 
 import { CollapsiblePanelModel } from './models/collapsible-panel.model';
 import { CollapsiblePanelService } from './providers/collapsible-panel.service';
-
-/** Applied to the panel content while it collapses, see `_mixins.collapsible-panel.scss`. */
-export const COLLAPSIBLE_PANEL_COLLAPSING_CLASS = 'clr-collapsible-panel-collapsing';
 
 /**
  * Base class of the accordion and stepper panels.
@@ -72,7 +69,7 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
   #destroyed = false;
   readonly #injector = inject(Injector);
   readonly #animations = inject(ClrAnimationsService);
-  readonly #heightAnimation = new HeightAnimation(this.#injector);
+  readonly #heightAnimation = new ClrHeightAnimation(this.#injector);
   #content: HTMLElement | undefined;
 
   constructor(
