@@ -18,7 +18,13 @@ import { StackblitzExampleComponent } from '../stackblitz-example/stackblitz-exa
 @Component({
   selector: 'app-doc-example',
   template: `
-    <ng-container *ngComponentOutlet="example().component"></ng-container>
+    @if (previewClass()) {
+      <div [class]="previewClass()">
+        <ng-container *ngComponentOutlet="example().component"></ng-container>
+      </div>
+    } @else {
+      <ng-container *ngComponentOutlet="example().component"></ng-container>
+    }
     <app-stackblitz-example
       [name]="example().title"
       [componentTemplate]="example().source.html"
@@ -32,4 +38,6 @@ import { StackblitzExampleComponent } from '../stackblitz-example/stackblitz-exa
 })
 export class DocExampleComponent {
   readonly example = input.required<Example>();
+  /** Classes for a block that wraps the rendered example, such as spacing. Without them, the example renders inline. */
+  readonly previewClass = input<string>();
 }
