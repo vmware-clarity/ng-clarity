@@ -44,11 +44,11 @@ From the [button design guidance](https://guidance.clarity.design/1003):
 
 ```html
 <button type="button" class="btn btn-icon btn-outline" aria-label="Settings">
-  <cds-icon shape="cog"></cds-icon>
+  <clr-icon shape="cog"></clr-icon>
 </button>
 
 <button type="button" class="btn btn-primary">
-  <cds-icon shape="plus"></cds-icon>
+  <clr-icon shape="plus"></clr-icon>
   Add
 </button>
 ```

@@ -28,6 +28,18 @@ const apiFiles = glob.sync('projects/{angular,addons}/**/*.api.md', { cwd: REPO_
 const apiText = apiFiles.map(file => fs.readFileSync(path.join(REPO_ROOT, file), 'utf8')).join('\n');
 const deprecated = findDeprecatedNames(apiText);
 
+// CSS-only names (e.g. `clr-required-mark`, `clr-row`) are not in the API reports; accept classes defined in the styles.
+const scssFiles = glob.sync('projects/{angular,addons,ui}/**/*.scss', {
+  cwd: REPO_ROOT,
+  ignore: ['**/node_modules/**'],
+});
+const cssClasses = new Set(
+  scssFiles.flatMap(file =>
+    [...fs.readFileSync(path.join(REPO_ROOT, file), 'utf8').matchAll(/\.([a-z][\w-]*)/g)].map(m => m[1])
+  )
+);
+const existsInLibrary = name => apiText.includes(name) || cssClasses.has(name);
+
 const files = [];
 for (const lib of Object.keys(LIBS)) {
   const { skills, errors } = collectSkills(lib);
@@ -46,15 +58,29 @@ const skillNames = new Set(files.filter(f => !f.agents).map(f => f.name));
 let problems = 0;
 for (const entry of files) {
   const names = extractApiNames(fs.readFileSync(entry.file, 'utf8')).filter(name => !skillNames.has(name));
-  const missing = names.filter(name => !apiText.includes(name));
+  const missing = names.filter(name => !existsInLibrary(name));
   const deprecatedUsed = names.filter(name => deprecated.has(name));
+  const indexIssues = entry.agents ? checkIndex(entry) : [];
 
-  if (missing.length || deprecatedUsed.length) {
+  if (missing.length || deprecatedUsed.length || indexIssues.length) {
     console.log(`\n${label(entry)}`);
     missing.forEach(name => console.log(`  missing     ${name}`));
     deprecatedUsed.forEach(name => console.log(`  deprecated  ${name}`));
-    problems += missing.length + deprecatedUsed.length;
+    indexIssues.forEach(issue => console.log(`  index       ${issue}`));
+    problems += missing.length + deprecatedUsed.length + indexIssues.length;
   }
+}
+
+// The AGENTS.md guide table must list exactly the skills of its package (first column: `skill-name`).
+function checkIndex(entry) {
+  const listed = new Set(
+    [...fs.readFileSync(entry.file, 'utf8').matchAll(/^\|\s*`([a-z0-9-]+)`\s*\|/gm)].map(m => m[1])
+  );
+  const libSkills = files.filter(f => !f.agents && f.lib === entry.lib).map(f => f.name);
+  return [
+    ...libSkills.filter(name => !listed.has(name)).map(name => `${name} is not listed in the guide table`),
+    ...[...listed].filter(name => !libSkills.includes(name)).map(name => `${name} is listed but no such skill exists`),
+  ];
 }
 
 const guidanceIndex = process.argv.indexOf('--guidance');

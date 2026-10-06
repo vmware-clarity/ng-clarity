@@ -66,7 +66,7 @@ For each changed CIP:
 - Verify every name against the report before writing it. Do not rely on memory.
 - Keep skills short and pattern-focused: when to use what, minimal examples, pitfalls. Do not paste API tables.
 - Do not change a skill's `name` (it is its install folder and website URL) unless the user asks. Keep `metadata.docs` pointing at the component's website page.
-- Examples use the app style from the skills: NgModule imports, `@for`/`@if`, `cds-icon`, `type="button"`, `aria-label` on icon-only buttons.
+- Examples use the app style from the skills: NgModule imports, `@for`/`@if`, `clr-icon` (the `cds-icon` alias is deprecated), `type="button"`, `aria-label` on icon-only buttons.
 - Do not run `npm run public-api:update`, builds, or `eslint:fix`. If the reports look stale, ask the user to update them.
 
 ## 4. Verify
