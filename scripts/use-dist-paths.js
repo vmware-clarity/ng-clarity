@@ -6,52 +6,34 @@
  */
 
 /*
- * This script points tsconfig paths for @clr/angular and @clr/addons to the pre-built
- * dist/ packages. It is used in the Angular 22 CI leg so consuming applications (demo,
- * website, storybook) compile against the pre-compiled Angular 21.2 library artifacts.
+ * Points the demo and website applications at the built `dist/` packages instead of the library sources, so they
+ * compile against the libraries the way an application consuming the published packages does. It is used in
+ * pr-build.yml to build the applications with a newer Angular version than the libraries were built with.
+ *
+ * Only the application tsconfigs are changed. The unit tests and storybook keep resolving the library sources through
+ * the root tsconfig: they import library internals by relative path, and mixing those with `dist/` would load two
+ * copies of the same classes.
  */
 
 const fs = require('fs');
 
-function updateJsonFile(filePath, updater) {
-  const content = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-  updater(content);
-  fs.writeFileSync(filePath, JSON.stringify(content, null, 2) + '\n');
-}
+const applicationTsconfigs = {
+  'projects/demo/tsconfig.json': '../..',
+  'projects/website/tsconfig.app.json': '../..',
+};
 
-// 1. Root tsconfig.json
-updateJsonFile('tsconfig.json', config => {
-  config.compilerOptions = config.compilerOptions || {};
-  // Only on the Angular v22 leg: consuming apps compile against the dist/ typings with Angular 22.
-  config.compilerOptions.skipLibCheck = true;
-  config.compilerOptions.paths = config.compilerOptions.paths || {};
-  config.compilerOptions.paths['@clr/angular'] = ['./dist/clr-angular'];
-  config.compilerOptions.paths['@clr/angular/*'] = ['./dist/clr-angular/*'];
-  config.compilerOptions.paths['@clr/addons'] = ['./dist/clr-addons'];
-  config.compilerOptions.paths['@clr/addons/*'] = ['./dist/clr-addons/*'];
-  config.compilerOptions.paths['@clr/angular/testing'] = ['./dist/clr-angular/testing'];
-});
+for (const [tsconfigPath, rootPath] of Object.entries(applicationTsconfigs)) {
+  const tsconfig = JSON.parse(fs.readFileSync(tsconfigPath, 'utf8'));
 
-// 2. Demo tsconfig.json
-if (fs.existsSync('projects/demo/tsconfig.json')) {
-  updateJsonFile('projects/demo/tsconfig.json', config => {
-    config.compilerOptions = config.compilerOptions || {};
-    config.compilerOptions.paths = config.compilerOptions.paths || {};
-    config.compilerOptions.paths['@clr/angular'] = ['../../dist/clr-angular'];
-    config.compilerOptions.paths['@clr/angular/*'] = ['../../dist/clr-angular/*'];
-    config.compilerOptions.paths['@clr/addons'] = ['../../dist/clr-addons'];
-    config.compilerOptions.paths['@clr/addons/*'] = ['../../dist/clr-addons/*'];
-  });
-}
+  tsconfig.compilerOptions = {
+    ...tsconfig.compilerOptions,
+    paths: {
+      '@clr/angular': [`${rootPath}/dist/clr-angular`],
+      '@clr/angular/*': [`${rootPath}/dist/clr-angular/*`],
+      '@clr/addons': [`${rootPath}/dist/clr-addons`],
+      '@clr/addons/*': [`${rootPath}/dist/clr-addons/*`],
+    },
+  };
 
-// 3. Storybook tsconfig.json
-if (fs.existsSync('.storybook/tsconfig.json')) {
-  updateJsonFile('.storybook/tsconfig.json', config => {
-    config.compilerOptions = config.compilerOptions || {};
-    config.compilerOptions.paths = config.compilerOptions.paths || {};
-    config.compilerOptions.paths['@clr/angular'] = ['./../dist/clr-angular'];
-    config.compilerOptions.paths['@clr/angular/*'] = ['./../dist/clr-angular/*'];
-    config.compilerOptions.paths['@clr/addons'] = ['./../dist/clr-addons'];
-    config.compilerOptions.paths['@clr/addons/*'] = ['./../dist/clr-addons/*'];
-  });
+  fs.writeFileSync(tsconfigPath, JSON.stringify(tsconfig, null, 2) + '\n');
 }
