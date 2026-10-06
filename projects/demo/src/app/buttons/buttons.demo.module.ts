@@ -9,18 +9,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
-import { ButtonLoadingDemo } from './button-loading';
-import { ButtonSizesDemo } from './button-sizes';
-import { ButtonStatesDemo } from './button-states';
 import { ButtonsIconsDemo } from './buttons-icons';
 import { ButtonsIconsSmallDemo } from './buttons-icons-sm';
 import { ButtonsTestDemo } from './buttons-test';
 import { ButtonsDemo } from './buttons.demo';
 import { ROUTING } from './buttons.demo.routing';
-import { IconButtonsDemo } from './icon-buttons';
-import { InverseButtonDemo } from './inverse-button';
 import { PrimaryButtonDemo } from './primary-button';
-import { RealButtonDemo } from './real-button';
 import { SecondaryButtonDemo } from './secondary-button';
 import { TertiaryButtonDemo } from './tertiary-button';
 
@@ -28,32 +22,20 @@ import { TertiaryButtonDemo } from './tertiary-button';
   imports: [CommonModule, ClarityModule, ROUTING],
   declarations: [
     ButtonsDemo,
-    RealButtonDemo,
     PrimaryButtonDemo,
     SecondaryButtonDemo,
     TertiaryButtonDemo,
-    InverseButtonDemo,
-    ButtonStatesDemo,
-    ButtonLoadingDemo,
-    ButtonSizesDemo,
     ButtonsTestDemo,
     ButtonsIconsDemo,
-    IconButtonsDemo,
     ButtonsIconsSmallDemo,
   ],
   exports: [
     ButtonsDemo,
-    RealButtonDemo,
     PrimaryButtonDemo,
     SecondaryButtonDemo,
     TertiaryButtonDemo,
-    InverseButtonDemo,
-    ButtonStatesDemo,
-    ButtonLoadingDemo,
-    ButtonSizesDemo,
     ButtonsTestDemo,
     ButtonsIconsDemo,
-    IconButtonsDemo,
     ButtonsIconsSmallDemo,
   ],
 })

@@ -6,17 +6,14 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrLoadingState } from '@clr/angular';
+import { ClrButtonModule, ClrIcon, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 
 @Component({
-  selector: 'clr-buttons-demo-button-loading',
-  templateUrl: './button-loading.html',
-  styleUrls: ['./buttons.demo.scss'],
-  standalone: false,
+  selector: 'clr-button-loading-states-example',
+  templateUrl: './loading-states.example.html',
+  imports: [ClrButtonModule, ClrIcon, ClrLoadingModule],
 })
-export class ButtonLoadingDemo {
-  validateState: ClrLoadingState = ClrLoadingState.DEFAULT;
-  submitState: ClrLoadingState = ClrLoadingState.DEFAULT;
+export class ButtonLoadingStatesExample {
   disabledState: ClrLoadingState = ClrLoadingState.DEFAULT;
   enabledState: ClrLoadingState = ClrLoadingState.DEFAULT;
   disabledStateDisabled = false;
@@ -39,20 +36,6 @@ export class ButtonLoadingDemo {
     setTimeout(() => {
       this.enabledState = ClrLoadingState.SUCCESS;
       this.enabledStateDisabled = false;
-    }, 1500);
-  }
-
-  validateDemo() {
-    this.validateState = ClrLoadingState.LOADING;
-    setTimeout(() => {
-      this.validateState = ClrLoadingState.SUCCESS;
-    }, 1500);
-  }
-
-  submitDemo() {
-    this.submitState = ClrLoadingState.LOADING;
-    setTimeout(() => {
-      this.submitState = ClrLoadingState.DEFAULT;
     }, 1500);
   }
 

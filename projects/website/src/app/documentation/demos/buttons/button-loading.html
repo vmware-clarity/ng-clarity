@@ -19,14 +19,5 @@
     </li>
   </ul>
   <br />
-  <button [clrLoading]="validateBtnState" class="btn btn-info-outline" (click)="validateDemo()">Validate</button>
-  <button [clrLoading]="submitBtnState" type="submit" class="btn btn-success-outline" (click)="submitDemo()">
-    Submit
-  </button>
-
-  <app-stackblitz-example
-    name="loading button"
-    [componentTemplate]="mainHTMLExample"
-    [componentClass]="mainTSExample"
-  ></app-stackblitz-example>
+  <app-doc-example [example]="examples.loading"></app-doc-example>
 </div>

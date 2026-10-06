@@ -7,6 +7,8 @@
       "@clr/angular": ["../angular/index.ts"],
       "@clr/angular/*": ["../angular/*"],
       "@clr/addons": ["../addons/index.ts"],
+      "@clr/examples": ["../examples/index.ts"],
+      "@clr/examples/*": ["../examples/*"],
       "@clr/addons/*": ["../addons/*"]
     }
   },

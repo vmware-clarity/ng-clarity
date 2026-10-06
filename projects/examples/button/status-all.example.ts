@@ -8,9 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-buttons-demo-inverse-button',
-  templateUrl: './inverse-button.html',
-  styleUrls: ['./buttons.demo.scss'],
-  standalone: false,
+  selector: 'clr-button-status-all-example',
+  templateUrl: './status-all.example.html',
 })
-export class InverseButtonDemo {}
+export class ButtonStatusAllExample {}

@@ -5,7 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-.buttons-center {
-  display: flex;
-  justify-content: center;
-}
+import { Component } from '@angular/core';
+import { ClrIcon } from '@clr/angular';
+
+@Component({
+  selector: 'clr-button-icon-example',
+  templateUrl: './icon.example.html',
+  imports: [ClrIcon],
+})
+export class ButtonIconExample {}

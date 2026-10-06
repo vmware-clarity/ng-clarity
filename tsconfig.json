@@ -22,6 +22,8 @@
       "@clr/angular/*": ["projects/angular/*"],
       "@clr/addons": ["projects/addons/index.ts"],
       "@clr/addons/*": ["projects/addons/*"],
+      "@clr/examples": ["projects/examples/index.ts"],
+      "@clr/examples/*": ["projects/examples/*"],
       "@clr/angular/testing": ["projects/angular/utils/testing"]
     }
   },

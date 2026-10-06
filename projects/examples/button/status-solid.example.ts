@@ -5,7 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-.buttons-center {
-  display: flex;
-  justify-content: center;
-}
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'clr-button-status-solid-example',
+  templateUrl: './status-solid.example.html',
+})
+export class ButtonStatusSolidExample {}

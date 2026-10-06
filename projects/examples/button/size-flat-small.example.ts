@@ -5,7 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-.buttons-center {
-  display: flex;
-  justify-content: center;
-}
+import { Component } from '@angular/core';
+
+@Component({
+  selector: 'clr-button-size-flat-small-example',
+  templateUrl: './size-flat-small.example.html',
+})
+export class ButtonSizeFlatSmallExample {}

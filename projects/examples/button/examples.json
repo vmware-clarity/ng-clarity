@@ -1,0 +1,26 @@
+{
+  "title": "Button",
+  "examples": [
+    { "id": "solid", "title": "Solid buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "outline", "title": "Outline buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "flat", "title": "Flat buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "status-outline", "title": "Outline status buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "status-solid", "title": "Solid status buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "status-all", "title": "All status buttons", "targets": ["demo", "storybook"] },
+    { "id": "size-normal", "title": "Normal buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "size-small", "title": "Small buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "size-flat-normal", "title": "Normal flat buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "size-flat-small", "title": "Small flat buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "block", "title": "Block buttons", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "inverse",
+      "title": "Inverse buttons",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    { "id": "icon", "title": "Icon buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "icon-sizes", "title": "Icon button sizes", "targets": ["demo", "storybook"] },
+    { "id": "loading", "title": "Loading buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "loading-states", "title": "Loading button states", "targets": ["demo"] }
+  ]
+}

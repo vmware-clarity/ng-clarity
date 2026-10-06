@@ -6,11 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrIcon } from '@clr/angular';
 
 @Component({
-  selector: 'clr-icon-buttons-demo',
-  templateUrl: './icon-buttons.html',
-  styleUrls: ['./buttons.demo.scss'],
-  standalone: false,
+  selector: 'clr-button-icon-sizes-example',
+  templateUrl: './icon-sizes.example.html',
+  imports: [ClrIcon],
 })
-export class IconButtonsDemo {}
+export class ButtonIconSizesExample {}
