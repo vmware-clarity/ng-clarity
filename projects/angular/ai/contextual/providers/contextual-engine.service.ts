@@ -14,6 +14,12 @@ import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
+import {
+  ClrContextFrameHost,
+  ClrContextFrameHostOptions,
+  ClrContextFrameRequestOptions,
+  clrRequestHostContext,
+} from '../iframe/context-frame-bridge';
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
 import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
 import { availableRoutes, routePatternFor } from '../routes';
@@ -67,6 +73,10 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
  * cached — so they can never contain obsolete information about UI that no longer exists.
  *
  * The engine only ever reads. It describes the page and never changes it.
+ *
+ * The engine can also serve snapshots across an iframe boundary (see
+ * {@link enableFrameBridge} and {@link requestHostContext}), so embedded UI such as a
+ * chat surface built with a different UI library can receive the hosting page's context.
  */
 @Injectable({ providedIn: 'root' })
 export class ClrContextEngineService implements OnDestroy {
@@ -76,6 +86,7 @@ export class ClrContextEngineService implements OnDestroy {
   /** How the router maps addresses to routes; there is none without a router. */
   private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   private readonly zone = inject(NgZone);
+  private frameHost: ClrContextFrameHost | null = null;
   private globalProperty: string | null = null;
 
   constructor(
@@ -86,6 +97,7 @@ export class ClrContextEngineService implements OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
+    this.disableFrameBridge();
     this.disableGlobalAccess();
   }
 
@@ -161,6 +173,53 @@ export class ClrContextEngineService implements OnDestroy {
       delete (window as unknown as Record<string, unknown>)[this.globalProperty];
     }
     this.globalProperty = null;
+  }
+
+  /**
+   * Starts answering context requests from embedded frames, so UI hosted in an iframe
+   * (a chat surface, an embedded tool) can pull this page's context through
+   * `postMessage`. Each request is answered with a freshly computed snapshot.
+   *
+   * By default only frames from the page's own origin are served; pass
+   * `allowedOrigins` to serve trusted cross-origin frames.
+   */
+  enableFrameBridge(options?: ClrContextFrameHostOptions): void {
+    const window = this.browserWindow();
+    if (!window) {
+      return;
+    }
+    this.disableFrameBridge();
+    // The host caps each frame's request against `options.snapshot`; the application's
+    // own options are the ceiling above that, so a frame cannot undo them either.
+    const ceiling = this.untrustedCeiling(options?.snapshot);
+    this.frameHost = new ClrContextFrameHost(
+      snapshotOptions => this.snapshot(capSnapshotOptions(snapshotOptions, ceiling)),
+      window,
+      options,
+      url => this.routePattern(url)
+    );
+    // Outside the zone: every `message` on the page reaches the listener, and answering
+    // one changes nothing the application renders, so none should check the application.
+    const frameHost = this.frameHost;
+    this.zone.runOutsideAngular(() => frameHost.start());
+  }
+
+  /** Stops answering embedded frames. */
+  disableFrameBridge(): void {
+    this.frameHost?.stop();
+    this.frameHost = null;
+  }
+
+  /**
+   * Requests the context of the page hosting this application, for applications that
+   * themselves run inside an iframe. Resolves with `null` when there is no hosting
+   * page or it does not serve context.
+   */
+  requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null> {
+    if (!this.browserWindow()) {
+      return Promise.resolve(null);
+    }
+    return clrRequestHostContext(options);
   }
 
   private snapshot(options: ClrContextSnapshotOptions | undefined): ClrPageContext {

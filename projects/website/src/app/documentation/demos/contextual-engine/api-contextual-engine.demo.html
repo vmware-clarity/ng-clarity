@@ -8,7 +8,7 @@
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextEngineService</code></h3>
 <p class="clr-mt-16px" cds-text="body">
-  Root-provided. Builds snapshots on demand and owns the global accessor, the way context leaves the application.
+  Root-provided. Builds snapshots on demand and owns the two ways context leaves the application.
 </p>
 <table class="table">
   <thead>
@@ -33,6 +33,33 @@
       <td class="left">
         Teaches the collector about markup that carries neither an ARIA role nor an accessible name. Returns a function
         that removes it again.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">enableFrameBridge(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Starts answering context requests from frames embedded in the page, and from nothing else — not a popup, another
+        tab or an opener, whatever its origin. Same-origin only unless told otherwise. A frame receives neither form
+        values nor the page's address — only the route pattern, such as
+        <code cds-text="code">clusters/:id</code>; links to the application as the route pattern they match (and none
+        when they match no route), links elsewhere and frames as their origin — unless the host sets
+        <code cds-text="code">shareFormValues</code> or <code cds-text="code">shareFullUrl</code>. A frame's budgets are
+        capped at the host's own <code cds-text="code">snapshot</code> budgets, and at the defaults wherever the host
+        set none.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">disableFrameBridge()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Stops answering frames.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">requestHostContext(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext | null&gt;</code></td>
+      <td class="left">
+        For an application that is itself embedded: asks the hosting page for its context. Resolves with
+        <code cds-text="code">null</code> when the host does not answer, so embedded UI degrades gracefully.
       </td>
     </tr>
     <tr>
@@ -404,7 +431,7 @@
 <h3 cds-text="section" class="clr-mt-32px">Application-wide options and presets</h3>
 <p class="clr-mt-16px" cds-text="body">
   <code cds-text="code">provideClrContextOptions(preset | options, overrides?)</code> sets the options every snapshot
-  starts from — the engine, the tracker and the global accessor all read the
+  starts from — the engine, the tracker, the frame bridge and the global accessor all read the
   <code cds-text="code">CLR_CONTEXT_OPTIONS</code> token — with per-call options applied over them. Presets:
   <code cds-text="code">'full'</code> (the defaults), <code cds-text="code">'interactive'</code> (no prose, no
   navigation/banner/footer) and <code cds-text="code">'minimal'</code> (no prose or layout, summary collections, shorter
@@ -429,7 +456,7 @@
       <td class="left"><b cds-text="medium">title</b></td>
       <td class="left clr-hidden-xs-down">String</td>
       <td class="left">
-        The document title. The global accessor receives an empty title, unless the application sets
+        The document title. Frames and the global accessor receive an empty title, unless the application sets
         <code cds-text="code">shareFullUrl</code>.
       </td>
     </tr>
@@ -446,7 +473,8 @@
       <td class="left"><b cds-text="medium">url</b></td>
       <td class="left clr-hidden-xs-down">String</td>
       <td class="left">
-        The current URL. The global accessor receives only the origin and the route pattern, unless the application sets
+        The current URL. Frames and the global accessor receive only the origin and the route pattern, unless the
+        application sets
         <code cds-text="code">shareFullUrl</code>.
       </td>
     </tr>
@@ -626,8 +654,8 @@
   <code cds-text="code">hiddenColumns</code>, <code cds-text="code">fileCount</code>,
   <code cds-text="code">matchingOptions</code>, <code cds-text="code">redactedMatchingOptions</code>,
   <code cds-text="code">matchingOptionsPending</code> and <code cds-text="code">matchingOptionCount</code> — are
-  withheld from the global accessor unless the application shares form values, and so is the state any node reads from
-  the accessibility tree to say what the user chose: <code cds-text="code">selected</code>,
+  withheld from embedded frames and the global accessor unless the application shares form values, and so is the state
+  any node reads from the accessibility tree to say what the user chose: <code cds-text="code">selected</code>,
   <code cds-text="code">checked</code>, <code cds-text="code">pressed</code> and
   <code cds-text="code">selectedRows</code>. A key of a publisher's own is shared as it is.
 </p>
@@ -660,6 +688,14 @@
       </td>
     </tr>
     <tr>
+      <td class="left"><b cds-text="medium">clrRequestHostContext(options?)</b></td>
+      <td class="left">
+        What <code cds-text="code">requestHostContext()</code> does, without the service: for a page inside a frame that
+        is not an Angular application, or not one that injects the engine. Resolves to the host's snapshot, or
+        <code cds-text="code">null</code> when there is no host or it does not answer in time.
+      </td>
+    </tr>
+    <tr>
       <td class="left"><b cds-text="medium">ClrContextRegionFilter</b></td>
       <td class="left">
         The filter <code cds-text="code">ClrContextRegistryService.collect(filter?)</code> takes: for the element a
@@ -670,6 +706,15 @@
     <tr>
       <td class="left"><b cds-text="medium">clrContextCategoryRoles(categories)</b></td>
       <td class="left">The roles a list of <code cds-text="code">excludeCategories</code> stands for.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ClrContextFrameHost</b></td>
+      <td class="left">
+        The frame bridge that <code cds-text="code">enableFrameBridge()</code> starts, for an application that wires it
+        to its own snapshot function:
+        <code cds-text="code">new ClrContextFrameHost(getSnapshot, window, options)</code>, then
+        <code cds-text="code">start()</code> and <code cds-text="code">stop()</code>.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">CLR_CONTEXT_DIRECTIVES</b></td>

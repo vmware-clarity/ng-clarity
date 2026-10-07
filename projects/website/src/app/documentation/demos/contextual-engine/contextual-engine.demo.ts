@@ -129,6 +129,42 @@ const unregister = this.contextEngine.registerDomExtractor({
 });
 `;
 
+const FRAME_HOST_EXAMPLE = `
+// Host page (the Clarity application)
+this.contextEngine.enableFrameBridge(); // same-origin frames only
+this.contextEngine.enableFrameBridge({ allowedOrigins: ['https://chat.example'] });
+
+// A frame receives no form values and no URL query string unless you say so:
+this.contextEngine.enableFrameBridge({
+  allowedOrigins: ['https://chat.example'],
+  shareFormValues: true,
+  shareFullUrl: true,
+});
+`;
+
+const FRAME_CLIENT_EXAMPLE = `
+// Inside the iframe: any framework, no Clarity required — plain postMessage.
+const hostOrigin = 'https://app.example'; // the application this frame is built for, never read from the page
+const requestId = crypto.randomUUID(); // unguessable, so no other frame can answer for the host
+
+window.addEventListener('message', event => {
+  // Only the window that was asked, only from its origin, only the answer to this request.
+  if (event.source !== window.parent || event.origin !== hostOrigin) {
+    return;
+  }
+  const message = event.data;
+  if (
+    message?.protocol === 'ui-context/v1' &&
+    message.kind === 'context-response' &&
+    message.requestId === requestId
+  ) {
+    render(message.context); // { title, url, route, regions, components, ... }
+  }
+});
+
+parent.postMessage({ protocol: 'ui-context/v1', kind: 'context-request', requestId }, hostOrigin);
+`;
+
 const FORM_CONTEXT_EXAMPLE = `
 const context = contextEngine.getSnapshot();
 
@@ -240,6 +276,8 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   extractorExample = EXTRACTOR_EXAMPLE;
   formContextExample = FORM_CONTEXT_EXAMPLE;
   redactExample = REDACT_EXAMPLE;
+  frameHostExample = FRAME_HOST_EXAMPLE;
+  frameClientExample = FRAME_CLIENT_EXAMPLE;
   globalAccessExample = GLOBAL_ACCESS_EXAMPLE;
   budgetsExample = BUDGETS_EXAMPLE;
   optionsExample = OPTIONS_EXAMPLE;

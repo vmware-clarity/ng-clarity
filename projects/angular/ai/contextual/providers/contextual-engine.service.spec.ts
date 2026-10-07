@@ -166,11 +166,63 @@ describe('ClrContextEngineService', () => {
       });
     });
 
-    it('removes the global accessor when destroyed', () => {
+    it('resolves host context with null when the page is not embedded', async () => {
+      expect(await engine.requestHostContext()).toBeNull();
+    });
+
+    /** A frame embedded in this page, as the bridge serves, and a spy on what it is sent. */
+    function embeddedFrame(): { frame: HTMLIFrameElement; postMessage: jasmine.Spy } {
+      const frame = document.createElement('iframe');
+      document.body.appendChild(frame);
+      return { frame, postMessage: spyOn(frame.contentWindow as Window, 'postMessage') };
+    }
+
+    it('serves snapshots to embedded frames only while the frame bridge is enabled', () => {
+      const { frame, postMessage } = embeddedFrame();
+      const source = frame.contentWindow as Window;
+      const request = {
+        protocol: 'ui-context/v1',
+        kind: 'context-request',
+        requestId: 'frame-request-1',
+      };
+
+      engine.enableFrameBridge();
+      window.dispatchEvent(new MessageEvent('message', { data: request, origin: window.location.origin, source }));
+
+      expect(postMessage).toHaveBeenCalledWith(
+        jasmine.objectContaining({
+          kind: 'context-response',
+          requestId: 'frame-request-1',
+          context: jasmine.objectContaining({ title: document.title }),
+        }),
+        jasmine.anything()
+      );
+
+      engine.disableFrameBridge();
+      window.dispatchEvent(new MessageEvent('message', { data: request, origin: window.location.origin, source }));
+
+      expect(postMessage).toHaveBeenCalledTimes(1);
+      frame.remove();
+    });
+
+    it('cleans up the frame bridge and global accessor when destroyed', () => {
+      const { frame, postMessage } = embeddedFrame();
+
+      engine.enableFrameBridge();
       engine.enableGlobalAccess('testClrContext');
       engine.ngOnDestroy();
 
+      window.dispatchEvent(
+        new MessageEvent('message', {
+          data: { protocol: 'ui-context/v1', kind: 'context-request', requestId: 'frame-request-2' },
+          origin: window.location.origin,
+          source: frame.contentWindow,
+        })
+      );
+
+      expect(postMessage).not.toHaveBeenCalled();
       expect((window as unknown as Record<string, unknown>)['testClrContext']).toBeUndefined();
+      frame.remove();
     });
   });
 

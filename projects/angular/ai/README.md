@@ -16,10 +16,11 @@ libraries and plain semantic HTML with one implementation. Components publish on
 cannot express, through `clrPublishElementContext` from `@clr/angular/utils` — which is why a
 component that publishes context does not depend on this entry point.
 
-Through custom extractors it also reaches other UI libraries. Callers the application does not
-control, such as the optional `window.clrContext()` accessor, are held to the application's budgets
-and the defaults, and see neither what the user entered nor the page's full address (only its route
-pattern) unless the application shares them.
+Through custom extractors and a framework-agnostic `postMessage` protocol it also reaches other UI
+libraries and UI embedded in iframes, such as chat components. Callers the application does not
+control — embedded frames and the optional `window.clrContext()` accessor — are held to the
+application's budgets and the defaults, and see neither what the user entered nor the page's full
+address (only its route pattern) unless the application shares them.
 
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
 model, never instructions: delimit it in prompts.
