@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryList } from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  ElementRef,
+  inject,
+  Input,
+  Optional,
+  QueryList,
+} from '@angular/core';
 import {
   ClrAbstractContainer,
   ContainerIdService,
@@ -13,7 +22,7 @@ import {
   LayoutService,
   NgControlService,
 } from '@clr/angular/forms/common';
-import { uniqueIdFactory } from '@clr/angular/utils';
+import { clrHasRequiredValidator, ClrHostAttribute, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrRadio } from './radio';
 
@@ -45,6 +54,8 @@ import { ClrRadio } from './radio';
     '[class.clr-row]': 'addGrid()',
     '[attr.role]': 'role',
     '[attr.aria-labelledby]': 'ariaLabelledBy',
+    '[attr.aria-required]': 'ariaRequired',
+    '[attr.aria-invalid]': 'ariaInvalid',
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
@@ -57,6 +68,10 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
 
   private inline = false;
   private _generatedId = uniqueIdFactory();
+  private readonly host: HTMLElement = inject(ElementRef).nativeElement;
+  // What the application writes or binds on the group itself is kept: see ClrHostAttribute.
+  private readonly ariaRequiredAttribute = new ClrHostAttribute(this.host, 'aria-required');
+  private readonly ariaInvalidAttribute = new ClrHostAttribute(this.host, 'aria-invalid');
 
   constructor(
     @Optional() protected override layoutService: LayoutService,
@@ -82,6 +97,23 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     } else {
       this.inline = !!value;
     }
+  }
+
+  /**
+   * The group's requirement and validity, reported once on the `radiogroup` — which is
+   * where ARIA puts them — rather than on each radio, all of which share one control.
+   */
+  protected get ariaRequired(): string | null {
+    return this.ariaRequiredAttribute.value(!!this.role && clrHasRequiredValidator(this.control?.control));
+  }
+
+  /**
+   * Whether the group's choice is invalid, once the user has had a chance to make one:
+   * touched, the same rule as every other wrapped control, whether or not an error
+   * message is projected.
+   */
+  protected get ariaInvalid(): string | null {
+    return this.ariaInvalidAttribute.value(!!this.role && !!this.control?.invalid && !!this.control?.touched);
   }
 
   ngAfterContentInit() {

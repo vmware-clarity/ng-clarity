@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AbstractControl } from '@angular/forms';
 import { AfterContentChecked } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
@@ -307,6 +308,7 @@ export interface ClrCommonStrings {
     unpinColumn: string;
     // (undocumented)
     unselectedTreeNode: string;
+    verticalNavLabel: string;
     // (undocumented)
     verticalNavToggle: string;
     warning: string;
@@ -425,6 +427,16 @@ export class ClrFocusOnViewInitModule {
 
 // @public (undocumented)
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
+
+// @public
+export function clrHasRequiredValidator(control: AbstractControl | null | undefined): boolean;
+
+// @public
+export class ClrHostAttribute {
+    constructor(element: Element | null | undefined, name: string);
+    get current(): string | null;
+    value(computed: string | boolean | null): string | null;
+}
 
 // @public
 export class ClrHostWrappingModule {

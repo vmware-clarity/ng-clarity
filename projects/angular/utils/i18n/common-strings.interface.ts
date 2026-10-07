@@ -299,6 +299,14 @@ export interface ClrCommonStrings {
   responsiveNavOverflowClose: string;
   // Vertical Nav
   verticalNavToggle: string;
+  // BREAKING CHANGE REVIEW: a new required key. An application that implements the whole
+  // `ClrCommonStrings` interface, rather than passing a `Partial` to `localize()`, must add
+  // it. Decide before merge whether it stays required or becomes optional.
+  /**
+   * The name of the vertical nav's navigation landmark, when the application gives none.
+   * Screen readers announce the role after it, so it does not repeat "navigation".
+   */
+  verticalNavLabel: string;
   /**
    * Timeline Steps
    */

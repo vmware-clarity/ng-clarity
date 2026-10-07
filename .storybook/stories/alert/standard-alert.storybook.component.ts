@@ -26,6 +26,7 @@ import { RenderComponentStorybook } from 'helpers/render-component';
           [clrAlertSizeSmall]="clrAlertSizeSmall"
           [clrAlertType]="alert"
           [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
+          [clrAlertRole]="clrAlertRole"
         >
           @for (_ of createArray(alertCount); track $index; let i = $index) {
             <clr-alert-item>
@@ -71,6 +72,7 @@ export class StandardAlertStorybookComponent extends RenderComponentStorybook {
   @Input() clrAlertLightweight = false;
   @Input() clrAlertSizeSmall = false;
   @Input() clrCloseButtonAriaLabel = commonStringsDefault.alertCloseButtonAriaLabel;
+  @Input() clrAlertRole: 'alert' | 'status' | null | undefined = undefined;
   @Input() alertCount = 3;
   @Input() showAction = false;
   @Input() showActions = false;

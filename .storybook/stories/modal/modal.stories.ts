@@ -40,6 +40,7 @@ export default {
     clrModalSize: 'md',
     clrModalSkipAnimation: false,
     clrModalClosable: true,
+    clrModalAriaModal: true,
     // outputs
     clrModalAlternateClose: action('clrModalAlternateClose'),
     clrModalOpenChange: action('clrModalOpenChange'),
@@ -75,6 +76,7 @@ const ModalTemplate: StoryFn = args => ({
       </div>
     }
     <clr-modal
+      [clrModalAriaModal]="clrModalAriaModal"
       [clrModalClosable]="clrModalClosable"
       [clrModalCloseButtonAriaLabel]="clrModalCloseButtonAriaLabel"
       [clrModalLabelledById]="clrModalLabelledById"

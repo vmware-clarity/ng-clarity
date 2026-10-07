@@ -329,6 +329,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected index: number;
     // (undocumented)
     inputId(): string;
+    protected get isInvalid(): boolean;
+    protected get isRequired(): boolean;
     // (undocumented)
     protected isTotalSelection: boolean;
     // Warning: (ae-forgotten-export) The symbol "ClrLoadingState" needs to be exported by the entry point clr-angular-forms.d.ts
@@ -382,6 +384,8 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     registerOnTouched(onTouched: any): void;
     // (undocumented)
     protected renderer: Renderer2;
+    protected reportsAriaInvalid(): boolean;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     get searchText(): string;
     set searchText(text: string);
@@ -918,6 +922,7 @@ export class ClrFileInput extends WrappedFormControl<ClrFileInputContainer> {
     constructor(injector: Injector, renderer: Renderer2, viewContainerRef: ViewContainerRef, elementRef: ElementRef<HTMLInputElement>, control: NgControl, commonStrings: ClrCommonStringsService);
     // (undocumented)
     readonly elementRef: ElementRef<HTMLInputElement>;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     selection: ClrFileInputSelection;
     // (undocumented)
@@ -1492,6 +1497,8 @@ export class ClrPasswordModule {
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected reportsAriaInvalid(): boolean;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRadio, "[clrRadio]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -1501,8 +1508,10 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
 // @public (undocumented)
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
     constructor(layoutService: LayoutService, controlClassService: ControlClassService, ngControlService: NgControlService);
+    protected get ariaInvalid(): string | null;
     // (undocumented)
     ariaLabelledBy: string;
+    protected get ariaRequired(): string | null;
     // (undocumented)
     get clrInline(): boolean | string;
     set clrInline(value: boolean | string);
@@ -1550,6 +1559,7 @@ export class ClrRadioWrapper implements OnInit {
 // @public (undocumented)
 export class ClrRange extends WrappedFormControl<ClrRangeContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrRange, "[clrRange]", never, {}, {}, never, never, false, never>;
     // (undocumented)
@@ -1943,6 +1953,8 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     ngOnInit(): void;
     // (undocumented)
     protected renderer: Renderer2;
+    protected reportsAriaInvalid(): boolean;
+    protected reportsAriaRequired(): boolean;
     // (undocumented)
     protected subscriptions: Subscription[];
     // (undocumented)
@@ -1959,7 +1971,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:252:657 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:278:657 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 

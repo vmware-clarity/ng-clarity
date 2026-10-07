@@ -40,6 +40,7 @@ import {
 } from '@clr/angular/popover/common';
 import {
   ClrCommonStringsService,
+  clrHasRequiredValidator,
   ClrLoadingState,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
@@ -70,6 +71,9 @@ import { OptionSelectionService } from './providers/option-selection.service';
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
+    // Kept for applications that styled or queried it; it has never meant that a value is
+    // required. The state itself is `aria-required` on the combobox input.
+    // @deprecated since v18, remove in v19: select on `aria-required` on the input instead.
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
@@ -119,6 +123,7 @@ export class ClrCombobox<T>
   private _searchText = '';
   private onTouchedCallback: () => any;
   private onChangeCallback: (model: T | T[]) => any;
+  private readonly comboboxHostElement: HTMLElement;
 
   constructor(
     vcr: ViewContainerRef,
@@ -139,6 +144,9 @@ export class ClrCombobox<T>
     @Optional() @Host() private container: ClrComboboxContainer
   ) {
     super(vcr, ClrComboboxContainer, injector, control, renderer, el);
+    // Captured now because ngAfterViewInit reassigns `el` to the wrapped text input, and
+    // a template-driven `required` sits on the host.
+    this.comboboxHostElement = el.nativeElement;
     if (control) {
       control.valueAccessor = this;
     }
@@ -265,6 +273,29 @@ export class ClrCombobox<T>
       this.isTotalSelection ||
       (this.calculatedLimit !== null && this.calculatedLimit < this.multiSelectModel.length)
     );
+  }
+
+  /**
+   * Whether a value must be chosen. Reported on the element carrying `role="combobox"`,
+   * which is where ARIA requires it — the host used to carry a `class="aria-required"`
+   * instead, which no stylesheet defines and no assistive technology reads.
+   *
+   * Both spellings are honored: `Validators.required` on a reactive control, and a
+   * `required` attribute on a template-driven one, which Angular applies through a
+   * directive rather than the validator function this could otherwise look for.
+   */
+  protected get isRequired(): boolean {
+    return clrHasRequiredValidator(this.control?.control) || this.comboboxHostElement.hasAttribute('required');
+  }
+
+  /**
+   * Whether the field is in error, as assistive technology should hear it: gated on the
+   * control having been touched, like every other Clarity control (see
+   * `WrappedFormControl`), so a required field is not announced as wrong before the user
+   * has reached it.
+   */
+  protected get isInvalid(): boolean {
+    return !!this.control?.invalid && !!this.control?.touched;
   }
 
   private get disabled() {
@@ -433,6 +464,20 @@ export class ClrCombobox<T>
     } else {
       this.containerWidthChange.next(this.containerWidth);
     }
+  }
+
+  /**
+   * Suppressed on the host: this component reports both on the element carrying
+   * `role="combobox"` (see the template), which is where ARIA requires them. The host is
+   * a role-less wrapper, so the same attributes there would be meaningless noise.
+   */
+  protected override reportsAriaInvalid(): boolean {
+    return false;
+  }
+
+  /** Suppressed on the host for the same reason; the combobox input reports it. */
+  protected override reportsAriaRequired(): boolean {
+    return false;
   }
 
   private initialiseObserver() {
