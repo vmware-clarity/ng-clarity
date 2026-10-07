@@ -141,7 +141,7 @@ export function generateComponentHtml(options: NormalizedOptions): string {
   }
 
   const gridAttributes = [
-    options.compact ? 'class="datagrid-compact"' : '',
+    options.compact ? 'clr-density="compact"' : '',
     options.selection !== 'none' ? `[clrDgSelectionType]="'${options.selection}'"` : '',
     options.selection !== 'none' ? '[(clrDgSelected)]="selected"' : '',
     isServer ? '(clrDgRefresh)="refresh($event)"' : '',

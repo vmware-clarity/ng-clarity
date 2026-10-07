@@ -321,15 +321,15 @@ describe('datagrid schematic', () => {
   });
 
   describe('misc options', () => {
-    it('adds the compact class', () => {
-      expect(run({ compact: true }).html).toContain('<clr-datagrid class="datagrid-compact">');
+    it('sets the compact density', () => {
+      expect(run({ compact: true }).html).toContain('<clr-datagrid clr-density="compact">');
     });
 
     it('puts every datagrid attribute on its own line when the tag gets long', () => {
       const { html } = run({ compact: true, mode: 'server', selection: 'multi' });
       expect(html).toContain(
         '<clr-datagrid\n' +
-          '  class="datagrid-compact"\n' +
+          '  clr-density="compact"\n' +
           `  [clrDgSelectionType]="'multi'"\n` +
           '  [(clrDgSelected)]="selected"\n' +
           '  (clrDgRefresh)="refresh($event)"\n' +

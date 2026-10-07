@@ -76,7 +76,7 @@
     "compact": {
       "type": "boolean",
       "default": false,
-      "description": "Use the compact row density (`datagrid-compact`)."
+      "description": "Use the compact row density (`clr-density=\"compact\"` on the datagrid)."
     },
     "animations": {
       "type": "boolean",
