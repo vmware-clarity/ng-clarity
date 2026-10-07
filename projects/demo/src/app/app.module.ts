@@ -10,6 +10,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
+import { provideClrMutationPolicy } from '@clr/angular/ai';
 
 import { AppComponent } from './app.component';
 import { ROUTING } from './app.routing';
@@ -28,7 +29,17 @@ import { LandingComponent } from './landing.component';
     ContextInspectorComponent,
   ],
   imports: [BrowserAnimationsModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
-  providers: [cdsThemePathLocationStrategyProvider],
+  providers: [
+    cdsThemePathLocationStrategyProvider,
+    // Enables the mutation engine (see the contextual demo). The application, not the
+    // engine, says what each operation would do: filling a field is reversible, since
+    // the previous value comes back with the result; leaving the page is worth a
+    // question, and the person answers it.
+    provideClrMutationPolicy({
+      classify: target => (target.operation === 'navigate' ? 'consequential' : 'reversible'),
+      confirm: target => window.confirm(`Let the agent go to ${target.url}?`),
+    }),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
