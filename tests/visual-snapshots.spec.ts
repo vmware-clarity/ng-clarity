@@ -49,15 +49,29 @@ function storyNameFor(importPath: string, storyId: string) {
   return `${file}--${storyId.slice(separator + 2)}`;
 }
 
+const usedOptionKeys = new Set<string>();
+
+/**
+ * Merges every `screenshotOptions` entry that covers a story, from the broadest key to the most
+ * specific, so a narrower key overrides a broader one. For `components/forms/datepicker/
+ * datepicker-opened--month-view` the keys are `components`, `components/forms`,
+ * `components/forms/datepicker`, `components/forms/datepicker/datepicker-opened` and the story key.
+ */
+function optionsFor(group: string, storyName: string) {
+  const folders = group.split('/').map((_, index, parts) => parts.slice(0, index + 1).join('/'));
+  const file = storyName.slice(0, storyName.indexOf('--'));
+  const keys = [...folders, `${group}/${file}`, `${group}/${storyName}`].filter(key => key in screenshotOptions);
+  keys.forEach(key => usedOptionKeys.add(key));
+  return Object.assign({}, ...keys.map(key => screenshotOptions[key]));
+}
+
 const takenScreenshotPaths = new Map<string, string>();
 
 for (const entry of entries) {
   const storyId = entry.id;
   const group = groupFor(entry.importPath);
   const storyName = storyNameFor(entry.importPath, storyId);
-  // Component-level options apply to all of the component's stories; a story-level entry
-  // fills in what the component entry doesn't set.
-  const options = { ...screenshotOptions[`${group}/${storyName}`], ...screenshotOptions[group] };
+  const options = optionsFor(group, storyName);
   if (storyId.endsWith('--docs')) {
     continue;
   }
@@ -115,6 +129,13 @@ for (const entry of entries) {
       mask: (options.maskSelectors ?? []).map(selector => page.locator(selector)),
     });
   });
+}
+
+// A key that covers no story is a typo or a leftover from a moved story file, and its options
+// would silently stop applying.
+const unusedOptionKeys = Object.keys(screenshotOptions).filter(key => !usedOptionKeys.has(key));
+if (unusedOptionKeys.length) {
+  throw new Error(`tests/screenshot-options.ts has keys that match no story: ${unusedOptionKeys.join(', ')}`);
 }
 
 const usedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);

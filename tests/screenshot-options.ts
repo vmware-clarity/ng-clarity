@@ -14,18 +14,20 @@ import { ScreenshotOptions } from './helpers/screenshot-options.interface';
  * tested extends beyond that element it will be clipped.
  *
  * Keys are derived from the story file's path under `.storybook/stories/`, not from the story's
- * `title` — see the comment in tests/visual-snapshots.spec.ts. There are two forms:
+ * `title` — see the comment in tests/visual-snapshots.spec.ts. A key covers:
  *
- *   `<group>`                        the story file's directory; applies to every story in it
- *   `<group>/<file>--<story-name>`   one story
+ *   `<folder>`                       every story in that folder and its subfolders
+ *   `<folder>/<file>`                every story in one story file
+ *   `<folder>/<file>--<story-name>`  one story
  *
  * For example, `.storybook/stories/components/forms/datepicker/datepicker-opened.stories.ts`
- * exporting `MonthView`:
+ * exporting `MonthView` is covered by `components/forms/datepicker`,
+ * `components/forms/datepicker/datepicker-opened` and
+ * `components/forms/datepicker/datepicker-opened--month-view`.
  *
- *   `components/forms/datepicker`
- *       -> every story under stories/components/forms/datepicker/
- *   `components/forms/datepicker/datepicker-opened--month-view`
- *       -> that one story
+ * When several keys cover a story, they are merged and the more specific key wins. Use the
+ * broadest key that covers only the stories that need the option. A key that covers no story
+ * fails the test run.
  *
  * The matching snapshot lands at `tests/snapshots/<browser>/<key>-<theme>-<density>.png`, so a key
  * can be read straight off a snapshot path (and vice versa).
@@ -36,13 +38,7 @@ export const screenshotOptions: ScreenshotOptions = {
     // the screenshot occasionally caught the story before the overlay appeared.
     waitForSelectors: ['#hello_world'],
   },
-  'addons/dialog/dialog--default': {
-    fullPageScreenshot: true,
-  },
-  'addons/dialog/dialog--vertical-tabs': {
-    fullPageScreenshot: true,
-  },
-  'addons/dialog/dialog--submit-default': {
+  'addons/dialog': {
     fullPageScreenshot: true,
   },
   // The old flat `dropdown/` directory is now two groups; both keep the full-page screenshot.
@@ -52,7 +48,7 @@ export const screenshotOptions: ScreenshotOptions = {
   'patterns/dropdown-combinations': {
     fullPageScreenshot: true,
   },
-  'components/navigation/header/header-static--header-static': {
+  'components/navigation/header/header-static': {
     fullPageScreenshot: true,
   },
   'components/forms/combobox/combobox--loading': {
@@ -73,22 +69,15 @@ export const screenshotOptions: ScreenshotOptions = {
   'components/timeline/timeline--horizontal-layout-with-long-text': {
     viewport: { width: 1000, height: 400 },
   },
-  'components/navigation/header/header-responsive-nav--level-1-nav-open': {
+  'components/navigation/header/header-responsive-nav': {
     viewport: { width: 500, height: 400 },
     fullPageScreenshot: true,
   },
-  'components/navigation/header/header-responsive-nav--level-2-nav-open': {
-    viewport: { width: 500, height: 400 },
+  'patterns/application-layout': {
     fullPageScreenshot: true,
   },
   'patterns/application-layout/application-layout--default': {
     exclude: true,
-  },
-  'patterns/application-layout/application-layout--first-navigation-only': {
-    fullPageScreenshot: true,
-  },
-  'patterns/application-layout/application-layout--no-navigations': {
-    fullPageScreenshot: true,
   },
   'components/overlays/modal/modal--open-small-modal': {
     fullPageScreenshot: true,
@@ -117,28 +106,11 @@ export const screenshotOptions: ScreenshotOptions = {
   'components/flows/wizard': {
     fullPageScreenshot: true,
   },
-  'components/forms/datepicker/datepicker-opened--datepicker': {
+  'components/forms/datepicker/datepicker-opened': {
     fullPageScreenshot: true,
   },
-  'components/forms/datepicker/datepicker-opened--default-date': {
-    fullPageScreenshot: true,
-  },
-  'components/forms/datepicker/datepicker-opened--min-date': {
-    fullPageScreenshot: true,
-  },
-  'components/forms/datepicker/datepicker-opened--max-date': {
-    fullPageScreenshot: true,
-  },
-  'components/forms/datepicker/datepicker-opened--action-buttons': {
-    fullPageScreenshot: true,
-  },
-  'components/forms/datepicker/datepicker-opened--month-view': {
-    fullPageScreenshot: true,
-  },
-  'components/forms/datepicker/datepicker-opened--year-view': {
-    fullPageScreenshot: true,
-  },
-  'components/forms/datepicker/datepicker-opened--predefined-date-ranges-open': {
-    fullPageScreenshot: true,
+  // A disabled datepicker never opens, so its baseline is the body-only screenshot.
+  'components/forms/datepicker/datepicker-opened--disabled': {
+    fullPageScreenshot: false,
   },
 };
