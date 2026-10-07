@@ -234,9 +234,6 @@ module.exports = [
             'No inline `<style>` in a story. Use `withStyles(css)` from `@storybook-helpers/decorators`, or `styles:` on a `*.storybook.component.ts`.',
         },
       ],
-
-      // R7: the title is derived from the file path. `npx eslint --fix` writes it; never type one.
-      'ng-clarity-eslint-rules/storybook-title': 'error',
     },
   },
 

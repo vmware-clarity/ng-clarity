@@ -63,7 +63,7 @@ that are merely complicated.
 
 - **The directory's main file:** name it after the directory — `components/badge/badge.stories.ts`,
   `components/data/datagrid/datagrid.stories.ts`. That makes it the directory's primary file, which takes the
-  directory's own title (see [Titles are derived, never typed](#titles-are-derived-never-typed)).
+  directory's own title (see [Titles follow the file path](#titles-follow-the-file-path)).
 - **Every other file:** name it after the _variant_ it covers. Prefixing it with the directory name is
   optional: the `<directory>-` prefix is stripped from the title, so `datagrid-detail.stories.ts` and
   `detail.stories.ts` both produce `Components/Data/Datagrid/Detail`. Follow whichever the directory already
@@ -139,9 +139,7 @@ Part by part:
 
 - **The license header** is mandatory on every `.ts` and `.js` file in the repository. `license-header/header`
   is an `error`; `npx eslint --fix` inserts it.
-- **`title`** is the one line in this template you never write by hand. It is derived from the file's path,
-  and `npx eslint --fix` inserts and corrects it — see
-  [Titles are derived, never typed](#titles-are-derived-never-typed).
+- **`title`** follows the file's path — see [Titles follow the file path](#titles-follow-the-file-path).
 - **`type AccordionArgs`** is the single declaration of what this file's stories can be configured with. It is
   the component class intersected with the story-only props the template needs. Writing it out is what makes
   every `args: { … }` below type-checked: a typo in an arg name becomes a compile error instead of a silently
@@ -174,7 +172,7 @@ Part by part:
 - **R5** — No `@Component` inside a `.stories.ts`. Story components live in `*.storybook.component.ts`.
 - **R6** — Story-only args are hidden with `hideControls(...)`, never with a hand-written
   `{ control: { disable: true }, table: { disable: true } }` block.
-- **R7** — `title` equals the title derived from the file path. You do not type it; `eslint --fix` writes it.
+- **R7** — `title` follows the file path. No lint rule checks it, so reviewers do.
 - **R8** — No inline `<style>` blocks in story templates.
 - **R9** — Helper imports use the `@storybook-helpers/*` alias, never `../../helpers/*`. `@storybook-helpers/*`
   classifies as an **external** import, so it belongs in the first import group alongside `@clr/angular` and
@@ -308,9 +306,9 @@ Where the styles belong to one story component, put them in that component's `st
 component `styles:` are view-encapsulated: they will not reach content projected into a Clarity component, so
 they are not a drop-in replacement for an inline `<style>` block that was styling projected markup.
 
-## Titles are derived, never typed
+## Titles follow the file path
 
-**Do not invent a `title:`.** It is computed from the file's path:
+**Do not invent a `title:`.** Write the one the file's path gives:
 
 ```
 directory title = the path segments of dirname(file), relative to .storybook/stories/,
@@ -333,17 +331,11 @@ A file's title depends only on its own path, never on its siblings, so adding, r
 file never retitles another.
 
 Every story file gets its own title. That matters: two files sharing a title would share one story-id
-namespace, and Storybook refuses to index a duplicate story id, so the build would fail. The rule reports two
-files resolving to the same title before Storybook gets that far. Splitting a story file into two therefore
+namespace, and Storybook refuses to index a duplicate story id, so the build would fail. Splitting a story file into two therefore
 adds a sidebar entry; it is not a sidebar-neutral change.
 
-When Title-Casing genuinely cannot produce the right label, the exception goes in
-`eslint-rules/storybook-title-overrides.js`, which is the _single_ place a non-derivable label may be declared.
-It holds one entry today: `checkbox-toggle` reads `Checkbox or Toggle`. Do not work around a bad title by
-hand-editing `title:`; the lint rule will just rewrite it.
-
-In practice: write the file, run `npx eslint --fix <your file>`, and the correct `title:` appears. If it
-appears wrong, the file is in the wrong directory.
+There is one exception today, where Title-Casing cannot produce the right label: `checkbox-toggle` reads
+`Checkbox or Toggle`. If the title the path gives looks wrong, the file is probably in the wrong directory.
 
 Sidebar ordering is alphabetical below the four roots, which are ordered explicitly in `.storybook/preview.js`
 (`parameters.options.storySort`). Nothing else orders stories, so do not add ordering parameters to a story
@@ -619,8 +611,7 @@ on the wrong Node version — switch versions rather than passing `--force`.
   Template literals are invisible to Prettier itself, so `scripts/format-story-templates.js` extracts every
   `template:` (and any `…Template` variable) and formats it with the Angular parser.
   `npm run _lint:format-stories:fix` rewrites them.
-- `npm run _lint:code` (`eslint .`) and `npm run _lint:code:fix`. `npx eslint --fix <file>` is also what
-  writes your `title:`.
+- `npm run _lint:code` (`eslint .`) and `npm run _lint:code:fix`.
 - `npm run lint` runs all of the above plus Prettier and Stylelint; `npm run lint:changed:fix` does the same
   for your modified files only, which is much faster.
 
@@ -631,8 +622,7 @@ Story files are checked by, in addition to the repository-wide Prettier, Styleli
 - `eslint-plugin-storybook`, at its recommended configuration, plus its `meta-satisfies-type` rule (R1,
   autofixable);
 - `no-restricted-syntax` selectors in `eslint.config.js` for R2, R3, R5, R6 and R8;
-- `no-restricted-imports`, which bans the `StoryFn` import (R4) and relative `../**/helpers/*` paths (R9);
-- `storybook-title` (R7, autofixable), the one custom rule, from the repository's local `eslint-rules/` plugin.
+- `no-restricted-imports`, which bans the `StoryFn` import (R4) and relative `../**/helpers/*` paths (R9).
 
 The story rules are **errors**: every story file conforms, and a violation fails `npm run lint`.
 
