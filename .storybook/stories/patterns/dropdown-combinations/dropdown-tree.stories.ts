@@ -20,7 +20,7 @@ type DropdownWithTreeArgs = ClrDropdown & {
   getChildren: (file: File) => File[];
 };
 
-const meta: Meta<DropdownWithTreeArgs> = {
+const meta = {
   title: 'Patterns/Dropdown Combinations/Dropdown Tree',
   decorators: [
     moduleMetadata({
@@ -61,7 +61,7 @@ const meta: Meta<DropdownWithTreeArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<DropdownWithTreeArgs>;
 
 export default meta;
 

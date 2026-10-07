@@ -40,7 +40,7 @@ type WizardPageArgs = Pick<ClrWizardPage, 'makeCurrent'> & {
   clrWizardPagePrimary: (event: unknown) => void;
 };
 
-const meta: Meta<WizardPageArgs> = {
+const meta = {
   title: 'Components/Flows/Wizard/Page',
   component: ClrWizardPage,
   decorators: [
@@ -146,7 +146,7 @@ const meta: Meta<WizardPageArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<WizardPageArgs>;
 
 export default meta;
 

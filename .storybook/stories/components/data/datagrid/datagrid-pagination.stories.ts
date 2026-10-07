@@ -36,7 +36,7 @@ type PaginationArgs = Pick<ClrDatagridPagination, 'next' | 'previous'> & {
   height: number;
 };
 
-const meta: Meta<PaginationArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Pagination',
   component: ClrDatagridPagination,
   decorators: [
@@ -136,7 +136,7 @@ const meta: Meta<PaginationArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<PaginationArgs>;
 
 export default meta;
 

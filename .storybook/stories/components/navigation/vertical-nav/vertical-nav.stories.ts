@@ -46,7 +46,7 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: userIcon, text: 'Profile' },
 ];
 
-const meta: Meta<VerticalNavArgs> = {
+const meta = {
   title: 'Components/Navigation/Vertical Nav',
   decorators: [
     moduleMetadata({
@@ -103,7 +103,7 @@ const meta: Meta<VerticalNavArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<VerticalNavArgs>;
 
 export default meta;
 

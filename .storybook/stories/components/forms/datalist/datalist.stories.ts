@@ -22,7 +22,7 @@ type DatalistArgs = {
   disabled: boolean;
 };
 
-const meta: Meta<DatalistArgs> = {
+const meta = {
   title: 'Components/Forms/Datalist',
   decorators: [
     moduleMetadata({
@@ -60,7 +60,7 @@ const meta: Meta<DatalistArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<DatalistArgs>;
 
 export default meta;
 

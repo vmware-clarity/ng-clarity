@@ -17,7 +17,7 @@ type ScrollArgs = {
   elements: Element[];
 };
 
-const meta: Meta<ScrollArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Scroll',
   decorators: [
     moduleMetadata({
@@ -123,7 +123,7 @@ const meta: Meta<ScrollArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<ScrollArgs>;
 
 export default meta;
 

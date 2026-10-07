@@ -23,7 +23,7 @@ type LazyLoadedRecursiveNodesArgs = {
   getChildren: (file: File) => Observable<File[]>;
 };
 
-const meta: Meta<LazyLoadedRecursiveNodesArgs> = {
+const meta = {
   title: 'Components/Data/Tree/With Lazy Loaded Recursive Nodes',
   decorators: [
     moduleMetadata({
@@ -55,7 +55,7 @@ const meta: Meta<LazyLoadedRecursiveNodesArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<LazyLoadedRecursiveNodesArgs>;
 
 export default meta;
 

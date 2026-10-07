@@ -17,7 +17,7 @@ type ModalStackedOnDetailArgs = {
   elements: Element[];
 };
 
-const meta: Meta<ModalStackedOnDetailArgs> = {
+const meta = {
   title: 'Patterns/Datagrid in Modal/Modal Stacked on Detail',
   decorators: [
     moduleMetadata({
@@ -78,7 +78,7 @@ const meta: Meta<ModalStackedOnDetailArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<ModalStackedOnDetailArgs>;
 
 export default meta;
 

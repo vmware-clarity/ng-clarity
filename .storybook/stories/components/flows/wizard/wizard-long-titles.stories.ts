@@ -55,7 +55,7 @@ type WizardLongTitlesArgs = Pick<
   pageCount: number;
 };
 
-const meta: Meta<WizardLongTitlesArgs> = {
+const meta = {
   title: 'Components/Flows/Wizard/Long Titles',
   component: ClrWizard,
   decorators: [
@@ -165,7 +165,7 @@ const meta: Meta<WizardLongTitlesArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<WizardLongTitlesArgs>;
 
 export default meta;
 

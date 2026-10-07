@@ -28,7 +28,7 @@ type ComboboxArgs = Omit<StorybookComboboxComponent, 'singleModel' | 'multiModel
   updateOn: 'change' | 'blur' | 'submit';
 };
 
-const meta: Meta<ComboboxArgs> = {
+const meta = {
   title: 'Components/Forms/Combobox',
   component: StorybookComboboxComponent,
   decorators: [
@@ -87,7 +87,7 @@ const meta: Meta<ComboboxArgs> = {
     multiModel: ['Am', 'As', 'Ba'],
     multiLineItems: false,
   },
-};
+} satisfies Meta<ComboboxArgs>;
 
 export default meta;
 
@@ -124,7 +124,7 @@ export const SingleSelectionEditableWithObjectValues: Story = {
     clrEditable: true,
     objectValues: true,
   },
-  // render-override: this story swaps the single model for the whole element object before rendering, which the docs-generated component template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story swaps the single model for the whole element object before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.singleModel = transformedArgs.objectValues
@@ -147,7 +147,7 @@ export const SingleSelectionEditableWithIdentityFnAndResolver: Story = {
     objectValues: true,
     useIdentityFn: true,
   },
-  // render-override: this story swaps the single model for the whole element object before rendering, which the docs-generated component template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story swaps the single model for the whole element object before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.singleModel = transformedArgs.objectValues
@@ -167,7 +167,7 @@ export const SingleSelectionWithIdentityFn: Story = {
     objectValues: true,
     useIdentityFn: true,
   },
-  // render-override: this story swaps the single model for the whole element object before rendering, which the docs-generated component template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story swaps the single model for the whole element object before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.singleModel = transformedArgs.objectValues
@@ -222,7 +222,7 @@ export const MultiSelectionEditableWithObjectValues: Story = {
     clrEditable: true,
     objectValues: true,
   },
-  // render-override: this story swaps the multi model for whole element objects before rendering, which the docs-generated component template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story swaps the multi model for whole element objects before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.multiModel = transformedArgs.objectValues
@@ -254,7 +254,7 @@ export const MultiSelectionEditableWithIdentityFnAndResolver: Story = {
       { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
     ],
   },
-  // render-override: this story swaps the multi model for whole element objects before rendering, which the docs-generated component template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story swaps the multi model for whole element objects before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.multiModel = transformedArgs.objectValues
@@ -283,7 +283,7 @@ export const MultiSelectionWithIdentityFn: Story = {
       { name: 'Berkelium', symbol: 'Bk', number: 97, electronegativity: 1.3 },
     ],
   },
-  // render-override: this story swaps the multi model for whole element objects before rendering, which the docs-generated component template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story swaps the multi model for whole element objects before rendering, which the docs-generated component template cannot express
   render: args => {
     const transformedArgs = args;
     transformedArgs.multiModel = transformedArgs.objectValues

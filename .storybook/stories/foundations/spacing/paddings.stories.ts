@@ -16,7 +16,7 @@ import { LayoutTestComponent } from './paddings.storybook.component';
  */
 type PaddingsArgs = LayoutTestComponent;
 
-const meta: Meta<PaddingsArgs> = {
+const meta = {
   title: 'Foundations/Spacing/Paddings',
   decorators: [
     moduleMetadata({
@@ -26,7 +26,7 @@ const meta: Meta<PaddingsArgs> = {
   component: LayoutTestComponent,
   argTypes: {},
   args: {},
-};
+} satisfies Meta<PaddingsArgs>;
 
 export default meta;
 

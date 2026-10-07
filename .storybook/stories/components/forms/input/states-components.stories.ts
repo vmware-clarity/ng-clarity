@@ -19,7 +19,7 @@ import { FormsStoryComponent } from './states-components.storybook.component';
  */
 type FormsInputStatesComponentsArgs = FormsStoryComponent;
 
-const meta: Meta<FormsInputStatesComponentsArgs> = {
+const meta = {
   title: 'Components/Forms/Input/States Components',
   component: FormsStoryComponent,
   decorators: [
@@ -42,7 +42,7 @@ const meta: Meta<FormsInputStatesComponentsArgs> = {
     isSuccess: false,
     isFullWidth: false,
   },
-};
+} satisfies Meta<FormsInputStatesComponentsArgs>;
 
 export default meta;
 

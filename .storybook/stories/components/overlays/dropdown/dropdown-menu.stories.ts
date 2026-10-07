@@ -27,7 +27,7 @@ type DropdownMenuArgs = {
   CLR_MENU_POSITIONS: string[];
 };
 
-const meta: Meta<DropdownMenuArgs> = {
+const meta = {
   title: 'Components/Overlays/Dropdown/Menu',
   decorators: [
     moduleMetadata({
@@ -106,7 +106,7 @@ const meta: Meta<DropdownMenuArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<DropdownMenuArgs>;
 
 export default meta;
 
@@ -131,7 +131,7 @@ export const LongItemTextTruncated: Story = {
 };
 
 export const Showcase: Story = {
-  // render-override: this story lays out one dropdown per menu position, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story lays out one dropdown per menu position, which the meta template cannot express
   render: args => ({
     template: `
       @for (position of CLR_MENU_POSITIONS; track position) {

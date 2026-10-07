@@ -24,7 +24,7 @@ type DropdownArgs = {
 
 const DROPDOWN_BUTTON_TYPE: string[] = ['btn-primary', 'btn-outline-primary', 'btn-link'];
 
-const meta: Meta<DropdownArgs> = {
+const meta = {
   title: 'Components/Overlays/Dropdown',
   decorators: [
     moduleMetadata({
@@ -66,7 +66,7 @@ const meta: Meta<DropdownArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<DropdownArgs>;
 
 export default meta;
 

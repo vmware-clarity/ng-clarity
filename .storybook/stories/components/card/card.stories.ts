@@ -17,7 +17,7 @@ import { CardStorybookComponent } from './card.storybook.component';
  */
 type CardArgs = CardStorybookComponent;
 
-const meta: Meta<CardArgs> = {
+const meta = {
   title: 'Components/Card',
   component: CardStorybookComponent,
   argTypes: {
@@ -38,7 +38,7 @@ const meta: Meta<CardArgs> = {
     showAlerts: false,
     alertCount: 2,
   },
-};
+} satisfies Meta<CardArgs>;
 
 export default meta;
 

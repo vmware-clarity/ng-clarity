@@ -15,7 +15,7 @@ import { WizardStoryWrapperComponent } from './wizard.storybook.component';
 /** The render targets `<clr-wizard-story-wrapper>`, so the wrapper's members are the args. */
 type WizardArgs = WizardStoryWrapperComponent;
 
-const meta: Meta<WizardArgs> = {
+const meta = {
   title: 'Addons/Wizard',
   component: WizardComponent,
   decorators: [
@@ -40,7 +40,7 @@ const meta: Meta<WizardArgs> = {
       <clr-wizard-story-wrapper [label]="label" [title]="title" [size]="size"></clr-wizard-story-wrapper>
     `,
   }),
-};
+} satisfies Meta<WizardArgs>;
 
 export default meta;
 

@@ -25,7 +25,7 @@ function collectionTemplate(collectionName: string) {
   `;
 }
 
-const meta: Meta<IconCollectionArgs> = {
+const meta = {
   title: 'Foundations/Icons/Icon Collection',
   decorators: [
     moduleMetadata({
@@ -33,7 +33,7 @@ const meta: Meta<IconCollectionArgs> = {
     }),
   ],
   render: args => ({ template: collectionTemplate(args.collectionName) }),
-};
+} satisfies Meta<IconCollectionArgs>;
 
 export default meta;
 

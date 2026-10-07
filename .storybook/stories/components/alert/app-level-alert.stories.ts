@@ -23,7 +23,7 @@ type AppLevelAlertArgs = AppLevelAlertStorybookComponent & Pick<ClrAlert, 'close
 /** Shared by the three paginated stories, which hide the args that the paginated view ignores. */
 const paginatedArgTypes = hideControls('clrCloseButtonAriaLabel', 'alertCount', 'close', 'open');
 
-const meta: Meta<AppLevelAlertArgs> = {
+const meta = {
   title: 'Components/Alert/App Level Alert',
   component: ClrAlert,
   decorators: [
@@ -74,7 +74,7 @@ const meta: Meta<AppLevelAlertArgs> = {
       <storybook-app-level-alert ${argsToTemplate(args)}></storybook-app-level-alert>
     `,
   }),
-};
+} satisfies Meta<AppLevelAlertArgs>;
 
 export default meta;
 

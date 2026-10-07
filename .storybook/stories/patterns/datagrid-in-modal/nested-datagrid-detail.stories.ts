@@ -21,7 +21,7 @@ type NestedDatagridDetailArgs = {
   actionOverflowOpen: boolean;
 };
 
-const meta: Meta<NestedDatagridDetailArgs> = {
+const meta = {
   title: 'Patterns/Datagrid in Modal/Nested Datagrid Detail',
   decorators: [
     moduleMetadata({
@@ -111,7 +111,7 @@ const meta: Meta<NestedDatagridDetailArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<NestedDatagridDetailArgs>;
 
 export default meta;
 

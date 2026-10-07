@@ -15,7 +15,7 @@ import { TabsStoryWrapperComponent } from './tabs.storybook.component';
 /** The render targets `<clr-tabs-story-wrapper>`, so the wrapper's inputs are the args. */
 type TabsArgs = TabsStoryWrapperComponent;
 
-const meta: Meta<TabsArgs> = {
+const meta = {
   title: 'Addons/Tabs',
   component: TabsComponent,
   decorators: [
@@ -46,7 +46,7 @@ const meta: Meta<TabsArgs> = {
       ></clr-tabs-story-wrapper>
     `,
   }),
-};
+} satisfies Meta<TabsArgs>;
 
 export default meta;
 

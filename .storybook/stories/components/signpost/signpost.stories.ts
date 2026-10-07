@@ -38,7 +38,7 @@ const positions: string[] = [
   'left-top',
 ];
 
-const meta: Meta<SignpostArgs> = {
+const meta = {
   title: 'Components/Signpost',
   component: ClrSignpostContent,
   decorators: [
@@ -73,7 +73,7 @@ const meta: Meta<SignpostArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<SignpostArgs>;
 
 export default meta;
 
@@ -89,7 +89,7 @@ export const Opened: Story = {
 
 // visual regression test for CDE-3123
 export const DefaultPositionOpened: Story = {
-  // render-override: this story omits the `clrPosition` binding entirely so the content falls back to its default position, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story omits the `clrPosition` binding entirely so the content falls back to its default position, which the meta template cannot express
   render: args => ({
     template: `
       <div style="padding: 250px; text-align: center">
@@ -118,7 +118,7 @@ export const OpenedLongContent: Story = {
 };
 
 export const SignpostWithTitle: Story = {
-  // render-override: this story adds a `<clr-signpost-title>` and drops the aria-label bindings, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story adds a `<clr-signpost-title>` and drops the aria-label bindings, which the meta template cannot express
   render: args => ({
     template: `
       <div style="padding: 250px; text-align: center">

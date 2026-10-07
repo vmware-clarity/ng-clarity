@@ -39,7 +39,7 @@ type ActionOverflowArgs = {
   height: number;
 };
 
-const meta: Meta<ActionOverflowArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Action Overflow',
   component: ClrDatagridActionOverflow,
   decorators: [
@@ -144,7 +144,7 @@ const meta: Meta<ActionOverflowArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<ActionOverflowArgs>;
 
 export default meta;
 

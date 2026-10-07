@@ -71,7 +71,7 @@ function getStepperForm() {
 
 const stepperFormMappingKey = 'stepper-form-mapping-key';
 
-const meta: Meta<WizardArgs> = {
+const meta = {
   title: 'Components/Flows/Wizard',
   component: ClrWizard,
   decorators: [
@@ -184,7 +184,7 @@ const meta: Meta<WizardArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<WizardArgs>;
 
 export default meta;
 
@@ -213,7 +213,7 @@ export const HorizontalWizardOverflow: Story = {
 };
 
 export const NestedWizardHorizontal: Story = {
-  // render-override: this story nests a second wizard inside a page of the outer one, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story nests a second wizard inside a page of the outer one, which the meta template cannot express
   render: args => ({
     template: `
       <clr-wizard
@@ -279,7 +279,7 @@ export const NestedWizardHorizontal: Story = {
 };
 
 export const NestedStepperHorizontal: Story = {
-  // render-override: this story puts a stepper form inside a wizard page, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story puts a stepper form inside a wizard page, which the meta template cannot express
   render: args => ({
     template: `
       <clr-wizard

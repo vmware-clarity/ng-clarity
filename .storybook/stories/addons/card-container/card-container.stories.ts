@@ -28,7 +28,7 @@ const DEFAULT_CARDS: any[] = [
   { id: 'dynamic', title: 'Dynamic', unitWidth: 1, unitHeight: 4, componentClass: DynamicCardComponent },
 ];
 
-const meta: Meta<CardContainerArgs> = {
+const meta = {
   title: 'Addons/Card Container',
   component: AppfxCardContainerComponent,
   decorators: [
@@ -61,7 +61,7 @@ const meta: Meta<CardContainerArgs> = {
       ></appfx-card-container>
     `,
   }),
-};
+} satisfies Meta<CardContainerArgs>;
 
 export default meta;
 

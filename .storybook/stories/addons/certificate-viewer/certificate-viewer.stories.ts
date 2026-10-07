@@ -14,7 +14,7 @@ import { CertViewerStoryWrapperComponent } from './certificate-viewer.storybook.
 /** The story renders the wrapper component itself, so its public members are the args. */
 type CertificateViewerArgs = CertViewerStoryWrapperComponent;
 
-const meta: Meta<CertificateViewerArgs> = {
+const meta = {
   title: 'Addons/Certificate Viewer',
   component: CertViewerStoryWrapperComponent,
   decorators: [
@@ -34,7 +34,7 @@ const meta: Meta<CertificateViewerArgs> = {
     props: args,
     component: CertViewerStoryWrapperComponent,
   }),
-};
+} satisfies Meta<CertificateViewerArgs>;
 
 export default meta;
 

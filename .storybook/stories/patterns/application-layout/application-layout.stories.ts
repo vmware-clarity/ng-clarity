@@ -15,7 +15,7 @@ import { ApplicationLayoutStorybookComponent } from './application-layout.storyb
  */
 type ApplicationLayoutArgs = ApplicationLayoutStorybookComponent;
 
-const meta: Meta<ApplicationLayoutArgs> = {
+const meta = {
   title: 'Patterns/Application Layout',
   component: ApplicationLayoutStorybookComponent,
   decorators: [],
@@ -26,7 +26,7 @@ const meta: Meta<ApplicationLayoutArgs> = {
     level3Navigation: true,
     level4Navigation: true,
   },
-};
+} satisfies Meta<ApplicationLayoutArgs>;
 
 export default meta;
 

@@ -17,7 +17,7 @@ type DropdownStaticArgs = ClrDropdown & {
   showIcon: boolean;
 };
 
-const meta: Meta<DropdownStaticArgs> = {
+const meta = {
   title: 'Components/Overlays/Dropdown/Static',
   decorators: [
     moduleMetadata({
@@ -99,7 +99,7 @@ const meta: Meta<DropdownStaticArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<DropdownStaticArgs>;
 
 export default meta;
 

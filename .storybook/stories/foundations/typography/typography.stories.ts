@@ -11,7 +11,7 @@ import { CommonModules } from '@storybook-helpers/common';
 /** The typography stories are pure markup demos of the `cds-text` values; none of them takes an arg. */
 type TypographyArgs = Record<never, never>;
 
-const meta: Meta<TypographyArgs> = {
+const meta = {
   title: 'Foundations/Typography',
   decorators: [
     moduleMetadata({
@@ -29,7 +29,7 @@ const meta: Meta<TypographyArgs> = {
       </div>
     `,
   }),
-};
+} satisfies Meta<TypographyArgs>;
 
 export default meta;
 
@@ -42,7 +42,7 @@ export const Headings: Story = {};
 // ─── Content ──────────────────────────────────────────────────────────────────
 
 export const Content: Story = {
-  // render-override: this story shows the body/message/secondary/caption scale rather than the heading scale of the meta template
+  // eslint-disable-next-line no-restricted-syntax -- this story shows the body/message/secondary/caption scale rather than the heading scale of the meta template
   render: () => ({
     template: `
       <div cds-layout="vertical gap:md">
@@ -59,7 +59,7 @@ export const Content: Story = {
 // ─── Font Weights ─────────────────────────────────────────────────────────────
 
 export const Weights: Story = {
-  // render-override: this story pairs every font weight with an inline `<em>`, which the heading-scale meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story pairs every font weight with an inline `<em>`, which the heading-scale meta template cannot express
   render: () => ({
     template: `
       <div cds-layout="vertical gap:md">
@@ -101,7 +101,7 @@ export const Weights: Story = {
 // ─── Text Alignment ───────────────────────────────────────────────────────────
 
 export const Alignment: Story = {
-  // render-override: this story constrains the demo to a `container:sm` column so the justified paragraph can wrap, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story constrains the demo to a `container:sm` column so the justified paragraph can wrap, which the meta template cannot express
   render: () => ({
     template: `
       <div cds-layout="vertical gap:md container:sm">
@@ -120,7 +120,7 @@ export const Alignment: Story = {
 // ─── Text Transforms ──────────────────────────────────────────────────────────
 
 export const Transforms: Story = {
-  // render-override: this story needs a truncating container and a fixed-width bordered box to show break-word, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story needs a truncating container and a fixed-width bordered box to show break-word, which the meta template cannot express
   render: () => ({
     template: `
       <div cds-layout="vertical gap:md">
@@ -148,7 +148,7 @@ export const Transforms: Story = {
 // ─── Links ────────────────────────────────────────────────────────────────────
 
 export const Links: Story = {
-  // render-override: this story wraps anchors inside body paragraphs, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story wraps anchors inside body paragraphs, which the meta template cannot express
   render: () => ({
     template: `
       <div cds-layout="vertical gap:md">
@@ -175,7 +175,7 @@ export const Links: Story = {
 // ─── Code & Monospace ─────────────────────────────────────────────────────────
 
 export const Code: Story = {
-  // render-override: this story wraps `<code>` and monospace spans inside body paragraphs, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story wraps `<code>` and monospace spans inside body paragraphs, which the meta template cannot express
   render: () => ({
     template: `
       <div cds-layout="vertical gap:md">
@@ -201,7 +201,7 @@ export const Code: Story = {
 // ─── Inline ───────────────────────────────────────────────────────────────────
 
 export const Inline: Story = {
-  // render-override: this story renders sibling inline spans outside a layout container plus an explanatory paragraph, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story renders sibling inline spans outside a layout container plus an explanatory paragraph, which the meta template cannot express
   render: () => ({
     template: `
       <div>
@@ -225,7 +225,7 @@ export const Inline: Story = {
 // ─── Legacy Headers (h1–h6) ───────────────────────────────────────────────────
 
 export const LegacyHeaders: Story = {
-  // render-override: this story lists the legacy h1-h6 values, a different set from the named heading scale in the meta template
+  // eslint-disable-next-line no-restricted-syntax -- this story lists the legacy h1-h6 values, a different set from the named heading scale in the meta template
   render: () => ({
     template: `
       <div cds-layout="vertical gap:md">
@@ -243,7 +243,7 @@ export const LegacyHeaders: Story = {
 // ─── Legacy Paragraphs (p1–p8) ────────────────────────────────────────────────
 
 export const LegacyParagraphs: Story = {
-  // render-override: this story lists the legacy p1-p8 values, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story lists the legacy p1-p8 values, which the meta template cannot express
   render: () => ({
     template: `
       <div cds-layout="vertical gap:md">
@@ -263,7 +263,7 @@ export const LegacyParagraphs: Story = {
 // ─── Accents & Special Glyphs ────────────────────────────────────────────────
 
 export const Accents: Story = {
-  // render-override: this story is a glyph-coverage grid with nested sections and HTML entities, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story is a glyph-coverage grid with nested sections and HTML entities, which the meta template cannot express
   render: () => ({
     template: `
       <div cds-layout="vertical gap:lg">

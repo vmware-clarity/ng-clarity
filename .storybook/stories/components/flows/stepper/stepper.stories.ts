@@ -62,7 +62,7 @@ const longTitleTemplate = `
   </form>
 `;
 
-const meta: Meta<StepperArgs> = {
+const meta = {
   title: 'Components/Flows/Stepper',
   decorators: [
     moduleMetadata({
@@ -121,7 +121,7 @@ const meta: Meta<StepperArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<StepperArgs>;
 
 export default meta;
 
@@ -154,7 +154,7 @@ export const StepperAlignmentTest: Story = {
 };
 
 export const StepperLongTitleWithDescriptions: Story = {
-  // render-override: this story uses a hand-written three-panel stepper with one very long title, which the step-count-driven meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story uses a hand-written three-panel stepper with one very long title, which the step-count-driven meta template cannot express
   render: args => ({
     template: longTitleTemplate,
     props: { ...args },
@@ -165,7 +165,7 @@ export const StepperLongTitleWithDescriptions: Story = {
 };
 
 export const StepperLongTitleWithoutDescriptions: Story = {
-  // render-override: same hand-written three-panel stepper as the story above, with the descriptions switched off
+  // eslint-disable-next-line no-restricted-syntax -- same hand-written three-panel stepper as the story above, with the descriptions switched off
   render: args => ({
     template: longTitleTemplate,
     props: { ...args },
@@ -194,7 +194,7 @@ function getNestedForm() {
 }
 
 export const NestedStepper: Story = {
-  // render-override: this story nests a second stepper inside the first panel and drives it from a second form group, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story nests a second stepper inside the first panel and drives it from a second form group, which the meta template cannot express
   render: args => ({
     template: `
       <form clrStepper [formGroup]="nestedForm">

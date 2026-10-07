@@ -74,7 +74,7 @@ const ICON_INNER_OFFSET_STYLES = `
 
 ClarityIcons.addIcons(userIcon, imageIcon, homeIcon, arrowIcon, exclamationCircleIcon, checkCircleIcon);
 
-const meta: Meta<IconArgs> = {
+const meta = {
   title: 'Foundations/Icons/Icon',
   decorators: [
     moduleMetadata({
@@ -135,7 +135,7 @@ const meta: Meta<IconArgs> = {
       </div>
     `,
   }),
-};
+} satisfies Meta<IconArgs>;
 
 export default meta;
 
@@ -148,7 +148,7 @@ export const Sizes: Story = {};
 // ─── Status ───────────────────────────────────────────────────────────────────
 
 export const Status: Story = {
-  // render-override: the meta template renders the size scale; this story is the status gallery
+  // eslint-disable-next-line no-restricted-syntax -- the meta template renders the size scale; this story is the status gallery
   render: () => ({
     template: `
       <p cds-text="section" cds-layout="m-b:sm">Outline (default)</p>
@@ -213,7 +213,7 @@ export const Status: Story = {
 // ─── Badges ───────────────────────────────────────────────────────────────────
 
 export const Badges: Story = {
-  // render-override: the meta template renders the size scale; this story is the badge gallery
+  // eslint-disable-next-line no-restricted-syntax -- the meta template renders the size scale; this story is the badge gallery
   render: () => ({
     template: `
       <div cds-layout="horizontal gap:lg align:vertical-center">
@@ -266,7 +266,7 @@ export const Badges: Story = {
 // ─── Solid ────────────────────────────────────────────────────────────────────
 
 export const Solid: Story = {
-  // render-override: the meta template renders the size scale; this story contrasts outline against solid
+  // eslint-disable-next-line no-restricted-syntax -- the meta template renders the size scale; this story contrasts outline against solid
   render: () => ({
     template: `
       <div cds-layout="horizontal gap:xl align:vertical-center">
@@ -286,7 +286,7 @@ export const Solid: Story = {
 // ─── Direction ────────────────────────────────────────────────────────────────
 
 export const Direction: Story = {
-  // render-override: the meta template renders the size scale; this story is the direction gallery
+  // eslint-disable-next-line no-restricted-syntax -- the meta template renders the size scale; this story is the direction gallery
   render: () => ({
     template: `
       <div cds-layout="horizontal gap:lg align:vertical-center">
@@ -314,7 +314,7 @@ export const Direction: Story = {
 // ─── Flip ─────────────────────────────────────────────────────────────────────
 
 export const Flip: Story = {
-  // render-override: the meta template renders the size scale; this story is the flip gallery
+  // eslint-disable-next-line no-restricted-syntax -- the meta template renders the size scale; this story is the flip gallery
   render: () => ({
     template: `
       <div cds-layout="horizontal gap:lg align:vertical-center">
@@ -338,7 +338,7 @@ export const Flip: Story = {
 // ─── Inverse ──────────────────────────────────────────────────────────────────
 
 export const Inverse: Story = {
-  // render-override: the meta template renders the size scale; this story is the inverse gallery on a dark panel
+  // eslint-disable-next-line no-restricted-syntax -- the meta template renders the size scale; this story is the inverse gallery on a dark panel
   render: () => ({
     template: `
       <div cds-layout="horizontal gap:md align:vertical-center" cds-theme="dark" cds-layout="p:md">
@@ -371,7 +371,7 @@ export const Inverse: Story = {
 
 export const InnerOffset: Story = {
   decorators: [withStyles(ICON_INNER_OFFSET_STYLES)],
-  // render-override: this story compares an icon with and without an inner offset, driven by its own controls, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story compares an icon with and without an inner offset, driven by its own controls, which the meta template cannot express
   render: args => ({
     // ClrIcon's `size` input is a string (it parses t-shirt sizes or numeric strings), but the
     // Storybook number control produces a real number, so it's coerced here before binding.
@@ -421,7 +421,7 @@ export const InnerOffset: Story = {
 
 export const CustomStyles: Story = {
   decorators: [withStyles(ICON_CUSTOM_STYLES)],
-  // render-override: the meta template renders the size scale; this story demonstrates the CSS custom properties
+  // eslint-disable-next-line no-restricted-syntax -- the meta template renders the size scale; this story demonstrates the CSS custom properties
   render: () => ({
     template: `
       <div cds-layout="horizontal gap:lg align:vertical-center">

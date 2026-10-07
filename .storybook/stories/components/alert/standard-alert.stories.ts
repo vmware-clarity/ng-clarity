@@ -33,7 +33,7 @@ type StandardAlertArgs = Omit<StandardAlertStorybookComponent, 'clrAlertClosable
     clrAlertClosedChange: (closed: boolean) => void;
   };
 
-const meta: Meta<StandardAlertArgs> = {
+const meta = {
   title: 'Components/Alert/Standard Alert',
   component: ClrAlert,
   decorators: [
@@ -89,7 +89,7 @@ const meta: Meta<StandardAlertArgs> = {
       <storybook-standard-alert ${argsToTemplate(args)}></storybook-standard-alert>
     `,
   }),
-};
+} satisfies Meta<StandardAlertArgs>;
 
 export default meta;
 

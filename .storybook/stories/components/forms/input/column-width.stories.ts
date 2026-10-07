@@ -19,7 +19,7 @@ import { FormsStoryComponent } from './column-width.storybook.component';
  */
 type FormsInputColumnWidthArgs = FormsStoryComponent;
 
-const meta: Meta<FormsInputColumnWidthArgs> = {
+const meta = {
   title: 'Components/Forms/Input/Column Width',
   component: FormsStoryComponent,
   decorators: [
@@ -49,7 +49,7 @@ const meta: Meta<FormsInputColumnWidthArgs> = {
       <forms-input-states-components ${argsToTemplate(args)}></forms-input-states-components>
     `,
   }),
-};
+} satisfies Meta<FormsInputColumnWidthArgs>;
 
 export default meta;
 

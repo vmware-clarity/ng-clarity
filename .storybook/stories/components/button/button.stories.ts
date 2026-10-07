@@ -25,7 +25,7 @@ type ButtonArgs = ButtonStorybookComponent &
     class: string;
   };
 
-const meta: Meta<ButtonArgs> = {
+const meta = {
   title: 'Components/Button',
   component: ClrButton,
   decorators: [
@@ -57,7 +57,7 @@ const meta: Meta<ButtonArgs> = {
       <storybook-button ${argsToTemplate(args)}></storybook-button>
     `,
   }),
-};
+} satisfies Meta<ButtonArgs>;
 
 export default meta;
 

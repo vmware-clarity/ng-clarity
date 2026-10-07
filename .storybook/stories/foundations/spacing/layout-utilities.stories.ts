@@ -60,7 +60,7 @@ const LAYOUT_UTILITIES_STYLES = `
   }
 `;
 
-const meta: Meta<LayoutUtilitiesArgs> = {
+const meta = {
   title: 'Foundations/Spacing/Layout Utilities',
   decorators: [
     moduleMetadata({
@@ -99,7 +99,7 @@ const meta: Meta<LayoutUtilitiesArgs> = {
       </div>
     `,
   }),
-};
+} satisfies Meta<LayoutUtilitiesArgs>;
 
 export default meta;
 
@@ -112,7 +112,7 @@ export const HorizontalLayout: Story = {};
 // ─── Vertical Layout ──────────────────────────────────────────────────────────
 
 export const VerticalLayout: Story = {
-  // render-override: this story stacks the demos vertically and shows `align:center`, which the horizontal-layout meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story stacks the demos vertically and shows `align:center`, which the horizontal-layout meta template cannot express
   render: () => ({
     template: `
       <div cds-layout="horizontal gap:xl align:top">
@@ -145,7 +145,7 @@ export const VerticalLayout: Story = {
 // ─── Alignment ────────────────────────────────────────────────────────────────
 
 export const Alignment: Story = {
-  // render-override: this story walks the whole `align:*` matrix across eight sized demo boxes, which the horizontal-layout meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story walks the whole `align:*` matrix across eight sized demo boxes, which the horizontal-layout meta template cannot express
   render: () => ({
     template: `
       <div cds-layout="vertical gap:lg">
@@ -259,7 +259,7 @@ export const Alignment: Story = {
 // ─── Container Widths ─────────────────────────────────────────────────────────
 
 export const ContainerWidths: Story = {
-  // render-override: this story is about the `container:*` max-widths rather than the gap and align utilities, so it needs its own markup
+  // eslint-disable-next-line no-restricted-syntax -- this story is about the `container:*` max-widths rather than the gap and align utilities, so it needs its own markup
   render: () => ({
     template: `
       <div cds-layout="vertical gap:sm" style="width: 100%">

@@ -42,7 +42,7 @@ class ElementsBlockService {
   }
 }
 
-const meta: Meta<StackViewLazyLoadingArgs> = {
+const meta = {
   title: 'Components/Data/Stack View/With Lazy Loaded Blocks',
   decorators: [
     moduleMetadata({
@@ -81,7 +81,7 @@ const meta: Meta<StackViewLazyLoadingArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<StackViewLazyLoadingArgs>;
 
 export default meta;
 

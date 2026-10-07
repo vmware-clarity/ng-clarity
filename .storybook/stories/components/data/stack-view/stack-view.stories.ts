@@ -41,7 +41,7 @@ const STACK_VIEW_STATES = [
   },
 ];
 
-const meta: Meta<StackViewArgs> = {
+const meta = {
   title: 'Components/Data/Stack View',
   decorators: [
     moduleMetadata({
@@ -83,7 +83,7 @@ const meta: Meta<StackViewArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<StackViewArgs>;
 
 export default meta;
 
@@ -92,7 +92,7 @@ type Story = StoryObj<StackViewArgs>;
 export const StackView: Story = {};
 
 export const StackViewShowcase: Story = {
-  // render-override: this story repeats the stack view once per STACK_VIEW_STATES entry, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story repeats the stack view once per STACK_VIEW_STATES entry, which the meta template cannot express
   render: args => ({
     template: `
       @for (state of STACK_VIEW_STATES; track state) {
@@ -124,7 +124,7 @@ export const StackViewShowcase: Story = {
 };
 
 export const StackViewBaseCss: Story = {
-  // render-override: this story builds the stack view from the base CSS classes rather than the Clarity components, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story builds the stack view from the base CSS classes rather than the Clarity components, which the meta template cannot express
   render: args => ({
     template: `
       <div class="stack-view">

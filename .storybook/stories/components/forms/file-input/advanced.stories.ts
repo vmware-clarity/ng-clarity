@@ -63,7 +63,7 @@ const advancedAdvancedFileInputTemplate = `
   </form>
 `;
 
-const meta: Meta<AdvancedFileInputArgs> = {
+const meta = {
   title: 'Components/Forms/File Input/Advanced',
   decorators: [
     moduleMetadata({
@@ -89,7 +89,7 @@ const meta: Meta<AdvancedFileInputArgs> = {
     template: advancedAdvancedFileInputTemplate,
     props: { ...args },
   }),
-};
+} satisfies Meta<AdvancedFileInputArgs>;
 
 export default meta;
 

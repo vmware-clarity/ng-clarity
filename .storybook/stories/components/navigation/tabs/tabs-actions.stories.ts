@@ -27,7 +27,7 @@ type TabsActionsArgs = {
   content: string;
 };
 
-const meta: Meta<TabsActionsArgs> = {
+const meta = {
   title: 'Components/Navigation/Tabs/Actions',
   decorators: [
     moduleMetadata({
@@ -87,7 +87,7 @@ const meta: Meta<TabsActionsArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<TabsActionsArgs>;
 
 export default meta;
 

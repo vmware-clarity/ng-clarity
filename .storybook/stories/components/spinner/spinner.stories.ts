@@ -26,7 +26,7 @@ const SPINNER_INVERSE_STYLES = `
   }
 `;
 
-const meta: Meta<SpinnerArgs> = {
+const meta = {
   title: 'Components/Spinner',
   decorators: [
     moduleMetadata({
@@ -62,7 +62,7 @@ const meta: Meta<SpinnerArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<SpinnerArgs>;
 
 export default meta;
 

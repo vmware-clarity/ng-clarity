@@ -59,7 +59,7 @@ type VirtualScrollArgs = Pick<ClrDatagrid, 'dataChanged' | 'resize'> & {
   setExpanded: (expanded: boolean, element: Element) => void;
 };
 
-const meta: Meta<VirtualScrollArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Virtualscroll',
   component: ClrDatagrid,
   decorators: [
@@ -258,7 +258,7 @@ const meta: Meta<VirtualScrollArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<VirtualScrollArgs>;
 
 export default meta;
 

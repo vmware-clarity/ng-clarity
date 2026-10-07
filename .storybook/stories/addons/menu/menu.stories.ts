@@ -14,7 +14,7 @@ import { MenuStoryWrapperComponent } from './menu.storybook.component';
 /** The story renders the wrapper component itself, so its public members are the args. */
 type MenuArgs = MenuStoryWrapperComponent;
 
-const meta: Meta<MenuArgs> = {
+const meta = {
   title: 'Addons/Menu',
   component: MenuStoryWrapperComponent,
   decorators: [
@@ -32,7 +32,7 @@ const meta: Meta<MenuArgs> = {
     props: args,
     component: MenuStoryWrapperComponent,
   }),
-};
+} satisfies Meta<MenuArgs>;
 
 export default meta;
 

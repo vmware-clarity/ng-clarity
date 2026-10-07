@@ -49,7 +49,7 @@ type DatagridArgs = Pick<ClrDatagrid, 'dataChanged' | 'resize'> & {
   selectedRows: (Element | number)[];
 };
 
-const meta: Meta<DatagridArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid',
   component: ClrDatagrid,
   decorators: [
@@ -220,7 +220,7 @@ const meta: Meta<DatagridArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<DatagridArgs>;
 
 export default meta;
 

@@ -25,7 +25,7 @@ type PlaceholderArgs = {
   content: string;
 };
 
-const meta: Meta<PlaceholderArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Placeholder',
   component: ClrDatagridPlaceholder,
   decorators: [
@@ -76,7 +76,7 @@ const meta: Meta<PlaceholderArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<PlaceholderArgs>;
 
 export default meta;
 

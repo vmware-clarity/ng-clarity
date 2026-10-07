@@ -21,7 +21,7 @@ type RadioArgs = {
   checked: boolean;
 };
 
-const meta: Meta<RadioArgs> = {
+const meta = {
   title: 'Components/Forms/Radio',
   decorators: [
     moduleMetadata({
@@ -50,7 +50,7 @@ const meta: Meta<RadioArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<RadioArgs>;
 
 export default meta;
 

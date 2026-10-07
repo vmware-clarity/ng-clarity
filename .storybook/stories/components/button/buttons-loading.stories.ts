@@ -24,7 +24,7 @@ type ButtonLoadingArgs = ButtonStorybookComponent &
     clrInMenu: boolean;
   };
 
-const meta: Meta<ButtonLoadingArgs> = {
+const meta = {
   title: 'Components/Button/Buttons Loading',
   component: ClrLoading,
   decorators: [
@@ -54,7 +54,7 @@ const meta: Meta<ButtonLoadingArgs> = {
       <storybook-button templateMode="loading" ${argsToTemplate(args)}></storybook-button>
     `,
   }),
-};
+} satisfies Meta<ButtonLoadingArgs>;
 
 export default meta;
 

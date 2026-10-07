@@ -19,7 +19,7 @@ import { FormsStoryComponent } from './group.storybook.component';
  */
 type FormsInputGroupArgs = FormsStoryComponent;
 
-const meta: Meta<FormsInputGroupArgs> = {
+const meta = {
   title: 'Components/Forms/Input/Group',
   component: FormsStoryComponent,
   decorators: [
@@ -49,7 +49,7 @@ const meta: Meta<FormsInputGroupArgs> = {
       <forms-input-group ${argsToTemplate(args)}></forms-input-group>
     `,
   }),
-};
+} satisfies Meta<FormsInputGroupArgs>;
 
 export default meta;
 

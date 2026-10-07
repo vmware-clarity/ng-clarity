@@ -15,7 +15,7 @@ import { StepperStoryWrapperComponent } from './stepper.storybook.component';
 /** The render targets `<clr-stepper-story-wrapper>`, so the wrapper's members are the args. */
 type StepperArgs = StepperStoryWrapperComponent;
 
-const meta: Meta<StepperArgs> = {
+const meta = {
   title: 'Addons/Stepper',
   component: StepperComponent,
   decorators: [
@@ -35,7 +35,7 @@ const meta: Meta<StepperArgs> = {
       <clr-stepper-story-wrapper [usePrimaryNextButton]="usePrimaryNextButton"></clr-stepper-story-wrapper>
     `,
   }),
-};
+} satisfies Meta<StepperArgs>;
 
 export default meta;
 

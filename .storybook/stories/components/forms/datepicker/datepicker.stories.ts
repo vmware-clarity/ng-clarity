@@ -36,7 +36,7 @@ type DatepickerArgs = {
   getProviderFromContainer: never;
 };
 
-const meta: Meta<DatepickerArgs> = {
+const meta = {
   title: 'Components/Forms/Datepicker',
   component: ClrDateInput,
   decorators: [
@@ -87,7 +87,7 @@ const meta: Meta<DatepickerArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<DatepickerArgs>;
 
 export default meta;
 

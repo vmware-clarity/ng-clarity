@@ -43,7 +43,7 @@ function getForm() {
   };
 }
 
-const meta: Meta<FormsTemplateDrivenArgs> = {
+const meta = {
   title: 'Components/Forms/Form Bindings/Template Driven',
   decorators: [
     moduleMetadata({
@@ -137,7 +137,7 @@ const meta: Meta<FormsTemplateDrivenArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<FormsTemplateDrivenArgs>;
 
 export default meta;
 

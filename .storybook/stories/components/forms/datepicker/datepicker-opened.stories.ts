@@ -53,7 +53,7 @@ const predefinedDateRanges = [
   { label: 'Last 90 Days', value: [addDays(new Date(), -90), addDays(new Date(), -1)] },
 ];
 
-const meta: Meta<DatepickerOpenedArgs> = {
+const meta = {
   title: 'Components/Forms/Datepicker/Opened',
   component: ClrDateInput,
   subcomponents: { ClrStartDateInput, ClrEndDateInput },
@@ -127,7 +127,7 @@ const meta: Meta<DatepickerOpenedArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<DatepickerOpenedArgs>;
 
 export default meta;
 
@@ -192,7 +192,7 @@ export const YearView: Story = {
 };
 
 export const PredefinedDateRangesOpen: Story = {
-  // render-override: this story drives the two-input date *range* container, not the single date input
+  // eslint-disable-next-line no-restricted-syntax -- this story drives the two-input date *range* container, not the single date input
   render: args => ({
     template: `
       <clr-date-range-container

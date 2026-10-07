@@ -27,7 +27,7 @@ type HeaderColorsArgs = {
 
 const HEADER_VARIANTS = ['header-1', 'header-2', 'header-3'];
 
-const meta: Meta<HeaderColorsArgs> = {
+const meta = {
   title: 'Components/Navigation/Header/Colors',
   decorators: [
     moduleMetadata({
@@ -59,7 +59,7 @@ const meta: Meta<HeaderColorsArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<HeaderColorsArgs>;
 
 export default meta;
 
@@ -68,7 +68,7 @@ type Story = StoryObj<HeaderColorsArgs>;
 export const HeaderColors: Story = {};
 
 export const Showcase: Story = {
-  // render-override: this story repeats the header once per variant, which the single-header meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story repeats the header once per variant, which the single-header meta template cannot express
   render: args => ({
     template: `
       @for (color of HEADER_VARIANTS; track color) {

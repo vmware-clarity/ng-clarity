@@ -23,7 +23,7 @@ enum CheckboxType {
   Toggle = 'toggle',
 }
 
-const meta: Meta<CheckboxToggleContainerArgs> = {
+const meta = {
   title: 'Components/Forms/Checkbox or Toggle/Container',
   decorators: [
     moduleMetadata({
@@ -55,7 +55,7 @@ const meta: Meta<CheckboxToggleContainerArgs> = {
       <storybook-checkbox-toggle ${argsToTemplate(args)}></storybook-checkbox-toggle>
     `,
   }),
-};
+} satisfies Meta<CheckboxToggleContainerArgs>;
 
 export default meta;
 

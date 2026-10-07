@@ -36,7 +36,7 @@ const Positions: any = [
   'left-top',
 ];
 
-const meta: Meta<PopoverArgs> = {
+const meta = {
   title: 'Components/Overlays/Popover',
   component: StorybookPopoverComponent,
   decorators: [
@@ -55,7 +55,7 @@ const meta: Meta<PopoverArgs> = {
       position: args.dropdownPosition || args.tooltipPosition || args.signpostPosition || args.defaultPosition,
     },
   }),
-};
+} satisfies Meta<PopoverArgs>;
 
 export default meta;
 

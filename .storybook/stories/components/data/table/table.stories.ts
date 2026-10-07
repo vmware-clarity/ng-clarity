@@ -19,7 +19,7 @@ type TableArgs = {
   vertical: boolean;
 };
 
-const meta: Meta<TableArgs> = {
+const meta = {
   title: 'Components/Data/Table',
   argTypes: {
     // story helpers
@@ -65,7 +65,7 @@ const meta: Meta<TableArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<TableArgs>;
 
 export default meta;
 

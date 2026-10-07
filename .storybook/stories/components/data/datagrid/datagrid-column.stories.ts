@@ -50,7 +50,7 @@ type ColumnArgs = Pick<ClrDatagridColumn, 'sort'> & {
   ClrDatagridSortOrder: typeof ClrDatagridSortOrder;
 };
 
-const meta: Meta<ColumnArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Column',
   component: ClrDatagridColumn,
   decorators: [
@@ -163,7 +163,7 @@ const meta: Meta<ColumnArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<ColumnArgs>;
 
 export default meta;
 

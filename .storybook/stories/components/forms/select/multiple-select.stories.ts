@@ -20,7 +20,7 @@ type MultipleSelectArgs = {
   selectedOptions: number[];
 };
 
-const meta: Meta<MultipleSelectArgs> = {
+const meta = {
   title: 'Components/Forms/Select/Multiple Select',
   component: ClrSelect,
   decorators: [
@@ -57,7 +57,7 @@ const meta: Meta<MultipleSelectArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<MultipleSelectArgs>;
 
 export default meta;
 

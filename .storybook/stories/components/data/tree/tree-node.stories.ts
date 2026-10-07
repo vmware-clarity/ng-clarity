@@ -35,7 +35,7 @@ type TreeNodeArgs = Pick<
   clrSelectedChange: (selected: ClrSelectedState) => void;
 };
 
-const meta: Meta<TreeNodeArgs> = {
+const meta = {
   title: 'Components/Data/Tree/Node',
   decorators: [
     moduleMetadata({
@@ -89,7 +89,7 @@ const meta: Meta<TreeNodeArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<TreeNodeArgs>;
 
 export default meta;
 

@@ -52,7 +52,7 @@ const ELECTRONEGATIVITY_STYLES = `
   }
 `;
 
-const meta: Meta<ExpandableRowArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Expandable Row',
   component: ClrDatagridRow,
   decorators: [
@@ -232,7 +232,7 @@ const meta: Meta<ExpandableRowArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<ExpandableRowArgs>;
 
 export default meta;
 

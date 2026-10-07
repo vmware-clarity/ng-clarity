@@ -50,7 +50,7 @@ function getForm() {
   });
 }
 
-const meta: Meta<FormsRequiredMarkArgs> = {
+const meta = {
   title: 'Components/Forms/Input/Required Mark',
   decorators: [
     moduleMetadata({
@@ -171,7 +171,7 @@ const meta: Meta<FormsRequiredMarkArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<FormsRequiredMarkArgs>;
 
 export default meta;
 

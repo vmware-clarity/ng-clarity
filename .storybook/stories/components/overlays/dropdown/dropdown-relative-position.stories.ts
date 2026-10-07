@@ -12,7 +12,7 @@ import { CommonModules } from '@storybook-helpers/common';
 /** The story renders `<clr-dropdown>` with a fixed template and declares no args of its own. */
 type DropdownRelativePositionArgs = ClrDropdown;
 
-const meta: Meta<DropdownRelativePositionArgs> = {
+const meta = {
   title: 'Components/Overlays/Dropdown/Relative Position',
   decorators: [
     moduleMetadata({
@@ -54,7 +54,7 @@ const meta: Meta<DropdownRelativePositionArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<DropdownRelativePositionArgs>;
 
 export default meta;
 

@@ -20,7 +20,7 @@ type RangeArgs = {
   disabled: boolean;
 } & Pick<ClrRangeContainer, 'getRangeProgressFillWidth' | 'addGrid' | 'controlClass'>;
 
-const meta: Meta<RangeArgs> = {
+const meta = {
   title: 'Components/Forms/Range',
   decorators: [
     moduleMetadata({
@@ -52,7 +52,7 @@ const meta: Meta<RangeArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<RangeArgs>;
 
 export default meta;
 
@@ -61,7 +61,7 @@ type Story = StoryObj<RangeArgs>;
 export const Range: Story = {};
 
 export const ShowcaseRange: Story = {
-  // render-override: this story lines up four differently configured range containers side by side, which the single-container meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story lines up four differently configured range containers side by side, which the single-container meta template cannot express
   render: args => ({
     template: `
       <h6>Default Range</h6>

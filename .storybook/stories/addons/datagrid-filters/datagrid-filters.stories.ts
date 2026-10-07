@@ -14,7 +14,7 @@ import { DatagridFiltersStoryWrapperComponent, presetFilters } from './datagrid-
 /** The render targets `<clr-datagrid-filters-story-wrapper>`, so the wrapper's inputs are the args. */
 type DatagridFiltersArgs = DatagridFiltersStoryWrapperComponent;
 
-const meta: Meta<DatagridFiltersArgs> = {
+const meta = {
   title: 'Addons/Datagrid Filters',
   component: DataGridFiltersComponent,
   decorators: [
@@ -47,7 +47,7 @@ const meta: Meta<DatagridFiltersArgs> = {
       ></clr-datagrid-filters-story-wrapper>
     `,
   }),
-};
+} satisfies Meta<DatagridFiltersArgs>;
 
 export default meta;
 

@@ -16,7 +16,7 @@ type LabelArgs = LabelStoryBookComponent;
 const LABEL_COLOR_TYPES = ['', 'purple', 'blue', 'orange', 'light-blue'];
 const LABEL_STATUS_TYPES = ['info', 'success', 'warning', 'danger'];
 
-const meta: Meta<LabelArgs> = {
+const meta = {
   title: 'Components/Label',
   component: LabelStoryBookComponent,
   decorators: [],
@@ -35,7 +35,7 @@ const meta: Meta<LabelArgs> = {
     solid: false,
     showProjectedContent: false,
   },
-};
+} satisfies Meta<LabelArgs>;
 
 export default meta;
 

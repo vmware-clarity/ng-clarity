@@ -19,7 +19,7 @@ import { AccordionStorybookComponent } from './accordion.storybook.component';
  */
 type AccordionArgs = AccordionStorybookComponent;
 
-const meta: Meta<AccordionArgs> = {
+const meta = {
   title: 'Components/Accordion',
   component: ClrAccordion,
   subcomponents: [ClrAccordionPanel],
@@ -53,7 +53,7 @@ const meta: Meta<AccordionArgs> = {
       <storybook-accordion ${argsToTemplate(args)}></storybook-accordion>
     `,
   }),
-};
+} satisfies Meta<AccordionArgs>;
 
 export default meta;
 

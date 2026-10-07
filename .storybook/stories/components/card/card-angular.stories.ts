@@ -24,7 +24,7 @@ type CardAngularArgs = {
   showFooter: boolean;
 };
 
-const meta: Meta<CardAngularArgs> = {
+const meta = {
   title: 'Components/Card/Angular',
   component: ClrCard,
   subcomponents: { ClrCardBody, ClrCardBodyTitle, ClrCardBodyText, ClrCardFooter },
@@ -63,7 +63,7 @@ const meta: Meta<CardAngularArgs> = {
       </clr-card>
     `,
   }),
-};
+} satisfies Meta<CardAngularArgs>;
 
 export default meta;
 

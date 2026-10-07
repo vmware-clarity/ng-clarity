@@ -25,7 +25,7 @@ type TabsArgs = {
   content: string;
 };
 
-const meta: Meta<TabsArgs> = {
+const meta = {
   title: 'Components/Navigation/Tabs',
   decorators: [
     moduleMetadata({
@@ -76,7 +76,7 @@ const meta: Meta<TabsArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<TabsArgs>;
 
 export default meta;
 

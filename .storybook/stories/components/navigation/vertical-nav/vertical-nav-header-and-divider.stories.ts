@@ -42,7 +42,7 @@ const navLinks: { iconShapeTuple: IconShapeTuple; text: string }[] = [
   { iconShapeTuple: userIcon, text: 'Profile' },
 ];
 
-const meta: Meta<VerticalNavHeaderAndDividerArgs> = {
+const meta = {
   title: 'Components/Navigation/Vertical Nav/Header and Divider',
   decorators: [
     moduleMetadata({
@@ -87,7 +87,7 @@ const meta: Meta<VerticalNavHeaderAndDividerArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<VerticalNavHeaderAndDividerArgs>;
 
 export default meta;
 

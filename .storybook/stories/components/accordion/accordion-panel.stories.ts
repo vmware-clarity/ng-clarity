@@ -20,7 +20,7 @@ import { AccordionPanelStorybookComponent } from './accordion-panel.storybook.co
 type AccordionPanelArgs = AccordionPanelStorybookComponent &
   Pick<ClrAccordionPanel, 'togglePanel' | 'collapsePanelOnAnimationDone' | 'getPanelStateClasses'>;
 
-const meta: Meta<AccordionPanelArgs> = {
+const meta = {
   title: 'Components/Accordion/Panel',
   component: ClrAccordionPanel,
   decorators: [
@@ -50,7 +50,7 @@ const meta: Meta<AccordionPanelArgs> = {
       <storybook-accordion-panel ${argsToTemplate(args)}></storybook-accordion-panel>
     `,
   }),
-};
+} satisfies Meta<AccordionPanelArgs>;
 
 export default meta;
 

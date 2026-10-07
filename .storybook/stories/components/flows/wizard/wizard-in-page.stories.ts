@@ -70,7 +70,7 @@ const IN_PAGE_WIZARD_STYLES = `
   }
 `;
 
-const meta: Meta<WizardInPageArgs> = {
+const meta = {
   title: 'Components/Flows/Wizard/In Page',
   component: ClrWizard,
   decorators: [
@@ -206,7 +206,7 @@ const meta: Meta<WizardInPageArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<WizardInPageArgs>;
 
 export default meta;
 

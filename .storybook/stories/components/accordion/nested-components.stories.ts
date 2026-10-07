@@ -141,7 +141,7 @@ const nestedComponents = [
   { type: LinkStorybookComponent },
 ];
 
-const meta: Meta<NestedComponentsArgs> = {
+const meta = {
   title: 'Components/Accordion/Nested Components',
   decorators: [
     moduleMetadata({
@@ -182,7 +182,7 @@ const meta: Meta<NestedComponentsArgs> = {
       </clr-accordion>
     `,
   }),
-};
+} satisfies Meta<NestedComponentsArgs>;
 
 export default meta;
 

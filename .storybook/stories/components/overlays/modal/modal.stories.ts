@@ -36,7 +36,7 @@ type ModalArgs = Pick<ClrModal, 'fadeDone' | 'open' | 'close'> & {
   showToggle: boolean;
 };
 
-const meta: Meta<ModalArgs> = {
+const meta = {
   title: 'Components/Overlays/Modal',
   decorators: [
     moduleMetadata({
@@ -135,7 +135,7 @@ const meta: Meta<ModalArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<ModalArgs>;
 
 export default meta;
 

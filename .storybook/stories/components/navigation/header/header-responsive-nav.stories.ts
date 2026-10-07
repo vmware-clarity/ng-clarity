@@ -19,7 +19,7 @@ import { HeaderStorybookComponent } from './header.storybook.component';
  */
 type HeaderResponsiveNavArgs = HeaderStorybookComponent;
 
-const meta: Meta<HeaderResponsiveNavArgs> = {
+const meta = {
   title: 'Components/Navigation/Header/Responsive Nav',
   decorators: [
     moduleMetadata({
@@ -36,7 +36,7 @@ const meta: Meta<HeaderResponsiveNavArgs> = {
       <storybook-header></storybook-header>
     `,
   }),
-};
+} satisfies Meta<HeaderResponsiveNavArgs>;
 
 export default meta;
 

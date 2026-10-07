@@ -24,7 +24,7 @@ type TimelineArgs = {
 const longText =
   'This step has a long description that wraps onto several lines, so the spacing between neighbouring steps is visible.';
 
-const meta: Meta<TimelineArgs> = {
+const meta = {
   title: 'Components/Timeline',
   decorators: [
     moduleMetadata({
@@ -138,7 +138,7 @@ const meta: Meta<TimelineArgs> = {
     `,
     props: { ...args, longText: args['longText'] ? longText : '' },
   }),
-};
+} satisfies Meta<TimelineArgs>;
 
 export default meta;
 

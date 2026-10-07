@@ -49,7 +49,7 @@ function buildMultiCategoryData(): PropertyViewModel {
   return builder.build();
 }
 
-const meta: Meta<PropertyViewArgs> = {
+const meta = {
   title: 'Addons/Property View',
   component: PropertyViewComponent,
   decorators: [
@@ -66,7 +66,7 @@ const meta: Meta<PropertyViewArgs> = {
       <appfx-property-view [data]="data"></appfx-property-view>
     `,
   }),
-};
+} satisfies Meta<PropertyViewArgs>;
 
 export default meta;
 

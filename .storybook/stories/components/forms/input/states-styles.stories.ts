@@ -22,7 +22,7 @@ type FormsInputStatesStylesArgs = {
   isFullWidth: boolean;
 };
 
-const meta: Meta<FormsInputStatesStylesArgs> = {
+const meta = {
   title: 'Components/Forms/Input/States Styles',
   decorators: [
     moduleMetadata({
@@ -270,7 +270,7 @@ const meta: Meta<FormsInputStatesStylesArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<FormsInputStatesStylesArgs>;
 
 export default meta;
 

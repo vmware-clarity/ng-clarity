@@ -21,7 +21,7 @@ type RecursiveNodesArgs = {
   getChildren: (file: File) => File[];
 };
 
-const meta: Meta<RecursiveNodesArgs> = {
+const meta = {
   title: 'Components/Data/Tree/With Recursive Nodes',
   decorators: [
     moduleMetadata({
@@ -50,7 +50,7 @@ const meta: Meta<RecursiveNodesArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<RecursiveNodesArgs>;
 
 export default meta;
 

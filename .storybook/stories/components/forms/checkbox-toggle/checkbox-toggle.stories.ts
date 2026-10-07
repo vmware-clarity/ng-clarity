@@ -19,7 +19,7 @@ import { CheckboxToggleStorybookComponent, CheckboxType } from './checkbox-toggl
  */
 type CheckboxToggleArgs = CheckboxToggleStorybookComponent;
 
-const meta: Meta<CheckboxToggleArgs> = {
+const meta = {
   title: 'Components/Forms/Checkbox or Toggle',
   component: ClrCheckbox,
   decorators: [
@@ -49,7 +49,7 @@ const meta: Meta<CheckboxToggleArgs> = {
       <storybook-checkbox-toggle templateMode="loading" ${argsToTemplate(args)}></storybook-checkbox-toggle>
     `,
   }),
-};
+} satisfies Meta<CheckboxToggleArgs>;
 
 export default meta;
 

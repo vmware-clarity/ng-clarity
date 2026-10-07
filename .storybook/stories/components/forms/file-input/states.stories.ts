@@ -20,7 +20,7 @@ type FileInputStatesArgs = {
   clrLayout: ClrFormLayout | string;
 };
 
-const meta: Meta<FileInputStatesArgs> = {
+const meta = {
   title: 'Components/Forms/File Input/States',
   decorators: [
     moduleMetadata({
@@ -47,7 +47,7 @@ const meta: Meta<FileInputStatesArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<FileInputStatesArgs>;
 
 export default meta;
 

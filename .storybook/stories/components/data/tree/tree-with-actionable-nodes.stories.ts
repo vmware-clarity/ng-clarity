@@ -19,7 +19,7 @@ type TreeWithActionableNodesArgs = {
   active: string;
 };
 
-const meta: Meta<TreeWithActionableNodesArgs> = {
+const meta = {
   title: 'Components/Data/Tree/With Actionable Nodes',
   decorators: [
     moduleMetadata({
@@ -76,7 +76,7 @@ const meta: Meta<TreeWithActionableNodesArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<TreeWithActionableNodesArgs>;
 
 export default meta;
 

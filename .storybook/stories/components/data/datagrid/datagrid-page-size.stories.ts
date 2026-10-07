@@ -30,7 +30,7 @@ type PageSizeArgs = {
   height: number;
 };
 
-const meta: Meta<PageSizeArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Page Size',
   component: ClrDatagridPageSize,
   decorators: [
@@ -107,7 +107,7 @@ const meta: Meta<PageSizeArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<PageSizeArgs>;
 
 export default meta;
 

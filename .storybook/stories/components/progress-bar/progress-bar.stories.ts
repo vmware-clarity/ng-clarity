@@ -31,7 +31,7 @@ type ProgressBarArgs = {
 
 const STATUS_TYPES = ['', 'success', 'warning', 'danger'];
 
-const meta: Meta<ProgressBarArgs> = {
+const meta = {
   title: 'Components/Progress Bar',
   component: ClrProgressBar,
   argTypes: {
@@ -72,7 +72,7 @@ const meta: Meta<ProgressBarArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<ProgressBarArgs>;
 
 export default meta;
 
@@ -81,7 +81,7 @@ type Story = StoryObj<ProgressBarArgs>;
 export const ProgressBar: Story = {};
 
 export const Showcase: Story = {
-  // render-override: this story renders the status/compact/labelled/looped matrix in one canvas, which the single-bar meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story renders the status/compact/labelled/looped matrix in one canvas, which the single-bar meta template cannot express
   render: args => ({
     template: `
       <h6>Progress Bar with Status</h6>

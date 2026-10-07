@@ -22,7 +22,7 @@ type TooltipArgs = {
   content: string;
 };
 
-const meta: Meta<TooltipArgs> = {
+const meta = {
   title: 'Components/Tooltip',
   decorators: [
     moduleMetadata({
@@ -55,7 +55,7 @@ const meta: Meta<TooltipArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<TooltipArgs>;
 
 export default meta;
 

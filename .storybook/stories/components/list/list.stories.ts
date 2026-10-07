@@ -18,7 +18,7 @@ type ListArgs = {
   unstyled: boolean;
 };
 
-const meta: Meta<ListArgs> = {
+const meta = {
   title: 'Components/List',
   argTypes: {
     // story helpers
@@ -52,7 +52,7 @@ const meta: Meta<ListArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<ListArgs>;
 
 export default meta;
 

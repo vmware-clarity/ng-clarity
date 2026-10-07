@@ -17,7 +17,7 @@ type NestedDetailInDetailArgs = {
   elements: Element[];
 };
 
-const meta: Meta<NestedDetailInDetailArgs> = {
+const meta = {
   title: 'Patterns/Nested Detail',
   decorators: [
     moduleMetadata({
@@ -100,7 +100,7 @@ const meta: Meta<NestedDetailInDetailArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<NestedDetailInDetailArgs>;
 
 export default meta;
 

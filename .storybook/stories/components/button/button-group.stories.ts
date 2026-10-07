@@ -28,7 +28,7 @@ import { ButtonGroupStorybookComponent } from './button-group.storybook.componen
 type ButtonGroupArgs = ButtonGroupStorybookComponent &
   Pick<ClrButtonGroup, 'getMoveIndex' | 'initializeButtons' | 'rearrangeButton'>;
 
-const meta: Meta<ButtonGroupArgs> = {
+const meta = {
   title: 'Components/Button/Group',
   component: ClrButtonGroup,
   decorators: [
@@ -73,7 +73,7 @@ const meta: Meta<ButtonGroupArgs> = {
       <storybook-button-group style="margin-top: 100px; display: block" ${argsToTemplate(args)}></storybook-button-group>
     `,
   }),
-};
+} satisfies Meta<ButtonGroupArgs>;
 
 export default meta;
 

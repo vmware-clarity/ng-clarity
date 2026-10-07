@@ -22,7 +22,7 @@ type RadioContainerArgs = {
   optionCount: number;
 } & Pick<ClrRadioContainer, 'addGrid' | 'controlClass'>;
 
-const meta: Meta<RadioContainerArgs> = {
+const meta = {
   title: 'Components/Forms/Radio/Container',
   decorators: [
     moduleMetadata({
@@ -59,7 +59,7 @@ const meta: Meta<RadioContainerArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<RadioContainerArgs>;
 
 export default meta;
 

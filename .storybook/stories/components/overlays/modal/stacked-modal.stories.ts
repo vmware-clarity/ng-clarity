@@ -16,7 +16,7 @@ type StackedModalArgs = {
   elements: Element[];
 };
 
-const meta: Meta<StackedModalArgs> = {
+const meta = {
   title: 'Components/Overlays/Modal/Stacked Modal',
   decorators: [
     moduleMetadata({
@@ -59,7 +59,7 @@ const meta: Meta<StackedModalArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<StackedModalArgs>;
 
 export default meta;
 

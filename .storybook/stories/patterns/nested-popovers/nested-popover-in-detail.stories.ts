@@ -23,7 +23,7 @@ type NestedPopoverInDetailArgs = {
   elements: Element[];
 };
 
-const meta: Meta<NestedPopoverInDetailArgs> = {
+const meta = {
   title: 'Patterns/Nested Popovers/Nested Popover in Detail',
   decorators: [
     moduleMetadata({
@@ -104,7 +104,7 @@ const meta: Meta<NestedPopoverInDetailArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<NestedPopoverInDetailArgs>;
 
 export default meta;
 

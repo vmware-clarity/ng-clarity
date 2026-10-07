@@ -38,7 +38,7 @@ class FileService {
   }
 }
 
-const meta: Meta<LazyLoadedNodesArgs> = {
+const meta = {
   title: 'Components/Data/Tree/With Lazy Loaded Nodes',
   decorators: [
     moduleMetadata({
@@ -73,7 +73,7 @@ const meta: Meta<LazyLoadedNodesArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<LazyLoadedNodesArgs>;
 
 export default meta;
 

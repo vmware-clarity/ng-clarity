@@ -45,7 +45,7 @@ const predefinedDateRanges = [
   { label: 'Last 90 Days', value: [addDays(new Date(), -90), addDays(new Date(), -1)] },
 ];
 
-const meta: Meta<DateRangePickerArgs> = {
+const meta = {
   title: 'Components/Forms/Datepicker/Daterangepicker',
   component: ClrStartDateInput,
   subcomponents: { ClrEndDateInput },
@@ -112,7 +112,7 @@ const meta: Meta<DateRangePickerArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<DateRangePickerArgs>;
 
 export default meta;
 

@@ -28,7 +28,7 @@ type PinnedColumnsArgs = {
   setExpanded: (expanded: boolean, element: Element) => void;
 };
 
-const meta: Meta<PinnedColumnsArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Pinned Columns',
   component: ClrDatagrid,
   decorators: [
@@ -95,7 +95,7 @@ const meta: Meta<PinnedColumnsArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<PinnedColumnsArgs>;
 
 export default meta;
 
@@ -120,7 +120,7 @@ function setExpanded($event, element) {
 // Virtual scroll keeps the header and the rows in two scroll containers that are kept in sync, so
 // the pinned columns have to stay aligned across both while scrolling in either direction.
 export const VirtualScroll: Story = {
-  // render-override: this story renders its rows inside a virtual-scroll viewport
+  // eslint-disable-next-line no-restricted-syntax -- this story renders its rows inside a virtual-scroll viewport
   render: args => ({
     template: `
       @if ({ elements: behaviorElements | async }; as data) {

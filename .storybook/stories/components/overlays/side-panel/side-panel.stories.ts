@@ -12,7 +12,7 @@ import * as stories from './side-panel.internal';
 /** Both side-panel story files share one args type, declared next to the args themselves. */
 type SidePanelArgs = stories.SidePanelArgs;
 
-const meta: Meta<SidePanelArgs> = {
+const meta = {
   title: 'Components/Overlays/Side Panel',
   decorators: stories.config.decorators,
   component: stories.config.component,
@@ -65,7 +65,7 @@ const meta: Meta<SidePanelArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<SidePanelArgs>;
 
 export default meta;
 

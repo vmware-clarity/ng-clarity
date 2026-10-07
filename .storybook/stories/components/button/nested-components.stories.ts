@@ -60,7 +60,7 @@ const nestedComponents = [
   },
 ];
 
-const meta: Meta<NestedComponentsArgs> = {
+const meta = {
   title: 'Components/Button/Nested Components',
   decorators: [
     moduleMetadata({
@@ -82,7 +82,7 @@ const meta: Meta<NestedComponentsArgs> = {
       <storybook-render-component ${argsToTemplate(args)}></storybook-render-component>
     `,
   }),
-};
+} satisfies Meta<NestedComponentsArgs>;
 
 export default meta;
 

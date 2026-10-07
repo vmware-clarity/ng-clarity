@@ -33,7 +33,7 @@ const fileInputTemplate = `
   </form>
 `;
 
-const meta: Meta<FileInputArgs> = {
+const meta = {
   title: 'Components/Forms/File Input',
   decorators: [
     moduleMetadata({
@@ -54,7 +54,7 @@ const meta: Meta<FileInputArgs> = {
     template: fileInputTemplate,
     props: { ...args },
   }),
-};
+} satisfies Meta<FileInputArgs>;
 
 export default meta;
 
@@ -101,7 +101,7 @@ export const CompactFileInputWithSelection: Story = {
 
 // regression test for CDE-2183
 export const VerticalFileInputWithSelectionInConstrainedContainer: Story = {
-  // render-override: this story wraps the form in a 10px-wide container, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story wraps the form in a 10px-wide container, which the meta template cannot express
   render: args => ({
     template: `
       <div style="width: 10px">${fileInputTemplate}</div>

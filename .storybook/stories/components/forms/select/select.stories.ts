@@ -19,7 +19,7 @@ type SelectArgs = {
   optionCount: number;
 };
 
-const meta: Meta<SelectArgs> = {
+const meta = {
   title: 'Components/Forms/Select',
   component: ClrSelect,
   decorators: [
@@ -53,7 +53,7 @@ const meta: Meta<SelectArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<SelectArgs>;
 
 export default meta;
 

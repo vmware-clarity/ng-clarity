@@ -14,7 +14,7 @@ import { StorybookPanelGroup } from './collapsible-panel.storybook.component';
 /** The args drive `<storybook-panel-group>`, so the args type is that wrapper. */
 type CollapsiblePanelArgs = StorybookPanelGroup;
 
-const meta: Meta<CollapsiblePanelArgs> = {
+const meta = {
   title: 'Components/Collapsible Panel',
   decorators: [
     moduleMetadata({
@@ -47,7 +47,7 @@ const meta: Meta<CollapsiblePanelArgs> = {
       ></storybook-panel-group>
     `,
   }),
-};
+} satisfies Meta<CollapsiblePanelArgs>;
 
 export default meta;
 

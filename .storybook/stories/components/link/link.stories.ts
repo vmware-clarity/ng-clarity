@@ -12,7 +12,7 @@ import { LinkStorybookComponent } from './link.storybook.component';
 /** Every arg is an `@Input()` of the story component, which is also this file's `component:`. */
 type LinkArgs = LinkStorybookComponent;
 
-const meta: Meta<LinkArgs> = {
+const meta = {
   title: 'Components/Link',
   component: LinkStorybookComponent,
   args: {
@@ -21,7 +21,7 @@ const meta: Meta<LinkArgs> = {
     visited: false,
     visitedHover: false,
   },
-};
+} satisfies Meta<LinkArgs>;
 
 export default meta;
 

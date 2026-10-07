@@ -28,7 +28,7 @@ type StackBlockArgs = Pick<ClrStackBlock, 'addChild' | 'getStackChildrenId' | 't
   subContent: string;
 };
 
-const meta: Meta<StackBlockArgs> = {
+const meta = {
   title: 'Components/Data/Stack View/Stack Block',
   decorators: [
     moduleMetadata({
@@ -73,7 +73,7 @@ const meta: Meta<StackBlockArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<StackBlockArgs>;
 
 export default meta;
 

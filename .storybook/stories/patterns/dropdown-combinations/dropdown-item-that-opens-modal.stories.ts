@@ -17,7 +17,7 @@ type DropdownWithModalArgs = {
   clrCloseMenuOnItemClick: boolean;
 };
 
-const meta: Meta<DropdownWithModalArgs> = {
+const meta = {
   title: 'Patterns/Dropdown Combinations/Dropdown Item That Opens Modal',
   decorators: [
     moduleMetadata({
@@ -68,7 +68,7 @@ const meta: Meta<DropdownWithModalArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<DropdownWithModalArgs>;
 
 export default meta;
 

@@ -18,7 +18,7 @@ import { DialogStoryWrapperComponent } from './dialog.storybook.component';
  */
 type DialogArgs = DialogStoryWrapperComponent;
 
-const meta: Meta<DialogArgs> = {
+const meta = {
   title: 'Addons/Dialog',
   component: DialogComponent,
   decorators: [
@@ -60,7 +60,7 @@ const meta: Meta<DialogArgs> = {
       ></clr-dialog-story-wrapper>
     `,
   }),
-};
+} satisfies Meta<DialogArgs>;
 
 export default meta;
 

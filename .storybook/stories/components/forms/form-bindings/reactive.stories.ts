@@ -49,7 +49,7 @@ function getForm() {
   });
 }
 
-const meta: Meta<FormsReactiveArgs> = {
+const meta = {
   title: 'Components/Forms/Form Bindings/Reactive',
   decorators: [
     moduleMetadata({
@@ -145,7 +145,7 @@ const meta: Meta<FormsReactiveArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<FormsReactiveArgs>;
 
 export default meta;
 

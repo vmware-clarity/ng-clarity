@@ -42,7 +42,7 @@ const menuItemsHref = [
 
 class MockComponent {}
 
-const meta: Meta<BreadcrumbsArgs> = {
+const meta = {
   title: 'Components/Navigation/Breadcrumbs',
   component: ClrBreadcrumbs,
   decorators: [
@@ -79,7 +79,7 @@ const meta: Meta<BreadcrumbsArgs> = {
     items: menuItems,
     clrBreadcrumbItemClick: action('clrBreadcrumItemClick'),
   },
-};
+} satisfies Meta<BreadcrumbsArgs>;
 
 export default meta;
 

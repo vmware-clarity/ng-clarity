@@ -40,7 +40,7 @@ type RowArgs = Pick<ClrDatagridRow, 'toggle' | 'toggleExpand'> & {
   height: number;
 };
 
-const meta: Meta<RowArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Row',
   component: ClrDatagridRow,
   decorators: [
@@ -147,7 +147,7 @@ const meta: Meta<RowArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<RowArgs>;
 
 export default meta;
 

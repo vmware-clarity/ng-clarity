@@ -21,7 +21,7 @@ type TreeArgs = {
   hasIcon: boolean;
 };
 
-const meta: Meta<TreeArgs> = {
+const meta = {
   title: 'Components/Data/Tree',
   decorators: [
     moduleMetadata({
@@ -44,7 +44,7 @@ const meta: Meta<TreeArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<TreeArgs>;
 
 export default meta;
 

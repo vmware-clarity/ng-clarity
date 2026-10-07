@@ -18,7 +18,7 @@ import { CommonModules } from '@storybook-helpers/common';
  */
 type HeaderStaticArgs = ClrHeader;
 
-const meta: Meta<HeaderStaticArgs> = {
+const meta = {
   title: 'Components/Navigation/Header/Static',
   decorators: [
     moduleMetadata({
@@ -147,7 +147,7 @@ const meta: Meta<HeaderStaticArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<HeaderStaticArgs>;
 
 export default meta;
 

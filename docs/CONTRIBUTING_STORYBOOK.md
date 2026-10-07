@@ -102,7 +102,7 @@ import { AccordionStorybookComponent } from './accordion.storybook.component';
  */
 type AccordionArgs = AccordionStorybookComponent;
 
-const meta: Meta<AccordionArgs> = {
+const meta = {
   title: 'Components/Accordion',
   component: ClrAccordion,
   subcomponents: [ClrAccordionPanel],
@@ -122,7 +122,7 @@ const meta: Meta<AccordionArgs> = {
     props: args,
     template: `<storybook-accordion ${argsToTemplate(args)}></storybook-accordion>`,
   }),
-};
+} satisfies Meta<AccordionArgs>;
 
 export default meta;
 
@@ -146,7 +146,7 @@ Part by part:
   the component class intersected with the story-only props the template needs. Writing it out is what makes
   every `args: { … }` below type-checked: a typo in an arg name becomes a compile error instead of a silently
   ignored property.
-- **`Meta<AccordionArgs>`**, assigned to a `const meta` and then `export default meta`. Never
+- **`satisfies Meta<AccordionArgs>`** on a `const meta`, then `export default meta`. Never
   `export default { … }` — an anonymous object literal is inferred as `Meta<unknown>`, which switches off arg
   checking for the whole file.
 - **`component`** drives the autodocs `<Controls />` table. `.storybook/preview.js` feeds compodoc output
@@ -166,10 +166,10 @@ Part by part:
 
 ### The rules, in one list
 
-- **R1** — Meta is `const meta: Meta<TArgs> = {…}; export default meta;`. Never `export default {`.
+- **R1** — Meta is `const meta = {…} satisfies Meta<TArgs>; export default meta;`. Never `export default {`.
 - **R2** — `type Story = StoryObj<TArgs>;` declared once per file; every story export annotated `: Story`.
 - **R3** — Exactly one `render` per file, in `meta`. A story-level `render` requires a
-  `// render-override: <reason>` comment on the line above.
+  `// eslint-disable-next-line no-restricted-syntax -- <reason>` comment on the line above.
 - **R4** — `StoryFn` is banned. No `const XTemplate: StoryFn = …`.
 - **R5** — No `@Component` inside a `.stories.ts`. Story components live in `*.storybook.component.ts`.
 - **R6** — Story-only args are hidden with `hideControls(...)`, never with a hand-written
@@ -209,9 +209,9 @@ export const Initial: StoryObj = {};
 ```ts
 type BadgeArgs = BadgeStorybookComponent & { badgeTypes: string[] };
 
-const meta: Meta<BadgeArgs> = {
+const meta = {
   component: BadgeStorybookComponent,
-};
+} satisfies Meta<BadgeArgs>;
 
 export default meta;
 
@@ -234,9 +234,9 @@ export const Expandable: StoryObj = { render: DetailTemplate, args: { expandable
 ✅
 
 ```ts
-const meta: Meta<DetailArgs> = {
+const meta = {
   render: args => ({ props: args, template: `<clr-datagrid>…</clr-datagrid>` }),
-};
+} satisfies Meta<DetailArgs>;
 
 export const Default: Story = {};
 export const Expandable: Story = { args: { expandable: true } };
@@ -247,7 +247,7 @@ around it — override it and say why:
 
 ```ts
 export const InModal: Story = {
-  // render-override: this story places the datagrid inside a modal, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story places the datagrid inside a modal, which the meta template cannot express
   render: args => ({ props: args, template: `<clr-modal [clrModalOpen]="true">…</clr-modal>` }),
 };
 ```
@@ -444,11 +444,11 @@ Use the shared helpers rather than re-deriving the convention:
 import { withStyles } from '@storybook-helpers/decorators';
 import { HIGHLIGHT_STYLES, highlightArgs, highlightArgTypes } from '@storybook-helpers/highlight';
 
-const meta: Meta<RowArgs> = {
+const meta = {
   decorators: [withStyles(HIGHLIGHT_STYLES)],
   argTypes: { ...highlightArgTypes },
   args: { ...highlightArgs },
-};
+} satisfies Meta<RowArgs>;
 ```
 
 ```html
@@ -628,17 +628,17 @@ on the wrong Node version — switch versions rather than passing `--force`.
 
 Story files are checked by, in addition to the repository-wide Prettier, Stylelint and license-header rules:
 
-- `eslint-plugin-storybook`, at its recommended configuration;
-- `storybook-typed-meta` (R1, R2), `storybook-single-render` (R3),
-  `storybook-no-component-decorator` (R5), `storybook-no-inline-hidden-control` (R6, autofixable),
-  `storybook-no-inline-style` (R8) and `storybook-title` (R7, autofixable), all from the repository's local
-  `eslint-rules/` plugin;
-- `no-restricted-imports`, which bans the `StoryFn` import (R4) and relative `../**/helpers/*` paths (R9).
+- `eslint-plugin-storybook`, at its recommended configuration, plus its `meta-satisfies-type` rule (R1,
+  autofixable);
+- `no-restricted-syntax` selectors in `eslint.config.js` for R2, R3, R5, R6 and R8;
+- `no-restricted-imports`, which bans the `StoryFn` import (R4) and relative `../**/helpers/*` paths (R9);
+- `storybook-title` (R7, autofixable), the one custom rule, from the repository's local `eslint-rules/` plugin.
 
 The story rules are **errors**: every story file conforms, and a violation fails `npm run lint`.
 
 If one of these rules fires on something you believe is correct, say so in the PR and leave the rule alone.
-Do not add an inline `eslint-disable`, and do not downgrade a rule to make a build pass.
+Do not add an inline `eslint-disable` (other than the R3 story-level `render` exception), and do not downgrade a
+rule to make a build pass.
 
 ### Before you open a pull request
 

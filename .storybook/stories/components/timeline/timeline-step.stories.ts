@@ -31,7 +31,7 @@ const TIMELINE_STEP_STATE = [
   { clrState: ClrTimelineStepState.ERROR },
 ];
 
-const meta: Meta<TimelineStepArgs> = {
+const meta = {
   title: 'Components/Timeline/Step',
   decorators: [
     moduleMetadata({
@@ -73,7 +73,7 @@ const meta: Meta<TimelineStepArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<TimelineStepArgs>;
 
 export default meta;
 
@@ -82,7 +82,7 @@ type Story = StoryObj<TimelineStepArgs>;
 export const TimelineStep: Story = {};
 
 export const TimelineStepStates: Story = {
-  // render-override: this story repeats the step for every state in one canvas, which the single-step meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story repeats the step for every state in one canvas, which the single-step meta template cannot express
   render: args => ({
     template: `
       @for (state of TIMELINE_STEP_STATE; track state) {

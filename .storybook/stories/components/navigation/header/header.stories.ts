@@ -19,7 +19,7 @@ import { HeaderStorybookComponent } from './header.storybook.component';
  */
 type HeaderArgs = HeaderStorybookComponent;
 
-const meta: Meta<HeaderArgs> = {
+const meta = {
   title: 'Components/Navigation/Header',
   decorators: [
     moduleMetadata({
@@ -41,7 +41,7 @@ const meta: Meta<HeaderArgs> = {
       <storybook-header ${argsToTemplate(args)}></storybook-header>
     `,
   }),
-};
+} satisfies Meta<HeaderArgs>;
 
 export default meta;
 

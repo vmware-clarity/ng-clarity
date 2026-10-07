@@ -62,7 +62,7 @@ const longUninterruptedContentElement: Element = {
   electronegativity: 1.1,
 };
 
-const meta: Meta<DetailArgs> = {
+const meta = {
   title: 'Components/Data/Datagrid/Detail',
   component: ClrDatagridDetail,
   decorators: [
@@ -229,7 +229,7 @@ const meta: Meta<DetailArgs> = {
       props: { ...args },
     };
   },
-};
+} satisfies Meta<DetailArgs>;
 
 export default meta;
 

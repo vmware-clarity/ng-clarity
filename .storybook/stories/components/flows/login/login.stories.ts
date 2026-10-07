@@ -17,7 +17,7 @@ type LoginArgs = {
   rememberMe: boolean;
 };
 
-const meta: Meta<LoginArgs> = {
+const meta = {
   title: 'Components/Flows/Login',
   decorators: [
     moduleMetadata({
@@ -115,7 +115,7 @@ const meta: Meta<LoginArgs> = {
     `,
     props: { ...args },
   }),
-};
+} satisfies Meta<LoginArgs>;
 
 export default meta;
 

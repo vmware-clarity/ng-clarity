@@ -16,7 +16,7 @@ type BadgeArgs = BadgeStoryBookComponent;
 const BADGE_COLOR_TYPES = ['gray', 'purple', 'blue', 'orange', 'light-blue', '1', '2', '3', '4', '5'];
 const BADGE_STATUS_TYPES = ['', 'info', 'success', 'warning', 'danger'];
 
-const meta: Meta<BadgeArgs> = {
+const meta = {
   title: 'Components/Badge',
   component: BadgeStoryBookComponent,
   decorators: [],
@@ -30,7 +30,7 @@ const meta: Meta<BadgeArgs> = {
     cssBadge: true,
     outlined: false,
   },
-};
+} satisfies Meta<BadgeArgs>;
 
 export default meta;
 

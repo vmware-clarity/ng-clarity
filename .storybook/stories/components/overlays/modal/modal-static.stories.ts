@@ -45,7 +45,7 @@ const MODAL_STATIC_STYLES = `
   }
 `;
 
-const meta: Meta<ModalStaticArgs> = {
+const meta = {
   title: 'Components/Overlays/Modal/Static',
   decorators: [
     moduleMetadata({
@@ -85,7 +85,7 @@ const meta: Meta<ModalStaticArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<ModalStaticArgs>;
 
 export default meta;
 

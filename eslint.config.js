@@ -39,6 +39,10 @@ const storybookRecommendedStoryRules = Object.fromEntries(
     .filter(([ruleId]) => ruleId.startsWith('storybook/'))
 );
 
+// Matches an argTypes key whose value is exactly `{ disable: true }`.
+const HIDDEN_ARG_TYPE =
+  '[value.properties.length=1][value.properties.0.key.name="disable"][value.properties.0.value.value=true]';
+
 module.exports = [
   // Base JS/recommended + globals
   {
@@ -193,12 +197,44 @@ module.exports = [
         },
       ],
 
-      // Custom story rules
-      'ng-clarity-eslint-rules/storybook-typed-meta': 'error',
-      'ng-clarity-eslint-rules/storybook-single-render': 'error',
-      'ng-clarity-eslint-rules/storybook-no-component-decorator': 'error',
-      'ng-clarity-eslint-rules/storybook-no-inline-hidden-control': 'error',
-      'ng-clarity-eslint-rules/storybook-no-inline-style': 'error',
+      // R1: the meta is typed with `satisfies Meta<TArgs>`. Autofixable.
+      'storybook/meta-satisfies-type': 'error',
+
+      // R2, R3, R5, R6, R8 (see docs/CONTRIBUTING_STORYBOOK.md). A justified exception is an
+      // `// eslint-disable-next-line no-restricted-syntax -- <reason>` comment on the line above.
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'ExportNamedDeclaration > VariableDeclaration > VariableDeclarator:not([id.typeAnnotation])',
+          message: 'Annotate story exports with the file-local `Story` type, e.g. `export const Default: Story = {};`.',
+        },
+        {
+          selector: 'ExportNamedDeclaration Property[key.name="render"]',
+          message:
+            'Declare the one `render` in `meta`. A story-level `render` needs a justified eslint-disable comment.',
+        },
+        {
+          selector: 'Decorator > CallExpression[callee.name="Component"]',
+          message: 'No `@Component` in a story file. Move it to a `*.storybook.component.ts` next to the story.',
+        },
+        {
+          // `{ control: { disable: true }, table: { disable: true } }`, in either key order.
+          selector: [
+            ['control', 'table'],
+            ['table', 'control'],
+          ]
+            .map(keys => keys.map(key => `Property[key.name="${key}"]${HIDDEN_ARG_TYPE}`))
+            .map(([first, second]) => `ObjectExpression[properties.length=2] > ${first} ~ ${second}`)
+            .join(', '),
+          message: "Hide story-only args with `...hideControls('name')` from `@storybook-helpers/arg-types`.",
+        },
+        {
+          selector: 'TemplateElement[value.raw=/<style/], Literal[value=/<style/]',
+          message:
+            'No inline `<style>` in a story. Use `withStyles(css)` from `@storybook-helpers/decorators`, or `styles:` on a `*.storybook.component.ts`.',
+        },
+      ],
+
       // R7: the title is derived from the file path. `npx eslint --fix` writes it; never type one.
       'ng-clarity-eslint-rules/storybook-title': 'error',
     },

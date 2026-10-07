@@ -103,7 +103,7 @@ const VERTICAL_NAV_STATES = [
   },
 ];
 
-const meta: Meta<VerticalNavRoutingArgs> = {
+const meta = {
   title: 'Components/Navigation/Vertical Nav/Routing',
   decorators: [
     moduleMetadata({
@@ -177,7 +177,7 @@ const meta: Meta<VerticalNavRoutingArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<VerticalNavRoutingArgs>;
 
 export default meta;
 
@@ -186,7 +186,7 @@ type Story = StoryObj<VerticalNavRoutingArgs>;
 export const NavWithRouting: Story = {};
 
 export const Showcase: Story = {
-  // render-override: this story renders one nav per VERTICAL_NAV_STATES entry, which the meta template cannot express
+  // eslint-disable-next-line no-restricted-syntax -- this story renders one nav per VERTICAL_NAV_STATES entry, which the meta template cannot express
   render: args => ({
     template: `
       @for (state of VERTICAL_NAV_STATES; track state) {

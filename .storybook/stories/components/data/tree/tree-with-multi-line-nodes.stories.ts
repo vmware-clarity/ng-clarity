@@ -19,7 +19,7 @@ type TreeWithMultiLineNodesArgs = {
   selected: ClrSelectedState;
 };
 
-const meta: Meta<TreeWithMultiLineNodesArgs> = {
+const meta = {
   title: 'Components/Data/Tree/With Multi Line Nodes',
   decorators: [
     moduleMetadata({
@@ -55,7 +55,7 @@ const meta: Meta<TreeWithMultiLineNodesArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<TreeWithMultiLineNodesArgs>;
 
 export default meta;
 

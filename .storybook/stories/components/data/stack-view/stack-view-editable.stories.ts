@@ -25,7 +25,7 @@ type StackViewEditableArgs = {
   subContent: string;
 };
 
-const meta: Meta<StackViewEditableArgs> = {
+const meta = {
   title: 'Components/Data/Stack View/Editable',
   decorators: [
     moduleMetadata({
@@ -95,7 +95,7 @@ const meta: Meta<StackViewEditableArgs> = {
     `,
     props: args,
   }),
-};
+} satisfies Meta<StackViewEditableArgs>;
 
 export default meta;
 
