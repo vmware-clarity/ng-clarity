@@ -69,7 +69,7 @@ when it should be shown or has another type.
 
 ```bash
 npm run _test:schematics            # vitest, tests in datagrid/tests and ng-update/tests
-npm run _build:schematics           # tsc + copy collection.json and schema.json to dist/clr-angular/schematics
+npm run _build:schematics           # tsc + scripts/copy-schematics-files.js (collection.json, package.json, schema.json, .npmignore)
 ```
 
 To try the built schematic in an app: `npm run _build:angular`, install `dist/clr-angular` into the app

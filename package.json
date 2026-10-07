@@ -37,7 +37,7 @@
     "_test:addons:watch": "ng test clr-addons",
     "_test:figma": "vitest run --config figma/vitest.config.mjs",
     "_build:angular": "ng build clr-angular --configuration production && npm run _build:schematics",
-    "_build:schematics": "tsc -p projects/angular/schematics/tsconfig.json && cp projects/angular/schematics/collection.json projects/angular/schematics/package.json dist/clr-angular/schematics/ && cp projects/angular/schematics/datagrid/schema.json dist/clr-angular/schematics/datagrid/",
+    "_build:schematics": "tsc -p projects/angular/schematics/tsconfig.json && node ./scripts/copy-schematics-files.js",
     "_build:addons": "ng build clr-addons --configuration production",
     "_build:demo": "ng build clr-demo --configuration production",
     "_build:website": "npm-run-all prebuild:website && ng build clr-website --configuration production",
