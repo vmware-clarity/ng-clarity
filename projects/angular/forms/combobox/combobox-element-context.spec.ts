@@ -283,6 +283,10 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
   function host() {
     return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
       clrElementContext?: ElementContextCallback;
+      clrElementMutator?: {
+        coerce: (proposed: unknown, options?: unknown) => { value?: unknown; refused?: string };
+        read: (options?: unknown) => unknown;
+      };
     };
   }
 
@@ -294,6 +298,18 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
     expect(context?.state['value']).toEqual([null]);
     expect(JSON.stringify(context)).not.toContain('998877');
     expect(JSON.stringify(context)).not.toContain('trust fund');
+  });
+
+  it('neither lists nor takes them in a write, and keeps them selected', () => {
+    const mutator = host().clrElementMutator;
+    const refused = mutator?.coerce('Nope', options);
+    expect(refused?.refused).toContain('"Checking"');
+    expect(refused?.refused).not.toContain('998877');
+    expect(refused?.refused).not.toContain('trust fund');
+    expect(mutator?.coerce('Hidden trust fund', options).refused).toBeDefined();
+
+    expect(mutator?.coerce('Checking', options).value).toEqual(['acct', 'trust', 'checking']);
+    expect(mutator?.coerce(null, options).value).toEqual(['acct', 'trust']);
   });
 });
 
@@ -348,6 +364,7 @@ describe('ClrCombobox element context, options matched by identity', () => {
   function host() {
     return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
       clrElementContext?: ElementContextCallback;
+      clrElementMutator?: { coerce: (proposed: unknown, options?: unknown) => { value?: unknown; refused?: string } };
     };
   }
 
@@ -359,6 +376,12 @@ describe('ClrCombobox element context, options matched by identity', () => {
     expect(JSON.stringify(context)).not.toContain('998877');
   });
 
+  it('refuses to replace that selection', () => {
+    expect(host().clrElementMutator?.coerce('Ops budget', {}).refused).toBe(
+      'The current choice is kept from agents, and cannot be changed by one.'
+    );
+  });
+
   it('names a selection the agent may see when it matches an option by identity', async () => {
     fixture.componentInstance.selection = { id: 1, label: 'Ops budget' };
     fixture.detectChanges();
@@ -366,6 +389,7 @@ describe('ClrCombobox element context, options matched by identity', () => {
     fixture.detectChanges();
 
     expect(host().clrElementContext?.({ maxItemsPerCollection: 25 })?.state['value']).toBe('Ops budget');
+    expect(host().clrElementMutator?.coerce({ id: 1 }, {}).value).toBe(fixture.componentInstance.accounts[0]);
   });
 });
 

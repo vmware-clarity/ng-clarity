@@ -16,6 +16,8 @@ import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
 import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
+import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
+import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
 import { availableRoutes, routePatternFor } from '../routes';
 import {
   capSnapshotOptions,
@@ -66,13 +68,19 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
  * Snapshots are always computed at call time from the live application — nothing is
  * cached — so they can never contain obsolete information about UI that no longer exists.
  *
- * The engine only ever reads. It describes the page and never changes it.
+ * The engine only ever reads. It describes the page and never changes it; changing it
+ * is the mutation engine's job (`ClrMutationEngineService`), which works from the refs
+ * these snapshots carry once the application has provided a `ClrMutationPolicy`.
  */
 @Injectable({ providedIn: 'root' })
 export class ClrContextEngineService implements OnDestroy {
   private readonly customExtractors: ClrContextDomExtractor[] = [];
   // What the application configured once for every snapshot; see provideClrContextOptions.
   private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
+  // Refs are handed out only while there is a policy to write under: readers who never
+  // write pay nothing for them.
+  private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
+  private readonly refs = inject(ContextRefRegistryService);
   /** How the router maps addresses to routes; there is none without a router. */
   private readonly locationStrategy = inject(LocationStrategy, { optional: true });
   private readonly zone = inject(NgZone);
@@ -92,9 +100,13 @@ export class ClrContextEngineService implements OnDestroy {
   /**
    * Takes a fresh snapshot of the page context. Options given here are applied over the
    * application-wide ones (see `provideClrContextOptions`).
+   *
+   * While the application has provided a `ClrMutationPolicy`, every node the mutation
+   * engine could write to carries a `ref`: the same ref for the same element in every
+   * snapshot, for as long as the element is on the page.
    */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
-    return this.snapshot(options);
+    return this.snapshot(options, !!this.mutationPolicy);
   }
 
   /**
@@ -148,7 +160,7 @@ export class ClrContextEngineService implements OnDestroy {
     const ceiling = this.untrustedCeiling(budgets);
     host[propertyName] = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
-      const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
+      const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), false);
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
       return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
     };
@@ -163,7 +175,7 @@ export class ClrContextEngineService implements OnDestroy {
     this.globalProperty = null;
   }
 
-  private snapshot(options: ClrContextSnapshotOptions | undefined): ClrPageContext {
+  private snapshot(options: ClrContextSnapshotOptions | undefined, withRefs: boolean): ClrPageContext {
     const effective = this.effectiveOptions(options);
     const resolved = resolveSnapshotOptions(effective);
     const snapshot: ClrPageContext = {
@@ -183,7 +195,9 @@ export class ClrContextEngineService implements OnDestroy {
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId) && resolved.includeDomComponents) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors);
+      const refs = withRefs ? this.refs.begin() : null;
+      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors, refs);
+      refs?.commit();
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;

@@ -3396,6 +3396,8 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     onValueChange(target: HTMLInputElement): void;

@@ -21,8 +21,18 @@ control, such as the optional `window.clrContext()` accessor, are held to the ap
 and the defaults, and see neither what the user entered nor the page's full address (only its route
 pattern) unless the application shares them.
 
+The engine's write half, the **mutation engine** (`ClrMutationEngineService`), lets an agent act
+on what it read: fill Angular-bound form controls (reactive and template-driven) and navigate to
+any route of the application's router configuration (as `availableRoutes` lists them), addressing controls by the `ref` each snapshot node carries — random,
+and stable for an element while it is on the page. It never submits, clicks or invokes; never
+writes what a snapshot would not show (an excluded or redacted control, option, radio or row; size budgets
+and summary mode shorten what a snapshot lists, not what can be written); and does nothing at all until the application provides a `ClrMutationPolicy` classifying what each operation would do.
+Components whose value is not what an agent sees — the combobox, the date input, the datagrid's row
+selection — say how they are written to through `clrPublishElementMutator` from `@clr/angular/utils`.
+
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
-model, never instructions: delimit it in prompts.
+model, never instructions: delimit it in prompts, and let the policy judge each operation's target
+rather than the agent's stated reason. The website guide has a section on this.
 
 The full guide, option reference and a live playground are on the Clarity website under "Contextual Engine"
 (`/documentation/contextual-engine`).
