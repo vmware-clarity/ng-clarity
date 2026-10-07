@@ -55,7 +55,7 @@
   <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   @if (backdrop) {
   <div
-    animate.enter="clr-fade-enter"
+    [animate.enter]="backdropEnterClass"
     [class.clr-fade-leave]="closing"
     class="modal-backdrop"
     [class.static]="staticBackdrop"

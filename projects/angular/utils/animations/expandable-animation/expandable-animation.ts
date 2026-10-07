@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 import { BaseExpandableAnimation } from './base-expandable-animation';
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
@@ -26,18 +26,30 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
   providers: [DomAdapter],
   standalone: false,
 })
-export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
-  @Input() clrExpandTrigger = false;
+export class ClrExpandableAnimation extends BaseExpandableAnimation {
+  // ECMAScript private fields, so that they cannot clash with the members of existing subclasses.
+  #expandTrigger = false;
+  #expandTriggerSet = false;
+
+  /**
+   * Changing this value animates the height of the host to the height of its updated content. A setter rather than
+   * `ngOnChanges()`, so that subclasses defining their own `ngOnChanges()` keep the animation.
+   */
+  @Input()
+  get clrExpandTrigger() {
+    return this.#expandTrigger;
+  }
+  set clrExpandTrigger(value: boolean) {
+    this.#expandTrigger = value;
+    if (this.#expandTriggerSet) {
+      this.scheduleAnimation();
+    }
+    this.#expandTriggerSet = true;
+  }
 
   /** @deprecated The expansion is animated with native CSS; there is no Angular animation state anymore. */
   get expandAnimation() {
     return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
-  }
-
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['clrExpandTrigger'] && !changes['clrExpandTrigger'].firstChange) {
-      this.scheduleAnimation();
-    }
   }
 
   /** @deprecated The expansion is animated with native CSS; there are no Angular animation callbacks anymore. */

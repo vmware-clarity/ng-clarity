@@ -4,7 +4,6 @@
 
 ```ts
 
-import { AfterViewInit } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
@@ -15,7 +14,7 @@ import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 
 // @public
-export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
+export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     protected readonly animatesCollapse: boolean;
     // (undocumented)
@@ -40,8 +39,6 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     //
     // (undocumented)
     protected ifExpandService: IfExpandService;
-    // (undocumented)
-    ngAfterViewInit(): void;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)

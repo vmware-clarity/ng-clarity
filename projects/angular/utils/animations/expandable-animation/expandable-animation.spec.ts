@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, ViewChild } from '@angular/core';
+import { Component, DebugElement, OnChanges, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { delay, finishAnimations } from '@clr/angular/testing';
@@ -43,6 +43,38 @@ class TestComponent {
 })
 class TestComponentDirective {
   @ViewChild(ClrExpandableAnimationDirective, { static: true }) expandable: ClrExpandableAnimationDirective;
+  expanded = false;
+  data = [{ id: 1, value: 'one' }];
+}
+
+// A consumer subclass with its own `ngOnChanges()` that does not call `super`: the animation must keep working.
+@Component({
+  selector: 'test-expandable-subclass',
+  template: `<ng-content></ng-content>`,
+  styles: [':host { display: block; }'],
+  providers: [DomAdapter],
+  host: { '[class.clr-expandable-animation]': 'true' },
+  standalone: false,
+})
+class ExpandableSubclass extends ClrExpandableAnimation implements OnChanges {
+  changes = 0;
+
+  ngOnChanges() {
+    this.changes++;
+  }
+}
+
+@Component({
+  template: `
+    <test-expandable-subclass [clrExpandTrigger]="expanded">
+      @for (item of data; track item.id) {
+        <div>{{ item.value }}</div>
+      }
+    </test-expandable-subclass>
+  `,
+  standalone: false,
+})
+class TestSubclassComponent {
   expanded = false;
   data = [{ id: 1, value: 'one' }];
 }
@@ -192,3 +224,25 @@ function animatedExpandableAnimationSpec(testComponent, component) {
     expect(element.classList).not.toContain('clr-expandable-animation-active');
   });
 }
+
+describe('Expandable animation subclass overriding ngOnChanges', () => {
+  it('still animates when the trigger changes', async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrExpandableAnimationModule],
+      declarations: [ExpandableSubclass, TestSubclassComponent],
+      animationsEnabled: true,
+    });
+    const subclassFixture = TestBed.createComponent(TestSubclassComponent);
+    subclassFixture.detectChanges();
+    const element: HTMLElement = subclassFixture.nativeElement.querySelector('test-expandable-subclass');
+
+    subclassFixture.componentInstance.data.push({ id: 2, value: 'two' });
+    subclassFixture.componentInstance.expanded = true;
+    subclassFixture.detectChanges();
+
+    expect(element.getAnimations().length).toBe(1);
+    finishAnimations(element);
+    await delay();
+    subclassFixture.destroy();
+  });
+});

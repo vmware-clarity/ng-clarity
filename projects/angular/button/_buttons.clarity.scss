@@ -89,8 +89,11 @@
     }
   }
 
+  // The button shows its success state for as long as the check mark animates. The duration is fixed, as it was
+  // with Angular animations, rather than derived from the animation tokens: the low motion theme sets them to a
+  // unitless 0, which would drop the animation and with it the success state.
   .spinner.spinner-check.clr-loading-btn-check {
-    animation: clr-loading-btn-check calc(#{tokens.$cds-global-animation-duration-quick} * 3) linear;
+    animation: clr-loading-btn-check 600ms linear;
 
     @media (prefers-reduced-motion: reduce) {
       animation-name: clr-loading-btn-check-reduced;

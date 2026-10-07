@@ -451,7 +451,7 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
+export class ClrExpandableAnimation extends BaseExpandableAnimation {
     // @deprecated (undocumented)
     animationDone(event: {
         fromState: string;
@@ -460,8 +460,8 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
     animationStart(event: {
         fromState: string;
     }): void;
-    // (undocumented)
-    clrExpandTrigger: boolean;
+    get clrExpandTrigger(): boolean;
+    set clrExpandTrigger(value: boolean);
     // @deprecated (undocumented)
     get expandAnimation(): {
         value: boolean;
@@ -470,20 +470,20 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
         };
     };
     // (undocumented)
-    ngOnChanges(changes: SimpleChanges): void;
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
 }
 
 // @public (undocumented)
-export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges {
+export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
     // (undocumented)
     expanded: boolean;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
+    // @deprecated (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)

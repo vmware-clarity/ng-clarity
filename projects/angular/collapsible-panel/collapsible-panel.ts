@@ -6,7 +6,6 @@
  */
 
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   DestroyRef,
   Directive,
@@ -47,7 +46,7 @@ import { CollapsiblePanelService } from './providers/collapsible-panel.service';
  * to `false`.
  */
 @Directive()
-export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
+export abstract class CollapsiblePanel implements OnInit {
   panelOpen = false;
   panelOpenChange = new EventEmitter<boolean>();
 
@@ -65,10 +64,11 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
 
   private _id = uniqueIdFactory();
   // ECMAScript private fields, so that they cannot clash with the members of existing subclasses.
-  #initialRender: ClrInitialRenderState = { done: false };
   #destroyed = false;
   readonly #injector = inject(Injector);
   readonly #animations = inject(ClrAnimationsService);
+  // Tracked from construction rather than from `ngAfterViewInit()`, which subclasses may override without `super`.
+  readonly #initialRender: ClrInitialRenderState = this.#animations.trackInitialRender(this.#injector);
   readonly #heightAnimation = new ClrHeightAnimation(this.#injector);
   #content: HTMLElement | undefined;
 
@@ -109,10 +109,6 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
       filter(panel => !!panel),
       tap(panel => this.emitPanelChange(panel))
     );
-  }
-
-  ngAfterViewInit() {
-    this.#initialRender = this.#animations.trackInitialRender(this.#injector);
   }
 
   togglePanel() {

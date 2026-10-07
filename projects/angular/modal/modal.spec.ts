@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ANIMATION_MODULE_TYPE, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { delay, enableCssAnimations, expectActiveElementToBe, finishAnimations } from '@clr/angular/testing';
@@ -512,5 +512,45 @@ describe('Modal with animations', () => {
     fixture.destroy();
 
     expect(openChanges).toEqual([]);
+  });
+});
+
+describe('Modal with no-op animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [CdkTrapFocusModule, ClrModalModule],
+      declarations: [TestComponent],
+      // What `NoopAnimationsModule` / `provideNoopAnimations()` provide. Unlike `TestBed`, they leave Angular's
+      // `animate.enter` running, so the modal must not bind its enter classes itself.
+      providers: [{ provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' }],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  it('neither animates in nor out', async () => {
+    const modal = fixture.componentInstance.modalInstance;
+    modal.close();
+    fixture.detectChanges();
+    await delay();
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.modal')).toBeNull();
+
+    modal.open();
+    fixture.detectChanges();
+
+    expect(fixture.nativeElement.querySelector('.modal-dialog').className).not.toContain('-enter');
+    expect(fixture.nativeElement.querySelector('.modal-backdrop').className).not.toContain('-enter');
+    expect(fixture.nativeElement.querySelector('.modal-dialog').getAnimations()).toEqual([]);
   });
 });

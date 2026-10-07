@@ -3717,7 +3717,7 @@ export class ClrEndDateInputValidator implements Validator {
 }
 
 // @public (undocumented)
-export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
+export class ClrExpandableAnimation extends BaseExpandableAnimation {
     // @deprecated (undocumented)
     animationDone(event: {
         fromState: string;
@@ -3726,8 +3726,8 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
     animationStart(event: {
         fromState: string;
     }): void;
-    // (undocumented)
-    clrExpandTrigger: boolean;
+    get clrExpandTrigger(): boolean;
+    set clrExpandTrigger(value: boolean);
     // @deprecated (undocumented)
     get expandAnimation(): {
         value: boolean;
@@ -3736,20 +3736,20 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation implements O
         };
     };
     // (undocumented)
-    ngOnChanges(changes: SimpleChanges): void;
-    // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
 }
 
 // @public (undocumented)
-export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges {
+export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
     // (undocumented)
     expanded: boolean;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
+    // @deprecated (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -4482,7 +4482,7 @@ export class ClrLoading implements OnDestroy {
 }
 
 // @public (undocumented)
-export class ClrLoadingButton implements LoadingListener, AfterViewInit {
+export class ClrLoadingButton implements LoadingListener {
     constructor(el: ElementRef<HTMLButtonElement>, renderer: Renderer2);
     // (undocumented)
     buttonState: typeof ClrLoadingState;
@@ -4493,10 +4493,9 @@ export class ClrLoadingButton implements LoadingListener, AfterViewInit {
     // (undocumented)
     el: ElementRef<HTMLButtonElement>;
     protected get enterClass(): string;
+    protected get leaveClass(): string;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
-    // (undocumented)
-    ngAfterViewInit(): void;
     // (undocumented)
     state: ClrLoadingState;
     // (undocumented)
@@ -4575,6 +4574,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     get backdrop(): boolean;
     // (undocumented)
     backdropClick(): void;
+    protected get backdropEnterClass(): string;
     // (undocumented)
     bypassScrollService: boolean;
     // (undocumented)
@@ -7100,7 +7100,7 @@ export const collapseCardIcon: IconShapeTuple;
 export const collapseCardIconName = "collapse-card";
 
 // @public
-export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
+export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     protected readonly animatesCollapse: boolean;
     // (undocumented)
@@ -7123,8 +7123,6 @@ export abstract class CollapsiblePanel implements OnInit, AfterViewInit {
     set id(value: string);
     // (undocumented)
     protected ifExpandService: IfExpandService;
-    // (undocumented)
-    ngAfterViewInit(): void;
     // (undocumented)
     ngOnInit(): void;
     // (undocumented)

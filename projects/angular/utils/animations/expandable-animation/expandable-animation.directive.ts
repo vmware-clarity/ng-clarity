@@ -12,6 +12,7 @@ import {
   InjectionToken,
   Input,
   OnChanges,
+  OnDestroy,
   Optional,
   Renderer2,
   SimpleChanges,
@@ -31,7 +32,7 @@ const UNUSED_ANIMATION_BUILDER = new InjectionToken<unknown>('UNUSED_ANIMATION_B
   },
   standalone: false,
 })
-export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges {
+export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
   @Input('clrExpandableAnimation') expanded = false;
 
   /**
@@ -51,5 +52,13 @@ export class ClrExpandableAnimationDirective extends BaseExpandableAnimation imp
     if (changes['expanded'] && !changes['expanded'].firstChange) {
       this.scheduleAnimation();
     }
+  }
+
+  /**
+   * @deprecated The running animation is stopped on destroy without this hook. Kept so that subclasses calling
+   * `super.ngOnDestroy()` still compile.
+   */
+  ngOnDestroy() {
+    // Nothing to do: see `BaseExpandableAnimation`.
   }
 }

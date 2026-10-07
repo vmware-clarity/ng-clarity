@@ -80,10 +80,12 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
     dropGroup: string;
     // (undocumented)
     readonly dropList: CdkDropList;
+    protected get enterClass(): string;
     // (undocumented)
     get isDraggableOver(): boolean;
     // (undocumented)
     get isSelected(): boolean;
+    protected get leaveClass(): string;
     // (undocumented)
     moveDropPositionBackwards(event: Event): void;
     // (undocumented)

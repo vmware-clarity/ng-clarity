@@ -126,9 +126,10 @@ export class ClrAnimationsService {
    * Tracks whether the render that created the calling component's view has completed.
    *
    * Enter animations bound with `animate.enter` run right after that render, so an element that exists on the
-   * first render of a component is animated too. Call this from `ngAfterViewInit` and only provide an enter class
-   * once the returned state says the initial render is done, to animate elements rendered later only (which is
-   * what an empty `:enter` transition on a parent trigger used to achieve).
+   * first render of a component is animated too. Call this when the component is created (in a field initializer,
+   * rather than in a lifecycle hook a subclass could override) and only provide an enter class once the returned
+   * state says the initial render is done, to animate elements rendered later only (which is what an empty `:enter`
+   * transition on a parent trigger used to achieve).
    *
    * @param injector Injector of the component, used to register the render hook.
    */

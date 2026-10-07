@@ -59,6 +59,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     get backdrop(): boolean;
     // (undocumented)
     backdropClick(): void;
+    protected get backdropEnterClass(): string;
     // (undocumented)
     bypassScrollService: boolean;
     // (undocumented)

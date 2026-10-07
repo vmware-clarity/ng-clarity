@@ -88,6 +88,20 @@ describe('ClrAnimationsService', () => {
       expect(complete).toBeTrue();
     });
 
+    it('clears its fallback timer once the animations have finished', async () => {
+      const setTimeoutSpy = spyOn(window, 'setTimeout').and.callThrough();
+      const clearTimeoutSpy = spyOn(window, 'clearTimeout').and.callThrough();
+      const animation = element.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1000 });
+
+      const complete = service.whenComplete(element);
+      const timer = setTimeoutSpy.calls.mostRecent().returnValue;
+      animation.finish();
+      await complete;
+
+      // A timer left running would keep the application unstable and fail consumer `fakeAsync` specs.
+      expect(clearTimeoutSpy).toHaveBeenCalledWith(timer);
+    });
+
     it('resolves when a running animation is cancelled', async () => {
       const animation = element.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 1000 });
       const complete = service.whenComplete(element);

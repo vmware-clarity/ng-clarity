@@ -6,7 +6,6 @@
  */
 
 import {
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -29,16 +28,12 @@ const MIN_BUTTON_WIDTH = 42;
     <span>
       @switch (state) {
         @case (buttonState.LOADING) {
-          <span
-            [animate.enter]="enterClass"
-            animate.leave="clr-loading-btn-leave"
-            class="spinner spinner-inline"
-          ></span>
+          <span [animate.enter]="enterClass" [animate.leave]="leaveClass" class="spinner spinner-inline"></span>
         }
         @case (buttonState.SUCCESS) {
           <span
             #validated
-            animate.leave="clr-loading-btn-leave"
+            [animate.leave]="leaveClass"
             class="spinner spinner-inline spinner-check clr-loading-btn-check"
           ></span>
         }
@@ -54,7 +49,7 @@ const MIN_BUTTON_WIDTH = 42;
   host: { '[attr.disabled]': "disabled? '' : null" },
   standalone: false,
 })
-export class ClrLoadingButton implements LoadingListener, AfterViewInit {
+export class ClrLoadingButton implements LoadingListener {
   @Input('disabled') disabled: boolean;
 
   @Output('clrLoadingChange') clrLoadingChange = new EventEmitter<ClrLoadingState>(false);
@@ -62,9 +57,9 @@ export class ClrLoadingButton implements LoadingListener, AfterViewInit {
   buttonState = ClrLoadingState;
   state: ClrLoadingState = ClrLoadingState.DEFAULT;
 
-  private initialRender: ClrInitialRenderState = { done: false };
   private readonly injector = inject(Injector);
   private readonly animations = inject(ClrAnimationsService);
+  private readonly initialRender: ClrInitialRenderState = this.animations.trackInitialRender(this.injector);
   private readonly cdr = inject(ChangeDetectorRef);
 
   constructor(
@@ -87,14 +82,16 @@ export class ClrLoadingButton implements LoadingListener, AfterViewInit {
 
   /**
    * Class animating the spinner and the button content in, meant for their `animate.enter` bindings.
-   * Nothing is animated when the button is first rendered.
+   * Nothing is animated when the button is first rendered, nor when animations are disabled (`animate.enter` itself
+   * still runs with `NoopAnimationsModule`).
    */
   protected get enterClass(): string {
-    return this.initialRender.done ? 'clr-loading-btn-enter' : '';
+    return this.initialRender.done && !this.animations.disabled ? 'clr-loading-btn-enter' : '';
   }
 
-  ngAfterViewInit() {
-    this.initialRender = this.animations.trackInitialRender(this.injector);
+  /** Class animating the spinner, the check mark and the button content out, meant for their `animate.leave` bindings. */
+  protected get leaveClass(): string {
+    return this.animations.disabled ? '' : 'clr-loading-btn-leave';
   }
 
   loadingStateChange(state: ClrLoadingState): void {

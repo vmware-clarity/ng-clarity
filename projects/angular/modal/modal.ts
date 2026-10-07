@@ -129,16 +129,24 @@ export class ClrModal implements OnChanges, OnDestroy {
     return this._open || this.closing;
   }
 
-  /** Class animating the dialog in, meant for its `animate.enter` binding. Empty when animations are skipped. */
+  /**
+   * Class animating the dialog in, meant for its `animate.enter` binding. Empty when animations are skipped or
+   * disabled (`animate.enter` itself still runs with `NoopAnimationsModule`).
+   */
   protected get dialogEnterClass(): string {
     const animation = FADE_MOVE_ANIMATIONS[this.fadeMove];
-    return animation ? `${animation}-enter` : '';
+    return animation && !this.animations.disabled ? `${animation}-enter` : '';
   }
 
   /** Class animating the dialog out, applied while the modal is closing. Empty when animations are skipped. */
   protected get dialogLeaveClass(): string {
     const animation = FADE_MOVE_ANIMATIONS[this.fadeMove];
     return animation ? `${animation}-leave` : '';
+  }
+
+  /** Class animating the backdrop in, meant for its `animate.enter` binding. Empty when animations are disabled. */
+  protected get backdropEnterClass(): string {
+    return this.animations.disabled ? '' : 'clr-fade-enter';
   }
 
   // Reacts to the clrModalOpen input: keeps the modal rendered while it animates out when it is closed,
