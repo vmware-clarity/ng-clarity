@@ -53,6 +53,10 @@ groups:
         url: /documentation/onboarding
   - label: Components
   - label: Addons
+  - label: AI
+    links:
+      - label: Contextual Engine
+        url: /documentation/contextual-engine
   - label: Updating
     links:
       - label: Update v17 to v18

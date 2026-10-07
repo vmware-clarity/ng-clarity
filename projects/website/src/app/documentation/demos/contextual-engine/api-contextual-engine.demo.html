@@ -1,0 +1,679 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<h2 id="summary-of-options" cds-text="title" class="clr-mt-24px">Services</h2>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextEngineService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Root-provided. Builds snapshots on demand and owns the global accessor, the way context leaves the application.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">getSnapshot(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrPageContext</code></td>
+      <td class="left">
+        Describes the page as it is at this moment. Nothing is cached, so a snapshot cannot report UI that has been
+        closed, destroyed or navigated away from.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">registerDomExtractor(extractor)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Teaches the collector about markup that carries neither an ARIA role nor an accessible name. Returns a function
+        that removes it again.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">enableGlobalAccess(propertyName?, options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Exposes <code cds-text="code">window.clrContext()</code> for agents driving the browser. Because any script on
+        the page can call it, the caller is treated as untrusted: only the options in
+        <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> are honoured (budgets, categories, roles, focus,
+        collection mode — never selectors), each held to what the application allows through
+        <code cds-text="code">options</code> here and <code cds-text="code">provideClrContextOptions</code>, and to the
+        defaults wherever neither says: a caller cannot turn on <code cds-text="code">includeRoutes</code> or raise
+        <code cds-text="code">maxComponents</code> past them. What the user entered — typed values, chosen options,
+        ticked boxes, pressed toggles, selected rows — is withheld unless
+        <code cds-text="code">shareFormValues</code> is set, and the page's address is reduced to its route pattern —
+        links to the application to the pattern they match, links elsewhere and frames to their origin,
+        <code cds-text="code">mailto:</code> links to their scheme — and the document title withheld — the page's, and a
+        frame's <code cds-text="code">state.title</code> — unless <code cds-text="code">shareFullUrl</code> is set. The
+        application's own <code cds-text="code">clrContext</code> annotations are shared as they are. Descriptions —
+        helper and validation text — are still shared: keep what they say free of the value, or mark the field
+        <code cds-text="code">data-clr-context-redact</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">disableGlobalAccess()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Removes the global accessor.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextTrackerService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Root-provided. Turns the pull-based engine into a stream for consumers that always want the current page.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">context$</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrPageContext&gt;</code></td>
+      <td class="left">
+        Emits whenever the page context actually changes, replaying the most recent snapshot to new subscribers until
+        the service is destroyed.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">currentContext</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrPageContext | null</code></td>
+      <td class="left">The most recent snapshot, or <code cds-text="code">null</code> before tracking starts.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">isTracking</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">
+        Whether the tracker is watching the page. The tracker is shared: a consumer that only wants to look can check
+        this and leave starting and stopping to whoever owns tracking.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">track(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrPageContext&gt;</code></td>
+      <td class="left">
+        The page context, tracked for as long as anyone subscribes: the first subscription starts tracking when nothing
+        else has, and the last one to end stops it, so consumers that come and go share one tracker without stopping
+        each other's. With options, tracking restarts with them; without, running tracking is joined as it is. There is
+        one tracker, so its options apply to every consumer.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">start(options?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">
+        Takes a snapshot immediately, then watches the DOM for changes and <code cds-text="code">input</code> /
+        <code cds-text="code">change</code> for typing. Calling it again restarts with the new options. Each snapshot
+        walks the page, taken once the page has been quiet for <code cds-text="code">debounceMs</code> and at most every
+        <code cds-text="code">maxWaitMs</code> while it keeps changing; on a large page, narrow it with
+        <code cds-text="code">rootSelector</code> or a smaller preset.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">stop()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Stops tracking. The last emitted context stays available.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">refresh()</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Takes a snapshot immediately and emits it.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">changes$</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Observable&lt;ClrContextChange&gt;</code></td>
+      <td class="left">
+        Emits, alongside every <code cds-text="code">context$</code> emission, what changed since the previous one —
+        nodes added, removed and changed, and whether the route, title or annotations moved — so a conversation can send
+        the difference rather than the whole page. <code cds-text="code">clrDiffContext(previous, current)</code> is the
+        same comparison as a function.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextRegistryService</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Root-provided. Holds whatever can contribute application knowledge to a snapshot. Providers are polled at snapshot
+  time and nothing is stored, so an annotation cannot go stale.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">register(provider, element?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Registers a <code cds-text="code">ClrContextProvider</code>. Returns a function that unregisters it. Given the
+        element the annotation sits on, the annotation follows that element's fate: left out when the element is hidden,
+        ignored or outside the snapshot root, and reported without its state inside a redacted region.
+        <code cds-text="code">[clrContext]</code> passes its host element.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">unregister(provider)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">void</code></td>
+      <td class="left">Removes a provider, typically from <code cds-text="code">ngOnDestroy</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="directives" cds-text="title" class="clr-mt-48px">Directives</h2>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">[clrContext]</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  Annotates a region with the knowledge only the application has. Ships in
+  <code cds-text="code">ClrContextModule</code>.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Input</th>
+      <th class="left clr-hidden-xs-down">Values</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContext</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left clr-hidden-xs-down">—</td>
+      <td class="left">What this region is about, in words an agent can use.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContextType</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'region'</code></td>
+      <td class="left">The kind of UI this annotation describes.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">[clrContextState]</b></td>
+      <td class="left clr-hidden-xs-down">Object</td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">null</code></td>
+      <td class="left">
+        Application state worth knowing, read at snapshot time rather than stored, so it is never out of date.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="attributes" cds-text="title" class="clr-mt-48px">Attributes</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Attribute</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">data-clr-context-ignore</b></td>
+      <td class="left">
+        The element and everything inside it is invisible to the engine: never described, and its DOM changes and
+        annotations never trigger a re-scrape. Put it on UI that renders the context, so a panel cannot describe itself
+        or loop. Exported as <code cds-text="code">CLR_CONTEXT_IGNORE_ATTRIBUTE</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">data-clr-context-redact</b></td>
+      <td class="left">
+        The control, or every control in the region, is still described — label, type, what it permits — but its value
+        is never reported, and the text the region shows is left out. A component inside publishes only that it is
+        redacted, none of its own state. An annotation inside is reported without its state. Addresses count as content:
+        a link or frame inside keeps its name but not where it points. A name taken from what an element shows is
+        content too, so inside the region a link or button is named only by what its author gave it — a label,
+        <code cds-text="code">aria-label</code>, a title. An item inside a list, tab list, menu or grid that is
+        otherwise readable is counted, but its name is withheld. Exported as
+        <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_HIDDEN_SELECTOR</b></td>
+      <td class="left">
+        What the engine treats as not on the page — <code cds-text="code">hidden</code>,
+        <code cds-text="code">aria-hidden="true"</code>, <code cds-text="code">inert</code> or
+        <code cds-text="code">data-clr-context-ignore</code>, and everything inside — as one selector, for a component
+        that publishes context and must agree with the engine about what an agent may see.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_WITHHELD_SELECTOR</b></td>
+      <td class="left">
+        Everything <code cds-text="code">CLR_CONTEXT_HIDDEN_SELECTOR</code> matches, and regions marked
+        <code cds-text="code">data-clr-context-redact</code>: what a component that labels something from its content —
+        a row by its cells, an option by its text — leaves out of that label.
+        <code cds-text="code">CLR_CONTEXT_IGNORE_SELECTOR</code> and
+        <code cds-text="code">CLR_CONTEXT_REDACT_SELECTOR</code> match the two attributes on their own.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_EDITING_HOST_SELECTOR</b></td>
+      <td class="left">
+        An editing host — <code cds-text="code">contenteditable</code> in any spelling but
+        <code cds-text="code">false</code>. What it holds was typed by the user, a value, so it is part of
+        <code cds-text="code">CLR_CONTEXT_WITHHELD_SELECTOR</code> and never read into a label.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="snapshot-options" cds-text="title" class="clr-mt-48px">Snapshot options</h2>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">ClrContextSnapshotOptions</code>. Defaults are in
+  <code cds-text="code">CLR_CONTEXT_DEFAULT_OPTIONS</code>, which, like
+  <code cds-text="code">CLR_CONTEXT_PRESETS</code> and <code cds-text="code">CLR_CONTEXT_CATEGORIES</code>, is frozen:
+  spread it into an object of your own to change it.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Option</th>
+      <th class="left clr-hidden-xs-down">Default</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">maxTextLength</b></td>
+      <td class="left clr-hidden-xs-down">100</td>
+      <td class="left">Longest any single string may be. Anything longer is truncated with an ellipsis.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">maxItemsPerCollection</b></td>
+      <td class="left clr-hidden-xs-down">25</td>
+      <td class="left">Most items reported per collection — rows, tabs, list items, options, menu items.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">maxComponents</b></td>
+      <td class="left clr-hidden-xs-down">300</td>
+      <td class="left">
+        Most components described in total. The walk stops when the budget is spent, so a low value drops whatever comes
+        last in the document — and the snapshot then carries <code cds-text="code">truncated: true</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">includeDomComponents</b></td>
+      <td class="left clr-hidden-xs-down">true</td>
+      <td class="left">Whether to describe the rendered page at all. Turn it off for route and annotations only.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">includeText</b></td>
+      <td class="left clr-hidden-xs-down">true</td>
+      <td class="left">
+        Whether visible text that carries no role — a paragraph, a card's body — is reported as
+        <code cds-text="code">text</code> nodes, so what the page says reaches the agent along with what it can do.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">includeFrames</b></td>
+      <td class="left clr-hidden-xs-down">true</td>
+      <td class="left">
+        Whether same-origin frames are described in place, as <code cds-text="code">frame</code> nodes with the frame's
+        content as children. A cross-origin frame is reported as a frame without children either way.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">includeRoutes</b></td>
+      <td class="left clr-hidden-xs-down">false</td>
+      <td class="left">
+        Whether to list the routes the application can navigate to (<code cds-text="code">availableRoutes</code>: path
+        patterns from the router configuration, with titles where named), so an agent can propose going somewhere the
+        page does not link to. The application performs the navigation. The list is bounded by
+        <code cds-text="code">maxItemsPerCollection</code>, never to fewer than 50 routes.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">excludeCategories</b></td>
+      <td class="left clr-hidden-xs-down">[]</td>
+      <td class="left">
+        Kinds of content to leave out by name — <code cds-text="code">layout</code> (header, navigation, footer, side
+        panels), <code cds-text="code">actions</code>, <code cds-text="code">forms</code>,
+        <code cds-text="code">headings</code>, <code cds-text="code">collections</code>,
+        <code cds-text="code">dialogs</code>, <code cds-text="code">status</code>, <code cds-text="code">images</code>,
+        <code cds-text="code">text</code>, <code cds-text="code">frames</code>. Each expands to the roles it covers
+        (<code cds-text="code">CLR_CONTEXT_CATEGORIES</code>).
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">excludeRoles</b></td>
+      <td class="left clr-hidden-xs-down">[]</td>
+      <td class="left">
+        Roles whose whole subtree is left out — <code cds-text="code">['navigation', 'banner', 'contentinfo']</code>
+        drops the header, navigation and footer that repeat in every snapshot.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">excludeSelectors</b></td>
+      <td class="left clr-hidden-xs-down">[]</td>
+      <td class="left">
+        CSS selectors for elements to leave out with their subtree. Their text is also kept out of other elements'
+        names, descriptions and summaries. Use them to make snapshots relevant. To keep content from agents, mark it
+        <code cds-text="code">data-clr-context-ignore</code> or <code cds-text="code">data-clr-context-redact</code>: a
+        caller the application does not control cannot set selectors.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">rootSelector</b></td>
+      <td class="left clr-hidden-xs-down">whole document</td>
+      <td class="left">
+        CSS selector for the element(s) to describe instead of the whole document, e.g.
+        <code cds-text="code">main</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">maxDepth</b></td>
+      <td class="left clr-hidden-xs-down">0 (unlimited)</td>
+      <td class="left">Deepest nesting of described nodes, counted from the top.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">focus</b></td>
+      <td class="left clr-hidden-xs-down">'page'</td>
+      <td class="left">
+        <code cds-text="code">'modal'</code>: while a modal dialog is open, describe only the dialog; the snapshot then
+        carries <code cds-text="code">focus: 'modal'</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">collectionItems</b></td>
+      <td class="left clr-hidden-xs-down">'all'</td>
+      <td class="left">
+        <code cds-text="code">'summary'</code>: collections report counts and current selection only, without item,
+        option or tab lists.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px">Application-wide options and presets</h3>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">provideClrContextOptions(preset | options, overrides?)</code> sets the options every snapshot
+  starts from — the engine, the tracker and the global accessor all read the
+  <code cds-text="code">CLR_CONTEXT_OPTIONS</code> token — with per-call options applied over them. Presets:
+  <code cds-text="code">'full'</code> (the defaults), <code cds-text="code">'interactive'</code> (no prose, no
+  navigation/banner/footer) and <code cds-text="code">'minimal'</code> (no prose or layout, summary collections, shorter
+  text, a lower budget, modal focus). <code cds-text="code">clrContextPreset(name, overrides?)</code> returns a preset
+  with overrides for a single call; exclusion lists in the overrides add to the preset's, so an override can only narrow
+  it further.
+</p>
+
+<h2 id="context-shape" cds-text="title" class="clr-mt-48px">Context shape</h2>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Property</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">title</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The document title. The global accessor receives an empty title, unless the application sets
+        <code cds-text="code">shareFullUrl</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">availableRoutes</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrAvailableRoute[]</code></td>
+      <td class="left">
+        With <code cds-text="code">includeRoutes</code>: the routes the application can navigate to —
+        <code cds-text="code">path</code>, <code cds-text="code">title</code>, and <code cds-text="code">lazy</code> for
+        a route whose children are not loaded yet.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">url</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The current URL. The global accessor receives only the origin and the route pattern, unless the application sets
+        <code cds-text="code">shareFullUrl</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">route</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrRouteContext</code></td>
+      <td class="left">
+        Present when the application uses the router: the path pattern, route and query parameters, and the
+        JSON-serializable part of the route data.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">regions</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
+      <td class="left">What the application said about itself, through <code cds-text="code">clrContext</code>.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">components</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
+      <td class="left">What is rendered right now, as a tree.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">collectedAt</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">ISO timestamp of the moment the snapshot was taken.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">truncated</b></td>
+      <td class="left clr-hidden-xs-down">Boolean</td>
+      <td class="left">
+        Present and <code cds-text="code">true</code> when something was left out for size: the
+        <code cds-text="code">maxComponents</code> budget ran out, a grid holds controls in more cells than
+        <code cds-text="code">maxItemsPerCollection</code> lists, or the page nests deeper than 512 elements or holds
+        more than 25,000 for one walk to read.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">focus</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'modal'</code></td>
+      <td class="left">
+        Present when <code cds-text="code">focus: 'modal'</code> narrowed the snapshot to the open modal dialog.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrComponentContext</code></h3>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Property</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">type</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The ARIA role describing what this is — <code cds-text="code">grid</code>, <code cds-text="code">dialog</code>,
+        <code cds-text="code">tablist</code>, <code cds-text="code">combobox</code>. The same word whatever library
+        rendered it.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">element</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">
+        The tag that rendered it, when that says something the role cannot — so a
+        <code cds-text="code">clr-side-panel</code> and a <code cds-text="code">clr-modal</code> stay distinguishable
+        while both being dialogs.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">label</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">Its accessible name.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">state</b></td>
+      <td class="left clr-hidden-xs-down">Object</td>
+      <td class="left">
+        What is true of it right now: <code cds-text="code">expanded</code>, <code cds-text="code">selected</code>,
+        <code cds-text="code">invalid</code>, <code cds-text="code">sort</code>, <code cds-text="code">value</code>,
+        <code cds-text="code">options</code>, <code cds-text="code">description</code>, and
+        <code cds-text="code">redacted</code> where a value is withheld.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">children</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrComponentContext[]</code></td>
+      <td class="left">
+        What it contains, where that structure matters. A button or link is a node here, not a separate top-level list:
+        to find what a dialog offers, read the dialog's own <code cds-text="code">children</code>.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="publishing" cds-text="title" class="clr-mt-48px">Publishing from a component</h2>
+<p class="clr-mt-16px" cds-text="body">
+  A component that knows more than its markup shows can say so. The contract lives in
+  <code cds-text="code">&#64;clr/angular/utils</code> rather than here, so publishing costs a component nothing but one
+  import.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left clr-hidden-xs-down">Returns</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">clrPublishElementContext(host, callback)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
+      <td class="left">
+        Publishes a callback on the host element, returning the teardown to run on destroy. The teardown removes only
+        the callback it published, so republishing is safe. What a component publishes wins over what the markup showed
+        — except a value the engine withheld as sensitive, which is removed again.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContextText(element, skip?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        The text an element shows, as a publisher may report it: text inside a redacted or ignored descendant, text
+        hidden from assistive technology and text hidden by style are left out, and block-level parts read as separate
+        words. Use it to label rows or options from their content, so a value the application withheld never reaches a
+        label.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrNormalizeContextText(text, lowercase?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        Text as the engine compares it — whitespace collapsed, and lowercased unless told otherwise — so a publisher and
+        the engine agree on whether two labels are the same.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrUsableSelectors(root, selectors)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        The selectors <code cds-text="code">root</code>'s document accepts, joined into one, or
+        <code cds-text="code">''</code>. A publisher given <code cds-text="code">excludeSelectors</code> uses it so that
+        one invalid entry does not throw, nor drop the others.
+      </td>
+    </tr>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">CLR_ELEMENT_CONTEXT_PROPERTY</b>
+      </td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        The element property <code cds-text="code">clrPublishElementContext</code> sets, for tooling other than this
+        engine that reads them.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_DEFAULT_MAX_ITEMS</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">number</code></td>
+      <td class="left">
+        How many items a publisher lists when the caller gives no budget: the engine's default
+        <code cds-text="code">maxItemsPerCollection</code>, 25.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="published-state" cds-text="title" class="clr-mt-48px">Published values</h2>
+<p class="clr-mt-16px" cds-text="body">
+  Keys a publisher reports as values — <code cds-text="code">value</code>, <code cds-text="code">selection</code>,
+  <code cds-text="code">rows</code>, <code cds-text="code">filteredColumns</code>,
+  <code cds-text="code">hiddenColumns</code>, <code cds-text="code">fileCount</code>,
+  <code cds-text="code">matchingOptions</code>, <code cds-text="code">redactedMatchingOptions</code>,
+  <code cds-text="code">matchingOptionsPending</code> and <code cds-text="code">matchingOptionCount</code> — are
+  withheld from the global accessor unless the application shares form values, and so is the state any node reads from
+  the accessibility tree to say what the user chose: <code cds-text="code">selected</code>,
+  <code cds-text="code">checked</code>, <code cds-text="code">pressed</code> and
+  <code cds-text="code">selectedRows</code>. A key of a publisher's own is shared as it is.
+</p>
+
+<h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Member</th>
+      <th class="left">Effect</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left">
+        <b cds-text="medium">clrCollectDomContextTree(root, options?, extractors?)</b>,
+        <b cds-text="medium">clrCollectDomContexts(…)</b>
+      </td>
+      <td class="left">
+        The walk the engine runs, over any part of a page: the tree with whether a budget ran out, or only its nodes.
+        For tests and tooling that describe markup outside an application.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ClrContextTreeResult</b></td>
+      <td class="left">
+        What <code cds-text="code">clrCollectDomContextTree</code> returns: the <code cds-text="code">components</code>,
+        whether a budget ran out (<code cds-text="code">truncated</code>), and <code cds-text="code">focus</code> when
+        the walk was narrowed to the open modal.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">ClrContextRegionFilter</b></td>
+      <td class="left">
+        The filter <code cds-text="code">ClrContextRegistryService.collect(filter?)</code> takes: for the element a
+        region is anchored to (or <code cds-text="code">null</code>), whether to <code cds-text="code">keep</code> it,
+        <code cds-text="code">drop</code> it or <code cds-text="code">redact</code> its state.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContextCategoryRoles(categories)</b></td>
+      <td class="left">The roles a list of <code cds-text="code">excludeCategories</code> stands for.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_DIRECTIVES</b></td>
+      <td class="left">The directives <code cds-text="code">ClrContextModule</code> declares and exports.</td>
+    </tr>
+  </tbody>
+</table>
