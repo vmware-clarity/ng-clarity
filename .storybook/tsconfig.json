@@ -6,8 +6,9 @@
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "baseUrl": "./",
     "paths": {
+      "helpers/*": ["./helpers/*"],
+      "stories/*": ["./stories/*"],
       "@clr/angular": ["./../projects/angular/index.ts"],
       "@clr/angular/*": ["./../projects/angular/*"],
       "@clr/addons": ["./../projects/addons/index.ts"],

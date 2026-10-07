@@ -5,8 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CdkTrapFocus, FocusTrapFactory } from '@angular/cdk/a11y';
-import { Directive, DOCUMENT, ElementRef, Inject, NgModule, Optional } from '@angular/core';
+import { CdkTrapFocus } from '@angular/cdk/a11y';
+import { Directive, NgModule } from '@angular/core';
 
 /**
  * This is just a copy of CdkTrapFocus so it can be used independent of the rest of the A11yModule.
@@ -17,16 +17,13 @@ import { Directive, DOCUMENT, ElementRef, Inject, NgModule, Optional } from '@an
 })
 export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
   /**
-   * Include the constructor to forward all the dependencies to the base class
-   * as a workaround to fix Angular "ɵɵinvalidFactoryDep" error after upgrading storybook
-   * https://github.com/storybookjs/storybook/issues/23534
+   * The base class resolves its dependencies with `inject()`, so it takes no constructor arguments
+   * (`@angular/cdk` 22 declares it that way). The explicit constructor stays as a workaround for the
+   * Angular "ɵɵinvalidFactoryDep" error in storybook: https://github.com/storybookjs/storybook/issues/23534
    */
-  constructor(
-    elementRef: ElementRef<HTMLElement>,
-    focusTrapFactory: FocusTrapFactory,
-    @Optional() @Inject(DOCUMENT) document: any
-  ) {
-    super(elementRef, focusTrapFactory, document);
+  // eslint-disable-next-line @typescript-eslint/no-useless-constructor
+  constructor() {
+    super();
   }
 }
 

@@ -70,3 +70,17 @@ export const TreeViewAsLinkHasIcon: Story = {
     hasIcon: true,
   },
 };
+
+export const TreeViewExpandAll: Story = {
+  // eslint-disable-next-line no-restricted-syntax -- this story adds expand all and collapse all buttons wired to the tree
+  render: args => ({
+    template: `
+      <div class="btn-group btn-sm" cds-layout="m-b:md">
+        <button type="button" class="btn" (click)="tree.expandAll()">Expand all</button>
+        <button type="button" class="btn" (click)="tree.collapseAll()">Collapse all</button>
+      </div>
+      <clr-tree #tree>${getFileTreeNodeMarkup(filesRoot, args)}</clr-tree>
+    `,
+    props: args,
+  }),
+};

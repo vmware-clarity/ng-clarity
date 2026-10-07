@@ -6,7 +6,7 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-import { FormsModule, NgControl } from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
@@ -19,7 +19,7 @@ export function WrapperNoLabelSpec(testContainer, testControl, testComponent): v
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testControl, testComponent],
-        providers: [NgControl, NgControlService, LayoutService],
+        providers: [NgControlService, LayoutService],
       });
       fixture = TestBed.createComponent(testComponent);
 
@@ -43,7 +43,7 @@ export function WrapperFullSpec(testContainer, testControl, testComponent, wrapp
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testControl, testComponent],
-        providers: [NgControl, NgControlService, LayoutService],
+        providers: [NgControlService, LayoutService],
       });
       fixture = TestBed.createComponent(testComponent);
 
@@ -82,7 +82,7 @@ export function WrapperContainerSpec(testContainer, testWrapper, testControl, te
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
         declarations: [testContainer, testWrapper, testControl, testComponent],
-        providers: [NgControl, NgControlService, LayoutService],
+        providers: [NgControlService, LayoutService],
       });
       fixture = TestBed.createComponent(testComponent);
 

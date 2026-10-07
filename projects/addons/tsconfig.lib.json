@@ -13,7 +13,6 @@
     "experimentalDecorators": true,
     "importHelpers": true,
     "useDefineForClassFields": false,
-    "baseUrl": ".",
     "paths": {
       "@clr/angular": ["../../dist/clr-angular"],
       "@clr/angular/*": ["../../dist/clr-angular/*"],
@@ -29,8 +28,7 @@
     "strictInjectionParameters": true,
     "skipTemplateCodegen": true,
     "strictMetadataEmit": true,
-    "skipMetadataEmit": false,
-    "fullTemplateTypeCheck": true
+    "skipMetadataEmit": false
   },
   "include": ["**/*.ts"],
   "exclude": ["test.ts", "**/*.spec.ts"]

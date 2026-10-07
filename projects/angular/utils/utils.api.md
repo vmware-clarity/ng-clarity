@@ -14,13 +14,9 @@ import { AnimationMetadata } from '@angular/animations';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
-import { Directionality } from '@angular/cdk/bidi';
-import { DragDrop } from '@angular/cdk/drag-drop';
-import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
-import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i2 from '@angular/common';
@@ -116,11 +112,11 @@ export class CdkDragModule {
 
 // @public
 export class CdkDragModule_CdkDrag extends CdkDrag {
-    constructor(elementRef: ElementRef<HTMLElement>, dropContainer: any, document: any, ngZone: NgZone, viewContainerRef: ViewContainerRef, config: DragDropConfig, dir: Directionality, dragDrop: DragDrop, changeDetectorRef: ChangeDetectorRef);
+    constructor();
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdkDragModule_CdkDrag, "[cdkDrag]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule_CdkDrag, [null, { optional: true; }, { optional: true; }, null, null, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkDragModule_CdkDrag, never>;
 }
 
 // @public
@@ -135,11 +131,11 @@ export class CdkTrapFocusModule {
 
 // @public
 export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
-    constructor(elementRef: ElementRef<HTMLElement>, focusTrapFactory: FocusTrapFactory, document: any);
+    constructor();
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<CdkTrapFocusModule_CdkTrapFocus, "[cdkTrapFocus]", never, {}, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, [null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, never>;
 }
 
 // @public (undocumented)
@@ -157,6 +153,7 @@ export interface ClrCommonStrings {
     // (undocumented)
     browse: string;
     cancel: string;
+    clearColumnSort: string;
     // (undocumented)
     clearFile: string;
     // (undocumented)
@@ -164,6 +161,7 @@ export interface ClrCommonStrings {
     close: string;
     collapse: string;
     collapseCardAriaLabel: string;
+    columnActions: string;
     columnSeparatorAriaLabel: string;
     columnSeparatorDescription: string;
     // (undocumented)
@@ -190,6 +188,7 @@ export interface ClrCommonStrings {
     current: string;
     currentPage: string;
     danger: string;
+    datagridColumnActionsAriaLabel: string;
     // (undocumented)
     datagridExpandableBeginningOf: string;
     // (undocumented)
@@ -233,6 +232,7 @@ export interface ClrCommonStrings {
     expandCardAriaLabel: string;
     // (undocumented)
     fileCount: string;
+    filterColumn: string;
     filterItems: string;
     firstPage: string;
     fromLabel: string;
@@ -254,6 +254,7 @@ export interface ClrCommonStrings {
     // (undocumented)
     passwordShow: string;
     pickColumns: string;
+    pinColumn: string;
     previous: string;
     previousPage: string;
     // (undocumented)
@@ -279,6 +280,8 @@ export interface ClrCommonStrings {
     singleActionableAriaLabel: string;
     singleSelectionAriaLabel: string;
     sortColumn: string;
+    sortColumnAscending: string;
+    sortColumnDescending: string;
     stackViewChanged: string;
     // (undocumented)
     stepComplete: string;
@@ -297,6 +300,7 @@ export interface ClrCommonStrings {
     toLabel: string;
     totalPages: string;
     unknown: string;
+    unpinColumn: string;
     // (undocumented)
     unselectedTreeNode: string;
     // (undocumented)
@@ -637,11 +641,11 @@ export class ClrRovingTabindex extends ClrKeyFocus {
 
 // @public (undocumented)
 export class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
-    constructor(elementRef: ElementRef<HTMLElement>, focusTrapFactory: FocusTrapFactory, document: any);
+    constructor();
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStandaloneCdkTrapFocus, never, never, {}, {}, never, never, true, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, [null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStandaloneCdkTrapFocus, never>;
 }
 
 // @public (undocumented)

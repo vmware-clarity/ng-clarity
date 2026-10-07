@@ -57,3 +57,43 @@ export default meta;
 type Story = StoryObj<RecursiveNodesArgs>;
 
 export const RecursiveNodes: Story = {};
+
+export const RecursiveNodesExpandAll: Story = {
+  // eslint-disable-next-line no-restricted-syntax -- this story adds expand all and collapse all buttons wired to the tree
+  render: args => ({
+    template: `
+      <div class="btn-group btn-sm" cds-layout="m-b:md">
+        <button type="button" class="btn" (click)="tree.expandAll()">Expand all</button>
+        <button type="button" class="btn" (click)="tree.collapseAll()">Collapse all</button>
+      </div>
+      <clr-tree #tree>
+        <clr-tree-node *clrRecursiveFor="let file of files; getChildren: getChildren">
+          {{ file.name }}
+        </clr-tree-node>
+      </clr-tree>
+    `,
+    props: args,
+  }),
+};
+
+export const RecursiveNodesExpandDescendants: Story = {
+  // eslint-disable-next-line no-restricted-syntax -- this story expands one subtree through a button on its node
+  render: args => ({
+    template: `
+      <p cds-text="body">
+        Only the
+        <code>src</code>
+        subtree is expanded, through expandDescendants() on that node.
+      </p>
+      <clr-tree>
+        <clr-tree-node #node *clrRecursiveFor="let file of files; getChildren: getChildren">
+          {{ file.name }}
+          @if (file.name === 'src') {
+            <button type="button" class="btn btn-sm btn-link" (click)="node.expandDescendants()">Expand src</button>
+          }
+        </clr-tree-node>
+      </clr-tree>
+    `,
+    props: args,
+  }),
+};
