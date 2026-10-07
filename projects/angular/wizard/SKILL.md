@@ -21,9 +21,10 @@ From the [wizard design guidance](https://guidance.clarity.design/1039):
 ## Setup
 
 ```ts
-import { ClrWizard, ClrWizardModule } from '@clr/angular';
+import { FormsModule } from '@angular/forms';
+import { ClrFormsModule, ClrSpinnerModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
-@Component({ imports: [ClrWizardModule] /* ... */ })
+@Component({ imports: [ClrWizardModule, ClrFormsModule, FormsModule, ClrSpinnerModule] /* ... */ })
 ```
 
 `ClrWizardModule` is an NgModule (the components are not standalone). Import `ClrWizard` only as a type for `viewChild`.
@@ -83,6 +84,11 @@ import { ClrWizard, ClrWizardModule } from '@clr/angular';
 ```
 
 ```ts
+open = false;
+model = { name: '' };
+checking = false;
+error = false;
+create(): void;
 wizard = viewChild<ClrWizard>(ClrWizard);
 
 validate() {
@@ -105,7 +111,7 @@ validate() {
 
 - `<ng-template clrPageButtons>` with `clr-wizard-button`s replaces the footer buttons for one page.
 - `clr-wizard-header-action` (with `(actionClicked)`) adds header icon actions; give it a `title` for its accessible name.
-- In-page wizard: `[clrWizardInPage]="true"` (and `[clrWizardInPageFillContentArea]="true"` to fill the content area) renders it inline instead of as a modal; combine with `[clrWizardClosable]="false"`.
+- `[clrWizardInPage]="true"` (plus `[clrWizardInPageFillContentArea]="true"`) renders the wizard inline without modal or close button. The docs use it for a nested wizard inside a parent page and advance the parent with `forceNext()` from `(clrWizardOnFinish)`.
 
 ## Rules
 

@@ -19,8 +19,15 @@ From the [badge guidance](https://guidance.clarity.design/1002):
 ## Component
 
 ```ts
-import { ClrBadge, ClrBadgeColors } from '@clr/angular'; // standalone; also in ClrEmphasisModule
+import { ClrBadge, ClrBadgeColors } from '@clr/angular';
+
+@Component({ imports: [ClrBadge] /* ... */ })
+export class Counts {
+  count = 0;
+}
 ```
+
+`ClrBadge` is standalone; `ClrEmphasisModule` is the alternative import.
 
 ```html
 <clr-badge>{{ count > 99 ? '99+' : count }}</clr-badge>
@@ -30,6 +37,7 @@ import { ClrBadge, ClrBadgeColors } from '@clr/angular'; // standalone; also in 
 
 - `clrColor`: `ClrBadgeColors` value: `info`, `success`, `warning`, `danger`, `gray`, `blue`, `light-blue`, `orange`, `purple` (empty = default).
 - `clrType`: `solid` (default) or `outlined`.
+- Use the status colours (`warning`, `danger`, `success`, `info`) for status meaning, not colour names (e.g. `orange`).
 
 ## CSS only
 

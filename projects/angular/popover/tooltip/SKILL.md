@@ -20,9 +20,12 @@ From the [tooltip guidance](https://guidance.clarity.design/1035):
 ## Setup
 
 ```ts
-import { ClrTooltipModule } from '@clr/angular';
+import { ClrTooltipModule } from '@clr/angular'; // also exports ClrIcon
 
 @Component({ imports: [ClrTooltipModule] /* ... */ })
+export class Toolbar {
+  tools: { id: string; label: string; icon: string; run(): void }[] = [];
+}
 ```
 
 NgModule, not standalone.

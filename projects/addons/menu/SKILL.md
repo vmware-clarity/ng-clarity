@@ -19,11 +19,12 @@ Do not migrate existing `clr-dropdown` usage unless asked.
 
 ```ts
 import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
+import { ClrIcon } from '@clr/angular';
 
-@Component({ imports: [AppfxMenuModule] })
+@Component({ imports: [AppfxMenuModule, ClrIcon] })
 ```
 
-NgModule-declared, no `forRoot()`. Add exactly one `<menu-outlet></menu-outlet>` to the root layout.
+NgModule-declared, no `forRoot()`. A template-declared `appfx-menu` needs no outlet; add one `<menu-outlet>` only when opening dynamically created menus.
 
 ## Context menu
 
@@ -50,6 +51,12 @@ NgModule-declared, no `forRoot()`. Add exactly one `<menu-outlet></menu-outlet>`
 
 ```ts
 @ViewChild('vmMenu') vmMenu!: MenuComponent;
+vms: Vm[] = [];
+current?: Vm;
+canDelete = true;
+powerOn(): void {}
+remove(): void {}
+snapshot(): void {}
 
 openMenu(event: MouseEvent, vm: Vm) {
   event.preventDefault();
@@ -81,13 +88,13 @@ Pass the trigger element as the 4th argument so focus returns to it on close. Fo
 
 - `appfx-menu-action`: `text`, `iconClass` (CSS class on an icon span), `shortcut` (display only), `enabled`, `(handle)`.
 - `appfx-menu-header`: `text`, `iconClass`. `appfx-menu-separator`: no inputs.
-- Nested `appfx-menu [text]` creates a submenu. All items extend `MenuItem` (`hidden`, `id`).
+- Nested `appfx-menu [text]` creates a submenu. All items extend `MenuItem` (`id`, plus a `hidden` class field).
 - `MenuComponent`: `show(event, x, y, trigger?)`, `close(event)`, outputs `opened` / `closed`.
 - `MenuOutletService.showMenu(componentRef, event, x, y)` / `closeMenu()` open a dynamically created menu.
 
 ## Rules
 
-- Menu content is static: toggle `[enabled]` or `hidden` to change availability.
+- Menu content is static: toggle `[enabled]` on `appfx-menu-action`; `MenuItem.hidden` is not a template input.
 - Call `event.preventDefault()` on `contextmenu` to suppress the browser menu.
 - Call `close(event)` before `show(...)` when reopening at a new position.
 - `shortcut` is a label only; bind the keyboard shortcut yourself.

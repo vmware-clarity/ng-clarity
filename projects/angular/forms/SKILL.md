@@ -24,7 +24,7 @@ metadata:
 ## Setup
 
 ```ts
-import { ClrFormsModule } from '@clr/angular'; // all form controls, incl. combobox and datepicker
+import { ClrForm, ClrFormsModule } from '@clr/angular'; // all form controls, incl. combobox and datepicker
 
 @Component({ imports: [ReactiveFormsModule, ClrFormsModule] /* or FormsModule */ })
 ```
@@ -48,7 +48,7 @@ Per-control NgModules also exist (`ClrInputModule`, `ClrSelectModule`, `ClrCheck
 
 - `clrLayout`: `horizontal` (default), `vertical`, `compact` (enum `ClrFormLayout`). `clrLabelSize` (1-12) sets label columns in horizontal layout.
 - Each control = container + directive + `<label>`. The container wires ids, `for`, `aria-describedby` and error state automatically.
-- `<clr-control-helper>` shows until the control is invalid; `<clr-control-error>` shows when invalid and touched; `<clr-control-success>` shows when valid and touched. Use `*clrIfError="'key'"` for one message per validator, `*clrIfSuccess` for success.
+- `<clr-control-helper>` is always visible; `<clr-control-error>` shows once touched and invalid; `<clr-control-success>` once touched and valid. Use `*clrIfError="'key'"` for one message per validator, `*clrIfSuccess` for success.
 - Generic wrapper for custom/other inputs: `<clr-control-container>` with `[clrControl]` on the control.
 
 ## Controls
@@ -58,7 +58,7 @@ Per-control NgModules also exist (`ClrInputModule`, `ClrSelectModule`, `ClrCheck
 | Text input    | `<clr-input-container>` + `<input clrInput />`                                                                    |
 | Textarea      | `<clr-textarea-container>` + `<textarea clrTextarea>`                                                             |
 | Select        | `<clr-select-container>` + `<select clrSelect>`                                                                   |
-| Password      | `<clr-password-container>` + `<input clrPassword />` (show/hide button built in, `[clrToggle]` to disable it)     |
+| Password      | `<clr-password-container>` + `<input clrPassword />` (`[clrToggle]="false"` removes the show/hide button)         |
 | Number        | `<clr-number-input-container>` + `<input type="number" clrNumberInput />`                                         |
 | Range         | `<clr-range-container [clrRangeHasProgress]="true">` + `<input type="range" clrRange />`                          |
 | Datalist      | `<clr-datalist-container>` + `<input clrDatalistInput />` + `<datalist>`                                          |
@@ -102,7 +102,12 @@ Per-control NgModules also exist (`ClrInputModule`, `ClrSelectModule`, `ClrCheck
 
 ## Validation on submit
 
+On submit call `markAsTouched()` on the `ClrForm` directive, not `markAllAsTouched()` on the form group, so error messages appear.
+
 ```ts
+form: FormGroup; // name, plan, region, logo
+plans: { id: string; name: string }[];
+regions: string[];
 readonly clrForm = viewChild(ClrForm);
 
 save() {
@@ -130,8 +135,8 @@ From the [forms pattern](https://guidance.clarity.design/3001) and control guida
 ## Rules
 
 - Every control needs a visible `<label>`; a placeholder is never a label or helper text. Without a visible label, set `aria-label` ([1014](https://guidance.clarity.design/1014)).
-- Mark required fields with `class="clr-required-mark"` on the label and state the asterisk meaning at the top of the form (login forms excepted).
-- No buttons or links inside a `<label>`.
+- Mark required fields with `class="clr-required-mark"` on the label and state the asterisk meaning at the top of the form (login forms excepted): use `appfx-required-field-legend` from `@clr/addons/a11y` or plain text.
+- No buttons or links inside a `<label>`. For a button next to a control, wrap the control container and button in a `cds-layout="horizontal gap:sm"` element.
 - Write specific, actionable error messages, one `*clrIfError` per validator. Don't validate while typing: errors show after blur/touch or `markAsTouched()`.
 - Group related controls (for example an address) when a form has more than six inputs.
 - Always put the control directive inside its matching container; a bare `clrInput` loses label/error wiring.

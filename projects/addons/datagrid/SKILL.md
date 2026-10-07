@@ -18,16 +18,17 @@ Use plain `clr-datagrid` (see the clr-datagrid skill) when every cell needs cust
 ## Setup
 
 ```ts
-import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
+import { ActionClickEvent, ActionDefinition, AppfxDatagridModule, ClientSideExportConfig, ColumnDefinition } from '@clr/addons/datagrid';
 import { SelectionType } from '@clr/angular/data/datagrid';
+import { ClrDatagridStateInterface } from '@clr/angular';
 
 @Component({
-  imports: [AppfxDatagridModule], // also brings in the filters module
+  imports: [AppfxDatagridModule],
   // ...
 })
 ```
 
-Components are NgModule-declared (not standalone). Optional app-level: `AppfxDatagridModule.forRoot(MyErrorNotifiableService)`.
+Components are NgModule-declared (not standalone). Optional app-level: `AppfxDatagridModule.forRoot(MyErrorNotifiableService)`. Filter definitions from `@clr/addons/datagrid-filters` are plain classes; the filter UI is rendered inside `appfx-datagrid`.
 
 ## Client-side
 
@@ -37,29 +38,43 @@ columns: ColumnDefinition<Vm>[] = [
   { uid: 'state', displayName: 'State', field: 'state', width: '120px' },
   { uid: 'host', displayName: 'Host', field: 'host.name', hidden: true },
 ];
+filteredVms: Vm[] = [];
 selected: Vm[] = [];
+loading = false;
+exportConfig: ClientSideExportConfig = { columnDefinitions: [] };
 readonly SelectionType = SelectionType;
+onSearch(term: string): void {}
 ```
 
 ```html
 <appfx-datagrid
   [gridItems]="filteredVms"
   [columns]="columns"
+  [trackByGridItemProperty]="'id'"
   [selectionType]="SelectionType.Multi"
   [selectedItems]="selected"
   (selectedItemsChange)="selected = $event"
   [loading]="loading"
   [pageSize]="10"
   [pageSizeOptions]="[10, 20, 50]"
-  [footerModel]="{ showFooter: true, clientSideExportConfig: exportConfig }"
+  [footerModel]="{ clientSideExportConfig: exportConfig }"
   (searchTermChange)="onSearch($event)"
 >
 </appfx-datagrid>
 ```
 
-Do not set `totalItems` in client mode — the grid computes it.
+Do not set `totalItems` in client mode — the grid computes it. `footerModel` replaces the whole default object (only `showFooter` falls back to `true`), so pass every non-default flag you need.
 
 ## Server-driven
+
+```ts
+page: Vm[] = [];
+total = 0;
+pageSize = 20;
+loading = false;
+onRefresh(state: ClrDatagridStateInterface): void {}
+onExport(event: unknown): void {}
+```
 
 ```html
 <appfx-datagrid
@@ -69,7 +84,6 @@ Do not set `totalItems` in client mode — the grid computes it.
   [gridItems]="page"
   [columns]="columns"
   [totalItems]="total"
-  [listItemsCount]="total"
   [loading]="loading"
   [pageSize]="pageSize"
   [footerModel]="{ enableCustomExport: true }"
@@ -91,7 +105,10 @@ filterableProperties = [
   new NumericPropertyDefinition('Memory', 'memory'),
   new EnumPropertyDefinition('State', 'state', new Map([['on', 'Powered On'], ['off', 'Powered Off']])),
 ];
+filteredItems: Vm[] = [];
 readonly FilterMode = FilterMode;
+onAdvancedFilter(filter: PropertyFilter): void {}
+onSearch(term: string): void {}
 ```
 
 ```html
@@ -106,7 +123,8 @@ readonly FilterMode = FilterMode;
 </appfx-datagrid>
 ```
 
-- `FilterMode.Quick` = search box, `Advanced` = search + advanced, `AdvancedOnly`.
+- `FilterMode`: `Quick` = search box only; `Advanced` = selector between search box and advanced filter; `AdvancedOnly` = advanced filter only.
+- Enum filter labels should match what the column renders, or render the column through the same map.
 - The grid only **emits** filters — apply them to the data yourself (`PropertyFilter { criteria: PropertyPredicate[], operator }`) and pass the result as `gridItems`.
 - Other definitions: `DateTimePropertyDefinition`, `UserPropertyDefinition` (requires providing `DatagridFiltersUserService`).
 - Per-column filters: `ColumnDefinition.stringFilter` or `ColumnDefinition.filter` (a `ColumnFilter<T>` component type).
@@ -118,6 +136,8 @@ actionBarActions: ActionDefinition[] = [
   { id: 'add', label: 'Add', enabled: true, icon: 'plus' },
   { id: 'delete', label: 'Delete', enabled: false },
 ];
+rowActions: ActionDefinition[] = [{ id: 'edit', label: 'Edit', enabled: true }];
+onAction(event: ActionClickEvent): void {}
 ```
 
 ```html
@@ -159,7 +179,7 @@ columns = [{ displayName: 'State', field: 'state', columnRenderer: StatusCell }]
 </appfx-datagrid>
 ```
 
-Persistence needs a `PersistDatagridSettingsService` provided via `appfxDatagridPersistSettingsToken` and a `uid` on each column. It is injected optionally, so **missing setup fails silently**.
+Persistence needs a `PersistDatagridSettingsService` provided via `appfxDatagridPersistSettingsToken` and a stable `uid` on each column (falls back to `field`, then `displayName`). It is injected optionally, so **missing setup fails silently**.
 
 ## Rules
 
@@ -168,7 +188,7 @@ Persistence needs a `PersistDatagridSettingsService` provided via `appfxDatagrid
 - `rowSelectionMode` defaults to `true` (clicking a row selects it). Set `false` when rows open a detail pane or have interactive content.
 - Defaults: `selectionType` = `Single`, `layoutModel.compact` = `true`, `disableUnsort` = `true`, column header menu is opt-in (`enableColumnActions`).
 - `virtualScrolling` requires `serverDrivenDatagrid` and uses `dataRange` instead of `gridItems`. Rows are fixed height and there are no expandable rows.
-- Use `trackByGridItemProperty` or `trackByFunction` with server data or `appfxPreserveSelection`.
+- Always set `trackByGridItemProperty` (or `trackByFunction`) when you replace the `gridItems` array, so rows are not recreated (client and server mode).
 - Localize with `[datagridLabels]` (`Partial<DatagridStrings>`) or by providing `DatagridStrings` / `DatagridFiltersStrings`.
 
 ## References

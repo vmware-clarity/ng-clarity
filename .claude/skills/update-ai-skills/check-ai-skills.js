@@ -23,10 +23,64 @@ const { LIBS, REPO_ROOT, collectSkills, getAgentsFile } = require(path.join(proc
 
 // Lines that warn against a name (e.g. "there is no `clrFoo`", "do not use `clrBar`") are skipped on purpose.
 const WARNING_LINE = /\b(no|not|never|deprecated|instead of|don't|doesn't)\b/i;
+const DOM_AND_ANGULAR_BINDINGS = new Set([
+  'class',
+  'style',
+  'attr',
+  'id',
+  'hidden',
+  'title',
+  'disabled',
+  'tabindex',
+  'href',
+  'value',
+  'checked',
+  'name',
+  'type',
+  'innerHTML',
+  'textContent',
+  'ngModel',
+  'ngModelChange',
+  'ngClass',
+  'ngStyle',
+  'formControl',
+  'formControlName',
+  'formGroup',
+  'formGroupName',
+  'formArrayName',
+  'routerLink',
+  'routerLinkActive',
+  'queryParams',
+  'ngTemplateOutlet',
+  'click',
+  'dblclick',
+  'keydown',
+  'keyup',
+  'keypress',
+  'focus',
+  'blur',
+  'input',
+  'change',
+  'submit',
+  'contextmenu',
+  'mouseenter',
+  'mouseleave',
+  'scroll',
+]);
 
 const apiFiles = glob.sync('projects/{angular,addons}/**/*.api.md', { cwd: REPO_ROOT, ignore: ['**/node_modules/**'] });
 const apiText = apiFiles.map(file => fs.readFileSync(path.join(REPO_ROOT, file), 'utf8')).join('\n');
 const deprecated = findDeprecatedNames(apiText);
+// Per library, for bound inputs: the same member name can be deprecated in one library and current in the other.
+const readApi = lib =>
+  apiFiles
+    .filter(file => file.split(path.sep).join('/').startsWith(`projects/${lib}/`))
+    .map(file => fs.readFileSync(path.join(REPO_ROOT, file), 'utf8'))
+    .join('\n');
+const deprecatedByPrefix = {
+  clr: findDeprecatedNames(readApi('angular')),
+  appfx: findDeprecatedNames(readApi('addons')),
+};
 
 // CSS-only names (e.g. `clr-required-mark`, `clr-row`) are not in the API reports; accept classes defined in the styles.
 const scssFiles = glob.sync('projects/{angular,addons,ui}/**/*.scss', {
@@ -57,9 +111,11 @@ const skillNames = new Set(files.filter(f => !f.agents).map(f => f.name));
 
 let problems = 0;
 for (const entry of files) {
-  const names = extractApiNames(fs.readFileSync(entry.file, 'utf8')).filter(name => !skillNames.has(name));
-  const missing = names.filter(name => !existsInLibrary(name));
-  const deprecatedUsed = names.filter(name => deprecated.has(name));
+  const markdown = fs.readFileSync(entry.file, 'utf8');
+  const names = extractApiNames(markdown).filter(name => !skillNames.has(name));
+  const bound = extractBoundNames(markdown);
+  const missing = [...names.filter(name => !existsInLibrary(name)), ...bound.missing];
+  const deprecatedUsed = [...names.filter(name => deprecated.has(name)), ...bound.deprecated];
   const indexIssues = entry.agents ? checkIndex(entry) : [];
 
   if (missing.length || deprecatedUsed.length || indexIssues.length) {
@@ -71,14 +127,15 @@ for (const entry of files) {
   }
 }
 
-// The AGENTS.md guide table must list exactly the skills of its package (first column: `skill-name`).
+// The AGENTS.md guide index must list exactly the skills of its package, as list items ("- `skill-name`: ...")
+// or table rows ("| `skill-name` | ...").
 function checkIndex(entry) {
   const listed = new Set(
-    [...fs.readFileSync(entry.file, 'utf8').matchAll(/^\|\s*`([a-z0-9-]+)`\s*\|/gm)].map(m => m[1])
+    [...fs.readFileSync(entry.file, 'utf8').matchAll(/^(?:-|\|)\s*`([a-z0-9-]+)`\s*[:|]/gm)].map(m => m[1])
   );
   const libSkills = files.filter(f => !f.agents && f.lib === entry.lib).map(f => f.name);
   return [
-    ...libSkills.filter(name => !listed.has(name)).map(name => `${name} is not listed in the guide table`),
+    ...libSkills.filter(name => !listed.has(name)).map(name => `${name} is not listed in the guide index`),
     ...[...listed].filter(name => !libSkills.includes(name)).map(name => `${name} is listed but no such skill exists`),
   ];
 }
@@ -170,15 +227,47 @@ function extractApiNames(markdown) {
   return [...new Set(names)].sort();
 }
 
+// Bound inputs/outputs on Clarity and AppFX elements in code blocks, e.g. `[listItemsCount]`, `(refreshGridData)`.
+// Catches unprefixed AppFX names that extractApiNames cannot see. DOM properties and Angular bindings are skipped.
+
+function extractBoundNames(markdown) {
+  const usable = markdown
+    .split('\n')
+    .filter(line => !WARNING_LINE.test(line))
+    .join('\n');
+  const code = [...usable.matchAll(/```[\s\S]*?```/g)].map(m => m[0]).join('\n');
+  const missing = new Set();
+  const deprecatedUsed = new Set();
+  for (const [, prefix, attributes] of code.matchAll(/<(clr|appfx)-[a-z0-9-]+\b([^>]*)>/g)) {
+    for (const [, name] of attributes.matchAll(/[[(]{1,2}([A-Za-z][\w]*)(?:\.[\w-]+)?[\])]{1,2}=/g)) {
+      if (DOM_AND_ANGULAR_BINDINGS.has(name) || /^(clr|appfx)/i.test(name)) {
+        continue; // prefixed names are checked by extractApiNames
+      }
+      // whole-word match, so an invented `trackBy` does not pass because `trackByFunction` exists
+      if (!new RegExp(`\\b${name}\\b`).test(apiText)) {
+        missing.add(name);
+      } else if (deprecatedByPrefix[prefix].has(name)) {
+        deprecatedUsed.add(name);
+      }
+    }
+  }
+  return { missing: [...missing], deprecated: [...deprecatedUsed] };
+}
+
 // Deprecated members, plus the input/output aliases that point at them ("prop": { "alias": "clrFoo" ...).
 function findDeprecatedNames(text) {
   const names = new Set();
   const lines = text.split('\n');
   lines.forEach((line, i) => {
     if (line.includes('@deprecated')) {
-      const member = lines[i + 1]?.match(/^\s*(?:protected |static |readonly |get |set )*([A-Za-z_$][\w$]*)\s*[(:<]/);
-      if (member) {
-        names.add(member[1]);
+      const next = lines[i + 1] || '';
+      // class-level: "export class Foo", "export const foo", ...; member-level: "foo(", "foo:", "get foo("
+      const declaration =
+        next.match(
+          /^export (?:declare )?(?:abstract )?(?:class|interface|const|enum|function|type) ([A-Za-z_$][\w$]*)/
+        ) || next.match(/^\s*(?:protected |static |readonly |get |set )*([A-Za-z_$][\w$]*)\s*[(:<]/);
+      if (declaration) {
+        names.add(declaration[1]);
       }
     }
   });

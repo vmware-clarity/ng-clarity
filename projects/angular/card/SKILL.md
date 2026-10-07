@@ -23,6 +23,11 @@ From the [card guidance](https://guidance.clarity.design/1005):
 import { ClrCardModule } from '@clr/angular';
 
 @Component({ imports: [ClrCardModule] /* ... */ })
+export class Projects {
+  projects: { id: string; name: string; owner: string; summary: string; logo: string; image: string }[] = [];
+  expanded = true;
+  open(project: { id: string }): void {}
+}
 ```
 
 ## Card component

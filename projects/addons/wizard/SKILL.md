@@ -18,13 +18,13 @@ Do not migrate existing `clr-wizard` usage unless asked. The same `Step[]` and m
 ## Setup
 
 ```ts
-import { AppfxWizardModule } from '@clr/addons/wizard';
+import { AppfxWizardModule, Reason } from '@clr/addons/wizard';
 import { CloseHandler, In, Out, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
 
 @Component({ imports: [AppfxWizardModule /* + step components */] })
 ```
 
-NgModule-declared, no `forRoot()`. Optional: provide `ZoomLevelService` (`@clr/addons/a11y`) for zoom-aware layout.
+NgModule-declared, no `forRoot()`.
 
 ## Models and pages
 
@@ -64,6 +64,9 @@ export class NamePage implements StepModelHolder {
 ```ts
 model = new VmWorkflowModel();
 isOpen = false;
+needsStorage = Var.of(true);
+private api = inject(VmApiService); // your service
+onClose(reason: Reason): void {}
 steps: Step[] = [
   {
     title: 'Name',
@@ -105,7 +108,7 @@ closeHandler: CloseHandler = {
 - Use `StepModelFactory` (`model: () => new X()`) when `recreateComponent` is set.
 - `isRelevant` is a `Var<boolean>` (`Var.of(true)` or `Var.from(...).by(...)`).
 - Built-in button and status strings come from the workflow library; pass translated `title`, `Step.title`/`description`/`navTitle`.
-- Debug: `WorkflowConfigurationService.debug = true` (or `appfx.debug=true` in localStorage) shows a model signpost.
+- Debug: `WorkflowConfigurationService.debug = true` (or `clr-addons-var.debug=true` in localStorage) shows a model signpost.
 
 ## References
 

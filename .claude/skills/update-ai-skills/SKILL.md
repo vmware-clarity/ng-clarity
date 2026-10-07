@@ -26,8 +26,9 @@ node .claude/skills/update-ai-skills/check-ai-skills.js --changed origin/main
 
 The guidance check needs a local, up-to-date clone of clarity-guidance. It looks in `../clarity-guidance` next to this repo by default; pass `--guidance <dir>` otherwise. If it is missing, the check is skipped — ask the user for the path instead of guessing.
 
-- **missing** — a name used in a skill no longer exists in any report (removed or renamed).
-- **deprecated** — a name used in a skill is marked `@deprecated` (input aliases are resolved to their property).
+- **missing** — a name used in a skill no longer exists in any report (removed or renamed). Covers `Clr*`/`Appfx*`/`clr*`/`appfx*`/`clr-*`/`appfx-*` names, CSS classes from the library SCSS, and inputs/outputs bound on `<clr-*>`/`<appfx-*>` elements in code blocks (whole-word, so unprefixed AppFX inputs are checked too).
+- **deprecated** — a name used in a skill is marked `@deprecated`, at member or class level (input aliases are resolved to their property; bound inputs are checked against their own library).
+- **index** — an `AGENTS.md` guide index (list items "- `guide`: ...") doesn't list exactly the skills of its package.
 - **guidance … updated** — a cited CIP changed after the date in `metadata.guidance`. Read the CIP's changelog and diff (`git -C ../clarity-guidance log -p -- <id>-*.md`).
 - **guidance … no longer exists / does not exist / not listed** — a CIP was renumbered or removed, or a skill links to a CIP its metadata doesn't track.
 - **API reports changed** — each changed report with the skill files that cover it. `(no skill covers this API yet)` means no skill needs editing for it; only consider whether the change is relevant to `AGENTS.md`.
@@ -52,7 +53,9 @@ For each change in the report diff:
 | Changed type or default                            | Update examples and rules that depend on it (e.g. a default selection type).                                                                                                           |
 | New component with no skill                        | Do not create a skill unless asked; mention it in the report.                                                                                                                          |
 
-Update `AGENTS.md` only for rules that apply to every component in the package (imports, module style, OnPush, a11y, tokens), and keep its skills index in sync when a skill is added, renamed, or removed.
+Update `AGENTS.md` only for rules that apply to every component in the package (imports, module style, OnPush, a11y, tokens), and keep its skills index in sync when a skill is added, renamed, or removed. Index entries are one line each: the guide name plus three or four trigger words; the details belong in the skill's `description`. `AGENTS.md` is loaded on every request, so keep it short.
+
+The checker validates names, not behaviour: it can't tell whether an example compiles or a stated default is true. Verify defaults and behaviour against the source, declare every member a template uses in the example's TS stub, and import everything the example needs (for example `ClrIcon` for `<clr-icon>`).
 
 For each changed CIP:
 

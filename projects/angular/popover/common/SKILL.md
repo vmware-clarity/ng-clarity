@@ -17,16 +17,17 @@ metadata:
 
 ```ts
 import { A11yModule } from '@angular/cdk/a11y'; // for cdkTrapFocus
-import { ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
+import { ClrIcon, ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 @Component({
   selector: 'app-host-details',
   providers: [ClrPopoverService], // one instance per popover
-  imports: [ClrPopoverModuleNext, A11yModule],
+  imports: [ClrPopoverModuleNext, A11yModule, ClrIcon],
   templateUrl: './host-details.component.html',
 })
 export class HostDetailsComponent {
   open = false;
+  actions: { id: string; label: string; run(): void }[] = [];
 }
 ```
 
@@ -49,7 +50,7 @@ export class HostDetailsComponent {
 </button>
 <div
   id="host-details"
-  class="popover-panel"
+  class="app-popover-panel"
   role="dialog"
   aria-labelledby="host-details-title"
   cdkTrapFocus
@@ -63,6 +64,7 @@ export class HostDetailsComponent {
 </div>
 ```
 
+- `app-popover-panel` and `app-context-area` are app-defined classes; style them yourself.
 - `[clrPopoverOrigin]`: the anchor element; also where focus returns on close.
 - `[clrPopoverOpenCloseButton]`: toggles the popover; emits `(clrPopoverOpenCloseChange)` with the new state.
 - `[clrPopoverCloseButton]`: closes from inside the content and refocuses the origin; emits `(clrPopoverOnCloseChange)`.
@@ -101,7 +103,7 @@ onContextMenu(event: MouseEvent) {
 ```
 
 ```html
-<div class="context-area" (contextmenu)="onContextMenu($event)">Right-click a host</div>
+<div class="app-context-area" (contextmenu)="onContextMenu($event)">Right-click a host</div>
 <div role="dialog" aria-label="Host actions" cdkTrapFocus *clrPopoverContent="open; at: 'bottom-left'">
   @for (action of actions; track action.id) {
   <button type="button" class="btn btn-sm btn-link" clrPopoverCloseButton (click)="action.run()">

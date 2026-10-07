@@ -24,6 +24,13 @@ From the [dropdown guidance](https://guidance.clarity.design/1011):
 import { ClrDropdownModule } from '@clr/angular'; // also exports *clrIfOpen and ClrIcon
 
 @Component({ imports: [ClrDropdownModule] /* ... */ })
+export class HostActions {
+  canMigrate = true;
+  actions: { id: string; label: string; run(): void }[] = [];
+  restart(): void {}
+  migrate(): void {}
+  remove(): void {}
+}
 ```
 
 NgModule, not standalone. `ClrPopoverModule` bundles dropdown, signpost and tooltip.
@@ -62,7 +69,7 @@ Icon-only trigger:
 ```
 
 - `*clrIfOpen` on `clr-dropdown-menu` renders the menu only while open.
-- `clrPosition`: `bottom-left` (default), `bottom-right`, `top-left`, `top-right`, `right-top`, `right-bottom`, `left-top`, `left-bottom`. Unknown values fall back to `bottom-left`.
+- `clrPosition`: `bottom-left`, `bottom-right`, `top-left`, `top-right`, `right-top`, `right-bottom`, `left-top`, `left-bottom`. Default is `bottom-left` for top-level menus and `right-top` for nested ones; an unknown value is ignored and the menu keeps its current position.
 - `[clrDisabled]="true"` on an item disables it (sets `aria-disabled`); use it rather than the `disabled` attribute.
 - `[clrCloseMenuOnItemClick]="false"` on `clr-dropdown` keeps the menu open after an item click (default `true`).
 - Headers: `<label class="dropdown-header">`; separators: `<div class="dropdown-divider" role="separator">`.

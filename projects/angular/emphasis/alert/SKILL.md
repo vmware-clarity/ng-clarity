@@ -24,6 +24,13 @@ From the [alert guidance](https://guidance.clarity.design/1001):
 import { ClrAlertModule } from '@clr/angular'; // or ClrEmphasisModule
 
 @Component({ imports: [ClrAlertModule] /* ... */ })
+export class Page {
+  error = '';
+  errorDismissed = false;
+  alertIndex = 0;
+  appMessages: { id: string; type: string; text: string }[] = [];
+  retry(): void {}
+}
 ```
 
 ## Standard alert

@@ -21,9 +21,14 @@ From the [tabs design guidance](https://guidance.clarity.design/1032):
 ## Setup
 
 ```ts
-import { ClrTabsModule } from '@clr/angular';
+import { ClrIcon, ClrTabsModule } from '@clr/angular';
 
-@Component({ imports: [ClrTabsModule] /* ... */ })
+@Component({ imports: [ClrTabsModule, ClrIcon] /* ... */ })
+export class Settings {
+  active = true;
+  tabs: { id: string; title: string; content: string }[] = [];
+  addTab(): void {}
+}
 ```
 
 `ClrTabsModule` is an NgModule and re-exports `ClrConditionalModule` (for `*clrIfActive`).

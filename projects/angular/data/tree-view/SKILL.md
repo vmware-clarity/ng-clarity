@@ -20,12 +20,12 @@ From the [tree view design guidance](https://guidance.clarity.design/1037):
 ## Setup
 
 ```ts
-import { ClrConditionalModule, ClrTreeViewModule } from '@clr/angular';
+import { ClrConditionalModule, ClrIcon, ClrTreeViewModule } from '@clr/angular';
 
-@Component({ imports: [ClrTreeViewModule, ClrConditionalModule] /* ... */ })
+@Component({ imports: [ClrTreeViewModule, ClrConditionalModule, ClrIcon] /* ... */ })
 ```
 
-`ClrTreeViewModule` is an NgModule (the components are not standalone). Add `ClrConditionalModule` when you use `clrIfExpanded` (lazy loading), and `ClrLoadingModule` for `[clrLoading]`.
+`ClrTreeViewModule` is an NgModule (the components are not standalone). Add `ClrConditionalModule` when you use `clrIfExpanded` (lazy loading), and `ClrLoadingModule` for `[clrLoading]`. `ClrIcon` is standalone; import it whenever a template contains `<clr-icon>`.
 
 ## Static tree
 
@@ -95,9 +95,9 @@ Set `[clrLazy]="true"` on `clr-tree` so children are only created when a node ex
 
 ## Selection
 
-- Binding `[(clrSelected)]` on nodes turns on checkbox selection for the whole tree. Selecting a parent selects all descendants; a partly selected parent becomes indeterminate.
+- A single `[(clrSelected)]` binding switches the whole tree to checkbox mode; still bind it on every node and in `*clrRecursiveFor` templates so each node's state is tracked.
+- Selecting a parent selects all descendants; a partly selected parent becomes indeterminate.
 - The value is a boolean or `ClrSelectedState` (`SELECTED`, `UNSELECTED`, `INDETERMINATE`). `(clrSelectedChange)` emits `ClrSelectedState`.
-- Bind it on every node of the tree, including recursive ones.
 
 ## Rules
 

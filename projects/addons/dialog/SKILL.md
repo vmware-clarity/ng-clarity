@@ -32,6 +32,9 @@ NgModule-declared, no `forRoot()`. Use `DialogComponent` / `DialogHeaderComponen
 readonly TabLayout = TabLayout;
 opened = false;
 model = new VmSettingsModel();
+vmName = '';
+private api = inject(VmApiService); // your service
+onClosed(): void {}
 steps: Step[] = [
   { title: 'General', componentClass: GeneralTab, model: new GeneralModel() },
   { title: 'Hardware', componentClass: HardwareTab, model: new HardwareModel() },
@@ -55,6 +58,7 @@ closeHandler: CloseHandler = {
   [tabLayout]="TabLayout.vertical"
   [closeHandler]="closeHandler"
   okButtonLabel="Save"
+  defaultButton="submit"
   (onClose)="onClosed()"
 ></appfx-dialog>
 ```
@@ -62,7 +66,7 @@ closeHandler: CloseHandler = {
 Step components and models are written as for `appfx-tabs` (`StepModelHolder`, `OnStepValidate`, `StepModel`).
 
 - `size`: `ModalSize` (`'sm' | 'md' | 'lg' | 'xl' | 'full-screen'`); `height` sets a fixed height.
-- `defaultButton`: `'close'` (default) or `'submit'` — which button is primary.
+- `defaultButton`: `'submit'` or `'close'`; unset, neither button is primary, so set it explicitly.
 - `showTabLinks` defaults to `true`; set `false` for a single step.
 - Other inputs: `cancelButtonLabel`, `disableTabsContent`, `loading`. Outputs: `onClose`, `openedChange`, `onModelChange`.
 - Custom header content: project `<appfx-dialog-header>` inside `appfx-dialog`.

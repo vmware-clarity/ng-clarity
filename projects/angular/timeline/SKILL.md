@@ -45,6 +45,9 @@ import { ClrTimelineLayout, ClrTimelineModule, ClrTimelineStepState } from '@clr
 ```
 
 ```ts
+steps: { id: string; state: ClrTimelineStepState; time: string; title: string; description: string }[];
+uploading = false;
+upload(): void;
 protected readonly ClrTimelineLayout = ClrTimelineLayout;
 protected readonly ClrTimelineStepState = ClrTimelineStepState;
 ```

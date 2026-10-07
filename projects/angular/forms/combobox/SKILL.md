@@ -19,8 +19,10 @@ From the [combobox guidance](https://guidance.clarity.design/1007):
 ## Setup
 
 ```ts
-import { ClrComboboxModule } from '@clr/angular'; // or ClrFormsModule
+import { ClrComboboxModule, ClrIcon } from '@clr/angular'; // or ClrFormsModule
 ```
+
+`ClrIcon` is standalone; import it whenever a template contains `<clr-icon>`.
 
 ## Single select
 
@@ -67,7 +69,9 @@ import { ClrComboboxModule } from '@clr/angular'; // or ClrFormsModule
   (clrOpenChange)="$event ? search('') : null"
 >
   <clr-options>
-    <clr-option *clrOptionItems="let s of results$ | async; field: 'name'" [clrValue]="s">{{ s.name }}</clr-option>
+    <clr-option *clrOptionItems="let s of (results$ | async) ?? []; field: 'name'" [clrValue]="s"
+      >{{ s.name }}</clr-option
+    >
   </clr-options>
 </clr-combobox>
 ```

@@ -35,6 +35,24 @@ import { IfExpandService } from '@clr/angular/utils';
 A subclass must implement `disabled` (getter), `getPanelStateClasses(panel)`, `getContentId(id)` and `getHeaderId(id)`, and redeclare `panelOpen` / `panelOpenChange` as `@Input()` / `@Output()` (the base declares them without decorators). Forward changes with `handlePanelInputChanges(changes)` in `ngOnChanges`. Template state comes from the `panel` observable (`CollapsiblePanelModel`: `open`, `disabled`, `templateId`, `index`).
 
 ```ts
+import { AsyncPipe, NgClass } from '@angular/common';
+import {
+  AfterContentInit,
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  EventEmitter,
+  Input,
+  OnChanges,
+  OnDestroy,
+  Output,
+  QueryList,
+  SimpleChanges,
+} from '@angular/core';
+import { Subscription } from 'rxjs';
+import { startWith } from 'rxjs/operators';
+// plus the Clarity imports from Setup
+
 @Component({
   selector: 'app-panel',
   imports: [AsyncPipe, NgClass, ClrIcon],

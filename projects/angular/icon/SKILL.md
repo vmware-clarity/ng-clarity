@@ -8,6 +8,10 @@ metadata:
 
 # Clarity icons
 
+- The tag is `<clr-icon>` (component `ClrIcon`).
+- `cds-icon` resolves to the same component, but that selector is scheduled for removal in v19.
+- `ClrIconModule`, `ClrIconCustomTag` and `CdsIconCustomTag` are deprecated.
+
 ## When to use
 
 From the [icons guidance](https://guidance.clarity.design/102): use the Clarity icon library rather than other icon sets or inline SVGs. Add a custom shape only when the library has no fitting one.
@@ -39,17 +43,17 @@ ClarityIcons.addIcons(homeIcon, cogIcon, userIcon); // once, e.g. in main.ts or 
 <clr-icon [shape]="item.icon" size="24"></clr-icon>
 ```
 
-| Input         | Values                                                                                                |
-| ------------- | ----------------------------------------------------------------------------------------------------- |
-| `shape`       | registered shape name or alias                                                                        |
-| `size`        | `xs`, `sm`, `md` (default 16px), `lg`, `xl`, `xxl`, or a number of pixels                             |
-| `direction`   | `up` (default), `down`, `left`, `right` — rotates directional icons such as `angle`, `arrow`          |
-| `flip`        | `horizontal`, `vertical`                                                                              |
-| `solid`       | boolean — filled variant                                                                              |
-| `status`      | `info`, `success`, `warning`, `danger`, `neutral`                                                     |
-| `inverse`     | boolean — for dark backgrounds                                                                        |
-| `badge`       | `info`, `success`, `warning`, `danger`, `inherit`, `warning-triangle`, `inherit-triangle` (or `true`) |
-| `innerOffset` | pixels to grow the glyph into its own whitespace (attribute `inner-offset`)                           |
+| Input         | Values                                                                                                                                                                     |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `shape`       | registered shape name or alias                                                                                                                                             |
+| `size`        | `xs`, `sm` (16px, same as no `size`), `md` (one step larger; the exact size depends on the density setting), `lg`, `xl`, `xxl`, `3xl`, `4xl`, `fit`, or a number of pixels |
+| `direction`   | `up` (default), `down`, `left`, `right` — rotates directional icons such as `angle`, `arrow`                                                                               |
+| `flip`        | `horizontal`, `vertical`                                                                                                                                                   |
+| `solid`       | boolean — filled variant                                                                                                                                                   |
+| `status`      | `info`, `success`, `warning`, `danger`, `neutral`                                                                                                                          |
+| `inverse`     | boolean — for dark backgrounds                                                                                                                                             |
+| `badge`       | `info`, `success`, `warning`, `danger`, `neutral`, `inherit`, `warning-triangle`, `inherit-triangle` (or `true`)                                                           |
+| `innerOffset` | pixels to grow the glyph into its own whitespace: `innerOffset="4"` or `[innerOffset]="4"` (reflected as the `inner-offset` attribute)                                     |
 
 - Color and badge color can be themed with the `--color` and `--badge-color` CSS custom properties.
 - Not every shape supports every badge or solid variant; check the shape in the icon library.

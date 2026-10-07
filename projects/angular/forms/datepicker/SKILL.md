@@ -19,7 +19,9 @@ From the [date picker guidance](https://guidance.clarity.design/1010):
 ## Setup
 
 ```ts
-import { ClrDatepickerModule } from '@clr/angular'; // or ClrFormsModule
+import { ClrDatepickerModule, ClrFormsModule } from '@clr/angular';
+
+@Component({ imports: [ReactiveFormsModule, ClrFormsModule] }) // ClrFormsModule includes ClrDatepickerModule
 ```
 
 ## Date picker
@@ -52,10 +54,12 @@ import { ClrDatepickerModule } from '@clr/angular'; // or ClrFormsModule
   <input type="date" autocomplete="off" clrStartDate formControlName="from" />
   <input type="date" autocomplete="off" clrEndDate formControlName="to" />
   <clr-control-error *clrIfError="'min'">Start is too early</clr-control-error>
+  <clr-control-error *clrIfError="'range'">End must be after start</clr-control-error>
 </clr-date-range-container>
 ```
 
 ```ts
+form: FormGroup; // start, from, to
 ranges = [
   { label: 'Today', value: [new Date(), new Date()] },
   { label: 'Last 7 days', value: [addDays(new Date(), -7), addDays(new Date(), -1)] },
@@ -70,7 +74,7 @@ ranges = [
 ## Rules
 
 - Always wrap inputs in the matching container with a `<label>`; a placeholder is not a label.
-- Add one `*clrIfError` message per validator (`required`, `min`, `max`); the built-in validators also report unparseable dates.
+- Add one `*clrIfError` per validator: `required`, `min`, `max`, and on range inputs `range`. Clarity does not flag unparseable text; add your own validator if needed.
 - Keep `min` / `max` within the range the guidance allows (about 10 years).
 
 ## References

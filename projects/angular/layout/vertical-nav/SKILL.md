@@ -22,8 +22,13 @@ From the [vertical nav design guidance](https://guidance.clarity.design/1038):
 
 ```ts
 import { ClrVerticalNavModule } from '@clr/angular';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 
-@Component({ imports: [ClrVerticalNavModule, RouterLink, RouterLinkActive] /* ... */ })
+@Component({ imports: [ClrVerticalNavModule, RouterLink, RouterLinkActive] /* ... */ }) // module also exports ClrIcon
+export class AppNav {
+  navCollapsed = false;
+  adminExpanded = false;
+}
 ```
 
 `ClrVerticalNavModule` is an NgModule (re-exports `ClrIcon` and `ClrConditionalModule` for `*clrIfExpanded`). Place the nav inside `div.content-container`, next to `content-area` (see the clr-app-layout skill).

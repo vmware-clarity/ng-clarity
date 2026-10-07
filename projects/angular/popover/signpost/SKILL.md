@@ -21,9 +21,12 @@ From the [signpost guidance](https://guidance.clarity.design/1027):
 ## Setup
 
 ```ts
-import { ClrSignpostModule } from '@clr/angular'; // also exports *clrIfOpen
+import { ClrIcon, ClrSignpostModule } from '@clr/angular'; // the module also exports *clrIfOpen
 
-@Component({ imports: [ClrSignpostModule] /* ... */ })
+@Component({ imports: [ClrSignpostModule, ClrIcon] /* ... */ })
+export class StorageInfo {
+  user = { name: '', email: '' };
+}
 ```
 
 NgModule, not standalone.
@@ -36,7 +39,7 @@ NgModule, not standalone.
   <clr-signpost-content *clrIfOpen [clrPosition]="'right-middle'">
     <clr-signpost-title>Storage policy</clr-signpost-title>
     <p>Defines placement and redundancy for VM disks.</p>
-    <a href="/docs/storage" class="label-link">Learn more</a>
+    <a href="/docs/storage">Learn more</a>
   </clr-signpost-content>
 </clr-signpost>
 ```

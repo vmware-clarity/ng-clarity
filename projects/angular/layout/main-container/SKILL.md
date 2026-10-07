@@ -92,7 +92,7 @@ import { ClrIcon, ClrMainContainerModule, ClrNavigationModule, ClrVerticalNavMod
 </div>
 ```
 
-Needs `ClrDropdownModule`. Use `class="nav-icon"` on the trigger for an icon-only menu (with `aria-label`).
+Needs `ClrDropdownModule`; the example assumes `user = { email: '' };` and `logout(): void {}` on the component. Trigger classes: `nav-text` (text), `nav-icon` (icon only, with `aria-label`), `nav-icon-text` (icon plus text).
 
 ## Subnav
 
@@ -111,7 +111,7 @@ Place it directly after the header. Add `[clr-nav-level]="2"` to make it part of
 
 ## Responsive navigation
 
-- `[clr-nav-level]="1"` (on `header-nav`) collapses into a hamburger menu on small screens; `[clr-nav-level]="2"` (on `clr-vertical-nav` or `nav.subnav`) collapses into the overflow menu at the right of the header. `clr-header` renders both toggle buttons automatically.
+- `[clr-nav-level]="1"` when it is the primary navigation, `"2"` when secondary (only 1 and 2 are valid). Level 1 collapses into the hamburger, level 2 into the overflow menu at the right of the header. `clr-header` renders both toggle buttons automatically.
 - Only works inside `clr-main-container` with `clr-header` (not plain `header.header`).
 - Localize the close button with `closeAriaLabel` on the `[clr-nav-level]` element.
 

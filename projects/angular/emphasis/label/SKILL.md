@@ -8,7 +8,7 @@ metadata:
 
 # Clarity label (tag)
 
-A small colored tag for metadata or status. For form field labels, use the form components (`clr-input-container` etc.) and a plain `<label>`.
+A small colored tag for metadata or status. Labels are for status/metadata text; for counts use a badge (`clr-badge`). For form field labels, use the form components (`clr-input-container` etc.) and a plain `<label>`.
 
 ## When to use
 
@@ -22,8 +22,16 @@ From the [label guidance](https://guidance.clarity.design/1015):
 ## Component
 
 ```ts
-import { ClrLabel, ClrLabelColors } from '@clr/angular'; // standalone; also in ClrEmphasisModule
+import { ClrLabel, ClrLabelColors } from '@clr/angular';
+
+@Component({ imports: [ClrLabel] /* ... */ })
+export class Tags {
+  canFilter = true;
+  filterBy(tag: string): void {}
+}
 ```
+
+`ClrLabel` is standalone; `ClrEmphasisModule` is the alternative import.
 
 ```html
 <clr-label clrText="Production" clrColor="blue"></clr-label>
@@ -40,6 +48,8 @@ import { ClrLabel, ClrLabelColors } from '@clr/angular'; // standalone; also in 
 | `clrBadgeText`   | Adds a badge with this count                                                                               |
 | `[clrClickable]` | Hover/active styling for interactive labels                                                                |
 | `[clrDisabled]`  | Disabled styling                                                                                           |
+
+Use the status colours (`warning`, `danger`, `success`, `info`) for status meaning, not colour names (e.g. `orange`).
 
 ## CSS only
 

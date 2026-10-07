@@ -15,7 +15,7 @@ From the [progress bar guidance](https://guidance.clarity.design/1020) and [spin
 - **Determinate progress bar** when the duration or amount is known (uploads, multi-step setup). Always add descriptive text next to it, such as the file name and size. A percentage label is optional.
 - **Indeterminate** (`clrLoop`) when there's no estimated end. If space is tight, use a spinner instead.
 - **Spinner**: a page spinner for whole-page operations, an inline spinner for one component. Place it where the result will appear, with a short status text ("Loading…").
-- Never signal state by color alone. Pair `danger`/`success` with text or an icon.
+- Colour must not carry meaning. Report completion or failure with a text label or an alert next to the bar, not with colour or flash.
 
 ## Setup
 
@@ -25,13 +25,20 @@ import { ClrProgressBarModule, ClrSpinnerModule } from '@clr/angular';
 @Component({ imports: [ClrProgressBarModule, ClrSpinnerModule] /* ... */ })
 ```
 
+```ts
+file: { name: string; size: number };
+uploaded = 0;
+loading = false;
+users: User[];
+```
+
 ## Progress bar
 
 ```html
-<span id="upload-label">Uploading {{ file.name }} ({{ file.size }})</span>
-<clr-progress-bar id="upload-progress" [clrValue]="uploaded" [clrMax]="file.size" clrLabeled></clr-progress-bar>
-
-<clr-progress-bar clrValue="100" clrColor="success" clrLabeled clrDisplayval="Done"></clr-progress-bar>
+<div class="progress-block">
+  <label for="upload-progress">Uploading {{ file.name }} ({{ file.size }})</label>
+  <clr-progress-bar id="upload-progress" [clrValue]="uploaded" [clrMax]="file.size" clrLabeled></clr-progress-bar>
+</div>
 
 <clr-progress-bar clrLoop></clr-progress-bar>
 ```
@@ -40,7 +47,7 @@ import { ClrProgressBarModule, ClrSpinnerModule } from '@clr/angular';
 | --------------- | --------------------------------------------------------- |
 | `clrValue`      | Current value (default 0)                                 |
 | `clrMax`        | Maximum (default 100)                                     |
-| `clrColor`      | `success`, `warning`, or `danger` (default: info/blue)    |
+| `clrColor`      | `success` / `warning` / `danger`, deprecated in 3.0       |
 | `clrLabeled`    | Show the value label on the right                         |
 | `clrDisplayval` | Custom label text (default `{value}%`)                    |
 | `clrLoop`       | Indeterminate, looping animation                          |
@@ -48,8 +55,8 @@ import { ClrProgressBarModule, ClrSpinnerModule } from '@clr/angular';
 | `clrFade`       | Fade out once the value reaches 100%                      |
 | `id`            | Id of the inner `<progress>` element (for `aria-*` links) |
 
-- `clrFlashDanger` is deprecated, and the flash styles behind `clrFlash` are marked deprecated in the scss. Show completion or failure with `clrColor` plus text instead.
-- CSS only: `<div class="progress success labeled"><progress value="65" max="100" data-displayval="65%"></progress></div>`. Use `class="progress loop"` for indeterminate.
+- `clrColor` variants, `clrFlash` and `clrFlashDanger` are deprecated; don't use them. Report completion or failure with a text label or an alert next to the bar.
+- CSS only: `<div class="progress labeled"><progress value="65" max="100"></progress><span>65%</span></div>`. Use `class="progress loop"` for indeterminate.
 
 ## Spinner
 

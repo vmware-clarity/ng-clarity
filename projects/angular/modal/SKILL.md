@@ -21,6 +21,13 @@ metadata:
 import { ClrModalModule, ClrSidePanelModule } from '@clr/angular'; // ClrSidePanelModule re-exports ClrModalModule
 
 @Component({ imports: [ClrModalModule, ClrSidePanelModule] /* ... */ })
+export class Hosts {
+  deleteOpen = false;
+  editOpen = false;
+  confirmOpen = false;
+  detailsOpen = false;
+  delete(): void {}
+}
 ```
 
 These are NgModules (not standalone) — import the modules, not component classes.
