@@ -14,6 +14,7 @@ export * from './breakpoints/breakpoints';
 export * from './host-wrapping/index';
 export * from './assert/assert.helpers';
 export * from './component/is-boolean-attribute-set';
+export * from './context/index';
 export * from './animations/index';
 export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';

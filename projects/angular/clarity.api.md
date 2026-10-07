@@ -910,6 +910,30 @@ export const CLR_ALERT_DIRECTIVES: Type<any>[];
 // @public (undocumented)
 export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 
+// @public
+export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
+
+// @public
+export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+
+// @public
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
+
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 
@@ -918,6 +942,12 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
+
+// @public
+export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
+
+// @public
+export const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
 
 // @public (undocumented)
 export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT: InjectionToken<ClrFileMessagesTemplateContext>;
@@ -2093,6 +2123,16 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
 }
 
+// @public
+export interface ClrComponentContext {
+    children?: ClrComponentContext[];
+    element?: string;
+    label?: string;
+    ref?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -2102,6 +2142,30 @@ export class ClrConditionalModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, never, [typeof i2.CommonModule, typeof ClrIfActive, typeof ClrIfExpanded], [typeof ClrIfActive, typeof ClrIfExpanded]>;
 }
+
+// @public
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export interface ClrContextSnapshotOptions {
+    collectionItems?: 'all' | 'summary';
+    excludeCategories?: ClrContextCategory[];
+    excludeRoles?: string[];
+    excludeSelectors?: string[];
+    focus?: 'page' | 'modal';
+    includeDomComponents?: boolean;
+    includeFrames?: boolean;
+    includeRoutes?: boolean;
+    includeText?: boolean;
+    maxComponents?: number;
+    maxDepth?: number;
+    maxItemsPerCollection?: number;
+    maxTextLength?: number;
+    rootSelector?: string;
+}
+
+// @public
+export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string;
 
 // @public (undocumented)
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
@@ -3566,6 +3630,26 @@ export class ClrDropdownTrigger {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
 }
 
+// @public
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+
+// @public
+export type ClrElementMutation = {
+    value: unknown;
+    refused?: never;
+} | {
+    refused: string;
+    value?: never;
+};
+
+// @public
+export interface ClrElementMutator {
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+    ownsContents?: boolean;
+    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+}
+
 // @public (undocumented)
 export class ClrEmphasisModule {
     // (undocumented)
@@ -4635,6 +4719,9 @@ export class ClrNavLevel implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }
 
+// @public
+export function clrNormalizeContextText(text: string, lowercase?: boolean): string;
+
 // @public (undocumented)
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
     constructor(focusService: FormsFocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
@@ -5182,6 +5269,12 @@ export class ClrProgressBarModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof ClrProgressBar], [typeof i2.CommonModule], [typeof ClrProgressBar]>;
 }
+
+// @public
+export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
@@ -6371,6 +6464,9 @@ export class ClrTreeViewModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i5.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
 }
+
+// @public
+export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export class ClrVerticalNav implements OnDestroy {
