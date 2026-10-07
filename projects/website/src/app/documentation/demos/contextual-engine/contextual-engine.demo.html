@@ -28,8 +28,8 @@
       while both being dialogs.
     </p>
     <p class="clr-mt-16px" cds-text="body">
-      A component adds only what a role cannot express — state that lives in the component instance rather than in the
-      DOM, published through <code cds-text="code">clrPublishElementContext</code>.
+      Components add only what a role cannot express — a combobox's options while its popover is closed, a datagrid's
+      total row count while paginated.
     </p>
     <p class="clr-mt-16px" cds-text="body">
       The engine reads the document it is in and the same-origin frames inside it. Content inside a shadow root is not
@@ -169,6 +169,8 @@
       always knows them. Any component can publish that truth with
       <code cds-text="code">clrPublishElementContext</code> from <code cds-text="code">&#64;clr/angular/utils</code>.
       The collector calls it while scraping and merges the result over what the DOM showed.
+      <code cds-text="code">ClrCombobox</code> ships this built in, and so does
+      <code cds-text="code">ClrDatagrid</code> for its total row count while paginated.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="elementContextExample" language="typescript"></app-code-snippet>
@@ -280,10 +282,11 @@
       </li>
       <li>
         A combobox of your own whose popover lists only the options matching what the user typed tells every consumer
-        what was typed through those options. Mark the popover <code cds-text="code">data-clr-context-ignore</code> and
-        publish the options through <code cds-text="code">clrPublishElementContext</code> as
-        <code cds-text="code">matchingOptions</code> (or <code cds-text="code">matchingOptionCount</code>), which the
-        engine withholds from consumers you do not control; a key of your own is shared with them.
+        what was typed through those options. Mark the popover <code cds-text="code">data-clr-context-ignore</code>, as
+        <code cds-text="code">clr-combobox</code> does, and publish the options through
+        <code cds-text="code">clrPublishElementContext</code> as <code cds-text="code">matchingOptions</code> (or
+        <code cds-text="code">matchingOptionCount</code>), which the engine withholds from consumers you do not control;
+        a key of your own is shared with them.
       </li>
     </ul>
   </app-doc-tab>

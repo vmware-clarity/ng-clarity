@@ -48,6 +48,7 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
       "type": "alert",
       "element": "clr-alert",
       "label": "esx-edge-01 has been disconnected",
+      "state": { "severity": "warning" },
       "children": [{ "type": "button", "label": "Dismiss" }]
     },
     { "type": "button", "label": "Add rule" }
