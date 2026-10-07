@@ -138,6 +138,8 @@ export class ClrCombobox<T>
   private teardownElementMutator?: () => void;
 
   private _searchText = '';
+  // Whether the application has been told of any input text, so a list it rendered may answer it.
+  private inputChangeSent = false;
   private onTouchedCallback: () => any;
   private onChangeCallback: (model: T | T[]) => any;
   private readonly comboboxHostElement: HTMLElement;
@@ -233,6 +235,7 @@ export class ClrCombobox<T>
         this.optionSelectionService.showAllOptions = false;
       }
       this._searchText = text;
+      this.inputChangeSent = true;
       this.clrInputChange.emit(this.searchText);
     }
     // We need to trigger this even if unchanged, so the option-items directive will update its list
@@ -722,14 +725,14 @@ export class ClrCombobox<T>
    * `*clrOptionItems` filters by the text in the input while the list is open. An
    * application listening to `clrInputChange` loads its list for whatever text it was
    * last given — the text before it was cleared, or a picked label after a close — and
-   * only it knows which, so any list it has loaded counts, or any typed text while none
-   * has. Options written out one by one with no one listening are all rendered whatever
-   * was typed.
+   * only it knows which, so once it has been given any text, any list counts, as does
+   * typed text while there is none. Options written out one by one are all rendered
+   * whatever was typed until then.
    */
   private optionsNarrowed(): boolean {
     const typed = !!this.optionSelectionService.currentInput;
     if (this.clrInputChange.observed) {
-      return typed || !!this.options?.items?.length;
+      return typed || (this.inputChangeSent && !!this.options?.items?.length);
     }
     return !!this.optionItems && !this.optionSelectionService.showAllOptions && typed;
   }

@@ -58,7 +58,9 @@ const CONFIRM_TIMEOUT_MS = 120_000;
  * itself rather than from a later surprise.
  *
  * Available to application code only: neither the global accessor nor the frame bridge
- * exposes it.
+ * exposes it. Its results carry the values the page holds — the value a write replaced,
+ * the options a refused value could have been — with nothing withheld from consumers the
+ * application does not control, so they are for the application's own agent only.
  */
 @Injectable({ providedIn: 'root' })
 export class ClrMutationEngineService {

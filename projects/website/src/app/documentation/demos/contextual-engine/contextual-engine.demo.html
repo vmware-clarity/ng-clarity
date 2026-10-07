@@ -422,6 +422,17 @@
         need to read them, and <code cds-text="code">data-clr-context-redact</code> when their values must not leave the
         page.
       </li>
+      <li>
+        Keep the mutation engine with your own agent. Its results carry what the page holds — the value a write
+        replaced, the options a refused value could have been — with nothing withheld from consumers you do not control,
+        so never pass them on to an embedded frame or a page script.
+      </li>
+      <li>
+        A combobox of your own whose popover lists only the options matching what the user typed tells every consumer
+        what was typed through those options. Mark the popover <code cds-text="code">data-clr-context-ignore</code>, as
+        <code cds-text="code">clr-combobox</code> does, and publish the options through
+        <code cds-text="code">clrPublishElementContext</code> under keys you withhold.
+      </li>
     </ul>
 
     <h3 id="mutation-limits" class="clr-mt-32px" cds-text="section">What it will not do</h3>

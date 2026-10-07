@@ -416,7 +416,13 @@ describe('ClrCombobox element context, options matched by identity', () => {
         <clr-option *clrOptionItems="let name of ports" [clrValue]="name">{{ name }}</clr-option>
       </clr-options>
     </clr-combobox>
-    <clr-combobox name="member" class="async-search" [(ngModel)]="member" (clrInputChange)="search($event)">
+    <clr-combobox
+      name="member"
+      class="async-search"
+      [(ngModel)]="member"
+      [clrLoading]="memberLoading"
+      (clrInputChange)="search($event)"
+    >
       <clr-options>
         @for (name of results; track name) {
           <clr-option [clrValue]="name">{{ name }}</clr-option>
@@ -427,6 +433,26 @@ describe('ClrCombobox element context, options matched by identity', () => {
       <clr-options>
         <clr-option clrValue="elsewhere">Somewhere else</clr-option>
         <clr-option *clrOptionItems="let name of cities" [clrValue]="name">{{ name }}</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox name="drink" class="static-listened" [(ngModel)]="drink" (clrInputChange)="typed.push($event)">
+      <clr-options>
+        <clr-option clrValue="tea">Tea</clr-option>
+        <clr-option clrValue="coffee">Coffee</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox
+      name="team"
+      class="async-multi"
+      [(ngModel)]="team"
+      clrMulti="true"
+      (clrInputChange)="searchTeam($event)"
+    >
+      <ng-container *clrOptionSelected="let name">{{ name }}</ng-container>
+      <clr-options>
+        @for (name of teamResults; track name) {
+          <clr-option [clrValue]="name">{{ name }}</clr-option>
+        }
       </clr-options>
     </clr-combobox>
   `,
@@ -441,7 +467,12 @@ class FilteredOptionsTestComponent {
   port: string | null = null;
   member: string | null = null;
   results: string[] = [];
+  memberLoading = false;
   ignoreEmptySearch = false;
+  drink: string | null = null;
+  typed: string[] = [];
+  team: string[] = [];
+  teamResults: string[] = [];
   ports = ['Burgas', 'Ruse'];
   people = ['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown', 'Eve Smithers'];
   selection: string | null = null;
@@ -450,7 +481,18 @@ class FilteredOptionsTestComponent {
     if (!text && this.ignoreEmptySearch) {
       return;
     }
-    this.results = this.people.filter(person => person.includes(text) && person !== 'Eve Smithers');
+    this.results = this.matches(text);
+  }
+
+  searchTeam(text: string) {
+    if (!text && this.ignoreEmptySearch) {
+      return;
+    }
+    this.teamResults = this.matches(text);
+  }
+
+  private matches(text: string) {
+    return this.people.filter(person => person.includes(text) && person !== 'Eve Smithers');
   }
 }
 
@@ -629,6 +671,53 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
   it('tells every consumer an application search has no results yet before anything is typed', () => {
     expect(published('.async-search').state['optionsAvailable']).toBe(false);
     expect(sharedState(3)).toEqual({ multiSelect: false, optionsAvailable: false });
+  });
+
+  it('says a search started after the typed text was cleared is running, and withholds the list it replaces', async () => {
+    fixture.componentInstance.ignoreEmptySearch = true;
+    open('.async-search');
+    type('Smi', '.async-search');
+    type('', '.async-search');
+    fixture.componentInstance.memberLoading = true;
+    await settle();
+
+    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published('.async-search').state['matchingOptionsPending']).toBeUndefined();
+    expect(published('.async-search').state['optionsPending']).toBe(true);
+    expect(sharedState(3)).toEqual({ multiSelect: false, optionsPending: true });
+  });
+
+  it('keeps listing written-out options to every consumer while nothing was typed, though the application listens', () => {
+    expect(published('.static-listened').state['options']).toEqual(['Tea', 'Coffee']);
+    expect(sharedState(5)).toEqual({ multiSelect: false, options: ['Tea', 'Coffee'] });
+  });
+
+  it('withholds written-out options once the application listening has been given text', () => {
+    open('.static-listened');
+    type('Te', '.static-listened');
+    type('', '.static-listened');
+
+    expect(fixture.componentInstance.typed).toEqual(['Te', '']);
+    expect(published('.static-listened').state['matchingOptions']).toEqual(['Tea', 'Coffee']);
+    expect(sharedState(5)).toEqual({ multiSelect: false });
+  });
+
+  it('withholds the results a multi-select keeps after closing, when the application ignores the empty search', async () => {
+    fixture.componentInstance.ignoreEmptySearch = true;
+    open('.async-multi');
+    type('Smi', '.async-multi');
+    const alice = Array.from(document.querySelectorAll<HTMLElement>('clr-option')).find(option =>
+      option.textContent?.includes('Alice Smith')
+    );
+    alice?.click();
+    await settle();
+    open('.async-multi');
+    await settle();
+
+    expect(fixture.componentInstance.team).toEqual(['Alice Smith']);
+    expect(published('.async-multi').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published('.async-multi').state['options']).toBeUndefined();
+    expect(sharedState(6)).toEqual({ multiSelect: true });
   });
 
   it('counts the options rather than listing them in a summary snapshot', () => {

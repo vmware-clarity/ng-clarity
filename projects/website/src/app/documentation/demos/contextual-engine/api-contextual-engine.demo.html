@@ -173,7 +173,8 @@
 <p class="clr-mt-16px" cds-text="body">
   Root-provided. The write half: gives Angular-bound form controls values and navigates, from the refs and routes in the
   latest snapshot. Inert until the application provides a <code cds-text="code">ClrMutationPolicy</code>. Available to
-  application code only.
+  application code only, and its results are for the application's own agent: they carry the values the page holds, with
+  nothing withheld, so never pass them to an embedded frame or a page script.
 </p>
 <table class="table">
   <thead>
@@ -935,13 +936,14 @@
         <code cds-text="code">redactedOptions</code> (how many options are withheld),
         <code cds-text="code">matchingOptions</code> and <code cds-text="code">redactedMatchingOptions</code> (values;
         in place of <code cds-text="code">options</code> and <code cds-text="code">redactedOptions</code> while the list
-        is narrowed to what the user typed by <code cds-text="code">*clrOptionItems</code>, and always once the
-        application has loaded a list for a combobox whose <code cds-text="code">clrInputChange</code> it listens to,
-        since that list may answer earlier text or a picked label),
+        is narrowed to the text in the input by <code cds-text="code">*clrOptionItems</code>, and, for a combobox whose
+        <code cds-text="code">clrInputChange</code> the application listens to, whenever text is in the input or, once
+        the application has been given any text, whenever there is a list, since that list may answer earlier text or a
+        picked label; a picked option's label left in the input counts as text),
         <code cds-text="code">matchingOptionsPending</code> (value; alongside them while
         <code cds-text="code">clrLoading</code> on the combobox says a search for the text in the input is still
         running), <code cds-text="code">optionsPending</code> (while <code cds-text="code">clrLoading</code> is set and
-        the input holds no text that narrows the list, as on opening or after clearing it),
+        the list is not narrowed to text in the input, as on opening an empty combobox or after clearing it),
         <code cds-text="code">optionCount</code>, or <code cds-text="code">matchingOptionCount</code> (value) while
         narrowed, in place of the lists in a <code cds-text="code">summary</code> snapshot, counting redacted options
         too, <code cds-text="code">optionsAvailable</code> (false while the list is empty and not narrowed to typed
