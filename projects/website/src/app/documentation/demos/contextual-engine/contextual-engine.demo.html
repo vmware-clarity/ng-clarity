@@ -431,7 +431,9 @@
         A combobox of your own whose popover lists only the options matching what the user typed tells every consumer
         what was typed through those options. Mark the popover <code cds-text="code">data-clr-context-ignore</code>, as
         <code cds-text="code">clr-combobox</code> does, and publish the options through
-        <code cds-text="code">clrPublishElementContext</code> under keys you withhold.
+        <code cds-text="code">clrPublishElementContext</code> as <code cds-text="code">matchingOptions</code> (or
+        <code cds-text="code">matchingOptionCount</code>), which the engine withholds from consumers you do not control;
+        a key of your own is shared with them.
       </li>
     </ul>
 

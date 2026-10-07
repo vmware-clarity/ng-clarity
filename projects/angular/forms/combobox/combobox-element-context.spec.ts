@@ -416,19 +416,21 @@ describe('ClrCombobox element context, options matched by identity', () => {
         <clr-option *clrOptionItems="let name of ports" [clrValue]="name">{{ name }}</clr-option>
       </clr-options>
     </clr-combobox>
-    <clr-combobox
-      name="member"
-      class="async-search"
-      [(ngModel)]="member"
-      [clrLoading]="memberLoading"
-      (clrInputChange)="search($event)"
-    >
-      <clr-options>
-        @for (name of results; track name) {
-          <clr-option [clrValue]="name">{{ name }}</clr-option>
-        }
-      </clr-options>
-    </clr-combobox>
+    @if (memberShown) {
+      <clr-combobox
+        name="member"
+        class="async-search"
+        [(ngModel)]="member"
+        [clrLoading]="memberLoading"
+        (clrInputChange)="search($event)"
+      >
+        <clr-options>
+          @for (name of results; track name) {
+            <clr-option [clrValue]="name">{{ name }}</clr-option>
+          }
+        </clr-options>
+      </clr-combobox>
+    }
     <clr-combobox name="city" class="mixed" [(ngModel)]="city">
       <clr-options>
         <clr-option clrValue="elsewhere">Somewhere else</clr-option>
@@ -468,6 +470,7 @@ class FilteredOptionsTestComponent {
   member: string | null = null;
   results: string[] = [];
   memberLoading = false;
+  memberShown = true;
   ignoreEmptySearch = false;
   drink: string | null = null;
   typed: string[] = [];
@@ -687,19 +690,24 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     expect(sharedState(3)).toEqual({ multiSelect: false, optionsPending: true });
   });
 
-  it('keeps listing written-out options to every consumer while nothing was typed, though the application listens', () => {
-    expect(published('.static-listened').state['options']).toEqual(['Tea', 'Coffee']);
-    expect(sharedState(5)).toEqual({ multiSelect: false, options: ['Tea', 'Coffee'] });
+  it('withholds even written-out options from untrusted consumers when the application listens to clrInputChange', () => {
+    expect(published('.static-listened').state['matchingOptions']).toEqual(['Tea', 'Coffee']);
+    expect(published('.static-listened').state['options']).toBeUndefined();
+    expect(sharedState(5)).toEqual({ multiSelect: false });
   });
 
-  it('withholds written-out options once the application listening has been given text', () => {
-    open('.static-listened');
-    type('Te', '.static-listened');
-    type('', '.static-listened');
+  it('withholds the results the application kept from a search typed into an earlier instance', async () => {
+    open('.async-search');
+    type('Smi', '.async-search');
+    fixture.componentInstance.memberShown = false;
+    await settle();
+    fixture.componentInstance.memberShown = true;
+    await settle();
 
-    expect(fixture.componentInstance.typed).toEqual(['Te', '']);
-    expect(published('.static-listened').state['matchingOptions']).toEqual(['Tea', 'Coffee']);
-    expect(sharedState(5)).toEqual({ multiSelect: false });
+    expect(fixture.nativeElement.querySelector('.async-search input').value).toBe('');
+    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published('.async-search').state['options']).toBeUndefined();
+    expect(sharedState(3)).toEqual({ multiSelect: false });
   });
 
   it('withholds the results a multi-select keeps after closing, when the application ignores the empty search', async () => {
@@ -709,11 +717,15 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     const alice = Array.from(document.querySelectorAll<HTMLElement>('clr-option')).find(option =>
       option.textContent?.includes('Alice Smith')
     );
-    alice?.click();
+    if (!alice) {
+      throw new Error('expected the search to list Alice Smith');
+    }
+    alice.click();
     await settle();
-    open('.async-multi');
+    open('.async-multi'); // the trigger toggles, so this closes the popover
     await settle();
 
+    expect(fixture.nativeElement.querySelector('.async-multi input').getAttribute('aria-expanded')).toBe('false');
     expect(fixture.componentInstance.team).toEqual(['Alice Smith']);
     expect(published('.async-multi').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(published('.async-multi').state['options']).toBeUndefined();
