@@ -233,17 +233,93 @@ describe('ClrCombobox element context, withheld option text', () => {
 
   afterEach(() => fixture.destroy());
 
-  it('labels options and the selection without the text of a redacted element inside them', () => {
-    const host = fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
+  function host() {
+    return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
       clrElementContext?: ElementContextCallback;
     };
-    const context = host.clrElementContext?.({});
+  }
+
+  it('labels options and the selection without the text of a redacted element inside them', () => {
+    const context = host().clrElementContext?.({});
 
     expect(context?.state['value']).toBe('Visa');
     expect(JSON.stringify(context)).not.toContain('4111');
     expect(JSON.stringify(context)).not.toContain('3782');
     // Nor by its value when all its text is withheld: the value is often the same secret.
     expect(JSON.stringify(context)).not.toContain('6011');
+  });
+
+  it('counts an option whose text is all withheld as redacted, rather than listing it unnamed', () => {
+    const context = host().clrElementContext?.({});
+
+    expect(context?.state['options']).toEqual(['Visa', 'Amex']);
+    expect(context?.state['redactedOptions']).toBe(1);
+  });
+
+  it('reports a selected option whose text is all withheld as unnamed', async () => {
+    fixture.componentInstance.selection = '6011 0000';
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(host().clrElementContext?.({})?.state['value']).toBeNull();
+  });
+});
+
+@Component({
+  template: `
+    <clr-combobox name="plan" [(ngModel)]="selection" clrMulti="true">
+      <clr-options>
+        <clr-option-group clrOptionGroupLabel="Public">
+          <clr-option *clrOptionItems="let plan of publicPlans" [clrValue]="plan">{{ plan }}</clr-option>
+        </clr-option-group>
+        <clr-option-group clrOptionGroupLabel="Internal" data-clr-context-ignore>
+          <clr-option *clrOptionItems="let plan of internalPlans" [clrValue]="plan">{{ plan }}</clr-option>
+        </clr-option-group>
+        <clr-option-group clrOptionGroupLabel="Retired" hidden>
+          <clr-option *clrOptionItems="let plan of retiredPlans" [clrValue]="plan">{{ plan }}</clr-option>
+        </clr-option-group>
+        <clr-option-group clrOptionGroupLabel="Draft" aria-hidden="true">
+          <clr-option *clrOptionItems="let plan of draftPlans" [clrValue]="plan">{{ plan }}</clr-option>
+        </clr-option-group>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class HiddenGroupTestComponent {
+  publicPlans = ['Basic', 'Pro'];
+  internalPlans = ['Secret plan'];
+  retiredPlans = ['Legacy plan'];
+  draftPlans = ['Draft plan'];
+  selection: string[] = ['Pro', 'Secret plan'];
+}
+
+describe('ClrCombobox element context, options in a group page-context tooling does not see', () => {
+  let fixture: ComponentFixture<HiddenGroupTestComponent>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
+      declarations: [HiddenGroupTestComponent],
+    });
+    fixture = TestBed.createComponent(HiddenGroupTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  it('leaves out the options of an ignored, hidden or aria-hidden group, as the walk leaves out the group', () => {
+    const host = fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
+      clrElementContext?: ElementContextCallback;
+    };
+    const context = host.clrElementContext?.({});
+
+    expect(context?.state['options']).toEqual(['Basic', 'Pro']);
+    expect('redactedOptions' in (context?.state ?? {})).toBe(false);
+    expect(context?.state['value']).toEqual(['Pro']);
+    expect(JSON.stringify(context)).not.toMatch(/Secret|Legacy|Draft/);
   });
 });
 

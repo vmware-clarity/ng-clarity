@@ -60,4 +60,30 @@ describe('ClrContextRegistryService', () => {
 
     expect(registry.collect().map(context => context.label)).toEqual(['healthy']);
   });
+
+  it('hands out a copy of what a provider returned, never the provider’s own objects', () => {
+    const cluster = { name: 'Production', hosts: ['esx-01'] };
+    const own: ClrComponentContext = { type: 'region', label: 'Cluster', state: { cluster } };
+    registry.register(provider(own));
+
+    const [collected] = registry.collect();
+    (collected.state?.['cluster'] as typeof cluster).hosts.push('injected');
+    collected.label = 'Changed';
+
+    expect(collected).not.toBe(own);
+    expect(collected.state?.['cluster']).not.toBe(cluster);
+    expect(cluster.hosts).toEqual(['esx-01']);
+    expect(own.label).toBe('Cluster');
+  });
+
+  it('copies only the plain, serialisable part of what a provider returned', () => {
+    class Model {
+      readonly name = 'Production';
+    }
+    registry.register(
+      provider({ type: 'region', label: 'Cluster', state: { model: new Model(), load: () => 1, empty: [] } as never })
+    );
+
+    expect(registry.collect()).toEqual([{ type: 'region', label: 'Cluster', state: { empty: [] } }]);
+  });
 });

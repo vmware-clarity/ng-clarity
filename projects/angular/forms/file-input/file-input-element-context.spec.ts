@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type } from '@angular/core';
+import { Component, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, NgModel } from '@angular/forms';
 import { ClrContextEngineService } from '@clr/angular/ai';
 import { ClrComponentContext } from '@clr/angular/utils';
 
@@ -32,12 +32,29 @@ class SingleFileTest {
     <clr-file-input-container>
       <label>Attachments</label>
       <input type="file" name="many" [(ngModel)]="model" clrFileInput multiple />
+      <clr-control-helper>Up to three files</clr-control-helper>
       <clr-file-list></clr-file-list>
     </clr-file-input-container>
   `,
   standalone: false,
 })
 class FileListTest {
+  model: FileList;
+}
+
+@Component({
+  template: `
+    <clr-file-input-container>
+      <label>Statement</label>
+      <input type="file" name="required" [(ngModel)]="model" clrFileInput required />
+      <clr-control-helper>One PDF, up to 10 MB</clr-control-helper>
+      <clr-control-error>Choose a statement to upload</clr-control-error>
+    </clr-file-input-container>
+  `,
+  standalone: false,
+})
+class ValidatedFileTest {
+  @ViewChild(NgModel) control: NgModel;
   model: FileList;
 }
 
@@ -60,7 +77,7 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrFileInputModule, FormsModule],
-      declarations: [SingleFileTest, FileListTest],
+      declarations: [SingleFileTest, FileListTest, ValidatedFileTest],
     });
   });
 
@@ -113,5 +130,28 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
     } finally {
       engine.disableGlobalAccess();
     }
+  });
+
+  it('keeps the helper text, and the error that says why the field is invalid', async () => {
+    const helped = JSON.stringify(await create(ValidatedFileTest, []));
+
+    expect(helped).toContain('One PDF, up to 10 MB');
+
+    (fixture.componentInstance as ValidatedFileTest).control.control.markAsTouched();
+    fixture.detectChanges();
+    const components = TestBed.inject(ClrContextEngineService).getSnapshot().components;
+
+    expect(JSON.stringify(components)).toContain('Choose a statement to upload');
+    expect(findNode(components, 'clr-file-input-container')?.state).toEqual(
+      jasmine.objectContaining({ fileCount: 0, redacted: true })
+    );
+  });
+
+  it('leaves a file list out, how many entries it has as well as their names, and keeps the rest', async () => {
+    const components = await create(FileListTest, ['a-4111.pdf']);
+
+    expect(JSON.stringify(components)).not.toMatch(/"itemCount"|4111/);
+    // What the walk found besides the list is kept.
+    expect(JSON.stringify(components)).toContain('Up to three files');
   });
 });

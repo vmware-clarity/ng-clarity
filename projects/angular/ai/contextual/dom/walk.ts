@@ -286,11 +286,8 @@ export function isOutsideSnapshot(element: Element, options: Required<ClrContext
   }
   if (options.excludeRoles.length) {
     const excluded = new Set(options.excludeRoles);
-    for (let current: Element | null = element; current; current = current.parentElement) {
-      const role = resolveRole(current);
-      if (role && excluded.has(role)) {
-        return true;
-      }
+    if (hasExcludedRole(element, excluded)) {
+      return true;
     }
     const candidates = roleCandidateSelector(excluded);
     if (
@@ -327,32 +324,63 @@ export interface ClrContextScope {
  * `rootSelector` picks out, or — with modal focus, while a modal dialog is open — the
  * topmost open dialog alone. The dialog is what the user can act on; the page behind it
  * is what an agent no longer needs, so it is left out entirely rather than budgeted down.
+ *
+ * Modal focus narrows a `rootSelector`, never steps outside it: only a dialog inside one
+ * of the roots is taken, and while none is open the roots are described. A root or a
+ * dialog in or under an excluded role is left out, as the walk would leave it out had it
+ * reached it from the page.
  */
 export function engineScope(root: ParentNode, options: Required<ClrContextSnapshotOptions>): ClrContextScope {
   const excludeSelector = clrUsableSelectors(root, options.excludeSelectors);
+  const excludedRoles = new Set(options.excludeRoles);
+  const roots = options.rootSelector ? selectedRoots(root, options.rootSelector, excludeSelector, excludedRoles) : null;
   if (options.focus === 'modal') {
-    const dialog = topmostModal(root, excludeSelector);
-    if (dialog) {
-      return { roots: [dialog], focus: 'modal' };
+    const dialogs = openModalDialogs(root, excludeSelector).filter(
+      dialog => !hasExcludedRole(dialog, excludedRoles) && (!roots || roots.some(scope => scope.contains(dialog)))
+    );
+    if (dialogs.length) {
+      return { roots: [dialogs[dialogs.length - 1]], focus: 'modal' };
     }
   }
-  if (options.rootSelector) {
-    // A selector the document rejects matches nothing, the same as one that matches no
-    // element: it must not silently widen the snapshot to the whole page.
-    const selector = clrUsableSelectors(root, [options.rootSelector]);
-    const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
-    // A root inside a hidden, inert, ignored or excluded region is still left out: what
-    // keeps a region from the engine holds however the walk is pointed at it. A root
-    // inside another is already described with it.
-    return {
-      roots: roots.filter(
-        element =>
-          !isHiddenFromEngine(element, excludeSelector) &&
-          !roots.some(other => other !== element && other.contains(element))
-      ),
-    };
+  return { roots };
+}
+
+/**
+ * The elements a `rootSelector` picks out that a snapshot may start from. A selector the
+ * document rejects matches nothing, the same as one that matches no element: it must not
+ * silently widen the snapshot to the whole page.
+ */
+function selectedRoots(
+  root: ParentNode,
+  rootSelector: string,
+  excludeSelector: string,
+  excludedRoles: ReadonlySet<string>
+): Element[] {
+  const selector = clrUsableSelectors(root, [rootSelector]);
+  const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
+  // A root inside a hidden, inert, ignored or excluded region is still left out: what
+  // keeps a region from the engine holds however the walk is pointed at it. A root
+  // inside another is already described with it.
+  return roots.filter(
+    element =>
+      !isHiddenFromEngine(element, excludeSelector) &&
+      !hasExcludedRole(element, excludedRoles) &&
+      !roots.some(other => other !== element && other.contains(element))
+  );
+}
+
+/** Whether the element, or anything it sits in, has one of the excluded roles. */
+function hasExcludedRole(element: Element, excludedRoles: ReadonlySet<string>): boolean {
+  if (!excludedRoles.size) {
+    return false;
   }
-  return { roots: null };
+  for (let current: Element | null = element; current; current = current.parentElement) {
+    const role = resolveRole(current);
+    if (role && excludedRoles.has(role)) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /** The open modal dialog the user is looking at, if any: the last one the engine would describe. */
@@ -884,7 +912,7 @@ function describeTextBlock(element: Element, walk: Walk, owner: Element | null):
  * an iframe, a widget that is another — is one page to the user and is described as one:
  * the frame's document is walked in place, against the same budget. A cross-origin frame
  * cannot be read from here and is reported as a frame with no children, so an agent at
- * least knows there is UI it does not see; the frame bridge is the way to reach it.
+ * least knows there is UI it does not see.
  */
 function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContext[] {
   if (!walk.options.includeFrames || walk.remaining <= 0) {
@@ -1102,6 +1130,9 @@ function finish(
   // selection, a combobox's value — and would otherwise carry it straight out. Nor is it
   // when the caller excluded what the component renders (see `rendersExcludedRole`).
   let described = redacted || !published ? node : mergeElementContext(node, element, walk.options);
+  if (redacted && published) {
+    described = withoutOverriddenLabel(node, element, walk);
+  }
   // A component that says it is something the caller excluded is left out like any
   // element with that role, whatever the DOM said about it. The node was counted against
   // the budget, which it no longer uses.
@@ -1123,6 +1154,21 @@ function finish(
     noteRef(pruned, element, walk);
   }
   return pruned;
+}
+
+/**
+ * A redacted node without the name its markup gives it, when its element publishes a name
+ * of its own. A component publishes a name because the markup's says more than it should
+ * — a datepicker toggle's names the date the user picked — and the published one is not
+ * used either, since inside a redacted region it may be the very content withheld.
+ */
+function withoutOverriddenLabel(node: ClrComponentContext, element: Element, walk: Walk): ClrComponentContext {
+  if (node.label === undefined || typeof readClrElementContext(element, walk.options)?.label !== 'string') {
+    return node;
+  }
+  const unnamed = { ...node };
+  delete unnamed.label;
+  return unnamed;
 }
 
 function listOf(node: ClrComponentContext | null): ClrComponentContext[] {

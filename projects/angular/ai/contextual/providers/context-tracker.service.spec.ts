@@ -684,4 +684,19 @@ describe('ClrContextTrackerService, reporting what changed', () => {
     expect(restarted.previous).toBeNull();
     expect(restarted.added.length).toBe(restarted.current.components.length);
   });
+
+  it('reports a change of the document title alone, which touches nothing in the body', async () => {
+    const originalTitle = document.title;
+    tracker.start({ debounceMs: 10 });
+    try {
+      document.title = 'Hosts (3 alerts)';
+      await elapse(10);
+
+      expect(changes.length).toBe(2);
+      expect(changes[1].titleChanged).toBe(true);
+      expect(changes[1].current.title).toBe('Hosts (3 alerts)');
+    } finally {
+      document.title = originalTitle;
+    }
+  });
 });

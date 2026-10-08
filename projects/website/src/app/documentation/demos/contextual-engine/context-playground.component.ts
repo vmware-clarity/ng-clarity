@@ -31,7 +31,7 @@ const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
   { name: 'status', covers: 'alerts, status, progress' },
   { name: 'images', covers: 'images, figures' },
   { name: 'text', covers: 'prose with no role' },
-  { name: 'frames', covers: 'same-origin frames' },
+  { name: 'frames', covers: 'embedded frames' },
 ];
 
 /**
