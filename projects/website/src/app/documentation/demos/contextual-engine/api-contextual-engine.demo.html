@@ -45,8 +45,10 @@
         <code cds-text="code">clusters/:id</code>; links to the application as the route pattern they match (and none
         when they match no route), links elsewhere and frames as their origin — unless the host sets
         <code cds-text="code">shareFormValues</code> or <code cds-text="code">shareFullUrl</code>. A frame's budgets are
-        capped at the host's own <code cds-text="code">snapshot</code> budgets, and at the defaults wherever the host
-        set none.
+        capped at the host's own <code cds-text="code">snapshot</code> budgets, the application-wide options and the
+        defaults. A sandboxed frame without <code cds-text="code">allow-same-origin</code> has no origin to answer and
+        is never served, even with <code cds-text="code">allowAnyOrigin</code>. Calling it again replaces the running
+        bridge; a configuration it refuses throws and leaves the running bridge as it was.
       </td>
     </tr>
     <tr>
@@ -690,9 +692,11 @@
     <tr>
       <td class="left"><b cds-text="medium">clrRequestHostContext(options?)</b></td>
       <td class="left">
-        What <code cds-text="code">requestHostContext()</code> does, without the service: for a page inside a frame that
-        is not an Angular application, or not one that injects the engine. Resolves to the host's snapshot, or
-        <code cds-text="code">null</code> when there is no host or it does not answer in time.
+        What <code cds-text="code">requestHostContext()</code> does, without the service: for an Angular page inside a
+        frame that does not inject the engine. A page that is not built with Angular talks the protocol directly, as
+        shown in the guide. Resolves to the host's snapshot, or <code cds-text="code">null</code> when there is no host
+        or it does not answer in time; rejects when the request cannot be sent, such as a
+        <code cds-text="code">hostOrigin</code> that is not an origin.
       </td>
     </tr>
     <tr>
@@ -713,7 +717,10 @@
         The frame bridge that <code cds-text="code">enableFrameBridge()</code> starts, for an application that wires it
         to its own snapshot function:
         <code cds-text="code">new ClrContextFrameHost(getSnapshot, window, options)</code>, then
-        <code cds-text="code">start()</code> and <code cds-text="code">stop()</code>.
+        <code cds-text="code">start()</code> and <code cds-text="code">stop()</code>. Used this way it caps a frame's
+        request only at its own <code cds-text="code">snapshot</code> option and the defaults, not at the
+        application-wide options, so set every limit the application relies on in <code cds-text="code">snapshot</code>,
+        or have <code cds-text="code">getSnapshot</code> cap what it is given.
       </td>
     </tr>
     <tr>

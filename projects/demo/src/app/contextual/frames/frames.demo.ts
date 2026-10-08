@@ -29,7 +29,18 @@ const EMBEDDED_CHAT_PAGE = `
         // about:srcdoc, has none (location.origin is "null"), so the origin is read from
         // the window. A page served on its own would name its host's origin as a constant.
         var hostOrigin = window.origin;
-        var requestId = crypto.randomUUID();
+        // An unguessable id. crypto.randomUUID() exists only in a secure context (HTTPS or
+        // localhost), and this demo may be opened over plain HTTP on a LAN address, so it falls
+        // back to crypto.getRandomValues(), which is available everywhere.
+        function newRequestId() {
+          if (typeof crypto.randomUUID === 'function') {
+            return crypto.randomUUID();
+          }
+          return Array.from(crypto.getRandomValues(new Uint8Array(16)), function (byte) {
+            return byte.toString(16).padStart(2, '0');
+          }).join('');
+        }
+        var requestId = newRequestId();
         window.addEventListener('message', function (event) {
           var message = event.data;
           if (event.source !== window.parent || event.origin !== hostOrigin) {
@@ -45,7 +56,7 @@ const EMBEDDED_CHAT_PAGE = `
           }
         });
         document.getElementById('ask').addEventListener('click', function () {
-          requestId = crypto.randomUUID();
+          requestId = newRequestId();
           parent.postMessage(
             { protocol: 'ui-context/v1', kind: 'context-request', requestId: requestId, options: { maxComponents: 30 } },
             hostOrigin

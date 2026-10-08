@@ -145,7 +145,11 @@ this.contextEngine.enableFrameBridge({
 const FRAME_CLIENT_EXAMPLE = `
 // Inside the iframe: any framework, no Clarity required — plain postMessage.
 const hostOrigin = 'https://app.example'; // the application this frame is built for, never read from the page
-const requestId = crypto.randomUUID(); // unguessable, so no other frame can answer for the host
+// Unguessable, so no other frame can answer for the host. randomUUID() needs a secure context (HTTPS or
+// localhost); getRandomValues() works everywhere.
+const requestId =
+  crypto.randomUUID?.() ??
+  Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('');
 
 window.addEventListener('message', event => {
   // Only the window that was asked, only from its origin, only the answer to this request.

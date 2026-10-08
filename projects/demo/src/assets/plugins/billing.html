@@ -42,8 +42,23 @@
       // accepted only from the window that was asked, and only from that origin. Without a
       // referrer there is no origin to trust, and nothing is asked: a request broadcast to
       // '*' could be answered by whatever the parent has navigated to since.
+      // Demo only: trusting the referrer trusts whichever page embeds this one, which can
+      // then answer with a made-up context. A deployed plugin names the origin of the
+      // application it is built for as a constant, as the guide's snippet does. The
+      // referrer is also this frame's own previous page once it navigates.
       var hostOrigin = document.referrer ? new URL(document.referrer).origin : null;
-      var requestId = crypto.randomUUID();
+      // An unguessable id. crypto.randomUUID() exists only in a secure context (HTTPS or
+      // localhost), and this demo may be opened over plain HTTP on a LAN address, so it falls
+      // back to crypto.getRandomValues(), which is available everywhere.
+      function newRequestId() {
+        if (typeof crypto.randomUUID === 'function') {
+          return crypto.randomUUID();
+        }
+        return Array.from(crypto.getRandomValues(new Uint8Array(16)), function (byte) {
+          return byte.toString(16).padStart(2, '0');
+        }).join('');
+      }
+      var requestId = newRequestId();
       window.addEventListener('message', function (event) {
         var message = event.data;
         if (event.source !== window.parent || event.origin !== hostOrigin) {
@@ -63,7 +78,7 @@
           document.getElementById('out').textContent = 'No referrer from the embedder: no host origin to ask.';
           return;
         }
-        requestId = crypto.randomUUID();
+        requestId = newRequestId();
         window.parent.postMessage(
           { protocol: 'ui-context/v1', kind: 'context-request', requestId: requestId, options: { maxComponents: 40 } },
           hostOrigin
