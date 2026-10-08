@@ -25,7 +25,9 @@ export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
  * the heading, the alert that owns it — never pulled out into a separate flattened list.
  * Nesting is the only representation of "this belongs to that": an agent looking for
  * what it can invoke inside a specific dialog walks that dialog's own `children`, the
- * same way it would read the rendered page.
+ * same way it would read the rendered page. The exception is a summarised collection: a
+ * table or grid reports its columns, row count and the form controls in its cells, and
+ * no other cell content, buttons and links included.
  *
  * `customExtractors` cover the remainder — markup carrying neither a role nor an
  * accessible name, such as a bare `<div class="card">`.

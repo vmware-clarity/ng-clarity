@@ -908,7 +908,7 @@ function describeTextBlock(element: Element, walk: Walk, owner: Element | null):
  * an iframe, a widget that is another — is one page to the user and is described as one:
  * the frame's document is walked in place, against the same budget. A cross-origin frame
  * cannot be read from here and is reported as a frame with no children, so an agent at
- * least knows there is UI it does not see; the frame bridge is the way to reach it.
+ * least knows there is UI it does not see.
  */
 function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContext[] {
   if (!walk.options.includeFrames || walk.remaining <= 0) {

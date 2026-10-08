@@ -54,7 +54,7 @@ export interface ClrComponentContext {
  * - `status` — alerts, status lines, progress bars and meters
  * - `images` — images and figures
  * - `text` — prose that carries no role (the `includeText` switch)
- * - `frames` — same-origin frames (the `includeFrames` switch)
+ * - `frames` — embedded frames, same-origin or not (the `includeFrames` switch)
  */
 export type ClrContextCategory =
   'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
@@ -83,10 +83,10 @@ export interface ClrContextSnapshotOptions {
    */
   includeText?: boolean;
   /**
-   * Whether to describe the contents of same-origin frames in place, as `frame` nodes
-   * with children, so a page assembled from embedded plugins is described as one page.
-   * A cross-origin frame is reported as a `frame` node without children either way.
-   * Default `true`.
+   * Whether to report embedded frames. A same-origin frame is described in place, as a
+   * `frame` node with children, so a page assembled from embedded plugins is described
+   * as one page; a cross-origin frame is a `frame` node without children. `false` leaves
+   * out every frame, same-origin or not. Default `true`.
    */
   includeFrames?: boolean;
   /**

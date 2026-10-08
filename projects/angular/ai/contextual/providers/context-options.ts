@@ -12,8 +12,8 @@ import { clrContextPreset, ClrContextPreset, warnIfExclusionsAreNotLists, withCa
 
 /**
  * Application-wide snapshot options. Whatever is provided here is what every snapshot
- * starts from — the engine, the tracker, the frame bridge and the global accessor all
- * read it — and options passed to an individual call are applied over it.
+ * starts from — the engine, the tracker and the global accessor all read it — and
+ * options passed to an individual call are applied over it.
  */
 export const CLR_CONTEXT_OPTIONS = new InjectionToken<ClrContextSnapshotOptions>('CLR_CONTEXT_OPTIONS');
 

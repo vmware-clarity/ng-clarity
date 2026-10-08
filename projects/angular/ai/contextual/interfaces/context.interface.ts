@@ -70,6 +70,11 @@ export interface ClrPageContext {
    * tree. A button or link is wherever it actually is in the DOM — inside the dialog,
    * the heading, the alert that owns it — there is no separate top-level list of
    * actions, so nesting is never discarded in favor of a flat array.
+   *
+   * Collections are summarised rather than listed. A table, grid or tree grid reports
+   * its columns, its row count and how many rows are selected, with the form controls in its cells as
+   * children (none when `collectionItems` is `'summary'`); other cell content, buttons
+   * and links included, is not described.
    */
   components: ClrComponentContext[];
   /**
