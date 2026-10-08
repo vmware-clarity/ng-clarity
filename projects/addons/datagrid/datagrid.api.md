@@ -9,7 +9,6 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import { AnimationCallbackEvent } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CdkConnectedOverlay } from '@angular/cdk/overlay';
 import { CdkDrag } from '@angular/cdk/drag-drop';

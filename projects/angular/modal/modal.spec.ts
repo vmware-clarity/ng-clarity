@@ -523,6 +523,59 @@ describe('Modal with animations', () => {
   });
 });
 
+@Component({
+  template: `
+    <clr-modal [(clrModalOpen)]="firstOpened">
+      <h4 class="modal-title">First</h4>
+      <div class="modal-body"></div>
+    </clr-modal>
+    <clr-modal [(clrModalOpen)]="secondOpened">
+      <h4 class="modal-title">Second</h4>
+      <div class="modal-body"></div>
+    </clr-modal>
+  `,
+  standalone: false,
+})
+class TwoModalsTestComponent {
+  firstOpened = true;
+  secondOpened = false;
+}
+
+describe('Modal closing while another modal opens', () => {
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [CdkTrapFocusModule, ClrModalModule],
+      declarations: [TwoModalsTestComponent],
+      animationsEnabled: true,
+    });
+  });
+
+  afterEach(() => {
+    restoreAnimations();
+  });
+
+  it('notifies the closing although Angular cuts its leave animation short', async () => {
+    const fixture = TestBed.createComponent(TwoModalsTestComponent);
+    fixture.detectChanges();
+    const [first] = fixture.debugElement.queryAll(By.directive(ClrModal)).map(debug => debug.componentInstance);
+    const openChanges: boolean[] = [];
+    first._openChanged.subscribe((open: boolean) => openChanges.push(open));
+
+    first.close();
+    fixture.detectChanges();
+    fixture.componentInstance.secondOpened = true;
+    fixture.detectChanges();
+    await delay();
+
+    expect(fixture.nativeElement.querySelectorAll('.modal').length).toBe(1);
+    expect(openChanges).toEqual([false]);
+    fixture.destroy();
+  });
+});
+
 describe('Modal with no-op animations', () => {
   let fixture: ComponentFixture<TestComponent>;
   let restoreAnimations: () => void;

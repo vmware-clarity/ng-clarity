@@ -4088,7 +4088,7 @@ export class ClrHeader implements OnDestroy {
 export class ClrHeightAnimation {
     constructor(injector: Injector, easing?: string);
     cancel(): number;
-    collapse(element: HTMLElement | null | undefined): Animation | null;
+    collapse(element: HTMLElement | null | undefined): void;
     expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
 }
 
@@ -7104,12 +7104,12 @@ export const collapseCardIconName = "collapse-card";
 // @public
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
-    protected animateCollapse(event: AnimationCallbackEvent): void;
     protected readonly animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
+    collapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
     // (undocumented)

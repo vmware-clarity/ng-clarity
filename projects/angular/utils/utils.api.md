@@ -532,7 +532,7 @@ export function clrFocusServiceFactory(existing: FocusService, renderer: Rendere
 export class ClrHeightAnimation {
     constructor(injector: Injector, easing?: string);
     cancel(): number;
-    collapse(element: HTMLElement | null | undefined): Animation | null;
+    collapse(element: HTMLElement | null | undefined): void;
     expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
 }
 
