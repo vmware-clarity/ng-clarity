@@ -390,6 +390,9 @@ describe('Modal with animations', () => {
 
   async function finishClosing() {
     finishAnimations(fixture.nativeElement);
+    // The `animationend` events of the finished animations, which complete the leave animation, are dispatched with
+    // the next frame.
+    await new Promise(resolve => requestAnimationFrame(resolve));
     await delay();
   }
 
