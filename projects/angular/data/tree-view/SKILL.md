@@ -101,6 +101,7 @@ Set `[clrLazy]="true"` on `clr-tree` so children are only created when a node ex
 
 ## Rules
 
+- A node whose children load on expand shows `[clrLoading]="loading"` on the `clr-tree-node` while the request runs; without it the user sees nothing happen.
 - Node labels must be text; icon-only nodes need visible text for screen readers and type-ahead.
 - Use `@for (...; track ...)` for nested nodes; give `track` a stable id.
 - Tree nodes handle their own keyboard navigation (arrows, Home/End, type-ahead). Do not put extra focusable controls inside nodes besides `.clr-treenode-link`.

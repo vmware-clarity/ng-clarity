@@ -85,6 +85,7 @@ Shape names must be unique. Collections already register built-in aliases (e.g. 
 
 ## Rules
 
+- Bind a dynamic shape with `[shape]="expr"`. Never use `[attr.shape]`: the component writes its `shape` input back to the attribute, so the icon renders as the unknown placeholder.
 - Use `<clr-icon>`. The older `cds-icon` selector is an alias of the same component that is removed in v19; replace it when you touch that code.
 - Do not import `ClrIconModule` (deprecated) — import `ClrIcon`.
 - Do not use `<img>`, icon fonts, or inline `<svg>` for library icons.

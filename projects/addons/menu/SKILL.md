@@ -9,9 +9,14 @@ metadata:
 
 ## When to use it vs `clr-dropdown`
 
-`clr-dropdown` is the default for a menu anchored to a trigger button.
+`appfx-menu` is built on `clr-dropdown` and opens through its `openAtPoint()`. Use `clr-dropdown` for menus by default, including nested menus and context menus at a point.
 
-Use `appfx-menu` when the menu opens at a point (right-click on a row, tree node, or canvas), or you need nested submenus with automatic flipping/shifting inside the viewport. Content is declared with dedicated item components instead of free markup.
+Use `appfx-menu` when the app already uses `@clr/addons` and needs one of:
+
+- menu items declared as components (`appfx-menu-action`, `appfx-menu-header`, nested `appfx-menu`),
+- menus created in code (`MenuOutletService.showMenu`),
+- focus returned to the trigger on close (a `clr-dropdown` opened at a point doesn't do this),
+- the 400% zoom behaviour (full-screen menu, submenu back header) via `ZoomLevelService`.
 
 Do not migrate existing `clr-dropdown` usage unless asked.
 

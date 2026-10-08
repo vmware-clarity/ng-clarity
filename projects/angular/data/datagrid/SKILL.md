@@ -47,6 +47,14 @@ Pagination or virtual scroll is also a UX choice: use pagination when users jump
 
 ```html
 <clr-datagrid [clrDgSelectionType]="'multi'" [(clrDgSelected)]="selected">
+  <clr-dg-action-bar>
+    <div class="btn-group">
+      <button type="button" class="btn btn-sm btn-link" [disabled]="!selected.length" (click)="deactivate()">
+        Deactivate
+      </button>
+    </div>
+  </clr-dg-action-bar>
+
   <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
   <clr-dg-column [clrDgField]="'age'" [clrDgColType]="'number'">Age</clr-dg-column>
 
@@ -69,7 +77,7 @@ Pagination or virtual scroll is also a UX choice: use pagination when users jump
 - `clrDgField` (property path, e.g. `'address.city'`) enables default sort **and** a string filter. `[clrDgColType]="'number'"` switches to a numeric range filter.
 - `clrDgField` filters on the raw value as text. For boolean or enum columns (e.g. shown as Yes/No), add a custom `clr-dg-filter` or leave the column unfiltered.
 - Custom sort: `[clrDgSortBy]="comparator"` (`ClrDatagridComparatorInterface<T>` → `compare(a, b): number`), initial order via `[(clrDgSortOrder)]` (`ClrDatagridSortOrder.ASC | DESC | UNSORTED`).
-- Custom filter: `<clr-dg-string-filter [clrDgStringFilter]="f">` (`accepts(item, search)`), `<clr-dg-numeric-filter [clrDgNumericFilter]="f">`, or fully custom `<clr-dg-filter [clrDgFilter]="f">` implementing `ClrDatagridFilterInterface<T>` (`accepts`, `changes`, `isActive`, optional `state`).
+- Custom filter: `<clr-dg-string-filter [clrDgStringFilter]="f">` (`accepts(item, search)`), `<clr-dg-numeric-filter [clrDgNumericFilter]="f">`, or fully custom `<clr-dg-filter [clrDgFilter]="f">` implementing `ClrDatagridFilterInterface<T>` (`accepts`, `changes`, `isActive`, optional `state`). Form controls inside a custom filter use the Clarity directives like any other form, e.g. `<clr-checkbox-wrapper><input type="checkbox" clrCheckbox /><label>…</label></clr-checkbox-wrapper>`.
 
 ## Server-driven
 
@@ -118,11 +126,12 @@ Clear `loading` on error too, or a failed request leaves the grid on the spinner
 - Every row needs `[clrDgItem]`.
 - Lock a row: `[clrDgSelectable]="false"` on `clr-dg-row`.
 - Keep selection across refetches: `[clrDgItemsIdentityFn]="(u) => u.id"` and `[clrDgPreserveSelection]="true"`.
-- Batch actions: `<clr-dg-action-bar>` with buttons above the columns, enabled from `selected.length`. Use a flat button group (`btn-link`) there ([button group guidance](https://guidance.clarity.design/1004)).
+- Batch actions: any button that acts on the selected rows goes inside `<clr-dg-action-bar>` as the first child of `clr-datagrid` (it renders above the columns), enabled from `selected.length`. Keep it inside the datagrid element, even when the request says "a button above the grid". Use a button group with `btn-link` or `btn-secondary` buttons; both are fine, so follow the app's existing style.
 - Per-row actions: `<clr-dg-action-overflow>` inside `clr-dg-row` with `<button class="action-item">` children.
-- Do **not** use `clrDgRowSelection` (deprecated, accessibility issue). There is no `clrDgSingleSelected` input.
-- For "click the row to select it", use the selection cell instead: `[clrDgSelectionType]="'single'"` gives a radio per row, `'multi'` a checkbox.
-- Do not add `(click)` handlers on `clr-dg-row` to emulate row-click selection; it brings back the accessibility problem.
+- `clrDgRowSelection` is deprecated (keyboard users can't select by row). There is no `clrDgSingleSelected` input.
+- Prefer the selection cell: `[clrDgSelectionType]="'single'"` gives a radio per row, `'multi'` a checkbox.
+- If the requirement is explicitly that clicking anywhere on the row selects it, use `[clrDgRowSelection]="true"` together with `clrDgSelectionType` and `clrDgSelected`, with a comment that it is deprecated.
+- Never emulate row-click selection with `(click)` on `clr-dg-row`, and never drop the requirement silently.
 
 ## Row details
 

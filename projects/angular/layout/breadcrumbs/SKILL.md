@@ -52,6 +52,7 @@ Store a label in route `data` (e.g. `data: { breadcrumb: 'Hosts' }`) and build t
 
 ## Rules
 
+- Every item except the last needs `routerLink` or `href`. An intermediate item with only a label renders empty, which shows as a leading or doubled slash.
 - Pass data through `[items]`. Do not write `clr-breadcrumb-item` elements by hand or build a custom `<ol>` trail.
 - Do not make the current page a link and do not repeat breadcrumbs that duplicate the vertical nav for shallow pages.
 - Keep labels short; they should match the page titles they point to.

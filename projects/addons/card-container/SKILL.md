@@ -72,6 +72,7 @@ store: AppfxContainerPersistenceStore = {
 
 ## Rules
 
+- The `cards` input is typed with an internal type that adds `hidden`, `order`, and `view`, which the container sets itself, and that type isn't exported. Build an `AppfxCard[]` and bind it with `[cards]="$any(cards)"` until the input type is fixed.
 - Give every card a unique, stable `id` and each container a unique `containerId` — drag-and-drop is scoped to the container and saved settings are matched by card id.
 - Add/remove cards by assigning a new array (`this.cards = [...this.cards, card]`); changes are diffed by item.
 - Card components must render `.card` / `.card-block` (and optional `.card-header` / `.card-footer`) — sizing is applied to those classes.

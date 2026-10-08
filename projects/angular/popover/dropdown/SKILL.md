@@ -112,6 +112,7 @@ onContextMenu(event: MouseEvent) {
 
 ## Rules
 
+- A menu opened with `openAtPoint()` doesn't return focus on close. Restore it yourself, e.g. `this.dropdown().popoverService.openChange.pipe(filter(open => !open), take(1)).subscribe(() => target.focus())` with `dropdown = viewChild.required(ClrDropdown)`.
 - Exactly one `clrDropdownTrigger` per `clr-dropdown`; use a real `<button>` for the trigger and items. `clrDropdownToggle` is an alias — prefer `clrDropdownTrigger`.
 - Icon-only triggers need an `aria-label`.
 - Items are `clrDropdownItem` elements directly inside `clr-dropdown-menu`; nested menus are a `clr-dropdown` inside the menu.

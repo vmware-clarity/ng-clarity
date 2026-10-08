@@ -25,7 +25,7 @@ Path: `node_modules/@clr/addons/ai/skills/<guide>/SKILL.md`.
 - `appfx-datagrid`: configuration-driven tables, advanced filters, export
 - `appfx-dialog`: multi-page modal dialogs
 - `appfx-drag-and-drop`: drag and drop across components
-- `appfx-menu`: context menus at a point
+- `appfx-menu`: declarative or code-created context menus at a point, 400%-zoom reflow
 - `appfx-property-view`: read-only property categories
 - `appfx-stepper`: workflow steppers
 - `appfx-tabs`: model-driven tabs

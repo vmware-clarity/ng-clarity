@@ -41,19 +41,19 @@ The service is `providedIn: 'root'`; no module import is needed.
     </div>
   `,
 })
-export class TaskListComponent implements AfterViewInit, OnDestroy {
+export class TaskListComponent implements OnInit, OnDestroy {
   @Input() group = 'tasks';
   @Input() items: Task[] = [];
   @ViewChild(CdkDropList, { static: true }) dropList!: CdkDropList;
 
   private readonly groupService = inject(DragAndDropGroupService);
 
-  get connectedLists(): CdkDropList[] {
-    return [...this.groupService.getGroupItems(this.group)];
-  }
+  // The group's live array: CDK reads it on every drag start, so lists registered later are included.
+  connectedLists: readonly CdkDropList[] = [];
 
-  ngAfterViewInit(): void {
-    this.groupService.addGroupItem(this.group, this.dropList);
+  ngOnInit(): void {
+    this.groupService.addGroupItem(this.group, this.dropList); // static: true, available in ngOnInit
+    this.connectedLists = this.groupService.getGroupItems(this.group);
   }
 
   ngOnDestroy(): void {
@@ -68,6 +68,7 @@ export class TaskListComponent implements AfterViewInit, OnDestroy {
 
 ## Rules
 
+- Bind `[cdkDropListConnectedTo]` to the array returned by `getGroupItems()`, kept in a field. Don't copy it in a getter (a new array on every check throws `NG0100`), and don't take a one-time copy (lists registered later are missed).
 - Always pair `addGroupItem` with `removeGroupItem` in `ngOnDestroy`; the service is a root singleton and keeps references otherwise.
 - `getGroupItems` returns a readonly array (empty for unknown groups); spread it when an input expects a mutable `CdkDropList[]`.
 - Use distinct group names per independent drag area.

@@ -77,7 +77,8 @@ export class AppNav {
 
 - Children go in `clr-vertical-nav-group-children`. Add `*clrIfExpanded` to render them lazily (only while expanded); `*clrIfExpanded="true"` starts it open.
 - `[clrVerticalNavGroupExpanded]` / `(clrVerticalNavGroupExpandedChange)` control the group state.
-- `routerLinkActive="active"` on the group highlights it when a child route is active. To make it react to a parent route, add a hidden link inside the group: `<a routerLink="/admin" hidden aria-hidden="true"></a>`.
+- `routerLinkActive="active"` on the group highlights it when one of its links is active.
+- With lazily rendered children (`*clrIfExpanded`), add a hidden link in the group itself so `routerLinkActive` keeps the highlight while collapsed: `<a routerLink="/inventory" hidden aria-hidden="true"></a>`. Use one link for the group's path when child routes are nested under it; if they aren't, one per child route. No `tabindex`. Eagerly rendered groups don't need it.
 - Groups and plain links can be mixed at the top level.
 
 ## Responsive

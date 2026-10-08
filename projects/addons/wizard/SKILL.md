@@ -103,6 +103,7 @@ closeHandler: CloseHandler = {
 
 ## Rules
 
+- Step components are created before `@In()` values are injected; the model is filled when the step becomes active, then `activate(changes)` is called (on the first activation `changes` has every `@In` property). Build or patch the step's form in `activate()`, not in the constructor or `ngOnInit()`, or bind the template to the model's `Var`s directly. Alternatively set `instantiateLazy: true` on the step so the component is created after injection. Example: `activate(): void { this.form.patchValue({ name: this.model.name.value }); }`
 - Create a fresh workflow model (and steps) each time the wizard opens, or old values persist.
 - Mutate `Var.value`, keep the `Var` instance. Matching is by property name between page and workflow models.
 - Use `StepModelFactory` (`model: () => new X()`) when `recreateComponent` is set.

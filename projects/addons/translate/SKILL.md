@@ -78,6 +78,7 @@ readonly format: DateTimeFormatOptions = { dateTimeKind: DateTimeKind.DateTime, 
 
 ## Rules
 
+- `AppfxTranslateService` is provided by `AppfxTranslateModule` or a component's `providers`, not at the root injector. Inject it in components; a `providedIn: 'root'` service that injects it fails at bootstrap with `NG0201` and the app renders nothing.
 - Provide translations per component (`providers`), with every `AppfxLocale` key present; global app-wide AppFX translations are discouraged.
 - Translations are static objects — loading them from an endpoint is unsupported.
 - Interpolation uses `{{param}}` placeholders.

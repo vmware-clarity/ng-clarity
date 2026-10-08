@@ -82,6 +82,7 @@ steps: Step[] = [
 
 ## Rules
 
+- Step components are created before `@In()` values are injected; the model is filled when the step becomes active, then `activate(changes)` is called (on the first activation `changes` has every `@In` property). Build or patch the step's form in `activate()`, not in the constructor or `ngOnInit()`, or bind the template to the model's `Var`s directly. Alternatively set `instantiateLazy: true` on the step so the component is created after injection. Example: `activate(): void { this.form.patchValue({ name: this.model.name.value }); }`
 - `onFinish` fires after the last step validates; read results from the workflow model (`model.name.value`). Apply them yourself.
 - To reset, assign a new workflow model and new `steps`.
 - Mutate `Var.value`, keep the `Var` instance; page and workflow properties match by name (use `Mappings` otherwise).

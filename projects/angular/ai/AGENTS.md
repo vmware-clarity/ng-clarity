@@ -17,6 +17,10 @@ This app uses Clarity for UI. Follow these rules whenever you add or change Clar
 - Icons: `<clr-icon shape="...">`; register the shapes you use. Icon-only buttons need `aria-label`.
 - Use Clarity design tokens (CSS custom properties) for color, spacing, and typography. Never
   hard-code hex colors ([tokens guidance](https://guidance.clarity.design/109)).
+- Themes: light is the default, set `cds-theme` or `cds-theme="light"` on `<body>`. Set `cds-theme="dark"` for dark; never style colors per
+  theme yourself (tokens follow the attribute).
+- Name your own components with your app's prefix (`app-`). Never use `clr-`, `cds-` or `appfx-`
+  for your own selectors, classes or tokens.
 - Native `<button>` defaults to `type="submit"`. Set `type="button"` unless it submits a form.
 - Use `@for (...; track ...)` and `@if`, not `*ngFor` / `*ngIf`.
 - Never invent `clr*` inputs. If unsure, read the matching guide below before writing code.
