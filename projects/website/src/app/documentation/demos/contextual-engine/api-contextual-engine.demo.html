@@ -569,7 +569,10 @@
       <td class="left">
         Publishes a callback on the host element, returning the teardown to run on destroy. The teardown removes only
         the callback it published, so republishing is safe. What a component publishes wins over what the markup showed
-        — except a value the engine withheld as sensitive, which is removed again.
+        — except a value the engine withheld as sensitive, which is removed again. Inside a
+        <code cds-text="code">data-clr-context-redact</code> region nothing published is merged, and an element that
+        publishes a <code cds-text="code">label</code> is described without one, since the name its markup gives it is
+        the one the component meant to replace.
       </td>
     </tr>
     <tr>
@@ -647,7 +650,7 @@
         <code cds-text="code">hiddenColumns</code> (value); when rows can be selected,
         <code cds-text="code">selectionMode</code> (<code cds-text="code">single</code> or
         <code cds-text="code">multi</code>), <code cds-text="code">rows</code> (each row's cells, the names its rows go
-        by) and <code cds-text="code">selection</code> (value)
+        by; value) and <code cds-text="code">selection</code> (value)
       </td>
     </tr>
     <tr>
@@ -675,14 +678,25 @@
       <td class="left"><b cds-text="medium">clr-wizard</b></td>
       <td class="left">
         <code cds-text="code">stepCount</code>, <code cds-text="code">currentStepIndex</code>,
-        <code cds-text="code">steps</code> (each with <code cds-text="code">current</code>,
-        <code cds-text="code">complete</code>, <code cds-text="code">error</code> and
-        <code cds-text="code">navigable</code>), while the wizard is open
+        <code cds-text="code">steps</code> (each with its <code cds-text="code">index</code>,
+        <code cds-text="code">current</code>, <code cds-text="code">complete</code>,
+        <code cds-text="code">error</code> and <code cds-text="code">navigable</code>), while the wizard is open
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">clr-stepper-panel</b>, <b cds-text="medium">clr-timeline-step</b></td>
-      <td class="left"><code cds-text="code">status</code></td>
+      <td class="left"><b cds-text="medium">clr-stepper-panel</b></td>
+      <td class="left">
+        <code cds-text="code">status</code>: <code cds-text="code">inactive</code>,
+        <code cds-text="code">complete</code> or <code cds-text="code">error</code>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-timeline-step</b></td>
+      <td class="left">
+        <code cds-text="code">status</code>: <code cds-text="code">not-started</code>,
+        <code cds-text="code">current</code>, <code cds-text="code">processing</code>,
+        <code cds-text="code">success</code> or <code cds-text="code">error</code>
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">clr-tree-node</b></td>
@@ -696,13 +710,18 @@
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">clr-file-input-container</b></td>
-      <td class="left"><code cds-text="code">fileCount</code> (value); the files themselves are always redacted</td>
+      <td class="left">
+        <code cds-text="code">fileCount</code> (value), <code cds-text="code">redacted</code> (always: the files
+        themselves are never described, and the file list is left out), <code cds-text="code">disabled</code> when the
+        input is disabled; helper, error and success text are kept
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">clr-date-container</b></td>
       <td class="left">
         The calendar toggle's name without the selected date, which the date input reports as its
-        <code cds-text="code">value</code> (value); the open calendar is not described
+        <code cds-text="code">value</code> (value); inside a <code cds-text="code">data-clr-context-redact</code> region
+        the toggle is described without a name. The open calendar is not described
       </td>
     </tr>
     <tr>
