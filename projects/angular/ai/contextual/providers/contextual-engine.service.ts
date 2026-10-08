@@ -188,19 +188,22 @@ export class ClrContextEngineService implements OnDestroy {
     if (!window) {
       return;
     }
-    this.disableFrameBridge();
     // The host caps each frame's request against `options.snapshot`; the application's
     // own options are the ceiling above that, so a frame cannot undo them either.
     const ceiling = this.untrustedCeiling(options?.snapshot);
-    this.frameHost = new ClrContextFrameHost(
+    // Built before the running bridge is stopped: the constructor refuses a configuration
+    // that is not usable, and a refused one should leave the frames already served as
+    // they were rather than silently cut off.
+    const frameHost = new ClrContextFrameHost(
       snapshotOptions => this.snapshot(capSnapshotOptions(snapshotOptions, ceiling)),
       window,
       options,
       url => this.routePattern(url)
     );
+    this.disableFrameBridge();
+    this.frameHost = frameHost;
     // Outside the zone: every `message` on the page reaches the listener, and answering
     // one changes nothing the application renders, so none should check the application.
-    const frameHost = this.frameHost;
     this.zone.runOutsideAngular(() => frameHost.start());
   }
 

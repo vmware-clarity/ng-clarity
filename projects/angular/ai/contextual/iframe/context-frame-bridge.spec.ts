@@ -627,6 +627,49 @@ describe('Context frame bridge', () => {
       expect(context).toBeNull();
     });
 
+    it('rejects and stops listening when the request cannot be sent', async () => {
+      const target = fakeWindow();
+      target.postMessage.and.throwError(new DOMException('could not be cloned', 'DataCloneError'));
+      const removeEventListener = spyOn(window, 'removeEventListener').and.callThrough();
+      const clearTimer = spyOn(window, 'clearTimeout').and.callThrough();
+
+      await expectAsync(
+        clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 60_000 })
+      ).toBeRejectedWithError(/could not be cloned/);
+
+      expect(removeEventListener).toHaveBeenCalledWith('message', jasmine.any(Function));
+      expect(clearTimer).toHaveBeenCalled();
+    });
+
+    describe('with a timeout that is not a usable delay', () => {
+      let delays: unknown[];
+
+      beforeEach(() => {
+        delays = [];
+        const realSetTimeout = window.setTimeout.bind(window);
+        // Recorded, then run at once, so each request settles within its test.
+        spyOn(window, 'setTimeout').and.callFake(((handler: () => void, delay?: number) => {
+          delays.push(delay);
+          return realSetTimeout(handler);
+        }) as typeof window.setTimeout);
+      });
+
+      for (const timeoutMs of [Number.NaN, -1, 0, Number.POSITIVE_INFINITY]) {
+        it(`waits the default time rather than giving up at once, given ${timeoutMs}`, async () => {
+          expect(
+            await clrRequestHostContext({ targetWindow: fakeWindow() as unknown as Window, timeoutMs })
+          ).toBeNull();
+          expect(delays).toEqual([2000]);
+        });
+      }
+
+      it('waits as long as a timer can for a timeout longer than that, rather than firing at once', async () => {
+        await clrRequestHostContext({ targetWindow: fakeWindow() as unknown as Window, timeoutMs: 2 ** 31 });
+
+        expect(delays).toEqual([2 ** 31 - 1]);
+      });
+    });
+
     it('resolves with null when there is no separate host window', async () => {
       expect(await clrRequestHostContext({ targetWindow: window })).toBeNull();
     });

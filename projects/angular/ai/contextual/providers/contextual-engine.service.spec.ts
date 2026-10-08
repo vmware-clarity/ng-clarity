@@ -186,14 +186,20 @@ describe('ClrContextEngineService', () => {
         requestId: 'frame-request-1',
       };
 
+      // A title of its own, so the assertion below proves the bridge withholds it rather
+      // than passing because the test page happens to have none.
+      const title = document.title;
+      document.title = 'Invoice 4711 - Acme Corp';
+
       engine.enableFrameBridge();
       window.dispatchEvent(new MessageEvent('message', { data: request, origin: window.location.origin, source }));
+      document.title = title;
 
       expect(postMessage).toHaveBeenCalledWith(
         jasmine.objectContaining({
           kind: 'context-response',
           requestId: 'frame-request-1',
-          context: jasmine.objectContaining({ title: document.title }),
+          context: jasmine.objectContaining({ title: '' }),
         }),
         jasmine.anything()
       );
@@ -202,6 +208,47 @@ describe('ClrContextEngineService', () => {
       window.dispatchEvent(new MessageEvent('message', { data: request, origin: window.location.origin, source }));
 
       expect(postMessage).toHaveBeenCalledTimes(1);
+      frame.remove();
+    });
+
+    it('keeps the running frame bridge when a new configuration is refused', () => {
+      const { frame, postMessage } = embeddedFrame();
+
+      engine.enableFrameBridge();
+      expect(() => engine.enableFrameBridge({ allowedOrigins: ['chat.example'] })).toThrowError(/not an origin/);
+
+      window.dispatchEvent(
+        new MessageEvent('message', {
+          data: { protocol: 'ui-context/v1', kind: 'context-request', requestId: 'frame-request-3' },
+          origin: window.location.origin,
+          source: frame.contentWindow,
+        })
+      );
+
+      expect(postMessage).toHaveBeenCalledWith(
+        jasmine.objectContaining({ kind: 'context-response', requestId: 'frame-request-3' }),
+        jasmine.anything()
+      );
+      engine.disableFrameBridge();
+      frame.remove();
+    });
+
+    it('stops the previous frame bridge when a new one replaces it', () => {
+      const { frame, postMessage } = embeddedFrame();
+
+      engine.enableFrameBridge();
+      engine.enableFrameBridge({ allowedOrigins: ['https://chat.example'] });
+
+      window.dispatchEvent(
+        new MessageEvent('message', {
+          data: { protocol: 'ui-context/v1', kind: 'context-request', requestId: 'frame-request-4' },
+          origin: window.location.origin,
+          source: frame.contentWindow,
+        })
+      );
+
+      expect(postMessage).not.toHaveBeenCalled();
+      engine.disableFrameBridge();
       frame.remove();
     });
 

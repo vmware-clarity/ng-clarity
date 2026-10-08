@@ -38,6 +38,9 @@ const MAX_REQUESTS_PER_INTERVAL = 5;
 /** How long a frame waits for the host's answer before giving up. */
 const DEFAULT_REQUEST_TIMEOUT_MS = 2000;
 
+/** Longest delay a browser timer holds; a longer one overflows and fires at once. */
+const MAX_TIMER_DELAY_MS = 2 ** 31 - 1;
+
 /** Message an embedded frame posts to its parent to ask for the page context. */
 export interface ClrContextFrameRequest {
   /** Names the protocol, so unrelated messages are ignored. */
@@ -84,6 +87,11 @@ export interface ClrContextFrameHostOptions {
    * nothing an arbitrary embedded document should not see — the whole page context,
    * including every visible label, is handed over. Only frames embedded in this page
    * are served, whatever their origin: never a popup, another tab or an opener.
+   *
+   * A frame with an opaque origin — sandboxed without `allow-same-origin`, or a `data:`
+   * document — is never served, even with this set: it reports its origin as `"null"`,
+   * which cannot be named as the target of the answer, and posting to `'*'` instead would
+   * hand the page context to whatever document the frame holds by then.
    */
   allowAnyOrigin?: boolean;
 
@@ -118,6 +126,11 @@ export interface ClrContextFrameHostOptions {
    *
    * Every request walks the document, which is not free. Without a floor, a frame in a
    * loop — buggy or hostile — can keep the host's main thread busy indefinitely.
+   *
+   * The same interval also bounds all frames together: at most five snapshots are served
+   * per interval across every frame, so a page embedding more than five frames that ask
+   * at the same moment has the rest go unanswered, and they resolve `null` once their
+   * timeout passes. `0` turns throttling off entirely, the overall limit included.
    */
   minRequestIntervalMs?: number;
 }
@@ -141,7 +154,10 @@ export interface ClrContextFrameRequestOptions {
    * request is rejected without one.
    */
   hostOrigin?: string;
-  /** How long to wait for an answer before resolving with `null`. Defaults to `2000`. */
+  /**
+   * How long to wait for an answer before resolving with `null`. Defaults to `2000`,
+   * which is also used for anything that is not a positive, finite number.
+   */
   timeoutMs?: number;
   /** Snapshot budgets the host should apply. */
   options?: ClrContextSnapshotOptions;
@@ -157,6 +173,15 @@ export interface ClrContextFrameRequestOptions {
  * the user has typed, nor the URL's query string, it cannot ask for a larger snapshot
  * than the host allows, and it cannot ask faster than
  * {@link ClrContextFrameHostOptions.minRequestIntervalMs}.
+ *
+ * Used directly, outside `ClrContextEngineService.enableFrameBridge`, the host holds a
+ * frame only to its own `snapshot` option and, where that leaves a budget or switch unset,
+ * to the library defaults. It does not know the application-wide options from
+ * `provideClrContextOptions`, and a `getSnapshot` that applies them the way the engine's
+ * `getSnapshot` does lets the frame's request override their budgets and switches.
+ * Either set every limit the application relies on in `snapshot`, or have `getSnapshot`
+ * cap what it is given at the application's options; `enableFrameBridge` does the latter
+ * itself.
  */
 export class ClrContextFrameHost {
   private readonly allowedOrigins: string[];
@@ -336,7 +361,8 @@ export class ClrContextFrameHost {
  * Requests the hosting page's context from inside an embedded frame. Resolves with
  * `null` when the host does not answer (e.g. it does not run a {@link ClrContextFrameHost},
  * this frame's origin is not allowed, or it asked again too soon), so embedded UI can
- * degrade gracefully.
+ * degrade gracefully. Rejects when the request cannot be made at all: a `hostOrigin`
+ * that is not an origin, or `options` the browser cannot send in a message.
  *
  * The answer is only accepted from the window that was asked, and from the origin the
  * request was addressed to. A browser sets `event.source` and a page cannot forge it,
@@ -382,7 +408,7 @@ export function clrRequestHostContext(options: ClrContextFrameRequestOptions = {
     options: options.options,
   };
 
-  return new Promise(resolve => {
+  return new Promise((resolve, reject) => {
     const cleanup = () => {
       window.removeEventListener('message', responseListener);
       clearTimeout(timeout);
@@ -403,11 +429,31 @@ export function clrRequestHostContext(options: ClrContextFrameRequestOptions = {
     const timeout = setTimeout(() => {
       cleanup();
       resolve(null);
-    }, options.timeoutMs ?? DEFAULT_REQUEST_TIMEOUT_MS);
+    }, requestTimeout(options.timeoutMs));
 
     window.addEventListener('message', responseListener);
-    targetWindow.postMessage(request, { targetOrigin });
+    // A request the browser cannot send — `options` holding something it cannot clone —
+    // will never be answered, so it is not left listening until the timeout.
+    try {
+      targetWindow.postMessage(request, { targetOrigin });
+    } catch (error) {
+      cleanup();
+      reject(error);
+    }
   });
+}
+
+/**
+ * How long to wait for an answer. Anything but a positive, finite number falls back to the
+ * default: a timer given `NaN`, a negative or an infinite delay fires at once, and the
+ * request would resolve `null` before the host could answer. A delay longer than a timer
+ * can hold also fires at once, so it is held to the longest one.
+ */
+function requestTimeout(timeoutMs: number | undefined): number {
+  if (typeof timeoutMs !== 'number' || !Number.isFinite(timeoutMs) || timeoutMs <= 0) {
+    return DEFAULT_REQUEST_TIMEOUT_MS;
+  }
+  return Math.min(timeoutMs, MAX_TIMER_DELAY_MS);
 }
 
 /** Whether an inbound message is a context request this host should answer. */
