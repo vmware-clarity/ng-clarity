@@ -9,6 +9,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 import { ClrComponentContext, ClrContextProvider } from '../interfaces/context.interface';
+import { jsonSafe, REGION_DEPTH } from '../json-safe';
 
 /**
  * How a snapshot treats one annotation, decided from the element it sits on (or `null`
@@ -78,6 +79,11 @@ export class ClrContextRegistryService {
    * Polls all live providers for their current context. Providers that return `null`
    * or throw are skipped so a single faulty provider cannot break a snapshot. `filter`
    * decides, from where each annotation sits, whether it is reported at all.
+   *
+   * Each context is handed out as a copy of its plain, serialisable part: a provider may
+   * return an object it keeps, or one holding live application state, and a snapshot
+   * goes to code the application does not control, which must not be able to reach
+   * into either.
    */
   collect(filter?: ClrContextRegionFilter): ClrComponentContext[] {
     const contexts: ClrComponentContext[] = [];
@@ -87,7 +93,7 @@ export class ClrContextRegistryService {
         if (verdict === 'drop') {
           continue;
         }
-        const context = provider.getClrContext();
+        const context = copied(provider.getClrContext());
         if (context) {
           contexts.push(verdict === 'redact' ? withheldState(context) : context);
         }
@@ -97,6 +103,12 @@ export class ClrContextRegistryService {
     }
     return contexts;
   }
+}
+
+/** A detached copy of what a provider returned, or `null` when that is not a context at all. */
+function copied(context: ClrComponentContext | null): ClrComponentContext | null {
+  const copy = jsonSafe(context, REGION_DEPTH, true) as ClrComponentContext | undefined;
+  return copy && typeof copy === 'object' && typeof copy.type === 'string' ? copy : null;
 }
 
 /** An annotation reported from inside a redacted region: what it is, not what it holds. */
