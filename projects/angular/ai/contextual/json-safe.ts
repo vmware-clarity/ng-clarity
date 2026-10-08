@@ -12,6 +12,12 @@ export const STATE_DEPTH = 3;
 export const ROUTE_DATA_DEPTH = 2;
 
 /**
+ * How deep an annotation a provider contributes is copied, counting the annotation
+ * itself: its state keeps several levels of whatever the application describes.
+ */
+export const REGION_DEPTH = 10;
+
+/**
  * Reduces a value to its JSON-serializable subset, dropping functions, class instances
  * and anything nested deeper than `depth`. Used wherever application data — route
  * configuration, a form control's value or errors — is put into a snapshot or a result,

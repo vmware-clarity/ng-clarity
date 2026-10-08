@@ -13,7 +13,7 @@ import { provideRouter, Router, withHashLocation } from '@angular/router';
 import { CLR_CONTEXT_OPTIONS, provideClrContextOptions } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
-import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
+import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 
 @Component({ template: '' })
@@ -557,6 +557,36 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
     TestBed.configureTestingModule({ providers: [provideRouter([{ path: 'hosts', component: RoutedComponent }])] });
     const engine = TestBed.inject(ClrContextEngineService);
     expect('availableRoutes' in engine.getSnapshot({ includeDomComponents: false })).toBe(false);
+  });
+
+  describe('for the global accessor', () => {
+    type Accessor = (options?: unknown) => ClrPageContext;
+
+    function accessorWith(applicationOptions: ClrContextSnapshotOptions, hostOptions = {}): Accessor {
+      TestBed.configureTestingModule({
+        providers: [
+          provideRouter([{ path: 'hosts', component: RoutedComponent }]),
+          provideClrContextOptions(applicationOptions),
+        ],
+      });
+      TestBed.inject(ClrContextEngineService).enableGlobalAccess('testClrContextRoutes', hostOptions);
+      return (window as unknown as Record<string, Accessor>)['testClrContextRoutes'];
+    }
+
+    afterEach(() => TestBed.inject(ClrContextEngineService).disableGlobalAccess());
+
+    it('lists the routes when the application turned them on, and the host said nothing', () => {
+      const accessor = accessorWith({ includeRoutes: true, includeDomComponents: false });
+
+      expect(accessor().availableRoutes).toEqual([{ path: 'hosts' }]);
+      expect(accessor({ includeRoutes: false }).availableRoutes).toBeUndefined();
+    });
+
+    it('does not let the host or a caller turn on routes the application turned off', () => {
+      const accessor = accessorWith({ includeRoutes: false, includeDomComponents: false }, { includeRoutes: true });
+
+      expect(accessor({ includeRoutes: true }).availableRoutes).toBeUndefined();
+    });
   });
 });
 

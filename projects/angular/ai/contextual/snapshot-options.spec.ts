@@ -406,6 +406,25 @@ describe('withoutUrlDetails', () => {
     expect(JSON.stringify(shared)).not.toContain('ACC-');
     expect(shared.components[0].state).toEqual({ url: 'https://plugin.example/' });
   });
+
+  it('drops the document title of a frame that is an editing host and reads as a textbox', () => {
+    const shared = withoutUrlDetails({
+      title: '',
+      url: 'https://app.example/',
+      regions: [],
+      components: [
+        {
+          type: 'textbox',
+          element: 'iframe',
+          state: { title: 'Draft to ACC-4711', url: 'https://app.example/editor' },
+        },
+      ],
+      collectedAt: '',
+    });
+
+    expect(JSON.stringify(shared)).not.toContain('ACC-');
+    expect(shared.components[0].state).toEqual({ url: 'https://app.example/' });
+  });
 });
 
 describe('withoutFormValues', () => {
