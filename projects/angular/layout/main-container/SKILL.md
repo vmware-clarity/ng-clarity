@@ -119,7 +119,7 @@ Place it directly after the header. Add `[clr-nav-level]="2"` to make it part of
 
 - Header actions: navigation is `<a class="nav-link nav-icon">`; an action is `<button type="button" class="btn btn-link nav-link">` (a bare `<button class="nav-link">` keeps the browser's gray button color). Icon-only items need `aria-label`.
 - Page content goes directly inside `content-area`. If you wrap it in `cds-layout="vertical ..."`, add `align:horizontal-stretch`; without it, datagrids and cards shrink to their content width.
-- Themes: light is the default. Switch to dark with `document.body.setAttribute('cds-theme', 'dark')` and back with `document.body.removeAttribute('cds-theme')`. Tokens follow the attribute, so never style colours per theme yourself.
+- Themes: light is the default. Keep `cds-theme` on `<body>` at all times and switch its value, e.g. `[attr.cds-theme]="isDark ? 'dark' : 'light'"`. Tokens follow the attribute, so never style colors per theme yourself.
 - Do not hand-build hamburger or overflow toggles; let `clr-header` + `[clr-nav-level]` create them.
 - Icon-only header links and buttons (`nav-icon`) must have an `aria-label`. Give the search input a label.
 - Use real links (`<a>`) for navigation and `<button type="button">` for actions.
