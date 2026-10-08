@@ -40,6 +40,8 @@ import {
 } from '@clr/angular/popover/common';
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  CLR_CONTEXT_EDITING_HOST_SELECTOR,
+  CLR_CONTEXT_HIDDEN_SELECTOR,
   CLR_CONTEXT_REDACT_SELECTOR,
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
@@ -691,27 +693,38 @@ export class ClrCombobox<T>
 
   /**
    * Whether an option is shown to page-context tooling: `'excluded'` when the snapshot
-   * options leave it out, `'withheld'` when it, or a group around it, is redacted — it is
-   * counted, but not named — and `'shown'` otherwise. Judged within the option list only:
-   * the list's overlay is ignored as a whole, since this component publishes it.
+   * options leave it out, or it or a group around it is not on the page as page-context
+   * tooling sees it — hidden, hidden from assistive technology, inert or ignored — as the
+   * walk leaves out such a group with everything in it; `'withheld'` when it, or a group
+   * around it, is redacted, or all its text is withheld — it is counted, but not named —
+   * and `'shown'` otherwise. Judged within the option list only: the list's overlay is
+   * ignored as a whole, since this component publishes it.
    */
   private optionShown(option: ClrOption<T>, excluded: string): 'shown' | 'withheld' | 'excluded' {
     const element: Element = option.elRef.nativeElement;
     const list = element.closest('clr-options');
     let verdict: 'shown' | 'withheld' = 'shown';
     for (let current: Element | null = element; current; current = current.parentElement) {
-      if (excluded && current.matches(excluded)) {
+      if (
+        (excluded && current.matches(excluded)) ||
+        (current !== list && current.matches(CLR_CONTEXT_HIDDEN_SELECTOR))
+      ) {
         return 'excluded';
       }
-      if (
-        current.matches(CLR_CONTEXT_REDACT_SELECTOR) ||
-        (current === element && current.matches(CLR_CONTEXT_WITHHELD_SELECTOR))
-      ) {
+      if (current.matches(CLR_CONTEXT_REDACT_SELECTOR) || current.matches(CLR_CONTEXT_EDITING_HOST_SELECTOR)) {
         verdict = 'withheld';
       }
       if (current === list) {
         break;
       }
+    }
+    if (
+      verdict === 'shown' &&
+      this.optionLabel(option) === '' &&
+      element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)
+    ) {
+      // Named, it would be listed as `''`: there, but with nothing to tell it apart.
+      verdict = 'withheld';
     }
     return verdict;
   }
