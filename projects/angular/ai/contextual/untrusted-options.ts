@@ -219,15 +219,13 @@ function originOf(url: string | undefined): string | null {
 function withoutAddressDetails(node: ClrComponentContext, scope: AddressScope): ClrComponentContext {
   let result = node;
   const state = node.state;
-  if (
-    state &&
-    (typeof state['href'] === 'string' ||
-      typeof state['url'] === 'string' ||
-      (node.type === 'frame' && 'title' in state))
-  ) {
+  // A frame whose document is an editing host reads as a textbox, so the frame is
+  // recognised by the element that renders it as well as by its type.
+  const frame = node.type === 'frame' || node.element === 'iframe' || node.element === 'frame';
+  if (state && (typeof state['href'] === 'string' || typeof state['url'] === 'string' || (frame && 'title' in state))) {
     const reduced: Record<string, unknown> = { ...state };
     // A frame's document title goes with the page's own.
-    if (node.type === 'frame') {
+    if (frame) {
       delete reduced['title'];
     }
     for (const key of ['href', 'url']) {
