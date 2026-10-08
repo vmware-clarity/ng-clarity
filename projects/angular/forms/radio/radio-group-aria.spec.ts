@@ -7,7 +7,8 @@
 
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrRadioModule } from './radio.module';
@@ -63,6 +64,36 @@ class AuthoredComponent {
     plan: new FormControl<string | null>(null),
     region: new FormControl<string | null>(null, Validators.required),
   });
+}
+
+// Without an enclosing form each standalone ngModel radio has its own control, and only
+// the last one carries the required validator.
+@Component({
+  template: `
+    <clr-radio-container>
+      <label>Size</label>
+      <clr-radio-wrapper>
+        <input type="radio" clrRadio [(ngModel)]="size" [ngModelOptions]="{ standalone: true }" value="small" />
+        <label>Small</label>
+      </clr-radio-wrapper>
+      <clr-radio-wrapper>
+        <input
+          type="radio"
+          clrRadio
+          [(ngModel)]="size"
+          [ngModelOptions]="{ standalone: true }"
+          value="large"
+          required
+        />
+        <label>Large</label>
+      </clr-radio-wrapper>
+      <clr-control-error>Pick a size</clr-control-error>
+    </clr-radio-container>
+  `,
+  standalone: false,
+})
+class StandaloneNgModelComponent {
+  size: string | null = null;
 }
 
 describe('Radio group, as assistive technology sees it', () => {
@@ -124,6 +155,32 @@ describe('Radio group ARIA the application wrote', () => {
     fixture.componentInstance.form.controls.region.markAsTouched();
     fixture.detectChanges();
     expect(region.getAttribute('aria-invalid')).toBe('true');
+    fixture.destroy();
+  });
+});
+
+describe('Radio group of standalone ngModel radios', () => {
+  it('reports the group as required and invalid when a radio other than the first is', async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrRadioModule, FormsModule, NoopAnimationsModule],
+      declarations: [StandaloneNgModelComponent],
+    });
+    const fixture = TestBed.createComponent(StandaloneNgModelComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+    const group: HTMLElement = fixture.nativeElement.querySelector('clr-radio-container');
+    const models = fixture.debugElement.queryAll(By.directive(NgModel)).map(debug => debug.injector.get(NgModel));
+
+    expect(models.length).toBe(2);
+    expect(models[0].control).not.toBe(models[1].control);
+    expect(group.getAttribute('aria-required')).toBe('true');
+    expect(group.hasAttribute('aria-invalid')).toBe(false);
+
+    // Shift+Tab into the group lands on the last radio, and leaving it touches only that one.
+    models[1].control.markAsTouched();
+    fixture.detectChanges();
+    expect(group.getAttribute('aria-invalid')).toBe('true');
     fixture.destroy();
   });
 });
