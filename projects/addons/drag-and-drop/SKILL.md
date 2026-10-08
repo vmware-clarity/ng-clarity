@@ -53,7 +53,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.groupService.addGroupItem(this.group, this.dropList); // static: true, available in ngOnInit
-    this.connectedLists = this.groupService.getGroupItems(this.group);
+    this.connectedLists = this.groupService.getGroupItems(this.group) as CdkDropList[];
   }
 
   ngOnDestroy(): void {
