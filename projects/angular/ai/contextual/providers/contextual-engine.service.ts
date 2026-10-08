@@ -23,12 +23,7 @@ import {
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
 import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
 import { availableRoutes, routePatternFor } from '../routes';
-import {
-  capSnapshotOptions,
-  resolveSnapshotOptions,
-  warnIfExclusionsAreNotLists,
-  withCallOptions,
-} from '../snapshot-options';
+import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
@@ -155,8 +150,8 @@ export class ClrContextEngineService implements OnDestroy {
     }
     this.disableGlobalAccess();
     this.globalProperty = propertyName;
-    // The frame host says so for its own ceiling; this one is checked here.
-    warnIfExclusionsAreNotLists(budgets);
+    // An exclusion list in the ceiling that is not a list is reported as the ceiling is
+    // laid over the application's options.
     const ceiling = this.untrustedCeiling(budgets);
     host[propertyName] = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
@@ -286,14 +281,17 @@ export class ClrContextEngineService implements OnDestroy {
   }
 
   /**
-   * What a caller the application does not control may at most be given: the host's
-   * own ceiling for that caller, held to the application-wide options above it, and
-   * the defaults wherever neither says. A budget or switch nobody set is the default,
-   * not "unlimited": an untrusted caller cannot turn on `includeRoutes` or raise
-   * `maxComponents` past what the application itself would get.
+   * What a caller the application does not control may at most be given: the
+   * application-wide options with the host's own ceiling for that caller over them,
+   * held to the application-wide options, and the defaults wherever neither says. The
+   * host can narrow what the application turned on and add exclusions, never turn on
+   * what the application turned off or raise a budget past it. A budget or switch
+   * nobody set is the default, not "unlimited": an untrusted caller cannot turn on
+   * `includeRoutes` or raise `maxComponents` past what the application itself would get.
    */
   private untrustedCeiling(hostCeiling?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
-    return resolveSnapshotOptions(capSnapshotOptions(hostCeiling, this.applicationOptions ?? undefined));
+    const application = this.applicationOptions ?? undefined;
+    return resolveSnapshotOptions(capSnapshotOptions(withCallOptions(application, hostCeiling), application));
   }
 
   /** The call's options over the application's; see {@link withCallOptions}. */

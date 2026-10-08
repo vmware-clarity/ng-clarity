@@ -23,9 +23,10 @@ const LABELABLE = new Set(['button', 'input', 'meter', 'output', 'progress', 'se
  * name computation covering the sources that actually appear in application markup.
  *
  * Resolution order: `aria-labelledby`, `aria-label`, a native label source (an
- * associated or wrapping `<label>`, a `<legend>`, `<caption>`, `<figcaption>`, or `alt`),
- * `title`, a placeholder, and finally the element's own text — but only for roles that
- * may name themselves from their contents (see `isNameFromContents`).
+ * associated or wrapping `<label>`, a `<legend>`, `<caption>`, `<figcaption>`, `alt`, or
+ * the caption of an input button), `title`, a placeholder, and finally the element's own
+ * text — but only for roles that may name themselves from their contents (see
+ * `isNameFromContents`).
  *
  * That last restriction is what keeps the result useful: without it a `region` or `form`
  * would take the whole page's prose as its label.
@@ -52,6 +53,11 @@ export function accessibleName(element: Element, role: string | null, maxTextLen
   const title = element.getAttribute('title');
   if (title?.trim()) {
     return truncate(title, maxTextLength);
+  }
+
+  // An image input with nothing else to go by submits its form, and is named for that.
+  if (inputType(element) === 'image') {
+    return 'Submit';
   }
 
   // A placeholder is the last thing HTML-AAM lets a field be named by. Search boxes in
@@ -85,9 +91,38 @@ function nativeName(element: Element, withheld: string): string | null {
     return scopedText(element, 'figcaption', withheld);
   }
   if (LABELABLE.has(tagName)) {
-    return labelText(element, withheld);
+    return labelText(element, withheld) || inputCaption(element);
   }
   return null;
+}
+
+/** The type of an `<input>`, as the browser understands it, or `null` for any other element. */
+function inputType(element: Element): string | null {
+  return element.tagName.toLowerCase() === 'input' ? (element as HTMLInputElement).type : null;
+}
+
+/**
+ * The caption an input button shows, which is its name when no label gives one: the
+ * `value` of a submit, reset or plain button input — or for a submit or reset input
+ * without one, the caption the browser shows in its place — and the `alt` text, then the
+ * `value`, of an image input. The value of any other input is what the user entered,
+ * never its name.
+ */
+function inputCaption(element: Element): string | null {
+  const type = inputType(element);
+  const value = element.getAttribute('value');
+  switch (type) {
+    case 'submit':
+      return value ?? 'Submit';
+    case 'reset':
+      return value ?? 'Reset';
+    case 'button':
+      return value;
+    case 'image':
+      return element.getAttribute('alt')?.trim() ? element.getAttribute('alt') : value;
+    default:
+      return null;
+  }
 }
 
 /** Text of a direct child matching `selector`, the only place these names may come from. */

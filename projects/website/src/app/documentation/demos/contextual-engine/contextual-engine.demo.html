@@ -9,7 +9,7 @@
     <p class="component-summary" id="summary">
       The contextual engine gives AI agents structured, always-current context about the page your application is
       showing: the active route, what is rendered right now and what state it is in — every button, link and field where
-      it sits on the page — and whatever the application chooses to say about itself.
+      it sits on the page, with tables and grids summarised — and whatever the application chooses to say about itself.
     </p>
 
     <h2 id="how-it-works" class="clr-mt-48px" cds-text="title">How it describes the page</h2>
@@ -49,6 +49,14 @@
       thousand nodes.
     </p>
     <p class="clr-mt-16px" cds-text="body">
+      <strong cds-text="medium">Tables and grids are summarised.</strong> A table, grid or tree grid is reported as its
+      summary: its columns, its row count, how many rows are selected, and the form controls inside its cells — a field,
+      a checkbox, a select — each described where it sits. Other cell content is not listed, and that includes buttons,
+      links and menus in the cells: an agent learns what the collection holds and what it can edit in it, not each row's
+      actions. With <code cds-text="code">collectionItems: 'summary'</code>, the form controls in cells are left out as
+      well.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
       <strong cds-text="medium">Reading never writes.</strong> Taking a snapshot describes the page and never changes
       it: the engine only reads.
     </p>
@@ -65,7 +73,9 @@
       <code cds-text="code">redacted</code> rather than by value, as is anything marked
       <code cds-text="code">data-clr-context-redact</code>. Every other field is reported by value to the application's
       own code, so mark what an agent should not see before a snapshot goes to a model. Embedded frames and the
-      browser-agent accessor receive no form values at all unless the application deliberately shares them.
+      browser-agent accessor are not given what the user entered — typed values, chosen options, ticked boxes, selected
+      rows — unless the application deliberately shares it; the application's annotations and the page's text, helper
+      and validation text included, are still shared.
     </p>
 
     <h2 id="who-it-is-for" class="clr-mt-48px" cds-text="title">Who consumes it</h2>
@@ -101,7 +111,7 @@
     </div>
     <p class="clr-mt-16px" cds-text="body">A snapshot is a small, serializable object:</p>
     <div class="clr-mt-16px">
-      <app-code-snippet [code]="snapshotShapeExample" language="typescript"></app-code-snippet>
+      <app-code-snippet [code]="snapshotShapeExample" language="json"></app-code-snippet>
     </div>
 
     <h3 id="live-context" class="clr-mt-32px" cds-text="section">Keeping a live page context</h3>

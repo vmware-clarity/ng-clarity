@@ -175,4 +175,30 @@ describe('accessibleName, sources the first version missed', () => {
       )
     ).toBe('Cluster name');
   });
+
+  describe('input buttons, which carry their caption in value', () => {
+    it('names a submit, reset or plain button input by its value', () => {
+      expect(nameOf('<input type="submit" value="Log in" />', 'input')).toBe('Log in');
+      expect(nameOf('<input type="reset" value="Clear form" />', 'input')).toBe('Clear form');
+      expect(nameOf('<input type="button" value="Add host" />', 'input')).toBe('Add host');
+    });
+
+    it('names a submit or reset input without a value by the caption the browser shows', () => {
+      expect(nameOf('<input type="submit" />', 'input')).toBe('Submit');
+      expect(nameOf('<input type="reset" />', 'input')).toBe('Reset');
+      expect(nameOf('<input type="button" />', 'input')).toBe('');
+    });
+
+    it('names an image input by its alt text, then its value, then as a submit button', () => {
+      expect(nameOf('<input type="image" alt="Search" value="Go" />', 'input')).toBe('Search');
+      expect(nameOf('<input type="image" value="Go" />', 'input')).toBe('Go');
+      expect(nameOf('<input type="image" title="Find hosts" />', 'input')).toBe('Find hosts');
+      expect(nameOf('<input type="image" />', 'input')).toBe('Submit');
+    });
+
+    it('still prefers aria-label and a label over the value', () => {
+      expect(nameOf('<input type="submit" value="Go" aria-label="Log in" />', 'input')).toBe('Log in');
+      expect(nameOf('<label for="s">Send</label><input id="s" type="submit" value="Go" />', 'input')).toBe('Send');
+    });
+  });
 });
