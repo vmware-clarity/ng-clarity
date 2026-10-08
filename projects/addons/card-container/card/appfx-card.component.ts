@@ -116,7 +116,7 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   get cdkDropGroup(): CdkDropList[] {
-    return this.groupService.getGroupItems(this.dropGroup) as unknown as CdkDropList[];
+    return this.groupService.getGroupItems(this.dropGroup);
   }
 
   ngOnInit(): void {
