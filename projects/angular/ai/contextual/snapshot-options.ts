@@ -86,8 +86,8 @@ function warnIfNotAList(key: string, value: unknown): void {
 
 /**
  * {@link warnIfNotAList} for every exclusion list in a set of options the application
- * configured once — `provideClrContextOptions`, a frame host's ceiling — where nothing
- * else would say that one was ignored.
+ * configured once — `provideClrContextOptions` — where nothing else would say that one
+ * was ignored.
  */
 export function warnIfExclusionsAreNotLists(options: ClrContextSnapshotOptions | null | undefined): void {
   for (const key of EXCLUSION_KEYS) {
