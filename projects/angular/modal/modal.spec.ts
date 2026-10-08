@@ -104,6 +104,7 @@ describe('Modal', () => {
   it('should set aria-hidden attribute to false if opened', async () => {
     fixture.componentInstance.opened = false;
     fixture.detectChanges();
+    await fixture.whenStable(); // Angular removes the modal once its (disabled) leave animation is done
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
     // open modal
     modal.open();
@@ -415,12 +416,16 @@ describe('Modal with animations', () => {
     modal.open();
     fixture.detectChanges();
 
-    expect(modalElement().hasAttribute('inert')).toBeFalse();
-    expect(fixture.nativeElement.querySelector('.modal-dialog').classList).not.toContain('clr-fade-slide-down-leave');
+    // The leaving modal stays, inert, until its animation is done; the reopened one is a new, interactive modal.
+    const reopened = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.modal')).filter(
+      element => !element.hasAttribute('inert')
+    );
+    expect(reopened.length).toBe(1);
+    expect(reopened[0].querySelector('.modal-dialog').classList).not.toContain('clr-fade-slide-down-leave');
 
     await finishClosing();
 
-    expect(modalElement()).not.toBeNull();
+    expect(fixture.nativeElement.querySelectorAll('.modal').length).toBe(1);
     expect(openChanges).toEqual([true]);
   });
 

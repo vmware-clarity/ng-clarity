@@ -100,6 +100,7 @@ describe('Side Panel', () => {
   it('should set aria-hidden attribute to false if opened', async () => {
     fixture.componentInstance.opened = false;
     fixture.detectChanges();
+    await fixture.whenStable(); // Angular removes the modal once its (disabled) leave animation is done
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
     // open modal
     sidePanel.open();

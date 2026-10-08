@@ -63,14 +63,15 @@ export class ClrHeightAnimation {
     );
   }
 
-  /** Animates the element from its current height to 0, right away. */
-  collapse(element: HTMLElement | null | undefined) {
+  /** Animates the element from its current height to 0, right away. Returns the animation, `null` when there is none. */
+  collapse(element: HTMLElement | null | undefined): Animation | null {
     if (!element || this.#animations.disabled) {
-      return;
+      return null;
     }
     const from = measureHeight(element);
     this.cancel();
     this.#play(element, from, 0, this.#timing(element));
+    return this.#animation;
   }
 
   /** Stops the running animation, if any, and returns the id of the next one. */

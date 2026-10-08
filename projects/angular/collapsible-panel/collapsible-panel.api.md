@@ -4,6 +4,7 @@
 
 ```ts
 
+import { AnimationCallbackEvent } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
@@ -16,12 +17,12 @@ import { Subject } from 'rxjs';
 // @public
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    protected animateCollapse(event: AnimationCallbackEvent): void;
     protected readonly animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
-    collapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
     // (undocumented)

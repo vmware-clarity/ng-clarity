@@ -10,6 +10,7 @@ import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
+import { AnimationCallbackEvent } from '@angular/core';
 import { ApplicationRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -4087,7 +4088,7 @@ export class ClrHeader implements OnDestroy {
 export class ClrHeightAnimation {
     constructor(injector: Injector, easing?: string);
     cancel(): number;
-    collapse(element: HTMLElement | null | undefined): void;
+    collapse(element: HTMLElement | null | undefined): Animation | null;
     expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
 }
 
@@ -4570,6 +4571,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
+    protected animateLeave(event: AnimationCallbackEvent): void;
     // (undocumented)
     get backdrop(): boolean;
     // (undocumented)
@@ -7102,12 +7104,12 @@ export const collapseCardIconName = "collapse-card";
 // @public
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    protected animateCollapse(event: AnimationCallbackEvent): void;
     protected readonly animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
-    collapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
     // (undocumented)

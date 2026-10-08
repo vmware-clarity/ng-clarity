@@ -46,8 +46,8 @@
     [attr.aria-hidden]="!panel.open"
     [attr.aria-labelledby]="getHeaderId(panel.templateId)"
   >
-    @if (panel.open || collapsing) {
-    <div #panelContent [class.clr-collapsible-panel-collapsing]="collapsing" class="clr-stepper-content">
+    @if (panel.open) {
+    <div #panelContent (animate.leave)="animateCollapse($event)" class="clr-stepper-content">
       <div class="clr-stepper-inner-content">
         <ng-content></ng-content>
       </div>

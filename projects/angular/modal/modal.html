@@ -5,13 +5,12 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-@if (_open || closing) {
-<div class="modal" [class.modal-full-screen]="size == 'full-screen'" [attr.inert]="closing ? '' : null">
+@if (_open) {
+<div class="modal" [class.modal-full-screen]="size == 'full-screen'" (animate.leave)="animateLeave($event)">
   <div
     #dialog
-    [cdkTrapFocus]="!closing"
+    cdkTrapFocus
     [animate.enter]="dialogEnterClass"
-    [class]="closing ? dialogLeaveClass : null"
     class="modal-dialog"
     [class.modal-sm]="size == 'sm'"
     [class.modal-lg]="size == 'lg'"
@@ -56,7 +55,6 @@
   @if (backdrop) {
   <div
     [animate.enter]="backdropEnterClass"
-    [class.clr-fade-leave]="closing"
     class="modal-backdrop"
     [class.static]="staticBackdrop"
     aria-hidden="true"
