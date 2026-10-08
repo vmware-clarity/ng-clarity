@@ -149,7 +149,9 @@ const hostOrigin = 'https://app.example'; // the application this frame is built
 // localhost); getRandomValues() works everywhere.
 const requestId =
   crypto.randomUUID?.() ??
-  Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('');
+  Array.from(crypto.getRandomValues(new Uint8Array(16)), byte =>
+    byte.toString(16).padStart(2, '0')
+  ).join('');
 
 window.addEventListener('message', event => {
   // Only the window that was asked, only from its origin, only the answer to this request.
