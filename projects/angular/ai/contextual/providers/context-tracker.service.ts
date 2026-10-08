@@ -311,7 +311,9 @@ export class ClrContextTrackerService implements OnDestroy {
 
   private observeDocument(target: Document): MutationObserver {
     const observer = new MutationObserver(records => this.onMutations(records));
-    observer.observe(target.body, {
+    // The whole document rather than its body: the title lives in the head, and a title
+    // that changes alone must still be reported.
+    observer.observe(target.documentElement, {
       childList: true,
       subtree: true,
       attributes: true,
