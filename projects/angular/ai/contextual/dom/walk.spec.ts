@@ -1054,6 +1054,41 @@ describe('collectContextTree, choosing what to collect', () => {
     }
   });
 
+  it('does not let modal focus step outside the root selector', () => {
+    const result = collect(
+      `${PAGE}<div role="dialog" aria-modal="true" aria-label="Elsewhere"><button>Leave</button></div>`,
+      { rootSelector: 'main', focus: 'modal' }
+    );
+    expect(result.focus).toBeUndefined();
+    expect(types(result.components)).toEqual(['main']);
+    expect(JSON.stringify(result.components)).not.toContain('Leave');
+  });
+
+  it('takes the topmost open dialog inside the root selector under modal focus', () => {
+    const result = collect(
+      `<main><div role="dialog" aria-modal="true" aria-label="Inside"><button>Stay</button></div></main>
+       <div role="dialog" aria-modal="true" aria-label="Outside"><button>Leave</button></div>`,
+      { rootSelector: 'main', focus: 'modal' }
+    );
+    expect(result.focus).toBe('modal');
+    expect(result.components.map(node => node.label)).toEqual(['Inside']);
+  });
+
+  it('does not let a root selector reach into a region of an excluded role', () => {
+    const html = `${PAGE}<aside><form class="x"><button>Aside</button></form></aside>`;
+    expect(collect(html, { rootSelector: 'form.x', excludeRoles: ['complementary'] }).components).toEqual([]);
+  });
+
+  it('does not let modal focus reach into a region of an excluded role', () => {
+    const result = collect(
+      `${PAGE}<aside><div role="dialog" aria-modal="true" aria-label="Panel"><button>Hidden</button></div></aside>`,
+      { focus: 'modal', excludeRoles: ['complementary'] }
+    );
+    expect(result.focus).toBeUndefined();
+    expect(types(result.components)).toEqual(['banner', 'main', 'contentinfo']);
+    expect(JSON.stringify(result.components)).not.toContain('Hidden');
+  });
+
   it('describes the whole page under modal focus while no modal is open', () => {
     const result = collect(`${PAGE}<div role="dialog" aria-modal="true" hidden></div>`, { focus: 'modal' });
     expect(result.focus).toBeUndefined();
