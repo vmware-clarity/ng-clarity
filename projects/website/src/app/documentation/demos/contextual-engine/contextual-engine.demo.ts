@@ -326,10 +326,13 @@ import { clrPublishElementMutator } from '@clr/angular/utils';
 
 // A component whose form control takes something other than what an agent sees.
 this.teardown = clrPublishElementMutator(this.host.nativeElement, {
-  // Turn the agent's proposal into what the control takes, or refuse with what would do.
+  // Turn the agent's proposal into what the control takes, and what the policy and a
+  // confirmation show, or refuse with what would do.
   coerce: proposed => {
     const option = this.options.find(option => option.label === proposed);
-    return option ? { value: option.id } : { refused: \`No such option. The options are: \${this.labels()}.\` };
+    return option
+      ? { value: option.id, display: option.label }
+      : { refused: \`No such option. The options are: \${this.labels()}.\` };
   },
   // Read the current value back in the agent's terms.
   read: () => this.selectedOption()?.label ?? null,

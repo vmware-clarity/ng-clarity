@@ -49,8 +49,10 @@ export interface ClrClearOperation {
 /**
  * Navigates to a route of the application's router configuration — the ones a snapshot
  * lists as `availableRoutes` — through the router, so every guard the application
- * configured runs. Any configured route is accepted, listed or not: the policy's
- * `classify`, which sees the whole `url`, is what decides where an agent may go.
+ * configured runs. Only a pattern `availableRoutes` would list is accepted, including
+ * one a snapshot left out for its item budget: wildcard, redirect and custom-matcher
+ * routes are not navigable. Among those, the policy's `classify`, which sees the whole
+ * `url`, is what decides where an agent may go.
  */
 export interface ClrNavigateOperation {
   /** Goes to a route. */

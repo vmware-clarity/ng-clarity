@@ -220,8 +220,8 @@
         <code cds-text="code">queryParams?</code>
       </td>
       <td class="left">
-        Goes to a route of the router configuration — the ones <code cds-text="code">availableRoutes</code> lists, and
-        any other configured route the policy allows — through the router, with the pattern's parameters filled in. Each
+        Goes to a route of the router configuration — only one <code cds-text="code">availableRoutes</code> lists,
+        whichever of those the policy allows — through the router, with the pattern's parameters filled in. Each
         parameter fills one path segment literally — a slash or a space stays part of the value — and
         <code cds-text="code">.</code> or <code cds-text="code">..</code> is refused. Guards run; the outcome is read
         from the router's events. A route whose module has not loaded yet is listed as
@@ -314,8 +314,9 @@
         Declares what an operation would do, given its resolved target: the node's ref, label, type and element, the
         <code cds-text="code">value</code> about to be written in the agent's terms (a radio's label, not its value,
         which is in <code cds-text="code">modelValue</code>; a native select maps its options to model values inside
-        Angular's accessor, so it has no <code cds-text="code">modelValue</code>), or the route, URL and query
-        parameters. The engine never infers this; a policy that throws or answers anything else forbids. Judge the
+        Angular's accessor, so it has no <code cds-text="code">modelValue</code>, nor has a component that translates
+        the value itself, such as a combobox, whose model may hold what it keeps from agents), or the route, URL and
+        query parameters. The engine never infers this; a policy that throws or answers anything else forbids. Judge the
         element or the form control rather than the label: a label is translated, and can repeat.
       </td>
     </tr>
@@ -796,7 +797,9 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
         Says how the component is written to, for the mutation engine. <code cds-text="code">coerce(proposed)</code>
-        turns what an agent proposes into what the form control takes, or refuses with what would have been accepted;
+        turns what an agent proposes into what the form control takes, and optionally a
+        <code cds-text="code">display</code> — the option's label, the date as the field shows it — that the policy and
+        a confirmation see in its place, or refuses with what would have been accepted;
         <code cds-text="code">write(proposed)</code> writes state that is not a form control, such as a datagrid's
         selection; <code cds-text="code">read()</code> reads the value back in the agent's terms. Every member is
         optional. Set <code cds-text="code">ownsContents</code> when the component is written as one thing and what it
