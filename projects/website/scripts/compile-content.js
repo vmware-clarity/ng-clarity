@@ -190,8 +190,8 @@ async function compileAiAgents({ agents }) {
   const aiAgents = [];
 
   for (const { lib, packageName, url, raw } of agents) {
-    // drop the merge markers and nest headings two levels below the page section (h4 and below)
-    const markdown = raw.replace(/<!--[\s\S]*?-->/g, '').trim();
+    // drop the managed-block marker lines and nest headings two levels below the page section (h4 and below)
+    const markdown = raw.replace(/^<!-- (?:clarity|appfx):(?:start|end)\b[^\n]*-->\n?/gm, '').trim();
     aiAgents.push({
       packageName,
       url,
