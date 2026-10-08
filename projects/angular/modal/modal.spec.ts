@@ -557,7 +557,9 @@ describe('Modal closing while another modal opens', () => {
     restoreAnimations();
   });
 
-  it('notifies the closing although Angular cuts its leave animation short', async () => {
+  // Angular 21 cuts the leave animation of the first modal short, as the second one renders the same template node;
+  // Angular 22 lets it play.
+  it('notifies the closing whether or not Angular cuts its leave animation short', async () => {
     const fixture = TestBed.createComponent(TwoModalsTestComponent);
     fixture.detectChanges();
     const [first] = fixture.debugElement.queryAll(By.directive(ClrModal)).map(debug => debug.componentInstance);
@@ -568,6 +570,9 @@ describe('Modal closing while another modal opens', () => {
     fixture.detectChanges();
     fixture.componentInstance.secondOpened = true;
     fixture.detectChanges();
+    await delay();
+    finishAnimations(fixture.nativeElement);
+    await new Promise(resolve => requestAnimationFrame(resolve));
     await delay();
 
     expect(fixture.nativeElement.querySelectorAll('.modal').length).toBe(1);

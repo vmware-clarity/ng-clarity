@@ -250,8 +250,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     };
 
     modal.setAttribute('inert', '');
-    // Angular cuts a leave animation short, with an `animationend` event on the modal, when another modal (from the same
-    // template) is rendered in the meantime. It does so while rendering: notify once that is done.
+    // Angular 21 cuts a leave animation short, with an `animationend` event on the modal, when another modal (from the
+    // same template) is rendered in the meantime. It does so while rendering: notify once that is done.
     modal.addEventListener('animationend', animationEvent => {
       if (animationEvent.target === modal) {
         Promise.resolve().then(done);
