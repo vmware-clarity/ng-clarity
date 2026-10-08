@@ -35,8 +35,8 @@ import {
   preventArrowKeyScroll,
   uniqueIdFactory,
 } from '@clr/angular/utils';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, filter } from 'rxjs/operators';
+import { asapScheduler, Subject, Subscription } from 'rxjs';
+import { debounceTime, filter, skip } from 'rxjs/operators';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
 import { ClrSelectedState } from './models/selected-state.enum';
@@ -60,15 +60,19 @@ const TREE_TYPE_AHEAD_TIMEOUT = 200;
       // The "instant" states are used by bulk operations (expand all, expand descendants): they have the same
       // styles but no transition leads to them, so hundreds of nested containers don't animate at once.
       transition('collapsed => expanded, collapsedInstant => expanded', [
-        style({ height: 0 }),
-        animate(200, style({ height: '*' })),
+        // The animation starts from the collapsed state's styles, so the children must be made visible explicitly.
+        style({ height: 0, 'content-visibility': 'visible' }),
+        animate(200, style({ height: '*', 'content-visibility': 'visible' })),
       ]),
       transition('expanded => collapsed, expandedInstant => collapsed', [
         style({ height: '*' }),
         animate(200, style({ height: 0 })),
       ]),
       state('expanded, expandedInstant', style({ height: '*', 'overflow-y': 'visible' })),
-      state('collapsed, collapsedInstant', style({ height: 0 })),
+      // Once collapsed, the browser skips the style, layout and paint of the whole subtree. The state style only
+      // applies when the collapse animation is over, so the children stay painted while they slide out; they are
+      // inert from the start (see the template), so they cannot be reached in the meantime.
+      state('collapsed, collapsedInstant', style({ height: 0, 'content-visibility': 'hidden' })),
     ]),
   ],
   host: {
@@ -238,8 +242,15 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       })
     );
 
+    // The loading state can flip in the middle of a change detection pass (a lazy fetch starts when the template
+    // reads the children), so it is applied in a microtask rather than synchronously. Using a macrotask timer here
+    // would schedule one timer per node when a large tree gets created, and one extra change detection pass per
+    // fetched node in lazy trees. The current value is read directly instead of debouncing the replayed initial one.
+    this.isModelLoading = this._model.loading;
     this.subscriptions.push(
-      this._model.loading$.pipe(debounceTime(0)).subscribe(isLoading => (this.isModelLoading = isLoading))
+      this._model.loading$
+        .pipe(skip(1), debounceTime(0, asapScheduler))
+        .subscribe(isLoading => (this.isModelLoading = isLoading))
     );
   }
 
