@@ -788,6 +788,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       if (replacing && this.isWithheldRow(current, excluded)) {
         return { refused: 'The selected row is kept from agents, and cannot be deselected by one.' };
       }
+      // A row selected on another page, or not rendered, was never shown to the agent,
+      // which could neither see what it gave up nor undo it: the user changes that one.
+      if (replacing && !this.rows.some(row => identify(row.item) === identify(current))) {
+        return { refused: 'The selected row is not on this page, and cannot be deselected by an agent.' };
+      }
     }
     return { rows, single, replacing };
   }

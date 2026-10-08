@@ -83,6 +83,34 @@ type ElementContextCallback = (options: { maxItemsPerCollection?: number }) => {
           </clr-options>
         </clr-combobox>
       </clr-combobox-container>
+      <clr-combobox-container>
+        <label>Cards</label>
+        <clr-combobox class="cards" formControlName="cards" clrMulti="true">
+          <clr-options>
+            <clr-option clrValue="visa">Visa</clr-option>
+            <clr-option clrValue="6011 0000" data-clr-context-redact>6011 0000</clr-option>
+          </clr-options>
+        </clr-combobox>
+      </clr-combobox-container>
+      <clr-combobox-container>
+        <label>Person</label>
+        <clr-combobox class="person" formControlName="person">
+          <clr-options>
+            <clr-option clrValue="u-1">John Smith</clr-option>
+            <clr-option clrValue="u-2">John Smith</clr-option>
+            <clr-option clrValue="2">Two</clr-option>
+            <clr-option clrValue="u-4">2</clr-option>
+          </clr-options>
+        </clr-combobox>
+      </clr-combobox-container>
+      <clr-combobox-container>
+        <label>Labels</label>
+        <clr-combobox class="labels" formControlName="labels" clrMulti="true" [clrEditable]="true">
+          <clr-options>
+            <clr-option clrValue="urgent">Urgent</clr-option>
+          </clr-options>
+        </clr-combobox>
+      </clr-combobox-container>
     </form>
   `,
   standalone: false,
@@ -94,6 +122,9 @@ class ComboboxMutatorHost {
     country: new FormControl<string | null>(null),
     fruits: new FormControl<string[]>([]),
     berries: new FormControl<string[] | null>(null),
+    cards: new FormControl<string[]>(['6011 0000']),
+    person: new FormControl<string | null>(null),
+    labels: new FormControl<string[]>([]),
   });
   resolve = jasmine.createSpy('resolve').and.callFake((text: string) => `custom:${text.toUpperCase()}`);
 }
@@ -200,7 +231,7 @@ describe('ClrCombobox element mutator', () => {
       const result = await write('city', 'Lisbon');
 
       expect(host.resolve).toHaveBeenCalledOnceWith('Lisbon');
-      expect(result).toEqual({ value: 'custom:LISBON' });
+      expect(result).toEqual({ value: 'custom:LISBON', display: 'Lisbon' });
       expect(host.form.value.city).toBe('custom:LISBON');
       expect(read('city')).toBe('custom:LISBON');
     });
@@ -214,7 +245,7 @@ describe('ClrCombobox element mutator', () => {
     it('still chooses an option by label, without the resolver', async () => {
       const result = await write('city', 'rome');
 
-      expect(result).toEqual({ value: 'rome' });
+      expect(result).toEqual({ value: 'rome', display: 'Rome' });
       expect(host.resolve).not.toHaveBeenCalled();
       expect(read('city')).toBe('Rome');
     });
@@ -222,7 +253,7 @@ describe('ClrCombobox element mutator', () => {
     it('takes free text as it is with the default resolver', async () => {
       const result = await write('town', 'Bergen');
 
-      expect(result).toEqual({ value: 'Bergen' });
+      expect(result).toEqual({ value: 'Bergen', display: 'Bergen' });
       expect(host.form.value.town).toBe('Bergen');
       expect(read('town')).toBe('Bergen');
     });
@@ -261,7 +292,7 @@ describe('ClrCombobox element mutator', () => {
       await write('fruits', ['Apple']);
       expect(read('fruits')).toEqual(['Apple']);
 
-      expect(await write('fruits', null)).toEqual({ value: [] });
+      expect(await write('fruits', null)).toEqual({ value: [], display: [] });
       expect(host.form.value.fruits).toEqual([]);
       expect(publishedValue('fruits')).toEqual([]);
       expect(read('fruits')).toEqual([]);
@@ -279,14 +310,14 @@ describe('ClrCombobox element mutator', () => {
     it('selects every label it is given', async () => {
       const result = await write('fruits', ['Apple', 'plum', ' Pear ']);
 
-      expect(result).toEqual({ value: ['apple', 'plum', 'pear'] });
+      expect(result).toEqual({ value: ['apple', 'plum', 'pear'], display: ['Apple', 'Plum', 'Pear'] });
       expect(host.form.value.fruits).toEqual(['apple', 'plum', 'pear']);
       expect(read('fruits')).toEqual(['Apple', 'Plum', 'Pear']);
       expect(publishedValue('fruits')).toEqual(['Apple', 'Plum', 'Pear']);
     });
 
     it('takes a single label as a selection of one', async () => {
-      expect(await write('fruits', 'Pear')).toEqual({ value: ['pear'] });
+      expect(await write('fruits', 'Pear')).toEqual({ value: ['pear'], display: ['Pear'] });
       expect(read('fruits')).toEqual(['Pear']);
     });
 
@@ -304,6 +335,21 @@ describe('ClrCombobox element mutator', () => {
       expect(coerce('country', ['France', 'Italy']).refused).toBeDefined();
     });
 
+    it('chooses an option once, however often it is named', async () => {
+      const result = await write('fruits', ['Apple', 'apple', 'pear', ' Pear ']);
+
+      expect(result).toEqual({ value: ['apple', 'pear'], display: ['Apple', 'Pear'] });
+      expect(host.form.value.fruits).toEqual(['apple', 'pear']);
+      expect(read('fruits')).toEqual(['Apple', 'Pear']);
+    });
+
+    it('takes the same free text once, and an option it names once', async () => {
+      const result = await write('labels', ['blocked', ' blocked ', 'Urgent', 'urgent']);
+
+      expect(result).toEqual({ value: ['blocked', 'urgent'], display: ['blocked', 'Urgent'] });
+      expect(host.form.value.labels).toEqual(['blocked', 'urgent']);
+    });
+
     it('selects several labels through the mutation engine and refuses an unknown one', async () => {
       const result = await set('Fruits', ['Plum', 'Apple']);
 
@@ -317,6 +363,60 @@ describe('ClrCombobox element mutator', () => {
       expect(refused.refused).toBe('invalid');
       expect(refused.detail).toContain('"Apple", "Pear", "Plum"');
       expect(host.form.value.fruits).toEqual(['plum', 'apple']);
+    });
+  });
+
+  describe('options that read the same', () => {
+    it('refuses a label several options have, as the user would have to tell them apart', async () => {
+      const result = await write('person', 'John Smith');
+
+      expect(result.refused).toBe(
+        'Several options read "John Smith", and nothing tells which one is meant. Leave this choice to the user.'
+      );
+      expect(host.form.value.person).toBeNull();
+    });
+
+    it('takes the value that names one of them exactly', async () => {
+      expect(await write('person', 'u-2')).toEqual({ value: 'u-2', display: 'John Smith' });
+      expect(host.form.value.person).toBe('u-2');
+    });
+
+    it('prefers the option whose label it is over the one whose value it is', () => {
+      expect(coerce('person', '2')).toEqual({ value: 'u-4', display: '2' });
+    });
+  });
+
+  describe('what the policy is shown', () => {
+    function plan(operation: 'setValue' | 'clear', label: string, value?: unknown) {
+      const ref = refOf(TestBed.inject(ClrContextEngineService).getSnapshot(), label);
+      return TestBed.inject(ClrMutationEngineService).plan([
+        operation === 'clear' ? { operation, ref, description: label } : { operation, ref, description: label, value },
+      ]);
+    }
+
+    it('names the option by its label, whatever the agent named it by', () => {
+      const [planned] = plan('setValue', 'Country', 'it');
+
+      expect(planned.refused).toBeUndefined();
+      expect(planned.target?.value).toBe('Italy');
+    });
+
+    it('never shows a selection kept from agents, on clear or on setValue', async () => {
+      const cleared = plan('clear', 'Cards');
+      const added = plan('setValue', 'Cards', 'Visa');
+
+      expect(cleared[0].target?.value).toEqual([]);
+      expect(added[0].target?.value).toEqual(['Visa']);
+      // Everything a plan carries but the live element it names, which is not data.
+      const serialized = (entries: unknown) =>
+        JSON.stringify(entries, (key, entry) => (key === 'element' ? undefined : entry));
+      expect(serialized(cleared)).toContain('Cards');
+      expect(serialized(cleared)).not.toContain('6011');
+      expect(serialized(added)).not.toContain('6011');
+
+      // The selection is still kept, as the write leaves it.
+      expect((await set('Cards', 'Visa')).applied).toBeTrue();
+      expect(host.form.value.cards).toEqual(['6011 0000', 'visa']);
     });
   });
 });

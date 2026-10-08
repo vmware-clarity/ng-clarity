@@ -119,7 +119,9 @@ export interface ClrMutationTarget {
   /**
    * The value the form control will receive, which may be a radio's value or a locale
    * string rather than anything a person would recognise. For inspection only. Absent
-   * for a native select, whose options map to model values inside Angular's accessor.
+   * for a native select, whose options map to model values inside Angular's accessor,
+   * and for a component that translates the value itself — a combobox, a date input, a
+   * datagrid — whose model may hold what it keeps from agents.
    */
   modelValue?: unknown;
 }

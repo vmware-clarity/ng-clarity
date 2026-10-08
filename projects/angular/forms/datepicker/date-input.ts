@@ -25,10 +25,10 @@ import {
   Self,
   ViewContainerRef,
 } from '@angular/core';
-import { NgControl } from '@angular/forms';
+import { FormControl, NgControl } from '@angular/forms';
 import { FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
 import { ClrElementMutation, clrPublishElementMutator, isBooleanAttributeSet } from '@clr/angular/utils';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
 import { ClrDateContainer } from './date-container';
@@ -275,15 +275,43 @@ export abstract class ClrDateInputBase
 
   private listenForControlValueChanges() {
     if (this.datepickerHasFormControl()) {
-      return this.control.valueChanges
+      const subscription = this.control.valueChanges
         .pipe(
           // only update date value if not being set by user
           filter(() => !this.datepickerFocusService.elementIsFocused(this.el.nativeElement))
         )
         .subscribe((value: string) => this.updateDate(this.dateFromControlValue(value)));
+      subscription.add(this.listenForModelWritesWhileFocused());
+      return subscription;
     } else {
       return null;
     }
+  }
+
+  /**
+   * A value set on the form control while the field has focus — by the application, or
+   * by an agent while the caret is still in the field — reaches the picker too, which
+   * the value changes above skip while the user types. Only writes to the model are
+   * heard here: Angular hands what the user types to the model without calling these
+   * listeners, so typing is left alone until the field is left.
+   */
+  private listenForModelWritesWhileFocused(): Subscription {
+    const control = this.control.control as FormControl | null;
+    if (typeof control?.registerOnChange !== 'function') {
+      return Subscription.EMPTY;
+    }
+    const onModelWrite = (value: unknown) => {
+      if (this.datepickerFocusService.elementIsFocused(this.el.nativeElement)) {
+        this.updateDate(this.dateFromControlValue(value));
+      }
+    };
+    control.registerOnChange(onModelWrite);
+    // Angular has no public way to remove the listener; its own form directives use this one.
+    return new Subscription(() =>
+      (control as FormControl & { _unregisterOnChange?: (listener: unknown) => void })._unregisterOnChange?.(
+        onModelWrite
+      )
+    );
   }
 
   private listenForUserSelectedDayChanges() {
@@ -335,17 +363,15 @@ export abstract class ClrDateInputBase
     this.teardownElementMutator = clrPublishElementMutator(this.el.nativeElement, {
       coerce: (proposed: unknown): ClrElementMutation => {
         if (proposed === null || proposed === '') {
-          return { value: '' };
+          return { value: '', display: '' };
         }
         const date = this.dateFromProposal(proposed);
         if (!date) {
           return { refused: `A date is expected: ${this.dateIOService.placeholderText}, or ISO YYYY-MM-DD.` };
         }
-        return {
-          value: this.usingNativeDatepicker()
-            ? isoDateString(date)
-            : this.dateIOService.toLocaleDisplayFormatString(date),
-        };
+        // The date as a person reads it in this locale, whatever form the agent gave it in.
+        const display = this.dateIOService.toLocaleDisplayFormatString(date);
+        return { value: this.usingNativeDatepicker() ? isoDateString(date) : display, display };
       },
     });
   }

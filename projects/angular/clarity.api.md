@@ -3638,10 +3638,12 @@ export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOp
 // @public
 export type ClrElementMutation = {
     value: unknown;
+    display?: unknown;
     refused?: never;
 } | {
     refused: string;
     value?: never;
+    display?: never;
 };
 
 // @public

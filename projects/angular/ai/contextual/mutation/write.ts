@@ -302,12 +302,14 @@ const NEGATING_WORDS: ReadonlySet<string> = new Set(['not', 'no', 'wrong', 'othe
  * What the form control will receive for a coerced value, where that is known before
  * writing: a radio group takes the chosen radio's value. A native select maps its options
  * to model values inside Angular's accessor, so its model value is only known once written.
+ * A component that translates the value itself is not asked: its model may hold what it
+ * keeps from agents — a selection they were never shown, fields of an option's object.
  */
 export function modelValueOf(target: WriteTarget, value: unknown): unknown {
   if (target.kind === 'radiogroup') {
     return value === null ? null : radioValue(value as HTMLInputElement);
   }
-  return target.kind === 'select' ? undefined : value;
+  return target.kind === 'select' || target.mutator?.coerce ? undefined : value;
 }
 
 /**
@@ -322,9 +324,16 @@ export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
     if (coerced.refused !== undefined) {
       return { refused: coerced.refused };
     }
-    // A component written through its own `write` translates in agent terms — a
-    // datagrid's rows by their full labels — and that is what the policy is shown.
-    const display = target.kind === 'custom' || proposed === null ? plain(coerced.value) : proposed;
+    // What the component says the value is called — an option's label, the date as the
+    // field shows it — is what the policy is shown, never the value itself, which may
+    // keep a selection the agent was never shown. A component written through its own
+    // `write` translates in agent terms — a datagrid's rows by their full labels.
+    const display =
+      coerced.display !== undefined
+        ? plain(coerced.display)
+        : target.kind === 'custom' || proposed === null
+          ? plain(coerced.value)
+          : proposed;
     return { value: coerced.value, display };
   }
   switch (target.kind) {

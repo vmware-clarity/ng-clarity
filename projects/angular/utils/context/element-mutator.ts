@@ -29,8 +29,15 @@ export const CLR_ELEMENT_MUTATOR_PROPERTY = 'clrElementMutator';
  * the value, or the reason the element cannot take what was proposed. A refusal is
  * expected to be actionable — it names the labels that would have been accepted, say —
  * because an agent repairs from a reason and can only retry blindly from an error.
+ *
+ * `display`, from `coerce`, is the value in the terms an agent and a person use — the
+ * option's label, the date as the field shows it — which is what the application's
+ * policy judges and what a confirmation shows. It must hold nothing the published
+ * context withholds: `value` may keep a selection the agent was never shown, and the
+ * display leaves it out. Without one the engine shows the proposal as the agent gave it.
  */
-export type ClrElementMutation = { value: unknown; refused?: never } | { refused: string; value?: never };
+export type ClrElementMutation =
+  { value: unknown; display?: unknown; refused?: never } | { refused: string; value?: never; display?: never };
 
 /**
  * What a component publishes through {@link CLR_ELEMENT_MUTATOR_PROPERTY}. Every member

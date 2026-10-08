@@ -274,6 +274,11 @@ export class ClrMutationEngineService {
     if (operation.operation !== 'setValue' && operation.operation !== 'clear') {
       return { refused: 'unsupported', detail: 'Supported operations are setValue, clear and navigate.' };
     }
+    // A missing value is a malformed operation, not a request to empty the control:
+    // `clear` says that deliberately.
+    if (operation.operation === 'setValue' && operation.value === undefined) {
+      return { refused: 'unsupported', detail: 'setValue needs a value; use clear to empty the control.' };
+    }
     const ref = typeof operation.ref === 'string' ? this.refs.resolve(operation.ref) : null;
     if (!ref) {
       return {
@@ -429,11 +434,17 @@ function withoutSnapshots(change: ClrContextChange): ClrMutationChanges {
   return changes as ClrMutationChanges;
 }
 
-/** Whether a re-prepared operation is still the one that was confirmed. */
+/**
+ * Whether a re-prepared operation is still the one that was confirmed: the same element,
+ * still called what the person was shown — a field relabelled in place, "State" become
+ * "Province", is not what they agreed to fill — and the same value.
+ */
 function sameOperation(confirmed: Prepared, now: Prepared): boolean {
   return (
     confirmed.consequence === now.consequence &&
     confirmed.target.element === now.target.element &&
+    confirmed.target.label === now.target.label &&
+    confirmed.target.type === now.target.type &&
     confirmed.target.url === now.target.url &&
     JSON.stringify(confirmed.target.value ?? null) === JSON.stringify(now.target.value ?? null) &&
     sameValue(confirmed.coerced?.value, now.coerced?.value)

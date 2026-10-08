@@ -96,6 +96,26 @@ class PagedHost {
 }
 
 @Component({
+  template: `
+    <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'single'" [clrDgItemsIdentityFn]="byId">
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+      <clr-dg-footer>
+        <clr-dg-pagination [clrDgPageSize]="2"></clr-dg-pagination>
+      </clr-dg-footer>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class SinglePagedHost {
+  items = servers();
+  selected: Server[] = [];
+  byId = (item: Server) => item.id;
+}
+
+@Component({
   selector: 'clr-test-toggle-host',
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="mode">
@@ -318,6 +338,7 @@ describe('ClrDatagrid element mutator', () => {
         MultiHost,
         SingleHost,
         PagedHost,
+        SinglePagedHost,
         ToggleHost,
         InputHost,
         RedactedHost,
@@ -422,6 +443,24 @@ describe('ClrDatagrid element mutator', () => {
       );
       await settle();
 
+      expect(report.results[0].applied).toBeTrue();
+      expect(names(host.selected)).toEqual(['esx-02']);
+    });
+
+    it('keeps its selection writable when forms are excluded and a cell holds a field', async () => {
+      const host = await create(InputHost);
+      const options = { excludeCategories: ['forms' as const] };
+      const node = gridOf(contextEngine.getSnapshot(options));
+
+      // The input belongs to its cell, the application's content: the snapshot still shows the grid.
+      expect(node.ref).toBeDefined();
+      const report = await engine.apply(
+        [{ operation: 'setValue', ref: String(node.ref), description: '', value: 'esx-02' }],
+        options
+      );
+      await settle();
+
+      expect(report.results[0].refused).toBeUndefined();
       expect(report.results[0].applied).toBeTrue();
       expect(names(host.selected)).toEqual(['esx-02']);
     });
@@ -656,6 +695,30 @@ describe('ClrDatagrid element mutator', () => {
 
       expect(result.applied).toBeTrue();
       expect(host.selected.map(server => server.id)).toEqual([4]);
+    });
+  });
+
+  describe('single selection on another page', () => {
+    it('refuses to replace or clear a selected row the agent was never shown', async () => {
+      const host = await create(SinglePagedHost);
+      host.selected = [host.items[3]];
+      await settle();
+      expect(grid().state?.['selection']).toBeUndefined();
+
+      const replaced = await select('esx-02');
+      expect(replaced.refused).toBe('invalid');
+      expect(replaced.detail).toBe('The selected row is not on this page, and cannot be deselected by an agent.');
+
+      const cleared = await select(null);
+      expect(cleared.refused).toBe('invalid');
+      expect(host.selected.map(server => server.id)).toEqual([4]);
+    });
+
+    it('still selects a row while nothing is selected', async () => {
+      const host = await create(SinglePagedHost);
+
+      expect((await select('esx-02')).applied).toBeTrue();
+      expect(host.selected.map(server => server.id)).toEqual([2]);
     });
   });
 

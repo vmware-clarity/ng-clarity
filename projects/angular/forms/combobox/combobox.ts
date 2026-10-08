@@ -712,8 +712,10 @@ export class ClrCombobox<T>
         if (!this.multiSelect && this.selectedValues().some(value => this.valueShown(value, excluded) !== 'shown')) {
           return { refused: 'The current choice is kept from agents, and cannot be changed by one.' };
         }
+        // The display is what the agent asked for, by the labels it knows: the selection
+        // it was never shown is kept in the value and left out of what it is shown.
         if (proposed === null || proposed === undefined || proposed === '') {
-          return { value: this.multiSelect ? kept : null };
+          return { value: this.multiSelect ? kept : null, display: this.multiSelect ? [] : null };
         }
         const proposals = Array.isArray(proposed) ? proposed : [proposed];
         if (!this.multiSelect && proposals.length > 1) {
@@ -724,23 +726,39 @@ export class ClrCombobox<T>
           option => this.optionShown(option, excluded) === 'shown'
         );
         const values: T[] = [...kept];
+        const labels: string[] = [];
+        // Naming an option twice, or by its label and its value, chooses it once, as the
+        // user can.
+        const choose = (value: T, label: string) => {
+          if (!values.some(chosen => this.sameValue(chosen, value))) {
+            values.push(value);
+            labels.push(label);
+          }
+        };
         for (const proposal of proposals) {
-          const option = items.find(candidate => this.optionMatches(candidate, proposal));
+          const matches = this.matchingOptions(items, proposal);
+          if (matches.length > 1) {
+            return {
+              refused: `Several options read "${String(proposal)}", and nothing tells which one is meant. Leave this choice to the user.`,
+            };
+          }
+          const option = matches[0];
           if (option) {
-            values.push(option.value);
+            choose(option.value, this.optionLabel(option));
           } else if (this.editable && typeof proposal === 'string' && proposal.trim()) {
             // An editable combobox takes what the user types, as it would from the keyboard.
-            values.push(this.optionSelectionService.editableResolver(proposal.trim()));
+            const text = proposal.trim();
+            choose(this.optionSelectionService.editableResolver(text), text);
           } else if (!items.length) {
             return { refused: 'No options are loaded: the combobox loads them as the user types.' };
           } else {
-            const labels = items
+            const named = items
               .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
               .map(candidate => `"${this.optionLabel(candidate)}"`);
-            return { refused: `No such option. The options are: ${labels.join(', ')}.` };
+            return { refused: `No such option. The options are: ${named.join(', ')}.` };
           }
         }
-        return { value: this.multiSelect ? values : values[0] };
+        return this.multiSelect ? { value: values, display: labels } : { value: values[0], display: labels[0] };
       },
       read: (options?: Required<ClrContextSnapshotOptions>) => this.selectedLabels(this.excludedBy(options)),
     });
@@ -833,6 +851,27 @@ export class ClrCombobox<T>
       .filter(entry => entry.shown !== 'excluded')
       .map(entry => (entry.shown === 'shown' ? this.selectedValueLabel(entry.value) : null));
     return this.multiSelect ? names : (names[0] ?? null);
+  }
+
+  /**
+   * The options a proposal names. Two can read the same — two people called "John Smith",
+   * a label that is another option's value — and only one naming them exactly tells
+   * which is meant: the one whose label is the proposal, else the one whose value is.
+   */
+  private matchingOptions(items: ClrOption<T>[], proposal: unknown): ClrOption<T>[] {
+    let matches = items.filter(candidate => this.optionMatches(candidate, proposal));
+    if (matches.length > 1 && typeof proposal === 'string') {
+      const wanted = clrNormalizeContextText(proposal);
+      const byLabel = matches.filter(candidate => clrNormalizeContextText(this.optionLabel(candidate)) === wanted);
+      matches = byLabel.length ? byLabel : matches;
+      const byValue = matches.filter(
+        candidate =>
+          (typeof candidate.value === 'string' || typeof candidate.value === 'number') &&
+          clrNormalizeContextText(String(candidate.value)) === wanted
+      );
+      matches = byValue.length ? byValue : matches;
+    }
+    return matches;
   }
 
   private optionMatches(option: ClrOption<T>, proposal: unknown): boolean {

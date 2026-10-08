@@ -235,7 +235,7 @@ describe('ClrDateInput element mutator', () => {
       it('writes an ISO date as exactly that day, with no time-zone shift', async () => {
         const result = await write('2026-03-05');
 
-        expect(result).toEqual({ value: '03/05/2026' });
+        expect(result).toEqual({ value: '03/05/2026', display: '03/05/2026' });
         expect(control.value).toBe('03/05/2026');
         expect(input.value).toBe('03/05/2026');
         expectSelectedDay(2026, 2, 5);
@@ -255,17 +255,17 @@ describe('ClrDateInput element mutator', () => {
         await write('2026-03-05');
         const held = control.value;
 
-        expect(coerce(held)).toEqual({ value: held });
-        expect(coerce(new Date(2026, 2, 5))).toEqual({ value: held });
+        expect(coerce(held)).toEqual({ value: held, display: held });
+        expect(coerce(new Date(2026, 2, 5))).toEqual({ value: held, display: held });
       });
 
       it('ignores the time of day of a Date', () => {
-        expect(coerce(new Date(2026, 2, 5, 23, 59, 59))).toEqual({ value: '03/05/2026' });
-        expect(coerce(new Date(2026, 2, 5, 0, 0, 0))).toEqual({ value: '03/05/2026' });
+        expect(coerce(new Date(2026, 2, 5, 23, 59, 59))).toEqual({ value: '03/05/2026', display: '03/05/2026' });
+        expect(coerce(new Date(2026, 2, 5, 0, 0, 0))).toEqual({ value: '03/05/2026', display: '03/05/2026' });
       });
 
       it('trims whitespace around an ISO date', () => {
-        expect(coerce('  2026-03-05 ')).toEqual({ value: '03/05/2026' });
+        expect(coerce('  2026-03-05 ')).toEqual({ value: '03/05/2026', display: '03/05/2026' });
       });
 
       it('keeps an ISO year before 100 in its own century', () => {
@@ -276,10 +276,10 @@ describe('ClrDateInput element mutator', () => {
       it('takes null and the empty string as clearing', async () => {
         await write('2026-03-05');
 
-        expect(await write(null)).toEqual({ value: '' });
+        expect(await write(null)).toEqual({ value: '', display: '' });
         expect(control.value).toBe('');
         expect(input.value).toBe('');
-        expect(coerce('')).toEqual({ value: '' });
+        expect(coerce('')).toEqual({ value: '', display: '' });
       });
     });
 
@@ -287,13 +287,19 @@ describe('ClrDateInput element mutator', () => {
       it('takes the calendar day an ISO date-time names, whatever its offset', async () => {
         const result = await write('2026-03-05T23:30:00-05:00');
 
-        expect(result).toEqual({ value: displayOf(new Date(2026, 2, 5)) });
+        expect(result).toEqual({ value: displayOf(new Date(2026, 2, 5)), display: displayOf(new Date(2026, 2, 5)) });
         expectSelectedDay(2026, 2, 5);
       });
 
       it('takes midnight UTC as the day it names, not the day before west of Greenwich', () => {
-        expect(coerce('2026-03-06T00:00:00Z')).toEqual({ value: displayOf(new Date(2026, 2, 6)) });
-        expect(coerce('2026-12-31T23:00:00Z')).toEqual({ value: displayOf(new Date(2026, 11, 31)) });
+        expect(coerce('2026-03-06T00:00:00Z')).toEqual({
+          value: displayOf(new Date(2026, 2, 6)),
+          display: displayOf(new Date(2026, 2, 6)),
+        });
+        expect(coerce('2026-12-31T23:00:00Z')).toEqual({
+          value: displayOf(new Date(2026, 11, 31)),
+          display: displayOf(new Date(2026, 11, 31)),
+        });
       });
 
       it('refuses a date-time that is not a moment', () => {
@@ -318,7 +324,7 @@ describe('ClrDateInput element mutator', () => {
       }
 
       it('accepts the 29th of February in a leap year', () => {
-        expect(coerce('2028-02-29')).toEqual({ value: '02/29/2028' });
+        expect(coerce('2028-02-29')).toEqual({ value: '02/29/2028', display: '02/29/2028' });
       });
 
       it('refuses an invalid Date and anything that is not a date', () => {
@@ -346,7 +352,7 @@ describe('ClrDateInput element mutator', () => {
 
         const result = await write(foreign);
 
-        expect(result).toEqual({ value: '03/05/2026' });
+        expect(result).toEqual({ value: '03/05/2026', display: '03/05/2026' });
         expectSelectedDay(2026, 2, 5);
       });
 
@@ -374,6 +380,29 @@ describe('ClrDateInput element mutator', () => {
         expect(result.value).toBe('03/05/2026');
         expect(control.value).toBe('03/05/2026');
         expect(input.value).toBe('03/05/2026');
+        expectSelectedDay(2026, 2, 5);
+      });
+
+      it('shows the policy the date as the field shows it, whatever form the agent gave it in', () => {
+        const ref = refOf(TestBed.inject(ClrContextEngineService).getSnapshot(), 'When');
+        const engine = TestBed.inject(ClrMutationEngineService);
+
+        for (const value of ['2026-03-05T23:30:00-05:00', '2026-03-05', new Date(2026, 2, 5, 18)]) {
+          const [planned] = engine.plan([{ operation: 'setValue', ref, description: 'When', value }]);
+
+          expect(planned.target?.value).toBe('03/05/2026');
+        }
+      });
+
+      it('moves the picker to a date written while the field has focus', async () => {
+        await set('2026-01-01');
+        input.focus();
+        expect(document.activeElement).toBe(input);
+
+        const result = await set('2026-03-05');
+
+        expect(result.applied).toBeTrue();
+        expect(control.value).toBe('03/05/2026');
         expectSelectedDay(2026, 2, 5);
       });
 
@@ -443,10 +472,10 @@ describe('ClrDateInput element mutator', () => {
     });
 
     it('coerces to the ISO date the native input holds, whatever form it is given in', () => {
-      expect(coerce('2026-07-14')).toEqual({ value: '2026-07-14' });
-      expect(coerce('07/14/2026')).toEqual({ value: '2026-07-14' });
-      expect(coerce(new Date(2026, 6, 14, 23, 30))).toEqual({ value: '2026-07-14' });
-      expect(coerce('2026-03-05T23:30:00-05:00')).toEqual({ value: '2026-03-05' });
+      expect(coerce('2026-07-14')).toEqual({ value: '2026-07-14', display: '07/14/2026' });
+      expect(coerce('07/14/2026')).toEqual({ value: '2026-07-14', display: '07/14/2026' });
+      expect(coerce(new Date(2026, 6, 14, 23, 30))).toEqual({ value: '2026-07-14', display: '07/14/2026' });
+      expect(coerce('2026-03-05T23:30:00-05:00')).toEqual({ value: '2026-03-05', display: '03/05/2026' });
     });
 
     it('refuses an impossible date', () => {
@@ -459,6 +488,16 @@ describe('ClrDateInput element mutator', () => {
       expect(control.value).toBe('2026-11-02');
       expect(input.value).toBe('2026-11-02');
       expectSelectedDay(2026, 10, 2);
+    });
+
+    it('shows the policy the date as the field shows it, not the ISO date it holds', () => {
+      const ref = refOf(TestBed.inject(ClrContextEngineService).getSnapshot(), 'When');
+
+      const [planned] = TestBed.inject(ClrMutationEngineService).plan([
+        { operation: 'setValue', ref, description: 'When', value: '2026-11-02' },
+      ]);
+
+      expect(planned.target?.value).toBe('11/02/2026');
     });
 
     it('writes through the mutation engine and keeps the field', async () => {

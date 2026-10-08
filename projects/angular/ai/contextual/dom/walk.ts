@@ -272,7 +272,8 @@ export function isHiddenFromEngine(element: Element, excludeSelector = ''): bool
 /**
  * Whether a snapshot with these options leaves the element out on purpose: it matches or
  * sits in one of the `excludeSelectors`, in or under an excluded role (a category is a
- * set of roles), holds one — a datagrid host renders the grid it is written through —
+ * set of roles), renders one itself — a datagrid host renders the grid it is written
+ * through, while an input in one of its cells is the application's content —
  * or lies outside every `rootSelector` root. What is hidden, inert, ignored or
  * behind a modal is judged separately, by {@link isHiddenFromEngine} and the modal check.
  * The mutation engine uses this so that it never writes what such a snapshot would not
@@ -295,7 +296,10 @@ export function isOutsideSnapshot(element: Element, options: Required<ClrContext
     if (
       candidates &&
       Array.from(element.querySelectorAll(candidates)).some(
-        inner => excluded.has(resolveRole(inner) ?? '') && !isLeftOutAnyway(inner, excludeSelector)
+        inner =>
+          excluded.has(resolveRole(inner) ?? '') &&
+          !isLeftOutAnyway(inner, excludeSelector) &&
+          isRenderedBy(inner, element)
       )
     ) {
       return true;
@@ -1140,15 +1144,24 @@ function rendersExcludedRole(element: Element, walk: Walk): boolean {
     if (!role || !walk.excludeRoles.has(role) || isLeftOutAnyway(descendant, walk.excludeSelector)) {
       continue;
     }
-    let owner: Element | null = descendant.parentElement;
-    while (owner && owner !== element && !isCustomElementTag(owner)) {
-      owner = owner.parentElement;
-    }
-    if (owner === element) {
+    if (isRenderedBy(descendant, element)) {
       return true;
     }
   }
   return false;
+}
+
+/**
+ * Whether the element itself renders the descendant, rather than another component
+ * inside it: no custom element stands between them. A datagrid renders its grid; the
+ * input in one of its cells belongs to the cell, which holds the application's content.
+ */
+function isRenderedBy(descendant: Element, element: Element): boolean {
+  let owner: Element | null = descendant.parentElement;
+  while (owner && owner !== element && !isCustomElementTag(owner)) {
+    owner = owner.parentElement;
+  }
+  return owner === element;
 }
 
 /**

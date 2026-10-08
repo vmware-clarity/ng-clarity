@@ -631,6 +631,33 @@ describe('ClrMutationEngineService', () => {
         expect(host.ghost.value).toBe('');
       });
 
+      it('refuses a setValue without a value rather than emptying the control', async () => {
+        const page = snapshot();
+        const tags = refOf(page, 'Tags');
+        const grid = nodeOf(
+          page,
+          node => node.element === 'clr-datagrid' && node.state?.['selectionMode'] === 'multi',
+          'multi grid'
+        );
+        await set(tags, 'Tags', ['Red']);
+        await set(String(grid.ref), '', ['esx-01']);
+
+        const report = await engine.apply([
+          { operation: 'setValue', ref: tags, description: 'Tags' } as never,
+          { operation: 'setValue', ref: String(grid.ref), description: '' } as never,
+          { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name' } as never,
+        ]);
+        await settle();
+
+        for (const result of report.results) {
+          expect(result.refused).toBe('unsupported');
+          expect(result.detail).toBe('setValue needs a value; use clear to empty the control.');
+        }
+        expect(host.form.value.tags).toEqual(['red']);
+        expect(host.selectedHosts.map(selected => selected.name)).toEqual(['esx-01']);
+        expect(host.form.value.name).toBe('seed');
+      });
+
       it('refuses an operation it does not know', async () => {
         const report = await engine.apply([{ operation: 'submit' } as never]);
         expect(report.results[0].refused).toBe('unsupported');
@@ -649,9 +676,10 @@ describe('ClrMutationEngineService', () => {
             label: 'Cluster',
             type: 'combobox',
             value: 'Alpha cluster',
-            modelValue: 'alpha',
           })
         );
+        // A component that translates the value itself keeps its model to itself.
+        expect('modelValue' in classify.calls.mostRecent().args[0]).toBeFalse();
       });
 
       it('refuses what the policy forbids', async () => {
@@ -715,6 +743,23 @@ describe('ClrMutationEngineService', () => {
         } finally {
           dialog.remove();
         }
+      });
+
+      it('refuses as stale a write whose field was renamed while the person was asked', async () => {
+        classify.and.returnValue('consequential');
+        const ref = refOf(snapshot(), 'Name');
+        const label = fixture.nativeElement.querySelector('clr-input-container label') as HTMLLabelElement;
+        // The field is relabelled in place while the question is open, and the page is read again.
+        confirm.and.callFake(() => {
+          label.textContent = 'My name';
+          snapshot();
+          return true;
+        });
+
+        const result = await set(ref, 'Name', 'Ada');
+
+        expect(result.refused).toBe('stale');
+        expect(host.form.value.name).toBe('seed');
       });
 
       it('treats a policy that throws as forbidding', async () => {
