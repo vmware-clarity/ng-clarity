@@ -32,6 +32,8 @@ import {
 } from '@angular/core';
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  CLR_CONTEXT_IGNORE_SELECTOR,
+  CLR_CONTEXT_REDACT_SELECTOR,
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
@@ -750,14 +752,52 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * A column as the grid's summary names it — by its header text, without screen-reader
    * additions or withheld text — so that an agent can pair it with the columns it lists;
    * by its field when the header says nothing. A hidden column's header is not rendered,
-   * so its markup is read as markup, without judging style.
+   * so its markup is read as markup, without judging style. A column the application keeps
+   * from agents or the snapshot leaves out, on itself or on anything up to the grid, is
+   * not named at all; nor is one whose header text is all withheld, by its field either,
+   * since that names the very thing withheld.
    */
   private columnName(column: ClrDatagridColumn<T>, excluded: string): string | null {
     const title = column.titleContainer?.nativeElement;
-    const skip = (element: Element) =>
-      element.classList.contains('clr-sr-only') || (!!excluded && element.matches(excluded));
-    const text = title ? clrNormalizeContextText(clrContextText(title.cloneNode(true) as Element, skip), false) : '';
-    return text || column.field || null;
+    if (!title) {
+      return column.field || null;
+    }
+    // Between the column and the grid only what the application marks counts: the grid
+    // hides itself from assistive technology while a detail pane is open, and its columns
+    // are still the same columns.
+    const host = title.closest('clr-dg-column');
+    const grid: HTMLElement = this.el.nativeElement;
+    for (let current: Element | null = title; current && current !== grid; current = current.parentElement) {
+      const marked = host?.contains(current) ? CLR_CONTEXT_WITHHELD_SELECTOR : CLR_CONTEXT_MARKED_SELECTOR;
+      if (current.matches(marked) || (!!excluded && current.matches(excluded))) {
+        return null;
+      }
+    }
+    // What the snapshot excludes is matched in the rendered header, where a selector that
+    // names what is around it still matches, and left out of the copy that is read.
+    const descendants = Array.from(title.querySelectorAll('*'));
+    const copy = title.cloneNode(true) as Element;
+    const copies = Array.from(copy.querySelectorAll('*'));
+    const skipped = new Set(
+      descendants.flatMap((descendant, index) =>
+        descendant.classList.contains('clr-sr-only') || (!!excluded && descendant.matches(excluded))
+          ? [copies[index]]
+          : []
+      )
+    );
+    const text = clrNormalizeContextText(
+      clrContextText(copy, descendant => skipped.has(descendant)),
+      false
+    );
+    if (text) {
+      return text;
+    }
+    const withheld = descendants.some(
+      descendant =>
+        (descendant.matches(CLR_CONTEXT_WITHHELD_SELECTOR) || (!!excluded && descendant.matches(excluded))) &&
+        !!descendant.textContent?.trim()
+    );
+    return withheld ? null : column.field || null;
   }
 
   /** The labels of the first `limit` rows that have one. */
@@ -864,3 +904,6 @@ function withinRow(element: Element, row: Element): Element[] {
   }
   return path;
 }
+
+/** What an application marks to keep from agents: a redacted or an ignored region. */
+const CLR_CONTEXT_MARKED_SELECTOR = `${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_IGNORE_SELECTOR}`;

@@ -172,3 +172,68 @@ describe('ClrDatagrid element context without pagination', () => {
     fixture.destroy();
   });
 });
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column [clrDgField]="'name'" [clrFilterValue]="filter">Name</clr-dg-column>
+      <clr-dg-column [clrDgField]="'salary'" data-clr-context-redact [clrFilterValue]="filter">
+        <ng-container *clrDgHideableColumn="{ hidden: true }">Salary</ng-container>
+      </clr-dg-column>
+      <clr-dg-column [clrDgField]="'ssn'" [clrFilterValue]="filter">
+        <span data-clr-context-redact>Social security number</span>
+      </clr-dg-column>
+      <clr-dg-column [clrDgField]="'code'" class="internal">
+        <ng-container *clrDgHideableColumn="{ hidden: true }">Code</ng-container>
+      </clr-dg-column>
+      <clr-dg-row *clrDgItems="let item of items" [clrDgItem]="item">
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+        <clr-dg-cell>{{ item.name }}</clr-dg-cell>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class WithheldColumnTestComponent {
+  // Matches no row, so that every column with it counts as filtered.
+  filter = 'zzz';
+  items: Node[] = [{ name: 'node-1', status: 'ok' }];
+}
+
+describe('ClrDatagrid element context, columns the application keeps from agents', () => {
+  let fixture: ComponentFixture<WithheldColumnTestComponent>;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrDatagridModule, NoopAnimationsModule],
+      declarations: [WithheldColumnTestComponent],
+    });
+    fixture = TestBed.createComponent(WithheldColumnTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+  });
+
+  afterEach(() => fixture.destroy());
+
+  function published(options: Partial<ClrContextSnapshotOptions> = {}) {
+    const host = fixture.nativeElement.querySelector('clr-datagrid') as HTMLElement & {
+      [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback;
+    };
+    return host[CLR_ELEMENT_CONTEXT_PROPERTY]?.(options as Required<ClrContextSnapshotOptions>);
+  }
+
+  it('names neither a redacted column nor one whose header text is withheld, not even by its field', () => {
+    const state = published()?.state ?? {};
+
+    expect(state['filteredColumns']).toEqual(['Name']);
+    expect(JSON.stringify(state)).not.toMatch(/salary|ssn|social/i);
+  });
+
+  it('leaves out a column the snapshot excludes, matched on the column itself', () => {
+    expect(published()?.state?.['hiddenColumns']).toEqual(['Code']);
+    expect('hiddenColumns' in (published({ excludeSelectors: ['clr-datagrid .internal'] })?.state ?? {})).toBe(false);
+  });
+});
