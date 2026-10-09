@@ -173,14 +173,11 @@ const LEAF_ROLES = new Set([
 ]);
 
 /**
- * Leaf roles that describe a unit of content rather than a single interactive widget.
- * A heading's, an alert's or a status's accessible name subsumes all descendant text —
- * that is correct, unlike-role computation — but ordinary markup routinely nests a
- * genuinely separate, independently focusable control inside one anyway: a heading with
- * a button, an alert with a dismiss action, a status with an undo action, a tree item
- * with its link. That control keeps its own role and state regardless of its
- * container's, so the walk must still find it. A widget leaf (`button`, `link`, `checkbox`, ...) has no such exception:
- * nothing inside it has independent semantics, so it stays fully terminal.
+ * Leaf roles that describe a unit of content rather than a single widget. Their name
+ * already carries the text inside them, but markup routinely nests a separate control in
+ * one — a heading with a button, an alert with a dismiss action, a tree item with its
+ * link — and the walk must still find it. Nothing inside a widget leaf, such as a button
+ * or a checkbox, has semantics of its own.
  */
 const CONTENT_LEAF_ROLES = new Set([
   'heading',

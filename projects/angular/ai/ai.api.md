@@ -53,9 +53,6 @@ export interface ClrAvailableRoute {
 }
 
 // @public
-export function clrCollectDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];
-
-// @public
 export function clrCollectDomContextTree(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrContextTreeResult;
 
 // @public
@@ -63,7 +60,6 @@ export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
-    ref?: string;
     state?: Record<string, unknown>;
     type: string;
 }

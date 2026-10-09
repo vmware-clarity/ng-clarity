@@ -931,9 +931,6 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 // @public
 export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
 
-// @public
-export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
-
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 
@@ -945,9 +942,6 @@ export const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
-
-// @public
-export const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
 
 // @public (undocumented)
 export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT: InjectionToken<ClrFileMessagesTemplateContext>;
@@ -2128,7 +2122,6 @@ export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
-    ref?: string;
     state?: Record<string, unknown>;
     type: string;
 }
@@ -2163,9 +2156,6 @@ export interface ClrContextSnapshotOptions {
     maxTextLength?: number;
     rootSelector?: string;
 }
-
-// @public
-export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string;
 
 // @public (undocumented)
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
@@ -3633,23 +3623,6 @@ export class ClrDropdownTrigger {
 // @public
 export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
 
-// @public
-export type ClrElementMutation = {
-    value: unknown;
-    refused?: never;
-} | {
-    refused: string;
-    value?: never;
-};
-
-// @public
-export interface ClrElementMutator {
-    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
-    ownsContents?: boolean;
-    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
-    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
-}
-
 // @public (undocumented)
 export class ClrEmphasisModule {
     // (undocumented)
@@ -4719,9 +4692,6 @@ export class ClrNavLevel implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }
 
-// @public
-export function clrNormalizeContextText(text: string, lowercase?: boolean): string;
-
 // @public (undocumented)
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
     constructor(focusService: FormsFocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
@@ -5272,9 +5242,6 @@ export class ClrProgressBarModule {
 
 // @public
 export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
-
-// @public
-export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {

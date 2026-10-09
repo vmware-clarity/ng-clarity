@@ -8,32 +8,41 @@
 import { ClrComponentContext, ClrContextSnapshotOptions, clrPublishElementContext } from '@clr/angular/utils';
 
 import { withoutValues } from './aria-state';
-import { collectContextTreeWithin, topmostModal } from './walk';
+import { ClrContextTreeResult, collectContextTreeWithin } from './walk';
 import { resolveSnapshotOptions } from '../snapshot-options';
 
-describe('collectContextTree', () => {
-  let container: HTMLElement;
+/** The element each spec renders into, attached to the page for the spec's duration. */
+let container: HTMLElement;
 
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> =>
-    resolveSnapshotOptions({ maxComponents: 100, ...overrides });
-
+/** Gives each spec in the calling `describe` a fresh {@link container}. */
+function useContainer(): void {
   beforeEach(() => {
     container = document.createElement('div');
     document.body.appendChild(container);
   });
+  afterEach(() => container.remove());
+}
 
-  afterEach(() => {
-    container.remove();
-  });
+function budgets(overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> {
+  return resolveSnapshotOptions({ maxComponents: 100, ...overrides });
+}
 
-  function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}): ClrComponentContext[] {
-    container.innerHTML = html;
-    return collectContextTreeWithin(container, budgets(overrides)).components;
-  }
+/** Renders `html` into the container and walks it. */
+function collectTree(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}): ClrContextTreeResult {
+  container.innerHTML = html;
+  return collectContextTreeWithin(container, budgets(overrides));
+}
 
-  function types(nodes: ClrComponentContext[] | undefined): string[] {
-    return (nodes ?? []).map(node => node.type);
-  }
+function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}): ClrComponentContext[] {
+  return collectTree(html, overrides).components;
+}
+
+function types(nodes: ClrComponentContext[] | undefined): string[] {
+  return (nodes ?? []).map(node => node.type);
+}
+
+describe('collectContextTree', () => {
+  useContainer();
 
   it('describes an element by its ARIA role', () => {
     const [node] = collect('<div role="dialog" aria-label="Add rule"></div>');
@@ -432,28 +441,7 @@ describe('collectContextTree', () => {
 });
 
 describe('collectContextTree, what a summary must not hide', () => {
-  let container: HTMLElement;
-
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> =>
-    resolveSnapshotOptions({ maxComponents: 100, ...overrides });
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    container.remove();
-  });
-
-  function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}): ClrComponentContext[] {
-    container.innerHTML = html;
-    return collectContextTreeWithin(container, budgets(overrides)).components;
-  }
-
-  function types(nodes: ClrComponentContext[] | undefined): string[] {
-    return (nodes ?? []).map(node => node.type);
-  }
+  useContainer();
 
   it('reports the commands a menu offers', () => {
     const [menu] = collect(
@@ -596,28 +584,7 @@ describe('collectContextTree, what a summary must not hide', () => {
 });
 
 describe('collectContextTree, text and frames', () => {
-  let container: HTMLElement;
-
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> =>
-    resolveSnapshotOptions({ maxComponents: 100, ...overrides });
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => {
-    container.remove();
-  });
-
-  function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}): ClrComponentContext[] {
-    container.innerHTML = html;
-    return collectContextTreeWithin(container, budgets(overrides)).components;
-  }
-
-  function types(nodes: ClrComponentContext[] | undefined): string[] {
-    return (nodes ?? []).map(node => node.type);
-  }
+  useContainer();
 
   function frameWith(
     html: string,
@@ -839,17 +806,7 @@ describe('collectContextTree, text and frames', () => {
 });
 
 describe('collectContextTreeWithin', () => {
-  let container: HTMLElement;
-
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> =>
-    resolveSnapshotOptions({ maxComponents: 100, ...overrides });
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => container.remove());
+  useContainer();
 
   it('says when the budget ran out before the page did', () => {
     container.innerHTML = '<button>a</button><button>b</button><button>c</button>';
@@ -878,10 +835,7 @@ describe('collectContextTreeWithin', () => {
 });
 
 describe('collectContextTree, choosing what to collect', () => {
-  let container: HTMLElement;
-
-  const budgets = (overrides: Partial<ClrContextSnapshotOptions> = {}): Required<ClrContextSnapshotOptions> =>
-    resolveSnapshotOptions({ maxComponents: 100, ...overrides });
+  useContainer();
 
   const PAGE = `
     <header><nav aria-label="Main"><a href="/hosts">Hosts</a><a href="/vms">VMs</a></nav></header>
@@ -892,55 +846,42 @@ describe('collectContextTree, choosing what to collect', () => {
     </main>
     <footer>v2.0</footer>`;
 
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => container.remove());
-
-  function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}) {
-    container.innerHTML = html;
-    return collectContextTreeWithin(container, budgets(overrides));
-  }
-
-  function types(nodes: ClrComponentContext[] | undefined): string[] {
-    return (nodes ?? []).map(node => node.type);
-  }
-
   it('leaves out whole subtrees by role, which is how the page layout is dropped', () => {
-    const { components } = collect(PAGE, { excludeRoles: ['navigation', 'contentinfo'] });
+    const { components } = collectTree(PAGE, { excludeRoles: ['navigation', 'contentinfo'] });
     expect(types(components)).toEqual(['banner', 'main']);
     expect(components[0].children).toBeUndefined();
     expect(types(components[1].children)).toEqual(['heading', 'text', 'form']);
   });
 
   it('leaves out whole subtrees by selector, for layout that cannot be annotated', () => {
-    const { components } = collect(PAGE, { excludeSelectors: ['header', 'footer'] });
+    const { components } = collectTree(PAGE, { excludeSelectors: ['header', 'footer'] });
     expect(types(components)).toEqual(['main']);
   });
 
   it('ignores a selector the document does not accept rather than failing the snapshot', () => {
-    const { components } = collect(PAGE, { excludeSelectors: ['[[nonsense'] });
+    const { components } = collectTree(PAGE, { excludeSelectors: ['[[nonsense'] });
     expect(types(components)).toEqual(['banner', 'main', 'contentinfo']);
   });
 
   it('describes only what the root selector picks out', () => {
-    const { components } = collect(PAGE, { rootSelector: 'main' });
+    const { components } = collectTree(PAGE, { rootSelector: 'main' });
     expect(types(components)).toEqual(['main']);
     expect(types(components[0].children)).toEqual(['heading', 'text', 'form']);
   });
 
   it('does not let a root selector reach into an ignored region', () => {
-    const { components } = collect(`${PAGE}<div data-clr-context-ignore><form><button>Secret</button></form></div>`, {
-      rootSelector: 'form',
-    });
+    const { components } = collectTree(
+      `${PAGE}<div data-clr-context-ignore><form><button>Secret</button></form></div>`,
+      {
+        rootSelector: 'form',
+      }
+    );
     expect(components.length).toBe(1);
     expect(types(components[0].children)).toEqual(['textbox', 'button']);
   });
 
   it('does not let a root selector reach into a redacted region', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       `${PAGE}<div data-clr-context-redact><main><label for="c">Card</label><input id="c" value="4111 1111" /><p>CVC 123</p></main></div>`,
       { rootSelector: 'main' }
     );
@@ -952,16 +893,16 @@ describe('collectContextTree, choosing what to collect', () => {
 
   it('does not let a root selector reach into a region hidden from assistive technology or inert', () => {
     const html = `${PAGE}<div aria-hidden="true"><form class="x"><button>Behind</button></form></div><div inert><form class="x"><button>Inert</button></form></div>`;
-    expect(collect(html, { rootSelector: 'form.x' }).components).toEqual([]);
+    expect(collectTree(html, { rootSelector: 'form.x' }).components).toEqual([]);
   });
 
   it('does not let a root selector reach into an excluded region', () => {
     const html = `${PAGE}<aside><form class="x"><button>Aside</button></form></aside>`;
-    expect(collect(html, { rootSelector: 'form.x', excludeSelectors: ['aside'] }).components).toEqual([]);
+    expect(collectTree(html, { rootSelector: 'form.x', excludeSelectors: ['aside'] }).components).toEqual([]);
   });
 
   it('never reads excluded text into a name, a description or a summary', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       `<button aria-labelledby="l">Go</button><span id="l">Pay <span class="secret">ACC-1</span></span>
        <input aria-label="Amount" aria-describedby="d" /><div id="d">Limit <b class="secret">ACC-2</b></div>
        <ul><li>One <i class="secret">ACC-3</i></li></ul>
@@ -975,17 +916,17 @@ describe('collectContextTree, choosing what to collect', () => {
   });
 
   it('describes nothing for a root selector the document rejects, rather than the whole page', () => {
-    expect(collect(PAGE, { rootSelector: '[[[' }).components).toEqual([]);
-    expect(collect(PAGE, { rootSelector: 'aside' }).components).toEqual([]);
+    expect(collectTree(PAGE, { rootSelector: '[[[' }).components).toEqual([]);
+    expect(collectTree(PAGE, { rootSelector: 'aside' }).components).toEqual([]);
   });
 
   it('keeps every valid exclusion when one entry of excludeSelectors is invalid', () => {
-    const { components } = collect(PAGE, { excludeSelectors: ['[[[', 'header'] });
+    const { components } = collectTree(PAGE, { excludeSelectors: ['[[[', 'header'] });
     expect(types(components)).toEqual(['main', 'contentinfo']);
   });
 
   it('does not let modal focus reach into a redacted region', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       `${PAGE}<div data-clr-context-redact><div role="dialog" aria-modal="true" aria-label="Pay"><input aria-label="Card" value="4111 1111" /></div></div>`,
       { focus: 'modal' }
     );
@@ -1002,24 +943,24 @@ describe('collectContextTree, choosing what to collect', () => {
         (_, i) => `<div role="row"><div role="gridcell"><input aria-label="Note ${i}" /></div></div>`
       ).join('')}</div>`;
 
-    expect(collect(grid(2), { maxItemsPerCollection: 2 }).truncated).toBe(false);
-    const capped = collect(grid(3), { maxItemsPerCollection: 2 });
+    expect(collectTree(grid(2), { maxItemsPerCollection: 2 }).truncated).toBe(false);
+    const capped = collectTree(grid(3), { maxItemsPerCollection: 2 });
     expect(capped.truncated).toBe(true);
     expect(capped.components[0].children?.length).toBe(2);
   });
 
   it('caps nesting depth, counting only nodes that appear in the snapshot', () => {
-    const one = collect(PAGE, { maxDepth: 1 }).components;
+    const one = collectTree(PAGE, { maxDepth: 1 }).components;
     expect(types(one)).toEqual(['banner', 'main', 'contentinfo']);
     expect(one.every(node => !node.children)).toBe(true);
 
-    const two = collect(PAGE, { maxDepth: 2 }).components;
+    const two = collectTree(PAGE, { maxDepth: 2 }).components;
     expect(types(two[1].children)).toEqual(['heading', 'text', 'form']);
     expect(two[1].children?.[2].children).toBeUndefined();
   });
 
   it('describes only the open modal dialog under modal focus', () => {
-    const result = collect(
+    const result = collectTree(
       `${PAGE}<div role="dialog" aria-modal="true" aria-label="Add host"><input aria-label="Name" /><button>Add</button></div>`,
       { focus: 'modal' }
     );
@@ -1029,7 +970,7 @@ describe('collectContextTree, choosing what to collect', () => {
   });
 
   it('takes the topmost dialog when several are open', () => {
-    const result = collect(
+    const result = collectTree(
       `<div role="dialog" aria-modal="true" aria-label="First"></div><div role="dialog" aria-modal="true" aria-label="Second"></div>`,
       { focus: 'modal' }
     );
@@ -1042,20 +983,21 @@ describe('collectContextTree, choosing what to collect', () => {
     // A dialog opened with show(), and an alert dialog that does not say it is modal,
     // leave the page in use.
     dialog.show();
-    expect(topmostModal(container)).toBeNull();
     expect(collectContextTreeWithin(container, resolveSnapshotOptions({ focus: 'modal' })).focus).toBeUndefined();
 
     dialog.close();
     dialog.showModal();
     try {
-      expect(topmostModal(container)).toBe(dialog);
+      const result = collectContextTreeWithin(container, resolveSnapshotOptions({ focus: 'modal' }));
+      expect(result.focus).toBe('modal');
+      expect(result.components.map(node => node.label)).toEqual(['Tip']);
     } finally {
       dialog.close();
     }
   });
 
   it('does not let modal focus step outside the root selector', () => {
-    const result = collect(
+    const result = collectTree(
       `${PAGE}<div role="dialog" aria-modal="true" aria-label="Elsewhere"><button>Leave</button></div>`,
       { rootSelector: 'main', focus: 'modal' }
     );
@@ -1065,7 +1007,7 @@ describe('collectContextTree, choosing what to collect', () => {
   });
 
   it('takes the topmost open dialog inside the root selector under modal focus', () => {
-    const result = collect(
+    const result = collectTree(
       `<main><div role="dialog" aria-modal="true" aria-label="Inside"><button>Stay</button></div></main>
        <div role="dialog" aria-modal="true" aria-label="Outside"><button>Leave</button></div>`,
       { rootSelector: 'main', focus: 'modal' }
@@ -1076,11 +1018,11 @@ describe('collectContextTree, choosing what to collect', () => {
 
   it('does not let a root selector reach into a region of an excluded role', () => {
     const html = `${PAGE}<aside><form class="x"><button>Aside</button></form></aside>`;
-    expect(collect(html, { rootSelector: 'form.x', excludeRoles: ['complementary'] }).components).toEqual([]);
+    expect(collectTree(html, { rootSelector: 'form.x', excludeRoles: ['complementary'] }).components).toEqual([]);
   });
 
   it('does not let modal focus reach into a region of an excluded role', () => {
-    const result = collect(
+    const result = collectTree(
       `${PAGE}<aside><div role="dialog" aria-modal="true" aria-label="Panel"><button>Hidden</button></div></aside>`,
       { focus: 'modal', excludeRoles: ['complementary'] }
     );
@@ -1090,13 +1032,13 @@ describe('collectContextTree, choosing what to collect', () => {
   });
 
   it('describes the whole page under modal focus while no modal is open', () => {
-    const result = collect(`${PAGE}<div role="dialog" aria-modal="true" hidden></div>`, { focus: 'modal' });
+    const result = collectTree(`${PAGE}<div role="dialog" aria-modal="true" hidden></div>`, { focus: 'modal' });
     expect(result.focus).toBeUndefined();
     expect(types(result.components)).toEqual(['banner', 'main', 'contentinfo']);
   });
 
   it('reduces collections to counts and selection in summary mode', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       `<div role="tablist"><button role="tab">One</button><button role="tab" aria-selected="true">Two</button></div>
        <select aria-label="Size"><option>S</option><option selected>M</option></select>
        <ul><li>a</li><li>b</li></ul>`,
@@ -1109,16 +1051,9 @@ describe('collectContextTree, choosing what to collect', () => {
 });
 
 describe('collectContextTree, leaving out whole kinds of content', () => {
-  let container: HTMLElement;
+  useContainer();
 
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => container.remove());
-
-  function collect(html: string, options: ClrContextSnapshotOptions): string[] {
+  function collectTypes(html: string, options: ClrContextSnapshotOptions): string[] {
     container.innerHTML = html;
     const flatten = (nodes: ClrComponentContext[]): string[] =>
       nodes.flatMap(node => [node.type, ...flatten(node.children ?? [])]);
@@ -1134,38 +1069,25 @@ describe('collectContextTree, leaving out whole kinds of content', () => {
     <ul><li><a href="/a">a</a></li></ul>`;
 
   it('drops every button, link and menu with the actions category', () => {
-    const types = collect(PAGE, { excludeCategories: ['actions'] });
-    expect(types).not.toContain('button');
-    expect(types).not.toContain('link');
-    expect(types).toContain('textbox');
-    expect(types).toContain('heading');
+    const found = collectTypes(PAGE, { excludeCategories: ['actions'] });
+    expect(found).not.toContain('button');
+    expect(found).not.toContain('link');
+    expect(found).toContain('textbox');
+    expect(found).toContain('heading');
   });
 
   it('drops forms with their controls, headings, status and collections by category', () => {
-    const types = collect(PAGE, { excludeCategories: ['forms', 'headings', 'status', 'collections'] });
-    expect(types).toEqual(['text', 'link']);
+    const found = collectTypes(PAGE, { excludeCategories: ['forms', 'headings', 'status', 'collections'] });
+    expect(found).toEqual(['text', 'link']);
   });
 
   it('drops prose with the text category', () => {
-    expect(collect(PAGE, { excludeCategories: ['text'] })).not.toContain('text');
+    expect(collectTypes(PAGE, { excludeCategories: ['text'] })).not.toContain('text');
   });
 });
 
 describe('collectContextTree, markup it did not expect', () => {
-  let container: HTMLElement;
-  const options = () => resolveSnapshotOptions({ maxComponents: 100 });
-
-  beforeEach(() => {
-    container = document.createElement('div');
-    document.body.appendChild(container);
-  });
-
-  afterEach(() => container.remove());
-
-  function collect(html: string, overrides: Partial<ClrContextSnapshotOptions> = {}) {
-    container.innerHTML = html;
-    return collectContextTreeWithin(container, resolveSnapshotOptions({ maxComponents: 100, ...overrides }));
-  }
+  useContainer();
 
   it('describes an element whose role or type names something every object has', () => {
     for (const name of [
@@ -1180,7 +1102,7 @@ describe('collectContextTree, markup it did not expect', () => {
       'constructor',
       '__proto__',
     ]) {
-      const { components } = collect(
+      const { components } = collectTree(
         `<div role="${name}">x</div><select role="${name}"><option>a</option></select><input type="${name}" aria-label="F" /><button>ok</button>`
       );
       expect(components.some(node => node.type === 'button'))
@@ -1193,7 +1115,7 @@ describe('collectContextTree, markup it did not expect', () => {
   });
 
   it('reads an editing host as a text field whatever role it claims', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       `<div contenteditable role="document" aria-label="Notes editor"><p>typed secret alpha</p></div>
        <h2 contenteditable>typed secret beta</h2>
        <div contenteditable role="presentation"><p>typed secret gamma</p></div>
@@ -1212,7 +1134,7 @@ describe('collectContextTree, markup it did not expect', () => {
     container.appendChild(frame);
     await loaded;
 
-    const [node] = collectContextTreeWithin(container, options()).components;
+    const [node] = collectContextTreeWithin(container, budgets()).components;
     expect(node.type).toBe('textbox');
     expect(node.label).toBe('Rich text area');
     expect(node.state?.value).toBe('typed secret delta');
@@ -1221,13 +1143,13 @@ describe('collectContextTree, markup it did not expect', () => {
     const contents = frame.contentDocument as Document;
     contents.body.removeAttribute('contenteditable');
     contents.designMode = 'on';
-    const [designed] = collectContextTreeWithin(container, options()).components;
+    const [designed] = collectContextTreeWithin(container, budgets()).components;
     expect(designed.type).toBe('textbox');
     expect(designed.children).toBeUndefined();
   });
 
   it('describes a root that sits inside another root once', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       '<section class="root"><section class="root" aria-label="Inner"><button>Save</button></section></section>',
       { rootSelector: '.root' }
     );
@@ -1235,7 +1157,7 @@ describe('collectContextTree, markup it did not expect', () => {
   });
 
   it('reports how far a native progress bar or meter shows, and no value while indeterminate', () => {
-    const nodes = collect(
+    const nodes = collectTree(
       '<progress aria-label="Upload" value="40" max="100"></progress><progress aria-label="Waiting"></progress>' +
         '<meter aria-label="Disk" min="0" max="1" value="0.7"></meter>'
     );
@@ -1257,7 +1179,7 @@ describe('collectContextTree, markup it did not expect', () => {
     shallow.textContent = 'Shallow';
     container.appendChild(shallow);
 
-    const result = collectContextTreeWithin(container, options());
+    const result = collectContextTreeWithin(container, budgets());
     expect(result.components.map(node => node.label)).toEqual(['Shallow']);
     expect(result.truncated).toBe(true);
   });
@@ -1271,13 +1193,15 @@ describe('collectContextTree, markup it did not expect', () => {
     }
     innermost.textContent = 'leaf';
 
-    const result = collectContextTreeWithin(container, options());
+    const result = collectContextTreeWithin(container, budgets());
     expect(result.components.map(node => node.label)).toEqual(['Deep']);
   });
 
   it('does not read the plain items of a summarised list, whatever its length', () => {
     const items = Array.from({ length: 3000 }, (_, index) => `<li><span>Item ${index}</span></li>`).join('');
-    const result = collect(`<ul aria-label="Many">${items}<li><a href="/x">Link</a></li></ul><button>After</button>`);
+    const result = collectTree(
+      `<ul aria-label="Many">${items}<li><a href="/x">Link</a></li></ul><button>After</button>`
+    );
 
     expect(result.truncated).toBe(false);
     const [list, button] = result.components;
@@ -1288,14 +1212,14 @@ describe('collectContextTree, markup it did not expect', () => {
 
   it('stops after looking at as many elements as a walk may, and says the snapshot was cut off', () => {
     container.innerHTML = '<div></div>'.repeat(25_100) + '<button>Late</button>';
-    const result = collectContextTreeWithin(container, options());
+    const result = collectContextTreeWithin(container, budgets());
 
     expect(result.components).toEqual([]);
     expect(result.truncated).toBe(true);
   });
 
   it('reads no description or name from an element hidden from assistive technology or inert', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       `<input aria-label="Code" aria-describedby="h i v" />
        <span id="h" aria-hidden="true">HIDDEN-TEXT</span><span id="i" inert>INERT-TEXT</span><span id="v">Six digits</span>
        <button aria-labelledby="l">Go</button><span id="l" aria-hidden="true">HIDDEN-NAME</span>`
@@ -1307,7 +1231,7 @@ describe('collectContextTree, markup it did not expect', () => {
   });
 
   it('reports the link a tree item holds', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       '<div role="tree"><div role="treeitem" aria-expanded="false"><a href="/hosts">Hosts</a></div></div>'
     );
     const [item] = components[0].children ?? [];
@@ -1317,7 +1241,7 @@ describe('collectContextTree, markup it did not expect', () => {
   });
 
   it('takes no name from a label, legend or caption nobody sees', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       `<label for="a" hidden>SMUGGLED-1</label><input id="a" />
        <label for="b" aria-hidden="true">SMUGGLED-2</label><input id="b" />
        <label for="c" style="display: none">SMUGGLED-3</label><input id="c" />
@@ -1344,7 +1268,7 @@ describe('collectContextTree, markup it did not expect', () => {
       clrPublishElementContext(container.querySelector('x-tabs') as Element, () => ({ state: { panels: 2 } })),
     ];
     try {
-      const json = JSON.stringify(collectContextTreeWithin(container, options()).components);
+      const json = JSON.stringify(collectContextTreeWithin(container, budgets()).components);
       expect(json).toContain('secret-row-1');
 
       const excluded = JSON.stringify(
@@ -1360,7 +1284,7 @@ describe('collectContextTree, markup it did not expect', () => {
   });
 
   it('never names a hidden, redacted or excluded selected option as a select’s value', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       `<select aria-label="Account"><option data-clr-context-redact selected>ACC-1234</option><option>Other</option></select>
        <select aria-label="Plan"><option class="x" selected>Gold</option><option>Basic</option></select>
        <select aria-label="Tier"><optgroup data-clr-context-redact><option selected>SECRET-TIER</option></optgroup><option>Open</option></select>
@@ -1376,7 +1300,7 @@ describe('collectContextTree, markup it did not expect', () => {
   });
 
   it('takes no name from a label that is itself marked redacted, even wrapped around its field', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       `<label data-clr-context-redact><input type="checkbox" /> Account 4111-SECRET</label>
        <div data-clr-context-redact><label for="x">Card holder</label><input id="x" /></div>`
     );
@@ -1387,14 +1311,14 @@ describe('collectContextTree, markup it did not expect', () => {
   });
 
   it('leaves out a list item that a display: contents wrapper sits in a hidden parent of', () => {
-    const { components } = collect(
+    const { components } = collectTree(
       '<ul><div style="display: none"><li style="display: contents">HIDDEN-LI</li></div><li>Shown</li></ul>'
     );
     expect(JSON.stringify(components)).not.toContain('HIDDEN-LI');
   });
 
   it('shortens a name without splitting a character in two', () => {
-    const { components } = collect(`<button>${'a'.repeat(98)}😀 tail</button>`);
+    const { components } = collectTree(`<button>${'a'.repeat(98)}😀 tail</button>`);
     const label = components[0].label as string;
     expect(label.endsWith('…')).toBe(true);
     expect(/[\ud800-\udbff]…$/.test(label)).toBe(false);
