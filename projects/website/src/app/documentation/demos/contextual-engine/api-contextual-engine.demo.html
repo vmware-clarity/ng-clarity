@@ -657,22 +657,44 @@
     <tr>
       <td class="left"><b cds-text="medium">clr-combobox</b></td>
       <td class="left">
-        <code cds-text="code">multiSelect</code>, <code cds-text="code">options</code>,
-        <code cds-text="code">redactedOptions</code> (how many options are withheld),
-        <code cds-text="code">matchingOptions</code> and <code cds-text="code">redactedMatchingOptions</code> (values;
-        in place of <code cds-text="code">options</code> and <code cds-text="code">redactedOptions</code> while the list
-        is narrowed to the text in the input by <code cds-text="code">*clrOptionItems</code>, and, for a combobox whose
-        <code cds-text="code">clrInputChange</code> the application listens to, whenever text is in the input or there
-        is any list, written-out options included, since such a list may answer earlier text, a picked label or a search
-        kept from an earlier instance; a picked option's label left in the input counts as text),
-        <code cds-text="code">matchingOptionsPending</code> (value; alongside them while
-        <code cds-text="code">clrLoading</code> on the combobox says a search for the text in the input is still
-        running), <code cds-text="code">optionsPending</code> (while <code cds-text="code">clrLoading</code> is set and
-        the list is not narrowed to text in the input, as on opening an empty combobox or after clearing it),
-        <code cds-text="code">optionCount</code>, or <code cds-text="code">matchingOptionCount</code> (value) while
-        narrowed, in place of the lists in a <code cds-text="code">summary</code> snapshot, counting redacted options
-        too, <code cds-text="code">optionsAvailable</code> (false while the list is empty and not narrowed to typed
-        text, as before a search loads it), <code cds-text="code">value</code> (value)
+        <ul class="list">
+          <li><code cds-text="code">multiSelect</code></li>
+          <li>
+            <code cds-text="code">options</code> and <code cds-text="code">redactedOptions</code> (how many options are
+            withheld)
+          </li>
+          <li>
+            <code cds-text="code">matchingOptions</code> and <code cds-text="code">redactedMatchingOptions</code>
+            (values), in their place while the list may be narrowed to what the user entered:
+            <ul class="list">
+              <li>while <code cds-text="code">*clrOptionItems</code> filters it by the text in the input;</li>
+              <li>
+                when the application listens to <code cds-text="code">clrInputChange</code>, while text is in the input,
+                a picked option's label included;
+              </li>
+              <li>
+                for such a combobox, also whenever there is any list, written-out options included, since it may answer
+                earlier text or a search kept from an earlier instance.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code cds-text="code">matchingOptionsPending</code> (value) while
+            <code cds-text="code">clrLoading</code> says a search for the text in the input is running;
+            <code cds-text="code">optionsPending</code> while it is set otherwise, as on opening an empty combobox or
+            after clearing it
+          </li>
+          <li>
+            <code cds-text="code">optionCount</code>, or <code cds-text="code">matchingOptionCount</code> (value) while
+            narrowed, in place of the lists in a <code cds-text="code">summary</code> snapshot, counting redacted
+            options too
+          </li>
+          <li>
+            <code cds-text="code">optionsAvailable</code>: false while the list is empty and not narrowed, as before a
+            search loads it
+          </li>
+          <li><code cds-text="code">value</code> (value)</li>
+        </ul>
       </td>
     </tr>
     <tr>
