@@ -144,6 +144,11 @@
     .clr-form {
       padding: 0;
     }
+
+    // The content stays displayed while its height collapses.
+    &.clr-collapse-leave {
+      display: block;
+    }
   }
 
   .#{$prefix}-inner-content {

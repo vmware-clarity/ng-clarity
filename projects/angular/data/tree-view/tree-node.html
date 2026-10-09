@@ -70,9 +70,11 @@
     }
   </ng-template>
 </div>
+<!-- Bulk operations (expand all, expand descendants) toggle without animation: see .is-instant in the styles. -->
 <div
   class="clr-treenode-children"
-  [@toggleChildrenAnim]="childrenAnimationState"
+  [class.is-expanded]="expandService.expanded"
+  [class.is-instant]="childrenAnimationState.endsWith('Instant')"
   [attr.role]="isExpandable() && !featuresService.recursion ? 'group' : null"
   [attr.inert]="expandService.expanded ? null : ''"
 >

@@ -5,15 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationEvent } from '@angular/animations';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { delay, expectActiveElementToBe } from '@clr/angular/testing';
+import { delay, enableCssAnimations, expectActiveElementToBe, finishAnimations } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
 import { ClrModal } from './modal';
+import { ModalStackService } from './modal-stack.service';
 import { ClrModalModule } from './modal.module';
 
 @Component({
@@ -72,7 +71,7 @@ describe('Modal', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrModalModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrModalModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
@@ -105,6 +104,7 @@ describe('Modal', () => {
   it('should set aria-hidden attribute to false if opened', async () => {
     fixture.componentInstance.opened = false;
     fixture.detectChanges();
+    await fixture.whenStable(); // Angular removes the modal once its (disabled) leave animation is done
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
     // open modal
     modal.open();
@@ -134,24 +134,35 @@ describe('Modal', () => {
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
   });
 
-  it('should not emit clrModalOpenChange - animation will do that for us', async () => {
-    /**
-     * Needed just to mock the event so I could enter the `if` statement.
-     */
-    const fakeAnimationEvent: AnimationEvent = {
-      fromState: '',
-      toState: 'void',
-      totalTime: 0,
-      phaseName: '',
-      element: {},
-      triggerName: '',
-      disabled: false,
-    };
+  it('emits clrModalOpenChange only once when the two-way binding propagates the closing', async () => {
+    // Mimics an application: close() runs from an event handler, the notification microtask updates the
+    // two-way bound property and only then does change detection see the input flip to false.
+    spyOn(modal._openChanged, 'emit').and.callThrough();
+    modal.close();
+    await delay();
+    expect(fixture.componentInstance.opened).toBe(false);
 
+    fixture.detectChanges();
+    await delay();
+    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+  });
+
+  it('stops tracking the modal in the modal stack when destroyed while open', () => {
+    const modalStackService = TestBed.inject(ModalStackService);
+    spyOn(modalStackService, 'trackModalClose');
+    fixture.destroy();
+    expect(modalStackService.trackModalClose).toHaveBeenCalledWith(modal);
+  });
+
+  it('emits clrModalOpenChange once the modal has been removed after closing', async () => {
     spyOn(modal._openChanged, 'emit');
     modal.close();
-    modal.fadeDone(fakeAnimationEvent);
-    expect(modal._openChanged.emit).toHaveBeenCalledTimes(1);
+    expect(modal._openChanged.emit).not.toHaveBeenCalled();
+
+    fixture.detectChanges();
+    await delay();
+    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+    expect(fixture.nativeElement.querySelector('.modal-dialog')).toBeNull();
   });
 
   it('should not close when already closed', async () => {
@@ -345,5 +356,225 @@ describe('Modal', () => {
     const maybleCloseButton = modalHeader.children[1];
     expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
     expect(maybleCloseButton.classList.contains('close')).toBeTrue();
+  });
+});
+
+describe('Modal with animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let modal: ClrModal;
+  let openChanges: boolean[];
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [CdkTrapFocusModule, ClrModalModule],
+      declarations: [TestComponent],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+    modal = fixture.componentInstance.modalInstance;
+    openChanges = [];
+    modal._openChanged.subscribe((open: boolean) => openChanges.push(open));
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function modalElement(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.modal');
+  }
+
+  async function finishClosing() {
+    finishAnimations(fixture.nativeElement);
+    // The `animationend` events of the finished animations, which complete the leave animation, are dispatched with
+    // the next frame.
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    await delay();
+  }
+
+  it('stays rendered while it animates out, and notifies the closing right away', async () => {
+    modal.close();
+    fixture.detectChanges();
+
+    expect(modalElement()).not.toBeNull();
+    expect(modalElement().classList).toContain('clr-modal-leave');
+    expect(modalElement().classList).toContain('clr-modal-leave-down');
+    await delay();
+    expect(openChanges).toEqual([false]);
+
+    await finishClosing();
+
+    expect(modalElement()).toBeNull();
+    expect(fixture.componentInstance.opened).toBeFalse();
+  });
+
+  it('can be opened again while it animates out', async () => {
+    modal.close();
+    fixture.detectChanges();
+    modal.open();
+    fixture.detectChanges();
+
+    // The leaving modal stays until its animation is done; the reopened one is a new modal.
+    const reopened = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.modal')).filter(
+      element => !element.classList.contains('clr-modal-leave')
+    );
+    expect(reopened.length).toBe(1);
+
+    await finishClosing();
+
+    expect(fixture.nativeElement.querySelectorAll('.modal').length).toBe(1);
+    expect(openChanges).toEqual([true]);
+  });
+
+  it('notifies the closing once when closed, opened and closed again while it animates out', async () => {
+    modal.close();
+    fixture.detectChanges();
+    modal.open();
+    fixture.detectChanges();
+    modal.close();
+    fixture.detectChanges();
+
+    await finishClosing();
+
+    expect(modalElement()).toBeNull();
+    expect(openChanges).toEqual([true, false]);
+  });
+
+  it('gives the focus back as soon as it starts closing', async () => {
+    modal.close();
+    fixture.detectChanges();
+    await finishClosing();
+
+    const opener: HTMLButtonElement = fixture.nativeElement.querySelector('.to-focus');
+    opener.focus();
+    modal.open();
+    fixture.detectChanges();
+    await finishClosing();
+    expect(document.activeElement).not.toBe(opener);
+
+    modal.close();
+    fixture.detectChanges();
+
+    expect(modalElement()).not.toBeNull();
+    expect(document.activeElement).toBe(opener);
+    await finishClosing();
+  });
+
+  it('gives the focus back once, when it starts closing', async () => {
+    modal.close();
+    fixture.detectChanges();
+    await finishClosing();
+
+    const opener: HTMLButtonElement = fixture.nativeElement.querySelector('.to-focus');
+    opener.focus();
+    modal.open();
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(fixture.nativeElement.querySelector('.modal-dialog').contains(document.activeElement)).toBeTrue();
+
+    modal.close();
+    fixture.detectChanges();
+    const elsewhere = document.createElement('button');
+    document.body.appendChild(elsewhere);
+    elsewhere.focus();
+    await finishClosing();
+
+    expect(modalElement()).toBeNull();
+    expect(document.activeElement).toBe(elsewhere);
+    elsewhere.remove();
+  });
+
+  it('gives the focus back when destroyed while open', async () => {
+    modal.close();
+    fixture.detectChanges();
+    await finishClosing();
+
+    const outside = document.createElement('button');
+    document.body.appendChild(outside);
+    outside.focus();
+    modal.open();
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    fixture.destroy();
+
+    expect(document.activeElement).toBe(outside);
+    outside.remove();
+  });
+
+  it('does not notify the closing from its destruction', () => {
+    fixture.destroy();
+
+    expect(openChanges).toEqual([]);
+  });
+
+  it('does not notify the closing from its destruction while it animates out', () => {
+    modal.close();
+    fixture.detectChanges();
+    fixture.destroy();
+
+    expect(openChanges).toEqual([]);
+  });
+});
+
+@Component({
+  template: `
+    <clr-modal [(clrModalOpen)]="firstOpened">
+      <h4 class="modal-title">First</h4>
+      <div class="modal-body"></div>
+    </clr-modal>
+    <clr-modal [(clrModalOpen)]="secondOpened">
+      <h4 class="modal-title">Second</h4>
+      <div class="modal-body"></div>
+    </clr-modal>
+  `,
+  standalone: false,
+})
+class TwoModalsTestComponent {
+  firstOpened = true;
+  secondOpened = false;
+}
+
+describe('Modal closing while another modal opens', () => {
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [CdkTrapFocusModule, ClrModalModule],
+      declarations: [TwoModalsTestComponent],
+      animationsEnabled: true,
+    });
+  });
+
+  afterEach(() => {
+    restoreAnimations();
+  });
+
+  // Angular 21 cuts the leave animation of the first modal short, as the second one renders the same template node;
+  // Angular 22 lets it play.
+  it('notifies the closing whether or not Angular cuts its leave animation short', async () => {
+    const fixture = TestBed.createComponent(TwoModalsTestComponent);
+    fixture.detectChanges();
+    const [first] = fixture.debugElement.queryAll(By.directive(ClrModal)).map(debug => debug.componentInstance);
+    const openChanges: boolean[] = [];
+    first._openChanged.subscribe((open: boolean) => openChanges.push(open));
+
+    first.close();
+    fixture.detectChanges();
+    fixture.componentInstance.secondOpened = true;
+    fixture.detectChanges();
+    await delay();
+    finishAnimations(fixture.nativeElement);
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    await delay();
+
+    expect(fixture.nativeElement.querySelectorAll('.modal').length).toBe(1);
+    expect(openChanges).toEqual([false]);
+    fixture.destroy();
   });
 });

@@ -5,15 +5,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, AnimationMetadata, state, style, transition } from '@angular/animations';
-
+import {
+  animationAnimate,
+  animationState,
+  animationStyle,
+  animationTransition,
+  ClrAnimationMetadata,
+} from '../animation-metadata';
 import { defaultAnimationTiming } from '../constants';
 
-export function collapse(): AnimationMetadata[] {
+/** @deprecated Clarity animates with native CSS; transition `grid-template-rows` or `height` instead. */
+export function collapse(): ClrAnimationMetadata[] {
   'use strict';
   return [
-    state('true', style({ height: 0, 'overflow-y': 'hidden' })),
-    transition('true => false', [animate(defaultAnimationTiming, style({ height: '*', 'overflow-y': 'hidden' }))]),
-    transition('false => true', [style({ height: '*', 'overflow-y': 'hidden' }), animate(defaultAnimationTiming)]),
+    animationState('true', animationStyle({ height: 0, 'overflow-y': 'hidden' })),
+    animationTransition('true => false', [
+      animationAnimate(defaultAnimationTiming, animationStyle({ height: '*', 'overflow-y': 'hidden' })),
+    ]),
+    animationTransition('false => true', [
+      animationStyle({ height: '*', 'overflow-y': 'hidden' }),
+      animationAnimate(defaultAnimationTiming),
+    ]),
   ];
 }

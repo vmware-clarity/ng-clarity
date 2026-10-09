@@ -9,8 +9,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionPanel } from './accordion-panel';
@@ -92,7 +92,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [CollapsiblePanelService, IfExpandService],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(ClrAccordionPanel);
@@ -133,7 +133,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent, TestNoBindingComponent],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(TestComponent);
@@ -211,7 +211,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent, TestNoBindingComponent, TestNestedAccordionComponent],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(TestComponent);
@@ -319,5 +319,56 @@ describe('ClrAccordionPanel', () => {
 
       expect(nestedPanelHeading).toBeNull();
     });
+  });
+});
+
+describe('ClrAccordionPanel with animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [ClrAccordionModule],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function content(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.clr-accordion-content');
+  }
+
+  function heightAnimations(element: HTMLElement): Animation[] {
+    return element.getAnimations().filter(animation => !(animation instanceof CSSTransition));
+  }
+
+  it('animates the height of the content when it expands', async () => {
+    fixture.componentInstance.open = true;
+    fixture.detectChanges();
+    await delay();
+
+    expect(heightAnimations(content()).length).toBe(1);
+    finishAnimations(fixture.nativeElement);
+  });
+
+  it('only animates the expansion: the content is removed as soon as the panel closes', async () => {
+    fixture.componentInstance.open = true;
+    fixture.detectChanges();
+    await delay();
+    finishAnimations(fixture.nativeElement);
+    await delay();
+
+    fixture.componentInstance.open = false;
+    fixture.detectChanges();
+
+    expect(content()).toBeNull();
   });
 });

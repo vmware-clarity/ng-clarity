@@ -5,12 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationEvent, transition, trigger, useAnimation } from '@angular/animations';
-import { Component, HostBinding, HostListener, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { DomAdapter } from '../../dom-adapter/dom-adapter';
-import { defaultExpandAnimation } from '../constants';
 import { BaseExpandableAnimation } from './base-expandable-animation';
+import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
 @Component({
   selector: 'clr-expandable-animation',
@@ -22,26 +20,30 @@ import { BaseExpandableAnimation } from './base-expandable-animation';
       }
     `,
   ],
-  animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])],
+  host: {
+    '[class.clr-expandable-animation]': 'true',
+  },
   providers: [DomAdapter],
   standalone: false,
 })
 export class ClrExpandableAnimation extends BaseExpandableAnimation {
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
   @Input() clrExpandTrigger = false;
 
-  @HostBinding('@expandAnimation')
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
   get expandAnimation() {
     return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
   }
 
-  @HostListener('@expandAnimation.start', ['$event'])
-  animationStart(event: AnimationEvent) {
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
+  animationStart(event: { fromState: string }) {
     if (event.fromState !== 'void') {
       this.initAnimationEffects();
     }
   }
-  @HostListener('@expandAnimation.done', ['$event'])
-  animationDone(event: AnimationEvent) {
+
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
+  animationDone(event: { fromState: string }) {
     if (event.fromState !== 'void') {
       this.cleanupAnimationEffects();
     }

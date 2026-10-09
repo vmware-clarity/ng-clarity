@@ -8,7 +8,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
@@ -68,7 +67,7 @@ describe('Side Panel', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrSidePanelModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrSidePanelModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
@@ -101,6 +100,7 @@ describe('Side Panel', () => {
   it('should set aria-hidden attribute to false if opened', async () => {
     fixture.componentInstance.opened = false;
     fixture.detectChanges();
+    await fixture.whenStable(); // Angular removes the modal once its (disabled) leave animation is done
     expect(compiled.querySelector('.modal-dialog')).toBeNull();
     // open modal
     sidePanel.open();

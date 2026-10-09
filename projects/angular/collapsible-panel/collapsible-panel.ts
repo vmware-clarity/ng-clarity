@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Directive, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Directive, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
 import { IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -13,12 +13,26 @@ import { filter, tap } from 'rxjs/operators';
 import { CollapsiblePanelModel } from './models/collapsible-panel.model';
 import { CollapsiblePanelService } from './providers/collapsible-panel.service';
 
+/**
+ * Base class of the accordion and stepper panels.
+ *
+ * The content of a panel expands and collapses with the `clr-expand-enter` / `clr-collapse-leave` CSS animations,
+ * bound with `animate.enter` / `animate.leave` in the template:
+ *
+ * ```html
+ * @if (panel.open) {
+ *   <div [animate.enter]="expandClass" animate.leave="clr-collapse-leave">
+ * ```
+ */
 @Directive()
 export abstract class CollapsiblePanel implements OnInit {
   panelOpen = false;
   panelOpenChange = new EventEmitter<boolean>();
 
   panel: Observable<CollapsiblePanelModel>;
+
+  /** Enter animation of the content: none for the content open on the first render. */
+  protected expandClass = '';
 
   protected _panelIndex: number;
   private _id = uniqueIdFactory();
@@ -27,7 +41,9 @@ export abstract class CollapsiblePanel implements OnInit {
     protected panelService: CollapsiblePanelService,
     protected ifExpandService: IfExpandService,
     protected cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    afterNextRender(() => (this.expandClass = 'clr-expand-enter'));
+  }
 
   get id(): string {
     return this._id;
@@ -76,6 +92,9 @@ export abstract class CollapsiblePanel implements OnInit {
     if (panel.open !== this.panelOpen) {
       this.panelOpenChange.emit(panel.open);
       this.panelOpen = panel.open;
+      if (!panel.open) {
+        Promise.resolve().then(() => this.collapsePanelOnAnimationDone(panel));
+      }
     }
 
     if (panel.open) {

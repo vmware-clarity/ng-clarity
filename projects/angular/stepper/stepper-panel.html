@@ -40,7 +40,6 @@
     </div>
   </div>
   <div
-    @skipInitialRender
     role="region"
     class="clr-stepper-content-region"
     [id]="getContentId(panel.templateId)"
@@ -48,7 +47,7 @@
     [attr.aria-labelledby]="getHeaderId(panel.templateId)"
   >
     @if (panel.open) {
-    <div @toggle (@toggle.done)="collapsePanelOnAnimationDone(panel)" class="clr-stepper-content">
+    <div class="clr-stepper-content" [animate.enter]="expandClass" animate.leave="clr-collapse-leave">
       <div class="clr-stepper-inner-content">
         <ng-content></ng-content>
       </div>

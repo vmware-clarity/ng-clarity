@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, AnimationMetadata, style, transition } from '@angular/animations';
-
+import { animationAnimate, animationStyle, animationTransition, ClrAnimationMetadata } from '../animation-metadata';
 import { defaultAnimationTiming } from '../constants';
 
-export function fadeSlide(direction: string): AnimationMetadata[] {
+/** @deprecated Clarity animates with native CSS; use the `clr-fade-slide-<direction>-enter` / `-leave` classes instead. */
+export function fadeSlide(direction: string): ClrAnimationMetadata[] {
   let transform: string = null;
   if (direction === 'up') {
     transform = 'translate(0, 25%)';
@@ -23,7 +23,12 @@ export function fadeSlide(direction: string): AnimationMetadata[] {
     throw new Error('Unknown direction ' + direction + ' for slide animation.');
   }
   return [
-    transition('void => *', [style({ opacity: 0, transform: transform }), animate(defaultAnimationTiming)]),
-    transition('* => void', [animate(defaultAnimationTiming, style({ opacity: 0, transform: transform }))]),
+    animationTransition('void => *', [
+      animationStyle({ opacity: 0, transform: transform }),
+      animationAnimate(defaultAnimationTiming),
+    ]),
+    animationTransition('* => void', [
+      animationAnimate(defaultAnimationTiming, animationStyle({ opacity: 0, transform: transform })),
+    ]),
   ];
 }

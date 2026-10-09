@@ -7,7 +7,6 @@
 
 import { Component, ElementRef, HostListener, Input, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrModal, ClrModalModule } from '@clr/angular/modal';
 import { Keys } from '@clr/angular/utils';
 
@@ -20,7 +19,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [NoopAnimationsModule, ClrModalModule],
+        imports: [ClrModalModule],
         declarations: [TestComponent, TestPopoverHostComponent],
       });
 

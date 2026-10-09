@@ -6,10 +6,16 @@
  */
 
 import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
-import { fakeAsync, flushMicrotasks } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { ClrIcon } from '@clr/angular/icon';
-import { expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
+import {
+  delay,
+  enableCssAnimations,
+  expectActiveElementToBe,
+  finishAnimations,
+  spec,
+  TestContext,
+} from '@clr/angular/testing';
 import { ClrCommonStringsService, IfExpandService, Keys } from '@clr/angular/utils';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
@@ -66,7 +72,7 @@ export default function (): void {
 
     describe('Providers', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -218,7 +224,7 @@ export default function (): void {
 
     describe('Template API', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -250,7 +256,7 @@ export default function (): void {
 
     describe('View', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -366,7 +372,7 @@ export default function (): void {
 
     describe('A11y and Focus Management', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -621,7 +627,7 @@ export default function (): void {
       type Context = TestContext<ClrTreeNode<void>, LinkTestComponent>;
 
       spec(ClrTreeNode, LinkTestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -648,6 +654,68 @@ export default function (): void {
       it('removes the tree node link from the native tab sequence to prevent a double-Tab stop', function (this: Context) {
         const link: HTMLElement = this.clarityElement.querySelector('.clr-treenode-link');
         expect(link.getAttribute('tabindex')).toBe('-1');
+      });
+    });
+
+    describe('Animations', function () {
+      let fixture: ComponentFixture<TestComponent>;
+      let restoreAnimations: () => void;
+
+      beforeEach(function () {
+        restoreAnimations = enableCssAnimations();
+        TestBed.configureTestingModule({
+          imports: [ClrTreeViewModule, ClrIcon],
+          declarations: [TestComponent],
+          providers: [TreeFocusManagerService],
+          animationsEnabled: true,
+        });
+        fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
+        // The children of a node expanded on the first render are not animated.
+        return delay();
+      });
+
+      afterEach(function () {
+        fixture.destroy();
+        restoreAnimations();
+      });
+
+      function children(): HTMLElement {
+        return fixture.nativeElement.querySelector('.clr-treenode-children');
+      }
+
+      /** The height transitions of the children, not the transitions of their overflow and visibility. */
+      function heightAnimations(): Animation[] {
+        return children()
+          .getAnimations()
+          .filter(animation => (animation as CSSTransition).transitionProperty === 'height');
+      }
+
+      it('animates the height of the children when the node expands and collapses', async function () {
+        // Transitions start from the style the browser computed last: make sure it computed the collapsed one.
+        getComputedStyle(children()).height;
+        fixture.componentInstance.expanded = true;
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        expect(heightAnimations().length).toBe(1);
+        expect(heightAnimations()[0].effect.getTiming().easing).toBe('linear');
+        finishAnimations(fixture.nativeElement);
+
+        fixture.componentInstance.expanded = false;
+        fixture.detectChanges();
+
+        expect(heightAnimations().length).toBe(1);
+        finishAnimations(fixture.nativeElement);
+      });
+
+      it('does not animate the children when all the descendants are expanded at once', async function () {
+        fixture.componentInstance.tree.expandDescendants();
+        fixture.detectChanges();
+        await fixture.whenStable();
+
+        expect(children().classList).toContain('is-instant');
+        expect(heightAnimations()).toEqual([]);
       });
     });
   });

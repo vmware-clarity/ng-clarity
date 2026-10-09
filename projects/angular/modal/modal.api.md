@@ -7,10 +7,6 @@
 import { AfterContentChecked } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_animations from '@angular/animations';
-import { AnimationBuilder } from '@angular/animations';
-import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
-import { AnimationMetadata } from '@angular/animations';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
@@ -75,13 +71,17 @@ export class ClrModal implements OnChanges, OnDestroy {
     //
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // (undocumented)
-    fadeDone(e: AnimationEvent_2): void;
+    protected get dialogEnterClass(): string;
+    // @deprecated (undocumented)
+    fadeDone(_e: {
+        toState: string;
+    }): void;
     // (undocumented)
     get fadeMove(): string;
     set fadeMove(move: string);
     // (undocumented)
     labelledBy: string;
+    protected get leaveClasses(): string[] | '';
     // (undocumented)
     protected readonly modalContentTemplate: TemplateRef<any>;
     // (undocumented)
@@ -110,6 +110,8 @@ export class ClrModal implements OnChanges, OnDestroy {
     stopClose: boolean;
     // (undocumented)
     title: ElementRef<HTMLElement>;
+    // (undocumented)
+    protected get visible(): boolean;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
     // (undocumented)

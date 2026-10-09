@@ -8,7 +8,6 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
 
 import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
@@ -65,7 +64,7 @@ describe('Expandable animation directive', () => {
 function expandableAnimationSpec(testComponent, component) {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrExpandableAnimationModule, NoopAnimationsModule],
+      imports: [ClrExpandableAnimationModule],
       declarations: [testComponent],
       providers: [DomAdapter],
     });
@@ -84,26 +83,6 @@ function expandableAnimationSpec(testComponent, component) {
       expect(clarityDirective.startHeight).toEqual(0);
       clarityDirective.updateStartHeight();
       expect(clarityDirective.startHeight).toBeGreaterThan(0);
-    });
-
-    // We test startHeight property separately from the DOM updates, because it has slightly different lifecycle
-    // which though related to the DOM heights does not correspond 1:1 on all lifecycle steps.
-    it('updates startHeight property on expand and collapse', async () => {
-      clarityDirective.updateStartHeight();
-      const collapsedHeight = clarityDirective.startHeight;
-      componentInstance.data.push({ id: 2, value: 'two' });
-      componentInstance.expanded = true;
-      fixture.detectChanges();
-      expect(clarityDirective.startHeight).toEqual(collapsedHeight);
-      await delay();
-      expect(clarityDirective.startHeight).toEqual(collapsedHeight * 2);
-      const expandedHeight = clarityDirective.startHeight;
-      componentInstance.data.pop();
-      componentInstance.expanded = false;
-      fixture.detectChanges();
-      expect(clarityDirective.startHeight).toEqual(expandedHeight);
-      await delay();
-      expect(clarityDirective.startHeight).toEqual(collapsedHeight);
     });
   });
 

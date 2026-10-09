@@ -8,11 +8,7 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_animations from '@angular/animations';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
-import { AnimationBuilder } from '@angular/animations';
-import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
-import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
@@ -1170,6 +1166,7 @@ export class ClrStackBlock implements OnInit {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     expandable: boolean;
+    protected expandClass: string;
     // (undocumented)
     expanded: boolean;
     // (undocumented)
@@ -1812,7 +1809,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1254:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1256:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

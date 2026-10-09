@@ -7,7 +7,6 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrTree } from './tree';
@@ -97,7 +96,7 @@ export default function (): void {
 
     const totalNodes = countNodes(generateTree(ROOTS, BRANCHING, DEPTH));
 
-    spec(ClrTree, PerformanceTestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] }, false);
+    spec(ClrTree, PerformanceTestComponent, ClrTreeViewModule, {}, false);
 
     /*
      * Change detection alone does not cover the cost of showing or hiding a subtree: the browser only restyles

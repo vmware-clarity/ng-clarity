@@ -8,7 +8,6 @@
 import { Component, Directive, InjectionToken, NgModule, OnInit, Type, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { HostWrapper } from './host-wrapper';
 import { ClrHostWrappingModule } from './host-wrapping.module';
@@ -74,7 +73,7 @@ interface TestContext<T extends WrappingTest | ExplicitTest | NgIfTest> {
 describe('Host wrapping', function () {
   function setupTest<T>(testContext: TestContext<T>, testComponent: Type<T>) {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, ClrHostWrappingModule, HostWrappingTestModule],
+      imports: [ClrHostWrappingModule, HostWrappingTestModule],
       declarations: [testComponent],
     });
     testContext.fixture = TestBed.createComponent(testComponent);

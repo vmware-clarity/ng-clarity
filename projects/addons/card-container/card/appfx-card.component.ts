@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, style, transition, trigger } from '@angular/animations';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import {
   AfterViewInit,
@@ -59,15 +58,8 @@ import { LayoutService } from '../services/layout.service';
       useValue: translations,
     },
   ],
-  animations: [
-    trigger('cardAnimation', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateX(-100%)' }),
-        animate('200ms ease-in', style({ opacity: 1, transform: 'translateX(0%)' })),
-      ]),
-      transition(':leave', [animate('200ms ease-in', style({ opacity: 0, transform: 'translateX(0%)' }))]),
-    ]),
-  ],
+  // The card container removes the card by destroying the component: only its host element can animate out.
+  host: { '[animate.leave]': "'clr-fade-leave'" },
 })
 export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   /**

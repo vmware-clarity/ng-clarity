@@ -5,12 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
-import { delay } from '@clr/angular/testing';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
@@ -25,8 +24,13 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrVerticalNavModule, ClrIcon, NoopAnimationsModule],
-        declarations: [GroupInternalsTestComponent, IfExpandedTestComponent, TemplateAPITestComponent],
+        imports: [ClrVerticalNavModule, ClrIcon],
+        declarations: [
+          GroupInternalsTestComponent,
+          IfExpandedTestComponent,
+          TemplateAPITestComponent,
+          OnPushTestComponent,
+        ],
         providers: [VerticalNavService, VerticalNavGroupRegistrationService],
       });
     });
@@ -115,6 +119,26 @@ export default function (): void {
           expect(compiled.querySelector('.nav-group-children').children.length).toBeGreaterThan(0);
         }
       );
+    });
+
+    describe('Nav Group inside an OnPush host', () => {
+      it('refreshes the expanded class of the host once the group has collapsed', async () => {
+        fixture = TestBed.createComponent(OnPushTestComponent);
+        fixture.detectChanges();
+        compiled = fixture.nativeElement;
+        const host: HTMLElement = compiled.querySelector('clr-vertical-nav-group');
+        const trigger: HTMLButtonElement = compiled.querySelector('.nav-group-trigger');
+
+        trigger.click();
+        fixture.detectChanges();
+        expect(host.classList.contains('is-expanded')).toBe(true);
+
+        trigger.click();
+        fixture.detectChanges();
+        await delay();
+        fixture.detectChanges();
+        expect(host.classList.contains('is-expanded')).toBe(false);
+      });
     });
 
     describe('Nav Group Internals with clrIfExpanded', () => {
@@ -235,6 +259,65 @@ export default function (): void {
       });
     });
   });
+
+  describe('Vertical Nav Group with animations', () => {
+    let fixture: ComponentFixture<AnimatedGroupTestComponent>;
+    let restoreAnimations: () => void;
+
+    beforeEach(async () => {
+      restoreAnimations = enableCssAnimations();
+      TestBed.configureTestingModule({
+        imports: [ClrVerticalNavModule, ClrIcon],
+        declarations: [AnimatedGroupTestComponent],
+        animationsEnabled: true,
+      });
+      fixture = TestBed.createComponent(AnimatedGroupTestComponent);
+      fixture.detectChanges();
+      await delay();
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+      restoreAnimations();
+    });
+
+    function children(): HTMLElement {
+      return fixture.nativeElement.querySelector('.nav-group-children');
+    }
+
+    /** The height transitions of the children, not the transitions of their visibility. */
+    function heightAnimations(): Animation[] {
+      return children()
+        .getAnimations()
+        .filter(animation => (animation as CSSTransition).transitionProperty === 'height');
+    }
+
+    it('animates the height of the children, and closes the group once they are collapsed', async () => {
+      const navGroup = fixture.componentInstance.navGroup;
+      // Transitions start from the style the browser computed last: make sure it computed the collapsed one.
+      getComputedStyle(children()).height;
+      navGroup.toggleExpand();
+      fixture.detectChanges();
+      await fixture.whenStable();
+
+      expect(heightAnimations().length).toBe(1);
+      finishAnimations(fixture.nativeElement);
+      await delay();
+
+      navGroup.toggleExpand();
+      fixture.detectChanges();
+
+      expect(heightAnimations().length).toBe(1);
+      expect(navGroup.expanded).toBeTrue(); // until the children are collapsed
+
+      finishAnimations(fixture.nativeElement);
+      // A finished CSS transition dispatches its `transitionend` event on the next frame.
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      await delay();
+
+      expect(navGroup.expanded).toBeFalse();
+    });
+  });
 }
 
 @Component({
@@ -294,4 +377,37 @@ class TemplateAPITestComponent {
   updateExpanded(value: boolean) {
     this.expandedChange = value;
   }
+}
+
+@Component({
+  template: `
+    <clr-vertical-nav-group #group>
+      Group
+      <clr-vertical-nav-group-children>
+        <a href="#" clrVerticalNavLink>Link</a>
+      </clr-vertical-nav-group-children>
+    </clr-vertical-nav-group>
+  `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  standalone: false,
+})
+class OnPushTestComponent {
+  @ViewChild('group') navGroup: ClrVerticalNavGroup;
+}
+
+@Component({
+  template: `
+    <clr-vertical-nav>
+      <clr-vertical-nav-group #group>
+        Group
+        <clr-vertical-nav-group-children>
+          <a href="#" clrVerticalNavLink>Link</a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
+    </clr-vertical-nav>
+  `,
+  standalone: false,
+})
+class AnimatedGroupTestComponent {
+  @ViewChild('group') navGroup: ClrVerticalNavGroup;
 }
