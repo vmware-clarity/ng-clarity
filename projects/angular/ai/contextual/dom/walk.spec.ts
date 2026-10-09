@@ -56,9 +56,10 @@ describe('collectContextTree', () => {
     expect(node.label).toBe('Usage summary');
   });
 
-  it('includes a custom element that has no role, naming it by its tag', () => {
+  it('includes a custom element that has no role as a group, naming its tag in element', () => {
     const [node] = collect('<my-widget>3 hosts</my-widget>');
-    expect(node.type).toBe('my-widget');
+    expect(node.type).toBe('group');
+    expect(node.element).toBe('my-widget');
     expect(node.label).toBe('3 hosts');
   });
 
@@ -177,7 +178,7 @@ describe('collectContextTree', () => {
     );
     // An editor's text is its value, and only its value: once values are withheld, as
     // they are for a caller the application does not control, none of it is left.
-    const withheld = JSON.stringify(nodes.map(withoutValues));
+    const withheld = JSON.stringify(nodes.map(node => withoutValues(node)));
     expect(withheld).not.toContain('TYPED');
     expect(withheld).toContain('Notes:');
     expect(withheld).toContain('Plain prose');
@@ -361,7 +362,7 @@ describe('collectContextTree', () => {
 
   it('labels an anonymous custom element with the text it renders', () => {
     const [node] = collect('<clr-dg-footer>2 items</clr-dg-footer>');
-    expect(node).toEqual({ type: 'clr-dg-footer', element: 'clr-dg-footer', label: '2 items' });
+    expect(node).toEqual({ type: 'group', element: 'clr-dg-footer', label: '2 items' });
   });
 
   it('does not describe text that exists only to describe another element', () => {
@@ -423,9 +424,9 @@ describe('collectContextTree', () => {
     const nodes = collect('<my-widget><div role="grid"></div><my-widget-footer>3 items</my-widget-footer></my-widget>');
 
     expect(nodes.length).toBe(1);
-    expect(nodes[0].type).toBe('my-widget');
+    expect(nodes[0].type).toBe('group');
     expect(nodes[0].element).toBe('my-widget');
-    expect(nodes[0].children?.map(child => child.type)).toEqual(['grid', 'my-widget-footer']);
+    expect(nodes[0].children?.map(child => child.element)).toEqual(['my-widget', 'my-widget-footer']);
     expect(nodes[0].children?.[1].label).toBe('3 items');
   });
 
@@ -529,7 +530,8 @@ describe('collectContextTree, what a summary must not hide', () => {
       state: { rowCount: 40 },
     });
     const [widget] = collectContextTreeWithin(container, budgets()).components;
-    expect(widget.type).toBe('my-grid');
+    expect(widget.type).toBe('group');
+    expect(widget.element).toBe('my-grid');
     expect(widget.state).toEqual({ rowCount: 40 });
     expect(widget.children?.[1].state).toBeUndefined();
   });
@@ -541,7 +543,7 @@ describe('collectContextTree, what a summary must not hide', () => {
       throw new Error('publisher broke');
     });
 
-    expect(collectContextTreeWithin(container, budgets()).components.map(node => node.type)).toEqual(['my-widget']);
+    expect(collectContextTreeWithin(container, budgets()).components.map(node => node.element)).toEqual(['my-widget']);
     expect(warn).toHaveBeenCalledWith(jasmine.stringContaining('<my-widget>'), jasmine.any(Error));
   });
 
@@ -652,7 +654,7 @@ describe('collectContextTree, text and frames', () => {
 
     it('labels a component by the text it renders, rather than nesting a text node inside it', () => {
       const [node] = collect('<clr-dg-footer><div>2 items</div></clr-dg-footer>');
-      expect(node).toEqual({ type: 'clr-dg-footer', element: 'clr-dg-footer', label: '2 items' });
+      expect(node).toEqual({ type: 'group', element: 'clr-dg-footer', label: '2 items' });
     });
 
     it('can be turned off', () => {
@@ -1322,5 +1324,180 @@ describe('collectContextTree, markup it did not expect', () => {
     const label = components[0].label as string;
     expect(label.endsWith('…')).toBe(true);
     expect(/[\ud800-\udbff]…$/.test(label)).toBe(false);
+  });
+});
+
+describe('collectContextTree, names, text and state an agent would otherwise miss', () => {
+  useContainer();
+
+  it('names an icon-only button or an image link by the name its icon or image gives itself', () => {
+    const nodes = collect(
+      `<button><img src="data:," alt="Delete" /></button>
+       <button><svg role="img" aria-label="Close" width="10" height="10"></svg></button>
+       <button><my-icon aria-label="Edit"></my-icon></button>
+       <a href="/home"><img src="data:," alt="Home" /></a>`
+    );
+    expect(nodes.map(node => node.label)).toEqual(['Delete', 'Close', 'Edit', 'Home']);
+  });
+
+  it('reports text written directly inside a container role, which no element wraps', () => {
+    const nodes = collect(
+      `<div role="dialog" aria-label="D1">Bare dialog text.<button>OK</button></div>
+       <section aria-label="R1">Bare region text.</section>
+       <div role="tabpanel" aria-label="T1">Bare tabpanel text.</div>
+       <div role="note" aria-label="N1">Bare note text.</div>
+       <div role="log" aria-label="L1">Bare log text.</div>`
+    );
+    expect(nodes.map(node => node.children)).toEqual([
+      [
+        { type: 'text', label: 'Bare dialog text.' },
+        { type: 'button', label: 'OK' },
+      ],
+      [{ type: 'text', label: 'Bare region text.' }],
+      [{ type: 'text', label: 'Bare tabpanel text.' }],
+      [{ type: 'text', label: 'Bare note text.' }],
+      [{ type: 'text', label: 'Bare log text.' }],
+    ]);
+  });
+
+  it('reports no loose text where it is a value, repeats the name, is a separator or is turned off', () => {
+    const nodes = collect(
+      `<div role="combobox" aria-label="Owner">Grace</div>
+       <section aria-label="Intro">Intro</section>
+       <nav aria-label="Crumbs"><a href="/a">A</a> / <a href="/b">B</a></nav>`
+    );
+    expect(nodes.map(node => types(node.children))).toEqual([[], [], ['link', 'link']]);
+    expect(collect('<div role="dialog" aria-label="D">Text</div>', { includeText: false })[0].children).toBeUndefined();
+    expect(
+      collect('<div data-clr-context-redact><div role="region" aria-label="R">Secret</div></div>')[0].children
+    ).toBeUndefined();
+  });
+
+  it('keeps prose broken up by phrasing elements as one text node, broken only by what is described itself', () => {
+    const [dialog] = collect(
+      `<div role="dialog" aria-label="Confirm">Delete <b>vm-01</b> from <em>cluster <code>c2</code></em>?<button>OK</button>
+       Read <a href="/docs">the docs</a> <strong>first</strong>.<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">(hidden hint)</span>
+       <span data-clr-context-redact>SECRET</span></div>`
+    );
+    expect(dialog.children).toEqual([
+      { type: 'text', label: 'Delete vm-01 from cluster c2?' },
+      { type: 'button', label: 'OK' },
+      { type: 'text', label: 'Read' },
+      { type: 'link', label: 'the docs', state: { href: '/docs' } },
+      { type: 'text', label: 'first.' },
+    ]);
+  });
+
+  it('says the snapshot is cut off when the budget runs out before loose text', () => {
+    const result = collectTree('<div role="dialog" aria-label="D">Bare text.</div>', { maxComponents: 1 });
+    expect(result.components).toEqual([{ type: 'dialog', label: 'D' }]);
+    expect(result.truncated).toBe(true);
+  });
+
+  it('names an alert or a status by its message, leaving out the actions inside it', () => {
+    const [alert] = collect('<div role="alert">Saved <button>Undo</button></div>');
+    expect(alert).toEqual({ type: 'alert', label: 'Saved', children: [{ type: 'button', label: 'Undo' }] });
+    const [status] = collect('<div role="status">3 hosts <a href="/hosts">View</a></div>');
+    expect(status.label).toBe('3 hosts');
+  });
+
+  it('reports the message aria-errormessage names as the error of an invalid field, and not again as text', () => {
+    const nodes = collect(
+      `<input aria-label="Due" aria-invalid="true" aria-errormessage="em" aria-describedby="hint em" />
+       <span id="hint">yyyy-mm-dd</span><span id="em">Date is in the past</span>`
+    );
+    expect(nodes).toEqual([
+      {
+        type: 'textbox',
+        label: 'Due',
+        state: { invalid: true, description: 'yyyy-mm-dd', error: 'Date is in the past', value: '' },
+      },
+    ]);
+  });
+
+  it('says how a role-less block of text is announced when it changes', () => {
+    expect(collect('<div aria-live="polite">Connection lost</div>')).toEqual([
+      { type: 'text', label: 'Connection lost', state: { live: 'polite' } },
+    ]);
+    expect(collect('<div aria-live="assertive"><p>Saved</p></div>')).toEqual([
+      { type: 'text', label: 'Saved', state: { live: 'assertive' } },
+    ]);
+  });
+
+  it('reports an author’s own word for what an element is', () => {
+    const [slide] = collect('<div role="group" aria-roledescription="slide" aria-label="2 of 5"></div>');
+    expect(slide).toEqual({ type: 'group', label: '2 of 5', state: { roleDescription: 'slide' } });
+  });
+
+  it('types a role-less component as a group, keeping its tag in element', () => {
+    const nodes = collect(
+      `<my-footer>3 items</my-footer>
+       <my-widget aria-label="Named"><button>Go</button></my-widget>
+       <my-pair><div role="grid"></div><my-footer>2 items</my-footer></my-pair>`
+    );
+    expect(nodes.map(node => [node.type, node.element])).toEqual([
+      ['group', 'my-footer'],
+      ['group', 'my-widget'],
+      ['group', 'my-pair'],
+    ]);
+    expect(nodes[2].children?.map(node => [node.type, node.element])).toEqual([
+      ['grid', 'my-pair'],
+      ['group', 'my-footer'],
+    ]);
+  });
+
+  describe('modal focus on a dialog a component renders', () => {
+    const SR_ONLY = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)';
+    const FLOW = `<main><button>Behind</button></main>
+      <my-flow><my-dialog-host><div class="wrap">
+        <div role="dialog" aria-modal="true" aria-label="New VM"><button>Next</button></div>
+        <div style="${SR_ONLY}">End of dialog</div>
+        <div class="backdrop" aria-hidden="true"></div>
+      </div></my-dialog-host></my-flow>`;
+
+    function publishSteps(): void {
+      clrPublishElementContext(container.querySelector('my-flow') as Element, () => ({ state: { stepCount: 2 } }));
+    }
+
+    it('starts from the outermost component the dialog is all of, keeping what it publishes and its tag', () => {
+      container.innerHTML = FLOW;
+      publishSteps();
+      const result = collectContextTreeWithin(container, budgets({ focus: 'modal' }));
+      expect(result.focus).toBe('modal');
+      expect(result.components).toEqual([
+        {
+          type: 'dialog',
+          element: 'my-dialog-host',
+          label: 'New VM',
+          state: { modal: true, stepCount: 2 },
+          children: [{ type: 'button', label: 'Next' }],
+        },
+      ]);
+    });
+
+    it('stops at a component that renders something beside the dialog, or that has a name', () => {
+      container.innerHTML = FLOW.replace('<my-dialog-host>', '<my-dialog-host><button>Help</button>');
+      publishSteps();
+      const [beside] = collectContextTreeWithin(container, budgets({ focus: 'modal' })).components;
+      expect(beside.element).toBeUndefined();
+      expect(beside.state).toEqual({ modal: true });
+
+      container.innerHTML = FLOW.replace('<my-flow>', '<my-flow aria-label="Flow">');
+      publishSteps();
+      const [named] = collectContextTreeWithin(container, budgets({ focus: 'modal' })).components;
+      expect(named.element).toBe('my-dialog-host');
+      expect(named.state).toEqual({ modal: true });
+    });
+
+    it('does not climb out of the roots a root selector picked', () => {
+      container.innerHTML = FLOW;
+      publishSteps();
+      const [dialog] = collectContextTreeWithin(
+        container,
+        budgets({ focus: 'modal', rootSelector: 'my-dialog-host' })
+      ).components;
+      expect(dialog.element).toBe('my-dialog-host');
+      expect(dialog.state).toEqual({ modal: true });
+    });
   });
 });

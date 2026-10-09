@@ -167,12 +167,22 @@ export class ClrContextEngineService implements OnDestroy {
     // An exclusion list in the ceiling that is not a list is reported as the ceiling is
     // laid over the application's options.
     const ceiling = this.untrustedCeiling(budgets);
-    host[propertyName] = (options?: unknown) => {
+    const accessor = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
       const snapshot = this.getSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
       return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
     };
+    // Read-only, so a script that assigns to the name by accident or on purpose does not
+    // silently put its own function where agents look for the engine's. It stays
+    // configurable, because that is what lets `disableGlobalAccess` delete it again; a
+    // script determined to redefine it can, but not by plain assignment.
+    Object.defineProperty(host, propertyName, {
+      value: accessor,
+      writable: false,
+      enumerable: true,
+      configurable: true,
+    });
   }
 
   /** Removes the global accessor, if this engine installed it. */

@@ -118,7 +118,7 @@ describe('ClrContextTrackerService', () => {
   }
 
   function widgetLabels(context: ClrPageContext | null): (string | undefined)[] {
-    return (context?.components ?? []).filter(component => component.type === 'clr-fake-widget').map(c => c.label);
+    return (context?.components ?? []).filter(component => component.element === 'clr-fake-widget').map(c => c.label);
   }
 
   beforeEach(() => {

@@ -149,13 +149,21 @@ export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<Clr
  * may change. The exclusion lists add to the preset's rather than replace them —
  * `clrContextPreset('interactive', { excludeCategories: ['images'] })` leaves out layout,
  * prose and images — so an override can only narrow a preset further; to start from no
- * exclusions, pass options rather than a preset.
+ * exclusions, pass options rather than a preset. Throws for a name that is not a preset.
  */
 export function clrContextPreset(
   preset: ClrContextPreset,
   overrides: ClrContextSnapshotOptions = {}
 ): ClrContextSnapshotOptions {
-  const base: Record<string, unknown> = { ...ownEntry(CLR_CONTEXT_PRESETS, preset) };
+  const options = ownEntry(CLR_CONTEXT_PRESETS, preset);
+  // A typo in configuration, or a name from JavaScript the type does not check, would
+  // otherwise give the defaults without a word.
+  if (!options) {
+    throw new Error(
+      `Clarity context options: "${String(preset)}" is not a preset; use one of ${Object.keys(CLR_CONTEXT_PRESETS).join(', ')}.`
+    );
+  }
+  const base: Record<string, unknown> = { ...options };
   // The preset's own lists are frozen; the caller gets copies it may change.
   for (const key of EXCLUSION_KEYS) {
     if (Array.isArray(base[key])) {

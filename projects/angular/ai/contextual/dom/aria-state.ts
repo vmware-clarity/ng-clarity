@@ -12,7 +12,7 @@ import {
   ClrContextSnapshotOptions,
 } from '@clr/angular/utils';
 
-import { accessibleText, referencedText, truncate } from './text';
+import { accessibleText, referencedIds, referencedText, truncate } from './text';
 
 /**
  * ARIA attributes that are only worth reporting when they are on, reported as a flag.
@@ -150,13 +150,29 @@ export function ariaState(
     state.level = level;
   }
 
+  // An author's own word for what the element is — "slide" for a group in a carousel —
+  // which a screen reader announces in place of the role.
+  const roleDescription = element.getAttribute('aria-roledescription')?.trim();
+  if (roleDescription) {
+    state.roleDescription = truncate(roleDescription, options.maxTextLength);
+  }
+
   // Helper guidance and validation messages are wired to a control with
   // aria-describedby, which is where an agent should read them from too — otherwise they
   // surface as unattached nodes beside the field and it has to guess which one they
-  // belong to.
-  const description = truncate(referencedText(element, 'aria-describedby', withheld), options.maxTextLength);
+  // belong to. The message `aria-errormessage` names is what is wrong with an invalid
+  // field, kept apart as its `error` rather than run into its description; it says
+  // nothing while the field is valid.
+  const errorIds = state.invalid === true ? referencedIds(element, 'aria-errormessage') : [];
+  const description = truncate(referencedText(element, 'aria-describedby', withheld, errorIds), options.maxTextLength);
   if (description) {
     state.description = description;
+  }
+  const error = errorIds.length
+    ? truncate(referencedText(element, 'aria-errormessage', withheld), options.maxTextLength)
+    : '';
+  if (error) {
+    state.error = error;
   }
 
   assignNativeState(element, state, options);
@@ -261,7 +277,11 @@ function assignValueState(
       state.checked = type === 'checkbox' && input.indeterminate ? 'mixed' : input.checked;
       return;
     }
-    if (!VALUELESS_INPUT_TYPES.has(type)) {
+    if (type === 'number' || type === 'range') {
+      // A number, as a write proposes one and as `aria-valuenow` reports one; an empty
+      // field holds none.
+      state.value = input.value === '' || Number.isNaN(input.valueAsNumber) ? null : input.valueAsNumber;
+    } else if (!VALUELESS_INPUT_TYPES.has(type)) {
       state.value = truncate(input.value, options.maxTextLength);
     }
     return;
@@ -374,19 +394,32 @@ const OUTPUT_WITHHELD_KEYS = VALUE_STATE_KEYS.filter(key => key !== 'value');
 /**
  * The same node with every value key removed from its state, recursively, so that
  * neither the node nor anything published under it keeps what the user entered.
- * Returns the node itself when there is nothing to remove.
+ * Returns the node itself when there is nothing to remove. With `markWithheld`, a node
+ * that lost something says so (`withheld: true`; see {@link withoutStateKeys}).
  */
-export function withoutValues(node: ClrComponentContext): ClrComponentContext {
-  return withoutStateKeys(node, ({ type }) => (OUTPUT_VALUE_ROLES.has(type) ? OUTPUT_WITHHELD_KEYS : VALUE_STATE_KEYS));
+export function withoutValues(node: ClrComponentContext, markWithheld = false): ClrComponentContext {
+  return withoutStateKeys(
+    node,
+    ({ type }) => (OUTPUT_VALUE_ROLES.has(type) ? OUTPUT_WITHHELD_KEYS : VALUE_STATE_KEYS),
+    markWithheld
+  );
 }
 
 /**
  * The same node with the keys `keysFor` names removed from its state and from the state
  * of every node below it. Returns the node itself when there is nothing to remove.
+ *
+ * With `markWithheld`, a node that lost a value carries `withheld: true` in its place,
+ * so a consumer can tell a field it may not see from one that happens to be empty — the
+ * same reason a redacted field says `redacted: true`. An empty value (`''`, `null`, an
+ * empty list) leaves no marker: that a field is empty says nothing of what the user
+ * entered, and is what an agent needs to know to fill it. A choice (`checked: false`) or
+ * a count of zero is a value, and is marked like any other.
  */
 export function withoutStateKeys(
   node: ClrComponentContext,
-  keysFor: (node: ClrComponentContext) => readonly string[]
+  keysFor: (node: ClrComponentContext) => readonly string[],
+  markWithheld = false
 ): ClrComponentContext {
   let result = node;
   const state = node.state;
@@ -395,6 +428,9 @@ export function withoutStateKeys(
     const kept: Record<string, unknown> = { ...state };
     for (const key of keys) {
       delete kept[key];
+    }
+    if (markWithheld && keys.some(key => key in state && !isEmptyValue(state[key]))) {
+      kept['withheld'] = true;
     }
     result = { ...result };
     if (Object.keys(kept).length) {
@@ -405,12 +441,17 @@ export function withoutStateKeys(
   }
   const children = node.children;
   if (children?.length) {
-    const reduced = children.map(child => withoutStateKeys(child, keysFor));
+    const reduced = children.map(child => withoutStateKeys(child, keysFor, markWithheld));
     if (reduced.some((child, index) => child !== children[index])) {
       result = { ...result, children: reduced };
     }
   }
   return result;
+}
+
+/** Whether a withheld value held nothing: no text, no number, no entries. */
+function isEmptyValue(value: unknown): boolean {
+  return value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length);
 }
 
 /**
