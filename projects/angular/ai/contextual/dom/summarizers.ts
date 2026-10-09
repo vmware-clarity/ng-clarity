@@ -100,11 +100,10 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
   // A paginated or virtualised grid holds only the current page, so its own declared
   // count is the only honest total. `aria-rowcount="-1"` means "unknown", and an absent
   // attribute must not be read as zero, so both fall back to counting what is rendered.
-  // The declared count is reported as declared: ARIA says it includes header rows, but
-  // the producers that actually set it (Clarity's virtual scroll among them) declare the
-  // data rows, which is also what the fallback counts.
-  // Only rows, and only this table's: a selected tab or option inside a cell is not a row.
-  // Read once, for both counts.
+  // The declared count is reported as declared: the producers that set it (Clarity's
+  // virtual scroll among them) declare the data rows, which is also what the fallback
+  // counts. Only this table's rows count, for the total and for the selection: a selected
+  // tab or option inside a cell is not a row.
   const rows = queryRole(element, 'row', scope);
   const declared = element.getAttribute('aria-rowcount');
   const total = declared === null ? Number.NaN : Number(declared);
@@ -132,15 +131,27 @@ function listsItems(options: Required<ClrContextSnapshotOptions>): boolean {
   return options.collectionItems !== 'summary';
 }
 
+/** How many entries a collection holds, and their names unless only a summary is wanted. */
+function counted(
+  entries: Element[],
+  countKey: string,
+  listKey: string,
+  collection: Element,
+  scope: SummaryScope
+): Record<string, unknown> {
+  const state: Record<string, unknown> = { [countKey]: entries.length };
+  if (listsItems(scope.options)) {
+    state[listKey] = namesOf(entries, collection, scope);
+  }
+  return state;
+}
+
 function summarizeTablist(element: Element, scope: SummaryScope): Record<string, unknown> {
   const tabs = queryRole(element, 'tab', scope);
   if (!tabs.length) {
     return {};
   }
-  const state: Record<string, unknown> = { tabCount: tabs.length };
-  if (listsItems(scope.options)) {
-    state.tabs = namesOf(tabs, element, scope);
-  }
+  const state = counted(tabs, 'tabCount', 'tabs', element, scope);
   // Looked for among all the tabs, not the reported few: the active one being past the
   // budget must not read as "nothing is selected".
   const active = tabs.find(tab => tab.getAttribute('aria-selected') === 'true');
@@ -163,11 +174,7 @@ function summarizeList(element: Element, scope: SummaryScope): Record<string, un
   if (!items.length) {
     return {};
   }
-  const state: Record<string, unknown> = { itemCount: items.length };
-  if (listsItems(scope.options)) {
-    state.items = namesOf(items, element, scope);
-  }
-  return state;
+  return counted(items, 'itemCount', 'items', element, scope);
 }
 
 /**
@@ -249,10 +256,7 @@ function summarizeChoices(
   if (!entries.length) {
     return {};
   }
-  const state: Record<string, unknown> = { optionCount: entries.length };
-  if (listsItems(scope.options)) {
-    state.options = namesOf(entries, collection, scope);
-  }
+  const state = counted(entries, 'optionCount', 'options', collection, scope);
   const selected = namesOf(entries.filter(isSelected), collection, scope);
   if (selected.length) {
     state.selected = selected;
@@ -286,10 +290,7 @@ function summarizeRadiogroup(element: Element, scope: SummaryScope): Record<stri
   if (!radios.length) {
     return {};
   }
-  const state: Record<string, unknown> = { optionCount: radios.length };
-  if (listsItems(scope.options)) {
-    state.options = namesOf(radios, element, scope);
-  }
+  const state = counted(radios, 'optionCount', 'options', element, scope);
   const chosen = radios.find(
     radio => (radio as HTMLInputElement).checked || radio.getAttribute('aria-checked') === 'true'
   );
@@ -306,8 +307,8 @@ function summarizeRadiogroup(element: Element, scope: SummaryScope): Record<stri
  * (`<th scope="row">`) names its own row and does not make it a header row.
  */
 function dataRows(rows: Element[]): Element[] {
-  // A row of column headers names the columns; a row that also holds data cells is a
-  // record whose first cell happens to be a header (`<th>` without `scope="row"`).
+  // A row that also holds data cells is a record whose first cell happens to be a header
+  // (`<th>` without `scope="row"`).
   return rows.filter(row => !row.querySelector(ROLE_SELECTORS.columnheader) || row.querySelector(DATA_CELL_SELECTOR));
 }
 

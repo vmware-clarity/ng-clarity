@@ -252,14 +252,6 @@
         <code cds-text="code">aria-hidden="true"</code>, <code cds-text="code">inert</code> or
         <code cds-text="code">data-clr-context-ignore</code>, and everything inside — as one selector, for a component
         that publishes context and must agree with the engine about what an agent may see.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">CLR_CONTEXT_WITHHELD_SELECTOR</b></td>
-      <td class="left">
-        Everything <code cds-text="code">CLR_CONTEXT_HIDDEN_SELECTOR</code> matches, and regions marked
-        <code cds-text="code">data-clr-context-redact</code>: what a component that labels something from its content —
-        a row by its cells, an option by its text — leaves out of that label.
         <code cds-text="code">CLR_CONTEXT_IGNORE_SELECTOR</code> and
         <code cds-text="code">CLR_CONTEXT_REDACT_SELECTOR</code> match the two attributes on their own.
       </td>
@@ -268,8 +260,8 @@
       <td class="left"><b cds-text="medium">CLR_CONTEXT_EDITING_HOST_SELECTOR</b></td>
       <td class="left">
         An editing host — <code cds-text="code">contenteditable</code> in any spelling but
-        <code cds-text="code">false</code>. What it holds was typed by the user, a value, so it is part of
-        <code cds-text="code">CLR_CONTEXT_WITHHELD_SELECTOR</code> and never read into a label.
+        <code cds-text="code">false</code>. What it holds was typed by the user, a value, so it is never read into a
+        label.
       </td>
     </tr>
   </tbody>
@@ -577,24 +569,6 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">clrContextText(element, skip?)</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
-      <td class="left">
-        The text an element shows, as a publisher may report it: text inside a redacted or ignored descendant, text
-        hidden from assistive technology and text hidden by style are left out, and block-level parts read as separate
-        words. Use it to label rows or options from their content, so a value the application withheld never reaches a
-        label.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">clrNormalizeContextText(text, lowercase?)</b></td>
-      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
-      <td class="left">
-        Text as the engine compares it — whitespace collapsed, and lowercased unless told otherwise — so a publisher and
-        the engine agree on whether two labels are the same.
-      </td>
-    </tr>
-    <tr>
       <td class="left"><b cds-text="medium">clrUsableSelectors(root, selectors)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
       <td class="left">
@@ -768,12 +742,11 @@
   <tbody>
     <tr>
       <td class="left">
-        <b cds-text="medium">clrCollectDomContextTree(root, options?, extractors?)</b>,
-        <b cds-text="medium">clrCollectDomContexts(…)</b>
+        <b cds-text="medium">clrCollectDomContextTree(root, options?, extractors?)</b>
       </td>
       <td class="left">
-        The walk the engine runs, over any part of a page: the tree with whether a budget ran out, or only its nodes.
-        For tests and tooling that describe markup outside an application.
+        The walk the engine runs, over any part of a page: the tree, with whether a budget ran out. For tests and
+        tooling that describe markup outside an application.
       </td>
     </tr>
     <tr>

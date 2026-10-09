@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { withoutValues } from './dom/aria-state';
+import { withoutStateKeys, withoutValues } from './dom/aria-state';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 import { BUDGET_KEYS, MAX_LIST_ENTRIES, SWITCH_KEYS } from './snapshot-options';
 
@@ -42,36 +42,50 @@ const UNTRUSTED_LIST_KEYS: readonly string[] = ['excludeCategories', 'excludeRol
 
 /**
  * Reduces whatever an untrusted caller passed to the budgets it is allowed to set,
- * discarding everything else. Each option keeps only the kind of value it takes — a
- * finite number for a budget, a boolean for a switch, a short string for an enumeration,
- * a list of strings for roles and categories — and anything else is dropped, so a caller cannot smuggle a getter or an
- * object through — nor a `NaN` or an `Infinity`, which a budget check would never see as
- * exhausted. What survives is still held to its range when the snapshot is built.
- * Selectors are not accepted from an untrusted caller at all.
+ * discarding everything else. Each option keeps only the kind of value it takes, so a
+ * caller cannot smuggle a getter or an object through — nor a `NaN` or an `Infinity`,
+ * which a budget check would never see as exhausted. What survives is still held to its
+ * range when the snapshot is built. Selectors are not accepted from an untrusted caller
+ * at all.
  */
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
   if (!options || typeof options !== 'object') {
     return undefined;
   }
   const candidate = options as Record<string, unknown>;
-  const sanitized: ClrContextSnapshotOptions = {};
+  const sanitized: Record<string, unknown> = {};
   for (const key of CLR_CONTEXT_UNTRUSTED_OPTION_KEYS) {
-    const value = candidate[key];
-    if (typeof value === 'number' && Number.isFinite(value) && (BUDGET_KEYS as readonly string[]).includes(key)) {
-      (sanitized as Record<string, unknown>)[key] = value;
-    } else if (typeof value === 'boolean' && (SWITCH_KEYS as readonly string[]).includes(key)) {
-      (sanitized as Record<string, unknown>)[key] = value;
-    } else if (typeof value === 'string' && value.length <= MAX_ENUM_LENGTH && ENUM_KEYS.includes(key)) {
-      // Enumerations; anything that is not one of the values is dropped when resolved.
-      (sanitized as Record<string, unknown>)[key] = value;
-    } else if (Array.isArray(value) && UNTRUSTED_LIST_KEYS.includes(key)) {
-      // Roles and categories; a selector is not accepted from here at all.
-      (sanitized as Record<string, unknown>)[key] = value
-        .filter(entry => typeof entry === 'string' && entry.length <= MAX_ENUM_LENGTH)
-        .slice(0, MAX_LIST_ENTRIES);
+    const value = acceptedValue(key, candidate[key]);
+    if (value !== undefined) {
+      sanitized[key] = value;
     }
   }
-  return sanitized;
+  return sanitized as ClrContextSnapshotOptions;
+}
+
+/**
+ * What an untrusted caller's value for an option is kept as: a finite number for a
+ * budget, a boolean for a switch, a short string for an enumeration and a bounded list of
+ * short strings for roles and categories. `undefined` for anything else.
+ */
+function acceptedValue(key: string, value: unknown): unknown {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) && (BUDGET_KEYS as readonly string[]).includes(key) ? value : undefined;
+  }
+  if (typeof value === 'boolean') {
+    return (SWITCH_KEYS as readonly string[]).includes(key) ? value : undefined;
+  }
+  if (typeof value === 'string') {
+    // Enumerations; anything that is not one of the values is dropped when resolved.
+    return value.length <= MAX_ENUM_LENGTH && ENUM_KEYS.includes(key) ? value : undefined;
+  }
+  if (Array.isArray(value) && UNTRUSTED_LIST_KEYS.includes(key)) {
+    // Roles and categories; a selector is not accepted from here at all.
+    return value
+      .filter(entry => typeof entry === 'string' && entry.length <= MAX_ENUM_LENGTH)
+      .slice(0, MAX_LIST_ENTRIES);
+  }
+  return undefined;
 }
 
 /**
@@ -90,7 +104,12 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
  * consumer.
  */
 export function withoutFormValues(context: ClrPageContext): ClrPageContext {
-  return { ...context, components: context.components.map(node => withoutUserContent(withoutValues(node))) };
+  return {
+    ...context,
+    components: context.components.map(node =>
+      withoutStateKeys(withoutValues(node), () => UNTRUSTED_WITHHELD_STATE_KEYS)
+    ),
+  };
 }
 
 /**
@@ -101,7 +120,8 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
  * the options a combobox lists, how many there are or are redacted and whether more are
  * still loading, while they are narrowed to what the user typed or picked.
  * Withheld, from any node, only from untrusted consumers: the application's own code is
- * told all of them.
+ * told all of them. With `VALUE_STATE_KEYS`, these are the keys `ClrElementContextCallback`
+ * lists for publishers and extractors; keep that list in step.
  */
 const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'rows',
@@ -113,32 +133,6 @@ const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'matchingOptionsPending',
   'matchingOptionCount',
 ]);
-
-/** A node without the {@link UNTRUSTED_WITHHELD_STATE_KEYS}, recursively. */
-function withoutUserContent(node: ClrComponentContext): ClrComponentContext {
-  let result = node;
-  const state = node.state;
-  if (state && UNTRUSTED_WITHHELD_STATE_KEYS.some(key => key in state)) {
-    const kept: Record<string, unknown> = { ...state };
-    for (const key of UNTRUSTED_WITHHELD_STATE_KEYS) {
-      delete kept[key];
-    }
-    result = { ...result };
-    if (Object.keys(kept).length) {
-      result.state = kept;
-    } else {
-      delete result.state;
-    }
-  }
-  const children = node.children;
-  if (children?.length) {
-    const reduced = children.map(withoutUserContent);
-    if (reduced.some((child, index) => child !== children[index])) {
-      result = { ...result, children: reduced };
-    }
-  }
-  return result;
-}
 
 /**
  * The same context with only as much of the address as says which page this is: the

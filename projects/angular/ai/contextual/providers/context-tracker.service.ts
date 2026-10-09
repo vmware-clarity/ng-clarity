@@ -87,7 +87,7 @@ export class ClrContextTrackerService implements OnDestroy {
   private observer: MutationObserver | null = null;
   private quietTimer: ReturnType<typeof setTimeout> | null = null;
   private maxWaitTimer: ReturnType<typeof setTimeout> | null = null;
-  private valueListener: ((event: Event) => void) | null = null;
+  private stopListeningForValues: (() => void) | null = null;
   private readonly frames = new Map<HTMLIFrameElement, TrackedFrame>();
   private registrySubscription: Subscription | null = null;
   private latest: ClrPageContext | null = null;
@@ -158,12 +158,7 @@ export class ClrContextTrackerService implements OnDestroy {
       this.observer = this.observeDocument(this.document);
       this.observeFrames();
 
-      // Typing changes an input's `value` property, never its attribute, so a
-      // MutationObserver never sees it. Without these listeners a subscriber would hold
-      // whatever the values were at the last unrelated DOM change.
-      this.valueListener = event => this.onValueChange(event);
-      this.document.body.addEventListener('input', this.valueListener, true);
-      this.document.body.addEventListener('change', this.valueListener, true);
+      this.stopListeningForValues = listenForValues(this.document.body, event => this.onValueChange(event));
 
       // An annotation's state is application data, changed without any DOM change.
       this.registrySubscription = this.contextRegistry.changes$.subscribe(() => this.scheduleScrape());
@@ -214,11 +209,8 @@ export class ClrContextTrackerService implements OnDestroy {
     this.tracking = false;
     this.observer?.disconnect();
     this.observer = null;
-    if (this.valueListener) {
-      this.document.body.removeEventListener('input', this.valueListener, true);
-      this.document.body.removeEventListener('change', this.valueListener, true);
-      this.valueListener = null;
-    }
+    this.stopListeningForValues?.();
+    this.stopListeningForValues = null;
     for (const [frame, tracked] of this.frames) {
       this.detachFrame(frame, tracked);
     }
@@ -350,16 +342,13 @@ export class ClrContextTrackerService implements OnDestroy {
       };
       frame.addEventListener('load', onLoad);
       if (!contents) {
-        this.frames.set(frame, { document: null, observer: null, valueListener: null, loadListener: onLoad });
+        this.frames.set(frame, { document: null, observer: null, stopListeningForValues: null, loadListener: onLoad });
         continue;
       }
-      const valueListener = (event: Event) => this.onValueChange(event);
-      contents.body.addEventListener('input', valueListener, true);
-      contents.body.addEventListener('change', valueListener, true);
       this.frames.set(frame, {
         document: contents,
         observer: this.observeDocument(contents),
-        valueListener,
+        stopListeningForValues: listenForValues(contents.body, event => this.onValueChange(event)),
         loadListener: onLoad,
       });
     }
@@ -374,10 +363,7 @@ export class ClrContextTrackerService implements OnDestroy {
   private detachFrame(frame: HTMLIFrameElement, tracked: TrackedFrame): void {
     frame.removeEventListener('load', tracked.loadListener);
     tracked.observer?.disconnect();
-    if (tracked.document && tracked.valueListener) {
-      tracked.document.body?.removeEventListener('input', tracked.valueListener, true);
-      tracked.document.body?.removeEventListener('change', tracked.valueListener, true);
-    }
+    tracked.stopListeningForValues?.();
   }
 
   private clearTimers(): void {
@@ -396,8 +382,23 @@ interface TrackedFrame {
   /** The frame's document while it was readable, `null` while it was not. */
   document: Document | null;
   observer: MutationObserver | null;
-  valueListener: ((event: Event) => void) | null;
+  stopListeningForValues: (() => void) | null;
   loadListener: () => void;
+}
+
+/**
+ * Listens for `input` and `change` under `body` and returns the teardown. Typing changes
+ * an input's `value` property, never its attribute, so a MutationObserver never sees it:
+ * without these listeners a subscriber would hold whatever the values were at the last
+ * unrelated DOM change.
+ */
+function listenForValues(body: HTMLElement, listener: (event: Event) => void): () => void {
+  body.addEventListener('input', listener, true);
+  body.addEventListener('change', listener, true);
+  return () => {
+    body.removeEventListener('input', listener, true);
+    body.removeEventListener('change', listener, true);
+  };
 }
 
 /** Every frame under a document, and under every readable frame inside it. */

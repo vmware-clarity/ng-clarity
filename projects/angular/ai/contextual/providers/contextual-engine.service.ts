@@ -88,7 +88,34 @@ export class ClrContextEngineService implements OnDestroy {
    * application-wide ones (see `provideClrContextOptions`).
    */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
-    return this.snapshot(options);
+    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
+    const snapshot: ClrPageContext = {
+      title: this.document.title,
+      url: this.currentUrl(),
+      regions: this.contextRegistry.collect(this.regionFilter(resolved)),
+      components: [],
+      collectedAt: new Date().toISOString(),
+    };
+    const route = this.routeContext();
+    if (route) {
+      snapshot.route = route;
+    }
+    if (resolved.includeRoutes && this.router?.config.length) {
+      // Bounded by the resolved budget, so an out-of-range request is clamped here too.
+      const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
+      snapshot.availableRoutes = availableRoutes(this.router.config, limit);
+    }
+    if (isPlatformBrowser(this.platformId) && resolved.includeDomComponents) {
+      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors);
+      snapshot.components = tree.components;
+      if (tree.truncated) {
+        snapshot.truncated = true;
+      }
+      if (tree.focus) {
+        snapshot.focus = tree.focus;
+      }
+    }
+    return snapshot;
   }
 
   /**
@@ -142,7 +169,7 @@ export class ClrContextEngineService implements OnDestroy {
     const ceiling = this.untrustedCeiling(budgets);
     host[propertyName] = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
-      const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
+      const snapshot = this.getSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
       return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
     };
@@ -155,38 +182,6 @@ export class ClrContextEngineService implements OnDestroy {
       delete (window as unknown as Record<string, unknown>)[this.globalProperty];
     }
     this.globalProperty = null;
-  }
-
-  private snapshot(options: ClrContextSnapshotOptions | undefined): ClrPageContext {
-    const effective = this.effectiveOptions(options);
-    const resolved = resolveSnapshotOptions(effective);
-    const snapshot: ClrPageContext = {
-      title: this.document.title,
-      url: this.currentUrl(),
-      regions: this.contextRegistry.collect(this.regionFilter(resolved)),
-      components: [],
-      collectedAt: new Date().toISOString(),
-    };
-    const route = this.routeContext();
-    if (route) {
-      snapshot.route = route;
-    }
-    if (resolved.includeRoutes && this.router?.config.length) {
-      // Bounded by the resolved budget, so an out-of-range request is clamped here too.
-      const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
-      snapshot.availableRoutes = availableRoutes(this.router.config, limit);
-    }
-    if (isPlatformBrowser(this.platformId) && resolved.includeDomComponents) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors);
-      snapshot.components = tree.components;
-      if (tree.truncated) {
-        snapshot.truncated = true;
-      }
-      if (tree.focus) {
-        snapshot.focus = tree.focus;
-      }
-    }
-    return snapshot;
   }
 
   /**
@@ -229,11 +224,6 @@ export class ClrContextEngineService implements OnDestroy {
   private untrustedCeiling(hostCeiling?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
     const application = this.applicationOptions ?? undefined;
     return resolveSnapshotOptions(capSnapshotOptions(withCallOptions(application, hostCeiling), application));
-  }
-
-  /** The call's options over the application's; see {@link withCallOptions}. */
-  private effectiveOptions(options?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
-    return withCallOptions(this.applicationOptions, options);
   }
 
   private browserWindow(): Window | null {

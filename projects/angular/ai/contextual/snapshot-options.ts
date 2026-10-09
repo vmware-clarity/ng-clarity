@@ -73,6 +73,11 @@ function listOrNothing(value: unknown): readonly unknown[] {
   return Array.isArray(value) ? value : [];
 }
 
+/** The entries of both lists, each once, in the order they first appear. */
+function union<T>(first: readonly T[], second: readonly T[]): T[] {
+  return [...new Set([...first, ...second])];
+}
+
 /**
  * In development, says that an exclusion list the application gave was ignored for not
  * being a list (`excludeSelectors: '.secret'` for `['.secret']`): the snapshot is then wider
@@ -150,16 +155,14 @@ export function clrContextPreset(
   preset: ClrContextPreset,
   overrides: ClrContextSnapshotOptions = {}
 ): ClrContextSnapshotOptions {
-  const base: Readonly<ClrContextSnapshotOptions> = ownEntry(CLR_CONTEXT_PRESETS, preset) ?? {};
-  const options = { ...base, ...overrides } as ClrContextSnapshotOptions;
+  const base: Record<string, unknown> = { ...ownEntry(CLR_CONTEXT_PRESETS, preset) };
+  // The preset's own lists are frozen; the caller gets copies it may change.
   for (const key of EXCLUSION_KEYS) {
-    warnIfNotAList(key, overrides[key]);
-    const combined = [...listOrNothing(base[key]), ...listOrNothing(overrides[key])];
-    if (combined.length || (key in options && !Array.isArray(options[key]))) {
-      (options as Record<string, unknown>)[key] = [...new Set(combined)];
+    if (Array.isArray(base[key])) {
+      base[key] = [...base[key]];
     }
   }
-  return options;
+  return withCallOptions(base, overrides);
 }
 
 /**
@@ -183,10 +186,9 @@ export function withCallOptions(
     }
   }
   for (const key of EXCLUSION_KEYS) {
-    const kept = application?.[key];
     const added = call?.[key];
-    if (Array.isArray(kept) && kept.length && Array.isArray(added)) {
-      (effective as Record<string, unknown>)[key] = [...new Set([...kept, ...added])];
+    if (Array.isArray(added)) {
+      (effective as Record<string, unknown>)[key] = union(listOrNothing(application?.[key]), added);
     }
   }
   return effective;
@@ -258,9 +260,7 @@ export function resolveSnapshotOptions(options?: ClrContextSnapshotOptions): Req
   }
   // A category is a name for roles, or for a switch: both are applied here, so the walk
   // only ever sees roles and switches.
-  resolved.excludeRoles = [
-    ...new Set([...resolved.excludeRoles, ...clrContextCategoryRoles(resolved.excludeCategories)]),
-  ];
+  resolved.excludeRoles = union(resolved.excludeRoles, clrContextCategoryRoles(resolved.excludeCategories));
   if (resolved.excludeCategories.includes('text')) {
     resolved.includeText = false;
   }
@@ -318,13 +318,14 @@ export function capSnapshotOptions(
   for (const key of LIST_KEYS) {
     const limit = ceiling[key];
     if (Array.isArray(limit) && limit.length) {
-      capped[key] = [...new Set([...stringList(limit), ...stringList(listOrNothing(capped[key]))])];
+      capped[key] = union(stringList(limit), stringList(listOrNothing(capped[key])));
     }
   }
   if (Array.isArray(ceiling.excludeCategories) && ceiling.excludeCategories.length) {
-    capped.excludeCategories = [
-      ...new Set([...ceiling.excludeCategories, ...listOrNothing(capped.excludeCategories)]),
-    ] as ClrContextCategory[];
+    capped.excludeCategories = union(
+      ceiling.excludeCategories,
+      listOrNothing(capped.excludeCategories)
+    ) as ClrContextCategory[];
   }
   if (ceiling.rootSelector) {
     capped.rootSelector = ceiling.rootSelector;
