@@ -134,7 +134,7 @@ From the [forms pattern](https://guidance.clarity.design/3001) and control guida
 
 ## Rules
 
-- Never set a value or default on a file control (`clrFileInput`): its value is a `FileList` or `null`, and writing anything else throws at runtime.
+- Never bind a value to a file control (`clrFileInput`): its value is a `FileList` or `null`, and writing anything else throws at runtime. A bare `ngModel` attribute passes `''` and throws too. Use a reactive control (`formControlName`, initial value `null`) or no form directive and read the files from `(change)`.
 - Every control needs a visible `<label>`; a placeholder is never a label or helper text. Without a visible label, set `aria-label` ([1014](https://guidance.clarity.design/1014)).
 - Mark required fields with `class="clr-required-mark"` on the label and state the asterisk meaning at the top of the form (login forms excepted): use `appfx-required-field-legend` from `@clr/addons/a11y` or plain text.
 - No buttons or links inside a `<label>`. For a button next to a control, wrap the control container and button in a `cds-layout="horizontal gap:sm"` element.

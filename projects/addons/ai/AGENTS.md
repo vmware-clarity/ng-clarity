@@ -19,17 +19,19 @@ AppFX builds on `@clr/angular`; the Clarity rules apply here too.
 
 Path: `node_modules/@clr/addons/ai/skills/<guide>/SKILL.md`.
 
-- `appfx-a11y`: tab overflow, required-field legend, zoom detection
-- `appfx-card-container`: reorderable card dashboards
-- `appfx-certificate-viewer`: certificate chains
-- `appfx-datagrid`: configuration-driven tables, advanced filters, export
-- `appfx-dialog`: multi-page modal dialogs
-- `appfx-drag-and-drop`: drag and drop across components
-- `appfx-menu`: declarative or code-created context menus at a point, 400%-zoom reflow
-- `appfx-property-view`: read-only property categories
-- `appfx-stepper`: workflow steppers
-- `appfx-tabs`: model-driven tabs
-- `appfx-translate`: AppFX locale and translations
-- `appfx-wizard`: workflow wizards
+| Guide                      | Use for                                                                                                                       |
+| -------------------------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `appfx-a11y`               | Tab overflow, stepper string overrides, required-field legend (`appfx-required-field-legend`), zoom/reflow detection          |
+| `appfx-card-container`     | Dashboards of cards users can reorder, show/hide, and keep the layout of (`appfx-card-container`, `persistenceStore`)         |
+| `appfx-certificate-viewer` | X.509 / PEM certificate chains (`appfx-certificate-viewer`)                                                                   |
+| `appfx-datagrid`           | Configuration-driven tables (`appfx-datagrid`, `ColumnDefinition`), advanced filters, server-driven paging, export            |
+| `appfx-dialog`             | Multi-page tabbed modals (`appfx-dialog`, `Step[]` with `StepModel` pages, async OK/Cancel `CloseHandler`)                    |
+| `appfx-drag-and-drop`      | Connecting CDK drop lists across components by group (`DragAndDropGroupService`, live `cdkDropListConnectedTo` array)         |
+| `appfx-menu`               | Declarative or code-created context menus at a point (`appfx-menu`, actions, submenus, `MenuOutletService`), 400%-zoom reflow |
+| `appfx-property-view`      | Read-only key/value details in categories and sections (`appfx-property-view`, `PropertyViewBuilder`)                         |
+| `appfx-stepper`            | Workflow-driven inline steppers (`appfx-stepper`, `Step[]`, `StepModel`, `readyToComplete`, per-step validation)              |
+| `appfx-tabs`               | Model-driven tabs (`appfx-tabs`, `TabLayout`, `validate$()`); `appfxIfTabActive` for two-way active state on plain `clr-tab`  |
+| `appfx-translate`          | AppFX locale and translations: `translate`/`dateTime` pipes in templates, `AppfxTranslateService` in code                     |
+| `appfx-wizard`             | Workflow-driven modal wizards (`appfx-wizard`, `Step[]`, `StepModel`, `Var` models, summary page)                             |
 
 <!-- appfx:end -->

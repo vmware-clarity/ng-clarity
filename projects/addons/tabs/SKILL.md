@@ -13,7 +13,7 @@ metadata:
 
 Use `appfx-tabs` when each tab is a component with its own model, data flows through a shared workflow model (`Var`, `@In`/`@Out`), and you need to validate the visited tabs before saving. It renders `clr-tabs` internally and adds loading/error states, disabled content mode, and a collapsible tab-links panel at high zoom. Its `Step[]` and models are reusable in `appfx-dialog`, `appfx-wizard`, and `appfx-stepper`.
 
-Use the `appfxIfTabActive` directive on a plain `clr-tab` only when you need two-way active state or an active CSS class.
+For a plain `clr-tabs` whose active tab must be bound two-way to a component property (or needs an active CSS class), do not reach for `appfx-tabs`: put the `appfxIfTabActive` directive on each `clr-tab` (section below). The wrapper is only for model-driven step components.
 
 Do not migrate existing `clr-tabs` usage unless asked.
 

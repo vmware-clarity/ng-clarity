@@ -38,7 +38,7 @@ export class VmWorkflowModel {
 // Page model
 export class NameModel implements StepModel {
   @Out() name = Var.of<string>('');
-  readyToComplete = true; // false disables Next
+  readyToComplete = true; // false disables Next; keep it a writable field, the framework assigns it
 }
 
 @Component({

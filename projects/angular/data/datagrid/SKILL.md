@@ -174,6 +174,8 @@ Add `[clrDgReplace]="true"` to replace the row cells with the detail. Detail pan
 
 Give the grid a fixed height. No pagination with virtual scroll. Virtual scroll is hard to use with a keyboard, so also offer the data as a downloadable file.
 
+The directive is `ClrDatagridVirtualScrollDirective` (part of `ClrDatagridModule`); it goes on an `ng-template` with `clrVirtualRowsOf`, and the `clr-dg-row` sits inside that template. There is no `*clrVirtualScrollOf` structural directive on `clr-dg-row`.
+
 ## Rules
 
 - Always include `<clr-dg-placeholder>` for the empty state.

@@ -49,7 +49,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
   private readonly groupService = inject(DragAndDropGroupService);
 
   // The group's live array: CDK reads it on every drag start, so lists registered later are included.
-  connectedLists: readonly CdkDropList[] = [];
+  connectedLists: CdkDropList[] = [];
 
   ngOnInit(): void {
     this.groupService.addGroupItem(this.group, this.dropList); // static: true, available in ngOnInit
@@ -71,6 +71,7 @@ export class TaskListComponent implements OnInit, OnDestroy {
 - Bind `[cdkDropListConnectedTo]` to the array returned by `getGroupItems()`, kept in a field. Don't copy it in a getter (a new array on every check throws `NG0100`), and don't take a one-time copy (lists registered later are missed).
 - Always pair `addGroupItem` with `removeGroupItem` in `ngOnDestroy`; the service is a root singleton and keeps references otherwise.
 - `getGroupItems` returns a readonly view of the group's live array (empty for unknown groups). Cast it to `CdkDropList[]` when binding to `cdkDropListConnectedTo`; never spread it, a copy loses later registrations.
+- Reorder with `moveItemInArray` and move between lists with `transferArrayItem` (both from `@angular/cdk/drag-drop`) inside `(cdkDropListDropped)`; do not splice the arrays by hand.
 - Use distinct group names per independent drag area.
 - Provide keyboard alternatives for reordering (e.g. move up/down buttons with `aria-label`) — CDK drag is pointer-only.
 

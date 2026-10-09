@@ -82,6 +82,7 @@ readonly format: DateTimeFormatOptions = { dateTimeKind: DateTimeKind.DateTime, 
 - Provide translations per component (`providers`), with every `AppfxLocale` key present; global app-wide AppFX translations are discouraged.
 - Translations are static objects — loading them from an endpoint is unsupported.
 - Interpolation uses `{{param}}` placeholders.
+- Templates translate with the `translate` pipe (`'key' | translate`); inject `AppfxTranslateService` only for text built in code (titles, notifications, step labels).
 
 ## References
 
