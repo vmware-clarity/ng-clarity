@@ -7,6 +7,10 @@
 
 import { IconShapeCollection } from './interfaces/icon.interfaces';
 
+// Every icon shape calls this at module level. esbuild (used by the Angular CLI) can't tell the call is pure and keeps
+// every shape. The annotation lets it drop unused shapes. Rollup and webpack drop them without it.
+// Keep it above `export`: the TypeScript build drops it when it sits between `export` and `function`.
+/* @__NO_SIDE_EFFECTS__ */
 export function renderIcon(shapeOrStringIcon: IconShapeCollection | string) {
   return shapeOrStringIcon;
 }
