@@ -28,8 +28,7 @@ export function writeObstacle(element: Element, knownModals?: ReadonlySet<Elemen
   if (isHiddenFromEngine(element)) {
     return 'hidden';
   }
-  const modals = openModalDialogs(element.ownerDocument).filter(dialog => !knownModals || knownModals.has(dialog));
-  const modal = modals[modals.length - 1];
+  const modal = topmostModal(element.ownerDocument, knownModals);
   if (modal && !modal.contains(element)) {
     return 'hidden';
   }
@@ -49,4 +48,13 @@ export function writeObstacle(element: Element, knownModals?: ReadonlySet<Elemen
     return 'readOnly';
   }
   return null;
+}
+
+/**
+ * The open modal dialog the person is acting in, if any: the topmost of those open, or of
+ * `knownModals` when given. Nothing outside it can be reached.
+ */
+export function topmostModal(document: Document, knownModals?: ReadonlySet<Element>): Element | null {
+  const modals = openModalDialogs(document).filter(dialog => !knownModals || knownModals.has(dialog));
+  return modals[modals.length - 1] ?? null;
 }

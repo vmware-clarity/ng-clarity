@@ -9,6 +9,9 @@ import { ClrComponentContext } from '@clr/angular/utils';
 
 import { ContextRefRegistryService } from './context-ref-registry.service';
 
+/** Hands out a ref for every node noted, bound or not, so that the bookkeeping can be looked at alone. */
+const anything = () => true;
+
 describe('ContextRefRegistryService', () => {
   let registry: ContextRefRegistryService;
   let input: HTMLInputElement;
@@ -27,7 +30,7 @@ describe('ContextRefRegistryService', () => {
   });
 
   it('gives a node a random ref and resolves it to the element once committed', () => {
-    const sink = registry.begin();
+    const sink = registry.begin(anything);
     const node: ClrComponentContext = { type: 'textbox' };
 
     sink.note(node, input);
@@ -39,12 +42,12 @@ describe('ContextRefRegistryService', () => {
   });
 
   it('keeps the same ref for the same element across snapshots', () => {
-    const first = registry.begin();
+    const first = registry.begin(anything);
     const node: ClrComponentContext = { type: 'textbox' };
     first.note(node, input);
     first.commit();
 
-    const second = registry.begin();
+    const second = registry.begin(anything);
     const again: ClrComponentContext = { type: 'textbox' };
     second.note(again, input);
     second.commit();
@@ -53,7 +56,7 @@ describe('ContextRefRegistryService', () => {
   });
 
   it('gives different elements refs that cannot be derived from one another', () => {
-    const sink = registry.begin();
+    const sink = registry.begin(anything);
     const refs = Array.from({ length: 20 }, () => {
       const node: ClrComponentContext = { type: 'textbox' };
       sink.note(node, document.createElement('input'));
@@ -63,7 +66,7 @@ describe('ContextRefRegistryService', () => {
   });
 
   it('records the host that renders a node ahead of the element inside it, as the node ends up', () => {
-    const sink = registry.begin();
+    const sink = registry.begin(anything);
     const node: ClrComponentContext = { type: 'combobox' };
 
     sink.note(node, input);
@@ -78,12 +81,12 @@ describe('ContextRefRegistryService', () => {
   });
 
   it('still resolves a ref after a later snapshot that did not show its element', () => {
-    const first = registry.begin();
+    const first = registry.begin(anything);
     const node: ClrComponentContext = { type: 'textbox' };
     first.note(node, input);
     first.commit();
 
-    const narrower = registry.begin();
+    const narrower = registry.begin(anything);
     narrower.note({ type: 'checkbox' }, document.createElement('input'));
     narrower.commit();
 
@@ -91,7 +94,7 @@ describe('ContextRefRegistryService', () => {
   });
 
   it('stops resolving a ref once its element leaves the document', () => {
-    const sink = registry.begin();
+    const sink = registry.begin(anything);
     const node: ClrComponentContext = { type: 'textbox' };
     sink.note(node, input);
     sink.commit();
@@ -102,10 +105,45 @@ describe('ContextRefRegistryService', () => {
   });
 
   it('records nothing from a walk that is never committed', () => {
-    const sink = registry.begin();
+    const sink = registry.begin(anything);
     const node: ClrComponentContext = { type: 'textbox' };
     sink.note(node, input);
 
     expect(registry.resolve(node.ref as string)).toBeNull();
+  });
+
+  it('takes the ref off a node the engine could not write through, in the tree the walk produced', () => {
+    const sink = registry.begin();
+    const node: ClrComponentContext = { type: 'textbox', label: 'Loose' };
+    const tree: ClrComponentContext[] = [{ type: 'form', children: [node] }];
+
+    sink.note(node, input);
+    sink.commit(tree);
+
+    expect(tree[0].children?.[0]).toEqual({ type: 'textbox', label: 'Loose' });
+  });
+
+  it('hands out no ref for an element behind an open modal dialog, and does for one inside it', () => {
+    const dialog = document.createElement('div');
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    const inside = document.createElement('input');
+    dialog.appendChild(inside);
+    document.body.appendChild(dialog);
+    try {
+      const sink = registry.begin(anything);
+      const behind: ClrComponentContext = { type: 'textbox' };
+      const front: ClrComponentContext = { type: 'textbox' };
+      sink.note(behind, input);
+      sink.note(front, inside);
+      const behindRef = behind.ref as string;
+      sink.commit([behind, front]);
+
+      expect(behind.ref).toBeUndefined();
+      expect(registry.resolve(behindRef)).toBeNull();
+      expect(registry.resolve(front.ref as string)?.elements).toEqual([inside]);
+    } finally {
+      dialog.remove();
+    }
   });
 });

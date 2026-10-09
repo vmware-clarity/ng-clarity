@@ -206,6 +206,16 @@ export function resolveWriteTarget(
   return { refused: 'unbound', detail: UNBOUND_DETAIL };
 }
 
+/**
+ * Whether a node's elements are something the engine could write to at all: one of them
+ * carries a form binding or writes itself, or the node is a radio group whose radios
+ * carry one. What else stands in the way — a disabled control, a role that says nothing
+ * about its value — is judged when a write is attempted, as it may change before then.
+ */
+export function offersWrite(ref: ContextRefTarget): boolean {
+  return !!boundElementOf(ref.elements) || !!boundRadioOf(ref.elements[ref.elements.length - 1]);
+}
+
 /** The outermost element that carries a form binding or a published `write`, which is what a write goes through. */
 function boundElementOf(elements: Element[]): Element | undefined {
   return elements.find(element => readElementMutator(element)?.write || formControlOn(element)?.control);

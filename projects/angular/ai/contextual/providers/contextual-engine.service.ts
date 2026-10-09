@@ -190,7 +190,7 @@ export class ClrContextEngineService implements OnDestroy {
     if (isPlatformBrowser(this.platformId) && resolved.includeDomComponents) {
       const refs = withRefs ? this.refs.begin() : null;
       const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors, refs);
-      refs?.commit();
+      refs?.commit(tree.components);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;

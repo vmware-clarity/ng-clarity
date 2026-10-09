@@ -8,6 +8,8 @@
 import { Injectable } from '@angular/core';
 import { ClrComponentContext } from '@clr/angular/utils';
 
+import { topmostModal } from './writability';
+import { offersWrite } from './write';
 import { ClrContextRefSink } from '../dom/walk';
 
 /** What a ref stands for: the node as a snapshot last showed it, and the elements behind it. */
@@ -43,6 +45,11 @@ const REF_RANDOM_LENGTH = 8;
  * not by which snapshot happened to be taken last. A ref is random, so one can only be
  * recalled from a snapshot, never worked out from another.
  *
+ * A snapshot hands out a ref only where a write could get somewhere: to a node whose
+ * elements carry a form binding or write themselves, and that no open modal dialog
+ * stands in front of. A ref is still a candidate rather than a promise: the write may be
+ * refused for what is true when it is attempted.
+ *
  * Elements are held weakly: a ref to UI that has been removed never keeps it alive.
  */
 @Injectable({ providedIn: 'root' })
@@ -52,9 +59,13 @@ export class ContextRefRegistryService {
 
   /**
    * A sink for one walk. What it collects is recorded once the walk is committed, and
-   * not before, so a snapshot that fails midway records nothing.
+   * not before, so a snapshot that fails midway records nothing. Committing takes the
+   * refs off the nodes, in the tree the walk produced, that `offered` turns down — by
+   * default, those the engine could not write through (see {@link offersWrite}).
    */
-  begin(): ClrContextRefSink & { commit(): void } {
+  begin(
+    offered: (target: ContextRefTarget) => boolean = offersWrite
+  ): ClrContextRefSink & { commit(components?: ClrComponentContext[]): void } {
     const collected = new Map<string, ContextRefTarget>();
     return {
       note: (node: ClrComponentContext, element: Element) => {
@@ -75,13 +86,25 @@ export class ContextRefRegistryService {
           target.label = node.label;
         }
       },
-      commit: () => {
+      commit: (components = []) => {
+        const withheld = new Set<string>();
+        // Refs never reach into a frame, so the walk's elements share one document.
+        let modal: Element | null | undefined;
         for (const [ref, target] of collected) {
+          const control = target.elements[target.elements.length - 1];
+          modal = modal === undefined ? topmostModal(control.ownerDocument) : modal;
+          if ((modal && !modal.contains(control)) || !offered(target)) {
+            withheld.add(ref);
+            continue;
+          }
           this.targets.set(ref, {
             elements: target.elements.map(element => new WeakRef(element)),
             type: target.type,
             label: target.label,
           });
+        }
+        if (withheld.size) {
+          withoutRefs(components, withheld);
         }
         this.prune();
       },
@@ -119,6 +142,16 @@ export class ContextRefRegistryService {
       this.refsByElement.set(element, ref);
     }
     return ref;
+  }
+}
+
+/** Takes these refs off the nodes carrying them. */
+function withoutRefs(nodes: ClrComponentContext[], refs: ReadonlySet<string>): void {
+  for (const node of nodes) {
+    if (node.ref && refs.has(node.ref)) {
+      delete node.ref;
+    }
+    withoutRefs(node.children ?? [], refs);
   }
 }
 

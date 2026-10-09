@@ -28,6 +28,7 @@ import {
   ClrMutationTarget,
   provideClrMutationPolicy,
 } from './mutation.interface';
+import { resolveWriteTarget } from './write';
 import { ClrPageContext } from '../interfaces/context.interface';
 import { ClrContextEngineService } from '../providers/contextual-engine.service';
 
@@ -252,7 +253,8 @@ describe('ClrMutationEngineService', () => {
         expect(withRefs('Agree')).toBeTrue();
         expect(withRefs('Size')).toBeTrue();
         expect(withRefs('Cluster')).toBeTrue();
-        expect(withRefs('Loose')).toBeTrue();
+        // A control without a form binding could never be written to, so it is not offered.
+        expect(withRefs('Loose')).toBeFalse();
         expect(findNode(page.components, node => node.element === 'clr-datagrid')?.ref).toBeDefined();
         expect(findNode(page.components, node => node.type === 'columnheader')?.ref).toBeUndefined();
         expect(findNode(page.components, node => node.type === 'button')?.ref).toBeUndefined();
@@ -555,11 +557,11 @@ describe('ClrMutationEngineService', () => {
         expect((await set(ref, '  NAME ', 'Bob')).applied).toBeTrue();
       });
 
-      it('refuses a control without an Angular form binding', async () => {
-        const result = await set(refOf(snapshot(), 'Loose'), 'Loose', 'x');
+      it('refuses a control without an Angular form binding, should a ref reach one', () => {
+        const loose = fixture.nativeElement.querySelector('[aria-label="Loose"]') as HTMLInputElement;
+        const resolution = resolveWriteTarget({ elements: [loose], type: 'textbox', label: 'Loose' }, null);
 
-        expect(result.refused).toBe('unbound');
-        expect(result.detail).toContain('formControlName');
+        expect(resolution).toEqual({ refused: 'unbound', detail: jasmine.stringContaining('formControlName') });
       });
 
       it('refuses a control that became disabled or hidden since the snapshot', async () => {

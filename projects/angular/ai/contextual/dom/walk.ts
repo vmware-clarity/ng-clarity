@@ -64,9 +64,9 @@ export interface ClrContextRefSink {
 }
 
 /**
- * Roles an agent can propose a value for. A node with one of these roles is given a ref
- * whether or not it turns out to be writable — the engine decides that when asked, and
- * says why when it is not.
+ * Roles an agent can propose a value for. A node with one of these roles is offered to
+ * the ref sink, which keeps a ref only where a write could get somewhere; whether one
+ * succeeds is decided when it is attempted, with the reason when it is not.
  */
 const WRITABLE_ROLES: ReadonlySet<string> = new Set([
   'textbox',

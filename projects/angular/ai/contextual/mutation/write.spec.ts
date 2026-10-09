@@ -734,6 +734,15 @@ describe('ClrMutationEngineService write path', () => {
       expect(host.inside.value).toBe('y');
     });
 
+    it('hands out no ref behind an open modal dialog, even in a snapshot of the whole page', async () => {
+      host.modalOpen = true;
+      await settle(fixture);
+      const page = contextEngine.getSnapshot();
+
+      expect(findNode(page.components, node => node.label === 'Name')?.ref).toBeUndefined();
+      expect(findNode(page.components, node => node.label === 'Inside')?.ref).toBeDefined();
+    });
+
     it('keeps a ref valid across a narrower snapshot taken by someone else', async () => {
       const ref = refOf(contextEngine.getSnapshot(), 'Name');
       contextEngine.getSnapshot({ rootSelector: 'app-toggle' });
