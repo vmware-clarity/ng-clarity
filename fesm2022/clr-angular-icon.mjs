@@ -162,6 +162,10 @@ class GlobalStateService {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+// Every icon shape calls this at module level. esbuild (used by the Angular CLI) can't tell the call is pure and keeps
+// every shape. The annotation lets it drop unused shapes. Rollup and webpack drop them without it.
+// Keep it above `export`: the TypeScript build drops it when it sits between `export` and `function`.
+/* @__NO_SIDE_EFFECTS__ */
 function renderIcon(shapeOrStringIcon) {
     return shapeOrStringIcon;
 }
