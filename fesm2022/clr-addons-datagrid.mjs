@@ -2374,7 +2374,7 @@ class DatagridComponent {
         return false;
     }
     dropGroup(group) {
-        return (this.groupService?.getGroupItems(group) || []);
+        return this.groupService?.getGroupItems(group) ?? [];
     }
     /**
      * Whether showing `visibleColumns` would make the `@for` loops create a column or cell in front of a

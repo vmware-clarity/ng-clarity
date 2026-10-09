@@ -10,9 +10,10 @@ declare class DragAndDropGroupService {
      * Retrieves the items (CdkDropList instances) belonging to a specific group.
      *
      * @param group The name of the group to retrieve items for.
-     * @returns An array of CdkDropList instances belonging to the specified group.
+     * @returns The live array of CdkDropList instances belonging to the specified group. It can be bound
+     * directly to `cdkDropListConnectedTo`; lists added or removed later are reflected in it.
      */
-    getGroupItems(group: string): readonly CdkDropList[];
+    getGroupItems(group: string): CdkDropList[];
     /**
      * Adds a CdkDropList item to the specified group.
      *
