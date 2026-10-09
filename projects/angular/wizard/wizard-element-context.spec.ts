@@ -101,10 +101,9 @@ describe('ClrWizard element context', () => {
     expect('title' in steps[0]).toBe(false);
   });
 
-  // Needs the base PR's fix that roots a modal-focused walk at the custom element
-  // around the open dialog; until it is merged, the walk starts inside clr-wizard and
-  // never reaches the state the wizard publishes on its host.
-  xit('puts the published steps on the dialog node of a modal-focused snapshot', () => {
+  // A modal-focused walk starts at clr-wizard, the custom element around the open dialog,
+  // so the state the wizard publishes on its host reaches the snapshot.
+  it('puts the published steps on the dialog node of a modal-focused snapshot', () => {
     const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot({ focus: 'modal' });
     expect(snapshot.focus).toBe('modal');
 
