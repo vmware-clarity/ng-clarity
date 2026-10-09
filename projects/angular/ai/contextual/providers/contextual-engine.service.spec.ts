@@ -244,6 +244,32 @@ describe('ClrContextEngineService', () => {
         expect(postMessage).toHaveBeenCalledTimes(1);
       });
 
+      it('serves a frame what the global accessor serves, withheld markers included', () => {
+        const form = document.createElement('div');
+        form.innerHTML =
+          '<label for="filled">Token</label><input id="filled" value="user-typed-secret" />' +
+          '<label for="empty">Note</label><input id="empty" />' +
+          '<a href="/invoices/4711?token=secret">Invoice</a>';
+        document.body.appendChild(form);
+
+        try {
+          engine.enableFrameBridge();
+          engine.enableGlobalAccess('testClrContext');
+          requestFrom('frame-request-parity');
+          const viaAccessor = globalAccessor()();
+          const viaFrame = postMessage.calls.mostRecent().args[0].context as ClrPageContext;
+
+          const textboxes = viaFrame.components.filter(component => component.type === 'textbox');
+          expect(textboxes.map(textbox => textbox.state?.['withheld'])).toEqual([true, undefined]);
+          expect(JSON.stringify(viaFrame)).not.toContain('secret');
+          // Collected moments apart, so only the time may differ.
+          expect({ ...viaFrame, collectedAt: '' }).toEqual({ ...viaAccessor, collectedAt: '' });
+        } finally {
+          form.remove();
+          engine.disableGlobalAccess();
+        }
+      });
+
       it('keeps the running frame bridge when a new configuration is refused', () => {
         engine.enableFrameBridge();
         expect(() => engine.enableFrameBridge({ allowedOrigins: ['chat.example'] })).toThrowError(/not an origin/);

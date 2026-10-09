@@ -408,6 +408,22 @@ describe('Context frame bridge', () => {
         expect(JSON.stringify(served)).not.toContain('4f9c');
       });
 
+      it('marks a field whose value was withheld, and leaves an empty one unmarked', () => {
+        restartHost({}, () => ({
+          ...JSON.parse(JSON.stringify(pageContext)),
+          components: [
+            { type: 'textbox', label: 'Host name', state: { value: 'esx-prod-04' } },
+            { type: 'textbox', label: 'Notes', state: { value: '' } },
+          ],
+        }));
+
+        dispatchRequest(frameRequest('request-withheld'));
+
+        const [filled, empty] = servedContext(frame).components;
+        expect(filled.state).toEqual({ withheld: true });
+        expect(empty.state?.['withheld']).toBeUndefined();
+      });
+
       it('still describes the fields and what they permit', () => {
         dispatchRequest(frameRequest('request-fields'));
 
