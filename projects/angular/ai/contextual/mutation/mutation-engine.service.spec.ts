@@ -268,6 +268,8 @@ describe('ClrMutationEngineService', () => {
         const comboboxes = allNodes(snapshot().components).filter(node => node.label === 'Cluster');
 
         expect(comboboxes.length).toBe(1);
+        // The combobox's own type, which it publishes over the group a role-less tag is.
+        expect(comboboxes[0]).toEqual(jasmine.objectContaining({ type: 'combobox', element: 'clr-combobox' }));
         expect(comboboxes[0].state).toEqual(jasmine.objectContaining({ value: null }));
         expect(comboboxes[0].children?.map(child => child.label)).toEqual(['Show options']);
       });

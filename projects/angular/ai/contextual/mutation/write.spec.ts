@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, forwardRef } from '@angular/core';
+import { Component, ElementRef, forwardRef, inject, Input, OnDestroy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   AbstractControl,
@@ -23,6 +23,7 @@ import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
 import { ClrSelectModule } from '@clr/angular/forms/select';
+import { clrPublishElementContext } from '@clr/angular/utils';
 
 import { allRefs, findNode, refOf, settle } from './helpers.spec';
 import { ClrMutationEngineService } from './mutation-engine.service';
@@ -151,6 +152,31 @@ class AppCount extends KeptValue<number> {}
 })
 class AppOwner extends KeptValue<{ id: number; name: string }> {}
 
+/**
+ * A component that renders nothing but a modal dialog and publishes state about it on its
+ * host, as a wizard does.
+ */
+@Component({
+  selector: 'app-rename',
+  template: `
+    <div role="dialog" aria-modal="true" aria-label="Rename">
+      <label for="renamed">New name</label>
+      <input id="renamed" [formControl]="control" />
+    </div>
+  `,
+  standalone: false,
+})
+class AppRename implements OnDestroy {
+  @Input() control = new FormControl('');
+  private readonly unpublish = clrPublishElementContext(inject(ElementRef).nativeElement, () => ({
+    state: { step: 1 },
+  }));
+
+  ngOnDestroy() {
+    this.unpublish();
+  }
+}
+
 /** A custom radio group, its radios named by their text. */
 @Component({
   selector: 'app-size',
@@ -237,6 +263,8 @@ class AppSize extends KeptValue<unknown> {
       <input id="tint" type="color" role="textbox" formControlName="tint" />
       <label for="volume">Volume</label>
       <input id="volume" type="range" min="0" max="10" step="2" formControlName="volume" />
+      <label for="cpus">CPU count</label>
+      <input id="cpus" type="number" min="1" max="64" formControlName="cpus" />
       <label for="locked">Locked</label>
       <input id="locked" formControlName="locked" />
       <label for="code">Code</label>
@@ -271,6 +299,9 @@ class AppSize extends KeptValue<unknown> {
         </select>
       </clr-select-container>
     </form>
+    @if (renameOpen) {
+      <app-rename [control]="renamed"></app-rename>
+    }
     @if (modalOpen) {
       <div role="dialog" aria-modal="true" aria-label="Confirm">
         <label for="inside">Inside</label>
@@ -300,6 +331,7 @@ class Host {
     due: new FormControl(''),
     tint: new FormControl('#000000'),
     volume: new FormControl(4),
+    cpus: new FormControl(2),
     locked: new FormControl({ value: 'fixed', disabled: true }),
     code: new FormControl(''),
     card: new FormControl<string | null>(null),
@@ -313,11 +345,13 @@ class Host {
     }),
   });
   inside = new FormControl('');
+  renamed = new FormControl('');
+  renameOpen = false;
   colourEvents = 0;
   modalOpen = false;
 }
 
-const DECLARATIONS = [Host, AppToggle, AppRating, AppBroken, AppStars, AppCount, AppOwner, AppSize];
+const DECLARATIONS = [Host, AppToggle, AppRating, AppBroken, AppStars, AppCount, AppOwner, AppSize, AppRename];
 
 describe('ClrMutationEngineService write path', () => {
   let fixture: ComponentFixture<Host>;
@@ -566,6 +600,21 @@ describe('ClrMutationEngineService write path', () => {
       expect(host.form.value.volume).toBe(8);
     });
 
+    it('reports a number field as a number in the snapshot, the result and the snapshot after', async () => {
+      const valueOf = (page: ReturnType<ClrContextEngineService['getSnapshot']>) =>
+        findNode(page.components, node => node.label === 'CPU count')?.state;
+      expect(valueOf(contextEngine.getSnapshot())?.['value']).toBe(2);
+
+      const ref = refOf(contextEngine.getSnapshot(), 'CPU count');
+      const report = await engine.apply([{ operation: 'setValue', ref, description: 'CPU count', value: '8' }]);
+      await settle(fixture);
+
+      expect(report.results[0]).toEqual(jasmine.objectContaining({ applied: true, value: 8, previous: 2 }));
+      expect(valueOf(report.snapshot)?.['value']).toBe(8);
+      expect(valueOf(contextEngine.getSnapshot())?.['value']).toBe(8);
+      expect(host.form.value.cpus).toBe(8);
+    });
+
     it('refuses text longer than the field lets a person type', async () => {
       const long = await set('Code', 'ABCDE');
       expect(long.refused).toBe('invalid');
@@ -741,6 +790,31 @@ describe('ClrMutationEngineService write path', () => {
 
       expect(findNode(page.components, node => node.label === 'Name')?.ref).toBeUndefined();
       expect(findNode(page.components, node => node.label === 'Inside')?.ref).toBeDefined();
+    });
+
+    it('hands out refs only inside the dialog of a modal-focused snapshot that starts at the component around it', async () => {
+      host.renameOpen = true;
+      await settle(fixture);
+      const modal = contextEngine.getSnapshot({ focus: 'modal' });
+
+      // The walk starts at the component, so the state it publishes lands on the dialog's
+      // node. That node carries no ref, and the only one handed out is inside the dialog.
+      expect(modal.focus).toBe('modal');
+      expect(modal.components[0]).toEqual(
+        jasmine.objectContaining({
+          type: 'dialog',
+          element: 'app-rename',
+          state: jasmine.objectContaining({ step: 1 }),
+        })
+      );
+      expect(allRefs(modal.components).length).toBe(1);
+
+      const report = await engine.apply([
+        { operation: 'setValue', ref: refOf(modal, 'New name'), description: 'New name', value: 'web-02' },
+      ]);
+
+      expect(report.results[0].applied).toBeTrue();
+      expect(host.renamed.value).toBe('web-02');
     });
 
     it('keeps a ref valid across a narrower snapshot taken by someone else', async () => {
