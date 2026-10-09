@@ -89,7 +89,7 @@ export interface ClrNavigationReport {
  * The events can, and a redirect is followed to wherever it ends up so the reported URL
  * is the one the user is looking at.
  */
-export function navigateAndReport(router: Router, target: UrlTree, zone?: NgZone): Promise<ClrNavigationReport> {
+export function navigateAndReport(router: Router, target: UrlTree, zone: NgZone): Promise<ClrNavigationReport> {
   const requested = router.serializeUrl(target);
   return new Promise<ClrNavigationReport>(resolve => {
     let id: number | null = null;
@@ -132,25 +132,13 @@ export function navigateAndReport(router: Router, target: UrlTree, zone?: NgZone
           followedRedirect = true;
           return;
         }
-        settle({
-          outcome:
-            event.code === NavigationCancellationCode.GuardRejected
-              ? 'rejected'
-              : event.code === NavigationCancellationCode.SupersededByNewNavigation
-                ? 'superseded'
-                : 'failed',
-          url: router.url,
-          detail: cancellationDetail(event.code),
-        });
+        settle({ ...cancellation(event.code), url: router.url });
       } else if (event instanceof NavigationSkipped) {
-        settle({
-          outcome: event.code === NavigationSkippedCode.IgnoredSameUrlNavigation ? 'unchanged' : 'failed',
-          url: router.url,
-          detail:
-            event.code === NavigationSkippedCode.IgnoredSameUrlNavigation
-              ? undefined
-              : 'The application does not let the router handle this URL.',
-        });
+        settle(
+          event.code === NavigationSkippedCode.IgnoredSameUrlNavigation
+            ? { outcome: 'unchanged', url: router.url }
+            : { outcome: 'failed', url: router.url, detail: 'The application does not let the router handle this URL.' }
+        );
       } else if (event instanceof NavigationError) {
         settle({ outcome: 'failed', url: router.url, detail: errorMessage(event.error) });
       }
@@ -159,7 +147,7 @@ export function navigateAndReport(router: Router, target: UrlTree, zone?: NgZone
     // A guard waiting on the user can hold a navigation indefinitely; the agent is told it
     // has not settled rather than left waiting for good. Timed outside the zone, so the
     // pending timer does not keep the application from being stable meanwhile.
-    const expire = () =>
+    timer = zone.runOutsideAngular(() =>
       setTimeout(
         () =>
           settle({
@@ -168,41 +156,38 @@ export function navigateAndReport(router: Router, target: UrlTree, zone?: NgZone
             detail: 'The navigation had not settled after a minute; it may still complete.',
           }),
         NAVIGATION_TIMEOUT_MS
-      );
-    timer = zone ? zone.runOutsideAngular(expire) : expire();
+      )
+    );
 
     router.navigateByUrl(target).then(
       () => {
         // The events normally settle this first; should none have, the URL decides. Outside
         // the zone, as the expiry is: waiting is not work for change detection.
-        const fallback = () =>
+        zone.runOutsideAngular(() =>
           setTimeout(() => {
             if (!subscription.closed) {
               const url = router.url;
               settle(url === requested ? { outcome: 'navigated', url } : { outcome: 'failed', url });
             }
-          });
-        if (zone) {
-          zone.runOutsideAngular(fallback);
-        } else {
-          fallback();
-        }
+          })
+        );
       },
       error => settle({ outcome: 'failed', url: router.url, detail: errorMessage(error) })
     );
   });
 }
 
-function cancellationDetail(code: NavigationCancellationCode | undefined): string | undefined {
+/** What a cancelled navigation reports, by why it was cancelled. */
+function cancellation(code: NavigationCancellationCode | undefined): { outcome: ClrNavigationOutcome; detail: string } {
   switch (code) {
     case NavigationCancellationCode.GuardRejected:
-      return 'A route guard refused the navigation.';
+      return { outcome: 'rejected', detail: 'A route guard refused the navigation.' };
     case NavigationCancellationCode.SupersededByNewNavigation:
-      return 'Another navigation started before this one finished.';
+      return { outcome: 'superseded', detail: 'Another navigation started before this one finished.' };
     case NavigationCancellationCode.NoDataFromResolver:
-      return 'A route resolver completed without data.';
+      return { outcome: 'failed', detail: 'A route resolver completed without data.' };
     default:
-      return 'The navigation was cancelled.';
+      return { outcome: 'failed', detail: 'The navigation was cancelled.' };
   }
 }
 

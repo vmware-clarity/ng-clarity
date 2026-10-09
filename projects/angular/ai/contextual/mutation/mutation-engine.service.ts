@@ -11,6 +11,7 @@ import { Router } from '@angular/router';
 import { ContextRefRegistryService } from './context-ref-registry.service';
 import {
   CLR_MUTATION_POLICY,
+  ClrClearOperation,
   ClrElementMutationResult,
   ClrMutationChanges,
   ClrMutationConsequence,
@@ -22,6 +23,7 @@ import {
   ClrMutationTarget,
   ClrNavigateOperation,
   ClrNavigationMutationResult,
+  ClrSetValueOperation,
 } from './mutation.interface';
 import { fillRoutePath, navigateAndReport, urlTreeFor } from './navigate';
 import {
@@ -53,9 +55,9 @@ const CONFIRM_TIMEOUT_MS = 120_000;
  * option, radio or row; size budgets and summary mode shorten what a snapshot lists, not
  * what can be written), never a control without an Angular form binding, and never
  * without the application's {@link ClrMutationPolicy}; and it only ever fills — it does
- * not submit, click or invoke, which stay with the user. Every result says what is true afterwards, so an
- * agent learns of a rejected value or a redirected navigation from the operation
- * itself rather than from a later surprise.
+ * not submit, click or invoke, which stay with the user. Every result says what is true
+ * afterwards, so an agent learns of a rejected value or a redirected navigation from the
+ * operation itself rather than from a later surprise.
  *
  * Available to application code only: neither the global accessor nor the frame bridge
  * exposes it. Its results carry the values the page holds — the value a write replaced,
@@ -82,7 +84,7 @@ export class ClrMutationEngineService {
    */
   plan(operations: ClrMutationOperation[], snapshotOptions?: ClrContextSnapshotOptions): ClrMutationPlanEntry[] {
     const options = this.scopeOptions(snapshotOptions);
-    return (Array.isArray(operations) ? operations : []).map(operation => {
+    return listOf(operations).map(operation => {
       const prepared = this.prepareSafely(operation, options);
       if ('refused' in prepared) {
         return { operation, refused: prepared.refused, detail: prepared.detail };
@@ -115,7 +117,7 @@ export class ClrMutationEngineService {
     const before = this.contextEngine.getSnapshot(snapshotOptions);
     const options = this.scopeOptions(snapshotOptions);
     const results: ClrMutationResult[] = [];
-    for (const operation of Array.isArray(operations) ? operations : []) {
+    for (const operation of listOf(operations)) {
       try {
         results.push(await this.applyOne(operation, options));
       } catch (error) {
@@ -124,11 +126,7 @@ export class ClrMutationEngineService {
         results.push(refusal(operation, 'unsupported', unforeseen(error)));
       }
     }
-    // Brings every view that shows a written value up to date — a zoneless application,
-    // or a write made from outside the zone, would otherwise show the old one — then
-    // lets whatever the application schedules itself run before the page is read back.
-    this.zone.run(() => this.application.tick());
-    await settle(this.zone);
+    await this.catchUp();
     const snapshot = this.contextEngine.getSnapshot(snapshotOptions);
     const report: ClrMutationReport = {
       results,
@@ -185,47 +183,18 @@ export class ClrMutationEngineService {
       return refusal(operation, blocked.refused, blocked.detail);
     }
     if (prepared.consequence === 'consequential') {
-      // The modal dialogs open now are the ones that stand between an agent and the page.
-      // One the application opens to ask the person is not: it is still open, or on its
-      // way out, when the answer arrives.
-      const document = prepared.write?.control.ownerDocument;
-      const knownModals = new Set(document ? openModalDialogs(document) : []);
-      const confirmed = await this.confirm(prepared.target);
-      if (confirmed !== true) {
-        return refusal(
-          operation,
-          'declined',
-          confirmed === 'timeout'
-            ? 'The confirmation was not answered in time.'
-            : 'The application declined the operation.'
-        );
+      prepared = await this.confirmAndRecheck(operation, prepared, options);
+      if ('refused' in prepared) {
+        return refusal(operation, prepared.refused, prepared.detail);
       }
-      // The person agreed to what they were shown. The page may have moved on while they
-      // looked — the field disabled, hidden, re-rendered — so it is checked again, and
-      // written only if it is still exactly what they agreed to, once the application has
-      // caught up with the answer.
-      this.zone.run(() => this.application.tick());
-      await settle(this.zone);
-      const again = this.prepare(operation, options, knownModals);
-      if ('refused' in again) {
-        return refusal(operation, again.refused, again.detail);
-      }
-      if (!sameOperation(prepared, again)) {
-        return refusal(
-          operation,
-          'stale',
-          'The page changed while the operation waited for confirmation. Take a new snapshot and ask again.'
-        );
-      }
-      prepared = again;
     }
-    if (operation.operation === 'navigate') {
-      return this.navigate(operation, prepared);
+    if (prepared.kind === 'navigate') {
+      return this.navigate(prepared);
     }
-    const write = prepared.write as WriteTarget;
+    const { write, coerced } = prepared;
     let outcome: WriteOutcome;
     try {
-      outcome = this.zone.run(() => writeValue(write, prepared.coerced as { value: unknown; display: unknown }));
+      outcome = this.zone.run(() => writeValue(write, coerced));
     } catch (error) {
       // A control's own code threw — a value accessor, a validator. Reported against this
       // operation, so the ones before it keep their results and the ones after still run.
@@ -236,7 +205,53 @@ export class ClrMutationEngineService {
       };
     }
     markViewForCheck(write.element);
-    return { operation: operation.operation, ref: operation.ref, ...outcome };
+    return { operation: prepared.operation.operation, ref: prepared.operation.ref, ...outcome };
+  }
+
+  /**
+   * Asks the person to confirm a consequential operation, then prepares it again: the page
+   * may have moved on while they looked — the field disabled, hidden, re-rendered — and it
+   * is written only if it is still exactly what they agreed to.
+   */
+  private async confirmAndRecheck(
+    operation: ClrMutationOperation,
+    prepared: Prepared,
+    options: Required<ClrContextSnapshotOptions>
+  ): Promise<Prepared | Refused> {
+    // The modal dialogs open now are the ones that stand between an agent and the page.
+    // One the application opens to ask the person is not.
+    const knownModals = new Set(
+      prepared.kind === 'write' ? openModalDialogs(prepared.write.control.ownerDocument) : []
+    );
+    const confirmed = await this.confirm(prepared.target);
+    if (confirmed !== true) {
+      return {
+        refused: 'declined',
+        detail:
+          confirmed === 'timeout'
+            ? 'The confirmation was not answered in time.'
+            : 'The application declined the operation.',
+      };
+    }
+    await this.catchUp();
+    const again = this.prepare(operation, options, knownModals);
+    if ('refused' in again || sameOperation(prepared, again)) {
+      return again;
+    }
+    return {
+      refused: 'stale',
+      detail: 'The page changed while the operation waited for confirmation. Take a new snapshot and ask again.',
+    };
+  }
+
+  /**
+   * Lets the page catch up before it is read again: every view is checked, which a zoneless
+   * application or a write from outside the zone would not do, and whatever the
+   * application scheduled itself runs.
+   */
+  private async catchUp(): Promise<void> {
+    this.zone.run(() => this.application.tick());
+    await settle(this.zone);
   }
 
   /** {@link prepare}, with anything unforeseen it throws reported as a refusal. */
@@ -329,6 +344,8 @@ export class ClrMutationEngineService {
       target.modelValue = modelValue;
     }
     return {
+      kind: 'write',
+      operation,
       target,
       consequence: this.classify(target),
       write,
@@ -336,7 +353,7 @@ export class ClrMutationEngineService {
     };
   }
 
-  private prepareNavigation(operation: ClrNavigateOperation): Prepared | Refused {
+  private prepareNavigation(operation: ClrNavigateOperation): PreparedNavigation | Refused {
     if (!this.router?.config.length) {
       return { refused: 'noRoute', detail: 'The application has no routes.' };
     }
@@ -357,16 +374,21 @@ export class ClrMutationEngineService {
     const queryParams = plainStrings(operation.queryParams);
     const url = this.router.serializeUrl(urlTreeFor(filled.segments, queryParams));
     const target: ClrMutationTarget = { operation: 'navigate', path: operation.path, url, queryParams };
-    return { target, consequence: this.classify(target), segments: filled.segments };
+    return {
+      kind: 'navigate',
+      operation,
+      target,
+      consequence: this.classify(target),
+      router: this.router,
+      segments: filled.segments,
+    };
   }
 
-  private async navigate(operation: ClrNavigateOperation, prepared: Prepared): Promise<ClrNavigationMutationResult> {
-    const router = this.router;
-    if (!router || !prepared.segments) {
-      return refusal(operation, 'noRoute', 'The application has no routes.') as ClrNavigationMutationResult;
-    }
-    const tree = urlTreeFor(prepared.segments, prepared.target.queryParams);
-    const report = await this.zone.run(() => navigateAndReport(router, tree, this.zone));
+  private async navigate(prepared: PreparedNavigation): Promise<ClrNavigationMutationResult> {
+    const { operation, router, segments, target } = prepared;
+    const report = await this.zone.run(() =>
+      navigateAndReport(router, urlTreeFor(segments, target.queryParams), this.zone)
+    );
     const result: ClrNavigationMutationResult = {
       operation: 'navigate',
       path: operation.path,
@@ -408,12 +430,25 @@ export class ClrMutationEngineService {
   }
 }
 
-interface Prepared {
+/** An operation ready to carry out: what the policy was shown, its verdict, and what to write or where to go. */
+type Prepared = PreparedWrite | PreparedNavigation;
+
+interface PreparedWrite {
+  kind: 'write';
+  operation: ClrSetValueOperation | ClrClearOperation;
   target: ClrMutationTarget;
   consequence: ClrMutationConsequence;
-  write?: WriteTarget;
-  coerced?: { value: unknown; display: unknown };
-  segments?: string[];
+  write: WriteTarget;
+  coerced: { value: unknown; display: unknown };
+}
+
+interface PreparedNavigation {
+  kind: 'navigate';
+  operation: ClrNavigateOperation;
+  target: ClrMutationTarget;
+  consequence: ClrMutationConsequence;
+  router: Router;
+  segments: string[];
 }
 
 interface Refused {
@@ -428,10 +463,9 @@ function unforeseen(error: unknown): string {
 
 /** A change without the two snapshots it compared: the report already carries the later one. */
 function withoutSnapshots(change: ClrContextChange): ClrMutationChanges {
-  const changes: Partial<ClrContextChange> = { ...change };
-  delete changes.previous;
-  delete changes.current;
-  return changes as ClrMutationChanges;
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const { previous, current, ...changes } = change;
+  return changes;
 }
 
 /**
@@ -447,8 +481,13 @@ function sameOperation(confirmed: Prepared, now: Prepared): boolean {
     confirmed.target.type === now.target.type &&
     confirmed.target.url === now.target.url &&
     JSON.stringify(confirmed.target.value ?? null) === JSON.stringify(now.target.value ?? null) &&
-    sameValue(confirmed.coerced?.value, now.coerced?.value)
+    sameValue(coercedValue(confirmed), coercedValue(now))
   );
+}
+
+/** What a prepared write hands the control; a navigation hands none. */
+function coercedValue(prepared: Prepared): unknown {
+  return prepared.kind === 'write' ? prepared.coerced.value : undefined;
 }
 
 /**
@@ -481,7 +520,12 @@ function refusal(operation: ClrMutationOperation, refused: ClrMutationRefusal, d
   return result;
 }
 
-/** Only the string entries of what may be an agent's loosely typed object. */
+/** The operations an agent handed over, which may be anything but a list. */
+function listOf(operations: unknown): ClrMutationOperation[] {
+  return Array.isArray(operations) ? operations : [];
+}
+
+/** The string, number and boolean entries of what may be an agent's loosely typed object, as strings. */
 function plainStrings(value: unknown): Record<string, string> {
   const result: Record<string, string> = {};
   if (value && typeof value === 'object' && !Array.isArray(value)) {

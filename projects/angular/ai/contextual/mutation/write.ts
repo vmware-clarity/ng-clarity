@@ -103,11 +103,15 @@ interface SelectAccessor {
   onTouched?: () => void;
 }
 
+type BoundSelectAccessor = SelectAccessor & { onChange: (value: unknown) => void };
+
 const UNSUPPORTED_SELECT_DETAIL =
   'The select is bound through an accessor the engine cannot hand a choice to. Publish a mutator for it.';
 
 const UNBOUND_DETAIL =
   'The control has no Angular form binding (formControlName, formControl or ngModel), which is required.';
+
+const KEPT_CHOICE_DETAIL = 'The current choice is kept from agents, and cannot be changed by one.';
 
 const OBSTACLE_DETAILS = {
   hidden: 'The control is not currently shown to the user, or sits behind an open modal dialog.',
@@ -135,22 +139,29 @@ export function resolveWriteTarget(
     return { refused: obstacle, detail: OBSTACLE_DETAILS[obstacle] };
   }
   const label = ref.label ?? labelOf(elements, withheldBy(control, options));
+  const targetOf = (
+    element: Element,
+    kind: ControlKind,
+    ngControl: NgControl | null,
+    mutator: ClrElementMutator | null
+  ): TargetResolution => ({
+    target: { element, control, label, type, kind, ngControl, mutator, options, knownModals },
+  });
 
   for (const element of elements) {
     const mutator = readElementMutator(element);
     const ngControl = formControlOn(element);
-    if (!mutator?.write && !ngControl?.control) {
+    const bound = ngControl?.control;
+    if (!mutator?.write && !bound) {
       continue;
     }
-    if (!sameApplication(element, application)) {
-      return { refused: 'unbound', detail: 'The control belongs to another Angular application on this page.' };
+    // A component that writes itself is not judged by a form control it may also carry.
+    const refusal = bindingRefusal(element, mutator?.write ? null : bound, application);
+    if (refusal) {
+      return refusal;
     }
     if (mutator?.write) {
-      return { target: { element, control, label, type, kind: 'custom', ngControl, mutator, options, knownModals } };
-    }
-    const bound = ngControl?.control as AbstractControl;
-    if (bound.disabled) {
-      return { refused: 'disabled', detail: OBSTACLE_DETAILS.disabled };
+      return targetOf(element, 'custom', ngControl, mutator);
     }
     const kind = kindFor(element, control, type) ?? (mutator?.coerce ? 'text' : null);
     if (!kind) {
@@ -160,42 +171,35 @@ export function resolveWriteTarget(
           'This custom control does not say how it is written to. It can publish a mutator (clrPublishElementMutator from @clr/angular/utils).',
       };
     }
-    if (kind === 'select' && bound.updateOn === 'submit') {
+    if (kind === 'select' && bound?.updateOn === 'submit') {
       return {
         refused: 'unsupported',
         detail: 'This select applies its value only when its form is submitted, which the engine never does.',
       };
     }
-    return { target: { element, control, label, type, kind, ngControl, mutator, options, knownModals } };
+    return targetOf(element, kind, ngControl, mutator);
   }
   // A radio group is summarised rather than walked, so its ref is the group's; the
   // binding is on the radios inside it.
-  if (resolveRole(control) === 'radiogroup') {
-    const bound = radiosOf(control).find(radio => formControlOn(radio)?.control);
-    if (bound) {
-      if (!sameApplication(bound, application)) {
-        return { refused: 'unbound', detail: 'The control belongs to another Angular application on this page.' };
-      }
-      const ngControl = formControlOn(bound);
-      if (ngControl?.control?.disabled) {
-        return { refused: 'disabled', detail: OBSTACLE_DETAILS.disabled };
-      }
-      return {
-        target: {
-          element: control,
-          control,
-          label,
-          type,
-          kind: 'radiogroup',
-          ngControl,
-          mutator: null,
-          options,
-          knownModals,
-        },
-      };
-    }
+  const radio =
+    resolveRole(control) === 'radiogroup' ? radiosOf(control).find(each => formControlOn(each)?.control) : null;
+  if (radio) {
+    const ngControl = formControlOn(radio);
+    return bindingRefusal(radio, ngControl?.control, application) ?? targetOf(control, 'radiogroup', ngControl, null);
   }
   return { refused: 'unbound', detail: UNBOUND_DETAIL };
+}
+
+/** Why a bound element cannot be written to: another application renders it, or its form control is disabled. */
+function bindingRefusal(
+  element: Element,
+  bound: AbstractControl | null | undefined,
+  application: ApplicationRef | null
+): TargetResolution | null {
+  if (!sameApplication(element, application)) {
+    return { refused: 'unbound', detail: 'The control belongs to another Angular application on this page.' };
+  }
+  return bound?.disabled ? { refused: 'disabled', detail: OBSTACLE_DETAILS.disabled } : null;
 }
 
 /**
@@ -226,6 +230,9 @@ export function descriptionMatches(description: unknown, label: string, type = '
   const cut = label.trimEnd().endsWith('…');
   // The last word of a cut label may itself be cut; only whole words are compared.
   const actual = cut ? labelWords.slice(0, -1) : labelWords;
+  // Not covered by `said` below: that lets a word of the type go unsaid, and a
+  // distinguishing word must be said even when the type contains it ("start" in a
+  // `date-range-start`).
   if (actual.some(word => (DISTINGUISHING_WORDS.has(word) || NEGATING_WORDS.has(word)) && !given.includes(word))) {
     return false;
   }
@@ -328,13 +335,13 @@ export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
     // field shows it — is what the policy is shown, never the value itself, which may
     // keep a selection the agent was never shown. A component written through its own
     // `write` translates in agent terms — a datagrid's rows by their full labels.
-    const display =
-      coerced.display !== undefined
-        ? plain(coerced.display)
-        : target.kind === 'custom' || proposed === null
-          ? plain(coerced.value)
-          : proposed;
-    return { value: coerced.value, display };
+    if (coerced.display !== undefined) {
+      return { value: coerced.value, display: plain(coerced.display) };
+    }
+    return {
+      value: coerced.value,
+      display: target.kind === 'custom' || proposed === null ? plain(coerced.value) : proposed,
+    };
   }
   switch (target.kind) {
     case 'custom':
@@ -416,15 +423,14 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
   if (!control) {
     return { applied: false, refused: 'unbound', detail: UNBOUND_DETAIL };
   }
-  const accessor = target.ngControl?.valueAccessor as SelectAccessor | null | undefined;
-  if (target.kind === 'select' && typeof accessor?.onChange !== 'function') {
+  const accessor = selectAccessorOf(target);
+  if (target.kind === 'select' && !accessor) {
     return { applied: false, refused: 'unsupported', detail: UNSUPPORTED_SELECT_DETAIL, previous };
   }
   const valueBefore: unknown = control.value;
   const modelBefore = serialized(valueBefore);
   // A write that is refused or throws leaves the control as the user left it: its value,
-  // neither dirty nor touched unless it was, and a select showing the choice its model holds.
-  let restoreOptions: (() => void) | null = null;
+  // and neither dirty nor touched unless it was.
   const wasDirty = control.dirty;
   const wasTouched = control.touched;
   const rollback = (bound: AbstractControl) => {
@@ -449,26 +455,9 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
       // does — so a cleared one is told through its control that it holds nothing: the
       // accessor then shows no option, or the one bound to `null` if there is one.
       control.setValue(null);
-    } else if (target.kind === 'select' && accessor?.onChange) {
-      const select = target.element as HTMLSelectElement;
-      const chosen = Array.isArray(coerced.value) ? (coerced.value as HTMLOptionElement[]) : [];
-      const shown = Array.from(select.options).map(option => option.selected);
-      restoreOptions = () => Array.from(select.options).forEach((option, index) => (option.selected = shown[index]));
-      for (const option of Array.from(select.options)) {
-        option.selected = chosen.includes(option);
-      }
-      // Handed to the accessor the way its own `change` listener would hand it over, so
-      // it maps the option back to the bound value — without dispatching DOM events,
-      // which would also run whatever `(change)` or `(blur)` handler the application
-      // attached. A control that updates on blur takes the value when it is told the
-      // field was left.
-      accessor.onChange(select.multiple ? select : select.value);
-      if (control.updateOn === 'blur') {
-        accessor.onTouched?.();
-      }
-      const moved = JSON.stringify(plain(previous)) !== JSON.stringify(plain(coerced.display));
-      if (moved && serialized(control.value) === modelBefore) {
-        restoreOptions();
+    } else if (target.kind === 'select' && accessor) {
+      const taken = writeSelect(target.element as HTMLSelectElement, control, accessor, coerced, previous, modelBefore);
+      if (!taken) {
         rollback(control);
         return { applied: false, refused: 'invalid', detail: 'The form control did not take the value.', previous };
       }
@@ -476,11 +465,8 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
       control.setValue(coerced.value);
     }
   } catch (error) {
-    restoreOptions?.();
-    // `setValue` stores the value and hands it to the view before it validates, so a
-    // throwing accessor or validator would leave the model, the view or both holding the
-    // refused value. Both are put back quietly — no change was announced — the view
-    // through the accessor; should that throw again, the model alone.
+    // `setValue` hands the value to the view before it validates, so a throw leaves the
+    // refused value shown: it is put back quietly, through the accessor if that works.
     try {
       control.setValue(valueBefore, { emitEvent: false });
     } catch {
@@ -496,6 +482,50 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
     outcome.errors = errors as Record<string, unknown>;
   }
   return outcome;
+}
+
+/** A select's accessor, when it keeps the `change` listener a write is handed to (see `SelectAccessor`). */
+function selectAccessorOf(target: WriteTarget): BoundSelectAccessor | null {
+  const accessor = target.ngControl?.valueAccessor as SelectAccessor | null | undefined;
+  return typeof accessor?.onChange === 'function' ? (accessor as BoundSelectAccessor) : null;
+}
+
+/**
+ * Chooses a native select's options and hands them to its accessor the way its own
+ * `change` listener would, so it maps them back to the bound values — without
+ * dispatching DOM events, which would also run whatever `(change)` or `(blur)` handler
+ * the application attached. A control that updates on blur is told the field was left.
+ * Returns whether the form control took the value; when it did not, or the accessor
+ * threw, the select shows the options it showed before.
+ */
+function writeSelect(
+  select: HTMLSelectElement,
+  control: AbstractControl,
+  accessor: BoundSelectAccessor,
+  coerced: { value: unknown; display: unknown },
+  previous: unknown,
+  modelBefore: string
+): boolean {
+  const options = Array.from(select.options);
+  const shown = options.map(option => option.selected);
+  const restore = () => options.forEach((option, index) => (option.selected = shown[index]));
+  const chosen = Array.isArray(coerced.value) ? coerced.value : [];
+  options.forEach(option => (option.selected = chosen.includes(option)));
+  try {
+    accessor.onChange(select.multiple ? select : select.value);
+    if (control.updateOn === 'blur') {
+      accessor.onTouched?.();
+    }
+  } catch (error) {
+    restore();
+    throw error;
+  }
+  const moved = JSON.stringify(plain(previous)) !== JSON.stringify(plain(coerced.display));
+  if (moved && serialized(control.value) === modelBefore) {
+    restore();
+    return false;
+  }
+  return true;
 }
 
 /** The control's value in the terms an agent sees: labels for choices, primitives otherwise. */
@@ -605,9 +635,9 @@ function coerceNumber(target: WriteTarget, proposed: unknown): Coerced {
   if (proposed === null) {
     return { value: null, display: null };
   }
-  const number =
-    typeof proposed === 'number' ? proposed : typeof proposed === 'string' && proposed.trim() ? Number(proposed) : NaN;
-  if (!Number.isFinite(number)) {
+  const blank = typeof proposed === 'string' && !proposed.trim();
+  const number = blank ? NaN : typeof proposed === 'string' ? Number(proposed) : proposed;
+  if (typeof number !== 'number' || !Number.isFinite(number)) {
     return { refused: 'A number is expected.' };
   }
   // A native input states its bounds; a range input clamps silently and Angular's min and
@@ -726,13 +756,6 @@ function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
 }
 
 /**
- * Whether a snapshot names this choice — an option or a radio — so that an agent may pick
- * it, and a refusal may list it: not in what the snapshot options exclude, and not
- * redacted itself. The control around it was judged already.
- */
-const KEPT_CHOICE_DETAIL = 'The current choice is kept from agents, and cannot be changed by one.';
-
-/**
  * Whether a choice is kept from agents — excluded, or redacted — as opposed to merely
  * not shown: a hidden placeholder option ("Choose…") is no secret, and a write may
  * replace it.
@@ -750,21 +773,13 @@ function choiceKept(choice: Element, target: WriteTarget): boolean {
   return false;
 }
 
+/**
+ * Whether a snapshot names this choice — an option or a radio — so that an agent may pick
+ * it, and a refusal may list it: not kept from agents, and not withheld itself. The
+ * control around it was judged already.
+ */
 function choiceShown(choice: Element, target: WriteTarget): boolean {
-  const excluded = withheldBy(choice, target.options);
-  if (excluded && choice.closest(excluded)) {
-    return false;
-  }
-  const control = target.control;
-  for (let current: Element | null = choice; current && current !== control; current = current.parentElement) {
-    if (
-      current.matches(CLR_CONTEXT_REDACT_SELECTOR) ||
-      (current === choice && current.matches(CLR_CONTEXT_WITHHELD_SELECTOR))
-    ) {
-      return false;
-    }
-  }
-  return true;
+  return !choiceKept(choice, target) && !choice.matches(CLR_CONTEXT_WITHHELD_SELECTOR);
 }
 
 /** Whether a person could pick this option: not disabled, alone or through its group, and shown. */

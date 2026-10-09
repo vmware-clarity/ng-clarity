@@ -124,13 +124,6 @@ export class ContextRefRegistryService {
 
 function randomSuffix(): string {
   const alphabet = '0123456789abcdefghijklmnopqrstuvwxyz';
-  const bytes = new Uint8Array(REF_RANDOM_LENGTH);
-  if (globalThis.crypto?.getRandomValues) {
-    globalThis.crypto.getRandomValues(bytes);
-  } else {
-    for (let index = 0; index < bytes.length; index++) {
-      bytes[index] = Math.floor(Math.random() * 256);
-    }
-  }
+  const bytes = crypto.getRandomValues(new Uint8Array(REF_RANDOM_LENGTH));
   return Array.from(bytes, byte => alphabet[byte % alphabet.length]).join('');
 }
