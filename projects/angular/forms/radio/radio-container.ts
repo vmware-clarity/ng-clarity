@@ -17,6 +17,7 @@ import {
 } from '@angular/core';
 import {
   ClrAbstractContainer,
+  ClrControlLabel,
   ContainerIdService,
   ControlClassService,
   LayoutService,
@@ -65,6 +66,10 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   ariaLabelledBy: string;
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
+
+  // Only a label that is a direct child of the container names the group. The inherited `label` query also matches the
+  // label inside each radio wrapper, which would give the group the name of its first radio.
+  @ContentChildren(ClrControlLabel, { descendants: false }) private groupLabels: QueryList<ClrControlLabel>;
 
   private inline = false;
   private _generatedId = uniqueIdFactory();
@@ -127,10 +132,12 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
   }
 
   private setAriaLabelledBy() {
-    if (this.label && !this.label.idAttr) {
-      this.label.idAttr = this._generatedId;
+    const groupLabel = this.groupLabels?.first;
+
+    if (groupLabel && !groupLabel.idAttr) {
+      groupLabel.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.radios?.length && this.label ? this.label.idAttr : null;
+    this.ariaLabelledBy = this.radios?.length && groupLabel ? groupLabel.idAttr : null;
   }
 }

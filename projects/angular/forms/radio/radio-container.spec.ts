@@ -77,6 +77,25 @@ class AriaLabelledByNoRadiosTest {}
 
 @Component({
   template: `
+    <clr-radio-container>
+      <clr-radio-wrapper>
+        <label>One</label>
+        <input type="radio" clrRadio name="choice" [(ngModel)]="model" value="one" />
+      </clr-radio-wrapper>
+      <clr-radio-wrapper>
+        <label>Two</label>
+        <input type="radio" clrRadio name="choice" [(ngModel)]="model" value="two" />
+      </clr-radio-wrapper>
+    </clr-radio-container>
+  `,
+  standalone: false,
+})
+class NoGroupLabelTest {
+  model = '';
+}
+
+@Component({
+  template: `
     <form [formGroup]="form">
       <clr-radio-container>
         <label>Hello World</label>
@@ -139,6 +158,22 @@ export default function (): void {
         fixture.componentInstance.labelId = 'my-label';
         fixture.detectChanges();
         expect(containerEl.getAttribute('aria-labelledby')).toBe('my-label');
+      });
+
+      it('names the radiogroup by the container label, not by a radio label', () => {
+        const { fixture, containerEl } = createFixture(AriaLabelledByTest);
+        fixture.detectChanges();
+        const [groupLabel, radioLabel] = containerEl.querySelectorAll('label');
+        expect(groupLabel.textContent.trim()).toBe('My Group');
+        expect(containerEl.getAttribute('aria-labelledby')).toBe(groupLabel.id);
+        expect(containerEl.getAttribute('aria-labelledby')).not.toBe(radioLabel.id);
+      });
+
+      it('does not name the radiogroup after the first radio label when the container has no label', () => {
+        const { fixture, containerEl } = createFixture(NoGroupLabelTest);
+        fixture.detectChanges();
+        expect(containerEl.getAttribute('role')).toBe('radiogroup');
+        expect(containerEl.getAttribute('aria-labelledby')).toBeNull();
       });
 
       it('does not set aria-labelledby when there are no radios', () => {
