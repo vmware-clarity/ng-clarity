@@ -50,6 +50,13 @@ export type ClrContextCategory =
   'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
 
 /**
+ * How many items a published collection lists when the caller gives no budget: the
+ * same default `maxItemsPerCollection` the contextual engine applies, so a component
+ * called by other page tooling reports no more than the engine would ask for.
+ */
+export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
+
+/**
  * Budgets applied while building a snapshot. The defaults are deliberately conservative
  * so a snapshot stays small enough to be pasted into an AI agent's context window.
  */

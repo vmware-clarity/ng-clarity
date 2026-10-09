@@ -931,9 +931,6 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 // @public
 export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
 
-// @public
-export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
-
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 
@@ -2159,9 +2156,6 @@ export interface ClrContextSnapshotOptions {
     maxTextLength?: number;
     rootSelector?: string;
 }
-
-// @public
-export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string;
 
 // @public (undocumented)
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
@@ -4697,9 +4691,6 @@ export class ClrNavLevel implements OnInit {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }
-
-// @public
-export function clrNormalizeContextText(text: string, lowercase?: boolean): string;
 
 // @public (undocumented)
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
