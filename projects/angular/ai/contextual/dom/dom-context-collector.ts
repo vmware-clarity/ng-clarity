@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
+import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { ClrContextDomExtractor, ClrContextTreeResult, collectContextTreeWithin } from './walk';
 import { resolveSnapshotOptions } from '../snapshot-options';
@@ -14,7 +14,8 @@ export { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
 
 /**
- * Describes everything currently rendered, as a tree, by reading the accessibility tree.
+ * Describes everything rendered under `root`, as a tree, by reading the accessibility
+ * tree, and says whether the component budget ran out before all of it was described.
  *
  * Clarity components, `@clr/ui` CSS-only markup, other component libraries and plain
  * semantic HTML are all described by the same code: a role means the same thing wherever
@@ -31,18 +32,6 @@ export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
  *
  * `customExtractors` cover the remainder — markup carrying neither a role nor an
  * accessible name, such as a bare `<div class="card">`.
- */
-export function clrCollectDomContexts(
-  root: ParentNode,
-  options?: ClrContextSnapshotOptions,
-  customExtractors: ClrContextDomExtractor[] = []
-): ClrComponentContext[] {
-  return clrCollectDomContextTree(root, options, customExtractors).components;
-}
-
-/**
- * {@link clrCollectDomContexts}, also reporting whether the component budget ran out
- * before the whole page was described.
  */
 export function clrCollectDomContextTree(
   root: ParentNode,
