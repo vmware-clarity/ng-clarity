@@ -881,7 +881,7 @@ export class ClrCombobox<T>
     if (typeof value === 'string' || typeof value === 'number') {
       return clrNormalizeContextText(String(value)) === wanted;
     }
-    const display = this.selectedValueLabel(value);
+    const display = this.selectedValueLabel(value, this.optionFor(value));
     return typeof display === 'string' && clrNormalizeContextText(display) === wanted;
   }
 
