@@ -16,14 +16,43 @@ import { ContextPlaygroundComponent } from './context-playground.component';
 
 const INSTALL_EXAMPLE = `npm install @clr/angular --save`;
 
+const QUICKSTART_EXAMPLE = `
+import { Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ClrContextEngineService, ClrContextTrackerService } from '@clr/angular/ai';
+
+@Component({
+  selector: 'app-assistant',
+  template: '...',
+})
+export class AssistantComponent {
+  private readonly engine = inject(ClrContextEngineService);
+  private readonly tracker = inject(ClrContextTrackerService);
+
+  constructor() {
+    // The current page, kept up to date: emits whenever what is on screen changes.
+    this.tracker
+      .track()
+      .pipe(takeUntilDestroyed(inject(DestroyRef)))
+      .subscribe(context => console.log(context.components));
+  }
+
+  ask(question: string) {
+    // Or one snapshot, taken now. Send it to your model as data, delimited from your prompt.
+    return { question, page: this.engine.getSnapshot() };
+  }
+}
+`;
+
 const SNAPSHOT_EXAMPLE = `
+import { Component, inject } from '@angular/core';
 import { ClrContextEngineService } from '@clr/angular/ai';
 
 @Component({
   // ...
 })
 export class AssistantPanelComponent {
-  constructor(private contextEngine: ClrContextEngineService) {}
+  private readonly contextEngine = inject(ClrContextEngineService);
 
   askAssistant(question: string) {
     const context = this.contextEngine.getSnapshot();
@@ -60,7 +89,7 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
 // button is nested under it, above — never pulled into a separate flat list.
 
 const TRACKER_EXAMPLE = `
-import { DestroyRef, inject } from '@angular/core';
+import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ClrContextTrackerService } from '@clr/angular/ai';
 
@@ -230,6 +259,7 @@ this.contextEngine.getSnapshot({
 })
 export class ContextualEngineDemo extends ClarityDocComponent {
   installExample = INSTALL_EXAMPLE;
+  quickstartExample = QUICKSTART_EXAMPLE;
   snapshotExample = SNAPSHOT_EXAMPLE;
   snapshotShapeExample = SNAPSHOT_SHAPE_EXAMPLE;
   trackerExample = TRACKER_EXAMPLE;
