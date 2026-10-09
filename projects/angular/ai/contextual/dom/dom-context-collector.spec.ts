@@ -474,7 +474,7 @@ describe('DOM context collector - component-published context', () => {
     ]);
   });
 
-  it('never lets a publisher hand out a ref, which only the engine may mint', () => {
+  it('drops a key a node does not have, such as a ref a publisher made up', () => {
     root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
     clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       ref: 'e-forged',

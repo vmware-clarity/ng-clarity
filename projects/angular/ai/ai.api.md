@@ -60,7 +60,6 @@ export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
-    ref?: string;
     state?: Record<string, unknown>;
     type: string;
 }

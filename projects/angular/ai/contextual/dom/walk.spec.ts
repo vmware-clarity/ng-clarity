@@ -8,7 +8,7 @@
 import { ClrComponentContext, ClrContextSnapshotOptions, clrPublishElementContext } from '@clr/angular/utils';
 
 import { withoutValues } from './aria-state';
-import { collectContextTreeWithin, topmostModal } from './walk';
+import { collectContextTreeWithin } from './walk';
 import { resolveSnapshotOptions } from '../snapshot-options';
 
 describe('collectContextTree', () => {
@@ -1042,13 +1042,14 @@ describe('collectContextTree, choosing what to collect', () => {
     // A dialog opened with show(), and an alert dialog that does not say it is modal,
     // leave the page in use.
     dialog.show();
-    expect(topmostModal(container)).toBeNull();
     expect(collectContextTreeWithin(container, resolveSnapshotOptions({ focus: 'modal' })).focus).toBeUndefined();
 
     dialog.close();
     dialog.showModal();
     try {
-      expect(topmostModal(container)).toBe(dialog);
+      const result = collectContextTreeWithin(container, resolveSnapshotOptions({ focus: 'modal' }));
+      expect(result.focus).toBe('modal');
+      expect(result.components.map(node => node.label)).toEqual(['Tip']);
     } finally {
       dialog.close();
     }

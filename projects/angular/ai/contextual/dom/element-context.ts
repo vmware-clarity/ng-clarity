@@ -90,9 +90,9 @@ const PUBLISHED_DEPTH = 4;
  * carry: a string `type` (without one there is no node), a string `element` and `label`
  * with the label held to the text budget, state reduced to its plain, serialisable part
  * with long strings shortened and lists held to the collection budget, and children
- * reduced the same way, a few levels deep. Anything else is dropped — a `ref`, which only
- * the walk hands out, a DOM element, a function, a circular object, an unknown key —
- * because a snapshot is data other code serialises and sends.
+ * reduced the same way, a few levels deep. Anything else is dropped — a DOM element, a
+ * function, a circular object, an unknown key — because a snapshot is data other code
+ * serialises and sends.
  */
 export function publishedNode(
   value: unknown,
