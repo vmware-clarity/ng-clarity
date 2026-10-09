@@ -289,6 +289,14 @@ describe('snapshot options, choosing what to collect', () => {
       expect(clrContextPreset('minimal').focus).toBe('modal');
     });
 
+    it('refuse a name that is not a preset, rather than silently giving the defaults', () => {
+      const unknown = 'interactiv' as unknown as Parameters<typeof clrContextPreset>[0];
+      expect(() => clrContextPreset(unknown)).toThrowError(
+        /"interactiv" is not a preset; use one of full, interactive, minimal/
+      );
+      expect(() => clrContextPreset('toString' as unknown as Parameters<typeof clrContextPreset>[0])).toThrowError();
+    });
+
     it('apply overrides over the preset', () => {
       const overridden = resolveSnapshotOptions(clrContextPreset('minimal', { maxComponents: 500 }));
       expect(overridden.maxComponents).toBe(500);

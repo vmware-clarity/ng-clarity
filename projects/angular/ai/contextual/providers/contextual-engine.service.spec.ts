@@ -172,6 +172,22 @@ describe('ClrContextEngineService', () => {
       });
     });
 
+    it('defines the global accessor so that assigning to it does not replace it, and still removes it', () => {
+      engine.enableGlobalAccess('testClrContext');
+      const installed = globalAccessor();
+      const host = window as unknown as Record<string, unknown>;
+
+      // Specs run as modules, in strict mode, where assigning to a read-only property throws.
+      expect(() => (host['testClrContext'] = () => ({ components: [] }))).toThrowError(TypeError);
+      expect(globalAccessor()).toBe(installed);
+
+      engine.disableGlobalAccess();
+      expect(globalAccessor()).toBeUndefined();
+      engine.enableGlobalAccess('testClrContext');
+      expect(globalAccessor()).toEqual(jasmine.any(Function));
+      engine.disableGlobalAccess();
+    });
+
     it('removes the global accessor when destroyed', () => {
       engine.enableGlobalAccess('testClrContext');
       engine.ngOnDestroy();
