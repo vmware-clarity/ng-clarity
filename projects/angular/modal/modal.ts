@@ -220,7 +220,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     afterNextRender(
       () => {
         if (this._open && !this.destroyed) {
-          this.trapFocus?.focusTrap?.focusInitialElementWhenReady();
+          this.trapFocus?.focusTrap?.focusInitialElement();
         }
       },
       { injector: this.injector }
