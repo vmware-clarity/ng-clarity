@@ -8,7 +8,7 @@ The DragAndDropGroupService is a singleton Angular service that manages groups o
 
 #### Methods
 
-`getGroupItems(group: string): readonly CdkDropList[]` - Retrieves an array of CdkDropList instances belonging to the specified group. If the group doesn't exist, it returns an empty array.
+`getGroupItems(group: string): CdkDropList[]` - Retrieves an array of CdkDropList instances belonging to the specified group. If the group doesn't exist, it returns an empty array.
 
 `addGroupItem(group: string, item: CdkDropList): void` - Adds a CdkDropList instance to the specified group. If the group doesn't exist, it creates a new one.
 
@@ -33,7 +33,7 @@ export class ExampleDragAndDropComponent {
 
   public constructor(private groupService: DragAndDropGroupService) {}
 
-  public dropGroup(group: string): readonly CdkDropList[] {
+  public dropGroup(group: string): CdkDropList[] {
     return this.groupService.getGroupItems(group);
   }
 
