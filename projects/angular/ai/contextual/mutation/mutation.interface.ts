@@ -201,9 +201,9 @@ export function provideClrMutationPolicy(policy: ClrMutationPolicy): Environment
  * - `disabled`, `readOnly` — the control does not accept input.
  * - `unbound` — the control has no Angular form binding, which this engine requires, or
  *   belongs to another Angular application on the page.
- * - `unsupported` — the operation is malformed, or the node cannot take a value — a
- *   custom control that does not say how it is written to, a select that applies its
- *   value only on submit.
+ * - `unsupported` — the operation is malformed or names no ref, or the node cannot take
+ *   a value — a custom control that does not say how it is written to, a select that
+ *   applies its value only on submit.
  * - `invalid` — the value is not one the control can take; the detail says what would be.
  * - `noRoute` — the path is not a navigable route of the router configuration: wildcard,
  *   redirect and custom-matcher routes are not navigable.

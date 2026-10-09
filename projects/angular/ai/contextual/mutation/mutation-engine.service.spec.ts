@@ -527,6 +527,19 @@ describe('ClrMutationEngineService', () => {
         expect((await set('e999', 'Anything', 'x')).refused).toBe('stale');
       });
 
+      it('refuses an operation that names no ref as unsupported, not stale', async () => {
+        const report = await engine.apply([
+          { operation: 'setValue', description: 'Secret', value: 'x' } as never,
+          { operation: 'clear', ref: '', description: 'Name' },
+        ]);
+
+        for (const result of report.results) {
+          expect(result.refused).toBe('unsupported');
+          expect(result.detail).toBe('The operation names no ref; only a node with a ref can be written to.');
+        }
+        expect(host.form.value.name).toBe('seed');
+      });
+
       it('refuses a description that does not match the node', async () => {
         const ref = refOf(snapshot(), 'Name');
         const result = await set(ref, 'Email address', 'x');

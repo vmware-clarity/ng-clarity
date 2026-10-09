@@ -294,7 +294,15 @@ export class ClrMutationEngineService {
     if (operation.operation === 'setValue' && operation.value === undefined) {
       return { refused: 'unsupported', detail: 'setValue needs a value; use clear to empty the control.' };
     }
-    const ref = typeof operation.ref === 'string' ? this.refs.resolve(operation.ref) : null;
+    // An operation without a ref is malformed, or aimed at a node the snapshot gave none —
+    // a redacted field, a label — and taking a new snapshot would not help.
+    if (typeof operation.ref !== 'string' || !operation.ref) {
+      return {
+        refused: 'unsupported',
+        detail: 'The operation names no ref; only a node with a ref can be written to.',
+      };
+    }
+    const ref = this.refs.resolve(operation.ref);
     if (!ref) {
       return {
         refused: 'stale',
