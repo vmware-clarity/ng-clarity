@@ -1193,7 +1193,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     return false;
   }
   protected dropGroup(group: string): CdkDropList[] {
-    return (this.groupService?.getGroupItems(group) || []) as CdkDropList[];
+    return this.groupService?.getGroupItems(group) ?? [];
   }
 
   /**

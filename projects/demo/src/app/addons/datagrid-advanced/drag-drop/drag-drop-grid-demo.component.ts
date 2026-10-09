@@ -86,7 +86,7 @@ export class DragDropGridDemoComponent {
   }
 
   protected dropGroup(group: string): CdkDropList[] {
-    return (this.groupService?.getGroupItems(group) || []) as CdkDropList[];
+    return this.groupService?.getGroupItems(group) ?? [];
   }
 
   protected drop(event: CdkDragDrop<unknown[]>) {
