@@ -128,7 +128,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     }
     const label = this.hostElement.nativeElement.querySelector(':scope > label');
     return {
-      type: 'clr-file-input-container',
+      type: 'group',
       element: 'clr-file-input-container',
       label: label ? clrNormalizeContextText(clrContextText(label), false) : '',
       state,
