@@ -9,15 +9,7 @@ import { afterNextRender, DestroyRef, Directive, ElementRef, inject, Injector, R
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { ClrAnimationsService } from '../animations.service';
-import { readAnimationTiming } from '../height-animation';
-
-/** Marks the host while its height is animated. */
-const ACTIVE_CLASS = 'clr-expandable-animation-active';
-
-interface ExpandAnimationStep {
-  endHeight: number;
-  timing: KeyframeAnimationOptions | null;
-}
+import { measureHeight, readAnimationTiming } from '../height-animation';
 
 @Directive()
 export class BaseExpandableAnimation {
@@ -26,31 +18,24 @@ export class BaseExpandableAnimation {
   // ECMAScript private fields, so that they cannot clash with the members of existing subclasses.
   readonly #animations = inject(ClrAnimationsService);
   readonly #injector = inject(Injector);
-  #animationId = 0;
   #animation: Animation | null = null;
+  #animationId = 0;
 
   constructor(
     protected element: ElementRef<HTMLElement>,
     protected domAdapter: DomAdapter,
     protected renderer: Renderer2
   ) {
-    // Not `ngOnDestroy()`, which a subclass could override without calling it.
-    inject(DestroyRef).onDestroy(() => this.#stopAnimation());
+    inject(DestroyRef).onDestroy(() => this.#stop());
   }
 
   updateStartHeight() {
-    this.startHeight = this.#height();
+    this.startHeight = measureHeight(this.element.nativeElement);
   }
 
-  /**
-   * Animates the height of the host from `startHeight` to the current height of its content.
-   *
-   * Call it once the content has been updated; the height it starts from is the one captured by the last
-   * `updateStartHeight()` call (or the last animation).
-   */
+  /** Animates the height of the host from `startHeight` to the height of its current content. */
   playAnimation() {
-    const animationId = this.#stopAnimation();
-    this.#startAnimation(animationId, this.#measure());
+    this.#play(this.#stop(), this.#measure());
   }
 
   initAnimationEffects() {
@@ -61,10 +46,7 @@ export class BaseExpandableAnimation {
     this.renderer.setStyle(this.element.nativeElement, 'overflow', 'clip');
   }
 
-  /**
-   * @param cancelAnimations Also cancels the finished Web Animations of the host.
-   * @deprecated The parameter is no longer needed: the height animation leaves no styles behind.
-   */
+  /** @deprecated `cancelAnimations` is no longer needed: the animation leaves no styles behind. */
   cleanupAnimationEffects(cancelAnimations = false) {
     this.renderer.removeStyle(this.element.nativeElement, 'overflow');
 
@@ -73,111 +55,78 @@ export class BaseExpandableAnimation {
     // For optimal behavior call manually updateStartHeight() from the parent component before initiating the update.
     this.updateStartHeight();
     if (cancelAnimations) {
-      this.cancelElementAnimations();
+      this.element.nativeElement.getAnimations?.().forEach(animation => {
+        if (animation.playState === 'finished') {
+          animation.cancel();
+        }
+      });
     }
   }
 
-  /**
-   * Plays the animation once the content has been rendered.
-   *
-   * The animations scheduled for the same rendering (every row of a datagrid expanding at once, for instance) first
-   * measure the DOM together, then all start: the layout is computed once rather than once per animation.
-   */
+  /** Plays the animation after the next render. All the rows expanding at once measure the DOM together. */
   protected scheduleAnimation() {
     if (this.playAnimation !== BaseExpandableAnimation.prototype.playAnimation) {
-      // Keep calling the playAnimation() override of a subclass.
-      Promise.resolve().then(() => this.playAnimation());
+      Promise.resolve().then(() => this.playAnimation()); // a subclass overrides it
       return;
     }
-
-    const animationId = this.#stopAnimation();
-
+    const id = this.#stop();
     if (this.#animations.disabled) {
-      Promise.resolve().then(() => this.#startAnimation(animationId, null));
-      return;
+      Promise.resolve().then(() => this.#play(id, null));
+    } else {
+      afterNextRender(
+        { earlyRead: () => this.#measure(), write: target => this.#play(id, target) },
+        { injector: this.#injector }
+      );
     }
-
-    afterNextRender(
-      {
-        earlyRead: () => this.#measure(),
-        write: step => this.#startAnimation(animationId, step),
-      },
-      { injector: this.#injector }
-    );
   }
 
-  private cancelElementAnimations() {
-    this.element.nativeElement.getAnimations?.().forEach(animation => {
-      if (animation.playState === 'finished') {
-        animation.cancel(); // clears animation-style set on the element
-      }
-    });
-  }
-
-  /** Stops the running animation, if any, and returns the id of the next one. */
-  #stopAnimation(): number {
+  /** Stops the running animation and returns the id of the next one. */
+  #stop() {
     if (this.#animation) {
       this.#animation.cancel();
       this.#animation = null;
-      this.renderer.removeClass(this.element.nativeElement, ACTIVE_CLASS);
+      this.renderer.removeClass(this.element.nativeElement, 'clr-expandable-animation-active');
     }
     return ++this.#animationId;
   }
 
-  /**
-   * The height of the host, with its fractional part: `DomAdapter.computedHeight` rounds it down, and animating to a
-   * rounded height makes the host jump by the remainder when the animation ends.
-   */
-  #height(): number {
+  #measure() {
     const element = this.element.nativeElement;
-    const height = typeof getComputedStyle === 'function' ? parseFloat(getComputedStyle(element).height) : NaN;
-    return Number.isFinite(height) ? height : this.domAdapter.computedHeight(element) || 0;
+    return { height: measureHeight(element), timing: this.#animations.disabled ? null : readAnimationTiming(element) };
   }
 
-  #measure(): ExpandAnimationStep {
-    const element = this.element.nativeElement;
-    return {
-      endHeight: this.#height(),
-      timing: this.#animations.disabled || typeof element.animate !== 'function' ? null : readAnimationTiming(element),
-    };
-  }
-
-  #startAnimation(animationId: number, step: ExpandAnimationStep | null) {
-    if (animationId !== this.#animationId) {
-      return; // superseded by another animation or destroyed
+  #play(id: number, target: { height: number; timing: KeyframeAnimationOptions | null } | null) {
+    if (id !== this.#animationId) {
+      return; // superseded or destroyed
     }
-    if (!step?.timing || step.endHeight === this.startHeight) {
+    const element = this.element.nativeElement;
+    let animation: Animation | undefined;
+    if (target?.timing && target.height !== this.startHeight && typeof element.animate === 'function') {
+      try {
+        animation = element.animate(
+          [{ height: `${this.startHeight}px` }, { height: `${target.height}px` }],
+          target.timing
+        );
+      } catch {
+        // Invalid timing (customized animation tokens): no animation.
+      }
+    }
+    if (!animation) {
       this.cleanupAnimationEffects();
       return;
     }
 
-    const element = this.element.nativeElement;
-    let animation: Animation;
-    try {
-      animation = element.animate(
-        [{ height: `${this.startHeight}px` }, { height: `${step.endHeight}px` }],
-        step.timing
-      );
-    } catch {
-      // Invalid timing (customized animation tokens): no animation.
-      this.cleanupAnimationEffects();
-      return;
-    }
-    this.initAnimationEffects();
-    this.renderer.addClass(element, ACTIVE_CLASS);
     this.#animation = animation;
-
+    this.initAnimationEffects();
+    this.renderer.addClass(element, 'clr-expandable-animation-active');
     animation.finished.then(
       () => {
         if (this.#animation === animation) {
-          this.#animation = null;
-          this.renderer.removeClass(element, ACTIVE_CLASS);
+          this.#stop();
           this.cleanupAnimationEffects();
         }
       },
-      () => {
-        // Cancelled: superseded by another animation or destroyed.
-      }
+      () => {} // cancelled
     );
   }
 }
