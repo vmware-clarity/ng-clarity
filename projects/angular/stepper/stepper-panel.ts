@@ -14,6 +14,7 @@ import {
   ElementRef,
   HostBinding,
   Inject,
+  inject,
   OnInit,
   Optional,
   PLATFORM_ID,
@@ -52,6 +53,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   readonly PanelStatus = StepperPanelStatus;
   override panel: Observable<StepperPanelModel>;
 
+  private readonly hostElement: ElementRef<HTMLElement> = inject(ElementRef);
   private teardownElementContext?: () => void;
   private subscriptions: Subscription[] = [];
 
@@ -62,10 +64,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     @Optional() private ngModelGroup: NgModelGroup,
     private stepperService: StepperService,
     ifExpandService: IfExpandService,
-    cdr: ChangeDetectorRef,
-    // Optional and last: existing `super(...)` calls keep compiling, and without a host
-    // there is simply nothing to publish on.
-    @Optional() private readonly hostElement?: ElementRef<HTMLElement>
+    cdr: ChangeDetectorRef
   ) {
     super(stepperService, ifExpandService, cdr);
   }
@@ -109,11 +108,9 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // started, or currently open, says nothing about itself. Read at snapshot time from
     // the service, which always holds the current model, rather than remembered from the
     // template's stream — which has not emitted yet between init and first render.
-    if (this.hostElement) {
-      this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
-        state: { status: this.currentStatus() },
-      }));
-    }
+    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
+      state: { status: this.currentStatus() },
+    }));
     this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));
     this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();

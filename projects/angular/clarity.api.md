@@ -3331,6 +3331,8 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     protected ngControlService: NgControlService;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     get open(): boolean;
     // (undocumented)
     get popoverPosition(): ClrPopoverPosition;
@@ -5907,7 +5909,7 @@ export class ClrStepperModule {
 
 // @public (undocumented)
 export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
-    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef, hostElement?: ElementRef<HTMLElement>);
+    constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
@@ -5946,7 +5948,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["stepDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null, { optional: true; }]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
 }
 
 // @public (undocumented)

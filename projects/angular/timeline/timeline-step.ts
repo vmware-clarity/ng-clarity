@@ -43,8 +43,7 @@ export class ClrTimelineStep implements OnDestroy {
   constructor(
     private iconAttributeService: TimelineIconAttributeService,
     @Inject(PLATFORM_ID) private platformId: any,
-    // Optional and last: existing `new ClrTimelineStep(...)` and `super(...)` calls keep
-    // working, and without a host there is simply nothing to publish on.
+    // Optional and last, so that existing `new ClrTimelineStep(...)` calls keep working.
     @Optional() private readonly hostElement?: ElementRef<HTMLElement>
   ) {}
 
@@ -72,12 +71,11 @@ export class ClrTimelineStep implements OnDestroy {
     // The outcome is announced through the icon's accessible name, but a timeline is a
     // list and its steps are list items: page-context tooling summarises a list by item
     // name and never descends to the icon. Reported here so the outcome survives.
-    if (!this.hostElement) {
-      return;
+    if (this.hostElement) {
+      this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
+        state: { status: this.state },
+      }));
     }
-    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
-      state: { status: this.state },
-    }));
   }
 
   ngOnDestroy() {
