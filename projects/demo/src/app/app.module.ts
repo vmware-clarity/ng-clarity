@@ -32,11 +32,18 @@ import { LandingComponent } from './landing.component';
   providers: [
     cdsThemePathLocationStrategyProvider,
     // Enables the mutation engine (see the contextual demo). The application, not the
-    // engine, says what each operation would do: filling a field is reversible, since
-    // the previous value comes back with the result; leaving the page is worth a
-    // question, and the person answers it.
+    // engine, says what each operation would do, and it allows only what it names: the
+    // fields inside an element marked `data-agent-fill` may be filled, which is reversible
+    // since the previous value comes back with the result. Leaving the page is worth a
+    // question, which the person answers, and only without query parameters, which the
+    // agent would choose. Everything else is forbidden.
     provideClrMutationPolicy({
-      classify: target => (target.operation === 'navigate' ? 'consequential' : 'reversible'),
+      classify: target => {
+        if (target.operation === 'navigate') {
+          return Object.keys(target.queryParams ?? {}).length ? 'forbidden' : 'consequential';
+        }
+        return target.element?.closest('[data-agent-fill]') ? 'reversible' : 'forbidden';
+      },
       confirm: target => window.confirm(`Let the agent go to ${target.url}?`),
     }),
   ],

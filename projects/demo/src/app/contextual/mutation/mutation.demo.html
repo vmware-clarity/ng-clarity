@@ -10,8 +10,9 @@
   page's snapshot; pick one, propose a value the way an agent would — text, a number,
   <code class="clr-code">true</code>, an option's label, a date such as <code class="clr-code">2026-03-06</code>, a row
   such as <code class="clr-code">esx-prod-03</code> — and the engine writes it through the form control, or says why
-  not. Try a label no option has, or clear the required field, and read the result beside the form. Navigation asks
-  first: this application classifies leaving the page as consequential.
+  not. Try a label no option has, or clear the required field, and read the result beside the form. Only the fields on
+  the right can be written: this application's policy allows what it marks and forbids the rest. Navigation asks first:
+  this application classifies leaving the page as consequential.
 </p>
 
 <div class="clr-row">
@@ -63,7 +64,8 @@
     </div>
   </div>
 
-  <div class="clr-col-lg-7 clr-col-12">
+  <!-- data-agent-fill: the application's policy lets an agent fill only what is inside. -->
+  <div class="clr-col-lg-7 clr-col-12" data-agent-fill>
     <h3>What the agent writes to</h3>
     <section clrContext="Host maintenance request" clrContextType="section">
       <h4>Hosts</h4>
