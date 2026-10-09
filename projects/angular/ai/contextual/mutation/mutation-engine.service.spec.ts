@@ -264,6 +264,14 @@ describe('ClrMutationEngineService', () => {
         expect(comboboxes.find(node => node.ref)?.state?.['options']).toEqual(['Alpha cluster', 'Beta cluster']);
       });
 
+      it('list a combobox once, folding the input it renders into it', () => {
+        const comboboxes = allNodes(snapshot().components).filter(node => node.label === 'Cluster');
+
+        expect(comboboxes.length).toBe(1);
+        expect(comboboxes[0].state).toEqual(jasmine.objectContaining({ value: null }));
+        expect(comboboxes[0].children?.map(child => child.label)).toEqual(['Show options']);
+      });
+
       it('are never given to a redacted control', () => {
         const page = snapshot();
         const secret = nodeOf(page, node => node.label === 'Secret', 'secret');

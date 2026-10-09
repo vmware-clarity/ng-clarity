@@ -722,6 +722,8 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
       if (named) {
         wrapper.label = named.label;
       }
+      const finished = finish(wrapper, element, walk, { published });
+      return listOf(finished && foldRenderedControl(finished, walk));
     }
     return listOf(finish(wrapper, element, walk, { published }));
   }
@@ -1251,6 +1253,32 @@ function noteRef(node: ClrComponentContext, element: Element, walk: Walk): void 
     }
     walk.refs.note(node, element);
   }
+}
+
+/**
+ * A component written to as one thing that says it is the control it renders — a
+ * combobox host publishing itself as a combobox — would otherwise list that control
+ * twice, once as itself and once as its rendered part with the same role and name. The
+ * part is folded into the host, which speaks for it: the host's own state is what the
+ * component publishes, and the part's — the typed text, whether the popup is open — is
+ * the component's internals. Whatever the part contains takes its place.
+ */
+function foldRenderedControl(node: ClrComponentContext, walk: Walk): ClrComponentContext {
+  const children = node.children ?? [];
+  const index = children.findIndex(
+    child => child.type === node.type && child.label === node.label && WRITABLE_ROLES.has(child.type)
+  );
+  if (index < 0) {
+    return node;
+  }
+  const part = children[index];
+  children.splice(index, 1, ...(part.children ?? []));
+  if (!children.length) {
+    delete node.children;
+  }
+  // The part was counted against the budget, which it no longer uses.
+  walk.remaining++;
+  return node;
 }
 
 /** Whether an element is a component written to as one thing, whose rendered controls are its own internals. */
