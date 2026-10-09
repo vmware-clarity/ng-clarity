@@ -42,36 +42,50 @@ const UNTRUSTED_LIST_KEYS: readonly string[] = ['excludeCategories', 'excludeRol
 
 /**
  * Reduces whatever an untrusted caller passed to the budgets it is allowed to set,
- * discarding everything else. Each option keeps only the kind of value it takes — a
- * finite number for a budget, a boolean for a switch, a short string for an enumeration,
- * a list of strings for roles and categories — and anything else is dropped, so a caller cannot smuggle a getter or an
- * object through — nor a `NaN` or an `Infinity`, which a budget check would never see as
- * exhausted. What survives is still held to its range when the snapshot is built.
- * Selectors are not accepted from an untrusted caller at all.
+ * discarding everything else. Each option keeps only the kind of value it takes, so a
+ * caller cannot smuggle a getter or an object through — nor a `NaN` or an `Infinity`,
+ * which a budget check would never see as exhausted. What survives is still held to its
+ * range when the snapshot is built. Selectors are not accepted from an untrusted caller
+ * at all.
  */
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
   if (!options || typeof options !== 'object') {
     return undefined;
   }
   const candidate = options as Record<string, unknown>;
-  const sanitized: ClrContextSnapshotOptions = {};
+  const sanitized: Record<string, unknown> = {};
   for (const key of CLR_CONTEXT_UNTRUSTED_OPTION_KEYS) {
-    const value = candidate[key];
-    if (typeof value === 'number' && Number.isFinite(value) && (BUDGET_KEYS as readonly string[]).includes(key)) {
-      (sanitized as Record<string, unknown>)[key] = value;
-    } else if (typeof value === 'boolean' && (SWITCH_KEYS as readonly string[]).includes(key)) {
-      (sanitized as Record<string, unknown>)[key] = value;
-    } else if (typeof value === 'string' && value.length <= MAX_ENUM_LENGTH && ENUM_KEYS.includes(key)) {
-      // Enumerations; anything that is not one of the values is dropped when resolved.
-      (sanitized as Record<string, unknown>)[key] = value;
-    } else if (Array.isArray(value) && UNTRUSTED_LIST_KEYS.includes(key)) {
-      // Roles and categories; a selector is not accepted from here at all.
-      (sanitized as Record<string, unknown>)[key] = value
-        .filter(entry => typeof entry === 'string' && entry.length <= MAX_ENUM_LENGTH)
-        .slice(0, MAX_LIST_ENTRIES);
+    const value = acceptedValue(key, candidate[key]);
+    if (value !== undefined) {
+      sanitized[key] = value;
     }
   }
-  return sanitized;
+  return sanitized as ClrContextSnapshotOptions;
+}
+
+/**
+ * What an untrusted caller's value for an option is kept as: a finite number for a
+ * budget, a boolean for a switch, a short string for an enumeration and a bounded list of
+ * short strings for roles and categories. `undefined` for anything else.
+ */
+function acceptedValue(key: string, value: unknown): unknown {
+  if (typeof value === 'number') {
+    return Number.isFinite(value) && (BUDGET_KEYS as readonly string[]).includes(key) ? value : undefined;
+  }
+  if (typeof value === 'boolean') {
+    return (SWITCH_KEYS as readonly string[]).includes(key) ? value : undefined;
+  }
+  if (typeof value === 'string') {
+    // Enumerations; anything that is not one of the values is dropped when resolved.
+    return value.length <= MAX_ENUM_LENGTH && ENUM_KEYS.includes(key) ? value : undefined;
+  }
+  if (Array.isArray(value) && UNTRUSTED_LIST_KEYS.includes(key)) {
+    // Roles and categories; a selector is not accepted from here at all.
+    return value
+      .filter(entry => typeof entry === 'string' && entry.length <= MAX_ENUM_LENGTH)
+      .slice(0, MAX_LIST_ENTRIES);
+  }
+  return undefined;
 }
 
 /**

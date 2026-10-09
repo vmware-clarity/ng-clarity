@@ -9,7 +9,7 @@ import { isDevMode } from '@angular/core';
 import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { truncate } from './text';
-import { jsonSafe, STATE_DEPTH } from '../json-safe';
+import { defineOwn, jsonSafe, STATE_DEPTH } from '../json-safe';
 
 /**
  * Reads an element's published context, if any. A callback that throws is treated as
@@ -133,7 +133,8 @@ function publishedParts(
     return {};
   }
   const source = value as Record<string, unknown>;
-  const parts: Partial<ClrComponentContext> = { state: {} };
+  const ownState: Record<string, unknown> = {};
+  const parts: Partial<ClrComponentContext> = { state: ownState };
   if (typeof source['type'] === 'string' && source['type']) {
     parts.type = truncate(source['type'], MAX_TYPE_LENGTH);
   }
@@ -148,7 +149,7 @@ function publishedParts(
     for (const [key, entry] of Object.entries(state)) {
       const safe = bounded(jsonSafe(entry, STATE_DEPTH, true), options);
       if (safe !== undefined) {
-        Object.defineProperty(parts.state, key, { value: safe, enumerable: true, writable: true, configurable: true });
+        defineOwn(ownState, key, safe);
       }
     }
   }
@@ -177,12 +178,7 @@ function bounded(value: unknown, options: Required<ClrContextSnapshotOptions>): 
   if (value && typeof value === 'object') {
     const result: Record<string, unknown> = {};
     for (const [key, entry] of Object.entries(value)) {
-      Object.defineProperty(result, key, {
-        value: bounded(entry, options),
-        enumerable: true,
-        writable: true,
-        configurable: true,
-      });
+      defineOwn(result, key, bounded(entry, options));
     }
     return result;
   }

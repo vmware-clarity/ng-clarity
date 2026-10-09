@@ -309,7 +309,7 @@ describe('snapshot options, choosing what to collect', () => {
 
       expect(warn).toHaveBeenCalledTimes(2);
       expect(options.excludeCategories).toEqual(['layout', 'text']);
-      expect(options.excludeRoles).toEqual([]);
+      expect(options.excludeRoles).toBeUndefined();
     });
   });
 });
