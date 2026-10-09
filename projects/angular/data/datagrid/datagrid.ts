@@ -30,7 +30,19 @@ import {
   ViewChildren,
   ViewContainerRef,
 } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import {
+  CLR_CONTEXT_DEFAULT_MAX_ITEMS,
+  CLR_CONTEXT_IGNORE_SELECTOR,
+  CLR_CONTEXT_REDACT_SELECTOR,
+  CLR_CONTEXT_WITHHELD_SELECTOR,
+  ClrCommonStringsService,
+  ClrContextSnapshotOptions,
+  clrContextText,
+  clrNormalizeContextText,
+  clrPublishElementContext,
+  clrUsableSelectors,
+  uniqueIdFactory,
+} from '@clr/angular/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
 
@@ -55,6 +67,7 @@ import { Sort } from './providers/sort';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
+import { HIDDEN_COLUMN_CLASS } from './render/constants';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
@@ -157,6 +170,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
+
+  private teardownElementContext?: () => void;
 
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;
@@ -302,6 +317,10 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngAfterContentInit() {
+    this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions =>
+      this.describeForContext(snapshotOptions)
+    );
+
     if (!this.items.smart) {
       this.items.all = this.rows.map((row: ClrDatagridRow<T>) => row.item);
     }
@@ -489,6 +508,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this.destroyFixedColumnViews();
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._virtualScrollSubscriptions.forEach((sub: Subscription) => sub.unsubscribe());
@@ -664,4 +684,186 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       this.renderer.removeClass(rowsWrapper, scrollClass);
     }
   }
+
+  /** What the grid publishes beyond its ARIA: the total, the rows and selection, filters and hidden columns. */
+  private describeForContext(snapshotOptions?: ClrContextSnapshotOptions): { state: Record<string, unknown> } | null {
+    const state: Record<string, unknown> = {};
+    const excluded = this.excludedBy(snapshotOptions);
+
+    // A paginated or server-driven grid holds only the current page, and `aria-rowcount`
+    // is set only in virtual-scroll mode, so only the component knows the total. It is
+    // named apart from the `rowCount` the engine reads off the grid, a different number.
+    const total = this.page.size > 0 ? this.page.totalItems : 0;
+    if (total > 0) {
+      state.totalRows = total;
+    }
+
+    // The rows by their content, so a reader can tell them apart, and the selection in
+    // the same terms, both bounded by the collection budget.
+    if (this.selection.selectable) {
+      state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
+      const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
+      // Labelling a row reads the style of everything in it, and a selected row is also
+      // listed, so each row is read at most once per snapshot.
+      const labels = new Map<ClrDatagridRow<T>, string>();
+      const label = (row: ClrDatagridRow<T>) => {
+        let text = labels.get(row);
+        if (text === undefined) {
+          text = this.readRowCells(row, excluded).join(' | ');
+          labels.set(row, text);
+        }
+        return text;
+      };
+      const rows = this.rows.toArray();
+      if (snapshotOptions?.collectionItems !== 'summary') {
+        state.rows = firstRowLabels(rows, label, maxItems);
+      }
+      const selected = firstRowLabels(
+        rows.filter(row => this.selection.isSelected(row.item)),
+        label,
+        maxItems
+      );
+      if (selected.length) {
+        state.selection = selected;
+      }
+    }
+
+    const columnNames = (keep: (column: ClrDatagridColumn<T>) => boolean) =>
+      this.columns
+        .filter(keep)
+        .map(column => this.columnName(column, excluded))
+        .filter((name): name is string => !!name);
+
+    // A filter's state is a CSS class on its toggle, and its value lives in a popover
+    // that is absent from the DOM while closed.
+    const filtered = columnNames(column => !!column.filter?.isActive());
+    if (filtered.length) {
+      state.filteredColumns = filtered;
+    }
+
+    // A hidden column is not rendered at all, so nothing in the DOM says it exists.
+    const hidden = columnNames(column => column.isHidden);
+    if (hidden.length) {
+      state.hiddenColumns = hidden;
+    }
+
+    return Object.keys(state).length ? { state } : null;
+  }
+
+  /**
+   * A column by its header text, or by its field when the header says nothing, so that an
+   * agent can pair it with the columns it lists. Not named at all when the application or
+   * the snapshot keeps it out, or when its header text is all withheld: the field would
+   * name the very thing withheld.
+   */
+  private columnName(column: ClrDatagridColumn<T>, excluded: string): string | null {
+    const title = column.titleContainer?.nativeElement;
+    if (!title) {
+      return column.field || null;
+    }
+    if (this.columnKeptOut(title, excluded)) {
+      return null;
+    }
+    const text = headerText(title, excluded);
+    if (text) {
+      return text;
+    }
+    const withheld = selectorList(CLR_CONTEXT_WITHHELD_SELECTOR, excluded);
+    const hasWithheldText = Array.from(title.querySelectorAll(withheld)).some(
+      descendant => !!descendant.textContent?.trim()
+    );
+    return hasWithheldText ? null : column.field || null;
+  }
+
+  /**
+   * Whether the header, or anything up to the grid, is withheld or excluded. Between the
+   * column and the grid only what the application marks counts: the grid hides itself from
+   * assistive technology while a detail pane is open, and its columns are still the same.
+   */
+  private columnKeptOut(title: Element, excluded: string): boolean {
+    const column = title.closest('clr-dg-column');
+    const grid: HTMLElement = this.el.nativeElement;
+    const withheld = selectorList(CLR_CONTEXT_WITHHELD_SELECTOR, excluded);
+    const marked = selectorList(CLR_CONTEXT_MARKED_SELECTOR, excluded);
+    for (let current: Element | null = title; current && current !== grid; current = current.parentElement) {
+      if (current.matches(column?.contains(current) ? withheld : marked)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /** The elements a snapshot with these options leaves out, as one selector, or `''`. */
+  private excludedBy(options: { excludeSelectors?: readonly string[] } | null | undefined): string {
+    return clrUsableSelectors(this.el.nativeElement, options?.excludeSelectors ?? []);
+  }
+
+  /**
+   * The row's content cells, as the user sees them: not the selection or action cells the
+   * grid adds, not hidden columns, not the cells of its expanded detail, and not a cell
+   * withheld or excluded. Only what lies between a cell and its row counts, for the same
+   * reason as in `columnKeptOut`.
+   */
+  private readRowCells(row: ClrDatagridRow<T>, excluded: string): string[] {
+    const host: HTMLElement = row.el.nativeElement;
+    const withheld = selectorList(CLR_CONTEXT_WITHHELD_SELECTOR, excluded);
+    const leftOut = selectorList('clr-dg-row-detail', withheld);
+    return Array.from(host.querySelectorAll('clr-dg-cell'))
+      .filter(cell => {
+        if (cell.closest('clr-dg-row') !== host || cell.classList.contains(HIDDEN_COLUMN_CLASS)) {
+          return false;
+        }
+        const nearest = cell.closest(leftOut);
+        return !nearest || !host.contains(nearest);
+      })
+      .map(cell =>
+        clrNormalizeContextText(
+          clrContextText(cell, element => element.matches(withheld)),
+          false
+        )
+      )
+      .filter(Boolean);
+  }
+}
+
+/** What an application marks to keep from agents: a redacted or an ignored region. */
+const CLR_CONTEXT_MARKED_SELECTOR = `${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_IGNORE_SELECTOR}`;
+
+/** The selectors as one list, leaving out empty ones such as an `excluded` of `''`. */
+function selectorList(...selectors: string[]): string {
+  return selectors.filter(Boolean).join(', ');
+}
+
+/**
+ * The labels of the first rows, stopping at `limit` so later rows are never read. A row
+ * with an empty label is left out: listing it would still say it is there.
+ */
+function firstRowLabels<R>(rows: R[], label: (row: R) => string, limit: number): string[] {
+  const labels: string[] = [];
+  for (const row of rows) {
+    if (labels.length >= limit) {
+      break;
+    }
+    const text = label(row);
+    if (text) {
+      labels.push(text);
+    }
+  }
+  return labels;
+}
+
+/** A header's text, without screen-reader additions or what the snapshot excludes. */
+function headerText(title: Element, excluded: string): string {
+  // Exclusions are matched in the rendered header, where a selector that names what is
+  // around it still matches. The text is read from a detached copy: a hidden column's
+  // header is `display: none`, and `clrContextText` judges style only on connected nodes.
+  const skip = selectorList('.clr-sr-only', excluded);
+  const descendants = Array.from(title.querySelectorAll('*'));
+  const copy = title.cloneNode(true) as Element;
+  const copies = Array.from(copy.querySelectorAll('*'));
+  const skipped = new Set(copies.filter((_, index) => descendants[index].matches(skip)));
+  return clrNormalizeContextText(
+    clrContextText(copy, descendant => skipped.has(descendant)),
+    false
+  );
 }

@@ -242,9 +242,10 @@
       <td class="left">
         The control, or every control in the region, is still described — label, type, what it permits — but its value
         is never reported, and the text the region shows is left out. A component inside publishes only that it is
-        redacted, none of its own state. An annotation inside is reported without its state. Addresses count as content:
-        a link or frame inside keeps its name but not where it points. A name taken from what an element shows is
-        content too, so inside the region a link or button is named only by what its author gave it — a label,
+        redacted: a datagrid reports neither its rows nor its selection. An annotation inside is reported without its
+        state. Addresses count as content: a link or frame inside keeps its name but not where it points. A name taken
+        from what an element shows is content too, so inside the region a link or button is named only by what its
+        author gave it — a label,
         <code cds-text="code">aria-label</code>, a title. An item inside a list, tab list, menu or grid that is
         otherwise readable is counted, but its name is withheld. Exported as
         <code cds-text="code">CLR_CONTEXT_REDACT_ATTRIBUTE</code>.
@@ -257,6 +258,14 @@
         <code cds-text="code">aria-hidden="true"</code>, <code cds-text="code">inert</code> or
         <code cds-text="code">data-clr-context-ignore</code>, and everything inside — as one selector, for a component
         that publishes context and must agree with the engine about what an agent may see.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">CLR_CONTEXT_WITHHELD_SELECTOR</b></td>
+      <td class="left">
+        Everything <code cds-text="code">CLR_CONTEXT_HIDDEN_SELECTOR</code> matches, and regions marked
+        <code cds-text="code">data-clr-context-redact</code>: what a component that labels something from its content —
+        a row by its cells, an option by its text — leaves out of that label.
         <code cds-text="code">CLR_CONTEXT_IGNORE_SELECTOR</code> and
         <code cds-text="code">CLR_CONTEXT_REDACT_SELECTOR</code> match the two attributes on their own.
       </td>
@@ -265,8 +274,8 @@
       <td class="left"><b cds-text="medium">CLR_CONTEXT_EDITING_HOST_SELECTOR</b></td>
       <td class="left">
         An editing host — <code cds-text="code">contenteditable</code> in any spelling but
-        <code cds-text="code">false</code>. What it holds was typed by the user, a value, so it is never read into a
-        label.
+        <code cds-text="code">false</code>. What it holds was typed by the user, a value, so it is part of
+        <code cds-text="code">CLR_CONTEXT_WITHHELD_SELECTOR</code> and never read into a label.
       </td>
     </tr>
   </tbody>
@@ -584,7 +593,28 @@
       <td class="left">
         Publishes a callback on the host element, returning the teardown to run on destroy. The teardown removes only
         the callback it published, so republishing is safe. What a component publishes wins over what the markup showed
-        — except a value the engine withheld as sensitive, which is removed again.
+        — except a value the engine withheld as sensitive, which is removed again. Inside a
+        <code cds-text="code">data-clr-context-redact</code> region nothing published is merged, and an element that
+        publishes a <code cds-text="code">label</code> is described without one, since the name its markup gives it is
+        the one the component meant to replace.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrContextText(element, skip?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        The text an element shows, as a publisher may report it: text inside a redacted or ignored descendant, text
+        hidden from assistive technology and text hidden by style are left out, and block-level parts read as separate
+        words. Use it to label rows or options from their content, so a value the application withheld never reaches a
+        label.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clrNormalizeContextText(text, lowercase?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
+      <td class="left">
+        Text as the engine compares it — whitespace collapsed, and lowercased unless told otherwise — so a publisher and
+        the engine agree on whether two labels are the same.
       </td>
     </tr>
     <tr>
@@ -617,21 +647,143 @@
   </tbody>
 </table>
 
-<h2 id="published-state" cds-text="title" class="clr-mt-48px">Published values</h2>
+<h2 id="published-state" cds-text="title" class="clr-mt-48px">What components publish</h2>
 <p class="clr-mt-16px" cds-text="body">
-  Keys a publisher reports as values — <code cds-text="code">value</code>, <code cds-text="code">selection</code>,
-  <code cds-text="code">rows</code>, <code cds-text="code">filteredColumns</code>,
-  <code cds-text="code">hiddenColumns</code>, <code cds-text="code">fileCount</code>,
-  <code cds-text="code">matchingOptions</code>, <code cds-text="code">redactedMatchingOptions</code>,
-  <code cds-text="code">matchingOptionsPending</code> and <code cds-text="code">matchingOptionCount</code> — are
-  withheld from the global accessor unless the application shares form values, and so is the state any node reads from
-  the accessibility tree to say what the user chose: <code cds-text="code">selected</code>,
-  <code cds-text="code">checked</code>, <code cds-text="code">pressed</code> and
+  State a Clarity component adds to its node, beyond what the accessibility tree says. Keys marked as values —
+  <code cds-text="code">value</code>, <code cds-text="code">selection</code>, <code cds-text="code">rows</code>,
+  <code cds-text="code">filteredColumns</code>, <code cds-text="code">hiddenColumns</code>,
+  <code cds-text="code">fileCount</code>, <code cds-text="code">matchingOptions</code>,
+  <code cds-text="code">redactedMatchingOptions</code>, <code cds-text="code">matchingOptionsPending</code> and
+  <code cds-text="code">matchingOptionCount</code> — are withheld from the global accessor unless the application shares
+  form values, and so is the state any node reads from the accessibility tree to say what the user chose:
+  <code cds-text="code">selected</code>, <code cds-text="code">checked</code>, <code cds-text="code">pressed</code> and
   <code cds-text="code">selectedRows</code>. <code cds-text="code">withheld: true</code> marks a field whose value was
   withheld; an empty field (an empty string, <code cds-text="code">null</code>, an empty list) carries no marker. A
   choice such as an unticked box, or a count of zero, is a value and is marked. A key of a publisher's own is shared as
   it is.
 </p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Component</th>
+      <th class="left">State</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-datagrid</b></td>
+      <td class="left">
+        <code cds-text="code">totalRows</code> (paginated total), <code cds-text="code">filteredColumns</code> (value),
+        <code cds-text="code">hiddenColumns</code> (value); when rows can be selected, which takes
+        <code cds-text="code">clrDgSelectionType</code> (binding <code cds-text="code">clrDgSelected</code> alone does
+        not make a grid selectable), <code cds-text="code">selectionMode</code> (<code cds-text="code">single</code> or
+        <code cds-text="code">multi</code>), <code cds-text="code">rows</code> (each row's cells, the names its rows go
+        by; value) and <code cds-text="code">selection</code> (value)
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-combobox</b></td>
+      <td class="left">
+        <ul class="list">
+          <li><code cds-text="code">multiSelect</code></li>
+          <li>
+            <code cds-text="code">options</code> and <code cds-text="code">redactedOptions</code> (how many options are
+            withheld)
+          </li>
+          <li>
+            <code cds-text="code">matchingOptions</code> and <code cds-text="code">redactedMatchingOptions</code>
+            (values), in their place while the list may be narrowed to what the user entered:
+            <ul class="list">
+              <li>while <code cds-text="code">*clrOptionItems</code> filters it by the text in the input;</li>
+              <li>
+                when the application listens to <code cds-text="code">clrInputChange</code>, while text is in the input,
+                a picked option's label included;
+              </li>
+              <li>
+                for such a combobox, also whenever there is any list, written-out options included, since it may answer
+                earlier text or a search kept from an earlier instance.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <code cds-text="code">matchingOptionsPending</code> (value) while
+            <code cds-text="code">clrLoading</code> says a search for the text in the input is running;
+            <code cds-text="code">optionsPending</code> while it is set otherwise, as on opening an empty combobox or
+            after clearing it
+          </li>
+          <li>
+            <code cds-text="code">optionCount</code>, or <code cds-text="code">matchingOptionCount</code> (value) while
+            narrowed, in place of the lists in a <code cds-text="code">summary</code> snapshot, counting redacted
+            options too
+          </li>
+          <li>
+            <code cds-text="code">optionsAvailable</code>: false while the list is empty and not narrowed, as before a
+            search loads it
+          </li>
+          <li><code cds-text="code">value</code> (value)</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-wizard</b></td>
+      <td class="left">
+        <code cds-text="code">stepCount</code>, <code cds-text="code">currentStepIndex</code>,
+        <code cds-text="code">steps</code> (each with its <code cds-text="code">index</code>,
+        <code cds-text="code">title</code> as its stepnav item shows it, <code cds-text="code">current</code>,
+        <code cds-text="code">complete</code>, <code cds-text="code">error</code> and
+        <code cds-text="code">navigable</code>), while the wizard is open
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-stepper-panel</b></td>
+      <td class="left">
+        <code cds-text="code">status</code>: <code cds-text="code">inactive</code>,
+        <code cds-text="code">complete</code> or <code cds-text="code">error</code>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-timeline-step</b></td>
+      <td class="left">
+        <code cds-text="code">status</code>: <code cds-text="code">not-started</code>,
+        <code cds-text="code">current</code>, <code cds-text="code">processing</code>,
+        <code cds-text="code">success</code> or <code cds-text="code">error</code>
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-tree-node</b></td>
+      <td class="left">
+        <code cds-text="code">expandable</code>, and <code cds-text="code">loading</code> while children load
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-alert</b></td>
+      <td class="left"><code cds-text="code">severity</code>, while the alert is shown</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-file-input-container</b></td>
+      <td class="left">
+        <code cds-text="code">fileCount</code> (value), <code cds-text="code">redacted</code> (always: the files
+        themselves are never described, and the file list is left out), <code cds-text="code">disabled</code> when the
+        input is disabled; helper, error and success text are kept
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">clr-date-container</b></td>
+      <td class="left">
+        The calendar toggle's name without the selected date, which the date input reports as its
+        <code cds-text="code">value</code> (value); inside a <code cds-text="code">data-clr-context-redact</code> region
+        the toggle is described without a name. The open calendar is not described
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">input[clrPassword]</b></td>
+      <td class="left">
+        Nothing of its own: the input is marked <code cds-text="code">data-clr-context-redact</code>, so it is described
+        without its value
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 <h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>
 <table class="table">
