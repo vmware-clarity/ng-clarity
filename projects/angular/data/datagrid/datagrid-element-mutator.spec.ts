@@ -464,49 +464,6 @@ describe('ClrDatagrid element mutator', () => {
       expect(report.results[0].applied).toBeTrue();
       expect(names(host.selected)).toEqual(['esx-02']);
     });
-
-    it('names a row by a number its cell shows', async () => {
-      const host = await create(NumberedHost);
-
-      expect((await select(20)).applied).toBeTrue();
-      expect(names(host.selected)).toEqual(['esx-02']);
-    });
-
-    it('lets a plan see the refusal a selection would meet, without selecting anything', async () => {
-      const host = await create(MultiHost);
-      const ref = String(grid().ref);
-
-      const [refused] = engine.plan([{ operation: 'setValue', ref, description: '', value: ['esx-09'] }]);
-      expect(refused.refused).toBe('invalid');
-      expect(refused.detail).toContain('No such row on this page');
-
-      const [planned] = engine.plan([{ operation: 'setValue', ref, description: '', value: ['esx-02'] }]);
-      expect(planned.refused).toBeUndefined();
-      expect(planned.target?.value).toEqual(['esx-02 | Running']);
-      expect(names(host.selected)).toEqual([]);
-    });
-
-    it('labels a row by its own cells, not those of its expanded detail', async () => {
-      const host = await create(ExpandedDetailHost);
-      expect(fixture.nativeElement.textContent).toContain('detail-esx-01');
-
-      expect(grid().state?.['rows']).toEqual(['esx-01', 'esx-02']);
-      expect((await select('esx-02')).applied).toBeTrue();
-      expect(names(host.selected)).toEqual(['esx-02']);
-    });
-
-    it('keeps labelling rows while a detail pane hides the grid from assistive technology', async () => {
-      const host = await create(MultiHost);
-      const ref = String(grid().ref);
-      // The detail pane marks the grid body aria-hidden while it is open; the rows are unchanged.
-      fixture.nativeElement.querySelector('.datagrid').setAttribute('aria-hidden', 'true');
-
-      const result = await write(ref, 'esx-02');
-
-      expect(result.applied).toBeTrue();
-      expect(result.value).toEqual(['esx-02 | Running']);
-      expect(names(host.selected)).toEqual(['esx-02']);
-    });
   });
 
   describe('row matching', () => {
@@ -582,6 +539,13 @@ describe('ClrDatagrid element mutator', () => {
 
       expect((await select('esx-02')).detail).toContain('fits 2 rows');
       expect((await select('Running')).applied).toBeTrue();
+      expect(names(host.selected)).toEqual(['esx-02']);
+    });
+
+    it('names a row by a number its cell shows', async () => {
+      const host = await create(NumberedHost);
+
+      expect((await select(20)).applied).toBeTrue();
       expect(names(host.selected)).toEqual(['esx-02']);
     });
   });
@@ -773,6 +737,20 @@ describe('ClrDatagrid element mutator', () => {
 
       expect(CLR_ELEMENT_MUTATOR_PROPERTY in element).toBeFalse();
     });
+
+    it('lets a plan see the refusal a selection would meet, without selecting anything', async () => {
+      const host = await create(MultiHost);
+      const ref = String(grid().ref);
+
+      const [refused] = engine.plan([{ operation: 'setValue', ref, description: '', value: ['esx-09'] }]);
+      expect(refused.refused).toBe('invalid');
+      expect(refused.detail).toContain('No such row on this page');
+
+      const [planned] = engine.plan([{ operation: 'setValue', ref, description: '', value: ['esx-02'] }]);
+      expect(planned.refused).toBeUndefined();
+      expect(planned.target?.value).toEqual(['esx-02 | Running']);
+      expect(names(host.selected)).toEqual([]);
+    });
   });
 
   describe('contents', () => {
@@ -800,6 +778,28 @@ describe('ClrDatagrid element mutator', () => {
       );
 
       expect(checkboxes).toBeNull();
+    });
+
+    it('labels a row by its own cells, not those of its expanded detail', async () => {
+      const host = await create(ExpandedDetailHost);
+      expect(fixture.nativeElement.textContent).toContain('detail-esx-01');
+
+      expect(grid().state?.['rows']).toEqual(['esx-01', 'esx-02']);
+      expect((await select('esx-02')).applied).toBeTrue();
+      expect(names(host.selected)).toEqual(['esx-02']);
+    });
+
+    it('keeps labelling rows while a detail pane hides the grid from assistive technology', async () => {
+      const host = await create(MultiHost);
+      const ref = String(grid().ref);
+      // The detail pane marks the grid body aria-hidden while it is open; the rows are unchanged.
+      fixture.nativeElement.querySelector('.datagrid').setAttribute('aria-hidden', 'true');
+
+      const result = await write(ref, 'esx-02');
+
+      expect(result.applied).toBeTrue();
+      expect(result.value).toEqual(['esx-02 | Running']);
+      expect(names(host.selected)).toEqual(['esx-02']);
     });
   });
 

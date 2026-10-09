@@ -26,10 +26,12 @@ import {
 } from '@clr/angular/utils';
 
 import { ClrDateContainer } from './date-container';
+import { ClrDateInput } from './date-single-input';
 import { ClrDatepickerModule } from './datepicker.module';
 import { DayModel } from './model/day.model';
 import { DateNavigationService } from './providers/date-navigation.service';
 import { DatepickerEnabledService } from './providers/datepicker-enabled.service';
+import { DatepickerFocusService } from './providers/datepicker-focus.service';
 
 function readElementMutator(element: Element): ClrElementMutator | null {
   return ((element as Element & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] as ClrElementMutator) ?? null;
@@ -176,6 +178,23 @@ describe('ClrDateInput element mutator', () => {
       fixture.destroy();
 
       expect(readElementMutator(input)).toBeNull();
+    });
+
+    // The listener for model writes while focused is removed through a private Angular
+    // method; should it be renamed, a destroyed input would go on hearing its control.
+    it('stops following model writes once destroyed', () => {
+      const injector = fixture.debugElement.query(By.directive(ClrDateInput)).injector;
+      spyOn(injector.get(DatepickerFocusService), 'elementIsFocused').and.returnValue(true);
+      const updateDate = spyOn<any>(injector.get(ClrDateInput), 'updateDate');
+
+      control.setValue('03/05/2026');
+      expect(updateDate).toHaveBeenCalled();
+      updateDate.calls.reset();
+
+      fixture.destroy();
+      control.setValue('04/06/2026');
+
+      expect(updateDate).not.toHaveBeenCalled();
     });
 
     describe('as page-context tooling sees it', () => {

@@ -23,8 +23,8 @@ import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
 import { ClrSelectModule } from '@clr/angular/forms/select';
-import { ClrComponentContext } from '@clr/angular/utils';
 
+import { allRefs, refOf, settle } from './helpers.spec';
 import { ClrMutationEngineService } from './mutation-engine.service';
 import {
   ClrElementMutationResult,
@@ -34,7 +34,6 @@ import {
   provideClrMutationPolicy,
 } from './mutation.interface';
 import { descriptionMatches } from './write';
-import { ClrPageContext } from '../interfaces/context.interface';
 import { ClrContextEngineService } from '../providers/contextual-engine.service';
 
 /** A third-party toggle: a custom element carrying the binding, rendering a checkbox. */
@@ -240,30 +239,6 @@ class Host {
   modalOpen = false;
 }
 
-function findNode(
-  nodes: ClrComponentContext[],
-  match: (node: ClrComponentContext) => boolean
-): ClrComponentContext | null {
-  for (const node of nodes) {
-    if (match(node)) {
-      return node;
-    }
-    const inside = findNode(node.children ?? [], match);
-    if (inside) {
-      return inside;
-    }
-  }
-  return null;
-}
-
-function refOf(snapshot: ClrPageContext, label: string): string {
-  const node = findNode(snapshot.components, candidate => !!candidate.ref && candidate.label === label);
-  if (!node?.ref) {
-    throw new Error(`no ref for "${label}" in ${JSON.stringify(snapshot.components)}`);
-  }
-  return node.ref;
-}
-
 describe('ClrMutationEngineService write path', () => {
   let fixture: ComponentFixture<Host>;
   let host: Host;
@@ -299,25 +274,17 @@ describe('ClrMutationEngineService write path', () => {
     });
     fixture = TestBed.createComponent(Host);
     host = fixture.componentInstance;
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
+    await settle(fixture);
     contextEngine = TestBed.inject(ClrContextEngineService);
     engine = TestBed.inject(ClrMutationEngineService);
   });
 
   afterEach(() => fixture.destroy());
 
-  async function settle() {
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
-  }
-
   async function set(label: string, value: unknown, description = label): Promise<ClrElementMutationResult> {
     const ref = refOf(contextEngine.getSnapshot(), label);
     const report = await engine.apply([{ operation: 'setValue', ref, description, value }]);
-    await settle();
+    await settle(fixture);
     return report.results[0] as ClrElementMutationResult;
   }
 
@@ -401,7 +368,7 @@ describe('ClrMutationEngineService write path', () => {
 
     it('refuses a control whose form control is disabled, whatever the DOM says', async () => {
       host.form.controls.tier.disable();
-      await settle();
+      await settle(fixture);
 
       expect((await set('Tier', 'Basic')).refused).toBe('disabled');
     });
@@ -436,7 +403,7 @@ describe('ClrMutationEngineService write path', () => {
     it('clears a select with no empty option to nothing, never to its first option', async () => {
       const ref = refOf(contextEngine.getSnapshot(), 'Office');
       const report = await engine.apply([{ operation: 'clear', ref, description: 'Office' }]);
-      await settle();
+      await settle(fixture);
       const result = report.results[0] as ClrElementMutationResult;
 
       expect(result).toEqual(jasmine.objectContaining({ applied: true, value: null, previous: 'Berlin' }));
@@ -558,7 +525,7 @@ describe('ClrMutationEngineService write path', () => {
     async function setWith(label: string, value: unknown): Promise<ClrElementMutationResult> {
       const ref = refOf(contextEngine.getSnapshot(options), label);
       const report = await engine.apply([{ operation: 'setValue', ref, description: label, value }], options);
-      await settle();
+      await settle(fixture);
       return report.results[0] as ClrElementMutationResult;
     }
 
@@ -580,7 +547,7 @@ describe('ClrMutationEngineService write path', () => {
       expect(host.form.value.grade).toBe('gold');
 
       host.form.controls.grade.setValue('');
-      await settle();
+      await settle(fixture);
       expect((await setWith('Grade', 'Basic')).applied).toBeTrue();
       expect(host.form.value.grade).toBe('basic');
     });
@@ -632,7 +599,7 @@ describe('ClrMutationEngineService write path', () => {
       const page = contextEngine.getSnapshot();
       const behind = refOf(page, 'Name');
       host.modalOpen = true;
-      await settle();
+      await settle(fixture);
 
       const report = await engine.apply([
         { operation: 'setValue', ref: behind, description: 'Name', value: 'x' },
@@ -654,15 +621,7 @@ describe('ClrMutationEngineService write path', () => {
     });
 
     it('never hands out a ref an agent could work out from another', () => {
-      const refs: string[] = [];
-      const collect = (nodes: ClrComponentContext[]) =>
-        nodes.forEach(node => {
-          if (node.ref) {
-            refs.push(node.ref);
-          }
-          collect(node.children ?? []);
-        });
-      collect(contextEngine.getSnapshot().components);
+      const refs = allRefs(contextEngine.getSnapshot().components);
 
       expect(refs.length).toBeGreaterThan(3);
       expect(refs.every(ref => /^e[0-9a-z]{8}$/.test(ref))).toBeTrue();
@@ -773,7 +732,7 @@ describe('ClrMutationEngineService write path', () => {
       const pending = engine.apply([{ operation: 'setValue', ref, description: 'Name', value: 'written too late' }]);
       await new Promise(resolve => setTimeout(resolve));
       host.form.controls.name.disable();
-      await settle();
+      await settle(fixture);
       answer(true);
 
       expect((await pending).results[0].refused).toBe('disabled');

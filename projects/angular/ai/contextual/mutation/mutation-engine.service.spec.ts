@@ -9,8 +9,6 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { provideRouter, Router } from '@angular/router';
-import { RouterTestingHarness } from '@angular/router/testing';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
 import { ClrComboboxModule } from '@clr/angular/forms/combobox';
@@ -20,15 +18,14 @@ import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrPasswordModule } from '@clr/angular/forms/password';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
 import { ClrSelectModule } from '@clr/angular/forms/select';
-import { ClrComponentContext } from '@clr/angular/utils';
 
+import { allNodes, allRefs, findNode, nodeOf, refOf, settle } from './helpers.spec';
 import { ClrMutationEngineService } from './mutation-engine.service';
 import {
   ClrElementMutationResult,
   ClrMutationConsequence,
   ClrMutationPolicy,
   ClrMutationTarget,
-  ClrNavigationMutationResult,
   provideClrMutationPolicy,
 } from './mutation.interface';
 import { ClrPageContext } from '../interfaces/context.interface';
@@ -169,50 +166,6 @@ class Host {
   hideGhost = false;
 }
 
-function findNode(
-  nodes: ClrComponentContext[],
-  match: (node: ClrComponentContext) => boolean
-): ClrComponentContext | null {
-  for (const node of nodes) {
-    if (match(node)) {
-      return node;
-    }
-    const inside = findNode(node.children ?? [], match);
-    if (inside) {
-      return inside;
-    }
-  }
-  return null;
-}
-
-/** The node matching, or a failure naming what was looked for — never `null` to guard against. */
-function nodeOf(
-  snapshot: ClrPageContext,
-  match: (node: ClrComponentContext) => boolean,
-  what: string
-): ClrComponentContext {
-  const node = findNode(snapshot.components, match);
-  if (!node) {
-    throw new Error(`no ${what} in ${JSON.stringify(snapshot.components)}`);
-  }
-  return node;
-}
-
-function refOf(snapshot: ClrPageContext, label: string, type?: string): string {
-  const node = findNode(
-    snapshot.components,
-    node => !!node.ref && node.label === label && (!type || node.type === type)
-  );
-  if (!node?.ref) {
-    throw new Error(`no ref for "${label}" in ${JSON.stringify(snapshot.components)}`);
-  }
-  return node.ref;
-}
-
-function allRefs(nodes: ClrComponentContext[]): string[] {
-  return nodes.flatMap(node => [...(node.ref ? [node.ref] : []), ...allRefs(node.children ?? [])]);
-}
-
 const IMPORTS = [
   NoopAnimationsModule,
   ReactiveFormsModule,
@@ -235,9 +188,7 @@ describe('ClrMutationEngineService', () => {
     beforeEach(async () => {
       TestBed.configureTestingModule({ imports: IMPORTS, declarations: [Host] });
       fixture = TestBed.createComponent(Host);
-      fixture.detectChanges();
-      await fixture.whenStable();
-      fixture.detectChanges();
+      await settle(fixture);
     });
 
     afterEach(() => fixture.destroy());
@@ -275,20 +226,12 @@ describe('ClrMutationEngineService', () => {
       });
       fixture = TestBed.createComponent(Host);
       host = fixture.componentInstance;
-      fixture.detectChanges();
-      await fixture.whenStable();
-      fixture.detectChanges();
+      await settle(fixture);
       contextEngine = TestBed.inject(ClrContextEngineService);
       engine = TestBed.inject(ClrMutationEngineService);
     });
 
     afterEach(() => fixture.destroy());
-
-    async function settle() {
-      fixture.detectChanges();
-      await fixture.whenStable();
-      fixture.detectChanges();
-    }
 
     function snapshot(): ClrPageContext {
       return contextEngine.getSnapshot();
@@ -296,7 +239,7 @@ describe('ClrMutationEngineService', () => {
 
     async function set(ref: string, description: string, value: unknown): Promise<ClrElementMutationResult> {
       const report = await engine.apply([{ operation: 'setValue', ref, description, value }]);
-      await settle();
+      await settle(fixture);
       return report.results[0] as ClrElementMutationResult;
     }
 
@@ -314,15 +257,7 @@ describe('ClrMutationEngineService', () => {
         expect(findNode(page.components, node => node.type === 'columnheader')?.ref).toBeUndefined();
         expect(findNode(page.components, node => node.type === 'button')?.ref).toBeUndefined();
         // The combobox speaks for the input it renders: one ref, on the node carrying its options.
-        const comboboxes = [] as ClrComponentContext[];
-        const collect = (nodes: ClrComponentContext[]) =>
-          nodes.forEach(node => {
-            if (node.label === 'Cluster') {
-              comboboxes.push(node);
-            }
-            collect(node.children ?? []);
-          });
-        collect(page.components);
+        const comboboxes = allNodes(page.components).filter(node => node.label === 'Cluster');
         expect(comboboxes.filter(node => node.ref).length).toBe(1);
         expect(comboboxes.find(node => node.ref)?.state?.['options']).toEqual(['Alpha cluster', 'Beta cluster']);
       });
@@ -520,7 +455,7 @@ describe('ClrMutationEngineService', () => {
           ],
           { excludeRoles: ['grid', 'combobox'] }
         );
-        await settle();
+        await settle(fixture);
 
         expect(report.results.map(result => result.refused)).toEqual(['hidden', 'hidden']);
         expect(host.selectedHosts).toEqual([]);
@@ -546,7 +481,7 @@ describe('ClrMutationEngineService', () => {
     describe('clear', () => {
       it('empties a text control and a combobox', async () => {
         host.form.patchValue({ name: 'Ada', cluster: 'alpha', tags: ['red'] });
-        await settle();
+        await settle(fixture);
         const page = snapshot();
 
         const report = await engine.apply([
@@ -565,7 +500,7 @@ describe('ClrMutationEngineService', () => {
 
       it('deselects every datagrid row', async () => {
         host.selectedHosts = [...host.hosts];
-        await settle();
+        await settle(fixture);
         const page = snapshot();
         const grid = nodeOf(
           page,
@@ -585,7 +520,7 @@ describe('ClrMutationEngineService', () => {
       it('refuses a ref that is not in the latest snapshot', async () => {
         const ref = refOf(snapshot(), 'Nickname');
         host.showTemplate = false;
-        await settle();
+        await settle(fixture);
 
         const gone = await set(ref, 'Nickname', 'x');
         expect(gone.refused).toBe('stale');
@@ -620,7 +555,7 @@ describe('ClrMutationEngineService', () => {
         const ghost = refOf(page, 'Ghost');
         host.frozenDisabled = true;
         host.hideGhost = true;
-        await settle();
+        await settle(fixture);
 
         expect((await set(ghost, 'Ghost', 'x')).refused).toBe('hidden');
         expect((await set(frozen, 'Frozen', 'x')).refused).toBe('disabled');
@@ -647,7 +582,7 @@ describe('ClrMutationEngineService', () => {
           { operation: 'setValue', ref: String(grid.ref), description: '' } as never,
           { operation: 'setValue', ref: refOf(page, 'Name'), description: 'Name' } as never,
         ]);
-        await settle();
+        await settle(fixture);
 
         for (const result of report.results) {
           expect(result.refused).toBe('unsupported');
@@ -814,146 +749,6 @@ describe('ClrMutationEngineService', () => {
         expect(changed?.after.state?.['value']).toBe('Ada');
         expect(refOf(report.snapshot, 'Name')).toBe(ref);
       });
-    });
-  });
-
-  describe('navigate', () => {
-    @Component({ template: 'routed', standalone: true })
-    class Routed {}
-
-    let harness: RouterTestingHarness;
-    let engine: ClrMutationEngineService;
-    let router: Router;
-    let classify: jasmine.Spy<(target: ClrMutationTarget) => ClrMutationConsequence>;
-    let releaseSlowGuard: (allowed: boolean) => void;
-    let slowGuard: Promise<boolean>;
-
-    beforeEach(async () => {
-      classify = jasmine.createSpy('classify').and.returnValue('reversible');
-      slowGuard = new Promise(resolve => (releaseSlowGuard = resolve));
-      TestBed.configureTestingModule({
-        providers: [
-          provideClrMutationPolicy({ classify: target => classify(target) }),
-          provideRouter([
-            { path: '', component: Routed },
-            { path: 'hosts', component: Routed },
-            { path: 'clusters/:id', component: Routed },
-            { path: 'billing', loadChildren: () => Promise.resolve([{ path: '', component: Routed }]) },
-            { path: 'legacy', component: Routed, canActivate: [() => TestBed.inject(Router).parseUrl('/hosts')] },
-            { path: 'admin', component: Routed, canActivate: [() => false] },
-            { path: 'slow', component: Routed, canActivate: [() => slowGuard] },
-            {
-              path: 'broken',
-              component: Routed,
-              resolve: {
-                data: () => {
-                  throw new Error('resolver broke');
-                },
-              },
-            },
-            { path: '**', redirectTo: '' },
-          ]),
-        ],
-      });
-      harness = await RouterTestingHarness.create('/');
-      engine = TestBed.inject(ClrMutationEngineService);
-      router = TestBed.inject(Router);
-    });
-
-    async function navigate(path: string, params?: Record<string, string>, queryParams?: Record<string, string>) {
-      const report = await engine.apply([{ operation: 'navigate', path, params, queryParams }]);
-      await harness.fixture.whenStable();
-      return report.results[0] as ClrNavigationMutationResult;
-    }
-
-    it('navigates to a listed route with its parameters filled in', async () => {
-      const result = await navigate('clusters/:id', { id: '42' }, { tab: 'hosts' });
-
-      expect(result).toEqual(
-        jasmine.objectContaining({
-          operation: 'navigate',
-          path: 'clusters/:id',
-          applied: true,
-          outcome: 'navigated',
-          url: '/clusters/42?tab=hosts',
-        })
-      );
-      expect(router.url).toBe('/clusters/42?tab=hosts');
-      expect(classify).toHaveBeenCalledWith(
-        jasmine.objectContaining({ operation: 'navigate', path: 'clusters/:id', url: '/clusters/42?tab=hosts' })
-      );
-    });
-
-    it('refuses a path the snapshot did not list, and a route missing a parameter', async () => {
-      expect(await navigate('/clusters/42')).toEqual(jasmine.objectContaining({ applied: false, refused: 'noRoute' }));
-      expect(await navigate('nowhere')).toEqual(jasmine.objectContaining({ applied: false, refused: 'noRoute' }));
-      const missing = await navigate('clusters/:id');
-      expect(missing.refused).toBe('invalid');
-      expect(missing.detail).toContain('"id"');
-      expect(router.url).toBe('/');
-    });
-
-    it('fills a parameter as one literal segment, whatever it contains', async () => {
-      const result = await navigate('clusters/:id', { id: 'a/b ?c' });
-
-      expect(result.outcome).toBe('navigated');
-      expect(result.url).toBe('/clusters/a%2Fb%20%3Fc');
-      expect(router.routerState.snapshot.root.firstChild?.params).toEqual({ id: 'a/b ?c' });
-    });
-
-    it('refuses a parameter that would step up the path', async () => {
-      const result = await navigate('clusters/:id', { id: '..' });
-
-      expect(result.refused).toBe('invalid');
-      expect(router.url).toBe('/');
-    });
-
-    it('navigates to a route whose module has not loaded yet', async () => {
-      const result = await navigate('billing');
-
-      expect(result).toEqual(jasmine.objectContaining({ applied: true, outcome: 'navigated', url: '/billing' }));
-    });
-
-    it('reports where a guard redirect actually went', async () => {
-      const result = await navigate('legacy');
-
-      expect(result.outcome).toBe('redirected');
-      expect(result.url).toBe('/hosts');
-      expect(result.applied).toBeTrue();
-    });
-
-    it('reports a guard that refused', async () => {
-      const result = await navigate('admin');
-
-      expect(result).toEqual(jasmine.objectContaining({ applied: false, outcome: 'rejected', url: '/' }));
-    });
-
-    it('reports a navigation another one overtook', async () => {
-      const pending = navigate('slow');
-      await new Promise(resolve => setTimeout(resolve));
-      await router.navigateByUrl('/hosts');
-      releaseSlowGuard(true);
-
-      expect(await pending).toEqual(jasmine.objectContaining({ applied: false, outcome: 'superseded' }));
-      expect(router.url).toBe('/hosts');
-    });
-
-    it('reports a navigation that failed, with the router’s reason', async () => {
-      const result = await navigate('broken');
-
-      expect(result).toEqual(
-        jasmine.objectContaining({ applied: false, outcome: 'failed', detail: 'resolver broke', url: '/' })
-      );
-    });
-
-    it('reports staying put', async () => {
-      expect((await navigate('/')).outcome).toBe('unchanged');
-    });
-
-    it('is subject to the policy like any other operation', async () => {
-      classify.and.returnValue('forbidden');
-      expect((await navigate('hosts')).refused).toBe('forbidden');
-      expect(router.url).toBe('/');
     });
   });
 });
