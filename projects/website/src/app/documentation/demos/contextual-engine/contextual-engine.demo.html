@@ -425,7 +425,8 @@
       <code cds-text="code">ngModelChange</code> fires once, and the control is marked dirty and touched — which is what
       makes Clarity show its validation messages. Values are whatever an agent would naturally say: an option's label
       for a select, combobox or radio group, where a select or combobox also takes the option's value;
-      <code cds-text="code">true</code> for a checkbox; a date or ISO string for a date input; the rows to select for a
+      <code cds-text="code">true</code> for a checkbox; a number for a number or range input, as the snapshot reports
+      its value and the result reports it back; a date or ISO string for a date input; the rows to select for a
       datagrid. Components whose model differs from what an agent sees — the combobox stores an option's value, the date
       input a locale string — translate for themselves, so a label no option has is refused with the options named
       rather than accepted silently. A disabled option or radio is refused, and so is a number outside the input's
