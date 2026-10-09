@@ -173,13 +173,14 @@ export class ClrLoadingButton implements LoadingListener {
     // (undocumented)
     buttonState: typeof ClrLoadingState;
     // (undocumented)
+    protected checkMarkDone(): void;
+    // (undocumented)
     clrLoadingChange: EventEmitter<ClrLoadingState>;
     // (undocumented)
     disabled: boolean;
     // (undocumented)
     el: ElementRef<HTMLButtonElement>;
-    protected get enterClass(): string;
-    protected get leaveClass(): string;
+    protected enterClass: string;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -204,7 +205,7 @@ export class ClrLoadingButtonModule {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-button.d.ts:165:283 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
+// dist/clr-angular/types/clr-angular-button.d.ts:158:283 - (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular-button.d.ts
 
 // (No @packageDocumentation comment for this package)
 

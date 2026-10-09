@@ -7,7 +7,6 @@
 import { AfterContentChecked } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import { AnimationCallbackEvent } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
@@ -56,12 +55,10 @@ export class ClrModal implements OnChanges, OnDestroy {
     constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
-    protected animateLeave(event: AnimationCallbackEvent): void;
     // (undocumented)
     get backdrop(): boolean;
     // (undocumented)
     backdropClick(): void;
-    protected get backdropEnterClass(): string;
     // (undocumented)
     bypassScrollService: boolean;
     // (undocumented)
@@ -70,15 +67,13 @@ export class ClrModal implements OnChanges, OnDestroy {
     close(): void;
     // (undocumented)
     closeButtonAriaLabel: string;
-    protected closing: boolean;
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-modal.d.ts
     //
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     protected get dialogEnterClass(): string;
-    protected get dialogLeaveClass(): string;
     // @deprecated (undocumented)
-    fadeDone(e: {
+    fadeDone(_e: {
         toState: string;
     }): void;
     // (undocumented)
@@ -86,6 +81,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     set fadeMove(move: string);
     // (undocumented)
     labelledBy: string;
+    protected get leaveClasses(): string[] | '';
     // (undocumented)
     protected readonly modalContentTemplate: TemplateRef<any>;
     // (undocumented)

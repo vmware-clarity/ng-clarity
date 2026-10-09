@@ -196,6 +196,38 @@ $clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
     }
   }
 
+  // Height animations, to and from the natural height of the element. They rely on `interpolate-size`, which
+  // only Chromium browsers support for now: elsewhere the element shows and hides without animation.
+  @keyframes clr-expand {
+    from {
+      height: 0;
+    }
+  }
+
+  @keyframes clr-collapse {
+    to {
+      height: 0;
+    }
+  }
+
+  @supports (interpolate-size: allow-keywords) {
+    @media (prefers-reduced-motion: no-preference) {
+      .clr-expand-enter,
+      .clr-collapse-leave {
+        interpolate-size: allow-keywords;
+        overflow: clip;
+      }
+
+      .clr-expand-enter {
+        animation: clr-expand $clr-animation-duration $clr-animation-easing;
+      }
+
+      .clr-collapse-leave {
+        animation: clr-collapse $clr-animation-duration $clr-animation-easing forwards;
+      }
+    }
+  }
+
   // Slides are motion: skip them when the user asked for reduced motion. The end state of the animations is kept, and
   // they still complete (right away), so the elements they apply to are still removed.
   @media (prefers-reduced-motion: reduce) {

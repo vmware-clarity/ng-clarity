@@ -7,6 +7,7 @@
 
 import {
   AfterContentInit,
+  afterNextRender,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -19,13 +20,7 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import {
-  ClrAnimationsService,
-  ClrCommonStringsService,
-  ClrHeightAnimation,
-  ClrInitialRenderState,
-  IfExpandService,
-} from '@clr/angular/utils';
+import { ClrCommonStringsService, IfExpandService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
@@ -52,11 +47,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   private _expandAnimationState: string = COLLAPSED_STATE;
   private destroyed = false;
   private readonly injector = inject(Injector);
-  private readonly animations = inject(ClrAnimationsService);
   private readonly cdr = inject(ChangeDetectorRef);
-  private readonly heightAnimation = new ClrHeightAnimation(this.injector);
-  // The state the group is first rendered in is not animated.
-  private readonly initialRender: ClrInitialRenderState = this.animations.trackInitialRender(this.injector);
 
   constructor(
     private _itemExpand: IfExpandService,
@@ -136,10 +127,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     return this._expandAnimationState;
   }
   set expandAnimationState(value: string) {
-    if (value !== this._expandAnimationState) {
-      this._expandAnimationState = value;
-      this.animateChildren();
-    }
+    this._expandAnimationState = value;
   }
 
   /** Whether the children are shown, or are being shown. */
@@ -158,7 +146,6 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
 
   ngOnDestroy() {
     this.destroyed = true;
-    this.heightAnimation.cancel();
     this._subscriptions.forEach((sub: Subscription) => sub.unsubscribe());
     this._navGroupRegistrationService.unregisterNavGroup();
   }
@@ -196,26 +183,30 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     }
   }
 
-  private animateChildren() {
-    if (!this.initialRender.done) {
-      return;
-    }
-    if (this.childrenExpanded) {
-      this.heightAnimation.expand(() => this.children?.nativeElement);
-    } else {
-      this.heightAnimation.collapse(this.children?.nativeElement);
+  /** Closes the group once its children are collapsed: the end of their `visibility` transition (see the styles). */
+  protected childrenTransitionEnd(event: TransitionEvent) {
+    if (event.target === this.children.nativeElement && event.propertyName === 'visibility') {
+      this.closeGroup();
     }
   }
 
-  // closes a group after the collapse animation, so that links projected with clrIfExpanded stay rendered until then
+  // closes a group after the collapse transition, so that links projected with clrIfExpanded stay rendered until then
   private closeGroupAfterCollapseAnimation() {
-    this.animations
-      .whenCompleteAfterRender(() => this.children.nativeElement, this.injector)
-      .then(() => {
-        if (this.expandAnimationState === COLLAPSED_STATE && !this.destroyed) {
-          this.expanded = false;
-          this.cdr.markForCheck();
+    afterNextRender(
+      () => {
+        // No transition to wait for (reduced motion, transitions disabled).
+        if (!this.children.nativeElement.getAnimations?.().length) {
+          this.closeGroup();
         }
-      });
+      },
+      { injector: this.injector }
+    );
+  }
+
+  private closeGroup() {
+    if (this.expandAnimationState === COLLAPSED_STATE && !this.destroyed) {
+      this.expanded = false;
+      this.cdr.markForCheck();
+    }
   }
 }

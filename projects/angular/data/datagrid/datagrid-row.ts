@@ -7,6 +7,7 @@
 
 import {
   AfterContentInit,
+  afterNextRender,
   AfterViewInit,
   Component,
   ContentChildren,
@@ -141,6 +142,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   ) {
     nbRow++;
     this.id = 'clr-dg-row' + nbRow;
+    afterNextRender(() => (expand.animateDetail = true));
     this.radioId = 'clr-dg-row-rd' + nbRow;
     this.checkboxId = 'clr-dg-row-cb' + nbRow;
     this.expandableId = expand.expandableId;

@@ -42,9 +42,6 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
 
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
 
-  // The accordion only animates the expansion of a panel (see the template).
-  protected override readonly animatesCollapse = false;
-
   ngOnChanges(changes: SimpleChanges) {
     this.handlePanelInputChanges(changes);
   }

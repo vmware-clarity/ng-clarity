@@ -8,8 +8,6 @@
 import { isPlatformBrowser } from '@angular/common';
 import {
   afterNextRender,
-  AnimationCallbackEvent,
-  ChangeDetectorRef,
   Component,
   ContentChild,
   ElementRef,
@@ -28,7 +26,6 @@ import {
 } from '@angular/core';
 import {
   CdkTrapFocusModule_CdkTrapFocus,
-  ClrAnimationsService,
   ClrCommonStringsService,
   ScrollingService,
   uniqueIdFactory,
@@ -37,12 +34,17 @@ import {
 import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ModalStackService } from './modal-stack.service';
 
-/** CSS animation classes (without their `-enter` / `-leave` suffix) matching the supported `fadeMove` values. */
-const FADE_MOVE_ANIMATIONS: Record<string, string> = {
-  fadeDown: 'clr-fade-slide-down',
-  fadeLeft: 'clr-fade-slide-left',
-  fadeUp: 'clr-fade-slide-up',
+/** Directions of the slide matching the supported `fadeMove` values. */
+const FADE_MOVE_DIRECTIONS: Record<string, string> = {
+  fadeDown: 'down',
+  fadeLeft: 'left',
+  fadeUp: 'up',
 };
+
+/** Leave classes of the modal by direction (see `_modal.clarity.scss`), as constants for the `animate.leave` binding. */
+const LEAVE_CLASSES: Record<string, string[]> = Object.fromEntries(
+  Object.values(FADE_MOVE_DIRECTIONS).map(direction => [direction, ['clr-modal-leave', `clr-modal-leave-${direction}`]])
+);
 
 @Component({
   selector: 'clr-modal',
@@ -53,7 +55,9 @@ const FADE_MOVE_ANIMATIONS: Record<string, string> = {
       :host {
         display: none;
       }
-      :host.open {
+      /* Also while the modal animates out. */
+      :host.open,
+      :host:has(> .modal) {
         display: inline;
       }
     `,
@@ -84,28 +88,17 @@ export class ClrModal implements OnChanges, OnDestroy {
   // Provide raw modal content. This is used by the wizard so that the same template can be rendered with and without a modal.
   @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate: TemplateRef<any>;
 
-  /** Whether the modal is playing its leave animation (see `animateLeave()`). The host stays displayed until it is done. */
-  protected closing = false;
-
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
   @ViewChild('dialog') private readonly dialogElementRef: ElementRef<HTMLElement>;
   @ViewChild(CdkTrapFocusModule_CdkTrapFocus) private readonly trapFocus: CdkTrapFocusModule_CdkTrapFocus;
 
   private destroyed = false;
-  /**
-   * Where the current opening stands in its closing: `pending` from the close request until `clrModalOpenChange`
-   * notified it, `notified` afterwards. `close()` and the `clrModalOpen` input flipping to false through a two-way
-   * binding both request the closing; only the first request counts.
-   */
-  private closeState: 'none' | 'pending' | 'notified' = 'none';
-  /** Identifies the latest close request, so that the completion of a superseded one is ignored. */
-  private closeId = 0;
+  /** Identifies the closing of the current opening, once requested. */
+  private closeRequest: object | null = null;
   /** Element focused when the modal opened, focused again as soon as the modal starts closing. */
   private focusReturnTarget: HTMLElement | null = null;
   private readonly isBrowser = isPlatformBrowser(inject(PLATFORM_ID));
   private readonly injector = inject(Injector);
-  private readonly animations = inject(ClrAnimationsService);
-  private readonly cdr = inject(ChangeDetectorRef);
 
   constructor(
     private _scrollingService: ScrollingService,
@@ -127,27 +120,18 @@ export class ClrModal implements OnChanges, OnDestroy {
 
   @HostBinding('class.open')
   protected get visible(): boolean {
-    return this._open || this.closing;
+    return this._open;
   }
 
-  /**
-   * Class animating the dialog in, meant for its `animate.enter` binding. Empty when animations are skipped or
-   * disabled (`animate.enter` itself still runs with `NoopAnimationsModule`).
-   */
+  /** Class animating the dialog in, meant for its `animate.enter` binding. Empty when animations are skipped. */
   protected get dialogEnterClass(): string {
-    const animation = FADE_MOVE_ANIMATIONS[this.fadeMove];
-    return animation && !this.animations.disabled ? `${animation}-enter` : '';
+    const direction = FADE_MOVE_DIRECTIONS[this.fadeMove];
+    return direction ? `clr-fade-slide-${direction}-enter` : '';
   }
 
-  /** Class animating the dialog out, added by `animateLeave()`. Empty when animations are skipped or disabled. */
-  protected get dialogLeaveClass(): string {
-    const animation = FADE_MOVE_ANIMATIONS[this.fadeMove];
-    return animation && !this.animations.disabled ? `${animation}-leave` : '';
-  }
-
-  /** Class animating the backdrop in, meant for its `animate.enter` binding. Empty when animations are disabled. */
-  protected get backdropEnterClass(): string {
-    return this.animations.disabled ? '' : 'clr-fade-enter';
+  /** Classes animating the modal out, meant for its `animate.leave` binding. Empty when animations are skipped. */
+  protected get leaveClasses(): string[] | '' {
+    return LEAVE_CLASSES[FADE_MOVE_DIRECTIONS[this.fadeMove]] ?? '';
   }
 
   // Reacts to the clrModalOpen input: keeps the modal rendered while it animates out when it is closed,
@@ -213,76 +197,18 @@ export class ClrModal implements OnChanges, OnDestroy {
     this.startClosing();
   }
 
-  /** @deprecated The modal is animated with native CSS and closes itself once its leave animation is done. */
-  fadeDone(e: { toState: string }) {
-    if (e.toState === 'void') {
-      this.modalClosed(this.closeId);
-    }
+  /** @deprecated The modal is animated with native CSS: `clrModalOpenChange` is emitted when it starts closing. */
+  fadeDone(_e: { toState: string }) {
+    // Nothing to do.
   }
 
   scrollTop() {
     this.bodyElementRef.nativeElement.scrollTo(0, 0);
   }
 
-  /**
-   * `animate.leave` callback of the modal: plays the leave animation of the dialog and the backdrop, then lets Angular
-   * remove the modal and notifies about the closing.
-   */
-  protected animateLeave(event: AnimationCallbackEvent) {
-    const closeId = this.closeId;
-    const modal = event.target as HTMLElement;
-    const dialog = modal.querySelector<HTMLElement>(':scope > .modal-dialog');
-    const backdrop = modal.querySelector<HTMLElement>(':scope > .modal-backdrop');
-    const leaveClass = this.dialogLeaveClass;
-
-    let completed = false;
-    const done = () => {
-      if (completed) {
-        return;
-      }
-      completed = true;
-      event.animationComplete();
-      if (closeId === this.closeId && !this.destroyed) {
-        this.closing = false;
-        this.cdr.markForCheck();
-      }
-      this.modalClosed(closeId);
-    };
-
-    modal.setAttribute('inert', '');
-    // Angular 21 cuts a leave animation short, with an `animationend` event on the modal, when another modal (from the
-    // same template) is rendered in the meantime. It does so while rendering: notify once that is done.
-    modal.addEventListener('animationend', animationEvent => {
-      if (animationEvent.target === modal) {
-        Promise.resolve().then(done);
-      }
-    });
-    if (!modal.isConnected) {
-      Promise.resolve().then(done); // already removed by Angular, see above
-      return;
-    }
-    if (!dialog || !leaveClass) {
-      done();
-      return;
-    }
-    dialog.classList.add(leaveClass);
-    backdrop?.classList.add('clr-fade-leave');
-    if (!dialog.getAnimations().length) {
-      done(); // the leave animation is turned off (customized styles)
-      return;
-    }
-    dialog.addEventListener('animationend', animationEvent => {
-      if (animationEvent.target === dialog) {
-        done();
-      }
-    });
-  }
-
   /** Resets the closing state when the modal (re)opens, possibly while it was still animating out. */
   private startOpening() {
-    this.closing = false;
-    this.closeState = 'none';
-    this.closeId++; // ignores the completion of a closing that was in progress
+    this.closeRequest = null;
 
     if (!this.isBrowser) {
       return;
@@ -302,37 +228,23 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   /**
-   * Requests the closing: gives the focus back right away and lets the next change detection remove the modal, which
-   * plays its leave animation (see `animateLeave()`). Nothing to do when the modal is not rendered (it was never
-   * opened, was destroyed) or when the closing was already requested.
+   * Gives the focus back and notifies the closing, while the next change detection removes the modal (Angular keeps
+   * it in the DOM during its leave animation). Nothing to do when the modal is not rendered (it was never opened, was
+   * destroyed) or when the closing was already requested.
    */
   private startClosing() {
-    if (this.closeState !== 'none' || this.destroyed || !this.dialogElementRef) {
+    if (this.closeRequest || this.destroyed || !this.dialogElementRef) {
       return;
     }
-    this.closeState = 'pending';
-    const closeId = ++this.closeId;
-
-    // The leaving dialog is inert (see `animateLeave()`): give the focus back right away, rather than once it has
-    // been removed.
+    const closeRequest = (this.closeRequest = {});
     this.focusReturnTarget?.focus();
     this.focusReturnTarget = null;
-
-    if (this.animations.disabled) {
-      // No leave animation: the next change detection removes the modal; notify right after it.
-      Promise.resolve().then(() => this.modalClosed(closeId));
-      return;
-    }
-    // Keeps the host displayed while the modal animates out.
-    this.closing = true;
-  }
-
-  private modalClosed(closeId: number) {
-    if (closeId !== this.closeId || this.closeState === 'notified' || this._open || this.destroyed) {
-      return; // superseded, already notified, opened again or destroyed in the meantime
-    }
-    this.closeState = 'notified';
-    this._openChanged.emit(false);
-    this.modalStackService.trackModalClose(this);
+    // Not while the parent is checked, when the closing comes from the clrModalOpen input.
+    Promise.resolve().then(() => {
+      if (closeRequest === this.closeRequest && !this.destroyed) {
+        this._openChanged.emit(false);
+        this.modalStackService.trackModalClose(this);
+      }
+    });
   }
 }

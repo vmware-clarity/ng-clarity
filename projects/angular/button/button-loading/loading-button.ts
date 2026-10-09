@@ -6,6 +6,7 @@
  */
 
 import {
+  afterNextRender,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -17,7 +18,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ClrAnimationsService, ClrInitialRenderState, ClrLoadingState, LoadingListener } from '@clr/angular/utils';
+import { ClrLoadingState, LoadingListener } from '@clr/angular/utils';
 
 // minimum width to fit loading spinner
 const MIN_BUTTON_WIDTH = 42;
@@ -28,13 +29,18 @@ const MIN_BUTTON_WIDTH = 42;
     <span>
       @switch (state) {
         @case (buttonState.LOADING) {
-          <span [animate.enter]="enterClass" [animate.leave]="leaveClass" class="spinner spinner-inline"></span>
+          <span
+            [animate.enter]="enterClass"
+            animate.leave="clr-loading-btn-leave"
+            class="spinner spinner-inline"
+          ></span>
         }
         @case (buttonState.SUCCESS) {
           <span
             #validated
-            [animate.leave]="leaveClass"
+            animate.leave="clr-loading-btn-leave"
             class="spinner spinner-inline spinner-check clr-loading-btn-check"
+            (animationend)="checkMarkDone()"
           ></span>
         }
         @case (buttonState.DEFAULT) {
@@ -57,41 +63,33 @@ export class ClrLoadingButton implements LoadingListener {
   buttonState = ClrLoadingState;
   state: ClrLoadingState = ClrLoadingState.DEFAULT;
 
+  /** Enter animation of the spinner and the button content: none on the first render. */
+  protected enterClass = '';
+
   private readonly injector = inject(Injector);
-  private readonly animations = inject(ClrAnimationsService);
-  private readonly initialRender: ClrInitialRenderState = this.animations.trackInitialRender(this.injector);
   private readonly cdr = inject(ChangeDetectorRef);
 
   constructor(
     public el: ElementRef<HTMLButtonElement>,
     private renderer: Renderer2
-  ) {}
+  ) {
+    afterNextRender(() => (this.enterClass = 'clr-loading-btn-enter'));
+  }
 
-  // The button goes back to its default state once the check mark animation (see `_buttons.clarity.scss`) is done.
+  // The button goes back to its default state once the check mark animation (see `_buttons.clarity.scss`) is done,
+  // or right away when it does not animate.
   @ViewChild('validated')
   protected set validatedIcon(icon: ElementRef<HTMLElement> | undefined) {
     if (icon) {
-      this.animations.whenComplete(icon.nativeElement).then(() => {
-        if (this.state === ClrLoadingState.SUCCESS) {
-          this.loadingStateChange(ClrLoadingState.DEFAULT);
-          this.cdr.markForCheck();
-        }
-      });
+      afterNextRender(
+        () => {
+          if (!icon.nativeElement.getAnimations?.().length) {
+            Promise.resolve().then(() => this.checkMarkDone());
+          }
+        },
+        { injector: this.injector }
+      );
     }
-  }
-
-  /**
-   * Class animating the spinner and the button content in, meant for their `animate.enter` bindings.
-   * Nothing is animated when the button is first rendered, nor when animations are disabled (`animate.enter` itself
-   * still runs with `NoopAnimationsModule`).
-   */
-  protected get enterClass(): string {
-    return this.initialRender.done && !this.animations.disabled ? 'clr-loading-btn-enter' : '';
-  }
-
-  /** Class animating the spinner, the check mark and the button content out, meant for their `animate.leave` bindings. */
-  protected get leaveClass(): string {
-    return this.animations.disabled ? '' : 'clr-loading-btn-leave';
   }
 
   loadingStateChange(state: ClrLoadingState): void {
@@ -123,6 +121,13 @@ export class ClrLoadingButton implements LoadingListener {
         break;
     }
     this.clrLoadingChange.emit(state);
+  }
+
+  protected checkMarkDone() {
+    if (this.state === ClrLoadingState.SUCCESS) {
+      this.loadingStateChange(ClrLoadingState.DEFAULT);
+      this.cdr.markForCheck();
+    }
   }
 
   private setExplicitButtonWidth() {

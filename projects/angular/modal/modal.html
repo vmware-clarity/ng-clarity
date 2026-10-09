@@ -6,7 +6,7 @@
   -->
 
 @if (_open) {
-<div class="modal" [class.modal-full-screen]="size == 'full-screen'" (animate.leave)="animateLeave($event)">
+<div class="modal" [class.modal-full-screen]="size == 'full-screen'" [animate.leave]="leaveClasses">
   <div
     #dialog
     cdkTrapFocus
@@ -54,7 +54,7 @@
   <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   @if (backdrop) {
   <div
-    [animate.enter]="backdropEnterClass"
+    animate.enter="clr-fade-enter"
     class="modal-backdrop"
     [class.static]="staticBackdrop"
     aria-hidden="true"

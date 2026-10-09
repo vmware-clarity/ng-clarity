@@ -51,7 +51,7 @@ export function assertNever(value: never): void;
 // @public (undocumented)
 export class BaseExpandableAnimation {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
-    // @deprecated (undocumented)
+    // (undocumented)
     cleanupAnimationEffects(cancelAnimations?: boolean): void;
     // (undocumented)
     protected domAdapter: DomAdapter;
@@ -59,10 +59,8 @@ export class BaseExpandableAnimation {
     protected element: ElementRef<HTMLElement>;
     // (undocumented)
     initAnimationEffects(): void;
-    playAnimation(): void;
     // (undocumented)
     protected renderer: Renderer2;
-    protected scheduleAnimation(): void;
     // (undocumented)
     startHeight: number;
     // (undocumented)
@@ -170,18 +168,6 @@ export interface ClrAnimationReferenceMetadata {
     options: ClrAnimationOptions | null;
     // (undocumented)
     type: 8;
-}
-
-// @public
-export class ClrAnimationsService {
-    readonly disabled: boolean;
-    trackInitialRender(injector: Injector): ClrInitialRenderState;
-    whenComplete(element: Element | null | undefined): Promise<void>;
-    whenCompleteAfterRender(getElement: () => Element | null | undefined, injector: Injector): Promise<void>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAnimationsService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrAnimationsService>;
 }
 
 // @public @deprecated (undocumented)
@@ -460,8 +446,8 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation {
     animationStart(event: {
         fromState: string;
     }): void;
-    get clrExpandTrigger(): boolean;
-    set clrExpandTrigger(value: boolean);
+    // @deprecated (undocumented)
+    clrExpandTrigger: boolean;
     // @deprecated (undocumented)
     get expandAnimation(): {
         value: boolean;
@@ -480,10 +466,12 @@ export class ClrExpandableAnimationDirective extends BaseExpandableAnimation imp
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
     // (undocumented)
     expanded: boolean;
-    // (undocumented)
-    ngOnChanges(changes: SimpleChanges): void;
+    // @deprecated (undocumented)
+    ngOnChanges(_changes: SimpleChanges): void;
     // @deprecated (undocumented)
     ngOnDestroy(): void;
+    // @deprecated (undocumented)
+    playAnimation(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -529,14 +517,6 @@ export class ClrFocusOnViewInitModule {
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
 
 // @public
-export class ClrHeightAnimation {
-    constructor(injector: Injector, easing?: string);
-    cancel(): number;
-    collapse(element: HTMLElement | null | undefined): void;
-    expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
-}
-
-// @public
 export class ClrHostWrappingModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
@@ -577,12 +557,6 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfExpanded, "[clrIfExpanded]", never, { "expanded": { "alias": "clrIfExpanded"; "required": false; }; }, { "expandedChange": "clrIfExpandedChange"; }, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
-}
-
-// @public (undocumented)
-export interface ClrInitialRenderState {
-    // (undocumented)
-    readonly done: boolean;
 }
 
 // @public (undocumented)

@@ -185,6 +185,8 @@ describe('Loading Buttons with animations', () => {
     expect(fixture.componentInstance.buttonState).toBe(ClrLoadingState.SUCCESS);
 
     finishAnimations(check);
+    // A finished CSS animation dispatches its `animationend` event on the next frame.
+    await new Promise(resolve => requestAnimationFrame(resolve));
     await delay();
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toBe(ClrLoadingState.DEFAULT);

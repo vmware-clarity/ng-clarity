@@ -5,25 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  ChangeDetectorRef,
-  DestroyRef,
-  Directive,
-  ElementRef,
-  EventEmitter,
-  inject,
-  Injector,
-  OnInit,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
-import {
-  ClrAnimationsService,
-  ClrHeightAnimation,
-  ClrInitialRenderState,
-  IfExpandService,
-  uniqueIdFactory,
-} from '@clr/angular/utils';
+import { afterNextRender, ChangeDetectorRef, Directive, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
+import { IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
@@ -33,17 +16,13 @@ import { CollapsiblePanelService } from './providers/collapsible-panel.service';
 /**
  * Base class of the accordion and stepper panels.
  *
- * The template of a panel is expected to render its content while `panel.open || collapsing` is true, with the
- * `panelContent` template reference and the `collapsing` class bound to the content element:
+ * The content of a panel expands and collapses with the `clr-expand-enter` / `clr-collapse-leave` CSS animations,
+ * bound with `animate.enter` / `animate.leave` in the template:
  *
  * ```html
- * @if (panel.open || collapsing) {
- *   <div #panelContent [class.clr-collapsible-panel-collapsing]="collapsing">
+ * @if (panel.open) {
+ *   <div [animate.enter]="expandClass" animate.leave="clr-collapse-leave">
  * ```
- *
- * The height of the content is animated when it expands and collapses. The `collapsing` class keeps the content
- * displayed until it is collapsed; a panel that only animates its expansion leaves it out and sets `animatesCollapse`
- * to `false`.
  */
 @Directive()
 export abstract class CollapsiblePanel implements OnInit {
@@ -52,35 +31,18 @@ export abstract class CollapsiblePanel implements OnInit {
 
   panel: Observable<CollapsiblePanelModel>;
 
-  /**
-   * Whether the panel content is playing its collapse animation. The content stays rendered until it is done.
-   */
-  collapsing = false;
+  /** Enter animation of the content: none for the content open on the first render. */
+  protected expandClass = '';
 
   protected _panelIndex: number;
-
-  /** Whether the template animates the collapse of the content by binding the `collapsing` class. */
-  protected readonly animatesCollapse: boolean = true;
-
   private _id = uniqueIdFactory();
-  // ECMAScript private fields, so that they cannot clash with the members of existing subclasses.
-  #destroyed = false;
-  readonly #injector = inject(Injector);
-  readonly #animations = inject(ClrAnimationsService);
-  // Tracked from construction rather than from `ngAfterViewInit()`, which subclasses may override without `super`.
-  readonly #initialRender: ClrInitialRenderState = this.#animations.trackInitialRender(this.#injector);
-  readonly #heightAnimation = new ClrHeightAnimation(this.#injector);
-  #content: HTMLElement | undefined;
 
   constructor(
     protected panelService: CollapsiblePanelService,
     protected ifExpandService: IfExpandService,
     protected cdr: ChangeDetectorRef
   ) {
-    inject(DestroyRef).onDestroy(() => {
-      this.#destroyed = true;
-      this.#heightAnimation.cancel();
-    });
+    afterNextRender(() => (this.expandClass = 'clr-expand-enter'));
   }
 
   get id(): string {
@@ -91,16 +53,6 @@ export abstract class CollapsiblePanel implements OnInit {
   }
 
   abstract get disabled(): boolean;
-
-  // Content that is open when the panel is first rendered is not animated.
-  @ViewChild('panelContent')
-  private set panelContent(content: ElementRef<HTMLElement> | undefined) {
-    const element = content?.nativeElement;
-    if (element && element !== this.#content && this.#initialRender.done) {
-      this.#heightAnimation.expand(() => element, 0);
-    }
-    this.#content = element;
-  }
 
   ngOnInit() {
     this.panelService.addPanel(this.id, this.panelOpen);
@@ -141,16 +93,11 @@ export abstract class CollapsiblePanel implements OnInit {
       this.panelOpenChange.emit(panel.open);
       this.panelOpen = panel.open;
       if (!panel.open) {
-        this.#collapseContent(panel);
+        Promise.resolve().then(() => this.collapsePanelOnAnimationDone(panel));
       }
     }
 
     if (panel.open) {
-      if (this.collapsing) {
-        // Opened again while it collapses: expand back from where it is.
-        this.#heightAnimation.expand(() => this.#content);
-      }
-      this.collapsing = false;
       this.ifExpandService.expanded = true;
     }
   }
@@ -158,32 +105,4 @@ export abstract class CollapsiblePanel implements OnInit {
   abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
   abstract getContentId(id: string): string;
   abstract getHeaderId(id: string): string;
-
-  #collapseContent(panel: CollapsiblePanelModel) {
-    if (this.#destroyed) {
-      return;
-    }
-
-    if (this.#animations.disabled || !this.animatesCollapse) {
-      // The next change detection removes the content; clean up right after it, like a completed animation would.
-      Promise.resolve().then(() => this.collapsePanelOnAnimationDone(panel));
-      return;
-    }
-
-    this.collapsing = true;
-    this.#heightAnimation.collapse(this.#content);
-
-    this.#animations
-      .whenCompleteAfterRender(() => this.#content, this.#injector)
-      .then(() => {
-        if (!this.collapsing || this.#destroyed) {
-          return; // the panel was opened again or destroyed in the meantime
-        }
-        this.collapsing = false;
-        // Remove the content right away rather than on the next change detection, which is what the
-        // tests of applications using the panels expect.
-        this.cdr.detectChanges();
-        this.collapsePanelOnAnimationDone(panel);
-      });
-  }
 }

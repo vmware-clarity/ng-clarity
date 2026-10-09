@@ -11,7 +11,6 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  inject,
   Input,
   OnDestroy,
   OnInit,
@@ -28,7 +27,6 @@ import {
   defaultMissingTranslationHandler,
 } from '@clr/addons/translate';
 import { ClarityIcons, dragHandleIcon } from '@clr/angular/icon';
-import { ClrAnimationsService } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -61,7 +59,7 @@ import { LayoutService } from '../services/layout.service';
     },
   ],
   // The card container removes the card by destroying the component: only its host element can animate out.
-  host: { '[animate.leave]': 'leaveClass' },
+  host: { '[animate.leave]': "'clr-fade-leave'" },
 })
 export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
@@ -88,7 +86,6 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   // Store current set card unit height
   private currentUnitHeight: number | undefined;
   private subscriptions = new Subscription();
-  private readonly animationsDisabled = inject(ClrAnimationsService).disabled;
 
   constructor(
     private el: ElementRef,
@@ -112,16 +109,6 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
 
   get cdkDropGroup(): CdkDropList[] {
     return this.groupService.getGroupItems(this.dropGroup) as unknown as CdkDropList[];
-  }
-
-  /** Class animating the card in, meant for its `animate.enter` binding. Empty when animations are disabled. */
-  protected get enterClass(): string {
-    return this.animationsDisabled ? '' : 'clr-fade-slide-right-enter';
-  }
-
-  /** Class animating the card out, meant for the `animate.leave` binding of the host. Empty when animations are disabled. */
-  protected get leaveClass(): string {
-    return this.animationsDisabled ? '' : 'clr-fade-leave';
   }
 
   ngOnInit(): void {

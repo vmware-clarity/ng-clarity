@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ANIMATION_MODULE_TYPE, Component, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { delay, enableCssAnimations, expectActiveElementToBe, finishAnimations } from '@clr/angular/testing';
@@ -396,20 +396,19 @@ describe('Modal with animations', () => {
     await delay();
   }
 
-  it('stays rendered and inert while it animates out', async () => {
+  it('stays rendered while it animates out, and notifies the closing right away', async () => {
     modal.close();
     fixture.detectChanges();
 
     expect(modalElement()).not.toBeNull();
-    expect(modalElement().hasAttribute('inert')).toBeTrue();
-    expect(fixture.nativeElement.querySelector('.modal-dialog').classList).toContain('clr-fade-slide-down-leave');
-    expect(fixture.nativeElement.querySelector('.modal-backdrop').classList).toContain('clr-fade-leave');
-    expect(openChanges).toEqual([]);
+    expect(modalElement().classList).toContain('clr-modal-leave');
+    expect(modalElement().classList).toContain('clr-modal-leave-down');
+    await delay();
+    expect(openChanges).toEqual([false]);
 
     await finishClosing();
 
     expect(modalElement()).toBeNull();
-    expect(openChanges).toEqual([false]);
     expect(fixture.componentInstance.opened).toBeFalse();
   });
 
@@ -419,12 +418,11 @@ describe('Modal with animations', () => {
     modal.open();
     fixture.detectChanges();
 
-    // The leaving modal stays, inert, until its animation is done; the reopened one is a new, interactive modal.
+    // The leaving modal stays until its animation is done; the reopened one is a new modal.
     const reopened = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.modal')).filter(
-      element => !element.hasAttribute('inert')
+      element => !element.classList.contains('clr-modal-leave')
     );
     expect(reopened.length).toBe(1);
-    expect(reopened[0].querySelector('.modal-dialog').classList).not.toContain('clr-fade-slide-down-leave');
 
     await finishClosing();
 
@@ -578,45 +576,5 @@ describe('Modal closing while another modal opens', () => {
     expect(fixture.nativeElement.querySelectorAll('.modal').length).toBe(1);
     expect(openChanges).toEqual([false]);
     fixture.destroy();
-  });
-});
-
-describe('Modal with no-op animations', () => {
-  let fixture: ComponentFixture<TestComponent>;
-  let restoreAnimations: () => void;
-
-  beforeEach(() => {
-    restoreAnimations = enableCssAnimations();
-    TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrModalModule],
-      declarations: [TestComponent],
-      // What `NoopAnimationsModule` / `provideNoopAnimations()` provide. Unlike `TestBed`, they leave Angular's
-      // `animate.enter` running, so the modal must not bind its enter classes itself.
-      providers: [{ provide: ANIMATION_MODULE_TYPE, useValue: 'NoopAnimations' }],
-      animationsEnabled: true,
-    });
-    fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
-  });
-
-  afterEach(() => {
-    fixture.destroy();
-    restoreAnimations();
-  });
-
-  it('neither animates in nor out', async () => {
-    const modal = fixture.componentInstance.modalInstance;
-    modal.close();
-    fixture.detectChanges();
-    await delay();
-    fixture.detectChanges();
-    expect(fixture.nativeElement.querySelector('.modal')).toBeNull();
-
-    modal.open();
-    fixture.detectChanges();
-
-    expect(fixture.nativeElement.querySelector('.modal-dialog').className).not.toContain('-enter');
-    expect(fixture.nativeElement.querySelector('.modal-backdrop').className).not.toContain('-enter');
-    expect(fixture.nativeElement.querySelector('.modal-dialog').getAnimations()).toEqual([]);
   });
 });

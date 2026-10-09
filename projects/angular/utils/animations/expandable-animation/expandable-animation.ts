@@ -27,39 +27,22 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
   standalone: false,
 })
 export class ClrExpandableAnimation extends BaseExpandableAnimation {
-  // ECMAScript private fields, so that they cannot clash with the members of existing subclasses.
-  #expandTrigger = false;
-  #expandTriggerSet = false;
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
+  @Input() clrExpandTrigger = false;
 
-  /**
-   * Changing this value animates the height of the host to the height of its updated content. A setter rather than
-   * `ngOnChanges()`, so that subclasses defining their own `ngOnChanges()` keep the animation.
-   */
-  @Input()
-  get clrExpandTrigger() {
-    return this.#expandTrigger;
-  }
-  set clrExpandTrigger(value: boolean) {
-    this.#expandTrigger = value;
-    if (this.#expandTriggerSet) {
-      this.scheduleAnimation();
-    }
-    this.#expandTriggerSet = true;
-  }
-
-  /** @deprecated The expansion is animated with native CSS; there is no Angular animation state anymore. */
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
   get expandAnimation() {
     return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
   }
 
-  /** @deprecated The expansion is animated with native CSS; there are no Angular animation callbacks anymore. */
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
   animationStart(event: { fromState: string }) {
     if (event.fromState !== 'void') {
       this.initAnimationEffects();
     }
   }
 
-  /** @deprecated The expansion is animated with native CSS; there are no Angular animation callbacks anymore. */
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
   animationDone(event: { fromState: string }) {
     if (event.fromState !== 'void') {
       this.cleanupAnimationEffects();

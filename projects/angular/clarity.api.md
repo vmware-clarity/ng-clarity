@@ -10,7 +10,6 @@ import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
-import { AnimationCallbackEvent } from '@angular/core';
 import { ApplicationRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -396,7 +395,7 @@ export const barsIconName = "bars";
 // @public (undocumented)
 export class BaseExpandableAnimation {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
-    // @deprecated (undocumented)
+    // (undocumented)
     cleanupAnimationEffects(cancelAnimations?: boolean): void;
     // (undocumented)
     protected domAdapter: DomAdapter;
@@ -404,10 +403,8 @@ export class BaseExpandableAnimation {
     protected element: ElementRef<HTMLElement>;
     // (undocumented)
     initAnimationEffects(): void;
-    playAnimation(): void;
     // (undocumented)
     protected renderer: Renderer2;
-    protected scheduleAnimation(): void;
     // (undocumented)
     startHeight: number;
     // (undocumented)
@@ -1072,8 +1069,6 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
     // (undocumented)
     accordionDescription: QueryList<ClrAccordionDescription>;
     // (undocumented)
-    protected readonly animatesCollapse = false;
-    // (undocumented)
     disabled: boolean;
     explicitHeadingLevel: HeadingLevel;
     // (undocumented)
@@ -1276,18 +1271,6 @@ export interface ClrAnimationReferenceMetadata {
     options: ClrAnimationOptions | null;
     // (undocumented)
     type: 8;
-}
-
-// @public
-export class ClrAnimationsService {
-    readonly disabled: boolean;
-    trackInitialRender(injector: Injector): ClrInitialRenderState;
-    whenComplete(element: Element | null | undefined): Promise<void>;
-    whenCompleteAfterRender(getElement: () => Element | null | undefined, injector: Injector): Promise<void>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAnimationsService, never>;
-    // (undocumented)
-    static ɵprov: i0.ɵɵInjectableDeclaration<ClrAnimationsService>;
 }
 
 // @public @deprecated (undocumented)
@@ -3727,8 +3710,8 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation {
     animationStart(event: {
         fromState: string;
     }): void;
-    get clrExpandTrigger(): boolean;
-    set clrExpandTrigger(value: boolean);
+    // @deprecated (undocumented)
+    clrExpandTrigger: boolean;
     // @deprecated (undocumented)
     get expandAnimation(): {
         value: boolean;
@@ -3747,10 +3730,12 @@ export class ClrExpandableAnimationDirective extends BaseExpandableAnimation imp
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
     // (undocumented)
     expanded: boolean;
-    // (undocumented)
-    ngOnChanges(changes: SimpleChanges): void;
+    // @deprecated (undocumented)
+    ngOnChanges(_changes: SimpleChanges): void;
     // @deprecated (undocumented)
     ngOnDestroy(): void;
+    // @deprecated (undocumented)
+    playAnimation(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -4085,14 +4070,6 @@ export class ClrHeader implements OnDestroy {
 }
 
 // @public
-export class ClrHeightAnimation {
-    constructor(injector: Injector, easing?: string);
-    cancel(): number;
-    collapse(element: HTMLElement | null | undefined): void;
-    expand(getElement: () => HTMLElement | null | undefined, startHeight?: number): void;
-}
-
-// @public
 export class ClrHostWrappingModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
@@ -4273,12 +4250,6 @@ export class ClrIfSuccess extends AbstractIfState {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrIfSuccess, "[clrIfSuccess]", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfSuccess, [{ optional: true; }, null, null]>;
-}
-
-// @public (undocumented)
-export interface ClrInitialRenderState {
-    // (undocumented)
-    readonly done: boolean;
 }
 
 // @public (undocumented)
@@ -4489,13 +4460,14 @@ export class ClrLoadingButton implements LoadingListener {
     // (undocumented)
     buttonState: typeof ClrLoadingState;
     // (undocumented)
+    protected checkMarkDone(): void;
+    // (undocumented)
     clrLoadingChange: EventEmitter<ClrLoadingState>;
     // (undocumented)
     disabled: boolean;
     // (undocumented)
     el: ElementRef<HTMLButtonElement>;
-    protected get enterClass(): string;
-    protected get leaveClass(): string;
+    protected enterClass: string;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -4572,12 +4544,10 @@ export class ClrModal implements OnChanges, OnDestroy {
     constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     // (undocumented)
     altClose: EventEmitter<boolean>;
-    protected animateLeave(event: AnimationCallbackEvent): void;
     // (undocumented)
     get backdrop(): boolean;
     // (undocumented)
     backdropClick(): void;
-    protected get backdropEnterClass(): string;
     // (undocumented)
     bypassScrollService: boolean;
     // (undocumented)
@@ -4586,13 +4556,11 @@ export class ClrModal implements OnChanges, OnDestroy {
     close(): void;
     // (undocumented)
     closeButtonAriaLabel: string;
-    protected closing: boolean;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
     protected get dialogEnterClass(): string;
-    protected get dialogLeaveClass(): string;
     // @deprecated (undocumented)
-    fadeDone(e: {
+    fadeDone(_e: {
         toState: string;
     }): void;
     // (undocumented)
@@ -4600,6 +4568,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     set fadeMove(move: string);
     // (undocumented)
     labelledBy: string;
+    protected get leaveClasses(): string[] | '';
     // (undocumented)
     protected readonly modalContentTemplate: TemplateRef<any>;
     // (undocumented)
@@ -5724,6 +5693,7 @@ export class ClrStackBlock implements OnInit {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     expandable: boolean;
+    protected expandClass: string;
     // (undocumented)
     expanded: boolean;
     // (undocumented)
@@ -6544,6 +6514,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService" needs to be exported by the entry point clr-angular.d.ts
     constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
     protected get childrenExpanded(): boolean;
+    protected childrenTransitionEnd(event: TransitionEvent): void;
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)
@@ -7105,14 +7076,13 @@ export const collapseCardIconName = "collapse-card";
 // @public
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
-    protected readonly animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
-    collapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
+    protected expandClass: string;
     // (undocumented)
     abstract getContentId(id: string): string;
     // (undocumented)

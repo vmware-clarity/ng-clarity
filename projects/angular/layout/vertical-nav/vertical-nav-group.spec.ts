@@ -285,15 +285,17 @@ export default function (): void {
       return fixture.nativeElement.querySelector('.nav-group-children');
     }
 
-    /** The height animations of the children, not the CSS transitions of their visibility. */
+    /** The height transitions of the children, not the transitions of their visibility. */
     function heightAnimations(): Animation[] {
       return children()
         .getAnimations()
-        .filter(animation => !(animation instanceof CSSTransition));
+        .filter(animation => (animation as CSSTransition).transitionProperty === 'height');
     }
 
     it('animates the height of the children, and closes the group once they are collapsed', async () => {
       const navGroup = fixture.componentInstance.navGroup;
+      // Transitions start from the style the browser computed last: make sure it computed the collapsed one.
+      getComputedStyle(children()).height;
       navGroup.toggleExpand();
       fixture.detectChanges();
       await fixture.whenStable();
@@ -309,6 +311,8 @@ export default function (): void {
       expect(navGroup.expanded).toBeTrue(); // until the children are collapsed
 
       finishAnimations(fixture.nativeElement);
+      // A finished CSS transition dispatches its `transitionend` event on the next frame.
+      await new Promise(resolve => requestAnimationFrame(resolve));
       await delay();
 
       expect(navGroup.expanded).toBeFalse();

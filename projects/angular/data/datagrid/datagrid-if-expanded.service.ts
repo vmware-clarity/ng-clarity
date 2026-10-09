@@ -14,6 +14,8 @@ let nbRow = 0;
 @Injectable()
 export class DatagridIfExpandService extends IfExpandService {
   expandableId = '';
+  /** Whether the detail animates when it is shown: not when the row is first rendered expanded. */
+  animateDetail = false;
 
   private _replace = new BehaviorSubject(false);
   private _animate = new Subject<void>();

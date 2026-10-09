@@ -16,11 +16,9 @@ export type {
   ClrAnimationTransitionMetadata,
   ClrAnimationTriggerMetadata,
 } from './animation-metadata';
-export * from './animations.service';
 export * from './constants';
 export * from './collapse/index';
 export * from './expandable-animation/index';
 export * from './fade/index';
 export * from './fade-slide/index';
-export { ClrHeightAnimation } from './height-animation';
 export * from './slide/index';

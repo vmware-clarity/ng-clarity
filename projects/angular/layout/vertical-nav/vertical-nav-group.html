@@ -15,6 +15,11 @@
     <cds-icon shape="angle" class="nav-group-trigger-icon" [direction]="expanded ? 'down' : 'right'"></cds-icon>
   </button>
 </div>
-<div #children class="nav-group-children" [class.is-expanded]="childrenExpanded">
+<div
+  #children
+  class="nav-group-children"
+  [class.is-expanded]="childrenExpanded"
+  (transitionend)="childrenTransitionEnd($event)"
+>
   <ng-content select="[clrIfExpanded], clr-vertical-nav-group-children"></ng-content>
 </div>

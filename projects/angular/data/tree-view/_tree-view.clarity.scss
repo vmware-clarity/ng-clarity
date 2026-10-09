@@ -254,19 +254,20 @@
     //Dimensions
     margin-left: tree-view-variables.$clr-tree-node-children-margin;
 
-    // The children of a node expand and collapse by animating their height (see `ClrTreeNode`). Content is only
-    // clipped vertically: a `clip` overflow does not turn the container into a scroll container, and wide children
-    // still overflow the tree horizontally as they always did.
+    // The children of a node expand and collapse by transitioning their height to and from `auto`, where the
+    // browser supports `interpolate-size`. Content is only clipped vertically: a `clip` overflow does not turn the
+    // container into a scroll container, and wide children still overflow the tree horizontally as they always did.
     // Once collapsed, the browser skips the style, layout and paint of the whole subtree. That switches at the end of
-    // the animation on collapse, so the children stay painted while they slide out, and right away on expand. They
+    // the transition on collapse, so the children stay painted while they slide out, and right away on expand. They
     // are inert from the start of the collapse (see the template), so they cannot be reached in the meantime.
     height: 0;
     overflow: visible clip;
     content-visibility: hidden;
+    interpolate-size: allow-keywords;
     transition:
-      overflow 0s,
-      content-visibility 0s tokens.$cds-global-animation-duration-quick;
-    transition-behavior: allow-discrete;
+      height tokens.$cds-global-animation-duration-quick linear,
+      overflow 0s allow-discrete,
+      content-visibility 0s tokens.$cds-global-animation-duration-quick allow-discrete;
 
     // The children are clipped while collapsed and while they animate, but not once expanded, so that content
     // overflowing a node (dropdowns, tooltips...) is not cut off.
@@ -275,20 +276,22 @@
       overflow: visible;
       content-visibility: visible;
       transition:
-        overflow 0s tokens.$cds-global-animation-duration-quick,
-        content-visibility 0s;
-      transition-behavior: allow-discrete;
+        height tokens.$cds-global-animation-duration-quick linear,
+        overflow 0s tokens.$cds-global-animation-duration-quick allow-discrete,
+        content-visibility 0s allow-discrete;
     }
 
     // Bulk operations (expand all, expand descendants) toggle without animation, so that hundreds of nested
     // children don't animate at once.
     &.is-instant {
+      transition-duration: 0s;
       transition-delay: 0s;
     }
 
     @media (prefers-reduced-motion: reduce) {
       &,
       &.is-expanded {
+        transition-duration: 0s;
         transition-delay: 0s;
       }
     }

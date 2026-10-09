@@ -199,10 +199,12 @@ describe('ClrStep collapse animation', () => {
     emitStep(false);
 
     expect(content()).not.toBeNull();
-    expect(content().classList).toContain('clr-collapsible-panel-collapsing');
+    expect(content().classList).toContain('clr-collapse-leave');
     expect(content().getAnimations().length).toBe(1);
 
     finishAnimations(fixture.nativeElement);
+    // Angular removes the content on the `animationend` event, dispatched with the next frame.
+    await new Promise(resolve => requestAnimationFrame(resolve));
     await delay();
 
     expect(content()).toBeNull();
@@ -219,6 +221,6 @@ describe('ClrStep collapse animation', () => {
     await delay();
 
     expect(content()).not.toBeNull();
-    expect(content().classList).not.toContain('clr-collapsible-panel-collapsing');
+    expect(content().classList).not.toContain('clr-collapse-leave');
   });
 });

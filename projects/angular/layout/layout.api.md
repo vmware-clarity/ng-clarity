@@ -512,6 +512,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService" needs to be exported by the entry point clr-angular-layout.d.ts
     constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
     protected get childrenExpanded(): boolean;
+    protected childrenTransitionEnd(event: TransitionEvent): void;
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)

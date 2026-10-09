@@ -73,6 +73,8 @@ import { Selection } from './providers/selection';
     '[class.datagrid-row-flex]': 'true',
     '[class.datagrid-row-detail]': 'true',
     '[attr.id]': 'expand.expandableId',
+    '[animate.enter]': "expand.animateDetail && !replacedRow ? 'clr-expand-enter' : ''",
+    '[animate.leave]': "replacedRow ? '' : 'clr-collapse-leave'",
     role: 'row',
   },
   standalone: false,

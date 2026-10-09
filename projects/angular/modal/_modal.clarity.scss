@@ -312,6 +312,27 @@
     }
   }
 
+  // Leave animation of the modal (see `ClrModal`): the whole modal fades out and the dialog slides out. Bound with
+  // Angular's `animate.leave` on the modal, the only element Angular waits for.
+  .modal.clr-modal-leave {
+    pointer-events: none;
+    animation: clr-fade-out tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out
+      forwards;
+  }
+
+  @each $direction in down, left, up {
+    .modal.clr-modal-leave-#{$direction} > .modal-dialog {
+      animation: clr-slide-#{$direction}-out
+        tokens.$cds-global-animation-duration-quick
+        tokens.$cds-global-animation-easing-in-out
+        forwards;
+
+      @media (prefers-reduced-motion: reduce) {
+        animation: none;
+      }
+    }
+  }
+
   // Bottom side panels slide in and out over half of their height.
   .side-panel-bottom .modal-dialog {
     --clr-slide-offset: 50%;

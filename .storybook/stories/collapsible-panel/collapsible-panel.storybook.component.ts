@@ -57,8 +57,8 @@ import { startWith } from 'rxjs/operators';
           [attr.aria-hidden]="!panel.open"
           [attr.aria-labelledby]="getHeaderId(panel.templateId)"
         >
-          @if (panel.open || collapsing) {
-            <div #panelContent class="clr-collapsible-content">
+          @if (panel.open) {
+            <div class="clr-collapsible-content" [animate.enter]="expandClass">
               <div class="clr-collapsible-inner-content">
                 <ng-content></ng-content>
               </div>
@@ -76,9 +76,6 @@ export class StorybookPanel extends CollapsiblePanel implements OnChanges {
   @Input() panelDisabled = false;
   @Input() override panelOpen = false;
   @Output() override panelOpenChange = new EventEmitter<boolean>();
-
-  // Like the accordion, this panel only animates its expansion (the template does not bind the collapsing class).
-  protected override readonly animatesCollapse = false;
 
   get disabled(): boolean {
     return this.panelDisabled;

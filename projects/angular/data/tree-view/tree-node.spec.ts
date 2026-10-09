@@ -684,14 +684,16 @@ export default function (): void {
         return fixture.nativeElement.querySelector('.clr-treenode-children');
       }
 
-      /** The height animations of the children, not the CSS transitions of their visibility. */
+      /** The height transitions of the children, not the transitions of their overflow and visibility. */
       function heightAnimations(): Animation[] {
         return children()
           .getAnimations()
-          .filter(animation => !(animation instanceof CSSTransition));
+          .filter(animation => (animation as CSSTransition).transitionProperty === 'height');
       }
 
       it('animates the height of the children when the node expands and collapses', async function () {
+        // Transitions start from the style the browser computed last: make sure it computed the collapsed one.
+        getComputedStyle(children()).height;
         fixture.componentInstance.expanded = true;
         fixture.detectChanges();
         await fixture.whenStable();

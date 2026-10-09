@@ -48,17 +48,18 @@ export class ClrExpandableAnimationDirective extends BaseExpandableAnimation imp
     super(element, domAdapter, renderer);
   }
 
-  ngOnChanges(changes: SimpleChanges) {
-    if (changes['expanded'] && !changes['expanded'].firstChange) {
-      this.scheduleAnimation();
-    }
+  /** @deprecated Kept so that subclasses calling `super.ngOnChanges()` still compile. */
+  ngOnChanges(_changes: SimpleChanges) {
+    // Nothing to animate.
   }
 
-  /**
-   * @deprecated The running animation is stopped on destroy without this hook. Kept so that subclasses calling
-   * `super.ngOnDestroy()` still compile.
-   */
+  /** @deprecated Kept so that subclasses calling `super.ngOnDestroy()` still compile. */
   ngOnDestroy() {
-    // Nothing to do: see `BaseExpandableAnimation`.
+    // Nothing to clean up.
+  }
+
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
+  playAnimation() {
+    // Nothing to animate.
   }
 }

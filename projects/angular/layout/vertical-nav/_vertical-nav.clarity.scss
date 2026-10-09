@@ -101,13 +101,17 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
       }
     }
 
-    // The children of a group expand and collapse by animating their height (see `ClrVerticalNavGroup`). They stay
-    // visible until they are fully collapsed.
+    // The children of a group expand and collapse by transitioning their height to and from `auto`, where the
+    // browser supports `interpolate-size`. They stay visible until they are fully collapsed: the end of the
+    // `visibility` transition is when the group closes (see `ClrVerticalNavGroup`).
     .nav-group-children {
       overflow-y: hidden;
       height: 0;
       visibility: hidden;
-      transition: visibility 0s tokens.$cds-global-animation-duration-quick;
+      interpolate-size: allow-keywords;
+      transition:
+        height tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out,
+        visibility 0s tokens.$cds-global-animation-duration-quick;
 
       &.is-expanded {
         height: auto;
@@ -116,6 +120,7 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
       }
 
       @media (prefers-reduced-motion: reduce) {
+        transition-duration: 0s;
         transition-delay: 0s;
       }
     }
