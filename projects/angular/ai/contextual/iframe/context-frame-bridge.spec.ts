@@ -13,7 +13,7 @@ import {
   clrRequestHostContext,
 } from './context-frame-bridge';
 import { resetNoHostOriginWarning } from './host-origin-warning';
-import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
+import { ClrPageContext } from '../interfaces/context.interface';
 
 /**
  * A stand-in for a frame's window: enough surface for the bridge, and a spy to assert on.
@@ -160,17 +160,6 @@ describe('Context frame bridge', () => {
 
       dispatchRequest(frameRequest('embedded'), 'https://plugin.example', frame);
       expect(frame.postMessage).toHaveBeenCalledTimes(1);
-    });
-
-    it('says when its ceiling has an exclusion list that is not one', () => {
-      const warn = spyOn(console, 'warn');
-      new ClrContextFrameHost(getSnapshot, window, {
-        snapshot: { excludeSelectors: '.secret' } as unknown as ClrContextSnapshotOptions,
-      });
-
-      expect(warn).toHaveBeenCalledOnceWith(
-        'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.'
-      );
     });
 
     it('refuses an opaque origin, which cannot be answered safely: listing one is a configuration error', () => {

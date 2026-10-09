@@ -13,6 +13,7 @@ import { provideRouter, Router, withHashLocation } from '@angular/router';
 import { CLR_CONTEXT_OPTIONS, provideClrContextOptions } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
+import { CLR_CONTEXT_PROTOCOL } from '../iframe/context-frame-bridge';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 
@@ -170,106 +171,98 @@ describe('ClrContextEngineService', () => {
       expect(await engine.requestHostContext()).toBeNull();
     });
 
-    /** A frame embedded in this page, as the bridge serves, and a spy on what it is sent. */
-    function embeddedFrame(): { frame: HTMLIFrameElement; postMessage: jasmine.Spy } {
-      const frame = document.createElement('iframe');
-      document.body.appendChild(frame);
-      return { frame, postMessage: spyOn(frame.contentWindow as Window, 'postMessage') };
-    }
+    describe('frame bridge', () => {
+      let frame: HTMLIFrameElement;
+      let postMessage: jasmine.Spy;
 
-    it('serves snapshots to embedded frames only while the frame bridge is enabled', () => {
-      const { frame, postMessage } = embeddedFrame();
-      const source = frame.contentWindow as Window;
-      const request = {
-        protocol: 'ui-context/v1',
-        kind: 'context-request',
-        requestId: 'frame-request-1',
-      };
+      /** A request from the frame embedded in this page, dispatched the way a browser would. */
+      function requestFrom(requestId: string): void {
+        window.dispatchEvent(
+          new MessageEvent('message', {
+            data: { protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId },
+            origin: window.location.origin,
+            source: frame.contentWindow,
+          })
+        );
+      }
 
-      // A title of its own, so the assertion below proves the bridge withholds it rather
-      // than passing because the test page happens to have none.
-      const title = document.title;
-      document.title = 'Invoice 4711 - Acme Corp';
+      beforeEach(() => {
+        frame = document.createElement('iframe');
+        document.body.appendChild(frame);
+        postMessage = spyOn(frame.contentWindow as Window, 'postMessage');
+      });
 
-      engine.enableFrameBridge();
-      window.dispatchEvent(new MessageEvent('message', { data: request, origin: window.location.origin, source }));
-      document.title = title;
+      afterEach(() => {
+        engine.disableFrameBridge();
+        frame.remove();
+      });
 
-      expect(postMessage).toHaveBeenCalledWith(
-        jasmine.objectContaining({
-          kind: 'context-response',
-          requestId: 'frame-request-1',
-          context: jasmine.objectContaining({ title: '' }),
-        }),
-        jasmine.anything()
-      );
+      it('serves snapshots to embedded frames only while the frame bridge is enabled', () => {
+        // A title of its own, so the assertion below proves the bridge withholds it rather
+        // than passing because the test page happens to have none.
+        const title = document.title;
+        document.title = 'Invoice 4711 - Acme Corp';
 
-      engine.disableFrameBridge();
-      window.dispatchEvent(new MessageEvent('message', { data: request, origin: window.location.origin, source }));
+        engine.enableFrameBridge();
+        requestFrom('frame-request-1');
+        document.title = title;
 
-      expect(postMessage).toHaveBeenCalledTimes(1);
-      frame.remove();
-    });
+        expect(postMessage).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            kind: 'context-response',
+            requestId: 'frame-request-1',
+            context: jasmine.objectContaining({ title: '' }),
+          }),
+          jasmine.anything()
+        );
 
-    it('keeps the running frame bridge when a new configuration is refused', () => {
-      const { frame, postMessage } = embeddedFrame();
+        engine.disableFrameBridge();
+        requestFrom('frame-request-1');
 
-      engine.enableFrameBridge();
-      expect(() => engine.enableFrameBridge({ allowedOrigins: ['chat.example'] })).toThrowError(/not an origin/);
+        expect(postMessage).toHaveBeenCalledTimes(1);
+      });
 
-      window.dispatchEvent(
-        new MessageEvent('message', {
-          data: { protocol: 'ui-context/v1', kind: 'context-request', requestId: 'frame-request-3' },
-          origin: window.location.origin,
-          source: frame.contentWindow,
-        })
-      );
+      it('keeps the running frame bridge when a new configuration is refused', () => {
+        engine.enableFrameBridge();
+        expect(() => engine.enableFrameBridge({ allowedOrigins: ['chat.example'] })).toThrowError(/not an origin/);
 
-      expect(postMessage).toHaveBeenCalledWith(
-        jasmine.objectContaining({ kind: 'context-response', requestId: 'frame-request-3' }),
-        jasmine.anything()
-      );
-      engine.disableFrameBridge();
-      frame.remove();
-    });
+        requestFrom('frame-request-3');
 
-    it('stops the previous frame bridge when a new one replaces it', () => {
-      const { frame, postMessage } = embeddedFrame();
+        expect(postMessage).toHaveBeenCalledWith(
+          jasmine.objectContaining({ kind: 'context-response', requestId: 'frame-request-3' }),
+          jasmine.anything()
+        );
+      });
 
-      engine.enableFrameBridge();
-      engine.enableFrameBridge({ allowedOrigins: ['https://chat.example'] });
+      it('stops the previous frame bridge when a new one replaces it', () => {
+        engine.enableFrameBridge();
+        engine.enableFrameBridge({ allowedOrigins: ['https://chat.example'] });
 
-      window.dispatchEvent(
-        new MessageEvent('message', {
-          data: { protocol: 'ui-context/v1', kind: 'context-request', requestId: 'frame-request-4' },
-          origin: window.location.origin,
-          source: frame.contentWindow,
-        })
-      );
+        requestFrom('frame-request-4');
 
-      expect(postMessage).not.toHaveBeenCalled();
-      engine.disableFrameBridge();
-      frame.remove();
-    });
+        expect(postMessage).not.toHaveBeenCalled();
+      });
 
-    it('cleans up the frame bridge and global accessor when destroyed', () => {
-      const { frame, postMessage } = embeddedFrame();
+      it('says once when its ceiling has an exclusion list that is not one', () => {
+        const warn = spyOn(console, 'warn');
 
-      engine.enableFrameBridge();
-      engine.enableGlobalAccess('testClrContext');
-      engine.ngOnDestroy();
+        engine.enableFrameBridge({ snapshot: { excludeSelectors: '.secret' } as unknown as ClrContextSnapshotOptions });
 
-      window.dispatchEvent(
-        new MessageEvent('message', {
-          data: { protocol: 'ui-context/v1', kind: 'context-request', requestId: 'frame-request-2' },
-          origin: window.location.origin,
-          source: frame.contentWindow,
-        })
-      );
+        expect(warn).toHaveBeenCalledOnceWith(
+          'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.'
+        );
+      });
 
-      expect(postMessage).not.toHaveBeenCalled();
-      expect((window as unknown as Record<string, unknown>)['testClrContext']).toBeUndefined();
-      frame.remove();
+      it('cleans up the frame bridge and global accessor when destroyed', () => {
+        engine.enableFrameBridge();
+        engine.enableGlobalAccess('testClrContext');
+        engine.ngOnDestroy();
+
+        requestFrom('frame-request-2');
+
+        expect(postMessage).not.toHaveBeenCalled();
+        expect((window as unknown as Record<string, unknown>)['testClrContext']).toBeUndefined();
+      });
     });
   });
 

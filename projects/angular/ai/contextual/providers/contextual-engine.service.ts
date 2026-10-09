@@ -184,7 +184,8 @@ export class ClrContextEngineService implements OnDestroy {
       return;
     }
     // The host caps each frame's request against `options.snapshot`; the application's
-    // own options are the ceiling above that, so a frame cannot undo them either.
+    // own options are the ceiling above that, so a frame cannot undo them either. An
+    // exclusion list in `options.snapshot` that is not a list is reported here, once.
     const ceiling = this.untrustedCeiling(options?.snapshot);
     // Built before the running bridge is stopped: the constructor refuses a configuration
     // that is not usable, and a refused one should leave the frames already served as

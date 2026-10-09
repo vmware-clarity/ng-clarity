@@ -6,7 +6,7 @@
  */
 
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
-import { capSnapshotOptions, resolveSnapshotOptions, warnIfExclusionsAreNotLists } from '../snapshot-options';
+import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 import { warnNoHostOrigin } from './host-origin-warning';
 
@@ -222,8 +222,9 @@ export class ClrContextFrameHost {
     this.shareFormValues = options.shareFormValues === true;
     // Resolved, so a budget or switch the host left unset is the default rather than
     // "whatever a frame asks for": a frame cannot turn on `includeRoutes` or raise
-    // `maxComponents` past what the engine would give anyone by default.
-    warnIfExclusionsAreNotLists(options.snapshot);
+    // `maxComponents` past what the engine would give anyone by default. An exclusion
+    // list that is not one was already reported when the engine laid it over the
+    // application's options.
     this.snapshotCeiling = resolveSnapshotOptions(options.snapshot);
     const interval = options.minRequestIntervalMs;
     this.minRequestIntervalMs =
