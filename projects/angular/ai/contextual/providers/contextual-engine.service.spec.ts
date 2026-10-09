@@ -19,6 +19,17 @@ import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 @Component({ template: '' })
 class RoutedComponent {}
 
+type Accessor = (options?: unknown) => ClrPageContext;
+
+/** The global accessor an engine installed on `window` under `name`. */
+function globalAccessor(name = 'testClrContext'): Accessor {
+  return (window as unknown as Record<string, Accessor>)[name];
+}
+
+function removeGlobal(name: string): void {
+  delete (window as unknown as Record<string, unknown>)[name];
+}
+
 describe('ClrContextEngineService', () => {
   describe('without configured routes', () => {
     let engine: ClrContextEngineService;
@@ -29,7 +40,7 @@ describe('ClrContextEngineService', () => {
     });
 
     afterEach(() => {
-      delete (window as unknown as Record<string, unknown>)['testClrContext'];
+      removeGlobal('testClrContext');
     });
 
     it('snapshots the document and reports no route for an unconfigured router', () => {
@@ -79,25 +90,20 @@ describe('ClrContextEngineService', () => {
     it('exposes and removes a global accessor for browser-driving agents', () => {
       engine.enableGlobalAccess('testClrContext');
 
-      const globalAccessor = (window as unknown as Record<string, unknown>)['testClrContext'] as (
-        options?: unknown
-      ) => { title: string };
-      expect(typeof globalAccessor).toBe('function');
+      const accessor = globalAccessor();
+      expect(typeof accessor).toBe('function');
       // Withheld with the address unless the application shares the full URL.
-      expect(globalAccessor().title).toBe('');
+      expect(accessor().title).toBe('');
 
       engine.disableGlobalAccess();
-      expect((window as unknown as Record<string, unknown>)['testClrContext']).toBeUndefined();
+      expect(globalAccessor()).toBeUndefined();
     });
 
     describe('the global accessor', () => {
       let form: HTMLElement;
 
       function snapshotVia(options?: unknown) {
-        const accessor = (window as unknown as Record<string, unknown>)['testClrContext'] as (options?: unknown) => {
-          components: { type: string; state?: Record<string, unknown> }[];
-        };
-        return accessor(options);
+        return globalAccessor()(options);
       }
 
       function reportedValue(snapshot: { components: { type: string; state?: Record<string, unknown> }[] }) {
@@ -170,7 +176,7 @@ describe('ClrContextEngineService', () => {
       engine.enableGlobalAccess('testClrContext');
       engine.ngOnDestroy();
 
-      expect((window as unknown as Record<string, unknown>)['testClrContext']).toBeUndefined();
+      expect(globalAccessor()).toBeUndefined();
     });
   });
 
@@ -234,10 +240,7 @@ describe('ClrContextEngineService, the global accessor as a boundary', () => {
   let form: HTMLElement;
 
   function snapshotVia(options?: unknown): ClrPageContext {
-    const accessor = (window as unknown as Record<string, unknown>)['testClrContext'] as (
-      options?: unknown
-    ) => ClrPageContext;
-    return accessor(options);
+    return globalAccessor()(options);
   }
 
   beforeEach(() => {
@@ -250,8 +253,8 @@ describe('ClrContextEngineService, the global accessor as a boundary', () => {
 
   afterEach(() => {
     engine.disableGlobalAccess();
-    delete (window as unknown as Record<string, unknown>)['testClrContext'];
-    delete (window as unknown as Record<string, unknown>)['testClrContextTaken'];
+    removeGlobal('testClrContext');
+    removeGlobal('testClrContextTaken');
     form.remove();
   });
 
@@ -269,7 +272,7 @@ describe('ClrContextEngineService, the global accessor as a boundary', () => {
   it('can be re-enabled under the same name, replacing only its own accessor', () => {
     engine.enableGlobalAccess('testClrContext');
     expect(() => engine.enableGlobalAccess('testClrContext')).not.toThrow();
-    expect(typeof (window as unknown as Record<string, unknown>)['testClrContext']).toBe('function');
+    expect(typeof globalAccessor()).toBe('function');
   });
 
   function nodeCount(snapshot: ClrPageContext): number {
@@ -397,9 +400,7 @@ describe('ClrContextEngineService, configured once for the application', () => {
     );
     engine.enableGlobalAccess('testClrContextCeiling');
     try {
-      const accessor = (window as unknown as Record<string, (options?: unknown) => ClrPageContext>)[
-        'testClrContextCeiling'
-      ];
+      const accessor = globalAccessor('testClrContextCeiling');
       const snapshot = accessor({ includeText: true, excludeRoles: [], maxComponents: 10_000 });
       expect(types(snapshot)).toEqual(['main']);
       expect(snapshot.components[0].children?.map(node => node.type)).toEqual(['button']);
@@ -412,9 +413,7 @@ describe('ClrContextEngineService, configured once for the application', () => {
     const engine = engineWith(provideClrContextOptions({ excludeRoles: ['navigation'], rootSelector: 'main, nav' }));
     engine.enableGlobalAccess('testClrContextPadding', { excludeCategories: ['dialogs'] });
     try {
-      const accessor = (window as unknown as Record<string, (options?: unknown) => ClrPageContext>)[
-        'testClrContextPadding'
-      ];
+      const accessor = globalAccessor('testClrContextPadding');
       const junk = Array.from({ length: 60 }, (_, index) => `junk-${index}`);
 
       expect(types(accessor({ excludeRoles: junk, excludeCategories: junk }))).toEqual(['main']);
@@ -427,9 +426,7 @@ describe('ClrContextEngineService, configured once for the application', () => {
     const engine = engineWith(provideClrContextOptions({ excludeRoles: ['navigation'], rootSelector: 'main, nav' }));
     engine.enableGlobalAccess('testClrContextStringList', { excludeCategories: ['dialogs'] });
     try {
-      const accessor = (window as unknown as Record<string, (options?: unknown) => ClrPageContext>)[
-        'testClrContextStringList'
-      ];
+      const accessor = globalAccessor('testClrContextStringList');
 
       expect(types(accessor({ excludeRoles: 'main', excludeCategories: 'text' }))).toEqual(['main']);
     } finally {
@@ -442,9 +439,7 @@ describe('ClrContextEngineService, configured once for the application', () => {
     engine.enableGlobalAccess('testClrContextWrongKinds');
     const warn = spyOn(console, 'warn');
     try {
-      const accessor = (window as unknown as Record<string, (options?: unknown) => ClrPageContext>)[
-        'testClrContextWrongKinds'
-      ];
+      const accessor = globalAccessor('testClrContextWrongKinds');
 
       expect(types(accessor({ excludeRoles: 7, excludeCategories: true, excludeSelectors: 1 }))).toEqual(['main']);
       expect(warn).not.toHaveBeenCalled();
@@ -560,8 +555,6 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
   });
 
   describe('for the global accessor', () => {
-    type Accessor = (options?: unknown) => ClrPageContext;
-
     function accessorWith(applicationOptions: ClrContextSnapshotOptions, hostOptions = {}): Accessor {
       TestBed.configureTestingModule({
         providers: [
@@ -570,7 +563,7 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
         ],
       });
       TestBed.inject(ClrContextEngineService).enableGlobalAccess('testClrContextRoutes', hostOptions);
-      return (window as unknown as Record<string, Accessor>)['testClrContextRoutes'];
+      return globalAccessor('testClrContextRoutes');
     }
 
     afterEach(() => TestBed.inject(ClrContextEngineService).disableGlobalAccess());
@@ -591,12 +584,11 @@ describe('ClrContextEngineService, the routes an application can navigate to', (
 });
 
 describe('ClrContextEngineService, links for the global accessor under other routing setups', () => {
-  type Accessor = (options?: unknown) => ClrPageContext;
   let page: HTMLElement;
 
   function hrefs(engine: ClrContextEngineService): unknown[] {
     engine.enableGlobalAccess('testClrContext');
-    const snapshot = (window as unknown as Record<string, Accessor>)['testClrContext']();
+    const snapshot = globalAccessor()();
     engine.disableGlobalAccess();
     return snapshot.components.filter(node => node.type === 'link').map(node => node.state?.['href']);
   }
@@ -632,12 +624,11 @@ describe('ClrContextEngineService, links for the global accessor under other rou
 });
 
 describe('ClrContextEngineService, what the global accessor keeps back', () => {
-  type Accessor = (options?: unknown) => ClrPageContext;
   let engine: ClrContextEngineService;
   let page: HTMLElement;
 
   function accessor(): Accessor {
-    return (window as unknown as Record<string, Accessor>)['testClrContext'];
+    return globalAccessor();
   }
 
   function find(nodes: ClrComponentContext[], match: (node: ClrComponentContext) => boolean): ClrComponentContext[] {
