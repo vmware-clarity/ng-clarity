@@ -30,7 +30,7 @@
       <tbody>
         <tr>
           <td>
-            <code cds-text="code">getGroupItems(group: string): readonly CdkDropList[]</code>
+            <code cds-text="code">getGroupItems(group: string): CdkDropList[]</code>
           </td>
           <td class="left">
             Retrieves an array of <code cds-text="code">CdkDropList</code> instances belonging to the specified group.
@@ -80,7 +80,7 @@ export class ExampleDragAndDropComponent {{ '{' }}
 
     public constructor(private groupService: DragAndDropGroupService) {{ '{}' }}
 
-    public dropGroup(group: string): readonly CdkDropList[] {{ '{' }}
+    public dropGroup(group: string): CdkDropList[] {{ '{' }}
         return this.groupService.getGroupItems(group);
     {{ '}' }}
 
