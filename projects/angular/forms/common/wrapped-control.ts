@@ -98,16 +98,17 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
   }
 
   /**
-   * Whether the control is currently in error, as assistive technology should hear it.
-   *
-   * Gated on the control having been touched, which is the same rule the container uses
-   * to decide whether to show the error (see `ClrAbstractContainer`): a field the user
-   * has not reached yet should not be announced as wrong.
+   * Whether the control is in error, as assistive technology should hear it: invalid and
+   * touched, so a field the user has not reached yet is not announced as wrong. The
+   * container shows its error by the same rule, when it has an error message to show.
    */
+  protected get controlInvalid(): boolean {
+    return !!this.ngControl?.invalid && !!this.ngControl?.touched;
+  }
+
   @HostBinding('attr.aria-invalid')
   private get hostAriaInvalid(): string | null {
-    const invalid = this.reportsAriaInvalid() && !!this.ngControl?.invalid && !!this.ngControl?.touched;
-    return this.ariaInvalidAttribute.value(invalid);
+    return this.ariaInvalidAttribute.value(this.reportsAriaInvalid() && this.controlInvalid);
   }
 
   /**

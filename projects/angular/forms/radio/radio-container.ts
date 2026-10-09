@@ -103,6 +103,8 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
    * The group's requirement and validity, reported once on the `radiogroup`, which is
    * where ARIA puts them, rather than on each radio. Radios bound with standalone
    * `ngModel` each carry their own control, so the group is required when any of them is.
+   * Nothing is reported without the role: radios rendered after the container initialised
+   * register their controls but do not give it one.
    */
   protected get ariaRequired(): string | null {
     return this.ariaRequiredAttribute.value(
@@ -110,15 +112,9 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     );
   }
 
-  /**
-   * Whether the group's choice is invalid, once the user has had a chance to make one.
-   * This is the rule the container uses to show its error: any of the group's controls
-   * invalid and any of them touched, whether or not an error message is projected.
-   */
+  /** Whether the group's choice is invalid, once the user has had a chance to make one. */
   protected get ariaInvalid(): string | null {
-    return this.ariaInvalidAttribute.value(
-      !!this.role && this.controls.some(control => control.invalid) && this.controls.some(control => control.touched)
-    );
+    return this.ariaInvalidAttribute.value(!!this.role && this.controlInvalid);
   }
 
   ngAfterContentInit() {

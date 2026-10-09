@@ -9,15 +9,10 @@
  * An attribute a component sets through a host binding while respecting the
  * application's say over it.
  *
- * Angular gives a directive's host binding the last word when the application also binds
- * the same attribute dynamically, so a component that starts reporting an attribute —
- * `aria-invalid`, `role` — would silently override what an application already set
- * itself. This yields instead: an attribute written in the template is kept as written,
- * and once the application is seen setting the attribute (its value differs from what
- * the component last reported, or is already there when the component first reports),
- * the application's binding owns it from then on.
- *
- * Call {@link value} from the host binding getter with what the component would report.
+ * Angular gives a directive's host binding the last word over an application binding of
+ * the same attribute. This yields instead: an attribute written in the template is kept
+ * as written, and once the application is seen setting the attribute, its binding owns
+ * it from then on. Call {@link value} from the host binding getter.
  *
  * An application binding of `null` from the first render cannot be told apart from no
  * binding at all, so it does not remove the component's attribute; a component that
@@ -30,7 +25,7 @@ export class ClrHostAttribute {
   private authored: string | null | undefined = undefined;
   private reported: string | null | undefined = undefined;
   private yielded = false;
-  /** Whether the page was server-rendered; looked up on the first {@link value} call. */
+  /** Whether the page was server-rendered; see {@link isServerRendered}. */
   private serverRendered?: boolean;
 
   constructor(
@@ -41,7 +36,7 @@ export class ClrHostAttribute {
     // wrote is readable here and is not yet overwritten by the host binding. So is what
     // the server rendered for the component itself, on a page being hydrated: which of
     // the two it is is decided on the first `value` call.
-    this.initial = element?.getAttribute?.(name) ?? null;
+    this.initial = element?.getAttribute(name) ?? null;
   }
 
   /**
@@ -56,25 +51,18 @@ export class ClrHostAttribute {
   /** What the host binding should return, given what the component would report. */
   value(computed: string | boolean | null): string | null {
     const next = computed === null || computed === false ? null : String(computed);
-    // On a page a server rendered — Angular marks its root with `ng-server-context` — a
-    // value equal to the component's own is what the server rendered for the component,
-    // and keeps following it after hydration. Anywhere else, a value already there is
-    // the application's, whatever it says. Asked only when such a value is there, which
-    // on most pages is never, since asking searches the document.
-    const ownIfEqual = () =>
-      (this.serverRendered ??= !!this.element?.ownerDocument?.querySelector?.('[ng-server-context]'));
     if (this.authored === undefined) {
-      this.authored = this.initial !== null && (this.initial !== next || !ownIfEqual()) ? this.initial : null;
+      this.authored = this.isApplicationValue(this.initial, next) ? this.initial : null;
     }
     if (this.authored !== null) {
       return this.authored;
     }
-    const current = this.element?.getAttribute?.(this.name) ?? null;
+    const current = this.element?.getAttribute(this.name) ?? null;
     // The application's bindings run before the component's host bindings, so on the
     // first pass a value already on the element was bound by the application — even one
     // equal to what the component would say, unless a server rendered it.
     const applicationSet =
-      this.reported === undefined ? current !== null && (current !== next || !ownIfEqual()) : current !== this.reported;
+      this.reported === undefined ? this.isApplicationValue(current, next) : current !== this.reported;
     if (this.yielded || applicationSet) {
       this.yielded = true;
       this.reported = current;
@@ -82,5 +70,23 @@ export class ClrHostAttribute {
     }
     this.reported = next;
     return next;
+  }
+
+  /**
+   * Whether a value found on the element was put there by the application. On a page a
+   * server rendered, a value equal to the component's own is what the server rendered for
+   * the component, and keeps following it after hydration; anywhere else, any value is.
+   */
+  private isApplicationValue(found: string | null, next: string | null): boolean {
+    return found !== null && (found !== next || !this.isServerRendered());
+  }
+
+  /**
+   * Whether Angular marked the page as server-rendered (`ng-server-context` on its root).
+   * Asked only when a value equal to the component's own is found, which on most pages is
+   * never, since asking searches the document.
+   */
+  private isServerRendered(): boolean {
+    return (this.serverRendered ??= !!this.element?.ownerDocument?.querySelector('[ng-server-context]'));
   }
 }

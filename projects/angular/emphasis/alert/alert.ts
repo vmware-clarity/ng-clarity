@@ -42,7 +42,7 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
    * The live-region role of the alert's content: `'alert'` interrupts, `'status'` waits its
    * turn, and `null` (or `'none'`) renders none, for an application that announces the
    * message itself. Left unset — or given anything else, such as the bare attribute — the
-   * alert chooses (see {@link ariaRole}).
+   * alert chooses from its type and placement.
    */
   @Input({ alias: 'clrAlertRole', transform: liveRoleAttribute }) liveRole: 'alert' | 'status' | null | undefined =
     undefined;
@@ -51,12 +51,13 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
 
   _closed = false;
 
+  /** How this alert is announced; see `chooseRole`. */
+  protected ariaRole: 'alert' | 'status' | null = null;
+
   private _hidden: boolean;
   private subscriptions: Subscription[] = [];
   private _isLightweight = false;
   private _origAlertType: string;
-  /** The role chosen from the inputs and where the alert sits; see {@link ariaRole}. */
-  private renderedRole: 'alert' | 'status' | null = null;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -123,39 +124,17 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
   }
 
   /**
-   * How this alert should be announced. An app-level danger or warning describes
-   * something the user has to deal with now, so it interrupts; everything else — an
-   * informational alert, and any alert placed inline in the content, where several may
-   * render at once — is reported politely and waits its turn.
-   *
-   * Without a role an alert is announced by nothing at all, and its severity lives only
-   * in a CSS class, which assistive technology cannot read.
-   *
-   * An alert placed inside a live region the application already has is announced by
-   * that region, so it adds none of its own, which would announce it twice; the
-   * `clrAlertRole` input overrides either choice.
-   *
-   * A `status` region is atomic by default, which would re-read the whole alert — its
-   * buttons included — whenever any part of it changed; see {@link ariaAtomic}.
-   *
-   * Chosen when the alert initialises and whenever an input changes, not on every check:
-   * an alert moved into a live region later says so with `clrAlertRole`.
-   */
-  protected get ariaRole(): 'alert' | 'status' | null {
-    return this.renderedRole;
-  }
-
-  /**
    * A polite alert announces what changed in it, not the whole alert again: `status` is
    * atomic by default, and an inline alert typically holds action buttons whose names
    * would be read out with every update.
    */
   protected get ariaAtomic(): 'false' | null {
-    return this.renderedRole === 'status' ? 'false' : null;
+    return this.ariaRole === 'status' ? 'false' : null;
   }
 
   ngOnInit() {
-    this.renderedRole = this.chooseRole();
+    // ngOnChanges does not run for an alert with no bound inputs, so the role is chosen here too.
+    this.ariaRole = this.chooseRole();
 
     if (this.multiAlertService) {
       this.subscriptions.push(
@@ -167,7 +146,7 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnChanges() {
-    this.renderedRole = this.chooseRole();
+    this.ariaRole = this.chooseRole();
   }
 
   ngOnDestroy() {
@@ -198,6 +177,15 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     this._closedChanged.emit(true);
   }
 
+  /**
+   * An app-level danger or warning is something the user has to deal with now, so it
+   * interrupts; everything else, including any inline alert, where several may render at
+   * once, waits its turn. An alert inside a live region the application already has is
+   * announced by that region, so it adds no role of its own. `clrAlertRole` overrides both.
+   *
+   * Chosen on init and on input changes, not on every check: an alert moved into a live
+   * region later says so with `clrAlertRole`.
+   */
   private chooseRole(): 'alert' | 'status' | null {
     if (this.liveRole !== undefined) {
       return this.liveRole;

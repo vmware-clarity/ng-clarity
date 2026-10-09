@@ -51,7 +51,7 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     get alertType(): string;
     set alertType(val: string);
     protected get ariaAtomic(): 'false' | null;
-    protected get ariaRole(): 'alert' | 'status' | null;
+    protected ariaRole: 'alert' | 'status' | null;
     // (undocumented)
     closable: boolean;
     // (undocumented)

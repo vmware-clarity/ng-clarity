@@ -7,7 +7,7 @@
 <div
   role="row"
   [id]="id"
-  [attr.aria-selected]="selection.selectionType === SELECTION_TYPE.None || (!clrDgSelectable && !selected) ? null : selected"
+  [attr.aria-selected]="ariaSelected"
   class="datagrid-row-master datagrid-row-flex"
   (mousedown)="clearRanges($event)"
   (click)="selectRow(!selected, $event)"

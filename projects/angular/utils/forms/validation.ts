@@ -41,22 +41,34 @@ export function clrHasRequiredValidator(control: AbstractControl | null | undefi
     return false;
   }
   // Host bindings ask on every change detection cycle; the composed validator runs
-  // once per recomputation of the control's validity instead (see `remember`).
-  const remembered = REQUIRED_BY_CONTROL.get(control);
-  if (remembered && remembered.validator === validator) {
-    return remembered.required;
+  // once per recomputation of the control's validity instead (see `REQUIRED_BY_CONTROL`).
+  let remembered = REQUIRED_BY_CONTROL.get(control);
+  if (!remembered) {
+    const entry: RememberedRequirement = { validator: null, required: false };
+    REQUIRED_BY_CONTROL.set(control, (remembered = entry));
+    // One subscription per control, for the control's lifetime: `statusChanges` emits on
+    // every updateValueAndValidity, which is what a `[required]` toggle triggers.
+    control.statusChanges.subscribe(() => (entry.validator = null));
   }
-  let required = false;
-  try {
-    // A control of its own for each probe: a validator is application code and may touch
-    // the control it is given, which must not carry over into the next probe.
-    required = validator(new FormControl<unknown>(null))?.required === true;
-  } catch {
-    // A custom validator that assumes a parent or a value is not one that expresses
-    // "required", and must not take the host binding down with it.
+  if (remembered.validator !== validator) {
+    remembered.validator = validator;
+    remembered.required = false;
+    try {
+      // A control of its own for each probe: a validator is application code and may touch
+      // the control it is given, which must not carry over into the next probe.
+      remembered.required = validator(new FormControl<unknown>(null))?.required === true;
+    } catch {
+      // A custom validator that assumes a parent or a value is not one that expresses
+      // "required", and must not take the host binding down with it.
+    }
   }
-  remember(control, validator, required);
-  return required;
+  return remembered.required;
+}
+
+interface RememberedRequirement {
+  /** The validator the answer is for; `null` once the control has recomputed its validity. */
+  validator: ValidatorFn | null;
+  required: boolean;
 }
 
 /**
@@ -65,21 +77,4 @@ export function clrHasRequiredValidator(control: AbstractControl | null | undefi
  * validation — so the answer is forgotten whenever the control recomputes its validity,
  * and recomputed when its validator is replaced.
  */
-const REQUIRED_BY_CONTROL = new WeakMap<AbstractControl, { validator: ValidatorFn; required: boolean }>();
-
-/**
- * Controls already watched for recomputation. Kept apart from the cache itself: the cache
- * entry is dropped on every recomputation, and a control whose entry is missing must not
- * be subscribed to again — that would add one subscription per status change.
- */
-const WATCHED_CONTROLS = new WeakSet<AbstractControl>();
-
-function remember(control: AbstractControl, validator: ValidatorFn, required: boolean): void {
-  if (!WATCHED_CONTROLS.has(control)) {
-    // One subscription per control, for the control's lifetime: `statusChanges` emits on
-    // every updateValueAndValidity, which is what a `[required]` toggle triggers.
-    WATCHED_CONTROLS.add(control);
-    control.statusChanges.subscribe(() => REQUIRED_BY_CONTROL.delete(control));
-  }
-  REQUIRED_BY_CONTROL.set(control, { validator, required });
-}
+const REQUIRED_BY_CONTROL = new WeakMap<AbstractControl, RememberedRequirement>();

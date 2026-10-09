@@ -5,12 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrComboboxModule } from './combobox.module';
+
+function render<T>(component: Type<T>, imports: unknown[]): ComponentFixture<T> {
+  TestBed.configureTestingModule({ imports: [...imports, NoopAnimationsModule], declarations: [component] });
+  const fixture = TestBed.createComponent(component);
+  fixture.detectChanges();
+  return fixture;
+}
 
 @Component({
   template: `
@@ -34,12 +41,7 @@ describe('ClrCombobox required state', () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, ReactiveFormsModule, NoopAnimationsModule],
-      declarations: [TestComponent],
-    });
-    fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    fixture = render(TestComponent, [ClrComboboxModule, ReactiveFormsModule]);
   });
 
   afterEach(() => fixture.destroy());
@@ -99,19 +101,14 @@ describe('ClrCombobox required state, template-driven', () => {
   }
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
-      declarations: [TemplateDrivenTestComponent],
-    });
-    fixture = TestBed.createComponent(TemplateDrivenTestComponent);
-    fixture.detectChanges();
+    fixture = render(TemplateDrivenTestComponent, [ClrComboboxModule, FormsModule]);
     await fixture.whenStable();
     fixture.detectChanges();
   });
 
   afterEach(() => fixture.destroy());
 
-  it('recognises a [required] binding, which writes no attribute and registers no Validators.required', () => {
+  it('recognises a [required] binding, which registers no Validators.required', () => {
     expect(comboboxInput().getAttribute('aria-required')).toBe('true');
   });
 
@@ -126,5 +123,38 @@ describe('ClrCombobox required state, template-driven', () => {
 
   it('does not call the field invalid before the user has touched it, like every other control', () => {
     expect(comboboxInput().hasAttribute('aria-invalid')).toBe(false);
+  });
+});
+
+@Component({
+  template: `
+    <clr-combobox [(ngModel)]="fruit" name="fruit" required>
+      <clr-options>
+        <clr-option clrValue="apple">Apple</clr-option>
+      </clr-options>
+    </clr-combobox>
+    <clr-combobox [formControl]="vegetable" required>
+      <clr-options>
+        <clr-option clrValue="leek">Leek</clr-option>
+      </clr-options>
+    </clr-combobox>
+  `,
+  standalone: false,
+})
+class StaticRequiredTestComponent {
+  fruit: string | null = null;
+  vegetable = new FormControl<string | null>(null);
+}
+
+describe('ClrCombobox required state, static attribute', () => {
+  it('recognises a static required attribute through the validator it registers, with ngModel or formControl', async () => {
+    const fixture = render(StaticRequiredTestComponent, [ClrComboboxModule, FormsModule, ReactiveFormsModule]);
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const [model, control] = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('[role="combobox"]'));
+    expect(model.getAttribute('aria-required')).withContext('ngModel').toBe('true');
+    expect(control.getAttribute('aria-required')).withContext('formControl').toBe('true');
+    fixture.destroy();
   });
 });

@@ -988,6 +988,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     controlErrorComponent: ClrControlError;
     // (undocumented)
     controlHelperComponent: ClrControlHelper;
+    protected get controlInvalid(): boolean;
     // (undocumented)
     controls: NgControl[];
     // (undocumented)
@@ -1117,7 +1118,7 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     get alertType(): string;
     set alertType(val: string);
     protected get ariaAtomic(): 'false' | null;
-    protected get ariaRole(): 'alert' | 'status' | null;
+    protected ariaRole: 'alert' | 'status' | null;
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -1785,7 +1786,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected index: number;
     // (undocumented)
     inputId(): string;
-    protected get isInvalid(): boolean;
     protected get isRequired(): boolean;
     // (undocumented)
     protected isTotalSelection: boolean;
@@ -2890,6 +2890,7 @@ export class ClrDatagridPlaceholder<T = any> {
 // @public (undocumented)
 export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit {
     constructor(selection: Selection_2<T>, rowActionService: RowActionService, globalExpandable: ExpandableRowsCount, expand: DatagridIfExpandService, detailService: DetailService, displayMode: DisplayModeService, vcr: ViewContainerRef, renderer: Renderer2, el: ElementRef<HTMLElement>, commonStrings: ClrCommonStringsService, items: Items, columnsService: ColumnsService, document: any);
+    protected get ariaSelected(): boolean | null;
     // (undocumented)
     _calculatedCells: ViewContainerRef;
     // (undocumented)
@@ -10348,6 +10349,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
+    protected get controlInvalid(): boolean;
     // (undocumented)
     protected el: ElementRef<HTMLElement>;
     // (undocumented)

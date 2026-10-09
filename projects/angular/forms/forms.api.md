@@ -119,6 +119,7 @@ export abstract class ClrAbstractContainer implements OnDestroy {
     controlErrorComponent: ClrControlError;
     // (undocumented)
     controlHelperComponent: ClrControlHelper;
+    protected get controlInvalid(): boolean;
     // (undocumented)
     controls: NgControl[];
     // (undocumented)
@@ -329,7 +330,6 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     protected index: number;
     // (undocumented)
     inputId(): string;
-    protected get isInvalid(): boolean;
     protected get isRequired(): boolean;
     // (undocumented)
     protected isTotalSelection: boolean;
@@ -1932,6 +1932,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     constructor(vcr: ViewContainerRef, wrapperType: Type<W>, injector: Injector, ngControl: NgControl | null, renderer: Renderer2, el: ElementRef<HTMLElement>);
     // (undocumented)
     protected controlIdService: ControlIdService;
+    protected get controlInvalid(): boolean;
     // (undocumented)
     protected el: ElementRef<HTMLElement>;
     // (undocumented)
@@ -1971,7 +1972,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:278:657 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
+// dist/clr-angular/types/clr-angular-forms-combobox.d.ts:261:657 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-forms.d.ts
 
 // (No @packageDocumentation comment for this package)
 

@@ -57,8 +57,8 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     private _navIconService: VerticalNavIconService,
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
     public commonStrings: ClrCommonStringsService,
-    // Optional and last, so that subclasses calling `super()` with the arguments they
-    // passed before keep compiling.
+    // Optional and last, so that downstream subclasses calling `super()` with the
+    // arguments they passed before keep compiling.
     @Optional() private readonly el?: ElementRef<HTMLElement>,
     @Optional() private readonly changeDetector?: ChangeDetectorRef
   ) {
@@ -101,12 +101,9 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
   }
 
   /**
-   * The vertical nav is a navigation landmark, the same way the header is a banner: it
-   * lets assistive technology jump to or past it, and lets page-context tooling leave it
-   * out as layout. Left off when the nav already sits inside a landmark (a `<nav>`, an
-   * element with `role="navigation"`), or holds one the application put in it, so a page
-   * does not end up with two nested ones. A `role` the application writes or binds on the
-   * element is kept either way.
+   * The vertical nav is a navigation landmark, so assistive technology can jump to or past
+   * it. Left off when a landmark already sits around or inside it, so a page does not end
+   * up with two nested ones; a `role` the application gives the element is kept either way.
    */
   @HostBinding('attr.role')
   private get hostRole(): string | null {
