@@ -6,12 +6,17 @@
  */
 
 import { build } from 'esbuild';
-import { existsSync } from 'node:fs';
-import { resolve } from 'node:path';
+import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join, resolve } from 'node:path';
+import { rollup } from 'rollup';
+import { minify } from 'terser';
+import webpack from 'webpack';
 
-// Bundles the built package the way the Angular CLI does (esbuild) to make sure unused icon shapes are tree-shaken.
-// Needs `npm run _build:angular` first.
+// Bundles the built package with esbuild (Angular CLI), Rollup and webpack to make sure unused icon shapes are
+// tree-shaken. Needs `npm run _build:angular` first.
 const iconEntryPoint = resolve('dist/clr-angular/fesm2022/clr-angular-icon.mjs');
+const isExternal = id => /^(@angular|rxjs|tslib)(\/|$)/.test(id);
 
 // [name, svg strings] of every shape source. The internal `test` and `tmpl` placeholders have no SVG markup.
 const shapes = Object.values(import.meta.glob('./shapes/*.ts', { eager: true }))
@@ -19,32 +24,68 @@ const shapes = Object.values(import.meta.glob('./shapes/*.ts', { eager: true }))
   .map(([name, shape]) => [name, Object.values(shape)])
   .filter(([, svgs]) => svgs.some(svg => svg.includes('<')));
 
-async function bundle(code) {
-  const result = await build({
-    stdin: {
-      contents: `import { ClarityIcons, homeIcon } from '${iconEntryPoint}'; ${code}`,
-      resolveDir: process.cwd(),
-    },
-    bundle: true,
-    minify: true,
-    format: 'esm',
-    external: ['@angular/*', 'rxjs', 'tslib'],
-    write: false,
-    logLevel: 'silent',
-  });
-  return result.outputFiles[0].text;
-}
+const bundlers = {
+  async esbuild(entry) {
+    const result = await build({
+      stdin: { contents: entry, resolveDir: process.cwd() },
+      bundle: true,
+      minify: true,
+      format: 'esm',
+      external: ['@angular/*', 'rxjs', 'tslib'],
+      write: false,
+      logLevel: 'silent',
+    });
+    return result.outputFiles[0].text;
+  },
+  async rollup(entry) {
+    const bundle = await rollup({
+      input: 'entry',
+      external: isExternal,
+      plugins: [
+        { name: 'entry', resolveId: id => (id === 'entry' ? id : null), load: id => (id === 'entry' ? entry : null) },
+      ],
+      onwarn: () => {},
+    });
+    const { output } = await bundle.generate({ format: 'es' });
+    return (await minify(output[0].code, { module: true })).code;
+  },
+  async webpack(entry) {
+    const dir = mkdtempSync(join(tmpdir(), 'clr-icon-tree-shaking-'));
+    writeFileSync(join(dir, 'entry.js'), entry);
+    try {
+      await new Promise((resolvePromise, reject) =>
+        webpack(
+          {
+            mode: 'production',
+            context: dir,
+            entry: './entry.js',
+            output: { path: dir, filename: 'bundle.js', module: true },
+            experiments: { outputModule: true },
+            externalsType: 'module',
+            externals: [({ request }, callback) => (isExternal(request) ? callback(null, request) : callback())],
+          },
+          (error, stats) =>
+            error || stats.hasErrors() ? reject(error ?? stats.toString('errors-only')) : resolvePromise()
+        )
+      );
+      return readFileSync(join(dir, 'bundle.js'), 'utf8');
+    } finally {
+      rmSync(dir, { recursive: true });
+    }
+  },
+};
 
 function bundledShapeNames(code) {
   return shapes.filter(([, svgs]) => svgs.every(svg => code.includes(svg))).map(([name]) => name);
 }
 
-describe('icon tree-shaking', () => {
+describe.each(Object.entries(bundlers))('icon tree-shaking with %s', (_, bundle) => {
   it('bundles only the imported icon shapes', async () => {
     expect(existsSync(iconEntryPoint), `${iconEntryPoint} not found, build clr-angular first`).toBe(true);
 
-    const withoutIcons = await bundle('ClarityIcons.addIcons();');
-    const withHomeIcon = await bundle('ClarityIcons.addIcons(homeIcon);');
+    const imports = `import { ClarityIcons, homeIcon } from '${iconEntryPoint}';`;
+    const withoutIcons = await bundle(`${imports} ClarityIcons.addIcons();`);
+    const withHomeIcon = await bundle(`${imports} ClarityIcons.addIcons(homeIcon);`);
     const [, homeSvgs] = shapes.find(([name]) => name === 'home');
 
     // The icon service always registers the unknown icon.
