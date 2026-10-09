@@ -59,9 +59,8 @@ import {
   host: {
     '[attr.role]': '"list"',
     '[class.clr-file-list]': 'true',
-    // Each entry is named after a file the user chose, and even redacted, the list would
-    // say how many there are under a key nothing withholds (`itemCount`). The container
-    // publishes the count, as a value.
+    // Each entry names a file the user chose, and the list's `itemCount` is not withheld;
+    // the container publishes the count instead.
     'data-clr-context-ignore': '',
   },
   standalone: false,

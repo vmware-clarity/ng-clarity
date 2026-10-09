@@ -43,17 +43,19 @@ export function jsonSafe(value: unknown, depth: number, keepEmpty = false): unkn
     for (const [key, entry] of Object.entries(value)) {
       const serializable = jsonSafe(entry, depth - 1, keepEmpty);
       if (serializable !== undefined) {
-        // Defined rather than assigned: an own `__proto__` key, which `JSON.parse` can
-        // produce, would otherwise set the result's prototype instead of copying the key.
-        Object.defineProperty(result, key, {
-          value: serializable,
-          enumerable: true,
-          writable: true,
-          configurable: true,
-        });
+        defineOwn(result, key, serializable);
       }
     }
     return Object.keys(result).length || keepEmpty ? result : undefined;
   }
   return undefined;
+}
+
+/**
+ * Sets `target[key]` as a plain own property. Defined rather than assigned: an own
+ * `__proto__` key, which `JSON.parse` can produce, would otherwise set the target's
+ * prototype instead of copying the key.
+ */
+export function defineOwn(target: object, key: string, value: unknown): void {
+  Object.defineProperty(target, key, { value, enumerable: true, writable: true, configurable: true });
 }

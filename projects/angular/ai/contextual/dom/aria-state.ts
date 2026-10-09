@@ -368,20 +368,32 @@ export function isContentEditable(element: Element): boolean {
   return editable !== null && editable.trim().toLowerCase() !== 'false';
 }
 
+/** The value keys withheld from a node whose value is the application's output. */
+const OUTPUT_WITHHELD_KEYS = VALUE_STATE_KEYS.filter(key => key !== 'value');
+
 /**
  * The same node with every value key removed from its state, recursively, so that
  * neither the node nor anything published under it keeps what the user entered.
  * Returns the node itself when there is nothing to remove.
  */
 export function withoutValues(node: ClrComponentContext): ClrComponentContext {
+  return withoutStateKeys(node, ({ type }) => (OUTPUT_VALUE_ROLES.has(type) ? OUTPUT_WITHHELD_KEYS : VALUE_STATE_KEYS));
+}
+
+/**
+ * The same node with the keys `keysFor` names removed from its state and from the state
+ * of every node below it. Returns the node itself when there is nothing to remove.
+ */
+export function withoutStateKeys(
+  node: ClrComponentContext,
+  keysFor: (node: ClrComponentContext) => readonly string[]
+): ClrComponentContext {
   let result = node;
   const state = node.state;
-  const withheld = OUTPUT_VALUE_ROLES.has(node.type)
-    ? VALUE_STATE_KEYS.filter(key => key !== 'value')
-    : VALUE_STATE_KEYS;
-  if (state && withheld.some(key => key in state)) {
+  const keys = keysFor(node);
+  if (state && keys.some(key => key in state)) {
     const kept: Record<string, unknown> = { ...state };
-    for (const key of withheld) {
+    for (const key of keys) {
       delete kept[key];
     }
     result = { ...result };
@@ -393,7 +405,7 @@ export function withoutValues(node: ClrComponentContext): ClrComponentContext {
   }
   const children = node.children;
   if (children?.length) {
-    const reduced = children.map(withoutValues);
+    const reduced = children.map(child => withoutStateKeys(child, keysFor));
     if (reduced.some((child, index) => child !== children[index])) {
       result = { ...result, children: reduced };
     }
@@ -455,28 +467,18 @@ const CONTENT_ROLES: ReadonlySet<string> = new Set([
  * not see from one that is empty.
  */
 export function redactNode(node: ClrComponentContext): ClrComponentContext {
-  const reduced = withoutContent(withoutValues(node));
+  const reduced = withoutContentLabels(withoutStateKeys(withoutValues(node), () => CONTENT_STATE_KEYS));
   return { ...reduced, state: { ...reduced.state, redacted: true } };
 }
 
-function withoutContent(node: ClrComponentContext): ClrComponentContext {
+/** The same node with the label of every {@link CONTENT_ROLES} node in it removed. */
+function withoutContentLabels(node: ClrComponentContext): ClrComponentContext {
   const result: ClrComponentContext = { ...node };
   if (CONTENT_ROLES.has(node.type)) {
     delete result.label;
   }
-  if (node.state && CONTENT_STATE_KEYS.some(key => key in (node.state as object))) {
-    const state: Record<string, unknown> = { ...node.state };
-    for (const key of CONTENT_STATE_KEYS) {
-      delete state[key];
-    }
-    if (Object.keys(state).length) {
-      result.state = state;
-    } else {
-      delete result.state;
-    }
-  }
   if (node.children?.length) {
-    result.children = node.children.map(withoutContent);
+    result.children = node.children.map(withoutContentLabels);
   }
   return result;
 }

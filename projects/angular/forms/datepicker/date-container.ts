@@ -22,7 +22,6 @@ import {
   DROPDOWN_POSITIONS,
 } from '@clr/angular/popover/common';
 import { ClrCommonStringsService, clrPublishElementContext } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
 import { startWith } from 'rxjs/operators';
 
 import { ClrWeekday } from './enums/weekday.enum';
@@ -132,8 +131,6 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     private localeHelperService: LocaleHelperService
   ) {
     super(layoutService, controlClassService, ngControlService);
-
-    this.subscriptions.push(new Subscription(() => this.teardownToggleContext?.()));
 
     this.subscriptions.push(
       focusService.focusChange.subscribe(state => {
@@ -275,6 +272,11 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     );
 
     this.subscriptions.push(this.listenForDateChanges());
+  }
+
+  override ngOnDestroy() {
+    this.teardownToggleContext?.();
+    super.ngOnDestroy();
   }
 
   /**

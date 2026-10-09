@@ -7,36 +7,10 @@
 
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions, ClrElementContextCallback } from '@clr/angular/utils';
+import { publishedState } from '@clr/angular/testing';
+import { CLR_ELEMENT_CONTEXT_PROPERTY } from '@clr/angular/utils';
 
 import { ClrTimelineModule } from './timeline.module';
-
-const BUDGETS: Required<ClrContextSnapshotOptions> = {
-  maxTextLength: 100,
-  maxItemsPerCollection: 25,
-  maxComponents: 100,
-  includeDomComponents: true,
-  includeText: true,
-  includeFrames: true,
-  excludeCategories: [],
-  excludeRoles: [],
-  excludeSelectors: [],
-  rootSelector: '',
-  maxDepth: 0,
-  focus: 'page',
-  collectionItems: 'all',
-  includeRoutes: false,
-};
-
-function publishedOn(element: Element): Record<string, unknown> {
-  const callback = (element as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback })[
-    CLR_ELEMENT_CONTEXT_PROPERTY
-  ];
-  if (!callback) {
-    throw new Error(`expected ${element.tagName.toLowerCase()} to publish an element context callback`);
-  }
-  return (callback(BUDGETS)?.state ?? {}) as Record<string, unknown>;
-}
 
 @Component({
   template: `
@@ -74,7 +48,7 @@ describe('ClrTimelineStep element context', () => {
   it('publishes the outcome of each step', () => {
     // The timeline is a list and its steps are list items, so the list is summarised by
     // item name — which never reaches the icon whose label carries the outcome.
-    expect(steps().map(step => publishedOn(step).status)).toEqual(['success', 'error', 'not-started']);
+    expect(steps().map(step => publishedState(step).status)).toEqual(['success', 'error', 'not-started']);
   });
 
   it('stops publishing once a step is destroyed', () => {

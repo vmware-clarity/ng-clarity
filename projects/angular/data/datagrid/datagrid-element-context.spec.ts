@@ -9,9 +9,15 @@ import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextEngineService } from '@clr/angular/ai';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions, ClrElementContextCallback } from '@clr/angular/utils';
+import { publishedState } from '@clr/angular/testing';
+import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { ClrDatagridModule } from './datagrid.module';
+
+/** The state the fixture's datagrid publishes. */
+function gridState(fixture: ComponentFixture<unknown>, options: ClrContextSnapshotOptions = {}) {
+  return publishedState(fixture.nativeElement.querySelector('clr-datagrid'), options);
+}
 
 interface Node {
   name: string;
@@ -49,34 +55,6 @@ class TestComponent {
 describe('ClrDatagrid element context', () => {
   let fixture: ComponentFixture<TestComponent>;
 
-  const budgets: Required<ClrContextSnapshotOptions> = {
-    maxTextLength: 100,
-    maxItemsPerCollection: 25,
-    maxComponents: 100,
-    includeDomComponents: true,
-    includeText: true,
-    includeFrames: true,
-    excludeCategories: [],
-    excludeRoles: [],
-    excludeSelectors: [],
-    rootSelector: '',
-    maxDepth: 0,
-    focus: 'page',
-    collectionItems: 'all',
-    includeRoutes: false,
-  };
-
-  function published(): ReturnType<ClrElementContextCallback> {
-    const host = fixture.nativeElement.querySelector('clr-datagrid') as HTMLElement & {
-      [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback;
-    };
-    const callback = host[CLR_ELEMENT_CONTEXT_PROPERTY];
-    if (!callback) {
-      throw new Error('expected the datagrid to publish an element context callback');
-    }
-    return callback(budgets);
-  }
-
   beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrDatagridModule, NoopAnimationsModule],
@@ -90,7 +68,7 @@ describe('ClrDatagrid element context', () => {
 
   it('publishes the total row count, which the rendered page cannot show', () => {
     // The DOM holds two rows; the grid holds 4210. Only the component knows the total.
-    expect(published()?.state?.totalRows).toBe(4210);
+    expect(gridState(fixture).totalRows).toBe(4210);
   });
 
   it('publishes which columns are filtered, which a closed filter popover cannot show', async () => {
@@ -99,25 +77,25 @@ describe('ClrDatagrid element context', () => {
     await fixture.whenStable();
 
     // Named as the grid's summary names its columns: by header text.
-    expect(published()?.state?.filteredColumns).toEqual(['Name']);
+    expect(gridState(fixture).filteredColumns).toEqual(['Name']);
   });
 
   it('publishes nothing about filters while none are applied', () => {
-    expect('filteredColumns' in (published()?.state ?? {})).toBe(false);
+    expect('filteredColumns' in gridState(fixture)).toBe(false);
   });
 
   it('publishes which columns are hidden, which the DOM cannot show', () => {
     fixture.componentInstance.hideStatus = true;
     fixture.detectChanges();
-    expect(published()?.state?.hiddenColumns).toEqual(['Status']);
+    expect(gridState(fixture).hiddenColumns).toEqual(['Status']);
   });
 
   it('says nothing about selection while rows cannot be selected', () => {
-    expect(JSON.stringify(published()?.state ?? {})).not.toMatch(/"(selectionMode|rows|selection)"/);
+    expect(JSON.stringify(gridState(fixture))).not.toMatch(/"(selectionMode|rows|selection)"/);
   });
 
   it('publishes nothing about hidden columns while every column is shown', () => {
-    expect('hiddenColumns' in (published()?.state ?? {})).toBe(false);
+    expect('hiddenColumns' in gridState(fixture)).toBe(false);
   });
 
   it('stops publishing once the datagrid is destroyed', () => {
@@ -151,29 +129,8 @@ describe('ClrDatagrid element context without pagination', () => {
     });
     const fixture = TestBed.createComponent(UnpaginatedTestComponent);
     fixture.detectChanges();
-    const host = fixture.nativeElement.querySelector('clr-datagrid') as HTMLElement & {
-      [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback;
-    };
-    const published = host[CLR_ELEMENT_CONTEXT_PROPERTY];
 
-    const budgets = {
-      maxTextLength: 100,
-      maxItemsPerCollection: 25,
-      maxComponents: 100,
-      includeDomComponents: true,
-      includeText: true,
-      includeFrames: true,
-      excludeCategories: [],
-      excludeRoles: [],
-      excludeSelectors: [],
-      rootSelector: '',
-      maxDepth: 0,
-      focus: 'page',
-      collectionItems: 'all',
-      includeRoutes: false,
-    } as Required<ClrContextSnapshotOptions>;
-
-    expect(published && 'totalRows' in (published(budgets)?.state ?? {})).toBeFalsy();
+    expect('totalRows' in gridState(fixture)).toBe(false);
     fixture.destroy();
   });
 });
@@ -223,23 +180,16 @@ describe('ClrDatagrid element context, columns the application keeps from agents
 
   afterEach(() => fixture.destroy());
 
-  function published(options: Partial<ClrContextSnapshotOptions> = {}) {
-    const host = fixture.nativeElement.querySelector('clr-datagrid') as HTMLElement & {
-      [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback;
-    };
-    return host[CLR_ELEMENT_CONTEXT_PROPERTY]?.(options as Required<ClrContextSnapshotOptions>);
-  }
-
   it('names neither a redacted column nor one whose header text is withheld, not even by its field', () => {
-    const state = published()?.state ?? {};
+    const state = gridState(fixture);
 
     expect(state['filteredColumns']).toEqual(['Name']);
     expect(JSON.stringify(state)).not.toMatch(/salary|ssn|social/i);
   });
 
   it('leaves out a column the snapshot excludes, matched on the column itself', () => {
-    expect(published()?.state?.['hiddenColumns']).toEqual(['Code']);
-    expect('hiddenColumns' in (published({ excludeSelectors: ['clr-datagrid .internal'] })?.state ?? {})).toBe(false);
+    expect(gridState(fixture)['hiddenColumns']).toEqual(['Code']);
+    expect('hiddenColumns' in gridState(fixture, { excludeSelectors: ['clr-datagrid .internal'] })).toBe(false);
   });
 });
 
@@ -312,16 +262,9 @@ describe('ClrDatagrid element context, selection', () => {
     fixture.detectChanges();
   }
 
-  function published(options: Partial<ClrContextSnapshotOptions> = {}) {
-    const host = fixture.nativeElement.querySelector('clr-datagrid') as HTMLElement & {
-      [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback;
-    };
-    return host[CLR_ELEMENT_CONTEXT_PROPERTY]?.(options as Required<ClrContextSnapshotOptions>)?.state ?? {};
-  }
-
   it('lists the rows of a multi-select grid and which are selected, by their content', async () => {
     await create(MultiSelectionTestComponent);
-    const state = published();
+    const state = gridState(fixture);
 
     expect(state['selectionMode']).toBe('multi');
     // By the cells the user sees, without the selection cell the grid adds and without
@@ -333,7 +276,7 @@ describe('ClrDatagrid element context, selection', () => {
 
   it('says which row of a single-select grid is selected', async () => {
     await create(SingleSelectionTestComponent);
-    const state = published();
+    const state = gridState(fixture);
 
     expect(state['selectionMode']).toBe('single');
     expect(state['selection']).toEqual(['brokerage | open']);
@@ -344,14 +287,14 @@ describe('ClrDatagrid element context, selection', () => {
     (fixture.componentInstance as MultiSelectionTestComponent).selected = [];
     fixture.detectChanges();
 
-    expect('selection' in published()).toBe(false);
+    expect('selection' in gridState(fixture)).toBe(false);
   });
 
   it('holds the rows to the collection budget, and leaves them out of a summary snapshot', async () => {
     await create(MultiSelectionTestComponent);
 
-    expect(published({ maxItemsPerCollection: 2 })['rows']).toEqual(['checking | open', 'savings | frozen']);
-    const summary = published({ collectionItems: 'summary' });
+    expect(gridState(fixture, { maxItemsPerCollection: 2 })['rows']).toEqual(['checking | open', 'savings | frozen']);
+    const summary = gridState(fixture, { collectionItems: 'summary' });
     expect('rows' in summary).toBe(false);
     expect(summary['selection']).toEqual(['savings | frozen']);
   });

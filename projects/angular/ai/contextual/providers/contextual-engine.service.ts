@@ -170,8 +170,7 @@ export class ClrContextEngineService implements OnDestroy {
   }
 
   private snapshot(options: ClrContextSnapshotOptions | undefined, withRefs: boolean): ClrPageContext {
-    const effective = this.effectiveOptions(options);
-    const resolved = resolveSnapshotOptions(effective);
+    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
     const snapshot: ClrPageContext = {
       title: this.document.title,
       url: this.currentUrl(),
@@ -243,11 +242,6 @@ export class ClrContextEngineService implements OnDestroy {
   private untrustedCeiling(hostCeiling?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
     const application = this.applicationOptions ?? undefined;
     return resolveSnapshotOptions(capSnapshotOptions(withCallOptions(application, hostCeiling), application));
-  }
-
-  /** The call's options over the application's; see {@link withCallOptions}. */
-  private effectiveOptions(options?: ClrContextSnapshotOptions): ClrContextSnapshotOptions {
-    return withCallOptions(this.applicationOptions, options);
   }
 
   private browserWindow(): Window | null {

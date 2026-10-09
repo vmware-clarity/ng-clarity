@@ -115,12 +115,9 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   private readonly commonStrings = inject(ClrCommonStringsService);
   private readonly hostElement = inject<ElementRef<HTMLElement>>(ElementRef);
 
-  // What files are chosen is what the user entered, and their names are on the browse
-  // button, the clear buttons and the file list. The application's own page-context
-  // tooling is told how many there are and nothing else, however it reads the rendered
-  // markup; consumers it does not control are not told the count either. The file list
-  // is left out of the snapshot (see `ClrFileList`), and what the walk finds besides it
-  // — the helper, error and success text — is kept.
+  // The chosen files' names are what the user entered, so only their count is published,
+  // and only to the application's own tooling. The file list is left out of the snapshot
+  // (see `ClrFileList`); the helper, error and success text are kept.
   private readonly teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => {
     const state: Record<string, unknown> = {
       fileCount: this.fileInput?.elementRef.nativeElement.files?.length ?? 0,

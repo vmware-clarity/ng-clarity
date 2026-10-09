@@ -12,7 +12,6 @@ import {
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_CONTEXT_REDACT_SELECTOR,
   CLR_ELEMENT_CONTEXT_PROPERTY,
-  CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
   clrUsableSelectors,
@@ -21,7 +20,6 @@ import {
 import { accessibleName } from './accessible-name';
 import { ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, publishedNode, readClrElementContext } from './element-context';
-import { readElementMutator } from './element-mutator';
 import { withinReadScope } from './read-scope';
 import {
   isLeafRole,
@@ -37,19 +35,12 @@ import { isVisible } from './visibility';
 import { stripQueryAndFragment } from '../url';
 
 /**
- * Teaches the collector how to describe one kind of element it would otherwise skip.
+ * Teaches the collector how to describe markup that carries neither a role nor an
+ * accessible name, such as a bare `<div class="card">`.
  *
- * The collector needs no extractors to describe well-formed markup — it reads the
- * accessibility tree, which Clarity components, `@clr/ui` CSS-only markup and plain HTML
- * all expose. Extractors exist for the remainder: markup that carries neither a role nor
- * an accessible name, such as a bare `<div class="card">`.
- *
- * What the user entered or chose is recognised by its state key — `value`, `selected`,
- * `checked`, `pressed`, `selection`, `selectedRows`, `rows`, `filteredColumns`,
- * `hiddenColumns`, `fileCount`, `matchingOptions`, `redactedMatchingOptions`,
- * `matchingOptionsPending`, `matchingOptionCount` — and withheld from a consumer the
- * application does not control; report it under one of those keys, or it is shared with
- * everyone.
+ * Report what the user entered or chose under the state keys listed on
+ * `ClrElementContextCallback`, which are withheld from a consumer the application does
+ * not control; under any other key it is shared with everyone.
  */
 export interface ClrContextDomExtractor {
   /** CSS selector matching the elements this extractor understands. */
@@ -58,24 +49,8 @@ export interface ClrContextDomExtractor {
   extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
 }
 
-/**
- * Receives, for every described node, the element it was produced from — so that a
- * later operation can find the element again from the node's `ref`. The walk calls it
- * innermost element first: a node folded into the custom element that renders it is
- * noted once for the role-bearing element and once for the host, which is how the host
- * that carries the form binding is reachable from a node the DOM attributed to an
- * element inside it.
- */
-export interface ClrContextRefSink {
-  note(node: ClrComponentContext, element: Element): void;
-}
-
-/**
- * Roles an agent can propose a value for. A node with one of these roles is given a ref
- * whether or not it turns out to be writable — the engine decides that when asked, and
- * says why when it is not.
- */
-export const WRITABLE_ROLES: ReadonlySet<string> = new Set([
+/** Roles whose element holds a value the user can change. */
+const WRITABLE_ROLES: ReadonlySet<string> = new Set([
   'textbox',
   'searchbox',
   'combobox',
@@ -167,7 +142,7 @@ interface Walk {
   describedByIds: Set<string>;
   /** Ids of elements that name another element, and so are not free-standing text, in the current document. */
   labelIds: Set<string>;
-  /** Components still within budget. Shared across the whole walk. */
+  /** Components still within budget. A probe has a budget of its own. */
   remaining: number;
   /** Whether the budget ran out while there was still something to describe. */
   truncated: boolean;
@@ -186,17 +161,8 @@ interface Walk {
   depth: number;
   /** How many elements are above the current one, described or not. */
   elementDepth: number;
-  /** How many elements the walk has looked at. Shared across the whole walk. */
+  /** How many elements the walk has looked at. Shared across the whole walk, probes included. */
   visited: { count: number };
-  /** Greater than zero while inside an embedded frame's document. */
-  frameDepth: number;
-  /**
-   * Greater than zero while inside a custom element that published how it is written
-   * to: the component owns writing, so the controls it renders get no refs of their own.
-   */
-  mutatorDepth: number;
-  /** Where refs go, when the snapshot is to carry them. */
-  readonly refs: ClrContextRefSink | null;
 }
 
 /** The result of a walk, and whether it ran out of budget before it ran out of page. */
@@ -209,12 +175,11 @@ export interface ClrContextTreeResult {
   focus?: 'modal';
 }
 
-/** {@link collectContextTree}, also reporting whether the component budget ran out. */
+/** Describes what is under `root` as a tree, and whether the component budget ran out. */
 export function collectContextTreeWithin(
   root: ParentNode,
   options: Required<ClrContextSnapshotOptions>,
-  extractors: ClrContextDomExtractor[] = [],
-  refs: ClrContextRefSink | null = null
+  extractors: ClrContextDomExtractor[] = []
 ): ClrContextTreeResult {
   const excludeRoles = new Set(options.excludeRoles);
   const walk: Walk = {
@@ -236,14 +201,11 @@ export function collectContextTreeWithin(
     depth: 0,
     elementDepth: 0,
     visited: { count: 0 },
-    frameDepth: 0,
-    mutatorDepth: 0,
-    refs,
   };
   return withinReadScope(() => {
     collectReferencedIds(root, walk);
-    const scope = scopeOf(root, walk);
-    const components = describeScope(scope.roots, walk);
+    const scope = engineScope(root, walk.options);
+    const components = describeScope(root, scope.roots, walk);
     const result: ClrContextTreeResult = { components, truncated: walk.truncated };
     if (scope.focus) {
       result.focus = scope.focus;
@@ -256,8 +218,7 @@ export function collectContextTreeWithin(
  * Whether the engine would leave this element out of a snapshot, judged from the element
  * and its ancestry: not in the document, inside something hidden, inert, ignored or
  * excluded, or not rendered visibly. Used wherever something must follow the walk's
- * rules without walking — the mutation engine before it writes, and annotations that
- * sit on an element.
+ * rules without walking, such as annotations that sit on an element.
  */
 export function isHiddenFromEngine(element: Element, excludeSelector = ''): boolean {
   if (!element.isConnected || element.closest(CLR_CONTEXT_HIDDEN_SELECTOR)) {
@@ -383,14 +344,8 @@ function hasExcludedRole(element: Element, excludedRoles: ReadonlySet<string>): 
   return false;
 }
 
-/** The open modal dialog the user is looking at, if any: the last one the engine would describe. */
-export function topmostModal(root: ParentNode, excludeSelector = ''): Element | null {
-  const dialogs = openModalDialogs(root, excludeSelector);
-  return dialogs.length ? dialogs[dialogs.length - 1] : null;
-}
-
 /** The open modal dialogs the engine would describe, in document order. */
-export function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
+function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
   return Array.from(modalDialogs(root)).filter(dialog => !isHiddenFromEngine(dialog, excludeSelector));
 }
 
@@ -402,30 +357,25 @@ function modalDialogs(root: ParentNode): NodeListOf<Element> {
   }
 }
 
-function scopeOf(root: ParentNode, walk: Walk): { roots: ParentNode | Element[]; focus?: 'modal' } {
-  const scope = engineScope(root, walk.options);
-  return scope.roots ? { roots: scope.roots, focus: scope.focus } : { roots: root };
-}
-
 /**
  * Describes the chosen roots. A root chosen by a selector or by modal focus may sit
  * inside a redacted region, which a walk starting from it cannot see; the region's
  * ancestry is checked once per root so that what it withholds stays withheld however
  * the walk is pointed at it.
  */
-function describeScope(roots: ParentNode | Element[], walk: Walk): ClrComponentContext[] {
-  if (Array.isArray(roots)) {
-    const nodes: ClrComponentContext[] = [];
-    for (const element of roots) {
-      if (walk.remaining <= 0) {
-        noteUndescribed(element, walk, null);
-        break;
-      }
-      nodes.push(...withinRedactedAncestry(element, walk, () => describeElement(element, walk, null)));
-    }
-    return nodes;
+function describeScope(root: ParentNode, roots: Element[] | null, walk: Walk): ClrComponentContext[] {
+  if (!roots) {
+    return withinRedactedAncestry(root, walk, () => describeChildren(root, walk, null));
   }
-  return withinRedactedAncestry(roots, walk, () => describeChildren(roots, walk, null));
+  const nodes: ClrComponentContext[] = [];
+  for (const element of roots) {
+    if (walk.remaining <= 0) {
+      noteUndescribed(element, walk, null);
+      break;
+    }
+    nodes.push(...withinRedactedAncestry(element, walk, () => describeElement(element, walk, null)));
+  }
+  return nodes;
 }
 
 /**
@@ -433,9 +383,9 @@ function describeScope(roots: ParentNode | Element[], walk: Walk): ClrComponentC
  * undescribed. Whether the snapshot is actually cut off depends on whether anything
  * there would have produced a node — an invisible or empty leftover is not a loss — so a
  * probe with a budget of one is walked from it, stopping at the first node it would
- * produce. The probe shares this walk's context but not its counters, and is itself
- * never probed, so it costs at most one node's worth of work. Once the walk is known to
- * be cut off, nothing further is probed.
+ * produce. The probe has a budget of its own but counts towards the elements visited,
+ * and is itself never probed, so it costs at most one node's worth of work. Once the
+ * walk is known to be cut off, nothing further is probed.
  */
 function noteUndescribed(element: Element, walk: Walk, owner: Element | null): void {
   if (walk.probing || walk.truncated) {
@@ -447,33 +397,25 @@ function noteUndescribed(element: Element, walk: Walk, owner: Element | null): v
   }
 }
 
-/**
- * Describes what a custom element renders, noting when the element is a component that
- * is written to as one thing and owns what it renders (see `ClrElementMutator.ownsContents`),
- * so that nothing it renders is offered for writing on its own.
- */
-function withinComponent<T>(element: Element, walk: Walk, describe: () => T): T {
-  if (!ownsContents(element)) {
-    return describe();
-  }
-  walk.mutatorDepth++;
-  try {
-    return describe();
-  } finally {
-    walk.mutatorDepth--;
-  }
-}
-
 function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () => T): T {
   const ancestor = node.nodeType === Node.ELEMENT_NODE ? (node as Element).parentElement : null;
-  if (!ancestor?.closest(CLR_CONTEXT_REDACT_SELECTOR)) {
-    return describe();
+  return within(walk, ancestor?.closest(CLR_CONTEXT_REDACT_SELECTOR) ? ['redactedDepth'] : [], describe);
+}
+
+/** The walk's depth counters: how deep the current element is, and inside what. */
+type DepthCounter = 'depth' | 'elementDepth' | 'redactedDepth' | 'summarizedListDepth' | 'textDepth';
+
+/** Runs `describe` one level deeper in each of `counters`, restoring them however it ends. */
+function within<T>(walk: Walk, counters: readonly DepthCounter[], describe: () => T): T {
+  for (const counter of counters) {
+    walk[counter]++;
   }
-  walk.redactedDepth++;
   try {
     return describe();
   } finally {
-    walk.redactedDepth--;
+    for (const counter of counters) {
+      walk[counter]--;
+    }
   }
 }
 
@@ -532,60 +474,33 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
   // on a long flat list would still cost a style read per element. Too deep a level is
   // left out too (see `MAX_NESTING_DEPTH`), and the snapshot says it was cut off.
   if (walk.visited.count >= MAX_ELEMENTS_VISITED) {
-    if (!walk.probing) {
-      walk.truncated = true;
-    }
+    walk.truncated = true;
     return [];
   }
   if (shouldSkipSubtree(element, walk)) {
     return [];
   }
   if (walk.elementDepth >= MAX_NESTING_DEPTH) {
-    if (!walk.probing) {
-      walk.truncated = true;
-    }
+    walk.truncated = true;
     return [];
   }
   walk.visited.count++;
-  walk.elementDepth++;
-  try {
-    return describeAtDepth(element, walk, owner);
-  } finally {
-    walk.elementDepth--;
+  const counters: DepthCounter[] = ['elementDepth'];
+  if (element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE)) {
+    counters.push('redactedDepth');
   }
-}
-
-function describeAtDepth(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
-  const redacts = element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE);
   // A described-by target that is walked for the controls it holds still had its text
   // reported as the description of whatever it describes.
-  const describes = !!element.id && walk.describedByIds.has(element.id);
-  if (!redacts && !describes) {
-    return describeVisible(element, walk, owner);
+  if (element.id && walk.describedByIds.has(element.id)) {
+    counters.push('textDepth');
   }
-  if (redacts) {
-    walk.redactedDepth++;
-  }
-  if (describes) {
-    walk.textDepth++;
-  }
-  try {
-    return describeVisible(element, walk, owner);
-  } finally {
-    if (redacts) {
-      walk.redactedDepth--;
-    }
-    if (describes) {
-      walk.textDepth--;
-    }
-  }
+  return within(walk, counters, () => describeVisible(element, walk, owner));
 }
 
 function describeVisible(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
   const extractor = walk.extractors.find(candidate => element.matches(candidate.selector));
   if (extractor) {
     const extracted = extractSafely(extractor, element as HTMLElement, walk);
-    // Only the walk hands out refs: an extractor's node cannot claim another node's.
     const described = extracted ? publishedNode(extracted, walk.options) : null;
     if (!described) {
       // The extractor owns this element: when it declines to describe it, the element is
@@ -596,7 +511,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       return [];
     }
     walk.remaining--;
-    return listOf(finish(described, element, walk, true));
+    return listOf(finish(described, element, walk, { foreign: true }));
   }
 
   const tagName = element.tagName.toLowerCase();
@@ -624,7 +539,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     return [];
   }
 
-  const isCustomElement = tagName.includes('-');
+  const isCustomElement = isCustomElementTag(element);
   // Inside a region the application keeps from agents, a name is only what an author
   // gave the element — a label, `aria-label`, a title. A name taken from the content is
   // that content: a link that reads as the account number it opens, a button that
@@ -638,66 +553,9 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
         ? describeTextBlock(element, walk, owner)
         : describeChildren(element, walk, owner);
     }
-    // An anonymous custom element is a wrapper around whatever it renders.
-    const rendered = withinComponent(element, walk, () => describeChildren(element, walk, element));
-
-    // A single reportable descendant effectively IS this element, so it is returned
-    // directly, attributed back to here (see the owner mechanism above) — how
-    // <div role="grid"> inside <clr-datagrid> reports itself as a grid rendered by a
-    // datagrid. What this element publishes belongs to that descendant too, and wins
-    // over what the DOM said about it. More than one independently reportable
-    // descendant means this component genuinely has several parts — clr-datagrid's grid
-    // and its clr-dg-footer, clr-tabs's tablist and each active tabpanel — siblings in
-    // the DOM but one component. Flattening them apart would scatter one thing into
-    // unrelated-looking siblings, so they are wrapped instead: nesting survives exactly
-    // as it is in the DOM, the wrapper counts against the budget like any other node,
-    // and it is the wrapper that carries what this element publishes.
-    // A component whose own content was excluded — a datagrid when grids are — says
-    // nothing about itself through what is left of it, a footer, and is not written to
-    // through it either.
-    const published = !rendered.length || !rendersExcludedRole(element, walk);
-    if (rendered.length === 1) {
-      const only = rendered[0];
-      // Text is all this element renders: it is the element's own label, the same way a
-      // `clr-dg-footer` with bare text is labelled by it, rather than a text node inside.
-      if (only.type === 'text' && !only.children && !only.state) {
-        return listOf(finish({ type: tagName, element: tagName, label: only.label }, element, walk, false, published));
-      }
-      return listOf(finish(only, element, walk, false, published));
-    }
-    if (rendered.length > 1) {
-      if (walk.remaining <= 0) {
-        // The parts were counted; a wrapper for them is not affordable, so they stand alone.
-        return rendered;
-      }
-      walk.remaining--;
-      const wrapper: ClrComponentContext = { type: tagName, element: tagName, children: rendered };
-      // A component that is written to as one thing is named by the control it renders
-      // — a combobox by the input the user types into — so the node carrying its ref
-      // carries the name an agent would refer to it by.
-      if (ownsContents(element)) {
-        const named = rendered.find(part => part.label && WRITABLE_ROLES.has(part.type));
-        if (named) {
-          wrapper.label = named.label;
-        }
-      }
-      return listOf(finish(wrapper, element, walk, false, published));
-    }
-    // Nothing rendered, nothing said, nothing published: a closed modal, an icon, a
-    // spacer, a dismissed alert. Such an element is not on the page as far as an agent is
-    // concerned: a publisher that has nothing to say right now counts as none. Nor is
-    // one whose content was left out on purpose — a datagrid when grids are excluded —
-    // which must not come back labelled with all the text it holds.
-    // The role check first: it looks only at the elements that could carry an excluded
-    // role, while the text check reads the style of everything with text.
-    if (holdsExcludedRole(element, walk)) {
-      return [];
-    }
-    if (
-      !readClrElementContext(element, walk.options) &&
-      !accessibleText(element, undefined, walk.excludeSelector).trim()
-    ) {
-      return [];
+    const parts = describeAnonymousCustomElement(element, tagName, walk);
+    if (parts) {
+      return parts;
     }
   }
 
@@ -743,20 +601,14 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   if (!terminal) {
     // A node named from its contents — a heading, a cell, a list item — already carries
     // the text below it as its label, so nothing inside it is free-standing text.
-    const carriesText = !!role && isNameFromContents(role);
+    const counters: DepthCounter[] = [];
     if (summarisedList) {
-      walk.summarizedListDepth++;
+      counters.push('summarizedListDepth');
     }
-    if (carriesText) {
-      walk.textDepth++;
+    if (role && isNameFromContents(role)) {
+      counters.push('textDepth');
     }
-    const children = withinComponent(element, walk, () => describeNested(element, walk, null));
-    if (carriesText) {
-      walk.textDepth--;
-    }
-    if (summarisedList) {
-      walk.summarizedListDepth--;
-    }
+    const children = within(walk, counters, () => describeNested(element, walk, null));
     if (children.length) {
       node.children = children;
     }
@@ -780,6 +632,58 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     return described.children ?? [];
   }
   return [described];
+}
+
+/**
+ * An anonymous custom element — no role, no name — is a wrapper around what it renders:
+ *
+ * - One reportable part is this element: it is returned attributed to it (how the grid
+ *   inside a `clr-datagrid` reports itself as a grid rendered by a datagrid), and what
+ *   this element publishes merges into it.
+ * - Several parts are one component — a datagrid's grid and footer, a tab set's tab list
+ *   and panel — and are wrapped in a node for it, which carries what it publishes, rather
+ *   than scattered into unrelated-looking siblings.
+ * - Nothing rendered leaves it out, unless it publishes something or shows text.
+ *
+ * Returns `null` in that last case, when the element is described as a node of its own.
+ */
+function describeAnonymousCustomElement(element: Element, tagName: string, walk: Walk): ClrComponentContext[] | null {
+  const rendered = describeChildren(element, walk, element);
+  // A component whose own content was excluded — a datagrid when grids are — says
+  // nothing about itself through what is left of it, a footer.
+  const published = !rendered.length || !rendersExcludedRole(element, walk);
+  if (rendered.length === 1) {
+    const only = rendered[0];
+    // Text is all this element renders: it is the element's own label, the same way a
+    // `clr-dg-footer` with bare text is labelled by it, rather than a text node inside.
+    if (only.type === 'text' && !only.children && !only.state) {
+      return listOf(finish({ type: tagName, element: tagName, label: only.label }, element, walk, { published }));
+    }
+    return listOf(finish(only, element, walk, { published }));
+  }
+  if (rendered.length > 1) {
+    if (walk.remaining <= 0) {
+      // The parts were counted; a wrapper for them is not affordable, so they stand alone.
+      return rendered;
+    }
+    walk.remaining--;
+    return listOf(finish({ type: tagName, element: tagName, children: rendered }, element, walk, { published }));
+  }
+  // Nothing rendered, nothing said, nothing published: a closed modal, an icon, a
+  // spacer, a dismissed alert. Nor is one whose content was left out on purpose — a
+  // datagrid when grids are excluded — which must not come back labelled with all the
+  // text it holds. The role check goes first: it looks only at the elements that could
+  // carry an excluded role, while the text check reads the style of everything with text.
+  if (holdsExcludedRole(element, walk)) {
+    return [];
+  }
+  if (
+    !readClrElementContext(element, walk.options) &&
+    !accessibleText(element, undefined, walk.excludeSelector).trim()
+  ) {
+    return [];
+  }
+  return null;
 }
 
 const CELL_SELECTOR = '[role="gridcell"], [role="cell"], td';
@@ -822,9 +726,7 @@ function describeCellControls(collection: Element, walk: Walk): ClrComponentCont
     if (cells.size >= walk.options.maxItemsPerCollection) {
       // One more cell the budget leaves out: the snapshot is cut off, as when the
       // component budget runs out.
-      if (!walk.probing) {
-        walk.truncated = true;
-      }
+      walk.truncated = true;
       break;
     }
     cells.set(
@@ -833,22 +735,9 @@ function describeCellControls(collection: Element, walk: Walk): ClrComponentCont
     );
   }
   const nodes: ClrComponentContext[] = [];
-  walk.textDepth++;
-  try {
-    for (const [cell, redacted] of cells) {
-      if (redacted) {
-        walk.redactedDepth++;
-      }
-      try {
-        nodes.push(...describeNested(cell, walk, null));
-      } finally {
-        if (redacted) {
-          walk.redactedDepth--;
-        }
-      }
-    }
-  } finally {
-    walk.textDepth--;
+  for (const [cell, redacted] of cells) {
+    const counters: DepthCounter[] = redacted ? ['textDepth', 'redactedDepth'] : ['textDepth'];
+    nodes.push(...within(walk, counters, () => describeNested(cell, walk, null)));
   }
   return nodes;
 }
@@ -898,9 +787,7 @@ function describeTextBlock(element: Element, walk: Walk, owner: Element | null):
   if (label) {
     node.label = label;
   }
-  walk.textDepth++;
-  const children = describeNested(element, walk, owner);
-  walk.textDepth--;
+  const children = within(walk, ['textDepth'], () => describeNested(element, walk, owner));
   if (children.length) {
     node.children = children;
   }
@@ -972,22 +859,16 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     const hostLabelIds = walk.labelIds;
     walk.describedByIds = new Set();
     walk.labelIds = new Set();
-    walk.frameDepth++;
     const redactedRoot = redacted && walk.redactedDepth === 0;
-    if (redactedRoot) {
-      walk.redactedDepth++;
-    }
     try {
       collectReferencedIds(contents, walk);
-      const children = describeNested(contents.body, walk, null);
+      const children = within(walk, redactedRoot ? ['redactedDepth'] : [], () =>
+        describeNested(contents.body, walk, null)
+      );
       if (children.length) {
         node.children = children;
       }
     } finally {
-      if (redactedRoot) {
-        walk.redactedDepth--;
-      }
-      walk.frameDepth--;
       walk.describedByIds = hostDescribedByIds;
       walk.labelIds = hostLabelIds;
     }
@@ -1082,12 +963,7 @@ function describeNested(parent: ParentNode, walk: Walk, owner: Element | null): 
   if (maxDepth > 0 && walk.depth + 1 >= maxDepth) {
     return [];
   }
-  walk.depth++;
-  try {
-    return describeChildren(parent, walk, owner);
-  } finally {
-    walk.depth--;
-  }
+  return within(walk, ['depth'], () => describeChildren(parent, walk, owner));
 }
 
 function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null): ClrComponentContext[] {
@@ -1096,17 +972,20 @@ function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null)
   for (let index = 0; index < children.length; index++) {
     if (walk.remaining <= 0) {
       // Whatever follows would be described from here on; check that it would have been.
-      for (const leftover of children.slice(index)) {
-        if (walk.truncated || walk.probing) {
-          break;
-        }
-        noteUndescribed(leftover, walk, owner);
-      }
+      children.slice(index).forEach(leftover => noteUndescribed(leftover, walk, owner));
       break;
     }
     nodes.push(...describeElement(children[index], walk, owner));
   }
   return nodes;
+}
+
+/** How {@link finish} treats a node. */
+interface FinishOptions {
+  /** The node came from outside the walk — an extractor — and was never pruned. */
+  foreign?: boolean;
+  /** Whether what the element publishes is merged in. */
+  published?: boolean;
 }
 
 /**
@@ -1121,17 +1000,18 @@ function finish(
   node: ClrComponentContext,
   element: Element,
   walk: Walk,
-  deep = false,
-  published = true
+  { foreign = false, published = true }: FinishOptions = {}
 ): ClrComponentContext | null {
   const redacted = isRedacted(element, walk.redactedDepth > 0);
   // Inside a region the application keeps from agents, what a component publishes about
   // itself is not merged at all: a publisher reports its own state — a grid's rows and
   // selection, a combobox's value — and would otherwise carry it straight out. Nor is it
   // when the caller excluded what the component renders (see `rendersExcludedRole`).
-  let described = redacted || !published ? node : mergeElementContext(node, element, walk.options);
-  if (redacted && published) {
-    described = withoutOverriddenLabel(node, element, walk);
+  let described = node;
+  if (published) {
+    described = redacted
+      ? withoutOverriddenLabel(node, element, walk)
+      : mergeElementContext(node, element, walk.options);
   }
   // A component that says it is something the caller excluded is left out like any
   // element with that role, whatever the DOM said about it. The node was counted against
@@ -1141,7 +1021,7 @@ function finish(
     return null;
   }
   // Anything published or extracted arrives unpruned and may carry children of its own.
-  const foreign = deep || described !== node;
+  const unpruned = foreign || described !== node;
 
   if (redacted || described.state?.['redacted'] === true) {
     // What the user entered goes, along with the content the region shows: neither this
@@ -1149,11 +1029,7 @@ function finish(
     described = redactNode(described);
   }
 
-  const pruned = pruneEmpty(described, foreign);
-  if (published) {
-    noteRef(pruned, element, walk);
-  }
-  return pruned;
+  return pruneEmpty(described, { foreign: unpruned });
 }
 
 /**
@@ -1163,6 +1039,8 @@ function finish(
  * used either, since inside a redacted region it may be the very content withheld.
  */
 function withoutOverriddenLabel(node: ClrComponentContext, element: Element, walk: Walk): ClrComponentContext {
+  // Reading the published label runs the component's whole callback (a datagrid reads
+  // every row), so it is done only for a node that has a label to lose.
   if (node.label === undefined || typeof readClrElementContext(element, walk.options)?.label !== 'string') {
     return node;
   }
@@ -1237,27 +1115,6 @@ function isLeftOutAnyway(element: Element, excludeSelector: string): boolean {
   return !!element.closest(CLR_CONTEXT_IGNORE_SELECTOR) || (!!excludeSelector && !!element.closest(excludeSelector));
 }
 
-/**
- * Gives a node a ref when it is something an agent could propose a value for — a
- * writable role, or an element that published how it is written to — and records the
- * element behind it. A node that already has a ref, because it was finished once for
- * the element inside and is now being finished for the host that renders it, keeps the
- * ref and gains the host as a second way to find its binding. Nothing inside a frame, a
- * redacted region or a component that owns its contents gets a ref: the engine never
- * writes there, so nothing should invite it to.
- */
-function noteRef(node: ClrComponentContext, element: Element, walk: Walk): void {
-  if (!walk.refs || walk.probing || walk.frameDepth > 0 || walk.redactedDepth > 0 || walk.mutatorDepth > 0) {
-    return;
-  }
-  if (node.ref || WRITABLE_ROLES.has(node.type) || CLR_ELEMENT_MUTATOR_PROPERTY in element) {
-    if (node.state?.['redacted'] === true) {
-      return;
-    }
-    walk.refs.note(node, element);
-  }
-}
-
 /** Whether an element and everything inside it is invisible to the engine. */
 function shouldSkipSubtree(element: Element, walk: Walk): boolean {
   if (SKIPPED_TAGS.has(element.tagName.toLowerCase())) {
@@ -1293,13 +1150,10 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
 }
 
 /** Removes empty labels, states and children so snapshots stay minimal. */
-function pruneEmpty(context: ClrComponentContext, deep = false): ClrComponentContext {
+function pruneEmpty(context: ClrComponentContext, { foreign = false } = {}): ClrComponentContext {
   const pruned: ClrComponentContext = { type: context.type };
   if (context.element) {
     pruned.element = context.element;
-  }
-  if (context.ref) {
-    pruned.ref = context.ref;
   }
   if (context.label) {
     pruned.label = context.label;
@@ -1310,12 +1164,7 @@ function pruneEmpty(context: ClrComponentContext, deep = false): ClrComponentCon
   if (context.children?.length) {
     // Children the walk produced were each pruned as they were finished; only children
     // that arrived from outside the walk need visiting.
-    pruned.children = deep ? context.children.map(child => pruneEmpty(child, true)) : context.children;
+    pruned.children = foreign ? context.children.map(child => pruneEmpty(child, { foreign: true })) : context.children;
   }
   return pruned;
-}
-
-/** Whether an element is a component written to as one thing, whose rendered controls are its own internals. */
-function ownsContents(element: Element): boolean {
-  return CLR_ELEMENT_MUTATOR_PROPERTY in element && readElementMutator(element)?.ownsContents === true;
 }
