@@ -1373,6 +1373,21 @@ describe('collectContextTree, names, text and state an agent would otherwise mis
     ).toBeUndefined();
   });
 
+  it('keeps prose broken up by phrasing elements as one text node, broken only by what is described itself', () => {
+    const [dialog] = collect(
+      `<div role="dialog" aria-label="Confirm">Delete <b>vm-01</b> from <em>cluster <code>c2</code></em>?<button>OK</button>
+       Read <a href="/docs">the docs</a> <strong>first</strong>.<span style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">(hidden hint)</span>
+       <span data-clr-context-redact>SECRET</span></div>`
+    );
+    expect(dialog.children).toEqual([
+      { type: 'text', label: 'Delete vm-01 from cluster c2?' },
+      { type: 'button', label: 'OK' },
+      { type: 'text', label: 'Read' },
+      { type: 'link', label: 'the docs', state: { href: '/docs' } },
+      { type: 'text', label: 'first.' },
+    ]);
+  });
+
   it('says the snapshot is cut off when the budget runs out before loose text', () => {
     const result = collectTree('<div role="dialog" aria-label="D">Bare text.</div>', { maxComponents: 1 });
     expect(result.components).toEqual([{ type: 'dialog', label: 'D' }]);

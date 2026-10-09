@@ -1039,6 +1039,11 @@ function describeChildren(
     if (child.nodeType !== Node.ELEMENT_NODE) {
       continue;
     }
+    // `Delete <b>vm-01</b>?` is one sentence: emphasis inside it does not break it up.
+    if (withText && isPhrasing(child as Element, walk)) {
+      text += phrasingText(child as Element, walk);
+      continue;
+    }
     nodes.push(...describeLooseText(text, looseText, walk));
     text = '';
     if (walk.remaining <= 0) {
@@ -1056,6 +1061,68 @@ function describeChildren(
   }
   nodes.push(...describeLooseText(text, looseText, walk));
   return nodes;
+}
+
+/** Inline elements that only style or mark up the prose they sit in. */
+const PHRASING_TAGS = new Set([
+  'abbr',
+  'b',
+  'bdi',
+  'bdo',
+  'cite',
+  'code',
+  'data',
+  'del',
+  'dfn',
+  'em',
+  'i',
+  'ins',
+  'kbd',
+  'mark',
+  'q',
+  's',
+  'samp',
+  'small',
+  'span',
+  'strong',
+  'sub',
+  'sup',
+  'time',
+  'u',
+  'var',
+]);
+
+/**
+ * Whether an element inside loose text is part of the prose around it: a phrasing element
+ * with no role, no name, nothing it publishes or an extractor describes, and nothing
+ * inside that is described in its own right. Anything else — a link, a button, a named
+ * or live span, one the application marked — is a node of its own, and ends the text
+ * before it.
+ */
+function isPhrasing(element: Element, walk: Walk): boolean {
+  return (
+    PHRASING_TAGS.has(element.tagName.toLowerCase()) &&
+    !resolveRole(element) &&
+    !element.hasAttribute('title') &&
+    !element.hasAttribute('aria-live') &&
+    !element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE) &&
+    !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !(element.id && walk.labelIds.has(element.id)) &&
+    !element.matches(DESCRIBABLE) &&
+    !element.querySelector(DESCRIBABLE) &&
+    !walk.extractors.some(extractor => element.matches(extractor.selector))
+  );
+}
+
+/**
+ * What a phrasing element adds to the prose it sits in: its text, unless the walk would
+ * leave it out or it is hidden from sight (guidance for a screen reader, as in a name).
+ */
+function phrasingText(element: Element, walk: Walk): string {
+  if (shouldSkipSubtree(element, walk) || isVisuallyHidden(element)) {
+    return '';
+  }
+  return accessibleText(element, undefined, walk.excludeSelector);
 }
 
 /** Text with a letter or a digit in it; punctuation between links — a separator — says nothing. */
