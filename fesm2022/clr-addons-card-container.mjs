@@ -290,6 +290,8 @@ class ContainerService {
         if (this.getCardById(card.id)) {
             throw new Error(`Card with id '${card.id}' already exist`);
         }
+        // the internal properties (order, hidden, view) are set on the same object by applyCardSettings
+        // and by the container once the card is inserted into the view
         this.containerCards = [...this.containerCards, card];
     }
     /**
@@ -304,9 +306,10 @@ class ContainerService {
      */
     applyCardSettings(card, cardSettings) {
         const cardSetting = cardSettings.find((setting) => setting.id === card.id);
-        card.order = cardSetting?.order ?? cardDefaults.order;
-        card.hidden = cardSetting?.hidden ?? cardDefaults.hidden;
-        return card;
+        const cardWithSettings = card;
+        cardWithSettings.order = cardSetting?.order ?? cardDefaults.order;
+        cardWithSettings.hidden = cardSetting?.hidden ?? cardDefaults.hidden;
+        return cardWithSettings;
     }
     /**
      * Remove hidden cards
