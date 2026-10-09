@@ -579,8 +579,9 @@ export class ClrIfExpanded implements OnInit, OnDestroy {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfExpanded, [{ optional: true; }, null, null, null, null]>;
 }
 
-// @public
+// @public (undocumented)
 export interface ClrInitialRenderState {
+    // (undocumented)
     readonly done: boolean;
 }
 

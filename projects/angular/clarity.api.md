@@ -4275,8 +4275,9 @@ export class ClrIfSuccess extends AbstractIfState {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrIfSuccess, [{ optional: true; }, null, null]>;
 }
 
-// @public
+// @public (undocumented)
 export interface ClrInitialRenderState {
+    // (undocumented)
     readonly done: boolean;
 }
 

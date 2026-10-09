@@ -6,7 +6,6 @@
  */
 
 import { isPlatformServer } from '@angular/common';
-import * as angularCore from '@angular/core';
 import {
   afterNextRender,
   ANIMATION_MODULE_TYPE,
@@ -15,50 +14,34 @@ import {
   Injector,
   MAX_ANIMATION_TIMEOUT,
   PLATFORM_ID,
+  ɵANIMATIONS_DISABLED,
 } from '@angular/core';
 
-// Angular's token disabling `animate.enter` / `animate.leave` (set by `TestBed`). It is private API, so it is read
-// from the namespace: if Angular stops exporting it, it is `undefined` instead of breaking the build.
-const ANIMATIONS_DISABLED = (angularCore as Partial<typeof angularCore>).ɵANIMATIONS_DISABLED;
-
-/** State returned by `ClrAnimationsService.trackInitialRender()`. */
 export interface ClrInitialRenderState {
-  /** Whether the render that created the component's view has completed. */
   readonly done: boolean;
 }
 
 /**
- * Waits for the CSS / Web Animations of the Clarity components that cannot use Angular's `animate.leave`.
+ * Waits for the animations of the Clarity components that cannot use Angular's `animate.leave`.
  */
 @Injectable({ providedIn: 'root' })
 export class ClrAnimationsService {
-  /**
-   * Whether animations are off: with `NoopAnimationsModule` / `provideNoopAnimations()`, in `TestBed` (unless
-   * `animationsEnabled: true`) and on the server.
-   */
-  readonly disabled: boolean =
+  /** True with `NoopAnimationsModule`, in `TestBed` (unless `animationsEnabled: true`) and on the server. */
+  readonly disabled =
     inject(ANIMATION_MODULE_TYPE, { optional: true }) === 'NoopAnimations' ||
-    (!!ANIMATIONS_DISABLED && !!inject(ANIMATIONS_DISABLED, { optional: true })) ||
+    inject(ɵANIMATIONS_DISABLED) ||
     isPlatformServer(inject(PLATFORM_ID));
 
-  private readonly maxAnimationTimeout = inject(MAX_ANIMATION_TIMEOUT);
+  private readonly timeout = inject(MAX_ANIMATION_TIMEOUT);
 
-  /**
-   * Resolves once the animations running on `element` have finished or were cancelled. Infinite animations are
-   * ignored, and like `animate.leave` it gives up after `MAX_ANIMATION_TIMEOUT`.
-   */
+  /** Resolves when the (finite) animations of `element` end, or after `MAX_ANIMATION_TIMEOUT`. */
   whenComplete(element: Element | null | undefined): Promise<void> {
-    const animations =
-      this.disabled || typeof element?.getAnimations !== 'function'
-        ? []
-        : element.getAnimations().filter(animation => animation.effect?.getTiming().iterations !== Infinity);
-
-    if (!animations.length) {
-      return Promise.resolve();
-    }
+    const animations = this.disabled
+      ? []
+      : (element?.getAnimations?.() ?? []).filter(animation => animation.effect?.getTiming().iterations !== Infinity);
 
     return new Promise(resolve => {
-      const timer = setTimeout(resolve, this.maxAnimationTimeout);
+      const timer = animations.length ? setTimeout(resolve, this.timeout) : undefined;
       Promise.allSettled(animations.map(animation => animation.finished)).then(() => {
         clearTimeout(timer);
         resolve();
@@ -66,10 +49,7 @@ export class ClrAnimationsService {
     });
   }
 
-  /**
-   * Like `whenComplete()`, but looks the element up after the next render, once the classes bound in the current
-   * change detection are applied.
-   */
+  /** `whenComplete()` for the element `getElement` returns after the next render. */
   whenCompleteAfterRender(getElement: () => Element | null | undefined, injector: Injector): Promise<void> {
     if (this.disabled) {
       return Promise.resolve();
@@ -79,10 +59,7 @@ export class ClrAnimationsService {
     });
   }
 
-  /**
-   * Tells when the component's first render is done, so that elements present on that render are not animated.
-   * Call it from a field initializer.
-   */
+  /** `done` turns true after the first render, so that only elements added later get enter animations. */
   trackInitialRender(injector: Injector): ClrInitialRenderState {
     const state = { done: false };
     afterNextRender(() => (state.done = true), { injector });
