@@ -24,7 +24,7 @@ import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../i
 import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
 import { availableRoutes, routePatternFor } from '../routes';
 import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
-import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
+import { contextForUntrustedCaller, sanitizeUntrustedSnapshotOptions } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
 
@@ -156,8 +156,12 @@ export class ClrContextEngineService implements OnDestroy {
     host[propertyName] = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
       const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
-      const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
-      return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
+      return contextForUntrustedCaller(
+        snapshot,
+        { shareFormValues, shareFullUrl },
+        url => this.routePattern(url),
+        this.document.baseURI
+      );
     };
   }
 

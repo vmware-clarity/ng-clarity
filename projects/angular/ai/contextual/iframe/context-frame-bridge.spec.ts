@@ -8,26 +8,36 @@
 import {
   CLR_CONTEXT_PROTOCOL,
   ClrContextFrameHost,
+  ClrContextFrameHostOptions,
   ClrContextFrameRequest,
+  ClrContextFrameRequestOptions,
   ClrContextFrameResponse,
   clrRequestHostContext,
 } from './context-frame-bridge';
 import { resetNoHostOriginWarning } from './host-origin-warning';
-import { ClrPageContext } from '../interfaces/context.interface';
+import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 
 /**
  * A stand-in for a frame's window: enough surface for the bridge, and a spy to assert on.
  * It is a frame of this window, as the bridge requires of anything it serves.
  */
-interface FakeWindow {
-  postMessage: jasmine.Spy;
-  parent: unknown;
-  location: { origin: string } | undefined;
-}
+type FakeWindow = Window & { postMessage: jasmine.Spy };
 
-/** A same-origin window by default, whose origin a request can read; pass `null` for one it cannot. */
+/**
+ * A same-origin window by default, whose origin a request can read; pass `null` for one
+ * it cannot, whose location throws as a cross-origin window's does.
+ */
 function fakeWindow(parent: unknown = window, origin: string | null = window.location.origin): FakeWindow {
-  return { postMessage: jasmine.createSpy('postMessage'), parent, location: origin ? { origin } : undefined };
+  const fake = { postMessage: jasmine.createSpy('postMessage'), parent };
+  Object.defineProperty(fake, 'location', {
+    get: () => {
+      if (!origin) {
+        throw new DOMException('Blocked a frame from accessing a cross-origin frame.', 'SecurityError');
+      }
+      return { origin };
+    },
+  });
+  return fake as unknown as FakeWindow;
 }
 
 /**
@@ -88,6 +98,17 @@ describe('Context frame bridge', () => {
       dispatchMessage({ data: request, origin, source });
     }
 
+    /** Replaces the host with one built from these options, unthrottled unless they say otherwise. */
+    function restartHost(
+      options: ClrContextFrameHostOptions = {},
+      snapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext = getSnapshot,
+      routePattern?: (url: URL) => string | null
+    ): void {
+      host.stop();
+      host = new ClrContextFrameHost(snapshot, window, { minRequestIntervalMs: 0, ...options }, routePattern);
+      host.start();
+    }
+
     beforeEach(() => {
       getSnapshot = jasmine.createSpy('getSnapshot').and.callFake(() => JSON.parse(JSON.stringify(pageContext)));
       frame = fakeWindow();
@@ -136,6 +157,23 @@ describe('Context frame bridge', () => {
       );
     });
 
+    it('caps the budgets a frame asks for at what the host allows', () => {
+      restartHost({ snapshot: { maxComponents: 20 } });
+
+      dispatchRequest(frameRequest('big', { maxComponents: 5000 }));
+      expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(20);
+
+      dispatchRequest(frameRequest('small', { maxComponents: 3 }));
+      expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(3);
+    });
+
+    it('drops a budget that is not a finite number rather than walking without bound', () => {
+      dispatchRequest(frameRequest('nan', { maxComponents: Number.NaN }));
+
+      // Dropped, so the default ceiling applies.
+      expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(300);
+    });
+
     it('ignores requests from origins that are not allowed', () => {
       dispatchRequest(frameRequest('request-3'), 'https://evil.example');
 
@@ -143,11 +181,9 @@ describe('Context frame bridge', () => {
     });
 
     it('answers only frames embedded in the page, not a popup, a tab or an opener from an allowed origin', () => {
-      host.stop();
-      host = new ClrContextFrameHost(getSnapshot, window, { allowAnyOrigin: true, minRequestIntervalMs: 0 });
-      host.start();
+      restartHost({ allowAnyOrigin: true });
       const popup = fakeWindow();
-      popup.parent = popup;
+      (popup as { parent: unknown }).parent = popup;
       const detached = fakeWindow(null);
 
       dispatchRequest(frameRequest('popup'), 'https://evil.example', popup);
@@ -173,12 +209,7 @@ describe('Context frame bridge', () => {
     });
 
     it('serves an origin listed with a trailing slash, a path or capitals, as the browser reports it', () => {
-      host.stop();
-      host = new ClrContextFrameHost(getSnapshot, window, {
-        allowedOrigins: ['HTTPS://Chat.Example/assistant/'],
-        minRequestIntervalMs: 0,
-      });
-      host.start();
+      restartHost({ allowedOrigins: ['HTTPS://Chat.Example/assistant/'] });
 
       dispatchRequest(frameRequest('request-normalised'), 'https://chat.example');
 
@@ -200,18 +231,16 @@ describe('Context frame bridge', () => {
       );
     });
 
-    it('does not honour a wildcard origin on its own', () => {
-      // A list that only says '*' names nobody to serve; refused rather than silently
-      // serving nobody, or worse, everybody.
-      expect(
-        () => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: ['*'], minRequestIntervalMs: 0 })
-      ).toThrowError(/allowAnyOrigin/);
+    it('refuses a list that names nobody to serve, such as only a wildcard', () => {
+      // Refused rather than silently serving nobody, or worse, everybody.
+      expect(() => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: ['*'] })).toThrowError(
+        /allowAnyOrigin/
+      );
+      expect(() => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: [] })).toThrowError(/allowAnyOrigin/);
     });
 
     it('serves any origin only when that is acknowledged explicitly', () => {
-      host.stop();
-      host = new ClrContextFrameHost(getSnapshot, window, { allowAnyOrigin: true, minRequestIntervalMs: 0 });
-      host.start();
+      restartHost({ allowAnyOrigin: true });
 
       dispatchRequest(frameRequest('request-4b'), 'https://trusted.example');
 
@@ -251,6 +280,54 @@ describe('Context frame bridge', () => {
       expect(frame.postMessage).not.toHaveBeenCalled();
     });
 
+    it('keeps serving after one request blows up', () => {
+      getSnapshot.and.callFake(() => {
+        if (getSnapshot.calls.count() === 1) {
+          throw new Error('broken publisher');
+        }
+        return JSON.parse(JSON.stringify(pageContext));
+      });
+
+      expect(() => dispatchRequest(frameRequest('first'))).not.toThrow();
+      dispatchRequest(frameRequest('second'));
+
+      expect(frame.postMessage).toHaveBeenCalledTimes(1);
+    });
+
+    it('answers a request a same-origin frame posts itself, and only that frame', async () => {
+      getSnapshot.and.returnValue({
+        title: 'Host page',
+        regions: [],
+        components: [{ type: 'button', label: 'Save' }],
+        collectedAt: '',
+      } as ClrPageContext);
+      const iframe = document.createElement('iframe');
+      const request = JSON.stringify(frameRequest('real-1'));
+      iframe.srcdoc = `<script>
+        window.addEventListener('message', event => {
+          if (event.source === parent && event.data && event.data.kind === 'context-response') {
+            window.served = event.data;
+          }
+        });
+        parent.postMessage(${request}, '*');
+      <\/script>`;
+      const loaded = new Promise(resolve => iframe.addEventListener('load', resolve, { once: true }));
+      document.body.appendChild(iframe);
+      try {
+        await loaded;
+        const frameWindow = iframe.contentWindow as Window & { served?: ClrContextFrameResponse };
+        for (let attempt = 0; attempt < 50 && !frameWindow.served; attempt++) {
+          await new Promise(resolve => setTimeout(resolve, 10));
+        }
+
+        expect(frameWindow.served?.requestId).toBe('real-1');
+        expect(frameWindow.served?.context.components).toEqual([{ type: 'button', label: 'Save' }]);
+        expect(getSnapshot).toHaveBeenCalledTimes(1);
+      } finally {
+        iframe.remove();
+      }
+    });
+
     describe('what a frame is allowed to see', () => {
       it('serves the route pattern in place of the address, which routinely carries identifiers and tokens', () => {
         dispatchRequest(frameRequest('request-url'));
@@ -274,8 +351,8 @@ describe('Context frame bridge', () => {
       });
 
       it('withholds the addresses of the page’s links and frames too, for the same reason', () => {
-        host.stop();
-        host = new ClrContextFrameHost(
+        restartHost(
+          {},
           () => ({
             ...pageContext,
             components: [
@@ -291,11 +368,8 @@ describe('Context frame bridge', () => {
               { type: 'frame', label: 'Plugin', state: { url: 'https://app.example/plugins/7' } },
             ],
           }),
-          window,
-          { minRequestIntervalMs: 0 },
           url => (/^\/users\/[^/]+$/.test(url.pathname) ? 'users/:id' : null)
         );
-        host.start();
 
         dispatchRequest(frameRequest('request-links'));
 
@@ -312,8 +386,8 @@ describe('Context frame bridge', () => {
       });
 
       it('serves only the origin of a page that matches no route, and resolves relative links against the page', () => {
-        host.stop();
-        host = new ClrContextFrameHost(
+        restartHost(
+          {},
           () => ({
             title: 'Host page',
             url: 'https://app.example/reset/4f9c-token',
@@ -321,11 +395,8 @@ describe('Context frame bridge', () => {
             components: [{ type: 'link', label: 'Edit', state: { href: 'edit' } }],
             collectedAt: new Date(0).toISOString(),
           }),
-          window,
-          { minRequestIntervalMs: 0 },
           url => (url.pathname === '/reset/edit' ? 'reset/edit' : null)
         );
-        host.start();
 
         dispatchRequest(frameRequest('request-no-route'));
 
@@ -346,9 +417,7 @@ describe('Context frame bridge', () => {
       });
 
       it('shares what the user typed when the host says so explicitly', () => {
-        host.stop();
-        host = new ClrContextFrameHost(getSnapshot, window, { shareFormValues: true, minRequestIntervalMs: 0 });
-        host.start();
+        restartHost({ shareFormValues: true });
 
         dispatchRequest(frameRequest('request-shared-values'));
 
@@ -356,9 +425,7 @@ describe('Context frame bridge', () => {
       });
 
       it('shares the full URL when the host opts in', () => {
-        host.stop();
-        host = new ClrContextFrameHost(getSnapshot, window, { shareFullUrl: true, minRequestIntervalMs: 0 });
-        host.start();
+        restartHost({ shareFullUrl: true });
 
         dispatchRequest(frameRequest('request-full-url'));
 
@@ -378,11 +445,7 @@ describe('Context frame bridge', () => {
     });
 
     describe('throttling', () => {
-      beforeEach(() => {
-        host.stop();
-        host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 10_000 });
-        host.start();
-      });
+      beforeEach(() => restartHost({ minRequestIntervalMs: 10_000 }));
 
       it('answers one request per frame per interval, so a loop cannot pin the main thread', () => {
         dispatchRequest(frameRequest('first'));
@@ -432,11 +495,35 @@ describe('Context frame bridge', () => {
         expect(getSnapshot).toHaveBeenCalledTimes(2);
         expect(other.postMessage).toHaveBeenCalledTimes(1);
       });
+
+      it('bounds the requests served to all frames together, so nesting frames cannot multiply past the floor', () => {
+        for (let index = 0; index < 25; index++) {
+          dispatchRequest(frameRequest(`frame-${index}`), window.location.origin, fakeWindow());
+        }
+
+        expect(getSnapshot.calls.count()).toBe(5);
+      });
+
+      it('keeps the default throttle when given an interval that is not a number', () => {
+        restartHost({ minRequestIntervalMs: Number.NaN });
+
+        dispatchRequest(frameRequest('first'));
+        dispatchRequest(frameRequest('second'));
+
+        expect(getSnapshot).toHaveBeenCalledTimes(1);
+      });
     });
   });
 
   describe('clrRequestHostContext', () => {
-    function answering(context: ClrPageContext, overrides: Partial<ClrContextFrameResponse> = {}): FakeWindow {
+    /**
+     * A window that answers every request with `context`. `response` changes the answer,
+     * `source` and `origin` where it claims to come from.
+     */
+    function answering(
+      context: ClrPageContext,
+      from: { response?: Partial<ClrContextFrameResponse>; source?: unknown; origin?: string } = {}
+    ): FakeWindow {
       const target = fakeWindow();
       target.postMessage.and.callFake((message: ClrContextFrameRequest) => {
         setTimeout(() =>
@@ -446,25 +533,31 @@ describe('Context frame bridge', () => {
               kind: 'context-response',
               requestId: message.requestId,
               context,
-              ...overrides,
+              ...from.response,
             },
-            source: target,
+            origin: from.origin,
+            source: 'source' in from ? from.source : target,
           })
         );
       });
       return target;
     }
 
-    it('resolves with the host context', async () => {
-      const target = answering(pageContext);
+    function ask(
+      target: Window,
+      options: Omit<ClrContextFrameRequestOptions, 'targetWindow'> = {}
+    ): Promise<ClrPageContext | null> {
+      return clrRequestHostContext({ targetWindow: target, ...options });
+    }
 
-      expect(await clrRequestHostContext({ targetWindow: target as unknown as Window })).toEqual(pageContext);
+    it('resolves with the host context', async () => {
+      expect(await ask(answering(pageContext))).toEqual(pageContext);
     });
 
     it('asks only the host origin, rather than announcing itself to any origin', async () => {
       const target = answering(pageContext);
 
-      await clrRequestHostContext({ targetWindow: target as unknown as Window });
+      await ask(target);
 
       expect(target.postMessage.calls.mostRecent().args[1]).toEqual({ targetOrigin: window.location.origin });
     });
@@ -481,7 +574,7 @@ describe('Context frame bridge', () => {
           target.addEventListener('message', event => resolve(event.data), { once: true })
         );
 
-        await clrRequestHostContext({ targetWindow: target, timeoutMs: 20 });
+        await ask(target, { timeoutMs: 20 });
 
         expect(await received).toEqual(jasmine.objectContaining({ kind: 'context-request' }));
       } finally {
@@ -492,9 +585,9 @@ describe('Context frame bridge', () => {
     it('uses an unguessable request id, so a response cannot be forged by guessing it', async () => {
       const target = answering(pageContext);
 
-      await clrRequestHostContext({ targetWindow: target as unknown as Window });
+      await ask(target);
       const first = (target.postMessage.calls.mostRecent().args[0] as ClrContextFrameRequest).requestId;
-      await clrRequestHostContext({ targetWindow: target as unknown as Window });
+      await ask(target);
       const second = (target.postMessage.calls.mostRecent().args[0] as ClrContextFrameRequest).requestId;
 
       expect(first).not.toBe(second);
@@ -503,78 +596,40 @@ describe('Context frame bridge', () => {
     });
 
     it('ignores a response that did not come from the window it asked', async () => {
-      const target = fakeWindow();
-      target.postMessage.and.callFake((message: ClrContextFrameRequest) => {
-        // A sibling frame that guessed the id correctly, answering in the host's place.
-        setTimeout(() =>
-          dispatchMessage({
-            data: {
-              protocol: CLR_CONTEXT_PROTOCOL,
-              kind: 'context-response',
-              requestId: message.requestId,
-              context: { ...pageContext, title: 'Forged by a sibling frame' },
-            },
-            source: fakeWindow(),
-          })
-        );
-      });
+      // A sibling frame that guessed the id correctly, answering in the host's place.
+      const target = answering({ ...pageContext, title: 'Forged by a sibling frame' }, { source: fakeWindow() });
 
-      const context = await clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 40 });
-
-      expect(context).toBeNull();
+      expect(await ask(target, { timeoutMs: 40 })).toBeNull();
     });
 
-    it('ignores a response from the right window but the wrong origin', async () => {
-      const target = fakeWindow();
-      target.postMessage.and.callFake((message: ClrContextFrameRequest) => {
-        setTimeout(() =>
-          dispatchMessage({
-            data: {
-              protocol: CLR_CONTEXT_PROTOCOL,
-              kind: 'context-response',
-              requestId: message.requestId,
-              context: pageContext,
-            },
-            origin: 'https://evil.example',
-            source: target,
-          })
-        );
-      });
+    // Without a hostOrigin, the origin the request was addressed to is still the one required.
+    for (const hostOrigin of [window.location.origin, undefined]) {
+      it(`ignores a response from the right window but the wrong origin, given hostOrigin ${hostOrigin}`, async () => {
+        const target = answering(pageContext, { origin: 'https://evil.example' });
 
-      const context = await clrRequestHostContext({
-        targetWindow: target as unknown as Window,
-        hostOrigin: window.location.origin,
-        timeoutMs: 40,
+        expect(await ask(target, { hostOrigin, timeoutMs: 40 })).toBeNull();
       });
-
-      expect(context).toBeNull();
-    });
+    }
 
     it('reads the host origin as an origin, whatever its case or trailing slash', async () => {
       const target = answering(pageContext);
       const hostOrigin = `${window.location.origin.toUpperCase()}/`;
 
-      expect(await clrRequestHostContext({ targetWindow: target as unknown as Window, hostOrigin })).toEqual(
-        pageContext
-      );
+      expect(await ask(target, { hostOrigin })).toEqual(pageContext);
       expect(target.postMessage).toHaveBeenCalledWith(jasmine.anything(), { targetOrigin: window.location.origin });
     });
 
     it('rejects a host origin that is not an origin', async () => {
       const target = answering(pageContext);
 
-      await expectAsync(
-        clrRequestHostContext({ targetWindow: target as unknown as Window, hostOrigin: '/app' })
-      ).toBeRejectedWithError(/is not an origin/);
+      await expectAsync(ask(target, { hostOrigin: '/app' })).toBeRejectedWithError(/is not an origin/);
       expect(target.postMessage).not.toHaveBeenCalled();
     });
 
     it('ignores a response that carries no context', async () => {
-      const target = answering(pageContext, { context: undefined as unknown as ClrPageContext });
+      const target = answering(pageContext, { response: { context: undefined as unknown as ClrPageContext } });
 
-      const context = await clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 40 });
-
-      expect(context).toBeNull();
+      expect(await ask(target, { timeoutMs: 40 })).toBeNull();
     });
 
     it('ignores responses for other requests until the right one arrives', async () => {
@@ -602,18 +657,13 @@ describe('Context frame bridge', () => {
         });
       });
 
-      const context = await clrRequestHostContext({ targetWindow: target as unknown as Window });
+      const context = await ask(target);
 
       expect(context?.title).toBe('Host page');
     });
 
     it('resolves with null when the host never answers', async () => {
-      const context = await clrRequestHostContext({
-        targetWindow: fakeWindow() as unknown as Window,
-        timeoutMs: 10,
-      });
-
-      expect(context).toBeNull();
+      expect(await ask(fakeWindow(), { timeoutMs: 10 })).toBeNull();
     });
 
     it('rejects and stops listening when the request cannot be sent', async () => {
@@ -622,9 +672,7 @@ describe('Context frame bridge', () => {
       const removeEventListener = spyOn(window, 'removeEventListener').and.callThrough();
       const clearTimer = spyOn(window, 'clearTimeout').and.callThrough();
 
-      await expectAsync(
-        clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 60_000 })
-      ).toBeRejectedWithError(/could not be cloned/);
+      await expectAsync(ask(target, { timeoutMs: 60_000 })).toBeRejectedWithError(/could not be cloned/);
 
       expect(removeEventListener).toHaveBeenCalledWith('message', jasmine.any(Function));
       expect(clearTimer).toHaveBeenCalled();
@@ -645,28 +693,26 @@ describe('Context frame bridge', () => {
 
       for (const timeoutMs of [Number.NaN, -1, 0, Number.POSITIVE_INFINITY]) {
         it(`waits the default time rather than giving up at once, given ${timeoutMs}`, async () => {
-          expect(
-            await clrRequestHostContext({ targetWindow: fakeWindow() as unknown as Window, timeoutMs })
-          ).toBeNull();
+          expect(await ask(fakeWindow(), { timeoutMs })).toBeNull();
           expect(delays).toEqual([2000]);
         });
       }
 
       it('waits as long as a timer can for a timeout longer than that, rather than firing at once', async () => {
-        await clrRequestHostContext({ targetWindow: fakeWindow() as unknown as Window, timeoutMs: 2 ** 31 });
+        await ask(fakeWindow(), { timeoutMs: 2 ** 31 });
 
         expect(delays).toEqual([2 ** 31 - 1]);
       });
     });
 
     it('resolves with null when there is no separate host window', async () => {
-      expect(await clrRequestHostContext({ targetWindow: window })).toBeNull();
+      expect(await ask(window)).toBeNull();
     });
 
     it('asks another window at its own origin, not the origin of the page embedding this one', async () => {
       const target = fakeWindow(window, 'https://other.example');
 
-      await clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 10 });
+      await ask(target, { timeoutMs: 10 });
 
       expect(target.postMessage.calls.mostRecent().args[1]).toEqual({ targetOrigin: 'https://other.example' });
     });
@@ -674,9 +720,7 @@ describe('Context frame bridge', () => {
     it('rejects asking another window whose origin it cannot read without a hostOrigin', async () => {
       const target = fakeWindow(window, null);
 
-      await expectAsync(clrRequestHostContext({ targetWindow: target as unknown as Window })).toBeRejectedWithError(
-        /needs a hostOrigin/
-      );
+      await expectAsync(ask(target)).toBeRejectedWithError(/needs a hostOrigin/);
       expect(target.postMessage).not.toHaveBeenCalled();
     });
 
@@ -686,14 +730,12 @@ describe('Context frame bridge', () => {
       beforeEach(() => {
         resetNoHostOriginWarning();
         warn = spyOn(console, 'warn');
+        spyOnProperty(window, 'parent').and.returnValue(fakeWindow());
       });
 
       afterEach(() => resetNoHostOriginWarning());
 
       it('warns once that whichever page embeds the frame is trusted to answer', async () => {
-        const target = fakeWindow();
-        spyOnProperty(window, 'parent').and.returnValue(target as unknown as Window);
-
         await clrRequestHostContext({ timeoutMs: 10 });
         await clrRequestHostContext({ timeoutMs: 10 });
 
@@ -702,171 +744,10 @@ describe('Context frame bridge', () => {
       });
 
       it('does not warn when a hostOrigin is given', async () => {
-        const target = fakeWindow();
-        spyOnProperty(window, 'parent').and.returnValue(target as unknown as Window);
-
         await clrRequestHostContext({ hostOrigin: window.location.origin, timeoutMs: 10 });
 
         expect(warn).not.toHaveBeenCalled();
       });
     });
-  });
-});
-
-describe('Context frame bridge, what the host stays in charge of', () => {
-  const pageContext: ClrPageContext = {
-    title: 'Host page',
-    regions: [],
-    components: [],
-    collectedAt: '2026-01-01T00:00:00.000Z',
-  };
-
-  function frameRequest(requestId: string, options?: unknown): unknown {
-    return { protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId, options };
-  }
-
-  function dispatchRequest(request: unknown, source: unknown) {
-    const event = new Event('message') as Event & { data: unknown; origin: string; source: unknown };
-    event.data = request;
-    event.origin = window.location.origin;
-    event.source = source;
-    window.dispatchEvent(event);
-  }
-
-  let host: ClrContextFrameHost | null;
-  let getSnapshot: jasmine.Spy;
-
-  beforeEach(() => {
-    host = null;
-    getSnapshot = jasmine.createSpy('getSnapshot').and.callFake(() => JSON.parse(JSON.stringify(pageContext)));
-  });
-
-  afterEach(() => host?.stop());
-
-  it('caps the budgets a frame asks for at what the host allows', () => {
-    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0, snapshot: { maxComponents: 20 } });
-    host.start();
-
-    dispatchRequest(frameRequest('big', { maxComponents: 5000 }), fakeWindow());
-    expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(20);
-
-    dispatchRequest(frameRequest('small', { maxComponents: 3 }), fakeWindow());
-    expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(3);
-  });
-
-  it('drops a budget that is not a finite number rather than walking without bound', () => {
-    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0 });
-    host.start();
-
-    dispatchRequest(frameRequest('nan', { maxComponents: Number.NaN }), fakeWindow());
-
-    // Dropped, so the default ceiling applies.
-    expect(getSnapshot.calls.mostRecent().args[0].maxComponents).toBe(300);
-  });
-
-  it('refuses a configuration that would serve nobody, rather than doing so silently', () => {
-    expect(() => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: ['*'] })).toThrowError(
-      /allowAnyOrigin/
-    );
-    expect(() => new ClrContextFrameHost(getSnapshot, window, { allowedOrigins: [] })).toThrowError(/allowAnyOrigin/);
-  });
-
-  it('keeps the default throttle when given an interval that is not a number', () => {
-    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: Number.NaN });
-    host.start();
-    const frame = fakeWindow();
-
-    dispatchRequest(frameRequest('first'), frame);
-    dispatchRequest(frameRequest('second'), frame);
-
-    expect(getSnapshot).toHaveBeenCalledTimes(1);
-  });
-
-  it('bounds the requests served to all frames together, so nesting frames cannot multiply past the floor', () => {
-    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 10_000 });
-    host.start();
-
-    for (let index = 0; index < 25; index++) {
-      dispatchRequest(frameRequest(`frame-${index}`), fakeWindow());
-    }
-
-    expect(getSnapshot.calls.count()).toBe(5);
-  });
-
-  it('keeps serving after one request blows up', () => {
-    getSnapshot.and.callFake(() => {
-      if (getSnapshot.calls.count() === 1) {
-        throw new Error('broken publisher');
-      }
-      return JSON.parse(JSON.stringify(pageContext));
-    });
-    host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0 });
-    host.start();
-    const frame = fakeWindow();
-
-    expect(() => dispatchRequest(frameRequest('first'), frame)).not.toThrow();
-    dispatchRequest(frameRequest('second'), frame);
-
-    expect(frame.postMessage).toHaveBeenCalledTimes(1);
-  });
-
-  it('ignores an answer from the right window but an origin other than the one it asked', async () => {
-    const target = fakeWindow();
-    target.postMessage.and.callFake((message: ClrContextFrameRequest) => {
-      setTimeout(() => {
-        const event = new Event('message') as Event & { data: unknown; origin: string; source: unknown };
-        event.data = {
-          protocol: CLR_CONTEXT_PROTOCOL,
-          kind: 'context-response',
-          requestId: message.requestId,
-          context: pageContext,
-        };
-        event.origin = 'https://elsewhere.example';
-        event.source = target;
-        window.dispatchEvent(event);
-      });
-    });
-
-    // No hostOrigin given: the origin the request was addressed to is still the one required.
-    expect(await clrRequestHostContext({ targetWindow: target as unknown as Window, timeoutMs: 50 })).toBeNull();
-  });
-});
-
-describe('Context frame bridge, with a real embedded frame', () => {
-  it('answers a request a same-origin frame posts itself, and only that frame', async () => {
-    const getSnapshot = jasmine.createSpy('getSnapshot').and.returnValue({
-      title: 'Host page',
-      regions: [],
-      components: [{ type: 'button', label: 'Save' }],
-      collectedAt: '',
-    } as ClrPageContext);
-    const host = new ClrContextFrameHost(getSnapshot, window, { minRequestIntervalMs: 0 });
-    host.start();
-    const frame = document.createElement('iframe');
-    const request = JSON.stringify({ protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId: 'real-1' });
-    frame.srcdoc = `<script>
-      window.addEventListener('message', event => {
-        if (event.source === parent && event.data && event.data.kind === 'context-response') {
-          window.served = event.data;
-        }
-      });
-      parent.postMessage(${request}, '*');
-    <\/script>`;
-    const loaded = new Promise(resolve => frame.addEventListener('load', resolve, { once: true }));
-    document.body.appendChild(frame);
-    try {
-      await loaded;
-      const frameWindow = frame.contentWindow as Window & { served?: ClrContextFrameResponse };
-      for (let attempt = 0; attempt < 50 && !frameWindow.served; attempt++) {
-        await new Promise(resolve => setTimeout(resolve, 10));
-      }
-
-      expect(frameWindow.served?.requestId).toBe('real-1');
-      expect(frameWindow.served?.context.components).toEqual([{ type: 'button', label: 'Save' }]);
-      expect(getSnapshot).toHaveBeenCalledTimes(1);
-    } finally {
-      host.stop();
-      frame.remove();
-    }
   });
 });

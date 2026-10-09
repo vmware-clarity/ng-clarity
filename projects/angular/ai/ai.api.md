@@ -136,13 +136,6 @@ export class ClrContextEngineService implements OnDestroy {
 }
 
 // @public
-export class ClrContextFrameHost {
-    constructor(getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext, hostWindow: Window, options?: ClrContextFrameHostOptions, routePattern?: (url: URL) => string | null);
-    start(): void;
-    stop(): void;
-}
-
-// @public
 export interface ClrContextFrameHostOptions {
     allowAnyOrigin?: boolean;
     allowedOrigins?: string[];
