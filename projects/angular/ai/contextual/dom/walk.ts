@@ -12,6 +12,7 @@ import {
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_CONTEXT_REDACT_SELECTOR,
   CLR_ELEMENT_CONTEXT_PROPERTY,
+  CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
   clrUsableSelectors,
@@ -20,6 +21,7 @@ import {
 import { accessibleName } from './accessible-name';
 import { ariaEnumValue, ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, publishedNode, readClrElementContext } from './element-context';
+import { readElementMutator } from './element-mutator';
 import { withinReadScope } from './read-scope';
 import {
   isLeafRole,
@@ -49,7 +51,23 @@ export interface ClrContextDomExtractor {
   extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
 }
 
-/** Roles whose element holds a value the user can change. */
+/**
+ * Receives, for every described node, the element it was produced from — so that a
+ * later operation can find the element again from the node's `ref`. The walk calls it
+ * innermost element first: a node folded into the custom element that renders it is
+ * noted once for the role-bearing element and once for the host, which is how the host
+ * that carries the form binding is reachable from a node the DOM attributed to an
+ * element inside it.
+ */
+export interface ClrContextRefSink {
+  note(node: ClrComponentContext, element: Element): void;
+}
+
+/**
+ * Roles an agent can propose a value for. A node with one of these roles is offered to
+ * the ref sink, which keeps a ref only where a write could get somewhere; whether one
+ * succeeds is decided when it is attempted, with the reason when it is not.
+ */
 const WRITABLE_ROLES: ReadonlySet<string> = new Set([
   'textbox',
   'searchbox',
@@ -163,6 +181,15 @@ interface Walk {
   elementDepth: number;
   /** How many elements the walk has looked at. Shared across the whole walk, probes included. */
   visited: { count: number };
+  /** Greater than zero while inside an embedded frame's document. */
+  frameDepth: number;
+  /**
+   * Greater than zero while inside a custom element that published how it is written
+   * to: the component owns writing, so the controls it renders get no refs of their own.
+   */
+  mutatorDepth: number;
+  /** Where refs go, when the snapshot is to carry them. */
+  readonly refs: ClrContextRefSink | null;
 }
 
 /** The result of a walk, and whether it ran out of budget before it ran out of page. */
@@ -179,7 +206,8 @@ export interface ClrContextTreeResult {
 export function collectContextTreeWithin(
   root: ParentNode,
   options: Required<ClrContextSnapshotOptions>,
-  extractors: ClrContextDomExtractor[] = []
+  extractors: ClrContextDomExtractor[] = [],
+  refs: ClrContextRefSink | null = null
 ): ClrContextTreeResult {
   const excludeRoles = new Set(options.excludeRoles);
   const walk: Walk = {
@@ -201,6 +229,9 @@ export function collectContextTreeWithin(
     depth: 0,
     elementDepth: 0,
     visited: { count: 0 },
+    frameDepth: 0,
+    mutatorDepth: 0,
+    refs,
   };
   return withinReadScope(() => {
     collectReferencedIds(root, walk);
@@ -218,7 +249,8 @@ export function collectContextTreeWithin(
  * Whether the engine would leave this element out of a snapshot, judged from the element
  * and its ancestry: not in the document, inside something hidden, inert, ignored or
  * excluded, or not rendered visibly. Used wherever something must follow the walk's
- * rules without walking, such as annotations that sit on an element.
+ * rules without walking — the mutation engine before it writes, and annotations that
+ * sit on an element.
  */
 export function isHiddenFromEngine(element: Element, excludeSelector = ''): boolean {
   if (!element.isConnected || element.closest(CLR_CONTEXT_HIDDEN_SELECTOR)) {
@@ -228,6 +260,48 @@ export function isHiddenFromEngine(element: Element, excludeSelector = ''): bool
     return true;
   }
   return !isVisible(element);
+}
+
+/**
+ * Whether a snapshot with these options leaves the element out on purpose: it matches or
+ * sits in one of the `excludeSelectors`, in or under an excluded role (a category is a
+ * set of roles), renders one itself — a datagrid host renders the grid it is written
+ * through, while an input in one of its cells is the application's content —
+ * or lies outside every `rootSelector` root. What is hidden, inert, ignored or
+ * behind a modal is judged separately, by {@link isHiddenFromEngine} and the modal check.
+ * The mutation engine uses this so that it never writes what such a snapshot would not
+ * show, whatever snapshot the ref came from.
+ */
+export function isOutsideSnapshot(element: Element, options: Required<ClrContextSnapshotOptions>): boolean {
+  const excludeSelector = clrUsableSelectors(element.ownerDocument, options.excludeSelectors);
+  if (excludeSelector && element.closest(excludeSelector)) {
+    return true;
+  }
+  if (options.excludeRoles.length) {
+    const excluded = new Set(options.excludeRoles);
+    if (hasExcludedRole(element, excluded)) {
+      return true;
+    }
+    const candidates = roleCandidateSelector(excluded);
+    if (
+      candidates &&
+      Array.from(element.querySelectorAll(candidates)).some(
+        inner =>
+          excluded.has(resolveRole(inner) ?? '') &&
+          !isLeftOutAnyway(inner, excludeSelector) &&
+          isRenderedBy(inner, element)
+      )
+    ) {
+      return true;
+    }
+  }
+  if (options.rootSelector) {
+    const { roots } = engineScope(element.ownerDocument, { ...options, focus: 'page' });
+    if (roots && !roots.some(root => root.contains(element))) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /** The part of the page a snapshot describes, when that is not the whole page. */
@@ -356,7 +430,7 @@ function rendersOnly(parent: Element, part: Element, excludeSelector: string): b
 const DESCRIBABLE = `[role], ${CONTROL_SELECTOR}, img, svg, iframe, frame, [aria-label], [aria-labelledby]`;
 
 /** The open modal dialogs the engine would describe, in document order. */
-function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
+export function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
   return Array.from(modalDialogs(root)).filter(dialog => !isHiddenFromEngine(dialog, excludeSelector));
 }
 
@@ -414,7 +488,8 @@ function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () =>
 }
 
 /** The walk's depth counters: how deep the current element is, and inside what. */
-type DepthCounter = 'depth' | 'elementDepth' | 'redactedDepth' | 'summarizedListDepth' | 'textDepth';
+type DepthCounter =
+  'depth' | 'elementDepth' | 'frameDepth' | 'mutatorDepth' | 'redactedDepth' | 'summarizedListDepth' | 'textDepth';
 
 /** Runs `describe` one level deeper in each of `counters`, restoring them however it ends. */
 function within<T>(walk: Walk, counters: readonly DepthCounter[], describe: () => T): T {
@@ -428,6 +503,15 @@ function within<T>(walk: Walk, counters: readonly DepthCounter[], describe: () =
       walk[counter]--;
     }
   }
+}
+
+/**
+ * Describes what a custom element renders, noting when the element is a component that
+ * is written to as one thing and owns what it renders (see `ClrElementMutator.ownsContents`),
+ * so that nothing it renders is offered for writing on its own.
+ */
+function withinComponent<T>(element: Element, walk: Walk, describe: () => T): T {
+  return within(walk, ownsContents(element) ? ['mutatorDepth'] : [], describe);
 }
 
 /**
@@ -519,6 +603,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   const extractor = walk.extractors.find(candidate => element.matches(candidate.selector));
   if (extractor) {
     const extracted = extractSafely(extractor, element as HTMLElement, walk);
+    // Only the walk hands out refs: an extractor's node cannot claim another node's.
     const described = extracted ? publishedNode(extracted, walk.options) : null;
     if (!described) {
       // The extractor owns this element: when it declines to describe it, the element is
@@ -632,7 +717,9 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     // that no element wraps — is content as much as wrapped text is. Not in a field,
     // where it is the value, and not where the node is named from it (see `textDepth`).
     const looseText = (role && WRITABLE_ROLES.has(role)) || (!role && !label) ? undefined : { label };
-    const children = within(walk, counters, () => describeNested(element, walk, null, looseText));
+    const children = within(walk, counters, () =>
+      withinComponent(element, walk, () => describeNested(element, walk, null, looseText))
+    );
     if (children.length) {
       node.children = children;
     }
@@ -672,9 +759,10 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
  * Returns `null` in that last case, when the element is described as a node of its own.
  */
 function describeAnonymousCustomElement(element: Element, tagName: string, walk: Walk): ClrComponentContext[] | null {
-  const rendered = describeChildren(element, walk, element);
+  const rendered = withinComponent(element, walk, () => describeChildren(element, walk, element));
   // A component whose own content was excluded — a datagrid when grids are — says
-  // nothing about itself through what is left of it, a footer.
+  // nothing about itself through what is left of it, a footer, and is not written to
+  // through it either.
   const published = !rendered.length || !rendersExcludedRole(element, walk);
   if (rendered.length === 1) {
     const only = rendered[0];
@@ -691,7 +779,19 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
       return rendered;
     }
     walk.remaining--;
-    return listOf(finish({ type: 'group', element: tagName, children: rendered }, element, walk, { published }));
+    const wrapper: ClrComponentContext = { type: 'group', element: tagName, children: rendered };
+    // A component that is written to as one thing is named by the control it renders
+    // — a combobox by the input the user types into — so the node carrying its ref
+    // carries the name an agent would refer to it by.
+    if (ownsContents(element)) {
+      const named = rendered.find(part => part.label && WRITABLE_ROLES.has(part.type));
+      if (named) {
+        wrapper.label = named.label;
+      }
+      const finished = finish(wrapper, element, walk, { published });
+      return listOf(finished && foldRenderedControl(finished, walk));
+    }
+    return listOf(finish(wrapper, element, walk, { published }));
   }
   // Nothing rendered, nothing said, nothing published: a closed modal, an icon, a
   // spacer, a dismissed alert. Nor is one whose content was left out on purpose — a
@@ -902,7 +1002,7 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
     const redactedRoot = redacted && walk.redactedDepth === 0;
     try {
       collectReferencedIds(contents, walk);
-      const children = within(walk, redactedRoot ? ['redactedDepth'] : [], () =>
+      const children = within(walk, redactedRoot ? ['frameDepth', 'redactedDepth'] : ['frameDepth'], () =>
         describeNested(contents.body, walk, null)
       );
       if (children.length) {
@@ -1196,7 +1296,11 @@ function finish(
     described = redactNode(described);
   }
 
-  return pruneEmpty(described, { foreign: unpruned });
+  const pruned = pruneEmpty(described, { foreign: unpruned });
+  if (published) {
+    noteRef(pruned, element, walk);
+  }
+  return pruned;
 }
 
 /**
@@ -1235,15 +1339,24 @@ function rendersExcludedRole(element: Element, walk: Walk): boolean {
     if (!role || !walk.excludeRoles.has(role) || isLeftOutAnyway(descendant, walk.excludeSelector)) {
       continue;
     }
-    let owner: Element | null = descendant.parentElement;
-    while (owner && owner !== element && !isCustomElementTag(owner)) {
-      owner = owner.parentElement;
-    }
-    if (owner === element) {
+    if (isRenderedBy(descendant, element)) {
       return true;
     }
   }
   return false;
+}
+
+/**
+ * Whether the element itself renders the descendant, rather than another component
+ * inside it: no custom element stands between them. A datagrid renders its grid; the
+ * input in one of its cells belongs to the cell, which holds the application's content.
+ */
+function isRenderedBy(descendant: Element, element: Element): boolean {
+  let owner: Element | null = descendant.parentElement;
+  while (owner && owner !== element && !isCustomElementTag(owner)) {
+    owner = owner.parentElement;
+  }
+  return owner === element;
 }
 
 /**
@@ -1310,6 +1423,9 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
 /** Removes empty labels, states and children so snapshots stay minimal. */
 function pruneEmpty(context: ClrComponentContext, { foreign = false } = {}): ClrComponentContext {
   const pruned: ClrComponentContext = { type: context.type };
+  if (context.ref) {
+    pruned.ref = context.ref;
+  }
   if (context.element) {
     pruned.element = context.element;
   }
@@ -1325,4 +1441,56 @@ function pruneEmpty(context: ClrComponentContext, { foreign = false } = {}): Clr
     pruned.children = foreign ? context.children.map(child => pruneEmpty(child, { foreign: true })) : context.children;
   }
   return pruned;
+}
+
+/**
+ * Gives a node a ref when it is something an agent could propose a value for — a
+ * writable role, or an element that published how it is written to — and records the
+ * element behind it. A node that already has a ref, because it was finished once for
+ * the element inside and is now being finished for the host that renders it, keeps the
+ * ref and gains the host as a second way to find its binding. Nothing inside a frame, a
+ * redacted region or a component that owns its contents gets a ref: the engine never
+ * writes there, so nothing should invite it to.
+ */
+function noteRef(node: ClrComponentContext, element: Element, walk: Walk): void {
+  if (!walk.refs || walk.probing || walk.frameDepth > 0 || walk.redactedDepth > 0 || walk.mutatorDepth > 0) {
+    return;
+  }
+  if (node.ref || WRITABLE_ROLES.has(node.type) || CLR_ELEMENT_MUTATOR_PROPERTY in element) {
+    if (node.state?.['redacted'] === true) {
+      return;
+    }
+    walk.refs.note(node, element);
+  }
+}
+
+/**
+ * A component written to as one thing that says it is the control it renders — a
+ * combobox host publishing itself as a combobox — would otherwise list that control
+ * twice, once as itself and once as its rendered part with the same role and name. The
+ * part is folded into the host, which speaks for it: the host's own state is what the
+ * component publishes, and the part's — the typed text, whether the popup is open — is
+ * the component's internals. Whatever the part contains takes its place.
+ */
+function foldRenderedControl(node: ClrComponentContext, walk: Walk): ClrComponentContext {
+  const children = node.children ?? [];
+  const index = children.findIndex(
+    child => child.type === node.type && child.label === node.label && WRITABLE_ROLES.has(child.type)
+  );
+  if (index < 0) {
+    return node;
+  }
+  const part = children[index];
+  children.splice(index, 1, ...(part.children ?? []));
+  if (!children.length) {
+    delete node.children;
+  }
+  // The part was counted against the budget, which it no longer uses.
+  walk.remaining++;
+  return node;
+}
+
+/** Whether an element is a component written to as one thing, whose rendered controls are its own internals. */
+function ownsContents(element: Element): boolean {
+  return CLR_ELEMENT_MUTATOR_PROPERTY in element && readElementMutator(element)?.ownsContents === true;
 }

@@ -21,9 +21,16 @@ export {
 export type { ClrContextPreset } from './snapshot-options';
 // The publishing contract lives in @clr/angular/utils, so components publish without
 // depending on this entry point; it is re-exported here so readers find it in one place.
-export { CLR_ELEMENT_CONTEXT_PROPERTY, clrPublishElementContext } from '@clr/angular/utils';
-export type { ClrElementContextCallback } from '@clr/angular/utils';
+export {
+  CLR_ELEMENT_CONTEXT_PROPERTY,
+  CLR_ELEMENT_MUTATOR_PROPERTY,
+  clrPublishElementContext,
+  clrPublishElementMutator,
+} from '@clr/angular/utils';
+export type { ClrElementContextCallback, ClrElementMutation, ClrElementMutator } from '@clr/angular/utils';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
 export * from './context';
 export * from './contextual.module';
 export { CLR_CONTEXT_UNTRUSTED_OPTION_KEYS } from './untrusted-options';
+export * from './mutation/mutation.interface';
+export * from './mutation/mutation-engine.service';

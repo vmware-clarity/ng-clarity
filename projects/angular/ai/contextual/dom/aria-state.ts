@@ -201,9 +201,11 @@ function assignNativeState(
   }
 
   // Constraints bound what an agent may legitimately propose, so they are reported
-  // whether or not values are.
+  // whether or not values are. A custom slider or spinbutton states its bounds through ARIA.
   for (const attribute of ['min', 'max', 'step'] as const) {
-    const value = numberAttribute(element, attribute);
+    const value =
+      numberAttribute(element, attribute) ??
+      (attribute === 'step' ? undefined : numberAttribute(element, `aria-value${attribute}`));
     if (value !== undefined) {
       state[attribute] = value;
     }

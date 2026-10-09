@@ -5,9 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export * from './attributes';
-export * from './context.interface';
-export * from './element-context';
-export * from './element-mutator';
-export * from './text';
-export * from './selectors';
+.mutation-panel {
+  .mutation-actions {
+    display: flex;
+    gap: var(--cds-global-space-5);
+    margin: var(--cds-global-space-6) 0 0;
+  }
+
+  .mutation-result {
+    max-height: 24rem;
+  }
+}
+
+.mutation-readout-json {
+  max-height: 20rem;
+}

@@ -943,6 +943,9 @@ export const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
+// @public
+export const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
+
 // @public (undocumented)
 export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT: InjectionToken<ClrFileMessagesTemplateContext>;
 
@@ -2122,6 +2125,7 @@ export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
+    ref?: string;
     state?: Record<string, unknown>;
     type: string;
 }
@@ -3391,6 +3395,8 @@ export abstract class ClrDateInputBase extends WrappedFormControl<ClrDateContain
     // (undocumented)
     ngAfterViewInit(): void;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     ngOnInit(): void;
     // (undocumented)
     onValueChange(target: HTMLInputElement): void;
@@ -3627,6 +3633,25 @@ export class ClrDropdownTrigger {
 
 // @public
 export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+
+// @public
+export type ClrElementMutation = {
+    value: unknown;
+    display?: unknown;
+    refused?: undefined;
+} | {
+    refused: string;
+    value?: undefined;
+    display?: undefined;
+};
+
+// @public
+export interface ClrElementMutator {
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+    ownsContents?: boolean;
+    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+}
 
 // @public (undocumented)
 export class ClrEmphasisModule {
@@ -5252,6 +5277,9 @@ export class ClrProgressBarModule {
 
 // @public
 export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
