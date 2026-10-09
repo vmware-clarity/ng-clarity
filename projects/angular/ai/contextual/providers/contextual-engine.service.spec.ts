@@ -699,7 +699,7 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
 
     try {
       const grid = find(accessor()().components, node => node.type === 'grid')[0];
-      expect(grid.state).toEqual({ rowCount: 3 });
+      expect(grid.state).toEqual({ rowCount: 3, withheld: true });
     } finally {
       unregister();
     }

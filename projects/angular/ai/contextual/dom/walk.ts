@@ -18,7 +18,7 @@ import {
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
-import { ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
+import { ariaEnumValue, ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, publishedNode, readClrElementContext } from './element-context';
 import { withinReadScope } from './read-scope';
 import {
@@ -258,7 +258,7 @@ export function engineScope(root: ParentNode, options: Required<ClrContextSnapsh
       dialog => !hasExcludedRole(dialog, excludedRoles) && (!roots || roots.some(scope => scope.contains(dialog)))
     );
     if (dialogs.length) {
-      return { roots: [dialogs[dialogs.length - 1]], focus: 'modal' };
+      return { roots: [modalRoot(dialogs[dialogs.length - 1], roots, excludeSelector)], focus: 'modal' };
     }
   }
   return { roots };
@@ -301,6 +301,59 @@ function hasExcludedRole(element: Element, excludedRoles: ReadonlySet<string>): 
   }
   return false;
 }
+
+/**
+ * Where modal focus starts: the dialog, or — when the dialog is all an anonymous custom
+ * element renders, as a wizard renders the modal it lives in — the outermost such
+ * component. What it publishes about itself (a wizard's steps) and its tag describe the
+ * dialog, and the walk from the dialog alone would never reach them. The climb stops at a
+ * component with a role or a name of its own, at one that renders anything beside the
+ * dialog, and at the edge of the roots a `rootSelector` picked.
+ */
+function modalRoot(dialog: Element, roots: Element[] | null, excludeSelector: string): Element {
+  let root = dialog;
+  const body = dialog.ownerDocument.body;
+  for (let part = dialog, parent = dialog.parentElement; parent && parent !== body; parent = parent.parentElement) {
+    if (roots && !roots.some(scope => scope.contains(parent))) {
+      break;
+    }
+    if (resolveRole(parent) || accessibleName(parent, null, 1) || !rendersOnly(parent, part, excludeSelector)) {
+      break;
+    }
+    if (isCustomElementTag(parent)) {
+      root = parent;
+    }
+    part = parent;
+  }
+  return root;
+}
+
+/** Whether `part` is all of `parent` the walk would describe: anything beside it adds nothing. */
+function rendersOnly(parent: Element, part: Element, excludeSelector: string): boolean {
+  return Array.from(parent.childNodes).every(node => {
+    if (node === part) {
+      return true;
+    }
+    if (node.nodeType === Node.TEXT_NODE) {
+      return !MEANINGFUL_TEXT.test(node.textContent ?? '');
+    }
+    if (node.nodeType !== Node.ELEMENT_NODE) {
+      return true;
+    }
+    const element = node as Element;
+    if (SKIPPED_TAGS.has(element.tagName.toLowerCase()) || isHiddenFromEngine(element, excludeSelector)) {
+      return true;
+    }
+    if (CLR_ELEMENT_CONTEXT_PROPERTY in element || element.matches(DESCRIBABLE) || element.querySelector(DESCRIBABLE)) {
+      return false;
+    }
+    // A screen reader's "end of dialog" marker is not content.
+    return !MEANINGFUL_TEXT.test(element.textContent ?? '') || isVisuallyHidden(element);
+  });
+}
+
+/** The elements that are described in their own right, beyond text: roles, controls, names, media. */
+const DESCRIBABLE = `[role], ${CONTROL_SELECTOR}, img, svg, iframe, frame, [aria-label], [aria-labelledby]`;
 
 /** The open modal dialogs the engine would describe, in document order. */
 function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
@@ -408,7 +461,14 @@ function collectReferencedIds(root: ParentNode, walk: Walk): void {
       }
     }
   };
-  collect('aria-describedby', walk.describedByIds, element => !!resolveRole(element) || isCustomElementTag(element));
+  const describes = (element: Element) => !!resolveRole(element) || isCustomElementTag(element);
+  collect('aria-describedby', walk.describedByIds, describes);
+  // An invalid field reports the message `aria-errormessage` names as its `error`.
+  collect(
+    'aria-errormessage',
+    walk.describedByIds,
+    element => describes(element) && ariaEnumValue(element, 'aria-invalid') !== null
+  );
   collect('aria-labelledby', walk.labelIds, () => true);
 }
 
@@ -530,7 +590,9 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
       ? truncate(accessibleText(element, undefined, walk.excludeSelector), walk.options.maxTextLength)
       : label;
 
-  const node: ClrComponentContext = { type: role ?? (isCustomElement ? tagName : 'group') };
+  // Without a role, a component is a group of what it renders, and its tag — in
+  // `element` — says which component: `type` stays a role, whatever rendered it.
+  const node: ClrComponentContext = { type: role ?? 'group' };
   const attribution = isCustomElement ? tagName : owner?.tagName.toLowerCase();
   if (attribution) {
     node.element = attribution;
@@ -566,7 +628,11 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     if (role && isNameFromContents(role)) {
       counters.push('textDepth');
     }
-    const children = within(walk, counters, () => describeNested(element, walk, null));
+    // Text written straight into a container — a dialog's message, a region's paragraph
+    // that no element wraps — is content as much as wrapped text is. Not in a field,
+    // where it is the value, and not where the node is named from it (see `textDepth`).
+    const looseText = (role && WRITABLE_ROLES.has(role)) || (!role && !label) ? undefined : { label };
+    const children = within(walk, counters, () => describeNested(element, walk, null, looseText));
     if (children.length) {
       node.children = children;
     }
@@ -615,7 +681,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
     // Text is all this element renders: it is the element's own label, the same way a
     // `clr-dg-footer` with bare text is labelled by it, rather than a text node inside.
     if (only.type === 'text' && !only.children && !only.state) {
-      return listOf(finish({ type: tagName, element: tagName, label: only.label }, element, walk, { published }));
+      return listOf(finish({ type: 'group', element: tagName, label: only.label }, element, walk, { published }));
     }
     return listOf(finish(only, element, walk, { published }));
   }
@@ -625,7 +691,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
       return rendered;
     }
     walk.remaining--;
-    return listOf(finish({ type: tagName, element: tagName, children: rendered }, element, walk, { published }));
+    return listOf(finish({ type: 'group', element: tagName, children: rendered }, element, walk, { published }));
   }
   // Nothing rendered, nothing said, nothing published: a closed modal, an icon, a
   // spacer, a dismissed alert. Nor is one whose content was left out on purpose — a
@@ -745,11 +811,27 @@ function describeTextBlock(element: Element, walk: Walk, owner: Element | null):
   if (label) {
     node.label = label;
   }
+  // Text the page announces as it changes — a connection lost, a save confirmed — says
+  // so, as a status or an alert would.
+  const live = liveSetting(element);
+  if (live) {
+    node.state = { live };
+  }
   const children = within(walk, ['textDepth'], () => describeNested(element, walk, owner));
   if (children.length) {
     node.children = children;
   }
   return listOf(finish(node, element, walk));
+}
+
+/**
+ * How a text block is announced when it changes: its own `aria-live`, or that of the
+ * role-less element it sits in. A live region with a role is described with its own
+ * `live` state, which the text inside it does not repeat.
+ */
+function liveSetting(element: Element): string | null {
+  const region = element.closest('[aria-live]');
+  return region && (region === element || !resolveRole(region)) ? ariaEnumValue(region, 'aria-live') : null;
 }
 
 /**
@@ -916,26 +998,86 @@ function frameDocument(frame: HTMLIFrameElement): Document | null {
  * walk is as deep as `maxDepth` allows. Transparent wrappers do not count as levels —
  * only nodes that appear in the snapshot do.
  */
-function describeNested(parent: ParentNode, walk: Walk, owner: Element | null): ClrComponentContext[] {
+function describeNested(
+  parent: ParentNode,
+  walk: Walk,
+  owner: Element | null,
+  looseText?: LooseText
+): ClrComponentContext[] {
   const { maxDepth } = walk.options;
   if (maxDepth > 0 && walk.depth + 1 >= maxDepth) {
     return [];
   }
-  return within(walk, ['depth'], () => describeChildren(parent, walk, owner));
+  return within(walk, ['depth'], () => describeChildren(parent, walk, owner, looseText));
 }
 
-function describeChildren(parent: ParentNode, walk: Walk, owner: Element | null): ClrComponentContext[] {
+/**
+ * Text directly inside a described node, between or beside its child elements: reported
+ * as `text` nodes, where text is (see {@link isTextBlock}). `label` is the node's own
+ * label, which text that merely repeats it does not add to.
+ */
+interface LooseText {
+  label: string;
+}
+
+function describeChildren(
+  parent: ParentNode,
+  walk: Walk,
+  owner: Element | null,
+  looseText?: LooseText
+): ClrComponentContext[] {
   const nodes: ClrComponentContext[] = [];
-  const children = Array.from(parent.children);
+  const withText = !!looseText && walk.options.includeText && walk.textDepth === 0 && walk.redactedDepth === 0;
+  const children: ChildNode[] = withText ? Array.from(parent.childNodes) : Array.from(parent.children);
+  let text = '';
   for (let index = 0; index < children.length; index++) {
+    const child = children[index];
+    if (child.nodeType === Node.TEXT_NODE) {
+      text += child.textContent ?? '';
+      continue;
+    }
+    if (child.nodeType !== Node.ELEMENT_NODE) {
+      continue;
+    }
+    nodes.push(...describeLooseText(text, looseText, walk));
+    text = '';
     if (walk.remaining <= 0) {
       // Whatever follows would be described from here on; check that it would have been.
-      children.slice(index).forEach(leftover => noteUndescribed(leftover, walk, owner));
-      break;
+      for (const leftover of children.slice(index)) {
+        if (leftover.nodeType === Node.ELEMENT_NODE) {
+          noteUndescribed(leftover as Element, walk, owner);
+        } else if (leftover.nodeType === Node.TEXT_NODE) {
+          describeLooseText(leftover.textContent ?? '', looseText, walk);
+        }
+      }
+      return nodes;
     }
-    nodes.push(...describeElement(children[index], walk, owner));
+    nodes.push(...describeElement(child as Element, walk, owner));
   }
+  nodes.push(...describeLooseText(text, looseText, walk));
   return nodes;
+}
+
+/** Text with a letter or a digit in it; punctuation between links — a separator — says nothing. */
+const MEANINGFUL_TEXT = /[\p{L}\p{N}]/u;
+
+/** A run of text directly inside a described node, as a `text` node; see {@link LooseText}. */
+function describeLooseText(text: string, looseText: LooseText | undefined, walk: Walk): ClrComponentContext[] {
+  if (!looseText || !MEANINGFUL_TEXT.test(text)) {
+    return [];
+  }
+  const label = truncate(text, walk.options.maxTextLength);
+  if (label === looseText.label) {
+    return [];
+  }
+  if (walk.remaining <= 0) {
+    if (!walk.probing) {
+      walk.truncated = true;
+    }
+    return [];
+  }
+  walk.remaining--;
+  return [{ type: 'text', label }];
 }
 
 /** How {@link finish} treats a node. */
