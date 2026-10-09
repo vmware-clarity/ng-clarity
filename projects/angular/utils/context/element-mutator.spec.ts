@@ -44,4 +44,25 @@ describe('clrPublishElementMutator', () => {
 
     expect(readElementMutator(host)).toBe(newer);
   });
+
+  // Compiled with the repository's settings, which leave `strictNullChecks` off: there a
+  // ternary between a value and a refusal is widened to `refused?: undefined`, which the
+  // union must accept, or the documented way of writing a mutator does not compile.
+  it('accepts a mutator written as the documentation writes one', () => {
+    const options = [{ id: 1, label: 'One' }];
+    const coerce = (proposed: unknown) => {
+      const option = options.find(each => each.label === proposed);
+      return option ? { value: option.id, display: option.label } : { refused: 'No such option.' };
+    };
+    const typed: ClrElementMutator = { coerce };
+    clrPublishElementMutator(host, {
+      coerce: proposed => {
+        const option = options.find(each => each.label === proposed);
+        return option ? { value: option.id, display: option.label } : { refused: 'No such option.' };
+      },
+    });
+
+    expect(typed.coerce?.('One')).toEqual({ value: 1, display: 'One' });
+    expect(readElementMutator(host)?.coerce?.('Two')).toEqual({ refused: 'No such option.' });
+  });
 });

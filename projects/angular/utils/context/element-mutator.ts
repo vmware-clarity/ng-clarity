@@ -37,7 +37,8 @@ export const CLR_ELEMENT_MUTATOR_PROPERTY = 'clrElementMutator';
  * display leaves it out. Without one the engine shows the proposal as the agent gave it.
  */
 export type ClrElementMutation =
-  { value: unknown; display?: unknown; refused?: never } | { refused: string; value?: never; display?: never };
+  | { value: unknown; display?: unknown; refused?: undefined }
+  | { refused: string; value?: undefined; display?: undefined };
 
 /**
  * What a component publishes through {@link CLR_ELEMENT_MUTATOR_PROPERTY}. Every member
