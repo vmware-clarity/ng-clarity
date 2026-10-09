@@ -179,6 +179,20 @@ export function withoutUrlDetails(
   return shared;
 }
 
+/**
+ * The context as a consumer the application does not control may see it: without what
+ * the user typed and without the address details, unless the host shares them.
+ */
+export function contextForUntrustedCaller(
+  context: ClrPageContext,
+  share: { shareFormValues?: boolean; shareFullUrl?: boolean },
+  routePattern?: (url: URL) => string | null,
+  baseUrl?: string
+): ClrPageContext {
+  const shared = share.shareFormValues ? context : withoutFormValues(context);
+  return share.shareFullUrl ? shared : withoutUrlDetails(shared, routePattern, baseUrl);
+}
+
 /** What reducing an address needs to know about the page it is on. */
 interface AddressScope {
   /** The page's origin: a link elsewhere keeps only its own. */

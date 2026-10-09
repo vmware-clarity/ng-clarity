@@ -6,7 +6,7 @@
  */
 
 import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
-import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, inject, Inject, Injectable, NgZone, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_REDACT_SELECTOR, clrUsableSelectors } from '@clr/angular/utils';
 
@@ -14,11 +14,17 @@ import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
+import {
+  ClrContextFrameHost,
+  ClrContextFrameHostOptions,
+  ClrContextFrameRequestOptions,
+  clrRequestHostContext,
+} from '../iframe/context-frame-bridge';
 import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
 import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
 import { availableRoutes, routePatternFor } from '../routes';
 import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
-import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
+import { contextForUntrustedCaller, sanitizeUntrustedSnapshotOptions } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
 
@@ -62,6 +68,10 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
  * cached — so they can never contain obsolete information about UI that no longer exists.
  *
  * The engine only ever reads. It describes the page and never changes it.
+ *
+ * The engine can also serve snapshots across an iframe boundary (see
+ * {@link enableFrameBridge} and {@link requestHostContext}), so embedded UI such as a
+ * chat surface built with a different UI library can receive the hosting page's context.
  */
 @Injectable({ providedIn: 'root' })
 export class ClrContextEngineService implements OnDestroy {
@@ -70,6 +80,8 @@ export class ClrContextEngineService implements OnDestroy {
   private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
   /** How the router maps addresses to routes; there is none without a router. */
   private readonly locationStrategy = inject(LocationStrategy, { optional: true });
+  private readonly zone = inject(NgZone);
+  private frameHost: ClrContextFrameHost | null = null;
   private globalProperty: string | null = null;
 
   constructor(
@@ -80,6 +92,7 @@ export class ClrContextEngineService implements OnDestroy {
   ) {}
 
   ngOnDestroy(): void {
+    this.disableFrameBridge();
     this.disableGlobalAccess();
   }
 
@@ -170,8 +183,12 @@ export class ClrContextEngineService implements OnDestroy {
     const accessor = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
       const snapshot = this.getSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
-      const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
-      return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
+      return contextForUntrustedCaller(
+        snapshot,
+        { shareFormValues, shareFullUrl },
+        url => this.routePattern(url),
+        this.document.baseURI
+      );
     };
     // Read-only, so a script that assigns to the name by accident or on purpose does not
     // silently put its own function where agents look for the engine's. It stays
@@ -192,6 +209,57 @@ export class ClrContextEngineService implements OnDestroy {
       delete (window as unknown as Record<string, unknown>)[this.globalProperty];
     }
     this.globalProperty = null;
+  }
+
+  /**
+   * Starts answering context requests from embedded frames, so UI hosted in an iframe
+   * (a chat surface, an embedded tool) can pull this page's context through
+   * `postMessage`. Each request is answered with a freshly computed snapshot.
+   *
+   * By default only frames from the page's own origin are served; pass
+   * `allowedOrigins` to serve trusted cross-origin frames.
+   */
+  enableFrameBridge(options?: ClrContextFrameHostOptions): void {
+    const window = this.browserWindow();
+    if (!window) {
+      return;
+    }
+    // The host caps each frame's request against `options.snapshot`; the application's
+    // own options are the ceiling above that, so a frame cannot undo them either. An
+    // exclusion list in `options.snapshot` that is not a list is reported here, once.
+    const ceiling = this.untrustedCeiling(options?.snapshot);
+    // Built before the running bridge is stopped: the constructor refuses a configuration
+    // that is not usable, and a refused one should leave the frames already served as
+    // they were rather than silently cut off.
+    const frameHost = new ClrContextFrameHost(
+      snapshotOptions => this.getSnapshot(capSnapshotOptions(snapshotOptions, ceiling)),
+      window,
+      options,
+      url => this.routePattern(url)
+    );
+    this.disableFrameBridge();
+    this.frameHost = frameHost;
+    // Outside the zone: every `message` on the page reaches the listener, and answering
+    // one changes nothing the application renders, so none should check the application.
+    this.zone.runOutsideAngular(() => frameHost.start());
+  }
+
+  /** Stops answering embedded frames. */
+  disableFrameBridge(): void {
+    this.frameHost?.stop();
+    this.frameHost = null;
+  }
+
+  /**
+   * Requests the context of the page hosting this application, for applications that
+   * themselves run inside an iframe. Resolves with `null` when there is no hosting
+   * page or it does not serve context.
+   */
+  requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null> {
+    if (!this.browserWindow()) {
+      return Promise.resolve(null);
+    }
+    return clrRequestHostContext(options);
   }
 
   /**

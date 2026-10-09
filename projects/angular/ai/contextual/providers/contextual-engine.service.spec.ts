@@ -13,6 +13,7 @@ import { provideRouter, Router, withHashLocation } from '@angular/router';
 import { CLR_CONTEXT_OPTIONS, provideClrContextOptions } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
+import { CLR_CONTEXT_PROTOCOL } from '../iframe/context-frame-bridge';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 
@@ -172,6 +173,10 @@ describe('ClrContextEngineService', () => {
       });
     });
 
+    it('resolves host context with null when the page is not embedded', async () => {
+      expect(await engine.requestHostContext()).toBeNull();
+    });
+
     it('defines the global accessor so that assigning to it does not replace it, and still removes it', () => {
       engine.enableGlobalAccess('testClrContext');
       const installed = globalAccessor();
@@ -188,11 +193,124 @@ describe('ClrContextEngineService', () => {
       engine.disableGlobalAccess();
     });
 
-    it('removes the global accessor when destroyed', () => {
-      engine.enableGlobalAccess('testClrContext');
-      engine.ngOnDestroy();
+    describe('frame bridge', () => {
+      let frame: HTMLIFrameElement;
+      let postMessage: jasmine.Spy;
 
-      expect(globalAccessor()).toBeUndefined();
+      /** A request from the frame embedded in this page, dispatched the way a browser would. */
+      function requestFrom(requestId: string): void {
+        window.dispatchEvent(
+          new MessageEvent('message', {
+            data: { protocol: CLR_CONTEXT_PROTOCOL, kind: 'context-request', requestId },
+            origin: window.location.origin,
+            source: frame.contentWindow,
+          })
+        );
+      }
+
+      beforeEach(() => {
+        frame = document.createElement('iframe');
+        document.body.appendChild(frame);
+        postMessage = spyOn(frame.contentWindow as Window, 'postMessage');
+      });
+
+      afterEach(() => {
+        engine.disableFrameBridge();
+        frame.remove();
+      });
+
+      it('serves snapshots to embedded frames only while the frame bridge is enabled', () => {
+        // A title of its own, so the assertion below proves the bridge withholds it rather
+        // than passing because the test page happens to have none.
+        const title = document.title;
+        document.title = 'Invoice 4711 - Acme Corp';
+
+        engine.enableFrameBridge();
+        requestFrom('frame-request-1');
+        document.title = title;
+
+        expect(postMessage).toHaveBeenCalledWith(
+          jasmine.objectContaining({
+            kind: 'context-response',
+            requestId: 'frame-request-1',
+            context: jasmine.objectContaining({ title: '' }),
+          }),
+          jasmine.anything()
+        );
+
+        engine.disableFrameBridge();
+        requestFrom('frame-request-1');
+
+        expect(postMessage).toHaveBeenCalledTimes(1);
+      });
+
+      it('serves a frame what the global accessor serves, withheld markers included', () => {
+        const form = document.createElement('div');
+        form.innerHTML =
+          '<label for="filled">Token</label><input id="filled" value="user-typed-secret" />' +
+          '<label for="empty">Note</label><input id="empty" />' +
+          '<a href="/invoices/4711?token=secret">Invoice</a>';
+        document.body.appendChild(form);
+
+        try {
+          engine.enableFrameBridge();
+          engine.enableGlobalAccess('testClrContext');
+          requestFrom('frame-request-parity');
+          const viaAccessor = globalAccessor()();
+          const viaFrame = postMessage.calls.mostRecent().args[0].context as ClrPageContext;
+
+          const textboxes = viaFrame.components.filter(component => component.type === 'textbox');
+          expect(textboxes.map(textbox => textbox.state?.['withheld'])).toEqual([true, undefined]);
+          expect(JSON.stringify(viaFrame)).not.toContain('secret');
+          // Collected moments apart, so only the time may differ.
+          expect({ ...viaFrame, collectedAt: '' }).toEqual({ ...viaAccessor, collectedAt: '' });
+        } finally {
+          form.remove();
+          engine.disableGlobalAccess();
+        }
+      });
+
+      it('keeps the running frame bridge when a new configuration is refused', () => {
+        engine.enableFrameBridge();
+        expect(() => engine.enableFrameBridge({ allowedOrigins: ['chat.example'] })).toThrowError(/not an origin/);
+
+        requestFrom('frame-request-3');
+
+        expect(postMessage).toHaveBeenCalledWith(
+          jasmine.objectContaining({ kind: 'context-response', requestId: 'frame-request-3' }),
+          jasmine.anything()
+        );
+      });
+
+      it('stops the previous frame bridge when a new one replaces it', () => {
+        engine.enableFrameBridge();
+        engine.enableFrameBridge({ allowedOrigins: ['https://chat.example'] });
+
+        requestFrom('frame-request-4');
+
+        expect(postMessage).not.toHaveBeenCalled();
+      });
+
+      it('says once when its ceiling has an exclusion list that is not one', () => {
+        const warn = spyOn(console, 'warn');
+
+        engine.enableFrameBridge({ snapshot: { excludeSelectors: '.secret' } as unknown as ClrContextSnapshotOptions });
+
+        expect(warn).toHaveBeenCalledOnceWith(
+          'Clarity context options: excludeSelectors must be a list, so ".secret" was ignored.'
+        );
+      });
+
+      it('cleans up the frame bridge and global accessor when destroyed', () => {
+        engine.enableFrameBridge();
+        engine.enableGlobalAccess('testClrContext');
+        engine.ngOnDestroy();
+
+        requestFrom('frame-request-2');
+
+        expect(postMessage).not.toHaveBeenCalled();
+        expect(globalAccessor()).toBeUndefined();
+      });
     });
   });
 

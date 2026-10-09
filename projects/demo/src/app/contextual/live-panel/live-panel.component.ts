@@ -31,7 +31,7 @@ import { Subscription } from 'rxjs';
 })
 export class ContextLivePanelComponent implements OnInit, OnDestroy {
   /**
-   * The demo pages are deliberately busy — nav, a datagrid, a long form —
+   * The demo pages are deliberately busy — nav, a datagrid, a long form, plugin frames —
    * so they need more than the default budget; the panel says so when it still runs out.
    */
   @Input() maxComponents = 500;
