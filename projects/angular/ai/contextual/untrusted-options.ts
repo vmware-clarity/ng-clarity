@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { withoutValues } from './dom/aria-state';
+import { withoutStateKeys, withoutValues } from './dom/aria-state';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 import { BUDGET_KEYS, MAX_LIST_ENTRIES, SWITCH_KEYS } from './snapshot-options';
 
@@ -90,7 +90,12 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
  * consumer.
  */
 export function withoutFormValues(context: ClrPageContext): ClrPageContext {
-  return { ...context, components: context.components.map(node => withoutUserContent(withoutValues(node))) };
+  return {
+    ...context,
+    components: context.components.map(node =>
+      withoutStateKeys(withoutValues(node), () => UNTRUSTED_WITHHELD_STATE_KEYS)
+    ),
+  };
 }
 
 /**
@@ -101,7 +106,8 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
  * the options a combobox lists, how many there are or are redacted and whether more are
  * still loading, while they are narrowed to what the user typed or picked.
  * Withheld, from any node, only from untrusted consumers: the application's own code is
- * told all of them.
+ * told all of them. With `VALUE_STATE_KEYS`, these are the keys `ClrElementContextCallback`
+ * lists for publishers and extractors; keep that list in step.
  */
 const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'rows',
@@ -113,32 +119,6 @@ const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'matchingOptionsPending',
   'matchingOptionCount',
 ]);
-
-/** A node without the {@link UNTRUSTED_WITHHELD_STATE_KEYS}, recursively. */
-function withoutUserContent(node: ClrComponentContext): ClrComponentContext {
-  let result = node;
-  const state = node.state;
-  if (state && UNTRUSTED_WITHHELD_STATE_KEYS.some(key => key in state)) {
-    const kept: Record<string, unknown> = { ...state };
-    for (const key of UNTRUSTED_WITHHELD_STATE_KEYS) {
-      delete kept[key];
-    }
-    result = { ...result };
-    if (Object.keys(kept).length) {
-      result.state = kept;
-    } else {
-      delete result.state;
-    }
-  }
-  const children = node.children;
-  if (children?.length) {
-    const reduced = children.map(withoutUserContent);
-    if (reduced.some((child, index) => child !== children[index])) {
-      result = { ...result, children: reduced };
-    }
-  }
-  return result;
-}
 
 /**
  * The same context with only as much of the address as says which page this is: the
