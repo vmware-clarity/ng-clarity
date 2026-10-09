@@ -11,6 +11,8 @@ groups:
         url: /pages/developing
       - label: Support Policies
         url: /pages/support-policies
+      - label: AI Agents
+        url: /pages/ai
   - label: Foundation
     links:
       - label: Accessibility

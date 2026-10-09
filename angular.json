@@ -180,6 +180,11 @@
                 "input": "projects/website/src/settings/",
                 "output": "/"
               },
+              {
+                "glob": "**/*",
+                "input": "projects/website/src/compiled-ai/",
+                "output": "/"
+              },
               "projects/website/src/assets"
             ],
             "styles": ["projects/angular/main.scss", "projects/website/src/styles/main.scss"],
