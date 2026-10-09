@@ -94,9 +94,9 @@ function acceptedValue(key: string, value: unknown): unknown {
  * control: an embedded frame, a script calling the global accessor.
  *
  * Fields keep their label, type, constraints and validation state, so such a consumer
- * still learns the shape of a form; it just does not learn its contents. A node that lost
- * something says so with `withheld: true`, so a withheld field does not read as an empty
- * one. The rows a
+ * still learns the shape of a form; it just does not learn its contents. `withheld: true`
+ * marks a field whose value was withheld; an empty field carries no marker, so such a
+ * consumer can still tell which fields are filled. The rows a
  * selectable grid lists, which exist to name a selection, go with the selection, and so do
  * a grid's filtered and hidden columns, how many files a file input holds, and the
  * options a combobox narrowed to what the user typed.

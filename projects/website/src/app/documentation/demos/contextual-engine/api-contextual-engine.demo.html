@@ -49,14 +49,14 @@
         <code cds-text="code">provideClrContextOptions</code>, and to the defaults wherever neither says: a caller
         cannot turn on <code cds-text="code">includeRoutes</code> or raise
         <code cds-text="code">maxComponents</code> past them. What the user entered — typed values, chosen options,
-        ticked boxes, pressed toggles, selected rows — is withheld, and the node marked
-        <code cds-text="code">withheld: true</code>, unless <code cds-text="code">shareFormValues</code> is set, and the
-        page's address is reduced to its route pattern — links to the application to the pattern they match, links
-        elsewhere and frames to their origin, <code cds-text="code">mailto:</code> links to their scheme — and the
-        document title withheld — the page's, and a frame's <code cds-text="code">state.title</code> — unless
-        <code cds-text="code">shareFullUrl</code> is set. The application's own
-        <code cds-text="code">clrContext</code> annotations are shared as they are. Descriptions — helper and validation
-        text — are still shared: keep what they say free of the value, or mark the field
+        ticked boxes, pressed toggles, selected rows — is withheld, and a field whose value was withheld marked
+        <code cds-text="code">withheld: true</code> (an empty field carries no marker), unless
+        <code cds-text="code">shareFormValues</code> is set, and the page's address is reduced to its route pattern —
+        links to the application to the pattern they match, links elsewhere and frames to their origin,
+        <code cds-text="code">mailto:</code> links to their scheme — and the document title withheld — the page's, and a
+        frame's <code cds-text="code">state.title</code> — unless <code cds-text="code">shareFullUrl</code> is set. The
+        application's own <code cds-text="code">clrContext</code> annotations are shared as they are. Descriptions —
+        helper and validation text — are still shared: keep what they say free of the value, or mark the field
         <code cds-text="code">data-clr-context-redact</code>. The accessor is a read-only property of
         <code cds-text="code">window</code>: assigning to it does not replace it. It stays configurable so that
         <code cds-text="code">disableGlobalAccess()</code> can remove it.
@@ -548,7 +548,8 @@
         <code cds-text="code">error</code> (what <code cds-text="code">aria-errormessage</code> names, while invalid),
         <code cds-text="code">live</code>, <code cds-text="code">roleDescription</code>,
         <code cds-text="code">redacted</code> where a value is never reported, and
-        <code cds-text="code">withheld</code> where a consumer the application does not control was not given one.
+        <code cds-text="code">withheld</code> on a field whose value a consumer the application does not control was not
+        given (an empty field carries no marker).
       </td>
     </tr>
     <tr>
@@ -626,9 +627,10 @@
   withheld from the global accessor unless the application shares form values, and so is the state any node reads from
   the accessibility tree to say what the user chose: <code cds-text="code">selected</code>,
   <code cds-text="code">checked</code>, <code cds-text="code">pressed</code> and
-  <code cds-text="code">selectedRows</code>. A node that lost any of them carries
-  <code cds-text="code">withheld: true</code> instead, which says something was withheld, not that it was empty. A key
-  of a publisher's own is shared as it is.
+  <code cds-text="code">selectedRows</code>. <code cds-text="code">withheld: true</code> marks a field whose value was
+  withheld; an empty field (an empty string, <code cds-text="code">null</code>, an empty list) carries no marker. A
+  choice such as an unticked box, or a count of zero, is a value and is marked. A key of a publisher's own is shared as
+  it is.
 </p>
 
 <h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>

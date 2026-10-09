@@ -409,9 +409,12 @@ export function withoutValues(node: ClrComponentContext, markWithheld = false): 
  * The same node with the keys `keysFor` names removed from its state and from the state
  * of every node below it. Returns the node itself when there is nothing to remove.
  *
- * With `markWithheld`, a node that lost a key carries `withheld: true` in its place, so
- * a consumer can tell a field it may not see from one that happens to be empty — the
- * same reason a redacted field says `redacted: true`.
+ * With `markWithheld`, a node that lost a value carries `withheld: true` in its place,
+ * so a consumer can tell a field it may not see from one that happens to be empty — the
+ * same reason a redacted field says `redacted: true`. An empty value (`''`, `null`, an
+ * empty list) leaves no marker: that a field is empty says nothing of what the user
+ * entered, and is what an agent needs to know to fill it. A choice (`checked: false`) or
+ * a count of zero is a value, and is marked like any other.
  */
 export function withoutStateKeys(
   node: ClrComponentContext,
@@ -426,7 +429,7 @@ export function withoutStateKeys(
     for (const key of keys) {
       delete kept[key];
     }
-    if (markWithheld) {
+    if (markWithheld && keys.some(key => key in state && !isEmptyValue(state[key]))) {
       kept['withheld'] = true;
     }
     result = { ...result };
@@ -444,6 +447,11 @@ export function withoutStateKeys(
     }
   }
   return result;
+}
+
+/** Whether a withheld value held nothing: no text, no number, no entries. */
+function isEmptyValue(value: unknown): boolean {
+  return value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length);
 }
 
 /**

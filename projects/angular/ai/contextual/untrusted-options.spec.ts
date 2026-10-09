@@ -129,6 +129,29 @@ describe('withoutFormValues', () => {
     expect(shared.components[0].state).toEqual({ redacted: true, withheld: true });
   });
 
+  it('leaves an empty field unmarked, so an agent can tell a filled field from an empty one', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        { type: 'textbox', label: 'Empty', state: { value: '', required: true } },
+        { type: 'spinbutton', label: 'Count', state: { value: null } },
+        { type: 'grid', state: { rowCount: 2, selection: [] } },
+        { type: 'spinbutton', label: 'Zero', state: { value: 0 } },
+        { type: 'checkbox', label: 'Unticked', state: { checked: false } },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components.map(node => node.state)).toEqual([
+      { required: true },
+      undefined,
+      { rowCount: 2 },
+      { withheld: true },
+      { withheld: true },
+    ]);
+  });
+
   it('marks where a value was withheld, so a withheld field does not read as an empty one', () => {
     const shared = withoutFormValues({
       title: '',

@@ -96,8 +96,8 @@
       own code, so mark what an agent should not see before a snapshot goes to a model. The browser-agent accessor is
       not given what the user entered — typed values, chosen options, ticked boxes, selected rows — unless the
       application deliberately shares it; the application's annotations and the page's text, helper and validation text
-      included, are still shared. A node that had something withheld says so with
-      <code cds-text="code">withheld: true</code>, so a field the consumer may not see does not read as an empty one.
+      included, are still shared. <code cds-text="code">withheld: true</code> marks a field whose value was withheld; an
+      empty field carries no marker, so an agent can still tell which fields are filled.
     </p>
 
     <h2 id="who-it-is-for" class="clr-mt-48px" cds-text="title">Who consumes it</h2>
@@ -127,7 +127,8 @@
           <td class="left"><code cds-text="code">window.clrContext()</code></td>
           <td class="left">Budgets, categories, roles, focus and collection mode only, never past the application's</td>
           <td class="left">
-            Withheld and marked <code cds-text="code">withheld: true</code>, unless
+            Withheld, with <code cds-text="code">withheld: true</code> on a filled field and no marker on an empty one,
+            unless
             <code cds-text="code">shareFormValues</code>
           </td>
           <td class="left">Route pattern and origin, empty title, unless <code cds-text="code">shareFullUrl</code></td>
