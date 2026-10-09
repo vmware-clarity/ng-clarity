@@ -301,20 +301,34 @@
     <div class="clr-mt-16px">
       <app-code-snippet [code]="mutationPolicyExample" language="typescript"></app-code-snippet>
     </div>
+    <p class="clr-mt-16px" cds-text="body">
+      Start from an allowlist, as above: name the fields and routes an agent may touch, judge the query parameters it
+      adds, and forbid everything else. Never classify everything as reversible, as in
+      <code cds-text="code">classify: () =&gt; 'reversible'</code>. Whoever can put words in front of the model could
+      then fill any bound field on the page, and the engine's visibility rules would not stop them. Those rules follow
+      what hides an element, not geometry, so a field moved off-screen or shrunk to almost nothing is still offered, as
+      "What it will not do" below explains. The policy is what stands between such a field and a write.
+    </p>
 
     <h3 id="refs" class="clr-mt-32px" cds-text="section">Refs: addressing what to write</h3>
     <p class="clr-mt-16px" cds-text="body">
-      With a policy in place, every node an agent could propose a value for carries a
-      <code cds-text="code">ref</code> — <code cds-text="code">e4k9x2m7q</code> — in the snapshot: text inputs,
-      checkboxes, radio groups, selects, comboboxes, date inputs, and a datagrid with row selection. An operation names
-      its target by ref and nothing else. A CSS selector is something a model can make up; a ref can only be recalled
-      from a snapshot it actually read, and refs are random, so one cannot be guessed either. Each ref stays the same
-      for the same element from one snapshot to the next — a narrower snapshot that left the element out does not change
-      it — and is refused as <code cds-text="code">stale</code> once the element has left the page, never silently
-      redirected to whatever now holds its place. Controls an application puts in a datagrid's cells get refs of their
-      own; the parts of a combobox or a date picker do not, since the component is written as one thing. Beside the ref,
-      an operation carries the node's label in the agent's words; when it does not match the node, the operation is
-      refused as <code cds-text="code">mismatch</code>, so a ref that drifted is caught rather than written to.
+      With a policy in place, a node carries a <code cds-text="code">ref</code> —
+      <code cds-text="code">e4k9x2m7q</code> — in the snapshot when a write to it could get somewhere. That means text
+      inputs, checkboxes, radio groups, selects, comboboxes, date inputs and a datagrid with row selection that have an
+      Angular form binding or publish a mutator, and that no open modal dialog stands in front of. A control without a
+      binding gets no ref, and nor does anything behind the open modal. A ref is a candidate, not a promise. Whether the
+      write happens is decided when it is attempted: by then the control may be disabled, the value may not fit, or the
+      policy may forbid it, and the result says which. An operation names its target by ref and nothing else. A CSS
+      selector is something a model can make up; a ref can only be recalled from a snapshot it actually read, and refs
+      are random, so one cannot be guessed either. Each ref stays the same for the same element from one snapshot to the
+      next — a narrower snapshot that left the element out does not change it — and is refused as
+      <code cds-text="code">stale</code> once the element has left the page, never silently redirected to whatever now
+      holds its place. Controls an application puts in a datagrid's cells get refs of their own; the parts of a combobox
+      or a date picker do not, since the component is written as one thing. Beside the ref, an operation carries the
+      node's label as its <code cds-text="code">description</code>. Tell the agent to copy the label verbatim from the
+      snapshot. The description must contain every word of the label, so a paraphrase such as "CPUs" for "CPU count" is
+      refused as <code cds-text="code">mismatch</code>, the same as a ref that drifted onto another field, which is
+      caught rather than written to.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="refsExample" language="json"></app-code-snippet>
@@ -325,17 +339,20 @@
       A value is written the way a user's input arrives: through the Angular form control, so the view updates,
       <code cds-text="code">ngModelChange</code> fires once, and the control is marked dirty and touched — which is what
       makes Clarity show its validation messages. Values are whatever an agent would naturally say: an option's label
-      for a select, combobox or radio group; <code cds-text="code">true</code> for a checkbox; a date or ISO string for
-      a date input; the rows to select for a datagrid. Components whose model differs from what an agent sees — the
-      combobox stores an option's value, the date input a locale string — translate for themselves, so a label no option
-      has is refused with the options named rather than accepted silently. A disabled option or radio is refused, and so
-      is a number outside the input's <code cds-text="code">min</code>, <code cds-text="code">max</code> and
-      <code cds-text="code">step</code>, or a time, month or colour the browser itself would reject. A custom control is
-      written by the role it renders — a switch takes <code cds-text="code">true</code> or
-      <code cds-text="code">false</code>, a spinbutton a number — and refused as
-      <code cds-text="code">unsupported</code> when its role says nothing about its value, unless it publishes a
-      mutator. <code cds-text="code">clear</code> is its own operation, so a model can say "no value" deliberately
-      instead of inventing one.
+      for a select, combobox or radio group, where a select or combobox also takes the option's value;
+      <code cds-text="code">true</code> for a checkbox; a date or ISO string for a date input; the rows to select for a
+      datagrid. Components whose model differs from what an agent sees — the combobox stores an option's value, the date
+      input a locale string — translate for themselves, so a label no option has is refused with the options named
+      rather than accepted silently. A disabled option or radio is refused, and so is a number outside the input's
+      <code cds-text="code">min</code>, <code cds-text="code">max</code> and <code cds-text="code">step</code>, or a
+      time, month or colour the browser itself would reject. A custom control is written by the role it renders. A
+      switch takes <code cds-text="code">true</code> or <code cds-text="code">false</code>, a spinbutton or slider a
+      number within its <code cds-text="code">aria-valuemin</code> and <code cds-text="code">aria-valuemax</code>, and a
+      radio group the label of one of its radios, as long as its form control holds such a label or nothing. A custom
+      control is refused as <code cds-text="code">unsupported</code> when its role says nothing about its value, or when
+      its form control holds an object or a list that the value would replace. It can publish a mutator instead.
+      <code cds-text="code">clear</code> is its own operation, so a model can say "no value" deliberately instead of
+      inventing one.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="applyExample" language="typescript"></app-code-snippet>
@@ -368,6 +385,12 @@
       <code cds-text="code">navigated</code>, <code cds-text="code">redirected</code> (and where to),
       <code cds-text="code">rejected</code>, <code cds-text="code">unchanged</code>,
       <code cds-text="code">superseded</code> or <code cds-text="code">failed</code>, with the URL the page is now at.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      Query parameters are not part of the pattern, and nothing about the route constrains them: the agent chooses them.
+      An application that acts on a query parameter, such as <code cds-text="code">returnUrl</code> or
+      <code cds-text="code">confirm</code>, has its policy judge <code cds-text="code">target.queryParams</code> (or the
+      whole <code cds-text="code">target.url</code>), as the policy example above does.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="navigateExample" language="typescript"></app-code-snippet>
@@ -427,18 +450,19 @@
       <li>
         <b cds-text="medium">Write what a snapshot would not show.</b> A hidden, inert, disabled, read-only or ignored
         control is refused, and so is anything behind an open modal or in a redacted region — the agent is not the thing
-        that types a password. The visibility rules follow what hides an element — <code cds-text="code">hidden</code>,
-        <code cds-text="code">display</code>, <code cds-text="code">visibility</code>, full transparency — not geometry:
-        a field moved off-screen or shrunk to nothing is still offered, because a visually hidden native input is also
-        how custom checkboxes are built. Fields hidden from the user are a documented attack on form-filling agents;
-        what protects against one is that only Angular-bound controls are written, and that the mutation policy judges
-        every write. An excluded or redacted option, radio or row is refused the same way; size budgets and
+        that types a password. Nothing behind the open modal gets a ref in the first place. The visibility rules follow
+        what hides an element — <code cds-text="code">hidden</code>, <code cds-text="code">display</code>,
+        <code cds-text="code">visibility</code>, full transparency — not geometry: a field moved off-screen or shrunk to
+        nothing is still offered, because a visually hidden native input is also how custom checkboxes are built. Fields
+        hidden from the user are a documented attack on form-filling agents; what protects against one is that only
+        Angular-bound controls are written, and that the mutation policy judges every write. An excluded or redacted
+        option, radio or row is refused the same way; size budgets and
         <code cds-text="code">collectionItems: 'summary'</code> shorten what a snapshot lists, not what can be chosen.
       </li>
       <li>
         <b cds-text="medium">Write an unbound control.</b> A control without an Angular form binding — plain HTML the
-        application never modelled — is refused as <code cds-text="code">unbound</code>. What the model does not know
-        about, the engine does not touch.
+        application never modelled — gets no ref, and an operation that reaches one anyway is refused as
+        <code cds-text="code">unbound</code>. What the model does not know about, the engine does not touch.
       </li>
       <li>
         <b cds-text="medium">Leave the application.</b> The global accessor does not expose the mutation engine, and the

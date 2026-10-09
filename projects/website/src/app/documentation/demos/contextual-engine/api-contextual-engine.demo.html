@@ -200,10 +200,11 @@
       <td class="left">
         Gives the control a value, in the agent's terms: text, a number, <code cds-text="code">true</code> or
         <code cds-text="code">false</code>, an option's label (or one per item for a multi-select), a date or ISO
-        string, the rows to select. The <code cds-text="code">description</code> is the node's label as the agent knows
-        it, and is checked against the node before anything is written: it must say every word of the label and may add
-        filler ("the … field"), but no other words — "last name" does not name "Name", nor "email" "Confirm email", nor
-        "the wrong email" "Email". Requiring every word is what tells a field from its pair in any language.
+        string, the rows to select. The <code cds-text="code">description</code> is the node's label, copied verbatim
+        from the snapshot, and is checked against the node before anything is written: it must say every word of the
+        label and may add filler ("the … field"), but no other words — "last name" does not name "Name", nor "email"
+        "Confirm email", nor "the wrong email" "Email". Requiring every word is what tells a field from its pair in any
+        language.
       </td>
     </tr>
     <tr>
@@ -316,8 +317,9 @@
         which is in <code cds-text="code">modelValue</code>; a native select maps its options to model values inside
         Angular's accessor, so it has no <code cds-text="code">modelValue</code>, nor has a component that translates
         the value itself, such as a combobox, whose model may hold what it keeps from agents), or the route, URL and
-        query parameters. The engine never infers this; a policy that throws or answers anything else forbids. Judge the
-        element or the form control rather than the label: a label is translated, and can repeat.
+        query parameters, which the agent chose and the route does not constrain. The engine never infers this; a policy
+        that throws or answers anything else forbids. Judge the element or the form control rather than the label: a
+        label is translated, and can repeat.
       </td>
     </tr>
     <tr>
@@ -759,11 +761,12 @@
       <td class="left"><b cds-text="medium">ref</b></td>
       <td class="left clr-hidden-xs-down">String</td>
       <td class="left">
-        The handle the mutation engine accepts for this node — <code cds-text="code">e4k9x2m7q</code>. Present only on
-        nodes the engine may be able to write to, and only while the application has provided a mutation policy. Random,
-        so it cannot be guessed, and stable for the same element across snapshots, including a narrower snapshot that
-        left the element out; refused once the element has left the page. Only the engine hands out refs: one in
-        published or extracted context is removed.
+        The handle the mutation engine accepts for this node — <code cds-text="code">e4k9x2m7q</code>. Present only
+        while the application has provided a mutation policy, and only where a write could get somewhere: a control with
+        an Angular form binding or a published mutator, not behind the open modal dialog. A candidate, not a promise: a
+        write may still be refused for what is true when it is attempted. Random, so it cannot be guessed, and stable
+        for the same element across snapshots, including a narrower snapshot that left the element out; refused once the
+        element has left the page. Only the engine hands out refs: one in published or extracted context is removed.
       </td>
     </tr>
   </tbody>

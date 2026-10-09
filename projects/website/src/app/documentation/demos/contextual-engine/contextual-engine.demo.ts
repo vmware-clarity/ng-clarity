@@ -216,21 +216,40 @@ this.contextEngine.getSnapshot({
 `;
 
 const MUTATION_POLICY_EXAMPLE = `
-import { provideClrMutationPolicy } from '@clr/angular/ai';
+import { ClrMutationConsequence, ClrMutationTarget, provideClrMutationPolicy } from '@clr/angular/ai';
+
+// The routes an agent may go to, and what going there means. Every other route is forbidden.
+const AGENT_ROUTES = new Map<string, ClrMutationConsequence>([
+  ['vms', 'reversible'],
+  ['vms/:id', 'reversible'],
+  ['billing', 'consequential'],
+]);
+// The query parameters an agent may add. The agent chooses them; the route does not constrain them.
+const AGENT_QUERY_PARAMS = new Set(['tab', 'filter']);
+
+function classify(target: ClrMutationTarget): ClrMutationConsequence {
+  if (target.operation === 'navigate') {
+    const query = Object.keys(target.queryParams ?? {});
+    if (query.some(key => !AGENT_QUERY_PARAMS.has(key))) {
+      return 'forbidden';
+    }
+    return AGENT_ROUTES.get(target.path ?? '') ?? 'forbidden';
+  }
+  // Fields are opted in, in the template, with data-agent-fill or data-agent-confirm.
+  // Judge the element rather than its label: a label is translated, and can repeat.
+  if (target.element?.closest('[data-agent-confirm]')) {
+    return 'consequential';
+  }
+  return target.element?.closest('[data-agent-fill]') ? 'reversible' : 'forbidden';
+}
 
 bootstrapApplication(AppComponent, {
   providers: [
     provideClrMutationPolicy({
-      // What each operation would do. Never inferred: the application declares it.
-      classify: target => {
-        if (target.operation === 'navigate') {
-          return target.path?.startsWith('billing') ? 'consequential' : 'reversible';
-        }
-        // Judge the element rather than its label: a label is translated, and can repeat.
-        return target.element?.closest('[data-agent-forbidden]') ? 'forbidden' : 'reversible';
-      },
+      classify,
       // Asked before anything consequential is applied; resolving false refuses it.
-      confirm: target => window.confirm(\`Go to \${target.url}?\`),
+      confirm: target =>
+        window.confirm(target.url ? \`Go to \${target.url}?\` : \`Set \${target.label} to \${JSON.stringify(target.value)}?\`),
       // Told what an apply() did, so the person learns it too — in the application's words.
       announce: report => console.info(\`\${report.results.filter(result => result.applied).length} fields filled\`),
     }),

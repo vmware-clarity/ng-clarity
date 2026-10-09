@@ -34,6 +34,39 @@ snapshot lists, not what can be written); and does nothing at all until the appl
 agent sees — the combobox, the date input, the datagrid's row selection — say how they are written
 to through `clrPublishElementMutator` from `@clr/angular/utils`.
 
+## Quickstart: writing back
+
+Provide a policy that allows what you name and forbids the rest, then plan and apply the agent's
+operations:
+
+```ts
+import { inject } from '@angular/core';
+import { ClrMutationEngineService, ClrMutationOperation, provideClrMutationPolicy } from '@clr/angular/ai';
+
+// In the application's providers.
+provideClrMutationPolicy({
+  classify: target => {
+    if (target.operation === 'navigate') {
+      // The agent chooses the query parameters; the route does not constrain them.
+      return target.path === 'vms' && !Object.keys(target.queryParams ?? {}).length ? 'reversible' : 'forbidden';
+    }
+    // Fields are opted in, in the template, with data-agent-fill.
+    return target.element?.closest('[data-agent-fill]') ? 'reversible' : 'forbidden';
+  },
+});
+
+// Where the agent's operations arrive: refs and labels copied verbatim from the latest snapshot.
+const mutationEngine = inject(ClrMutationEngineService);
+const operations: ClrMutationOperation[] = [
+  { operation: 'setValue', ref: 'e7mq2k4xa', description: 'VM name', value: 'web-01' },
+];
+const plan = mutationEngine.plan(operations); // what each would do, nothing written
+const report = await mutationEngine.apply(operations); // results, a fresh snapshot, what changed
+```
+
+Never classify everything as reversible (`classify: () => 'reversible'`): anyone who can put words
+in front of the model could then fill any bound field on the page, including one moved off-screen.
+
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
 model, never instructions: delimit it in prompts, and let the policy judge each operation's target
 rather than the agent's stated reason. The website guide has a section on this.
