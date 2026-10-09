@@ -89,6 +89,24 @@ describe('ariaState', () => {
     expect(state.step).toBe(2);
   });
 
+  it('reports the value of a number or range field as a number, and an empty one as none', () => {
+    expect(stateOf('<input type="number" value="2" />').value).toBe(2);
+    expect(stateOf('<input type="range" min="0" max="10" value="4" />').value).toBe(4);
+    expect(stateOf('<input type="number" />').value).toBeNull();
+  });
+
+  it('reports what an invalid field’s aria-errormessage says as its error, apart from its description', () => {
+    container.innerHTML =
+      '<input aria-invalid="true" aria-errormessage="e" aria-describedby="h e" /><span id="h">Hint</span><span id="e">Too long</span>';
+    const state = ariaState(container.firstElementChild as HTMLElement, budgets());
+    expect(state.error).toBe('Too long');
+    expect(state.description).toBe('Hint');
+
+    container.innerHTML =
+      '<input aria-errormessage="e" aria-describedby="h" /><span id="h">Hint</span><span id="e">Too long</span>';
+    expect('error' in ariaState(container.firstElementChild as HTMLElement, budgets())).toBe(false);
+  });
+
   it('reports format constraints so an agent cannot propose an invalid value', () => {
     const state = stateOf('<input pattern="^[a-z-]{3,24}$" maxlength="24" />');
     expect(state.pattern).toBe('^[a-z-]{3,24}$');

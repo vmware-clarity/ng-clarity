@@ -177,6 +177,22 @@ describe('ClrContextEngineService', () => {
       expect(await engine.requestHostContext()).toBeNull();
     });
 
+    it('defines the global accessor so that assigning to it does not replace it, and still removes it', () => {
+      engine.enableGlobalAccess('testClrContext');
+      const installed = globalAccessor();
+      const host = window as unknown as Record<string, unknown>;
+
+      // Specs run as modules, in strict mode, where assigning to a read-only property throws.
+      expect(() => (host['testClrContext'] = () => ({ components: [] }))).toThrowError(TypeError);
+      expect(globalAccessor()).toBe(installed);
+
+      engine.disableGlobalAccess();
+      expect(globalAccessor()).toBeUndefined();
+      engine.enableGlobalAccess('testClrContext');
+      expect(globalAccessor()).toEqual(jasmine.any(Function));
+      engine.disableGlobalAccess();
+    });
+
     describe('frame bridge', () => {
       let frame: HTMLIFrameElement;
       let postMessage: jasmine.Spy;
@@ -791,7 +807,7 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
 
     try {
       const grid = find(accessor()().components, node => node.type === 'grid')[0];
-      expect(grid.state).toEqual({ rowCount: 3 });
+      expect(grid.state).toEqual({ rowCount: 3, withheld: true });
     } finally {
       unregister();
     }

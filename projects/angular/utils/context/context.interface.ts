@@ -11,7 +11,11 @@
  * should ever be placed here.
  */
 export interface ClrComponentContext {
-  /** ARIA role describing what this piece of UI is, e.g. `'dialog'`, `'grid'`, `'tablist'`. */
+  /**
+   * ARIA role describing what this piece of UI is, e.g. `'dialog'`, `'grid'`, `'tablist'`.
+   * A component with no role of its own is a `'group'`, with its tag in `element`; prose
+   * is `'text'` and an embedded frame `'frame'`.
+   */
   type: string;
   /**
    * Tag name, when it says something the role cannot — most usefully the custom element
@@ -75,8 +79,10 @@ export interface ClrContextSnapshotOptions {
   includeDomComponents?: boolean;
   /**
    * Whether to report visible text that carries no role — a paragraph, a card's body,
-   * a status line — as `text` nodes, so what a page says reaches an agent along with
-   * what it can do. Default `true`.
+   * a status line, text written directly inside a dialog or a region — as `text` nodes,
+   * so what a page says reaches an agent along with what it can do. A control's value,
+   * such as a slider's `aria-valuetext` or an editor's content, is not prose and is
+   * reported either way. Default `true`.
    */
   includeText?: boolean;
   /**
@@ -117,7 +123,9 @@ export interface ClrContextSnapshotOptions {
   /**
    * `'modal'`: while a modal dialog is open, describe only the dialog — what the user can
    * act on is the dialog, and the page behind it is exactly the content an agent no longer
-   * needs. The snapshot then carries `focus: 'modal'`. Default `'page'`.
+   * needs. When the dialog is all a component renders, as a wizard renders its modal,
+   * the description starts at that component, so what it publishes is kept. The snapshot
+   * then carries `focus: 'modal'`. Default `'page'`.
    */
   focus?: 'page' | 'modal';
   /**
