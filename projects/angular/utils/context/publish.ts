@@ -9,7 +9,7 @@
  * Assigns `value` to `host[property]` and returns a teardown that removes it only while
  * it is still the value assigned here, so a component that republishes (for example
  * after its host is re-created) can let a stale teardown run without unpublishing the
- * newer value.
+ * newer value. Shared by the element context and element mutator contracts.
  */
 export function publishOnElement<T>(host: Element, property: string, value: T): () => void {
   const carrier = host as unknown as Record<string, T | undefined>;
