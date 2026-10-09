@@ -200,25 +200,39 @@
     <h3 id="iframes" class="clr-mt-32px" cds-text="section">Serving context to embedded frames</h3>
     <p class="clr-mt-16px" cds-text="body">
       UI embedded in an iframe — such as a chat assistant built with a separate UI library — can receive the hosting
-      page's context. Only frames embedded in the page are answered; a window that merely shares an allowed origin — a
-      popup, another tab, an opener — never is. An embedded document is trusted less than the application that embeds
-      it: same-origin only by default; no form values (typed, chosen, ticked, pressed or selected); no address beyond
-      the route pattern — the frame learns it is on <code cds-text="code">clusters/:id</code>, not which cluster, nor
-      what a query string carried — links reduced the same way, to the route they lead to or the origin they point at,
-      and no document title — the page's, nor an embedded frame's — which names the record on screen as often as the
-      page, unless the host sets <code cds-text="code">shareFormValues</code> or
-      <code cds-text="code">shareFullUrl</code>; only the options in
-      <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> honoured, and only to ask for less than the host,
-      the application-wide options and the defaults allow; one snapshot per frame per
-      <code cds-text="code">minRequestIntervalMs</code>, and at most five across all frames per interval, so frames in a
-      loop cannot keep the host's main thread busy. A page that embeds more than five frames asking at once has the rest
-      go unanswered until the next interval, and they resolve <code cds-text="code">null</code> when their timeout
-      passes; <code cds-text="code">minRequestIntervalMs: 0</code> turns both limits off. A sandboxed frame without
-      <code cds-text="code">allow-same-origin</code> reports its origin as <code cds-text="code">null</code>, which
-      cannot be addressed safely, so it is never served, even with <code cds-text="code">allowAnyOrigin</code>. The
-      application's own <code cds-text="code">clrContext</code>
-      annotations are shared as they are, state included: what they say was written for every consumer.
+      page's context. An embedded document is trusted less than the application that embeds it:
     </p>
+    <ul class="list clr-mt-16px" cds-text="body">
+      <li>
+        Only frames embedded in the page are answered, from the page's own origin unless
+        <code cds-text="code">allowedOrigins</code> says otherwise; a popup, another tab or an opener never is. A
+        sandboxed frame without <code cds-text="code">allow-same-origin</code> has no origin to answer, so it is never
+        served, even with <code cds-text="code">allowAnyOrigin</code>.
+      </li>
+      <li>
+        No form values — typed, chosen, ticked, pressed or selected — unless the host sets
+        <code cds-text="code">shareFormValues</code>.
+      </li>
+      <li>
+        No address beyond the route pattern: the frame learns it is on <code cds-text="code">clusters/:id</code>, not
+        which cluster. Links are reduced to the route they lead to or the origin they point at, and the document title
+        is withheld, since it names the record on screen as often as the page. The host can set
+        <code cds-text="code">shareFullUrl</code>.
+      </li>
+      <li>
+        Only the options in <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> are honoured, and only to ask
+        for less than the host, the application-wide options and the defaults allow.
+      </li>
+      <li>
+        One snapshot per frame per <code cds-text="code">minRequestIntervalMs</code>, and at most five across all frames
+        per interval; the rest resolve <code cds-text="code">null</code> when their timeout passes.
+        <code cds-text="code">minRequestIntervalMs: 0</code> turns both limits off.
+      </li>
+      <li>
+        The application's own <code cds-text="code">clrContext</code> annotations are shared as they are, state
+        included: what they say was written for every consumer.
+      </li>
+    </ul>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="frameHostExample" language="typescript"></app-code-snippet>
     </div>

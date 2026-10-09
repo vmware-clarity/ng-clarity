@@ -86,7 +86,7 @@ const ALTERNATE_HOSTS = ['127.0.0.1', '[::1]', 'localhost'];
 /** Whether this page is itself served from a loopback name, i.e. from a dev server. */
 function servedFromLoopback(): boolean {
   const host = new URL(document.baseURI).hostname;
-  return ALTERNATE_HOSTS.includes(host) || host === '::1' || /^127\./.test(host);
+  return ALTERNATE_HOSTS.includes(host) || /^127\./.test(host);
 }
 
 function alternateOrigins(): URL[] {

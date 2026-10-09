@@ -713,18 +713,6 @@
       <td class="left">The roles a list of <code cds-text="code">excludeCategories</code> stands for.</td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">ClrContextFrameHost</b></td>
-      <td class="left">
-        The frame bridge that <code cds-text="code">enableFrameBridge()</code> starts, for an application that wires it
-        to its own snapshot function:
-        <code cds-text="code">new ClrContextFrameHost(getSnapshot, window, options)</code>, then
-        <code cds-text="code">start()</code> and <code cds-text="code">stop()</code>. Used this way it caps a frame's
-        request only at its own <code cds-text="code">snapshot</code> option and the defaults, not at the
-        application-wide options, so set every limit the application relies on in <code cds-text="code">snapshot</code>,
-        or have <code cds-text="code">getSnapshot</code> cap what it is given.
-      </td>
-    </tr>
-    <tr>
       <td class="left"><b cds-text="medium">CLR_CONTEXT_DIRECTIVES</b></td>
       <td class="left">The directives <code cds-text="code">ClrContextModule</code> declares and exports.</td>
     </tr>
