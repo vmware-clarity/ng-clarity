@@ -9,36 +9,10 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions, ClrElementContextCallback } from '@clr/angular/utils';
+import { publishedState } from '@clr/angular/testing';
+import { CLR_ELEMENT_CONTEXT_PROPERTY } from '@clr/angular/utils';
 
 import { ClrStepperModule } from './stepper.module';
-
-const BUDGETS: Required<ClrContextSnapshotOptions> = {
-  maxTextLength: 100,
-  maxItemsPerCollection: 25,
-  maxComponents: 100,
-  includeDomComponents: true,
-  includeText: true,
-  includeFrames: true,
-  excludeCategories: [],
-  excludeRoles: [],
-  excludeSelectors: [],
-  rootSelector: '',
-  maxDepth: 0,
-  focus: 'page',
-  collectionItems: 'all',
-  includeRoutes: false,
-};
-
-function publishedOn(element: Element): Record<string, unknown> {
-  const callback = (element as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback })[
-    CLR_ELEMENT_CONTEXT_PROPERTY
-  ];
-  if (!callback) {
-    throw new Error('expected an element context callback to be published');
-  }
-  return (callback(BUDGETS)?.state ?? {}) as Record<string, unknown>;
-}
 
 @Component({
   template: `
@@ -87,7 +61,7 @@ describe('ClrStepperPanel element context', () => {
   it('publishes each step status as state on the step itself', () => {
     // The status is otherwise announced as a transient live-region message beside the
     // step, and only for two of its states.
-    expect(panels().map(panel => publishedOn(panel).status)).toEqual(['inactive', 'inactive']);
+    expect(panels().map(panel => publishedState(panel).status)).toEqual(['inactive', 'inactive']);
   });
 
   it('stops publishing once the panel is destroyed', () => {

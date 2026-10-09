@@ -8,37 +8,11 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrContextSnapshotOptions, ClrElementContextCallback } from '@clr/angular/utils';
+import { publishedState } from '@clr/angular/testing';
+import { CLR_ELEMENT_CONTEXT_PROPERTY } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 
 import { ClrTreeViewModule } from './tree-view.module';
-
-const BUDGETS: Required<ClrContextSnapshotOptions> = {
-  maxTextLength: 100,
-  maxItemsPerCollection: 25,
-  maxComponents: 100,
-  includeDomComponents: true,
-  includeText: true,
-  includeFrames: true,
-  excludeCategories: [],
-  excludeRoles: [],
-  excludeSelectors: [],
-  rootSelector: '',
-  maxDepth: 0,
-  focus: 'page',
-  collectionItems: 'all',
-  includeRoutes: false,
-};
-
-function publishedOn(element: Element): Record<string, unknown> {
-  const callback = (element as Element & { [CLR_ELEMENT_CONTEXT_PROPERTY]?: ClrElementContextCallback })[
-    CLR_ELEMENT_CONTEXT_PROPERTY
-  ];
-  if (!callback) {
-    throw new Error('expected an element context callback to be published');
-  }
-  return (callback(BUDGETS)?.state ?? {}) as Record<string, unknown>;
-}
 
 @Component({
   template: `
@@ -71,15 +45,15 @@ describe('ClrTreeNode element context', () => {
 
   it('publishes that a collapsed node has children, which are not in the DOM to be found', () => {
     // aria-expanded="false" says collapsed. It cannot say whether anything is under it.
-    expect(publishedOn(nodes()[0]).expandable).toBe(true);
+    expect(publishedState(nodes()[0]).expandable).toBe(true);
   });
 
   it('publishes that a leaf node has nothing under it', () => {
-    expect(publishedOn(nodes()[1]).expandable).toBe(false);
+    expect(publishedState(nodes()[1]).expandable).toBe(false);
   });
 
   it('publishes nothing about loading while the node is idle', () => {
-    expect('loading' in publishedOn(nodes()[0])).toBe(false);
+    expect('loading' in publishedState(nodes()[0])).toBe(false);
   });
 
   it('stops publishing once the node is destroyed', () => {
@@ -118,7 +92,7 @@ describe('ClrTreeNode element context while children load', () => {
     await new Promise(resolve => setTimeout(resolve));
     fixture.detectChanges();
 
-    const state = publishedOn(fixture.nativeElement.querySelector('clr-tree-node'));
+    const state = publishedState(fixture.nativeElement.querySelector('clr-tree-node'));
     expect(state.loading).toBe(true);
     fixture.destroy();
   });

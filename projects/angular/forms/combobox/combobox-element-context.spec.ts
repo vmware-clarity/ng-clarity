@@ -5,19 +5,45 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextEngineService } from '@clr/angular/ai';
-import { ClrComponentContext, ClrLoadingModule } from '@clr/angular/utils';
+import { publishedOn } from '@clr/angular/testing';
+import {
+  CLR_ELEMENT_CONTEXT_PROPERTY,
+  ClrComponentContext,
+  ClrContextSnapshotOptions,
+  ClrLoadingModule,
+} from '@clr/angular/utils';
 
 import { ClrComboboxModule } from './combobox.module';
 
-type ElementContextCallback = (options: { maxItemsPerCollection?: number; collectionItems?: string }) => {
-  type: string;
-  state: Record<string, unknown>;
-};
+/** Creates a fixture and lets its comboboxes settle. */
+async function create<C>(component: Type<C>, imports: unknown[] = []): Promise<ComponentFixture<C>> {
+  TestBed.configureTestingModule({
+    imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule, ...imports],
+    declarations: [component],
+  });
+  const fixture = TestBed.createComponent(component);
+  fixture.detectChanges();
+  await fixture.whenStable();
+  fixture.detectChanges();
+  return fixture;
+}
+
+/** What the fixture's first combobox, or the one `selector` matches, publishes. */
+function published(
+  fixture: ComponentFixture<unknown>,
+  selector = 'clr-combobox',
+  options: ClrContextSnapshotOptions = {}
+): { type: string; state: Record<string, unknown> } {
+  return publishedOn(fixture.nativeElement.querySelector(selector), options) as {
+    type: string;
+    state: Record<string, unknown>;
+  };
+}
 
 @Component({
   template: `
@@ -38,23 +64,8 @@ describe('ClrCombobox element context', () => {
   let fixture: ComponentFixture<TestComponent>;
   let host: HTMLElement;
 
-  function publishedContext(options: Parameters<ElementContextCallback>[0] = {}) {
-    const callback = (host as HTMLElement & { clrElementContext?: ElementContextCallback }).clrElementContext;
-    if (!callback) {
-      throw new Error('expected the combobox to publish a clrElementContext callback');
-    }
-    return callback(options);
-  }
-
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
-      declarations: [TestComponent],
-    });
-    fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
+    fixture = await create(TestComponent);
     host = fixture.nativeElement.querySelector('clr-combobox');
   });
 
@@ -63,28 +74,28 @@ describe('ClrCombobox element context', () => {
   });
 
   it('publishes a context callback on its host element', () => {
-    const context = publishedContext();
+    const context = published(fixture);
 
     expect(context.type).toBe('combobox');
     expect(context.state.multiSelect).toBe(false);
   });
 
   it('lists its options even while the popover is closed', () => {
-    const context = publishedContext({ maxItemsPerCollection: 25 });
+    const context = published(fixture);
 
     expect(context.state.options).toEqual(['Apple', 'Pear']);
     expect(context.state.optionsAvailable).toBeUndefined();
   });
 
   it('exposes the current selection, which a closed popover does not show', () => {
-    expect(publishedContext().state.value).toBe('Apple');
+    expect(published(fixture).state.value).toBe('Apple');
   });
 
   it('lists the same options while the popover is open, without screen reader additions', () => {
     fixture.nativeElement.querySelector('button.clr-combobox-trigger').click();
     fixture.detectChanges();
 
-    const context = publishedContext({ maxItemsPerCollection: 25 });
+    const context = published(fixture);
 
     expect(context.state.options).toEqual(['Apple', 'Pear']);
   });
@@ -108,13 +119,13 @@ describe('ClrCombobox element context', () => {
   });
 
   it('caps the option list to the collection budget', () => {
-    expect(publishedContext({ maxItemsPerCollection: 1 }).state.options).toEqual(['Apple']);
+    expect(published(fixture, 'clr-combobox', { maxItemsPerCollection: 1 }).state.options).toEqual(['Apple']);
   });
 
   it('removes the callback when the combobox is destroyed', () => {
     fixture.destroy();
 
-    expect((host as HTMLElement & { clrElementContext?: unknown }).clrElementContext).toBeUndefined();
+    expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(false);
   });
 });
 
@@ -141,32 +152,14 @@ class MoreShapesTestComponent {
 describe('ClrCombobox element context, other shapes', () => {
   let fixture: ComponentFixture<MoreShapesTestComponent>;
 
-  function publishedOn(selector: string): ReturnType<ElementContextCallback> {
-    const host = fixture.nativeElement.querySelector(selector) as HTMLElement & {
-      clrElementContext?: ElementContextCallback;
-    };
-    const callback = host.clrElementContext;
-    if (!callback) {
-      throw new Error('expected the combobox to publish a clrElementContext callback');
-    }
-    return callback({});
-  }
-
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
-      declarations: [MoreShapesTestComponent],
-    });
-    fixture = TestBed.createComponent(MoreShapesTestComponent);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
+    fixture = await create(MoreShapesTestComponent);
   });
 
   afterEach(() => fixture.destroy());
 
   it('reports every selected value of a multi-select combobox', () => {
-    const context = publishedOn('clr-combobox');
+    const context = published(fixture, 'clr-combobox');
     expect(context.state.multiSelect).toBe(true);
     expect(context.state.value).toEqual(['Apple', 'Plum']);
   });
@@ -187,14 +180,14 @@ describe('ClrCombobox element context, other shapes', () => {
   });
 
   it('says that an async combobox has no options until a search loads them', () => {
-    const context = publishedOn('clr-combobox.async');
+    const context = published(fixture, 'clr-combobox.async');
     expect(context.state.optionsAvailable).toBe(false);
     expect('options' in context.state).toBe(false);
   });
 
   it('never publishes a model object it has no label for', async () => {
     await fixture.whenStable();
-    const context = publishedOn('clr-combobox.object');
+    const context = published(fixture, 'clr-combobox.object');
 
     expect(context.state.value).toBeNull();
     expect(JSON.stringify(context)).not.toContain('hidden@example.com');
@@ -221,28 +214,15 @@ describe('ClrCombobox element context, withheld option text', () => {
   let fixture: ComponentFixture<SecretOptionTestComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
-      declarations: [SecretOptionTestComponent],
-    });
-    fixture = TestBed.createComponent(SecretOptionTestComponent);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
+    fixture = await create(SecretOptionTestComponent);
   });
 
   afterEach(() => fixture.destroy());
 
-  function host() {
-    return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
-      clrElementContext?: ElementContextCallback;
-    };
-  }
-
   it('labels options and the selection without the text of a redacted element inside them', () => {
-    const context = host().clrElementContext?.({});
+    const context = published(fixture);
 
-    expect(context?.state['value']).toBe('Visa');
+    expect(context.state['value']).toBe('Visa');
     expect(JSON.stringify(context)).not.toContain('4111');
     expect(JSON.stringify(context)).not.toContain('3782');
     // Nor by its value when all its text is withheld: the value is often the same secret.
@@ -250,10 +230,10 @@ describe('ClrCombobox element context, withheld option text', () => {
   });
 
   it('counts an option whose text is all withheld as redacted, rather than listing it unnamed', () => {
-    const context = host().clrElementContext?.({});
+    const context = published(fixture);
 
-    expect(context?.state['options']).toEqual(['Visa', 'Amex']);
-    expect(context?.state['redactedOptions']).toBe(1);
+    expect(context.state['options']).toEqual(['Visa', 'Amex']);
+    expect(context.state['redactedOptions']).toBe(1);
   });
 
   it('reports a selected option whose text is all withheld as unnamed', async () => {
@@ -261,7 +241,7 @@ describe('ClrCombobox element context, withheld option text', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(host().clrElementContext?.({})?.state['value']).toBeNull();
+    expect(published(fixture).state['value']).toBeNull();
   });
 });
 
@@ -298,27 +278,17 @@ describe('ClrCombobox element context, options in a group page-context tooling d
   let fixture: ComponentFixture<HiddenGroupTestComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
-      declarations: [HiddenGroupTestComponent],
-    });
-    fixture = TestBed.createComponent(HiddenGroupTestComponent);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
+    fixture = await create(HiddenGroupTestComponent);
   });
 
   afterEach(() => fixture.destroy());
 
   it('leaves out the options of an ignored, hidden or aria-hidden group, as the walk leaves out the group', () => {
-    const host = fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
-      clrElementContext?: ElementContextCallback;
-    };
-    const context = host.clrElementContext?.({});
+    const context = published(fixture);
 
-    expect(context?.state['options']).toEqual(['Basic', 'Pro']);
-    expect('redactedOptions' in (context?.state ?? {})).toBe(false);
-    expect(context?.state['value']).toEqual(['Pro']);
+    expect(context.state['options']).toEqual(['Basic', 'Pro']);
+    expect('redactedOptions' in context.state).toBe(false);
+    expect(context.state['value']).toEqual(['Pro']);
     expect(JSON.stringify(context)).not.toMatch(/Secret|Legacy|Draft/);
   });
 });
@@ -344,30 +314,17 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
   const options = { excludeSelectors: ['.secret'], maxItemsPerCollection: 25 };
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
-      declarations: [MarkedOptionTestComponent],
-    });
-    fixture = TestBed.createComponent(MarkedOptionTestComponent);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
+    fixture = await create(MarkedOptionTestComponent);
   });
 
   afterEach(() => fixture.destroy());
 
-  function host() {
-    return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
-      clrElementContext?: ElementContextCallback;
-    };
-  }
-
   it('counts a redacted option without naming it, and leaves an excluded one out', () => {
-    const context = host().clrElementContext?.(options);
+    const context = published(fixture, 'clr-combobox', options);
 
-    expect(context?.state['options']).toEqual(['Checking']);
-    expect(context?.state['redactedOptions']).toBe(1);
-    expect(context?.state['value']).toEqual([null]);
+    expect(context.state['options']).toEqual(['Checking']);
+    expect(context.state['redactedOptions']).toBe(1);
+    expect(context.state['value']).toEqual([null]);
     expect(JSON.stringify(context)).not.toContain('998877');
     expect(JSON.stringify(context)).not.toContain('trust fund');
   });
@@ -409,29 +366,16 @@ describe('ClrCombobox element context, options matched by identity', () => {
   let fixture: ComponentFixture<IdentityTestComponent>;
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, FormsModule, NoopAnimationsModule],
-      declarations: [IdentityTestComponent],
-    });
-    fixture = TestBed.createComponent(IdentityTestComponent);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
+    fixture = await create(IdentityTestComponent);
   });
 
   afterEach(() => fixture.destroy());
 
-  function host() {
-    return fixture.nativeElement.querySelector('clr-combobox') as HTMLElement & {
-      clrElementContext?: ElementContextCallback;
-    };
-  }
-
   it('withholds a redacted selection matched by clrComboboxIdentityFn rather than by reference', () => {
-    const context = host().clrElementContext?.({ maxItemsPerCollection: 25 });
+    const context = published(fixture);
 
-    expect(context?.state['value']).toBeNull();
-    expect(context?.state['redactedOptions']).toBe(1);
+    expect(context.state['value']).toBeNull();
+    expect(context.state['redactedOptions']).toBe(1);
     expect(JSON.stringify(context)).not.toContain('998877');
   });
 
@@ -441,7 +385,7 @@ describe('ClrCombobox element context, options matched by identity', () => {
     await fixture.whenStable();
     fixture.detectChanges();
 
-    expect(host().clrElementContext?.({ maxItemsPerCollection: 25 })?.state['value']).toBe('Ops budget');
+    expect(published(fixture).state['value']).toBe('Ops budget');
   });
 });
 
@@ -556,16 +500,6 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
   let fixture: ComponentFixture<FilteredOptionsTestComponent>;
   let engine: ClrContextEngineService;
 
-  function published(selector = 'clr-combobox', options: { collectionItems?: string } = {}) {
-    const host = fixture.nativeElement.querySelector(selector) as HTMLElement & {
-      clrElementContext?: ElementContextCallback;
-    };
-    if (!host.clrElementContext) {
-      throw new Error('expected the combobox to publish a clrElementContext callback');
-    }
-    return host.clrElementContext({ maxItemsPerCollection: 25, ...options });
-  }
-
   async function settle() {
     fixture.detectChanges();
     await fixture.whenStable();
@@ -595,14 +529,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
   }
 
   beforeEach(async () => {
-    TestBed.configureTestingModule({
-      imports: [ClrComboboxModule, ClrLoadingModule, FormsModule, NoopAnimationsModule],
-      declarations: [FilteredOptionsTestComponent],
-    });
-    fixture = TestBed.createComponent(FilteredOptionsTestComponent);
-    fixture.detectChanges();
-    await fixture.whenStable();
-    fixture.detectChanges();
+    fixture = await create(FilteredOptionsTestComponent, [ClrLoadingModule]);
     engine = TestBed.inject(ClrContextEngineService);
   });
 
@@ -612,8 +539,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
   });
 
   it('lists every option to untrusted consumers before anything is typed', () => {
-    expect(published().state['options']).toEqual(['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown']);
-    expect(published().state['redactedOptions']).toBe(1);
+    expect(published(fixture).state['options']).toEqual(['Alice Smith', 'Bob Jones', 'Carol Smith', 'Dan Brown']);
+    expect(published(fixture).state['redactedOptions']).toBe(1);
     expect(shared()).toContain('Carol Smith');
   });
 
@@ -622,9 +549,9 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     fixture.detectChanges();
     type('Smi');
 
-    expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
-    expect(published().state['redactedMatchingOptions']).toBe(1);
-    expect(published().state['options']).toBeUndefined();
+    expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture).state['redactedMatchingOptions']).toBe(1);
+    expect(published(fixture).state['options']).toBeUndefined();
     expect(shared()).not.toMatch(/Smi|"redactedMatchingOptions"/);
   });
 
@@ -632,8 +559,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     open();
     type('Zzq');
 
-    expect(published().state['matchingOptions']).toEqual([]);
-    expect(published().state['optionsAvailable']).toBeUndefined();
+    expect(published(fixture).state['matchingOptions']).toEqual([]);
+    expect(published(fixture).state['optionsAvailable']).toBeUndefined();
     expect(shared()).not.toMatch(/Zzq|"matchingOptions"/);
     expect(sharedState(0)).toEqual({ multiSelect: false });
   });
@@ -645,15 +572,15 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     type('Smi');
 
     // The matches shown so far stay listed: the user sees them, and an agent may pick one.
-    expect(published().state['matchingOptionsPending']).toBe(true);
-    expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture).state['matchingOptionsPending']).toBe(true);
+    expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(shared()).not.toMatch(/Smi|"matchingOptionsPending"/);
 
     fixture.componentInstance.loading = false;
     await settle();
 
-    expect(published().state['matchingOptionsPending']).toBeUndefined();
-    expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture).state['matchingOptionsPending']).toBeUndefined();
+    expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
   });
 
   it('says the matches are pending when the search starts after the user typed', async () => {
@@ -662,8 +589,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     fixture.componentInstance.loading = true;
     await settle();
 
-    expect(published().state['matchingOptionsPending']).toBe(true);
-    expect(published().state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture).state['matchingOptionsPending']).toBe(true);
+    expect(published(fixture).state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
     expect(shared()).not.toContain('"matchingOptionsPending"');
   });
 
@@ -673,16 +600,16 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     open('.options-loading');
     type('Bur', '.options-loading');
 
-    expect(published('.options-loading').state['matchingOptionsPending']).toBeUndefined();
-    expect(published('.options-loading').state['matchingOptions']).toEqual(['Burgas']);
+    expect(published(fixture, '.options-loading').state['matchingOptionsPending']).toBeUndefined();
+    expect(published(fixture, '.options-loading').state['matchingOptions']).toEqual(['Burgas']);
   });
 
   it('says a search started before anything was typed is still running, to every consumer', async () => {
     fixture.componentInstance.loading = true;
     await settle();
 
-    expect(published().state['optionsPending']).toBe(true);
-    expect(published().state['options']).toBeDefined();
+    expect(published(fixture).state['optionsPending']).toBe(true);
+    expect(published(fixture).state['options']).toBeDefined();
     expect(shared()).toContain('"optionsPending":true');
   });
 
@@ -690,8 +617,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     open('.async-search');
     type('Smi', '.async-search');
 
-    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
-    expect(published('.async-search').state['options']).toBeUndefined();
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-search').state['options']).toBeUndefined();
     expect(shared()).not.toMatch(/Smi"|"matchingOptions"/);
     expect(sharedState(3)).toEqual({ multiSelect: false });
   });
@@ -702,8 +629,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     type('Smi', '.async-search');
     type('', '.async-search');
 
-    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
-    expect(published('.async-search').state['options']).toBeUndefined();
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-search').state['options']).toBeUndefined();
     expect(sharedState(3)).toEqual({ multiSelect: false });
   });
 
@@ -717,14 +644,14 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     await settle();
 
     expect(fixture.componentInstance.member).toBe('Alice Smith');
-    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith']);
-    expect(published('.async-search').state['options']).toBeUndefined();
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith']);
+    expect(published(fixture, '.async-search').state['options']).toBeUndefined();
     expect(sharedState(3)).toEqual({ multiSelect: false });
     expect(sharedState(3, { collectionItems: 'summary' })).toEqual({ multiSelect: false });
   });
 
   it('tells every consumer an application search has no results yet before anything is typed', () => {
-    expect(published('.async-search').state['optionsAvailable']).toBe(false);
+    expect(published(fixture, '.async-search').state['optionsAvailable']).toBe(false);
     expect(sharedState(3)).toEqual({ multiSelect: false, optionsAvailable: false });
   });
 
@@ -736,15 +663,15 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     fixture.componentInstance.memberLoading = true;
     await settle();
 
-    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
-    expect(published('.async-search').state['matchingOptionsPending']).toBeUndefined();
-    expect(published('.async-search').state['optionsPending']).toBe(true);
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-search').state['matchingOptionsPending']).toBeUndefined();
+    expect(published(fixture, '.async-search').state['optionsPending']).toBe(true);
     expect(sharedState(3)).toEqual({ multiSelect: false, optionsPending: true });
   });
 
   it('withholds even written-out options from untrusted consumers when the application listens to clrInputChange', () => {
-    expect(published('.static-listened').state['matchingOptions']).toEqual(['Tea', 'Coffee']);
-    expect(published('.static-listened').state['options']).toBeUndefined();
+    expect(published(fixture, '.static-listened').state['matchingOptions']).toEqual(['Tea', 'Coffee']);
+    expect(published(fixture, '.static-listened').state['options']).toBeUndefined();
     expect(sharedState(5)).toEqual({ multiSelect: false });
   });
 
@@ -757,8 +684,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     await settle();
 
     expect(fixture.nativeElement.querySelector('.async-search input').value).toBe('');
-    expect(published('.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
-    expect(published('.async-search').state['options']).toBeUndefined();
+    expect(published(fixture, '.async-search').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-search').state['options']).toBeUndefined();
     expect(sharedState(3)).toEqual({ multiSelect: false });
   });
 
@@ -779,13 +706,13 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
 
     expect(fixture.nativeElement.querySelector('.async-multi input').getAttribute('aria-expanded')).toBe('false');
     expect(fixture.componentInstance.team).toEqual(['Alice Smith']);
-    expect(published('.async-multi').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
-    expect(published('.async-multi').state['options']).toBeUndefined();
+    expect(published(fixture, '.async-multi').state['matchingOptions']).toEqual(['Alice Smith', 'Carol Smith']);
+    expect(published(fixture, '.async-multi').state['options']).toBeUndefined();
     expect(sharedState(6)).toEqual({ multiSelect: true });
   });
 
   it('counts the options rather than listing them in a summary snapshot', () => {
-    expect(published('clr-combobox', { collectionItems: 'summary' }).state).toEqual({
+    expect(published(fixture, 'clr-combobox', { collectionItems: 'summary' }).state).toEqual({
       multiSelect: false,
       optionCount: 5,
       value: null,
@@ -799,7 +726,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     open();
     type('Smi');
 
-    expect(published('clr-combobox', { collectionItems: 'summary' }).state).toEqual({
+    expect(published(fixture, 'clr-combobox', { collectionItems: 'summary' }).state).toEqual({
       multiSelect: false,
       matchingOptionCount: 3,
       value: null,
@@ -813,7 +740,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     open('.mixed');
     type('Var', '.mixed');
 
-    expect(published('.mixed').state['matchingOptions']).toEqual(['Somewhere else', 'Varna']);
+    expect(published(fixture, '.mixed').state['matchingOptions']).toEqual(['Somewhere else', 'Varna']);
     expect(shared()).not.toMatch(/Var|Somewhere else/);
   });
 
@@ -823,7 +750,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     open();
     await settle();
 
-    expect(published().state['matchingOptions']).toEqual(['Bob Jones']);
+    expect(published(fixture).state['matchingOptions']).toEqual(['Bob Jones']);
     expect(shared()).not.toContain('Bob');
   });
 
@@ -832,8 +759,8 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     type('Pe', '.static');
 
     expect(document.querySelectorAll('[role="listbox"] [role="option"]').length).toBe(2);
-    expect(published('.static').state['options']).toEqual(['Apple', 'Pear']);
-    expect(published('.static').state['matchingOptions']).toBeUndefined();
+    expect(published(fixture, '.static').state['options']).toEqual(['Apple', 'Pear']);
+    expect(published(fixture, '.static').state['matchingOptions']).toBeUndefined();
   });
 
   it('does not tell untrusted consumers the one option left after an editable combobox closes on a pick', async () => {
@@ -848,7 +775,7 @@ describe('ClrCombobox element context, options narrowed to what the user typed',
     fixture.detectChanges();
 
     expect(fixture.componentInstance.selection).toBe('Bob Jones');
-    expect(published().state['matchingOptions']).toEqual(['Bob Jones']);
+    expect(published(fixture).state['matchingOptions']).toEqual(['Bob Jones']);
     expect(shared()).not.toContain('Bob');
   });
 });
