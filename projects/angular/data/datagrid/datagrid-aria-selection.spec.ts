@@ -5,11 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrDatagridModule } from './datagrid.module';
+
+function render<T>(component: Type<T>, imports: unknown[]): ComponentFixture<T> {
+  TestBed.configureTestingModule({ imports: [...imports, NoopAnimationsModule], declarations: [component] });
+  const fixture = TestBed.createComponent(component);
+  fixture.detectChanges();
+  return fixture;
+}
 
 interface Node {
   name: string;
@@ -54,12 +61,7 @@ describe('ClrDatagrid selection, as assistive technology sees it', () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [ClrDatagridModule, NoopAnimationsModule],
-      declarations: [TestComponent],
-    });
-    fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    fixture = render(TestComponent, [ClrDatagridModule]);
   });
 
   afterEach(() => fixture.destroy());
@@ -118,12 +120,7 @@ class SingleTestComponent {
 
 describe('ClrDatagrid single selection, as assistive technology sees it', () => {
   it('reports which row is selected, and does not claim several may be', () => {
-    TestBed.configureTestingModule({
-      imports: [ClrDatagridModule, NoopAnimationsModule],
-      declarations: [SingleTestComponent],
-    });
-    const fixture = TestBed.createComponent(SingleTestComponent);
-    fixture.detectChanges();
+    const fixture = render(SingleTestComponent, [ClrDatagridModule]);
     fixture.componentInstance.single = [fixture.componentInstance.items[1]];
     fixture.detectChanges();
 

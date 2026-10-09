@@ -32,16 +32,13 @@ describe('ClrSidePanel pinned state, as assistive technology sees it', () => {
     return fixture.nativeElement.querySelector('button.pinnable');
   }
 
-  beforeEach(() => {
+  beforeEach(async () => {
     TestBed.configureTestingModule({
       imports: [CdkTrapFocusModule, ClrSidePanelModule, NoopAnimationsModule],
       declarations: [TestComponent],
     });
     fixture = TestBed.createComponent(TestComponent);
     fixture.detectChanges();
-  });
-
-  beforeEach(async () => {
     // The panel renders its content through an inner clr-modal, which settles a tick later.
     await fixture.whenStable();
     fixture.detectChanges();

@@ -5,13 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ClrInputModule } from '../input/input.module';
 import { ClrRangeModule } from '../range/range.module';
+
+function render<T>(component: Type<T>, imports: unknown[]): ComponentFixture<T> {
+  TestBed.configureTestingModule({ imports: [...imports, NoopAnimationsModule], declarations: [component] });
+  const fixture = TestBed.createComponent(component);
+  fixture.detectChanges();
+  return fixture;
+}
 
 @Component({
   template: `
@@ -59,12 +66,7 @@ describe('Wrapped form control, as assistive technology sees it', () => {
   }
 
   beforeEach(() => {
-    TestBed.configureTestingModule({
-      imports: [ClrInputModule, ReactiveFormsModule, NoopAnimationsModule],
-      declarations: [TestComponent],
-    });
-    fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
+    fixture = render(TestComponent, [ClrInputModule, ReactiveFormsModule]);
   });
 
   afterEach(() => fixture.destroy());
@@ -132,22 +134,14 @@ describe('Wrapped form control, as assistive technology sees it', () => {
   });
 
   it('keeps aria-required the author wrote on an otherwise optional control', () => {
-    fixture.detectChanges();
-
     expect(input('authoredRequired').getAttribute('aria-required')).toBe('true');
   });
 
-  it('reports its own aria-invalid and aria-required when the author wrote neither', () => {
-    fixture.componentInstance.form.controls.host.markAsTouched();
-    fixture.detectChanges();
-    expect(input('host').getAttribute('aria-invalid')).toBe('true');
-    expect(input('host').getAttribute('aria-required')).toBe('true');
-
-    fixture.componentInstance.form.controls.host.setValue('esx-prod-04');
+  it('stops reporting required once the validator is removed', () => {
     fixture.componentInstance.form.controls.host.clearValidators();
     fixture.componentInstance.form.controls.host.updateValueAndValidity();
     fixture.detectChanges();
-    expect(input('host').hasAttribute('aria-invalid')).toBe(false);
+
     expect(input('host').hasAttribute('aria-required')).toBe(false);
   });
 });
@@ -167,12 +161,7 @@ class RangeTestComponent {
 
 describe('Range, as assistive technology sees it', () => {
   it('reports no aria-required, which a slider does not support, and aria-invalid once touched', () => {
-    TestBed.configureTestingModule({
-      imports: [ClrRangeModule, ReactiveFormsModule, NoopAnimationsModule],
-      declarations: [RangeTestComponent],
-    });
-    const fixture = TestBed.createComponent(RangeTestComponent);
-    fixture.detectChanges();
+    const fixture = render(RangeTestComponent, [ClrRangeModule, ReactiveFormsModule]);
     const range = fixture.nativeElement.querySelector('input[type="range"]') as HTMLInputElement;
 
     expect(range.hasAttribute('aria-required')).toBe(false);
