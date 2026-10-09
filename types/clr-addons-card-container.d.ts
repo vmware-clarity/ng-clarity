@@ -177,7 +177,7 @@ declare class ContainerService {
     /**
      * Initialize container service by adding list of cards and persistence service instance.
      */
-    initialize(cardContainer: ViewContainerRef, cards: AppfxCardInternal[]): void;
+    initialize(cardContainer: ViewContainerRef, cards: AppfxCard[]): void;
     /**
      * Fetches card order, hidden properties from the persistence service and apply it to card.
      * Filters hidden card, sorts cards according to order and remove duplicate order cards.
@@ -187,7 +187,7 @@ declare class ContainerService {
      * Fetches card order, hidden properties from the persistence service and apply it to card.
      * if card is hidden before filters it accordingly so that container will not insert it.
      */
-    getCardWithOrder(card: AppfxCardInternal): Observable<AppfxCardInternal>;
+    getCardWithOrder(card: AppfxCard): Observable<AppfxCardInternal>;
     /**
      * Toggles card hidden property and save updated settings in store.
      */
@@ -236,7 +236,7 @@ declare class ContainerService {
      * Adds card to the container list of cards of the container service.
      * Container cards contains all the available cards within container visible as well as hidden.
      */
-    addCard(card: AppfxCardInternal): void;
+    addCard(card: AppfxCard): void;
     /**
      * Updates each of the card settings properties like order, hidden.
      */
@@ -422,7 +422,7 @@ declare class AppfxCardContainerComponent implements OnInit, DoCheck {
     private persistenceService;
     private iterableDiffers;
     containerId: string;
-    cards: AppfxCardInternal[];
+    cards: AppfxCard[];
     persistenceStore?: AppfxContainerPersistenceStore;
     showCardContainerSettings: boolean;
     dragDropEnabled: boolean;
