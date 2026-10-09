@@ -24,7 +24,7 @@ import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
 import { ClrSelectModule } from '@clr/angular/forms/select';
 
-import { allRefs, refOf, settle } from './helpers.spec';
+import { allRefs, findNode, refOf, settle } from './helpers.spec';
 import { ClrMutationEngineService } from './mutation-engine.service';
 import {
   ClrElementMutationResult,
@@ -102,10 +102,82 @@ class AppBroken implements ControlValueAccessor {
   }
 }
 
+/** A value accessor that keeps what it is given, for the custom controls below. */
+abstract class KeptValue<T> implements ControlValueAccessor {
+  value: T | null = null;
+  writeValue(value: T | null): void {
+    this.value = value;
+  }
+  registerOnChange(): void {
+    // Not needed here.
+  }
+  registerOnTouched(): void {
+    // Not needed here.
+  }
+}
+
+/** A custom slider stating its bounds through ARIA on its own host. */
+@Component({
+  selector: 'app-stars',
+  template: '{{ value }}',
+  host: {
+    role: 'slider',
+    'aria-label': 'Stars',
+    'aria-valuemin': '1',
+    'aria-valuemax': '5',
+    '[attr.aria-valuenow]': 'value',
+  },
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppStars), multi: true }],
+  standalone: false,
+})
+class AppStars extends KeptValue<number> {}
+
+/** A custom element carrying the binding, rendering a spinbutton that states its bounds. */
+@Component({
+  selector: 'app-count',
+  template:
+    '<div role="spinbutton" aria-label="Count" aria-valuemin="0" aria-valuemax="10" [attr.aria-valuenow]="value"></div>',
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppCount), multi: true }],
+  standalone: false,
+})
+class AppCount extends KeptValue<number> {}
+
+/** A third-party autocomplete rendering a text input, whose model is the chosen record. */
+@Component({
+  selector: 'app-owner',
+  template: '<input aria-label="Owner" [value]="value?.name ?? \'\'" />',
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppOwner), multi: true }],
+  standalone: false,
+})
+class AppOwner extends KeptValue<{ id: number; name: string }> {}
+
+/** A custom radio group, its radios named by their text. */
+@Component({
+  selector: 'app-size',
+  template: `
+    @for (size of sizes; track size) {
+      <div role="radio" [attr.aria-checked]="size === value" [attr.aria-disabled]="size === 'XL' || null">
+        {{ size }}
+      </div>
+    }
+  `,
+  host: { role: 'radiogroup' },
+  providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppSize), multi: true }],
+  standalone: false,
+})
+class AppSize extends KeptValue<unknown> {
+  sizes = ['S', 'M', 'L', 'XL'];
+}
+
 @Component({
   template: `
     <form [formGroup]="form">
       <app-toggle formControlName="enabled"></app-toggle>
+      <app-stars formControlName="stars"></app-stars>
+      <app-count formControlName="count"></app-count>
+      <app-owner formControlName="owner"></app-owner>
+      <app-size formControlName="size" aria-label="Size"></app-size>
+      <app-size formControlName="sizeCode" aria-label="Size code"></app-size>
       <app-rating formControlName="rating" role="listbox" aria-label="Rating"></app-rating>
       <app-broken formControlName="broken"></app-broken>
       <clr-input-container>
@@ -211,6 +283,12 @@ class AppBroken implements ControlValueAccessor {
 class Host {
   form = new FormGroup({
     enabled: new FormControl(true),
+    stars: new FormControl(3),
+    count: new FormControl(2),
+    owner: new FormControl<{ id: number; name: string } | null>({ id: 7, name: 'Grace' }),
+    size: new FormControl('M'),
+    // A group whose model is a code rather than the label a radio shows.
+    sizeCode: new FormControl<unknown>(2),
     rating: new FormControl(3),
     broken: new FormControl(''),
     name: new FormControl('', Validators.required),
@@ -239,6 +317,8 @@ class Host {
   modalOpen = false;
 }
 
+const DECLARATIONS = [Host, AppToggle, AppRating, AppBroken, AppStars, AppCount, AppOwner, AppSize];
+
 describe('ClrMutationEngineService write path', () => {
   let fixture: ComponentFixture<Host>;
   let host: Host;
@@ -262,7 +342,7 @@ describe('ClrMutationEngineService write path', () => {
         ClrSelectModule,
         ClrRadioModule,
       ],
-      declarations: [Host, AppToggle, AppRating, AppBroken],
+      declarations: DECLARATIONS,
       providers: [
         provideClrMutationPolicy({
           classify: target => classify(target),
@@ -304,6 +384,49 @@ describe('ClrMutationEngineService write path', () => {
       expect(result.refused).toBe('unsupported');
       expect(result.detail).toContain('clrPublishElementMutator');
       expect(host.form.value.rating).toBe(3);
+    });
+
+    it('refuses a number outside the bounds a custom slider or spinbutton states through ARIA', async () => {
+      const page = contextEngine.getSnapshot();
+      expect(findNode(page.components, node => node.label === 'Stars')?.state).toEqual(
+        jasmine.objectContaining({ min: 1, max: 5 })
+      );
+
+      const high = await set('Stars', 9);
+      expect(high.refused).toBe('invalid');
+      expect(high.detail).toBe('The number must be at least 1 and at most 5.');
+      expect((await set('Count', -1)).detail).toBe('The number must be at least 0 and at most 10.');
+      expect(host.form.value.stars).toBe(3);
+      expect(host.form.value.count).toBe(2);
+
+      expect((await set('Stars', 5)).applied).toBeTrue();
+      expect(host.form.value.stars).toBe(5);
+    });
+
+    it('refuses to write text over a custom control holding an object', async () => {
+      const result = await set('Owner', 'Ada');
+
+      expect(result.refused).toBe('unsupported');
+      expect(result.detail).toContain('clrPublishElementMutator');
+      expect(host.form.value.owner).toEqual({ id: 7, name: 'Grace' });
+    });
+
+    it('chooses a radio of a custom radio group by its label', async () => {
+      const result = await set('Size', 'l');
+
+      expect(result).toEqual(jasmine.objectContaining({ applied: true, value: 'L', previous: 'M' }));
+      expect(host.form.value.size).toBe('L');
+      expect((await set('Size', 'XXL')).detail).toBe('No such option. The options are: "S", "M", "L".');
+      expect((await set('Size', 'XL')).detail).toBe('The option "XL" cannot be chosen right now.');
+      expect(host.form.value.size).toBe('L');
+    });
+
+    it('refuses a custom radio group whose model is not the label of a radio', async () => {
+      const result = await set('Size code', 'L');
+
+      expect(result.refused).toBe('unsupported');
+      expect(result.detail).toContain('clrPublishElementMutator');
+      expect(host.form.value.sizeCode).toBe(2);
     });
 
     it('reports a control that throws as refused, and still applies the operations after it', async () => {
@@ -678,7 +801,7 @@ describe('ClrMutationEngineService write path', () => {
           ClrSelectModule,
           ClrRadioModule,
         ],
-        declarations: [Host, AppToggle, AppRating, AppBroken],
+        declarations: DECLARATIONS,
         providers: [provideClrMutationPolicy({ classify: () => 'consequential' })],
       });
       const unconfirmed = TestBed.createComponent(Host);

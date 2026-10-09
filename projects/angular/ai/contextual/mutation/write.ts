@@ -39,13 +39,16 @@ const MAX_LABEL_LENGTH = CLR_CONTEXT_DEFAULT_OPTIONS.maxTextLength;
  *   which for an `[ngValue]` binding is an object the engine could not construct.
  * - `radiogroup` — the radio is chosen by its label and its own control takes its value.
  * - `radio` — a lone radio with a ref of its own; its control takes the radio's value.
+ * - `choice` — a custom element rendering a radio group, whose control takes the label
+ *   of the radio chosen.
  * - `checkbox` — a native checkbox; the control takes a boolean.
  * - `boolean`, `number`, `text` — the control takes the primitive. `boolean` is a custom
  *   control rendering a checkbox or switch.
  * - `typed` — a native date, time, month, week or colour input, which takes only the
  *   exact format the browser accepts.
  */
-type ControlKind = 'custom' | 'select' | 'radiogroup' | 'radio' | 'checkbox' | 'boolean' | 'number' | 'typed' | 'text';
+type ControlKind =
+  'custom' | 'select' | 'radiogroup' | 'radio' | 'choice' | 'checkbox' | 'boolean' | 'number' | 'typed' | 'text';
 
 /** Native input types that accept only one exact string format. */
 const TYPED_INPUTS: Record<string, string> = {
@@ -113,6 +116,15 @@ const UNBOUND_DETAIL =
 
 const KEPT_CHOICE_DETAIL = 'The current choice is kept from agents, and cannot be changed by one.';
 
+const STRUCTURED_VALUE_DETAIL =
+  'The control holds an object or a list, which the value its role suggests would replace. It can publish a mutator (clrPublishElementMutator from @clr/angular/utils).';
+
+const CHOICE_VALUE_DETAIL =
+  'The group holds something other than one of its radios’ labels, so choosing one by its label would store the wrong thing. It can publish a mutator (clrPublishElementMutator from @clr/angular/utils).';
+
+/** Elements that say themselves what value they take, rather than through the role of what they render. */
+const NATIVE_CONTROLS: ReadonlySet<string> = new Set(['input', 'select', 'textarea']);
+
 const OBSTACLE_DETAILS = {
   hidden: 'The control is not currently shown to the user, or sits behind an open modal dialog.',
   redacted: 'The control is in a region the application keeps from agents.',
@@ -148,13 +160,11 @@ export function resolveWriteTarget(
     target: { element, control, label, type, kind, ngControl, mutator, options, knownModals },
   });
 
-  for (const element of elements) {
+  const element = boundElementOf(elements);
+  if (element) {
     const mutator = readElementMutator(element);
     const ngControl = formControlOn(element);
     const bound = ngControl?.control;
-    if (!mutator?.write && !bound) {
-      continue;
-    }
     // A component that writes itself is not judged by a form control it may also carry.
     const refusal = bindingRefusal(element, mutator?.write ? null : bound, application);
     if (refusal) {
@@ -177,17 +187,38 @@ export function resolveWriteTarget(
         detail: 'This select applies its value only when its form is submitted, which the engine never does.',
       };
     }
+    // A custom control judged by the role it renders is taken to hold what that role
+    // shows: text, a number, a label. One whose form control holds an object or a list —
+    // an autocomplete keeping the chosen record — would have it replaced by a string.
+    if (!NATIVE_CONTROLS.has(element.tagName.toLowerCase()) && !mutator?.coerce && isStructured(bound?.value)) {
+      return { refused: 'unsupported', detail: STRUCTURED_VALUE_DETAIL };
+    }
+    if (kind === 'choice' && !holdsChoiceLabel(control, bound?.value)) {
+      return { refused: 'unsupported', detail: CHOICE_VALUE_DETAIL };
+    }
     return targetOf(element, kind, ngControl, mutator);
   }
-  // A radio group is summarised rather than walked, so its ref is the group's; the
-  // binding is on the radios inside it.
-  const radio =
-    resolveRole(control) === 'radiogroup' ? radiosOf(control).find(each => formControlOn(each)?.control) : null;
+  const radio = boundRadioOf(control);
   if (radio) {
     const ngControl = formControlOn(radio);
     return bindingRefusal(radio, ngControl?.control, application) ?? targetOf(control, 'radiogroup', ngControl, null);
   }
   return { refused: 'unbound', detail: UNBOUND_DETAIL };
+}
+
+/** The outermost element that carries a form binding or a published `write`, which is what a write goes through. */
+function boundElementOf(elements: Element[]): Element | undefined {
+  return elements.find(element => readElementMutator(element)?.write || formControlOn(element)?.control);
+}
+
+/**
+ * A radio group is summarised rather than walked, so its ref is the group's; the binding
+ * is on the radios inside it.
+ */
+function boundRadioOf(control: Element): HTMLInputElement | undefined {
+  return resolveRole(control) === 'radiogroup'
+    ? radiosOf(control).find(each => formControlOn(each)?.control)
+    : undefined;
 }
 
 /** Why a bound element cannot be written to: another application renders it, or its form control is disabled. */
@@ -365,6 +396,8 @@ export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
       return { value: radioValue(target.element as HTMLInputElement), display: true };
     case 'radiogroup':
       return coerceRadio(target, proposed);
+    case 'choice':
+      return coerceChoice(target, proposed);
     case 'number':
       return coerceNumber(target, proposed);
     case 'typed':
@@ -626,6 +659,8 @@ function kindFor(bound: Element, rendered: Element, type: string): ControlKind |
     case 'textbox':
     case 'searchbox':
       return 'text';
+    case 'radiogroup':
+      return 'choice';
     default:
       return null;
   }
@@ -642,16 +677,19 @@ function coerceNumber(target: WriteTarget, proposed: unknown): Coerced {
   }
   // A native input states its bounds; a range input clamps silently and Angular's min and
   // max validators do not apply to it, so a value outside them would reach the model only.
+  // A custom slider or spinbutton states them through ARIA on the element carrying its
+  // role, which is where the snapshot reads them from too.
   const input = target.element.tagName.toLowerCase() === 'input' ? (target.element as HTMLInputElement) : null;
+  const [min, max] = input
+    ? nativeBounds(input)
+    : [ariaBound(target.control, 'aria-valuemin'), ariaBound(target.control, 'aria-valuemax')];
+  if ((Number.isFinite(min) && number < min) || (Number.isFinite(max) && number > max)) {
+    const bounds = [Number.isFinite(min) ? `at least ${min}` : '', Number.isFinite(max) ? `at most ${max}` : '']
+      .filter(Boolean)
+      .join(' and ');
+    return { refused: `The number must be ${bounds}.` };
+  }
   if (input) {
-    const min = input.min !== '' ? Number(input.min) : input.type === 'range' ? 0 : NaN;
-    const max = input.max !== '' ? Number(input.max) : input.type === 'range' ? 100 : NaN;
-    if ((Number.isFinite(min) && number < min) || (Number.isFinite(max) && number > max)) {
-      const bounds = [Number.isFinite(min) ? `at least ${min}` : '', Number.isFinite(max) ? `at most ${max}` : '']
-        .filter(Boolean)
-        .join(' and ');
-      return { refused: `The number must be ${bounds}.` };
-    }
     const step = input.step && input.step !== 'any' ? Number(input.step) : NaN;
     if (Number.isFinite(step) && step > 0) {
       const offset = (number - (Number.isFinite(min) ? min : 0)) / step;
@@ -661,6 +699,18 @@ function coerceNumber(target: WriteTarget, proposed: unknown): Coerced {
     }
   }
   return { value: number, display: number };
+}
+
+/** A native input's bounds, `NaN` where it sets none; a range input has the browser's defaults. */
+function nativeBounds(input: HTMLInputElement): [number, number] {
+  const [min, max] = input.type === 'range' ? [0, 100] : [NaN, NaN];
+  return [input.min !== '' ? Number(input.min) : min, input.max !== '' ? Number(input.max) : max];
+}
+
+/** A bound an ARIA attribute states, or `NaN` when it states none. */
+function ariaBound(element: Element, attribute: string): number {
+  const raw = element.getAttribute(attribute);
+  return raw?.trim() ? Number(raw) : NaN;
 }
 
 function coerceTyped(target: WriteTarget, proposed: unknown): Coerced {
@@ -753,6 +803,56 @@ function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
     return { refused: `The option "${radioLabel(chosen)}" cannot be chosen right now.` };
   }
   return { value: chosen, display: radioLabel(chosen) };
+}
+
+/**
+ * Chooses a radio of a custom radio group by the label the snapshot showed, and gives the
+ * group's control that label, which is what a group that passed `holdsChoiceLabel` takes.
+ */
+function coerceChoice(target: WriteTarget, proposed: unknown): Coerced {
+  const radios = customRadiosOf(target.control);
+  if (radios.some(radio => radio.getAttribute('aria-checked') === 'true' && choiceKept(radio, target))) {
+    return { refused: KEPT_CHOICE_DETAIL };
+  }
+  if (proposed === null) {
+    return { value: null, display: null };
+  }
+  const withheld = withheldBy(target.control, target.options);
+  const shown = radios.filter(radio => choiceShown(radio, target));
+  const usable = shown.filter(radio => !writeObstacle(radio, target.knownModals));
+  const labelOfRadio = (radio: Element) => accessibleName(radio, 'radio', MAX_LABEL_LENGTH, withheld);
+  const chosen = shown.find(
+    radio =>
+      typeof proposed === 'string' && clrNormalizeContextText(labelOfRadio(radio)) === clrNormalizeContextText(proposed)
+  );
+  if (!chosen) {
+    return { refused: `No such option. The options are: ${listLabels(usable.map(labelOfRadio))}.` };
+  }
+  const label = labelOfRadio(chosen);
+  if (!usable.includes(chosen)) {
+    return { refused: `The option "${label}" cannot be chosen right now.` };
+  }
+  return { value: label, display: label };
+}
+
+/** Whether a custom radio group's control holds nothing, or the label of one of its radios. */
+function holdsChoiceLabel(group: Element, value: unknown): boolean {
+  if (value === null || value === undefined || value === '') {
+    return true;
+  }
+  const labels = customRadiosOf(group).map(radio =>
+    clrNormalizeContextText(accessibleName(radio, 'radio', MAX_LABEL_LENGTH))
+  );
+  return typeof value === 'string' && labels.includes(clrNormalizeContextText(value));
+}
+
+function customRadiosOf(group: Element): Element[] {
+  return Array.from(group.querySelectorAll('[role="radio"]'));
+}
+
+/** Whether a value is an object or a list, rather than a primitive. */
+function isStructured(value: unknown): boolean {
+  return value !== null && typeof value === 'object';
 }
 
 /**

@@ -89,6 +89,13 @@ describe('ariaState', () => {
     expect(state.step).toBe(2);
   });
 
+  it('reports the bounds a custom slider or spinbutton states through ARIA', () => {
+    const slider = stateOf('<div role="slider" aria-valuemin="1" aria-valuemax="5" aria-valuenow="3"></div>');
+    expect(slider.min).toBe(1);
+    expect(slider.max).toBe(5);
+    expect(stateOf('<div role="spinbutton" aria-valuemin="0"></div>').min).toBe(0);
+  });
+
   it('reports format constraints so an agent cannot propose an invalid value', () => {
     const state = stateOf('<input pattern="^[a-z-]{3,24}$" maxlength="24" />');
     expect(state.pattern).toBe('^[a-z-]{3,24}$');
