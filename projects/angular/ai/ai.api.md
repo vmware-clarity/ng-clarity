@@ -63,9 +63,6 @@ export interface ClrClearOperation {
 }
 
 // @public
-export function clrCollectDomContexts(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrComponentContext[];
-
-// @public
 export function clrCollectDomContextTree(root: ParentNode, options?: ClrContextSnapshotOptions, customExtractors?: ClrContextDomExtractor[]): ClrContextTreeResult;
 
 // @public
