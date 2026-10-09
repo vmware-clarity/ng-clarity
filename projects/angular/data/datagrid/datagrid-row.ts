@@ -17,6 +17,7 @@ import {
   Inject,
   Injector,
   Input,
+  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -44,6 +45,7 @@ import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { Items } from './providers/items';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
+import { DatagridTreeNode, DatagridTreeService } from './providers/tree.service';
 import { WrappedRow } from './wrapped-row';
 
 let nbRow = 0;
@@ -137,7 +139,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     public commonStrings: ClrCommonStringsService,
     private items: Items,
     private columnsService: ColumnsService,
-    @Inject(DOCUMENT) private document: any
+    @Inject(DOCUMENT) private document: any,
+    @Optional() public tree: DatagridTreeService<T>
   ) {
     nbRow++;
     this.id = 'clr-dg-row' + nbRow;
@@ -251,6 +254,32 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     return this.items.identifyBy;
   }
 
+  /**
+   * The place of this row in the tree, when the datagrid renders one.
+   */
+  get treeNode(): DatagridTreeNode<T> | undefined {
+    return this.tree?.enabled ? this.tree.nodeFor(this.item) : undefined;
+  }
+
+  /**
+   * The parents whose loaded children end with this row and that have more to load, innermost
+   * first. Each gets a "load more" line right below this row.
+   */
+  get treeLoadMoreParents(): DatagridTreeNode<T>[] {
+    const parents: DatagridTreeNode<T>[] = [];
+    let node = this.treeNode;
+    if (!node || (node.expanded && node.children?.length)) {
+      return parents;
+    }
+    while (node.parent && node.posInSet === node.parent.children.length) {
+      if (node.parent.hasMore) {
+        parents.push(node.parent);
+      }
+      node = node.parent;
+    }
+    return parents;
+  }
+
   openDetails(event: MouseEvent, detailButton: HTMLButtonElement) {
     event.stopPropagation();
 
@@ -263,7 +292,9 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   ngAfterContentInit() {
+    this.markTreeCell();
     this.dgCells.changes.subscribe(() => {
+      this.markTreeCell();
       this.insertCellViews();
     });
   }
@@ -398,6 +429,13 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       const container = this.columnsService.isPinned(index) ? this._pinnedCells : this._scrollableCells;
       container.insert(cell._view);
     });
+  }
+
+  /**
+   * The first cell carries the indentation and the expand toggle of a tree row.
+   */
+  private markTreeCell() {
+    this.dgCells.forEach((cell, index) => (cell.treeRow = index === 0 ? this : null));
   }
 
   private rangeSelect() {

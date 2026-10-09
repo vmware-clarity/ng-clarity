@@ -55,6 +55,7 @@ import { Sort } from './providers/sort';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
+import { DatagridTreeService } from './providers/tree.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
@@ -77,6 +78,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
     ColumnsService,
     DisplayModeService,
     KeyNavigationGridController,
+    DatagridTreeService,
   ],
   host: {
     '[class.datagrid-host]': 'true',
@@ -205,7 +207,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     public commonStrings: ClrCommonStringsService,
     public keyNavigation: KeyNavigationGridController,
     private zone: NgZone,
-    private columnsService: ColumnsService
+    private columnsService: ColumnsService,
+    public tree: DatagridTreeService<T>
   ) {
     const datagridId = uniqueIdFactory();
 
@@ -541,6 +544,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   dataChanged() {
     this.items.refresh();
+  }
+
+  /**
+   * Fetches the children of `item` again, or of every loaded row when no item is given.
+   */
+  reloadChildren(item?: T) {
+    this.tree.reload(item);
   }
 
   private destroyFixedColumnViews() {

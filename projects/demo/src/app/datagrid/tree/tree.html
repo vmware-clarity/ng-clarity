@@ -1,0 +1,79 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Datagrid: Tree data (spike)</h2>
+
+<p>
+  Root rows come one page at a time through <code class="clr-code">(clrDgRefresh)</code>. Children are fetched when a
+  row is expanded, three at a time.
+</p>
+
+<clr-radio-container clrInline>
+  <label>Selection</label>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio name="tree-selection" value="multi" [(ngModel)]="selectionType" />
+    <label>Multi</label>
+  </clr-radio-wrapper>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio name="tree-selection" value="single" [(ngModel)]="selectionType" />
+    <label>Single</label>
+  </clr-radio-wrapper>
+</clr-radio-container>
+<clr-checkbox-wrapper>
+  <input type="checkbox" clrCheckbox name="tree-pin" [(ngModel)]="pinName" />
+  <label>Pin the name column</label>
+</clr-checkbox-wrapper>
+
+<div class="tree-demo">
+  <clr-datagrid
+    [clrDgSelectionType]="selectionType"
+    [(clrDgSelected)]="selected"
+    [clrDgItemsIdentityFn]="identity"
+    [clrDgLoading]="loading"
+    (clrDgRefresh)="refresh($event)"
+  >
+    <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="320">Name</clr-dg-column>
+    <clr-dg-column [style.width.px]="140">Kind</clr-dg-column>
+    <clr-dg-column [style.width.px]="140">Status</clr-dg-column>
+    <clr-dg-column [style.width.px]="400">CPU %</clr-dg-column>
+    <clr-dg-column [style.width.px]="400">Memory (GB)</clr-dg-column>
+    <clr-dg-column [style.width.px]="400">Children</clr-dg-column>
+
+    <clr-dg-row
+      *clrDgTreeItems="let resource of roots; children: getChildren; expandable: expandable"
+      [clrDgItem]="resource"
+    >
+      <clr-dg-action-overflow>
+        <button class="action-item" (click)="act('Edit', resource)">Edit</button>
+        <button class="action-item" (click)="act('Delete', resource)">Delete</button>
+      </clr-dg-action-overflow>
+      <clr-dg-cell>{{ resource.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.kind }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.status }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.cpu }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.memory }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.childCount }}</clr-dg-cell>
+    </clr-dg-row>
+
+    <clr-dg-detail *clrIfDetail="let detail">
+      <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
+      <clr-dg-detail-body>
+        <p>{{ detail.kind }} {{ detail.id }} is {{ detail.status }}.</p>
+        <p>{{ detail.cpu }}% CPU, {{ detail.memory }} GB memory, {{ detail.childCount }} children.</p>
+      </clr-dg-detail-body>
+    </clr-dg-detail>
+
+    <clr-dg-footer>
+      <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="total">
+        {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total }} datacenters
+      </clr-dg-pagination>
+    </clr-dg-footer>
+  </clr-datagrid>
+</div>
+
+<p class="tree-demo-selected">Selected: {{ selectedNames }}</p>
+<p class="tree-demo-log">Actions: {{ log.join('; ') }}</p>

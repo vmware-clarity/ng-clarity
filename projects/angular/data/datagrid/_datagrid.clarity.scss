@@ -256,6 +256,42 @@
     }
   }
 
+  // Tree rows: the first cell is indented by its depth and starts with the expand toggle, which sits
+  // in the indentation so the content of every level lines up past it.
+  .datagrid .datagrid-cell.datagrid-tree-cell {
+    --clr-datagrid-tree-indent: #{tokens.$cds-global-space-9};
+
+    position: relative;
+    padding-inline-start: calc(
+      #{tables-variables.$clr-table-cell-horizontal-padding} + var(--clr-datagrid-tree-level, 0) *
+        var(--clr-datagrid-tree-indent) + var(--clr-datagrid-tree-indent)
+    );
+
+    .datagrid-tree-toggle {
+      @include mixins.clr-no-styles-button();
+
+      position: absolute;
+      inset-block: 0;
+      inset-inline-start: calc(
+        #{tables-variables.$clr-table-cell-horizontal-padding} + var(--clr-datagrid-tree-level, 0) *
+          var(--clr-datagrid-tree-indent)
+      );
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--clr-datagrid-tree-indent);
+      cursor: pointer;
+
+      cds-icon {
+        color: datagrid-variables.$clr-datagrid-icon-color;
+      }
+    }
+  }
+
+  .datagrid-tree-load-more .datagrid-cell {
+    border: none;
+  }
+
   .datagrid-row-sticky {
     background-color: tables-variables.$clr-table-bgcolor;
     display: flex;

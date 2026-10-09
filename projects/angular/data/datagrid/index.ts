@@ -21,6 +21,7 @@ export * from './datagrid-hideable-column';
 export * from './datagrid-filter';
 export * from './datagrid-if-detail';
 export * from './datagrid-items';
+export * from './datagrid-tree-items';
 export * from './datagrid-row';
 export * from './datagrid-row-detail';
 export * from './datagrid-cell';
@@ -52,6 +53,7 @@ export * from './datagrid.module';
 
 export { Selection } from './providers/selection'; // exported specifically for appfx datagrid;
 export { ClrDatagridItemsIdentityFunction } from './providers/items';
+export { ClrDatagridTreeChildren, ClrDatagridTreeChildrenLoader, ClrDatagridTreeChunk } from './providers/tree.service';
 export { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 export { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 export { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';

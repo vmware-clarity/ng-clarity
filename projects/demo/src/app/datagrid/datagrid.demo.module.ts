@@ -50,6 +50,7 @@ import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
 import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
+import { DatagridTreeDemo } from './tree/tree';
 import { ColorFilter } from './utils/color-filter';
 import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
 import { DatagridVirtualScrollEmptyRowsDemo } from './virtual-scroll-empty-rows/virtual-scroll-empty-rows';
@@ -95,6 +96,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridColumnSizingDemo,
     DatagridColumnActionsDemo,
     DatagridPinnableColumnsDemo,
+    DatagridTreeDemo,
     DatagridExpandableRowsDemo,
     DatagridPerformanceDemo,
     DatagridTestCasesDemo,

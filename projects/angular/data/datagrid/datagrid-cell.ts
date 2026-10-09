@@ -5,17 +5,37 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChildren, Injector, OnInit, QueryList, ViewContainerRef } from '@angular/core';
+import { Component, ContentChildren, Injector, OnInit, Optional, QueryList, ViewContainerRef } from '@angular/core';
 import { ClrSignpost } from '@clr/angular/popover/signpost';
-import { HostWrapper } from '@clr/angular/utils';
+import { ClrCommonStringsService, HostWrapper } from '@clr/angular/utils';
 
+import { DatagridTreeNode, DatagridTreeService } from './providers/tree.service';
 import { WrappedCell } from './wrapped-cell';
 
 @Component({
   selector: 'clr-dg-cell',
-  template: `<ng-content></ng-content>`,
+  template: `
+    @if (treeRow?.treeNode; as node) {
+      @if (node.loading) {
+        <clr-spinner class="datagrid-tree-toggle" clrInline>{{ commonStrings.keys.loading }}</clr-spinner>
+      } @else if (node.expandable) {
+        <button
+          type="button"
+          class="datagrid-tree-toggle"
+          tabindex="-1"
+          [attr.aria-label]="node.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand"
+          (click)="toggle($event, node)"
+        >
+          <cds-icon shape="angle" [direction]="node.expanded ? 'down' : 'right'"></cds-icon>
+        </button>
+      }
+    }
+    <ng-content></ng-content>
+  `,
   host: {
     '[class.datagrid-cell]': 'true',
+    '[class.datagrid-tree-cell]': '!!treeRow?.treeNode',
+    '[style.--clr-datagrid-tree-level]': 'treeRow?.treeNode ? treeRow.treeNode.level - 1 : null',
     '[class.datagrid-signpost-trigger]': 'signpost.length > 0',
     role: 'gridcell',
   },
@@ -32,12 +52,27 @@ export class ClrDatagridCell implements OnInit {
    */
   @ContentChildren(ClrSignpost) signpost: QueryList<ClrSignpost>;
 
+  /**
+   * Set by the row on its first cell when the datagrid renders a tree.
+   */
+  treeRow: { treeNode: DatagridTreeNode<any> | undefined } | null = null;
+
   private wrappedInjector: Injector;
 
-  constructor(private vcr: ViewContainerRef) {}
+  constructor(
+    private vcr: ViewContainerRef,
+    public commonStrings: ClrCommonStringsService,
+    @Optional() private tree: DatagridTreeService
+  ) {}
 
   get _view() {
     return this.wrappedInjector.get(WrappedCell, this.vcr).cellView;
+  }
+
+  toggle(event: MouseEvent, node: DatagridTreeNode<any>) {
+    // Expanding is not selecting, even in row selection mode.
+    event.stopPropagation();
+    this.tree.setExpanded(node, !node.expanded);
   }
 
   ngOnInit() {

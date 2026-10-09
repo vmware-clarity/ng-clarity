@@ -12,6 +12,10 @@
   (click)="selectRow(!selected, $event)"
   [class.datagrid-row-clickable]="selection.rowSelectionMode"
   [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
+  [attr.aria-level]="treeNode?.level"
+  [attr.aria-expanded]="treeNode?.expandable ? treeNode.expanded : null"
+  [attr.aria-posinset]="treeNode?.posInSet"
+  [attr.aria-setsize]="treeNode?.setSize"
 >
   <div class="datagrid-row-sticky">
     <!-- Sticky elements here -->
@@ -137,6 +141,37 @@
     }
   </div>
 </div>
+@for (parent of treeLoadMoreParents; track parent) {
+<div role="row" class="datagrid-row-flex datagrid-tree-load-more" [attr.aria-level]="parent.level + 1">
+  <div class="datagrid-row-sticky">
+    @if (selection.selectionType !== SELECTION_TYPE.None) {
+    <div class="datagrid-select datagrid-fixed-column datagrid-cell" role="gridcell"></div>
+    } @if (rowActionService.hasActionableRow) {
+    <div class="datagrid-row-actions datagrid-fixed-column datagrid-cell" role="gridcell"></div>
+    } @if (globalExpandable.hasExpandableRow) {
+    <div class="datagrid-expandable-caret datagrid-fixed-column datagrid-cell" role="gridcell"></div>
+    } @if (detailService.enabled) {
+    <div class="datagrid-detail-caret datagrid-fixed-column datagrid-cell" role="gridcell"></div>
+    }
+  </div>
+  <div class="datagrid-row-scrollable">
+    <div class="datagrid-cell datagrid-tree-cell" role="gridcell" [style.--clr-datagrid-tree-level]="parent.level">
+      @if (parent.loading) {
+      <clr-spinner clrInline>{{ commonStrings.keys.loading }}</clr-spinner>
+      } @else {
+      <button
+        type="button"
+        class="btn btn-link btn-sm datagrid-tree-load-more-button"
+        tabindex="-1"
+        (click)="tree.loadMore(parent)"
+      >
+        {{ commonStrings.keys.datagridTreeLoadMore }} ({{ parent.children.length }} / {{ parent.total }})
+      </button>
+      }
+    </div>
+  </div>
+</div>
+}
 <!--
 We need the "project into template" hacks because we need this in 2 different places
 depending on whether the details replace the row or not.
