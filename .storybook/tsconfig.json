@@ -1,6 +1,8 @@
 {
   "extends": "../projects/angular/tsconfig.lib.json",
   "compilerOptions": {
+    "declaration": false,
+    "declarationMap": false,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
@@ -10,11 +12,12 @@
       "@clr/angular": ["./../projects/angular/index.ts"],
       "@clr/angular/*": ["./../projects/angular/*"],
       "@clr/addons": ["./../projects/addons/index.ts"],
-      "@clr/addons/*": ["./../projects/addons/*"]
+      "@clr/addons/*": ["./../projects/addons/*"],
+      "@storybook-helpers/*": ["./helpers/*"]
     },
     "types": ["node"]
   },
   "exclude": ["../src/test.ts", "../src/**/*.spec.ts", "../projects/**/*.spec.ts"],
-  "include": ["./stories/**/*.stories.ts", "./stories/**/*.storybook.component.ts", "./helpers/**/*.ts"],
+  "include": ["./stories/**/*.ts", "./helpers/**/*.ts"],
   "files": ["./typings.d.ts"]
 }
