@@ -45,7 +45,7 @@ describe('withoutUrlDetails', () => {
 });
 
 describe('withoutFormValues', () => {
-  it('leaves no empty state behind when every key a node published is withheld', () => {
+  it('says a node lost what it published, rather than leaving it looking empty', () => {
     const shared = withoutFormValues({
       title: '',
       regions: [],
@@ -53,7 +53,7 @@ describe('withoutFormValues', () => {
       collectedAt: '',
     });
 
-    expect('state' in shared.components[0]).toBe(false);
+    expect(shared.components[0].state).toEqual({ withheld: true });
   });
 
   it('withholds the rows a selectable grid lists along with its selection', () => {
@@ -70,7 +70,7 @@ describe('withoutFormValues', () => {
       collectedAt: '',
     });
 
-    expect(shared.components[0].state).toEqual({ rowCount: 2, selectionMode: 'multi' });
+    expect(shared.components[0].state).toEqual({ rowCount: 2, selectionMode: 'multi', withheld: true });
   });
 
   it('withholds how many rows are selected, and keeps what a progress bar or meter shows', () => {
@@ -87,10 +87,10 @@ describe('withoutFormValues', () => {
     });
 
     expect(shared.components.map(node => node.state)).toEqual([
-      { rowCount: 2 },
+      { rowCount: 2, withheld: true },
       { value: 40, max: 100 },
       { value: 0.7 },
-      { max: 10 },
+      { max: 10, withheld: true },
     ]);
   });
 
@@ -108,7 +108,7 @@ describe('withoutFormValues', () => {
       collectedAt: '',
     });
 
-    expect(shared.components[0].state).toEqual({ totalRows: 40 });
+    expect(shared.components[0].state).toEqual({ totalRows: 40, withheld: true });
   });
 
   it('withholds how many files a file input holds', () => {
@@ -117,7 +117,8 @@ describe('withoutFormValues', () => {
       regions: [],
       components: [
         {
-          type: 'clr-file-input-container',
+          type: 'group',
+          element: 'clr-file-input-container',
           label: 'Statement',
           state: { fileCount: 2, redacted: true },
         },
@@ -125,6 +126,52 @@ describe('withoutFormValues', () => {
       collectedAt: '',
     });
 
-    expect(shared.components[0].state).toEqual({ redacted: true });
+    expect(shared.components[0].state).toEqual({ redacted: true, withheld: true });
+  });
+
+  it('leaves an empty field unmarked, so an agent can tell a filled field from an empty one', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        { type: 'textbox', label: 'Empty', state: { value: '', required: true } },
+        { type: 'spinbutton', label: 'Count', state: { value: null } },
+        { type: 'grid', state: { rowCount: 2, selection: [] } },
+        { type: 'spinbutton', label: 'Zero', state: { value: 0 } },
+        { type: 'checkbox', label: 'Unticked', state: { checked: false } },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components.map(node => node.state)).toEqual([
+      { required: true },
+      undefined,
+      { rowCount: 2 },
+      { withheld: true },
+      { withheld: true },
+    ]);
+  });
+
+  it('marks where a value was withheld, so a withheld field does not read as an empty one', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [],
+      components: [
+        {
+          type: 'form',
+          children: [
+            { type: 'textbox', label: 'Typed', state: { value: 'secret-typed', required: true } },
+            { type: 'textbox', label: 'Never asked', state: { required: true } },
+          ],
+        },
+      ],
+      collectedAt: '',
+    });
+
+    expect(shared.components[0].state).toBeUndefined();
+    expect(shared.components[0].children?.map(node => node.state)).toEqual([
+      { required: true, withheld: true },
+      { required: true },
+    ]);
   });
 });

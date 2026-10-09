@@ -235,7 +235,7 @@ describe('DOM context collector - Clarity Angular components', () => {
   });
 
   it('carries the text of an element that has nothing but its content to offer', () => {
-    expect(contextOfType('clr-dg-footer')?.label).toBe('2 items');
+    expect(findContext(collectComponents(root), context => context.element === 'clr-dg-footer')?.label).toBe('2 items');
   });
 });
 
@@ -475,7 +475,12 @@ describe('DOM context collector - component-published context', () => {
     });
 
     expect(collectComponents(root)).toEqual([
-      { type: 'clr-fake-widget', element: 'clr-fake-widget', label: 'DOM label' },
+      {
+        type: 'group',
+        element: 'clr-fake-widget',
+        label: 'DOM label',
+        children: [{ type: 'text', label: 'content' }],
+      },
     ]);
   });
 

@@ -109,6 +109,12 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
     expect(JSON.stringify(components)).not.toContain('4111');
   });
 
+  it('is described as a group named by its tag, as any role-less custom element is', async () => {
+    const node = findNode(await create(SingleFileTest, []), 'clr-file-input-container');
+
+    expect(node?.type).toBe('group');
+  });
+
   it('keeps the names in a file list from the snapshot too', async () => {
     const components = await create(FileListTest, ['a-4111.pdf', 'b-4222.pdf']);
 

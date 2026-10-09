@@ -12,6 +12,16 @@
       it sits on the page, with tables and grids summarised — and whatever the application chooses to say about itself.
     </p>
 
+    <h2 id="quickstart" class="clr-mt-48px" cds-text="title">Quickstart</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      Inject the engine for a snapshot of the page now, or the tracker for the current page as it changes. There is
+      nothing to configure first. Letting an agent write back — fill a form, go to a route — takes a policy first, as
+      <a routerLink="/documentation/contextual-engine/code" fragment="writing-back">Writing back</a> shows.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="quickstartExample" language="typescript"></app-code-snippet>
+    </div>
+
     <h2 id="how-it-works" class="clr-mt-48px" cds-text="title">How it describes the page</h2>
     <p class="clr-mt-16px" cds-text="body">
       The engine reads the <strong cds-text="medium">accessibility tree</strong>, not any library's selectors. An ARIA
@@ -25,11 +35,24 @@
       <code cds-text="code">grid</code>, a modal is a <code cds-text="code">dialog</code>. Where the role is too coarse,
       an <code cds-text="code">element</code> field carries the tag that rendered it, so a
       <code cds-text="code">clr-side-panel</code> and a <code cds-text="code">clr-modal</code> remain distinguishable
-      while both being dialogs.
+      while both being dialogs. A component with no role of its own is a <code cds-text="code">group</code>, with its
+      tag in <code cds-text="code">element</code>: <code cds-text="code">type</code> is always a role, or
+      <code cds-text="code">text</code> for prose and <code cds-text="code">frame</code> for an embedded frame.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      A <code cds-text="code">label</code> is the accessible name. Where an element is named by what it contains, a
+      descendant that names itself counts by that name: a button holding only an icon with an
+      <code cds-text="code">aria-label</code>, or a link holding only an image, is called what the icon or the image's
+      <code cds-text="code">alt</code> says. An alert or a status is named by its message, without the buttons and links
+      inside it, which are nodes of their own. Text hidden only from sight, such as a
+      <code cds-text="code">clr-sr-only</code> span, is left out of a name whenever the element shows other text,
+      because it is usually guidance for a screen reader ("use the arrow keys to resize"); it is the name when it is all
+      the element has, as for an icon button labelled by one.
     </p>
     <p class="clr-mt-16px" cds-text="body">
       Components add only what a role cannot express — a combobox's options while its popover is closed, a datagrid's
-      total row count while paginated, a wizard's step states. The
+      total row count while paginated, and its rows and selection when <code cds-text="code">clrDgSelectionType</code>
+      makes its rows selectable, a wizard's step states. The
       <a routerLink="/documentation/contextual-engine/api" fragment="published-state">API tab</a> lists what each
       component publishes.
     </p>
@@ -79,7 +102,8 @@
       own code, so mark what an agent should not see before a snapshot goes to a model. The browser-agent accessor is
       not given what the user entered — typed values, chosen options, ticked boxes, selected rows — unless the
       application deliberately shares it; the application's annotations and the page's text, helper and validation text
-      included, are still shared.
+      included, are still shared. <code cds-text="code">withheld: true</code> marks a field whose value was withheld; an
+      empty field carries no marker, so an agent can still tell which fields are filled.
     </p>
 
     <h2 id="who-it-is-for" class="clr-mt-48px" cds-text="title">Who consumes it</h2>
@@ -89,6 +113,48 @@
       <code cds-text="code">window.clrContext()</code>. Those are different trust boundaries, and each is configured
       separately.
     </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Consumer</th>
+          <th class="left">Options</th>
+          <th class="left">What the user entered</th>
+          <th class="left">Address and title</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">The application's own code (<code cds-text="code">getSnapshot()</code>, the tracker)</td>
+          <td class="left">Any, over the application-wide ones</td>
+          <td class="left">Reported, except what is redacted</td>
+          <td class="left">Full URL, route parameters and data, title</td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">window.clrContext()</code></td>
+          <td class="left">Budgets, categories, roles, focus and collection mode only, never past the application's</td>
+          <td class="left">
+            Withheld, with <code cds-text="code">withheld: true</code> on a filled field and no marker on an empty one,
+            unless
+            <code cds-text="code">shareFormValues</code>
+          </td>
+          <td class="left">Route pattern and origin, empty title, unless <code cds-text="code">shareFullUrl</code></td>
+        </tr>
+        <tr>
+          <td class="left">
+            Any other untrusted consumer the application serves context to, such as an embedded frame
+          </td>
+          <td class="left">Held to the same limits as the global accessor</td>
+          <td class="left">Withheld, as for the global accessor</td>
+          <td class="left">Reduced, as for the global accessor</td>
+        </tr>
+      </tbody>
+    </table>
+    <p class="clr-mt-16px" cds-text="body">
+      Every consumer gets the page's text, its helper and error text, and the application's own
+      <code cds-text="code">clrContext</code> annotations. What is marked
+      <code cds-text="code">data-clr-context-redact</code> or
+      <code cds-text="code">data-clr-context-ignore</code> reaches none of them.
+    </p>
   </app-doc-tab>
 
   <app-doc-tab tab="code">
@@ -97,7 +163,8 @@
     <h3 id="installing" class="clr-mt-32px" cds-text="section">Installing</h3>
     <p class="clr-mt-16px" cds-text="body">
       The engine ships with <code cds-text="code">&#64;clr/angular</code> as the
-      <code cds-text="code">&#64;clr/angular/ai</code> entry point, so there is nothing extra to install.
+      <code cds-text="code">&#64;clr/angular/ai</code> entry point, so an application that uses Clarity has nothing
+      extra to install. If you do not already use <code cds-text="code">&#64;clr/angular</code>, add it:
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="installExample" language="bash"></app-code-snippet>
@@ -115,6 +182,10 @@
     <div class="clr-mt-16px">
       <app-code-snippet [code]="snapshotShapeExample" language="json"></app-code-snippet>
     </div>
+    <p class="clr-mt-16px" cds-text="body">
+      <code cds-text="code">route</code> is there only when the application uses the Angular Router;
+      <code cds-text="code">url</code> and <code cds-text="code">title</code> always are.
+    </p>
 
     <h3 id="live-context" class="clr-mt-32px" cds-text="section">Keeping a live page context</h3>
     <p class="clr-mt-16px" cds-text="body">
@@ -167,7 +238,10 @@
       <code cds-text="code">max</code>, <code cds-text="code">step</code>, <code cds-text="code">pattern</code> and
       <code cds-text="code">maxLength</code>, its validation state, and the helper or error text that describes it —
       resolved from <code cds-text="code">aria-describedby</code>, so it is attached to the field it belongs to rather
-      than floating beside it.
+      than floating beside it. While a field is invalid, the message its
+      <code cds-text="code">aria-errormessage</code> names is its <code cds-text="code">error</code>, apart from the
+      <code cds-text="code">description</code>. A number or range field reports its value as a number, and
+      <code cds-text="code">null</code> when it is empty.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="formContextExample" language="typescript"></app-code-snippet>
@@ -200,6 +274,13 @@
       about itself — a bare <code cds-text="code">&lt;div class="card"&gt;</code>. Register an extractor for those; the
       returned function removes it again.
     </p>
+    <p class="clr-mt-16px" cds-text="body">
+      What an extractor returns stands for the whole element: the walk does not go inside it, so the buttons, fields and
+      text in the element, and what components inside it publish, are left out unless the extractor returns them as
+      <code cds-text="code">children</code>. Its node has no <code cds-text="code">element</code> unless the extractor
+      sets one. What the element itself publishes is still merged in, and a redacted region still withholds values from
+      it.
+    </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="extractorExample" language="typescript"></app-code-snippet>
     </div>
@@ -207,7 +288,11 @@
     <h3 id="browser-agents" class="clr-mt-32px" cds-text="section">Browser-driving agents</h3>
     <p class="clr-mt-16px" cds-text="body">
       Agents that drive the browser directly and have no application API can be given a global accessor. Any script on
-      the page can call it, so what the user typed is withheld unless the application shares it deliberately.
+      the page can call it, so what the user typed is withheld unless the application shares it deliberately. Options
+      the accessor does not accept — an unknown or misspelt key, a selector, a value of the wrong kind — are dropped
+      without an error, and the snapshot is taken as if they had not been passed. The accessor is defined read-only on
+      <code cds-text="code">window</code>, so a script cannot replace it by assigning to it;
+      <code cds-text="code">disableGlobalAccess()</code> removes it.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="globalAccessExample" language="typescript"></app-code-snippet>

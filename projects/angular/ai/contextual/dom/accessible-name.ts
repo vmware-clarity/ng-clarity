@@ -13,7 +13,10 @@ import {
 
 import { readScope } from './read-scope';
 import { isNameFromContents } from './roles';
-import { accessibleText, isUnrendered, referencedText, truncate } from './text';
+import { accessibleText, ACTION_SELECTOR, isUnrendered, referencedText, truncate } from './text';
+
+/** Roles named by the message they carry, which leaves out any control inside it. */
+const MESSAGE_ROLES = new Set(['alert', 'status']);
 
 /** Elements whose name a `<label>` may supply. */
 const LABELABLE = new Set(['button', 'input', 'meter', 'output', 'progress', 'select', 'textarea']);
@@ -68,7 +71,14 @@ export function accessibleName(element: Element, role: string | null, maxTextLen
   }
 
   if (role && isNameFromContents(role)) {
-    return truncate(accessibleText(element, undefined, withheld), maxTextLength);
+    // An alert or a status is named by its message, not by the actions offered beside
+    // it: "Saved", not "Saved Undo". Those actions are nodes of their own.
+    const unread = MESSAGE_ROLES.has(role)
+      ? withheld
+        ? `${withheld}, ${ACTION_SELECTOR}`
+        : ACTION_SELECTOR
+      : withheld;
+    return truncate(accessibleText(element, undefined, unread), maxTextLength);
   }
 
   return '';

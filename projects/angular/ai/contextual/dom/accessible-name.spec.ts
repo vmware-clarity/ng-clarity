@@ -26,6 +26,24 @@ describe('accessibleName', () => {
     return accessibleName(element, resolveRole(element), maxTextLength);
   }
 
+  it('takes a descendant’s own name into a name from contents, where its text would say nothing', () => {
+    expect(nameOf('<span id="t">Trash</span><button><span aria-labelledby="t"></span></button>', 'button')).toBe(
+      'Trash'
+    );
+    expect(nameOf('<button><img src="data:," alt="" /> Save</button>', 'button')).toBe('Save');
+    expect(nameOf('<a href="/x"><span role="img" title="Home"></span></a>', 'a')).toBe('Home');
+    expect(nameOf('<button><span aria-hidden="true" aria-label="Hidden"></span>Go</button>', 'button')).toBe('Go');
+  });
+
+  it('does not follow two elements that name each other round and round', () => {
+    expect(
+      nameOf(
+        '<button><span aria-labelledby="b"></span> Go</button><span id="b"><span aria-labelledby="b"></span>Next</span>',
+        'button'
+      )
+    ).toBe('Next Go');
+  });
+
   it('prefers aria-labelledby over aria-label', () => {
     expect(
       nameOf(

@@ -125,6 +125,35 @@ export function accessibleText(element: Element, exclude?: Element, withheld = '
 }
 
 /**
+ * What a user can act on, which the walk describes as a node of its own: a message is
+ * named without it, and nothing inside it lends its own name to another element's.
+ */
+export const ACTION_SELECTOR = [
+  'a[href]',
+  'button',
+  'input',
+  'select',
+  'textarea',
+  '[contenteditable]',
+  ...[
+    'button',
+    'link',
+    'checkbox',
+    'radio',
+    'switch',
+    'textbox',
+    'searchbox',
+    'combobox',
+    'listbox',
+    'menu',
+    'menuitem',
+    'tab',
+    'slider',
+    'spinbutton',
+  ].map(role => `[role="${role}"]`),
+].join(', ');
+
+/**
  * How deeply nested an element the engine still reads, in a walk or a name. The HTML
  * parser nests no deeper than 512, but script can, and reading recurses once per level:
  * what lies deeper is left out rather than the stack running out.
@@ -136,7 +165,8 @@ function textFor(
   exclude: Element | undefined,
   includeClipped: boolean,
   withheld: string,
-  depth = 0
+  depth = 0,
+  embedding = true
 ): string {
   if (depth >= MAX_NESTING_DEPTH) {
     return '';
@@ -158,7 +188,15 @@ function textFor(
     if (child.matches(UNREADABLE_SELECTOR) || (withheld && child.matches(withheld))) {
       continue;
     }
-    const inner = textFor(child, exclude, includeClipped, withheld, depth + 1);
+    // A descendant that names itself — an icon's `aria-label`, an image's `alt` — stands
+    // for its content, as it does when a browser names an element from what it holds: a
+    // button holding only an image is called what the image's text alternative says. A
+    // control inside, such as a column header's filter button, is a node of its own, and
+    // neither it nor anything in it lends its name.
+    const embeds = embedding && !child.matches(ACTION_SELECTOR);
+    const inner =
+      (embeds ? embeddedName(child, withheld) : null) ??
+      textFor(child, exclude, includeClipped, withheld, depth + 1, embeds);
     // Nothing to contribute, and checking style for an empty element would be a layout
     // read for no reason.
     if (!inner.trim()) {
@@ -176,19 +214,70 @@ function textFor(
 }
 
 /**
- * The joined text of every element an id-list attribute (`aria-labelledby`,
- * `aria-describedby`) points at, in the order the ids are given; missing and empty
- * targets are skipped, and so are targets inside anything `withheld` selects.
+ * The name a descendant gives itself, which stands for its content in a name taken from
+ * contents: its `aria-labelledby` or `aria-label`, and for an image (`<img>`, `<area>`,
+ * `role="img"`) its `alt` or `title`. An image that gives none contributes nothing, since
+ * what it draws is not text. `null` for any other element that gives no name, whose
+ * content is read instead.
+ *
+ * `aria-labelledby` is not followed while already following one, as in the ARIA name
+ * computation: two elements that name each other must not recurse.
  */
-export function referencedText(element: Element, attribute: string, withheld = ''): string {
+function embeddedName(element: Element, withheld: string): string | null {
+  const referenced = followingReference ? '' : referencedText(element, 'aria-labelledby', withheld);
+  if (referenced) {
+    return referenced;
+  }
+  const label = element.getAttribute('aria-label')?.trim();
+  if (label) {
+    return label;
+  }
+  const tagName = element.tagName.toLowerCase();
+  const nativeImage = tagName === 'img' || tagName === 'area';
+  if (!nativeImage && element.getAttribute('role')?.trim().split(/\s+/)[0] !== 'img') {
+    return null;
+  }
+  return (nativeImage && element.getAttribute('alt')?.trim()) || element.getAttribute('title')?.trim() || '';
+}
+
+/** Whether an id reference is being followed, during which another is not; see {@link embeddedName}. */
+let followingReference = false;
+
+/**
+ * The joined text of every element an id-list attribute (`aria-labelledby`,
+ * `aria-describedby`, `aria-errormessage`) points at, in the order the ids are given;
+ * missing and empty targets are skipped, and so are targets inside anything `withheld`
+ * selects and the ids in `skip`.
+ */
+export function referencedText(
+  element: Element,
+  attribute: string,
+  withheld = '',
+  skip: readonly string[] = []
+): string {
   const ids = element.getAttribute(attribute)?.trim();
   if (!ids) {
     return '';
   }
-  const document = element.ownerDocument;
+  const following = followingReference;
+  followingReference = true;
+  try {
+    return textOfReferences(element.ownerDocument, ids, withheld, skip);
+  } finally {
+    followingReference = following;
+  }
+}
+
+/** The ids an id-list attribute names, in order. */
+export function referencedIds(element: Element, attribute: string): string[] {
+  return (element.getAttribute(attribute) ?? '').split(/\s+/).filter(id => id);
+}
+
+function textOfReferences(document: Document, ids: string, withheld: string, skip: readonly string[]): string {
   return (
     ids
       .split(/\s+/)
+      .filter(id => !skip.includes(id))
       .map(id => document.getElementById(id))
       // A reference must not reach into a region the engine may not read, nor into an
       // element it would not describe — hidden, `aria-hidden`, inert, or not rendered at

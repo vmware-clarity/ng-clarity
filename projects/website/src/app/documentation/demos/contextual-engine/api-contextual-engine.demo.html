@@ -32,7 +32,9 @@
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
         Teaches the collector about markup that carries neither an ARIA role nor an accessible name. Returns a function
-        that removes it again.
+        that removes it again. The extractor's node stands for the whole element: nothing inside it is walked, so only
+        the <code cds-text="code">children</code> it returns are reported, and the node has no
+        <code cds-text="code">element</code> unless it sets one.
       </td>
     </tr>
     <tr>
@@ -42,18 +44,22 @@
         Exposes <code cds-text="code">window.clrContext()</code> for agents driving the browser. Because any script on
         the page can call it, the caller is treated as untrusted: only the options in
         <code cds-text="code">CLR_CONTEXT_UNTRUSTED_OPTION_KEYS</code> are honoured (budgets, categories, roles, focus,
-        collection mode — never selectors), each held to what the application allows through
-        <code cds-text="code">options</code> here and <code cds-text="code">provideClrContextOptions</code>, and to the
-        defaults wherever neither says: a caller cannot turn on <code cds-text="code">includeRoutes</code> or raise
+        collection mode — never selectors; anything else, or a value of the wrong kind, is dropped without an error),
+        each held to what the application allows through <code cds-text="code">options</code> here and
+        <code cds-text="code">provideClrContextOptions</code>, and to the defaults wherever neither says: a caller
+        cannot turn on <code cds-text="code">includeRoutes</code> or raise
         <code cds-text="code">maxComponents</code> past them. What the user entered — typed values, chosen options,
-        ticked boxes, pressed toggles, selected rows — is withheld unless
+        ticked boxes, pressed toggles, selected rows — is withheld, and a field whose value was withheld marked
+        <code cds-text="code">withheld: true</code> (an empty field carries no marker), unless
         <code cds-text="code">shareFormValues</code> is set, and the page's address is reduced to its route pattern —
         links to the application to the pattern they match, links elsewhere and frames to their origin,
         <code cds-text="code">mailto:</code> links to their scheme — and the document title withheld — the page's, and a
         frame's <code cds-text="code">state.title</code> — unless <code cds-text="code">shareFullUrl</code> is set. The
         application's own <code cds-text="code">clrContext</code> annotations are shared as they are. Descriptions —
         helper and validation text — are still shared: keep what they say free of the value, or mark the field
-        <code cds-text="code">data-clr-context-redact</code>.
+        <code cds-text="code">data-clr-context-redact</code>. The accessor is a read-only property of
+        <code cds-text="code">window</code>: assigning to it does not replace it. It stays configurable so that
+        <code cds-text="code">disableGlobalAccess()</code> can remove it.
       </td>
     </tr>
     <tr>
@@ -529,8 +535,10 @@
       <td class="left"><b cds-text="medium">includeText</b></td>
       <td class="left clr-hidden-xs-down">true</td>
       <td class="left">
-        Whether visible text that carries no role — a paragraph, a card's body — is reported as
-        <code cds-text="code">text</code> nodes, so what the page says reaches the agent along with what it can do.
+        Whether visible text that carries no role — a paragraph, a card's body, text written directly inside a dialog or
+        a region — is reported as <code cds-text="code">text</code> nodes, so what the page says reaches the agent along
+        with what it can do. It does not affect control values, such as a slider's
+        <code cds-text="code">aria-valuetext</code> or an editor's content, which are values rather than prose.
       </td>
     </tr>
     <tr>
@@ -600,7 +608,8 @@
       <td class="left clr-hidden-xs-down">'page'</td>
       <td class="left">
         <code cds-text="code">'modal'</code>: while a modal dialog is open, describe only the dialog; the snapshot then
-        carries <code cds-text="code">focus: 'modal'</code>.
+        carries <code cds-text="code">focus: 'modal'</code>. When the dialog is all a component renders, as a wizard
+        renders its modal, the description starts at that component, so what it publishes and its tag are kept.
       </td>
     </tr>
     <tr>
@@ -623,7 +632,8 @@
   navigation, banner, footer and side panels) and <code cds-text="code">'minimal'</code> (no prose or layout, summary
   collections, shorter text, a lower budget, modal focus).
   <code cds-text="code">clrContextPreset(name, overrides?)</code> returns a preset with overrides for a single call;
-  exclusion lists in the overrides add to the preset's, so an override can only narrow it further.
+  exclusion lists in the overrides add to the preset's, so an override can only narrow it further. Both throw for a name
+  that is not a preset.
 </p>
 
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Context shape</h2>
@@ -722,7 +732,9 @@
       <td class="left">
         The ARIA role describing what this is — <code cds-text="code">grid</code>, <code cds-text="code">dialog</code>,
         <code cds-text="code">tablist</code>, <code cds-text="code">combobox</code>. The same word whatever library
-        rendered it.
+        rendered it. A component with no role of its own is a <code cds-text="code">group</code>, with its tag in
+        <code cds-text="code">element</code>; prose is <code cds-text="code">text</code>, an embedded frame
+        <code cds-text="code">frame</code>.
       </td>
     </tr>
     <tr>
@@ -737,16 +749,27 @@
     <tr>
       <td class="left"><b cds-text="medium">label</b></td>
       <td class="left clr-hidden-xs-down">String</td>
-      <td class="left">Its accessible name.</td>
+      <td class="left">
+        Its accessible name. Named from its content, an element takes a descendant icon's or image's own name (<code
+          cds-text="code"
+          >aria-label</code
+        >, <code cds-text="code">alt</code>); an alert or status leaves out the controls inside it; text hidden only
+        from sight is left out when there is visible text.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">state</b></td>
       <td class="left clr-hidden-xs-down">Object</td>
       <td class="left">
         What is true of it right now: <code cds-text="code">expanded</code>, <code cds-text="code">selected</code>,
-        <code cds-text="code">invalid</code>, <code cds-text="code">sort</code>, <code cds-text="code">value</code>,
-        <code cds-text="code">options</code>, <code cds-text="code">description</code>, and
-        <code cds-text="code">redacted</code> where a value is withheld.
+        <code cds-text="code">invalid</code>, <code cds-text="code">sort</code>, <code cds-text="code">value</code> (a
+        number for a number or range field, <code cds-text="code">null</code> when it is empty),
+        <code cds-text="code">options</code>, <code cds-text="code">description</code>,
+        <code cds-text="code">error</code> (what <code cds-text="code">aria-errormessage</code> names, while invalid),
+        <code cds-text="code">live</code>, <code cds-text="code">roleDescription</code>,
+        <code cds-text="code">redacted</code> where a value is never reported, and
+        <code cds-text="code">withheld</code> on a field whose value a consumer the application does not control was not
+        given (an empty field carries no marker).
       </td>
     </tr>
     <tr>
@@ -871,7 +894,10 @@
   <code cds-text="code">matchingOptionCount</code> — are withheld from the global accessor unless the application shares
   form values, and so is the state any node reads from the accessibility tree to say what the user chose:
   <code cds-text="code">selected</code>, <code cds-text="code">checked</code>, <code cds-text="code">pressed</code> and
-  <code cds-text="code">selectedRows</code>.
+  <code cds-text="code">selectedRows</code>. <code cds-text="code">withheld: true</code> marks a field whose value was
+  withheld; an empty field (an empty string, <code cds-text="code">null</code>, an empty list) carries no marker. A
+  choice such as an unticked box, or a count of zero, is a value and is marked. A key of a publisher's own is shared as
+  it is.
 </p>
 <table class="table">
   <thead>
@@ -885,10 +911,11 @@
       <td class="left"><b cds-text="medium">clr-datagrid</b></td>
       <td class="left">
         <code cds-text="code">totalRows</code> (paginated total), <code cds-text="code">filteredColumns</code> (value),
-        <code cds-text="code">hiddenColumns</code> (value); when rows can be selected,
-        <code cds-text="code">selectionMode</code> (<code cds-text="code">single</code> or
-        <code cds-text="code">multi</code>), <code cds-text="code">rows</code> (each row's cells, the names a selection
-        is written with; value) and <code cds-text="code">selection</code> (value)
+        <code cds-text="code">hiddenColumns</code> (value); when rows can be selected, which takes
+        <code cds-text="code">clrDgSelectionType</code> (binding <code cds-text="code">clrDgSelected</code> alone does
+        not make a grid selectable), <code cds-text="code">selectionMode</code> (<code cds-text="code">single</code> or
+        <code cds-text="code">multi</code>), <code cds-text="code">rows</code> (each row's cells, the names its rows go
+        by and a selection is written with; value) and <code cds-text="code">selection</code> (value)
       </td>
     </tr>
     <tr>
@@ -939,8 +966,9 @@
       <td class="left">
         <code cds-text="code">stepCount</code>, <code cds-text="code">currentStepIndex</code>,
         <code cds-text="code">steps</code> (each with its <code cds-text="code">index</code>,
-        <code cds-text="code">current</code>, <code cds-text="code">complete</code>,
-        <code cds-text="code">error</code> and <code cds-text="code">navigable</code>), while the wizard is open
+        <code cds-text="code">title</code> as its stepnav item shows it, <code cds-text="code">current</code>,
+        <code cds-text="code">complete</code>, <code cds-text="code">error</code> and
+        <code cds-text="code">navigable</code>), while the wizard is open
       </td>
     </tr>
     <tr>
