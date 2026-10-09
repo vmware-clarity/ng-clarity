@@ -8,6 +8,7 @@
 import { AfterContentInit, Component, ContentChildren, Input, Optional, QueryList } from '@angular/core';
 import {
   ClrAbstractContainer,
+  ClrControlLabel,
   ContainerIdService,
   ControlClassService,
   LayoutService,
@@ -54,6 +55,10 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
   ariaLabelledBy: string;
 
   @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
+
+  // Only a label that is a direct child of the container names the group. The inherited `label` query also matches the
+  // label inside each checkbox wrapper, which would give the group the name of its first checkbox.
+  @ContentChildren(ClrControlLabel, { descendants: false }) private groupLabels: QueryList<ClrControlLabel>;
 
   private inline = false;
   private _generatedId = uniqueIdFactory();
@@ -102,10 +107,12 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
   }
 
   private setAriaLabelledBy() {
-    if (this.label && !this.label.idAttr) {
-      this.label.idAttr = this._generatedId;
+    const groupLabel = this.groupLabels?.first;
+
+    if (groupLabel && !groupLabel.idAttr) {
+      groupLabel.idAttr = this._generatedId;
     }
 
-    this.ariaLabelledBy = this.checkboxes?.length && this.label ? this.label.idAttr : null;
+    this.ariaLabelledBy = this.checkboxes?.length && groupLabel ? groupLabel.idAttr : null;
   }
 }
