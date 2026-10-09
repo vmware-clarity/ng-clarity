@@ -244,11 +244,11 @@ export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOp
 export type ClrElementMutation = {
     value: unknown;
     display?: unknown;
-    refused?: never;
+    refused?: undefined;
 } | {
     refused: string;
-    value?: never;
-    display?: never;
+    value?: undefined;
+    display?: undefined;
 };
 
 // @public
