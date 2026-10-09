@@ -16,10 +16,17 @@ import { ROUTING } from './app.routing';
 import { cdsThemePathLocationStrategyProvider } from './cds-theme-path-location-strategy';
 import { CdsThemeSelectComponent } from './cds-theme-select.component';
 import { AppContentContainerComponent } from './content-container.component';
+import { ContextInspectorComponent } from './context-inspector/context-inspector.component';
 import { LandingComponent } from './landing.component';
 
 @NgModule({
-  declarations: [AppComponent, LandingComponent, AppContentContainerComponent, CdsThemeSelectComponent],
+  declarations: [
+    AppComponent,
+    LandingComponent,
+    AppContentContainerComponent,
+    CdsThemeSelectComponent,
+    ContextInspectorComponent,
+  ],
   imports: [BrowserAnimationsModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
   providers: [cdsThemePathLocationStrategyProvider],
   bootstrap: [AppComponent],
