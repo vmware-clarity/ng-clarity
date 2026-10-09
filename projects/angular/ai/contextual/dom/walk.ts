@@ -965,9 +965,11 @@ function finish(
   // itself is not merged at all: a publisher reports its own state — a grid's rows and
   // selection, a combobox's value — and would otherwise carry it straight out. Nor is it
   // when the caller excluded what the component renders (see `rendersExcludedRole`).
-  let described = redacted || !published ? node : mergeElementContext(node, element, walk.options);
-  if (redacted && published) {
-    described = withoutOverriddenLabel(node, element, walk);
+  let described = node;
+  if (published) {
+    described = redacted
+      ? withoutOverriddenLabel(node, element, walk)
+      : mergeElementContext(node, element, walk.options);
   }
   // A component that says it is something the caller excluded is left out like any
   // element with that role, whatever the DOM said about it. The node was counted against
@@ -995,6 +997,8 @@ function finish(
  * used either, since inside a redacted region it may be the very content withheld.
  */
 function withoutOverriddenLabel(node: ClrComponentContext, element: Element, walk: Walk): ClrComponentContext {
+  // Reading the published label runs the component's whole callback (a datagrid reads
+  // every row), so it is done only for a node that has a label to lose.
   if (node.label === undefined || typeof readClrElementContext(element, walk.options)?.label !== 'string') {
     return node;
   }
