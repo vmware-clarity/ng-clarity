@@ -74,6 +74,6 @@ export class TabsAddonDemoComponent extends ClarityDocComponent {
   readonly disabledTabsTs = DisabledTabsTs;
 
   constructor() {
-    super('tabs-addon');
+    super('advanced-tabs');
   }
 }

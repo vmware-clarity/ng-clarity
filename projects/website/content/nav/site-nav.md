@@ -53,6 +53,9 @@ groups:
         url: /documentation/onboarding
   - label: Components
   - label: Addons
+    links:
+      - label: Overview
+        url: /pages/addons
   - label: Updating
     links:
       - label: Update v17 to v18

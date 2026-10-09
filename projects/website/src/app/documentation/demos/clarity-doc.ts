@@ -20,10 +20,13 @@ export class ClarityDocComponent {
 
   @ViewChild(DocTabsComponent)
   set docTabs(docTabs: DocTabsComponent) {
-    if (this.component) {
-      docTabs.title = this.component.text;
-      docTabs.type = this.component.type;
-      docTabs.storybookPath = this.component.storybookPath;
+    const component = this.component;
+    if (component) {
+      docTabs.title = component.text;
+      docTabs.type = component.type;
+      docTabs.storybookPath = component.storybookPath;
+      docTabs.basedOn = component.basedOn ? COMPONENT_MAP.get(component.basedOn) : undefined;
+      docTabs.addons = [...COMPONENT_MAP.values()].filter(addon => addon.basedOn === component.url);
     }
   }
 }

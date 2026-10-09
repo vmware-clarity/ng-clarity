@@ -72,7 +72,7 @@ export class StepperAddonDemoComponent extends ClarityDocComponent implements On
   readonly basicStepperTs = BasicStepperTs;
 
   constructor() {
-    super('stepper-addon');
+    super('advanced-stepper');
   }
 
   ngOnInit() {

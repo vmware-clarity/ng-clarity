@@ -309,18 +309,72 @@
     },
     {
       "url": "a11y",
-      "text": "Accessibility",
+      "text": "Accessibility Utilities",
       "type": "addons"
     },
     {
       "url": "advanced-datagrid",
       "text": "Advanced Datagrid",
-      "type": "addons"
+      "type": "addons",
+      "basedOn": "datagrid"
+    },
+    {
+      "url": "advanced-stepper",
+      "text": "Advanced Stepper",
+      "type": "addons",
+      "basedOn": "stepper",
+      "storybookPath": "addons-stepper"
+    },
+    {
+      "url": "advanced-tabs",
+      "text": "Advanced Tabs",
+      "type": "addons",
+      "basedOn": "tabs",
+      "storybookPath": "addons-tabs"
+    },
+    {
+      "url": "advanced-wizard",
+      "text": "Advanced Wizard",
+      "type": "addons",
+      "basedOn": "wizard",
+      "storybookPath": "addons-wizard"
+    },
+    {
+      "url": "card-container",
+      "text": "Card Container",
+      "type": "addons",
+      "storybookPath": "addons-card-container"
+    },
+    {
+      "url": "certificate-viewer",
+      "text": "Certificate Viewer",
+      "type": "addons",
+      "storybookPath": "addons-certificate-viewer"
     },
     {
       "url": "drag-and-drop",
       "text": "Drag and Drop",
       "type": "addons"
+    },
+    {
+      "url": "menu",
+      "text": "Menu",
+      "type": "addons",
+      "basedOn": "dropdown",
+      "storybookPath": "addons-menu"
+    },
+    {
+      "url": "dialog",
+      "text": "Multi-Page Dialog",
+      "type": "addons",
+      "basedOn": "modal",
+      "storybookPath": "addons-dialog"
+    },
+    {
+      "url": "property-view",
+      "text": "Property View",
+      "type": "addons",
+      "storybookPath": "addons-property-view"
     },
     {
       "url": "theme-builder",
@@ -331,54 +385,6 @@
       "url": "translate",
       "text": "Translate",
       "type": "addons"
-    },
-    {
-      "url": "menu",
-      "text": "Menu",
-      "type": "addons",
-      "storybookPath": "addons-menu"
-    },
-    {
-      "url": "certificate-viewer",
-      "text": "Certificate Viewer",
-      "type": "addons",
-      "storybookPath": "addons-certificate-viewer"
-    },
-    {
-      "url": "property-view",
-      "text": "Property View",
-      "type": "addons",
-      "storybookPath": "addons-property-view"
-    },
-    {
-      "url": "card-container",
-      "text": "Card Container",
-      "type": "addons",
-      "storybookPath": "addons-card-container"
-    },
-    {
-      "url": "stepper-addon",
-      "text": "Advanced Stepper",
-      "type": "addons",
-      "storybookPath": "addons-stepper"
-    },
-    {
-      "url": "wizard-addon",
-      "text": "Advanced Wizard",
-      "type": "addons",
-      "storybookPath": "addons-wizard"
-    },
-    {
-      "url": "tabs-addon",
-      "text": "Advanced Tabs",
-      "type": "addons",
-      "storybookPath": "addons-tabs"
-    },
-    {
-      "url": "dialog",
-      "text": "Multi-Page Dialog",
-      "type": "addons",
-      "storybookPath": "addons-dialog"
     }
   ]
 }

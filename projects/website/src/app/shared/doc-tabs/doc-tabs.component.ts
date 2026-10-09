@@ -25,6 +25,7 @@ import { map, shareReplay, startWith, switchMap, tap } from 'rxjs/operators';
 
 import { DocTabComponent } from './doc-tab.component';
 import { DocTabsLinkCardsLinksPipe } from './doc-tabs-link-cards-links.pipe';
+import { ComponentListElement } from '../../documentation/demos/component-list';
 import { getFeatureFlags } from '../../feature-flags';
 import { HashListenerDirective } from '../hash-listener/hash-listener.directive';
 import { LinkCardsComponent } from '../link-cards/link-cards.component';
@@ -54,6 +55,8 @@ export class DocTabsComponent implements AfterViewInit, OnDestroy {
   @Input() title = '';
   @Input() type: string | undefined;
   @Input() storybookPath: string | undefined;
+  @Input() basedOn: ComponentListElement | undefined;
+  @Input() addons: ComponentListElement[] = [];
 
   readonly doxContent = viewChild('doxContent', { read: ElementRef });
   scrollParent: HTMLElement | undefined;

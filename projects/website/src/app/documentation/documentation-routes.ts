@@ -51,6 +51,33 @@ export const documentationRoutes: Routes = [
         redirectTo: '/pages/accessibility',
       },
       {
+        path: 'stepper-addon',
+        pathMatch: 'full',
+        redirectTo: '/documentation/advanced-stepper',
+      },
+      {
+        path: 'stepper-addon/:tab',
+        redirectTo: '/documentation/advanced-stepper/:tab',
+      },
+      {
+        path: 'tabs-addon',
+        pathMatch: 'full',
+        redirectTo: '/documentation/advanced-tabs',
+      },
+      {
+        path: 'tabs-addon/:tab',
+        redirectTo: '/documentation/advanced-tabs/:tab',
+      },
+      {
+        path: 'wizard-addon',
+        pathMatch: 'full',
+        redirectTo: '/documentation/advanced-wizard',
+      },
+      {
+        path: 'wizard-addon/:tab',
+        redirectTo: '/documentation/advanced-wizard/:tab',
+      },
+      {
         matcher: documentationRouteMatcher,
         data: { routePath: 'badge/:tab?' },
         loadChildren: () => import('./demos/badges/badges.demo.module').then(m => m.BadgesDemoModule),
@@ -385,18 +412,18 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
-        data: { routePath: 'stepper-addon/:tab?' },
+        data: { routePath: 'advanced-stepper/:tab?' },
         loadChildren: () =>
           import('./demos/stepper-addon/stepper-addon.demo.module').then(m => m.StepperAddonDemoModule),
       },
       {
         matcher: documentationRouteMatcher,
-        data: { routePath: 'wizard-addon/:tab?' },
+        data: { routePath: 'advanced-wizard/:tab?' },
         loadChildren: () => import('./demos/wizard-addon/wizard-addon.demo.module').then(m => m.WizardAddonDemoModule),
       },
       {
         matcher: documentationRouteMatcher,
-        data: { routePath: 'tabs-addon/:tab?' },
+        data: { routePath: 'advanced-tabs/:tab?' },
         loadChildren: () => import('./demos/tabs-addon/tabs-addon.demo.module').then(m => m.TabsAddonDemoModule),
       },
       {
