@@ -703,67 +703,67 @@ export class ClrCombobox<T>
     this.teardownElementMutator = clrPublishElementMutator(host, {
       // The search input inside carries a form binding of its own, which is not the value.
       ownsContents: true,
-      coerce: (proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation => {
-        const excluded = this.excludedBy(options);
-        // A selection the agent was never shown stays as it is.
-        const kept = this.multiSelect
-          ? this.selectedValues().filter(value => this.valueShown(value, excluded) !== 'shown')
-          : [];
-        // One choice at a time: replacing one the agent was never shown would change what
-        // it cannot see, and could not undo.
-        if (!this.multiSelect && this.selectedValues().some(value => this.valueShown(value, excluded) !== 'shown')) {
-          return { refused: 'The current choice is kept from agents, and cannot be changed by one.' };
-        }
-        // The display is what the agent asked for, by the labels it knows: the selection
-        // it was never shown is kept in the value and left out of what it is shown.
-        if (proposed === null || proposed === undefined || proposed === '') {
-          return { value: this.multiSelect ? kept : null, display: this.multiSelect ? [] : null };
-        }
-        const proposals = Array.isArray(proposed) ? proposed : [proposed];
-        if (!this.multiSelect && proposals.length > 1) {
-          return { refused: 'The combobox takes one option.' };
-        }
-        // Only the options the snapshot named can be chosen, or named in a refusal.
-        const items = (this.options?.items?.toArray() ?? []).filter(
-          option => this.optionShown(option, excluded) === 'shown'
-        );
-        const values: T[] = [...kept];
-        const labels: string[] = [];
-        // Naming an option twice, or by its label and its value, chooses it once, as the
-        // user can.
-        const choose = (value: T, label: string) => {
-          if (!values.some(chosen => this.sameValue(chosen, value))) {
-            values.push(value);
-            labels.push(label);
-          }
-        };
-        for (const proposal of proposals) {
-          const matches = this.matchingOptions(items, proposal);
-          if (matches.length > 1) {
-            return {
-              refused: `Several options read "${String(proposal)}", and nothing tells which one is meant. Leave this choice to the user.`,
-            };
-          }
-          const option = matches[0];
-          if (option) {
-            choose(option.value, this.optionLabel(option));
-          } else if (this.editable && typeof proposal === 'string' && proposal.trim()) {
-            // An editable combobox takes what the user types, as it would from the keyboard.
-            const text = proposal.trim();
-            choose(this.optionSelectionService.editableResolver(text), text);
-          } else if (!items.length) {
-            return { refused: 'No options are loaded: the combobox loads them as the user types.' };
-          } else {
-            const named = items
-              .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
-              .map(candidate => `"${this.optionLabel(candidate)}"`);
-            return { refused: `No such option. The options are: ${named.join(', ')}.` };
-          }
-        }
-        return this.multiSelect ? { value: values, display: labels } : { value: values[0], display: labels[0] };
-      },
+      coerce: (proposed: unknown, options?: Required<ClrContextSnapshotOptions>) =>
+        this.coerceSelection(proposed, options),
       read: (options?: Required<ClrContextSnapshotOptions>) => this.selectedLabels(this.excludedBy(options)),
     });
+  }
+
+  /** The option values a proposal of labels names, or why it names none the agent may choose. */
+  private coerceSelection(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation {
+    const excluded = this.excludedBy(options);
+    const hidden = this.selectedValues().filter(value => this.valueShown(value, excluded) !== 'shown');
+    // One choice at a time: replacing one the agent was never shown would change what it
+    // cannot see, and could not undo. In a multi-select, such a selection stays as it is.
+    if (!this.multiSelect && hidden.length) {
+      return { refused: 'The current choice is kept from agents, and cannot be changed by one.' };
+    }
+    // The display is what the agent asked for, by the labels it knows: the selection it
+    // was never shown is kept in the value and left out of what it is shown.
+    if (proposed === null || proposed === undefined || proposed === '') {
+      return { value: this.multiSelect ? hidden : null, display: this.multiSelect ? [] : null };
+    }
+    const proposals = Array.isArray(proposed) ? proposed : [proposed];
+    if (!this.multiSelect && proposals.length > 1) {
+      return { refused: 'The combobox takes one option.' };
+    }
+    // Only the options the snapshot named can be chosen, or named in a refusal.
+    const items = (this.options?.items?.toArray() ?? []).filter(
+      option => this.optionShown(option, excluded) === 'shown'
+    );
+    const values: T[] = [...hidden];
+    const labels: string[] = [];
+    // Naming an option twice, or by its label and its value, chooses it once, as the user can.
+    const choose = (value: T, label: string) => {
+      if (!values.some(chosen => this.sameValue(chosen, value))) {
+        values.push(value);
+        labels.push(label);
+      }
+    };
+    for (const proposal of proposals) {
+      const matches = this.matchingOptions(items, proposal);
+      if (matches.length > 1) {
+        return {
+          refused: `Several options read "${String(proposal)}", and nothing tells which one is meant. Leave this choice to the user.`,
+        };
+      }
+      const option = matches[0];
+      if (option) {
+        choose(option.value, this.optionLabel(option));
+      } else if (this.editable && typeof proposal === 'string' && proposal.trim()) {
+        // An editable combobox takes what the user types, as it would from the keyboard.
+        const text = proposal.trim();
+        choose(this.optionSelectionService.editableResolver(text), text);
+      } else if (!items.length) {
+        return { refused: 'No options are loaded: the combobox loads them as the user types.' };
+      } else {
+        const named = items
+          .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
+          .map(candidate => `"${this.optionLabel(candidate)}"`);
+        return { refused: `No such option. The options are: ${named.join(', ')}.` };
+      }
+    }
+    return this.multiSelect ? { value: values, display: labels } : { value: values[0], display: labels[0] };
   }
 
   /** The selector for what the snapshot options exclude, on this page. */

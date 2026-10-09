@@ -753,12 +753,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     if (!this.selection.selectable) {
       return { refused: 'The datagrid does not offer row selection.' };
     }
-    const wanted =
-      proposed === null || proposed === undefined || proposed === ''
-        ? []
-        : Array.isArray(proposed)
-          ? proposed
-          : [proposed];
+    const wanted = proposed === null || proposed === undefined || proposed === '' ? [] : [proposed].flat();
     const single = this.selection.selectionType === SelectionType.Single;
     if (single && wanted.length > 1) {
       return { refused: 'The datagrid selects one row at a time.' };
@@ -780,10 +775,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     }
     let replacing = false;
     if (single) {
-      const identify = (item: T) => this.items.identifyBy(item);
-      const current = this.selection.currentSingle;
-      replacing =
-        current !== undefined && current !== null && (!rows.length || identify(rows[0].item) !== identify(current));
+      const current = this.selection.currentSingle ?? null;
+      replacing = current !== null && (!rows.length || this.identify(rows[0].item) !== this.identify(current));
       if (replacing && this.selection.isLocked(current)) {
         return { refused: 'The selected row is locked and cannot be deselected.' };
       }
@@ -792,7 +785,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       }
       // A row selected on another page, or not rendered, was never shown to the agent,
       // which could neither see what it gave up nor undo it: the user changes that one.
-      if (replacing && !this.rows.some(row => identify(row.item) === identify(current))) {
+      if (replacing && !this.rows.some(row => this.identify(row.item) === this.identify(current))) {
         return { refused: 'The selected row is not on this page, and cannot be deselected by an agent.' };
       }
     }
@@ -805,12 +798,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       return resolved;
     }
     const { rows, single, replacing } = resolved;
-    const identify = (item: T) => this.items.identifyBy(item);
     if (single) {
-      const current = this.selection.currentSingle;
-      const unchanged = rows.length
-        ? current !== undefined && current !== null && !replacing
-        : current === undefined || current === null;
+      const current = this.selection.currentSingle ?? null;
+      const unchanged = rows.length ? current !== null && !replacing : current === null;
       // Repeating a write changes nothing, so it does not tell the application it did.
       if (unchanged) {
         return { value: this.readSelection(excluded, limit) };
@@ -821,22 +811,22 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         this.selection.clearSelection();
       }
     } else {
-      const onPage = new Set(this.rows.map(row => identify(row.item)));
+      const onPage = new Set(this.rows.map(row => this.identify(row.item)));
       // What the agent cannot see or change stays as it is: selections on other pages,
       // rows kept from agents, and locked rows, which the user cannot deselect either.
       const kept = (this.selection.current ?? []).filter(
-        item => !onPage.has(identify(item)) || this.selection.isLocked(item) || this.isWithheldRow(item, excluded)
+        item => !onPage.has(this.identify(item)) || this.selection.isLocked(item) || this.isWithheldRow(item, excluded)
       );
       const next = [...kept];
       for (const row of rows) {
-        if (!next.some(item => identify(item) === identify(row.item))) {
+        if (!next.some(item => this.identify(item) === this.identify(row.item))) {
           next.push(row.item);
         }
       }
       // Repeating a write changes nothing, so it does not tell the application it did.
       const current = this.selection.current ?? [];
-      const selected = new Set(current.map(identify));
-      if (next.length !== current.length || next.some(item => !selected.has(identify(item)))) {
+      const selected = new Set(current.map(item => this.identify(item)));
+      if (next.length !== current.length || next.some(item => !selected.has(this.identify(item)))) {
         this.selection.current = next;
       }
     }
@@ -959,9 +949,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
   /** Whether a row on this page is one whose every cell is withheld or excluded. */
   private isWithheldRow(item: T, excluded: string): boolean {
-    const identify = (candidate: T) => this.items.identifyBy(candidate);
-    const row = this.rows.find(candidate => identify(candidate.item) === identify(item));
+    const row = this.rows.find(candidate => this.identify(candidate.item) === this.identify(item));
     return !!row && !this.rowLabel(row, excluded);
+  }
+
+  /** What tells one item from another: `clrDgItemsIdentityFn`, or the item itself. */
+  private identify(item: T): unknown {
+    return this.items.identifyBy(item);
   }
 
   /** The labels of the first `limit` rows that have one. */
