@@ -51,7 +51,6 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     activePreset: ThemePreset | null;
     // (undocumented)
     activeTheme: 'light' | 'dark';
-    // (undocumented)
     applyPreset(preset: ThemePreset): void;
     // (undocumented)
     applyPreviewStyles(): void;
@@ -71,6 +70,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     generatedCSS: EventEmitter<string>;
     // (undocumented)
     get generatedCss(): string;
+    importCSS(css: string): void;
     // (undocumented)
     get isDarkTheme(): boolean;
     // (undocumented)
@@ -81,6 +81,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     onWarningTextOverrideChange(): void;
     get presets(): ThemePreset[];
     set presets(value: ThemePreset[]);
+    presetSwatchColor(preset: ThemePreset): string | undefined;
     // (undocumented)
     previewDarkWrapper: ElementRef<HTMLElement>;
     // (undocumented)
@@ -139,15 +140,15 @@ export interface ThemeColor {
 // @public (undocumented)
 export interface ThemeColors {
     // (undocumented)
-    danger?: Color;
+    danger?: Color[];
     // (undocumented)
-    info?: Color;
+    info?: Color[];
     // (undocumented)
-    primary?: Color;
+    primary?: Color[];
     // (undocumented)
-    success?: Color;
+    success?: Color[];
     // (undocumented)
-    warning?: Color;
+    warning?: Color[];
 }
 
 // @public (undocumented)
