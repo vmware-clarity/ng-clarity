@@ -91,7 +91,12 @@ export abstract class ClrAbstractContainer implements OnDestroy {
   }
 
   get showInvalid(): boolean {
-    return this.touched && this.state === CONTROL_STATE.INVALID && this.errorMessagePresent;
+    return this.controlInvalid && this.errorMessagePresent;
+  }
+
+  /** Whether any of the controls is invalid once any of them has been touched, message or not. */
+  protected get controlInvalid(): boolean {
+    return this.touched && this.state === CONTROL_STATE.INVALID;
   }
 
   protected get successMessagePresent() {

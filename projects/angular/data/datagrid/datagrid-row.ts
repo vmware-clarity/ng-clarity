@@ -250,6 +250,17 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   get identifyBy() {
     return this.items.identifyBy;
   }
+  /**
+   * `aria-selected` is stated only where there is a choice: never without selection, and
+   * on a locked row only when it is selected.
+   */
+  protected get ariaSelected(): boolean | null {
+    if (this.selection.selectionType === SelectionType.None) {
+      return null;
+    }
+    const selected = this.selection.isSelected(this.item);
+    return selected || this.clrDgSelectable ? selected : null;
+  }
 
   openDetails(event: MouseEvent, detailButton: HTMLButtonElement) {
     event.stopPropagation();

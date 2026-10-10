@@ -40,6 +40,7 @@ import {
 } from '@clr/angular/popover/common';
 import {
   ClrCommonStringsService,
+  clrHasRequiredValidator,
   ClrLoadingState,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
@@ -70,6 +71,9 @@ import { OptionSelectionService } from './providers/option-selection.service';
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
+    // Kept for applications that styled or queried it; it has never meant that a value is
+    // required, which `aria-required` on the combobox input now reports.
+    // @deprecated since v18, remove in v19: select on `aria-required` on the input instead.
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
     '[class.clr-combobox-disabled]': 'control?.disabled',
@@ -267,6 +271,14 @@ export class ClrCombobox<T>
     );
   }
 
+  /**
+   * Whether a value must be chosen. This and `aria-invalid` are reported on the element
+   * carrying `role="combobox"`, which is where ARIA requires them, not on the role-less host.
+   */
+  protected get isRequired(): boolean {
+    return clrHasRequiredValidator(this.control?.control);
+  }
+
   private get disabled() {
     return this.control?.disabled;
   }
@@ -433,6 +445,16 @@ export class ClrCombobox<T>
     } else {
       this.containerWidthChange.next(this.containerWidth);
     }
+  }
+
+  /** Suppressed on the host: the combobox input reports it (see `isRequired`). */
+  protected override reportsAriaInvalid(): boolean {
+    return false;
+  }
+
+  /** Suppressed on the host: the combobox input reports it (see `isRequired`). */
+  protected override reportsAriaRequired(): boolean {
+    return false;
   }
 
   private initialiseObserver() {
