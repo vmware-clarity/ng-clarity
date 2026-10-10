@@ -1,0 +1,111 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use 'sass:map';
+@use '../../styles/mixins';
+@use 'variables.signpost' as signpost-variables;
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+
+$_opp: mixins.$opp-directions;
+
+// CSS border-radius requires vertical-then-horizontal order.
+@function _corner-radius-prop($dir-a, $dir-b) {
+  @if $dir-a == top or $dir-a == bottom {
+    @return border-#{$dir-a}-#{$dir-b}-radius;
+  } @else {
+    @return border-#{$dir-b}-#{$dir-a}-radius;
+  }
+}
+
+// Shared `.popover-pointer` styles for all positions on a primary edge.
+@mixin popover-pointer-primary($primary, $pointer-size-negative, $before-props: ()) {
+  $opp-primary: map.get($_opp, $primary);
+  $is-vertical: $primary == top or $primary == bottom;
+
+  .popover-pointer {
+    border-#{$primary}: signpost-variables.$clr-signpost-pointer-border;
+    #{$opp-primary}: $pointer-size-negative;
+
+    &::before {
+      border-#{$primary}: signpost-variables.$clr-signpost-pointer-pseudo-border;
+
+      @if $is-vertical {
+        #{$opp-primary}: tokens.$cds-global-space-2;
+      }
+
+      @each $prop, $val in $before-props {
+        #{$prop}: #{$val};
+      }
+    }
+  }
+}
+
+// Per-position `.popover-pointer` and `.signpost-wrap` styles.
+//
+// $primary     – edge the pointer sits on (top | bottom | left | right)
+// $secondary   – position along that edge (start | middle | end)
+// $before-props – extra `::before` properties specific to this position
+@mixin popover-pointer-position($primary, $secondary, $before-props: ()) {
+  $opp-primary: map.get($_opp, $primary);
+  $is-vertical: $primary == top or $primary == bottom;
+  $cross-start: left;
+  $cross-end: right;
+
+  @if not $is-vertical {
+    $cross-start: top;
+    $cross-end: bottom;
+  }
+
+  @if $secondary == start {
+    .signpost-wrap {
+      #{_corner-radius-prop($opp-primary, $cross-end)}: 0;
+    }
+
+    .popover-pointer {
+      border-#{$cross-start}: signpost-variables.$clr-signpost-pointer-invisible-border;
+      #{$cross-end}: calc(-1 * tokens.$cds-global-space-1);
+
+      &::before {
+        border-#{$cross-start}: signpost-variables.$clr-signpost-pointer-invisible-border;
+
+        @each $prop, $val in $before-props {
+          #{$prop}: #{$val};
+        }
+      }
+    }
+  } @else if $secondary == middle {
+    .popover-pointer {
+      border-#{$cross-end}: signpost-variables.$clr-signpost-pointer-invisible-border;
+      #{$cross-start}: 50%;
+
+      &::before {
+        border-#{$cross-end}: signpost-variables.$clr-signpost-pointer-invisible-border;
+
+        @each $prop, $val in $before-props {
+          #{$prop}: #{$val};
+        }
+      }
+    }
+  } @else if $secondary == end {
+    .signpost-wrap {
+      #{_corner-radius-prop($opp-primary, $cross-start)}: 0;
+    }
+
+    .popover-pointer {
+      border-#{$cross-end}: signpost-variables.$clr-signpost-pointer-invisible-border;
+      #{$cross-start}: calc(-1 * tokens.$cds-global-space-1);
+
+      &::before {
+        border-#{$cross-end}: signpost-variables.$clr-signpost-pointer-invisible-border;
+
+        @each $prop, $val in $before-props {
+          #{$prop}: #{$val};
+        }
+      }
+    }
+  }
+}
