@@ -7,7 +7,7 @@
 
 import { Component, Input } from '@angular/core';
 import { ClrAlertModule, ClrDropdownModule, commonStringsDefault } from '@clr/angular';
-import { ALERT_TYPES } from '@clr/angular/emphasis/alert';
+import { ALERT_TYPES, AlertType } from '@clr/angular/emphasis/alert';
 import { createArray } from 'helpers/common';
 import { RenderComponentStorybook } from 'helpers/render-component';
 @Component({
@@ -76,7 +76,7 @@ export class StandardAlertStorybookComponent extends RenderComponentStorybook {
   @Input() showActions = false;
   @Input() showActionsButton = false;
   @Input() content = 'Hello World!';
-  @Input() alertTypes = ALERT_TYPES;
+  @Input() alertTypes: AlertType[] = ALERT_TYPES;
   @Input() openContextMenu = false;
   createArray = createArray;
 }
