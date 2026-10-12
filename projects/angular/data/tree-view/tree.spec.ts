@@ -95,6 +95,7 @@ class TreeTypeAhead {}
       </clr-tree>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExpandAllTestComponent {
@@ -133,6 +134,7 @@ interface LazyNode {
       </clr-tree-node>
     </clr-tree>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class LazyExpandAllTestComponent {
