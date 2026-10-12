@@ -174,6 +174,7 @@ class PinnedNotFirstWithDetailTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class PinToggleTest {

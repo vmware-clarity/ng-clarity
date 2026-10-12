@@ -9,6 +9,7 @@ import type { QueryList } from '@angular/core';
 import {
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -55,6 +56,7 @@ import { SummaryModel } from './summary/summary.model';
  */
 @Component({
   selector: 'appfx-wizard',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   templateUrl: 'wizard.component.html',
   styleUrls: ['wizard.component.scss'],
