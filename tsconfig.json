@@ -6,11 +6,7 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "lib": [
-      "es2022",
-      "dom",
-      "dom.iterable"
-    ],
+    "lib": ["es2022", "dom", "dom.iterable"],
     "module": "es2022",
     "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
@@ -21,21 +17,11 @@
     "target": "es2022",
     "useDefineForClassFields": false,
     "paths": {
-      "@clr/angular": [
-        "./projects/angular/index.ts"
-      ],
-      "@clr/angular/*": [
-        "./projects/angular/*"
-      ],
-      "@clr/addons": [
-        "./projects/addons/index.ts"
-      ],
-      "@clr/addons/*": [
-        "./projects/addons/*"
-      ],
-      "@clr/angular/testing": [
-        "./projects/angular/utils/testing"
-      ]
+      "@clr/angular": ["./projects/angular/index.ts"],
+      "@clr/angular/*": ["./projects/angular/*"],
+      "@clr/addons": ["./projects/addons/index.ts"],
+      "@clr/addons/*": ["./projects/addons/*"],
+      "@clr/angular/testing": ["./projects/angular/utils/testing"]
     },
     "skipLibCheck": true
   },
@@ -45,8 +31,5 @@
     "strictTemplates": true,
     "typeCheckHostBindings": false
   },
-  "exclude": [
-    "dist",
-    "node_modules"
-  ]
+  "exclude": ["dist", "node_modules"]
 }

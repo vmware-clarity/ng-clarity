@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import * as express from 'express';
+import express = require('express');
 import * as path from 'path';
 
 // Serves a built app directory for the visual regression tests.
