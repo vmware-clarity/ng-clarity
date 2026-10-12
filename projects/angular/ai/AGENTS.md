@@ -35,10 +35,11 @@ Path: `node_modules/@clr/angular/ai/skills/<guide>/SKILL.md`. Design rules: http
 | ----------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
 | `clr-accordion`         | Collapsible stacked panels (`clr-accordion`), single or multi-open, lazy content                                                         |
 | `clr-alert`             | Alert banners: standard, small, lightweight, app-level, paged `clr-alerts`                                                               |
-| `clr-app-layout`        | App shell: `clr-main-container`, `clr-header`, header actions, subnav, responsive nav, `cds-theme` switching                             |
+| `clr-app-layout`        | App shell: `clr-main-container`, `content-container`, `content-area`, app-level alert, `cds-theme` switching                             |
 | `clr-badge`             | Count badges (`clr-badge`, `.badge-*`); use labels for status text                                                                       |
 | `clr-breadcrumbs`       | Hierarchy trail (`clr-breadcrumbs`, `BreadcrumbItem`)                                                                                    |
-| `clr-button`            | Buttons, icon buttons, loading buttons (`[clrLoading]`), button groups and overflow menus                                                |
+| `clr-button`            | Buttons, icon buttons, loading buttons (`[clrLoading]`), `.btn` variants                                                                 |
+| `clr-button-group`      | Related actions in a group with an overflow menu (`clr-button-group`, `clrInMenu`, `clrMenuPosition`)                                    |
 | `clr-card`              | Cards (`clr-card` parts, media, collapsible, clickable cards)                                                                            |
 | `clr-collapsible-panel` | Custom collapsible panel groups (`CollapsiblePanel` base, service, models)                                                               |
 | `clr-combobox`          | Filterable single/multi-select (`clr-combobox`, `clrMulti`, `*clrOptionItems`), async options                                            |
@@ -46,12 +47,16 @@ Path: `node_modules/@clr/angular/ai/skills/<guide>/SKILL.md`. Design rules: http
 | `clr-datepicker`        | Date and date range pickers (`clrDate`, `clrStartDate`/`clrEndDate`)                                                                     |
 | `clr-dropdown`          | Action menus (`clr-dropdown`, `clrDropdownTrigger`, `clrDropdownItem`), nested and context menus                                         |
 | `clr-forms`             | Forms (`clrForm`, layouts, validation), input/select/checkbox/radio/toggle/textarea/password/range/number/datalist/file (`clrFileInput`) |
+| `clr-header`            | App header (`clr-header`: branding, `header-nav`, search, `header-actions` menus, colors) and `nav.subnav`                               |
 | `clr-icons`             | Icons (`clr-icon`), registering shapes, size/status/badge, icon a11y                                                                     |
 | `clr-label`             | Colored tag/status labels (`clr-label`, `.label-*`), not form labels                                                                     |
-| `clr-modal`             | Modal dialogs (`[(clrModalOpen)]`, sizes, static backdrop) and side panels (`clr-side-panel`)                                            |
+| `clr-modal`             | Modal dialogs (`[(clrModalOpen)]`, sizes, static backdrop, prevent close, stacked)                                                       |
+| `clr-navigation`        | Responsive navigation (`[clr-nav-level]` 1/2, hamburger and overflow triggers) and which nav levels to combine                           |
 | `clr-popover`           | Custom anchored overlays (`ClrPopoverModuleNext`, `ClrPopoverService`), open at a point                                                  |
-| `clr-progress`          | Progress bars (`clr-progress-bar`) and spinners (`clr-spinner`)                                                                          |
+| `clr-progress-bar`      | Determinate/indeterminate progress bars (`clr-progress-bar`, `clrValue`, `clrLabeled`, `clrLoop`)                                        |
+| `clr-side-panel`        | Slide-in side panels (`clr-side-panel`, `[(clrSidePanelOpen)]`, pinnable, bottom)                                                        |
 | `clr-signpost`          | Click-triggered contextual help popovers (`clr-signpost`)                                                                                |
+| `clr-spinner`           | Loading indicators (`clr-spinner`: page, inline, small/medium, inverse); not for measurable progress                                     |
 | `clr-stack-view`        | Key/value detail views with expandable blocks (`clr-stack-view`)                                                                         |
 | `clr-stepper`           | Inline multi-step forms (`form[clrStepper]`); stepper vs wizard                                                                          |
 | `clr-tabs`              | Tabbed panes (`clr-tabs`, `*clrIfActive`), vertical, overflow, dynamic tabs; two-way active tab via `appfxIfTabActive` (addons)          |

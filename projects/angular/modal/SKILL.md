@@ -1,38 +1,37 @@
 ---
 name: clr-modal
-description: Clarity modal dialogs (`clr-modal`) and side panels (`clr-side-panel`) from `@clr/angular` — open state binding, sizes, static backdrop, closable, preventing close, pinnable and bottom side panels. Use when adding a dialog, confirmation, or slide-in panel with `clrModalOpen`, `clrModalSize`, `clrSidePanelOpen`, or `clrSidePanelPinnable`.
+description: Clarity modal dialogs (`clr-modal`) from `@clr/angular` — open state binding (`[(clrModalOpen)]`), sizes, static backdrop, closable, preventing close, stacked modals. Use when adding a dialog or confirmation. For a slide-in panel anchored to an edge, use `clr-side-panel`.
 metadata:
   docs: /documentation/modal
-  guidance: ['1018:2024-10-30', '1026:2024-10-30']
+  guidance: ['1018:2024-10-30']
 ---
 
-# Clarity modal and side panel
+# Clarity modal
 
 ## When to use
 
-- Modal: critical messages that need immediate action (errors, irreversible actions), or a short task broken into steps, without leaving the page. See [modal guidance](https://guidance.clarity.design/1018).
-- Side panel: supplementary content or a sub-process that needs more room than a modal, while the page stays visible. See [side panel guidance](https://guidance.clarity.design/1026).
+- Critical messages that need immediate action (errors, irreversible actions), or a short task broken into steps, without leaving the page. See [modal guidance](https://guidance.clarity.design/1018).
+- Supplementary content or a sub-process that needs more room while the page stays visible is a side panel instead — guide `clr-side-panel`.
 - Short plain-text hint on an icon: tooltip. Rich contextual help next to an element: signpost. List of actions: dropdown.
-- Avoid stacked modals or side panels; expand content inline in the first one instead.
+- Avoid stacked modals; expand content inline in the first one instead.
 
 ## Setup
 
 ```ts
-import { ClrModalModule, ClrSidePanelModule } from '@clr/angular'; // ClrSidePanelModule re-exports ClrModalModule
+import { ClrModalModule } from '@clr/angular';
 
-@Component({ imports: [ClrModalModule, ClrSidePanelModule] /* ... */ })
+@Component({ imports: [ClrModalModule] /* ... */ })
 export class Hosts {
   deleteOpen = false;
   editOpen = false;
   confirmOpen = false;
-  detailsOpen = false;
   delete(): void {}
 }
 ```
 
-These are NgModules (not standalone) — import the modules, not component classes.
+This is an NgModule (not standalone) — import the module, not the component class.
 
-## Modal
+## Usage
 
 ```html
 <button type="button" class="btn btn-primary" (click)="deleteOpen = true">Delete</button>
@@ -66,67 +65,31 @@ Content slots: `.modal-title`, `.modal-body`, `.modal-footer` (and `.leading-but
 Confirm before closing:
 
 ```html
-<clr-modal
-  #editModal
-  [(clrModalOpen)]="editOpen"
-  [clrModalPreventClose]="true"
-  (clrModalAlternateClose)="confirmOpen = true"
->
+<clr-modal [(clrModalOpen)]="editOpen" [clrModalPreventClose]="true" (clrModalAlternateClose)="confirmOpen = true">
   <h3 class="modal-title">Edit</h3>
   <div class="modal-body">...</div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="editModal.close()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="editOpen = false">Close</button>
   </div>
 </clr-modal>
 ```
 
+- With `clrModalPreventClose`, `close()` does nothing but emit `(clrModalAlternateClose)`. Close the modal by setting the bound field (`editOpen = false`) — that is the only way out once the user confirms.
 - Pick the size by testing the content at narrow widths; `md` is the default.
 - Always give the user a way to dismiss: a Cancel and a primary action button in `.modal-footer`.
 - Keep `clrModalStaticBackdrop` at its default so a stray click does not lose form data.
 - Render the modal in a container with `clrModalHost` to scope it to that element instead of the viewport.
 
-## Side panel
-
-```html
-<button type="button" class="btn btn-outline" (click)="detailsOpen = true">Details</button>
-
-<clr-side-panel [(clrSidePanelOpen)]="detailsOpen" [clrSidePanelPinnable]="true" clrSidePanelSize="md">
-  <h3 class="side-panel-title">Host details</h3>
-  <div class="side-panel-body">...</div>
-  <div class="side-panel-footer">
-    <button type="button" class="btn btn-outline" (click)="detailsOpen = false">Close</button>
-  </div>
-</clr-side-panel>
-```
-
-| Input / output                     | Default   | Notes                                                                   |
-| ---------------------------------- | --------- | ----------------------------------------------------------------------- |
-| `[(clrSidePanelOpen)]`             | `false`   | Two-way open state (`clrSidePanelOpenChange`).                          |
-| `clrSidePanelSize`                 | `'md'`    | Same values as `clrModalSize`.                                          |
-| `clrSidePanelPosition`             | `'right'` | `'right'` or `'bottom'`.                                                |
-| `[clrSidePanelPinnable]`           | `false`   | Shows a pin button; when pinned the page reflows beside the panel.      |
-| `[clrSidePanelPinned]`             | `false`   | Pinned state. A pinned panel ignores X, backdrop and `close()`.         |
-| `[clrSidePanelBackdrop]`           | `true`    | Set `false` for a panel without backdrop.                               |
-| `[clrSidePanelStaticBackdrop]`     | `false`   | Set `true` to ignore backdrop clicks.                                   |
-| `[clrSidePanelClosable]`           | `true`    | Close (X) button and Escape.                                            |
-| `[clrSidePanelPreventClose]`       | `false`   | Emits `(clrSidePanelAlternateClose)` for X / Escape / backdrop instead. |
-| `clrSidePanelCloseButtonAriaLabel` |           | Localized label for the X button.                                       |
-| `clrSidePanelLabelledById`         |           | Id of the labelling element.                                            |
-
-- Setting `clrSidePanelOpen` to `false` closes the panel even when pinned; `close()` respects the pin.
-- Keep side panel content simple (text, links, cards, images); put tables or accordions on a page.
-- Use `clrModalHost` on a container to open the panel inline in that container.
-
 ## Rules
 
-- Open and close via `[(clrModalOpen)]` / `[(clrSidePanelOpen)]` or the `open()` / `close()` methods — never toggle CSS classes or `*ngIf` the component.
-- Use a heading element for `.modal-title` / `.side-panel-title` so the dialog gets an accessible name.
-- Localize the close button labels when the app is translated.
+- Open and close via `[(clrModalOpen)]` or the `open()` / `close()` methods — never toggle CSS classes or `*ngIf` the component.
+- Use a heading element for `.modal-title` so the dialog gets an accessible name.
+- Localize the close button label when the app is translated.
 - Put footer buttons in order secondary (outline) then primary; each has `type="button"` unless it submits a form.
 
 ## References
 
-- Design guidance: https://guidance.clarity.design/1018, https://guidance.clarity.design/1026
+- Design guidance: https://guidance.clarity.design/1018
 - API: `projects/angular/modal/modal.api.md`
 - Styles: `projects/angular/modal/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/modal/`, `.../demos/side-panel/`
+- Docs demos: `projects/website/src/app/documentation/demos/modal/`

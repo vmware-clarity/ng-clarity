@@ -1,9 +1,9 @@
 ---
 name: clr-button
-description: Use Clarity buttons correctly — `.btn` CSS classes and variants, icon buttons, loading buttons (`[clrLoading]`), and button groups with overflow menus (`clr-button-group` / `clr-button`) from `@clr/angular`. Use when adding or styling buttons, toolbars, or action groups in a Clarity app.
+description: Use Clarity buttons correctly — `.btn` CSS classes and variants, icon buttons, loading buttons (`[clrLoading]`) from `@clr/angular`. Use when adding or styling buttons or toolbar actions in a Clarity app. For a row of related actions with an overflow menu, use `clr-button-group`.
 metadata:
   docs: /documentation/button
-  guidance: ['1003:2024-10-30', '1004:2024-10-30']
+  guidance: ['1003:2024-10-30']
 ---
 
 # Clarity buttons
@@ -95,49 +95,15 @@ export class SaveForm {
 - `(clrLoadingChange)` emits state changes; bind it back so your field follows the button's own reset after `SUCCESS`.
 - Show `LOADING` while the request runs, then `SUCCESS` or `ERROR`. Don't start the same action again while it is loading.
 
-## Button group (with overflow menu)
-
-```ts
-import { ClrButtonModule, ClrIcon } from '@clr/angular'; // ClrButtonModule includes button group + loading button
-
-@Component({ imports: [ClrButtonModule, ClrIcon] /* ... */ })
-export class Toolbar {
-  selected: User | undefined;
-  create(): void {}
-  edit(): void {}
-  assign(): void {}
-  remove(): void {}
-}
-```
-
-```html
-<clr-button-group class="btn-primary btn-sm" [clrMenuPosition]="'bottom-right'" clrToggleButtonAriaLabel="More actions">
-  <clr-button (click)="create()">Create</clr-button>
-  <clr-button (click)="edit()" [disabled]="!selected">Edit</clr-button>
-  <clr-button [clrInMenu]="true" (click)="assign()">Assign</clr-button>
-  <clr-button [clrInMenu]="true" (click)="remove()">Delete</clr-button>
-</clr-button-group>
-```
-
-- Put the group's style on `clr-button-group`. A single `clr-button` may add a same-style colour class (for example `btn-danger` on the destructive last action). Never mix solid and outline in one group.
-- `[clrInMenu]="true"` moves a button into the overflow menu. There is **no** `clrIfOverflow` input.
-- `clrMenuPosition`: `bottom-left` (default), `bottom-right`, `top-left`, `top-right`, `left-top`, `left-bottom`, `right-top`, `right-bottom`. Invalid values are silently ignored.
-- Localize `clrToggleButtonAriaLabel`.
-- Order: primary actions first, then secondary, with a destructive action last. The overflow menu sits at the far right, and its items always show text, even when the group shows icons only.
-- Use a flat group (`btn-link`) for tertiary actions, in cards, and above datagrids.
-- Icon-only button groups use the default size, not `btn-sm`.
-- Design rules: [button group guidance](https://guidance.clarity.design/1004).
-- Static, CSS-only group: `<div class="btn-group">` with `.btn` children.
-- Checkbox and radio button groups (`div.checkbox.btn` / `div.radio.btn` inside `.btn-group`) are a CSS-only pattern (see the button-group demos). Their styling is marked legacy in `_button-group.clarity.scss` and may change when buttons are revamped.
-
 ## Imports
 
-- All from `@clr/angular`: `ClrButtonModule` (re-exports `ClrButtonGroupModule`, `ClrLoadingButtonModule`), plus `ClrLoadingModule` for `[clrLoading]`. Or use `ClarityModule`.
+- All from `@clr/angular`: `ClrLoadingButtonModule` plus `ClrLoadingModule` for `[clrLoading]` (both are re-exported by `ClrButtonModule`). Or use `ClarityModule`.
 - These are NgModules (not standalone) — import the modules, not the component classes.
 - Plain `.btn` buttons need no Angular import, only Clarity styles.
 
 ## References
 
-- Design guidance: https://guidance.clarity.design/1003, https://guidance.clarity.design/1004
+- Design guidance: https://guidance.clarity.design/1003
 - Styles: `projects/angular/button/_buttons.clarity.scss`, `projects/angular/button/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/buttons/`, `.../demos/button-group/`
+- Docs demos: `projects/website/src/app/documentation/demos/buttons/`
+- For a group of related actions with an overflow menu, see the `clr-button-group` guide.

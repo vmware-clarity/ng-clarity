@@ -117,7 +117,7 @@ onContextMenu(event: MouseEvent) {
 - Icon-only triggers need an `aria-label`.
 - Items are `clrDropdownItem` elements directly inside `clr-dropdown-menu`; nested menus are a `clr-dropdown` inside the menu.
 - Keyboard navigation and focus handling are built in — no custom keydown handlers needed.
-- For a row of buttons with an overflow menu, use `clr-button-group` with `[clrInMenu]` (see clr-button skill).
+- For a row of buttons with an overflow menu, use `clr-button-group` with `[clrInMenu]` (guide `clr-button-group`).
 
 ## References
 

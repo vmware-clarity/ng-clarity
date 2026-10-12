@@ -31,6 +31,7 @@ import { ButtonGroupIconsDemo } from './icons';
 import { MixedButtonGroupDemo } from './mixed';
 import { ButtonGroupRadioDemo } from './radio';
 import { ButtonGroupTypes } from './types';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -80,6 +81,7 @@ const ACCESSIBILITY_EXAMPLE = `
     ButtonGroupRadioDemo,
     StyleDocsComponent,
     NestingTableComponent,
+    AiSkillComponent,
   ],
 })
 export class ButtonGroupDemo extends ClarityDocComponent {

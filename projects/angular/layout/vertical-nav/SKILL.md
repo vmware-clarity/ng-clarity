@@ -83,7 +83,7 @@ export class AppNav {
 
 ## Responsive
 
-Add `[clr-nav-level]="2"` on `clr-vertical-nav` (inside `clr-main-container` with `clr-header`) so it collapses into the header overflow menu on small screens. Needs `ClrNavigationModule`.
+Add `[clr-nav-level]="2"` on `clr-vertical-nav` (inside `clr-main-container` with `clr-header`) so it collapses into the header overflow menu on small screens. Needs `ClrNavigationModule`. See the clr-navigation skill.
 
 ## Rules
 

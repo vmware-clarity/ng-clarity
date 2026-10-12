@@ -126,7 +126,7 @@ Clear `loading` on error too, or a failed request leaves the grid on the spinner
 - Every row needs `[clrDgItem]`.
 - Lock a row: `[clrDgSelectable]="false"` on `clr-dg-row`.
 - Keep selection across refetches: `[clrDgItemsIdentityFn]="(u) => u.id"` and `[clrDgPreserveSelection]="true"`.
-- Batch actions: any button that acts on the selected rows goes inside `<clr-dg-action-bar>` as the first child of `clr-datagrid` (it renders above the columns), enabled from `selected.length`. Keep it inside the datagrid element, even when the request says "a button above the grid". Use a button group with `btn-link` or `btn-secondary` buttons; both are fine, so follow the app's existing style.
+- Batch actions: any button that acts on the selected rows goes inside `<clr-dg-action-bar>` as the first child of `clr-datagrid` (it renders above the columns), enabled from `selected.length`. Keep it inside the datagrid element, even when the request says "a button above the grid". Use a button group (guide `clr-button-group`) with `btn-link` or `btn-secondary` buttons; both are fine, so follow the app's existing style.
 - Per-row actions: `<clr-dg-action-overflow>` inside `clr-dg-row` with `<button class="action-item">` children.
 - `clrDgRowSelection` is deprecated (keyboard users can't select by row). There is no `clrDgSingleSelected` input.
 - Prefer the selection cell: `[clrDgSelectionType]="'single'"` gives a radio per row, `'multi'` a checkbox.
