@@ -13,6 +13,8 @@ Use whenever the UI shows the contents of an X.509 certificate or chain (thumbpr
 
 ## Setup
 
+Install the two optional peer dependencies the viewer parses certificates with: `npm install asn1js pkijs`. npm does not install them automatically because `@clr/addons` marks them optional.
+
 ```ts
 import { AppfxCertificateViewerModule } from '@clr/addons/certificate-viewer';
 

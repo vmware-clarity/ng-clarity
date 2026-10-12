@@ -41,7 +41,10 @@ columns: ColumnDefinition<Vm>[] = [
 filteredVms: Vm[] = [];
 selected: Vm[] = [];
 loading = false;
-exportConfig: ClientSideExportConfig = { columnDefinitions: [] };
+exportConfig: ClientSideExportConfig = {
+  exportedFileName: 'vms',
+  columnDefinitions: this.columns.map(c => ({ displayName: c.displayName, field: c.field })),
+};
 readonly SelectionType = SelectionType;
 onSearch(term: string): void {}
 ```
@@ -107,7 +110,7 @@ filterableProperties = [
 ];
 filteredItems: Vm[] = [];
 readonly FilterMode = FilterMode;
-onAdvancedFilter(filter: PropertyFilter): void {}
+onAdvancedFilter(filters: PropertyFilter[]): void {}
 onSearch(term: string): void {}
 ```
 
@@ -125,7 +128,7 @@ onSearch(term: string): void {}
 
 - `FilterMode`: `Quick` = search box only; `Advanced` = selector between search box and advanced filter; `AdvancedOnly` = advanced filter only.
 - Enum filter labels should match what the column renders, or render the column through the same map.
-- The grid only **emits** filters — apply them to the data yourself (`PropertyFilter { criteria: PropertyPredicate[], operator }`) and pass the result as `gridItems`.
+- The grid only **emits** filters — `advancedFilterChange` carries a `PropertyFilter[]` (each `{ criteria: PropertyPredicate[], operator }`); apply them to the data yourself and pass the result as `gridItems`.
 - Other definitions: `DateTimePropertyDefinition`, `UserPropertyDefinition` (requires providing `DatagridFiltersUserService`).
 - Per-column filters: `ColumnDefinition.stringFilter` or `ColumnDefinition.filter` (a `ColumnFilter<T>` component type).
 

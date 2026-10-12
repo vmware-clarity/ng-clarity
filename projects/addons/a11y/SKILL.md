@@ -41,13 +41,11 @@ Moves tab links into an overflow menu when the width is too small.
 
 ## Stepper string overrides
 
-```html
-<clr-stepper-panel formGroupName="name" [appfxOverrideClrStrings]="{ stepComplete: 'Done', stepError: 'Has errors' }">
-  ...
-</clr-stepper-panel>
-```
+`appfxOverrideClrStrings` only adds `stepComplete` and `stepError` for Clarity versions that lack them; on Clarity 16.4 / 17.1 and later the strings exist and the directive does nothing. To change them, localize the common strings instead (`ClrCommonStringsService.localize` takes `Partial<ClrCommonStrings>`):
 
-Takes `Partial<ClrCommonStrings>` scoped to that panel.
+```ts
+inject(ClrCommonStringsService).localize({ stepComplete: 'Done', stepError: 'Has errors' });
+```
 
 ## Required field legend
 

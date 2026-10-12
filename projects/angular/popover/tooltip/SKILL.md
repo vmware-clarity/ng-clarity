@@ -53,7 +53,7 @@ Toolbar:
     [attr.aria-label]="tool.label"
     (click)="tool.run()"
   >
-    <clr-icon [attr.shape]="tool.icon"></clr-icon>
+    <clr-icon [shape]="tool.icon"></clr-icon>
   </button>
   <clr-tooltip-content clrPosition="bottom-right">{{ tool.label }}</clr-tooltip-content>
 </clr-tooltip>

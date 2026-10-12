@@ -73,7 +73,7 @@ steps: Step[] = [
     description: 'Specify a unique name',
     componentClass: NamePage,
     model: new NameModel(),
-    summary: (builder, m: NameModel) => builder.property('Name', m.name.value).build(),
+    summary: (builder, m) => builder.property('Name', (m as NameModel).name.value).build(),
   },
   { title: 'Storage', componentClass: StoragePage, model: new StorageModel(), isRelevant: this.needsStorage },
 ];

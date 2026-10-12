@@ -58,7 +58,7 @@ steps: Step[] = [
     description: 'Enter a unique name',
     componentClass: ProjectNameStep,
     model: new ProjectNameModel(),
-    summary: (builder, m: ProjectNameModel) => builder.property('Name', m.name.value).build(),
+    summary: (builder, m) => builder.property('Name', (m as ProjectNameModel).name.value).build(),
   },
   { title: 'Team', componentClass: TeamStep, model: new TeamModel() },
 ];
@@ -86,7 +86,7 @@ steps: Step[] = [
 - `onFinish` fires after the last step validates; read results from the workflow model (`model.name.value`). Apply them yourself.
 - To reset, assign a new workflow model and new `steps`.
 - Mutate `Var.value`, keep the `Var` instance; page and workflow properties match by name (use `Mappings` otherwise).
-- `readyToComplete = false` on a step model disables its Next button.
+- `readyToComplete = false` on a step model disables its Next button. Keep it a writable field (the stepper assigns it when it resets validation); a getter-only property throws.
 - Pass translated `Step.title` / `description`; built-in button text comes from the workflow library.
 
 ## References
