@@ -21,7 +21,6 @@ import { createArray } from '@storybook-helpers/common';
         <clr-accordion-panel
           [clrAccordionPanelOpen]="!!openIndices[i]"
           [clrAccordionPanelDisabled]="clrAccordionPanelDisabled"
-          [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
           [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
         >
           <clr-accordion-title>
@@ -41,7 +40,6 @@ import { createArray } from '@storybook-helpers/common';
 export class AccordionStorybookComponent {
   @Input() componentDescription = null;
   @Input() clrAccordionMultiPanel = false;
-  @Input() clrAccordionPanelHeadingEnabled = false;
   @Input() clrAccordionPanelHeadingLevel = 1;
   @Input() clrAccordionPanelDisabled = false;
   @Input() panelCount = 5;
