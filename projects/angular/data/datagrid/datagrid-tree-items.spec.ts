@@ -38,8 +38,8 @@ type LoaderKind = 'observable' | 'promise' | 'sync';
       (clrDgTreeExpandedChange)="expandedChanges.push($event)"
       (clrDgTreeLoadError)="errors.push($event)"
     >
-      <clr-dg-column>Name</clr-dg-column>
-      <clr-dg-column [clrDgPinned]="pinSize">Size</clr-dg-column>
+      <clr-dg-column [clrDgTreeColumn]="treeOnName">Name</clr-dg-column>
+      <clr-dg-column [clrDgPinned]="pinSize" [clrDgTreeColumn]="treeOnSize">Size</clr-dg-column>
       <clr-dg-row
         *clrDgTreeItems="let folder of roots; children: getChildren; expandable: expandable; selects: selects"
         [clrDgItem]="folder"
@@ -64,6 +64,8 @@ class TreeTest {
   requests: string[] = [];
   selects: 'self' | 'descendants' = 'descendants';
   pinSize = false;
+  treeOnName = false;
+  treeOnSize = false;
   loader: LoaderKind = 'observable';
   expandedChanges: ClrDatagridTreeExpandedChange<Folder>[] = [];
   errors: ClrDatagridTreeLoadError<Folder>[] = [];
@@ -213,16 +215,31 @@ export default function (): void {
         expect(rows()[0].querySelector('.datagrid-tree-cell .datagrid-tree-toggle')).not.toBeNull();
       });
 
-      it('moves the toggle to the first pinned column', async function () {
+      // The cell of a column, wherever the column is on screen.
+      function cellOf(row: number, text: RegExp) {
+        return Array.from(rows()[row].querySelectorAll<HTMLElement>('clr-dg-cell')).find(cell =>
+          text.test(cell.innerText.trim())
+        );
+      }
+
+      it('keeps the toggle in its column when another column is pinned', async function () {
         context.pinSize = true;
         fixture.detectChanges();
         await fixture.whenStable();
-        // Pinned cells are rendered first, so the toggle is still in the first cell, now the Size one.
-        const cells = rows()[0].querySelectorAll('clr-dg-cell');
-        expect(cells[0].querySelector('.datagrid-tree-toggle')).not.toBeNull();
-        expect(cells[0].classList).toContain('datagrid-tree-cell');
-        expect(cells[0].textContent.trim()).toMatch(/ 2$/);
-        expect(cells[1].querySelector('.datagrid-tree-toggle')).toBeNull();
+        expect(cellOf(0, /^a$/).querySelector('.datagrid-tree-toggle')).not.toBeNull();
+        expect(cellOf(0, /^2$/).querySelector('.datagrid-tree-toggle')).toBeNull();
+      });
+
+      it('puts the toggle in the columns marked as tree columns', function () {
+        context.treeOnSize = true;
+        fixture.detectChanges();
+        expect(cellOf(0, /^a$/).querySelector('.datagrid-tree-toggle')).toBeNull();
+        expect(cellOf(0, /^2$/).querySelector('.datagrid-tree-toggle')).not.toBeNull();
+        expect(cellOf(0, /^2$/).classList).toContain('datagrid-tree-cell');
+
+        context.treeOnName = true;
+        fixture.detectChanges();
+        expect(rows()[0].querySelectorAll('.datagrid-tree-toggle').length).toBe(2);
       });
 
       it('only offers the toggle on expandable rows', function () {

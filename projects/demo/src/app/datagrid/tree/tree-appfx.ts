@@ -27,7 +27,7 @@ export class DatagridTreeAppfxDemo implements OnDestroy {
   SelectionType = SelectionType;
 
   // Every column can be pinned from its actions menu; Name starts pinned. Unpinned columns can be
-  // dragged or moved from the same menu. The tree toggle follows the leftmost column.
+  // dragged or moved from the same menu. The tree toggle stays with Name, or with the tree columns.
   columns: ColumnDefinition<Resource>[] = [
     { displayName: 'Name', field: 'name', pinnable: true, pinned: true, width: '280px' },
     { displayName: 'Kind', field: 'kind', pinnable: true, width: '160px' },
@@ -65,5 +65,11 @@ export class DatagridTreeAppfxDemo implements OnDestroy {
 
   onColumnOrderChange(event: ColumnOrderChanged) {
     this.ordered = event.columns;
+  }
+
+  setTreeColumn(column: ColumnDefinition<Resource>, treeColumn: boolean) {
+    column.treeColumn = treeColumn;
+    // A new array, in the order the user left the columns, so the grid picks the change up.
+    this.columns = [...this.ordered];
   }
 }

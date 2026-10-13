@@ -6,7 +6,7 @@
  */
 
 import { Injectable, OnDestroy } from '@angular/core';
-import { from, isObservable, Observable, Subject, Subscription } from 'rxjs';
+import { BehaviorSubject, from, isObservable, Observable, Subject, Subscription } from 'rxjs';
 import { finalize, take } from 'rxjs/operators';
 
 import { Items } from './items';
@@ -14,6 +14,7 @@ import { Page } from './page';
 import { Selection } from './selection';
 import { Sort } from './sort';
 import { SelectionType } from '../enums/selection-type';
+import { ColumnState } from '../interfaces/column-state.interface';
 
 /**
  * What selecting a row of a tree selects, in multi-selection:
@@ -81,6 +82,8 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   /** Whether an item can have children. By default every item can, until it turns out to have none. */
   isExpandable: (item: T) => boolean;
   selects: ClrDatagridTreeSelection = 'self';
+  /** The columns marked with `clrDgTreeColumn`, which carry the toggle; the first column when none is. */
+  readonly columns = new Set<BehaviorSubject<ColumnState>>();
 
   readonly expandedChange = new Subject<ClrDatagridTreeExpandedChange<T>>();
   readonly loadError = new Subject<ClrDatagridTreeLoadError<T>>();

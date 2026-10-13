@@ -73,6 +73,7 @@
       [clrDgDisableUnsort]="column.disableUnsort ?? disableUnsort"
       [clrDgPinnable]="!!column.pinnable"
       [clrDgPinned]="!!column.pinned"
+      [clrDgTreeColumn]="!!treeChildren && isTreeColumn(column)"
       (clrDgPinnedChange)="onPinnedChange($event, column)"
     >
       <clr-dg-filter

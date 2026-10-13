@@ -2859,6 +2859,36 @@ describe('DatagridComponent', () => {
       expect(rows[1].querySelector('.datagrid-tree-toggle')).toBeNull();
     });
 
+    // The text of the cells that have the toggle, in the order they are on screen.
+    function toggleCells(element: HTMLElement): string[] {
+      return Array.from(
+        element.querySelectorAll<HTMLElement>('clr-dg-row')[0].querySelectorAll<HTMLElement>('clr-dg-cell')
+      )
+        .filter(cell => cell.querySelector('.datagrid-tree-toggle'))
+        .map(cell => cell.innerText.trim());
+    }
+
+    it('keeps the toggle in the first column when it is moved', async function (this: any) {
+      await this.fixture.whenStable();
+      const [name, state, status] = this.columnsDefs;
+      this.component.columnsDefs = [state, name, status];
+      await this.fixture.whenStable();
+
+      const firstCell = this.fixture.nativeElement.querySelector('clr-dg-row clr-dg-cell') as HTMLElement;
+      expect(firstCell.innerText.trim()).toBe('Powered Off');
+      expect(toggleCells(this.fixture.nativeElement)).toEqual(['vm0']);
+    });
+
+    it('puts the toggle in the tree columns', async function (this: any) {
+      this.columnsDefs[1].treeColumn = true;
+      this.columnsDefs[2].treeColumn = true;
+      this.component.columnsDefs = [...this.columnsDefs];
+      await this.fixture.whenStable();
+
+      expect(toggleCells(this.fixture.nativeElement).length).toBe(2);
+      expect(toggleCells(this.fixture.nativeElement)).not.toContain('vm0');
+    });
+
     it('shows the children when they arrive', async function (this: any) {
       await this.fixture.whenStable();
       const element: HTMLElement = this.fixture.nativeElement;

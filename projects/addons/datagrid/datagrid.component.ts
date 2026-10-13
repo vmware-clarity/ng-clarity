@@ -561,6 +561,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * @type ColumnDefinition
    */
   #dgColumns: ColumnDefinition<T>[];
+  // The column defined first, which carries the tree toggle when no column is a tree column.
+  #firstColumn: ColumnDefinition<T> | undefined;
   #selectionType: SelectionType = SelectionType.Single;
   #selectedItems: T[] = [];
   #rowSelectionMode = true;
@@ -650,6 +652,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   set columns(columns: ColumnDefinition<T>[]) {
     this.#dgColumns = columns;
     if (columns) {
+      // Moving columns hands them back in a new order; the first one keeps the toggle all the same.
+      if (!this.#firstColumn || !columns.includes(this.#firstColumn)) {
+        this.#firstColumn = columns[0];
+      }
       const visibleColumns = columns.filter((column: ColumnDefinition<T>) => !column.hidden);
       if (this.needsColumnViewsRebuild(visibleColumns)) {
         this.rebuildColumnViews(visibleColumns);
@@ -930,6 +936,17 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * Keeps tree rows across refreshes that return new objects, like the rows of the other modes.
    */
   trackByTreeItem: TrackByFunction<T> = (index: number, item: T) => this.trackByFn(index, item);
+
+  /**
+   * Whether the cells of a column carry the tree toggle: the tree columns, else the column defined
+   * first, and the first column on screen while none of those is shown.
+   */
+  isTreeColumn(column: ColumnDefinition<T>): boolean {
+    const marked = this.columns.some(definition => definition.treeColumn)
+      ? (definition: ColumnDefinition<T>) => !!definition.treeColumn
+      : (definition: ColumnDefinition<T>) => definition === this.#firstColumn;
+    return marked(column) || (!this.visibleColumns.some(marked) && column === this.visibleColumns[0]);
+  }
 
   trackByColumnId(index: number, column: ColumnDefinition<T>): string {
     return column.uid || column.displayName;

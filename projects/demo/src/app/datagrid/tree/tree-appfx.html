@@ -10,9 +10,24 @@
 <p>
   <code class="clr-code">appfx-datagrid</code> renders a tree when it is server driven and gets
   <code class="clr-code">[treeChildren]</code>. Drag a column header, or use its actions menu, to move it; every column
-  can be pinned from the same menu. The expand toggle stays in the leftmost column: the first pinned one, or the first
-  one when nothing is pinned.
+  can be pinned from the same menu. The expand toggle stays in its column wherever it goes: Name, or the columns picked
+  as tree columns below.
 </p>
+
+<clr-checkbox-container clrInline>
+  <label>Tree columns</label>
+  @for (column of columns; track column.field) {
+  <clr-checkbox-wrapper>
+    <input
+      type="checkbox"
+      clrCheckbox
+      [ngModel]="!!column.treeColumn"
+      (ngModelChange)="setTreeColumn(column, $event)"
+    />
+    <label>{{ column.displayName }}</label>
+  </clr-checkbox-wrapper>
+  }
+</clr-checkbox-container>
 
 <clr-radio-container clrInline>
   <label>Selecting a row selects</label>

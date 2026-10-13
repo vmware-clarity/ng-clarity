@@ -268,27 +268,21 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   /**
-   * The cell that carries the indentation and the expand toggle: the leftmost one on screen, which
-   * is the first pinned column when any is pinned (pinned columns are rendered first), and the
-   * first visible column otherwise. Reordering, pinning or hiding columns moves it. Cells match
-   * columns by declaration index, as everywhere else in the datagrid.
+   * The cells that carry the indentation and the expand toggle: those of the tree columns, so they
+   * move with their column when it is reordered or pinned. The tree columns are the ones marked with
+   * `clrDgTreeColumn`, or the first visible column when none of them is visible. Cells match columns
+   * by declaration index, as everywhere else in the datagrid.
    */
-  get _treeCell(): ClrDatagridCell | undefined {
-    let firstVisible = -1;
+  get _treeCells(): ClrDatagridCell[] {
     const columns = this.columnsService.columns;
-    for (let index = 0; index < columns.length; index++) {
-      const state = columns[index].value;
-      if (state.hidden) {
-        continue;
-      }
-      if (state.pinned) {
-        return this.dgCells.get(index);
-      }
-      if (firstVisible < 0) {
-        firstVisible = index;
-      }
+    const cells = this.dgCells?.toArray() || [];
+    const visible = (index: number) => !!cells[index] && !columns[index]?.value.hidden;
+    const marked = cells.filter((_, index) => visible(index) && this.tree?.columns.has(columns[index]));
+    if (marked.length) {
+      return marked;
     }
-    return this.dgCells.get(Math.max(firstVisible, 0));
+    const first = cells.findIndex((_, index) => visible(index));
+    return cells.slice(Math.max(first, 0), Math.max(first, 0) + 1);
   }
 
   /**

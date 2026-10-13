@@ -27,7 +27,7 @@ import { WrappedCell } from './wrapped-cell';
  */
 export interface DatagridTreeRow {
   readonly _treeNode: DatagridTreeNode<unknown> | undefined;
-  readonly _treeCell: ClrDatagridCell | undefined;
+  readonly _treeCells: ClrDatagridCell[];
 }
 
 @Component({
@@ -98,11 +98,11 @@ export class ClrDatagridCell implements OnInit {
   }
 
   /**
-   * The tree node of the row, on the one cell that carries the indentation and the toggle.
+   * The tree node of the row, on the cells that carry the indentation and the toggle.
    */
   protected get treeNode(): DatagridTreeNode<unknown> | undefined {
     const row = this._treeRow;
-    return row && row._treeCell === this ? row._treeNode : undefined;
+    return row?._treeCells.includes(this) ? row._treeNode : undefined;
   }
 
   /**

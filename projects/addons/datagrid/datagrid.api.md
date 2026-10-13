@@ -201,6 +201,7 @@ export interface ColumnDefinition<T> {
     // Warning: (ae-forgotten-export) The symbol "ClrDatagridComparatorInterface" needs to be exported by the entry point clr-addons-datagrid.d.ts
     sortComparator?: ClrDatagridComparatorInterface<T> | string;
     stringFilter?: ClrDatagridStringFilterInterface<T>;
+    treeColumn?: boolean;
     uid?: string;
     width?: string;
 }
@@ -410,6 +411,7 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     // (undocumented)
     protected isItemSelected(item: T): boolean;
     isRowLocked: (rowItem: T) => boolean;
+    isTreeColumn(column: ColumnDefinition<T>): boolean;
     get layoutModel(): GridLayoutModel;
     set layoutModel(config: GridLayoutModel);
     // @deprecated
