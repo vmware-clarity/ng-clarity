@@ -395,8 +395,10 @@
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">[clrContext]</code></h3>
 <p class="clr-mt-16px" cds-text="body">
-  Annotates a region with the knowledge only the application has. Ships in
-  <code cds-text="code">ClrContextModule</code>.
+  Annotates a region with the knowledge only the application has. The directive is standalone: a standalone component
+  imports <code cds-text="code">ClrContext</code> directly, and <code cds-text="code">ClrContextModule</code> still
+  exports it for NgModule applications. It annotates markup in the application's own templates, while
+  <code cds-text="code">window.clrContext()</code> is the accessor agents outside the application call to read the page.
 </p>
 <table class="table">
   <thead>
@@ -1069,7 +1071,7 @@
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">CLR_CONTEXT_DIRECTIVES</b></td>
-      <td class="left">The directives <code cds-text="code">ClrContextModule</code> declares and exports.</td>
+      <td class="left">The standalone directives <code cds-text="code">ClrContextModule</code> imports and exports.</td>
     </tr>
   </tbody>
 </table>

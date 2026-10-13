@@ -44,6 +44,31 @@ export class AssistantComponent {
 }
 ```
 
+### Annotating the application
+
+The `clrContext` directive adds what only the application knows, such as what a section is for. It
+is standalone: a standalone component imports `ClrContext` directly, and an NgModule application can
+keep importing `ClrContextModule`.
+
+```ts
+import { Component } from '@angular/core';
+import { ClrContext } from '@clr/angular/ai';
+
+@Component({
+  selector: 'app-firewall',
+  imports: [ClrContext],
+  template: `<section clrContext="Firewall rules for the selected cluster" [clrContextState]="{ cluster }">
+    ...
+  </section>`,
+})
+export class FirewallComponent {
+  cluster = 'alpha';
+}
+```
+
+The directive annotates markup in the application's own templates, while the optional
+`window.clrContext()` accessor is what agents outside the application call to read the page.
+
 ### Writing back
 
 Nothing is written until the application provides a policy. Provide one that allows what you name

@@ -8,6 +8,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
+import { ClrContext } from './context';
 import { ClrContextModule } from './contextual.module';
 import { ClrContextRegistryService } from './providers/context-registry.service';
 import { ClrContextEngineService } from './providers/contextual-engine.service';
@@ -211,5 +212,25 @@ describe('ClrContext directive, following the element it annotates', () => {
     fixture.detectChanges();
 
     expect(changes).toBe(0);
+  });
+});
+
+// A standalone component imports the directive class itself; no module is involved.
+@Component({
+  template: `<section clrContext="Standalone annotation" [clrContextState]="{ step: 2 }"></section>`,
+  imports: [ClrContext],
+})
+class StandaloneHostComponent {}
+
+describe('ClrContext directive, imported by a standalone component', () => {
+  it('annotates the template without ClrContextModule', () => {
+    TestBed.configureTestingModule({ imports: [StandaloneHostComponent] });
+    const fixture = TestBed.createComponent(StandaloneHostComponent);
+    fixture.detectChanges();
+
+    expect(TestBed.inject(ClrContextRegistryService).collect()).toEqual([
+      { type: 'region', label: 'Standalone annotation', state: { step: 2 } },
+    ]);
+    fixture.destroy();
   });
 });

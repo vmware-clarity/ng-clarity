@@ -221,12 +221,24 @@
     <p class="clr-mt-16px" cds-text="body">
       The DOM only knows <em>what</em> is on the page. The <code cds-text="code">clrContext</code> directive lets the
       application add the <em>why</em> — knowledge only it has. Annotations register when the element appears,
-      unregister when it is destroyed, and are read at snapshot time, so they are never stale.
+      unregister when it is destroyed, and are read at snapshot time, so they are never stale. The directive annotates
+      markup in the application's own templates, while the optional
+      <code cds-text="code">window.clrContext()</code> accessor is what agents outside the application call to read the
+      page.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="directiveExample" language="html"></app-code-snippet>
     </div>
-    <p class="clr-mt-16px" cds-text="body">The directive ships in <code cds-text="code">ClrContextModule</code>:</p>
+    <p class="clr-mt-16px" cds-text="body">
+      The directive is standalone, so a standalone component imports <code cds-text="code">ClrContext</code> directly:
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="directiveStandaloneExample" language="typescript"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      An application that uses NgModules can keep importing <code cds-text="code">ClrContextModule</code>, which exports
+      it:
+    </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="directiveModuleExample" language="typescript"></app-code-snippet>
     </div>
