@@ -10,7 +10,7 @@ import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } 
 import { ClarityModule } from '@clr/angular';
 import {
   ClrComponentContext,
-  ClrContextModule,
+  ClrContext,
   ClrContextTrackerService,
   ClrMutationEngineService,
   ClrMutationOperation,
@@ -34,7 +34,7 @@ interface WritableTarget {
 @Component({
   selector: 'clr-contextual-mutation-demo',
   standalone: true,
-  imports: [FormsModule, ReactiveFormsModule, ClarityModule, ClrContextModule],
+  imports: [FormsModule, ReactiveFormsModule, ClarityModule, ClrContext],
   templateUrl: './mutation.demo.html',
   styleUrls: ['./mutation.demo.scss'],
 })
