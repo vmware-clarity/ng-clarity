@@ -3,7 +3,9 @@ name: clr-stepper
 description: Build inline multi-step forms with the Clarity stepper (`form[clrStepper]`, `clr-stepper-panel`, `clr-step-title`, `clr-step-description`, `clr-step-content`, `clrStepButton` from `@clr/angular`). Use when splitting a reactive (`formGroupName`) or template-driven (`ngModelGroup`) form into accordion-like steps on the page, or when choosing between a stepper, a wizard, and a timeline.
 metadata:
   docs: /documentation/stepper
-  guidance: ['1030:2024-10-30', '1039:2024-10-30', '1036:2024-10-30']
+  guidance-1030: '2024-10-30'
+  guidance-1039: '2024-10-30'
+  guidance-1036: '2024-10-30'
 ---
 
 # Clarity stepper (`form[clrStepper]`)

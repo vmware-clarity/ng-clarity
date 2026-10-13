@@ -3,7 +3,7 @@ name: clr-signpost
 description: Clarity signposts (`clr-signpost`, `clr-signpost-content`, `clr-signpost-title`, `clrSignpostTrigger`) from `@clr/angular` — click-triggered popovers with rich contextual help, custom triggers, positions, and `openAtPoint()`. Use when adding inline help, an info icon popover, or contextual details that stay open until dismissed.
 metadata:
   docs: /documentation/signpost
-  guidance: ['1027:2024-10-30']
+  guidance-1027: '2024-10-30'
 ---
 
 # Clarity signpost

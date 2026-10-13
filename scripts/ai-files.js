@@ -26,7 +26,8 @@ function getAgentsFile(lib) {
 }
 
 // Returns { skills, errors }. Each skill: { lib, packageName, name, description, docs, guidance, file, raw, body }.
-// `guidance` lists the design guidance (https://guidance.clarity.design/<id>) the skill follows, as '<id>:<updated date>'.
+// `guidance` lists the design guidance (https://guidance.clarity.design/<id>) the skill follows, as '<id>:<updated date>',
+// read from one `guidance-<id>: '<updated date>'` metadata key per CIP.
 function collectSkills(lib) {
   const { packageName, prefix } = LIBS[lib];
   const skills = [];
@@ -50,7 +51,10 @@ function collectSkills(lib) {
       errors.push(`${relativeFile}: missing "description" in frontmatter`);
     } else {
       seen.set(name, relativeFile);
-      const { docs, guidance = [] } = attributes.metadata || {};
+      const { docs, ...metadata } = attributes.metadata || {};
+      const guidance = Object.entries(metadata)
+        .filter(([key]) => key.startsWith('guidance-'))
+        .map(([key, date]) => `${key.slice('guidance-'.length)}:${date}`);
       skills.push({ lib, packageName, name, description, docs, guidance, file, raw, body });
     }
   }

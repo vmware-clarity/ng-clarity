@@ -3,7 +3,7 @@ name: clr-app-layout
 description: Build the Clarity application shell — `clr-main-container` with the header, optional subnav, `content-container`, `content-area` and vertical nav, app-level alerts, and `cds-theme` switching on `<body>` — from `@clr/angular`. Use when creating or changing the top-level page layout of a Clarity app or placing page content, cards, datagrids or forms in the content area. For the header itself use `clr-header`; for navigation that collapses on small screens use `clr-navigation`.
 metadata:
   docs: /documentation/app-layout
-  guidance: ['104:2024-12-03']
+  guidance-104: '2024-12-03'
 ---
 
 # Clarity application layout

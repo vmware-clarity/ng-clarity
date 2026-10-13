@@ -3,7 +3,7 @@ name: clr-tabs
 description: Organize page content into switchable panes with Clarity tabs (`clr-tabs`, `clr-tab`, `clrTabLink`, `clr-tab-content`, `*clrIfActive`, `clr-tabs-actions`) from `@clr/angular`. Use when adding tabs, vertical tabs (`clrLayout="vertical"`), tab overflow (`clrTabLinkInOverflow`), dynamic/added tabs, or programmatic tab selection.
 metadata:
   docs: /documentation/tabs
-  guidance: ['1032:2024-10-30']
+  guidance-1032: '2024-10-30'
 ---
 
 # Clarity tabs

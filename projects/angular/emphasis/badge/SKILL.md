@@ -3,7 +3,7 @@ name: clr-badge
 description: Show item counts with Clarity badges — the `clr-badge` component (`clrColor`, `clrType`) or the `.badge` / `.badge-{color}` CSS classes from `@clr/angular`. Use when adding a count next to a label, button, tab, or nav item, or choosing badge colors and outlined vs solid style.
 metadata:
   docs: /documentation/badge
-  guidance: ['1002:2024-10-30']
+  guidance-1002: '2024-10-30'
 ---
 
 # Clarity badge

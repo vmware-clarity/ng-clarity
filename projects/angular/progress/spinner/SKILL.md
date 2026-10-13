@@ -3,7 +3,7 @@ name: clr-spinner
 description: Show a loading indicator with the Clarity spinner (`clr-spinner` with `clrInline`, `clrSmall`, `clrMedium`, `clrInverse`, or the `.spinner` CSS classes) from `@clr/angular`. Use when adding or changing a spinner for page, section, inline, or button loading states. For measurable progress, use `clr-progress-bar`.
 metadata:
   docs: /documentation/spinner
-  guidance: ['1028:2024-10-30']
+  guidance-1028: '2024-10-30'
 ---
 
 # Clarity spinner

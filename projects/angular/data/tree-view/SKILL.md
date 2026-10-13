@@ -3,7 +3,7 @@ name: clr-tree-view
 description: Display hierarchical data with the Clarity tree view (`clr-tree`, `clr-tree-node` from `@clr/angular`). Use when building a file/folder or inventory tree — static nested nodes, recursive trees with `*clrRecursiveFor`, lazy loading (`clrLazy`, `clrIfExpanded`), checkbox selection (`clrSelected`, `ClrSelectedState`), expand/collapse, or link nodes (`.clr-treenode-link`).
 metadata:
   docs: /documentation/tree-view
-  guidance: ['1037:2024-10-30']
+  guidance-1037: '2024-10-30'
 ---
 
 # Clarity tree view (`clr-tree`)

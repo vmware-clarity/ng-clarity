@@ -3,7 +3,7 @@ name: clr-card
 description: Build Clarity cards — the `clr-card` component family (`clr-card-header`, `clr-card-body`, `clr-card-body-title`, `clr-card-body-text`, `clr-card-image`, `clr-card-media-block`, `clr-card-divider`, `clr-card-footer`, collapsible via `clrCardCollapsible`) and `.card` CSS classes incl. clickable cards. Use when grouping related content and actions in a card or card grid.
 metadata:
   docs: /documentation/card
-  guidance: ['1005:2024-10-30']
+  guidance-1005: '2024-10-30'
 ---
 
 # Clarity card

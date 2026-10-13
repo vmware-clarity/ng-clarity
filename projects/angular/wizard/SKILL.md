@@ -3,7 +3,8 @@ name: clr-wizard
 description: Guide users through a modal (or in-page) multi-step flow with the Clarity wizard (`clr-wizard`, `clr-wizard-page`, `clr-wizard-button`, `clrPageTitle`, `clrPageButtons` from `@clr/angular`). Use when building a step-by-step dialog with Next/Back/Finish buttons, per-page validation (`clrWizardPageNextDisabled`), async validation before moving on, custom buttons, or when choosing between a wizard and a stepper.
 metadata:
   docs: /documentation/wizard
-  guidance: ['1039:2024-10-30', '1030:2024-10-30']
+  guidance-1039: '2024-10-30'
+  guidance-1030: '2024-10-30'
 ---
 
 # Clarity wizard (`clr-wizard`)

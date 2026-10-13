@@ -3,7 +3,7 @@ name: clr-button
 description: Use Clarity buttons correctly — `.btn` CSS classes and variants, icon buttons, loading buttons (`[clrLoading]`) from `@clr/angular`. Use when adding or styling buttons or toolbar actions in a Clarity app. For a row of related actions with an overflow menu, use `clr-button-group`.
 metadata:
   docs: /documentation/button
-  guidance: ['1003:2024-10-30']
+  guidance-1003: '2024-10-30'
 ---
 
 # Clarity buttons

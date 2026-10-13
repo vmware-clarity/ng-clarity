@@ -3,7 +3,7 @@ name: clr-side-panel
 description: Clarity side panels (`clr-side-panel`) from `@clr/angular` — open state binding (`[(clrSidePanelOpen)]`), sizes, pinnable and bottom panels, static backdrop. Use when adding a slide-in panel for details or settings next to the page content. For a centered dialog, use `clr-modal`.
 metadata:
   docs: /documentation/side-panel
-  guidance: ['1026:2024-10-30']
+  guidance-1026: '2024-10-30'
 ---
 
 # Clarity side panel

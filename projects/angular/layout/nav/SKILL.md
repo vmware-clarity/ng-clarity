@@ -3,7 +3,7 @@ name: clr-header
 description: Build the Clarity app header (`clr-header` / `header.header` — branding, `header-nav` links, search, `header-actions` with dropdown menus, `header-1`..`header-3` colors) and the subnav (`nav.subnav`) from `@clr/angular`. Use when adding or changing the header, its top-level links, search box, user menu or icon actions, or a subnav below it. For the surrounding shell use `clr-app-layout`; for the hamburger and overflow behavior use `clr-navigation`.
 metadata:
   docs: /documentation/header
-  guidance: ['1013:2024-10-30']
+  guidance-1013: '2024-10-30'
 ---
 
 # Clarity header

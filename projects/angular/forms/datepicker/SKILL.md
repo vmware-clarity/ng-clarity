@@ -3,7 +3,7 @@ name: clr-datepicker
 description: Use the Clarity date picker and date range picker from `@clr/angular` — `clr-date-container` with `clrDate`, `clr-date-range-container` with `clrStartDate` / `clrEndDate`, min/max, predefined ranges, action buttons and first day of week. Use when adding a date or date range field, binding dates to forms, or validating dates.
 metadata:
   docs: /documentation/datepicker
-  guidance: ['1010:2024-10-30']
+  guidance-1010: '2024-10-30'
 ---
 
 # Clarity date picker

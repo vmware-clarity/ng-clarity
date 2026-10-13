@@ -3,7 +3,7 @@ name: clr-stack-view
 description: Show key/value pairs with the Clarity stack view (`clr-stack-view`, `clr-stack-block`, `clr-stack-label`, `clr-stack-content` from `@clr/angular`). Use when displaying object properties or details as label/value rows, with expandable nested blocks (`clrSbExpanded`, `clrSbExpandable`), lazy-loaded children, or an edit action that opens a modal.
 metadata:
   docs: /documentation/stack-view
-  guidance: ['1029:2024-10-30']
+  guidance-1029: '2024-10-30'
 ---
 
 # Clarity stack view (`clr-stack-view`)

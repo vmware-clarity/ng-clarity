@@ -3,7 +3,7 @@ name: clr-modal
 description: Clarity modal dialogs (`clr-modal`) from `@clr/angular` — open state binding (`[(clrModalOpen)]`), sizes, static backdrop, closable, preventing close, stacked modals. Use when adding a dialog or confirmation. For a slide-in panel anchored to an edge, use `clr-side-panel`.
 metadata:
   docs: /documentation/modal
-  guidance: ['1018:2024-10-30']
+  guidance-1018: '2024-10-30'
 ---
 
 # Clarity modal

@@ -3,7 +3,7 @@ name: clr-accordion
 description: Build Clarity accordions — vertically stacked panels that expand and collapse (`clr-accordion`, `clr-accordion-panel`, `clr-accordion-title`, `clr-accordion-description`, `clr-accordion-content`) from `@clr/angular`. Use when adding collapsible sections, single- or multi-open panels, or controlling panel open/disabled state with `clrAccordionPanelOpen` / `clrAccordionMultiPanel`.
 metadata:
   docs: /documentation/accordion
-  guidance: ['1000:2024-10-30']
+  guidance-1000: '2024-10-30'
 ---
 
 # Clarity accordion

@@ -3,20 +3,17 @@ name: clr-forms
 description: Build Clarity forms in `@clr/angular` — `clrForm`, layouts (`clrLayout`, `clrLabelSize`), control containers for input, textarea, select, checkbox, radio, toggle, password, number, range, file picker and datalist, plus helper, error and success messages. Use when creating or validating a form, adding form controls, or choosing between form controls.
 metadata:
   docs: /documentation/forms
-  guidance:
-    [
-      '1006:2024-10-30',
-      '1009:2024-10-30',
-      '1012:2024-10-30',
-      '1014:2024-10-30',
-      '1019:2024-10-30',
-      '1021:2024-10-30',
-      '1023:2024-10-30',
-      '1024:2024-10-30',
-      '1033:2024-10-30',
-      '1034:2024-10-30',
-      '3001:2024-12-03',
-    ]
+  guidance-1006: '2024-10-30'
+  guidance-1009: '2024-10-30'
+  guidance-1012: '2024-10-30'
+  guidance-1014: '2024-10-30'
+  guidance-1019: '2024-10-30'
+  guidance-1021: '2024-10-30'
+  guidance-1023: '2024-10-30'
+  guidance-1024: '2024-10-30'
+  guidance-1033: '2024-10-30'
+  guidance-1034: '2024-10-30'
+  guidance-3001: '2024-12-03'
 ---
 
 # Clarity forms

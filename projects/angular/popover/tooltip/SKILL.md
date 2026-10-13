@@ -3,7 +3,7 @@ name: clr-tooltip
 description: Clarity tooltips (`clr-tooltip`, `clrTooltipTrigger`, `clr-tooltip-content`) from `@clr/angular` — short plain-text labels shown on hover and focus, with `clrPosition` and `clrSize`. Use when labelling icon-only buttons or toolbar icons, or when choosing between a tooltip and a signpost.
 metadata:
   docs: /documentation/tooltip
-  guidance: ['1035:2024-10-30']
+  guidance-1035: '2024-10-30'
 ---
 
 # Clarity tooltip

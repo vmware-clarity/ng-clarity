@@ -3,7 +3,7 @@ name: clr-dropdown
 description: Clarity dropdown menus (`clr-dropdown`, `clr-dropdown-menu`, `clrDropdownTrigger`, `clrDropdownItem`) from `@clr/angular` — action menus, nested menus, positioning, and context menus via `openAtPoint()`. Use when adding an actions menu, kebab/overflow menu, or right-click menu in a Clarity app.
 metadata:
   docs: /documentation/dropdown
-  guidance: ['1011:2024-10-30']
+  guidance-1011: '2024-10-30'
 ---
 
 # Clarity dropdown

@@ -3,7 +3,7 @@ name: clr-button-group
 description: Group related actions with the Clarity button group (`clr-button-group` / `clr-button` with `clrInMenu`, overflow menu, `clrMenuPosition`) from `@clr/angular`. Use when adding a toolbar of related actions, split or overflow menus, or batch actions above a datagrid. For single buttons use `clr-button`.
 metadata:
   docs: /documentation/button-group
-  guidance: ['1004:2024-10-30']
+  guidance-1004: '2024-10-30'
 ---
 
 # Clarity button group

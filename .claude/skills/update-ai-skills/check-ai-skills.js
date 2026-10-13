@@ -9,7 +9,7 @@
 // Reports names that are missing from every *.api.md (removed or renamed) and names that are deprecated.
 // Also checks the design guidance (https://guidance.clarity.design) cited by skills against a local clone of
 // https://github.com/vmware-clarity/clarity-guidance: reports cited CIPs that were updated after the date in the
-// skill's `metadata.guidance` ('<id>:<date>'), CIPs that no longer exist, and guidance links not listed in metadata.
+// skill's `guidance-<id>: '<date>'` metadata keys, CIPs that no longer exist, and guidance links not listed in metadata.
 // Usage (from the repo root): node .claude/skills/update-ai-skills/check-ai-skills.js [--changed <base-ref>] [--guidance <dir>]
 //   --changed <ref>    also list which skill files cover each *.api.md that differs from <ref> (e.g. origin/main)
 //   --guidance <dir>   clarity-guidance clone (default: ../clarity-guidance next to this repo; skipped if absent)
@@ -171,7 +171,7 @@ if (fs.existsSync(guidanceDir)) {
       if (!cipDates.has(id)) {
         issues.push(`guidance   link to CIP ${id}, which does not exist`);
       } else if (!entry.agents && !tracked.has(id)) {
-        issues.push(`guidance   links to CIP ${id} but metadata.guidance does not list it`);
+        issues.push(`guidance   links to CIP ${id} but has no guidance-${id} metadata key`);
       }
     }
 

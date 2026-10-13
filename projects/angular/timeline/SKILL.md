@@ -3,7 +3,8 @@ name: clr-timeline
 description: Show progress through a workflow or a chronological list of events with the Clarity timeline (`clr-timeline`, `clr-timeline-step`, `clr-timeline-step-header`, `clr-timeline-step-title`, `clr-timeline-step-description` from `@clr/angular`). Use when rendering step states (`ClrTimelineStepState`), horizontal or vertical layouts (`clrLayout`, `ClrTimelineLayout`), or an event history.
 metadata:
   docs: /documentation/timeline
-  guidance: ['1036:2024-10-30', '1030:2024-10-30']
+  guidance-1036: '2024-10-30'
+  guidance-1030: '2024-10-30'
 ---
 
 # Clarity timeline (`clr-timeline`)

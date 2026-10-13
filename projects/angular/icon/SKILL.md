@@ -3,7 +3,7 @@ name: clr-icons
 description: Render Clarity SVG icons with the standalone `ClrIcon` component (`<clr-icon>`) from `@clr/angular` — registering shapes with `ClarityIcons.addIcons(...)` or `load*IconSet()`, custom shapes and aliases, `size`, `direction`, `flip`, `solid`, `status`, `inverse`, `badge`, and icon accessibility. Use when adding any icon to a Clarity app or when an icon renders as the "unknown" shape.
 metadata:
   docs: /documentation/icons
-  guidance: ['102:2024-12-03']
+  guidance-102: '2024-12-03'
 ---
 
 # Clarity icons

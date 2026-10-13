@@ -3,7 +3,9 @@ name: clr-datagrid
 description: Build tables with the Clarity Angular datagrid (`clr-datagrid` from `@clr/angular`). Use when adding or changing a `<clr-datagrid>` — sorting, filtering, pagination, selection, expandable rows, detail pane, virtual scroll, or server-driven data. For the column-definition based `<appfx-datagrid>` from `@clr/addons`, use the appfx-datagrid skill instead.
 metadata:
   docs: /documentation/datagrid
-  guidance: ['1008:2024-12-05', '1031:2024-10-30', '1004:2024-10-30']
+  guidance-1008: '2024-12-05'
+  guidance-1031: '2024-10-30'
+  guidance-1004: '2024-10-30'
 ---
 
 # Clarity datagrid (`clr-datagrid`)

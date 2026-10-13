@@ -3,7 +3,7 @@ name: clr-alert
 description: Show Clarity alert banners — standard, lightweight, small, and app-level alerts (`clr-alert`, `clr-alert-item`, `.alert-text`, `.alert-actions`) plus grouped app-level alerts with a pager (`clr-alerts`) from `@clr/angular`. Use when adding status/error/warning/info/success messages, closable banners, `clrAlertType`, `clrAlertAppLevel`, `clrAlertLightweight`, or `clrAlertClosed`.
 metadata:
   docs: /documentation/alert
-  guidance: ['1001:2024-11-20']
+  guidance-1001: '2024-11-20'
 ---
 
 # Clarity alerts

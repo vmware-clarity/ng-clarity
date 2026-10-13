@@ -3,7 +3,7 @@ name: clr-combobox
 description: Use the Clarity combobox (`clr-combobox`) from `@clr/angular` — a filterable dropdown with single or multi select (`clrMulti`), async loading, option groups, custom selected templates, select-all and editable mode. Use when adding `clr-combobox`, `clr-options`, `clr-option`, `*clrOptionItems` or `*clrOptionSelected`, or picking from a long or searchable list.
 metadata:
   docs: /documentation/combobox
-  guidance: ['1007:2024-10-30']
+  guidance-1007: '2024-10-30'
 ---
 
 # Clarity combobox

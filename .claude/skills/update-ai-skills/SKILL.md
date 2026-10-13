@@ -14,7 +14,7 @@ The consumer AI files ship in the npm packages and on the website:
 
 The public API reports (`projects/**/*.api.md`) are the source of truth for names. A skill must never use a name that is not in a report, and must not recommend a deprecated one.
 
-The Clarity design guidance (CIPs, https://guidance.clarity.design/<id>, source in the [clarity-guidance](https://github.com/vmware-clarity/clarity-guidance) repo) is the source of truth for "which variant, when, where". It covers `@clr/angular` components only, not AppFX. Each `clr-` skill lists the CIPs it follows in `metadata.guidance` as `'<id>:<updated date>'`.
+The Clarity design guidance (CIPs, https://guidance.clarity.design/<id>, source in the [clarity-guidance](https://github.com/vmware-clarity/clarity-guidance) repo) is the source of truth for "which variant, when, where". It covers `@clr/angular` components only, not AppFX. Each `clr-` skill lists the CIPs it follows in its metadata, one `guidance-<id>: '<updated date>'` key per CIP.
 
 ## 1. Find what changed and what is affected
 
@@ -29,7 +29,7 @@ The guidance check needs a local, up-to-date clone of clarity-guidance. It looks
 - **missing** — a name used in a skill no longer exists in any report (removed or renamed). Covers `Clr*`/`Appfx*`/`clr*`/`appfx*`/`clr-*`/`appfx-*` names, CSS classes from the library SCSS, and inputs/outputs bound on `<clr-*>`/`<appfx-*>` elements in code blocks (whole-word, so unprefixed AppFX inputs are checked too).
 - **deprecated** — a name used in a skill is marked `@deprecated`, at member or class level (input aliases are resolved to their property; bound inputs are checked against their own library).
 - **index** — an `AGENTS.md` guide index (list items "- `guide`: ...") doesn't list exactly the skills of its package.
-- **guidance … updated** — a cited CIP changed after the date in `metadata.guidance`. Read the CIP's changelog and diff (`git -C ../clarity-guidance log -p -- <id>-*.md`).
+- **guidance … updated** — a cited CIP changed after the date in its `guidance-<id>` metadata key. Read the CIP's changelog and diff (`git -C ../clarity-guidance log -p -- <id>-*.md`).
 - **guidance … no longer exists / does not exist / not listed** — a CIP was renumbered or removed, or a skill links to a CIP its metadata doesn't track.
 - **API reports changed** — each changed report with the skill files that cover it. `(no skill covers this API yet)` means no skill needs editing for it; only consider whether the change is relevant to `AGENTS.md`.
 
@@ -59,7 +59,7 @@ The checker validates names, not behaviour: it can't tell whether an example com
 
 For each changed CIP:
 
-- Bring the skill's design rules in line with it, keep the link to `https://guidance.clarity.design/<id>`, and set the date in `metadata.guidance` to the CIP's new `updated:` date. Update the date even when no text change was needed.
+- Bring the skill's design rules in line with it, keep the link to `https://guidance.clarity.design/<id>`, and set the date in the skill's `guidance-<id>` metadata key to the CIP's new `updated:` date. Update the date even when no text change was needed.
 - Only take rules that change the code an agent writes (which class, component, or variant to use, ordering, a11y). Skip Figma-only and visual-only rules, and rules the CSS already applies.
 - Translate design terms to code names, e.g. "flat button" → `btn-link`.
 - If a CIP contradicts the shipped API (it recommends something deprecated or missing), keep the skill aligned with the API and report the conflict to the user.

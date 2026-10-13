@@ -3,7 +3,7 @@ name: clr-progress-bar
 description: Show determinate or indeterminate progress with the Clarity progress bar (`clr-progress-bar` with `clrValue`, `clrMax`, `clrLabeled`, `clrLoop`, or the `.progress` CSS classes) from `@clr/angular`. Use when adding or changing a progress bar for uploads, long operations, or step completion. For a loading indicator with no measurable progress, use `clr-spinner`.
 metadata:
   docs: /documentation/progress
-  guidance: ['1020:2024-10-30']
+  guidance-1020: '2024-10-30'
 ---
 
 # Clarity progress bar

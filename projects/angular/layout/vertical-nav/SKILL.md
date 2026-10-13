@@ -3,7 +3,7 @@ name: clr-vertical-nav
 description: Build side navigation with the Clarity vertical nav (`clr-vertical-nav`, `clrVerticalNavLink`, `clr-vertical-nav-group`, `clr-vertical-nav-group-children`, `clrVerticalNavIcon`) from `@clr/angular`. Use when adding a left-side app navigation, collapsible sidebar, nav groups, lazy-loaded nav children, or router-driven active links.
 metadata:
   docs: /documentation/vertical-nav
-  guidance: ['1038:2024-10-30']
+  guidance-1038: '2024-10-30'
 ---
 
 # Clarity vertical nav

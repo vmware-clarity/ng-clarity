@@ -3,7 +3,8 @@ name: clr-navigation
 description: Make Clarity navigation responsive with `[clr-nav-level]` (levels 1 and 2; hamburger and overflow triggers rendered by `clr-header` inside `clr-main-container`) and choose the navigation pattern (header nav, subnav, vertical nav as primary or secondary) from `@clr/angular`. Use when navigation must collapse on small screens, when the hamburger or overflow toggle does not appear, or when deciding which navigation levels an app uses. For the header markup use `clr-header`, for side navigation `clr-vertical-nav`, for the shell `clr-app-layout`.
 metadata:
   docs: /documentation/navigation
-  guidance: ['105:2024-12-03', '1038:2024-10-30']
+  guidance-105: '2024-12-03'
+  guidance-1038: '2024-10-30'
 ---
 
 # Clarity responsive navigation

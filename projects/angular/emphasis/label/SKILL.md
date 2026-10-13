@@ -3,7 +3,7 @@ name: clr-label
 description: Show colored tag/status labels with Clarity — the `clr-label` component (`clrText`, `clrColor`, `clrType`, `clrBadgeText`, `clrClickable`) or `.label` / `.label-{color}` CSS classes from `@clr/angular`. This is the emphasis tag, not a form `<label>`. Use when adding tags, metadata chips, status labels, clickable labels, or labels with a count badge.
 metadata:
   docs: /documentation/label
-  guidance: ['1015:2024-10-30']
+  guidance-1015: '2024-10-30'
 ---
 
 # Clarity label (tag)
