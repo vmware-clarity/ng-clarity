@@ -9,7 +9,9 @@ import { Injectable, OnDestroy } from '@angular/core';
 import { isObservable, Observable, Subject, Subscription } from 'rxjs';
 
 import { Items } from './items';
+import { Selection } from './selection';
 import { Sort } from './sort';
+import { SelectionType } from '../enums/selection-type';
 
 /**
  * One chunk of children, for parents whose children are fetched page by page. `total` is how many
@@ -77,10 +79,14 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   private _change = new Subject<T[]>();
   private subscriptions: Subscription[] = [];
   private loads = new Map<DatagridTreeNode<T>, Subscription>();
+  /** Refs of the rows with some, but not all, descendants selected; rebuilt when the selection or the tree changes. */
+  private indeterminateRefs = new Set<any>();
+  private indeterminateFor: { selection: T[]; tree: T[] } = { selection: null, tree: null };
 
   constructor(
     private items: Items<T>,
-    private sort: Sort<T>
+    private sort: Sort<T>,
+    private selection: Selection<T>
   ) {
     this.subscriptions.push(sort.change.subscribe(() => this.update()));
   }
@@ -91,6 +97,14 @@ export class DatagridTreeService<T = any> implements OnDestroy {
 
   get visible(): T[] {
     return this._visible;
+  }
+
+  /**
+   * Multi-selection in a tree works like in the tree view: a row's selection reaches all of its
+   * loaded descendants, and a parent is selected when all of its children are.
+   */
+  get cascadesSelection(): boolean {
+    return this.enabled && this.selection.selectionType === SelectionType.Multi;
   }
 
   setRoots(items: T[]) {
@@ -151,6 +165,76 @@ export class DatagridTreeService<T = any> implements OnDestroy {
       }
     });
     this.update();
+  }
+
+  /**
+   * Selects or deselects `items` with all their loaded descendants, then settles their ancestors:
+   * a parent is selected only when all of its children are. A parent with children left to load
+   * keeps its selection when its loaded children are all selected, since the rest will inherit it.
+   */
+  setSelected(items: T[], selected: boolean) {
+    const selection = new Map((this.selection.current || []).map(item => [this.items.identifyBy(item), item]));
+    const isSelected = (node: DatagridTreeNode<T>) => selection.has(this.items.identifyBy(node.item));
+    const set = (node: DatagridTreeNode<T>, value: boolean) => {
+      if (this.selection.isLocked(node.item)) {
+        return;
+      }
+      if (value) {
+        selection.set(this.items.identifyBy(node.item), node.item);
+      } else {
+        selection.delete(this.items.identifyBy(node.item));
+      }
+    };
+    const cascade = (node: DatagridTreeNode<T>) => {
+      set(node, selected);
+      node.children?.forEach(cascade);
+    };
+
+    items.forEach(item => {
+      const node = this.nodeFor(item);
+      if (!node) {
+        return;
+      }
+      cascade(node);
+      for (let parent = node.parent; parent; parent = parent.parent) {
+        const allChildren = parent.children.every(child => isSelected(child) || this.selection.isLocked(child.item));
+        set(parent, allChildren && (!parent.hasMore || isSelected(parent)));
+      }
+    });
+    this.selection.current = Array.from(selection.values());
+  }
+
+  /**
+   * The header checkbox: selects every row of the page with its loaded descendants, or clears them
+   * when all the displayed rows already are.
+   */
+  toggleAll() {
+    this.setSelected(
+      this.roots.map(root => root.item),
+      !this.selection.isAllSelected()
+    );
+  }
+
+  isIndeterminate(item: T): boolean {
+    if (this.indeterminateFor.selection !== this.selection.current || this.indeterminateFor.tree !== this._visible) {
+      this.indeterminateFor = { selection: this.selection.current, tree: this._visible };
+      this.indeterminateRefs.clear();
+      const selected = new Set((this.selection.current || []).map(selectedItem => this.items.identifyBy(selectedItem)));
+      // Whether any descendant is selected; marks the unselected rows that have one on the way.
+      const walk = (node: DatagridTreeNode<T>): boolean => {
+        let below = false;
+        node.children?.forEach(child => {
+          below = walk(child) || below;
+        });
+        const ref = this.items.identifyBy(node.item);
+        if (below && !selected.has(ref)) {
+          this.indeterminateRefs.add(ref);
+        }
+        return below || selected.has(ref);
+      };
+      this.roots.forEach(walk);
+    }
+    return this.indeterminateRefs.has(this.items.identifyBy(item));
   }
 
   ngOnDestroy() {
@@ -232,6 +316,10 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     const added = this.adopt(chunk, node, new Map());
     node.children = kept.concat(added);
     node.total = total;
+    // Children of a selected parent come in selected.
+    if (this.cascadesSelection && added.length && this.selection.isSelected(node.item)) {
+      this.setSelected([node.item], true);
+    }
     // An item that turned out to have no children is no longer offered as expandable.
     if (node.total === 0) {
       node.expandable = false;

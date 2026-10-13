@@ -204,6 +204,12 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     if (this.selection.selectionType === SelectionType.None) {
       this._selected = value as boolean;
     } else {
+      if (this.tree?.cascadesSelection) {
+        // In a tree, a row's selection reaches its descendants and ancestors; ranges don't apply.
+        this.selection.rangeStart = null;
+        this.tree.setSelected([this.item], !!value);
+        return;
+      }
       if (value && this.selection.selectionType === SelectionType.Multi) {
         this.rangeSelect();
       } else {
@@ -259,6 +265,13 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
    */
   get treeNode(): DatagridTreeNode<T> | undefined {
     return this.tree?.enabled ? this.tree.nodeFor(this.item) : undefined;
+  }
+
+  /**
+   * Some, but not all, of this row's descendants are selected.
+   */
+  get treeIndeterminate(): boolean {
+    return !!this.tree?.cascadesSelection && this.tree.isIndeterminate(this.item);
   }
 
   /**
@@ -322,6 +335,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
           const fixedCellConditions = [
             this.selection.selectionType !== this.SELECTION_TYPE.None,
             this.rowActionService.hasActionableRow,
+            this.tree?.enabled,
             this.globalExpandable.hasExpandableRow,
             this.detailService.enabled,
           ];
@@ -356,6 +370,12 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       this.selected = selected;
       this.selectedChanged.emit(selected);
     }
+  }
+
+  toggleTreeNode(event: MouseEvent, node: DatagridTreeNode<T>) {
+    // Expanding is not selecting, even in row selection mode.
+    event.stopPropagation();
+    this.tree.setExpanded(node, !node.expanded);
   }
 
   toggleExpand(event: MouseEvent) {

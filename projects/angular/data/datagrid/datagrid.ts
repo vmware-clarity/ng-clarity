@@ -292,7 +292,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
        * It's strange, but it lets us have an indeterminate state where only
        * some of the items are selected.
        */
-      this.selection.toggleAll();
+      if (this.tree.cascadesSelection) {
+        this.tree.toggleAll();
+      } else {
+        this.selection.toggleAll();
+      }
     }
   }
 
@@ -446,6 +450,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           const fixedColumnConditions = [
             this.rowActionService.hasActionableRow,
             this.selection.selectionType !== this.SELECTION_TYPE.None,
+            this.tree.enabled,
             this.expandableRows.hasExpandableRow || this.detailService.enabled,
           ];
           fixedColumnConditions.filter(Boolean).forEach(() => {

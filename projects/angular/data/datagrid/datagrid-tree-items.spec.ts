@@ -34,6 +34,7 @@ interface Folder {
         </clr-dg-action-overflow>
         <clr-dg-cell>{{ folder.id }}</clr-dg-cell>
         <clr-dg-cell>{{ folder.children || 0 }}</clr-dg-cell>
+        <clr-dg-row-detail *clrIfExpanded>Never shown in a tree</clr-dg-row-detail>
       </clr-dg-row>
     </clr-datagrid>
   `,
@@ -78,7 +79,7 @@ export default function (): void {
     }
 
     function toggle(index: number) {
-      rows()[index].querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      rows()[index].querySelector<HTMLButtonElement>('.datagrid-expandable-caret-button').click();
       fixture.detectChanges();
     }
 
@@ -100,8 +101,16 @@ export default function (): void {
       expect(row.getAttribute('aria-expanded')).toBe('false');
     });
 
+    it('puts the toggle in the expand column and leaves no room for expandable rows', function () {
+      expect(element.querySelectorAll('.datagrid-header .datagrid-expandable-caret').length).toBe(1);
+      rows().forEach(row => {
+        expect(row.querySelectorAll('.datagrid-row-master .datagrid-expandable-caret').length).toBe(1);
+      });
+      expect(rows()[0].querySelector('.datagrid-tree-cell').textContent.trim()).toBe('a');
+    });
+
     it('only offers the toggle on expandable rows', function () {
-      const toggles = rows().map(row => !!row.querySelector('.datagrid-tree-toggle'));
+      const toggles = rows().map(row => !!row.querySelector('.datagrid-expandable-caret-button'));
       expect(toggles).toEqual([true, true, false]);
     });
 
@@ -174,6 +183,95 @@ export default function (): void {
       fixture.detectChanges();
       expect(rows()[1].querySelector('clr-dg-action-overflow')).not.toBeNull();
       expect(rows()[1].querySelector('input[type=checkbox]')).not.toBeNull();
+    });
+
+    describe('multi-selection', function () {
+      function checkbox(index: number) {
+        return rows()[index].querySelector<HTMLInputElement>('.datagrid-select input');
+      }
+
+      function selectedIds() {
+        return context.datagrid.selection.current.map(folder => folder.id).sort();
+      }
+
+      // Through the label, like a user: it is what covers the checkbox.
+      async function click(index: number) {
+        rows()[index].querySelector<HTMLLabelElement>('.datagrid-select label').click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        fixture.detectChanges();
+      }
+
+      beforeEach(async function () {
+        context.chunked = true;
+        toggle(0);
+        context.respond('a', 2, 0, 2);
+        fixture.detectChanges();
+        // Lets the checkboxes take their initial value before the tests click them.
+        await fixture.whenStable();
+        // a, a1, a2, b, c
+      });
+
+      it('selects and deselects a parent with its loaded descendants', async function () {
+        await click(0);
+        expect(selectedIds()).toEqual(['a', 'a1', 'a2']);
+        expect(context.selected.map(folder => folder.id).sort()).toEqual(['a', 'a1', 'a2']);
+
+        await click(0);
+        expect(selectedIds()).toEqual([]);
+      });
+
+      it('makes a parent indeterminate when only some children are selected', async function () {
+        await click(1);
+        expect(selectedIds()).toEqual(['a1']);
+        expect(checkbox(0).indeterminate).toBe(true);
+        expect(checkbox(0).checked).toBe(false);
+
+        await click(2);
+        expect(selectedIds()).toEqual(['a', 'a1', 'a2']);
+        expect(checkbox(0).indeterminate).toBe(false);
+        expect(checkbox(0).checked).toBe(true);
+      });
+
+      it('deselects the parent when one of its children is deselected', async function () {
+        await click(0);
+        await click(2);
+        expect(selectedIds()).toEqual(['a1']);
+        expect(checkbox(0).indeterminate).toBe(true);
+      });
+
+      it('selects children that load after their parent was selected', async function () {
+        await click(3); // b, not loaded yet
+        toggle(3);
+        context.respond('b', 2, 0, 5);
+        fixture.detectChanges();
+        await fixture.whenStable();
+        // Lets the two-way [(clrDgSelected)] binding catch up, as the application would.
+        fixture.detectChanges();
+        expect(selectedIds()).toEqual(['b', 'b1', 'b2']);
+
+        rows()[5].querySelector<HTMLButtonElement>('.datagrid-tree-load-more-button').click();
+        context.respond('b', 3, 2, 5);
+        fixture.detectChanges();
+        expect(selectedIds()).toEqual(['b', 'b1', 'b2', 'b3', 'b4', 'b5']);
+      });
+
+      it('keeps a parent with children left to load out of the selection until it is selected itself', async function () {
+        toggle(3);
+        context.respond('b', 2, 0, 5);
+        fixture.detectChanges();
+        await click(4);
+        await click(5);
+        expect(selectedIds()).toEqual(['b1', 'b2']);
+        expect(checkbox(3).indeterminate).toBe(true);
+      });
+
+      it('selects everything loaded from the header checkbox', async function () {
+        element.querySelector<HTMLLabelElement>('.datagrid-header .datagrid-select label').click();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        expect(selectedIds()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
+      });
     });
   });
 }
