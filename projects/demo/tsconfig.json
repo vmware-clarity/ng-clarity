@@ -2,14 +2,13 @@
   "compileOnSave": false,
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "baseUrl": "./",
     "paths": {
-      "@clr/angular": ["../angular/index.ts"],
-      "@clr/angular/*": ["../angular/*"],
-      "@clr/addons": ["../addons/index.ts"],
-      "@clr/examples": ["../examples/index.ts"],
-      "@clr/examples/*": ["../examples/*"],
-      "@clr/addons/*": ["../addons/*"]
+      "@clr/angular": ["./../angular/index.ts"],
+      "@clr/angular/*": ["./../angular/*"],
+      "@clr/addons": ["./../addons/index.ts"],
+      "@clr/addons/*": ["./../addons/*"],
+      "@clr/examples": ["./../examples/index.ts"],
+      "@clr/examples/*": ["./../examples/*"]
     }
   },
   "exclude": ["dist", "node_modules"]
