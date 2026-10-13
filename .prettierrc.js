@@ -14,4 +14,15 @@ module.exports = {
   trailingComma: 'es5',
   bracketSpacing: true,
   arrowParens: 'avoid',
+  overrides: [
+    {
+      // Shared examples are shown as code on the website. Match the width and whitespace handling of the website's
+      // code examples (projects/website/scripts/format-code-examples.js).
+      files: 'projects/examples/**/*.{html,ts,scss}',
+      options: {
+        printWidth: 104,
+        htmlWhitespaceSensitivity: 'ignore',
+      },
+    },
+  ],
 };

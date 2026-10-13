@@ -6,27 +6,16 @@
  */
 
 import { Component } from '@angular/core';
+import { BUTTON_EXAMPLES } from '@clr/examples/button';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE_1 = `
-<button class="btn btn-info-outline">Info</button>
-<button class="btn btn-success-outline">Success</button>
-<button class="btn btn-danger-outline">Danger</button>
-`;
-
-const HTML_EXAMPLE_2 = `
-<button class="btn btn-success">Success</button>
-<button class="btn btn-danger">Danger</button>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-buttons-demo-button-states',
   templateUrl: './button-states.html',
   styleUrl: './buttons.demo.scss',
-  imports: [StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class ButtonStatesDemo {
-  htmlExample1 = HTML_EXAMPLE_1;
-  htmlExample2 = HTML_EXAMPLE_2;
+  readonly examples = BUTTON_EXAMPLES;
 }

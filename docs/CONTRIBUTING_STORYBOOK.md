@@ -70,6 +70,9 @@ that are merely complicated.
   uses.
 - **Story component:** a `@Component` used by a story lives beside it in a file with the same base name and
   the `.storybook.component.ts` suffix — `badge.stories.ts` → `badge.storybook.component.ts`.
+- **Generated example stories:** `<directory>-examples.stories.ts` files (for example
+  `components/button/button-examples.stories.ts`) are written by `npm run examples:generate` from the shared
+  examples in `projects/examples`. Do not edit them; change the example or its `examples.json` instead.
 - **Supporting data and models:** `<name>.data.ts` and `<name>.model.ts`. These are not components; do not
   give them the `.storybook.component.ts` suffix.
 

@@ -8,9 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-icon-buttons-demo',
-  templateUrl: './icon-buttons.html',
-  styleUrls: ['./buttons.demo.scss'],
-  standalone: false,
+  selector: 'clr-button-flat-example',
+  templateUrl: './flat.example.html',
 })
-export class IconButtonsDemo {}
+export class ButtonFlatExample {}
