@@ -91,6 +91,6 @@ steps: Step[] = [
 
 ## References
 
-- API: `projects/addons/stepper/stepper.api.md`, `projects/addons/var/var.api.md`
+- API: `@clr/addons/types/clr-addons-stepper.d.ts`, `@clr/addons/types/clr-addons-var.d.ts`
 - Demos: `projects/website/src/app/documentation/demos/stepper-addon/`, `projects/demo/src/app/addons/stepper-addon/`
 - Model concepts in detail: the appfx-wizard skill

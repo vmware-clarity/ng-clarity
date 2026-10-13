@@ -196,5 +196,5 @@ Persistence needs a `PersistDatagridSettingsService` provided via `appfxDatagrid
 
 ## References
 
-- API: `projects/addons/datagrid/datagrid.api.md`, `projects/addons/datagrid-filters/datagrid-filters.api.md`
-- Docs: `projects/addons/datagrid/README.md`, demos in `projects/website/src/app/documentation/demos/advanced-datagrid/ng/`
+- API: `@clr/addons/types/clr-addons-datagrid.d.ts`, `@clr/addons/types/clr-addons-datagrid-filters.d.ts`
+- Docs: `@clr/addons/datagrid/README.md`

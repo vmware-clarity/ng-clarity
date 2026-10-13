@@ -142,5 +142,4 @@ From the [forms pattern](https://guidance.clarity.design/3001) and control guida
 ## References
 
 - Design guidance: https://guidance.clarity.design/3001 and the per-control pages linked above
-- API report: `projects/angular/forms/forms.api.md`
-- Docs demos: `projects/website/src/app/documentation/demos/forms/`, `.../demos/{input,select,checkboxes,radio,toggles,password,textarea,range,file-picker,datalist}/`
+- API: `@clr/angular/types/clr-angular-forms.d.ts`

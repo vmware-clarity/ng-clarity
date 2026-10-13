@@ -72,6 +72,5 @@ import { ClrMainContainerModule } from '@clr/angular';
 ## References
 
 - Design guidance: https://guidance.clarity.design/104
-- Public API: `projects/angular/layout/layout.api.md` (`ClrMainContainer`)
-- Styles: `projects/angular/layout/main-container/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/app-layout/`
+- Public API: `@clr/angular/types/clr-angular-layout-main-container.d.ts` (`ClrMainContainer`)
+- Styles: `@clr/ui/layout/main-container/_layout.clarity.scss`

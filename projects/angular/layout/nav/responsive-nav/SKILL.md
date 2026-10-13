@@ -67,6 +67,5 @@ The three combinations the documentation shows:
 ## References
 
 - Design guidance: https://guidance.clarity.design/105, https://guidance.clarity.design/1038
-- Public API: `projects/angular/layout/layout.api.md` (`ClrNavLevel`)
-- Styles: `projects/angular/layout/nav/_responsive-nav.clarity.scss`
-- Docs demos: `projects/website/src/app/documentation/demos/nav/`
+- Public API: `@clr/angular/types/clr-angular-layout-nav.d.ts` (`ClrNavLevel`)
+- Styles: `@clr/ui/layout/nav/_responsive-nav.clarity.scss`

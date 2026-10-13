@@ -77,5 +77,5 @@ export class TaskListComponent implements OnInit, OnDestroy {
 
 ## References
 
-- API: `projects/addons/drag-and-drop/drag-and-drop.api.md`
-- Docs: `projects/addons/drag-and-drop/README.md`, demos in `projects/website/src/app/documentation/demos/drag-and-drop/`
+- API: `@clr/addons/types/clr-addons-drag-and-drop.d.ts`
+- Docs: `@clr/addons/drag-and-drop/README.md`

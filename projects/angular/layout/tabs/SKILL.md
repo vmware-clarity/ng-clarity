@@ -107,5 +107,4 @@ export class Settings {
 ## References
 
 - Design guidance: https://guidance.clarity.design/1032
-- Public API: `projects/angular/layout/layout.api.md` (search `ClrTab`), `projects/angular/utils/utils.api.md` (`ClrIfActive`)
-- Docs demos: `projects/website/src/app/documentation/demos/tabs/`
+- Public API: `@clr/angular/types/clr-angular-layout-tabs.d.ts` (search `ClrTab`), `@clr/angular/types/clr-angular-utils-conditional.d.ts` (`ClrIfActive`)

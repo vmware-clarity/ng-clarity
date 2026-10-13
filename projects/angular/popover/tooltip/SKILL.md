@@ -76,6 +76,5 @@ Toolbar:
 ## References
 
 - Design guidance: https://guidance.clarity.design/1035
-- API: `projects/angular/popover/popover.api.md`
-- Styles: `projects/angular/popover/tooltip/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/tooltips/`
+- API: `@clr/angular/types/clr-angular-popover-tooltip.d.ts`
+- Styles: `@clr/ui/popover/tooltip/_tooltips.clarity.scss`

@@ -104,6 +104,5 @@ export class SaveForm {
 ## References
 
 - Design guidance: https://guidance.clarity.design/1003
-- Styles: `projects/angular/button/_buttons.clarity.scss`, `projects/angular/button/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/buttons/`
+- Styles: `@clr/ui/button/_buttons.clarity.scss`
 - For a group of related actions with an overflow menu, see the `clr-button-group` guide.

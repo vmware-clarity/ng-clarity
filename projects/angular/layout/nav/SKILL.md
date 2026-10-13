@@ -61,7 +61,7 @@ import { ClrDropdownModule, ClrIcon, ClrNavigationModule } from '@clr/angular';
 
 - Header parts: `branding` (logo + `span.title`, links to home), `header-nav` (top-level links, `nav-link` + `span.nav-text`, or `nav-icon` for icon-only), `form.search`, `header-actions` (right-aligned).
 - Mark the current item with `active` and `aria-current="page"`; with the router, `routerLinkActive="active"` + `clrAriaCurrentLink` sets both.
-- Header colors: `header-1`, `header-2`, `header-3` on the header. Theme the header with its CSS custom properties (listed in `STYLES.md`).
+- Header colors: `header-1`, `header-2`, `header-3` on the header. Theme the header with its CSS custom properties, listed in the "Layout" section of `@clr/ui/STYLES.md`.
 - `[clr-nav-level]="1"` makes `header-nav` collapse into the hamburger on small screens — guide `clr-navigation`.
 
 ## Header actions with a menu
@@ -109,6 +109,5 @@ Place it directly after the header. Add `[clr-nav-level]="2"` to make it part of
 ## References
 
 - Design guidance: https://guidance.clarity.design/1013
-- Public API: `projects/angular/layout/layout.api.md` (`ClrHeader`, `ClrAriaCurrentLink`)
-- Styles: `projects/angular/layout/nav/_header.clarity.scss`, `_subnav.clarity.scss`, `_links.clarity.scss`
-- Docs demos: `projects/website/src/app/documentation/demos/header/`
+- Public API: `@clr/angular/types/clr-angular-layout-nav.d.ts` (`ClrHeader`, `ClrAriaCurrentLink`)
+- Styles: `@clr/ui/layout/nav/_header.clarity.scss`, `@clr/ui/layout/nav/_subnav.clarity.scss`, `@clr/ui/layout/nav/_links.clarity.scss`

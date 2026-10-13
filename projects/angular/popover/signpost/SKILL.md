@@ -100,6 +100,5 @@ onContextMenu(event: MouseEvent) {
 ## References
 
 - Design guidance: https://guidance.clarity.design/1027
-- API: `projects/angular/popover/popover.api.md`
-- Styles: `projects/angular/popover/signpost/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/signposts/`
+- API: `@clr/angular/types/clr-angular-popover-signpost.d.ts`
+- Styles: `@clr/ui/popover/signpost/_signposts.clarity.scss`

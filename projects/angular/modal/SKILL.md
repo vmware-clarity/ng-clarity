@@ -90,6 +90,5 @@ Confirm before closing:
 ## References
 
 - Design guidance: https://guidance.clarity.design/1018
-- API: `projects/angular/modal/modal.api.md`
-- Styles: `projects/angular/modal/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/modal/`
+- API: `@clr/angular/types/clr-angular-modal.d.ts`
+- Styles: `@clr/ui/modal/_modal.clarity.scss`

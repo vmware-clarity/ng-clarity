@@ -76,5 +76,4 @@ import { ClrAccordionModule, ClrIfExpanded } from '@clr/angular';
 ## References
 
 - Design guidance: https://guidance.clarity.design/1000
-- API: `projects/angular/accordion/accordion.api.md`
-- Docs demos: `projects/website/src/app/documentation/demos/accordion/`
+- API: `@clr/angular/types/clr-angular-accordion.d.ts`

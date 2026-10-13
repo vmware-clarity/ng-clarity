@@ -113,5 +113,5 @@ closeHandler: CloseHandler = {
 
 ## References
 
-- API: `projects/addons/wizard/wizard.api.md`, `projects/addons/var/var.api.md`
+- API: `@clr/addons/types/clr-addons-wizard.d.ts`, `@clr/addons/types/clr-addons-var.d.ts`
 - Demos: `projects/website/src/app/documentation/demos/wizard-addon/`, `projects/demo/src/app/addons/wizard-addon/`

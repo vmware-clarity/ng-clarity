@@ -80,5 +80,5 @@ store: AppfxContainerPersistenceStore = {
 
 ## References
 
-- API: `projects/addons/card-container/card-container.api.md`
+- API: `@clr/addons/types/clr-addons-card-container.d.ts`
 - Demos: `projects/website/src/app/documentation/demos/card-container/`, `.storybook/stories/addons/`

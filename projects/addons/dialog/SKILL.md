@@ -80,6 +80,6 @@ Step components and models are written as for `appfx-tabs` (`StepModelHolder`, `
 
 ## References
 
-- API: `projects/addons/dialog/dialog.api.md`, `projects/addons/var/var.api.md`
-- Docs: `projects/addons/dialog/README.md`; demos in `projects/website/src/app/documentation/demos/dialog/`, `projects/demo/src/app/addons/dialog/`
+- API: `@clr/addons/types/clr-addons-dialog.d.ts`, `@clr/addons/types/clr-addons-var.d.ts`
+- Docs: `@clr/addons/dialog/README.md`
 - Step/model concepts: the appfx-tabs and appfx-wizard skills

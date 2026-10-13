@@ -94,6 +94,5 @@ Shape names must be unique. Collections already register built-in aliases (e.g. 
 ## References
 
 - Design guidance: https://guidance.clarity.design/102
-- Public API: `projects/angular/icon/icon.api.md` (`ClrIcon`, `ClarityIcons`, shape exports)
+- Public API: `@clr/angular/types/clr-angular-icon.d.ts` (`ClrIcon`, `ClarityIcons`, shape exports)
 - Source: `projects/angular/icon/icon.component.ts`, `projects/angular/icon/shapes/`
-- Docs demos: `projects/website/src/app/documentation/demos/icons/`

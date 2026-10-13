@@ -98,5 +98,5 @@ save() {
 
 ## References
 
-- API: `projects/addons/tabs/tabs.api.md`, `projects/addons/var/var.api.md`
+- API: `@clr/addons/types/clr-addons-tabs.d.ts`, `@clr/addons/types/clr-addons-var.d.ts`
 - Docs: `projects/addons/tabs/tabs.md`; demos in `projects/website/src/app/documentation/demos/tabs-addon/ng/`

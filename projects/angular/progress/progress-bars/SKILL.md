@@ -60,6 +60,5 @@ export class Upload {
 ## References
 
 - Design guidance: https://guidance.clarity.design/1020
-- API: `projects/angular/clarity.api.md` (`ClrProgressBar`)
-- Styles: `projects/angular/progress/progress-bars/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/progress-bars/`
+- API: `@clr/angular/types/clr-angular-progress-progress-bars.d.ts` (`ClrProgressBar`)
+- Styles: `@clr/ui/progress/progress-bars/_progress-bars.clarity.scss`

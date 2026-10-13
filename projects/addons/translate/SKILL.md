@@ -86,5 +86,5 @@ readonly format: DateTimeFormatOptions = { dateTimeKind: DateTimeKind.DateTime, 
 
 ## References
 
-- API: `projects/addons/translate/translate.api.md`
-- Docs: `projects/addons/translate/README.md`, demos in `projects/website/src/app/documentation/demos/translate/`
+- API: `@clr/addons/types/clr-addons-translate.d.ts`
+- Docs: `@clr/addons/translate/README.md`

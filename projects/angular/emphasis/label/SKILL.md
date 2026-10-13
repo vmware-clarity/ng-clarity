@@ -73,6 +73,5 @@ Classes: `label`, `label-{color}`, `solid`, `clickable`, `disabled`. Inside, use
 ## References
 
 - Design guidance: https://guidance.clarity.design/1015
-- API: `projects/angular/emphasis/emphasis.api.md`
-- Styles: `projects/angular/emphasis/label/_labels.clarity.scss`, `projects/angular/emphasis/label/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/labels/`
+- API: `@clr/angular/types/clr-angular-emphasis-label.d.ts`
+- Styles: `@clr/ui/emphasis/label/_labels.clarity.scss`

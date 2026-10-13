@@ -67,5 +67,4 @@ protected readonly ClrTimelineStepState = ClrTimelineStepState;
 ## References
 
 - Design guidance: https://guidance.clarity.design/1036
-- Source: `projects/angular/timeline/`
-- Docs demos: `projects/website/src/app/documentation/demos/timeline/`
+- API: `@clr/angular/types/clr-angular-timeline.d.ts`

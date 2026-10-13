@@ -62,5 +62,5 @@ These are NgModules (not standalone) — import the modules, not the component c
 ## References
 
 - Design guidance: https://guidance.clarity.design/1004
-- Styles: `projects/angular/button/button-group/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/button-group/`
+- Styles: `@clr/ui/button/button-group/_button-group.clarity.scss`
+- API: `@clr/angular/types/clr-angular-button.d.ts`

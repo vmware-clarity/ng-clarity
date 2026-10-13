@@ -56,6 +56,5 @@ Classes: `badge` plus `badge-{info,success,warning,danger,gray,blue,light-blue,o
 ## References
 
 - Design guidance: https://guidance.clarity.design/1002
-- API: `projects/angular/emphasis/emphasis.api.md`
-- Styles: `projects/angular/emphasis/badge/_badges.clarity.scss`, `projects/angular/emphasis/badge/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/badges/`
+- API: `@clr/angular/types/clr-angular-emphasis-badge.d.ts`
+- Styles: `@clr/ui/emphasis/badge/_badges.clarity.scss`

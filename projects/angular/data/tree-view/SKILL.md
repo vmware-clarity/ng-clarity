@@ -109,5 +109,4 @@ Set `[clrLazy]="true"` on `clr-tree` so children are only created when a node ex
 ## References
 
 - Design guidance: https://guidance.clarity.design/1037
-- Source: `projects/angular/data/tree-view/`
-- Docs demos: `projects/website/src/app/documentation/demos/tree-view/`
+- API: `@clr/angular/types/clr-angular-data-tree-view.d.ts`

@@ -102,5 +102,4 @@ import { ClrComboboxModule, ClrIcon } from '@clr/angular'; // or ClrFormsModule
 ## References
 
 - Design guidance: https://guidance.clarity.design/1007
-- API report: `projects/angular/forms/forms.api.md`
-- Docs demos: `projects/website/src/app/documentation/demos/combobox/`
+- API: `@clr/angular/types/clr-angular-forms-combobox.d.ts`

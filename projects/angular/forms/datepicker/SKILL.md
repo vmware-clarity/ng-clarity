@@ -80,5 +80,4 @@ ranges = [
 ## References
 
 - Design guidance: https://guidance.clarity.design/1010
-- API report: `projects/angular/forms/forms.api.md`
-- Docs demos: `projects/website/src/app/documentation/demos/datepicker/`, `.../demos/date-range-picker/` (docs page `/documentation/date-range-picker`)
+- API: `@clr/angular/types/clr-angular-forms-datepicker.d.ts`

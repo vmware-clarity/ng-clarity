@@ -95,6 +95,5 @@ Classes: `card`, `card-header`, `card-block`, `card-title`, `card-text`, `card-i
 ## References
 
 - Design guidance: https://guidance.clarity.design/1005
-- API: `projects/angular/card/card.api.md`
-- Styles: `projects/angular/card/_card.clarity.scss`, `projects/angular/card/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/card/` (Angular: `.../card/angular/`)
+- API: `@clr/angular/types/clr-angular-card.d.ts`
+- Styles: `@clr/ui/card/_card.clarity.scss`

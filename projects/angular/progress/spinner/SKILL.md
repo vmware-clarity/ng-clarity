@@ -54,6 +54,5 @@ export class UserList {
 ## References
 
 - Design guidance: https://guidance.clarity.design/1028
-- API: `projects/angular/clarity.api.md` (`ClrSpinner`)
-- Styles: `projects/angular/progress/spinner/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/spinners/` (page: /documentation/spinner)
+- API: `@clr/angular/types/clr-angular-progress-spinner.d.ts` (`ClrSpinner`)
+- Styles: `@clr/ui/progress/spinner/_spinner.clarity.scss`

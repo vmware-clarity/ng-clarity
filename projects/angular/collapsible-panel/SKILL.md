@@ -165,11 +165,11 @@ export class AppPanelGroup implements AfterContentInit, OnDestroy {
 - Keep `CollapsiblePanelService` on the group, never on the panel — each panel would become its own group.
 - A11y: the header is a real `<button type="button">` with `aria-expanded` and `aria-controls` (only while open and enabled); the content is `role="region"` with `aria-labelledby` the header id. Tab / Enter / Space come from the native button. Wrap the header in `role="heading"` + `aria-level` when it acts as a section heading (as `ClrAccordionPanel` does). No interactive elements inside the header button.
 - Header/content ids must be unique: derive them from `panel.templateId`.
-- Styling: the `{prefix}-*` classes in `STYLES.md` come from the SCSS mixin `collapsible-panel($prefix)` in `_mixins.collapsible-panel.scss`, shipped in `@clr/ui` as `@clr/ui/collapsible-panel/_mixins.collapsible-panel.scss` (the accordion passes `clr-accordion`). Include it with your own prefix (here `app-collapsible`) and theme it through the `--clr-collapsible-panel-*` custom properties listed in `STYLES.md`.
+- Styling: the `{prefix}-*` classes in the "Collapsible Panel" section of `@clr/ui/STYLES.md` come from the SCSS mixin `collapsible-panel($prefix)` in `_mixins.collapsible-panel.scss`, shipped in `@clr/ui` as `@clr/ui/collapsible-panel/_mixins.collapsible-panel.scss` (the accordion passes `clr-accordion`). Include it with your own prefix (here `app-collapsible`) and theme it through the `--clr-collapsible-panel-*` custom properties listed in the same section.
 
 ## References
 
-- API: `projects/angular/collapsible-panel/collapsible-panel.api.md`
-- Styles: `projects/angular/collapsible-panel/STYLES.md`
+- API: `@clr/angular/types/clr-angular-collapsible-panel.d.ts`
+- Styles: `@clr/ui/collapsible-panel/_mixins.collapsible-panel.scss`
 - Example: `.storybook/stories/collapsible-panel/collapsible-panel.storybook.component.ts`
 - Reference implementations: `projects/angular/accordion/` (`accordion-panel.ts`, `providers/accordion.service.ts`) and `projects/angular/stepper/` (`stepper-panel.ts`)

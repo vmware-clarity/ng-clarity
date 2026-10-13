@@ -6,6 +6,9 @@ This app uses Clarity for UI. Follow these rules whenever you add or change Clar
 
 ### Always
 
+- Install `@clr/ui` together with `@clr/angular` (`npm install @clr/ui @clr/angular`) and add the minified
+  `@clr/ui` stylesheet to the app's global styles (`angular.json` `styles`, or `@use` in the global
+  stylesheet). Clarity's component styles come from `@clr/ui`.
 - Import what `@clr/angular` exports. Most components ship in NgModules: import the module, not the
   component class (`imports: [ClrDatagridModule]`). These are standalone and imported directly:
   `ClrIcon`, `ClrBadge`, `ClrLabel`, `ClrIfExpanded`, `ClrIfActive`, `ClrIfOpen`.
@@ -19,6 +22,9 @@ This app uses Clarity for UI. Follow these rules whenever you add or change Clar
   hard-code hex colors ([tokens guidance](https://guidance.clarity.design/109)). Use only token
   names that exist in `@clr/ui` (`node_modules/@clr/ui/clr-ui.css`); never invent `--cds-global-*`
   or `--cds-alias-*` tokens. Font size and weight come from `cds-text` modifiers.
+- Component styles: `@clr/ui/STYLES.md` (`node_modules/@clr/ui/STYLES.md`) has one section per component
+  (`# Button`, `# Layout`, ...) listing its CSS classes and its `--clr-*` CSS custom properties. Read the
+  component's section before styling or theming it.
 - Themes: light is the default, set `cds-theme` or `cds-theme="light"` on `<body>`. Set `cds-theme="dark"` for dark; never style colors per
   theme yourself (tokens follow the attribute).
 - Name your own components with your app's prefix (`app-`). Never use `clr-`, `cds-` or `appfx-`

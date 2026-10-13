@@ -99,5 +99,5 @@ export class StatusValueComponent implements PropertyViewPropertyValueComponent<
 
 ## References
 
-- API: `projects/addons/property-view/property-view.api.md`
+- API: `@clr/addons/types/clr-addons-property-view.d.ts`
 - Demos: `projects/website/src/app/documentation/demos/property-view/`, `.storybook/stories/addons/`

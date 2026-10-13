@@ -105,5 +105,4 @@ Import `FormsModule` instead of `ReactiveFormsModule`.
 ## References
 
 - Design guidance: https://guidance.clarity.design/1030
-- Source: `projects/angular/stepper/`
-- Docs demos: `projects/website/src/app/documentation/demos/stepper/`
+- API: `@clr/angular/types/clr-angular-stepper.d.ts`

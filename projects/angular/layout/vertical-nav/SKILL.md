@@ -96,5 +96,4 @@ Add `[clr-nav-level]="2"` on `clr-vertical-nav` (inside `clr-main-container` wit
 ## References
 
 - Design guidance: https://guidance.clarity.design/1038
-- Public API: `projects/angular/layout/layout.api.md` (search `ClrVerticalNav`)
-- Docs demos: `projects/website/src/app/documentation/demos/vertical-nav/`
+- Public API: `@clr/angular/types/clr-angular-layout-vertical-nav.d.ts` (search `ClrVerticalNav`)

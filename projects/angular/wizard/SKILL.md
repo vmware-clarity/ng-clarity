@@ -123,5 +123,4 @@ validate() {
 ## References
 
 - Design guidance: https://guidance.clarity.design/1039
-- Source: `projects/angular/wizard/`
-- Docs demos: `projects/website/src/app/documentation/demos/wizard/`
+- API: `@clr/angular/types/clr-angular-wizard.d.ts`

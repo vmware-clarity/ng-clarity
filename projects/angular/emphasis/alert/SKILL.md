@@ -92,6 +92,5 @@ export class Page {
 ## References
 
 - Design guidance: https://guidance.clarity.design/1001
-- API: `projects/angular/emphasis/emphasis.api.md`
-- Styles: `projects/angular/emphasis/alert/_alert.clarity.scss`, `projects/angular/emphasis/alert/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/alert/`
+- API: `@clr/angular/types/clr-angular-emphasis-alert.d.ts`
+- Styles: `@clr/ui/emphasis/alert/_alert.clarity.scss`

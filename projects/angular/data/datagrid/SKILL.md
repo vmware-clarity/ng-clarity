@@ -191,5 +191,4 @@ The directive is `ClrDatagridVirtualScrollDirective` (part of `ClrDatagridModule
 ## References
 
 - Design guidance: https://guidance.clarity.design/1008
-- Public API: `projects/angular/clarity.api.md` (search `ClrDatagrid`)
-- Docs demos: `projects/website/src/app/documentation/demos/datagrid/`
+- Public API: `@clr/angular/types/clr-angular-data-datagrid.d.ts` (search `ClrDatagrid`)

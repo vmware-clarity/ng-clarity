@@ -99,5 +99,4 @@ loadChildren(): void;
 ## References
 
 - Design guidance: https://guidance.clarity.design/1029
-- Source: `projects/angular/data/stack-view/`
-- Docs demos: `projects/website/src/app/documentation/demos/stack-view/`
+- API: `@clr/angular/types/clr-angular-data-stack-view.d.ts`

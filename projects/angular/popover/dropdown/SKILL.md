@@ -122,6 +122,5 @@ onContextMenu(event: MouseEvent) {
 ## References
 
 - Design guidance: https://guidance.clarity.design/1011
-- API: `projects/angular/popover/popover.api.md`
-- Styles: `projects/angular/popover/dropdown/STYLES.md`
-- Docs demos: `projects/website/src/app/documentation/demos/dropdown/`
+- API: `@clr/angular/types/clr-angular-popover-dropdown.d.ts`
+- Styles: `@clr/ui/popover/dropdown/_dropdown.clarity.scss`

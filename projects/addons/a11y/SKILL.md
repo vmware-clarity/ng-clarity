@@ -99,5 +99,5 @@ ngOnInit(): void {
 
 ## References
 
-- API: `projects/addons/a11y/a11y.api.md`
-- Docs: `projects/addons/a11y/README.md`, demos in `projects/website/src/app/documentation/demos/a11y/`
+- API: `@clr/addons/types/clr-addons-a11y.d.ts`
+- Docs: `@clr/addons/a11y/README.md`
