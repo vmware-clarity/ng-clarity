@@ -256,14 +256,24 @@
     }
   }
 
-  // Tree rows: the leftmost cell is indented by its depth and starts with the expand toggle, which
-  // sits in the indentation so the content of every level lines up past it.
+  // Tree rows: the tree cell is indented by its depth and starts with the expand toggle, which sits
+  // in the indentation so the content of every level lines up past it. In a column narrower than the
+  // indentation, the indentation shrinks to what fits instead of making the cell wider than its
+  // header, and the toggle stays just before the content.
   .datagrid .datagrid-cell.datagrid-tree-cell {
-    position: relative;
-    padding-inline-start: calc(
+    $indentation: calc(
       #{tables-variables.$clr-table-cell-horizontal-padding} + (var(--clr-datagrid-tree-level, 0) + 1) *
         #{datagrid-variables.$clr-datagrid-tree-indent}
     );
+    $room: calc(
+      var(--clr-datagrid-cell-width, #{$indentation}) - #{tables-variables.$clr-table-cell-horizontal-padding}
+    );
+
+    --clr-datagrid-tree-cell-indentation: max(0px, min(#{$indentation}, #{$room}));
+
+    position: relative;
+    overflow: hidden;
+    padding-inline-start: var(--clr-datagrid-tree-cell-indentation);
   }
 
   .datagrid .datagrid-tree-toggle {
@@ -271,9 +281,9 @@
 
     position: absolute;
     inset-block: 0;
-    inset-inline-start: calc(
-      #{tables-variables.$clr-table-cell-horizontal-padding} + var(--clr-datagrid-tree-level, 0) *
-        #{datagrid-variables.$clr-datagrid-tree-indent}
+    inset-inline-start: max(
+      0px,
+      var(--clr-datagrid-tree-cell-indentation) - #{datagrid-variables.$clr-datagrid-tree-indent}
     );
     display: inline-flex;
     align-items: center;

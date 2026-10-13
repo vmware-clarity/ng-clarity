@@ -2870,13 +2870,18 @@ describe('DatagridComponent', () => {
 
     it('keeps the toggle in the first column when it is moved', async function (this: any) {
       await this.fixture.whenStable();
-      const [name, state, status] = this.columnsDefs;
-      this.component.columnsDefs = [state, name, status];
+      // Drops Name after Status, like dragging its header.
+      const dropList = this.fixture.debugElement.query(By.directive(CdkDropList)).injector.get(CdkDropList);
+      const lastIndex = dropList.getSortedItems().findIndex((item: any) => item.data === this.columnsDefs[2]);
+      dropList.dropped.next({ item: { data: this.columnsDefs[0] }, currentIndex: lastIndex });
       await this.fixture.whenStable();
 
       const firstCell = this.fixture.nativeElement.querySelector('clr-dg-row clr-dg-cell') as HTMLElement;
       expect(firstCell.innerText.trim()).toBe('Powered Off');
       expect(toggleCells(this.fixture.nativeElement)).toEqual(['vm0']);
+      expect(
+        Array.from(this.fixture.nativeElement.querySelector('clr-dg-row').querySelectorAll('clr-dg-cell')).pop()
+      ).toBe(this.fixture.nativeElement.querySelector('.datagrid-tree-toggle').closest('clr-dg-cell'));
     });
 
     it('puts the toggle in the tree columns', async function (this: any) {

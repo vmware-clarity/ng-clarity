@@ -61,6 +61,13 @@ export default function (): void {
       expect(context.clarityElement.classList).not.toContain(STRICT_WIDTH_CLASS);
     });
 
+    it('exposes the width to the indentation of tree cells', function () {
+      context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 42, strictWidth: 0 });
+      expect(context.clarityElement.style.getPropertyValue('--clr-datagrid-cell-width')).toBe('42px');
+      organizer.updateRenderStep.next(DatagridRenderStep.CLEAR_WIDTHS);
+      expect(context.clarityElement.style.getPropertyValue('--clr-datagrid-cell-width')).toBe('');
+    });
+
     it('should run all changes when columnState is set', function () {
       expect(context.clarityElement.style.width).toBe('');
       expect(context.clarityElement.classList).not.toContain(STRICT_WIDTH_CLASS);

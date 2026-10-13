@@ -5,13 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Directive, ElementRef, OnDestroy, Renderer2 } from '@angular/core';
+import { Directive, ElementRef, OnDestroy, Renderer2, RendererStyleFlags2 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { HIDDEN_COLUMN_CLASS, PINNED_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnState } from '../interfaces/column-state.interface';
+
+const CELL_WIDTH_PROPERTY = '--clr-datagrid-cell-width';
 
 @Directive({
   selector: 'clr-dg-cell',
@@ -51,6 +53,13 @@ export class DatagridCellRenderer implements OnDestroy {
       this.renderer.removeClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
     }
     this.renderer.setStyle(this.el.nativeElement, 'width', state.width + 'px');
+    // Read by the indentation of tree cells, which must not make the cell wider than its column.
+    this.renderer.setStyle(
+      this.el.nativeElement,
+      CELL_WIDTH_PROPERTY,
+      state.width + 'px',
+      RendererStyleFlags2.DashCase
+    );
   }
 
   setHidden(state: ColumnState) {
@@ -72,5 +81,6 @@ export class DatagridCellRenderer implements OnDestroy {
   private clearWidth() {
     this.renderer.removeClass(this.el.nativeElement, STRICT_WIDTH_CLASS);
     this.renderer.setStyle(this.el.nativeElement, 'width', null);
+    this.renderer.removeStyle(this.el.nativeElement, CELL_WIDTH_PROPERTY, RendererStyleFlags2.DashCase);
   }
 }
