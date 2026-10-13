@@ -74,6 +74,7 @@ export class DatagridTreeDemo {
   loading = true;
   selected: Resource[] = [];
   selectionType: 'multi' | 'single' = 'multi';
+  selects: 'self' | 'descendants' = 'descendants';
   pinName = true;
   log: string[] = [];
   private request: Subscription;

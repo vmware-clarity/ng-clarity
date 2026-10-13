@@ -22,6 +22,14 @@ export interface ClrDatagridTreeChunk<T> {
   total: number;
 }
 
+/**
+ * What selecting a row of a tree selects, in multi-selection:
+ * - `self` (default): only the row itself, like any datagrid row.
+ * - `descendants`: the row and all of its loaded descendants; a parent is selected when all of its
+ *   children are and indeterminate when only some are, like the tree view.
+ */
+export type ClrDatagridTreeSelection = 'self' | 'descendants';
+
 export type ClrDatagridTreeChildren<T> = T[] | ClrDatagridTreeChunk<T> | null | undefined;
 
 /**
@@ -70,6 +78,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   getChildren: ClrDatagridTreeChildrenLoader<T>;
   /** Whether an item can have children. By default every item can, until it turns out to have none. */
   isExpandable: (item: T) => boolean;
+  selects: ClrDatagridTreeSelection = 'self';
 
   private roots: DatagridTreeNode<T>[] = [];
   private nodes = new Map<any, DatagridTreeNode<T>>();
@@ -100,11 +109,11 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   }
 
   /**
-   * Multi-selection in a tree works like in the tree view: a row's selection reaches all of its
-   * loaded descendants, and a parent is selected when all of its children are.
+   * With `descendants`, multi-selection works like in the tree view: a row's selection reaches all
+   * of its loaded descendants, and a parent is selected when all of its children are.
    */
   get cascadesSelection(): boolean {
-    return this.enabled && this.selection.selectionType === SelectionType.Multi;
+    return this.enabled && this.selects === 'descendants' && this.selection.selectionType === SelectionType.Multi;
   }
 
   setRoots(items: T[]) {

@@ -450,7 +450,6 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           const fixedColumnConditions = [
             this.rowActionService.hasActionableRow,
             this.selection.selectionType !== this.SELECTION_TYPE.None,
-            this.tree.enabled,
             this.expandableRows.hasExpandableRow || this.detailService.enabled,
           ];
           fixedColumnConditions.filter(Boolean).forEach(() => {

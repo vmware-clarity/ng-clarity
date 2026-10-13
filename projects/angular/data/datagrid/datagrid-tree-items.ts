@@ -18,7 +18,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
-import { ClrDatagridTreeChildrenLoader, DatagridTreeService } from './providers/tree.service';
+import { ClrDatagridTreeChildrenLoader, ClrDatagridTreeSelection, DatagridTreeService } from './providers/tree.service';
 
 /**
  * Renders a tree as datagrid rows: the roots, and below every expanded row its children, indented.
@@ -39,6 +39,8 @@ export class ClrDatagridTreeItems<T> implements OnChanges, OnDestroy {
   @Input('clrDgTreeItemsOf') roots: T[];
   @Input('clrDgTreeItemsChildren') getChildren: ClrDatagridTreeChildrenLoader<T>;
   @Input('clrDgTreeItemsExpandable') expandable: (item: T) => boolean;
+  /** What selecting a row selects: the row only (default), or the row with its descendants. */
+  @Input('clrDgTreeItemsSelects') selects: ClrDatagridTreeSelection;
 
   private iterableProxy: NgForOf<T>;
   private subscription: Subscription;
@@ -70,6 +72,7 @@ export class ClrDatagridTreeItems<T> implements OnChanges, OnDestroy {
   ngOnChanges() {
     this.tree.getChildren = this.getChildren;
     this.tree.isExpandable = this.expandable;
+    this.tree.selects = this.selects || 'self';
     this.tree.setRoots(this.roots);
   }
 

@@ -23,6 +23,17 @@
     <label>Single</label>
   </clr-radio-wrapper>
 </clr-radio-container>
+<clr-radio-container clrInline>
+  <label>Selecting a row selects</label>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio name="tree-selects" value="self" [(ngModel)]="selects" />
+    <label>The row only</label>
+  </clr-radio-wrapper>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio name="tree-selects" value="descendants" [(ngModel)]="selects" />
+    <label>The row and its descendants</label>
+  </clr-radio-wrapper>
+</clr-radio-container>
 <clr-checkbox-wrapper>
   <input type="checkbox" clrCheckbox name="tree-pin" [(ngModel)]="pinName" />
   <label>Pin the name column</label>
@@ -44,7 +55,7 @@
     <clr-dg-column [style.width.px]="400">Children</clr-dg-column>
 
     <clr-dg-row
-      *clrDgTreeItems="let resource of roots; children: getChildren; expandable: expandable"
+      *clrDgTreeItems="let resource of roots; children: getChildren; expandable: expandable; selects: selects"
       [clrDgItem]="resource"
     >
       <clr-dg-action-overflow>

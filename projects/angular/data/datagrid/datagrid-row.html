@@ -73,28 +73,6 @@
       <div class="datagrid-row-actions datagrid-fixed-column datagrid-cell" role="gridcell">
         <ng-content select="clr-dg-action-overflow"></ng-content>
       </div>
-      } @if (tree?.enabled) {
-      <div class="datagrid-expandable-caret datagrid-fixed-column datagrid-cell" role="gridcell">
-        @if (treeNode; as node) { @if (node.loading) {
-        <clr-spinner clrSmall>{{ commonStrings.keys.loading }}</clr-spinner>
-        } @else if (node.expandable) {
-        <button
-          tabindex="-1"
-          (click)="toggleTreeNode($event, node)"
-          type="button"
-          class="datagrid-expandable-caret-button"
-          [attr.aria-expanded]="node.expanded"
-          [attr.aria-label]="node.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand"
-        >
-          <cds-icon
-            shape="angle"
-            class="datagrid-expandable-caret-icon"
-            [direction]="node.expanded ? 'down' : 'right'"
-            [attr.title]="node.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand"
-          ></cds-icon>
-        </button>
-        } }
-      </div>
       } @if (globalExpandable.hasExpandableRow) {
       <div class="datagrid-expandable-caret datagrid-fixed-column datagrid-cell" role="gridcell">
         @if (expand.expandable) { @if (!expand.loading) {
@@ -171,8 +149,6 @@
     <div class="datagrid-select datagrid-fixed-column datagrid-cell" role="gridcell"></div>
     } @if (rowActionService.hasActionableRow) {
     <div class="datagrid-row-actions datagrid-fixed-column datagrid-cell" role="gridcell"></div>
-    } @if (tree?.enabled) {
-    <div class="datagrid-expandable-caret datagrid-fixed-column datagrid-cell" role="gridcell"></div>
     } @if (globalExpandable.hasExpandableRow) {
     <div class="datagrid-expandable-caret datagrid-fixed-column datagrid-cell" role="gridcell"></div>
     } @if (detailService.enabled) {

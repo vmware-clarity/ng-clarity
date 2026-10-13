@@ -21,7 +21,7 @@ export class ExpandableRowsCount {
 
   /**
    * false means no rows with action
-   * check if details are on, and disable rows entirely; a tree uses the expand column for itself
+   * check if details are on, and disable rows entirely; a tree has no expandable rows
    */
   get hasExpandableRow(): boolean {
     return !this.detailService.enabled && !this.tree?.enabled && this.expandableCount > 0;

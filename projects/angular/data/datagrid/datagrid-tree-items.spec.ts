@@ -26,7 +26,7 @@ interface Folder {
       <clr-dg-column>Name</clr-dg-column>
       <clr-dg-column>Size</clr-dg-column>
       <clr-dg-row
-        *clrDgTreeItems="let folder of roots; children: getChildren; expandable: expandable"
+        *clrDgTreeItems="let folder of roots; children: getChildren; expandable: expandable; selects: selects"
         [clrDgItem]="folder"
       >
         <clr-dg-action-overflow>
@@ -49,6 +49,7 @@ class TreeTest {
   requests: { id: string; skip: number }[] = [];
   responses = new Subject<ClrDatagridTreeChildren<Folder>>();
   chunked = false;
+  selects: 'self' | 'descendants' = 'descendants';
 
   identity = (folder: Folder) => folder.id;
   expandable = (folder: Folder) => !!folder.children;
@@ -79,7 +80,7 @@ export default function (): void {
     }
 
     function toggle(index: number) {
-      rows()[index].querySelector<HTMLButtonElement>('.datagrid-expandable-caret-button').click();
+      rows()[index].querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
       fixture.detectChanges();
     }
 
@@ -101,16 +102,16 @@ export default function (): void {
       expect(row.getAttribute('aria-expanded')).toBe('false');
     });
 
-    it('puts the toggle in the expand column and leaves no room for expandable rows', function () {
-      expect(element.querySelectorAll('.datagrid-header .datagrid-expandable-caret').length).toBe(1);
+    it('puts the toggle in the indented first cell and leaves no room for expandable rows', function () {
+      expect(element.querySelector('.datagrid-header .datagrid-expandable-caret')).toBeNull();
       rows().forEach(row => {
-        expect(row.querySelectorAll('.datagrid-row-master .datagrid-expandable-caret').length).toBe(1);
+        expect(row.querySelector('.datagrid-row-master .datagrid-expandable-caret')).toBeNull();
       });
-      expect(rows()[0].querySelector('.datagrid-tree-cell').textContent.trim()).toBe('a');
+      expect(rows()[0].querySelector('.datagrid-tree-cell .datagrid-tree-toggle')).not.toBeNull();
     });
 
     it('only offers the toggle on expandable rows', function () {
-      const toggles = rows().map(row => !!row.querySelector('.datagrid-expandable-caret-button'));
+      const toggles = rows().map(row => !!row.querySelector('.datagrid-tree-toggle'));
       expect(toggles).toEqual([true, true, false]);
     });
 
@@ -185,7 +186,21 @@ export default function (): void {
       expect(rows()[1].querySelector('input[type=checkbox]')).not.toBeNull();
     });
 
-    describe('multi-selection', function () {
+    it('selects only the row itself by default', async function () {
+      context.selects = undefined;
+      fixture.detectChanges();
+      toggle(0);
+      context.respond('a', 2);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      rows()[0].querySelector<HTMLLabelElement>('.datagrid-select label').click();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(context.datagrid.selection.current.map(folder => folder.id)).toEqual(['a']);
+      expect(rows()[0].querySelector<HTMLInputElement>('.datagrid-select input').indeterminate).toBe(false);
+    });
+
+    describe('multi-selection of descendants', function () {
       function checkbox(index: number) {
         return rows()[index].querySelector<HTMLInputElement>('.datagrid-select input');
       }

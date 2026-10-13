@@ -335,7 +335,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
           const fixedCellConditions = [
             this.selection.selectionType !== this.SELECTION_TYPE.None,
             this.rowActionService.hasActionableRow,
-            this.tree?.enabled,
             this.globalExpandable.hasExpandableRow,
             this.detailService.enabled,
           ];
@@ -370,12 +369,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       this.selected = selected;
       this.selectedChanged.emit(selected);
     }
-  }
-
-  toggleTreeNode(event: MouseEvent, node: DatagridTreeNode<T>) {
-    // Expanding is not selecting, even in row selection mode.
-    event.stopPropagation();
-    this.tree.setExpanded(node, !node.expanded);
   }
 
   toggleExpand(event: MouseEvent) {
