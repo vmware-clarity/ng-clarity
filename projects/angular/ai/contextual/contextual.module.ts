@@ -9,12 +9,15 @@ import { NgModule, Type } from '@angular/core';
 
 import { ClrContext } from './context';
 
-/** The directives {@link ClrContextModule} declares and exports. */
+/** The standalone directives {@link ClrContextModule} imports and exports. */
 export const CLR_CONTEXT_DIRECTIVES: Type<any>[] = [ClrContext];
 
-/** Declares the `clrContext` directive for applications that use NgModules. */
+/**
+ * Makes the `clrContext` directive available to applications that use NgModules. The directive
+ * is standalone, so a standalone component can import `ClrContext` directly instead.
+ */
 @NgModule({
-  declarations: [CLR_CONTEXT_DIRECTIVES],
+  imports: [CLR_CONTEXT_DIRECTIVES],
   exports: [CLR_CONTEXT_DIRECTIVES],
 })
 export class ClrContextModule {}

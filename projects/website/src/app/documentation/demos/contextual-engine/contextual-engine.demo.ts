@@ -127,6 +127,16 @@ const DIRECTIVE_EXAMPLE = `
 </section>
 `;
 
+const DIRECTIVE_STANDALONE_EXAMPLE = `
+import { ClrContext } from '@clr/angular/ai';
+
+@Component({
+  imports: [ClrContext],
+  template: \`<section clrContext="Firewall rules for the selected cluster">...</section>\`,
+})
+export class FirewallComponent {}
+`;
+
 const DIRECTIVE_MODULE_EXAMPLE = `
 import { ClrContextModule } from '@clr/angular/ai';
 
@@ -266,6 +276,7 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   trackerExample = TRACKER_EXAMPLE;
   ignoreExample = IGNORE_EXAMPLE;
   directiveExample = DIRECTIVE_EXAMPLE;
+  directiveStandaloneExample = DIRECTIVE_STANDALONE_EXAMPLE;
   directiveModuleExample = DIRECTIVE_MODULE_EXAMPLE;
   elementContextExample = ELEMENT_CONTEXT_EXAMPLE;
   extractorExample = EXTRACTOR_EXAMPLE;
