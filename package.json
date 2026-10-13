@@ -3,7 +3,7 @@
   "private": true,
   "engines": {
     "yarn": "please-use-npm",
-    "node": ">=24.0.0",
+    "node": "^24.15.0 || >=26.0.0",
     "npm": ">=11.0.0"
   },
   "scripts": {
