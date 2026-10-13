@@ -1,5 +1,5 @@
 {
-  "title": "Button",
+  "storybook": "components/button",
   "examples": [
     { "id": "solid", "title": "Solid buttons", "targets": ["website", "demo", "storybook"] },
     { "id": "outline", "title": "Outline buttons", "targets": ["website", "demo", "storybook"] },

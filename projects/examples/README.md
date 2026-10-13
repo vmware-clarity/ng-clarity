@@ -16,9 +16,12 @@ The apps import them from `@clr/examples/<component>`, compiled from source like
    - Styles use CSS custom properties such as `var(--cds-global-space-9)`, not `@use` or `@import` of Sass files
      from this repository.
 2. Add an entry to the folder's `examples.json` with its `id`, `title` and `targets` (`website`, `demo`, `storybook`).
+   When any example targets Storybook, set the file's `storybook` key to the component's story directory, such as
+   `components/button` (see `docs/CONTRIBUTING_STORYBOOK.md`).
    Set `"showStyles": false` when the styles only frame the example and are not worth showing on the website.
 3. Run `npm run examples:generate`. It writes the folder's `index.ts` (components, metadata and source text) and the
-   Storybook stories in `.storybook/stories/examples`. `npm run lint` fails when they are out of date.
+   Storybook stories in `.storybook/stories/<storybook>/<name>-examples.stories.ts`. `npm run lint` fails when they
+   are out of date.
 
 The source text is rewritten to what the website's StackBlitz project expects: the component is renamed to
 `ExampleComponent`, its selector to `app-example` and its files to `example.component.*`.
@@ -27,4 +30,5 @@ The source text is rewritten to what the website's StackBlitz project expects: t
 
 - Website: `<app-doc-example [example]="examples.solid"></app-doc-example>` renders the example and its code.
 - Demo app: route to `ExampleListComponent` with `data: { examples }` to render every example that targets the demo.
-- Storybook: the generated stories render every example that targets Storybook under `<Component>/Examples`.
+- Storybook: the generated stories render every example that targets Storybook under `<story directory>/Examples`,
+  such as `Components/Button/Examples`.

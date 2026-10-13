@@ -7,24 +7,24 @@
 
 import { NgComponentOutlet } from '@angular/common';
 import { Example } from '@clr/examples';
-import { Meta, moduleMetadata, StoryObj } from '@storybook/angular';
+import { Meta, moduleMetadata } from '@storybook/angular';
 
 /**
  * Stories generated from projects/examples (see scripts/generate-examples.js) render the shared example components
- * as they are, so they have no controls or actions. The title stays in each stories file, where Storybook reads it.
+ * as they are, so they have no args, controls or actions. Each story names its example in `parameters.example`.
  */
-export const exampleStoriesDecorators: Meta['decorators'] = [moduleMetadata({ imports: [NgComponentOutlet] })];
+export type ExampleArgs = Record<string, never>;
 
-export const exampleStoriesParameters: Meta['parameters'] = {
+export const exampleStoriesDecorators: Meta<ExampleArgs>['decorators'] = [
+  moduleMetadata({ imports: [NgComponentOutlet] }),
+];
+
+export const exampleStoriesParameters: Meta<ExampleArgs>['parameters'] = {
   actions: { disable: true },
   controls: { disable: true },
 };
 
-export function exampleStory(example: Example): StoryObj {
-  return {
-    render: () => ({
-      props: { component: example.component },
-      template: '<ng-container *ngComponentOutlet="component"></ng-container>',
-    }),
-  };
-}
+export const renderExample: Meta<ExampleArgs>['render'] = (_args, { parameters }) => ({
+  props: { component: (parameters['example'] as Example).component },
+  template: '<ng-container *ngComponentOutlet="component"></ng-container>',
+});

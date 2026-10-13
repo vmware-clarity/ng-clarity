@@ -10,7 +10,8 @@
  * projects/examples. For every component folder that has an examples.json, it writes:
  *
  * - projects/examples/<component>/index.ts: every example with its component, metadata and source text.
- * - .storybook/stories/examples/<component>.stories.ts: one story per example that targets Storybook.
+ * - .storybook/stories/<storybook>/<directory name>-examples.stories.ts: one story per example that targets Storybook,
+ *   where `storybook` in examples.json is the component's story directory (docs/CONTRIBUTING_STORYBOOK.md).
  *
  * Run with --check to fail when a generated file is out of date instead of writing it.
  */
@@ -22,7 +23,7 @@ const prettier = require('prettier');
 
 const ROOT = path.resolve(__dirname, '..');
 const EXAMPLES_ROOT = path.join(ROOT, 'projects/examples');
-const STORIES_ROOT = path.join(ROOT, '.storybook/stories/examples');
+const STORIES_ROOT = path.join(ROOT, '.storybook/stories');
 const TARGETS = ['website', 'demo', 'storybook'];
 
 const TS_LICENSE_HEADER = fs.readFileSync(path.join(ROOT, '.license-header.js')).toString().trim();
@@ -49,14 +50,23 @@ async function main() {
     outputs.set(indexPath, await format(buildIndex(name, examples), indexPath));
 
     if (examples.some(example => example.targets.includes('storybook'))) {
-      const storiesPath = path.join(STORIES_ROOT, `${name}.stories.ts`);
-      outputs.set(storiesPath, await format(buildStories(name, manifest.title, examples), storiesPath));
+      if (typeof manifest.storybook !== 'string') {
+        throw new Error(
+          `${name}/examples.json: set "storybook" to the component's story directory, e.g. "components/button".`
+        );
+      }
+      const storiesPath = path.join(
+        STORIES_ROOT,
+        manifest.storybook,
+        `${path.basename(manifest.storybook)}-examples.stories.ts`
+      );
+      outputs.set(storiesPath, await format(buildStories(name, manifest.storybook, examples), storiesPath));
     }
   }
 
   // Generated stories of components that no longer have Storybook examples. Hand-written stories are left alone.
   const staleStories = glob
-    .sync('*.stories.ts', { cwd: STORIES_ROOT, absolute: true })
+    .sync('**/*-examples.stories.ts', { cwd: STORIES_ROOT, absolute: true })
     .map(filePath => path.normalize(filePath))
     .filter(filePath => !outputs.has(filePath) && readFile(filePath).includes(GENERATED_NOTICE));
 
@@ -155,12 +165,12 @@ export const ${constantName(name)} = {
 `;
 }
 
-function buildStories(name, title, examples) {
+function buildStories(name, storybookDirectory, examples) {
   const stories = examples
     .filter(example => example.targets.includes('storybook'))
     .map(
       example =>
-        `export const ${pascalCase(example.id)}: StoryObj = exampleStory(${constantName(name)}.${example.key});`
+        `export const ${pascalCase(example.id)}: Story = { parameters: { example: ${constantName(name)}.${example.key} } };`
     );
 
   return `${TS_LICENSE_HEADER}
@@ -168,18 +178,49 @@ function buildStories(name, title, examples) {
 ${GENERATED_NOTICE}
 
 import { ${constantName(name)} } from '@clr/examples/${name}';
-import { Meta, StoryObj } from '@storybook/angular';
+import { type Meta, type StoryObj } from '@storybook/angular';
+import {
+  type ExampleArgs,
+  exampleStoriesDecorators,
+  exampleStoriesParameters,
+  renderExample,
+} from '@storybook-helpers/example-story';
 
-import { exampleStoriesDecorators, exampleStoriesParameters, exampleStory } from '../../helpers/example-story';
-
-export default {
-  title: ${JSON.stringify(`${title}/Examples`)},
+const meta = {
+  title: ${JSON.stringify(`${storyDirectoryTitle(storybookDirectory)}/Examples`)},
   decorators: exampleStoriesDecorators,
   parameters: exampleStoriesParameters,
-} satisfies Meta;
+  render: renderExample,
+} satisfies Meta<ExampleArgs>;
+
+export default meta;
+
+type Story = StoryObj<ExampleArgs>;
 
 ${stories.join('\n\n')}
 `;
+}
+
+/**
+ * The title that docs/CONTRIBUTING_STORYBOOK.md gives a story directory: each path segment Title-Cased from
+ * kebab-case, with short connecting words in lower case.
+ */
+function storyDirectoryTitle(storybookDirectory) {
+  const lowercaseWords = ['and', 'or', 'in', 'on', 'of', 'with', 'to', 'a', 'an', 'the'];
+  const overrides = { 'checkbox-toggle': 'Checkbox or Toggle' };
+  return storybookDirectory
+    .split('/')
+    .map(
+      segment =>
+        overrides[segment] ??
+        segment
+          .split('-')
+          .map((word, index) =>
+            index > 0 && lowercaseWords.includes(word) ? word : word[0].toUpperCase() + word.slice(1)
+          )
+          .join(' ')
+    )
+    .join('/');
 }
 
 async function format(code, filePath) {
