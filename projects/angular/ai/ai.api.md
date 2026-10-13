@@ -81,7 +81,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     state: Record<string, unknown> | null;
     type: string;
     // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, { "label": { "alias": "clrContext"; "required": false; }; "type": { "alias": "clrContextType"; "required": false; }; "state": { "alias": "clrContextState"; "required": false; }; }, {}, never, never, false, never>;
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrContext, "[clrContext]", never, { "label": { "alias": "clrContext"; "required": false; }; "type": { "alias": "clrContextType"; "required": false; }; "state": { "alias": "clrContextState"; "required": false; }; }, {}, never, never, true, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContext, never>;
 }
@@ -138,7 +138,7 @@ export class ClrContextModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrContextModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextModule, [typeof ClrContext], never, [typeof ClrContext]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrContextModule, never, [typeof ClrContext], [typeof ClrContext]>;
 }
 
 // @public

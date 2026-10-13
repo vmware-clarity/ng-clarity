@@ -23,13 +23,17 @@ import { ClrContextRegistryService } from './providers/context-registry.service'
  * the directive initializes and unregisters when it is destroyed, and its inputs are
  * read at snapshot time, so snapshots never contain outdated annotations.
  *
+ * The directive is standalone: a standalone component imports `ClrContext` directly, and an
+ * NgModule application can keep importing `ClrContextModule`. It annotates markup in the
+ * application's own templates, while the optional `window.clrContext()` accessor is what agents
+ * outside the application call to read the page.
+ *
  * Changes to the annotation are also announced to whatever keeps a snapshot current —
  * whether the state object was replaced or edited in place — because they alter no DOM
  * and would otherwise go unnoticed until something else on the page changed.
  */
 @Directive({
   selector: '[clrContext]',
-  standalone: false,
 })
 export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvider {
   /** Human-readable description of what this piece of UI is about. */
