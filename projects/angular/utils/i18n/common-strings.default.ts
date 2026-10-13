@@ -63,7 +63,6 @@ export const commonStringsDefault: ClrCommonStrings = {
   singleSelectionAriaLabel: 'Single selection header',
   singleActionableAriaLabel: 'Single actionable header',
   detailExpandableAriaLabel: 'Toggle more row content',
-  datagridTreeLoadMore: 'Load more',
   datagridFilterAriaLabel: '{COLUMN} filter',
   datagridFilterLabel: '{COLUMN} filter',
   datagridFilterDialogAriaLabel: 'Filter',

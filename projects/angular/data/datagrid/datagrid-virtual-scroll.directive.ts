@@ -270,7 +270,9 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       this.virtualScrollViewport.ngOnInit();
     });
 
-    this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>('[role="grid"]');
+    this.gridRoleElement = this.datagridElementRef.nativeElement.querySelector<HTMLElement>(
+      '[role="grid"], [role="treegrid"]'
+    );
 
     this.updateCdkVirtualForInputs();
 

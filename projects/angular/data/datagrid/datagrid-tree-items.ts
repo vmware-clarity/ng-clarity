@@ -18,6 +18,7 @@ import {
 } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 import { ClrDatagridTreeChildrenLoader, ClrDatagridTreeSelection, DatagridTreeService } from './providers/tree.service';
 
 /**
@@ -28,8 +29,7 @@ import { ClrDatagridTreeChildrenLoader, ClrDatagridTreeSelection, DatagridTreeSe
  * ```
  *
  * The roots are the current page, exactly like the items of a server-driven datagrid: sorting and
- * pagination go through `(clrDgRefresh)`. Children are fetched on expand, in chunks when the loader
- * returns them with a `total`.
+ * pagination go through `(clrDgRefresh)`. Children are fetched the first time their parent is expanded.
  */
 @Directive({
   selector: '[clrDgTreeItems][clrDgTreeItemsOf]',
@@ -68,12 +68,51 @@ export class ClrDatagridTreeItems<T> implements OnChanges, OnDestroy {
     return true;
   }
 
-  // Applied together, once every input is set, so the roots are built with the final loader and predicate.
   ngOnChanges() {
-    this.tree.getChildren = this.getChildren;
-    this.tree.isExpandable = this.expandable;
-    this.tree.selects = this.selects || 'self';
-    this.tree.setRoots(this.roots);
+    this.tree.configure(this.roots, this.getChildren, this.expandable, this.selects);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+    this.tree.enabled = false;
+  }
+}
+
+/**
+ * Renders a tree in a virtual scroll datagrid: the virtual scroll renders the rows of the expanded
+ * tree, flattened, as if they were one long list.
+ *
+ * ```html
+ * <ng-template ClrVirtualScroll let-item [clrVirtualTreeOf]="roots" [clrVirtualTreeChildren]="getChildren">
+ *   <clr-dg-row [clrDgItem]="item">...</clr-dg-row>
+ * </ng-template>
+ * ```
+ */
+@Directive({
+  selector: '[ClrVirtualScroll][clrVirtualTreeOf],[clrVirtualScroll][clrVirtualTreeOf]',
+  standalone: false,
+})
+export class ClrDatagridVirtualTree<T> implements OnChanges, OnDestroy {
+  @Input('clrVirtualTreeOf') roots: T[];
+  @Input('clrVirtualTreeChildren') getChildren: ClrDatagridTreeChildrenLoader<T>;
+  @Input('clrVirtualTreeExpandable') expandable: (item: T) => boolean;
+  @Input('clrVirtualTreeSelects') selects: ClrDatagridTreeSelection;
+
+  private subscription: Subscription;
+
+  constructor(
+    private tree: DatagridTreeService<T>,
+    virtualScroll: ClrDatagridVirtualScrollDirective<T>
+  ) {
+    tree.enabled = true;
+    // The whole flat list is one data range, so the virtual scroll neither sorts nor pages it.
+    this.subscription = tree.change.subscribe(items => {
+      virtualScroll.dataRange = { total: items.length, skip: 0, data: items };
+    });
+  }
+
+  ngOnChanges() {
+    this.tree.configure(this.roots, this.getChildren, this.expandable, this.selects);
   }
 
   ngOnDestroy() {

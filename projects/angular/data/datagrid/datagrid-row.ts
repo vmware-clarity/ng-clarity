@@ -268,29 +268,22 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   /**
+   * The cell that carries the indentation and the expand toggle: the leftmost one on screen, which
+   * is the first pinned column when any is pinned (pinned columns are rendered first), and the
+   * first visible column otherwise. Reordering, pinning or hiding columns moves it.
+   */
+  get treeCell(): ClrDatagridCell | undefined {
+    const states = this.columnsService.columnStates;
+    const pinned = states.findIndex(state => state.pinned && !state.hidden);
+    const index = pinned >= 0 ? pinned : states.findIndex(state => !state.hidden);
+    return this.dgCells?.get(Math.max(index, 0));
+  }
+
+  /**
    * Some, but not all, of this row's descendants are selected.
    */
   get treeIndeterminate(): boolean {
     return !!this.tree?.cascadesSelection && this.tree.isIndeterminate(this.item);
-  }
-
-  /**
-   * The parents whose loaded children end with this row and that have more to load, innermost
-   * first. Each gets a "load more" line right below this row.
-   */
-  get treeLoadMoreParents(): DatagridTreeNode<T>[] {
-    const parents: DatagridTreeNode<T>[] = [];
-    let node = this.treeNode;
-    if (!node || (node.expanded && node.children?.length)) {
-      return parents;
-    }
-    while (node.parent && node.posInSet === node.parent.children.length) {
-      if (node.parent.hasMore) {
-        parents.push(node.parent);
-      }
-      node = node.parent;
-    }
-    return parents;
   }
 
   openDetails(event: MouseEvent, detailButton: HTMLButtonElement) {
@@ -444,11 +437,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     });
   }
 
-  /**
-   * The first cell carries the indentation and the expand toggle of a tree row.
-   */
   private markTreeCell() {
-    this.dgCells.forEach((cell, index) => (cell.treeRow = index === 0 ? this : null));
+    this.dgCells.forEach(cell => (cell.treeRow = this.tree ? this : null));
   }
 
   private rangeSelect() {

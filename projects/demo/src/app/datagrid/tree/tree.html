@@ -7,9 +7,11 @@
 
 <h2>Datagrid: Tree data (spike)</h2>
 
+<h3>Pagination</h3>
+
 <p>
-  Root rows come one page at a time through <code class="clr-code">(clrDgRefresh)</code>. Children are fetched when a
-  row is expanded, three at a time.
+  Root rows come one page at a time through <code class="clr-code">(clrDgRefresh)</code>. Children are fetched the first
+  time a row is expanded.
 </p>
 
 <clr-radio-container clrInline>
@@ -88,3 +90,7 @@
 
 <p class="tree-demo-selected">Selected: {{ selectedNames }}</p>
 <p class="tree-demo-log">Actions: {{ log.join('; ') }}</p>
+
+<clr-datagrid-tree-virtual-demo></clr-datagrid-tree-virtual-demo>
+
+<clr-datagrid-tree-appfx-demo></clr-datagrid-tree-appfx-demo>

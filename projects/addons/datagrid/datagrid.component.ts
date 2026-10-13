@@ -35,6 +35,8 @@ import {
   ClrDatagridPagination,
   ClrDatagridSortOrder,
   ClrDatagridStateInterface,
+  ClrDatagridTreeChildrenLoader,
+  ClrDatagridTreeSelection,
   ClrDatagridVirtualScrollRangeInterface,
   SelectionType,
   selectionTypeAttribute,
@@ -409,6 +411,24 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * as defined in {@link ColumnDefinition}.
    */
   @Input() gridItems: T[];
+
+  /**
+   * Loads the children of a row, which turns a server-driven datagrid with paging into a tree:
+   * `gridItems` are the roots, and a row is expanded with the toggle in its leftmost cell.
+   */
+  @Input() treeChildren?: ClrDatagridTreeChildrenLoader<T>;
+
+  /**
+   * Whether a row of the tree has children. Without it, every row offers the toggle until its
+   * children turn out to be empty.
+   */
+  @Input() treeExpandable?: (item: T) => boolean;
+
+  /**
+   * What selecting a row of the tree selects: the row only (default), or the row with its loaded
+   * descendants.
+   */
+  @Input() treeSelects?: ClrDatagridTreeSelection;
 
   /**
    * Emits the updated page size {@link pageSize} to the parent component when changed.

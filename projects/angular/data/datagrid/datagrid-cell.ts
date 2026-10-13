@@ -15,10 +15,8 @@ import { WrappedCell } from './wrapped-cell';
 @Component({
   selector: 'clr-dg-cell',
   template: `
-    @if (treeRow?.treeNode; as node) {
-      @if (node.loading) {
-        <clr-spinner class="datagrid-tree-toggle" clrInline>{{ commonStrings.keys.loading }}</clr-spinner>
-      } @else if (node.expandable) {
+    @if (treeNode; as node) {
+      @if (node.expandable) {
         <button
           type="button"
           class="datagrid-tree-toggle"
@@ -34,8 +32,8 @@ import { WrappedCell } from './wrapped-cell';
   `,
   host: {
     '[class.datagrid-cell]': 'true',
-    '[class.datagrid-tree-cell]': '!!treeRow?.treeNode',
-    '[style.--clr-datagrid-tree-level]': 'treeRow?.treeNode ? treeRow.treeNode.level - 1 : null',
+    '[class.datagrid-tree-cell]': '!!treeNode',
+    '[style.--clr-datagrid-tree-level]': 'treeNode ? treeNode.level - 1 : null',
     '[class.datagrid-signpost-trigger]': 'signpost.length > 0',
     role: 'gridcell',
   },
@@ -53,9 +51,9 @@ export class ClrDatagridCell implements OnInit {
   @ContentChildren(ClrSignpost) signpost: QueryList<ClrSignpost>;
 
   /**
-   * Set by the row on its first cell when the datagrid renders a tree.
+   * Set by the row on its cells when the datagrid renders a tree.
    */
-  treeRow: { treeNode: DatagridTreeNode<any> | undefined } | null = null;
+  treeRow: { treeNode: DatagridTreeNode<any> | undefined; treeCell: ClrDatagridCell | undefined } | null = null;
 
   private wrappedInjector: Injector;
 
@@ -64,6 +62,13 @@ export class ClrDatagridCell implements OnInit {
     public commonStrings: ClrCommonStringsService,
     @Optional() private tree: DatagridTreeService
   ) {}
+
+  /**
+   * The tree node of the row, on the cell that carries the indentation and the toggle.
+   */
+  get treeNode(): DatagridTreeNode<any> | undefined {
+    return this.treeRow?.treeCell === this ? this.treeRow.treeNode : undefined;
+  }
 
   get _view() {
     return this.wrappedInjector.get(WrappedCell, this.vcr).cellView;

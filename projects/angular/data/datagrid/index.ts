@@ -53,7 +53,11 @@ export * from './datagrid.module';
 
 export { Selection } from './providers/selection'; // exported specifically for appfx datagrid;
 export { ClrDatagridItemsIdentityFunction } from './providers/items';
-export { ClrDatagridTreeChildren, ClrDatagridTreeChildrenLoader, ClrDatagridTreeChunk } from './providers/tree.service';
+export {
+  ClrDatagridTreeChildren,
+  ClrDatagridTreeChildrenLoader,
+  ClrDatagridTreeSelection,
+} from './providers/tree.service';
 export { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';
 export { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
 export { ClrDatagridSingleSelectionValueAccessor } from './datagrid-single-selection.directive';

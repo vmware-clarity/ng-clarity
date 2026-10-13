@@ -259,11 +259,6 @@ export interface ClrCommonStrings {
   detailExpandableAriaLabel: string;
 
   /**
-   * Datagrid: Tree rows, button that fetches the next chunk of children
-   */
-  datagridTreeLoadMore: string;
-
-  /**
    * Alert: Close alert button
    */
   alertCloseButtonAriaLabel: string;

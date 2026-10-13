@@ -1,0 +1,53 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3>AppFx datagrid</h3>
+
+<p>
+  <code class="clr-code">appfx-datagrid</code> renders a tree when it is server driven and gets
+  <code class="clr-code">[treeChildren]</code>. Drag a column header, or use its actions menu, to move it; every column
+  can be pinned from the same menu. The expand toggle stays in the leftmost column: the first pinned one, or the first
+  one when nothing is pinned.
+</p>
+
+<clr-radio-container clrInline>
+  <label>Selecting a row selects</label>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio name="appfx-selects" value="self" [(ngModel)]="selects" />
+    <label>The row only</label>
+  </clr-radio-wrapper>
+  <clr-radio-wrapper>
+    <input type="radio" clrRadio name="appfx-selects" value="descendants" [(ngModel)]="selects" />
+    <label>The row and its descendants</label>
+  </clr-radio-wrapper>
+</clr-radio-container>
+
+<p class="tree-demo-columns">Columns: {{ order }}</p>
+
+<appfx-datagrid
+  [serverDrivenDatagrid]="true"
+  [gridItems]="roots"
+  [totalItems]="total"
+  [loading]="loading"
+  [columns]="columns"
+  [trackByGridItemProperty]="'id'"
+  [selectionType]="SelectionType.Multi"
+  [selectedItems]="selected"
+  [treeChildren]="getChildren"
+  [treeExpandable]="expandable"
+  [treeSelects]="selects"
+  [enableColumnActions]="true"
+  [layoutModel]="{ stretchToParentHeight: false }"
+  [footerModel]="{ showFooter: true }"
+  [pageSize]="10"
+  (refreshGridData)="refresh($event)"
+  (selectedItemsChange)="selected = $event"
+  (columnOrderChange)="onColumnOrderChange($event)"
+>
+</appfx-datagrid>
+
+<p class="tree-demo-selected">Selected: {{ selected.length }}</p>

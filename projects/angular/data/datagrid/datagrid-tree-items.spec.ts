@@ -46,21 +46,19 @@ class TreeTest {
   selectionType = SelectionType.Multi;
   selected: Folder[] = [];
   roots: Folder[] = [{ id: 'a', children: 2 }, { id: 'b', children: 5 }, { id: 'c' }];
-  requests: { id: string; skip: number }[] = [];
+  requests: string[] = [];
   responses = new Subject<ClrDatagridTreeChildren<Folder>>();
-  chunked = false;
   selects: 'self' | 'descendants' = 'descendants';
 
   identity = (folder: Folder) => folder.id;
   expandable = (folder: Folder) => !!folder.children;
-  getChildren = (folder: Folder, skip: number) => {
-    this.requests.push({ id: folder.id, skip });
+  getChildren = (folder: Folder) => {
+    this.requests.push(folder.id);
     return this.responses;
   };
 
-  respond(parent: string, count: number, skip = 0, total = count) {
-    const items = Array.from({ length: count }, (_, i) => ({ id: `${parent}${skip + i + 1}` }));
-    this.responses.next(this.chunked ? { items, total } : items);
+  respond(parent: string, count: number) {
+    this.responses.next(Array.from({ length: count }, (_, i) => ({ id: `${parent}${i + 1}` })));
   }
 }
 
@@ -117,8 +115,9 @@ export default function (): void {
 
     it('fetches the children on expand and shows them below their parent', function () {
       toggle(0);
-      expect(context.requests).toEqual([{ id: 'a', skip: 0 }]);
-      expect(rows()[0].querySelector('clr-spinner')).not.toBeNull();
+      expect(context.requests).toEqual(['a']);
+      expect(rowNames()).toEqual(['a', 'b', 'c']);
+      expect(rows()[0].querySelector('.datagrid-tree-toggle')).not.toBeNull();
 
       context.respond('a', 2);
       fixture.detectChanges();
@@ -145,26 +144,6 @@ export default function (): void {
       toggle(0);
       expect(context.requests.length).toBe(1);
       expect(rowNames()).toEqual(['a', 'a1', 'a2', 'b', 'c']);
-    });
-
-    it('loads children in chunks', function () {
-      context.chunked = true;
-      toggle(1);
-      context.respond('b', 2, 0, 5);
-      fixture.detectChanges();
-      expect(rowNames()).toEqual(['a', 'b', 'b1', 'b2', 'c']);
-
-      const loadMore = element.querySelector<HTMLButtonElement>('.datagrid-tree-load-more-button');
-      expect(loadMore.textContent).toContain('2 / 5');
-      loadMore.click();
-      expect(context.requests).toEqual([
-        { id: 'b', skip: 0 },
-        { id: 'b', skip: 2 },
-      ]);
-      context.respond('b', 3, 2, 5);
-      fixture.detectChanges();
-      expect(rowNames()).toEqual(['a', 'b', 'b1', 'b2', 'b3', 'b4', 'b5', 'c']);
-      expect(element.querySelector('.datagrid-tree-load-more-button')).toBeNull();
     });
 
     it('keeps rows expanded when the roots are replaced', function () {
@@ -218,9 +197,8 @@ export default function (): void {
       }
 
       beforeEach(async function () {
-        context.chunked = true;
         toggle(0);
-        context.respond('a', 2, 0, 2);
+        context.respond('a', 2);
         fixture.detectChanges();
         // Lets the checkboxes take their initial value before the tests click them.
         await fixture.whenStable();
@@ -258,27 +236,12 @@ export default function (): void {
       it('selects children that load after their parent was selected', async function () {
         await click(3); // b, not loaded yet
         toggle(3);
-        context.respond('b', 2, 0, 5);
+        context.respond('b', 2);
         fixture.detectChanges();
         await fixture.whenStable();
         // Lets the two-way [(clrDgSelected)] binding catch up, as the application would.
         fixture.detectChanges();
         expect(selectedIds()).toEqual(['b', 'b1', 'b2']);
-
-        rows()[5].querySelector<HTMLButtonElement>('.datagrid-tree-load-more-button').click();
-        context.respond('b', 3, 2, 5);
-        fixture.detectChanges();
-        expect(selectedIds()).toEqual(['b', 'b1', 'b2', 'b3', 'b4', 'b5']);
-      });
-
-      it('keeps a parent with children left to load out of the selection until it is selected itself', async function () {
-        toggle(3);
-        context.respond('b', 2, 0, 5);
-        fixture.detectChanges();
-        await click(4);
-        await click(5);
-        expect(selectedIds()).toEqual(['b1', 'b2']);
-        expect(checkbox(3).indeterminate).toBe(true);
       });
 
       it('selects everything loaded from the header checkbox', async function () {
