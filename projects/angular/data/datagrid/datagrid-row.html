@@ -12,10 +12,11 @@
   (click)="selectRow(!selected, $event)"
   [class.datagrid-row-clickable]="selection.rowSelectionMode"
   [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
-  [attr.aria-level]="treeNode?.level"
-  [attr.aria-expanded]="treeNode?.expandable ? treeNode.expanded : null"
-  [attr.aria-posinset]="treeNode?.posInSet"
-  [attr.aria-setsize]="treeNode?.setSize"
+  [attr.aria-level]="_treeNode?.level"
+  [attr.aria-expanded]="_treeNode?.expandable ? _treeNode.expanded : null"
+  [attr.aria-posinset]="_treeNode?.posInSet"
+  [attr.aria-setsize]="_treeNode?.setSize"
+  [attr.aria-busy]="_treeNode?.loading || null"
 >
   <div class="datagrid-row-sticky">
     <!-- Sticky elements here -->

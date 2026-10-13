@@ -14,10 +14,10 @@ import {
   ElementRef,
   EmbeddedViewRef,
   EventEmitter,
+  inject,
   Inject,
   Injector,
   Input,
-  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -125,6 +125,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
   // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
   private _selectable: boolean | string = true;
+  private tree = inject<DatagridTreeService<T>>(DatagridTreeService, { optional: true });
 
   constructor(
     public selection: Selection<T>,
@@ -139,8 +140,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     public commonStrings: ClrCommonStringsService,
     private items: Items,
     private columnsService: ColumnsService,
-    @Inject(DOCUMENT) private document: any,
-    @Optional() public tree: DatagridTreeService<T>
+    @Inject(DOCUMENT) private document: any
   ) {
     nbRow++;
     this.id = 'clr-dg-row' + nbRow;
@@ -261,28 +261,40 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   /**
-   * The place of this row in the tree, when the datagrid renders one.
+   * The place of this row in the tree, when the datagrid renders one. Read by the row's cells.
    */
-  get treeNode(): DatagridTreeNode<T> | undefined {
+  get _treeNode(): DatagridTreeNode<T> | undefined {
     return this.tree?.enabled ? this.tree.nodeFor(this.item) : undefined;
   }
 
   /**
    * The cell that carries the indentation and the expand toggle: the leftmost one on screen, which
    * is the first pinned column when any is pinned (pinned columns are rendered first), and the
-   * first visible column otherwise. Reordering, pinning or hiding columns moves it.
+   * first visible column otherwise. Reordering, pinning or hiding columns moves it. Cells match
+   * columns by declaration index, as everywhere else in the datagrid.
    */
-  get treeCell(): ClrDatagridCell | undefined {
-    const states = this.columnsService.columnStates;
-    const pinned = states.findIndex(state => state.pinned && !state.hidden);
-    const index = pinned >= 0 ? pinned : states.findIndex(state => !state.hidden);
-    return this.dgCells?.get(Math.max(index, 0));
+  get _treeCell(): ClrDatagridCell | undefined {
+    let firstVisible = -1;
+    const columns = this.columnsService.columns;
+    for (let index = 0; index < columns.length; index++) {
+      const state = columns[index].value;
+      if (state.hidden) {
+        continue;
+      }
+      if (state.pinned) {
+        return this.dgCells.get(index);
+      }
+      if (firstVisible < 0) {
+        firstVisible = index;
+      }
+    }
+    return this.dgCells.get(Math.max(firstVisible, 0));
   }
 
   /**
    * Some, but not all, of this row's descendants are selected.
    */
-  get treeIndeterminate(): boolean {
+  protected get treeIndeterminate(): boolean {
     return !!this.tree?.cascadesSelection && this.tree.isIndeterminate(this.item);
   }
 
@@ -437,8 +449,13 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     });
   }
 
+  /**
+   * Lets the cells of a tree row find out which of them carries the toggle. Rows of other
+   * datagrids leave their cells alone, so they pay nothing for trees.
+   */
   private markTreeCell() {
-    this.dgCells.forEach(cell => (cell.treeRow = this.tree ? this : null));
+    const treeRow = this.tree?.enabled ? this : null;
+    this.dgCells.forEach(cell => (cell._treeRow = treeRow));
   }
 
   private rangeSelect() {

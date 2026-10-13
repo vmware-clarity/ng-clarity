@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, Optional } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { DetailService } from './detail.service';
 import { DatagridTreeService } from './tree.service';
@@ -13,11 +13,9 @@ import { DatagridTreeService } from './tree.service';
 @Injectable()
 export class ExpandableRowsCount {
   private expandableCount = 0;
+  private tree = inject(DatagridTreeService, { optional: true });
 
-  constructor(
-    private detailService: DetailService,
-    @Optional() private tree: DatagridTreeService
-  ) {}
+  constructor(private detailService: DetailService) {}
 
   /**
    * false means no rows with action

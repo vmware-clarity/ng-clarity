@@ -237,7 +237,13 @@
   <!-- Server driven tree datagrid with paging. A tree has no expandable rows. -->
   @if (serverDrivenDatagrid && !virtualScrolling && treeChildren) {
     <clr-dg-row
-      *clrDgTreeItems="let item of gridItems; children: treeChildren; expandable: treeExpandable; selects: treeSelects"
+      *clrDgTreeItems="
+        let item of gridItems;
+        children: treeChildren;
+        expandable: treeExpandable;
+        selects: treeSelects;
+        trackBy: trackByTreeItem
+      "
       [clrDgItem]="item"
       [clrDgSelectable]="item | isRowSelectable: isRowLocked : rowsDisabled"
       [clrDgRowSelectionLabel]="$any(item)?.[visibleColumns && visibleColumns.length ? visibleColumns[0].field : -1]"
@@ -249,6 +255,7 @@
       >
         @for (action of singleRowActions; track action) {
           <button
+            type="button"
             class="action-item"
             (click)="onActionClick(action, item)"
             [title]="action.tooltip"
@@ -258,6 +265,11 @@
           </button>
         }
       </clr-dg-action-overflow>
+      @if (dragConfig) {
+        <clr-dg-cell class="draggableCell" style="width: 20px">
+          <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+        </clr-dg-cell>
+      }
       @for (column of visibleColumns; track column) {
         <clr-dg-cell>
           <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>

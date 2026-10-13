@@ -17,6 +17,7 @@ import {
   HostBinding,
   Inject,
   Input,
+  isDevMode,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -415,6 +416,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   /**
    * Loads the children of a row, which turns a server-driven datagrid with paging into a tree:
    * `gridItems` are the roots, and a row is expanded with the toggle in its leftmost cell.
+   *
+   * Only works with `serverDrivenDatagrid` and without `virtualScrolling`; other grids ignore it.
+   * A tree has no expandable rows, so `rowDetailContent` is not rendered. Rows are matched by
+   * `trackByGridItemProperty` or `trackByFunction`, which must be unique across the whole tree.
    */
   @Input() treeChildren?: ClrDatagridTreeChildrenLoader<T>;
 
@@ -907,6 +912,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     if (changes['singleRowActions']) {
       this.initActionTypes();
     }
+
+    if (this.treeChildren && (!this.serverDrivenDatagrid || this.virtualScrolling) && isDevMode()) {
+      console.warn(
+        'appfx-datagrid: treeChildren needs serverDrivenDatagrid without virtualScrolling; rendering flat rows.'
+      );
+    }
   }
 
   /**
@@ -914,6 +925,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * The index passed (0) is a dummy value and should not be relied upon.
    */
   trackByGridItemFn = (item: T) => this.trackByFn(0, <T>(item || {}));
+
+  /**
+   * Keeps tree rows across refreshes that return new objects, like the rows of the other modes.
+   */
+  trackByTreeItem: TrackByFunction<T> = (index: number, item: T) => this.trackByFn(index, item);
 
   trackByColumnId(index: number, column: ColumnDefinition<T>): string {
     return column.uid || column.displayName;
@@ -1261,8 +1277,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         return this.trackByGridItemFn(item) === this.trackByGridItemFn(this.detailState as T);
       });
       if (matchingItems.length === 0) {
-        // Hide detail pane when item is no longer present in the dataset
-        this.detailState = null;
+        // Hide detail pane when item is no longer present in the dataset. Child rows of a tree are
+        // not among the roots; the datagrid closes the pane itself when such a row goes away.
+        if (!this.treeChildren) {
+          this.detailState = null;
+        }
       } else {
         this.detailState = matchingItems[0];
         // In order for the datagrid detail caret button to be activated and

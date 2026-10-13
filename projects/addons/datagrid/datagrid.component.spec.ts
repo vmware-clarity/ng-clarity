@@ -2828,6 +2828,66 @@ describe('DatagridComponent', () => {
     });
   });
 
+  describe('Tree', () => {
+    let answer: Subject<any[]>;
+
+    beforeEach(function (this: any) {
+      this.component.columnsDefs = this.columnsDefs;
+      this.component.data = this.data;
+      this.component.serverDrivenDatagrid = true;
+      this.component.trackByProperty = 'name';
+      this.component.treeExpandable = (item: any) => item.name === 'vm0';
+      this.component.treeChildren = () => (answer = new Subject<any[]>());
+      // The datagrid is OnPush, so let the application check it the way it does in an app.
+      this.fixture.autoDetectChanges();
+    });
+
+    function rowNames(element: HTMLElement): string[] {
+      return Array.from(element.querySelectorAll<HTMLElement>('clr-dg-row')).map(row =>
+        row.querySelector<HTMLElement>('clr-dg-cell').innerText.trim()
+      );
+    }
+
+    it('renders the rows as a treegrid with a toggle on expandable rows', async function (this: any) {
+      await this.fixture.whenStable();
+
+      const element: HTMLElement = this.fixture.nativeElement;
+      expect(element.querySelector('.datagrid-table').getAttribute('role')).toBe('treegrid');
+      const rows = element.querySelectorAll('clr-dg-row');
+      expect(rows.length).toBe(this.data.length);
+      expect(rows[0].querySelector('.datagrid-tree-toggle')).not.toBeNull();
+      expect(rows[1].querySelector('.datagrid-tree-toggle')).toBeNull();
+    });
+
+    it('shows the children when they arrive', async function (this: any) {
+      await this.fixture.whenStable();
+      const element: HTMLElement = this.fixture.nativeElement;
+
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      await this.fixture.whenStable();
+      answer.next([
+        { ...this.data[0], name: 'vm0-a' },
+        { ...this.data[0], name: 'vm0-b' },
+      ]);
+      await this.fixture.whenStable();
+
+      expect(rowNames(element).slice(0, 3)).toEqual(['vm0', 'vm0-a', 'vm0-b']);
+      expect(element.querySelectorAll('clr-dg-row [role=row]')[1].getAttribute('aria-level')).toBe('2');
+    });
+
+    it('drops the toggle of a row whose children come back empty', async function (this: any) {
+      await this.fixture.whenStable();
+      const element: HTMLElement = this.fixture.nativeElement;
+
+      element.querySelector<HTMLButtonElement>('.datagrid-tree-toggle').click();
+      await this.fixture.whenStable();
+      answer.next([]);
+      await this.fixture.whenStable();
+
+      expect(element.querySelector('.datagrid-tree-toggle')).toBeNull();
+    });
+  });
+
   describe('toggleAll', () => {
     it('should toggle the allSelected property of clrDatagrid', function (this: any) {
       this.component.selectionType = SelectionType.Multi;
@@ -2902,6 +2962,8 @@ class StatusComparator implements ClrDatagridComparatorInterface<any> {
       (exportDataEvent)="onExportDataEvent($event)"
       [rowsExpandedByDefault]="rowsExpandedByDefault"
       [rowDetailContent]="rowDetailContent"
+      [treeChildren]="treeChildren"
+      [treeExpandable]="treeExpandable"
     >
       <div class="custom-placeholder-content">
         <p>Custom placeholder content</p>
@@ -2941,6 +3003,8 @@ class DatagridHostComponent {
   enableColumnActions = false;
   columnActions: ActionDefinition[] | null = null;
   serverDrivenDatagrid = false;
+  treeChildren?: (item: any) => Observable<any[]>;
+  treeExpandable?: (item: any) => boolean;
   dataRange: ClrDatagridVirtualScrollRangeInterface<any> = {
     total: 100,
     skip: 0,

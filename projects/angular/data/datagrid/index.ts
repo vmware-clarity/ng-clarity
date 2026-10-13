@@ -56,6 +56,8 @@ export { ClrDatagridItemsIdentityFunction } from './providers/items';
 export {
   ClrDatagridTreeChildren,
   ClrDatagridTreeChildrenLoader,
+  ClrDatagridTreeExpandedChange,
+  ClrDatagridTreeLoadError,
   ClrDatagridTreeSelection,
 } from './providers/tree.service';
 export { ClrDatagridSelectionCellDirective } from './datagrid-selection-cell.directive';

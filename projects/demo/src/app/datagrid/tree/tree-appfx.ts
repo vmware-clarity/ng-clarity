@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
 import { ColumnDefinition, ColumnOrderChanged } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface, SelectionType } from '@clr/angular';
 import { Subscription } from 'rxjs';
@@ -17,7 +17,7 @@ import { Resource, ResourceBackend } from './resource-backend';
   templateUrl: 'tree-appfx.html',
   standalone: false,
 })
-export class DatagridTreeAppfxDemo {
+export class DatagridTreeAppfxDemo implements OnDestroy {
   backend = new ResourceBackend();
   roots: Resource[] = [];
   total = 0;
@@ -48,6 +48,10 @@ export class DatagridTreeAppfxDemo {
 
   expandable = (resource: Resource) => resource.childCount > 0;
   getChildren = (resource: Resource) => this.backend.children(resource);
+
+  ngOnDestroy() {
+    this.request?.unsubscribe();
+  }
 
   refresh(state: ClrDatagridStateInterface) {
     this.loading = true;

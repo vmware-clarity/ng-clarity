@@ -12,7 +12,7 @@
   the expanded tree as one long list: all the roots are in memory, children are fetched on expand.
 </p>
 
-<form clrForm clrLayout="horizontal" class="tree-demo-options">
+<form clrForm clrLayout="horizontal">
   <clr-number-input-container>
     <label>Datacenters</label>
     <input clrNumberInput type="number" name="roots" min="0" [(ngModel)]="options.roots" />
@@ -73,7 +73,6 @@
 <!-- Rebuilt with the backend, so the virtual scroll starts over with the new tree. -->
 @for (backend of [backend]; track backend) {
 <clr-datagrid
-  class="tree-demo-virtual"
   [class.datagrid-compact]="compact"
   [clrDgSelectionType]="selectionType"
   [(clrDgSelected)]="selected"
