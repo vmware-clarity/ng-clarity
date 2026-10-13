@@ -8,7 +8,7 @@
 import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { ClarityModule } from '@clr/angular';
-import { ClrContextEngineService, ClrContextModule } from '@clr/angular/ai';
+import { ClrContext, ClrContextEngineService } from '@clr/angular/ai';
 
 import { ContextLivePanelComponent } from '../live-panel/live-panel.component';
 
@@ -111,7 +111,7 @@ async function reachable(href: string): Promise<boolean> {
 @Component({
   selector: 'clr-contextual-frames-demo',
   standalone: true,
-  imports: [ClarityModule, ClrContextModule, ContextLivePanelComponent],
+  imports: [ClarityModule, ClrContext, ContextLivePanelComponent],
   templateUrl: './frames.demo.html',
   styleUrls: ['./frames.demo.scss'],
 })
