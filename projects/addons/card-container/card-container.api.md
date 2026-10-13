@@ -118,7 +118,7 @@ export class AppfxCardContainerComponent implements OnInit, DoCheck {
     // Warning: (ae-forgotten-export) The symbol "PersistenceService" needs to be exported by the entry point clr-addons-card-container.d.ts
     constructor(containerService: ContainerService, persistenceService: PersistenceService, iterableDiffers: IterableDiffers);
     // (undocumented)
-    cards: AppfxCardInternal[];
+    cards: AppfxCard[];
     // (undocumented)
     containerCards: AppfxCardInternal[];
     // (undocumented)
