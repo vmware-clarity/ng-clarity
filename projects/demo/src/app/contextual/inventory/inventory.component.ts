@@ -8,7 +8,7 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
-import { ClrContextModule } from '@clr/angular/ai';
+import { ClrContext } from '@clr/angular/ai';
 
 import { DEMO_HOSTS, DemoHost } from '../hosts';
 
@@ -19,7 +19,7 @@ import { DEMO_HOSTS, DemoHost } from '../hosts';
 @Component({
   selector: 'clr-context-inventory',
   standalone: true,
-  imports: [FormsModule, ClarityModule, ClrContextModule],
+  imports: [FormsModule, ClarityModule, ClrContext],
   templateUrl: './inventory.component.html',
 })
 export class ContextInventoryComponent {
