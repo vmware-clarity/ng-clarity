@@ -100,4 +100,3 @@ export class StatusValueComponent implements PropertyViewPropertyValueComponent<
 ## References
 
 - API: `@clr/addons/types/clr-addons-property-view.d.ts`
-- Demos: `projects/website/src/app/documentation/demos/property-view/`, `.storybook/stories/addons/`

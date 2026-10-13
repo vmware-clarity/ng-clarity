@@ -60,4 +60,3 @@ Inside a modal:
 ## References
 
 - API: `@clr/addons/types/clr-addons-certificate-viewer.d.ts`
-- Demos: `projects/website/src/app/documentation/demos/certificate-viewer/`, `.storybook/stories/addons/`

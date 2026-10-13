@@ -108,4 +108,3 @@ Pass the trigger element as the 4th argument so focus returns to it on close. Fo
 ## References
 
 - API: `@clr/addons/types/clr-addons-menu.d.ts`
-- Demos: `projects/website/src/app/documentation/demos/menu/ng/` (basic, button, datagrid, tree), `projects/demo/src/app/addons/menu/`

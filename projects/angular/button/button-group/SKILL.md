@@ -52,7 +52,7 @@ These are NgModules (not standalone) — import the modules, not the component c
 - Use a flat group (`btn-link`) for tertiary actions, in cards, and above datagrids.
 - Icon-only button groups use the default size, not `btn-sm`.
 - Static, CSS-only group: `<div class="btn-group">` with `.btn` children.
-- Checkbox and radio button groups (`div.checkbox.btn` / `div.radio.btn` inside `.btn-group`) are a CSS-only pattern (see the button-group demos). Their styling is marked legacy in `_button-group.clarity.scss` and may change when buttons are revamped.
+- Checkbox and radio button groups (`div.checkbox.btn` / `div.radio.btn` inside `.btn-group`) are a CSS-only pattern. Their styling is marked legacy in `_button-group.clarity.scss` and may change when buttons are revamped.
 
 ## Imports
 
