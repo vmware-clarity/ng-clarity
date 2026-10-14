@@ -92,7 +92,8 @@ const cssClasses = new Set(
     [...fs.readFileSync(path.join(REPO_ROOT, file), 'utf8').matchAll(/\.([a-z][\w-]*)/g)].map(m => m[1])
   )
 );
-const existsInLibrary = name => apiText.includes(name) || cssClasses.has(name);
+const apiIdentifiers = new Set(apiText.match(/[A-Za-z_$][\w$-]*/g));
+const existsInLibrary = name => apiIdentifiers.has(name) || cssClasses.has(name);
 
 const files = [];
 for (const lib of Object.keys(LIBS)) {

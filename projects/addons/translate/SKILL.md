@@ -30,10 +30,10 @@ Use `AppfxTranslateModule`, `AppfxTranslateService`, `AppfxTranslations`, `Appfx
 
 ```ts
 export class AppComponent {
-  private readonly appfxTranslate = inject(AppfxTranslateService);
+  private readonly translate = inject(AppfxTranslateService);
 
   onLocaleChange(lang: string): void {
-    this.appfxTranslate.locale = lang as AppfxLocale; // e.g. 'fr'
+    this.translate.locale = lang as AppfxLocale; // e.g. 'fr'
   }
 }
 ```
