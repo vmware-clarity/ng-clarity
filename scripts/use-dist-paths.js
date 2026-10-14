@@ -8,7 +8,7 @@
 /*
  * Points the demo and website applications at the built `dist/` packages instead of the library sources, so they
  * compile against the libraries the way an application consuming the published packages does. It is used in
- * pr-build.yml to build the applications with a newer Angular version than the libraries were built with.
+ * pr-build.yml to verify published-package consumption, including Angular 22 consumers of Angular 21 libraries on main.
  *
  * Only the application tsconfigs are changed. The unit tests and storybook keep resolving the library sources through
  * the root tsconfig: they import library internals by relative path, and mixing those with `dist/` would load two
