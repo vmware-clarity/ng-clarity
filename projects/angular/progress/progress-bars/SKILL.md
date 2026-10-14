@@ -26,8 +26,12 @@ import { ClrProgressBarModule } from '@clr/angular';
 
 ```ts
 export class Upload {
-  file: { name: string; size: number };
+  file = { name: 'backup.zip', size: 524288 };
   uploaded = 0;
+
+  get percent(): number {
+    return Math.round((this.uploaded / this.file.size) * 100);
+  }
 }
 ```
 
@@ -36,7 +40,7 @@ export class Upload {
 ```html
 <div class="progress-block">
   <label for="upload-progress">Uploading {{ file.name }} ({{ file.size }})</label>
-  <clr-progress-bar id="upload-progress" [clrValue]="uploaded" [clrMax]="file.size" clrLabeled></clr-progress-bar>
+  <clr-progress-bar id="upload-progress" [clrValue]="percent" clrLabeled></clr-progress-bar>
 </div>
 
 <clr-progress-bar clrLoop></clr-progress-bar>
@@ -54,6 +58,7 @@ export class Upload {
 | `clrFade`       | Fade out once the value reaches 100%                      |
 | `id`            | Id of the inner `<progress>` element (for `aria-*` links) |
 
+- The label is `{value}%`, and `clrFade` only fires at a value of exactly `100`. So bind a percentage with the default `clrMax` of 100; if you set another `clrMax`, also set `clrDisplayval`.
 - `clrColor` variants, `clrFlash` and `clrFlashDanger` are deprecated; don't use them. Report completion or failure with a text label or an alert next to the bar.
 - CSS only: `<div class="progress labeled"><progress value="65" max="100"></progress><span>65%</span></div>`. Use `class="progress loop"` for indeterminate.
 
