@@ -60,7 +60,7 @@ The three combinations the documentation shows:
 
 ## Rules
 
-- `[clr-nav-level]` accepts only `1` and `2`. Any other value, or a level on an element outside `clr-main-container` + `clr-header`, is ignored.
+- `[clr-nav-level]` accepts only the numbers `1` and `2`; use the binding `[clr-nav-level]="1"`, not the attribute `clr-nav-level="1"`. Any other value logs an error and gets no toggle, but the element is still hidden below the large breakpoint, so users can't reach it on small screens.
 - Do not hand-build hamburger or overflow toggles; let `clr-header` + `[clr-nav-level]` create them.
 - Localize the close button with `closeAriaLabel` on the `[clr-nav-level]` element.
 - Use the same level on only one element per level; two elements claiming level 1 is not a supported layout.
