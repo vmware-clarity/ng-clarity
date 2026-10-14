@@ -1,7 +1,0 @@
-{
-  "compileOnSave": false,
-  "compilerOptions": {
-    "types": ["node"],
-    "lib": ["es2020"]
-  }
-}
