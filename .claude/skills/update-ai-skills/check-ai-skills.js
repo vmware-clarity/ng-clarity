@@ -11,7 +11,8 @@
 // https://github.com/vmware-clarity/clarity-guidance: reports cited CIPs that were updated after the date in the
 // skill's `guidance-<id>: '<date>'` metadata keys, CIPs that no longer exist, and guidance links not listed in metadata.
 // Usage (from the repo root): node .claude/skills/update-ai-skills/check-ai-skills.js [--changed <base-ref>] [--guidance <dir>]
-//   --changed <ref>    also list which skill files cover each *.api.md that differs from <ref> (e.g. origin/main)
+//   --changed [ref]    also list which skill files cover each *.api.md that differs from <ref> (default: HEAD, i.e.
+//                      the reports `npm run public-api:update` just rewrote)
 //   --guidance <dir>   clarity-guidance clone (default: ../clarity-guidance next to this repo; skipped if absent)
 
 const { execSync } = require('child_process');
@@ -189,7 +190,7 @@ if (guidanceChecked) {
 
 const changedIndex = process.argv.indexOf('--changed');
 if (changedIndex !== -1) {
-  const base = process.argv[changedIndex + 1] || 'origin/main';
+  const base = process.argv[changedIndex + 1] || 'HEAD';
   const changedApi = execSync(`git diff --name-only ${base} -- "projects/**/*.api.md"`, { cwd: REPO_ROOT })
     .toString()
     .split('\n')

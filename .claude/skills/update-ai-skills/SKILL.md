@@ -21,8 +21,11 @@ The Clarity design guidance (CIPs, https://guidance.clarity.design/<id>, source 
 From the repo root:
 
 ```bash
-node .claude/skills/update-ai-skills/check-ai-skills.js --changed origin/main
+npm run public-api:update
+node .claude/skills/update-ai-skills/check-ai-skills.js --changed
 ```
+
+With no ref, `--changed` lists the reports that differ from `HEAD`: the ones `public-api:update` just rewrote. To also include report changes already committed on your branch, pass the branch your PR targets, e.g. `--changed origin/next`.
 
 The guidance check needs a local, up-to-date clone of clarity-guidance. It looks in `../clarity-guidance` next to this repo by default; pass `--guidance <dir>` otherwise. If it is missing, the check is skipped — ask the user for the path instead of guessing.
 
@@ -38,7 +41,7 @@ Lines that warn against a name ("there is no `clrFoo`", "do not use `clrBar`") a
 Then read the actual change for each affected report:
 
 ```bash
-git diff origin/main -- projects/angular/data/data.api.md
+git diff HEAD -- projects/angular/data/data.api.md
 ```
 
 ## 2. Decide what to update
