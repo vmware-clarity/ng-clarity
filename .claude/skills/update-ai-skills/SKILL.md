@@ -21,11 +21,10 @@ The Clarity design guidance (CIPs, https://guidance.clarity.design/<id>, source 
 From the repo root:
 
 ```bash
-npm run public-api:update
-node .claude/skills/update-ai-skills/check-ai-skills.js --changed
+npm run check-for-ai-skill-changes
 ```
 
-With no ref, `--changed` lists the reports that differ from `HEAD`: the ones `public-api:update` just rewrote. To also include report changes already committed on your branch, pass the branch your PR targets, e.g. `--changed origin/next`.
+It runs `npm run public-api:update`, then the checker with `--changed`, which lists the reports that differ from `HEAD`: the ones the update just rewrote. To also include report changes already committed on your branch, run the checker with the branch your PR targets, e.g. `node .claude/skills/update-ai-skills/check-ai-skills.js --changed origin/next`.
 
 The guidance check needs a local, up-to-date clone of clarity-guidance. It looks in `../clarity-guidance` next to this repo by default; pass `--guidance <dir>` otherwise. If it is missing, the check is skipped — ask the user for the path instead of guessing.
 
@@ -74,6 +73,7 @@ For each changed CIP:
 - Do not change a skill's `name` (it is its install folder and website URL) unless the user asks. Keep `metadata.docs` pointing at the component's website page.
 - Examples use the app style from the skills: NgModule imports, `@for`/`@if`, `clr-icon` (the `cds-icon` alias is deprecated), `type="button"`, `aria-label` on icon-only buttons.
 - Do not run `npm run public-api:update`, builds, or `eslint:fix`. If the reports look stale, ask the user to update them.
+- Exception: `npm run check-for-ai-skill-changes` in step 1 may be run; it needs a library build in `dist/`, so if it fails for that, ask the user to build.
 
 ## 4. Verify
 
