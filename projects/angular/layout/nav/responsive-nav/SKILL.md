@@ -18,10 +18,12 @@ metadata:
 ## Setup
 
 ```ts
-import { ClrNavigationModule } from '@clr/angular';
+import { ClrMainContainerModule, ClrNavigationModule, ClrVerticalNavModule } from '@clr/angular';
 
-@Component({ imports: [ClrNavigationModule] /* ... */ })
+@Component({ imports: [ClrMainContainerModule, ClrNavigationModule, ClrVerticalNavModule] /* ... */ })
 ```
+
+- `ClrMainContainerModule` is required: with `ClrNavigationModule` alone, `clr-main-container` still compiles but never gets the hamburger and overflow classes, so the toggles do nothing. `ClrVerticalNavModule` is only needed for a `clr-vertical-nav` level.
 
 `[clr-nav-level]` only works inside `clr-main-container` with `clr-header` (not a plain `header.header`). The shell is the `clr-app-layout` guide; the header markup is the `clr-header` guide.
 
