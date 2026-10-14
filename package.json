@@ -92,7 +92,6 @@
     "@angular/elements": "22.1.2",
     "@angular/forms": "22.1.2",
     "@angular/platform-browser": "22.1.2",
-    "@angular/platform-browser-dynamic": "22.1.2",
     "@angular/router": "22.1.2",
     "@compodoc/compodoc": "2.0.0",
     "@eslint/js": "9.39.5",
