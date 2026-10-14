@@ -19,6 +19,7 @@ import { ClrLabel, ClrLabelColors } from './label';
     [clrType]="type"
     [clrClickable]="clickable"
     [clrDisabled]="disabled"
+    (click)="clicks = clicks + 1"
   >
     {{ projectedContent }}
   </clr-label>`,
@@ -33,6 +34,7 @@ class TestComponent {
   clickable = false;
   type = Type.Outlined;
   disabled = false;
+  clicks = 0;
   color: ClrLabelColors | string = ClrLabelColors.None;
 }
 
@@ -208,6 +210,81 @@ describe('ClrLabel component', () => {
 
       expect(htmlElement.className).toContain('clickable');
       expect(htmlElement.className).toContain('disabled');
+    });
+
+    describe('Accessibility', () => {
+      let htmlElement: HTMLElement;
+
+      function pressKey(key: string) {
+        htmlElement.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true }));
+      }
+
+      beforeEach(() => {
+        htmlElement = fixture.nativeElement.querySelector('.label');
+      });
+
+      it('is not a button when not clickable', () => {
+        expect(htmlElement.getAttribute('role')).toBeNull();
+        expect(htmlElement.getAttribute('tabindex')).toBeNull();
+        expect(htmlElement.getAttribute('aria-disabled')).toBeNull();
+      });
+
+      it('is a focusable button when clickable', () => {
+        fixture.componentInstance.clickable = true;
+        fixture.detectChanges();
+
+        expect(htmlElement.getAttribute('role')).toBe('button');
+        expect(htmlElement.getAttribute('tabindex')).toBe('0');
+        expect(htmlElement.getAttribute('aria-disabled')).toBeNull();
+      });
+
+      it('is a disabled button out of the tab order when clickable and disabled', () => {
+        fixture.componentInstance.clickable = true;
+        fixture.componentInstance.disabled = true;
+        fixture.detectChanges();
+
+        expect(htmlElement.getAttribute('role')).toBe('button');
+        expect(htmlElement.getAttribute('tabindex')).toBeNull();
+        expect(htmlElement.getAttribute('aria-disabled')).toBe('true');
+      });
+
+      it('triggers click on Enter and Space when clickable', () => {
+        fixture.componentInstance.clickable = true;
+        fixture.detectChanges();
+
+        pressKey('Enter');
+        pressKey(' ');
+
+        expect(fixture.componentInstance.clicks).toBe(2);
+      });
+
+      it('does not trigger click on Enter and Space when not clickable', () => {
+        pressKey('Enter');
+        pressKey(' ');
+
+        expect(fixture.componentInstance.clicks).toBe(0);
+      });
+
+      it('does not trigger click handlers when clickable and disabled', () => {
+        fixture.componentInstance.clickable = true;
+        fixture.componentInstance.disabled = true;
+        fixture.detectChanges();
+
+        pressKey('Enter');
+        pressKey(' ');
+        htmlElement.click();
+
+        expect(fixture.componentInstance.clicks).toBe(0);
+      });
+
+      it('keeps click handlers working when disabled but not clickable', () => {
+        fixture.componentInstance.disabled = true;
+        fixture.detectChanges();
+
+        htmlElement.click();
+
+        expect(fixture.componentInstance.clicks).toBe(1);
+      });
     });
   });
 });
