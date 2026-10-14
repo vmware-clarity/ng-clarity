@@ -60,4 +60,4 @@ Store a label in route `data` (e.g. `data: { breadcrumb: 'Hosts' }`) and build t
 ## References
 
 - Public API: `@clr/angular/types/clr-angular-layout-breadcrumbs.d.ts` (`ClrBreadcrumbs`, `BreadcrumbItem`)
-- Source: `projects/angular/layout/breadcrumbs/`
+- Styles: `@clr/ui/layout/breadcrumbs/_breadcrumbs.clarity.scss`

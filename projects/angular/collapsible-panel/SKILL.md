@@ -171,5 +171,4 @@ export class AppPanelGroup implements AfterContentInit, OnDestroy {
 
 - API: `@clr/angular/types/clr-angular-collapsible-panel.d.ts`
 - Styles: `@clr/ui/collapsible-panel/_mixins.collapsible-panel.scss`
-- Example: `.storybook/stories/collapsible-panel/collapsible-panel.storybook.component.ts`
 - Reference implementations: `projects/angular/accordion/` (`accordion-panel.ts`, `providers/accordion.service.ts`) and `projects/angular/stepper/` (`stepper-panel.ts`)

@@ -127,4 +127,4 @@ For a plain action list at a point, prefer `ClrDropdown.openAtPoint()` (clr-drop
 ## References
 
 - API: `@clr/angular/types/clr-angular-popover-common.d.ts`
-- Toolkit internals: `projects/angular/popover/common/README.md`
+- Docs: `@clr/angular/popover/common/README.md`
