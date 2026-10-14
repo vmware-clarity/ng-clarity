@@ -15,7 +15,7 @@
 //                      the reports `npm run public-api:update` just rewrote)
 //   --guidance <dir>   clarity-guidance clone (default: ../clarity-guidance next to this repo; skipped if absent)
 
-const { execSync } = require('child_process');
+const { execFileSync } = require('child_process');
 const fs = require('fs');
 const glob = require('glob');
 const path = require('path');
@@ -190,8 +190,12 @@ if (guidanceChecked) {
 
 const changedIndex = process.argv.indexOf('--changed');
 if (changedIndex !== -1) {
-  const base = process.argv[changedIndex + 1] || 'HEAD';
-  const changedApi = execSync(`git diff --name-only ${base} -- "projects/**/*.api.md"`, { cwd: REPO_ROOT })
+  // an argument starting with "-" is the next option, not a ref, so it is never passed to git
+  const next = process.argv[changedIndex + 1];
+  const base = next && !next.startsWith('-') ? next : 'HEAD';
+  const changedApi = execFileSync('git', ['diff', '--name-only', base, '--', 'projects/**/*.api.md'], {
+    cwd: REPO_ROOT,
+  })
     .toString()
     .split('\n')
     .filter(Boolean);
