@@ -27,7 +27,7 @@ import { ClrSpinnerModule } from '@clr/angular';
 ```ts
 export class UserList {
   loading = false;
-  users: User[];
+  users: { name: string }[] = [];
 }
 ```
 
@@ -37,7 +37,11 @@ export class UserList {
 @if (loading) {
 <clr-spinner>Loading users</clr-spinner>
 } @else {
-<app-user-list [users]="users" />
+<ul>
+  @for (user of users; track user.name) {
+  <li>{{ user.name }}</li>
+  }
+</ul>
 }
 
 <span>
