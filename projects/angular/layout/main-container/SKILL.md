@@ -17,12 +17,14 @@ metadata:
 ## Setup
 
 ```ts
+import { RouterOutlet } from '@angular/router';
 import { ClrMainContainerModule } from '@clr/angular';
 
-@Component({ imports: [ClrMainContainerModule] /* ... */ })
+@Component({ imports: [ClrMainContainerModule, RouterOutlet] /* ... */ })
 ```
 
 - `ClrMainContainerModule` (`clr-main-container`) is an NgModule — import the module, not the class. `ClrLayoutModule` bundles all layout modules (main container, navigation, tabs, vertical nav, breadcrumbs).
+- Adding the header or a vertical nav: also import `ClrNavigationModule` (`clr-header`, `[clr-nav-level]`) or `ClrVerticalNavModule` (`clr-vertical-nav`), or `ClrLayoutModule` for all layout modules. Their guides are `clr-header` and `clr-vertical-nav`.
 - The layout is CSS-driven; `div.main-container` works without Angular, but responsive navigation needs `clr-main-container` + `clr-header`.
 
 ## Shell
@@ -37,15 +39,13 @@ import { ClrMainContainerModule } from '@clr/angular';
     </div>
   </div>
 
-  <clr-header class="header-1">
-    <!-- branding, header-nav, search, header-actions — see the clr-header guide -->
-  </clr-header>
+  <!-- Header: <clr-header> from ClrNavigationModule — see the clr-header guide -->
 
   <div class="content-container">
     <main class="content-area">
       <router-outlet></router-outlet>
     </main>
-    <clr-vertical-nav [clr-nav-level]="2">...</clr-vertical-nav>
+    <!-- Optional vertical nav: <clr-vertical-nav> from ClrVerticalNavModule — see the clr-vertical-nav guide -->
   </div>
 </clr-main-container>
 ```
