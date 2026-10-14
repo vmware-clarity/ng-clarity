@@ -55,6 +55,8 @@ export class ClrLabel {
 
   constructor(private el: ElementRef<HTMLElement>) {
     // Capture phase, so it runs before the click handlers that the app binds on the same element.
+    // No removeEventListener needed: the listener lives on the host element and only references this
+    // instance, so both are garbage-collected together once Angular destroys the component.
     el.nativeElement.addEventListener('click', this.stopClickIfDisabled, true);
   }
 
