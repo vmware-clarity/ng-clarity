@@ -79,8 +79,9 @@ For each changed CIP:
 
 ```bash
 node .claude/skills/update-ai-skills/check-ai-skills.js
-node scripts/copy-ai-files.js angular "$TEMP/ai-check/clr-angular"
-node scripts/copy-ai-files.js addons "$TEMP/ai-check/clr-addons"
+AI_CHECK="$(mktemp -d)"
+node scripts/copy-ai-files.js angular "$AI_CHECK/clr-angular"
+node scripts/copy-ai-files.js addons "$AI_CHECK/clr-addons"
 npx prettier --check <changed SKILL.md / AGENTS.md files>
 ```
 
