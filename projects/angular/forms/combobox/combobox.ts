@@ -513,6 +513,8 @@ export class ClrCombobox<T>
   }
 
   private initializeSubscriptions(): void {
+    this.subscriptions.push(this.focusHandler.pseudoFocus.focusChanged.subscribe(() => this.cdr.markForCheck()));
+
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
