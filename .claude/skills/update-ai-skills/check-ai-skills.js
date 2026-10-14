@@ -145,7 +145,8 @@ const guidanceIndex = process.argv.indexOf('--guidance');
 const guidanceDir = path.resolve(
   guidanceIndex !== -1 ? process.argv[guidanceIndex + 1] : path.join(REPO_ROOT, '../clarity-guidance')
 );
-if (fs.existsSync(guidanceDir)) {
+const guidanceChecked = fs.existsSync(guidanceDir);
+if (guidanceChecked) {
   const cipDates = readCipDates(guidanceDir);
 
   for (const entry of files) {
@@ -212,7 +213,9 @@ if (changedIndex !== -1) {
 console.log(
   problems
     ? `\n${problems} problem(s) found.`
-    : '\nNo problems found: API names exist and are not deprecated, and cited guidance is current.'
+    : `\nNo problems found: API names exist and are not deprecated${
+        guidanceChecked ? ', and cited guidance is current' : '; guidance not found'
+      }.`
 );
 process.exit(problems ? 1 : 0);
 
