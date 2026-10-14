@@ -20,12 +20,14 @@ From the [header design guidance](https://guidance.clarity.design/1013):
 ## Setup
 
 ```ts
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { ClrDropdownModule, ClrIcon, ClrNavigationModule } from '@clr/angular';
 
-@Component({ imports: [ClrNavigationModule, ClrIcon, ClrDropdownModule] /* ... */ })
+@Component({ imports: [ClrNavigationModule, ClrIcon, ClrDropdownModule, RouterLink, RouterLinkActive] /* ... */ })
 ```
 
 - `ClrNavigationModule` (`clr-header`, `[clr-nav-level]`, `[clrAriaCurrentLink]`) is an NgModule — import the module, not the classes. `ClrLayoutModule` bundles all layout modules. `ClrDropdownModule` is only needed for a menu in `header-actions`.
+- `clrAriaCurrentLink` injects `RouterLinkActive`, so it must sit on an element that also has `routerLinkActive`; without it Angular throws `NullInjectorError`.
 - The header belongs inside `clr-main-container` — guide `clr-app-layout`. A plain `header.header` works without Angular, but responsive navigation needs `clr-main-container` + `clr-header`.
 
 ## Usage
