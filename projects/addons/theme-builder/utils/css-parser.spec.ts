@@ -121,11 +121,22 @@ describe('validateGeneratedCSS', () => {
     expect(validateGeneratedCSS(css)).toEqual({ valid: false, malformedDeclarations: [] });
   });
 
-  it('lists theme colors whose value is not in the generated hsl() shape', () => {
+  it('accepts hsl() with or without deg, separated by commas or whitespace', () => {
+    for (const value of ['hsl(281deg, 50%, 20%)', 'hsl(281, 50%, 20%)', 'hsl(281 50% 20%)', 'hsl(281deg 50% 20%)']) {
+      const css = `[cds-theme~='light'] {\n  --cds-alias-primary: ${value};\n}`;
+
+      expect(validateGeneratedCSS(css)).withContext(value).toEqual({ valid: true, malformedDeclarations: [] });
+      expect(colorsByName(parseGeneratedCSS(css).light.primary))
+        .withContext(value)
+        .toEqual({ '--cds-alias-primary': new HslColor(281, 50, 20) });
+    }
+  });
+
+  it('lists theme colors whose value is not in an accepted hsl() shape', () => {
     const css = `[cds-theme~='light'] {
   --cds-alias-primary: hsl(1.2.3deg abc% 150%);
   --cds-alias-status-info: #ff0000;
-  --cds-alias-status-success: hsl(120deg 50% 50%);
+  --cds-alias-status-success: hsl(120deg, 50% 50%);
   --cds-alias-status-warning: hsl(40deg, 50%, 150%);
   --cds-alias-status-danger: hsl(0deg, 50%, 50%);
 }`;
@@ -135,7 +146,7 @@ describe('validateGeneratedCSS', () => {
       malformedDeclarations: [
         '--cds-alias-primary: hsl(1.2.3deg abc% 150%)',
         '--cds-alias-status-info: #ff0000',
-        '--cds-alias-status-success: hsl(120deg 50% 50%)',
+        '--cds-alias-status-success: hsl(120deg, 50% 50%)',
         '--cds-alias-status-warning: hsl(40deg, 50%, 150%)',
       ],
     });

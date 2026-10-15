@@ -14,12 +14,19 @@ const COMMENT_REGEX = /\/\*[\s\S]*?\*\//g;
 const DECLARATION_REGEX = /^(--[\w-]+)\s*:\s*([\s\S]+)$/;
 
 /**
- * The exact `hsl(<h>deg, <s>%, <l>%)` shape `Color.hsl` emits, and so the only one
- * `generateCSS` produces. Anything else (missing units, extra components, `turn`,
- * `none`, malformed numbers) is rejected rather than guessed at.
+ * Accepted `hsl()` shapes: the hue in degrees (`deg` optional), then saturation and
+ * lightness in `%`, separated either all by commas or all by whitespace — e.g.
+ * `hsl(281deg, 50%, 20%)` (what `Color.hsl` emits), `hsl(281, 50%, 20%)` or
+ * `hsl(281 50% 20%)`. Anything else (other units, extra components, `none`, mixed
+ * separators, malformed numbers) is rejected rather than guessed at.
  */
 const NUMBER = String.raw`-?\d+(?:\.\d+)?(?:e[-+]?\d+)?`;
-const GENERATED_HSL_REGEX = new RegExp(String.raw`^hsl\(\s*(${NUMBER})deg,\s*(${NUMBER})%,\s*(${NUMBER})%\s*\)$`, 'i');
+const HUE = String.raw`(${NUMBER})(?:deg)?`;
+const PERCENT = String.raw`(${NUMBER})%`;
+const HSL_REGEX = new RegExp(
+  String.raw`^hsl\(\s*(?:${HUE},\s*${PERCENT},\s*${PERCENT}|${HUE}\s+${PERCENT}\s+${PERCENT})\s*\)$`,
+  'i'
+);
 
 /** Reverse lookup from a CSS custom property name to the `TOKEN_KEYS` group it belongs to. */
 const TOKEN_TO_GROUP: Record<string, string> = {};
@@ -37,7 +44,7 @@ for (const [group, tokens] of Object.entries(TOKEN_KEYS)) {
 export interface ThemeCssValidation {
   /** `true` when the CSS can be imported as is. */
   valid: boolean;
-  /** Theme-block declarations that aren't in the shape `generateCSS` emits, as written. */
+  /** Theme-block declarations that aren't in an accepted shape (see `HSL_REGEX`), as written. */
   malformedDeclarations: string[];
 }
 
@@ -49,7 +56,7 @@ interface ThemeDeclaration {
   value: string;
   /** The declaration as written (comments stripped, whitespace trimmed). */
   source: string;
-  /** `true` when the declaration is in the shape `generateCSS` emits. */
+  /** `true` when the declaration is in an accepted shape (see `HSL_REGEX`). */
   wellFormed: boolean;
 }
 
@@ -78,10 +85,10 @@ export function parseGeneratedCSS(css: string): CdsThemeStructure {
 }
 
 /**
- * Checks that `css` is something `generateCSS` could have produced, before it's imported.
- * It's malformed when a theme color in a `[cds-theme~='light'|'dark']` block, or any `hsl()`
- * value there, isn't in the exact `hsl(<h>deg, <s>%, <l>%)` shape (saturation and lightness
- * within 0–100), or when a block holds anything other than a custom-property declaration.
+ * Checks that `css` can be imported, before it's applied. It's malformed when a theme color
+ * in a `[cds-theme~='light'|'dark']` block, or any `hsl()` value there, isn't in an accepted
+ * `hsl()` shape (see `HSL_REGEX`; saturation and lightness within 0–100), or when a block
+ * holds anything other than a custom-property declaration.
  * CSS with no recognized theme color at all (including `generateCSS`'s output for an
  * unchanged theme) is rejected too, since importing it would only reset the colors.
  */
@@ -127,7 +134,7 @@ function readThemeDeclarations(css: string): ThemeDeclaration[] {
         tokenName,
         value: trimmedValue,
         source,
-        wellFormed: !checked || isGeneratedHsl(trimmedValue),
+        wellFormed: !checked || isAcceptedHsl(trimmedValue),
       });
     }
   }
@@ -135,14 +142,18 @@ function readThemeDeclarations(css: string): ThemeDeclaration[] {
   return declarations;
 }
 
-function isGeneratedHsl(value: string): boolean {
-  const match = value.match(GENERATED_HSL_REGEX);
+function isAcceptedHsl(value: string): boolean {
+  const match = value.match(HSL_REGEX);
 
   if (!match) {
     return false;
   }
 
-  const [h, s, l] = match.slice(1).map(Number);
+  // Only one of the two alternatives in `HSL_REGEX` matched, so its three groups are the defined ones.
+  const [h, s, l] = match
+    .slice(1)
+    .filter(group => group !== undefined)
+    .map(Number);
 
   return Number.isFinite(h) && s >= 0 && s <= 100 && l >= 0 && l <= 100;
 }

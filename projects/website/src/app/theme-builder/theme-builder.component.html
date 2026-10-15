@@ -70,19 +70,8 @@
 <clr-modal [(clrModalOpen)]="importModalOpen" [clrModalSize]="'xl'">
   <div class="modal-title">Import generated CSS</div>
   <div class="modal-body">
-    <clr-textarea-container cds-layout="m-t:none">
-      <label>Paste generated CSS</label>
-      <textarea
-        clrTextarea
-        [(ngModel)]="cssToImport"
-        (ngModelChange)="scheduleCssToImportValidation($event)"
-        rows="12"
-        cols="120"
-        name="cssToImportInput"
-      ></textarea>
-    </clr-textarea-container>
     @if (importValidation && !importValidation.valid) {
-      <clr-alert clrAlertType="danger" [clrAlertClosable]="false" cds-layout="m-t:md">
+      <clr-alert clrAlertType="danger" [clrAlertClosable]="false" cds-layout="m-b:md">
         <clr-alert-item>
           <span class="alert-text">Malformed CSS detected.</span>
         </clr-alert-item>
@@ -99,6 +88,17 @@
         }
       </clr-alert>
     }
+    <clr-textarea-container cds-layout="m-t:none">
+      <label>Paste generated CSS</label>
+      <textarea
+        clrTextarea
+        [(ngModel)]="cssToImport"
+        (ngModelChange)="scheduleCssToImportValidation($event)"
+        rows="12"
+        cols="120"
+        name="cssToImportInput"
+      ></textarea>
+    </clr-textarea-container>
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="importModalOpen = false">Cancel</button>
