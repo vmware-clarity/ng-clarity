@@ -8,15 +8,12 @@
     "types": []
   },
   "angularCompilerOptions": {
-    "enableResourceInlining": true,
     "extendedDiagnostics": {
       "checks": {
         "nullishCoalescingNotNullable": "suppress",
         "optionalChainNotNullable": "suppress"
       }
-    },
-    "skipTemplateCodegen": true,
-    "strictMetadataEmit": true
+    }
   },
   "exclude": ["test.ts", "**/*.spec.ts", "**/*.stories.ts", "schematics/**"]
 }
