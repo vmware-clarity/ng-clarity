@@ -17,7 +17,7 @@
     "useDefineForClassFields": true,
     "target": "ES2022",
     "module": "es2020",
-    "lib": ["es2020", "dom", "dom.iterable"]
+    "lib": ["es2020", "dom"]
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
