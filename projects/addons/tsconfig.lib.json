@@ -4,7 +4,7 @@
     "target": "ES2022",
     "module": "es2020",
     "moduleResolution": "bundler",
-    "types": ["jasmine"],
+    "types": [],
     "declaration": true,
     "sourceMap": true,
     "inlineSources": true,
