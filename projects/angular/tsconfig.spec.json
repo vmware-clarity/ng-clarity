@@ -5,13 +5,5 @@
   },
   "files": ["test.ts"],
   "include": ["**/*.spec.ts", "**/*.d.ts"],
-  "exclude": ["schematics/**"],
-  "angularCompilerOptions": {
-    "extendedDiagnostics": {
-      "checks": {
-        "nullishCoalescingNotNullable": "suppress",
-        "optionalChainNotNullable": "suppress"
-      }
-    }
-  }
+  "exclude": ["schematics/**"]
 }
