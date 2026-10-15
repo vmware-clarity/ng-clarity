@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { NgModule, Type } from '@angular/core';
-import { ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, ClrIcon, pinIcon, unpinIcon } from '@clr/angular/icon';
 import { CdkTrapFocusModule } from '@clr/angular/utils';
 
 import { ClrModalModule } from './modal.module';
@@ -20,4 +20,8 @@ export const CLR_SIDEPANEL_DIRECTIVES: Type<any>[] = [ClrSidePanel];
   declarations: [CLR_SIDEPANEL_DIRECTIVES],
   exports: [CLR_SIDEPANEL_DIRECTIVES, ClrModalModule, ClrIcon],
 })
-export class ClrSidePanelModule {}
+export class ClrSidePanelModule {
+  constructor() {
+    ClarityIcons.addIcons(pinIcon, unpinIcon);
+  }
+}
