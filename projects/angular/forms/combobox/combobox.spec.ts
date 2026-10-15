@@ -285,6 +285,7 @@ export default function (): void {
       const identityFn = (item: Item) => item.id;
 
       @Component({
+        changeDetection: ChangeDetectionStrategy.Eager,
         template: `
           <clr-combobox [(ngModel)]="selection" [clrComboboxIdentityFn]="identityFn">
             <clr-options>

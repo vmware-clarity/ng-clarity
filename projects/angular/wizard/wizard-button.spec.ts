@@ -63,6 +63,7 @@ export default function (): void {
       const buttonHub = new ButtonHubMock();
 
       @Component({
+        changeDetection: ChangeDetectionStrategy.Eager,
         template: `<clr-wizard-button></clr-wizard-button>`,
         standalone: false,
       })

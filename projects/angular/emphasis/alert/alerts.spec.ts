@@ -241,6 +241,7 @@ export default function () {
 
   describe('with an initially-closed alert', () => {
     @Component({
+      changeDetection: ChangeDetectionStrategy.Eager,
       template: `
         <clr-alerts>
           <clr-alert [clrAlertClosed]="true">

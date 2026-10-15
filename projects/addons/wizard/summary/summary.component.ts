@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { StepModelHolder } from '@clr/addons/var';
 
 import { SummaryModel } from './summary.model';
@@ -15,6 +15,7 @@ import { SummaryModel } from './summary.model';
  * The data required by this component comes from the PropertyViewSectionModel returned by Step#summary
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-summary',
   standalone: false,
   templateUrl: 'summary.component.html',
