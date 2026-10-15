@@ -7,7 +7,7 @@
 
 import { Color } from './color';
 import { generateCSS } from './css-generator';
-import { parseGeneratedCSS } from './css-parser';
+import { parseGeneratedCSS, validateGeneratedCSS } from './css-parser';
 import { CdsThemeStructure, HslColor } from './types';
 
 function emptyStruct(): CdsThemeStructure {
@@ -88,5 +88,86 @@ describe('parseGeneratedCSS', () => {
     const names = (parsed.light.primary ?? []).map(c => c.name);
     expect(names).not.toContain('--cds-alias-object-interaction-background-hover');
     expect(names).toContain('--cds-alias-primary-tint');
+  });
+
+  it('skips a malformed declaration instead of importing it', () => {
+    const css = `[cds-theme~='light'] {
+  --cds-alias-primary: hsl(1.2.3deg 50% 50%);
+  --cds-alias-status-info: hsl(220deg, 60%, 45%);
+}`;
+
+    const parsed = parseGeneratedCSS(css);
+
+    expect(parsed.light.primary).toBeUndefined();
+    expect(colorsByName(parsed.light.info)).toEqual({ '--cds-alias-status-info': new HslColor(220, 60, 45) });
+  });
+});
+
+describe('validateGeneratedCSS', () => {
+  function changedStruct(): CdsThemeStructure {
+    const struct = emptyStruct();
+    struct.light.primary[0].color = new HslColor(10.5, 20.25, 30);
+    struct.dark.primary[0].color = new HslColor(11, 22, 33);
+    return struct;
+  }
+
+  it('accepts CSS produced by generateCSS', () => {
+    const css = generateCSS(changedStruct()).join('\n');
+    expect(validateGeneratedCSS(css)).toEqual({ valid: true, malformedDeclarations: [] });
+  });
+
+  it("rejects generateCSS's output for an unchanged theme", () => {
+    const css = generateCSS(emptyStruct()).join('\n');
+    expect(validateGeneratedCSS(css)).toEqual({ valid: false, malformedDeclarations: [] });
+  });
+
+  it('lists theme colors whose value is not in the generated hsl() shape', () => {
+    const css = `[cds-theme~='light'] {
+  --cds-alias-primary: hsl(1.2.3deg abc% 150%);
+  --cds-alias-status-info: #ff0000;
+  --cds-alias-status-success: hsl(120deg 50% 50%);
+  --cds-alias-status-warning: hsl(40deg, 50%, 150%);
+  --cds-alias-status-danger: hsl(0deg, 50%, 50%);
+}`;
+
+    expect(validateGeneratedCSS(css)).toEqual({
+      valid: false,
+      malformedDeclarations: [
+        '--cds-alias-primary: hsl(1.2.3deg abc% 150%)',
+        '--cds-alias-status-info: #ff0000',
+        '--cds-alias-status-success: hsl(120deg 50% 50%)',
+        '--cds-alias-status-warning: hsl(40deg, 50%, 150%)',
+      ],
+    });
+  });
+
+  it('lists a malformed hsl() value on an unknown token and anything that is not a custom property', () => {
+    const css = `[cds-theme~='dark'] {
+  --cds-alias-primary: hsl(10deg, 20%, 30%);
+  --not-a-theme-token: hsl(none none none);
+  color: red;
+}`;
+
+    expect(validateGeneratedCSS(css).malformedDeclarations).toEqual([
+      '--not-a-theme-token: hsl(none none none)',
+      'color: red',
+    ]);
+  });
+
+  it('ignores the var() overrides generateCSS emits alongside the theme colors', () => {
+    const struct = emptyStruct();
+    struct.light.primary = [new Color('--cds-alias-status-warning', 'hsl(48deg 94% 57%)')];
+    struct.light.primary[0].color = new HslColor(10, 20, 30);
+
+    const css = generateCSS(struct, true).join('\n');
+
+    expect(css).toContain('--cds-alias-typography-color-black');
+    expect(validateGeneratedCSS(css).valid).toBe(true);
+  });
+
+  it('rejects CSS with no recognized theme colors', () => {
+    for (const css of ['body { color: red; }', "[cds-theme~='light'] { --cds-alias-primary: hsl(10deg, 20%, 30%);"]) {
+      expect(validateGeneratedCSS(css)).toEqual({ valid: false, malformedDeclarations: [] });
+    }
   });
 });

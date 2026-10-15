@@ -7,8 +7,16 @@
 
 import { CommonModule } from '@angular/common';
 import { ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
-import { ThemeBuilderComponent as ClrThemeBuilder, Color, PRESETS, ThemePreset } from '@clr/addons/theme-builder';
+import {
+  ThemeBuilderComponent as ClrThemeBuilder,
+  Color,
+  PRESETS,
+  ThemeCssValidation,
+  ThemePreset,
+  validateGeneratedCSS,
+} from '@clr/addons/theme-builder';
 import {
   ClarityIcons,
   ClrAlertModule,
@@ -17,6 +25,7 @@ import {
   ClrTextareaModule,
   trashIcon,
 } from '@clr/angular';
+import { debounceTime, Subject } from 'rxjs';
 
 import { getFeatureFlags } from '../feature-flags';
 import { CodeSnippetComponent } from '../shared/code-snippet/code-snippet.component';
@@ -25,6 +34,7 @@ import { SiteNavComponent } from '../shared/site-nav/site-nav.component';
 import { ThemeLockService } from '../shared/theme-toggle/theme-lock.service';
 
 const CUSTOM_PRESETS_STORAGE_KEY = 'clr-theme-builder-custom-presets';
+const IMPORT_VALIDATION_DEBOUNCE_MS = 400;
 
 @Component({
   selector: 'app-theme-builder',
@@ -53,6 +63,10 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   importModalOpen = false;
   cssToImport = '';
+  /** Result of validating `cssToImport`; `null` until it has been checked (or while it's empty). */
+  importValidation: ThemeCssValidation | null = null;
+  /** `true` while a `cssToImport` change is waiting for its debounced validation. */
+  importValidationPending = false;
 
   clearPresetsModalOpen = false;
 
@@ -64,9 +78,19 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   private copiedTimer: ReturnType<typeof setTimeout> | null = null;
 
+  private readonly cssToImportChanges = new Subject<string>();
+
   constructor(public cd: ChangeDetectorRef) {
     ClarityIcons.addIcons(trashIcon);
     this.themeLockService.lockLightTheme();
+
+    this.cssToImportChanges
+      .pipe(debounceTime(IMPORT_VALIDATION_DEBOUNCE_MS), takeUntilDestroyed())
+      .subscribe(css => this.validateCssToImport(css));
+  }
+
+  get importDisabled(): boolean {
+    return !this.cssToImport.trim() || this.importValidationPending || !this.importValidation?.valid;
   }
 
   get presets(): ThemePreset[] {
@@ -122,15 +146,26 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   openImportModal(): void {
     this.cssToImport = '';
+    this.importValidation = null;
+    this.importValidationPending = false;
     this.importModalOpen = true;
   }
 
+  scheduleCssToImportValidation(css: string): void {
+    this.importValidationPending = true;
+    this.cssToImportChanges.next(css);
+  }
+
   confirmImportCss(): void {
-    if (!this.cssToImport.trim()) {
+    if (this.importDisabled) {
       return;
     }
 
-    this.themeBuilder.importCSS(this.cssToImport);
+    if (!this.themeBuilder.importCSS(this.cssToImport)) {
+      this.validateCssToImport(this.cssToImport);
+      return;
+    }
+
     this.importModalOpen = false;
   }
 
@@ -161,6 +196,11 @@ export class ThemeBuilderComponent implements OnDestroy {
     } catch {
       // clipboard not available — silently ignore
     }
+  }
+
+  private validateCssToImport(css: string): void {
+    this.importValidation = css.trim() ? validateGeneratedCSS(css) : null;
+    this.importValidationPending = false;
   }
 
   /**

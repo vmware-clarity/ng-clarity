@@ -70,7 +70,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     generatedCSS: EventEmitter<string>;
     // (undocumented)
     get generatedCss(): string;
-    importCSS(css: string): void;
+    importCSS(css: string): boolean;
     // (undocumented)
     get isDarkTheme(): boolean;
     // (undocumented)
@@ -151,6 +151,12 @@ export interface ThemeColors {
     warning?: Color[];
 }
 
+// @public
+export interface ThemeCssValidation {
+    malformedDeclarations: string[];
+    valid: boolean;
+}
+
 // @public (undocumented)
 export interface ThemePreset {
     // (undocumented)
@@ -160,6 +166,9 @@ export interface ThemePreset {
     // (undocumented)
     name: string;
 }
+
+// @public
+export function validateGeneratedCSS(css: string): ThemeCssValidation;
 
 // (No @packageDocumentation comment for this package)
 

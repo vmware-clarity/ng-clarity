@@ -22,7 +22,7 @@ import {
 
 import { Color } from './utils/color';
 import { generateCSS } from './utils/css-generator';
-import { parseGeneratedCSS } from './utils/css-parser';
+import { parseGeneratedCSS, validateGeneratedCSS } from './utils/css-parser';
 import {
   BACKGROUND_TOKENS,
   CLARITY_DEFAULT_PRESET,
@@ -185,9 +185,16 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
    * Re-applies previously generated CSS (e.g. the output of the `generatedCSS` event,
    * pasted back in by the user) by parsing it into a `CdsThemeStructure` (see
    * `parseGeneratedCSS`), grouped exactly like `colorStruct`. Applied the same way as a
-   * preset (see `applyGroupOverrides`).
+   * preset (see `applyGroupOverrides`). CSS that `validateGeneratedCSS` rejects is not
+   * applied at all, so the current colors are left untouched.
+   *
+   * @returns `true` when the CSS was applied, `false` when it was rejected as malformed.
    */
-  importCSS(css: string): void {
+  importCSS(css: string): boolean {
+    if (!validateGeneratedCSS(css).valid) {
+      return false;
+    }
+
     const parsed = parseGeneratedCSS(css);
 
     for (const theme of ['light', 'dark'] as const) {
@@ -201,6 +208,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     this.activePreset = null;
     this.applyPreviewStyles();
     this.refreshThemeColors();
+
+    return true;
   }
 
   resetAllThemeColors(theme: string) {

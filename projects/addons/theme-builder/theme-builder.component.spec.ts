@@ -262,6 +262,38 @@ describe('ThemeBuilderComponent', () => {
       expect(primaryBase.isOriginalColor).toBe(false);
       expect(infoBase.isOriginalColor).toBe(true);
     });
+
+    it('leaves the current colors untouched and returns false for malformed CSS', function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const primaryGroup = this.component.colorStruct['light']['primary'];
+      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      this.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
+
+      const malformed = `[cds-theme~='light'] {\n  ${primaryBase.name}: hsl(1.2.3deg 50% 50%);\n}`;
+
+      for (const css of [malformed, 'not generated css']) {
+        expect(this.component.importCSS(css)).toBe(false);
+        expect(primaryBase.hex).toBe('#112233');
+      }
+    });
+
+    it('returns true when the CSS is applied', function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const primaryGroup = this.component.colorStruct['light']['primary'];
+      const primaryBase = primaryGroup.find(c => c.label === 'Base');
+      this.component.setCurrentColor(primaryBase, '#112233', primaryGroup);
+
+      expect(this.component.importCSS(this.component.generatedCss)).toBe(true);
+    });
+
+    it("refuses the generated CSS of an unchanged theme (the '/* NO changes */' output)", function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      expect(this.component.generatedCss).toContain('NO changes');
+      expect(this.component.importCSS(this.component.generatedCss)).toBe(false);
+    });
   });
 
   describe('presetSwatchColor', () => {

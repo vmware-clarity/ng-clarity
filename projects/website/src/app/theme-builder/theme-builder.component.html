@@ -72,12 +72,37 @@
   <div class="modal-body">
     <clr-textarea-container cds-layout="m-t:none">
       <label>Paste generated CSS</label>
-      <textarea clrTextarea [(ngModel)]="cssToImport" rows="12" cols="120" name="cssToImportInput"></textarea>
+      <textarea
+        clrTextarea
+        [(ngModel)]="cssToImport"
+        (ngModelChange)="scheduleCssToImportValidation($event)"
+        rows="12"
+        cols="120"
+        name="cssToImportInput"
+      ></textarea>
     </clr-textarea-container>
+    @if (importValidation && !importValidation.valid) {
+      <clr-alert clrAlertType="danger" [clrAlertClosable]="false" cds-layout="m-t:md">
+        <clr-alert-item>
+          <span class="alert-text">Malformed CSS detected.</span>
+        </clr-alert-item>
+        @for (declaration of importValidation.malformedDeclarations; track $index) {
+          <clr-alert-item>
+            <span class="alert-text">
+              <code>{{ declaration }}</code>
+            </span>
+          </clr-alert-item>
+        } @empty {
+          <clr-alert-item>
+            <span class="alert-text">No Clarity theme colors found.</span>
+          </clr-alert-item>
+        }
+      </clr-alert>
+    }
   </div>
   <div class="modal-footer">
     <button type="button" class="btn btn-outline" (click)="importModalOpen = false">Cancel</button>
-    <button type="button" class="btn btn-primary" [disabled]="!cssToImport.trim()" (click)="confirmImportCss()">
+    <button type="button" class="btn btn-primary" [disabled]="importDisabled" (click)="confirmImportCss()">
       Import
     </button>
   </div>
