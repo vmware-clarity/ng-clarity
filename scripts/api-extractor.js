@@ -91,8 +91,10 @@ const LIBRARIES = [
  */
 function getDistPathMappings() {
   return LIBRARIES.reduce((paths, lib) => {
-    paths[lib.pkgName] = [lib.typesDir, lib.distDir];
-    paths[`${lib.pkgName}/*`] = [`${lib.typesDir}/*`, `${lib.distDir}/*`];
+    const typesDir = `./${path.relative(CWD, lib.typesDir).split(path.sep).join('/')}`;
+    const distDir = `./${path.relative(CWD, lib.distDir).split(path.sep).join('/')}`;
+    paths[lib.pkgName] = [typesDir, distDir];
+    paths[`${lib.pkgName}/*`] = [`${typesDir}/*`, `${distDir}/*`];
     return paths;
   }, {});
 }
@@ -210,8 +212,7 @@ function writeTempTsConfig(filePath, libConfig, distPaths) {
       {
         extends: fs.existsSync(projectTsConfig) ? projectTsConfig : undefined,
         compilerOptions: {
-          baseUrl: '.',
-          moduleResolution: 'node',
+          moduleResolution: 'bundler',
           preserveSymlinks: true,
           paths: distPaths,
           types: [],
