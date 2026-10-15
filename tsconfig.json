@@ -6,7 +6,7 @@
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
     "importHelpers": true,
-    "lib": ["es2022", "dom", "dom.iterable"],
+    "lib": ["es2022", "dom"],
     "module": "es2022",
     "moduleResolution": "bundler",
     "noFallthroughCasesInSwitch": true,
