@@ -6,7 +6,7 @@ import { Keys, uniqueIdFactory, ScrollingService, CdkTrapFocusModule } from '@cl
 import * as i4 from '@angular/common';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i5 from '@clr/angular/icon';
-import { ClarityIcons, windowCloseIcon, ClrIcon } from '@clr/angular/icon';
+import { ClarityIcons, windowCloseIcon, ClrIcon, pinIcon, unpinIcon } from '@clr/angular/icon';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -591,6 +591,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  */
 const CLR_SIDEPANEL_DIRECTIVES = [ClrSidePanel];
 class ClrSidePanelModule {
+    constructor() {
+        ClarityIcons.addIcons(pinIcon, unpinIcon);
+    }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSidePanelModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
     static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrSidePanelModule, declarations: [ClrSidePanel], imports: [CommonModule, CdkTrapFocusModule, ClrIcon, ClrModalModule], exports: [ClrSidePanel, ClrModalModule, ClrIcon] }); }
     static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSidePanelModule, imports: [CommonModule, CdkTrapFocusModule, ClrIcon, ClrModalModule, ClrModalModule] }); }
@@ -602,7 +605,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     declarations: [CLR_SIDEPANEL_DIRECTIVES],
                     exports: [CLR_SIDEPANEL_DIRECTIVES, ClrModalModule, ClrIcon],
                 }]
-        }] });
+        }], ctorParameters: () => [] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
