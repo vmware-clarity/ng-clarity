@@ -5434,6 +5434,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrSidePanelModule {
+    constructor();
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanelModule, never>;
     // (undocumented)
