@@ -7,7 +7,7 @@
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -84,6 +84,7 @@ describe('ColumnMoveActionDirective', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-datagrid-host-component',
   imports: [ClrDatagridModule, DatagridColumnsOrderModule, DragDropModule],
   template: `
