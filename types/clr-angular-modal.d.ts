@@ -151,6 +151,7 @@ declare class ClrSidePanel implements OnInit, OnDestroy {
 
 declare const CLR_SIDEPANEL_DIRECTIVES: Type<any>[];
 declare class ClrSidePanelModule {
+    constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanelModule, never>;
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrSidePanelModule, [typeof ClrSidePanel], [typeof i4.CommonModule, typeof i5.CdkTrapFocusModule, typeof i6.ClrIcon, typeof ClrModalModule], [typeof ClrSidePanel, typeof ClrModalModule, typeof i6.ClrIcon]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrSidePanelModule>;
