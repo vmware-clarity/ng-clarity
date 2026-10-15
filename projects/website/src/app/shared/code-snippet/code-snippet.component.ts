@@ -13,6 +13,7 @@ import prismjs from 'prismjs';
 // add languages for code highlighting
 import 'prismjs/components/prism-typescript';
 import 'prismjs/components/prism-bash';
+import 'prismjs/components/prism-json';
 
 /**
  * Describe ES5/6 module import
@@ -94,7 +95,17 @@ export class CodeSnippetComponent {
     const code = this._code?.trim();
     const language = this._language;
 
-    this.highlightedCode =
-      code && language ? prismjs.highlight(code, prismjs.languages[language], language) : undefined;
+    if (!code || !language) {
+      this.highlightedCode = undefined;
+      return;
+    }
+    // A language without a loaded grammar is shown as plain text: Prism throws for it, which
+    // would take the whole page's rendering down with it.
+    const grammar = prismjs.languages[language];
+    this.highlightedCode = grammar ? prismjs.highlight(code, grammar, language) : escapeHtml(code);
   }
+}
+
+function escapeHtml(code: string): string {
+  return code.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }

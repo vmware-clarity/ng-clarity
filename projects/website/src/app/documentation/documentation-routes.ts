@@ -97,6 +97,12 @@ export const documentationRoutes: Routes = [
       },
       {
         matcher: documentationRouteMatcher,
+        data: { routePath: 'contextual-engine/:tab?' },
+        loadChildren: () =>
+          import('./demos/contextual-engine/contextual-engine.demo.module').then(m => m.ContextualEngineDemoModule),
+      },
+      {
+        matcher: documentationRouteMatcher,
         data: { routePath: 'datagrid/:tab?' },
         loadChildren: () => import('./demos/datagrid/datagrid.demo.module').then(m => m.DatagridDemoModule),
       },
