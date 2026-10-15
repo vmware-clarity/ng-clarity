@@ -22,7 +22,7 @@
     "zone.js": "PLACEHOLDER"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "PLACEHOLDER",
+    "@angular/build": "PLACEHOLDER",
     "@angular/cli": "PLACEHOLDER",
     "@angular/compiler-cli": "PLACEHOLDER",
     "typescript": "PLACEHOLDER"
