@@ -70,6 +70,12 @@
             <ng-template [clrIfActive]="currentTab === 'api'"></ng-template>
           </clr-tab>
         }
+        @if (availableTabs['ai']) {
+          <clr-tab>
+            <a clrTabLink [routerLink]="[componentURL, 'ai']" (keyup.space)="$any($event.target).click()">AI</a>
+            <ng-template [clrIfActive]="currentTab === 'ai'"></ng-template>
+          </clr-tab>
+        }
         @if (availableTabs['accessibility'] && (accessibilityEnabled || type !== 'component')) {
           <clr-tab>
             <a clrTabLink [routerLink]="[componentURL, 'accessibility']" (keyup.space)="$any($event.target).click()">

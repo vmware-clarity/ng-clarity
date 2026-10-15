@@ -28,6 +28,7 @@ import { PersistenceGridDemoComponent } from './ng/persistance';
 import { PinnableColumnsGridDemoComponent } from './ng/pinnable-columns';
 import { ServerDrivenGridDemoComponent } from './ng/server-driven';
 import { VirtualScrollGridDemoComponent } from './ng/virtual-scroll';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -244,6 +245,7 @@ const additionalFiles = {
     DocTabComponent,
     ThemedImageComponent,
     CodeSnippetComponent,
+    AiSkillComponent,
     ClrAccordionModule,
     ClrDatagridModule,
     ClrIfExpanded,

@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
 import { DatepickerAPIDemo } from './demos/datepicker-api.demo';
 import { DatepickerInternationalizationDemo } from './demos/datepicker-internationalization.demo';
 import { DatepickerIODemo } from './demos/datepicker-io.demo';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabActiveDirective } from '../../../shared/doc-tabs/doc-tab-active.directive';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -42,6 +43,7 @@ registerLocaleData(localeFr);
     DatepickerIODemo,
     StyleDocsComponent,
     NestingTableComponent,
+    AiSkillComponent,
   ],
 })
 export class DatepickerDemo extends ClarityDocComponent {
