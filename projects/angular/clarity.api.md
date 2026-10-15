@@ -4268,6 +4268,7 @@ export class ClrKeyFocusModule {
 
 // @public (undocumented)
 export class ClrLabel {
+    constructor(el: ElementRef<HTMLElement>);
     // (undocumented)
     badgeText: string;
     // (undocumented)
@@ -5433,6 +5434,7 @@ export class ClrSidePanel implements OnInit, OnDestroy {
 
 // @public (undocumented)
 export class ClrSidePanelModule {
+    constructor();
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrSidePanelModule, never>;
     // (undocumented)
