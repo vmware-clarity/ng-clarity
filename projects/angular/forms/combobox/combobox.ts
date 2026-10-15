@@ -47,9 +47,11 @@ import {
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
   clrContextText,
+  ClrElementMutation,
   ClrLoadingState,
   clrNormalizeContextText,
   clrPublishElementContext,
+  clrPublishElementMutator,
   clrUsableSelectors,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
@@ -130,6 +132,7 @@ export class ClrCombobox<T>
   @ContentChild(ClrOptionItems) private optionItems: ClrOptionItems<T> | undefined;
 
   private teardownElementContext?: () => void;
+  private teardownElementMutator?: () => void;
 
   private _searchText = '';
   private onTouchedCallback: () => any;
@@ -291,6 +294,7 @@ export class ClrCombobox<T>
     this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions =>
       this.describeForContext(snapshotOptions)
     );
+    this.publishMutator(this.el.nativeElement);
 
     // Initialize with preselected value
     if (!this.optionSelectionService.selectionModel.isEmpty()) {
@@ -318,6 +322,7 @@ export class ClrCombobox<T>
   override ngOnDestroy(): void {
     super.ngOnDestroy();
     this.teardownElementContext?.();
+    this.teardownElementMutator?.();
     if (this.resizeObserver) {
       this.resizeObserver.disconnect();
     }
@@ -666,6 +671,85 @@ export class ClrCombobox<T>
     return !!this.optionItems && !this.optionSelectionService.showAllOptions && typed;
   }
 
+  /**
+   * Says how this combobox is written to: its form control holds an option's value,
+   * which may be an object, while an agent knows the option by the label it saw in the
+   * published context. Given a label (one per item for multi-select) this returns the
+   * option's value for the engine to write through the form control; a label no option
+   * has is refused with the options named, so a value the component would otherwise
+   * accept silently never reaches the model. Read back, the selection is labels again.
+   */
+  private publishMutator(host: HTMLElement) {
+    this.teardownElementMutator = clrPublishElementMutator(host, {
+      // The search input inside carries a form binding of its own, which is not the value.
+      ownsContents: true,
+      coerce: (proposed: unknown, options?: Required<ClrContextSnapshotOptions>) =>
+        this.coerceSelection(proposed, options),
+      read: (options?: Required<ClrContextSnapshotOptions>) => this.selectedLabels(this.excludedBy(options)),
+    });
+  }
+
+  /** The option values a proposal of labels names, or why it names none the agent may choose. */
+  private coerceSelection(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation {
+    const excluded = this.excludedBy(options);
+    // A value no option holds is shown by its own label.
+    const hidden = this.selectedValues().filter(value => {
+      const option = this.optionFor(value);
+      return !!option && this.optionShown(option, excluded) !== 'shown';
+    });
+    // One choice at a time: replacing one the agent was never shown would change what it
+    // cannot see, and could not undo. In a multi-select, such a selection stays as it is.
+    if (!this.multiSelect && hidden.length) {
+      return { refused: 'The current choice is kept from agents, and cannot be changed by one.' };
+    }
+    // The display is what the agent asked for, by the labels it knows: the selection it
+    // was never shown is kept in the value and left out of what it is shown.
+    if (proposed === null || proposed === undefined || proposed === '') {
+      return { value: this.multiSelect ? hidden : null, display: this.multiSelect ? [] : null };
+    }
+    const proposals = Array.isArray(proposed) ? proposed : [proposed];
+    if (!this.multiSelect && proposals.length > 1) {
+      return { refused: 'The combobox takes one option.' };
+    }
+    // Only the options the snapshot named can be chosen, or named in a refusal.
+    const items = (this.options?.items?.toArray() ?? []).filter(
+      option => this.optionShown(option, excluded) === 'shown'
+    );
+    const values: T[] = [...hidden];
+    const labels: string[] = [];
+    // Naming an option twice, or by its label and its value, chooses it once, as the user can.
+    const choose = (value: T, label: string) => {
+      if (!values.some(chosen => this.sameValue(chosen, value))) {
+        values.push(value);
+        labels.push(label);
+      }
+    };
+    for (const proposal of proposals) {
+      const matches = this.matchingOptions(items, proposal);
+      if (matches.length > 1) {
+        return {
+          refused: `Several options read "${String(proposal)}", and nothing tells which one is meant. Leave this choice to the user.`,
+        };
+      }
+      const option = matches[0];
+      if (option) {
+        choose(option.value, this.optionLabel(option));
+      } else if (this.editable && typeof proposal === 'string' && proposal.trim()) {
+        // An editable combobox takes what the user types, as it would from the keyboard.
+        const text = proposal.trim();
+        choose(this.optionSelectionService.editableResolver(text), text);
+      } else if (!items.length) {
+        return { refused: 'No options are loaded: the combobox loads them as the user types.' };
+      } else {
+        const named = items
+          .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
+          .map(candidate => `"${this.optionLabel(candidate)}"`);
+        return { refused: `No such option. The options are: ${named.join(', ')}.` };
+      }
+    }
+    return this.multiSelect ? { value: values, display: labels } : { value: values[0], display: labels[0] };
+  }
+
   /** The selector for what the snapshot options exclude, on this page. */
   private excludedBy(options?: ClrContextSnapshotOptions): string {
     return clrUsableSelectors(this.el.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
@@ -734,6 +818,14 @@ export class ClrCombobox<T>
     }
   }
 
+  private selectedValues(): T[] {
+    const model = this.optionSelectionService.selectionModel?.model;
+    if (model === null || model === undefined) {
+      return [];
+    }
+    return Array.isArray(model) ? model : [model];
+  }
+
   /**
    * The selection as the user sees it: the option's label when the value matches an
    * option, the display field otherwise, the value itself as a last resort. `[]` or
@@ -754,6 +846,43 @@ export class ClrCombobox<T>
       .filter(entry => entry.shown !== 'excluded')
       .map(entry => (entry.shown === 'shown' ? this.selectedValueLabel(entry.value, entry.option) : null));
     return this.multiSelect ? names : (names[0] ?? null);
+  }
+
+  /**
+   * The options a proposal names. Two can read the same — two people called "John Smith",
+   * a label that is another option's value — and only one naming them exactly tells
+   * which is meant: the one whose label is the proposal, else the one whose value is.
+   */
+  private matchingOptions(items: ClrOption<T>[], proposal: unknown): ClrOption<T>[] {
+    let matches = items.filter(candidate => this.optionMatches(candidate, proposal));
+    if (matches.length > 1 && typeof proposal === 'string') {
+      const wanted = clrNormalizeContextText(proposal);
+      const byLabel = matches.filter(candidate => clrNormalizeContextText(this.optionLabel(candidate)) === wanted);
+      matches = byLabel.length ? byLabel : matches;
+      const byValue = matches.filter(
+        candidate =>
+          (typeof candidate.value === 'string' || typeof candidate.value === 'number') &&
+          clrNormalizeContextText(String(candidate.value)) === wanted
+      );
+      matches = byValue.length ? byValue : matches;
+    }
+    return matches;
+  }
+
+  private optionMatches(option: ClrOption<T>, proposal: unknown): boolean {
+    if (typeof proposal !== 'string') {
+      return this.sameValue(option.value, proposal);
+    }
+    const wanted = clrNormalizeContextText(proposal);
+    if (clrNormalizeContextText(this.optionLabel(option)) === wanted) {
+      return true;
+    }
+    const value = option.value;
+    if (typeof value === 'string' || typeof value === 'number') {
+      return clrNormalizeContextText(String(value)) === wanted;
+    }
+    const display = this.selectedValueLabel(value, this.optionFor(value));
+    return typeof display === 'string' && clrNormalizeContextText(display) === wanted;
   }
 
   /**

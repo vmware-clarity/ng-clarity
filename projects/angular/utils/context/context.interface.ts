@@ -33,6 +33,16 @@ export interface ClrComponentContext {
    * level: there is no separate flattened list, so nesting is never discarded.
    */
   children?: ClrComponentContext[];
+  /**
+   * A handle the mutation engine accepts in place of this node — `e4k9x2m7q` — present
+   * only on nodes the engine may be able to write to, and only while the application has
+   * enabled mutations. An agent recalls a ref from the snapshot it read; it never
+   * constructs one, and refs are random so it cannot guess one. A ref stays the same for
+   * the same element from one snapshot to the next and resolves for as long as the
+   * element is in the document; whether it may be written is decided when a write is
+   * attempted.
+   */
+  ref?: string;
 }
 
 /**
