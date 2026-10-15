@@ -127,15 +127,15 @@
         "offset": 0,
         "easing": "ease-in-out",
         "composite": "auto",
-        "height": "465px",
-        "display": "block"
+        "display": "block",
+        "height": "465px"
       },
       {
         "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "height": "0px",
-        "display": "none"
+        "display": "none",
+        "height": "0px"
       }
     ]
   },
@@ -152,15 +152,15 @@
         "offset": 0,
         "easing": "ease-in-out",
         "composite": "auto",
-        "height": "0px",
-        "display": "block"
+        "display": "block",
+        "height": "0px"
       },
       {
         "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "height": "145px",
-        "display": "block"
+        "display": "block",
+        "height": "145px"
       }
     ]
   }
