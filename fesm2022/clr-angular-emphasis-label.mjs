@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Input, Component } from '@angular/core';
+import { HostListener, Input, Component } from '@angular/core';
 import { ClrBadge } from '@clr/angular/emphasis/badge';
 import { Type } from '@clr/angular/emphasis/common';
 
@@ -23,13 +23,24 @@ var ClrLabelColors;
     ClrLabelColors["Purple"] = "purple";
 })(ClrLabelColors || (ClrLabelColors = {}));
 class ClrLabel {
-    constructor() {
+    constructor(el) {
+        this.el = el;
         this.color = ClrLabelColors.None;
         this.badgeText = '';
         this.textContent = '';
         this.clickable = false;
         this.disabled = false;
         this.type = Type.Outlined;
+        this.stopClickIfDisabled = ($event) => {
+            if (this.clickable && this.disabled) {
+                $event.preventDefault();
+                $event.stopImmediatePropagation();
+            }
+        };
+        // Capture phase, so it runs before the click handlers that the app binds on the same element.
+        // No removeEventListener needed: the listener lives on the host element and only references this
+        // instance, so both are garbage-collected together once Angular destroys the component.
+        el.nativeElement.addEventListener('click', this.stopClickIfDisabled, true);
     }
     get isSolid() {
         return this.type === Type.Solid;
@@ -37,8 +48,14 @@ class ClrLabel {
     get colorClass() {
         return this.color ? `label-${this.color}` : '';
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrLabel, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrLabel, isStandalone: true, selector: "clr-label", inputs: { color: ["clrColor", "color"], badgeText: ["clrBadgeText", "badgeText"], textContent: ["clrText", "textContent"], clickable: ["clrClickable", "clickable"], disabled: ["clrDisabled", "disabled"], type: ["clrType", "type"] }, host: { properties: { "class.clickable": "clickable", "class.disabled": "disabled", "class.solid": "isSolid", "class": "colorClass" }, classAttribute: "label" }, ngImport: i0, template: `@if (textContent) {
+    onActivationKeydown($event) {
+        if (this.clickable && !this.disabled && $event.target === this.el.nativeElement) {
+            $event.preventDefault(); // keep space from scrolling the page
+            this.el.nativeElement.click();
+        }
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrLabel, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrLabel, isStandalone: true, selector: "clr-label", inputs: { color: ["clrColor", "color"], badgeText: ["clrBadgeText", "badgeText"], textContent: ["clrText", "textContent"], clickable: ["clrClickable", "clickable"], disabled: ["clrDisabled", "disabled"], type: ["clrType", "type"] }, host: { listeners: { "keydown.enter": "onActivationKeydown($event)", "keydown.space": "onActivationKeydown($event)" }, properties: { "class.clickable": "clickable", "class.disabled": "disabled", "attr.role": "clickable ? 'button' : null", "attr.tabindex": "clickable && !disabled ? 0 : null", "attr.aria-disabled": "clickable && disabled ? 'true' : null", "class.solid": "isSolid", "class": "colorClass" }, classAttribute: "label" }, ngImport: i0, template: `@if (textContent) {
       <span class="text">{{ textContent }}</span>
     }
 
@@ -65,12 +82,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                         class: 'label',
                         '[class.clickable]': 'clickable',
                         '[class.disabled]': 'disabled',
+                        '[attr.role]': "clickable ? 'button' : null",
+                        '[attr.tabindex]': 'clickable && !disabled ? 0 : null',
+                        '[attr.aria-disabled]': "clickable && disabled ? 'true' : null",
                         '[class.solid]': 'isSolid',
                         '[class]': 'colorClass',
                     },
                     imports: [ClrBadge],
                 }]
-        }], propDecorators: { color: [{
+        }], ctorParameters: () => [{ type: i0.ElementRef }], propDecorators: { color: [{
                 type: Input,
                 args: ['clrColor']
             }], badgeText: [{
@@ -88,6 +108,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
             }], type: [{
                 type: Input,
                 args: ['clrType']
+            }], onActivationKeydown: [{
+                type: HostListener,
+                args: ['keydown.enter', ['$event']]
+            }, {
+                type: HostListener,
+                args: ['keydown.space', ['$event']]
             }] } });
 
 /*
