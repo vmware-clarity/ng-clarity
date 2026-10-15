@@ -160,6 +160,9 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
 
 // @public
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public (undocumented)
@@ -389,6 +392,9 @@ export interface ClrContextSnapshotOptions {
     maxTextLength?: number;
     rootSelector?: string;
 }
+
+// @public
+export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string;
 
 // @public
 export class ClrDestroyService extends Subject<void> implements OnDestroy {
@@ -637,6 +643,9 @@ export enum ClrLoadingState {
     // (undocumented)
     SUCCESS = 2
 }
+
+// @public
+export function clrNormalizeContextText(text: string, lowercase?: boolean): string;
 
 // @public (undocumented)
 export class ClrOutsideClickModule {

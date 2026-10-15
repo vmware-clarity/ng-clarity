@@ -1174,7 +1174,12 @@ function finish(
   // itself is not merged at all: a publisher reports its own state — a grid's rows and
   // selection, a combobox's value — and would otherwise carry it straight out. Nor is it
   // when the caller excluded what the component renders (see `rendersExcludedRole`).
-  let described = redacted || !published ? node : mergeElementContext(node, element, walk.options);
+  let described = node;
+  if (published) {
+    described = redacted
+      ? withoutOverriddenLabel(node, element, walk)
+      : mergeElementContext(node, element, walk.options);
+  }
   // A component that says it is something the caller excluded is left out like any
   // element with that role, whatever the DOM said about it. The node was counted against
   // the budget, which it no longer uses.
@@ -1192,6 +1197,23 @@ function finish(
   }
 
   return pruneEmpty(described, { foreign: unpruned });
+}
+
+/**
+ * A redacted node without the name its markup gives it, when its element publishes a name
+ * of its own. A component publishes a name because the markup's says more than it should
+ * — a datepicker toggle's names the date the user picked — and the published one is not
+ * used either, since inside a redacted region it may be the very content withheld.
+ */
+function withoutOverriddenLabel(node: ClrComponentContext, element: Element, walk: Walk): ClrComponentContext {
+  // Reading the published label runs the component's whole callback (a datagrid reads
+  // every row), so it is done only for a node that has a label to lose.
+  if (node.label === undefined || typeof readClrElementContext(element, walk.options)?.label !== 'string') {
+    return node;
+  }
+  const unnamed = { ...node };
+  delete unnamed.label;
+  return unnamed;
 }
 
 function listOf(node: ClrComponentContext | null): ClrComponentContext[] {

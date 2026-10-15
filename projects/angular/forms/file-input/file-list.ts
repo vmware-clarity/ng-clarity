@@ -37,6 +37,7 @@ import {
               {{ file.name }}
               <button
                 class="btn btn-sm btn-link-neutral btn-icon clr-file-clear-button"
+                data-clr-context-ignore
                 [attr.aria-label]="getClearFileLabel(file.name)"
                 (click)="clearFile(file)"
               >
@@ -58,6 +59,9 @@ import {
   host: {
     '[attr.role]': '"list"',
     '[class.clr-file-list]': 'true',
+    // Each entry names a file the user chose, and the list's `itemCount` is not withheld;
+    // the container publishes the count instead.
+    'data-clr-context-ignore': '',
   },
   standalone: false,
 })

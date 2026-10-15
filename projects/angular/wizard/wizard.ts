@@ -23,7 +23,13 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import {
+  ClrCommonStringsService,
+  clrContextText,
+  clrNormalizeContextText,
+  clrPublishElementContext,
+  uniqueIdFactory,
+} from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -167,6 +173,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
+  private teardownElementContext?: () => void;
   private _forceForward = false;
   private _stopNext = false;
   private _stopCancel = false;
@@ -328,6 +335,35 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   ngAfterContentInit(): void {
+    // Each step's completion and error state lives in a CSS class on its stepnav item.
+    // The icon there does carry an accessible name for it, but the icon sits inside a
+    // button, and a button is described as a leaf — so nothing reaches it. The step
+    // titles are in the DOM and readable; these facts are not. Each step's title is
+    // published with them all the same, read from its stepnav item, so a snapshot that
+    // leaves out the stepnav still says which step is which.
+    this.teardownElementContext = clrPublishElementContext(this.elementRef.nativeElement, () => {
+      const pages = this.pages?.toArray() ?? [];
+      // A closed wizard is not on the page, so its steps are not either.
+      if (!pages.length || !this._open) {
+        return null;
+      }
+      const currentStepIndex = pages.findIndex(page => page.current);
+      return {
+        state: {
+          stepCount: pages.length,
+          ...(currentStepIndex >= 0 ? { currentStepIndex } : {}),
+          steps: pages.map((page, index) => ({
+            index,
+            ...this.stepTitle(page),
+            current: page.current,
+            complete: page.completed,
+            error: page.hasError,
+            navigable: page.enabled,
+          })),
+        },
+      };
+    });
+
     this.navService.stepnavLayout = this.stepnavLayout;
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
@@ -344,6 +380,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   ngOnDestroy(): void {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
@@ -582,5 +619,16 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       this.forceFinish();
     }
     this.wizardFinished.emit();
+  }
+
+  /**
+   * The title a page's stepnav item shows, as page-context tooling reads it, or nothing
+   * when the item shows none.
+   */
+  private stepTitle(page: ClrWizardPage): { title?: string } {
+    const id = `${this.pageCollection.getStepItemIdForPage(page)}-step-title`;
+    const element = this.elementRef.nativeElement.querySelector(`#${CSS.escape(id)}`);
+    const title = element ? clrNormalizeContextText(clrContextText(element), false) : '';
+    return title ? { title } : {};
   }
 }

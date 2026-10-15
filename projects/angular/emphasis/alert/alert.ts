@@ -17,7 +17,7 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
-import { ClrCommonStringsService } from '@clr/angular/utils';
+import { ClrCommonStringsService, clrPublishElementContext } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
@@ -43,6 +43,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   private subscriptions: Subscription[] = [];
   private _isLightweight = false;
   private _origAlertType: string;
+  private teardownElementContext?: () => void;
 
   constructor(
     private iconService: AlertIconAndTypesService,
@@ -109,6 +110,13 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+    // Which of danger, warning, success, info or neutral this is lives in a CSS class,
+    // which nothing can read semantically, so the component reports it directly.
+    // A dismissed alert is no longer on the page, so it says nothing.
+    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () =>
+      this._closed ? null : { state: { severity: this.alertType } }
+    );
+
     if (this.multiAlertService) {
       this.subscriptions.push(
         this.multiAlertService.changes.subscribe(() => {
@@ -119,6 +127,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 

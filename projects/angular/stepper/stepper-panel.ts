@@ -14,6 +14,7 @@ import {
   ElementRef,
   HostBinding,
   Inject,
+  inject,
   OnInit,
   Optional,
   PLATFORM_ID,
@@ -22,9 +23,14 @@ import {
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
-import { ClrCommonStringsService, IfExpandService, triggerAllFormControlValidation } from '@clr/angular/utils';
+import {
+  ClrCommonStringsService,
+  clrPublishElementContext,
+  IfExpandService,
+  triggerAllFormControlValidation,
+} from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
-import { filter, map, pairwise, startWith, tap } from 'rxjs/operators';
+import { filter, map, pairwise, startWith, take, tap } from 'rxjs/operators';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
 import { StepperPanelModel } from './models/stepper-panel.model';
@@ -47,6 +53,8 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   readonly PanelStatus = StepperPanelStatus;
   override panel: Observable<StepperPanelModel>;
 
+  private readonly hostElement: ElementRef<HTMLElement> = inject(ElementRef);
+  private teardownElementContext?: () => void;
   private subscriptions: Subscription[] = [];
 
   constructor(
@@ -94,6 +102,15 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
 
   override ngOnInit(): void {
     super.ngOnInit();
+
+    // The status is otherwise announced only as a transient live-region message beside
+    // the step, and only when it is complete or in error — so a step that is simply not
+    // started, or currently open, says nothing about itself. Read at snapshot time from
+    // the service, which always holds the current model, rather than remembered from the
+    // template's stream — which has not emitted yet between init and first render.
+    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
+      state: { status: this.currentStatus() },
+    }));
     this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));
     this.stepperService.disablePanel(this.id, true);
     this.listenToFocusChanges();
@@ -130,6 +147,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
@@ -139,6 +157,16 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
 
   protected stepErrorText(panelNumber: number) {
     return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
+  }
+
+  /** The step's status now: the service's panels are held in a subject that replays them at once. */
+  private currentStatus(): StepperPanelStatus {
+    let status = StepperPanelStatus.Inactive;
+    this.stepperService
+      .getPanelChanges(this.id)
+      .pipe(take(1))
+      .subscribe(panel => (status = (panel as StepperPanelModel | undefined)?.status ?? status));
+    return status;
   }
 
   private listenToFocusChanges() {

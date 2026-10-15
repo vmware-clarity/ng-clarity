@@ -28,6 +28,7 @@ import {
 } from '@angular/core';
 import {
   ClrCommonStringsService,
+  clrPublishElementContext,
   IfExpandService,
   isKeyEitherLetterOrNumber,
   Keys,
@@ -95,6 +96,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   contentContainerTabindex = -1;
   _model: TreeNodeModel<T>;
 
+  private teardownElementContext?: () => void;
   private bulkChange = false;
   private skipAnimation = false;
   private skipEmitChange = false;
@@ -211,6 +213,17 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnInit() {
+    // aria-expanded says collapsed; it cannot say whether anything is under the node, and
+    // a lazily loaded subtree is absent from the DOM until it arrives. The loading
+    // indicator is a bare span with no aria-busy, so neither fact is otherwise readable.
+    this.teardownElementContext = clrPublishElementContext(this.elementRef.nativeElement, () => {
+      const state: Record<string, unknown> = { expandable: !!this.isExpandable() };
+      if (this.expandService.loading || this.isModelLoading) {
+        state.loading = true;
+      }
+      return { state };
+    });
+
     this._model.expanded = this.expanded;
     this._model.disabled = this.disabled;
     this.subscriptions.push(
@@ -284,6 +297,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnDestroy() {
+    this.teardownElementContext?.();
     this._model.destroy();
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
