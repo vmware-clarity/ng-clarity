@@ -24,7 +24,7 @@ import { ColumnDefinition, ColumnRenderer } from './shared/column/column-definit
   standalone: false,
   template: `
     @if (!column.columnRenderer) {
-      <span [title]="$safeNavigationMigration(item?.[column.field])">{{ item?.[column.field] }}</span>
+      <span [title]="item?.[column.field] ?? null">{{ item?.[column.field] }}</span>
     }
     <ng-template #cellContainer></ng-template>
   `,

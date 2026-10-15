@@ -105,8 +105,8 @@
       >
       <clr-dg-cell>{{user?.name}} {{user?.name}} {{user?.name}} {{user?.name}}</clr-dg-cell>
       <clr-dg-cell
-        >{{$safeNavigationMigration(user?.creation) | date}} {{$safeNavigationMigration(user?.creation) | date}}
-        {{$safeNavigationMigration(user?.creation) | date}}</clr-dg-cell
+        >{{(user?.creation ?? null) | date}} {{(user?.creation ?? null) | date}} {{(user?.creation ?? null) |
+        date}}</clr-dg-cell
       >
       <clr-dg-cell>
         {{user?.pokemon?.name}}
@@ -116,10 +116,7 @@
         <span class="color-square" [style.backgroundColor]="user?.color"></span>
       </clr-dg-cell>
       <ng-container ngProjectAs="clr-dg-row-detail">
-        <clr-dg-row-detail
-          [clrIfExpanded]="$safeNavigationMigration(user?.expanded)"
-          (clrIfExpandedChange)="setExpanded($event, user)"
-        >
+        <clr-dg-row-detail [clrIfExpanded]="(user?.expanded ?? null)" (clrIfExpandedChange)="setExpanded($event, user)">
           {{user | json}}
         </clr-dg-row-detail>
       </ng-container>

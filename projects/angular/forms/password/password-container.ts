@@ -37,17 +37,13 @@ export const TOGGLE_SERVICE_PROVIDER = { provide: TOGGLE_SERVICE, useFactory: To
           @if (clrToggle) {
             <button
               (click)="toggle()"
-              [disabled]="$safeNavigationMigration(control?.disabled)"
+              [disabled]="control?.disabled ?? null"
               class="clr-input-group-icon-action"
               type="button"
             >
               <cds-icon class="clr-password-eye-icon" [shape]="show ? 'eye-hide' : 'eye'"></cds-icon>
               <span class="clr-sr-only">
-                {{
-                  show
-                    ? hidePasswordText($safeNavigationMigration(label?.labelText))
-                    : showPasswordText($safeNavigationMigration(label?.labelText))
-                }}
+                {{ show ? hidePasswordText(label?.labelText ?? null) : showPasswordText(label?.labelText ?? null) }}
               </span>
             </button>
           }
