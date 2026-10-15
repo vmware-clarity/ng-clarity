@@ -101,37 +101,39 @@
                 </div>
               </clr-stack-content>
 
-              @for (colorVariant of colorGroup.variants; track colorVariant.label) {
-                <clr-stack-block [clrStackViewLevel]="2">
-                  <clr-stack-label>{{ colorVariant.label }}</clr-stack-label>
-                  <clr-stack-content>
-                    <div class="tb-color-input-wrap">
-                      <input
-                        type="color"
-                        class="tb-color-picker"
-                        [value]="colorVariant.hex"
-                        [attr.aria-label]="colorGroup.key + ' ' + colorVariant.label + ' color picker'"
-                        (input)="setCurrentColor(colorVariant, $any($event.target).value)"
-                      />
-                      <input
-                        readonly
-                        type="text"
-                        class="tb-hex-input"
-                        [value]="colorVariant.hex"
-                        [attr.aria-label]="colorGroup.key + ' ' + colorVariant.label + ' color hex value'"
-                      />
-                      <button
-                        *ngIf="!colorVariant.isOriginalColor"
-                        class="btn btn-sm btn-icon btn-primary"
-                        (click)="resetColor($event, colorVariant)"
-                        title="Back to original color"
-                      >
-                        <cds-icon shape="undo"></cds-icon>
-                      </button>
-                    </div>
-                  </clr-stack-content>
-                </clr-stack-block>
-              }
+              <ng-container ngProjectAs="clr-stack-block">
+                @for (colorVariant of colorGroup.variants; track colorVariant.label) {
+                  <clr-stack-block [clrStackViewLevel]="2">
+                    <clr-stack-label>{{ colorVariant.label }}</clr-stack-label>
+                    <clr-stack-content>
+                      <div class="tb-color-input-wrap">
+                        <input
+                          type="color"
+                          class="tb-color-picker"
+                          [value]="colorVariant.hex"
+                          [attr.aria-label]="colorGroup.key + ' ' + colorVariant.label + ' color picker'"
+                          (input)="setCurrentColor(colorVariant, $any($event.target).value)"
+                        />
+                        <input
+                          readonly
+                          type="text"
+                          class="tb-hex-input"
+                          [value]="colorVariant.hex"
+                          [attr.aria-label]="colorGroup.key + ' ' + colorVariant.label + ' color hex value'"
+                        />
+                        <button
+                          *ngIf="!colorVariant.isOriginalColor"
+                          class="btn btn-sm btn-icon btn-primary"
+                          (click)="resetColor($event, colorVariant)"
+                          title="Back to original color"
+                        >
+                          <cds-icon shape="undo"></cds-icon>
+                        </button>
+                      </div>
+                    </clr-stack-content>
+                  </clr-stack-block>
+                }
+              </ng-container>
             </clr-stack-block>
           </clr-stack-view>
 

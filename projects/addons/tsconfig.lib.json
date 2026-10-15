@@ -22,12 +22,6 @@
   },
   "angularCompilerOptions": {
     "preserveWhitespaces": true,
-    "extendedDiagnostics": {
-      "checks": {
-        "nullishCoalescingNotNullable": "suppress",
-        "optionalChainNotNullable": "suppress"
-      }
-    },
     "strictTemplates": true,
     "strictInjectionParameters": true
   },

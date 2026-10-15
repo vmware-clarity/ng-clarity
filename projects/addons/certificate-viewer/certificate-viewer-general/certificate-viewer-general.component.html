@@ -18,10 +18,7 @@
   </ng-container>
 
   <ng-container
-    *ngTemplateOutlet="
-      relativeDistinguishedNames;
-      context: { certificate: $safeNavigationMigration(certificate?.subject) }
-    "
+    *ngTemplateOutlet="relativeDistinguishedNames; context: { certificate: certificate?.subject ?? null }"
   ></ng-container>
 </section>
 
@@ -39,10 +36,7 @@
   </ng-container>
 
   <ng-container
-    *ngTemplateOutlet="
-      relativeDistinguishedNames;
-      context: { certificate: $safeNavigationMigration(certificate?.issuer) }
-    "
+    *ngTemplateOutlet="relativeDistinguishedNames; context: { certificate: certificate?.issuer ?? null }"
   ></ng-container>
 </section>
 
@@ -62,13 +56,13 @@
   <dl class="key-value">
     <dt>{{ 'issued-on' | translate }}</dt>
     <dd id="issue-date">
-      {{ $safeNavigationMigration(certificate?.certificate?.notBefore?.value) | dateTime: dateTimeFormat }}
+      {{ certificate?.certificate?.notBefore?.value ?? null | dateTime: dateTimeFormat }}
     </dd>
   </dl>
   <dl class="key-value">
     <dt>{{ 'expires-on' | translate }}</dt>
     <dd id="expiry-date">
-      {{ $safeNavigationMigration(certificate?.certificate?.notAfter?.value) | dateTime: dateTimeFormat }}
+      {{ certificate?.certificate?.notAfter?.value ?? null | dateTime: dateTimeFormat }}
     </dd>
   </dl>
 </section>

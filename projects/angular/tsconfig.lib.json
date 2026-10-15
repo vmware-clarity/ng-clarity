@@ -7,13 +7,5 @@
     "noImplicitOverride": true,
     "types": []
   },
-  "angularCompilerOptions": {
-    "extendedDiagnostics": {
-      "checks": {
-        "nullishCoalescingNotNullable": "suppress",
-        "optionalChainNotNullable": "suppress"
-      }
-    }
-  },
   "exclude": ["test.ts", "**/*.spec.ts", "**/*.stories.ts", "schematics/**"]
 }
