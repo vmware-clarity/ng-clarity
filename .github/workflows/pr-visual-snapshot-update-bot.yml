@@ -57,7 +57,7 @@ jobs:
           git checkout HEAD -- scripts/delete-unused-screenshots.ts
 
           # delete unused screenshots
-          npm run ts-node -- ./scripts/delete-unused-screenshots.ts
+          node --experimental-strip-types ./scripts/delete-unused-screenshots.ts
       - name: Check for Changes
         id: diff
         run: |
