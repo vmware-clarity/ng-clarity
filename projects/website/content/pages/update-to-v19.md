@@ -43,3 +43,9 @@ sixth constructor argument, after `deferAnchors`, and `ConfigurableFocusTrap` ta
 its configuration argument. `ConfigurableFocusTrapFactory` has a zero-argument constructor; obtain it
 through Angular dependency injection and call `create(element, config)` instead of passing dependencies
 to the factory constructor. Clarity's website focus-trap override has been adapted to the new signature.
+
+## Enum declarations
+
+The exported `Reason` enum in `@clr/addons/wizard` is now a regular enum rather than a const enum, so
+applications using `isolatedModules` can reference its members. Its `finish` and `cancel` string values
+are unchanged. Internal icon size and certificate algorithm enums also use regular enum declarations.

@@ -605,7 +605,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
 /**
  * Reason for Wizard close.
  */
-export const enum Reason {
+export enum Reason {
   /**
    * Wizard closed by clicking finish button.
    */
