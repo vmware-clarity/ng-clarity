@@ -264,6 +264,11 @@ module.exports = [
     },
   },
 
+  {
+    files: ['projects/angular/**/*.ts', 'projects/addons/**/*.ts'],
+    rules: { 'ng-clarity-eslint-rules/explicit-change-detection': 'error' },
+  },
+
   globalIgnores([
     '!**/.*',
     '.angular',

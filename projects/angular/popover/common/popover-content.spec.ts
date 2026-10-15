@@ -30,6 +30,7 @@ import { ClrPopoverPosition } from './utils/popover-positions';
   standalone: false,
 })
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ``,
   providers: [ClrPopoverService],
   standalone: false,
