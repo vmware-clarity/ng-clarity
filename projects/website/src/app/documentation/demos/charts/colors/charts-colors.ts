@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ChartsColorsCategorical } from './categorical/charts-colors-categorical';
 import { ChartsColorsDiverging } from './diverging/charts-colors-diverging';
@@ -15,6 +15,7 @@ import { ChartsColorsSeverity } from './severity/charts-colors-severity';
 @Component({
   selector: 'app-charts-colors',
   templateUrl: './charts-colors.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ChartsColorsCategorical, ChartsColorsSequential, ChartsColorsDiverging, ChartsColorsSeverity],
 })
 export class ChartsColors {}

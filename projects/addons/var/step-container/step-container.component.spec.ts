@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, DebugElement, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, NgModule } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,6 +37,7 @@ class MockPageModel implements StepModel {
 
 @Component({
   selector: 'mock-page-component',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<div>Mock Page Content</div>`,
 })
 class MockPageComponent implements OnStepActivate, OnStepValidate, StepModelHolder {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
 
@@ -17,6 +17,7 @@ import { ClrCombobox } from './combobox';
       <clr-options class="test">Test</clr-options>
     </clr-combobox>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestSelectWithMenu {}

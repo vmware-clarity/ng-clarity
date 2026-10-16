@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  Input,
+  OnDestroy,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { startWith, Subscription } from 'rxjs';
 
 import { ClrWizardStepnavLayout } from './interfaces/wizard-stepnav-layout';
@@ -57,6 +66,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
   `,
   host: { class: 'clr-wizard-stepnav' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   @Input() label: string;

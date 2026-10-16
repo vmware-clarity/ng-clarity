@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, InjectionToken, NgModule, OnInit, Type, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  InjectionToken,
+  NgModule,
+  OnInit,
+  Type,
+  ViewContainerRef,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -19,6 +28,7 @@ const WRAPPER_SERVICE = new InjectionToken<number>('WrapperService');
   selector: 'wrapper-component',
   template: `Hello <ng-content></ng-content>!`,
   providers: [{ provide: WRAPPER_SERVICE, useValue: 42 }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WrapperComponent {}
@@ -45,12 +55,14 @@ class HostWrappingTestModule {}
 
 @Component({
   template: `<span wrappedDirective>World</span>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class WrappingTest {}
 
 @Component({
   template: `<wrapper-component><span wrappedDirective>World</span></wrapper-component>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExplicitTest {}
@@ -59,6 +71,7 @@ class ExplicitTest {}
   template: `@if (show) {
     <span wrappedDirective>World</span>
   }`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NgIfTest {

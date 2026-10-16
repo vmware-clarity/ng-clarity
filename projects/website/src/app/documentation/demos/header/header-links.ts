@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrIcon, ClrIconModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -39,6 +39,7 @@ const EXAMPLE = `
   selector: 'clr-header-demo-links',
   templateUrl: './header-links.demo.html',
   styleUrl: './headers.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
 })
 export class HeaderLinksDemo {

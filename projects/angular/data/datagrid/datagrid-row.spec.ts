@@ -6,7 +6,7 @@
  */
 
 import { AnimationBuilder } from '@angular/animations';
-import { ChangeDetectorRef, Component, EmbeddedViewRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, EmbeddedViewRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, TestContext } from '@clr/angular/testing';
@@ -802,12 +802,14 @@ function getFixedCellViews(row: ClrDatagridRow): EmbeddedViewRef<void>[] {
       <clr-dg-cell>Hello world</clr-dg-cell>
     </clr-dg-row>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ProjectionTest {}
 
 @Component({
   template: `<clr-dg-row [clrDgItem]="item" [clrDgSelectable]="clrDgSelectable">None</clr-dg-row>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SelectableRow {
@@ -821,6 +823,7 @@ class SelectableRow {
       None
     </clr-dg-row>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SelectableRowOrder {
@@ -831,6 +834,7 @@ class SelectableRowOrder {
 
 @Component({
   template: `<clr-dg-row [clrDgItem]="item" [(clrDgSelected)]="selected">Hello world</clr-dg-row>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {
@@ -853,6 +857,7 @@ class FullTest {
       }
     </clr-dg-row>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExpandTest {
@@ -870,6 +875,7 @@ class ExpandTest {
       }
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NgForDatagridWithTrackBy {
@@ -898,6 +904,7 @@ class NgForDatagridWithTrackBy {
       </ng-template>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DatagridWithDisabledOrHiddenDetails {
@@ -944,6 +951,7 @@ class DatagridWithDisabledOrHiddenDetails {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class RowSelectionWithExpandAndActionTest {
@@ -974,6 +982,7 @@ class RowSelectionWithExpandAndActionTest {
       </clr-dg-detail>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class RowSelectionWithDetailAndActionTest {

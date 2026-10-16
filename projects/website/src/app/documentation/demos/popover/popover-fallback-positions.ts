@@ -6,7 +6,7 @@
  */
 
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { ClrIcon, ClrPopoverContent, ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -67,6 +67,7 @@ export class PopoverFallbackComponent {
   styleUrl: './popover.demo.scss',
   encapsulation: ViewEncapsulation.None,
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrPopoverContent, ClrIcon, ClrPopoverModuleNext, StackblitzExampleComponent],
 })
 export class PopoverFallbackPositionsDemo {

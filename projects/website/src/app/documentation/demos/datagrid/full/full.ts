@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrCheckboxModule,
@@ -99,8 +99,9 @@ const exampleHtml = `
 
   @if (!isServerDriven && users) {
     <clr-datagrid
-      [(clrDgSelected)]="selected"
-      [clrDgSelectionType]="'multi'"
+      [clrDgSelected]="selected ?? []"
+      (clrDgSelectedChange)="selected = $event"
+      [clrDgSelectionType]="selected ? 'multi' : 'none'"
       [clrDgItemsIdentityFn]="trackUserItemById"
     >
       <clr-dg-column>User ID</clr-dg-column>
@@ -148,8 +149,9 @@ const exampleHtml = `
 
   @if (isServerDriven) {
     <clr-datagrid
-      [(clrDgSelected)]="selected"
-      [clrDgSelectionType]="'multi'"
+      [clrDgSelected]="selected ?? []"
+      (clrDgSelectedChange)="selected = $event"
+      [clrDgSelectionType]="selected ? 'multi' : 'none'"
       (clrDgRefresh)="refresh($event)"
       [clrDgLoading]="loading"
       [clrDgItemsIdentityFn]="trackUserItemById"
@@ -203,7 +205,7 @@ const exampleHtml = `
 
 const exampleTs = `
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrCheckboxModule,
@@ -212,7 +214,6 @@ import {
   ClrFormsModule,
   ClrLoadingModule,
   ClrRadioModule,
-  ClrIcon,
 } from '@clr/angular';
 
 import { FetchResult, Inventory } from './inventory/inventory';
@@ -223,6 +224,7 @@ import { PokemonFilter } from './utils/pokemon-filter';
 
 @Component({
   selector: 'app-example',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
 
@@ -234,12 +236,13 @@ import { PokemonFilter } from './utils/pokemon-filter';
     ClrCheckboxModule,
     ClrFormsModule,
     ClrLoadingModule,
-    ClrIcon,
     FormsModule,
     ColorFilter,
   ],
 })
 export class ExampleComponent {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   options = {
     totalUsers: 103,
     pageSize: '10',
@@ -287,6 +290,7 @@ export class ExampleComponent {
         this.users = this.inventory.all;
       }
       this.resetting = false;
+      this.changeDetectorRef.markForCheck();
     });
   }
 
@@ -320,6 +324,7 @@ export class ExampleComponent {
         this.users = result.users;
         this.total = result.length;
         this.loading = false;
+        this.changeDetectorRef.markForCheck();
       });
   }
 
@@ -334,6 +339,7 @@ export class ExampleComponent {
   providers: [Inventory],
   templateUrl: './full.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ClrCommonFormsModule,

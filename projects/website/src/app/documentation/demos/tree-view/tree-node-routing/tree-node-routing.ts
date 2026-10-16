@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrTreeViewModule } from '@clr/angular';
 
 import { albums } from './albums';
@@ -57,6 +57,7 @@ const additionalFiles = {
   selector: 'clr-tree-node-routing-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: 'tree-node-routing.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule, StackblitzExampleComponent],
 })
 export class TreeNodeRoutingDemo {

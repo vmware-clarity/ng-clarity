@@ -18,7 +18,6 @@ import { ClrAccordionModule } from '@clr/angular';
         <clr-accordion-panel
           [clrAccordionPanelOpen]="clrAccordionPanelOpen"
           [clrAccordionPanelDisabled]="clrAccordionPanelDisabled"
-          [clrAccordionPanelHeadingEnabled]="clrAccordionPanelHeadingEnabled"
           [clrAccordionPanelHeadingLevel]="clrAccordionPanelHeadingLevel"
           (clrAccordionPanelOpenChange)="clrAccordionPanelOpenChange.emit($event)"
         >
@@ -33,7 +32,6 @@ import { ClrAccordionModule } from '@clr/angular';
 export class AccordionPanelStorybookComponent {
   @Input() clrAccordionPanelOpen = false;
   @Input() clrAccordionPanelDisabled = false;
-  @Input() clrAccordionPanelHeadingEnabled = false;
   @Input() clrAccordionPanelHeadingLevel = 1;
   @Input() title = 'Title';
   @Input() content = 'Hello World!';

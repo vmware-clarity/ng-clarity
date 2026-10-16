@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrAlertModule,
@@ -179,6 +179,7 @@ const html = `
   selector: 'clr-wizard-alt-next',
   templateUrl: './wizard-alt-next.demo.html',
   styles: ['.stress { color: var(--cds-alias-status-danger); }'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrWizardModule,
     ClrCheckboxModule,

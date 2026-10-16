@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlertModule, ClrDatagridModule } from '@clr/angular';
 
 import { EXAMPLES } from './examples';
@@ -21,6 +21,7 @@ import { CommonFiles } from '../utils/stackblitz-common-data';
   providers: [Inventory],
   templateUrl: 'custom-select-all.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrDatagridModule, StackblitzExampleComponent, ClrAlertModule, CodeSnippetComponent, DatePipe],
 })
 export class DatagridCustomSelectAllDemo {

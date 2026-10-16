@@ -6,6 +6,7 @@
  */
 
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -65,6 +66,7 @@ import { DefaultButton, ModalSize } from './multi-page-dialog.model';
  */
 @Component({
   selector: 'appfx-dialog',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   templateUrl: 'multi-page-dialog.component.html',
   styleUrls: ['multi-page-dialog.component.scss', 'multi-page-dialog.a11y.scss'],
