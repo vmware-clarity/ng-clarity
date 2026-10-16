@@ -6,10 +6,12 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { delay, enableCssAnimations, finishAnimations, TestContext } from '@clr/angular/testing';
 
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
+import { ClrDatagridModule } from './datagrid.module';
 import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
 
 export default function (): void {
@@ -61,6 +63,66 @@ export default function (): void {
       expect(context.clarityElement.getAttribute('role')).toBe('row');
     });
   });
+
+  describe('ClrDatagridRowDetail animations', function () {
+    let fixture: ComponentFixture<AnimatedDetailTest>;
+    let restoreAnimations: () => void;
+
+    beforeEach(function () {
+      restoreAnimations = enableCssAnimations();
+      TestBed.configureTestingModule({
+        imports: [ClrDatagridModule],
+        declarations: [AnimatedDetailTest],
+        animationsEnabled: true,
+      });
+      fixture = TestBed.createComponent(AnimatedDetailTest);
+    });
+
+    afterEach(function () {
+      fixture.destroy();
+      restoreAnimations();
+    });
+
+    function detail(): HTMLElement {
+      return fixture.nativeElement.querySelector('clr-dg-row-detail');
+    }
+
+    async function render(expanded: boolean) {
+      fixture.componentInstance.expanded = expanded;
+      fixture.detectChanges();
+      await delay();
+    }
+
+    it('does not animate a detail rendered expanded with its row', async function () {
+      await render(true);
+      expect(detail().classList).not.toContain('clr-expand-enter');
+    });
+
+    it('expands the detail when the row is expanded', async function () {
+      await render(false);
+      await render(true);
+      expect(detail().classList).toContain('clr-expand-enter');
+    });
+
+    it('does not animate a detail replacing its row', async function () {
+      fixture.componentInstance.replace = true;
+      await render(false);
+      await render(true);
+      expect(detail().classList).not.toContain('clr-expand-enter');
+    });
+
+    it('collapses the detail before removing it', async function () {
+      await render(true);
+      await render(false);
+      expect(detail().classList).toContain('clr-collapse-leave');
+
+      finishAnimations(fixture.nativeElement);
+      // Angular removes the element on the `animationend` event, dispatched with the next frame.
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      await delay();
+      expect(detail()).toBeNull();
+    });
+  });
 }
 
 @Component({
@@ -79,4 +141,21 @@ export default function (): void {
 class FullTest {
   replace = false;
   cell = false;
+}
+
+@Component({
+  template: `
+    <clr-datagrid>
+      <clr-dg-column>Name</clr-dg-column>
+      <clr-dg-row [clrDgExpanded]="expanded">
+        <clr-dg-cell>Row</clr-dg-cell>
+        <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="replace">Detail</clr-dg-row-detail>
+      </clr-dg-row>
+    </clr-datagrid>
+  `,
+  standalone: false,
+})
+class AnimatedDetailTest {
+  expanded = false;
+  replace = false;
 }

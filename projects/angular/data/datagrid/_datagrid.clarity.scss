@@ -184,6 +184,12 @@
       min-height: tables-variables.$clr-table-row-height;
       width: auto;
 
+      // Otherwise the height animations stop at the min-height.
+      &.clr-expand-enter,
+      &.clr-collapse-leave {
+        min-height: 0;
+      }
+
       .datagrid-cell {
         border: none;
 

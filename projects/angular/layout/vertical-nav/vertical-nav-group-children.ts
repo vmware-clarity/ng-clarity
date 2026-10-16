@@ -10,6 +10,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'clr-vertical-nav-group-children',
   template: `<ng-content></ng-content>`,
+  // Removed by `*clrIfExpanded` when the group closes: stays displayed while the group collapses.
+  host: { 'animate.leave': 'clr-collapse-hold-leave' },
   standalone: false,
 })
 export class ClrVerticalNavGroupChildren {}

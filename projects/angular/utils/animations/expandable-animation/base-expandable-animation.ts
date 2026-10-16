@@ -11,6 +11,7 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
 @Directive()
 export class BaseExpandableAnimation {
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
   startHeight = 0;
 
   constructor(
@@ -19,10 +20,12 @@ export class BaseExpandableAnimation {
     protected renderer: Renderer2
   ) {}
 
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
   updateStartHeight() {
     this.startHeight = this.domAdapter.computedHeight(this.element.nativeElement) || 0;
   }
 
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
   initAnimationEffects() {
     // `clip` rather than `hidden`: both clip the content that grows past the animated height, but
     // `hidden` also turns this element into a scroll container, and a scroll container is what a
@@ -31,6 +34,7 @@ export class BaseExpandableAnimation {
     this.renderer.setStyle(this.element.nativeElement, 'overflow', 'clip');
   }
 
+  /** @deprecated The height is no longer animated: the content shown inside animates itself with CSS. */
   cleanupAnimationEffects(cancelAnimations = false) {
     this.renderer.removeStyle(this.element.nativeElement, 'overflow');
 

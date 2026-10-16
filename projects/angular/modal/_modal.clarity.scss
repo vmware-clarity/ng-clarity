@@ -143,6 +143,8 @@
       .modal-dialog {
         max-height: 100%;
         width: 100%;
+        // Slides in over half of its height.
+        --clr-slide-offset: 50%;
       }
     }
   }

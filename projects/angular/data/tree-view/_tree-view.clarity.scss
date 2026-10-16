@@ -11,6 +11,8 @@
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../styles/variables/variables.density' as density;
 
+$children-transition-duration: tokens.$cds-global-animation-duration-quick;
+
 @include meta.load-css('properties.tree-view');
 @include mixins.exports('tree-view.clarity') {
   .clr-tree-node {
@@ -253,8 +255,35 @@
   .clr-treenode-children {
     //Dimensions
     margin-left: tree-view-variables.$clr-tree-node-children-margin;
-    will-change: height;
-    overflow-y: hidden;
+
+    // The height animates to and from `auto` where the browser supports `interpolate-size`. Collapsed children are
+    // clipped vertically only (wide children still overflow the tree) and skipped by the browser (`content-visibility`)
+    // once the collapse is over; they are inert from its start (see the template).
+    height: 0;
+    overflow: visible clip;
+    content-visibility: hidden;
+    interpolate-size: allow-keywords;
+    transition:
+      height $children-transition-duration linear,
+      overflow 0s allow-discrete,
+      content-visibility 0s $children-transition-duration allow-discrete;
+
+    // Not clipped once expanded, so that content overflowing a node (dropdowns, tooltips...) is not cut off.
+    &.is-expanded {
+      height: auto;
+      overflow: visible;
+      content-visibility: visible;
+      transition-delay: 0s, $children-transition-duration, 0s;
+    }
+
+    // Bulk operations (expand all, expand descendants) and reduced motion skip the animation.
+    &.is-instant {
+      transition: none;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
+    }
   }
 
   .clr-treenode-link {

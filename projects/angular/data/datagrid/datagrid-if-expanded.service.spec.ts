@@ -43,24 +43,6 @@ export default function (): void {
       expect(this.expand.loading).toBe(false);
     });
 
-    it('prepares the animation before requesting to expand', function () {
-      const listeners: string[] = [];
-      this.expand.animate.subscribe(() => listeners.push('animate'));
-      this.expand.expandChange.subscribe(() => listeners.push('expand'));
-      this.expand.expanded = true;
-      expect(listeners).toEqual(['animate', 'expand']);
-    });
-
-    it('re-triggers animation when done loading', function () {
-      let animates = 0;
-      this.expand.animate.subscribe(() => animates++);
-      this.expand.loadingStateChange(ClrLoadingState.LOADING);
-      this.expand.expanded = true;
-      expect(animates).toBe(1);
-      this.expand.loadingStateChange(ClrLoadingState.DEFAULT);
-      expect(animates).toBe(2);
-    });
-
     it('expect to create expandableId property', function () {
       expect(this.expand.expandableId).toContain('clr-dg-expandable-row-');
     });

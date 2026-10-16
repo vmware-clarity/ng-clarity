@@ -6,6 +6,7 @@
  */
 
 import {
+  afterNextRender,
   Component,
   ContentChild,
   EventEmitter,
@@ -53,10 +54,11 @@ import { ClrStackViewLabel } from './stack-view-custom-tags';
       </div>
     </div>
 
-    <clr-expandable-animation [clrExpandTrigger]="expanded" class="stack-children">
+    <clr-expandable-animation class="stack-children">
       @if (expanded) {
         <div
-          [style.height]="expanded ? 'auto' : 0"
+          [animate.enter]="expandClass"
+          animate.leave="clr-collapse-leave"
           role="region"
           [attr.id]="getStackChildrenId()"
           [attr.aria-labelledby]="labelledById"
@@ -98,6 +100,9 @@ export class ClrStackBlock implements OnInit {
   focused = false;
   uniqueId = uniqueIdFactory();
 
+  /** Enter animation of the children: none when the block is first rendered expanded. */
+  protected expandClass = '';
+
   private _changedChildren = 0;
   private _fullyInitialized = false;
   private _changed = false;
@@ -116,6 +121,7 @@ export class ClrStackBlock implements OnInit {
     if (parent) {
       parent.addChild();
     }
+    afterNextRender(() => (this.expandClass = 'clr-expand-enter'));
   }
 
   @Input('clrSbNotifyChange')

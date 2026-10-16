@@ -9,7 +9,8 @@ import { Component, Injectable, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
+import { ClrConditionalModule } from '@clr/angular/utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
@@ -44,6 +45,25 @@ class TemplateFormsTestComponent {
   @ViewChild(ClrStepperPanel) step: ClrStepperPanel;
 }
 
+@Component({
+  template: `
+    <form clrStepper [formGroup]="form">
+      <clr-stepper-panel formGroupName="first">
+        <clr-step-title>First</clr-step-title>
+        <clr-step-content *clrIfExpanded>first step</clr-step-content>
+      </clr-stepper-panel>
+      <clr-stepper-panel formGroupName="second">
+        <clr-step-title>Second</clr-step-title>
+        <clr-step-content *clrIfExpanded>second step</clr-step-content>
+      </clr-stepper-panel>
+    </form>
+  `,
+  standalone: false,
+})
+class StepperTestComponent {
+  form = new FormGroup({ first: new FormGroup({}), second: new FormGroup({}) });
+}
+
 @Injectable()
 class MockStepperService extends StepperService {
   step = new BehaviorSubject(new StepperPanelModel('groupName', 0));
@@ -62,7 +82,7 @@ describe('ClrStep Reactive Forms', () => {
       TestBed.configureTestingModule({
         declarations: [ReactiveFormsTestComponent],
         providers: [{ provide: StepperService, useClass: MockStepperService }],
-        imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+        imports: [ReactiveFormsModule, ClrStepperModule],
       });
 
       TestBed.overrideComponent(ClrStepper, {
@@ -136,7 +156,7 @@ describe('ClrStep Template Forms', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TemplateFormsTestComponent],
-        imports: [FormsModule, NoopAnimationsModule, ClrStepperModule],
+        imports: [FormsModule, ClrStepperModule],
       });
 
       fixture = TestBed.createComponent(TemplateFormsTestComponent);
@@ -146,5 +166,110 @@ describe('ClrStep Template Forms', () => {
     it('should use template forms to access form groups', () => {
       expect(fixture.componentInstance.step.id).toBe('groupName');
     });
+  });
+});
+
+describe('ClrStep collapse animation', () => {
+  let fixture: ComponentFixture<ReactiveFormsTestComponent>;
+  let stepperService: MockStepperService;
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      declarations: [ReactiveFormsTestComponent],
+      providers: [{ provide: StepperService, useClass: MockStepperService }],
+      imports: [ReactiveFormsModule, ClrStepperModule],
+      animationsEnabled: true,
+    });
+    TestBed.overrideComponent(ClrStepper, {
+      set: { providers: [{ provide: StepperService, useClass: MockStepperService }] },
+    });
+
+    fixture = TestBed.createComponent(ReactiveFormsTestComponent);
+    fixture.detectChanges();
+    stepperService = fixture.debugElement
+      .query(By.directive(ClrStepperPanel))
+      .injector.get(StepperService) as MockStepperService;
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function content(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.clr-stepper-content');
+  }
+
+  function emitStep(open: boolean) {
+    const step = new StepperPanelModel('groupName', 0);
+    step.open = open;
+    stepperService.step.next(step);
+    fixture.detectChanges();
+  }
+
+  it('keeps the content rendered while it collapses', async () => {
+    emitStep(true);
+    await delay();
+    expect(content().getAnimations().length).toBe(1);
+    finishAnimations(fixture.nativeElement);
+    await delay();
+
+    emitStep(false);
+
+    expect(content()).not.toBeNull();
+    expect(content().classList).toContain('clr-collapse-leave');
+    expect(content().getAnimations().length).toBe(1);
+
+    finishAnimations(fixture.nativeElement);
+    // Angular removes the content on the `animationend` event, dispatched with the next frame.
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    await delay();
+
+    expect(content()).toBeNull();
+  });
+
+  it('keeps the content when opened again while it collapses', async () => {
+    emitStep(true);
+    finishAnimations(fixture.nativeElement);
+    await delay();
+
+    emitStep(false);
+    emitStep(true);
+    finishAnimations(fixture.nativeElement);
+    await delay();
+
+    expect(content()).not.toBeNull();
+    expect(content().classList).not.toContain('clr-collapse-leave');
+  });
+});
+
+describe('ClrStep expand animation', () => {
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      declarations: [StepperTestComponent],
+      imports: [ReactiveFormsModule, ClrStepperModule, ClrConditionalModule],
+      animationsEnabled: true,
+    });
+  });
+
+  afterEach(() => {
+    restoreAnimations();
+  });
+
+  it('does not animate the first step opened by the stepper on the first render', async () => {
+    const fixture = TestBed.createComponent(StepperTestComponent);
+    fixture.detectChanges();
+    await delay();
+    fixture.detectChanges();
+
+    const content: HTMLElement = fixture.nativeElement.querySelector('.clr-stepper-content');
+    expect(content.textContent).toContain('first step');
+    expect(content.classList).not.toContain('clr-expand-enter');
+    fixture.destroy();
   });
 });

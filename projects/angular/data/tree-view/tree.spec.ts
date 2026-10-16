@@ -8,7 +8,6 @@
 import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, spec, TestContext } from '@clr/angular/testing';
 
 import { RecursiveChildren } from './recursive-children';
@@ -152,7 +151,7 @@ export default function (): void {
   type Context = TestContext<ClrTree<void>, TestComponent>;
 
   describe('ClrTree Component', function () {
-    spec(ClrTree, TestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, TestComponent, ClrTreeViewModule);
 
     it('declares a TreeFeaturesService provider', function (this: Context) {
       expect(this.getClarityProvider(TreeFeaturesService, null)).not.toBeNull();
@@ -217,7 +216,7 @@ export default function (): void {
     let forTypeAheadDirectiveDEs: DebugElement[];
     let forTypeAheadDirectives: ClrTreeNode<any>[];
 
-    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule);
 
     beforeEach(function (this: Context) {
       forTypeAheadDirectiveDEs = this.fixture.debugElement.queryAll(By.directive(ClrTreeNode));
@@ -259,7 +258,7 @@ export default function (): void {
   describe('Expand all in ClrTree Component', function () {
     type ExpandAllContext = TestContext<ClrTree<void>, ExpandAllTestComponent>;
 
-    spec(ClrTree, ExpandAllTestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, ExpandAllTestComponent, ClrTreeViewModule);
 
     function allNodes(context: ExpandAllContext): ClrTreeNode<void>[] {
       return context.fixture.debugElement.queryAll(By.directive(ClrTreeNode)).map(de => de.componentInstance);
@@ -433,6 +432,21 @@ export default function (): void {
       expect(node.childrenAnimationState).toBe('collapsedInstant');
     });
 
+    it('marks the children of bulk changes only as instant, so that they do not transition', function (this: ExpandAllContext) {
+      const node = this.testComponent.california;
+      const children = () =>
+        this.fixture.debugElement
+          .queryAll(By.directive(ClrTreeNode))
+          .find(de => de.componentInstance === node)
+          .query(By.css('.clr-treenode-children')).nativeElement as HTMLElement;
+      this.testComponent.tree.expandAll();
+      this.detectChanges();
+      expect(children().classList).toContain('is-instant');
+      node.expandService.toggle();
+      this.detectChanges();
+      expect(children().classList).not.toContain('is-instant');
+    });
+
     it('skips the animation for nodes added while the tree is expanded', function (this: ExpandAllContext) {
       this.testComponent.tree.expandAll();
       this.detectChanges();
@@ -486,7 +500,7 @@ export default function (): void {
   describe('Expand all in a lazy-loaded recursive ClrTree Component', function () {
     type LazyContext = TestContext<ClrTree<LazyNode>, LazyExpandAllTestComponent>;
 
-    spec(ClrTree, LazyExpandAllTestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, LazyExpandAllTestComponent, ClrTreeViewModule);
 
     async function settleLoading(context: LazyContext, rounds = 6) {
       for (let i = 0; i < rounds; i++) {

@@ -5,15 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationEvent } from '@angular/animations';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { delay, expectActiveElementToBe } from '@clr/angular/testing';
+import { delay, enableCssAnimations, expectActiveElementToBe, finishAnimations } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
 import { ClrModal } from './modal';
+import { ModalStackService } from './modal-stack.service';
 import { ClrModalModule } from './modal.module';
 
 @Component({
@@ -72,7 +71,7 @@ describe('Modal', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrModalModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrModalModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
@@ -134,24 +133,35 @@ describe('Modal', () => {
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
   });
 
-  it('should not emit clrModalOpenChange - animation will do that for us', async () => {
-    /**
-     * Needed just to mock the event so I could enter the `if` statement.
-     */
-    const fakeAnimationEvent: AnimationEvent = {
-      fromState: '',
-      toState: 'void',
-      totalTime: 0,
-      phaseName: '',
-      element: {},
-      triggerName: '',
-      disabled: false,
-    };
+  it('emits clrModalOpenChange only once when the two-way binding propagates the closing', async () => {
+    // Mimics an application: close() runs from an event handler, the notification microtask updates the
+    // two-way bound property and only then does change detection see the input flip to false.
+    spyOn(modal._openChanged, 'emit').and.callThrough();
+    modal.close();
+    await delay();
+    expect(fixture.componentInstance.opened).toBe(false);
 
+    fixture.detectChanges();
+    await delay();
+    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+  });
+
+  it('stops tracking the modal in the modal stack when destroyed while open', () => {
+    const modalStackService = TestBed.inject(ModalStackService);
+    spyOn(modalStackService, 'trackModalClose');
+    fixture.destroy();
+    expect(modalStackService.trackModalClose).toHaveBeenCalledWith(modal);
+  });
+
+  it('emits clrModalOpenChange once the modal has been removed after closing', async () => {
     spyOn(modal._openChanged, 'emit');
     modal.close();
-    modal.fadeDone(fakeAnimationEvent);
-    expect(modal._openChanged.emit).toHaveBeenCalledTimes(1);
+    expect(modal._openChanged.emit).not.toHaveBeenCalled();
+
+    fixture.detectChanges();
+    await delay();
+    expect(modal._openChanged.emit).toHaveBeenCalledOnceWith(false);
+    expect(fixture.nativeElement.querySelector('.modal-dialog')).toBeNull();
   });
 
   it('should not close when already closed', async () => {
@@ -345,5 +355,100 @@ describe('Modal', () => {
     const maybleCloseButton = modalHeader.children[1];
     expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
     expect(maybleCloseButton.classList.contains('close')).toBeTrue();
+  });
+});
+
+describe('Modal with animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let modal: ClrModal;
+  let restoreAnimations: () => void;
+
+  beforeEach(async () => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [CdkTrapFocusModule, ClrModalModule],
+      declarations: [TestComponent],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.componentInstance.opened = false;
+    fixture.detectChanges();
+    modal = fixture.componentInstance.modalInstance;
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function query(selector: string): HTMLElement | null {
+    return fixture.nativeElement.querySelector(selector);
+  }
+
+  async function open() {
+    modal.open();
+    fixture.detectChanges();
+    await delay();
+  }
+
+  it('fades the dialog and the backdrop in', async () => {
+    await open();
+    expect(query('.modal-dialog').classList).toContain('clr-fade-slide-down-enter');
+    expect(query('.modal-backdrop').classList).toContain('clr-fade-enter');
+  });
+
+  it('does not animate the dialog when animations are skipped', async () => {
+    modal.skipAnimation = true;
+    await open();
+    expect(query('.modal-dialog').classList).not.toContain('clr-fade-slide-down-enter');
+  });
+
+  it('disappears at once when closed, and notifies the closing', async () => {
+    await open();
+    finishAnimations(fixture.nativeElement);
+    const openChanges: boolean[] = [];
+    modal._openChanged.subscribe((opened: boolean) => openChanges.push(opened));
+
+    modal.close();
+    fixture.detectChanges();
+
+    expect(query('.modal')).toBeNull();
+    await delay();
+    expect(openChanges).toEqual([false]);
+  });
+
+  it('gives the focus back when it closes', async () => {
+    const opener = query('.to-focus');
+    opener.focus();
+    await open();
+    await fixture.whenStable();
+    expect(query('.modal-dialog').contains(document.activeElement)).toBeTrue();
+
+    modal.close();
+    fixture.detectChanges();
+
+    expect(document.activeElement).toBe(opener);
+  });
+
+  it('gives the focus back when destroyed while open', async () => {
+    const opener = query('.to-focus');
+    opener.focus();
+    await open();
+    await fixture.whenStable();
+
+    fixture.destroy();
+
+    expect(document.activeElement).toBe(opener);
+  });
+
+  it('does not notify the closing when destroyed right after closing', async () => {
+    await open();
+    spyOn(modal._openChanged, 'emit');
+
+    modal.close();
+    fixture.destroy();
+    await delay();
+
+    expect(modal._openChanged.emit).not.toHaveBeenCalled();
   });
 });

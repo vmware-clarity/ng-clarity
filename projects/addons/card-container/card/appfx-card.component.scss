@@ -91,7 +91,14 @@ $card-container-selected-card-opacity: 0.4;
   }
 }
 
+// Cards slide in over their whole width, easing in.
 .droppable {
+  --clr-slide-offset: 100%;
+
+  &.clr-fade-slide-right-enter {
+    animation-timing-function: ease-in;
+  }
+
   margin: $card-container-card-margin 0;
   border: $card-container-card-border-width solid transparent;
 

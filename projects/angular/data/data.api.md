@@ -8,11 +8,7 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_animations from '@angular/animations';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
-import { AnimationBuilder } from '@angular/animations';
-import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
-import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkFixedSizeVirtualScroll } from '@angular/cdk/scrolling';
@@ -836,9 +832,9 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     expandableId: string;
     // Warning: (ae-forgotten-export) The symbol "ClrExpandableAnimationDirective" needs to be exported by the entry point clr-angular-data.d.ts
     //
-    // (undocumented)
+    // @deprecated (undocumented)
     expandAnimation: ClrExpandableAnimationDirective;
-    // (undocumented)
+    // @deprecated (undocumented)
     expandAnimationTrigger: boolean;
     // (undocumented)
     get expanded(): boolean | string;
@@ -1170,6 +1166,7 @@ export class ClrStackBlock implements OnInit {
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     expandable: boolean;
+    protected expandClass: string;
     // (undocumented)
     expanded: boolean;
     // (undocumented)
@@ -1297,7 +1294,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     get ariaSelected(): boolean;
     // (undocumented)
     broadcastFocusOnContainer(): void;
-    // (undocumented)
+    // @deprecated (undocumented)
     get childrenAnimationState(): string;
     // (undocumented)
     set clrForTypeAhead(value: string);
@@ -1352,6 +1349,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     selectedChange: EventEmitter<ClrSelectedState>;
     // (undocumented)
     _setExpandedInBulk(expanded: boolean): void;
+    protected skipAnimation: boolean;
     // (undocumented)
     STATES: typeof ClrSelectedState;
     // (undocumented)
@@ -1812,7 +1810,7 @@ export class WrappedRow implements AfterViewInit, OnDestroy {
 
 // Warnings were encountered during analysis:
 //
-// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1254:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
+// dist/clr-angular/types/clr-angular-data-datagrid.d.ts:1253:335 - (ae-forgotten-export) The symbol "i1_2" needs to be exported by the entry point clr-angular-data.d.ts
 
 // (No @packageDocumentation comment for this package)
 

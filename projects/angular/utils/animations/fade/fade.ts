@@ -5,13 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, AnimationMetadata, style, transition } from '@angular/animations';
-
+import { animationAnimate, animationStyle, animationTransition, ClrAnimationMetadata } from '../animation-metadata';
 import { defaultAnimationTiming } from '../constants';
 
-export function fade(opacity = 1): AnimationMetadata[] {
+/** @deprecated Clarity animates with native CSS; use the `clr-fade-enter` and `clr-fade-leave` classes instead. */
+export function fade(opacity = 1): ClrAnimationMetadata[] {
   return [
-    transition('void => *', [style({ opacity: 0 }), animate(defaultAnimationTiming, style({ opacity: opacity }))]),
-    transition('* => void', [animate(defaultAnimationTiming, style({ opacity: 0 }))]),
+    animationTransition('void => *', [
+      animationStyle({ opacity: 0 }),
+      animationAnimate(defaultAnimationTiming, animationStyle({ opacity: opacity })),
+    ]),
+    animationTransition('* => void', [animationAnimate(defaultAnimationTiming, animationStyle({ opacity: 0 }))]),
   ];
 }

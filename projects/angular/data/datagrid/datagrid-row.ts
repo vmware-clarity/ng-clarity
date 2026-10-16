@@ -7,6 +7,7 @@
 
 import {
   AfterContentInit,
+  afterNextRender,
   AfterViewInit,
   Component,
   ContentChildren,
@@ -78,6 +79,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   expandableId: string;
   replaced: boolean;
   displayCells = false;
+  /** @deprecated No longer used: the row detail animates itself with CSS. To be removed in a future major version. */
   expandAnimationTrigger = false;
 
   /* reference to the enum so that template can access */
@@ -97,6 +99,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
    */
   @ContentChildren(ClrDatagridCell) dgCells: QueryList<ClrDatagridCell>;
 
+  /** @deprecated No longer used: the row detail animates itself with CSS. To be removed in a future major version. */
   @ViewChild(ClrExpandableAnimationDirective) expandAnimation: ClrExpandableAnimationDirective;
   @ViewChild('detailButton') detailButton: ElementRef<HTMLButtonElement>;
   @ViewChild('stickyCells', { read: ViewContainerRef }) _stickyCells: ViewContainerRef;
@@ -141,6 +144,7 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   ) {
     nbRow++;
     this.id = 'clr-dg-row' + nbRow;
+    afterNextRender(() => (expand.animateDetail = true));
     this.radioId = 'clr-dg-row-rd' + nbRow;
     this.checkboxId = 'clr-dg-row-cb' + nbRow;
     this.expandableId = expand.expandableId;
@@ -308,9 +312,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
           this.displayCells = true;
           this.insertCellViews();
         }
-      }),
-      this.expand.animate.subscribe(() => {
-        this.expandAnimationTrigger = !this.expandAnimationTrigger;
       })
     );
   }
@@ -331,7 +332,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     event.stopPropagation();
 
     if (this.expand.expandable) {
-      this.expandAnimation.updateStartHeight();
       this.expanded = !this.expanded;
       this.expandedChange.emit(this.expanded);
     }

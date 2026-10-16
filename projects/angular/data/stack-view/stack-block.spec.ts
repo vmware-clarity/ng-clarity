@@ -8,8 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { delay } from '@clr/angular/testing';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
 
 import { ClrStackBlock } from './stack-block';
@@ -136,7 +135,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrStackViewModule, NoopAnimationsModule, FormsModule],
+        imports: [ClrStackViewModule, FormsModule],
         declarations: [BasicBlock, DynamicBlock, DynamicBlockWithInput, NestedBlocks, BlocksWithIinteractiveElements],
         providers: [ClrStackView],
       });
@@ -543,6 +542,60 @@ export default function (): void {
         expect(fixture.componentInstance.testBlockInstance.expanded).toBeTruthy();
         expect(fixture.componentInstance.testExpanded).toBeTruthy();
       });
+    });
+  });
+
+  describe('StackBlock animations', () => {
+    let fixture: ComponentFixture<DynamicBlock>;
+    let restoreAnimations: () => void;
+
+    beforeEach(() => {
+      restoreAnimations = enableCssAnimations();
+      TestBed.configureTestingModule({
+        imports: [ClrStackViewModule],
+        declarations: [DynamicBlock],
+        providers: [ClrStackView],
+        animationsEnabled: true,
+      });
+      fixture = TestBed.createComponent(DynamicBlock);
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+      restoreAnimations();
+    });
+
+    function children(): HTMLElement {
+      return fixture.nativeElement.querySelector('.stack-children > [role="region"]');
+    }
+
+    async function render(expanded: boolean) {
+      fixture.componentInstance.expanded = expanded;
+      fixture.detectChanges();
+      await delay();
+    }
+
+    it('does not animate the children of a block rendered expanded', async () => {
+      await render(true);
+      expect(children().classList).not.toContain('clr-expand-enter');
+    });
+
+    it('expands the children when the block is expanded', async () => {
+      await render(false);
+      await render(true);
+      expect(children().classList).toContain('clr-expand-enter');
+    });
+
+    it('collapses the children before removing them', async () => {
+      await render(true);
+      await render(false);
+      expect(children().classList).toContain('clr-collapse-leave');
+
+      finishAnimations(fixture.nativeElement);
+      // Angular removes the element on the `animationend` event, dispatched with the next frame.
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      await delay();
+      expect(children()).toBeNull();
     });
   });
 }
