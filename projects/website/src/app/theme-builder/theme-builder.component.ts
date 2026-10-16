@@ -13,6 +13,7 @@ import {
   ThemeBuilderComponent as ClrThemeBuilder,
   Color,
   PRESETS,
+  ThemeColors,
   ThemeCssValidation,
   ThemePreset,
   validateGeneratedCSS,
@@ -129,8 +130,8 @@ export class ThemeBuilderComponent implements OnDestroy {
 
     const preset: ThemePreset = {
       name: name,
-      light: this.themeBuilder.colorStruct.light,
-      dark: this.themeBuilder.colorStruct.dark,
+      light: changedColors(this.themeBuilder.colorStruct.light),
+      dark: changedColors(this.themeBuilder.colorStruct.dark),
     };
     const withoutExistingNamesake = this.savedPresets.filter(saved => saved.name !== name);
 
@@ -263,4 +264,22 @@ export class ThemeBuilderComponent implements OnDestroy {
 
     return presets;
   }
+}
+
+/**
+ * Keeps only the colors that differ from their Clarity default, dropping groups left empty, so
+ * a saved preset doesn't pin unchanged tokens to the defaults of the build it was saved with.
+ */
+function changedColors(themeColors: Record<string, Color[]>): ThemeColors {
+  const changed: Record<string, Color[]> = {};
+
+  for (const [key, colors] of Object.entries(themeColors)) {
+    const edited = colors.filter(color => !color.isOriginalColor);
+
+    if (edited.length) {
+      changed[key] = edited;
+    }
+  }
+
+  return changed;
 }
