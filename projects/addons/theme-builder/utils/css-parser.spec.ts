@@ -90,6 +90,18 @@ describe('parseGeneratedCSS', () => {
     expect(names).toContain('--cds-alias-primary-tint');
   });
 
+  it('skips a well-formed token that is not a theme color', () => {
+    const css = `[cds-theme~='light'] {
+  --not-a-theme-token: hsl(10, 20%, 30%);
+  --cds-alias-status-info: hsl(220deg, 60%, 45%);
+}`;
+
+    const parsed = parseGeneratedCSS(css);
+
+    expect(Object.keys(parsed.light)).toEqual(['info']);
+    expect(colorsByName(parsed.light.info)).toEqual({ '--cds-alias-status-info': new HslColor(220, 60, 45) });
+  });
+
   it('skips a malformed declaration instead of importing it', () => {
     const css = `[cds-theme~='light'] {
   --cds-alias-primary: hsl(1.2.3deg 50% 50%);

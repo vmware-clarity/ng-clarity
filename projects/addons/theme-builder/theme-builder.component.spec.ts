@@ -127,6 +127,31 @@ describe('ThemeBuilderComponent', () => {
     expect(this.component.activePreset).toBe(testPresets[1]);
   });
 
+  it("derives each theme's primary variants from that theme's base when applying a preset", function (this: ThisTest) {
+    this.component.presets = testPresets;
+    this.fixture.detectChanges(false);
+
+    this.component.applyPreset(testPresets[1]);
+
+    const variantsByLabel = (theme: string) =>
+      Object.fromEntries(this.component.colorStruct[theme]['primary'].map(c => [c.label, c.hsl]));
+
+    expect(variantsByLabel('light')).toEqual({
+      Base: 'hsl(160deg, 69%, 36%)',
+      Tint: 'hsl(160deg, 69%, 94%)',
+      'Tint dark': 'hsl(160deg, 69%, 95%)',
+      Shade: 'hsl(160deg, 69%, 29%)',
+      Dark: 'hsl(160deg, 69%, 26%)',
+    });
+    expect(variantsByLabel('dark')).toEqual({
+      Base: 'hsl(160deg, 69%, 53%)',
+      Tint: 'hsl(160deg, 69%, 25%)',
+      'Tint dark': 'hsl(160deg, 69%, 18%)',
+      Shade: 'hsl(160deg, 69%, 60%)',
+      Dark: 'hsl(160deg, 69%, 73%)',
+    });
+  });
+
   it('restores original colors when re-applying the null (Clarity Default) preset', function (this: ThisTest) {
     this.component.presets = testPresets;
     this.fixture.detectChanges(false);
@@ -303,7 +328,7 @@ describe('ThemeBuilderComponent', () => {
       const primaryColor = new Color('--cds-alias-primary', 'hsl(160deg 69% 36%)');
       const preset: ThemePreset = { name: 'Swatch test', light: { primary: [primaryColor] }, dark: {} };
 
-      expect(this.component.presetSwatchColor(preset)).toBe(primaryColor.hex);
+      expect(this.component.presetSwatchColor(preset)).toBe('#1c9b71');
     });
 
     it('returns undefined when the preset has no light colors (e.g. Clarity Default)', function (this: ThisTest) {
