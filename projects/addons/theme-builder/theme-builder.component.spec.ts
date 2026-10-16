@@ -57,6 +57,30 @@ describe('ThemeBuilderComponent', () => {
     expect(this.component.activePreset).toBe(CLARITY_DEFAULT_PRESET);
   });
 
+  it('keeps only the first preset with a name, ignoring case', function (this: ThisTest) {
+    const warn = spyOn(console, 'warn');
+    const renamed: ThemePreset = { ...testPresets[1], name: 'CUSTOM' };
+
+    this.component.presets = [testPresets[1], testPresets[0], renamed];
+
+    expect(this.component.presets).toEqual([CLARITY_DEFAULT_PRESET, testPresets[1], testPresets[0]]);
+    expect(warn).toHaveBeenCalledOnceWith(
+      'Theme builder: more than one preset is named "CUSTOM", so only the first one is kept.'
+    );
+  });
+
+  it('never replaces the Clarity Default preset with one reusing its name', function (this: ThisTest) {
+    const warn = spyOn(console, 'warn');
+    const impostor: ThemePreset = { ...testPresets[1], name: 'clarity default' };
+
+    this.component.presets = [impostor, testPresets[0]];
+
+    expect(this.component.presets).toEqual([CLARITY_DEFAULT_PRESET, testPresets[0]]);
+    expect(warn).toHaveBeenCalledOnceWith(
+      'Theme builder: more than one preset is named "clarity default", so only the first one is kept.'
+    );
+  });
+
   it('renders the built-in preview by default', function (this: ThisTest) {
     this.fixture.detectChanges(false);
 

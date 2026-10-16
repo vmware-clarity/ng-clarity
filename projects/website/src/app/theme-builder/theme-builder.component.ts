@@ -99,6 +99,21 @@ export class ThemeBuilderComponent implements OnDestroy {
       .subscribe(css => this.validateCssToImport(css));
   }
 
+  /**
+   * `true` when `presetName` belongs to one of the theme builder's own presets (Clarity Default
+   * and the built-in ones), which can't be saved over.
+   */
+  get presetNameReserved(): boolean {
+    return (this.themeBuilder?.presets ?? []).some(
+      preset => !this.savedPresets.includes(preset) && isSameName(preset.name, this.presetName)
+    );
+  }
+
+  /** `true` when saving `presetName` updates an existing saved preset. */
+  get presetNameTaken(): boolean {
+    return this.savedPresets.some(preset => isSameName(preset.name, this.presetName));
+  }
+
   get importDisabled(): boolean {
     return !this.cssToImport.trim() || this.importValidationPending || !this.importValidation?.valid;
   }
@@ -124,7 +139,7 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   confirmSavePreset(): void {
     const name = this.presetName.trim();
-    if (!name) {
+    if (!name || this.presetNameReserved) {
       return;
     }
 
@@ -133,7 +148,7 @@ export class ThemeBuilderComponent implements OnDestroy {
       light: changedColors(this.themeBuilder.colorStruct.light),
       dark: changedColors(this.themeBuilder.colorStruct.dark),
     };
-    const withoutExistingNamesake = this.savedPresets.filter(saved => saved.name !== name);
+    const withoutExistingNamesake = this.savedPresets.filter(saved => !isSameName(saved.name, name));
 
     try {
       localStorage.setItem(CUSTOM_PRESETS_STORAGE_KEY, JSON.stringify([...withoutExistingNamesake, preset]));
@@ -264,6 +279,11 @@ export class ThemeBuilderComponent implements OnDestroy {
 
     return presets;
   }
+}
+
+/** Compares preset names ignoring case and surrounding whitespace. */
+function isSameName(a: string, b: string): boolean {
+  return a.trim().toLowerCase() === b.trim().toLowerCase();
 }
 
 /**

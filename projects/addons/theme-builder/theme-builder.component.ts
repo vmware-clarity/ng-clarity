@@ -94,7 +94,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   /**
    * Presets available in the preset selector. Defaults to Clarity's built-in preset list.
    * The Clarity Default preset is always prepended, so it's guaranteed to remain available
-   * as a fallback even when a custom list is provided.
+   * as a fallback even when a custom list is provided. Preset names are unique, ignoring
+   * case (see `uniquePresets`).
    */
   @Input()
   get presets(): ThemePreset[] {
@@ -102,7 +103,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   }
 
   set presets(value: ThemePreset[]) {
-    this._presets = [CLARITY_DEFAULT_PRESET, ...(value ?? [])];
+    this._presets = this.uniquePresets([CLARITY_DEFAULT_PRESET, ...(value ?? [])]);
   }
 
   get isDarkTheme(): boolean {
@@ -421,5 +422,26 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     });
 
     this.refreshThemeColors();
+  }
+
+  /**
+   * Keeps one preset per name, ignoring case, and warns about each duplicate. The first preset
+   * with a name wins, so the Clarity Default preset and the presets listed before a duplicate
+   * can't be overridden.
+   */
+  private uniquePresets(presets: ThemePreset[]): ThemePreset[] {
+    const byName = new Map<string, ThemePreset>();
+
+    for (const preset of presets) {
+      const key = preset.name.toLowerCase();
+
+      if (byName.has(key)) {
+        console.warn(`Theme builder: more than one preset is named "${preset.name}", so only the first one is kept.`);
+      } else {
+        byName.set(key, preset);
+      }
+    }
+
+    return [...byName.values()];
   }
 }
