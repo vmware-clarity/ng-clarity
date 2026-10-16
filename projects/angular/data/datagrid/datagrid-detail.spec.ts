@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridDetail } from './datagrid-detail';
 import { DetailService } from './providers/detail.service';
@@ -14,16 +14,18 @@ import { DetailService } from './providers/detail.service';
 const content = 'Detail Pane';
 
 export default function (): void {
-  describe('ClrDatagridDetail component', function () {
-    describe('Typescript API', function () {
+  describe('ClrDatagridDetail component', () => {
+    const helpers = createTestHelpers();
+
+    describe('Typescript API', () => {
       let context: TestContext<ClrDatagridDetail, FullTest>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagridDetail, FullTest, [DetailService]);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridDetail, FullTest, [DetailService]);
         context.detectChanges();
       });
 
-      afterEach(function () {
+      afterEach(() => {
         context.fixture.destroy();
       });
 
@@ -123,12 +125,12 @@ export default function (): void {
       });
     });
 
-    describe('View', function () {
+    describe('View', () => {
       let context: TestContext<ClrDatagridDetail, FullTest>;
       let detailService: DetailService;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagridDetail, FullTest, [DetailService]);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridDetail, FullTest, [DetailService]);
         detailService = context.getClarityProvider(DetailService);
         detailService.id = 'clr-id-1';
         context.detectChanges();
@@ -173,7 +175,7 @@ export default function (): void {
         expect(messages[1].innerText).toBe('End of row details');
       });
 
-      it('should have aria-labelledby attribute by default', function () {
+      it('should have aria-labelledby attribute by default', () => {
         detailService.open({});
         context.detectChanges();
         const detailDialog = context.clarityElement.querySelector('[role="dialog"]');
@@ -182,7 +184,7 @@ export default function (): void {
         expect(detailDialog.getAttribute('aria-labelledby')).toBe(headerTitle.getAttribute('id'));
       });
 
-      it('should allow a custom id value for aria-labelledby along with the default id', function () {
+      it('should allow a custom id value for aria-labelledby along with the default id', () => {
         context.testComponent.ariaLabelledBy = 'customId';
         detailService.open({});
         context.detectChanges();

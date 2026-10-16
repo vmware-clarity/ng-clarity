@@ -17,7 +17,12 @@ import { ZoomLevelService } from './zoom-level.service';
 //
 // Possible root cause is this: https://github.com/angular/angular/issues/31695
 describe('ZoomLevelService', () => {
-  beforeEach(function (this: any) {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [
         ZoomLevelService,
@@ -28,14 +33,14 @@ describe('ZoomLevelService', () => {
       ],
     });
 
-    this.zoomLevelService = TestBed.inject(ZoomLevelService);
+    testContext.zoomLevelService = TestBed.inject(ZoomLevelService);
   });
 
   describe('when initialized', () => {
-    it('starts observing document body size changes.', function (this: any, done: DoneFn) {
+    it('starts observing document body size changes.', (done: DoneFn) => {
       let zoomLevel: ZoomLevel;
 
-      const subscription = this.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
+      const subscription = testContext.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
         zoomLevel = newZoomLevel;
 
         expect(zoomLevel).toBeDefined();
@@ -46,10 +51,10 @@ describe('ZoomLevelService', () => {
   });
 
   describe('when document body size is less than 576 px', () => {
-    it('zoom level is `4x`', function (this: any, done: DoneFn) {
+    it('zoom level is `4x`', (done: DoneFn) => {
       let zoomLevel = ZoomLevel.none;
 
-      const subscription = this.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
+      const subscription = testContext.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
         zoomLevel = newZoomLevel;
 
         expect(zoomLevel).toEqual(ZoomLevel.x4);
@@ -63,10 +68,10 @@ describe('ZoomLevelService', () => {
   });
 
   describe('when document body size is greater than 575 px and less than 1200 px', () => {
-    it('zoom level is `2x`', function (this: any, done: DoneFn) {
+    it('zoom level is `2x`', (done: DoneFn) => {
       let zoomLevel = ZoomLevel.none;
 
-      const subscription = this.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
+      const subscription = testContext.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
         zoomLevel = newZoomLevel;
 
         expect(zoomLevel).toEqual(ZoomLevel.x2);
@@ -80,10 +85,10 @@ describe('ZoomLevelService', () => {
   });
 
   describe('when document body size is greater than or equal to 1200 px', () => {
-    it('zoom level is `none`', function (this: any, done: DoneFn) {
+    it('zoom level is `none`', (done: DoneFn) => {
       let zoomLevel = ZoomLevel.x2;
 
-      const subscription = this.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
+      const subscription = testContext.zoomLevelService.onChange.subscribe((newZoomLevel: ZoomLevel) => {
         zoomLevel = newZoomLevel;
 
         expect(zoomLevel).toEqual(ZoomLevel.none);
@@ -97,10 +102,10 @@ describe('ZoomLevelService', () => {
   });
 
   describe('#ngOnDestroy', () => {
-    it('unobserves the document element for resize and completes the `onChange` observable', function (this: any) {
+    it('unobserves the document element for resize and completes the `onChange` observable', () => {
       let onChangeObservableCompleted = false;
-      spyOn(this.zoomLevelService['observer'], 'unobserve');
-      this.zoomLevelService.onChange.subscribe(
+      spyOn(testContext.zoomLevelService['observer'], 'unobserve');
+      testContext.zoomLevelService.onChange.subscribe(
         () => {
           // no action
         },
@@ -112,9 +117,9 @@ describe('ZoomLevelService', () => {
         }
       );
 
-      this.zoomLevelService.ngOnDestroy();
+      testContext.zoomLevelService.ngOnDestroy();
 
-      expect(this.zoomLevelService['observer'].unobserve).toHaveBeenCalledWith(document.documentElement);
+      expect(testContext.zoomLevelService['observer'].unobserve).toHaveBeenCalledWith(document.documentElement);
       expect(onChangeObservableCompleted).toBeTruthy();
     });
   });

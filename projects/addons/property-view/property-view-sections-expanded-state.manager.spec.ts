@@ -18,9 +18,14 @@ interface ThisTest {
   propertyViewSectionsExpandedStateManager: PropertyViewSectionsExpandedStateManager;
 }
 
-describe('PropertyViewSectionsExpandedStateManager', function () {
-  beforeEach(function (this: ThisTest) {
-    this.createCategoryData = (overrides: Partial<PropertyViewCategoryModel>) => {
+describe('PropertyViewSectionsExpandedStateManager', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
+    testContext.createCategoryData = (overrides: Partial<PropertyViewCategoryModel>) => {
       const defaultData: PropertyViewCategoryModel = {
         type: PropertyViewModelType.Category,
         id: '',
@@ -29,7 +34,7 @@ describe('PropertyViewSectionsExpandedStateManager', function () {
       };
       return Object.assign({}, defaultData, overrides);
     };
-    this.createSectionData = (overrides: Partial<PropertyViewSectionModel>) => {
+    testContext.createSectionData = (overrides: Partial<PropertyViewSectionModel>) => {
       const defaultData: PropertyViewSectionModel = {
         type: PropertyViewModelType.Section,
         id: '',
@@ -42,35 +47,35 @@ describe('PropertyViewSectionsExpandedStateManager', function () {
       };
       return Object.assign({}, defaultData, overrides);
     };
-    this.getSubsetData = () => [
-      this.createCategoryData({
+    testContext.getSubsetData = () => [
+      testContext.createCategoryData({
         id: 'cat-2',
         content: [
-          this.createSectionData({
+          testContext.createSectionData({
             id: 'sec-2',
             collapseContent: true,
           }),
         ],
       }),
     ];
-    this.getMainData = () => [
-      this.createCategoryData({
+    testContext.getMainData = () => [
+      testContext.createCategoryData({
         id: 'cat-1',
         content: [
-          this.createSectionData({
+          testContext.createSectionData({
             id: 'sec-1',
             collapseContent: true,
           }),
         ],
       }),
-      this.createCategoryData({
+      testContext.createCategoryData({
         id: 'cat-2',
         content: [
-          this.createSectionData({
+          testContext.createSectionData({
             id: 'sec-1',
             collapseContent: false,
           }),
-          this.createSectionData({
+          testContext.createSectionData({
             id: 'sec-2',
             collapseContent: true,
           }),
@@ -82,159 +87,217 @@ describe('PropertyViewSectionsExpandedStateManager', function () {
       providers: [PropertyViewSectionsExpandedStateManager],
     });
 
-    this.propertyViewSectionsExpandedStateManager = TestBed.inject(PropertyViewSectionsExpandedStateManager);
+    testContext.propertyViewSectionsExpandedStateManager = TestBed.inject(PropertyViewSectionsExpandedStateManager);
   });
 
-  describe('update() method', function () {
-    it("should add states for all categories' sections on first call", function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
+  describe('update() method', () => {
+    it("should add states for all categories' sections on first call", () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
 
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(true);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(false);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        false
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        true
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
+        false
+      );
     });
 
-    it('should remove old states on subsequent calls', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
-      this.propertyViewSectionsExpandedStateManager.update(this.getSubsetData());
+    it('should remove old states on subsequent calls', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
 
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')
+        testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')
       ).toThrowError();
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')
+        testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')
       ).toThrowError();
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(false);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
+        false
+      );
     });
 
-    it('should add new states on subsequent calls', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getSubsetData());
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
+    it('should add new states on subsequent calls', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
 
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(true);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(false);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        false
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        true
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
+        false
+      );
     });
 
-    it('should update states on subsequent calls', function (this: ThisTest) {
-      const updatedStatesMainData = this.getMainData();
+    it('should update states on subsequent calls', () => {
+      const updatedStatesMainData = testContext.getMainData();
       updatedStatesMainData[1].content[1].collapseContent = false;
 
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
-      this.propertyViewSectionsExpandedStateManager.update(updatedStatesMainData);
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
+      testContext.propertyViewSectionsExpandedStateManager.update(updatedStatesMainData);
 
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(true);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(true);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        false
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        true
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
+        true
+      );
     });
 
-    it('should not override user-set states on subsequent calls', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getSubsetData());
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-2', true);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(true);
+    it('should not override user-set states on subsequent calls', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-2', true);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
+        true
+      );
 
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(true);
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
+        true
+      );
 
-      const updatedStatesMainData = this.getMainData();
+      const updatedStatesMainData = testContext.getMainData();
       updatedStatesMainData[1].content[1].collapseContent = false;
-      this.propertyViewSectionsExpandedStateManager.update(updatedStatesMainData);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(true);
+      testContext.propertyViewSectionsExpandedStateManager.update(updatedStatesMainData);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
+        true
+      );
 
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-2', false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(false);
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-2', false);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
+        false
+      );
     });
   });
 
-  describe('getSectionExpandedState() method', function () {
-    it('should fail when category does not exist', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getSubsetData());
+  describe('getSectionExpandedState() method', () => {
+    it('should fail when category does not exist', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')
+        testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')
       ).toThrowError('Unknown category ID: cat-1');
 
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-3', 'sec-1')
+        testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-3', 'sec-1')
       ).toThrowError('Unknown category ID: cat-3');
     });
 
-    it('should fail when section does not exist', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getSubsetData());
+    it('should fail when section does not exist', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-3')
+        testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-3')
       ).toThrowError('Unknown section ID: sec-3');
 
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-2')
+        testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-2')
       ).toThrowError('Unknown section ID: sec-2');
     });
 
-    it('should return the data state when user state was not set', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
+    it('should return the data state when user state was not set', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
 
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(true);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(false);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        false
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        true
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
+        false
+      );
     });
 
-    it('should return the user-set state when the user state was set', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(true);
+    it('should return the user-set state when the user state was set', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        false
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        true
+      );
 
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', true);
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-1', false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(true);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(false);
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', true);
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-1', false);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        true
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        false
+      );
 
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', false);
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-1', true);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(true);
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', false);
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-1', true);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        false
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        true
+      );
     });
   });
 
-  describe('setSectionExpandedState() method', function () {
-    it('should fail when category does not exist', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getSubsetData());
+  describe('setSectionExpandedState() method', () => {
+    it('should fail when category does not exist', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', true)
+        testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', true)
       ).toThrowError('Unknown category ID: cat-1');
 
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-3', 'sec-1', true)
+        testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-3', 'sec-1', true)
       ).toThrowError('Unknown category ID: cat-3');
     });
 
-    it('should fail when section does not exist', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getSubsetData());
+    it('should fail when section does not exist', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-3', true)
+        testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-3', true)
       ).toThrowError('Unknown section ID: sec-3');
 
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
       expect(() =>
-        this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-2', true)
+        testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-2', true)
       ).toThrowError('Unknown section ID: sec-2');
     });
 
-    it('should update the user-set state', function (this: ThisTest) {
-      this.propertyViewSectionsExpandedStateManager.update(this.getMainData());
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(true);
+    it('should update the user-set state', () => {
+      testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        false
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        true
+      );
 
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', true);
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-1', false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(true);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(false);
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', true);
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-1', false);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        true
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        false
+      );
 
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', false);
-      this.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-1', true);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(false);
-      expect(this.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(true);
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', false);
+      testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-1', true);
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')).toEqual(
+        false
+      );
+      expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')).toEqual(
+        true
+      );
     });
   });
 });

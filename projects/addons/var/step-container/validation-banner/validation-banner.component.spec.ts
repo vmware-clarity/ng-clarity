@@ -39,79 +39,86 @@ interface ThisTest {
 }
 
 describe('wizard-banner.spec', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
   describe('wizard-banner-internal', () => {
-    beforeEach(function (this: ThisTest) {
+    beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ClrAlertModule, NoopAnimationsModule],
         declarations: [ValidationBannerInternalComponent],
       });
 
-      this.fixtureInternal = TestBed.createComponent(ValidationBannerInternalComponent);
-      this.componentInternal = this.fixtureInternal.componentInstance;
-      this.dummyItems = ['Dummy Item 1', 'Dummy Item 2'];
-      this.myCustomType = 'danger';
+      testContext.fixtureInternal = TestBed.createComponent(ValidationBannerInternalComponent);
+      testContext.componentInternal = testContext.fixtureInternal.componentInstance;
+      testContext.dummyItems = ['Dummy Item 1', 'Dummy Item 2'];
+      testContext.myCustomType = 'danger';
     });
 
-    afterEach(function (this: ThisTest) {
-      this.fixtureInternal.destroy();
+    afterEach(() => {
+      testContext.fixtureInternal.destroy();
     });
 
     describe('WHEN rendered', () => {
-      beforeEach(function (this: ThisTest) {
-        this.componentInternal.items = this.dummyItems;
-        this.componentInternal.type = this.myCustomType;
-        this.componentInternal.closable = false;
+      beforeEach(() => {
+        testContext.componentInternal.items = testContext.dummyItems;
+        testContext.componentInternal.type = testContext.myCustomType;
+        testContext.componentInternal.closable = false;
       });
 
-      it('THEN all items are visible', function (this: ThisTest) {
-        this.fixtureInternal.detectChanges();
+      it('THEN all items are visible', () => {
+        testContext.fixtureInternal.detectChanges();
 
-        const items = queryAlertItems(this.fixtureInternal.debugElement);
-        expect(items.length).toEqual(this.dummyItems.length);
+        const items = queryAlertItems(testContext.fixtureInternal.debugElement);
+        expect(items.length).toEqual(testContext.dummyItems.length);
         items.forEach((item: DebugElement, index: number) => {
-          expect(findAlertItemText(item)).toEqual(this.dummyItems[index]);
+          expect(findAlertItemText(item)).toEqual(testContext.dummyItems[index]);
         });
       });
 
-      it('THEN correct type is applied', function (this: ThisTest) {
-        this.fixtureInternal.detectChanges();
+      it('THEN correct type is applied', () => {
+        testContext.fixtureInternal.detectChanges();
 
-        const items = queryAlertItems(this.fixtureInternal.debugElement, this.myCustomType);
-        expect(items.length).toEqual(this.dummyItems.length);
+        const items = queryAlertItems(testContext.fixtureInternal.debugElement, testContext.myCustomType);
+        expect(items.length).toEqual(testContext.dummyItems.length);
       });
     });
   });
 
   describe('wizard-banner', () => {
-    beforeEach(function (this: ThisTest) {
+    beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [ClrAlertModule, NoopAnimationsModule],
         declarations: [ValidationBannerInternalComponent, ValidationBannerComponent],
       });
 
-      this.fixture = TestBed.createComponent(ValidationBannerComponent);
-      this.component = this.fixture.componentInstance;
-      this.state = new StepValidationState(
+      testContext.fixture = TestBed.createComponent(ValidationBannerComponent);
+      testContext.component = testContext.fixture.componentInstance;
+      testContext.state = new StepValidationState(
         ['Error Item 1', 'Error Item 2'],
         ['Warning Item 1', 'Warning Item 2'],
         ['Info Item 1', 'Info Item 2']
       );
     });
 
-    afterEach(function (this: ThisTest) {
-      this.fixture.destroy();
+    afterEach(() => {
+      testContext.fixture.destroy();
     });
 
     describe('WHEN rendered', () => {
-      beforeEach(function (this: ThisTest) {
-        this.component.state = this.state;
+      beforeEach(() => {
+        testContext.component.state = testContext.state;
       });
 
-      it('THEN all items are displayed correctly', function (this: any) {
-        this.fixture.detectChanges();
+      it('THEN all items are displayed correctly', () => {
+        const untypedContext: any = testContext;
+
+        untypedContext.fixture.detectChanges();
 
         (['info', 'danger', 'warning'] as AlertType[]).forEach(alertType => {
-          const items = queryAlertItems(this.fixture.debugElement, alertType);
+          const items = queryAlertItems(untypedContext.fixture.debugElement, alertType);
           expect(items.length).toEqual(2); // 2 per dummy Item type
         });
       });

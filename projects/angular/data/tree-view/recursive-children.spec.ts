@@ -42,17 +42,24 @@ class TestComponent {
 }
 
 export default function (): void {
-  describe('RecursiveChildren Component', function () {
+  describe('RecursiveChildren Component', () => {
+    let testContext: Context;
+
     let TEST_ROOT: RecursiveTreeNodeModel<TestNode>;
     type Context = TestContext<RecursiveChildren<TestNode>, TestComponent> & {
       featuresService: TreeFeaturesService<TestNode>;
       expandService: IfExpandService;
     };
-    spec(RecursiveChildren, TestComponent, undefined, { providers: [TreeFeaturesService, IfExpandService] });
+    const getContext = spec(RecursiveChildren, TestComponent, undefined, {
+      providers: [TreeFeaturesService, IfExpandService],
+    });
+    beforeEach(() => {
+      testContext = getContext() as Context;
+    });
 
-    beforeEach(function (this: Context) {
-      this.featuresService = this.getClarityProvider<TreeFeaturesService<TestNode>>(TreeFeaturesService);
-      this.expandService = this.getClarityProvider(IfExpandService);
+    beforeEach(() => {
+      testContext.featuresService = testContext.getClarityProvider<TreeFeaturesService<TestNode>>(TreeFeaturesService);
+      testContext.expandService = testContext.getClarityProvider(IfExpandService);
       TEST_ROOT = new RecursiveTreeNodeModel(
         {
           name: 'root',
@@ -64,78 +71,80 @@ export default function (): void {
         },
         null,
         getChildren,
-        this.featuresService
+        testContext.featuresService
       );
-      this.featuresService.recursion = {
-        template: this.testComponent.template,
+      testContext.featuresService.recursion = {
+        template: testContext.testComponent.template,
         root: [TEST_ROOT],
       };
-      this.testComponent.parent = TEST_ROOT;
-      this.detectChanges();
+      testContext.testComponent.parent = TEST_ROOT;
+      testContext.detectChanges();
     });
 
-    it('can create a ClrRecursiveForOfContext for a node', function (this: Context) {
-      expect(this.clarityDirective.getContext(TEST_ROOT)).toEqual({
+    it('can create a ClrRecursiveForOfContext for a node', () => {
+      expect(testContext.clarityDirective.getContext(TEST_ROOT)).toEqual({
         $implicit: TEST_ROOT.model,
         clrModel: TEST_ROOT,
       });
     });
 
-    it('keeps one context object per node across change detection passes', function (this: Context) {
+    it('keeps one context object per node across change detection passes', () => {
       // A new object on every pass would make ngTemplateOutlet run ngOnChanges for every node on every pass.
-      expect(this.clarityDirective.getContext(TEST_ROOT)).toBe(this.clarityDirective.getContext(TEST_ROOT));
+      expect(testContext.clarityDirective.getContext(TEST_ROOT)).toBe(
+        testContext.clarityDirective.getContext(TEST_ROOT)
+      );
     });
 
-    it('renders the current model of a node even after it gets reassigned', function (this: Context) {
+    it('renders the current model of a node even after it gets reassigned', () => {
       TEST_ROOT.children[0].model = { name: 'Renamed' };
-      this.detectChanges();
-      expect(this.clarityElement.textContent).toMatch(/Renamed\s*B\s*C/);
+      testContext.detectChanges();
+      expect(testContext.clarityElement.textContent).toMatch(/Renamed\s*B\s*C/);
     });
 
-    it('does not render anything if the tree is not recursive', function (this: Context) {
-      delete this.featuresService.recursion;
-      this.detectChanges();
-      expect(this.clarityElement.textContent.trim()).toBe('');
+    it('does not render anything if the tree is not recursive', () => {
+      delete testContext.featuresService.recursion;
+      testContext.detectChanges();
+      expect(testContext.clarityElement.textContent.trim()).toBe('');
     });
 
-    it('renders children if the tree is eager', function (this: Context) {
-      expect(this.clarityElement.textContent).toMatch(/A\s*B\s*C/);
+    it('renders children if the tree is eager', () => {
+      expect(testContext.clarityElement.textContent).toMatch(/A\s*B\s*C/);
     });
 
-    it('does not render anything if the tree is lazy and the parent is collapsed', function (this: Context) {
-      this.featuresService.eager = false;
-      this.detectChanges();
-      expect(this.clarityElement.textContent.trim()).toBe('');
+    it('does not render anything if the tree is lazy and the parent is collapsed', () => {
+      testContext.featuresService.eager = false;
+      testContext.detectChanges();
+      expect(testContext.clarityElement.textContent.trim()).toBe('');
     });
 
-    it('renders children if the tree is lazy and the parent is expanded', function (this: Context) {
-      this.featuresService.eager = false;
-      this.expandService.expanded = true;
-      this.detectChanges();
-      expect(this.clarityElement.textContent).toMatch(/A\s*B\s*C/);
+    it('renders children if the tree is lazy and the parent is expanded', () => {
+      testContext.featuresService.eager = false;
+      testContext.expandService.expanded = true;
+      testContext.detectChanges();
+      expect(testContext.clarityElement.textContent).toMatch(/A\s*B\s*C/);
     });
 
-    it('renders children even if there is no parent', function (this: Context) {
-      delete this.testComponent.parent;
-      this.testComponent.children = TEST_ROOT.children;
-      this.detectChanges();
-      expect(this.clarityElement.textContent).toMatch(/A\s*B\s*C/);
+    it('renders children even if there is no parent', () => {
+      delete testContext.testComponent.parent;
+      testContext.testComponent.children = TEST_ROOT.children;
+      testContext.detectChanges();
+      expect(testContext.clarityElement.textContent).toMatch(/A\s*B\s*C/);
     });
 
-    it('does not destroy the children when he parent becomes collapsed if the tree is eager', function (this: Context) {
-      const spy = spyOn(this.testComponent.parent, 'clearChildren');
-      this.expandService.expanded = true;
+    it('does not destroy the children when he parent becomes collapsed if the tree is eager', () => {
+      const spy = spyOn(testContext.testComponent.parent, 'clearChildren');
+      testContext.expandService.expanded = true;
       expect(spy).not.toHaveBeenCalled();
-      this.expandService.expanded = false;
+      testContext.expandService.expanded = false;
       expect(spy).not.toHaveBeenCalled();
     });
 
-    it('destroys the children when he parent becomes collapsed if the tree is lazy', function (this: Context) {
-      this.featuresService.eager = false;
-      const spy = spyOn(this.testComponent.parent, 'clearChildren');
-      this.expandService.expanded = true;
+    it('destroys the children when he parent becomes collapsed if the tree is lazy', () => {
+      testContext.featuresService.eager = false;
+      const spy = spyOn(testContext.testComponent.parent, 'clearChildren');
+      testContext.expandService.expanded = true;
       expect(spy).not.toHaveBeenCalled();
-      this.expandService.expanded = false;
+      testContext.expandService.expanded = false;
       expect(spy).toHaveBeenCalled();
     });
 

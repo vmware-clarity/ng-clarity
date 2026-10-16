@@ -5,16 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { addHelpers } from '@clr/angular/testing';
-
 import SignpostFocusManagerServiceSpec from './providers/signpost-focus-manager.service.spec';
 import SignpostIdServiceSpec from './providers/signpost-id.service.spec';
 import SignpostContentSpecs from './signpost-content.spec';
 import SignpostTriggerSpecs from './signpost-trigger.spec';
 import SignpostSpecs from './signpost.spec';
 
-describe('Signpost', function () {
-  addHelpers();
+describe('Signpost', () => {
   /*
    * After having to work with it, I think this spec delves waaaay to much into the component's views.
    * So I'm not happy with some of the code I wrote, but refactoring this whole spec is not part of my

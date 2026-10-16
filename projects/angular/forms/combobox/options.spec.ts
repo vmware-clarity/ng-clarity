@@ -8,7 +8,7 @@
 import { Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, FocusService, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/utils';
 
 import { ClrOptions } from './options';
@@ -54,28 +54,31 @@ class TestComponentWithChild {
 class TestComponentWithError {}
 
 export default function (): void {
-  describe('Select Options Menu Component', function () {
+  describe('Select Options Menu Component', () => {
+    const helpers = createTestHelpers();
+
     let context:
-      TestContext<ClrOptions<string>, TestComponent> | TestContext<ClrOptions<string>, TestComponentWithChild>;
+      | TestContext<ClrOptions<string>, TestComponent>
+      | TestContext<ClrOptions<string>, TestComponentWithChild>;
     let popoverService: ClrPopoverService;
 
-    describe('View Basics', function () {
-      beforeEach(function () {
-        context = this.createOnly(ClrOptions, TestComponent, []);
+    describe('View Basics', () => {
+      beforeEach(() => {
+        context = helpers.createOnly<ClrOptions<string>, TestComponent>(ClrOptions, TestComponent, []);
         popoverService = context.getClarityProvider(ClrPopoverService);
       });
 
-      afterEach(function () {
+      afterEach(() => {
         popoverService.open = false;
         context.detectChanges();
       });
 
-      it('projects content', function () {
+      it('projects content', () => {
         const menu = context.testElement.querySelector('clr-options');
         expect(menu.textContent).toMatch(/Test/);
       });
 
-      it('has the correct class', function () {
+      it('has the correct class', () => {
         const menu = context.testElement.querySelector('clr-options');
         expect(menu.classList.contains('clr-combobox-options')).toBe(true);
       });
@@ -88,7 +91,7 @@ export default function (): void {
         expect(popoverService.open).toBe(true);
       });
 
-      it('handles loading and no-result states', function () {
+      it('handles loading and no-result states', () => {
         const selectionService: OptionSelectionService<any> = context.getClarityProvider(OptionSelectionService);
         selectionService.loading = true;
         context.fixture.detectChanges();
@@ -101,31 +104,31 @@ export default function (): void {
       });
     });
 
-    describe('Template API', function () {
-      describe('Plain text content', function () {
-        beforeEach(function () {
-          context = this.createOnly(ClrOptions, TestComponent, []);
+    describe('Template API', () => {
+      describe('Plain text content', () => {
+        beforeEach(() => {
+          context = helpers.createOnly<ClrOptions<string>, TestComponent>(ClrOptions, TestComponent, []);
         });
 
-        it('has a searchText method', function () {
+        it('has a searchText method', () => {
           const searchText = context.clarityDirective.searchText('test');
           expect(searchText).toEqual('Searching for matches for "test"');
         });
       });
 
-      describe('ClrOption content', function () {
-        beforeEach(function () {
-          context = this.create(ClrOptions, TestComponentWithChild, []);
+      describe('ClrOption content', () => {
+        beforeEach(() => {
+          context = helpers.create<ClrOptions<string>, TestComponentWithChild>(ClrOptions, TestComponentWithChild, []);
         });
 
-        it('can add option items', function () {
+        it('can add option items', () => {
           expect(context.clarityDirective.items.length).toBe(1);
           (context.testComponent as TestComponentWithChild).showOption = false;
           context.detectChanges();
           expect(context.clarityDirective.items.length).toBe(0);
         });
 
-        it('has "emptyOptions" field that depend on the items', function () {
+        it('has "emptyOptions" field that depend on the items', () => {
           expect(context.clarityDirective.emptyOptions).toBeFalse();
           (context.testComponent as TestComponentWithChild).showOption = false;
           context.detectChanges();
@@ -134,8 +137,8 @@ export default function (): void {
       });
     });
 
-    describe('Error Condition', function () {
-      it('throws an error when options menu is not used inside of clr-combobox', function () {
+    describe('Error Condition', () => {
+      it('throws an error when options menu is not used inside of clr-combobox', () => {
         TestBed.configureTestingModule({ declarations: [ClrOptions, TestComponentWithError] });
         expect(() => {
           TestBed.createComponent(TestComponentWithError);

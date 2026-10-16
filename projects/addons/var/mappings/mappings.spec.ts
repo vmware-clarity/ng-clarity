@@ -41,45 +41,50 @@ interface ThisTest {
 }
 
 describe('Mappings', () => {
-  beforeEach(function (this: ThisTest) {
-    this.stepModel = new StepModel();
-    this.inputMappings = getInputMappings(this.stepModel);
-    this.outputMappings = getOutputMappings(this.stepModel);
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
+    testContext.stepModel = new StepModel();
+    testContext.inputMappings = getInputMappings(testContext.stepModel);
+    testContext.outputMappings = getOutputMappings(testContext.stepModel);
   });
 
   describe('when step model class extends another step model', () => {
-    beforeEach(function (this: ThisTest) {
-      this.stepModel = new ExtendedStepModel();
-      this.inputMappings = getInputMappings(this.stepModel);
-      this.outputMappings = getOutputMappings(this.stepModel);
+    beforeEach(() => {
+      testContext.stepModel = new ExtendedStepModel();
+      testContext.inputMappings = getInputMappings(testContext.stepModel);
+      testContext.outputMappings = getOutputMappings(testContext.stepModel);
     });
 
-    it('input mapping of own properties should work', function (this: ThisTest) {
-      expect(this.inputMappings['eVar1'].propertyName).toEqual('eVar1');
+    it('input mapping of own properties should work', () => {
+      expect(testContext.inputMappings['eVar1'].propertyName).toEqual('eVar1');
     });
 
-    it('input mapping of parent properties should work', function (this: ThisTest) {
-      expect(this.inputMappings['var1'].propertyName).toEqual('var1');
+    it('input mapping of parent properties should work', () => {
+      expect(testContext.inputMappings['var1'].propertyName).toEqual('var1');
     });
 
-    it('output mapping of own properties should work', function (this: ThisTest) {
-      expect(this.outputMappings['eVar2'].propertyName).toEqual('eVar2');
+    it('output mapping of own properties should work', () => {
+      expect(testContext.outputMappings['eVar2'].propertyName).toEqual('eVar2');
     });
 
-    it('output mapping of parent properties should work', function (this: ThisTest) {
-      expect(this.outputMappings['var2'].propertyName).toEqual('var2');
+    it('output mapping of parent properties should work', () => {
+      expect(testContext.outputMappings['var2'].propertyName).toEqual('var2');
     });
   });
 
-  it('input mapping var1 should be mapped to var1', function (this: ThisTest) {
-    expect(this.inputMappings['var1'].propertyName).toEqual('var1');
+  it('input mapping var1 should be mapped to var1', () => {
+    expect(testContext.inputMappings['var1'].propertyName).toEqual('var1');
   });
 
-  it('output mapping var2 should be mapped to var2', function (this: ThisTest) {
-    expect(this.outputMappings['var2'].propertyName).toEqual('var2');
+  it('output mapping var2 should be mapped to var2', () => {
+    expect(testContext.outputMappings['var2'].propertyName).toEqual('var2');
   });
 
-  it('if there are no @in or @out for mappings mentioned, then it should throw error', function () {
+  it('if there are no @in or @out for mappings mentioned, then it should throw error', () => {
     const mappings = new Mappings<StepModel2, WizardModel>()
       .mapStepProp('var3')
       .to('prop1')
@@ -93,7 +98,7 @@ describe('Mappings', () => {
     }
   });
 
-  it('throws error, if mapping is defined more than once for same step model property ', function () {
+  it('throws error, if mapping is defined more than once for same step model property ', () => {
     try {
       new Mappings<StepModel, WizardModel>().mapStepProp('var1').to('prop1').mapStepProp('var1').to('prop2');
       fail('should never reach here');
@@ -102,7 +107,7 @@ describe('Mappings', () => {
     }
   });
 
-  it('throws error, if mapping is defined more than once for same wizard model property ', function () {
+  it('throws error, if mapping is defined more than once for same wizard model property ', () => {
     try {
       new Mappings<StepModel, WizardModel>().mapStepProp('var1').to('prop1').mapStepProp('var2').to('prop1');
       fail('should never reach here');

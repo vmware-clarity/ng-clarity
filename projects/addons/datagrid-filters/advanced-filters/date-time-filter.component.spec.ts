@@ -160,319 +160,339 @@ function mockCurrentTime(): void {
 }
 
 describe('DateTimeFilterComponent', () => {
-  beforeEach(function (this: ThisTest) {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrInputModule, ClrSelectModule, CommonModule, FormsModule, ReactiveFormsModule, ClrIcon],
       declarations: [DateTimeFilterComponent, FilterFormComponent],
       providers: [DatagridFiltersStrings, DatePipe],
     });
-    this.fixture = TestBed.createComponent(DateTimeFilterComponent);
-    this.component = this.fixture.componentInstance;
-    this.component.filterProperty = dateTimeProperty;
-    this.dateOffsetSpy = spyOn(Date.prototype, 'getTimezoneOffset').and.returnValue(-360);
+    testContext.fixture = TestBed.createComponent(DateTimeFilterComponent);
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.component.filterProperty = dateTimeProperty;
+    testContext.dateOffsetSpy = spyOn(Date.prototype, 'getTimezoneOffset').and.returnValue(-360);
     mockCurrentTime();
   });
 
-  afterEach(function (this: ThisTest) {
+  afterEach(() => {
     jasmine.clock().uninstall();
-    this.fixture.destroy();
+    testContext.fixture.destroy();
   });
   describe('in normal mode', () => {
-    beforeEach(function (this: ThisTest) {
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.fixture.detectChanges();
     });
-    it('is properly initialized', function (this: ThisTest) {
-      expect(this.component).toBeTruthy();
+    it('is properly initialized', () => {
+      expect(testContext.component).toBeTruthy();
 
-      expect(this.component.comparisonOperators).toEqual(dateTimeoperations);
-      expect(this.component.dateTimeFilterForm.controls['dateValue'].value).toEqual('');
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.AfterOrEqualTo);
+      expect(testContext.component.comparisonOperators).toEqual(dateTimeoperations);
+      expect(testContext.component.dateTimeFilterForm.controls['dateValue'].value).toEqual('');
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(
+        ComparisonOperator.AfterOrEqualTo
+      );
 
-      expect(this.component.dateTimeFilterForm.valid).toBeFalsy();
+      expect(testContext.component.dateTimeFilterForm.valid).toBeFalsy();
     });
-    it('emits an empty event on cancel', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
-      const cancelDateTimeFilterButton = this.fixture.debugElement.nativeElement.querySelector(
+    it('emits an empty event on cancel', () => {
+      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      const cancelDateTimeFilterButton = testContext.fixture.debugElement.nativeElement.querySelector(
         'button[data-test-id=cancelBtn]'
       );
       expect(cancelDateTimeFilterButton).toBeTruthy();
 
       cancelDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith();
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith();
     });
-    it('emits a property filter event on submit with operator equals', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
+    it('emits a property filter event on submit with operator equals', () => {
+      spyOn(testContext.component.filterCriteriaChange, 'emit');
       const submitDateTimeFilterButton: HTMLButtonElement =
-        this.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
       expect(submitDateTimeFilterButton).toBeTruthy();
       expect(submitDateTimeFilterButton.disabled).toBeTruthy();
-      expect(this.component.dateTimeFilterForm.valid).toBeFalsy();
+      expect(testContext.component.dateTimeFilterForm.valid).toBeFalsy();
 
-      const operatorSelect: HTMLSelectElement = this.fixture.debugElement.nativeElement.querySelector(operatorSelector);
+      const operatorSelect: HTMLSelectElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(operatorSelector);
       expect(operatorSelect).toBeTruthy();
       expect(operatorSelect.options.length).toEqual(12);
 
       operatorSelect.value = operatorSelect.options[0].value;
       operatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.Equals);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.Equals);
 
-      const dateValueInput: HTMLInputElement = this.fixture.debugElement.nativeElement.querySelector(dateInputSelector);
+      const dateValueInput: HTMLInputElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(dateInputSelector);
       dateValueInput.value = augustNinth;
       dateValueInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['dateValue'].value).toEqual(augustNinth);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['dateValue'].value).toEqual(augustNinth);
       expect(submitDateTimeFilterButton.disabled).toBeFalsy();
-      expect(this.component.dateTimeFilterForm.valid).toBeTruthy();
+      expect(testContext.component.dateTimeFilterForm.valid).toBeTruthy();
 
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(equalsPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(equalsPropertyFilter);
     });
-    it('emits a property filter event on submit with operator after', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
+    it('emits a property filter event on submit with operator after', () => {
+      spyOn(testContext.component.filterCriteriaChange, 'emit');
       const afterPropertyFilter = new PropertyFilter();
       afterPropertyFilter.criteria = [afterPredicate];
       const submitDateTimeFilterButton: HTMLButtonElement =
-        this.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
 
-      const operatorSelect: HTMLSelectElement = this.fixture.debugElement.nativeElement.querySelector(operatorSelector);
+      const operatorSelect: HTMLSelectElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(operatorSelector);
       operatorSelect.value = operatorSelect.options[3].value;
       operatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.After);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.After);
 
-      const dateValueInput: HTMLInputElement = this.fixture.debugElement.nativeElement.querySelector(dateInputSelector);
+      const dateValueInput: HTMLInputElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(dateInputSelector);
       dateValueInput.value = '2023-08-10';
       dateValueInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['dateValue'].value).toEqual('2023-08-10');
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['dateValue'].value).toEqual('2023-08-10');
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(afterPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(afterPropertyFilter);
     });
-    it('emits a property filter event on submit with operator custom range', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
-      this.component.timePredicate = true;
+    it('emits a property filter event on submit with operator custom range', () => {
+      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      testContext.component.timePredicate = true;
 
       const submitDateTimeFilterButton: HTMLButtonElement =
-        this.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
 
-      const operatorSelect: HTMLSelectElement = this.fixture.debugElement.nativeElement.querySelector(operatorSelector);
+      const operatorSelect: HTMLSelectElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(operatorSelector);
       operatorSelect.value = operatorSelect.options[5].value;
       operatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.CustomRange);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(
+        ComparisonOperator.CustomRange
+      );
 
-      const dateValueInput: HTMLInputElement = this.fixture.debugElement.nativeElement.querySelector(dateInputSelector);
+      const dateValueInput: HTMLInputElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(dateInputSelector);
       const dummyDate = '2023-08-11';
       dateValueInput.value = dummyDate;
       dateValueInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['dateValue'].value).toEqual(dummyDate);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['dateValue'].value).toEqual(dummyDate);
 
-      const dateValueToInput: HTMLInputElement = this.fixture.debugElement.nativeElement.querySelector(
+      const dateValueToInput: HTMLInputElement = testContext.fixture.debugElement.nativeElement.querySelector(
         'input[formControlName=dateValueTo]'
       );
       dateValueToInput.value = dummyDate;
       dateValueToInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['dateValueTo'].value).toEqual(dummyDate);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['dateValueTo'].value).toEqual(dummyDate);
 
-      const timeValueInput: HTMLInputElement = this.fixture.debugElement.nativeElement.querySelector(
+      const timeValueInput: HTMLInputElement = testContext.fixture.debugElement.nativeElement.querySelector(
         'input[formControlName=timeValue]'
       );
       timeValueInput.value = '15:15';
       timeValueInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['timeValue'].value).toEqual('15:15');
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['timeValue'].value).toEqual('15:15');
 
-      const timeValueToInput: HTMLInputElement = this.fixture.debugElement.nativeElement.querySelector(
+      const timeValueToInput: HTMLInputElement = testContext.fixture.debugElement.nativeElement.querySelector(
         'input[formControlName=timeValueTo]'
       );
       timeValueToInput.value = '15:18';
       timeValueToInput.dispatchEvent(new Event('input'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['timeValueTo'].value).toEqual('15:18');
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['timeValueTo'].value).toEqual('15:18');
 
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(customRangePropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(customRangePropertyFilter);
     });
-    it('emits a property filter event on submit with relative operator', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
+    it('emits a property filter event on submit with relative operator', () => {
+      spyOn(testContext.component.filterCriteriaChange, 'emit');
       const submitDateTimeFilterButton: HTMLButtonElement =
-        this.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
 
-      const operatorSelect: HTMLSelectElement = this.fixture.debugElement.nativeElement.querySelector(operatorSelector);
+      const operatorSelect: HTMLSelectElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(operatorSelector);
       operatorSelect.value = operatorSelect.options[7].value;
       operatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.LastDay);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.LastDay);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastDayPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastDayPropertyFilter);
 
       operatorSelect.value = operatorSelect.options[8].value;
       operatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.LastWeek);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.LastWeek);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(2);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastWeekPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(2);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastWeekPropertyFilter);
 
       operatorSelect.value = operatorSelect.options[9].value;
       operatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.LastMonth);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.LastMonth);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(3);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastMonthPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(3);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastMonthPropertyFilter);
 
       operatorSelect.value = operatorSelect.options[10].value;
       operatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.LastYear);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.LastYear);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(4);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastYearPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(4);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastYearPropertyFilter);
     });
-    it('emits a property filter event on submit with time span operator', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
+    it('emits a property filter event on submit with time span operator', () => {
+      spyOn(testContext.component.filterCriteriaChange, 'emit');
       const submitDateTimeFilterButton: HTMLButtonElement =
-        this.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
 
-      const operatorSelect: HTMLSelectElement = this.fixture.debugElement.nativeElement.querySelector(operatorSelector);
+      const operatorSelect: HTMLSelectElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(operatorSelector);
       operatorSelect.value = operatorSelect.options[11].value;
       operatorSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.TimeSpan);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.TimeSpan);
       const timeSpanValueInput: HTMLInputElement =
-        this.fixture.debugElement.nativeElement.querySelector(timeSpanInputSelector);
+        testContext.fixture.debugElement.nativeElement.querySelector(timeSpanInputSelector);
       timeSpanValueInput.value = '1';
       timeSpanValueInput.dispatchEvent(new Event('input'));
-      const timeSpanSelect: HTMLSelectElement = this.fixture.debugElement.nativeElement.querySelector(timeSpanSelector);
+      const timeSpanSelect: HTMLSelectElement =
+        testContext.fixture.debugElement.nativeElement.querySelector(timeSpanSelector);
       timeSpanSelect.value = timeSpanSelect.options[0].value;
       timeSpanSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Minutes);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Minutes);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastMinutePropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastMinutePropertyFilter);
 
       timeSpanSelect.value = timeSpanSelect.options[1].value;
       timeSpanSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Hours);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Hours);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(2);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastHourPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(2);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastHourPropertyFilter);
 
       timeSpanSelect.value = timeSpanSelect.options[2].value;
       timeSpanSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Days);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Days);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(3);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastDayPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(3);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastDayPropertyFilter);
 
       timeSpanSelect.value = timeSpanSelect.options[3].value;
       timeSpanSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Weeks);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Weeks);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(4);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastWeekPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(4);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastWeekPropertyFilter);
 
       timeSpanSelect.value = timeSpanSelect.options[4].value;
       timeSpanSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Months);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Months);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(5);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastMonthPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(5);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastMonthPropertyFilter);
 
       timeSpanSelect.value = timeSpanSelect.options[5].value;
       timeSpanSelect.dispatchEvent(new Event('change'));
-      this.fixture.detectChanges();
-      expect(this.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Years);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Years);
       submitDateTimeFilterButton.click();
-      this.fixture.detectChanges();
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(6);
-      expect(this.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastYearPropertyFilter);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledTimes(6);
+      expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastYearPropertyFilter);
     });
   });
   describe('in edit mode', () => {
-    beforeEach(function (this: ThisTest) {
+    beforeEach(() => {
       dateTimeProperty.selectedValue = undefined;
       dateTimeProperty.selectedValueTo = undefined;
     });
-    it('is properly initialized with custom range operator', function (this: ThisTest) {
-      this.component.propertyFilter = customRangePropertyFilter;
+    it('is properly initialized with custom range operator', () => {
+      testContext.component.propertyFilter = customRangePropertyFilter;
       dateTimeProperty.selectedOperator = ComparisonOperator.CustomRange;
       dateTimeProperty.selectedValue = '2023-10-23T15:15';
       dateTimeProperty.selectedValueTo = '2023-10-24T15:18';
 
-      this.component.ngOnChanges();
-      this.fixture.detectChanges();
+      testContext.component.ngOnChanges();
+      testContext.fixture.detectChanges();
 
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.CustomRange);
-      expect(this.component.dateTimeFilterForm.controls['dateValue'].value).toEqual('2023-10-23');
-      expect(this.component.dateTimeFilterForm.controls['dateValueTo'].value).toEqual('2023-10-24');
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(
+        ComparisonOperator.CustomRange
+      );
+      expect(testContext.component.dateTimeFilterForm.controls['dateValue'].value).toEqual('2023-10-23');
+      expect(testContext.component.dateTimeFilterForm.controls['dateValueTo'].value).toEqual('2023-10-24');
 
-      expect(this.component.dateTimeFilterForm.controls['timeValue'].value).toEqual('15:15');
-      expect(this.component.dateTimeFilterForm.controls['timeValueTo'].value).toEqual('15:18');
+      expect(testContext.component.dateTimeFilterForm.controls['timeValue'].value).toEqual('15:15');
+      expect(testContext.component.dateTimeFilterForm.controls['timeValueTo'].value).toEqual('15:18');
     });
-    it('is properly initialized with time span operator', function (this: ThisTest) {
-      this.component.propertyFilter = lastYearPropertyFilter;
+    it('is properly initialized with time span operator', () => {
+      testContext.component.propertyFilter = lastYearPropertyFilter;
       dateTimeProperty.selectedOperator = ComparisonOperator.TimeSpan;
       dateTimeProperty.selectedTimeSpanValue = '5';
       dateTimeProperty.selectedTimeSpan = TimeSpan.Years;
 
-      this.component.ngOnChanges();
-      this.fixture.detectChanges();
+      testContext.component.ngOnChanges();
+      testContext.fixture.detectChanges();
 
-      expect(this.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.TimeSpan);
-      expect(this.component.dateTimeFilterForm.controls['timeSpanValue'].value).toEqual('5');
-      expect(this.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Years);
+      expect(testContext.component.dateTimeFilterForm.controls['operator'].value).toEqual(ComparisonOperator.TimeSpan);
+      expect(testContext.component.dateTimeFilterForm.controls['timeSpanValue'].value).toEqual('5');
+      expect(testContext.component.dateTimeFilterForm.controls['timeSpan'].value).toEqual(TimeSpan.Years);
     });
   });
   describe('additional coverage', () => {
-    beforeEach(function (this: ThisTest) {
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.fixture.detectChanges();
     });
 
-    it('should handle includeSeconds=true correctly by preserving seconds in the value', function (this: ThisTest) {
+    it('should handle includeSeconds=true correctly by preserving seconds in the value', () => {
       // Arrange
-      this.component.includeSeconds = true;
-      this.component.enableTimePredicate();
-      this.fixture.detectChanges();
+      testContext.component.includeSeconds = true;
+      testContext.component.enableTimePredicate();
+      testContext.fixture.detectChanges();
 
       // Act: Set operator to Equals (to trigger buildEqualsDateTimePredicates -> getFromDateTimePredicate)
-      this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Equals);
-      this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
+      testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Equals);
+      testContext.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
       // When includeSeconds is true, the component expects the input to contain the seconds
-      this.component.dateTimeFilterForm.controls['timeValue'].setValue('12:30:45');
+      testContext.component.dateTimeFilterForm.controls['timeValue'].setValue('12:30:45');
 
-      spyOn(this.component.filterCriteriaChange, 'emit');
-      this.component.onApplyButtonClick();
+      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      testContext.component.onApplyButtonClick();
 
       // Assert
-      const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+      const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
       const emittedFilter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
       const primaryPredicate = emittedFilter.criteria[0];
 
@@ -481,68 +501,68 @@ describe('DateTimeFilterComponent', () => {
       expect(primaryPredicate.value).toContain('2023-08-09T12:30:45');
     });
 
-    it('should submit form when Enter key is pressed and form is valid', function (this: ThisTest) {
-      spyOn(this.component, 'onApplyButtonClick');
+    it('should submit form when Enter key is pressed and form is valid', () => {
+      spyOn(testContext.component, 'onApplyButtonClick');
 
       // Arrange: Make form valid
-      this.component.dateTimeFilterForm.controls['dateValue'].setValue('2023-01-01');
+      testContext.component.dateTimeFilterForm.controls['dateValue'].setValue('2023-01-01');
 
       const event = new KeyboardEvent('keypress', { key: 'Enter' });
       spyOn(event, 'stopPropagation');
       spyOn(event, 'preventDefault');
 
       // Act
-      this.component.onInputKeyPress(event);
+      testContext.component.onInputKeyPress(event);
 
       // Assert
       expect(event.stopPropagation).toHaveBeenCalled();
       expect(event.preventDefault).toHaveBeenCalled();
-      expect(this.component.onApplyButtonClick).toHaveBeenCalled();
+      expect(testContext.component.onApplyButtonClick).toHaveBeenCalled();
     });
 
-    it('should NOT submit form when Enter key is pressed and form is invalid', function (this: ThisTest) {
-      spyOn(this.component, 'onApplyButtonClick');
+    it('should NOT submit form when Enter key is pressed and form is invalid', () => {
+      spyOn(testContext.component, 'onApplyButtonClick');
 
       // Arrange: Make form invalid (dateValue is required by default)
-      this.component.dateTimeFilterForm.controls['dateValue'].setValue('');
+      testContext.component.dateTimeFilterForm.controls['dateValue'].setValue('');
 
       const event = new KeyboardEvent('keypress', { key: 'Enter' });
 
       // Act
-      this.component.onInputKeyPress(event);
+      testContext.component.onInputKeyPress(event);
 
       // Assert
-      expect(this.component.onApplyButtonClick).not.toHaveBeenCalled();
+      expect(testContext.component.onApplyButtonClick).not.toHaveBeenCalled();
     });
 
-    it('should remove time controls when disableTimePredicate is called', function (this: ThisTest) {
+    it('should remove time controls when disableTimePredicate is called', () => {
       // Arrange: Enable first to verify they exist
-      this.component.isCustomRangePredicate = true; // To test removal of 'To' controls
-      this.component.enableTimePredicate();
+      testContext.component.isCustomRangePredicate = true; // To test removal of 'To' controls
+      testContext.component.enableTimePredicate();
 
-      expect(this.component.dateTimeFilterForm.contains('timeValue')).toBeTrue();
-      expect(this.component.dateTimeFilterForm.contains('timeValueTo')).toBeTrue();
+      expect(testContext.component.dateTimeFilterForm.contains('timeValue')).toBeTrue();
+      expect(testContext.component.dateTimeFilterForm.contains('timeValueTo')).toBeTrue();
 
       // Act
-      this.component.disableTimePredicate();
+      testContext.component.disableTimePredicate();
 
       // Assert
-      expect(this.component.timePredicate).toBeFalse();
-      expect(this.component.dateTimeFilterForm.contains('timeValue')).toBeFalse();
-      expect(this.component.dateTimeFilterForm.contains('timeValueTo')).toBeFalse();
+      expect(testContext.component.timePredicate).toBeFalse();
+      expect(testContext.component.dateTimeFilterForm.contains('timeValue')).toBeFalse();
+      expect(testContext.component.dateTimeFilterForm.contains('timeValueTo')).toBeFalse();
     });
 
     describe('getSinglePredicate switch cases', () => {
-      it('should handle Before operator', function (this: ThisTest) {
-        spyOn(this.component.filterCriteriaChange, 'emit');
+      it('should handle Before operator', () => {
+        spyOn(testContext.component.filterCriteriaChange, 'emit');
 
         // Act
-        this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Before);
-        this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
-        this.component.onApplyButtonClick();
+        testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Before);
+        testContext.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
+        testContext.component.onApplyButtonClick();
 
         // Assert
-        const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+        const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
         const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
 
         // Before 2023-08-09 means < 2023-08-09T00:00:00
@@ -550,16 +570,16 @@ describe('DateTimeFilterComponent', () => {
         expect(filter.criteria[0].value).toContain('2023-08-09T00:00:00');
       });
 
-      it('should handle BeforeOrEqualTo operator', function (this: ThisTest) {
-        spyOn(this.component.filterCriteriaChange, 'emit');
+      it('should handle BeforeOrEqualTo operator', () => {
+        spyOn(testContext.component.filterCriteriaChange, 'emit');
 
         // Act
-        this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.BeforeOrEqualTo);
-        this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
-        this.component.onApplyButtonClick();
+        testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.BeforeOrEqualTo);
+        testContext.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
+        testContext.component.onApplyButtonClick();
 
         // Assert
-        const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+        const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
         const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
 
         // BeforeOrEqualTo uses getFromDateTimePredicate(true), which adds 1 day (if no time)
@@ -568,16 +588,16 @@ describe('DateTimeFilterComponent', () => {
         expect(filter.criteria[0].value).toContain('2023-08-10T00:00:00');
       });
 
-      it('should handle After operator', function (this: ThisTest) {
-        spyOn(this.component.filterCriteriaChange, 'emit');
+      it('should handle After operator', () => {
+        spyOn(testContext.component.filterCriteriaChange, 'emit');
 
         // Act
-        this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.After);
-        this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
-        this.component.onApplyButtonClick();
+        testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.After);
+        testContext.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth);
+        testContext.component.onApplyButtonClick();
 
         // Assert
-        const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+        const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
         const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
 
         // After uses getFromDateTimePredicate(true), adding 1 day
@@ -587,25 +607,25 @@ describe('DateTimeFilterComponent', () => {
       });
     });
 
-    it('should handle getToDateTimePredicate else block (CustomRange without Time)', function (this: ThisTest) {
-      spyOn(this.component.filterCriteriaChange, 'emit');
+    it('should handle getToDateTimePredicate else block (CustomRange without Time)', () => {
+      spyOn(testContext.component.filterCriteriaChange, 'emit');
 
       // Arrange
-      this.component.timePredicate = false; // Ensure we hit the 'else' block
+      testContext.component.timePredicate = false; // Ensure we hit the 'else' block
 
       // Act
-      this.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.CustomRange);
+      testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.CustomRange);
       // Trigger UI update to add controls (normally handled by subscription, but safer to be explicit in test setup logic)
       // But here we just set values because enableCustomRangePredicate was likely called by valueChanges in real component
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      this.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth); // From
-      this.component.dateTimeFilterForm.controls['dateValueTo'].setValue('2023-08-15'); // To
+      testContext.component.dateTimeFilterForm.controls['dateValue'].setValue(augustNinth); // From
+      testContext.component.dateTimeFilterForm.controls['dateValueTo'].setValue('2023-08-15'); // To
 
-      this.component.onApplyButtonClick();
+      testContext.component.onApplyButtonClick();
 
       // Assert
-      const emitSpy = this.component.filterCriteriaChange.emit as jasmine.Spy;
+      const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
       const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
 
       // Index 0 is Primary (From), Index 1 is Secondary (To)

@@ -5,22 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { addHelpers } from '@clr/angular/testing';
-
 import DropdownItemSpecs from './dropdown-item.spec';
 import DropdownMenuSpecs from './dropdown-menu.spec';
 import DropdownTriggerSpecs from './dropdown-trigger.spec';
 import DropdownSpecs from './dropdown.spec';
 import DropdownFocusHandlerSpecs from './providers/dropdown-focus-handler.spec';
 
-describe('Dropdown', function () {
-  addHelpers();
-
-  describe('Providers', function () {
+describe('Dropdown', () => {
+  describe('Providers', () => {
     DropdownFocusHandlerSpecs();
   });
 
-  describe('Components', function () {
+  describe('Components', () => {
     DropdownSpecs();
     DropdownMenuSpecs();
     DropdownItemSpecs();

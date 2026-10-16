@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatepickerViewManager } from './datepicker-view-manager';
 import { DateFormControlService } from './providers/date-form-control.service';
@@ -19,6 +19,8 @@ import { ViewManagerService } from './providers/view-manager.service';
 
 export default function () {
   describe('Datepicker View Manager Component', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrDatepickerViewManager, TestComponent>;
     let viewManagerService: ViewManagerService;
     let dateNavigationService: DateNavigationService;
@@ -26,8 +28,8 @@ export default function () {
 
     let testElement;
 
-    beforeEach(function () {
-      context = this.create(ClrDatepickerViewManager, TestComponent, [
+    beforeEach(() => {
+      context = helpers.create(ClrDatepickerViewManager, TestComponent, [
         ViewManagerService,
         DatepickerFocusService,
         ClrPopoverService,

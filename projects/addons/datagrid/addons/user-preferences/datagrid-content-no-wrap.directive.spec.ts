@@ -76,7 +76,7 @@ describe('DatagridContentNoWrapDirective', () => {
     expect(appfxDatagridHostComponent.appfxDatagridComponent.wrapText).toEqual(false);
   });
 
-  afterEach(function (this: any) {
+  afterEach(() => {
     fixture.destroy();
   });
 });

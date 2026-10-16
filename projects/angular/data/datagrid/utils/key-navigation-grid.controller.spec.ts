@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import { createTestHelpers, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
 
 import { ClrDatagrid } from '../datagrid';
@@ -66,14 +66,16 @@ class TestComponent {
 }
 
 export default function (): void {
-  describe('Key navigation controller', function () {
-    describe('Basic datagrid', function () {
+  describe('Key navigation controller', () => {
+    const helpers = createTestHelpers();
+
+    describe('Basic datagrid', () => {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, TestComponent);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagrid<number>, TestComponent>(ClrDatagrid, TestComponent);
 
         grid = context.clarityElement.querySelector('[role=grid]');
         expect(grid).toBeDefined();
@@ -92,7 +94,7 @@ export default function (): void {
       // | 9d|10d|11d|
       // |12d|13d|14d|
 
-      it('Moves focus across cells no action cells', function () {
+      it('Moves focus across cells no action cells', () => {
         // cell flow: start at index 0 -> 3 -> 4 -> 5 -> 8 -> 7 -> 4 end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -115,7 +117,7 @@ export default function (): void {
         expectActiveElementToBe(cells[4]);
       });
 
-      it('Moves focus with PageDown and PageUp no action cells', function () {
+      it('Moves focus with PageDown and PageUp no action cells', () => {
         // cell flow: start at index 0 -> 12 -> 3 end
 
         // focus at bottom datagrid cell
@@ -127,7 +129,7 @@ export default function (): void {
         expectActiveElementToBe(cells[3]);
       });
 
-      it('Moves focus on Home and End no action cells', function () {
+      it('Moves focus on Home and End no action cells', () => {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expectActiveElementToBe(cells[3]);
 
@@ -138,7 +140,7 @@ export default function (): void {
         expectActiveElementToBe(cells[3]);
       });
 
-      it('Moves focus on Ctrl-Home and Ctrl-End no action cells', function () {
+      it('Moves focus on Ctrl-Home and Ctrl-End no action cells', () => {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
         expectActiveElementToBe(cells[14]);
 
@@ -146,7 +148,7 @@ export default function (): void {
         expectActiveElementToBe(cells[0]);
       });
 
-      it('Moves focus to a clicked element', function () {
+      it('Moves focus to a clicked element', () => {
         const testCell = 7;
         expect(document.activeElement.textContent).not.toBe(cells[testCell].textContent);
 
@@ -155,13 +157,13 @@ export default function (): void {
       });
     });
 
-    describe('Basic datagrid with actions', function () {
+    describe('Basic datagrid with actions', () => {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagrid<number>, TestComponent>(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.detectChanges();
 
@@ -182,7 +184,7 @@ export default function (): void {
       // |12c|13d|14d|15d|
       // |16c|17d|18d|19d|
 
-      it('Moves focus across cells with action cells', function () {
+      it('Moves focus across cells with action cells', () => {
         // check cell flow: start at index 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 12 -> 7 -> 6 -> 5 end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -213,7 +215,7 @@ export default function (): void {
         expectActiveElementToBe(cells[4].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus with PageDown and PageUp with action cells', function () {
+      it('Moves focus with PageDown and PageUp with action cells', () => {
         // cell flow: start at index 0 (check) -> 16 (check) -> 4 (check)  end
 
         // focus at bottom datagrid cell
@@ -225,7 +227,7 @@ export default function (): void {
         expectActiveElementToBe(cells[4].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus on Home and End with action cells', function () {
+      it('Moves focus on Home and End with action cells', () => {
         // cell flow: start at index 0 (check) -> 4 (check) -> 7 (check) -> 4 (check) end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -238,7 +240,7 @@ export default function (): void {
         expectActiveElementToBe(cells[4].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus on Ctrl-Home and Ctrl-End with action cells', function () {
+      it('Moves focus on Ctrl-Home and Ctrl-End with action cells', () => {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
         expectActiveElementToBe(cells[19]);
 
@@ -247,13 +249,13 @@ export default function (): void {
       });
     });
 
-    describe('Expandable datagrid', function () {
+    describe('Expandable datagrid', () => {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, TestComponent);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagrid<number>, TestComponent>(ClrDatagrid, TestComponent);
         context.testComponent.showRowDetail = true;
         context.detectChanges();
 
@@ -274,7 +276,7 @@ export default function (): void {
       // |12e|13d|14d|15d|
       // |16e|17d|18d|19d|
 
-      it('Moves focus across cells with expand no action cells', function () {
+      it('Moves focus across cells with expand no action cells', () => {
         // check cell flow: start at index 0 -> 4 -> 5 -> 6 -> 10 -> 9 -> 5 -> 4 end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -300,7 +302,7 @@ export default function (): void {
         expectActiveElementToBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus with PageDown and PageUp with expand no action cells', function () {
+      it('Moves focus with PageDown and PageUp with expand no action cells', () => {
         // cell flow: start at index 0 (check) -> 1 (check) -> 17 (check) -> 5 (check)  end
 
         // focus at bottom datagrid cell
@@ -312,7 +314,7 @@ export default function (): void {
         expectActiveElementToBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus on Home and End with expand no action cells', function () {
+      it('Moves focus on Home and End with expand no action cells', () => {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
         expectActiveElementToBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
 
@@ -323,7 +325,7 @@ export default function (): void {
         expectActiveElementToBe(cells[4].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus on Ctrl-Home and Ctrl-End with expand no action cells', function () {
+      it('Moves focus on Ctrl-Home and Ctrl-End with expand no action cells', () => {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
         expectActiveElementToBe(cells[19]);
 
@@ -332,13 +334,13 @@ export default function (): void {
       });
     });
 
-    describe('Expandable datagrid with actions', function () {
+    describe('Expandable datagrid with actions', () => {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagrid<number>, TestComponent>(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.showRowDetail = true;
         context.detectChanges();
@@ -360,7 +362,7 @@ export default function (): void {
       // |15c|16e|17d|18d|19d|
       // |20c|21e|22d|23d|24d|
 
-      it('Moves focus across cells with action and expand cells', function () {
+      it('Moves focus across cells with action and expand cells', () => {
         // check cell flow: start at index 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 12 -> 7 -> 6 -> 5 end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -391,7 +393,7 @@ export default function (): void {
         expectActiveElementToBe(cells[5].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus across sticky cells with actions and expand cells', function () {
+      it('Moves focus across sticky cells with actions and expand cells', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 15 -> 16 -> 11
         // end
@@ -412,7 +414,7 @@ export default function (): void {
         expectActiveElementToBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus with PageDown and PageUp with action and expand cells', function () {
+      it('Moves focus with PageDown and PageUp with action and expand cells', () => {
         // cell flow: start at index 0 (check) -> 20 (check) -> 5 (check)  end
 
         // focus at bottom datagrid cell
@@ -424,7 +426,7 @@ export default function (): void {
         expectActiveElementToBe(cells[5].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus on Home and End with action and expand cells', function () {
+      it('Moves focus on Home and End with action and expand cells', () => {
         // cell flow: start at index 0 (check) -> 4 (check) -> 7 (check) -> 4 (check) end
 
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
@@ -437,7 +439,7 @@ export default function (): void {
         expectActiveElementToBe(cells[5].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus on Ctrl-Home and Ctrl-End with and expand action cells', function () {
+      it('Moves focus on Ctrl-Home and Ctrl-End with and expand action cells', () => {
         grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.End, ctrlKey: true }));
         expectActiveElementToBe(cells[24]);
 
@@ -446,13 +448,13 @@ export default function (): void {
       });
     });
 
-    describe('Expandable datagrid with expanded column row and actions', function () {
+    describe('Expandable datagrid with expanded column row and actions', () => {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagrid<number>, TestComponent>(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.showRowDetail = true;
@@ -478,7 +480,7 @@ export default function (): void {
       // |       |23d|24d|25d|
       // |26c|27e|28d|29d|30d|
 
-      it('Moves focus across data cells with action and expanded rows', function () {
+      it('Moves focus across data cells with action and expanded rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 6 -> 7 -> 8 -> 13 -> 16 -> 21 -> 24 -> 29 -> 24 -> 23 -> 20 -> 15 -> 12 -> 7
         // end
@@ -529,7 +531,7 @@ export default function (): void {
         expectActiveElementToBe(cells[7]);
       });
 
-      it('Moves focus across sticky cells with actions and expanded rows', function () {
+      it('Moves focus across sticky cells with actions and expanded rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 19 -> 18 -> 26 -> 27 -> 19 -> 18 -> 10 -> 11 -> 6
         // end
@@ -571,7 +573,7 @@ export default function (): void {
         expectActiveElementToBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus between sticky and data cells with actions and expanded rows', function () {
+      it('Moves focus between sticky and data cells with actions and expanded rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 12 -> 11 -> 12 -> 15 -> 11
         // end
@@ -601,7 +603,7 @@ export default function (): void {
         expectActiveElementToBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus on Home and End with action and expand cells', function () {
+      it('Moves focus on Home and End with action and expand cells', () => {
         // cell flow: start at index
         // 0 -> 5 -> 10 -> 14 -> 10 -> 14 -> 17 -> 10
         // end
@@ -628,7 +630,7 @@ export default function (): void {
         expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus on Ctrl-Home and Ctrl-End between expanded rows', function () {
+      it('Moves focus on Ctrl-Home and Ctrl-End between expanded rows', () => {
         context.testComponent.expandedRowIndexes = [0, 3];
         context.detectChanges();
 
@@ -678,13 +680,13 @@ export default function (): void {
       });
     });
 
-    describe('Expandable datagrid with expanded replace column row and actions', function () {
+    describe('Expandable datagrid with expanded replace column row and actions', () => {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagrid<number>, TestComponent>(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.showRowDetail = true;
@@ -713,7 +715,7 @@ export default function (): void {
       // |       |23d|24d|25d|
       // |26c|27e|28d|29d|30d|
 
-      it('Moves focus across data cells with action and expanded rows', function () {
+      it('Moves focus across data cells with action and expanded rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 6 -> 7 -> 15 -> 16 -> 24 -> 29 -> 28 -> 23 -> 15 -> 16 -> 8
         // end
@@ -759,7 +761,7 @@ export default function (): void {
         expectActiveElementToBe(cells[8]);
       });
 
-      it('Moves focus between sticky and data cells with actions and expanded replaced rows', function () {
+      it('Moves focus between sticky and data cells with actions and expanded replaced rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 15 -> 11
         // end
@@ -780,7 +782,7 @@ export default function (): void {
         expectActiveElementToBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus across sticky cells with actions and expanded replaced rows', function () {
+      it('Moves focus across sticky cells with actions and expanded replaced rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 19 -> 18 -> 26 -> 27 -> 19 -> 18 -> 10 -> 11 -> 6
         // end
@@ -822,7 +824,7 @@ export default function (): void {
         expectActiveElementToBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus on Home and End with action and expand replaced cells', function () {
+      it('Moves focus on Home and End with action and expand replaced cells', () => {
         // cell flow: start at index
         // 0 -> 5 -> 10 -> 17 -> 10
         // end
@@ -840,7 +842,7 @@ export default function (): void {
         expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus on Ctrl-Home and Ctrl-End between expanded replaced column rows', function () {
+      it('Moves focus on Ctrl-Home and Ctrl-End between expanded replaced column rows', () => {
         context.testComponent.expandedRowIndexes = [0, 3];
         context.detectChanges();
 
@@ -871,13 +873,13 @@ export default function (): void {
       });
     });
 
-    describe('Expandable datagrid with expanded detail row and actions', function () {
+    describe('Expandable datagrid with expanded detail row and actions', () => {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagrid<number>, TestComponent>(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.expandedRowIndexes = [1, 2];
         context.testComponent.showRowDetail = true;
@@ -906,7 +908,7 @@ export default function (): void {
       // |       |----21d----|
       // |22c|23e|24d|25d|26d|
 
-      it('Moves focus across data cells with action and expanded detail rows', function () {
+      it('Moves focus across data cells with action and expanded detail rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 6 -> 11 -> 12 -> 13 -> 8 -> 3 -> 8 -> 13 -> 15 -> 18 -> 21 -> 24 -> 25 -> 21 -> 18 -> 19 -> 15
         // end
@@ -966,7 +968,7 @@ export default function (): void {
         expectActiveElementToBe(cells[15]);
       });
 
-      it('Moves focus between sticky and data cells with actions and expanded detail rows', function () {
+      it('Moves focus between sticky and data cells with actions and expanded detail rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 12 -> 15 -> 11
         // end
@@ -990,7 +992,7 @@ export default function (): void {
         expectActiveElementToBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus across sticky cells with actions and expanded detail rows', function () {
+      it('Moves focus across sticky cells with actions and expanded detail rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 17 -> 16 -> 22 -> 23 -> 17 -> 16 -> 10 -> 11 -> 6
         // end
@@ -1032,7 +1034,7 @@ export default function (): void {
         expectActiveElementToBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus on Home and End with action and expanded detail row', function () {
+      it('Moves focus on Home and End with action and expanded detail row', () => {
         // cell flow: start at index
         // 0 -> 5 -> 10 -> 14 -> 15 -> 10
         // end
@@ -1053,7 +1055,7 @@ export default function (): void {
         expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus on Ctrl-Home and Ctrl-End between expanded detail rows', function () {
+      it('Moves focus on Ctrl-Home and Ctrl-End between expanded detail rows', () => {
         context.testComponent.expandedRowIndexes = [0, 3];
         context.detectChanges();
 
@@ -1103,13 +1105,13 @@ export default function (): void {
       });
     });
 
-    describe('Expandable datagrid with expanded replaced detail row and actions', function () {
+    describe('Expandable datagrid with expanded replaced detail row and actions', () => {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagrid<number>, TestComponent>(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.selected = [];
         context.testComponent.columns = false;
         context.testComponent.expandedRowIndexes = [1, 2];
@@ -1139,7 +1141,7 @@ export default function (): void {
       // |       |----21d----|
       // |22c|23e|24d|25d|26d|
 
-      it('Moves focus across data cells with action and expanded replaced detail rows', function () {
+      it('Moves focus across data cells with action and expanded replaced detail rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 6 -> 7 -> 8 -> 15 -> 21 -> 24 -> 25 -> 21 -> 15 -> 7
         // end
@@ -1178,7 +1180,7 @@ export default function (): void {
         expectActiveElementToBe(cells[7]);
       });
 
-      it('Moves focus between sticky and data cells with actions and expanded replaced detail rows', function () {
+      it('Moves focus between sticky and data cells with actions and expanded replaced detail rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 15 -> 11
         // end
@@ -1199,7 +1201,7 @@ export default function (): void {
         expectActiveElementToBe(cells[11].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus across sticky cells with actions and expanded replaced detail rows', function () {
+      it('Moves focus across sticky cells with actions and expanded replaced detail rows', () => {
         // check cell flow: start at index
         // 0 -> 5 -> 10 -> 11 -> 17 -> 16 -> 22 -> 23 -> 17 -> 16 -> 10 -> 11 -> 6
         // end
@@ -1241,7 +1243,7 @@ export default function (): void {
         expectActiveElementToBe(cells[6].querySelector('button.datagrid-expandable-caret-button'));
       });
 
-      it('Moves focus on Home and End with action and expanded replaced detail row', function () {
+      it('Moves focus on Home and End with action and expanded replaced detail row', () => {
         // cell flow: start at index
         // 0 -> 5 -> 10 -> 15 -> 10
         // end
@@ -1259,7 +1261,7 @@ export default function (): void {
         expectActiveElementToBe(cells[10].querySelector('[type=checkbox]'));
       });
 
-      it('Moves focus on Ctrl-Home and Ctrl-End between expanded replaced detail rows', function () {
+      it('Moves focus on Ctrl-Home and Ctrl-End between expanded replaced detail rows', () => {
         context.testComponent.expandedRowIndexes = [0, 3];
         context.detectChanges();
 
@@ -1290,13 +1292,13 @@ export default function (): void {
       });
     });
 
-    describe('Extended PageUp and PageDown key navigation datagrid with expanded rows and actions', function () {
+    describe('Extended PageUp and PageDown key navigation datagrid with expanded rows and actions', () => {
       let context: TestContext<ClrDatagrid<number>, TestComponent>;
       let grid: HTMLElement;
       let cells: NodeListOf<HTMLElement>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, TestComponent, [Selection]);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagrid<number>, TestComponent>(ClrDatagrid, TestComponent, [Selection]);
         context.testComponent.items = Array.from(Array(10), (v, i) => {
           return { value: v, id: i };
         });
@@ -1334,7 +1336,7 @@ export default function (): void {
       // Covers key navigation over data cells
       // PageUp and PageDown from NOT expanded row to expanded column row
       // PageUp and PageDown from expanded column row to NOT expanded row
-      it('Moves focus across data cells with actions and expanded column rows', function () {
+      it('Moves focus across data cells with actions and expanded column rows', () => {
         context.testComponent.expandedRowIndexes = [4, 5, 6];
         context.detectChanges();
 
@@ -1398,7 +1400,7 @@ export default function (): void {
       // Covers key navigation over action cells
       // PageUp and PageDown from NOT expanded row to expanded column row
       // PageUp and PageDown from expanded column row to NOT expanded row
-      it('Moves focus across action cells with actions and expanded column rows', function () {
+      it('Moves focus across action cells with actions and expanded column rows', () => {
         context.testComponent.expandedRowIndexes = [4, 5, 6];
         context.detectChanges();
 
@@ -1469,7 +1471,7 @@ export default function (): void {
       // PageUp from expanded sub to sub column row
       // PageDown from expanded sub to main column row
       // PageUp from expanded main to main column row
-      it('Moves focus across data cells with actions between expanded column rows', function () {
+      it('Moves focus across data cells with actions between expanded column rows', () => {
         context.testComponent.expandedRowIndexes = [0, 2, 5, 9];
         context.detectChanges();
 
@@ -1537,7 +1539,7 @@ export default function (): void {
       // PageUp from expanded main to sub column row
       // PageDown from expanded sub to sub column row
       // PageUp from expanded sub to main column row
-      it('Moves focus across data cells with actions between expanded column rows for Page up', function () {
+      it('Moves focus across data cells with actions between expanded column rows for Page up', () => {
         context.testComponent.expandedRowIndexes = [0, 1, 2, 5];
         context.detectChanges();
 
@@ -1609,7 +1611,7 @@ export default function (): void {
       // PageUp from NOT expanded to replaced column row (x2 because replaced row can be targeted)
       // PageDown from replaced column row to NOT expanded row
       // PageUp from replaced column row to NOT expanded row
-      it('Moves focus across data cells with actions between NOT expanded and replaced column rows', function () {
+      it('Moves focus across data cells with actions between NOT expanded and replaced column rows', () => {
         context.testComponent.replaceCells = true;
         context.testComponent.expandedRowIndexes = [4, 5];
         context.detectChanges();
@@ -1691,7 +1693,7 @@ export default function (): void {
 
       // PageDown from replaced column row to replaced column row
       // PageUp from replaced column row to replaced column row
-      it('Moves focus across data cells with actions between replaced and replaced column rows', function () {
+      it('Moves focus across data cells with actions between replaced and replaced column rows', () => {
         context.testComponent.replaceCells = true;
         context.testComponent.expandedRowIndexes = [1, 2, 5, 6];
         context.detectChanges();
@@ -1751,7 +1753,7 @@ export default function (): void {
       // Covers key navigation over data cells
       // PageUp and PageDown from NOT expanded row to expanded detail row
       // PageUp and PageDown from expanded detail row to NOT expanded row
-      it('Moves focus across data cells with actions and expanded detail rows', function () {
+      it('Moves focus across data cells with actions and expanded detail rows', () => {
         context.testComponent.columns = false;
         context.testComponent.expandedRowIndexes = [4, 5, 6];
         context.detectChanges();
@@ -1826,7 +1828,7 @@ export default function (): void {
       // Covers key navigation over action cells
       // PageUp and PageDown from NOT expanded row to expanded detail row
       // PageUp and PageDown from expanded detail row to NOT expanded row
-      it('Moves focus across action cells with actions and expanded detail rows', function () {
+      it('Moves focus across action cells with actions and expanded detail rows', () => {
         context.testComponent.columns = false;
         context.testComponent.expandedRowIndexes = [4, 5, 6];
         context.detectChanges();
@@ -1896,7 +1898,7 @@ export default function (): void {
       // PageUp from expanded detail to expanded detail row
       // PageDown from expanded detail to expanded main row
       // PageUp from expanded main to expanded main row
-      it('Moves focus across data cells with actions between expanded details and main rows', function () {
+      it('Moves focus across data cells with actions between expanded details and main rows', () => {
         context.testComponent.columns = false;
         context.testComponent.expandedRowIndexes = [0, 2, 3, 9];
         context.detectChanges();
@@ -1969,7 +1971,7 @@ export default function (): void {
       // PageUp from expanded main to sub column row
       // PageDown from expanded sub to sub column row
       // PageUp from expanded sub to main column row
-      it('Moves focus across data cells with actions between expanded details and details rows', function () {
+      it('Moves focus across data cells with actions between expanded details and details rows', () => {
         context.testComponent.columns = false;
         context.testComponent.expandedRowIndexes = [0, 1, 2, 5];
         context.detectChanges();
@@ -2039,7 +2041,7 @@ export default function (): void {
       // PageUp from NOT expanded to replaced column row (x2 because replaced row can be targeted)
       // PageDown from replaced column row to NOT expanded row
       // PageUp from replaced column row to NOT expanded row
-      it('Moves focus across data cells with actions between NOT expanded and replaced details rows', function () {
+      it('Moves focus across data cells with actions between NOT expanded and replaced details rows', () => {
         context.testComponent.replaceCells = true;
         context.testComponent.columns = false;
         context.testComponent.expandedRowIndexes = [4, 5];
@@ -2131,7 +2133,7 @@ export default function (): void {
 
       // PageDown from replaced column row to replaced column row
       // PageUp from replaced column row to replaced column row
-      it('Moves focus across data cells with actions between replaced details and replaced details rows', function () {
+      it('Moves focus across data cells with actions between replaced details and replaced details rows', () => {
         context.testComponent.replaceCells = true;
         context.testComponent.columns = false;
         context.testComponent.expandedRowIndexes = [1, 2, 5, 6];

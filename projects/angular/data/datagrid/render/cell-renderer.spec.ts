@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { DatagridCellRenderer } from './cell-renderer';
 import { HIDDEN_COLUMN_CLASS, STRICT_WIDTH_CLASS } from './constants';
@@ -22,29 +22,31 @@ import { DatagridRenderStep } from '../enums/render-step.enum';
 class SimpleTest {}
 
 export default function (): void {
-  describe('DatagridCellRenderer directive', function () {
+  describe('DatagridCellRenderer directive', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<DatagridCellRenderer, SimpleTest>;
     let organizer: MockDatagridRenderOrganizer;
 
-    beforeEach(function () {
-      context = this.create(DatagridCellRenderer, SimpleTest, [MOCK_ORGANIZER_PROVIDER]);
+    beforeEach(() => {
+      context = helpers.create(DatagridCellRenderer, SimpleTest, [MOCK_ORGANIZER_PROVIDER]);
       organizer = context.getClarityProvider(DatagridRenderOrganizer) as MockDatagridRenderOrganizer;
     });
 
-    it('sets proper width and class for strict width cells', function () {
+    it('sets proper width and class for strict width cells', () => {
       context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 42, strictWidth: 42 });
       expect(context.clarityElement.style.width).toBe('42px');
       expect(context.clarityElement.classList).toContain(STRICT_WIDTH_CLASS);
     });
 
-    it('sets proper hidden class for hidden cell', function () {
+    it('sets proper hidden class for hidden cell', () => {
       context.clarityDirective.setHidden({ changes: [DatagridColumnChanges.HIDDEN], hidden: true });
       expect(context.clarityElement.classList).toContain(HIDDEN_COLUMN_CLASS);
       context.clarityDirective.setHidden({ changes: [DatagridColumnChanges.HIDDEN], hidden: false });
       expect(context.clarityElement.classList).not.toContain(HIDDEN_COLUMN_CLASS);
     });
 
-    it('makes the cell non-flexible if and only if the width is strict', function () {
+    it('makes the cell non-flexible if and only if the width is strict', () => {
       context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 42, strictWidth: 42 });
       expect(context.clarityElement.style.width).toBe('42px');
       expect(context.clarityElement.classList).toContain(STRICT_WIDTH_CLASS);
@@ -52,7 +54,7 @@ export default function (): void {
       expect(context.clarityElement.classList).not.toContain(STRICT_WIDTH_CLASS);
     });
 
-    it('resets the cell to default width when notified', function () {
+    it('resets the cell to default width when notified', () => {
       context.clarityDirective.setWidth({ changes: [DatagridColumnChanges.WIDTH], width: 42, strictWidth: 42 });
       expect(context.clarityElement.style.width).toBe('42px');
       expect(context.clarityElement.classList).toContain(STRICT_WIDTH_CLASS);
@@ -61,7 +63,7 @@ export default function (): void {
       expect(context.clarityElement.classList).not.toContain(STRICT_WIDTH_CLASS);
     });
 
-    it('should run all changes when columnState is set', function () {
+    it('should run all changes when columnState is set', () => {
       expect(context.clarityElement.style.width).toBe('');
       expect(context.clarityElement.classList).not.toContain(STRICT_WIDTH_CLASS);
       expect(context.clarityElement.classList).not.toContain(HIDDEN_COLUMN_CLASS);

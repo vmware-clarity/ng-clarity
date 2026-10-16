@@ -68,8 +68,13 @@ interface ThisTest {
 }
 
 describe('Appfx Multi Page Dialog', () => {
-  beforeEach(function (this: ThisTest) {
-    this.dialogModel = {};
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
+    testContext.dialogModel = {};
 
     TestBed.configureTestingModule({
       imports: [ClrAlertModule, ClrModalModule, ClrTabsModule, MockWorkflowTestModule],
@@ -100,102 +105,102 @@ describe('Appfx Multi Page Dialog', () => {
         isFocusable: () => true,
       },
     });
-    this.fixture = TestBed.createComponent(DialogComponent);
+    testContext.fixture = TestBed.createComponent(DialogComponent);
 
-    this.mockElementRef = this.fixture.debugElement.injector.get(ElementRef);
+    testContext.mockElementRef = testContext.fixture.debugElement.injector.get(ElementRef);
 
-    this.component = this.fixture.componentInstance;
-    this.component.model = this.dialogModel;
-    this.component.closeHandler = {
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.component.model = testContext.dialogModel;
+    testContext.component.closeHandler = {
       onSubmit: () => of({}),
       onCancel: () => of({}),
     } as CloseHandler;
-    spyOn(this.component.openedChange, 'emit').and.callThrough();
-    spyOn(this.component.onClose, 'emit').and.callThrough();
-    spyOn(this.component.closeHandler, 'onSubmit').and.callThrough();
-    spyOn(this.component.closeHandler as any, 'onCancel').and.callThrough();
+    spyOn(testContext.component.openedChange, 'emit').and.callThrough();
+    spyOn(testContext.component.onClose, 'emit').and.callThrough();
+    spyOn(testContext.component.closeHandler, 'onSubmit').and.callThrough();
+    spyOn(testContext.component.closeHandler as any, 'onCancel').and.callThrough();
 
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 
-  it('is created', function (this: ThisTest) {
-    expect(this.component).toBeTruthy();
-    expect(this.component.tabs).toBeTruthy();
+  it('is created', () => {
+    expect(testContext.component).toBeTruthy();
+    expect(testContext.component.tabs).toBeTruthy();
   });
 
   const errorMessage = 'Error Message';
   describe('WHEN cancel button clicked', () => {
-    it('THEN onCancel closeHandler is invoked and onClose event is emitted', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      this.component.onCancelButtonClick();
-      expect(this.component.closeHandler.onCancel).toHaveBeenCalled();
-      expect(this.component.onClose.emit).toHaveBeenCalled();
-      expect(this.component.openedChange.emit).toHaveBeenCalledWith(false);
+    it('THEN onCancel closeHandler is invoked and onClose event is emitted', () => {
+      testContext.fixture.detectChanges();
+      testContext.component.onCancelButtonClick();
+      expect(testContext.component.closeHandler.onCancel).toHaveBeenCalled();
+      expect(testContext.component.onClose.emit).toHaveBeenCalled();
+      expect(testContext.component.openedChange.emit).toHaveBeenCalledWith(false);
     });
 
     describe('WHEN onCancel throws error', () => {
-      beforeEach(function (this: ThisTest) {
-        this.component.closeHandler.onCancel = () => throwError(errorMessage);
-        spyOn(this.component.closeHandler as any, 'onCancel').and.callThrough();
-        this.fixture.detectChanges();
-        this.component.onCancelButtonClick();
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.component.closeHandler.onCancel = () => throwError(errorMessage);
+        spyOn(testContext.component.closeHandler as any, 'onCancel').and.callThrough();
+        testContext.fixture.detectChanges();
+        testContext.component.onCancelButtonClick();
+        testContext.fixture.detectChanges();
       });
 
-      it('THEN onCancel closeHandler is invoked and onClose event is NOT emitted', function (this: ThisTest) {
-        expect(this.component.closeHandler.onCancel).toHaveBeenCalled();
-        expect(this.component.onClose.emit).not.toHaveBeenCalled();
-        expect(this.component.openedChange.emit).not.toHaveBeenCalled();
+      it('THEN onCancel closeHandler is invoked and onClose event is NOT emitted', () => {
+        expect(testContext.component.closeHandler.onCancel).toHaveBeenCalled();
+        expect(testContext.component.onClose.emit).not.toHaveBeenCalled();
+        expect(testContext.component.openedChange.emit).not.toHaveBeenCalled();
       });
 
-      it('THEN closeHandlerValidationState has error message', function (this: ThisTest) {
-        expect(this.component.closeHandlerValidationState.errors[0]).toEqual(errorMessage);
+      it('THEN closeHandlerValidationState has error message', () => {
+        expect(testContext.component.closeHandlerValidationState.errors[0]).toEqual(errorMessage);
       });
     });
   });
 
   describe('WHEN close button clicked', () => {
-    it('THEN onCancel closeHandler is invoked and onClose event is emitted', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      this.component.onModalOpenChange(false);
-      expect(this.component.closeHandler.onCancel).toHaveBeenCalled();
-      expect(this.component.onClose.emit).toHaveBeenCalled();
-      expect(this.component.openedChange.emit).toHaveBeenCalledWith(false);
+    it('THEN onCancel closeHandler is invoked and onClose event is emitted', () => {
+      testContext.fixture.detectChanges();
+      testContext.component.onModalOpenChange(false);
+      expect(testContext.component.closeHandler.onCancel).toHaveBeenCalled();
+      expect(testContext.component.onClose.emit).toHaveBeenCalled();
+      expect(testContext.component.openedChange.emit).toHaveBeenCalledWith(false);
     });
 
     describe('WHEN onCancel throws error', () => {
-      beforeEach(function (this: ThisTest) {
-        this.component.closeHandler.onCancel = () => throwError(errorMessage);
-        spyOn(this.component.closeHandler as any, 'onCancel').and.callThrough();
-        this.fixture.detectChanges();
-        this.component.onModalOpenChange(false);
+      beforeEach(() => {
+        testContext.component.closeHandler.onCancel = () => throwError(errorMessage);
+        spyOn(testContext.component.closeHandler as any, 'onCancel').and.callThrough();
+        testContext.fixture.detectChanges();
+        testContext.component.onModalOpenChange(false);
       });
 
-      it('THEN onCancel closeHandler is invoked and onClose event is NOT emitted', function (this: ThisTest) {
-        expect(this.component.closeHandler.onCancel).toHaveBeenCalled();
-        expect(this.component.onClose.emit).not.toHaveBeenCalled();
-        expect(this.component.openedChange.emit).not.toHaveBeenCalled();
+      it('THEN onCancel closeHandler is invoked and onClose event is NOT emitted', () => {
+        expect(testContext.component.closeHandler.onCancel).toHaveBeenCalled();
+        expect(testContext.component.onClose.emit).not.toHaveBeenCalled();
+        expect(testContext.component.openedChange.emit).not.toHaveBeenCalled();
       });
 
-      it('THEN closeHandlerValidationState has error message', function (this: ThisTest) {
-        expect(this.component.closeHandlerValidationState.errors[0]).toEqual(errorMessage);
+      it('THEN closeHandlerValidationState has error message', () => {
+        expect(testContext.component.closeHandlerValidationState.errors[0]).toEqual(errorMessage);
       });
     });
   });
 
   const ipAllocationTitle = 'IP Allocation';
   describe('when all steps are valid', () => {
-    beforeEach(function (this: ThisTest) {
-      this.firstStepModel = new MockStepModel('resourcesProperty');
-      this.steps = [
+    beforeEach(() => {
+      testContext.firstStepModel = new MockStepModel('resourcesProperty');
+      testContext.steps = [
         {
           title: 'Resources',
           componentClass: MockStepComponent,
-          model: this.firstStepModel,
+          model: testContext.firstStepModel,
           instantiateLazy: true,
         },
         {
@@ -212,50 +217,50 @@ describe('Appfx Multi Page Dialog', () => {
         },
       ];
 
-      this.component.steps = this.steps;
-      this.fixture.detectChanges();
+      testContext.component.steps = testContext.steps;
+      testContext.fixture.detectChanges();
     });
 
-    it('renders pages disabled when disableTabContent = true', function (this: ThisTest) {
-      this.component.disableTabsContent = true;
-      this.fixture.detectChanges();
+    it('renders pages disabled when disableTabContent = true', () => {
+      testContext.component.disableTabsContent = true;
+      testContext.fixture.detectChanges();
 
       expect(
-        this.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
+        testContext.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
       ).toEqual(true);
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
       expect(
-        this.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
+        testContext.fixture.nativeElement.querySelectorAll('appfx-step-container')[0].classList.contains('div-disabled')
       ).toEqual(true);
     });
 
-    it('the first page is always instantiateLazy = false', function (this: ThisTest) {
-      expect(this.steps[0].instantiateLazy).toEqual(false);
-      expect(this.steps[1].instantiateLazy).toEqual(true);
-      expect(this.steps[2].instantiateLazy).toEqual(true);
+    it('the first page is always instantiateLazy = false', () => {
+      expect(testContext.steps[0].instantiateLazy).toEqual(false);
+      expect(testContext.steps[1].instantiateLazy).toEqual(true);
+      expect(testContext.steps[2].instantiateLazy).toEqual(true);
     });
 
-    it('WHEN StepModel.readyToComplete=false, Ok button should be disabled', function (this: ThisTest) {
-      this.firstStepModel.readyToComplete = false;
-      this.fixture.detectChanges();
-      expect(this.component.isOkButtonDisabled).toEqual(true);
+    it('WHEN StepModel.readyToComplete=false, Ok button should be disabled', () => {
+      testContext.firstStepModel.readyToComplete = false;
+      testContext.fixture.detectChanges();
+      expect(testContext.component.isOkButtonDisabled).toEqual(true);
     });
 
-    it('should set a title', function (this: ThisTest) {
-      this.component.title = 'Title';
-      this.fixture.detectChanges();
+    it('should set a title', () => {
+      testContext.component.title = 'Title';
+      testContext.fixture.detectChanges();
 
-      expect(this.fixture.nativeElement.querySelector('.modal-title .primaryTitle').innerHTML).toEqual(
-        this.component.title
+      expect(testContext.fixture.nativeElement.querySelector('.modal-title .primaryTitle').innerHTML).toEqual(
+        testContext.component.title
       );
     });
   });
 
   describe('when one step is invalid', () => {
-    beforeEach(function (this: ThisTest) {
-      this.steps = [
+    beforeEach(() => {
+      testContext.steps = [
         {
           title: 'Resources',
           componentClass: MockStepComponent,
@@ -276,46 +281,46 @@ describe('Appfx Multi Page Dialog', () => {
         },
       ];
 
-      this.component.steps = this.steps;
-      this.fixture.detectChanges();
+      testContext.component.steps = testContext.steps;
+      testContext.fixture.detectChanges();
     });
 
-    it('closes the dialog when when the OK button is clicked and all steps are valid', function (this: ThisTest) {
-      spyOn(this.component.tabs, 'validate$').and.returnValue(of(true));
+    it('closes the dialog when when the OK button is clicked and all steps are valid', () => {
+      spyOn(testContext.component.tabs, 'validate$').and.returnValue(of(true));
 
-      this.component.onOkButtonClick();
-      expect(this.component.closeHandler.onSubmit).toHaveBeenCalled();
-      expect(this.component.openedChange.emit).toHaveBeenCalledWith(false);
-      expect(this.component.onClose.emit).toHaveBeenCalled();
+      testContext.component.onOkButtonClick();
+      expect(testContext.component.closeHandler.onSubmit).toHaveBeenCalled();
+      expect(testContext.component.openedChange.emit).toHaveBeenCalledWith(false);
+      expect(testContext.component.onClose.emit).toHaveBeenCalled();
     });
 
-    it('does not close the dialog when the OK button is clicked and onSubmit closeHandler throws Error', function (this: ThisTest) {
-      this.component.closeHandler.onSubmit = () => throwError(errorMessage);
-      spyOn(this.component.closeHandler, 'onSubmit').and.callThrough();
+    it('does not close the dialog when the OK button is clicked and onSubmit closeHandler throws Error', () => {
+      testContext.component.closeHandler.onSubmit = () => throwError(errorMessage);
+      spyOn(testContext.component.closeHandler, 'onSubmit').and.callThrough();
 
-      this.fixture.detectChanges();
-      this.component.onOkButtonClick();
+      testContext.fixture.detectChanges();
+      testContext.component.onOkButtonClick();
 
-      expect(this.component.closeHandler.onSubmit).toHaveBeenCalled();
-      expect(this.component.openedChange.emit).not.toHaveBeenCalled();
-      expect(this.component.onClose.emit).not.toHaveBeenCalled();
+      expect(testContext.component.closeHandler.onSubmit).toHaveBeenCalled();
+      expect(testContext.component.openedChange.emit).not.toHaveBeenCalled();
+      expect(testContext.component.onClose.emit).not.toHaveBeenCalled();
     });
 
     it(`validates all visited pages when OK is clicked
-            and does not call onSubmit when #tabs.validate$ return false`, fakeAsync(function (this: ThisTest) {
-      spyOn(this.component.tabs, 'validate$').and.returnValue(of(false));
+            and does not call onSubmit when #tabs.validate$ return false`, fakeAsync(() => {
+      spyOn(testContext.component.tabs, 'validate$').and.returnValue(of(false));
 
-      this.component.onOkButtonClick();
-      this.fixture.detectChanges();
+      testContext.component.onOkButtonClick();
+      testContext.fixture.detectChanges();
 
       // The dialog is not closed
-      expect(this.component.closeHandler.onSubmit).not.toHaveBeenCalledWith();
+      expect(testContext.component.closeHandler.onSubmit).not.toHaveBeenCalledWith();
     }));
   });
 
   describe('when the first step is skipped', () => {
-    beforeEach(function (this: ThisTest) {
-      this.steps = [
+    beforeEach(() => {
+      testContext.steps = [
         {
           title: 'Resources - skipped',
           componentClass: MockStepComponent,
@@ -337,28 +342,28 @@ describe('Appfx Multi Page Dialog', () => {
       ];
 
       const relevanceProperty: Var<boolean> = Var.of<boolean>();
-      this.steps[0].isRelevant = Var.from(relevanceProperty).by(prop => of(prop));
+      testContext.steps[0].isRelevant = Var.from(relevanceProperty).by(prop => of(prop));
       relevanceProperty.value = false;
 
-      this.component.steps = this.steps;
+      testContext.component.steps = testContext.steps;
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
     });
 
-    it('the first page is skipped', function (this: ThisTest) {
-      expect(this.steps[0].isSkipped).toEqual(true);
-      expect(this.steps[1].isSkipped).toBeUndefined();
-      expect(this.steps[2].isSkipped).toBeUndefined();
+    it('the first page is skipped', () => {
+      expect(testContext.steps[0].isSkipped).toEqual(true);
+      expect(testContext.steps[1].isSkipped).toBeUndefined();
+      expect(testContext.steps[2].isSkipped).toBeUndefined();
     });
 
-    it('the second page is activated if the first one is skipped', function (this: ThisTest) {
-      expect(this.steps[0].model.isActivated).toEqual(false);
-      expect(this.steps[1].model.isActivated).toEqual(true);
+    it('the second page is activated if the first one is skipped', () => {
+      expect(testContext.steps[0].model.isActivated).toEqual(false);
+      expect(testContext.steps[1].model.isActivated).toEqual(true);
     });
 
-    it('renders page tabs links correctly', fakeAsync(function (this: ThisTest) {
-      this.fixture.whenStable().then(() => {
-        const tabsHelper = new TabsHelper(this.fixture.debugElement);
+    it('renders page tabs links correctly', fakeAsync(() => {
+      testContext.fixture.whenStable().then(() => {
+        const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
         const labels: string[] = tabsHelper
           .getLinkList()
           .map((link: DebugElement) => link.nativeElement.textContent.trim());
@@ -368,8 +373,8 @@ describe('Appfx Multi Page Dialog', () => {
   });
 
   describe('vertical tabs zoom accessibility', () => {
-    beforeEach(function (this: ThisTest) {
-      this.steps = [
+    beforeEach(() => {
+      testContext.steps = [
         {
           title: 'Step 1',
           componentClass: MockStepComponent,
@@ -402,106 +407,107 @@ describe('Appfx Multi Page Dialog', () => {
         },
       ];
 
-      this.zoomLevelService = TestBed.inject(ZoomLevelService);
-      this.component.steps = this.steps;
-      this.component.tabLayout = TabLayout.vertical;
-      this.fixture.detectChanges();
+      testContext.zoomLevelService = TestBed.inject(ZoomLevelService);
+      testContext.component.steps = testContext.steps;
+      testContext.component.tabLayout = TabLayout.vertical;
+      testContext.fixture.detectChanges();
     });
 
     describe('zoom2x', () => {
-      beforeEach(function (this: ThisTest) {
-        this.zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
+        testContext.fixture.detectChanges();
       });
 
-      it('appfx-tab-links is visible', function (this: ThisTest) {
-        const appfxTabLinks = this.fixture.debugElement.query(By.css('appfx-tab-links'));
+      it('appfx-tab-links is visible', () => {
+        const appfxTabLinks = testContext.fixture.debugElement.query(By.css('appfx-tab-links'));
         expect(appfxTabLinks).toBeTruthy();
       });
 
-      it('tabs panel is hidden by default', function (this: ThisTest) {
-        const tabsHelper = new TabsHelper(this.fixture.debugElement);
+      it('tabs panel is hidden by default', () => {
+        const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
         expect(tabsHelper.areTabsVisible()).toBeFalsy();
       });
 
-      it('`Show tabs` burger icon is visible by default', function (this: ThisTest) {
-        const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+      it('`Show tabs` burger icon is visible by default', () => {
+        const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
         const isVisible = getComputedStyle(showTabsIcon.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeTruthy();
       });
 
-      it('tab name is visible in the dialog header', function (this: ThisTest) {
-        const activeTabTitle = this.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement.innerText;
-        expect(activeTabTitle).toEqual(this.steps[0].title);
+      it('tab name is visible in the dialog header', () => {
+        const activeTabTitle = testContext.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement
+          .innerText;
+        expect(activeTabTitle).toEqual(testContext.steps[0].title);
       });
 
-      it('tab-content is visible by default', function (this: ThisTest) {
-        const activeTabContent = this.fixture.debugElement.query(By.css('.tab-content.active'));
+      it('tab-content is visible by default', () => {
+        const activeTabContent = testContext.fixture.debugElement.query(By.css('.tab-content.active'));
         expect(activeTabContent).toBeTruthy();
         const isVisible = getComputedStyle(activeTabContent.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeTruthy();
       });
 
-      it('tab nav is not visible by default', function (this: ThisTest) {
-        const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+      it('tab nav is not visible by default', () => {
+        const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
         const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeFalsy();
       });
 
       describe('when `Show tabs` burger icon is clicked', () => {
-        beforeEach(function (this: ThisTest) {
-          const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+        beforeEach(() => {
+          const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
           showTabsIcon.triggerEventHandler('click', null);
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         });
 
-        it('tabs panel is opened', function (this: ThisTest) {
-          const tabsHelper = new TabsHelper(this.fixture.debugElement);
+        it('tabs panel is opened', () => {
+          const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
           expect(tabsHelper.areTabsVisible()).toBeTruthy();
         });
 
-        it('showTabsLink is true', function (this: ThisTest) {
-          expect(this.component.tabLinksOpened).toBeTruthy();
+        it('showTabsLink is true', () => {
+          expect(testContext.component.tabLinksOpened).toBeTruthy();
         });
 
-        it('tab-content is hidden', function (this: ThisTest) {
-          const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
+        it('tab-content is hidden', () => {
+          const tabContents = testContext.fixture.debugElement.queryAll(By.css(`.tab-content`));
           tabContents.forEach(tabContent => {
             const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeFalsy();
           });
         });
 
-        it('tab nav is visible', function (this: ThisTest) {
-          const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+        it('tab nav is visible', () => {
+          const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
           const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
           expect(isVisible).toBeTruthy();
         });
 
         describe('when `Close tabs` icon is clicked', () => {
-          beforeEach(function (this: ThisTest) {
-            const closeTabsIcon = this.fixture.debugElement.query(By.css(`.btn-close-tabs`));
+          beforeEach(() => {
+            const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
             closeTabsIcon.triggerEventHandler('click', null);
-            this.fixture.detectChanges();
+            testContext.fixture.detectChanges();
           });
 
-          it('tabs panel is closed', function (this: ThisTest) {
-            const tabsHelper = new TabsHelper(this.fixture.debugElement);
+          it('tabs panel is closed', () => {
+            const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
             expect(tabsHelper.areTabsVisible()).toBeFalsy();
           });
 
-          it('tabs panel is closed', function (this: ThisTest) {
-            const tabsHelper = new TabsHelper(this.fixture.debugElement);
+          it('tabs panel is closed', () => {
+            const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
             expect(tabsHelper.areTabsVisible()).toBeFalsy();
           });
 
-          it('tab-content is visible', function (this: ThisTest) {
-            const activeTabContent = this.fixture.debugElement.query(By.css('.tab-content.active'));
+          it('tab-content is visible', () => {
+            const activeTabContent = testContext.fixture.debugElement.query(By.css('.tab-content.active'));
             expect(activeTabContent).toBeTruthy();
             const isVisible = getComputedStyle(activeTabContent.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeTruthy();
 
-            const inactiveTabContents = this.fixture.debugElement.queryAll(By.css('.tab-content:not(.active)'));
+            const inactiveTabContents = testContext.fixture.debugElement.queryAll(By.css('.tab-content:not(.active)'));
             expect(inactiveTabContents.length).toBeGreaterThan(0);
             inactiveTabContents.forEach(tabContent => {
               const isInactiveVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
@@ -509,8 +515,8 @@ describe('Appfx Multi Page Dialog', () => {
             });
           });
 
-          it('tab nav is not visible', function (this: ThisTest) {
-            const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+          it('tab nav is not visible', () => {
+            const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
             const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeFalsy();
           });
@@ -519,99 +525,100 @@ describe('Appfx Multi Page Dialog', () => {
     });
 
     describe('zoom4x', () => {
-      beforeEach(function (this: ThisTest) {
-        this.zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
+        testContext.fixture.detectChanges();
       });
 
-      it('appfx-tab-links is visible', function (this: ThisTest) {
-        const appfxTabLinks = this.fixture.debugElement.query(By.css('appfx-tab-links'));
+      it('appfx-tab-links is visible', () => {
+        const appfxTabLinks = testContext.fixture.debugElement.query(By.css('appfx-tab-links'));
         expect(appfxTabLinks).toBeTruthy();
       });
 
-      it('tabs panel is hidden by default', function (this: ThisTest) {
-        const tabsHelper = new TabsHelper(this.fixture.debugElement);
+      it('tabs panel is hidden by default', () => {
+        const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
         expect(tabsHelper.areTabsVisible()).toBeFalsy();
       });
 
-      it('`Show tabs` burger icon is visible by default', function (this: ThisTest) {
-        const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+      it('`Show tabs` burger icon is visible by default', () => {
+        const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
         const isVisible = getComputedStyle(showTabsIcon.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeTruthy();
       });
 
-      it('tab name is visible in the dialog header', function (this: ThisTest) {
-        const activeTabTitle = this.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement.innerText;
-        expect(activeTabTitle).toEqual(this.steps[0].title);
+      it('tab name is visible in the dialog header', () => {
+        const activeTabTitle = testContext.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement
+          .innerText;
+        expect(activeTabTitle).toEqual(testContext.steps[0].title);
       });
 
-      it('tab-content is visible by default', function (this: ThisTest) {
-        const activeTabContent = this.fixture.debugElement.query(By.css('.tab-content.active'));
+      it('tab-content is visible by default', () => {
+        const activeTabContent = testContext.fixture.debugElement.query(By.css('.tab-content.active'));
         expect(activeTabContent).toBeTruthy();
         const isVisible = getComputedStyle(activeTabContent.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeTruthy();
       });
 
-      it('tab nav is not visible by default', function (this: ThisTest) {
-        const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+      it('tab nav is not visible by default', () => {
+        const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
         const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
         expect(isVisible).toBeFalsy();
       });
 
       describe('when `Show tabs` burger icon is clicked', () => {
-        beforeEach(function (this: ThisTest) {
-          const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+        beforeEach(() => {
+          const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
           showTabsIcon.triggerEventHandler('click', null);
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         });
 
-        it('tabs panel is opened', function (this: ThisTest) {
-          const tabsHelper = new TabsHelper(this.fixture.debugElement);
+        it('tabs panel is opened', () => {
+          const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
           expect(tabsHelper.areTabsVisible()).toBeTruthy();
         });
 
-        it('showTabsLink is true', function (this: ThisTest) {
-          expect(this.component.tabLinksOpened).toBeTruthy();
+        it('showTabsLink is true', () => {
+          expect(testContext.component.tabLinksOpened).toBeTruthy();
         });
 
-        it('tab-content is hidden', function (this: ThisTest) {
-          const tabContents = this.fixture.debugElement.queryAll(By.css(`.tab-content`));
+        it('tab-content is hidden', () => {
+          const tabContents = testContext.fixture.debugElement.queryAll(By.css(`.tab-content`));
           tabContents.forEach(tabContent => {
             const isVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeFalsy();
           });
         });
 
-        it('tab nav is visible', function (this: ThisTest) {
-          const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+        it('tab nav is visible', () => {
+          const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
           const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
           expect(isVisible).toBeTruthy();
         });
 
         describe('when `Close tabs` icon is clicked', () => {
-          beforeEach(function (this: ThisTest) {
-            const closeTabsIcon = this.fixture.debugElement.query(By.css(`.btn-close-tabs`));
+          beforeEach(() => {
+            const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
             closeTabsIcon.triggerEventHandler('click', null);
-            this.fixture.detectChanges();
+            testContext.fixture.detectChanges();
           });
 
-          it('tabs panel is closed', function (this: ThisTest) {
-            const tabsHelper = new TabsHelper(this.fixture.debugElement);
+          it('tabs panel is closed', () => {
+            const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
             expect(tabsHelper.areTabsVisible()).toBeFalsy();
           });
 
-          it('tabs panel is closed', function (this: ThisTest) {
-            const tabsHelper = new TabsHelper(this.fixture.debugElement);
+          it('tabs panel is closed', () => {
+            const tabsHelper = new TabsHelper(testContext.fixture.debugElement);
             expect(tabsHelper.areTabsVisible()).toBeFalsy();
           });
 
-          it('tab-content is visible', function (this: ThisTest) {
-            const activeTabContent = this.fixture.debugElement.query(By.css('.tab-content.active'));
+          it('tab-content is visible', () => {
+            const activeTabContent = testContext.fixture.debugElement.query(By.css('.tab-content.active'));
             expect(activeTabContent).toBeTruthy();
             const isVisible = getComputedStyle(activeTabContent.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeTruthy();
 
-            const inactiveTabContents = this.fixture.debugElement.queryAll(By.css('.tab-content:not(.active)'));
+            const inactiveTabContents = testContext.fixture.debugElement.queryAll(By.css('.tab-content:not(.active)'));
             expect(inactiveTabContents.length).toBeGreaterThan(0);
             inactiveTabContents.forEach(tabContent => {
               const isInactiveVisible = getComputedStyle(tabContent.nativeElement)['display'] !== 'none';
@@ -619,8 +626,8 @@ describe('Appfx Multi Page Dialog', () => {
             });
           });
 
-          it('tab nav is not visible', function (this: ThisTest) {
-            const tabNav = this.fixture.debugElement.query(By.css('.nav'));
+          it('tab nav is not visible', () => {
+            const tabNav = testContext.fixture.debugElement.query(By.css('.nav'));
             const isVisible = getComputedStyle(tabNav.nativeElement)['display'] !== 'none';
             expect(isVisible).toBeFalsy();
           });

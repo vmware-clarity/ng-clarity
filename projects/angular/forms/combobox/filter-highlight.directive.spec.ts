@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrFilterHighlight } from './filter-highlight.directive';
 import { OptionSelectionService } from './providers/option-selection.service';
@@ -25,11 +25,15 @@ class TestComponent {}
 export default function () {
   // Temporarily disabled while the directive is being verified to be properly sanitized.
   describe('Highlight directive', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrFilterHighlight<string>, TestComponent>;
     let optionService: OptionSelectionService<string>;
 
-    beforeEach(function () {
-      context = this.createOnly(ClrFilterHighlight, TestComponent, [OptionSelectionService]);
+    beforeEach(() => {
+      context = helpers.createOnly<ClrFilterHighlight<string>, TestComponent>(ClrFilterHighlight, TestComponent, [
+        OptionSelectionService,
+      ]);
       optionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
     });
 

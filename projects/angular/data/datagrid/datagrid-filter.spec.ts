@@ -7,7 +7,7 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 import { Subject } from 'rxjs';
 
@@ -27,14 +27,16 @@ function cleanPopoverDOM(component: ClrDatagridFilter) {
 }
 
 export default function (): void {
-  describe('ClrDatagridFilter component', function () {
-    describe('Typescript API', function () {
+  describe('ClrDatagridFilter component', () => {
+    const helpers = createTestHelpers();
+
+    describe('Typescript API', () => {
       let filterService: FiltersProvider<number>;
       let filter: TestFilter;
       let component: ClrDatagridFilter<number>;
       let popoverService: ClrPopoverService;
 
-      beforeEach(function () {
+      beforeEach(() => {
         const stateDebouncer = new StateDebouncer();
         filterService = new FiltersProvider(new Page(stateDebouncer), stateDebouncer);
         popoverService = new ClrPopoverService();
@@ -51,24 +53,24 @@ export default function (): void {
         );
       });
 
-      afterEach(function () {
+      afterEach(() => {
         cleanPopoverDOM(component);
       });
 
-      it('registers to the FiltersProvider provider', function () {
+      it('registers to the FiltersProvider provider', () => {
         expect(filterService.getActiveFilters()).toEqual([]);
         component.customFilter = filter;
         expect(filterService.getActiveFilters()).toEqual([filter]);
       });
 
-      it('unregisters when destroyed', function () {
+      it('unregisters when destroyed', () => {
         component.customFilter = filter;
         expect(filterService.getActiveFilters()).toEqual([filter]);
         component.ngOnDestroy();
         expect(filterService.getActiveFilters()).toEqual([]);
       });
 
-      it('detects if the filter is active', function () {
+      it('detects if the filter is active', () => {
         expect(component.active).toEqual(false);
         component.customFilter = filter;
         expect(component.active).toEqual(true);
@@ -79,12 +81,12 @@ export default function (): void {
 
     // The grid's key navigation has to stand down while the filter is open, however it was opened -
     // its own toggle and the column actions menu drive the popover directly, not the open input.
-    describe('key navigation', function () {
+    describe('key navigation', () => {
       let popoverService: ClrPopoverService;
       let keyNavigation: KeyNavigationGridController;
       let component: ClrDatagridFilter<number>;
 
-      beforeEach(function () {
+      beforeEach(() => {
         const stateDebouncer = new StateDebouncer();
         popoverService = new ClrPopoverService();
         keyNavigation = { skipItemFocus: false } as KeyNavigationGridController;
@@ -97,11 +99,11 @@ export default function (): void {
         );
       });
 
-      afterEach(function () {
+      afterEach(() => {
         cleanPopoverDOM(component);
       });
 
-      it('skips item focus while the popover is open, even when opened directly', function () {
+      it('skips item focus while the popover is open, even when opened directly', () => {
         popoverService.open = true;
         expect(keyNavigation.skipItemFocus).toBeTrue();
 
@@ -109,7 +111,7 @@ export default function (): void {
         expect(keyNavigation.skipItemFocus).toBeFalse();
       });
 
-      it('skips item focus when opened through the open input', function () {
+      it('skips item focus when opened through the open input', () => {
         component.open = true;
         expect(keyNavigation.skipItemFocus).toBeTrue();
 
@@ -118,25 +120,25 @@ export default function (): void {
       });
     });
 
-    describe('Template API', function () {
+    describe('Template API', () => {
       // Until we can properly type "this"
       let context: TestContext<ClrDatagridFilter<number>, FullTest>;
       let filter: TestFilter;
       let popoverService: ClrPopoverService;
 
-      beforeEach(function (this: any) {
+      beforeEach(() => {
         filter = new TestFilter();
-        context = this.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
+        context = helpers.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
         popoverService = context.getClarityProvider(ClrPopoverService);
       });
 
-      it('receives an input for the filter logic', function () {
+      it('receives an input for the filter logic', () => {
         context.testComponent.filter = filter;
         context.detectChanges();
         expect(context.clarityDirective.filter).toBe(filter);
       });
 
-      it('offers two-way binding on he open state of the filter dropdown', function () {
+      it('offers two-way binding on he open state of the filter dropdown', () => {
         context.testComponent.filter = filter;
         context.testComponent.open = true;
         context.detectChanges();
@@ -146,27 +148,27 @@ export default function (): void {
         expect(popoverService.open).toBe(false);
       });
 
-      it('registers itself as a CustomFilter provider', function () {
+      it('registers itself as a CustomFilter provider', () => {
         expect(context.testComponent.customFilter).toBe(context.clarityDirective);
       });
     });
 
-    describe('View', function () {
+    describe('View', () => {
       let context: TestContext<ClrDatagridFilter<number>, FullTest>;
       let filter: TestFilter;
 
-      beforeEach(function (this: any) {
+      beforeEach(() => {
         filter = new TestFilter();
-        context = this.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
+        context = helpers.create(ClrDatagridFilter, FullTest, DATAGRID_SPEC_PROVIDERS);
         context.testComponent.filter = filter;
         context.detectChanges();
       });
 
-      afterEach(function () {
+      afterEach(() => {
         cleanPopoverDOM(context.clarityDirective);
       });
 
-      it('correctly associates the popover content with the aria-controls value', function () {
+      it('correctly associates the popover content with the aria-controls value', () => {
         const toggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-filter-toggle');
         toggle.click();
         context.detectChanges();
@@ -174,7 +176,7 @@ export default function (): void {
         expect(toggle.getAttribute('aria-controls')).toEqual(popover.getAttribute('id'));
       });
 
-      it('correctly updates the aria-expanded state', function () {
+      it('correctly updates the aria-expanded state', () => {
         const toggle: HTMLButtonElement = context.clarityElement.querySelector('.datagrid-filter-toggle');
         expect(toggle.getAttribute('aria-expanded')).toBe('false');
         toggle.click();
@@ -189,7 +191,7 @@ export default function (): void {
         expect(toggle.getAttribute('aria-label')).toBe('user filter');
       });
 
-      it('has role and label on the filter dialog', function () {
+      it('has role and label on the filter dialog', () => {
         const openBtn: HTMLButtonElement = context.clarityElement.querySelector('.clr-smart-open-close');
         openBtn.click();
         context.detectChanges();
@@ -198,7 +200,7 @@ export default function (): void {
         expect(popoverContent.getAttribute('aria-label')).toBe('Filter');
       });
 
-      it('projects content into the dropdown', function () {
+      it('projects content into the dropdown', () => {
         const openBtn: HTMLButtonElement = context.clarityElement.querySelector('.clr-smart-open-close');
         const prePopoverContent = document.querySelector('.datagrid-filter');
         expect(prePopoverContent).toBeNull();
@@ -208,7 +210,7 @@ export default function (): void {
         expect(popoverContent.textContent.trim()).toMatch('Filter content');
       });
 
-      it('opens and closes the dropdown when the toggle is clicked', function () {
+      it('opens and closes the dropdown when the toggle is clicked', () => {
         const toggle = context.clarityElement.querySelector('.datagrid-filter-toggle');
         expect(context.clarityDirective.open).toBe(false);
         toggle.click();
@@ -219,7 +221,7 @@ export default function (): void {
         expect(context.clarityDirective.open).toBe(false);
       });
 
-      it('should call clrDgFilterOpenChange output when open changed', function () {
+      it('should call clrDgFilterOpenChange output when open changed', () => {
         spyOn(context.fixture.componentInstance, 'clrDgFilterOpenChangeFn');
         const toggle = context.clarityElement.querySelector('.datagrid-filter-toggle');
         toggle.click();

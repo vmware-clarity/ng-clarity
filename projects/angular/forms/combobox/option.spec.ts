@@ -7,7 +7,7 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ComboboxModel } from './model/combobox.model';
 import { SingleSelectComboboxModel } from './model/single-select-combobox.model';
@@ -33,20 +33,22 @@ class TestComponent {
 }
 
 export default function (): void {
-  describe('Combobox Option Component', function () {
+  describe('Combobox Option Component', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrOption<string>, TestComponent>;
     let popoverService: ClrPopoverService;
     let optionSelectionService: OptionSelectionService<string>;
 
-    describe('View Basics', function () {
-      beforeEach(function () {
-        context = this.createOnly(ClrOption, TestComponent, []);
+    describe('View Basics', () => {
+      beforeEach(() => {
+        context = helpers.createOnly<ClrOption<string>, TestComponent>(ClrOption, TestComponent, []);
         popoverService = context.getClarityProvider(ClrPopoverService);
         optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
         optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>() as ComboboxModel<string>;
       });
 
-      afterEach(function () {
+      afterEach(() => {
         popoverService.open = false;
         context.detectChanges();
       });
@@ -75,15 +77,15 @@ export default function (): void {
       });
     });
 
-    describe('Typescript API', function () {
-      beforeEach(function () {
-        context = this.createOnly(ClrOption, TestComponent, []);
+    describe('Typescript API', () => {
+      beforeEach(() => {
+        context = helpers.createOnly<ClrOption<string>, TestComponent>(ClrOption, TestComponent, []);
         popoverService = context.getClarityProvider(ClrPopoverService);
         optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
         optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>();
       });
 
-      afterEach(function () {
+      afterEach(() => {
         popoverService.open = false;
         context.detectChanges();
       });
@@ -118,9 +120,9 @@ export default function (): void {
       });
     });
 
-    describe('Template API', function () {
-      beforeEach(function () {
-        context = this.createOnly(ClrOption, TestComponent, []);
+    describe('Template API', () => {
+      beforeEach(() => {
+        context = helpers.createOnly<ClrOption<string>, TestComponent>(ClrOption, TestComponent, []);
       });
 
       it('defines optionProxy', () => {

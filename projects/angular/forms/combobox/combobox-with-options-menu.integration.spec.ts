@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrCombobox } from './combobox';
 
@@ -22,23 +22,25 @@ import { ClrCombobox } from './combobox';
 class TestSelectWithMenu {}
 
 export default function (): void {
-  describe('Select with Menu', function () {
+  describe('Select with Menu', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrCombobox<string>, TestSelectWithMenu>;
     let popoverService: ClrPopoverService;
 
-    beforeEach(function () {
-      context = this.create(ClrCombobox, TestSelectWithMenu, [], []);
+    beforeEach(() => {
+      context = helpers.create<ClrCombobox<string>, TestSelectWithMenu>(ClrCombobox, TestSelectWithMenu, [], []);
       popoverService = context.getClarityProvider(ClrPopoverService);
       popoverService.open = true;
       context.detectChanges();
     });
 
-    afterEach(function () {
+    afterEach(() => {
       popoverService.open = false;
       context.detectChanges();
     });
 
-    it('renders the menu projected by the consumer', function () {
+    it('renders the menu projected by the consumer', () => {
       const menus = document.body.querySelectorAll('clr-options');
       expect(menus.length).toBe(1);
       expect(menus[0].classList.contains('test')).toBe(true);

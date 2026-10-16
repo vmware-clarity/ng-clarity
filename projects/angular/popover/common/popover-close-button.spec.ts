@@ -32,67 +32,82 @@ class TestHost {
 }
 
 export default function (): void {
-  describe('ClrPopoverCloseButton', function () {
+  describe('ClrPopoverCloseButton', () => {
     type Context = TestContext<ClrPopoverCloseButton, TestHost> & {
       popoverService: ClrPopoverService;
     };
 
-    describe('TypeScript API', function (this: Context) {
-      spec(ClrPopoverCloseButton, TestHost, ClrPopoverModuleNext, {
+    describe('TypeScript API', () => {
+      let testContext: Context;
+
+      const getContext = spec(ClrPopoverCloseButton, TestHost, ClrPopoverModuleNext, {
         providers: [ClrPopoverService],
       });
-
-      beforeEach(function (this: Context) {
-        this.popoverService = this.getClarityProvider(ClrPopoverService);
-        this.detectChanges();
+      beforeEach(() => {
+        testContext = getContext() as Context;
       });
 
-      it('declares a Popover Service', function (this: Context) {
-        expect(this.popoverService).toBeDefined();
+      beforeEach(() => {
+        testContext.popoverService = testContext.getClarityProvider(ClrPopoverService);
+        testContext.detectChanges();
       });
 
-      it('sets the close button ref in the popover service', function (this: Context) {
-        expect(this.testComponent.closeButton).toEqual(this.popoverService.closeButtonRef);
+      it('declares a Popover Service', () => {
+        expect(testContext.popoverService).toBeDefined();
+      });
+
+      it('sets the close button ref in the popover service', () => {
+        expect(testContext.testComponent.closeButton).toEqual(testContext.popoverService.closeButtonRef);
       });
     });
 
     describe('Template API', () => {
-      spec(ClrPopoverCloseButton, TestHost, ClrPopoverModuleNext, {
+      let testContext: Context;
+
+      const getContext = spec(ClrPopoverCloseButton, TestHost, ClrPopoverModuleNext, {
         providers: [ClrPopoverService],
       });
-
-      beforeEach(function (this: Context) {
-        this.popoverService = this.getClarityProvider(ClrPopoverService);
-        this.detectChanges();
+      beforeEach(() => {
+        testContext = getContext() as Context;
       });
 
-      it('emits a close change event when popover is closed', function (this: Context) {
-        this.popoverService.open = true;
-        this.detectChanges();
-        expect(this.fixture.componentInstance.openState).toBeUndefined();
-        const closeBtn: HTMLButtonElement = this.testElement.querySelector('.clr-smart-close-button');
+      beforeEach(() => {
+        testContext.popoverService = testContext.getClarityProvider(ClrPopoverService);
+        testContext.detectChanges();
+      });
+
+      it('emits a close change event when popover is closed', () => {
+        testContext.popoverService.open = true;
+        testContext.detectChanges();
+        expect(testContext.fixture.componentInstance.openState).toBeUndefined();
+        const closeBtn: HTMLButtonElement = testContext.testElement.querySelector('.clr-smart-close-button');
         closeBtn.click();
-        this.detectChanges();
-        expect(this.testComponent.openState).toBe(this.popoverService.open);
+        testContext.detectChanges();
+        expect(testContext.testComponent.openState).toBe(testContext.popoverService.open);
       });
 
-      it('focuses on the origin element when clicked', function (this: Context) {
-        const clickSpy = spyOn(this.popoverService, 'toggleWithEvent');
-        const closeBtn: HTMLButtonElement = this.testElement.querySelector('.clr-smart-close-button');
-        const focusSpy = spyOn(this.testComponent.toggleButton.nativeElement, 'focus');
+      it('focuses on the origin element when clicked', () => {
+        const clickSpy = spyOn(testContext.popoverService, 'toggleWithEvent');
+        const closeBtn: HTMLButtonElement = testContext.testElement.querySelector('.clr-smart-close-button');
+        const focusSpy = spyOn(testContext.testComponent.toggleButton.nativeElement, 'focus');
         closeBtn.click();
         expect(clickSpy.calls.count()).toEqual(1);
         expect(focusSpy.calls.count()).toEqual(1);
       });
     });
 
-    describe('View Basics', function (this: Context) {
-      spec(ClrPopoverCloseButton, TestHost, undefined, {
+    describe('View Basics', () => {
+      let testContext: Context;
+
+      const getContext = spec(ClrPopoverCloseButton, TestHost, undefined, {
         providers: [ClrPopoverService],
       });
+      beforeEach(() => {
+        testContext = getContext() as Context;
+      });
 
-      it('adds the clr-smart-close-button classname to the host', function (this: Context) {
-        expect(this.clarityElement.classList).toContain('clr-smart-close-button');
+      it('adds the clr-smart-close-button classname to the host', () => {
+        expect(testContext.clarityElement.classList).toContain('clr-smart-close-button');
       });
     });
   });

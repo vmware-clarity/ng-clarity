@@ -50,27 +50,32 @@ class InstantiationCounter {
 }
 
 export default function (): void {
-  describe('ClrDatagridPagination component integration', function () {
+  describe('ClrDatagridPagination component integration', () => {
+    let testContext: Context;
+
     type Context = TestContext<ClrDatagridPagination, IntegrationTest>;
 
-    spec(
+    const getContext = spec(
       ClrDatagridPagination,
       IntegrationTest,
       ClrDatagridModule,
       { declarations: [InstantiationCounter], imports: [NoopAnimationsModule] },
       false
     );
+    beforeEach(() => {
+      testContext = getContext() as Context;
+    });
 
-    it('sets the page size a single time on initialization', function (this: Context) {
+    it('sets the page size a single time on initialization', () => {
       const spy = spyOnProperty(Page.prototype, 'size', 'set').and.callThrough();
-      this.init();
+      testContext.init();
       expect(spy).toHaveBeenCalledTimes(1);
       expect(spy).toHaveBeenCalledWith(20);
     });
 
-    it('only instantiates rows that need to be displayed', function (this: Context) {
+    it('only instantiates rows that need to be displayed', () => {
       InstantiationCounter.total = 0;
-      this.init();
+      testContext.init();
       expect(InstantiationCounter.total).toBe(20);
     });
   });

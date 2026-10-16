@@ -24,10 +24,12 @@ export class TestContext<D, C> {
 
   private clarityDebugElement: DebugElement;
 
-  constructor(directiveType: Type<D>, componentType: Type<C>) {
+  constructor(directiveType: Type<D>, componentType: Type<C>, autoInit = true) {
     this.clarityDirectiveType = directiveType;
     this.testComponentType = componentType;
-    this.init();
+    if (autoInit) {
+      this.init();
+    }
   }
 
   init() {
@@ -68,7 +70,7 @@ export class TestContext<D, C> {
  * @param moduleMetadata - custom additional metadata for the testing module: extra imports, extra declarations, etc.
  * @param autoInit - the host test component is instantiated by default when the test starts. If you need to override
  *  some component's provider, templates or other override TestBed provides, set this autoInit option to false and
- *  perform your overrides before manually calling this.init() on the TestContext.
+ *  perform your overrides before manually calling context.init() on the TestContext returned by the accessor.
  */
 export function spec<C, H>(
   clarityDirectiveType: Type<C>,
@@ -77,21 +79,9 @@ export function spec<C, H>(
   moduleMetadata: TestModuleMetadata = {},
   autoInit = true
 ) {
-  beforeEach(function () {
-    /*
-     * I feel slightly dirty writing this, but Jasmine creates plain objects
-     * and modifying their prototype is definitely a bad idea
-     */
-    Object.assign(this, TestContext.prototype);
-    // What changed from 8.0.0-rc5 -> 8.0.0 ?!?!!
-    // After Anglar 8 updates functions are not getting assigned to this.
-    this.detectChanges = TestContext.prototype.detectChanges;
-    this.getClarityProvider = TestContext.prototype.getClarityProvider;
-    this.init = TestContext.prototype.init;
-    this.getProvider = TestContext.prototype.getProvider;
-  });
+  let context: TestContext<C, H>;
 
-  beforeEach(function (this: TestContext<C, H>) {
+  beforeEach(() => {
     const imports = [];
     if (claritySubmodule) {
       imports.push(claritySubmodule);
@@ -106,103 +96,111 @@ export function spec<C, H>(
     if (moduleMetadata && moduleMetadata.declarations) {
       declarations.push(...moduleMetadata.declarations);
     }
-    this.testingModule = TestBed.configureTestingModule({ ...moduleMetadata, imports, declarations });
-    this.clarityDirectiveType = clarityDirectiveType;
-    this.testComponentType = testComponentType;
+    const testingModule = TestBed.configureTestingModule({ ...moduleMetadata, imports, declarations });
+    context = new TestContext(clarityDirectiveType, testComponentType, false);
+    context.testingModule = testingModule;
     if (autoInit) {
-      this.init();
+      context.init();
     }
   });
 
-  afterEach(function (this: TestContext<C, H>) {
-    if (this.fixture) {
-      this.fixture.destroy();
-      this.fixture.nativeElement.remove();
+  afterEach(() => {
+    if (context?.fixture) {
+      context.fixture.destroy();
+      context.fixture.nativeElement.remove();
     }
   });
+
+  return () => context;
 }
 
-export function addHelpers(): void {
-  beforeEach(function () {
-    /*
-     * Ideally we would just make "this" a TestContext, but typing "this" in typescript
-     * is a bit too new for all IDEs to correctly process it.
-     */
-    this.create = <D, C>(
-      clarityDirective: Type<D>,
-      testComponent: Type<C>,
-      providers: any[] = [],
-      extraDirectives: Type<any>[] = []
-    ) => {
-      TestBed.configureTestingModule({
-        imports: [ClarityModule, NoopAnimationsModule],
-        declarations: [testComponent, ...extraDirectives],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        providers: providers,
-      });
-      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
-    };
+/** Create fixture helpers scoped to the current suite, with cleanup after each test. */
+export function createTestHelpers() {
+  const contexts: TestContext<any, any>[] = [];
+  const create = <D, C>(
+    clarityDirective: Type<D>,
+    testComponent: Type<C>,
+    providers: any[] = [],
+    extraDirectives: Type<any>[] = []
+  ) => {
+    TestBed.configureTestingModule({
+      imports: [ClarityModule, NoopAnimationsModule],
+      declarations: [testComponent, ...extraDirectives],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: providers,
+    });
+    const context = new TestContext<D, C>(clarityDirective, testComponent);
+    contexts.push(context);
+    return context;
+  };
 
-    this.createOnly = <D, C>(
-      clarityDirective: Type<D>,
-      testComponent: Type<C>,
-      providers: any[] = [],
-      extraDirectives: Type<any>[] = []
-    ) => {
-      TestBed.configureTestingModule({
-        declarations: [clarityDirective, testComponent, ...extraDirectives],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        providers: providers,
-      });
-      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
-    };
+  const createOnly = <D, C>(
+    clarityDirective: Type<D>,
+    testComponent: Type<C>,
+    providers: any[] = [],
+    extraDirectives: Type<any>[] = []
+  ) => {
+    TestBed.configureTestingModule({
+      declarations: [clarityDirective, testComponent, ...extraDirectives],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: providers,
+    });
+    const context = new TestContext<D, C>(clarityDirective, testComponent);
+    contexts.push(context);
+    return context;
+  };
 
-    this.createWithOverrideComponent = <D, C>(
-      clarityDirective: Type<D>,
-      testComponent: Type<C>,
-      providers: any[] = [],
-      extraDirectives: Type<any>[] = [],
-      serviceOverrides: any[]
-    ) => {
-      TestBed.configureTestingModule({
-        imports: [ClarityModule, NoopAnimationsModule],
-        declarations: [testComponent, ...extraDirectives],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        providers: providers,
-      }).overrideComponent(clarityDirective, {
-        set: {
-          providers: serviceOverrides,
-        },
-      });
-      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
-    };
+  const createWithOverrideComponent = <D, C>(
+    clarityDirective: Type<D>,
+    testComponent: Type<C>,
+    providers: any[] = [],
+    extraDirectives: Type<any>[] = [],
+    serviceOverrides: any[]
+  ) => {
+    TestBed.configureTestingModule({
+      imports: [ClarityModule, NoopAnimationsModule],
+      declarations: [testComponent, ...extraDirectives],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: providers,
+    }).overrideComponent(clarityDirective, {
+      set: {
+        providers: serviceOverrides,
+      },
+    });
+    const context = new TestContext<D, C>(clarityDirective, testComponent);
+    contexts.push(context);
+    return context;
+  };
 
-    this.createWithOverrideDirective = <D, C>(
-      clarityDirective: Type<D>,
-      testComponent: Type<C>,
-      providers: any[] = [],
-      extraDirectives: Type<any>[] = [],
-      serviceOverrides: any[]
-    ) => {
-      TestBed.configureTestingModule({
-        imports: [ClarityModule, NoopAnimationsModule],
-        declarations: [testComponent, ...extraDirectives],
-        schemas: [CUSTOM_ELEMENTS_SCHEMA],
-        providers: providers,
-      }).overrideDirective(clarityDirective, {
-        set: {
-          providers: serviceOverrides,
-        },
-      });
-      return (this._context = new TestContext<D, C>(clarityDirective, testComponent));
-    };
-  });
-
-  afterEach(function () {
-    if (this._context) {
-      this._context.fixture.destroy();
+  const createWithOverrideDirective = <D, C>(
+    clarityDirective: Type<D>,
+    testComponent: Type<C>,
+    providers: any[] = [],
+    extraDirectives: Type<any>[] = [],
+    serviceOverrides: any[]
+  ) => {
+    TestBed.configureTestingModule({
+      imports: [ClarityModule, NoopAnimationsModule],
+      declarations: [testComponent, ...extraDirectives],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: providers,
+    }).overrideDirective(clarityDirective, {
+      set: {
+        providers: serviceOverrides,
+      },
+    });
+    const context = new TestContext<D, C>(clarityDirective, testComponent);
+    contexts.push(context);
+    return context;
+  };
+  afterEach(() => {
+    for (const context of contexts) {
+      context.fixture.destroy();
     }
+    contexts.length = 0;
   });
+
+  return { create, createOnly, createWithOverrideComponent, createWithOverrideDirective };
 }
 
 export function assertEqualDates(date1: Date, date2: Date): boolean {

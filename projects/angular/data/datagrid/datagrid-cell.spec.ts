@@ -6,17 +6,24 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridCell } from './datagrid-cell';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 
 export default function (): void {
-  describe('ClrDatagridCell component', function () {
+  describe('ClrDatagridCell component', () => {
+    const helpers = createTestHelpers();
+
+    let testContext: any;
+    beforeEach(() => {
+      testContext = {};
+    });
+
     let context: TestContext<ClrDatagridCell, SimpleTest>;
 
-    beforeEach(function () {
-      context = this.create(ClrDatagridCell, SimpleTest, [DatagridRenderOrganizer]);
+    beforeEach(() => {
+      context = helpers.create(ClrDatagridCell, SimpleTest, [DatagridRenderOrganizer]);
     });
 
     afterEach(() => {
@@ -25,27 +32,27 @@ export default function (): void {
       popoverContent.forEach(content => document.body.removeChild(content));
     });
 
-    it('provides a wrapped view for the content', function () {
-      this.directive = context.clarityDirective;
-      expect(this.directive._view).toBeDefined();
+    it('provides a wrapped view for the content', () => {
+      testContext.directive = context.clarityDirective;
+      expect(testContext.directive._view).toBeDefined();
     });
 
-    it('projects content', function () {
+    it('projects content', () => {
       expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
     });
 
-    it('adds the .datagrid-cell class to the host', function () {
+    it('adds the .datagrid-cell class to the host', () => {
       expect(context.clarityElement.classList.contains('datagrid-cell')).toBeTruthy();
     });
 
-    it('does only adds .datagrid-signpost-trigger class when there is a signpost', function () {
+    it('does only adds .datagrid-signpost-trigger class when there is a signpost', () => {
       expect(context.clarityElement.classList.contains('datagrid-signpost-trigger')).toBeFalsy();
       context.testComponent.signpostTest = true;
       context.detectChanges();
       expect(context.clarityElement.classList.contains('datagrid-signpost-trigger')).toBeTruthy();
     });
 
-    it('adds a11y roles to the cell', function () {
+    it('adds a11y roles to the cell', () => {
       expect(context.clarityElement.attributes.role.value).toBe('gridcell');
     });
   });

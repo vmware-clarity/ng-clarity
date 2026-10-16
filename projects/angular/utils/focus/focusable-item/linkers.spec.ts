@@ -11,8 +11,8 @@ import { MockFocusableItem } from './focusable-item.mock';
 import { Linkers } from './linkers';
 
 export default function (): void {
-  describe('linkParent()', function () {
-    it('links the list of items to the parent according to the given direction', function () {
+  describe('linkParent()', () => {
+    it('links the list of items to the parent according to the given direction', () => {
       const parent = new MockFocusableItem('parent');
       const children: FocusableItem[] = new Array(5).fill(0).map((_, i) => new MockFocusableItem(`${i}`));
       Linkers.linkParent(children, parent, ArrowKeyDirection.RIGHT);
@@ -22,35 +22,40 @@ export default function (): void {
     });
   });
 
-  describe('linkVertical()', function () {
+  describe('linkVertical()', () => {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
+    });
+
     type TestContext = {
       first: FocusableItem;
       second: FocusableItem;
       third: FocusableItem;
     };
 
-    beforeEach(function (this: TestContext) {
-      this.first = new MockFocusableItem('0');
-      this.second = new MockFocusableItem('1');
-      this.third = new MockFocusableItem('2');
+    beforeEach(() => {
+      testContext.first = new MockFocusableItem('0');
+      testContext.second = new MockFocusableItem('1');
+      testContext.third = new MockFocusableItem('2');
     });
 
-    it('links the items vertically both ways', function (this: TestContext) {
-      Linkers.linkVertical([this.first, this.second, this.third]);
-      expect(this.second.up).toBe(this.first);
-      expect(this.second.down).toBe(this.third);
+    it('links the items vertically both ways', () => {
+      Linkers.linkVertical([testContext.first, testContext.second, testContext.third]);
+      expect(testContext.second.up).toBe(testContext.first);
+      expect(testContext.second.down).toBe(testContext.third);
     });
 
-    it('loops by default', function (this: TestContext) {
-      Linkers.linkVertical([this.first, this.second, this.third]);
-      expect(this.first.up).toBe(this.third);
-      expect(this.third.down).toBe(this.first);
+    it('loops by default', () => {
+      Linkers.linkVertical([testContext.first, testContext.second, testContext.third]);
+      expect(testContext.first.up).toBe(testContext.third);
+      expect(testContext.third.down).toBe(testContext.first);
     });
 
-    it('offer the option to not loop', function (this: TestContext) {
-      Linkers.linkVertical([this.first, this.second, this.third], false);
-      expect(this.first.up).toBeUndefined();
-      expect(this.third.down).toBeUndefined();
+    it('offer the option to not loop', () => {
+      Linkers.linkVertical([testContext.first, testContext.second, testContext.third], false);
+      expect(testContext.first.up).toBeUndefined();
+      expect(testContext.third.down).toBeUndefined();
     });
   });
 }

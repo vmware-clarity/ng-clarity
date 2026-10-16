@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, Keys } from '@clr/angular/utils';
 
 import { DateNavigationService } from './providers/date-navigation.service';
@@ -18,6 +18,8 @@ import { ClrYearpicker } from './yearpicker';
 
 export default function () {
   describe('Yearpicker Component', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrYearpicker, TestComponent>;
     let dateNavigationService: DateNavigationService;
     const selectedYear = 2003;
@@ -29,10 +31,10 @@ export default function () {
     }
 
     describe('View Basics', () => {
-      beforeEach(function () {
+      beforeEach(() => {
         initializeCalendar(selectedYear);
 
-        context = this.create(ClrYearpicker, TestComponent, [
+        context = helpers.create(ClrYearpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
           ClrPopoverService,
@@ -150,10 +152,10 @@ export default function () {
     });
 
     describe('Typescript API', () => {
-      beforeEach(function () {
+      beforeEach(() => {
         initializeCalendar(selectedYear);
 
-        context = this.create(ClrYearpicker, TestComponent, [
+        context = helpers.create(ClrYearpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
           ClrPopoverService,
@@ -256,10 +258,10 @@ export default function () {
       // 2003 | 2008
       // 2004 | 2009
 
-      function createYearPicker(scope: any, selYear: number) {
+      function createYearPicker(selYear: number) {
         initializeCalendar(selYear);
 
-        context = scope.create(ClrYearpicker, TestComponent, [
+        context = helpers.create(ClrYearpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
           ClrPopoverService,
@@ -269,8 +271,8 @@ export default function () {
         ]);
       }
 
-      it('handles up arrow', function () {
-        createYearPicker(this, 2010);
+      it('handles up arrow', () => {
+        createYearPicker(2010);
 
         // Boundary
         expect(context.clarityDirective.getTabIndex(2010)).toBe(0);
@@ -284,8 +286,8 @@ export default function () {
         expect(context.clarityDirective.yearRangeModel.inRange(2010)).toBe(false);
       });
 
-      it('handles down arrow', function () {
-        createYearPicker(this, 2009);
+      it('handles down arrow', () => {
+        createYearPicker(2009);
 
         // Boundary
         expect(context.clarityDirective.getTabIndex(2009)).toBe(0);
@@ -299,8 +301,8 @@ export default function () {
         expect(context.clarityDirective.yearRangeModel.inRange(2010)).toBe(true);
       });
 
-      it('handles right arrow', function () {
-        createYearPicker(this, 2008);
+      it('handles right arrow', () => {
+        createYearPicker(2008);
         expect(context.clarityDirective.getTabIndex(2008)).toBe(0, "Year 2008 doesn't have tabindex 0");
         context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowRight }));
         expect(context.clarityDirective.getTabIndex(2009)).toBe(0, "Year 2009 doesn't have tabindex 0");
@@ -312,8 +314,8 @@ export default function () {
         expect(context.clarityDirective.getTabIndex(2010)).toBe(0, "Year 2010 doesn't have tabindex 0");
       });
 
-      it('handles left arrow', function () {
-        createYearPicker(this, 2011);
+      it('handles left arrow', () => {
+        createYearPicker(2011);
         expect(context.clarityDirective.getTabIndex(2011)).toBe(0, "Year 2011 doesn't have tabindex 0");
         context.clarityDirective.onKeyDown(new KeyboardEvent('keydown', { key: Keys.ArrowLeft }));
         expect(context.clarityDirective.getTabIndex(2010)).toBe(0, "Year 2010 doesn't have tabindex 0");

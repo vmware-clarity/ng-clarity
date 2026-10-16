@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridPlaceholder } from './datagrid-placeholder';
 import { FiltersProvider } from './providers/filters';
@@ -17,45 +17,58 @@ import { Sort } from './providers/sort';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 
 export default function (): void {
-  describe('ClrDatagridPlaceholder component', function () {
-    describe('Typescript API', function () {
-      beforeEach(function () {
-        this.pageProvider = new Page(new StateDebouncer());
-        this.itemsProvider = new Items(null, null, this.pageProvider);
-        this.component = new ClrDatagridPlaceholder(this.itemsProvider);
+  describe('ClrDatagridPlaceholder component', () => {
+    const helpers = createTestHelpers();
+
+    let testContext: any;
+    beforeEach(() => {
+      testContext = {};
+    });
+
+    describe('Typescript API', () => {
+      beforeEach(() => {
+        testContext.pageProvider = new Page(new StateDebouncer());
+        testContext.itemsProvider = new Items(null, null, testContext.pageProvider);
+        testContext.component = new ClrDatagridPlaceholder(testContext.itemsProvider);
       });
 
-      it('detects if the Datagrid is empty', function () {
-        expect(this.component.emptyDatagrid).toBe(true);
-        this.itemsProvider.all = new Array(1);
-        expect(this.component.emptyDatagrid).toBe(false);
-        this.itemsProvider.all = [];
-        expect(this.component.emptyDatagrid).toBe(true);
+      it('detects if the Datagrid is empty', () => {
+        expect(testContext.component.emptyDatagrid).toBe(true);
+        testContext.itemsProvider.all = new Array(1);
+        expect(testContext.component.emptyDatagrid).toBe(false);
+        testContext.itemsProvider.all = [];
+        expect(testContext.component.emptyDatagrid).toBe(true);
       });
     });
 
-    describe('View', function () {
+    describe('View', () => {
       let context: TestContext<ClrDatagridPlaceholder<void>, SimpleTest>;
       let itemsProvider: Items<void>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagridPlaceholder, SimpleTest, [Items, Page, Sort, FiltersProvider, StateDebouncer]);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagridPlaceholder<void>, SimpleTest>(ClrDatagridPlaceholder, SimpleTest, [
+          Items,
+          Page,
+          Sort,
+          FiltersProvider,
+          StateDebouncer,
+        ]);
         itemsProvider = TestBed.inject(Items);
       });
 
-      it('is empty when there are items', function () {
+      it('is empty when there are items', () => {
         itemsProvider.all = new Array(1);
         context.detectChanges();
         expect(context.clarityElement.textContent.trim()).toMatch('');
       });
 
-      it('is empty when the data is loading', function () {
+      it('is empty when the data is loading', () => {
         itemsProvider.loading = true;
         context.detectChanges();
         expect(context.clarityElement.textContent.trim()).toMatch('');
       });
 
-      it('projects content when there are no items', function () {
+      it('projects content when there are no items', () => {
         expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
       });
     });

@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { addHelpers } from '@clr/angular/testing';
-
 import CalendarSpecs from './calendar.spec';
 import DateContainerSpecs from './date-container.spec';
 import DateInputSpecs from './date-input.spec';
@@ -28,17 +26,15 @@ import LocaleHelperServiceSpecs from './providers/locale-helper.service.spec';
 import ViewManagerServiceSpecs from './providers/view-manager.service.spec';
 import YearpickerSpecs from './yearpicker.spec';
 
-describe('Datepicker', function () {
-  addHelpers();
-
-  describe('Model', function () {
+describe('Datepicker', () => {
+  describe('Model', () => {
     DayModelSpecs();
     CalendarModelSpecs();
     YearRangeModelSpecs();
     CalendarViewModelSpecs();
   });
 
-  describe('Providers', function () {
+  describe('Providers', () => {
     ViewManagerServiceSpecs();
     LocaleHelperServiceSpecs();
     DatepickerFocusServiceSpecs();
@@ -48,7 +44,7 @@ describe('Datepicker', function () {
     DateFormControlServiceSpecs();
   });
 
-  describe('Components', function () {
+  describe('Components', () => {
     DayComponentSpecs();
     DatepickerViewManagerSpecs();
     DateContainerSpecs();

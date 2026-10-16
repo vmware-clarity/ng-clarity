@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
 import { DetailService } from './providers/detail.service';
@@ -14,12 +14,14 @@ import { DetailService } from './providers/detail.service';
 const content = 'Detail Pane';
 
 export default function (): void {
-  describe('ClrDatagridDetailHeader component', function () {
-    describe('Typescript API', function () {
+  describe('ClrDatagridDetailHeader component', () => {
+    const helpers = createTestHelpers();
+
+    describe('Typescript API', () => {
       let context: TestContext<ClrDatagridDetailHeader, FullTest>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagridDetailHeader, FullTest, [DetailService]);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridDetailHeader, FullTest, [DetailService]);
         context.detectChanges();
       });
 
@@ -28,12 +30,12 @@ export default function (): void {
       });
     });
 
-    describe('View', function () {
+    describe('View', () => {
       let context: TestContext<ClrDatagridDetailHeader, FullTest>;
       let detailService: DetailService;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagridDetailHeader, FullTest, [DetailService]);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridDetailHeader, FullTest, [DetailService]);
         detailService = context.getClarityProvider(DetailService);
         context.detectChanges();
       });

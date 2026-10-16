@@ -8,7 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { animationFrameTick, delay, TestContext } from '@clr/angular/testing';
+import { animationFrameTick, createTestHelpers, delay, TestContext } from '@clr/angular/testing';
 import { DomAdapter } from '@clr/angular/utils';
 
 import { DatagridNumericFilter } from './datagrid-numeric-filter';
@@ -22,7 +22,9 @@ import { StateDebouncer } from '../../providers/state-debouncer.provider';
 const PROVIDERS = [FiltersProvider, DomAdapter, Page, StateDebouncer, ClrPopoverService];
 
 export default function (): void {
-  describe('DatagridNumericFilter accessibility', function () {
+  describe('DatagridNumericFilter accessibility', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<DatagridNumericFilter<string>, AccessibilityTest>;
 
     function openFilter() {
@@ -30,15 +32,15 @@ export default function (): void {
       context.detectChanges();
     }
 
-    beforeEach(function () {
-      context = this.create(DatagridNumericFilter, AccessibilityTest, PROVIDERS);
+    beforeEach(() => {
+      context = helpers.create(DatagridNumericFilter, AccessibilityTest, PROVIDERS);
     });
 
-    afterEach(function () {
+    afterEach(() => {
       context.fixture.destroy();
     });
 
-    it('should be able to change the min placeholder text', async function () {
+    it('should be able to change the min placeholder text', async () => {
       context.testComponent.filterValue = [null, 10];
       context.testComponent.clrFilterMinPlaceholder = 'min demo placeholder';
 
@@ -49,7 +51,7 @@ export default function (): void {
       await delay();
     });
 
-    it('should be able to change the max placeholder text', async function () {
+    it('should be able to change the max placeholder text', async () => {
       context.testComponent.filterValue = [null, 10];
       context.testComponent.clrFilterMaxPlaceholder = 'max demo placeholder';
 
@@ -61,7 +63,9 @@ export default function (): void {
     });
   });
 
-  describe('DatagridNumericFilter component', function () {
+  describe('DatagridNumericFilter component', () => {
+    const helpers = createTestHelpers();
+
     // Until we can properly type "this"
     let context: TestContext<DatagridNumericFilter<number>, FullTest>;
     let filter: TestFilter;
@@ -72,52 +76,52 @@ export default function (): void {
       context.detectChanges();
     }
 
-    beforeEach(function () {
+    beforeEach(() => {
       filter = new TestFilter();
-      context = this.create(DatagridNumericFilter, FullTest, PROVIDERS);
+      context = helpers.create(DatagridNumericFilter, FullTest, PROVIDERS);
       filtersInstance = TestBed.inject(FiltersProvider);
     });
 
-    afterEach(function () {
+    afterEach(() => {
       context.fixture.destroy();
     });
 
-    it('receives an input for the filter value', function () {
+    it('receives an input for the filter value', () => {
       context.testComponent.filterValue = [null, 10];
       context.detectChanges();
       expect(context.clarityDirective.filter.value).toEqual([null, 10]);
     });
 
-    it('wires the RegisteredFilter correctly', function () {
+    it('wires the RegisteredFilter correctly', () => {
       const test = new DatagridNumericFilterImpl(new TestFilter());
       context.testComponent.filter = filter;
       context.detectChanges();
       expect(context.clarityDirective.filter.filterFn).toEqual(test.filterFn);
     });
 
-    it('receives an input for the filter logic', function () {
+    it('receives an input for the filter logic', () => {
       context.testComponent.filter = filter;
       context.detectChanges();
       expect(context.clarityDirective.filter.filterFn).toBe(filter);
     });
 
-    it('registers a filter', function () {
+    it('registers a filter', () => {
       context.clarityDirective.value = [null, 10];
       expect(filtersInstance.getActiveFilters().length).toBe(1);
       expect(filtersInstance.getActiveFilters()[0]).toBe(context.clarityDirective.filter);
     });
 
-    it('registers itself as a CustomFilter provider', function () {
+    it('registers itself as a CustomFilter provider', () => {
       expect(context.testComponent.customFilter).toBe(context.clarityDirective);
     });
 
-    it('displays numeric inputs when open', function () {
+    it('displays numeric inputs when open', () => {
       expect(document.querySelector("input[type='number']")).toBeNull();
       openFilter();
       expect(document.querySelector("input[type='number']")).not.toBeNull();
     });
 
-    it('focuses on the input when the filter opens', async function () {
+    it('focuses on the input when the filter opens', async () => {
       openFilter();
       const input: HTMLInputElement = document.querySelector("input[type='number']");
       spyOn(input, 'focus').and.callThrough();
@@ -125,7 +129,7 @@ export default function (): void {
       await animationFrameTick();
       expect(input.focus).toHaveBeenCalled();
     });
-    it('offers two way binding on the filtered state', function () {
+    it('offers two way binding on the filtered state', () => {
       context.testComponent.filterValue = [1, 10];
       context.detectChanges();
       expect(context.clarityDirective.value).toEqual([1, 10]);

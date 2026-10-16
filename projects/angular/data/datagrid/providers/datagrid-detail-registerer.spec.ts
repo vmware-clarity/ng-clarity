@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
 
 import { ClrDatagrid } from '../datagrid';
@@ -16,11 +16,13 @@ import { DetailService } from './detail.service';
 import { ExpandableRowsCount } from './global-expandable-rows';
 
 export default function (): void {
-  describe('DatagridDetailRegisterer directive', function () {
+  describe('DatagridDetailRegisterer directive', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrDatagrid<void>, FullTest>;
 
-    beforeEach(function () {
-      context = this.create(ClrDatagrid, FullTest, [
+    beforeEach(() => {
+      context = helpers.create<ClrDatagrid<void>, FullTest>(ClrDatagrid, FullTest, [
         ExpandableRowsCount,
         DatagridIfExpandService,
         DetailService,
@@ -29,7 +31,7 @@ export default function (): void {
       ]);
     });
 
-    it('is present', function () {
+    it('is present', () => {
       expect(context.getClarityProvider(DatagridDetailRegisterer)).toBeDefined();
     });
   });

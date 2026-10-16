@@ -33,7 +33,12 @@ function generateKeyUpEvent(value: string): KeyboardEvent {
 }
 
 describe('DatagridFilterComponent', () => {
-  beforeEach(function (this: any) {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrInputModule],
       declarations: [DatagridFilterComponent],
@@ -51,127 +56,127 @@ describe('DatagridFilterComponent', () => {
     });
   });
 
-  beforeEach(function (this: any) {
-    this.fixture = TestBed.createComponent(DatagridFilterComponent);
-    this.clrPopoverService = TestBed.inject(ClrPopoverService);
-    this.caseInsensitiveContainsStringFilter = TestBed.inject(CaseInsensitiveContainsStringFilter);
+  beforeEach(() => {
+    testContext.fixture = TestBed.createComponent(DatagridFilterComponent);
+    testContext.clrPopoverService = TestBed.inject(ClrPopoverService);
+    testContext.caseInsensitiveContainsStringFilter = TestBed.inject(CaseInsensitiveContainsStringFilter);
   });
 
-  it('should set the initial input value to be equal to the default filter value', function (this: any) {
-    this.fixture.componentInstance.filterValue = 'hdd';
-    this.fixture.detectChanges();
+  it('should set the initial input value to be equal to the default filter value', () => {
+    testContext.fixture.componentInstance.filterValue = 'hdd';
+    testContext.fixture.detectChanges();
 
-    expect(this.fixture.componentInstance.value).toEqual('hdd');
-    expect(this.fixture.componentInstance.isActive()).toBeTruthy();
+    expect(testContext.fixture.componentInstance.value).toEqual('hdd');
+    expect(testContext.fixture.componentInstance.isActive()).toBeTruthy();
   });
 
-  describe('should mark the filter as', function (this: any) {
-    it('not active initially', function (this: any) {
-      expect(this.fixture.componentInstance.isActive()).toBeFalsy();
+  describe('should mark the filter as', () => {
+    it('not active initially', () => {
+      expect(testContext.fixture.componentInstance.isActive()).toBeFalsy();
     });
 
-    it('active when the value is not empty', function (this: any) {
-      this.fixture.componentInstance.value = 'name';
+    it('active when the value is not empty', () => {
+      testContext.fixture.componentInstance.value = 'name';
 
-      expect(this.fixture.componentInstance.isActive()).toBeTruthy();
+      expect(testContext.fixture.componentInstance.isActive()).toBeTruthy();
     });
   });
 
-  describe('should filter and return', function (this: any) {
-    it('true when provided with a valid property name ', function (this: any) {
+  describe('should filter and return', () => {
+    it('true when provided with a valid property name ', () => {
       const item = {
         propA: 'ABC',
         propB: 'DEF',
       };
 
-      this.fixture.componentInstance.fieldName = 'propA';
-      this.fixture.componentInstance.value = 'ABC';
+      testContext.fixture.componentInstance.fieldName = 'propA';
+      testContext.fixture.componentInstance.value = 'ABC';
 
-      expect(this.fixture.componentInstance.accepts(item)).toBeTruthy();
+      expect(testContext.fixture.componentInstance.accepts(item)).toBeTruthy();
 
-      this.fixture.componentInstance.value = 'abc';
+      testContext.fixture.componentInstance.value = 'abc';
 
-      expect(this.fixture.componentInstance.accepts(item)).toBeTruthy();
+      expect(testContext.fixture.componentInstance.accepts(item)).toBeTruthy();
 
-      this.fixture.componentInstance.value = 'abC';
+      testContext.fixture.componentInstance.value = 'abC';
 
-      expect(this.fixture.componentInstance.accepts(item)).toBeTruthy();
+      expect(testContext.fixture.componentInstance.accepts(item)).toBeTruthy();
 
-      this.fixture.componentInstance.value = ' ABC ';
+      testContext.fixture.componentInstance.value = ' ABC ';
 
-      expect(this.fixture.componentInstance.accepts(item)).toBeTruthy();
+      expect(testContext.fixture.componentInstance.accepts(item)).toBeTruthy();
     });
 
-    it('false when provided with an invalid property name', function (this: any) {
+    it('false when provided with an invalid property name', () => {
       const item = {
         propA: 'ABC',
         propB: 'DEF',
       };
 
-      this.fixture.componentInstance.fieldName = 'propA';
-      this.fixture.componentInstance.value = 'abcd';
+      testContext.fixture.componentInstance.fieldName = 'propA';
+      testContext.fixture.componentInstance.value = 'abcd';
 
-      expect(this.fixture.componentInstance.accepts(item)).toBeFalsy();
+      expect(testContext.fixture.componentInstance.accepts(item)).toBeFalsy();
 
-      this.fixture.componentInstance.value = ' ab c ';
+      testContext.fixture.componentInstance.value = ' ab c ';
 
-      expect(this.fixture.componentInstance.accepts(item)).toBeFalsy();
+      expect(testContext.fixture.componentInstance.accepts(item)).toBeFalsy();
     });
   });
 
-  describe('when a string filter property is defined should filter and return', function (this: any) {
-    it('true when provided with a valid filter property name', function (this: any) {
+  describe('when a string filter property is defined should filter and return', () => {
+    it('true when provided with a valid filter property name', () => {
       const item = {
         propA: 'ABC',
       };
 
-      this.fixture.componentInstance.stringFilterType = new CaseInsensitiveContainsStringFilter('propA');
-      this.fixture.componentInstance.value = 'abc';
+      testContext.fixture.componentInstance.stringFilterType = new CaseInsensitiveContainsStringFilter('propA');
+      testContext.fixture.componentInstance.value = 'abc';
 
-      spyOn(this.caseInsensitiveContainsStringFilter, 'accepts').and.returnValue(true);
+      spyOn(testContext.caseInsensitiveContainsStringFilter, 'accepts').and.returnValue(true);
 
-      expect(this.fixture.componentInstance.accepts(item)).toBeTruthy();
+      expect(testContext.fixture.componentInstance.accepts(item)).toBeTruthy();
     });
 
-    it('false when provided with an invalid filter property name', function (this: any) {
+    it('false when provided with an invalid filter property name', () => {
       const item = {
         propA: 'ABC',
       };
 
-      this.fixture.componentInstance.stringFilterType = new CaseInsensitiveContainsStringFilter('propA');
-      this.fixture.componentInstance.value = 'abcd';
+      testContext.fixture.componentInstance.stringFilterType = new CaseInsensitiveContainsStringFilter('propA');
+      testContext.fixture.componentInstance.value = 'abcd';
 
-      spyOn(this.caseInsensitiveContainsStringFilter, 'accepts').and.returnValue(false);
+      spyOn(testContext.caseInsensitiveContainsStringFilter, 'accepts').and.returnValue(false);
 
-      expect(this.fixture.componentInstance.accepts(item)).toBeFalsy();
+      expect(testContext.fixture.componentInstance.accepts(item)).toBeFalsy();
     });
   });
 
-  it('emits a keyup event when the value has changed', function (this: any) {
-    const input: HTMLElement = this.fixture.nativeElement.querySelector('input');
+  it('emits a keyup event when the value has changed', () => {
+    const input: HTMLElement = testContext.fixture.nativeElement.querySelector('input');
     let changesFlag = false;
 
-    spyOn(this.fixture.componentInstance.filterValueChange, 'emit').and.callThrough();
+    spyOn(testContext.fixture.componentInstance.filterValueChange, 'emit').and.callThrough();
 
-    this.fixture.componentInstance.changes.subscribe(() => (changesFlag = true));
+    testContext.fixture.componentInstance.changes.subscribe(() => (changesFlag = true));
 
     input.dispatchEvent(generateKeyUpEvent('abcd'));
 
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
 
     expect(changesFlag).toBe(true);
-    expect(this.fixture.componentInstance.filterValueChange.emit).toHaveBeenCalledWith('abcd');
+    expect(testContext.fixture.componentInstance.filterValueChange.emit).toHaveBeenCalledWith('abcd');
   });
 
-  it('should focus the input field when the filter dropdown is opened', fakeAsync(function (this: any) {
-    const input: HTMLElement = this.fixture.nativeElement.querySelector('input');
+  it('should focus the input field when the filter dropdown is opened', fakeAsync(() => {
+    const input: HTMLElement = testContext.fixture.nativeElement.querySelector('input');
 
     spyOn(input, 'focus');
 
     expect(input).toBeTruthy();
 
-    this.fixture.componentInstance.ngAfterViewInit();
-    this.fixture.detectChanges();
+    testContext.fixture.componentInstance.ngAfterViewInit();
+    testContext.fixture.detectChanges();
 
     tick();
 

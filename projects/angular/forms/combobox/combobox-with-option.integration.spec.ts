@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { delay, TestContext } from '@clr/angular/testing';
+import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
 
 import { ClrCombobox } from './combobox';
 
@@ -23,23 +23,25 @@ import { ClrCombobox } from './combobox';
 class TestOptionSelection {}
 
 export default function (): void {
-  describe('Rendering Selected Option', function () {
+  describe('Rendering Selected Option', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrCombobox<string>, TestOptionSelection>;
     let popoverService: ClrPopoverService;
 
-    beforeEach(function () {
-      context = this.create(ClrCombobox, TestOptionSelection, [], []);
+    beforeEach(() => {
+      context = helpers.create<ClrCombobox<string>, TestOptionSelection>(ClrCombobox, TestOptionSelection, [], []);
       popoverService = context.getClarityProvider(ClrPopoverService);
       popoverService.open = true;
       context.detectChanges();
     });
 
-    afterEach(function () {
+    afterEach(() => {
       popoverService.open = false;
       context.detectChanges();
     });
 
-    it('renders the selected option in the input when it is clicked', async function () {
+    it('renders the selected option in the input when it is clicked', async () => {
       const options = document.body.querySelectorAll('.clr-combobox-option');
       const selection: HTMLInputElement = context.clarityElement.querySelector('.clr-combobox-input');
 
@@ -49,7 +51,7 @@ export default function (): void {
       await delay();
       expect(selection.value).toMatch(/Option 1/);
     });
-    it('clears the previous selection and renders the new selection', async function () {
+    it('clears the previous selection and renders the new selection', async () => {
       const options = document.body.querySelectorAll('.clr-combobox-option');
       const selection: HTMLInputElement = context.clarityElement.querySelector('.clr-combobox-input');
       (options[0] as HTMLElement).click();

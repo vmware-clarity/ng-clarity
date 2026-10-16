@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDaypicker } from './daypicker';
@@ -21,18 +21,20 @@ import { ViewManagerService } from './providers/view-manager.service';
 
 export default function () {
   describe('Daypicker Component', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrDaypicker, TestComponent>;
     let viewManagerService: ViewManagerService;
     let localeHelperService: LocaleHelperService;
     let dateNavigationService: DateNavigationService;
 
-    beforeEach(function () {
+    beforeEach(() => {
       dateNavigationService = new DateNavigationService();
       // Initializing selected day just to make sure that previous and next month tests become easier
       dateNavigationService.selectedDay = new DayModel(2015, 1, 1);
       dateNavigationService.initializeCalendar();
 
-      context = this.create(ClrDaypicker, TestComponent, [
+      context = helpers.create(ClrDaypicker, TestComponent, [
         { provide: DateNavigationService, useValue: dateNavigationService },
         DateIOService,
         ClrPopoverService,

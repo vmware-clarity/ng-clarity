@@ -76,8 +76,13 @@ interface ThisTest {
   actionsWithVisibility: ActionDefinition[];
 }
 
-describe('DatagridActionBarComponent', function () {
-  beforeEach(function () {
+describe('DatagridActionBarComponent', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [NoopAnimationsModule, ClrIcon, ClrTooltipModule, ClrDropdownModule, TestContainerComponent],
       providers: [
@@ -95,14 +100,16 @@ describe('DatagridActionBarComponent', function () {
     });
   });
 
-  beforeEach(function (this: ThisTest) {
-    this.fixture = TestBed.createComponent(TestContainerComponent);
-    this.containerComponent = this.fixture.componentInstance;
-    this.component = this.fixture.debugElement.query(By.directive(DatagridActionBarComponent)).componentInstance;
+  beforeEach(() => {
+    testContext.fixture = TestBed.createComponent(TestContainerComponent);
+    testContext.containerComponent = testContext.fixture.componentInstance;
+    testContext.component = testContext.fixture.debugElement.query(
+      By.directive(DatagridActionBarComponent)
+    ).componentInstance;
 
-    this.resizeService = TestBed.inject(ElementResizeService) as MockElementResizeService;
+    testContext.resizeService = TestBed.inject(ElementResizeService) as MockElementResizeService;
 
-    this.actionsWithGroups = [
+    testContext.actionsWithGroups = [
       {
         id: 'com.domain.a1',
         label: 'Action 1',
@@ -127,7 +134,7 @@ describe('DatagridActionBarComponent', function () {
       },
     ];
 
-    this.actionsToFitScreen = [
+    testContext.actionsToFitScreen = [
       {
         id: 'com.domain.a1',
         label: 'Action 1',
@@ -139,7 +146,7 @@ describe('DatagridActionBarComponent', function () {
         enabled: true,
       },
     ];
-    this.actionsNotFittingScreen = this.actionsToFitScreen.concat([
+    testContext.actionsNotFittingScreen = testContext.actionsToFitScreen.concat([
       {
         id: 'com.domain.a3',
         label: 'Action 3',
@@ -151,7 +158,7 @@ describe('DatagridActionBarComponent', function () {
         enabled: true,
       },
     ]);
-    this.actionsWithVisibility = [
+    testContext.actionsWithVisibility = [
       {
         id: 'com.domain.a1',
         label: 'Action 1',
@@ -166,209 +173,212 @@ describe('DatagridActionBarComponent', function () {
       },
     ];
 
-    spyOn(this.containerComponent, 'onActionClick');
-    spyOn(this.component, 'deriveBaseRootElementSize').and.returnValue(24);
+    spyOn(testContext.containerComponent, 'onActionClick');
+    spyOn(testContext.component, 'deriveBaseRootElementSize').and.returnValue(24);
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 
-  describe('WHEN there are grouped actions', function () {
-    beforeEach(function (this: ThisTest) {
-      this.containerComponent.actions = this.actionsWithGroups;
-      this.fixture.detectChanges();
+  describe('WHEN there are grouped actions', () => {
+    beforeEach(() => {
+      testContext.containerComponent.actions = testContext.actionsWithGroups;
+      testContext.fixture.detectChanges();
     });
 
-    it('THEN displays all available actions', function (this: ThisTest) {
-      this.actionsWithGroups.forEach(action => {
-        expect(this.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
+    it('THEN displays all available actions', () => {
+      testContext.actionsWithGroups.forEach(action => {
+        expect(testContext.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
 
         expect(
-          this.fixture.debugElement
+          testContext.fixture.debugElement
             .query(By.css(`button[data-test-id='${action.id}']`))
             .nativeElement.textContent.trim()
         ).toEqual(action.label);
       });
-      expect(this.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(
-        this.actionsWithGroups.length
+      expect(testContext.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(
+        testContext.actionsWithGroups.length
       );
     });
 
-    it('THEN a dropdown is displayed', function (this: ThisTest) {
-      expect(this.fixture.debugElement.query(By.css('clr-dropdown'))).not.toBeNull();
+    it('THEN a dropdown is displayed', () => {
+      expect(testContext.fixture.debugElement.query(By.css('clr-dropdown'))).not.toBeNull();
     });
   });
 
-  describe("WHEN initially all the actions fit the container's width", function () {
-    beforeEach(function (this: ThisTest) {
-      this.containerComponent.actions = this.actionsToFitScreen;
-      this.fixture.detectChanges();
+  describe("WHEN initially all the actions fit the container's width", () => {
+    beforeEach(() => {
+      testContext.containerComponent.actions = testContext.actionsToFitScreen;
+      testContext.fixture.detectChanges();
     });
 
-    it('THEN displays all available actions', function (this: ThisTest) {
-      this.actionsToFitScreen.forEach(action => {
-        expect(this.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
+    it('THEN displays all available actions', () => {
+      testContext.actionsToFitScreen.forEach(action => {
+        expect(testContext.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
 
         expect(
-          this.fixture.debugElement
+          testContext.fixture.debugElement
             .query(By.css(`button[data-test-id='${action.id}']`))
             .nativeElement.textContent.trim()
         ).toEqual(action.label);
       });
-      expect(this.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(
-        this.actionsToFitScreen.length
+      expect(testContext.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(
+        testContext.actionsToFitScreen.length
       );
     });
 
-    it('THEN a dropdown is NOT displayed', function (this: ThisTest) {
-      expect(this.fixture.debugElement.query(By.css('clr-dropdown'))).toBeNull();
+    it('THEN a dropdown is NOT displayed', () => {
+      expect(testContext.fixture.debugElement.query(By.css('clr-dropdown'))).toBeNull();
     });
 
-    describe('AND an action button is clicked', function () {
-      beforeEach(function (this: ThisTest) {
-        this.fixture.debugElement
-          .query(By.css(`button[data-test-id='${this.actionsToFitScreen[0].id}']`))
+    describe('AND an action button is clicked', () => {
+      beforeEach(() => {
+        testContext.fixture.debugElement
+          .query(By.css(`button[data-test-id='${testContext.actionsToFitScreen[0].id}']`))
           .triggerEventHandler('click', {});
       });
 
-      it('THEN invokes the right action', function (this: ThisTest) {
-        expect(this.containerComponent.onActionClick).toHaveBeenCalledWith(this.actionsToFitScreen[0]);
+      it('THEN invokes the right action', () => {
+        expect(testContext.containerComponent.onActionClick).toHaveBeenCalledWith(testContext.actionsToFitScreen[0]);
       });
     });
 
-    describe('WHEN the first action is disabled', function () {
-      beforeEach(function (this: ThisTest) {
-        this.containerComponent.actions = this.actionsToFitScreen.map(
+    describe('WHEN the first action is disabled', () => {
+      beforeEach(() => {
+        testContext.containerComponent.actions = testContext.actionsToFitScreen.map(
           action =>
             <ActionDefinition>{
               id: action.id,
               label: action.label,
-              enabled: action.id !== this.actionsToFitScreen[0].id,
+              enabled: action.id !== testContext.actionsToFitScreen[0].id,
             }
         );
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
       });
 
-      it('THEN the first action button is disabled', function (this: ThisTest) {
+      it('THEN the first action button is disabled', () => {
         expect(
-          this.fixture.debugElement.query(By.css(`button[data-test-id='${this.actionsToFitScreen[0].id}']`))
-            .nativeElement.attributes['disabled']
+          testContext.fixture.debugElement.query(
+            By.css(`button[data-test-id='${testContext.actionsToFitScreen[0].id}']`)
+          ).nativeElement.attributes['disabled']
         ).toBeTruthy();
       });
     });
 
-    describe("AND the container's width has decreased due to a browser window resize", function () {
-      beforeEach(fakeAsync(function (this: ThisTest) {
-        this.containerComponent.width = this.containerComponent.smallSize;
-        this.fixture.detectChanges();
-        this.resizeService.resize$.next();
+    describe("AND the container's width has decreased due to a browser window resize", () => {
+      beforeEach(fakeAsync(() => {
+        testContext.containerComponent.width = testContext.containerComponent.smallSize;
+        testContext.fixture.detectChanges();
+        testContext.resizeService.resize$.next();
         tick(10);
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
       }));
 
-      it("THEN displays only the buttons for actions which fit the container's width", function (this: ThisTest) {
-        const action: ActionDefinition = this.actionsToFitScreen[0];
-        expect(this.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
+      it("THEN displays only the buttons for actions which fit the container's width", () => {
+        const action: ActionDefinition = testContext.actionsToFitScreen[0];
+        expect(testContext.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
         expect(
-          this.fixture.debugElement
+          testContext.fixture.debugElement
             .query(By.css(`button[data-test-id='${action.id}']`))
             .nativeElement.textContent.trim()
         ).toEqual(action.label);
 
-        expect(this.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(1);
+        expect(testContext.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(1);
       });
 
-      it('THEN a dropdown is displayed', function (this: ThisTest) {
-        expect(this.fixture.debugElement.query(By.css('clr-dropdown'))).toBeTruthy();
+      it('THEN a dropdown is displayed', () => {
+        expect(testContext.fixture.debugElement.query(By.css('clr-dropdown'))).toBeTruthy();
       });
 
-      it('THEN displays the rest of the actions within the dropdown', function (this: ThisTest) {
-        this.fixture.debugElement.query(By.css('clr-dropdown > button')).triggerEventHandler('click', {});
-        this.fixture.detectChanges();
+      it('THEN displays the rest of the actions within the dropdown', () => {
+        testContext.fixture.debugElement.query(By.css('clr-dropdown > button')).triggerEventHandler('click', {});
+        testContext.fixture.detectChanges();
 
-        const action: ActionDefinition = last(this.actionsToFitScreen);
+        const action: ActionDefinition = last(testContext.actionsToFitScreen);
         expect(
-          this.fixture.debugElement.query(By.css(`clr-dropdown-menu button[data-test-id='${action.id}']`))
+          testContext.fixture.debugElement.query(By.css(`clr-dropdown-menu button[data-test-id='${action.id}']`))
         ).toBeTruthy();
 
         expect(
-          this.fixture.debugElement
+          testContext.fixture.debugElement
             .query(By.css(`clr-dropdown-menu button[data-test-id='${action.id}']`))
             .nativeElement.textContent.trim()
         ).toEqual(action.label);
 
-        expect(this.fixture.debugElement.queryAll(By.css('clr-dropdown-menu button[data-test-id]')).length).toEqual(1);
+        expect(
+          testContext.fixture.debugElement.queryAll(By.css('clr-dropdown-menu button[data-test-id]')).length
+        ).toEqual(1);
       });
 
-      describe('AND the container is resized back to its original size', function () {
-        beforeEach(fakeAsync(function (this: ThisTest) {
-          this.containerComponent.width = this.containerComponent.normalSize;
-          this.fixture.detectChanges();
-          this.resizeService.resize$.next();
+      describe('AND the container is resized back to its original size', () => {
+        beforeEach(fakeAsync(() => {
+          testContext.containerComponent.width = testContext.containerComponent.normalSize;
+          testContext.fixture.detectChanges();
+          testContext.resizeService.resize$.next();
           tick(10);
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         }));
 
-        it('THEN displays all available actions', function (this: ThisTest) {
-          this.actionsToFitScreen.forEach(action => {
-            expect(this.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
+        it('THEN displays all available actions', () => {
+          testContext.actionsToFitScreen.forEach(action => {
+            expect(testContext.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
 
             expect(
-              this.fixture.debugElement
+              testContext.fixture.debugElement
                 .query(By.css(`button[data-test-id='${action.id}']`))
                 .nativeElement.textContent.trim()
             ).toEqual(action.label);
           });
-          expect(this.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(
-            this.actionsToFitScreen.length
+          expect(testContext.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(
+            testContext.actionsToFitScreen.length
           );
         });
 
-        it('THEN a dropdown is NOT displayed', function (this: ThisTest) {
-          expect(this.fixture.debugElement.query(By.css('clr-dropdown'))).toBeNull();
+        it('THEN a dropdown is NOT displayed', () => {
+          expect(testContext.fixture.debugElement.query(By.css('clr-dropdown'))).toBeNull();
         });
       });
     });
   });
 
-  describe("WHEN initially NOT all actions fit the container's width", function () {
-    beforeEach(function (this: ThisTest) {
-      this.containerComponent.actions = this.actionsNotFittingScreen;
-      this.fixture.detectChanges();
+  describe("WHEN initially NOT all actions fit the container's width", () => {
+    beforeEach(() => {
+      testContext.containerComponent.actions = testContext.actionsNotFittingScreen;
+      testContext.fixture.detectChanges();
     });
 
-    it("THEN displays all actions which fit the container's width", function (this: ThisTest) {
-      this.actionsToFitScreen.forEach(action => {
-        expect(this.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
+    it("THEN displays all actions which fit the container's width", () => {
+      testContext.actionsToFitScreen.forEach(action => {
+        expect(testContext.fixture.debugElement.query(By.css(`button[data-test-id='${action.id}']`))).toBeTruthy();
 
         expect(
-          this.fixture.debugElement
+          testContext.fixture.debugElement
             .query(By.css(`button[data-test-id='${action.id}']`))
             .nativeElement.textContent.trim()
         ).toEqual(action.label);
       });
-      expect(this.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(
-        this.actionsToFitScreen.length
+      expect(testContext.fixture.debugElement.queryAll(By.css('button[data-test-id]')).length).toEqual(
+        testContext.actionsToFitScreen.length
       );
     });
 
-    it('THEN a dropdown is displayed', function (this: ThisTest) {
-      expect(this.fixture.debugElement.query(By.css('clr-dropdown'))).toBeTruthy();
+    it('THEN a dropdown is displayed', () => {
+      expect(testContext.fixture.debugElement.query(By.css('clr-dropdown'))).toBeTruthy();
     });
 
-    describe('AND the dropdown is opened', function () {
-      beforeEach(function (this: ThisTest) {
-        this.fixture.debugElement.query(By.css('clr-dropdown > button')).triggerEventHandler('click', {});
-        this.fixture.detectChanges();
+    describe('AND the dropdown is opened', () => {
+      beforeEach(() => {
+        testContext.fixture.debugElement.query(By.css('clr-dropdown > button')).triggerEventHandler('click', {});
+        testContext.fixture.detectChanges();
       });
 
-      it('THEN displays the rest of the actions within the dropdown', function (this: ThisTest) {
-        const actionsToFitScreenLength = this.actionsToFitScreen.length;
-        this.actionsNotFittingScreen
+      it('THEN displays the rest of the actions within the dropdown', () => {
+        const actionsToFitScreenLength = testContext.actionsToFitScreen.length;
+        testContext.actionsNotFittingScreen
           .filter(
             action =>
-              this.actionsToFitScreen.reduce((length: number, a: ActionDefinition): number => {
+              testContext.actionsToFitScreen.reduce((length: number, a: ActionDefinition): number => {
                 if (a.id === action.id) {
                   return length - 1;
                 }
@@ -377,87 +387,89 @@ describe('DatagridActionBarComponent', function () {
           )
           .forEach(action => {
             expect(
-              this.fixture.debugElement.query(By.css(`clr-dropdown-menu button[data-test-id='${action.id}']`))
+              testContext.fixture.debugElement.query(By.css(`clr-dropdown-menu button[data-test-id='${action.id}']`))
             ).toBeTruthy();
 
             expect(
-              this.fixture.debugElement
+              testContext.fixture.debugElement
                 .query(By.css(`clr-dropdown-menu button[data-test-id='${action.id}']`))
                 .nativeElement.textContent.trim()
             ).toEqual(action.label);
           });
 
-        expect(this.fixture.debugElement.queryAll(By.css('clr-dropdown-menu button[data-test-id]')).length).toEqual(
-          this.actionsNotFittingScreen.length - this.actionsToFitScreen.length
-        );
+        expect(
+          testContext.fixture.debugElement.queryAll(By.css('clr-dropdown-menu button[data-test-id]')).length
+        ).toEqual(testContext.actionsNotFittingScreen.length - testContext.actionsToFitScreen.length);
       });
 
-      describe('AND an action button from the dropdown is clicked', function () {
-        beforeEach(function (this: ThisTest) {
-          this.fixture.debugElement
-            .query(By.css(`clr-dropdown-menu button[data-test-id='${last(this.actionsNotFittingScreen)?.id}']`))
+      describe('AND an action button from the dropdown is clicked', () => {
+        beforeEach(() => {
+          testContext.fixture.debugElement
+            .query(By.css(`clr-dropdown-menu button[data-test-id='${last(testContext.actionsNotFittingScreen)?.id}']`))
             .triggerEventHandler('click', {});
         });
 
-        it('THEN invokes the right action', function (this: ThisTest) {
-          expect(this.containerComponent.onActionClick).toHaveBeenCalledWith(last(this.actionsNotFittingScreen));
+        it('THEN invokes the right action', () => {
+          expect(testContext.containerComponent.onActionClick).toHaveBeenCalledWith(
+            last(testContext.actionsNotFittingScreen)
+          );
         });
       });
 
-      describe('AND the browser window is being resized', function () {
-        beforeEach(fakeAsync(function (this: ThisTest) {
-          this.resizeService.resize$.next();
+      describe('AND the browser window is being resized', () => {
+        beforeEach(fakeAsync(() => {
+          testContext.resizeService.resize$.next();
           tick(10);
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         }));
 
-        it('THEN the dropdown is closed', function (this: ThisTest) {
-          expect(this.fixture.debugElement.query(By.css('clr-dropdown-menu'))).toBeNull();
+        it('THEN the dropdown is closed', () => {
+          expect(testContext.fixture.debugElement.query(By.css('clr-dropdown-menu'))).toBeNull();
         });
       });
     });
 
-    describe('AND the last action from the dropdown is disabled', function () {
-      beforeEach(function (this: ThisTest) {
-        this.containerComponent.actions = this.actionsNotFittingScreen.map(
+    describe('AND the last action from the dropdown is disabled', () => {
+      beforeEach(() => {
+        testContext.containerComponent.actions = testContext.actionsNotFittingScreen.map(
           action =>
             <ActionDefinition>{
               id: action.id,
               label: action.label,
-              enabled: action.id !== last(this.actionsNotFittingScreen)?.id,
+              enabled: action.id !== last(testContext.actionsNotFittingScreen)?.id,
             }
         );
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
       });
 
-      it('THEN the last action button from the dropdown is disabled', function (this: ThisTest) {
-        this.fixture.debugElement.query(By.css('clr-dropdown > button')).triggerEventHandler('click', {});
-        this.fixture.detectChanges();
+      it('THEN the last action button from the dropdown is disabled', () => {
+        testContext.fixture.debugElement.query(By.css('clr-dropdown > button')).triggerEventHandler('click', {});
+        testContext.fixture.detectChanges();
         expect(
-          this.fixture.debugElement.query(
-            By.css(`clr-dropdown-menu button[data-test-id='${last(this.actionsNotFittingScreen)?.id}']`)
+          testContext.fixture.debugElement.query(
+            By.css(`clr-dropdown-menu button[data-test-id='${last(testContext.actionsNotFittingScreen)?.id}']`)
           ).nativeElement.attributes['disabled']
         ).toBeTruthy();
       });
     });
   });
 
-  it('NOT all actions should be visible', fakeAsync(function (this: ThisTest) {
-    const visibleActionSelector = `button[data-test-id='${this.actionsWithVisibility[0].id}']`;
-    const hiddenActionSelector = `button[data-test-id='${this.actionsWithVisibility[1].id}']`;
+  it('NOT all actions should be visible', fakeAsync(() => {
+    const visibleActionSelector = `button[data-test-id='${testContext.actionsWithVisibility[0].id}']`;
+    const hiddenActionSelector = `button[data-test-id='${testContext.actionsWithVisibility[1].id}']`;
     const dropDownSelector = 'clr-dropdown.dropdown button.dropdown-toggle';
-    this.containerComponent.actions = this.actionsWithVisibility;
-    this.fixture.detectChanges();
+    testContext.containerComponent.actions = testContext.actionsWithVisibility;
+    testContext.fixture.detectChanges();
 
-    expect(this.fixture.debugElement.query(By.css(visibleActionSelector))).toBeTruthy();
-    expect(this.fixture.debugElement.query(By.css(hiddenActionSelector))).toBeNull();
+    expect(testContext.fixture.debugElement.query(By.css(visibleActionSelector))).toBeTruthy();
+    expect(testContext.fixture.debugElement.query(By.css(hiddenActionSelector))).toBeNull();
 
-    this.fixture.debugElement.query(By.css(dropDownSelector)).triggerEventHandler('click', {});
+    testContext.fixture.debugElement.query(By.css(dropDownSelector)).triggerEventHandler('click', {});
     tick(10);
-    this.fixture.detectChanges();
+    testContext.fixture.detectChanges();
 
-    const hiddenActionEle: DebugElement = this.fixture.debugElement.query(By.css(hiddenActionSelector));
+    const hiddenActionEle: DebugElement = testContext.fixture.debugElement.query(By.css(hiddenActionSelector));
     expect(hiddenActionEle).toBeTruthy();
-    expect(hiddenActionEle.nativeElement.textContent.trim()).toEqual(`${this.actionsWithVisibility[1].label}`);
+    expect(hiddenActionEle.nativeElement.textContent.trim()).toEqual(`${testContext.actionsWithVisibility[1].label}`);
   }));
 });

@@ -10,7 +10,7 @@ import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ClrDropdown, ClrDropdownItem } from '@clr/angular/popover/dropdown';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
@@ -191,8 +191,10 @@ class KeepFilterInHeaderTest {
 }
 
 export default function (): void {
-  describe('ClrDatagridColumnActions', function () {
-    describe('rendering', function () {
+  describe('ClrDatagridColumnActions', () => {
+    const helpers = createTestHelpers();
+
+    describe('rendering', () => {
       let context: TestContext<ClrDatagrid, ColumnActionsTest>;
       let element: HTMLElement;
 
@@ -203,21 +205,21 @@ export default function (): void {
         }
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, ColumnActionsTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, ColumnActionsTest);
         element = context.clarityElement;
       });
 
-      afterEach(function () {
+      afterEach(() => {
         // The menu lives in an overlay outside the fixture, so it has to be closed between tests.
         closeMenu();
       });
 
-      it('only renders a trigger on columns that asked for the menu', function () {
+      it('only renders a trigger on columns that asked for the menu', () => {
         expect(queryAll(element, TOGGLE).length).toBe(1);
       });
 
-      it('renders the trigger at the trailing edge of the header, not inside the sort button', function () {
+      it('renders the trigger at the trailing edge of the header, not inside the sort button', () => {
         const headerCell = element.querySelector<HTMLElement>('.datagrid-header clr-dg-column .datagrid-column-flex');
         const actions = headerCell.querySelector('clr-dg-column-actions');
 
@@ -226,7 +228,7 @@ export default function (): void {
         expect(headerCell.querySelector('.datagrid-column-title clr-dg-column-actions')).toBeNull();
       });
 
-      it('labels the trigger with the column it belongs to', function () {
+      it('labels the trigger with the column it belongs to', () => {
         const commonStrings = new ClrCommonStringsService();
 
         expect(element.querySelector(TOGGLE).getAttribute('aria-label')).toBe(
@@ -234,7 +236,7 @@ export default function (): void {
         );
       });
 
-      it('leaves the column title sortable', function () {
+      it('leaves the column title sortable', () => {
         const title = element.querySelector<HTMLButtonElement>('.datagrid-header .datagrid-column-title');
         expect(title.tagName).toBe('BUTTON');
 
@@ -245,7 +247,7 @@ export default function (): void {
       });
     });
 
-    describe('item visibility', function () {
+    describe('item visibility', () => {
       let context: TestContext<ClrDatagrid, ColumnActionsTest>;
       let element: HTMLElement;
       let commonStrings: ClrCommonStringsService;
@@ -266,24 +268,24 @@ export default function (): void {
         }
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, ColumnActionsTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, ColumnActionsTest);
         element = context.clarityElement;
         commonStrings = new ClrCommonStringsService();
       });
 
-      afterEach(function () {
+      afterEach(() => {
         closeMenu();
       });
 
-      it('offers both sort directions on a sortable column', function () {
+      it('offers both sort directions on a sortable column', () => {
         openMenu();
 
         expect(menuItemLabels()).toContain(commonStrings.keys.sortColumnAscending);
         expect(menuItemLabels()).toContain(commonStrings.keys.sortColumnDescending);
       });
 
-      it('omits the sort actions when the column cannot be sorted', function () {
+      it('omits the sort actions when the column cannot be sorted', () => {
         context.testComponent.sortBy = undefined;
         context.detectChanges();
 
@@ -295,7 +297,7 @@ export default function (): void {
 
       // The menu never offers a dead option, so Clear Sort is absent until there is a sort to clear
       // rather than sitting there disabled.
-      it('offers clearing the sort only once the column is sorted', function () {
+      it('offers clearing the sort only once the column is sorted', () => {
         openMenu();
         expect(menuItemLabels()).not.toContain(commonStrings.keys.clearColumnSort);
 
@@ -306,7 +308,7 @@ export default function (): void {
         expect(menuItemLabels()).toContain(commonStrings.keys.clearColumnSort);
       });
 
-      it('never offers clearing the sort when the column disabled unsorting', function () {
+      it('never offers clearing the sort when the column disabled unsorting', () => {
         context.testComponent.disableUnsort = true;
         context.detectChanges();
 
@@ -318,7 +320,7 @@ export default function (): void {
         expect(menuItemLabels()).not.toContain(commonStrings.keys.clearColumnSort);
       });
 
-      it('omits the pin action when the column is not pinnable', function () {
+      it('omits the pin action when the column is not pinnable', () => {
         context.testComponent.pinnable = false;
         context.detectChanges();
 
@@ -328,16 +330,16 @@ export default function (): void {
       });
     });
 
-    describe('projected actions', function () {
+    describe('projected actions', () => {
       let context: TestContext<ClrDatagrid, ProjectedActionTest>;
       let element: HTMLElement;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, ProjectedActionTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, ProjectedActionTest);
         element = context.clarityElement;
       });
 
-      afterEach(function () {
+      afterEach(() => {
         closeMenu();
       });
 
@@ -357,7 +359,7 @@ export default function (): void {
         }
       }
 
-      it('appends projected actions after the built-in ones', function () {
+      it('appends projected actions after the built-in ones', () => {
         openMenu();
 
         const labels = menuItemLabels();
@@ -365,7 +367,7 @@ export default function (): void {
         expect(labels.indexOf('Custom')).toBe(labels.length - 1);
       });
 
-      it('styles a projected action as a menu item', function () {
+      it('styles a projected action as a menu item', () => {
         openMenu();
 
         const custom = itemLabelled('Custom');
@@ -376,7 +378,7 @@ export default function (): void {
       // What lets clrDgColumnAction be a clrDropdownItem at all. A projected item is declared outside
       // this component, so it can only resolve ClrDropdown because the component is the dropdown and
       // provides itself under that token - a clr-dropdown inside its template would be out of reach.
-      it('is the dropdown a projected action injects', function () {
+      it('is the dropdown a projected action injects', () => {
         // The item is only rendered while the menu is open, and then it sits in the overlay rather
         // than in the fixture, which is why it is reached through its element.
         openMenu();
@@ -393,7 +395,7 @@ export default function (): void {
       // The menu is anchored with its own popover service; the column's, which its filter uses, is a
       // different one. Being the dropdown is what brings the second service - without it the menu
       // would be driving the same overlay as the filter.
-      it('keeps the menu overlay apart from the column one', function () {
+      it('keeps the menu overlay apart from the column one', () => {
         const actions = context.fixture.debugElement.query(By.directive(ClrDatagridColumnActions));
         const column = context.fixture.debugElement.query(By.directive(ClrDatagridColumn));
 
@@ -401,7 +403,7 @@ export default function (): void {
         expect(actions.injector.get(ClrPopoverService)).toBe(actions.componentInstance.popoverService);
       });
 
-      it('joins a projected action to the arrow key order', function () {
+      it('joins a projected action to the arrow key order', () => {
         openMenu();
 
         expect(itemLabelled('Custom').getAttribute('tabindex')).toBe('-1');
@@ -410,7 +412,7 @@ export default function (): void {
 
       // clrCanClosePopover defaults to true. The menu keeps isMenuClosable false for its built-in
       // items, and closeMenu() does not read that flag, so the input is what decides.
-      it('closes the menu when a projected action is picked', function () {
+      it('closes the menu when a projected action is picked', () => {
         openMenu();
 
         itemLabelled('Custom').click();
@@ -420,7 +422,7 @@ export default function (): void {
         expect(menuIsOpen()).toBeFalse();
       });
 
-      it('leaves the menu open for an action with clrCanClosePopover false', function () {
+      it('leaves the menu open for an action with clrCanClosePopover false', () => {
         openMenu();
 
         itemLabelled('Keep open').click();
@@ -429,7 +431,7 @@ export default function (): void {
         expect(element.querySelector(TOGGLE).getAttribute('aria-expanded')).toBe('true');
       });
 
-      it('marks a disabled projected action and leaves the menu open', function () {
+      it('marks a disabled projected action and leaves the menu open', () => {
         context.testComponent.customDisabled = true;
         context.detectChanges();
 
@@ -450,16 +452,16 @@ export default function (): void {
     // themselves, so anything directly projected joins the arrow key order - a clrDgColumnAction, a
     // plain clrDropdownItem, and a nested clr-dropdown through its trigger - while the nested
     // dropdown's items stay in its own menu.
-    describe('arrow key order of projected items', function () {
+    describe('arrow key order of projected items', () => {
       let context: TestContext<ClrDatagrid, ProjectedOrderTest>;
       let commonStrings: ClrCommonStringsService;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, ProjectedOrderTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, ProjectedOrderTest);
         commonStrings = TestBed.inject(ClrCommonStringsService);
       });
 
-      afterEach(function () {
+      afterEach(() => {
         document.querySelectorAll('.dropdown-menu').forEach(menu => menu.remove());
       });
 
@@ -486,7 +488,7 @@ export default function (): void {
         await settle();
       }
 
-      it('walks the built-in items, then every directly projected one, and wraps', async function () {
+      it('walks the built-in items, then every directly projected one, and wraps', async () => {
         await openByKeyboard();
 
         const order = [focusedLabel()];
@@ -505,7 +507,7 @@ export default function (): void {
         ]);
       });
 
-      it('opens a nested dropdown with ArrowRight and keeps its items out of the menu order', async function () {
+      it('opens a nested dropdown with ArrowRight and keeps its items out of the menu order', async () => {
         await openByKeyboard();
         for (let i = 0; i < 4; i++) {
           await press('ArrowDown');
@@ -520,7 +522,7 @@ export default function (): void {
       });
     });
 
-    describe('actions', function () {
+    describe('actions', () => {
       let context: TestContext<ClrDatagrid, ColumnActionsTest>;
       let element: HTMLElement;
       let commonStrings: ClrCommonStringsService;
@@ -550,13 +552,13 @@ export default function (): void {
         closeMenu();
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, ColumnActionsTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, ColumnActionsTest);
         element = context.clarityElement;
         commonStrings = new ClrCommonStringsService();
       });
 
-      afterEach(function () {
+      afterEach(() => {
         closeMenu();
       });
 
@@ -591,7 +593,7 @@ export default function (): void {
         expect(document.activeElement).toBe(ascendingButton);
       });
 
-      it('sorts ascending and descending', function () {
+      it('sorts ascending and descending', () => {
         const column = context.clarityDirective.columns.first;
 
         invoke(commonStrings.keys.sortColumnAscending);
@@ -601,7 +603,7 @@ export default function (): void {
         expect(column.sortOrder).toBe(ClrDatagridSortOrder.DESC);
       });
 
-      it('re-selecting the active direction keeps it, rather than cycling to unsorted', function () {
+      it('re-selecting the active direction keeps it, rather than cycling to unsorted', () => {
         const column = context.clarityDirective.columns.first;
 
         invoke(commonStrings.keys.sortColumnAscending);
@@ -610,7 +612,7 @@ export default function (): void {
         expect(column.sortOrder).toBe(ClrDatagridSortOrder.ASC);
       });
 
-      it('clears the sort', function () {
+      it('clears the sort', () => {
         const column = context.clarityDirective.columns.first;
 
         invoke(commonStrings.keys.sortColumnAscending);
@@ -620,7 +622,7 @@ export default function (): void {
         expect(column.sortOrder).toBe(ClrDatagridSortOrder.UNSORTED);
       });
 
-      it('marks the active sort direction', function () {
+      it('marks the active sort direction', () => {
         invoke(commonStrings.keys.sortColumnAscending);
         openMenu();
 
@@ -632,7 +634,7 @@ export default function (): void {
       // than two commands, so each is a radio item and the applied one is the checked one - without
       // that, a screen reader announces two identical menu items and never says which is in effect.
       // The column header's aria-sort does not cover it: it is not read from inside the menu.
-      it('announces the applied sort direction as the checked radio item', function () {
+      it('announces the applied sort direction as the checked radio item', () => {
         openMenu();
 
         expect(itemLabelled(commonStrings.keys.sortColumnAscending).getAttribute('role')).toBe('menuitemradio');
@@ -649,14 +651,14 @@ export default function (): void {
 
       // The checkable role belongs to the sort items alone - everything else in the menu performs an
       // action rather than reporting a setting, so it keeps the plain menuitem role.
-      it('leaves the remaining items as plain menu items', function () {
+      it('leaves the remaining items as plain menu items', () => {
         openMenu();
 
         expect(itemLabelled(commonStrings.keys.pinColumn).getAttribute('role')).toBe('menuitem');
         expect(itemLabelled(commonStrings.keys.pinColumn).getAttribute('aria-checked')).toBeNull();
       });
 
-      it('pins and unpins the column', function () {
+      it('pins and unpins the column', () => {
         expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
 
         invoke(commonStrings.keys.pinColumn);
@@ -666,7 +668,7 @@ export default function (): void {
         expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
       });
 
-      it('writes the new pinned state back through the two-way binding', function () {
+      it('writes the new pinned state back through the two-way binding', () => {
         invoke(commonStrings.keys.pinColumn);
         expect(context.testComponent.firstPinned).toBeTrue();
 
@@ -674,7 +676,7 @@ export default function (): void {
         expect(context.testComponent.firstPinned).toBeFalse();
       });
 
-      it('follows the binding when the application pins the column itself', function () {
+      it('follows the binding when the application pins the column itself', () => {
         context.testComponent.firstPinned = true;
         context.detectChanges();
 
@@ -689,7 +691,7 @@ export default function (): void {
       // that undoes the pin - so it has to be re-anchored rather than left hanging next to where the
       // column used to be. The relocation happens on the render cycle the pin schedules, which is
       // why the hook runs after it rather than during the click.
-      it('re-anchors the open menu after pinning moves the column', function () {
+      it('re-anchors the open menu after pinning moves the column', () => {
         // The menu is its own dropdown, so this is the popover service the menu is anchored with -
         // the column's, which its filter uses, is a separate one from the parent injector.
         const popoverService = context.fixture.debugElement
@@ -707,7 +709,7 @@ export default function (): void {
         expect(menuItemLabels()).toContain(commonStrings.keys.unpinColumn);
       });
 
-      it('does not sort the column when the pin action is used', function () {
+      it('does not sort the column when the pin action is used', () => {
         const column = context.clarityDirective.columns.first;
         expect(column.sortable).toBeTrue();
 
@@ -717,7 +719,7 @@ export default function (): void {
       });
     });
 
-    describe('filter integration', function () {
+    describe('filter integration', () => {
       let context: TestContext<ClrDatagrid, AutoFilterTest>;
       let element: HTMLElement;
       let commonStrings: ClrCommonStringsService;
@@ -742,13 +744,13 @@ export default function (): void {
         return document.querySelector('.datagrid-filter');
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, AutoFilterTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, AutoFilterTest);
         element = context.clarityElement;
         commonStrings = new ClrCommonStringsService();
       });
 
-      afterEach(function () {
+      afterEach(() => {
         // Both overlays live outside the fixture, so neither may leak into the next test.
         if (filterPanel()) {
           document.body.click();
@@ -757,14 +759,14 @@ export default function (): void {
         closeMenu();
       });
 
-      it('hides the filter toggle on a column that has the menu, and keeps it on one that does not', function () {
+      it('hides the filter toggle on a column that has the menu, and keeps it on one that does not', () => {
         const columns = queryAll(element, '.datagrid-header clr-dg-column');
 
         expect(columns[0].querySelector('.datagrid-filter-toggle')).toBeNull();
         expect(columns[1].querySelector('.datagrid-filter-toggle')).not.toBeNull();
       });
 
-      it('offers the filter action for a column that has a filter', function () {
+      it('offers the filter action for a column that has a filter', () => {
         openMenu();
 
         expect(menuItemLabels()).toContain(commonStrings.keys.filterColumn);
@@ -773,7 +775,7 @@ export default function (): void {
       // The click that opens the popover is also an outside click as far as the popover is concerned.
       // ClrPopoverService.openEvent is what makes it ignore that one event, so this is the regression
       // test for the filter opening and instantly closing again.
-      it('opens the filter and leaves it open', function () {
+      it('opens the filter and leaves it open', () => {
         openMenu();
         itemLabelled(commonStrings.keys.filterColumn).click();
         context.detectChanges();
@@ -781,7 +783,7 @@ export default function (): void {
         expect(filterPanel()).not.toBeNull();
       });
 
-      it('anchors the filter popover to the filter menu item rather than the removed toggle', function () {
+      it('anchors the filter popover to the filter menu item rather than the removed toggle', () => {
         // The column owns the popover service its filter uses, so this is the anchor the filter
         // popover positions against.
         const popover = context.fixture.debugElement
@@ -799,7 +801,7 @@ export default function (): void {
       // The menu and the filter are two separate overlays, so nothing structurally stops both being
       // open at once. Clicking the trigger is an outside click for the filter, which is what keeps
       // them from overlapping.
-      it('dismisses the filter when the menu is opened again', function () {
+      it('dismisses the filter when the menu is opened again', () => {
         openMenu();
         itemLabelled(commonStrings.keys.filterColumn).click();
         context.detectChanges();
@@ -840,7 +842,7 @@ export default function (): void {
       // This item stands in for the filter's own toggle, which announced all of this - see the
       // aria-expanded and aria-controls on .datagrid-filter-toggle. Without them the item reads as a
       // plain command, with no sign that it opens a dialog, which dialog, or that it is already open.
-      it('announces the filter action as opening the filter dialog', function () {
+      it('announces the filter action as opening the filter dialog', () => {
         openMenu();
         const filterItem = itemLabelled(commonStrings.keys.filterColumn);
 
@@ -859,7 +861,7 @@ export default function (): void {
       // template, and the menu is OnPush - so without being told, the item would be left announcing
       // itself as expanded over a filter that is gone. Closing through the service is that path: it is
       // what both of those gestures end up doing.
-      it('reports the filter closed again when it is dismissed from the outside', function () {
+      it('reports the filter closed again when it is dismissed from the outside', () => {
         const popover = context.fixture.debugElement
           .query(By.directive(ClrDatagridColumn))
           .injector.get(ClrPopoverService);
@@ -876,7 +878,7 @@ export default function (): void {
         expect(filterItem.getAttribute('aria-expanded')).toBe('false');
       });
 
-      it('marks the trigger and the action once the column is filtered', function () {
+      it('marks the trigger and the action once the column is filtered', () => {
         const filter: any = context.clarityDirective.columns.first.filter;
         filter.value = 'aaa';
         context.detectChanges();
@@ -890,7 +892,7 @@ export default function (): void {
       });
     });
 
-    describe('filter integration without a filter', function () {
+    describe('filter integration without a filter', () => {
       let context: TestContext<ClrDatagrid, NoFilterTest>;
       let element: HTMLElement;
 
@@ -901,16 +903,16 @@ export default function (): void {
         }
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, NoFilterTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, NoFilterTest);
         element = context.clarityElement;
       });
 
-      afterEach(function () {
+      afterEach(() => {
         closeMenu();
       });
 
-      it('omits the filter action when the column has no filter', function () {
+      it('omits the filter action when the column has no filter', () => {
         element.querySelector<HTMLButtonElement>(TOGGLE).click();
         context.detectChanges();
 
@@ -918,7 +920,7 @@ export default function (): void {
       });
     });
 
-    describe('clrDgKeepFilterInHeader', function () {
+    describe('clrDgKeepFilterInHeader', () => {
       let context: TestContext<ClrDatagrid, KeepFilterInHeaderTest>;
       let element: HTMLElement;
       let commonStrings: ClrCommonStringsService;
@@ -937,29 +939,29 @@ export default function (): void {
         }
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, KeepFilterInHeaderTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, KeepFilterInHeaderTest);
         element = context.clarityElement;
         commonStrings = new ClrCommonStringsService();
       });
 
-      afterEach(function () {
+      afterEach(() => {
         closeMenu();
       });
 
-      it('keeps the filter toggle in the header instead of moving it into the menu', function () {
+      it('keeps the filter toggle in the header instead of moving it into the menu', () => {
         expect(element.querySelector('.datagrid-header .datagrid-filter-toggle')).not.toBeNull();
       });
 
       // A column offers one way to reach its filter at a time, so the menu gives the filter action up
       // in exchange for the toggle staying in the header.
-      it('drops the filter action from the menu', function () {
+      it('drops the filter action from the menu', () => {
         openMenu();
 
         expect(menuItemLabels()).not.toContain(commonStrings.keys.filterColumn);
       });
 
-      it('offers the filter action in the menu once the input is turned off', function () {
+      it('offers the filter action in the menu once the input is turned off', () => {
         context.testComponent.keepInHeader = false;
         context.detectChanges();
 
@@ -968,14 +970,14 @@ export default function (): void {
         expect(menuItemLabels()).toContain(commonStrings.keys.filterColumn);
       });
 
-      it('moves the filter into the menu once the input is turned off', function () {
+      it('moves the filter into the menu once the input is turned off', () => {
         context.testComponent.keepInHeader = false;
         context.detectChanges();
 
         expect(element.querySelector('.datagrid-header .datagrid-filter-toggle')).toBeNull();
       });
 
-      it('moves the filter back into the header when the input is turned on again', function () {
+      it('moves the filter back into the header when the input is turned on again', () => {
         context.testComponent.keepInHeader = false;
         context.detectChanges();
         context.testComponent.keepInHeader = true;

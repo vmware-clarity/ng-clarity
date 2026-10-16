@@ -78,10 +78,15 @@ const persistedDatagridSettings = {
 };
 
 describe('DatagridPersistSettingsDirective', () => {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
   let localStorageService: PersistDatagridSettingsService;
   let columns: ColumnDefinition<any>[];
 
-  beforeEach(function (this: any) {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule, NoopAnimationsModule, DragDropModule, OverlayModule, DatagridHostComponent],
       declarations: [MockDatagridColumnToggleComponent, MockDatagridCellContainerComponent, MockIsRowSelectablePipe],
@@ -105,60 +110,60 @@ describe('DatagridPersistSettingsDirective', () => {
     });
     columns = [];
     columnDefsMock.forEach(val => columns.push(Object.assign({}, val)));
-    this.fixture = TestBed.createComponent(DatagridHostComponent);
+    testContext.fixture = TestBed.createComponent(DatagridHostComponent);
     localStorageService = TestBed.inject(appfxDatagridPersistSettingsToken);
-    this.datagridHostComponent = this.fixture.componentInstance;
+    testContext.datagridHostComponent = testContext.fixture.componentInstance;
   });
 
   describe('calls getUserDataSync method of datagrid persisted settings service', () => {
-    it('when column definitions are set', function (this: any) {
+    it('when column definitions are set', () => {
       (localStorageService.getUserDataSync as Spy).and.returnValue(null);
-      this.fixture.detectChanges(false);
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).not.toHaveBeenCalled();
-      this.datagridHostComponent.columnDefs = columns;
-      this.fixture.detectChanges(false);
+      testContext.datagridHostComponent.columnDefs = columns;
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).toHaveBeenCalled();
     });
 
-    it('when column page size are set', function (this: any) {
+    it('when column page size are set', () => {
       (localStorageService.getUserDataSync as Spy).and.returnValue(null);
-      this.fixture.detectChanges(false);
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).not.toHaveBeenCalled();
-      this.datagridHostComponent.pageSize = 4;
-      this.fixture.detectChanges(false);
+      testContext.datagridHostComponent.pageSize = 4;
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).toHaveBeenCalled();
     });
   });
 
-  it('apply persisted datagrid settings return from datagrid persisted settings service to the datagrid', function (this: any) {
+  it('apply persisted datagrid settings return from datagrid persisted settings service to the datagrid', () => {
     (localStorageService.getUserDataSync as Spy).and.returnValue(persistedDatagridSettings);
-    this.fixture.detectChanges(false);
+    testContext.fixture.detectChanges(false);
     expect(localStorageService.getUserDataSync).not.toHaveBeenCalled();
-    this.datagridHostComponent.columnDefs = columns;
-    this.datagridHostComponent.pageSize = 10;
-    this.fixture.detectChanges(false);
+    testContext.datagridHostComponent.columnDefs = columns;
+    testContext.datagridHostComponent.pageSize = 10;
+    testContext.fixture.detectChanges(false);
     expect(localStorageService.getUserDataSync).toHaveBeenCalled();
-    expect(this.datagridHostComponent.appfxDatagridComponent.pageSize).toEqual(15);
-    expect(this.datagridHostComponent.appfxDatagridComponent.columns[0].hidden).toEqual(true);
-    expect(this.datagridHostComponent.appfxDatagridComponent.columns[0].width).toEqual('337px');
-    expect(this.datagridHostComponent.appfxDatagridComponent.columns[0].defaultSortOrder).toBeUndefined();
-    expect(this.datagridHostComponent.appfxDatagridComponent.columns[1].hidden).toEqual(false);
-    expect(this.datagridHostComponent.appfxDatagridComponent.columns[1].width).toEqual('113px');
-    expect(this.datagridHostComponent.appfxDatagridComponent.columns[2].hidden).toEqual(false);
-    expect(this.datagridHostComponent.appfxDatagridComponent.columns[2].width).toEqual('120px');
-    expect(this.datagridHostComponent.appfxDatagridComponent.columns[2].defaultSortOrder).toEqual(1);
+    expect(testContext.datagridHostComponent.appfxDatagridComponent.pageSize).toEqual(15);
+    expect(testContext.datagridHostComponent.appfxDatagridComponent.columns[0].hidden).toEqual(true);
+    expect(testContext.datagridHostComponent.appfxDatagridComponent.columns[0].width).toEqual('337px');
+    expect(testContext.datagridHostComponent.appfxDatagridComponent.columns[0].defaultSortOrder).toBeUndefined();
+    expect(testContext.datagridHostComponent.appfxDatagridComponent.columns[1].hidden).toEqual(false);
+    expect(testContext.datagridHostComponent.appfxDatagridComponent.columns[1].width).toEqual('113px');
+    expect(testContext.datagridHostComponent.appfxDatagridComponent.columns[2].hidden).toEqual(false);
+    expect(testContext.datagridHostComponent.appfxDatagridComponent.columns[2].width).toEqual('120px');
+    expect(testContext.datagridHostComponent.appfxDatagridComponent.columns[2].defaultSortOrder).toEqual(1);
   });
 
   describe('calls setUserData method of datagrid persisted settings service', () => {
-    beforeEach(function (this: any) {
+    beforeEach(() => {
       (localStorageService.getUserDataSync as Spy).and.returnValue(null);
-      this.datagridHostComponent.columnDefs = columns;
-      this.datagridHostComponent.pageSize = 10;
-      this.fixture.detectChanges(false);
+      testContext.datagridHostComponent.columnDefs = columns;
+      testContext.datagridHostComponent.pageSize = 10;
+      testContext.fixture.detectChanges(false);
     });
 
-    it('when page size is changes ', function (this: any) {
-      expect(this.datagridHostComponent.appfxDatagridComponent.pageSize).toEqual(10);
+    it('when page size is changes ', () => {
+      expect(testContext.datagridHostComponent.appfxDatagridComponent.pageSize).toEqual(10);
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).and.callFake((key: string, data: PersistedDatagridState) => {
         persistedData = data;
@@ -170,19 +175,19 @@ describe('DatagridPersistSettingsDirective', () => {
           size: 20,
         },
       };
-      this.datagridHostComponent.appfxDatagridComponent.refreshGridData.emit(datagridState);
+      testContext.datagridHostComponent.appfxDatagridComponent.refreshGridData.emit(datagridState);
 
       expect(persistedData).toBeTruthy();
       expect(persistedData.pageSize).toEqual(20);
     });
 
-    it('when column sort order is changes ', function (this: any) {
-      expect(this.datagridHostComponent.appfxDatagridComponent.pageSize).toEqual(10);
+    it('when column sort order is changes ', () => {
+      expect(testContext.datagridHostComponent.appfxDatagridComponent.pageSize).toEqual(10);
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).and.callFake((key: string, data: PersistedDatagridState) => {
         persistedData = data;
       });
-      this.datagridHostComponent.appfxDatagridComponent.columnSortOrderChange.emit({
+      testContext.datagridHostComponent.appfxDatagridComponent.columnSortOrderChange.emit({
         sortOrder: ClrDatagridSortOrder.DESC,
         column: columns[2],
       });
@@ -191,12 +196,12 @@ describe('DatagridPersistSettingsDirective', () => {
       expect(persistedData.sorting.column.uid).toEqual(columns[2].displayName);
     });
 
-    it('when column visible state is changes ', fakeAsync(function (this: any) {
+    it('when column visible state is changes ', fakeAsync(() => {
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).and.callFake((key: string, data: PersistedDatagridState) => {
         persistedData = data;
       });
-      this.datagridHostComponent.appfxDatagridComponent.columnHiddenStateChange.emit({
+      testContext.datagridHostComponent.appfxDatagridComponent.columnHiddenStateChange.emit({
         hidden: true,
         column: columns[1],
       });
@@ -211,13 +216,13 @@ describe('DatagridPersistSettingsDirective', () => {
       expect(persistedData.columns[2].uid).toEqual(columns[2].displayName);
     }));
 
-    it('when column is resized state is changes ', fakeAsync(function (this: any) {
+    it('when column is resized state is changes ', fakeAsync(() => {
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).and.callFake((key: string, data: PersistedDatagridState) => {
         persistedData = data;
       });
 
-      this.datagridHostComponent.appfxDatagridComponent.columnResize.emit({
+      testContext.datagridHostComponent.appfxDatagridComponent.columnResize.emit({
         columnSize: 101,
         column: columns[0],
       });
@@ -229,13 +234,13 @@ describe('DatagridPersistSettingsDirective', () => {
       expect(persistedData.columns[0].width).toEqual(101);
     }));
 
-    it('when column order is changes ', fakeAsync(function (this: any) {
+    it('when column order is changes ', fakeAsync(() => {
       let persistedData: PersistedDatagridState = {};
       (localStorageService.setUserData as Spy).and.callFake((key: string, data: PersistedDatagridState) => {
         persistedData = data;
       });
 
-      this.datagridHostComponent.appfxDatagridComponent.columnOrderChange.emit({
+      testContext.datagridHostComponent.appfxDatagridComponent.columnOrderChange.emit({
         previousIndex: 1,
         currentIndex: 2,
         column: columns,
@@ -249,12 +254,12 @@ describe('DatagridPersistSettingsDirective', () => {
   });
 
   describe('does not calls setUserData method of datagrid persisted settings service', () => {
-    it('when page size is changes and persistPageSize input of the directive is false ', function (this: any) {
+    it('when page size is changes and persistPageSize input of the directive is false ', () => {
       (localStorageService.getUserDataSync as Spy).and.returnValue(null);
-      this.datagridHostComponent.columnDefs = columns;
-      this.datagridHostComponent.pageSize = 10;
-      this.datagridHostComponent.persistPageSize = false;
-      this.fixture.detectChanges(false);
+      testContext.datagridHostComponent.columnDefs = columns;
+      testContext.datagridHostComponent.pageSize = 10;
+      testContext.datagridHostComponent.persistPageSize = false;
+      testContext.fixture.detectChanges(false);
       const datagridState = {
         page: {
           from: 1,
@@ -262,17 +267,17 @@ describe('DatagridPersistSettingsDirective', () => {
           size: 20,
         },
       };
-      this.datagridHostComponent.appfxDatagridComponent.refreshGridData.emit(datagridState);
+      testContext.datagridHostComponent.appfxDatagridComponent.refreshGridData.emit(datagridState);
 
       expect(localStorageService.setUserData).not.toHaveBeenCalled();
     });
 
-    it('when column sort order is changes and persistSortOrder input of the directive is false', function (this: any) {
+    it('when column sort order is changes and persistSortOrder input of the directive is false', () => {
       (localStorageService.getUserDataSync as Spy).and.returnValue(null);
-      this.datagridHostComponent.columnDefs = columns;
-      this.datagridHostComponent.pageSize = 10;
-      this.datagridHostComponent.persistSortOrder = false;
-      this.datagridHostComponent.appfxDatagridComponent.columnSortOrderChange.emit({
+      testContext.datagridHostComponent.columnDefs = columns;
+      testContext.datagridHostComponent.pageSize = 10;
+      testContext.datagridHostComponent.persistSortOrder = false;
+      testContext.datagridHostComponent.appfxDatagridComponent.columnSortOrderChange.emit({
         sortOrder: ClrDatagridSortOrder.DESC,
         column: columns[2],
       });
@@ -281,21 +286,21 @@ describe('DatagridPersistSettingsDirective', () => {
   });
 
   describe('does not apply persisted datagrid columns settings', () => {
-    it('when the persisted columns are more than datagrid columns', function (this: any) {
+    it('when the persisted columns are more than datagrid columns', () => {
       (localStorageService.getUserDataSync as Spy).and.returnValue(persistedDatagridSettings);
-      this.fixture.detectChanges(false);
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).not.toHaveBeenCalled();
       const gridColumns = columns.slice(1);
-      this.datagridHostComponent.columnDefs = gridColumns;
-      this.datagridHostComponent.pageSize = 10;
-      this.fixture.detectChanges(false);
+      testContext.datagridHostComponent.columnDefs = gridColumns;
+      testContext.datagridHostComponent.pageSize = 10;
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).toHaveBeenCalled();
-      expect(this.datagridHostComponent.appfxDatagridComponent.columns).toEqual(gridColumns);
+      expect(testContext.datagridHostComponent.appfxDatagridComponent.columns).toEqual(gridColumns);
     });
 
-    it('when the persisted columns are less than datagrid columns', function (this: any) {
+    it('when the persisted columns are less than datagrid columns', () => {
       (localStorageService.getUserDataSync as Spy).and.returnValue(persistedDatagridSettings);
-      this.fixture.detectChanges(false);
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).not.toHaveBeenCalled();
       const gridColumns = [
         ...columns,
@@ -305,33 +310,33 @@ describe('DatagridPersistSettingsDirective', () => {
           uid: 'version',
         },
       ];
-      this.datagridHostComponent.columnDefs = gridColumns;
-      this.datagridHostComponent.pageSize = 10;
-      this.fixture.detectChanges(false);
+      testContext.datagridHostComponent.columnDefs = gridColumns;
+      testContext.datagridHostComponent.pageSize = 10;
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).toHaveBeenCalled();
-      expect(this.datagridHostComponent.appfxDatagridComponent.columns).toEqual(gridColumns);
+      expect(testContext.datagridHostComponent.appfxDatagridComponent.columns).toEqual(gridColumns);
     });
 
-    it('when the column is not persisted', function (this: any) {
+    it('when the column is not persisted', () => {
       (localStorageService.getUserDataSync as Spy).and.returnValue(persistedDatagridSettings);
-      this.fixture.detectChanges(false);
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).not.toHaveBeenCalled();
       const gridColumns = [...columns];
       gridColumns[0].uid = 'name1';
-      this.datagridHostComponent.columnDefs = gridColumns;
-      this.datagridHostComponent.pageSize = 10;
-      this.fixture.detectChanges(false);
+      testContext.datagridHostComponent.columnDefs = gridColumns;
+      testContext.datagridHostComponent.pageSize = 10;
+      testContext.fixture.detectChanges(false);
       expect(localStorageService.getUserDataSync).toHaveBeenCalled();
-      expect(this.datagridHostComponent.appfxDatagridComponent.columns).toEqual(gridColumns);
+      expect(testContext.datagridHostComponent.appfxDatagridComponent.columns).toEqual(gridColumns);
     });
   });
 
-  afterEach(function (this: any) {
-    this.fixture.destroy();
-    this.datagridHostComponent.columnsDefs = null;
-    this.datagridHostComponent.data = null;
-    this.datagridHostComponent = null;
-    this.directive = null;
+  afterEach(() => {
+    testContext.fixture.destroy();
+    testContext.datagridHostComponent.columnsDefs = null;
+    testContext.datagridHostComponent.data = null;
+    testContext.datagridHostComponent = null;
+    testContext.directive = null;
   });
 });
 

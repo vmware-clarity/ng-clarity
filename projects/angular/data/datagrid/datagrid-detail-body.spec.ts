@@ -6,19 +6,21 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridDetailBody } from './datagrid-detail-body';
 
 const content = 'Detail Pane';
 
 export default function (): void {
-  describe('ClrDatagridDetailBody component', function () {
-    describe('View', function () {
+  describe('ClrDatagridDetailBody component', () => {
+    const helpers = createTestHelpers();
+
+    describe('View', () => {
       let context: TestContext<ClrDatagridDetailBody, FullTest>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagridDetailBody, FullTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridDetailBody, FullTest);
         context.detectChanges();
       });
 

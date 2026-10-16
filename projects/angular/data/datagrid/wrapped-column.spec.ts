@@ -25,23 +25,28 @@ interface TestContext {
 
 export default function (): void {
   describe('WrappedColumn', () => {
-    beforeEach(function (this: TestContext) {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
+    });
+
+    beforeEach(() => {
       TestBed.configureTestingModule({ declarations: [WrappedColumn, WrappedColumnTest] });
-      this.fixture = TestBed.createComponent(WrappedColumnTest);
-      this.wrapper = this.fixture.componentInstance.wrapper;
-      this.fixture.detectChanges();
+      testContext.fixture = TestBed.createComponent(WrappedColumnTest);
+      testContext.wrapper = testContext.fixture.componentInstance.wrapper;
+      testContext.fixture.detectChanges();
     });
 
-    it('should have a columnView', function (this: TestContext) {
-      expect(this.wrapper.columnView).toBeDefined();
+    it('should have a columnView', () => {
+      expect(testContext.wrapper.columnView).toBeDefined();
     });
 
-    it('should have a templateRef to the portal', function (this: TestContext) {
-      expect(this.wrapper.templateRef).toBeDefined();
+    it('should have a templateRef to the portal', () => {
+      expect(testContext.wrapper.templateRef).toBeDefined();
     });
 
-    it('projects content into the template', function (this: TestContext) {
-      expect(this.wrapper.columnView.rootNodes[0].textContent.trim()).toBe('Hello World!');
+    it('projects content into the template', () => {
+      expect(testContext.wrapper.columnView.rootNodes[0].textContent.trim()).toBe('Hello World!');
     });
   });
 }

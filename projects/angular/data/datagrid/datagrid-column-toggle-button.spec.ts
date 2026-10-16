@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrDatagridColumnToggleButton } from './datagrid-column-toggle-button';
@@ -15,7 +15,9 @@ import { ColumnsService } from './providers/columns.service';
 import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/columns.service.mock';
 
 export default function (): void {
-  describe('Datagrid Column Toggle Button component', function () {
+  describe('Datagrid Column Toggle Button component', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrDatagridColumnToggleButton, ButtonTest>;
     let columnsService: MockColumnsService;
     let toggleButton: ClrDatagridColumnToggleButton;
@@ -24,8 +26,8 @@ export default function (): void {
       return columnsService.columns.filter(column => column.value.titleTemplateRef);
     };
 
-    beforeEach(function () {
-      context = this.create(
+    beforeEach(() => {
+      context = helpers.create(
         ClrDatagridColumnToggleButton,
         ButtonTest,
         [MOCK_COLUMN_SERVICE_PROVIDER],
@@ -36,8 +38,8 @@ export default function (): void {
       columnsService.mockColumns(3);
     });
 
-    describe('Typescript API', function () {
-      it('checks hideable columns are all hidden', function () {
+    describe('Typescript API', () => {
+      it('checks hideable columns are all hidden', () => {
         columnsService.mockPartialHideable(0, 1);
         expect(toggleButton.allHideablesVisible).toBeTruthy();
         columnsService.mockHideableAt(1, true);
@@ -46,7 +48,7 @@ export default function (): void {
         expect(toggleButton.allHideablesVisible).toBeTruthy();
       });
 
-      it('makes all hideable columns visible when selectAll is clicked', function () {
+      it('makes all hideable columns visible when selectAll is clicked', () => {
         columnsService.mockPartialHideable(0, 1, true);
         expect(hideableColumns()).toEqual([columnsService.columns[0], columnsService.columns[1]]);
         expect(toggleButton.allHideablesVisible).toBeFalsy();
@@ -56,8 +58,8 @@ export default function (): void {
       });
     });
 
-    describe('View', function () {
-      it('makes button disabled when all hideable columns are visible', function () {
+    describe('View', () => {
+      it('makes button disabled when all hideable columns are visible', () => {
         columnsService.mockPartialHideable(0, 1);
         expect(toggleButton.allHideablesVisible).toBeTruthy();
         expect(context.clarityElement.querySelector('button.btn-link').disabled).toBeTruthy();

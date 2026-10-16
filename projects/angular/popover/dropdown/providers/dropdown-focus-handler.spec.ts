@@ -48,239 +48,244 @@ interface TestContext {
 }
 
 export default function (): void {
-  describe('DropdownFocusHandler', function () {
-    describe('basic dropdown', function () {
-      beforeEach(function (this: TestContext) {
+  describe('DropdownFocusHandler', () => {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
+    });
+
+    describe('basic dropdown', () => {
+      beforeEach(() => {
         TestBed.configureTestingModule({ declarations: [SimpleHost] });
-        this.fixture = TestBed.createComponent(SimpleHost);
-        this.popoverService = this.fixture.debugElement.injector.get(ClrPopoverService);
-        this.focusService = this.fixture.debugElement.injector.get(FocusService);
-        this.focusHandler = this.fixture.debugElement.injector.get(DropdownFocusHandler, null);
-        this.trigger = document.createElement('button');
-        this.container = document.createElement('div');
-        this.outside = document.createElement('button');
+        testContext.fixture = TestBed.createComponent(SimpleHost);
+        testContext.popoverService = testContext.fixture.debugElement.injector.get(ClrPopoverService);
+        testContext.focusService = testContext.fixture.debugElement.injector.get(FocusService);
+        testContext.focusHandler = testContext.fixture.debugElement.injector.get(DropdownFocusHandler, null);
+        testContext.trigger = document.createElement('button');
+        testContext.container = document.createElement('div');
+        testContext.outside = document.createElement('button');
         // We need the elements in the DOM to be able to focus them
-        document.body.append(this.trigger, this.container, this.outside);
-        this.children = new Array(3).fill(0).map((_, i) => new MockFocusableItem(`${i}`));
+        document.body.append(testContext.trigger, testContext.container, testContext.outside);
+        testContext.children = new Array(3).fill(0).map((_, i) => new MockFocusableItem(`${i}`));
       });
 
-      afterEach(function (this: TestContext) {
-        document.body.removeChild(this.trigger);
-        document.body.removeChild(this.container);
-        document.body.removeChild(this.outside);
+      afterEach(() => {
+        document.body.removeChild(testContext.trigger);
+        document.body.removeChild(testContext.container);
+        document.body.removeChild(testContext.outside);
       });
 
-      it('declares a DropdownFocusHandler provider', function (this: TestContext) {
-        expect(this.focusHandler).not.toBeNull();
+      it('declares a DropdownFocusHandler provider', () => {
+        expect(testContext.focusHandler).not.toBeNull();
       });
 
-      it('aliases the DropdownFocusHandler as a FocusableItem', function (this: TestContext) {
-        expect(this.fixture.debugElement.injector.get(FocusableItem, null)).toBe(this.focusHandler);
+      it('aliases the DropdownFocusHandler as a FocusableItem', () => {
+        expect(testContext.fixture.debugElement.injector.get(FocusableItem, null)).toBe(testContext.focusHandler);
       });
 
-      it('toggles open when arrow up or down on the trigger', async function (this: TestContext) {
-        expect(this.popoverService.open).toBeFalsy();
-        this.focusHandler.trigger = this.trigger;
+      it('toggles open when arrow up or down on the trigger', async () => {
+        expect(testContext.popoverService.open).toBeFalsy();
+        testContext.focusHandler.trigger = testContext.trigger;
 
-        this.focusHandler.trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'arrowup' }));
+        testContext.focusHandler.trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'arrowup' }));
         await delay();
-        expect(this.popoverService.open).toBeTruthy();
+        expect(testContext.popoverService.open).toBeTruthy();
 
         //once open, the up/down arrow keys control the focus on menu items, so we close again for the next test
-        this.popoverService.open = false;
+        testContext.popoverService.open = false;
         await delay();
-        expect(this.popoverService.open).toBeFalsy();
+        expect(testContext.popoverService.open).toBeFalsy();
 
-        this.focusHandler.trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'arrowdown' }));
+        testContext.focusHandler.trigger.dispatchEvent(new KeyboardEvent('keydown', { key: 'arrowdown' }));
         await delay();
-        expect(this.popoverService.open).toBeTruthy();
+        expect(testContext.popoverService.open).toBeTruthy();
       });
 
-      it('proxies focus() and blur() to the trigger', function (this: TestContext) {
-        this.focusHandler.trigger = this.trigger;
-        expectActiveElementNotToBe(this.trigger);
-        this.focusHandler.focus();
-        expectActiveElementToBe(this.trigger);
-        this.focusHandler.blur();
-        expectActiveElementNotToBe(this.trigger);
+      it('proxies focus() and blur() to the trigger', () => {
+        testContext.focusHandler.trigger = testContext.trigger;
+        expectActiveElementNotToBe(testContext.trigger);
+        testContext.focusHandler.focus();
+        expectActiveElementToBe(testContext.trigger);
+        testContext.focusHandler.blur();
+        expectActiveElementNotToBe(testContext.trigger);
       });
 
-      it('clicks on the trigger when activated', function (this: TestContext) {
+      it('clicks on the trigger when activated', () => {
         let clicks = 0;
-        this.trigger.addEventListener('click', () => clicks++);
-        this.focusHandler.trigger = this.trigger;
+        testContext.trigger.addEventListener('click', () => clicks++);
+        testContext.focusHandler.trigger = testContext.trigger;
         expect(clicks).toBe(0);
-        this.focusHandler.activate();
+        testContext.focusHandler.activate();
         expect(clicks).toBe(1);
-        this.focusHandler.activate();
+        testContext.focusHandler.activate();
         expect(clicks).toBe(2);
       });
 
-      it('registers the container to the FocusService', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'registerContainer');
-        this.focusHandler.container = this.container;
-        expect(spy).toHaveBeenCalledWith(this.container);
+      it('registers the container to the FocusService', () => {
+        const spy = spyOn(testContext.focusService, 'registerContainer');
+        testContext.focusHandler.container = testContext.container;
+        expect(spy).toHaveBeenCalledWith(testContext.container);
       });
 
-      it('does not prevent moving focus to a different part of the page', async function (this: TestContext) {
-        this.focusHandler.trigger = this.trigger;
-        this.focusHandler.container = this.container;
-        this.popoverService.open = true;
+      it('does not prevent moving focus to a different part of the page', async () => {
+        testContext.focusHandler.trigger = testContext.trigger;
+        testContext.focusHandler.container = testContext.container;
+        testContext.popoverService.open = true;
         await delay();
-        this.outside.focus();
-        expectActiveElementToBe(this.outside);
+        testContext.outside.focus();
+        expectActiveElementToBe(testContext.outside);
       });
 
-      it('links received children vertically', function (this: TestContext) {
+      it('links received children vertically', () => {
         const spy = spyOn(Linkers, 'linkVertical');
-        this.focusHandler.addChildren(this.children);
-        expect(spy).toHaveBeenCalledWith(this.children);
+        testContext.focusHandler.addChildren(testContext.children);
+        expect(spy).toHaveBeenCalledWith(testContext.children);
       });
 
-      it('points down to the first child', function (this: TestContext) {
+      it('points down to the first child', () => {
         let down: FocusableItem;
-        this.focusHandler.down.subscribe(child => (down = child));
-        this.focusHandler.addChildren(this.children);
-        expect(down).toBe(this.children[0]);
+        testContext.focusHandler.down.subscribe(child => (down = child));
+        testContext.focusHandler.addChildren(testContext.children);
+        expect(down).toBe(testContext.children[0]);
       });
 
-      it('points up to the last child', function (this: TestContext) {
+      it('points up to the last child', () => {
         let up: FocusableItem;
-        this.focusHandler.up.subscribe(child => (up = child));
-        this.focusHandler.addChildren(this.children);
-        expect(up).toBe(this.children[this.children.length - 1]);
+        testContext.focusHandler.up.subscribe(child => (up = child));
+        testContext.focusHandler.addChildren(testContext.children);
+        expect(up).toBe(testContext.children[testContext.children.length - 1]);
       });
 
-      it('does not point left or right', function (this: TestContext) {
-        this.focusHandler.addChildren(this.children);
-        expect((this.focusHandler as FocusableItem).left).toBeUndefined();
-        expect((this.focusHandler as FocusableItem).right).toBeUndefined();
+      it('does not point left or right', () => {
+        testContext.focusHandler.addChildren(testContext.children);
+        expect((testContext.focusHandler as FocusableItem).left).toBeUndefined();
+        expect((testContext.focusHandler as FocusableItem).right).toBeUndefined();
       });
 
-      it('points correctly even if children have been added early', function (this: TestContext) {
+      it('points correctly even if children have been added early', () => {
         let down: FocusableItem;
-        this.focusHandler.addChildren(this.children);
-        this.focusHandler.down.subscribe(child => (down = child));
-        expect(down).toBe(this.children[0]);
+        testContext.focusHandler.addChildren(testContext.children);
+        testContext.focusHandler.down.subscribe(child => (down = child));
+        expect(down).toBe(testContext.children[0]);
       });
 
-      it('properly resets children', function (this: TestContext) {
-        this.focusHandler.addChildren(this.children);
-        this.focusHandler.resetChildren();
-        this.focusHandler.down.subscribe(() => fail('Expected no pointer down.'));
-        this.focusHandler.up.subscribe(() => fail('Expected no pointer up.'));
+      it('properly resets children', () => {
+        testContext.focusHandler.addChildren(testContext.children);
+        testContext.focusHandler.resetChildren();
+        testContext.focusHandler.down.subscribe(() => fail('Expected no pointer down.'));
+        testContext.focusHandler.up.subscribe(() => fail('Expected no pointer up.'));
       });
 
-      it('opens the dropdown when trying to go down or up', function (this: TestContext) {
-        expect(this.popoverService.open).toBeFalsy();
-        this.focusHandler.down.subscribe(() => null);
-        expect(this.popoverService.open).toBeTruthy();
-        this.popoverService.open = false;
-        this.focusHandler.up.subscribe(() => null);
-        expect(this.popoverService.open).toBeTruthy();
+      it('opens the dropdown when trying to go down or up', () => {
+        expect(testContext.popoverService.open).toBeFalsy();
+        testContext.focusHandler.down.subscribe(() => null);
+        expect(testContext.popoverService.open).toBeTruthy();
+        testContext.popoverService.open = false;
+        testContext.focusHandler.up.subscribe(() => null);
+        expect(testContext.popoverService.open).toBeTruthy();
       });
 
-      it('moves to the first child when opened with a click', async function (this: TestContext) {
-        this.focusHandler.addChildren(this.children);
-        const moveTo = spyOn(this.focusService, 'moveTo');
-        const move = spyOn(this.focusService, 'move');
-        this.popoverService.toggleWithEvent({});
+      it('moves to the first child when opened with a click', async () => {
+        testContext.focusHandler.addChildren(testContext.children);
+        const moveTo = spyOn(testContext.focusService, 'moveTo');
+        const move = spyOn(testContext.focusService, 'move');
+        testContext.popoverService.toggleWithEvent({});
         await delay();
 
         // First we move to the clicked item, which is the trigger,
-        expect(moveTo).toHaveBeenCalledWith(this.focusHandler);
+        expect(moveTo).toHaveBeenCalledWith(testContext.focusHandler);
         // then we move down to the first item,
         expect(move).toHaveBeenCalledWith(ArrowKeyDirection.DOWN);
         // but maybe that's too detailed for this unit test? It's just the easiest way to test it right now.
       });
     });
 
-    describe('nested dropdown', function () {
-      beforeEach(function (this: TestContext) {
+    describe('nested dropdown', () => {
+      beforeEach(() => {
         TestBed.configureTestingModule({ declarations: [SimpleHost, NestedHost] });
-        this.fixture = TestBed.createComponent(NestedHost);
-        const nestedInjector = this.fixture.debugElement.query(By.directive(SimpleHost)).injector;
-        this.popoverService = nestedInjector.get(ClrPopoverService);
-        this.focusService = nestedInjector.get(FocusService);
-        this.focusHandler = nestedInjector.get(DropdownFocusHandler, null);
-        this.trigger = document.createElement('button');
-        this.container = document.createElement('div');
+        testContext.fixture = TestBed.createComponent(NestedHost);
+        const nestedInjector = testContext.fixture.debugElement.query(By.directive(SimpleHost)).injector;
+        testContext.popoverService = nestedInjector.get(ClrPopoverService);
+        testContext.focusService = nestedInjector.get(FocusService);
+        testContext.focusHandler = nestedInjector.get(DropdownFocusHandler, null);
+        testContext.trigger = document.createElement('button');
+        testContext.container = document.createElement('div');
         // We need the elements in the DOM to be able to focus them
-        document.body.append(this.trigger, this.container);
-        this.children = new Array(3).fill(0).map((_, i) => new MockFocusableItem(`${i}`));
+        document.body.append(testContext.trigger, testContext.container);
+        testContext.children = new Array(3).fill(0).map((_, i) => new MockFocusableItem(`${i}`));
       });
 
-      afterEach(function (this: TestContext) {
-        document.body.removeChild(this.trigger);
-        document.body.removeChild(this.container);
+      afterEach(() => {
+        document.body.removeChild(testContext.trigger);
+        document.body.removeChild(testContext.container);
       });
 
-      it('calls native elements focus() and blur when focused and blurred', function (this: TestContext) {
-        this.focusHandler.trigger = this.trigger;
-        this.focusHandler.focus();
-        expectActiveElementToBe(this.trigger);
-        this.focusHandler.blur();
-        expectActiveElementNotToBe(this.trigger);
+      it('calls native elements focus() and blur when focused and blurred', () => {
+        testContext.focusHandler.trigger = testContext.trigger;
+        testContext.focusHandler.focus();
+        expectActiveElementToBe(testContext.trigger);
+        testContext.focusHandler.blur();
+        expectActiveElementNotToBe(testContext.trigger);
       });
 
-      it('does not register the container to the FocusService', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'registerContainer');
-        this.focusHandler.container = this.container;
+      it('does not register the container to the FocusService', () => {
+        const spy = spyOn(testContext.focusService, 'registerContainer');
+        testContext.focusHandler.container = testContext.container;
         expect(spy).toHaveBeenCalled();
       });
 
-      it('does not focus on the container when the dropdown becomes open', async function (this: TestContext) {
-        this.focusHandler.container = this.container;
-        this.popoverService.open = true;
+      it('does not focus on the container when the dropdown becomes open', async () => {
+        testContext.focusHandler.container = testContext.container;
+        testContext.popoverService.open = true;
         // This specific focusing action is asynchronous so we have to tick
         await delay();
-        expectActiveElementNotToBe(this.container);
+        expectActiveElementNotToBe(testContext.container);
       });
-      it('does not focus on the trigger when the dropdown becomes closed', function (this: TestContext) {
-        this.focusHandler.trigger = this.trigger;
-        this.focusHandler.container = this.container;
-        this.popoverService.open = true;
-        this.popoverService.open = false;
-        expectActiveElementNotToBe(this.trigger);
+      it('does not focus on the trigger when the dropdown becomes closed', () => {
+        testContext.focusHandler.trigger = testContext.trigger;
+        testContext.focusHandler.container = testContext.container;
+        testContext.popoverService.open = true;
+        testContext.popoverService.open = false;
+        expectActiveElementNotToBe(testContext.trigger);
       });
 
-      it('points right to the first child', function (this: TestContext) {
+      it('points right to the first child', () => {
         let right: FocusableItem;
-        this.focusHandler.right.subscribe(child => (right = child));
-        this.focusHandler.addChildren(this.children);
-        expect(right).toBe(this.children[0]);
+        testContext.focusHandler.right.subscribe(child => (right = child));
+        testContext.focusHandler.addChildren(testContext.children);
+        expect(right).toBe(testContext.children[0]);
       });
 
-      it('does not point up, down or left', function (this: TestContext) {
-        this.focusHandler.addChildren(this.children);
-        expect((this.focusHandler as FocusableItem).up).toBeUndefined();
-        expect((this.focusHandler as FocusableItem).down).toBeUndefined();
-        expect((this.focusHandler as FocusableItem).left).toBeUndefined();
+      it('does not point up, down or left', () => {
+        testContext.focusHandler.addChildren(testContext.children);
+        expect((testContext.focusHandler as FocusableItem).up).toBeUndefined();
+        expect((testContext.focusHandler as FocusableItem).down).toBeUndefined();
+        expect((testContext.focusHandler as FocusableItem).left).toBeUndefined();
       });
 
-      it('links received children back to the trigger', function (this: TestContext) {
+      it('links received children back to the trigger', () => {
         const spy = spyOn(Linkers, 'linkParent');
-        this.focusHandler.addChildren(this.children);
-        expect(spy).toHaveBeenCalledWith(this.children, jasmine.any(Observable), ArrowKeyDirection.LEFT);
+        testContext.focusHandler.addChildren(testContext.children);
+        expect(spy).toHaveBeenCalledWith(testContext.children, jasmine.any(Observable), ArrowKeyDirection.LEFT);
       });
 
-      it('closes the dropdown when trying to go back to the trigger', function (this: TestContext) {
-        this.focusHandler.addChildren(this.children);
-        this.popoverService.open = true;
-        const back = this.children[0].left;
+      it('closes the dropdown when trying to go back to the trigger', () => {
+        testContext.focusHandler.addChildren(testContext.children);
+        testContext.popoverService.open = true;
+        const back = testContext.children[0].left;
         expect(isObservable(back)).toBeTruthy();
         (back as Observable<FocusableItem>).subscribe(() => null);
-        expect(this.popoverService.open).toBeFalsy();
+        expect(testContext.popoverService.open).toBeFalsy();
       });
 
-      it('moves to the first child when opened with a click', async function (this: TestContext) {
-        this.focusHandler.addChildren(this.children);
-        const moveTo = spyOn(this.focusService, 'moveTo');
-        const move = spyOn(this.focusService, 'move');
-        this.popoverService.toggleWithEvent({});
+      it('moves to the first child when opened with a click', async () => {
+        testContext.focusHandler.addChildren(testContext.children);
+        const moveTo = spyOn(testContext.focusService, 'moveTo');
+        const move = spyOn(testContext.focusService, 'move');
+        testContext.popoverService.toggleWithEvent({});
         await delay();
 
-        expect(moveTo).toHaveBeenCalledWith(this.focusHandler);
+        expect(moveTo).toHaveBeenCalledWith(testContext.focusHandler);
         expect(move).toHaveBeenCalledWith(ArrowKeyDirection.RIGHT);
       });
     });

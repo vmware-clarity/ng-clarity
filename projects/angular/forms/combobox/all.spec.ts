@@ -12,8 +12,6 @@
  * over the place because we load them asynchronously.
  */
 
-import { addHelpers } from '@clr/angular/testing';
-
 import ComboboxContainerSpecs from './combobox-container.spec';
 import ComboboxOptionIntegrationSpecs from './combobox-with-option.integration.spec';
 import ComboboxOptionsMenuIntegrationSpecs from './combobox-with-options-menu.integration.spec';
@@ -27,9 +25,7 @@ import ComboboxContainerProviderSpecs from './providers/combobox-container.servi
 import comboboxFocusHandlerServiceSpec from './providers/combobox-focus-handler.service.spec';
 import OptionSelectionProviderSpecs from './providers/option-selection.service.spec';
 
-describe('Combobox component', function () {
-  addHelpers();
-
+describe('Combobox component', () => {
   describe('Directives', () => {
     (ComboboxContainerSpecs(), ComboboxSpecs());
     OptionsSpecs();

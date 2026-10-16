@@ -14,25 +14,30 @@ interface ThisTest {
   propertyViewService: PropertyViewService;
 }
 
-describe('PropertyViewService', function () {
-  beforeEach(function (this: ThisTest) {
+describe('PropertyViewService', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       providers: [PropertyViewService],
     });
 
-    this.propertyViewService = TestBed.inject(PropertyViewService);
+    testContext.propertyViewService = TestBed.inject(PropertyViewService);
   });
 
   describe('createPropertyViewBuilder() method', () => {
-    it('should return a PropertyViewBuilder', function (this: ThisTest) {
-      const propertyViewBuilder = this.propertyViewService.createPropertyViewBuilder();
+    it('should return a PropertyViewBuilder', () => {
+      const propertyViewBuilder = testContext.propertyViewService.createPropertyViewBuilder();
 
       expect(propertyViewBuilder).toEqual(jasmine.any(PropertyViewBuilder));
     });
 
-    it('should return a new PropertyViewBuilder instance on each invocation', function (this: ThisTest) {
-      const propertyViewBuilder1 = this.propertyViewService.createPropertyViewBuilder();
-      const propertyViewBuilder2 = this.propertyViewService.createPropertyViewBuilder();
+    it('should return a new PropertyViewBuilder instance on each invocation', () => {
+      const propertyViewBuilder1 = testContext.propertyViewService.createPropertyViewBuilder();
+      const propertyViewBuilder2 = testContext.propertyViewService.createPropertyViewBuilder();
 
       expect(propertyViewBuilder1).not.toBe(propertyViewBuilder2);
     });

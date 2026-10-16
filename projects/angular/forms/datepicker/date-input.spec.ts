@@ -17,7 +17,13 @@ import {
   NgControlService,
 } from '@clr/angular/forms/common';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { delay, expectActiveElementNotToBe, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import {
+  createTestHelpers,
+  delay,
+  expectActiveElementNotToBe,
+  expectActiveElementToBe,
+  TestContext,
+} from '@clr/angular/testing';
 
 import { ClrFormsModule } from '../forms.module';
 import { ClrDateContainer } from './date-container';
@@ -34,6 +40,8 @@ import { ViewManagerService } from './providers/view-manager.service';
 
 export default function () {
   describe('Date Input Component', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrDateInput, TestComponent>;
     let enabledService: MockDatepickerEnabledService;
     let dateIOService: DateIOService;
@@ -58,14 +66,14 @@ export default function () {
     ];
 
     describe('Basics', () => {
-      beforeEach(function () {
+      beforeEach(() => {
         TestBed.overrideComponent(ClrDateContainer, {
           set: {
             providers: [{ provide: DatepickerEnabledService, useClass: MockDatepickerEnabledService }],
           },
         });
 
-        context = this.create(ClrDateInput, TestComponent, DATEPICKER_PROVIDERS);
+        context = helpers.create(ClrDateInput, TestComponent, DATEPICKER_PROVIDERS);
         enabledService = context.fixture.debugElement
           .query(By.directive(ClrDateContainer))
           .injector.get(DatepickerEnabledService) as MockDatepickerEnabledService;
@@ -342,7 +350,7 @@ export default function () {
       let dateContainerDebugElement: DebugElement;
       let dateInputDebugElement: DebugElement;
 
-      beforeEach(function () {
+      beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [FormsModule, ClrFormsModule],
           providers: [NgControlService],
@@ -428,7 +436,8 @@ export default function () {
     });
 
     describe('Mobile Datepicker with Reactive Forms', () => {
-      beforeEach(function () {
+      let context: TestContext<ClrDateInput, TestComponentWithReactiveForms>;
+      beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [ReactiveFormsModule, ClrFormsModule],
           declarations: [TestComponentWithReactiveForms],
@@ -441,7 +450,11 @@ export default function () {
           },
         });
 
-        context = this.create(ClrDateInput, TestComponentWithReactiveForms, DATEPICKER_PROVIDERS);
+        context = helpers.create<ClrDateInput, TestComponentWithReactiveForms>(
+          ClrDateInput,
+          TestComponentWithReactiveForms,
+          DATEPICKER_PROVIDERS
+        );
 
         datepickerFocusService = context.fixture.debugElement.injector.get(DatepickerFocusService);
         enabledService = context.fixture.debugElement
@@ -467,7 +480,7 @@ export default function () {
       let dateContainerDebugElement: DebugElement;
       let dateInputDebugElement: DebugElement;
 
-      beforeEach(function () {
+      beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [ReactiveFormsModule, ClrFormsModule],
           providers: [NgControlService],
@@ -554,7 +567,7 @@ export default function () {
       let fixture: ComponentFixture<TestComponentWithTemplateDrivenForms>;
       let dateContainerDebugElement: DebugElement;
 
-      beforeEach(function () {
+      beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [FormsModule, ClrFormsModule],
           providers: [NgControlService],
@@ -626,7 +639,7 @@ export default function () {
       let dateContainerDebugElement: DebugElement;
       let dateInputDebugElement: DebugElement;
 
-      beforeEach(function () {
+      beforeEach(() => {
         TestBed.configureTestingModule({
           imports: [FormsModule, ClrFormsModule],
           providers: [NgControlService],

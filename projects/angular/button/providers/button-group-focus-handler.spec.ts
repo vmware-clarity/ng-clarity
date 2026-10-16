@@ -45,79 +45,84 @@ interface TestContext {
 }
 
 export default function (): void {
-  describe('ButtonGroupFocusHandler', function () {
-    describe('Default Button Group', function () {
-      beforeEach(function (this: TestContext) {
+  describe('ButtonGroupFocusHandler', () => {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
+    });
+
+    describe('Default Button Group', () => {
+      beforeEach(() => {
         TestBed.configureTestingModule({ imports: [ClrButtonGroupModule], declarations: [BtnGroupViewContainer] });
-        this.fixture = TestBed.createComponent(BtnGroupViewContainer);
+        testContext.fixture = TestBed.createComponent(BtnGroupViewContainer);
 
-        this.focusService = this.fixture.debugElement.injector.get(FocusService);
-        this.focusHandler = this.fixture.debugElement.injector.get(ButtonGroupFocusHandler);
+        testContext.focusService = testContext.fixture.debugElement.injector.get(FocusService);
+        testContext.focusHandler = testContext.fixture.debugElement.injector.get(ButtonGroupFocusHandler);
 
-        this.fixture.detectChanges();
-        this.compiled = this.fixture.nativeElement;
-        this.testBtnGroup = this.fixture.componentInstance.btnGroup;
+        testContext.fixture.detectChanges();
+        testContext.compiled = testContext.fixture.nativeElement;
+        testContext.testBtnGroup = testContext.fixture.componentInstance.btnGroup;
 
-        this.menuToggle = this.testBtnGroup.menuToggle.nativeElement;
-        this.menuToggle.click();
-        this.fixture.detectChanges();
+        testContext.menuToggle = testContext.testBtnGroup.menuToggle.nativeElement;
+        testContext.menuToggle.click();
+        testContext.fixture.detectChanges();
 
-        this.menu = this.testBtnGroup.menu.nativeElement;
-        this.outside = document.createElement('button');
+        testContext.menu = testContext.testBtnGroup.menu.nativeElement;
+        testContext.outside = document.createElement('button');
 
         // We need this element in the DOM to be able to focus it
-        document.body.append(this.outside);
+        document.body.append(testContext.outside);
       });
 
-      afterEach(function (this: TestContext) {
-        document.body.removeChild(this.outside);
-        this.fixture.destroy();
+      afterEach(() => {
+        document.body.removeChild(testContext.outside);
+        testContext.fixture.destroy();
       });
 
-      it('declares a ButtonGroupFocusHandler provider', function (this: TestContext) {
-        expect(this.focusHandler).not.toBeNull();
+      it('declares a ButtonGroupFocusHandler provider', () => {
+        expect(testContext.focusHandler).not.toBeNull();
       });
 
-      it('registers the container to the FocusService', function (this: TestContext) {
-        const spy = spyOn(this.focusService, 'registerContainer');
-        this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
+      it('registers the container to the FocusService', () => {
+        const spy = spyOn(testContext.focusService, 'registerContainer');
+        testContext.focusHandler.initialize({ menu: testContext.menu, menuToggle: testContext.menuToggle });
         expect(spy).toHaveBeenCalled();
       });
 
-      it('initializes the buttons correctly', function (this: TestContext) {
-        expect(this.testBtnGroup.inlineButtons.length).toBe(2);
-        expect(this.testBtnGroup.menuButtons.length).toBe(3);
+      it('initializes the buttons correctly', () => {
+        expect(testContext.testBtnGroup.inlineButtons.length).toBe(2);
+        expect(testContext.testBtnGroup.menuButtons.length).toBe(3);
       });
 
-      it('button group menu is opened', function (this: TestContext) {
-        expect(this.testBtnGroup.open).toBeTruthy();
+      it('button group menu is opened', () => {
+        expect(testContext.testBtnGroup.open).toBeTruthy();
       });
 
-      it('first child is focused after open', function (this: TestContext) {
-        this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
-        const firstChild = this.menu.children[0];
+      it('first child is focused after open', () => {
+        testContext.focusHandler.initialize({ menu: testContext.menu, menuToggle: testContext.menuToggle });
+        const firstChild = testContext.menu.children[0];
         expectActiveElementToBe(firstChild);
       });
 
-      it('last child is focused after open', function (this: TestContext) {
-        this.focusHandler.initialFocus = InitialFocus.LAST_ITEM;
-        this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
-        const lastChild = this.menu.children[this.menu.children.length - 1];
+      it('last child is focused after open', () => {
+        testContext.focusHandler.initialFocus = InitialFocus.LAST_ITEM;
+        testContext.focusHandler.initialize({ menu: testContext.menu, menuToggle: testContext.menuToggle });
+        const lastChild = testContext.menu.children[testContext.menu.children.length - 1];
         expectActiveElementToBe(lastChild);
       });
 
-      it('focus last button in the menu on key down events', function (this: TestContext) {
-        this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
-        this.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        this.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
-        const lastChild = this.menu.children[this.menu.children.length - 1];
+      it('focus last button in the menu on key down events', () => {
+        testContext.focusHandler.initialize({ menu: testContext.menu, menuToggle: testContext.menuToggle });
+        testContext.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        testContext.menu.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.ArrowDown }));
+        const lastChild = testContext.menu.children[testContext.menu.children.length - 1];
         expectActiveElementToBe(lastChild);
       });
 
-      it('does not prevent moving focus to a different part of the page', function (this: TestContext) {
-        this.focusHandler.initialize({ menu: this.menu, menuToggle: this.menuToggle });
-        this.outside.focus();
-        expectActiveElementToBe(this.outside);
+      it('does not prevent moving focus to a different part of the page', () => {
+        testContext.focusHandler.initialize({ menu: testContext.menu, menuToggle: testContext.menuToggle });
+        testContext.outside.focus();
+        expectActiveElementToBe(testContext.outside);
       });
     });
   });

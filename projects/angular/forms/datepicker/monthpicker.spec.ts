@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
 
 import { DayModel } from './model/day.model';
@@ -20,6 +20,8 @@ import { ViewManagerService } from './providers/view-manager.service';
 
 export default function () {
   describe('Monthpicker Component', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrMonthpicker, TestComponent>;
     let localeHelperService: LocaleHelperService;
     let dateNavigationService: DateNavigationService;
@@ -33,10 +35,10 @@ export default function () {
     }
 
     describe('View Basics', () => {
-      beforeEach(function () {
+      beforeEach(() => {
         initializeCalendar(new DayModel(2015, selectedMonth, 1));
 
-        context = this.create(ClrMonthpicker, TestComponent, [
+        context = helpers.create(ClrMonthpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
           ClrPopoverService,
@@ -120,10 +122,10 @@ export default function () {
     });
 
     describe('Typescript API', () => {
-      beforeEach(function () {
+      beforeEach(() => {
         initializeCalendar(new DayModel(2015, selectedMonth, 1));
 
-        context = this.create(ClrMonthpicker, TestComponent, [
+        context = helpers.create(ClrMonthpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
           ClrPopoverService,
@@ -190,10 +192,10 @@ export default function () {
       //  May   |   Nov
       //  Jun   |   Dec
 
-      function createMonthPicker(scope: any, selectedDay: DayModel) {
+      function createMonthPicker(selectedDay: DayModel) {
         initializeCalendar(selectedDay);
 
-        context = scope.create(ClrMonthpicker, TestComponent, [
+        context = helpers.create(ClrMonthpicker, TestComponent, [
           ViewManagerService,
           DatepickerFocusService,
           ClrPopoverService,
@@ -203,8 +205,8 @@ export default function () {
         ]);
       }
 
-      it('handles the up arrow', function () {
-        createMonthPicker(this, new DayModel(2015, 11, 1));
+      it('handles the up arrow', () => {
+        createMonthPicker(new DayModel(2015, 11, 1));
 
         expect(context.clarityDirective.getTabIndex(11)).toBe(0, "Month 11 doesn't have tabindex 0");
 
@@ -223,8 +225,8 @@ export default function () {
         expect(context.clarityDirective.getTabIndex(1)).toBe(0, "Month 0 does't have tabindex 0");
       });
 
-      it('handles the down arrow', function () {
-        createMonthPicker(this, new DayModel(2015, 0, 1));
+      it('handles the down arrow', () => {
+        createMonthPicker(new DayModel(2015, 0, 1));
 
         expect(context.clarityDirective.getTabIndex(0)).toBe(0, "Month 0 doesn't have tabindex 0");
 
@@ -243,8 +245,8 @@ export default function () {
         expect(context.clarityDirective.getTabIndex(10)).toBe(0, "Month 11 does't have tabindex 0");
       });
 
-      it('handles the right arrow', function () {
-        createMonthPicker(this, new DayModel(2015, 0, 1));
+      it('handles the right arrow', () => {
+        createMonthPicker(new DayModel(2015, 0, 1));
 
         for (let i = 0; i < 12; i++) {
           expect(context.clarityDirective.getTabIndex(i)).toBe(0, 'Month ' + (i + 2) + "doesn't have tabindex 0");
@@ -257,8 +259,8 @@ export default function () {
         }
       });
 
-      it('handles the left arrow', function () {
-        createMonthPicker(this, new DayModel(2015, 11, 1));
+      it('handles the left arrow', () => {
+        createMonthPicker(new DayModel(2015, 11, 1));
 
         for (let i = 11; i > -1; i--) {
           expect(context.clarityDirective.getTabIndex(i)).toBe(0, 'Month ' + i + "doesn't have tabindex 0");

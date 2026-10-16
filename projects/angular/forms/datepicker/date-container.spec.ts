@@ -20,7 +20,7 @@ import {
   NgControlService,
 } from '@clr/angular/forms/common';
 import { ClrPopoverPosition, ClrPopoverService } from '@clr/angular/popover/common';
-import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import { createTestHelpers, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 
 import { ClrDateContainer } from './date-container';
 import { ClrWeekday } from './enums/weekday.enum';
@@ -50,6 +50,8 @@ const DATEPICKER_PROVIDERS: any[] = [
 
 export default function () {
   describe('Date Container Component', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrDateContainer, TestComponent>;
     let enabledService: MockDatepickerEnabledService;
     let dateFormControlService: DateFormControlService;
@@ -57,7 +59,7 @@ export default function () {
     let popoverService: ClrPopoverService;
     let container: any;
 
-    beforeEach(function () {
+    beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [FormsModule, ClrCommonFormsModule],
       });
@@ -67,7 +69,7 @@ export default function () {
         },
       });
 
-      context = this.create(ClrDateContainer, TestComponent, DATEPICKER_PROVIDERS);
+      context = helpers.create(ClrDateContainer, TestComponent, DATEPICKER_PROVIDERS);
 
       enabledService = context.getClarityProvider(DatepickerEnabledService) as MockDatepickerEnabledService;
       dateFormControlService = context.getClarityProvider(DateFormControlService);
@@ -238,10 +240,12 @@ export default function () {
   });
 
   describe('Date Container with firstDayOfWeek', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrDateContainer, TestComponentWithFirstDay>;
     let localeHelperService: LocaleHelperService;
 
-    beforeEach(function () {
+    beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [FormsModule, ClrCommonFormsModule],
       });
@@ -251,7 +255,7 @@ export default function () {
         },
       });
 
-      context = this.create(ClrDateContainer, TestComponentWithFirstDay, DATEPICKER_PROVIDERS);
+      context = helpers.create(ClrDateContainer, TestComponentWithFirstDay, DATEPICKER_PROVIDERS);
       localeHelperService = context.getClarityProvider(LocaleHelperService);
     });
 
@@ -281,10 +285,12 @@ export default function () {
   });
 
   describe('Date Container with DE locale firstDayOfWeek', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrDateContainer, TestComponentWithFirstDay>;
     let localeHelperService: LocaleHelperService;
 
-    beforeEach(function () {
+    beforeEach(() => {
       TestBed.configureTestingModule({
         imports: [FormsModule, ClrCommonFormsModule],
       });
@@ -294,7 +300,7 @@ export default function () {
         },
       });
 
-      context = this.create(ClrDateContainer, TestComponentWithFirstDay, [
+      context = helpers.create(ClrDateContainer, TestComponentWithFirstDay, [
         ...DATEPICKER_PROVIDERS,
         { provide: LOCALE_ID, useValue: 'de' },
       ]);

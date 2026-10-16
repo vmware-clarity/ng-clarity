@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
 import { ClrDatagridFooter } from './datagrid-footer';
@@ -17,29 +17,35 @@ import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/co
 import { DetailService } from './providers/detail.service';
 
 export default function (): void {
-  describe('ClrDatagridFooter component', function () {
-    describe('View', function () {
+  describe('ClrDatagridFooter component', () => {
+    const helpers = createTestHelpers();
+
+    describe('View', () => {
       let context: TestContext<ClrDatagridFooter<number>, SimpleTest>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagridFooter, SimpleTest, DATAGRID_SPEC_PROVIDERS);
+      beforeEach(() => {
+        context = helpers.create<ClrDatagridFooter<number>, SimpleTest>(
+          ClrDatagridFooter,
+          SimpleTest,
+          DATAGRID_SPEC_PROVIDERS
+        );
       });
 
-      afterEach(function () {
+      afterEach(() => {
         context.fixture.destroy();
         const popoverContent = document.querySelectorAll('.clr-popover-content');
         popoverContent.forEach(content => document.body.removeChild(content));
       });
 
-      it('projects content', function () {
+      it('projects content', () => {
         expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
       });
 
-      it('adds the .datagrid-cell class to the host', function () {
+      it('adds the .datagrid-cell class to the host', () => {
         expect(context.clarityElement.classList.contains('datagrid-footer')).toBeTruthy();
       });
 
-      it('does not show the selection details when selection type is None', function () {
+      it('does not show the selection details when selection type is None', () => {
         const clarityDirectiveSelection = context.clarityDirective.selection;
         clarityDirectiveSelection.selectionType = SelectionType.None;
 
@@ -48,7 +54,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.datagrid-footer-select')).toBeNull();
       });
 
-      it('does not show the selection details when selection type is single', function () {
+      it('does not show the selection details when selection type is single', () => {
         const clarityDirectiveSelection = context.clarityDirective.selection;
         clarityDirectiveSelection.selectionType = SelectionType.Single;
         clarityDirectiveSelection.current = [1];
@@ -58,7 +64,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.datagrid-footer-select')).toBeNull();
       });
 
-      it('shows the selection details when more than one item is selected', function () {
+      it('shows the selection details when more than one item is selected', () => {
         const clarityDirectiveSelection = context.clarityDirective.selection;
         clarityDirectiveSelection.selectionType = SelectionType.Multi;
         clarityDirectiveSelection.current.push(1);
@@ -81,11 +87,11 @@ export default function (): void {
       });
     });
 
-    describe('View with Detail Pane open', function () {
+    describe('View with Detail Pane open', () => {
       let context: TestContext<ClrDatagridFooter<void>, SimpleTest>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagridFooter, SimpleTest, [
+      beforeEach(() => {
+        context = helpers.create<ClrDatagridFooter<void>, SimpleTest>(ClrDatagridFooter, SimpleTest, [
           ...DATAGRID_SPEC_PROVIDERS,
           MOCK_COLUMN_SERVICE_PROVIDER,
         ]);
@@ -98,7 +104,7 @@ export default function (): void {
         context.detectChanges();
       });
 
-      it('shows condensed footer with detail pane', function () {
+      it('shows condensed footer with detail pane', () => {
         expect(context.clarityElement.querySelector('clr-dg-column-toggle')).toBeTruthy();
         context.getClarityProvider(DetailService).open({});
         context.detectChanges();

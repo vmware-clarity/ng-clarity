@@ -6,7 +6,7 @@
  */
 
 import { Component, Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
-import { delay, TestContext } from '@clr/angular/testing';
+import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, ClrLoading, ClrLoadingState } from '@clr/angular/utils';
 
 import { ClrDatagrid } from './datagrid';
@@ -385,15 +385,17 @@ class LoadingCellsRowDetailTest {
 }
 
 export default function (): void {
-  describe('Pinnable columns', function () {
-    describe('Reordering', function () {
+  describe('Pinnable columns', () => {
+    const helpers = createTestHelpers();
+
+    describe('Reordering', () => {
       let context: TestContext<ClrDatagrid, ReorderableColumnsTest>;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, ReorderableColumnsTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, ReorderableColumnsTest);
       });
 
-      it('reorders two scrollable columns while another one is pinned', function () {
+      it('reorders two scrollable columns while another one is pinned', () => {
         const [first, second, third] = context.testComponent.columns;
 
         // Both moved columns are scrollable, the pinned one keeps its place.
@@ -403,7 +405,7 @@ export default function (): void {
       });
     });
 
-    describe('Maximum total width', function () {
+    describe('Maximum total width', () => {
       // Kept in sync with $clr-datagrid-pinned-columns-max-width in _variables.datagrid.scss.
       const MAX_SHARE = 0.85;
 
@@ -423,21 +425,21 @@ export default function (): void {
         );
       }
 
-      describe('with normal scrolling', function () {
+      describe('with normal scrolling', () => {
         let context: TestContext<ClrDatagrid, PinnedWidthCapTest>;
         let element: HTMLElement;
 
-        beforeEach(function () {
-          context = this.create(ClrDatagrid, PinnedWidthCapTest);
+        beforeEach(() => {
+          context = helpers.create(ClrDatagrid, PinnedWidthCapTest);
           element = context.clarityElement;
         });
 
-        it('caps the pinned columns at their share of the datagrid width', function () {
+        it('caps the pinned columns at their share of the datagrid width', () => {
           // 2 x 200px of pinned columns asked for all 400px of a 400px wide datagrid.
           expect(widthOf(element, HEADER_PINNED)).toBeCloseTo(budget(element), 0);
         });
 
-        it('shrinks the pinned columns so they fit the cap instead of overflowing it', function () {
+        it('shrinks the pinned columns so they fit the cap instead of overflowing it', () => {
           const widths = pinnedWidths(element, '.datagrid-header');
 
           expect(widths.length).toBe(2);
@@ -445,7 +447,7 @@ export default function (): void {
           expect(widths[0] + widths[1]).toBeLessThanOrEqual(Math.ceil(budget(element)));
         });
 
-        it('keeps the pinned cells the same width as the pinned headers', function () {
+        it('keeps the pinned cells the same width as the pinned headers', () => {
           // The shrinking is resolved separately for the header and for every row, so it has to
           // land on the same widths on both sides or the pinned column stops lining up.
           expect(pinnedWidths(element, '.datagrid-rows .datagrid-row:first-child')).toEqual(
@@ -453,7 +455,7 @@ export default function (): void {
           );
         });
 
-        it('leaves the scrollable columns reachable', function () {
+        it('leaves the scrollable columns reachable', () => {
           // The static container now sits inside .datagrid-row-scrollable, so the scrollable column
           // is measured on its own rather than through the width of that container.
           const scrollable = queryAll(element, `${HEADER_SCROLLABLE} > clr-dg-column`);
@@ -463,7 +465,7 @@ export default function (): void {
           expect(widthOf(element, HEADER_PINNED)).toBeLessThan(widthOf(element, '.datagrid-table-wrapper'));
         });
 
-        it('does not shrink pinned columns that already fit', function () {
+        it('does not shrink pinned columns that already fit', () => {
           context.testComponent.hostWidth = 900;
           context.detectChanges();
 
@@ -472,27 +474,27 @@ export default function (): void {
         });
       });
 
-      describe('with virtual scrolling', function () {
+      describe('with virtual scrolling', () => {
         let context: TestContext<ClrDatagrid, PinnedWidthCapVirtualScrollTest>;
         let element: HTMLElement;
 
-        beforeEach(function () {
-          context = this.create(ClrDatagrid, PinnedWidthCapVirtualScrollTest);
+        beforeEach(() => {
+          context = helpers.create(ClrDatagrid, PinnedWidthCapVirtualScrollTest);
           element = context.clarityElement;
         });
 
-        it('caps the pinned columns at their share of the datagrid width', function () {
+        it('caps the pinned columns at their share of the datagrid width', () => {
           expect(widthOf(element, HEADER_PINNED)).toBeCloseTo(budget(element), 0);
         });
 
-        it('shrinks the pinned columns so they fit the cap instead of overflowing it', function () {
+        it('shrinks the pinned columns so they fit the cap instead of overflowing it', () => {
           const widths = pinnedWidths(element, '.datagrid-header');
 
           expect(widths.length).toBe(2);
           expect(widths[0] + widths[1]).toBeLessThanOrEqual(Math.ceil(budget(element)));
         });
 
-        it('does not shrink pinned columns that already fit', function () {
+        it('does not shrink pinned columns that already fit', () => {
           context.testComponent.hostWidth = 900;
           context.detectChanges();
 
@@ -501,26 +503,26 @@ export default function (): void {
       });
     });
 
-    describe('Projection', function () {
+    describe('Projection', () => {
       let context: TestContext<ClrDatagrid, PinnableTest>;
       let element: HTMLElement;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, PinnableTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, PinnableTest);
         element = context.clarityElement;
       });
 
-      it('keeps every column scrollable by default', function () {
+      it('keeps every column scrollable by default', () => {
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Second', 'Third']);
         expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
         expect(element.querySelector(`.${PINNED_COLUMN_CLASS}`)).toBeNull();
       });
 
-      it('defaults `pinned` to false on the column', function () {
+      it('defaults `pinned` to false on the column', () => {
         expect(context.clarityDirective.columns.map(column => column.pinned)).toEqual([false, false, false]);
       });
 
-      it('moves a pinned column header into the static container of the header', function () {
+      it('moves a pinned column header into the static container of the header', () => {
         context.testComponent.pinFirst = true;
         context.detectChanges();
 
@@ -528,7 +530,7 @@ export default function (): void {
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['Second', 'Third']);
       });
 
-      it('moves the cells of a pinned column into the static container of every row', function () {
+      it('moves the cells of a pinned column into the static container of every row', () => {
         context.testComponent.pinFirst = true;
         context.detectChanges();
 
@@ -540,7 +542,7 @@ export default function (): void {
         ]);
       });
 
-      it('marks the pinned column and its cells with the pinned class', function () {
+      it('marks the pinned column and its cells with the pinned class', () => {
         context.testComponent.pinFirst = true;
         context.detectChanges();
 
@@ -554,7 +556,7 @@ export default function (): void {
         });
       });
 
-      it('keeps the declaration order of multiple pinned columns', function () {
+      it('keeps the declaration order of multiple pinned columns', () => {
         context.testComponent.pinFirst = true;
         context.testComponent.pinSecond = true;
         context.detectChanges();
@@ -568,7 +570,7 @@ export default function (): void {
         ]);
       });
 
-      it('pins a column that is not the first one without reordering the others', function () {
+      it('pins a column that is not the first one without reordering the others', () => {
         context.testComponent.pinSecond = true;
         context.detectChanges();
 
@@ -582,7 +584,7 @@ export default function (): void {
         ]);
       });
 
-      it('moves the column and its cells back when it gets unpinned', function () {
+      it('moves the column and its cells back when it gets unpinned', () => {
         context.testComponent.pinFirst = true;
         context.detectChanges();
         expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
@@ -596,7 +598,7 @@ export default function (): void {
         expect(element.querySelector(`.${PINNED_COLUMN_CLASS}`)).toBeNull();
       });
 
-      it('stores the pinned state on the column state', function () {
+      it('stores the pinned state on the column state', () => {
         const columnsService: ColumnsService = context.getClarityProvider(ColumnsService);
 
         context.testComponent.pinFirst = true;
@@ -608,7 +610,7 @@ export default function (): void {
         expect(columnsService.hasPinnedColumns).toBeTrue();
       });
 
-      it('hides the separator of the last scrollable column, not of the pinned one', function () {
+      it('hides the separator of the last scrollable column, not of the pinned one', () => {
         context.testComponent.pinSecond = true;
         context.detectChanges();
 
@@ -619,7 +621,7 @@ export default function (): void {
       });
     });
 
-    describe('Header pin toggle', function () {
+    describe('Header pin toggle', () => {
       let context: TestContext<ClrDatagrid, PinToggleTest>;
       let element: HTMLElement;
 
@@ -631,12 +633,12 @@ export default function (): void {
         return pinToggle().querySelector('cds-icon').getAttribute('shape');
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, PinToggleTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, PinToggleTest);
         element = context.clarityElement;
       });
 
-      it('only renders the toggle on columns that are pinnable', function () {
+      it('only renders the toggle on columns that are pinnable', () => {
         expect(queryAll(element, '.datagrid-header .datagrid-column-pin').length).toBe(1);
 
         context.testComponent.pinnable = false;
@@ -645,7 +647,7 @@ export default function (): void {
         expect(pinToggle()).toBeNull();
       });
 
-      it('renders the toggle last in the header, after the title and the filter', function () {
+      it('renders the toggle last in the header, after the title and the filter', () => {
         const headerCell = element.querySelector('.datagrid-header clr-dg-column .datagrid-column-flex');
         const children = Array.from(headerCell.children);
         const indexOf = (selector: string) => children.findIndex(child => child.matches(selector));
@@ -656,7 +658,7 @@ export default function (): void {
         expect(children[indexOf('.datagrid-column-pin') + 1].tagName.toLowerCase()).toBe('clr-dg-column-separator');
       });
 
-      it('shows the pin shape while unpinned and the unpin shape once pinned', function () {
+      it('shows the pin shape while unpinned and the unpin shape once pinned', () => {
         expect(pinIconShape()).toBe('pin');
 
         pinToggle().click();
@@ -665,7 +667,7 @@ export default function (): void {
         expect(pinIconShape()).toBe('unpin');
       });
 
-      it('pins and unpins the column when the toggle is clicked', function () {
+      it('pins and unpins the column when the toggle is clicked', () => {
         expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
 
         pinToggle().click();
@@ -678,7 +680,7 @@ export default function (): void {
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Second']);
       });
 
-      it('writes the new state back through the two-way binding', function () {
+      it('writes the new state back through the two-way binding', () => {
         pinToggle().click();
         context.detectChanges();
         expect(context.testComponent.firstPinned).toBeTrue();
@@ -688,7 +690,7 @@ export default function (): void {
         expect(context.testComponent.firstPinned).toBeFalse();
       });
 
-      it('follows the binding when the application pins the column itself', function () {
+      it('follows the binding when the application pins the column itself', () => {
         context.testComponent.firstPinned = true;
         context.detectChanges();
 
@@ -696,7 +698,7 @@ export default function (): void {
         expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
       });
 
-      it('does not sort the column when the toggle is clicked', function () {
+      it('does not sort the column when the toggle is clicked', () => {
         const column = context.clarityDirective.columns.first;
         expect(column.sortable).toBeTrue();
 
@@ -706,7 +708,7 @@ export default function (): void {
         expect(column.sortOrder).toBe(ClrDatagridSortOrder.UNSORTED);
       });
 
-      it('labels the toggle with the action it performs', function () {
+      it('labels the toggle with the action it performs', () => {
         const commonStrings = new ClrCommonStringsService();
 
         expect(pinToggle().getAttribute('aria-label')).toBe(commonStrings.keys.pinColumn);
@@ -718,7 +720,7 @@ export default function (): void {
       });
 
       // The actions menu offers Pin Column, so the header keeps one pin control rather than two.
-      it('drops the toggle while the column has an actions menu, and brings it back without one', function () {
+      it('drops the toggle while the column has an actions menu, and brings it back without one', () => {
         context.testComponent.hasActions = true;
         context.detectChanges();
         expect(pinToggle()).toBeNull();
@@ -729,7 +731,7 @@ export default function (): void {
       });
 
       // clrDgKeepFilterInHeader only keeps the filter toggle - the menu still offers Pin Column.
-      it('drops the toggle even when the menu keeps the filter in the header', function () {
+      it('drops the toggle even when the menu keeps the filter in the header', () => {
         context.testComponent.keepFilterInHeader = true;
         context.testComponent.hasActions = true;
         context.detectChanges();
@@ -738,7 +740,7 @@ export default function (): void {
       });
     });
 
-    describe('Offset of the static container', function () {
+    describe('Offset of the static container', () => {
       let context: TestContext<ClrDatagrid, PinnedWithRowControlsTest>;
       let element: HTMLElement;
 
@@ -757,12 +759,12 @@ export default function (): void {
           .width;
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, PinnedWithRowControlsTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, PinnedWithRowControlsTest);
         element = context.clarityElement;
       });
 
-      it('freezes the pinned columns where the row controls end', function () {
+      it('freezes the pinned columns where the row controls end', () => {
         const pinned: HTMLElement = element.querySelector(HEADER_PINNED);
 
         // The select column is what makes this more than a no-op.
@@ -771,7 +773,7 @@ export default function (): void {
         expect(parseFloat(getComputedStyle(pinned).insetInlineStart)).toBeCloseTo(controlsWidth('.datagrid-header'), 1);
       });
 
-      it('keeps the static container anchored while the expand animation runs', function () {
+      it('keeps the static container anchored while the expand animation runs', () => {
         // CDE-3127: the animation clips its host for as long as it runs. Clipping with
         // `overflow: hidden` would turn that host into a scroll container, and the static container
         // - which sits inside it - anchors itself to the nearest one, so the pinned columns would
@@ -791,7 +793,7 @@ export default function (): void {
         row.expandAnimation.cleanupAnimationEffects();
       });
 
-      it('measures the row controls separately from the ones in the header', function () {
+      it('measures the row controls separately from the ones in the header', () => {
         // The header renders a single column for both kinds of caret where a row renders one cell
         // per caret, so the two containers are not necessarily the same width.
         expect(publishedWidth('.datagrid-header')).toBeCloseTo(controlsWidth('.datagrid-header'), 1);
@@ -799,25 +801,25 @@ export default function (): void {
       });
     });
 
-    describe('Row detail laid out in columns', function () {
+    describe('Row detail laid out in columns', () => {
       let context: TestContext<ClrDatagrid, RowDetailTest>;
       let element: HTMLElement;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, RowDetailTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, RowDetailTest);
         element = context.clarityElement;
       });
 
-      it('moves the cell of a pinned column into the static container of the detail', function () {
+      it('moves the cell of a pinned column into the static container of the detail', () => {
         expect(detailPinnedCells(element)).toEqual(['dA1']);
         expect(detailPlainCells(element)).toEqual(['dB1', 'dC1']);
       });
 
-      it('lines the detail cells up with the cells of the row', function () {
+      it('lines the detail cells up with the cells of the row', () => {
         expect(cellBoxes(element, 'dA1', 'dB1', 'dC1')).toEqual(cellBoxes(element, 'A1', 'B1', 'C1'));
       });
 
-      it('freezes the pinned detail cell alongside the pinned cell of the row', function () {
+      it('freezes the pinned detail cell alongside the pinned cell of the row', () => {
         const rowPinned: HTMLElement = element.querySelector(`.datagrid-rows .datagrid-row-master ${PINNED}`);
         const detailPinned: HTMLElement = element.querySelector(`.datagrid-row-detail ${PINNED}`);
 
@@ -825,7 +827,7 @@ export default function (): void {
         expect(getComputedStyle(detailPinned).insetInlineStart).toBe(getComputedStyle(rowPinned).insetInlineStart);
       });
 
-      it('holds the pinned cells of the row and of the detail in place while scrolling sideways', function () {
+      it('holds the pinned cells of the row and of the detail in place while scrolling sideways', () => {
         const scroller = queryAll(element, '.datagrid, .datagrid-table-wrapper, .datagrid-table').find(
           candidate => candidate.scrollWidth > candidate.clientWidth
         );
@@ -840,7 +842,7 @@ export default function (): void {
         expect([after[2].left, after[3].left]).toEqual([before[2].left - 80, before[3].left - 80]);
       });
 
-      it('leaves the detail alone when it does not hold one cell per column', function () {
+      it('leaves the detail alone when it does not hold one cell per column', () => {
         context.testComponent.matchingCells = false;
         context.detectChanges();
 
@@ -848,7 +850,7 @@ export default function (): void {
         expect(detailPlainCells(element)).toEqual(['detail of 1']);
       });
 
-      it('leaves the detail alone when no column is pinned', function () {
+      it('leaves the detail alone when no column is pinned', () => {
         context.testComponent.pinFirst = false;
         context.detectChanges();
 
@@ -856,7 +858,7 @@ export default function (): void {
         expect(detailPlainCells(element)).toEqual(['dA1', 'dB1', 'dC1']);
       });
 
-      it('moves the detail cells back when the column stops being pinned', function () {
+      it('moves the detail cells back when the column stops being pinned', () => {
         expect(detailPinnedCells(element)).toEqual(['dA1']);
 
         context.testComponent.pinFirst = false;
@@ -866,18 +868,18 @@ export default function (): void {
         expect(detailPlainCells(element)).toEqual(['dA1', 'dB1', 'dC1']);
       });
 
-      describe('while it replaces the row', function () {
-        beforeEach(function () {
+      describe('while it replaces the row', () => {
+        beforeEach(() => {
           context.testComponent.replace = true;
           context.detectChanges();
         });
 
-        it('moves the cell of a pinned column into the static container of the detail', function () {
+        it('moves the cell of a pinned column into the static container of the detail', () => {
           expect(detailPinnedCells(element)).toEqual(['dA1']);
           expect(detailPlainCells(element)).toEqual(['dB1', 'dC1']);
         });
 
-        it('lines the detail cells up with the columns', function () {
+        it('lines the detail cells up with the columns', () => {
           // The cells of the row are hidden in this mode, so the header is what is left to line up
           // with.
           expect(cellBoxes(element, 'dA1', 'dB1', 'dC1')).toEqual(columnBoxes(element, 'A', 'B', 'C'));
@@ -890,7 +892,7 @@ export default function (): void {
     // the content of a detail without cells somewhere else than the content of one with cells, and
     // creating either place projects the content into it - which takes the cells straight back out
     // of the containers they were moved into.
-    describe('Row detail that loads its cells', function () {
+    describe('Row detail that loads its cells', () => {
       let context: TestContext<ClrDatagrid, LoadingRowDetailTest>;
       let element: HTMLElement;
 
@@ -900,32 +902,32 @@ export default function (): void {
         context.detectChanges();
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, LoadingRowDetailTest, [], [TestFakeLoader]);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, LoadingRowDetailTest, [], [TestFakeLoader]);
         element = context.clarityElement;
       });
 
-      it('holds no cells of its own while it is still loading', async function () {
+      it('holds no cells of its own while it is still loading', async () => {
         context.detectChanges();
 
         expect(detailPinnedCells(element)).toEqual([]);
         expect(detailPlainCells(element)).toEqual([]);
       });
 
-      it('moves the cell of a pinned column into the static container once it has loaded', async function () {
+      it('moves the cell of a pinned column into the static container once it has loaded', async () => {
         await load();
 
         expect(detailPinnedCells(element)).toEqual(['dA1']);
         expect(detailPlainCells(element)).toEqual(['dB1', 'dC1']);
       });
 
-      it('lines the loaded detail cells up with the cells of the row', async function () {
+      it('lines the loaded detail cells up with the cells of the row', async () => {
         await load();
 
         expect(cellBoxes(element, 'dA1', 'dB1', 'dC1')).toEqual(cellBoxes(element, 'A1', 'B1', 'C1'));
       });
 
-      it('lines the loaded detail cells up with the columns while it replaces the row', async function () {
+      it('lines the loaded detail cells up with the columns while it replaces the row', async () => {
         context.testComponent.replace = true;
         await load();
 
@@ -934,16 +936,16 @@ export default function (): void {
       });
     });
 
-    describe('Row detail that loads around its cells', function () {
+    describe('Row detail that loads around its cells', () => {
       let context: TestContext<ClrDatagrid, LoadingCellsRowDetailTest>;
       let element: HTMLElement;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, LoadingCellsRowDetailTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, LoadingCellsRowDetailTest);
         element = context.clarityElement;
       });
 
-      it('lines the detail cells up once the row stops loading', function () {
+      it('lines the detail cells up once the row stops loading', () => {
         // The cells are there from the start here, only the row withholds the detail while it
         // reports itself as loading.
         expect(element.querySelector('.datagrid-row-detail')).toBeNull();
@@ -956,23 +958,23 @@ export default function (): void {
       });
     });
 
-    describe('With a detail pane', function () {
+    describe('With a detail pane', () => {
       let context: TestContext<ClrDatagrid, PinnableWithDetailTest>;
       let detailService: DetailService;
       let element: HTMLElement;
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, PinnableWithDetailTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, PinnableWithDetailTest);
         detailService = context.getClarityProvider(DetailService);
         element = context.clarityElement;
       });
 
-      it('pins the column through the attribute form of the input', function () {
+      it('pins the column through the attribute form of the input', () => {
         expect(columnTitles(element, HEADER_PINNED)).toEqual(['First']);
         expect(context.clarityDirective.columns.first.pinned).toBeTrue();
       });
 
-      it('suspends pinning while the detail pane is open', function () {
+      it('suspends pinning while the detail pane is open', () => {
         detailService.open(context.testComponent.items[0]);
         context.detectChanges();
 
@@ -986,7 +988,7 @@ export default function (): void {
         expect(context.clarityDirective.columns.first.pinned).toBeTrue();
       });
 
-      it('restores pinning when the detail pane closes', function () {
+      it('restores pinning when the detail pane closes', () => {
         detailService.open(context.testComponent.items[0]);
         context.detectChanges();
         expect(columnTitles(element, HEADER_PINNED)).toEqual([]);
@@ -1000,7 +1002,7 @@ export default function (): void {
       });
     });
 
-    describe('With a detail pane and a pinned column that is not the first one', function () {
+    describe('With a detail pane and a pinned column that is not the first one', () => {
       let context: TestContext<ClrDatagrid, PinnedNotFirstWithDetailTest>;
       let detailService: DetailService;
       let element: HTMLElement;
@@ -1010,26 +1012,26 @@ export default function (): void {
         context.detectChanges();
       }
 
-      beforeEach(function () {
-        context = this.create(ClrDatagrid, PinnedNotFirstWithDetailTest);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagrid, PinnedNotFirstWithDetailTest);
         detailService = context.getClarityProvider(DetailService);
         element = context.clarityElement;
       });
 
-      it('renders the pinned columns before the ones declared ahead of them', function () {
+      it('renders the pinned columns before the ones declared ahead of them', () => {
         // Which is what makes the first pinned column the one on the left of the row, rather than
         // the first declared one.
         expect(columnTitles(element, HEADER_PINNED)).toEqual(['Second', 'Third']);
         expect(columnTitles(element, HEADER_SCROLLABLE)).toEqual(['First', 'Fourth']);
       });
 
-      it('keeps the first pinned column visible while the pane is open', function () {
+      it('keeps the first pinned column visible while the pane is open', () => {
         openPane();
 
         expect(visibleColumnTitles(element)).toEqual(['Second']);
       });
 
-      it('suspends pinning on the column it keeps', function () {
+      it('suspends pinning on the column it keeps', () => {
         openPane();
 
         // Nothing is left to scroll, so the column that stays is a plain full width one.
@@ -1042,7 +1044,7 @@ export default function (): void {
         ]);
       });
 
-      it('restores every column when the pane closes', function () {
+      it('restores every column when the pane closes', () => {
         openPane();
         expect(visibleColumnTitles(element)).toEqual(['Second']);
 
@@ -1053,7 +1055,7 @@ export default function (): void {
         expect(columnTitles(element, HEADER_PINNED)).toEqual(['Second', 'Third']);
       });
 
-      it('falls back to the first declared column when nothing is pinned', function () {
+      it('falls back to the first declared column when nothing is pinned', () => {
         context.testComponent.pinSecond = false;
         context.testComponent.pinThird = false;
         context.detectChanges();

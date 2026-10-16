@@ -12,8 +12,6 @@
  * over the place because we load them asynchronously.
  */
 
-import { addHelpers } from '@clr/angular/testing';
-
 import DatagridPropertyComparatorSpecs from './built-in/comparators/datagrid-property-comparator.spec';
 import DatagridNumericFilterImplSpecs from './built-in/filters/datagrid-numeric-filter-impl.spec';
 import DatagridNumericFilterSpecs from './built-in/filters/datagrid-numeric-filter.spec';
@@ -65,10 +63,8 @@ import WrappedCellSpec from './wrapped-cell.spec';
 import WrappedColumnSpec from './wrapped-column.spec';
 import WrappedRowSpec from './wrapped-row.spec';
 
-describe('Datagrid', function () {
-  addHelpers();
-
-  describe('Providers', function () {
+describe('Datagrid', () => {
+  describe('Providers', () => {
     SortProviderSpecs();
     StateProviderSpecs();
     FiltersProviderSpecs();
@@ -80,7 +76,7 @@ describe('Datagrid', function () {
     ColumnResizerServiceSpecs();
   });
 
-  describe('Components', function () {
+  describe('Components', () => {
     DatagridActionBarSpecs();
     DatagridActionOverflowSpecs();
     DatagridCellSpecs();
@@ -110,7 +106,7 @@ describe('Datagrid', function () {
     WrappedRowSpec();
   });
 
-  describe('Render', function () {
+  describe('Render', () => {
     NoopDomAdapterSpecs();
     DatagridRenderOrganizerSpecs();
     DatagridCellRendererSpecs();
@@ -119,7 +115,7 @@ describe('Datagrid', function () {
     DatagridMainRendererSpecs();
   });
 
-  describe('Built-in', function () {
+  describe('Built-in', () => {
     NestedPropertySpecs();
     DatagridPropertyComparatorSpecs();
     DatagridPropertyStringFilterSpecs();

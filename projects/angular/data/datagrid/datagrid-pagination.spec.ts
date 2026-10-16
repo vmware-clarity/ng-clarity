@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagridPagination } from './datagrid-pagination';
@@ -15,59 +15,61 @@ import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 
 export default function (): void {
-  describe('ClrDatagridPagination component', function () {
-    describe('Typescript API', function () {
+  describe('ClrDatagridPagination component', () => {
+    const helpers = createTestHelpers();
+
+    describe('Typescript API', () => {
       let pageService: Page;
       let component: ClrDatagridPagination;
 
-      beforeEach(function () {
+      beforeEach(() => {
         pageService = new Page(new StateDebouncer());
         component = new ClrDatagridPagination(pageService, new ClrCommonStringsService(), null);
         component.ngOnInit(); // For the subscription that will get destroyed.
       });
 
-      afterEach(function () {
+      afterEach(() => {
         component.ngOnDestroy();
       });
 
-      it('sets the default page size to 10', function () {
+      it('sets the default page size to 10', () => {
         expect(pageService.size).toBe(10);
       });
 
-      it("uses the page service's page size", function () {
+      it("uses the page service's page size", () => {
         component.pageSize = 20;
         expect(pageService.size).toBe(20);
         pageService.size = 30;
         expect(component.pageSize).toBe(30);
       });
 
-      it("uses the page service's total items", function () {
+      it("uses the page service's total items", () => {
         component.totalItems = 20;
         expect(pageService.totalItems).toBe(20);
         pageService.totalItems = 30;
         expect(component.totalItems).toBe(30);
       });
 
-      it("uses the page service's last page", function () {
+      it("uses the page service's last page", () => {
         component.lastPage = 20;
         expect(pageService.last).toBe(20);
         pageService.last = 30;
         expect(component.lastPage).toBe(30);
       });
 
-      it('offers a next() method that delegates to the page service', function () {
+      it('offers a next() method that delegates to the page service', () => {
         spyOn(pageService, 'next');
         component.next();
         expect(pageService.next).toHaveBeenCalled();
       });
 
-      it('offers a previous() method that delegates to the page service', function () {
+      it('offers a previous() method that delegates to the page service', () => {
         spyOn(pageService, 'previous');
         component.previous();
         expect(pageService.previous).toHaveBeenCalled();
       });
 
-      it("uses the page service's first and last items", function () {
+      it("uses the page service's first and last items", () => {
         pageService.size = 7;
         pageService.current = 42;
         expect(component.firstItem).toBe(pageService.firstItem);
@@ -91,33 +93,33 @@ export default function (): void {
       });
     });
 
-    describe('Template API', function () {
+    describe('Template API', () => {
       // Until we can properly type "this"
       let context: TestContext<ClrDatagridPagination, FullTest>;
 
-      beforeEach(function (this: any) {
-        context = this.create(ClrDatagridPagination, FullTest, [Page, DetailService, StateDebouncer]);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridPagination, FullTest, [Page, DetailService, StateDebouncer]);
       });
 
-      it('receives an input for page size', function () {
+      it('receives an input for page size', () => {
         context.testComponent.size = 42;
         context.detectChanges();
         expect(context.clarityDirective.pageSize).toBe(42);
       });
 
-      it('receives an input for total number of items', function () {
+      it('receives an input for total number of items', () => {
         context.testComponent.total = 42;
         context.detectChanges();
         expect(context.clarityDirective.totalItems).toBe(42);
       });
 
-      it('receives an input for last page', function () {
+      it('receives an input for last page', () => {
         context.testComponent.last = 42;
         context.detectChanges();
         expect(context.clarityDirective.lastPage).toBe(42);
       });
 
-      it('offers two-way binding on the current page', function () {
+      it('offers two-way binding on the current page', () => {
         context.testComponent.current = 42;
         context.detectChanges();
         expect(context.clarityDirective.currentPage).toBe(42);
@@ -126,35 +128,35 @@ export default function (): void {
         expect(context.testComponent.current).toBe(3);
       });
 
-      it('disables the current page input', function () {
+      it('disables the current page input', () => {
         context.testComponent.disableCurrentPageInput = true;
         context.detectChanges();
         expect(context.clarityDirective.disableCurrentPageInput).toBe(true);
       });
 
-      it('enables the current page input', function () {
+      it('enables the current page input', () => {
         context.testComponent.disableCurrentPageInput = false;
         context.detectChanges();
         expect(context.clarityDirective.disableCurrentPageInput).toBe(false);
       });
     });
 
-    describe('View', function () {
+    describe('View', () => {
       // Until we can properly type "this"
       let context: TestContext<ClrDatagridPagination, FullTest>;
 
-      beforeEach(function (this: any) {
-        context = this.create(ClrDatagridPagination, FullTest, [Page, DetailService, StateDebouncer]);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridPagination, FullTest, [Page, DetailService, StateDebouncer]);
       });
 
-      it("doesn't display anything if there is only one page", function () {
+      it("doesn't display anything if there is only one page", () => {
         context.testComponent.size = 10;
         context.testComponent.total = 10;
         context.detectChanges();
         expect(context.clarityElement.textContent.trim()).toBe('');
       });
 
-      it('displays a next button', function () {
+      it('displays a next button', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 1;
@@ -166,7 +168,7 @@ export default function (): void {
         expect(context.testComponent.current).toBe(2);
       });
 
-      it('displays a last button', function () {
+      it('displays a last button', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 1;
@@ -178,7 +180,7 @@ export default function (): void {
         expect(context.testComponent.current).toBe(10);
       });
 
-      it('disables the next button on the last page', function () {
+      it('disables the next button on the last page', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 10;
@@ -186,7 +188,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.pagination-next:disabled')).not.toBeNull();
       });
 
-      it('disables the last button on the last page', function () {
+      it('disables the last button on the last page', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 10;
@@ -194,7 +196,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.pagination-last:disabled')).not.toBeNull();
       });
 
-      it('displays a previous button', function () {
+      it('displays a previous button', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 10;
@@ -206,7 +208,7 @@ export default function (): void {
         expect(context.testComponent.current).toBe(9);
       });
 
-      it('displays a first button', function () {
+      it('displays a first button', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 10;
@@ -218,7 +220,7 @@ export default function (): void {
         expect(context.testComponent.current).toBe(1);
       });
 
-      it('disables the previous button on the first page', function () {
+      it('disables the previous button on the first page', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 1;
@@ -226,7 +228,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.pagination-previous:disabled')).not.toBeNull();
       });
 
-      it('disables the first button on the first page', function () {
+      it('disables the first button on the first page', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 1;
@@ -234,7 +236,7 @@ export default function (): void {
         expect(context.clarityElement.querySelector('.pagination-first:disabled')).not.toBeNull();
       });
 
-      it('changes the current page on enter', function () {
+      it('changes the current page on enter', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 1;
@@ -255,7 +257,7 @@ export default function (): void {
         expect(context.testComponent.current.toString()).toBe('4');
       });
 
-      it('does not change the current page on blur', function () {
+      it('does not change the current page on blur', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 1;
@@ -271,7 +273,7 @@ export default function (): void {
         expect(context.testComponent.current.toString()).toBe('1');
       });
 
-      it('input value resets on blur', function () {
+      it('input value resets on blur', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 1;
@@ -287,7 +289,7 @@ export default function (): void {
         expect(current.value.toString()).toBe('1');
       });
 
-      it('ignores the current page when input value is invalid', function () {
+      it('ignores the current page when input value is invalid', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 4;
@@ -303,7 +305,7 @@ export default function (): void {
         expect(context.testComponent.current.toString()).toBe('4');
       });
 
-      it('sets the current page to 1 when input value is less than 1', function () {
+      it('sets the current page to 1 when input value is less than 1', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 4;
@@ -324,7 +326,7 @@ export default function (): void {
         expect(context.testComponent.current.toString()).toBe('1');
       });
 
-      it('sets the current page to last page when input value is greater than the last page', function () {
+      it('sets the current page to last page when input value is greater than the last page', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 4;
@@ -345,7 +347,7 @@ export default function (): void {
         expect(context.testComponent.current.toString()).toBe('10');
       });
 
-      it('should have type button on all button elements', function () {
+      it('should have type button on all button elements', () => {
         context.testComponent.size = 10;
         context.testComponent.total = 100;
         context.testComponent.current = 1;
@@ -375,12 +377,12 @@ export default function (): void {
       });
     });
 
-    describe('Accessibility', function () {
+    describe('Accessibility', () => {
       // Until we can properly type "this"
       let context: TestContext<ClrDatagridPagination, FullTest>;
 
-      beforeEach(function (this: any) {
-        context = this.create(ClrDatagridPagination, FullTest, [Page, DetailService, StateDebouncer]);
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridPagination, FullTest, [Page, DetailService, StateDebouncer]);
 
         context.testComponent.size = 10;
         context.testComponent.total = 100;
@@ -388,7 +390,7 @@ export default function (): void {
         context.detectChanges();
       });
 
-      it('expect buttons to have the correct aria-label', function () {
+      it('expect buttons to have the correct aria-label', () => {
         expect(context.clarityElement.querySelector('.pagination-first').attributes['aria-label'].value).toBe(
           'First Page'
         );

@@ -92,12 +92,23 @@ function timed(label: string, action: () => void): number {
 }
 
 export default function (): void {
-  describe('ClrTree performance on a large eager recursive tree', function () {
+  describe('ClrTree performance on a large eager recursive tree', () => {
+    let testContext: Context;
+
     type Context = TestContext<ClrTree<PerfNode>, PerformanceTestComponent>;
 
     const totalNodes = countNodes(generateTree(ROOTS, BRANCHING, DEPTH));
 
-    spec(ClrTree, PerformanceTestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] }, false);
+    const getContext = spec(
+      ClrTree,
+      PerformanceTestComponent,
+      ClrTreeViewModule,
+      { imports: [NoopAnimationsModule] },
+      false
+    );
+    beforeEach(() => {
+      testContext = getContext() as Context;
+    });
 
     /*
      * Change detection alone does not cover the cost of showing or hiding a subtree: the browser only restyles
@@ -126,33 +137,33 @@ export default function (): void {
     }
 
     // One test, so that the 4,000 nodes are only built once.
-    it('builds, expands, collapses and focuses without rendering collapsed subtrees', function (this: Context) {
+    it('builds, expands, collapses and focuses without rendering collapsed subtrees', () => {
       const buildMs = timed(`build ${totalNodes} nodes`, () => {
-        this.init();
-        render(this);
+        testContext.init();
+        render(testContext);
       });
-      expect(nodes(this).length).toBe(totalNodes);
-      expect(renderedCollapsedSubtrees(this)).toBe(0);
+      expect(nodes(testContext).length).toBe(totalNodes);
+      expect(renderedCollapsedSubtrees(testContext)).toBe(0);
 
-      const noopMs = timed('change detection with no changes', () => render(this));
+      const noopMs = timed('change detection with no changes', () => render(testContext));
 
       const subtreeParents = (totalNodes - ROOTS * Math.pow(BRANCHING, DEPTH - 1)) / ROOTS;
       const expandMs = timed('expand a root', () => {
-        this.testComponent.expanded = expandedMap(this.testComponent.roots[0]);
-        render(this);
+        testContext.testComponent.expanded = expandedMap(testContext.testComponent.roots[0]);
+        render(testContext);
       });
-      expect(this.clarityElement.querySelectorAll('[aria-expanded="true"]').length).toBe(subtreeParents);
+      expect(testContext.clarityElement.querySelectorAll('[aria-expanded="true"]').length).toBe(subtreeParents);
       // Expanding one root does not start rendering the subtrees of the others.
-      expect(renderedCollapsedSubtrees(this)).toBe(0);
+      expect(renderedCollapsedSubtrees(testContext)).toBe(0);
 
       const collapseMs = timed('collapse a root', () => {
-        this.testComponent.expanded = {};
-        render(this);
+        testContext.testComponent.expanded = {};
+        render(testContext);
       });
-      expect(this.clarityElement.querySelectorAll('[aria-expanded="true"]').length).toBe(0);
+      expect(testContext.clarityElement.querySelectorAll('[aria-expanded="true"]').length).toBe(0);
 
-      const focusManager = this.getClarityProvider(TreeFocusManagerService);
-      const roots = this.fixture.debugElement
+      const focusManager = testContext.getClarityProvider(TreeFocusManagerService);
+      const roots = testContext.fixture.debugElement
         .queryAll(By.directive(ClrTreeNode))
         .filter(de => !(de.componentInstance as ClrTreeNode<PerfNode>)._model.parent);
       const last = roots[roots.length - 1];

@@ -5,8 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { addHelpers } from '@clr/angular/testing';
-
 import ButtonHubSpecs from './providers/button-hub.service.spec';
 import HeaderActionsSpecs from './providers/header-actions.service.spec';
 import PageCollectionSpecs from './providers/page-collection.service.spec';
@@ -19,8 +17,6 @@ import WizardStepnavSpecs from './wizard-stepnav.spec';
 import WizardSpecs from './wizard.spec';
 
 describe('New Wizard Tests', () => {
-  addHelpers();
-
   WizardSpecs();
   WizardStepnavSpecs();
   WizardStepnavItemSpecs();

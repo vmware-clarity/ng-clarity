@@ -32,73 +32,88 @@ class TestHost {
 }
 
 export default function (): void {
-  describe('ClrPopoverOpenCloseButton', function () {
+  describe('ClrPopoverOpenCloseButton', () => {
     type Context = TestContext<ClrPopoverOpenCloseButton, TestHost> & {
       popoverService: ClrPopoverService;
     };
 
-    describe('TypeScript API', function (this: Context) {
-      spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
+    describe('TypeScript API', () => {
+      let testContext: Context;
+
+      const getContext = spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
         providers: [ClrPopoverService],
       });
-
-      beforeEach(function (this: Context) {
-        this.popoverService = this.getClarityProvider(ClrPopoverService);
-        this.detectChanges();
+      beforeEach(() => {
+        testContext = getContext() as Context;
       });
 
-      it('declares a ClrPopoverService', function (this: Context) {
-        expect(this.popoverService).toBeDefined();
+      beforeEach(() => {
+        testContext.popoverService = testContext.getClarityProvider(ClrPopoverService);
+        testContext.detectChanges();
       });
 
-      it('responds to openChange events from the popoverService', function (this: Context) {
+      it('declares a ClrPopoverService', () => {
+        expect(testContext.popoverService).toBeDefined();
+      });
+
+      it('responds to openChange events from the popoverService', () => {
         let changeCount = 0;
-        const sub: Subscription = this.popoverService.openChange.subscribe(() => {
+        const sub: Subscription = testContext.popoverService.openChange.subscribe(() => {
           changeCount++;
         });
         expect(changeCount).toBe(0); // initial state
-        this.clarityElement.click();
+        testContext.clarityElement.click();
         expect(changeCount).toBe(1); // open click
-        this.clarityElement.click();
+        testContext.clarityElement.click();
         expect(changeCount).toBe(2); // close click
         sub.unsubscribe();
       });
     });
 
     describe('Template API', () => {
-      spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
+      let testContext: Context;
+
+      const getContext = spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
         providers: [ClrPopoverService],
       });
-
-      beforeEach(function (this: Context) {
-        this.popoverService = this.getClarityProvider(ClrPopoverService);
-        this.detectChanges();
+      beforeEach(() => {
+        testContext = getContext() as Context;
       });
 
-      it('emits events when the open state changes', function (this: Context) {
-        expect(this.fixture.componentInstance.openState).toBeUndefined(); // inital state
-        this.clarityElement.click();
-        expect(this.testComponent.openState).toEqual(this.popoverService.open);
-        expect(this.testComponent.openState).toBe(true); // opened state
-        this.clarityElement.click();
-        expect(this.testComponent.openState).toEqual(this.popoverService.open);
-        expect(this.testComponent.openState).toBe(false); // closed state
+      beforeEach(() => {
+        testContext.popoverService = testContext.getClarityProvider(ClrPopoverService);
+        testContext.detectChanges();
       });
 
-      it('handles click events', function (this: Context) {
-        const clickSpy = spyOn(this.popoverService, 'toggleWithEvent');
-        this.clarityElement.click();
+      it('emits events when the open state changes', () => {
+        expect(testContext.fixture.componentInstance.openState).toBeUndefined(); // inital state
+        testContext.clarityElement.click();
+        expect(testContext.testComponent.openState).toEqual(testContext.popoverService.open);
+        expect(testContext.testComponent.openState).toBe(true); // opened state
+        testContext.clarityElement.click();
+        expect(testContext.testComponent.openState).toEqual(testContext.popoverService.open);
+        expect(testContext.testComponent.openState).toBe(false); // closed state
+      });
+
+      it('handles click events', () => {
+        const clickSpy = spyOn(testContext.popoverService, 'toggleWithEvent');
+        testContext.clarityElement.click();
         expect(clickSpy.calls.count()).toEqual(1);
       });
     });
 
-    describe('View Basics', function (this: Context) {
-      spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
+    describe('View Basics', () => {
+      let testContext: Context;
+
+      const getContext = spec(ClrPopoverOpenCloseButton, TestHost, undefined, {
         providers: [ClrPopoverService],
       });
+      beforeEach(() => {
+        testContext = getContext() as Context;
+      });
 
-      it('adds the clr-smart-open-close classname', function (this: Context) {
-        expect(this.clarityElement.classList).toContain('clr-smart-open-close');
+      it('adds the clr-smart-open-close classname', () => {
+        expect(testContext.clarityElement.classList).toContain('clr-smart-open-close');
       });
     });
   });

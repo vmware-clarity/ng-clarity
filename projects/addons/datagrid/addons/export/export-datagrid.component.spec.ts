@@ -14,120 +14,135 @@ import { ExportType } from './export-type';
 import { DatagridStrings } from '../../i18n/datagrid-strings.service';
 
 describe('ExportDatagridComponent', () => {
-  beforeEach(function (this: any) {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [FormsModule],
       providers: [{ provide: DatagridStrings, useClass: DatagridStrings }],
     });
-    this.fixture = TestBed.createComponent(ExportDatagridComponent);
-    this.fixture.componentInstance.exportType = ExportType;
-    this.fixture.componentInstance.exportEventEmitter = new EventEmitter<string>();
-    this.fixture.componentInstance.exportStatus = { inProgress: false };
-    this.exportDatagridHostComponent = this.fixture.componentInstance;
+    testContext.fixture = TestBed.createComponent(ExportDatagridComponent);
+    testContext.fixture.componentInstance.exportType = ExportType;
+    testContext.fixture.componentInstance.exportEventEmitter = new EventEmitter<string>();
+    testContext.fixture.componentInstance.exportStatus = { inProgress: false };
+    testContext.exportDatagridHostComponent = testContext.fixture.componentInstance;
   });
 
-  it('emits export event for all items on click with an export type ALL', function (this: any) {
-    spyOn(this.exportDatagridHostComponent.exportEventEmitter, 'emit');
-    this.exportDatagridHostComponent.onExportClick(this.exportDatagridHostComponent.exportType.ALL);
-    this.fixture.componentInstance.exportStatus.exportType = this.exportDatagridHostComponent.exportType.ALL;
-    expect(this.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith(
-      this.fixture.componentInstance.exportStatus
+  it('emits export event for all items on click with an export type ALL', () => {
+    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    testContext.exportDatagridHostComponent.onExportClick(testContext.exportDatagridHostComponent.exportType.ALL);
+    testContext.fixture.componentInstance.exportStatus.exportType =
+      testContext.exportDatagridHostComponent.exportType.ALL;
+    expect(testContext.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith(
+      testContext.fixture.componentInstance.exportStatus
     );
   });
 
-  it('emits export event for filtered items on click with an export type MATCHING_FILTERS', function (this: any) {
-    spyOn(this.exportDatagridHostComponent.exportEventEmitter, 'emit');
-    this.exportDatagridHostComponent.onExportClick(this.exportDatagridHostComponent.exportType.MATCHING_FILTERS);
-    this.fixture.componentInstance.exportStatus.exportType =
-      this.exportDatagridHostComponent.exportType.MATCHING_FILTERS;
-    expect(this.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith(
-      this.fixture.componentInstance.exportStatus
+  it('emits export event for filtered items on click with an export type MATCHING_FILTERS', () => {
+    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    testContext.exportDatagridHostComponent.onExportClick(
+      testContext.exportDatagridHostComponent.exportType.MATCHING_FILTERS
+    );
+    testContext.fixture.componentInstance.exportStatus.exportType =
+      testContext.exportDatagridHostComponent.exportType.MATCHING_FILTERS;
+    expect(testContext.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith(
+      testContext.fixture.componentInstance.exportStatus
     );
   });
 
-  it('emits export event for selected items on click with an export type SELECTED_ONLY', function (this: any) {
-    spyOn(this.exportDatagridHostComponent.exportEventEmitter, 'emit');
-    this.exportDatagridHostComponent.onExportClick(this.exportDatagridHostComponent.exportType.SELECTED_ONLY);
-    this.fixture.componentInstance.exportStatus.exportType = this.exportDatagridHostComponent.exportType.SELECTED_ONLY;
-    expect(this.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith(
-      this.fixture.componentInstance.exportStatus
+  it('emits export event for selected items on click with an export type SELECTED_ONLY', () => {
+    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    testContext.exportDatagridHostComponent.onExportClick(
+      testContext.exportDatagridHostComponent.exportType.SELECTED_ONLY
+    );
+    testContext.fixture.componentInstance.exportStatus.exportType =
+      testContext.exportDatagridHostComponent.exportType.SELECTED_ONLY;
+    expect(testContext.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith(
+      testContext.fixture.componentInstance.exportStatus
     );
   });
 
-  it('emits export event for all items if no selected or filtered items', function (this: any) {
-    spyOn(this.exportDatagridHostComponent.exportEventEmitter, 'emit');
-    this.exportDatagridHostComponent.allItemsCount = 10;
-    this.exportDatagridHostComponent.filteredItemsCount = 0;
-    this.exportDatagridHostComponent.selectedItemsCount = 0;
+  it('emits export event for all items if no selected or filtered items', () => {
+    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    testContext.exportDatagridHostComponent.allItemsCount = 10;
+    testContext.exportDatagridHostComponent.filteredItemsCount = 0;
+    testContext.exportDatagridHostComponent.selectedItemsCount = 0;
 
-    this.exportDatagridHostComponent.exportAllIfOnlyOption();
+    testContext.exportDatagridHostComponent.exportAllIfOnlyOption();
 
-    expect(this.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith({
+    expect(testContext.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith({
       inProgress: false,
-      exportType: this.exportDatagridHostComponent.exportType.ALL,
+      exportType: testContext.exportDatagridHostComponent.exportType.ALL,
     });
   });
 
-  it('does not emit export event if there are selected or filtered items', function (this: any) {
-    spyOn(this.exportDatagridHostComponent.exportEventEmitter, 'emit');
-    this.exportDatagridHostComponent.allItemsCount = 10;
-    this.exportDatagridHostComponent.filteredItemsCount = 5;
-    this.exportDatagridHostComponent.selectedItemsCount = 3;
+  it('does not emit export event if there are selected or filtered items', () => {
+    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    testContext.exportDatagridHostComponent.allItemsCount = 10;
+    testContext.exportDatagridHostComponent.filteredItemsCount = 5;
+    testContext.exportDatagridHostComponent.selectedItemsCount = 3;
 
-    this.exportDatagridHostComponent.exportAllIfOnlyOption();
+    testContext.exportDatagridHostComponent.exportAllIfOnlyOption();
 
-    expect(this.exportDatagridHostComponent.exportEventEmitter.emit).not.toHaveBeenCalled();
+    expect(testContext.exportDatagridHostComponent.exportEventEmitter.emit).not.toHaveBeenCalled();
   });
 
-  it('emits export event for selected items when exportType SELECTED_ONLY', function (this: any) {
-    spyOn(this.exportDatagridHostComponent.exportEventEmitter, 'emit');
-    this.exportDatagridHostComponent.selectedItemsCount = 5;
+  it('emits export event for selected items when exportType SELECTED_ONLY', () => {
+    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    testContext.exportDatagridHostComponent.selectedItemsCount = 5;
 
-    this.exportDatagridHostComponent.onExportClick(this.exportDatagridHostComponent.exportType.SELECTED_ONLY);
+    testContext.exportDatagridHostComponent.onExportClick(
+      testContext.exportDatagridHostComponent.exportType.SELECTED_ONLY
+    );
 
-    expect(this.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith({
+    expect(testContext.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith({
       inProgress: false,
-      exportType: this.exportDatagridHostComponent.exportType.SELECTED_ONLY,
+      exportType: testContext.exportDatagridHostComponent.exportType.SELECTED_ONLY,
     });
   });
 
-  it('emits export event for filtered items when exportType MATCHING_FILTERS', function (this: any) {
-    spyOn(this.exportDatagridHostComponent.exportEventEmitter, 'emit');
-    this.exportDatagridHostComponent.filteredItemsCount = 8;
+  it('emits export event for filtered items when exportType MATCHING_FILTERS', () => {
+    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    testContext.exportDatagridHostComponent.filteredItemsCount = 8;
 
-    this.exportDatagridHostComponent.onExportClick(this.exportDatagridHostComponent.exportType.MATCHING_FILTERS);
+    testContext.exportDatagridHostComponent.onExportClick(
+      testContext.exportDatagridHostComponent.exportType.MATCHING_FILTERS
+    );
 
-    expect(this.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith({
+    expect(testContext.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith({
       inProgress: false,
-      exportType: this.exportDatagridHostComponent.exportType.MATCHING_FILTERS,
+      exportType: testContext.exportDatagridHostComponent.exportType.MATCHING_FILTERS,
     });
   });
 
-  it('sets export inProgress status to true and emits correct status', function (this: any) {
-    spyOn(this.exportDatagridHostComponent.exportEventEmitter, 'emit');
-    this.exportDatagridHostComponent.exportStatus.inProgress = true;
+  it('sets export inProgress status to true and emits correct status', () => {
+    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    testContext.exportDatagridHostComponent.exportStatus.inProgress = true;
 
-    this.exportDatagridHostComponent.onExportClick(this.exportDatagridHostComponent.exportType.ALL);
+    testContext.exportDatagridHostComponent.onExportClick(testContext.exportDatagridHostComponent.exportType.ALL);
 
-    expect(this.exportDatagridHostComponent.exportStatus.inProgress).toBeTrue();
-    expect(this.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith(
-      this.exportDatagridHostComponent.exportStatus
+    expect(testContext.exportDatagridHostComponent.exportStatus.inProgress).toBeTrue();
+    expect(testContext.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith(
+      testContext.exportDatagridHostComponent.exportStatus
     );
   });
 
-  it('shows the correct row counts in dropdown options', function (this: any) {
-    this.exportDatagridHostComponent.allItemsCount = 10;
-    this.exportDatagridHostComponent.filteredItemsCount = 5;
-    this.exportDatagridHostComponent.selectedItemsCount = 3;
+  it('shows the correct row counts in dropdown options', () => {
+    testContext.exportDatagridHostComponent.allItemsCount = 10;
+    testContext.exportDatagridHostComponent.filteredItemsCount = 5;
+    testContext.exportDatagridHostComponent.selectedItemsCount = 3;
 
-    this.exportDatagridHostComponent.exportAllIfOnlyOption();
+    testContext.exportDatagridHostComponent.exportAllIfOnlyOption();
 
-    expect(this.exportDatagridHostComponent.allRowsCount).toBe('(10)');
-    expect(this.exportDatagridHostComponent.matchedFilterRowsCount).toBe('(5)');
-    expect(this.exportDatagridHostComponent.selectedRowsCount).toBe('(3)');
+    expect(testContext.exportDatagridHostComponent.allRowsCount).toBe('(10)');
+    expect(testContext.exportDatagridHostComponent.matchedFilterRowsCount).toBe('(5)');
+    expect(testContext.exportDatagridHostComponent.selectedRowsCount).toBe('(3)');
   });
 
-  afterEach(function (this: any) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 });

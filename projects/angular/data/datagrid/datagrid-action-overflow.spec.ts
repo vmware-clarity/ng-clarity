@@ -7,40 +7,42 @@
 
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
+import { createTestHelpers, expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 import { commonStringsDefault } from '@clr/angular/utils';
 
 import { ClrDatagridActionOverflow } from './datagrid-action-overflow';
 import { RowActionService } from './providers/row-action-service';
 
 export default function (): void {
-  describe('DatagridActionOverflow component', function () {
+  describe('DatagridActionOverflow component', () => {
+    const helpers = createTestHelpers();
+
     let context: TestContext<ClrDatagridActionOverflow, SimpleTest>;
     let toggle: HTMLElement;
 
-    beforeEach(function () {
-      context = this.create(ClrDatagridActionOverflow, SimpleTest, [RowActionService, ClrPopoverService]);
+    beforeEach(() => {
+      context = helpers.create(ClrDatagridActionOverflow, SimpleTest, [RowActionService, ClrPopoverService]);
       toggle = context.clarityElement.querySelector('.clr-smart-open-close');
     });
 
-    afterEach(function () {
+    afterEach(() => {
       context.fixture.destroy();
       const popoverContent = document.querySelectorAll('.datagrid-action-overflow');
       popoverContent.forEach(content => content.remove());
     });
 
-    it('has a default aria-label for the button', function () {
+    it('has a default aria-label for the button', () => {
       expect(toggle.getAttribute('aria-label')).toBe(commonStringsDefault.rowActions);
     });
 
-    it('allows a custom aria-label for the button', function () {
+    it('allows a custom aria-label for the button', () => {
       context.testComponent.buttonLabel = 'custom label';
       context.detectChanges();
 
       expect(toggle.getAttribute('aria-label')).toBe('custom label');
     });
 
-    it('offers two-way binding on clrDgActionOverflowOpen', function () {
+    it('offers two-way binding on clrDgActionOverflowOpen', () => {
       context.clarityDirective.open = true;
       context.detectChanges();
       expect(context.testComponent.open).toBe(true);
@@ -49,7 +51,7 @@ export default function (): void {
       expect(context.clarityDirective.open).toBe(false);
     });
 
-    it('opens and closes the menu when the toggle is clicked', function () {
+    it('opens and closes the menu when the toggle is clicked', () => {
       expect(context.clarityDirective.open).toBe(false);
       toggle.click();
       context.detectChanges();
@@ -59,7 +61,7 @@ export default function (): void {
       expect(context.clarityDirective.open).toBe(false);
     });
 
-    it('closes the menu when clicked outside of the host', function () {
+    it('closes the menu when clicked outside of the host', () => {
       const outsideDiv: HTMLElement = context.testElement.querySelector('.outside-click-test');
 
       // should be closed initially
@@ -76,14 +78,14 @@ export default function (): void {
       expect(context.clarityDirective.open).toBe(false);
     });
 
-    it('projects menu content when open', function () {
+    it('projects menu content when open', () => {
       toggle.click();
       context.detectChanges();
       const popoverContent = document.querySelector('.datagrid-action-overflow');
       expect(popoverContent.textContent.trim()).toMatch('Hello world');
     });
 
-    it('should call clrDgActionOverflowOpenChange output when open changed', function () {
+    it('should call clrDgActionOverflowOpenChange output when open changed', () => {
       spyOn(context.fixture.componentInstance, 'clrDgActionOverflowOpenChangeFn');
       toggle = context.clarityElement.querySelector('.datagrid-action-toggle');
       toggle.click();
@@ -92,7 +94,7 @@ export default function (): void {
       expect(context.fixture.componentInstance.clrDgActionOverflowOpenChangeFn).toHaveBeenCalledWith(false);
     });
 
-    it('closes the menu when an action menu item is clicked', function () {
+    it('closes the menu when an action menu item is clicked', () => {
       toggle.click();
       context.detectChanges();
 
@@ -102,7 +104,7 @@ export default function (): void {
       expect(context.clarityDirective.open).toBe(false);
     });
 
-    it('focuses on the first projected button', async function () {
+    it('focuses on the first projected button', async () => {
       toggle.click();
       context.detectChanges();
       await context.fixture.whenStable();
@@ -110,7 +112,7 @@ export default function (): void {
       expectActiveElementToBe(firstButton);
     });
 
-    it('stops click event propagation when the toggle button is clicked', function () {
+    it('stops click event propagation when the toggle button is clicked', () => {
       let propagatedToParent = false;
       context.testElement.addEventListener('click', () => {
         propagatedToParent = true;
