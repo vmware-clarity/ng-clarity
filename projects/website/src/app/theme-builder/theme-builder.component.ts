@@ -70,6 +70,11 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   clearPresetsModalOpen = false;
 
+  /** Presets saved in `localStorage`; reloaded only after a save or a clear. */
+  savedPresets: ThemePreset[] = [];
+  /** Built-in presets followed by `savedPresets`, as passed to the theme builder. */
+  presets: ThemePreset[] = PRESETS;
+
   @ViewChild(ClrThemeBuilder) themeBuilder!: ClrThemeBuilder;
 
   protected readonly themeBuilderOnly = getFeatureFlags().themeBuilderOnly;
@@ -83,6 +88,7 @@ export class ThemeBuilderComponent implements OnDestroy {
   constructor(public cd: ChangeDetectorRef) {
     ClarityIcons.addIcons(trashIcon);
     this.themeLockService.lockLightTheme();
+    this.refreshSavedPresets();
 
     this.cssToImportChanges
       .pipe(debounceTime(IMPORT_VALIDATION_DEBOUNCE_MS), takeUntilDestroyed())
@@ -91,21 +97,6 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   get importDisabled(): boolean {
     return !this.cssToImport.trim() || this.importValidationPending || !this.importValidation?.valid;
-  }
-
-  get presets(): ThemePreset[] {
-    return [...PRESETS, ...this.savedPresets];
-  }
-
-  get savedPresets(): ThemePreset[] {
-    try {
-      const raw = localStorage.getItem(CUSTOM_PRESETS_STORAGE_KEY);
-      const parsed = raw ? (JSON.parse(raw) as ThemePreset[]) : [];
-
-      return this.rehydratePreset(parsed);
-    } catch {
-      return [];
-    }
   }
 
   ngOnDestroy(): void {
@@ -140,6 +131,7 @@ export class ThemeBuilderComponent implements OnDestroy {
     const withoutExistingNamesake = this.savedPresets.filter(saved => saved.name !== name);
 
     localStorage.setItem(CUSTOM_PRESETS_STORAGE_KEY, JSON.stringify([...withoutExistingNamesake, preset]));
+    this.refreshSavedPresets();
 
     this.saveModalOpen = false;
   }
@@ -175,6 +167,7 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   clearCustomPresets(): void {
     localStorage.removeItem(CUSTOM_PRESETS_STORAGE_KEY);
+    this.refreshSavedPresets();
     this.clearPresetsModalOpen = false;
     this.cd.detectChanges();
   }
@@ -201,6 +194,27 @@ export class ThemeBuilderComponent implements OnDestroy {
   private validateCssToImport(css: string): void {
     this.importValidation = css.trim() ? validateGeneratedCSS(css) : null;
     this.importValidationPending = false;
+  }
+
+  /**
+   * Reloads `savedPresets` from `localStorage` and rebuilds `presets`. Reloading (instead of
+   * appending the saved preset) keeps the cached presets independent of the theme builder's
+   * live `colorStruct`, which a newly saved preset references.
+   */
+  private refreshSavedPresets(): void {
+    this.savedPresets = this.loadSavedPresets();
+    this.presets = [...PRESETS, ...this.savedPresets];
+  }
+
+  private loadSavedPresets(): ThemePreset[] {
+    try {
+      const raw = localStorage.getItem(CUSTOM_PRESETS_STORAGE_KEY);
+      const parsed = raw ? (JSON.parse(raw) as ThemePreset[]) : [];
+
+      return this.rehydratePreset(parsed);
+    } catch {
+      return [];
+    }
   }
 
   /**
