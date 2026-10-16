@@ -12,7 +12,7 @@ import { AppfxPropertyViewModule, PropertyViewBuilder, PropertyViewModel } from 
   selector: 'clr-basic-property-view-demo',
   standalone: true,
   imports: [AppfxPropertyViewModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'basic-property-view.html',
 })
 export class BasicPropertyViewDemoComponent implements OnInit {

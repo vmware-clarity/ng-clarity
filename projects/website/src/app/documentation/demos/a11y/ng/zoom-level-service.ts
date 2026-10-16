@@ -13,7 +13,7 @@ import { Subscription } from 'rxjs';
   selector: 'app-example',
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   standalone: true,
 })
 export class ExampleComponent {

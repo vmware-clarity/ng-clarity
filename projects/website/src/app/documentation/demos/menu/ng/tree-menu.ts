@@ -15,7 +15,7 @@ import { buildingIcon, ClarityIcons, clusterIcon, hostIcon } from '@clr/angular/
   selector: 'clr-tree-menu-demo',
   standalone: true,
   imports: [CommonModule, ClarityModule, AppfxMenuModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'tree-menu.html',
 })
 export class TreeMenuDemoComponent {

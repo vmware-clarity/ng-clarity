@@ -13,7 +13,7 @@ import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
   selector: 'clr-basic-menu-demo',
   standalone: true,
   imports: [CommonModule, AppfxMenuModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'basic-menu.html',
 })
 export class BasicMenuDemoComponent {

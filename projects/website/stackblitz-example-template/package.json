@@ -18,13 +18,19 @@
     "@clr/ui": "latest",
     "@clr/addons": "latest",
     "rxjs": "PLACEHOLDER",
-    "tslib": "PLACEHOLDER",
-    "zone.js": "PLACEHOLDER"
+    "tslib": "PLACEHOLDER"
   },
   "devDependencies": {
     "@angular/build": "PLACEHOLDER",
     "@angular/cli": "PLACEHOLDER",
     "@angular/compiler-cli": "PLACEHOLDER",
     "typescript": "PLACEHOLDER"
+  },
+  "overrides": {
+    "esbuild": "npm:esbuild-wasm@0.28.2"
+  },
+  "stackblitz": {
+    "installDependencies": false,
+    "startCommand": "npx --yes npm@11.13.0 install --ignore-scripts && npm start"
   }
 }

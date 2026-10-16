@@ -17,7 +17,7 @@ import { Inventory, VmItem } from './inventory/inventory';
   imports: [AppfxDatagridModule, ClrCheckboxModule, ClrInputModule, FormsModule, ReactiveFormsModule],
   standalone: true,
   templateUrl: './custom-column-definitions.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [Inventory],
 })
 export class CustomColumnDefinitionsDemoComponent {

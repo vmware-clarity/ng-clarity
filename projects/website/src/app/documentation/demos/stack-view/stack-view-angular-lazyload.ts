@@ -52,7 +52,7 @@ const EXAMPLE = `
 `;
 
 const CODE = `
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrModalModule, ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } from '@clr/angular';
 
@@ -64,6 +64,8 @@ import { ClrModalModule, ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } f
   imports: [FormsModule, ClrStackViewModule, ClrModalModule, ClrSpinnerModule],
 })
 export class ExampleComponent {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   @ViewChild('lazyBlock', { static: true }) lazyBlock!: ClrStackBlock;
 
   editModal = false;
@@ -97,6 +99,8 @@ export class ExampleComponent {
         { title: 'Sub-label 2', content: 'Sub-content 2' },
         { title: 'Sub-label 3', content: 'Sub-content 3' },
       ];
+
+      this.changeDetectorRef.markForCheck();
     }, 2000);
   }
 }

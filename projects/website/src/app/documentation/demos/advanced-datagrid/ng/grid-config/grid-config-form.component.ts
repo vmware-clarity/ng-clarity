@@ -35,7 +35,7 @@ export interface GridConfigDemoOptions {
   selector: 'grid-confirm-form',
   imports: [ClrCheckboxModule, ClrDatagridModule, ClrInputModule, ClrNumberInputModule, ClrSelectModule, FormsModule],
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'grid-config-form.component.html',
 })
 export class GridConfigFormComponent {
