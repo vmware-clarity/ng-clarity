@@ -13,5 +13,5 @@
     "sourceMap": true
   },
   "include": ["./**/*.ts"],
-  "exclude": ["**/*.spec.ts", "**/*.vitest.ts", "vitest.config.ts"]
+  "exclude": ["**/*.spec.ts", "**/*.vitest.ts", "**/tests/**", "vitest.config.ts"]
 }

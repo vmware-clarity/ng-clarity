@@ -9,6 +9,11 @@
     "migrate-v18": {
       "description": "Applies automated @clr/angular v17→v18 source migrations (templates, imports, CSS). Run with: ng generate @clr/angular:migrate-v18",
       "factory": "./ng-update/index#migrate"
+    },
+    "datagrid": {
+      "description": "Generates a standalone component with a configured <clr-datagrid>. Run with: ng generate @clr/angular:datagrid <name> --columns=<field[:type]>,...",
+      "factory": "./datagrid/index#datagrid",
+      "schema": "./datagrid/schema.json"
     }
   }
 }

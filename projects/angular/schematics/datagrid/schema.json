@@ -1,0 +1,110 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema",
+  "$id": "ClarityDatagrid",
+  "title": "Generate a Clarity datagrid component",
+  "description": "Creates a standalone Angular component with a configured <clr-datagrid>: typed columns, client-side, server-driven or virtual-scroll rows, pagination, selection, batch and row actions, and row details.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "Name of the component, in kebab-case. May include a directory, e.g. `users/users-list`.",
+      "$default": {
+        "$source": "argv",
+        "index": 0
+      },
+      "x-prompt": "What name would you like to use for the datagrid component?"
+    },
+    "columns": {
+      "type": "string",
+      "description": "Comma-separated columns as `field[:type]`, where type is string (default), number, date or boolean. Example: `name,age:number,createdAt:date,active:boolean`.",
+      "x-prompt": "Which columns should the datagrid have? (comma-separated `field[:string|number|date|boolean]`)"
+    },
+    "mode": {
+      "type": "string",
+      "enum": ["client", "server", "virtual-scroll"],
+      "default": "client",
+      "description": "client: all rows in memory, the datagrid sorts, filters and pages (`*clrDgItems`). server: the backend sorts, filters and pages, the component handles `(clrDgRefresh)`. virtual-scroll: all rows in memory, rendered with `ClrVirtualScroll`, no pagination."
+    },
+    "pagination": {
+      "type": "boolean",
+      "default": true,
+      "description": "Add a footer with `clr-dg-pagination` and a page size selector. Ignored for virtual-scroll."
+    },
+    "pageSize": {
+      "type": "number",
+      "default": 10,
+      "description": "Rows per page."
+    },
+    "sort": {
+      "type": "boolean",
+      "default": true,
+      "description": "Make the columns sortable."
+    },
+    "filter": {
+      "type": "boolean",
+      "default": true,
+      "description": "Add the built-in string and number filters to the string and number columns. Requires sort."
+    },
+    "selection": {
+      "type": "string",
+      "enum": ["none", "single", "multi"],
+      "default": "none",
+      "description": "Row selection: none, single or multi."
+    },
+    "actionBar": {
+      "type": "boolean",
+      "default": false,
+      "description": "Add a `clr-dg-action-bar` with batch action buttons that act on the selected rows. Implies multi selection when no selection is given."
+    },
+    "rowActions": {
+      "type": "boolean",
+      "default": false,
+      "description": "Add a `clr-dg-action-overflow` menu with per-row actions."
+    },
+    "detail": {
+      "type": "string",
+      "enum": ["none", "expandable", "pane"],
+      "default": "none",
+      "description": "Row details: expandable rows (`clr-dg-row-detail`) or a detail pane (`clr-dg-detail`)."
+    },
+    "hideableColumns": {
+      "type": "boolean",
+      "default": false,
+      "description": "Let users show and hide columns (`*clrDgHideableColumn`)."
+    },
+    "compact": {
+      "type": "boolean",
+      "default": false,
+      "description": "Use the compact row density (`clr-density=\"compact\"` on the datagrid)."
+    },
+    "animations": {
+      "type": "boolean",
+      "default": true,
+      "description": "Add `provideAnimationsAsync()` to the project's app.config.ts when no animations provider is set up. The datagrid needs one at runtime."
+    },
+    "path": {
+      "type": "string",
+      "format": "path",
+      "description": "Directory to create the component in, relative to the workspace root. Defaults to the project's `src/app`.",
+      "visible": false
+    },
+    "project": {
+      "type": "string",
+      "description": "Name of the project in angular.json. Defaults to the first application.",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "prefix": {
+      "type": "string",
+      "description": "Selector prefix. Defaults to the project's prefix, or `app`."
+    },
+    "flat": {
+      "type": "boolean",
+      "default": false,
+      "description": "Create the files directly in `path` instead of a folder named after the component."
+    }
+  },
+  "required": ["name", "columns"]
+}
