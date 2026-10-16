@@ -26,7 +26,7 @@ import { ClrSelectModule } from '@clr/angular';
   styleUrl: './example.component.scss',
   standalone: true,
   imports: [AppfxTranslateModule, ClrSelectModule, FormsModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     AppfxTranslateService,
     {

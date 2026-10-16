@@ -16,7 +16,7 @@ import { ClrFocusOnViewInitModule } from '@clr/angular';
     and
     <a target="_blank" href="https://pokemondb.net">PokémonDB</a>
   `,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [ClrFocusOnViewInitModule],
 })
 export class PokedexComponent {}

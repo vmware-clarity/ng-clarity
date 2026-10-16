@@ -16,7 +16,7 @@ import { Inventory, VmItem } from './inventory/inventory';
   imports: [AppfxDatagridModule],
   standalone: true,
   templateUrl: './detail-pane.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [Inventory],
 })
 export class DetailPaneGridDemoComponent {

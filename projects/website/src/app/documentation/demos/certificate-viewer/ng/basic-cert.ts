@@ -18,7 +18,7 @@ const EXAMPLE_CHAIN = [
   selector: 'clr-basic-cert-demo',
   standalone: true,
   imports: [AppfxCertificateViewerModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'basic-cert.html',
 })
 export class BasicCertDemoComponent {

@@ -15,7 +15,7 @@ import { ClarityIcons, vmIcon } from '@clr/angular/icon';
   selector: 'clr-datagrid-menu-demo',
   standalone: true,
   imports: [CommonModule, ClarityModule, AppfxMenuModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'datagrid-menu.html',
 })
 export class DatagridMenuDemoComponent {

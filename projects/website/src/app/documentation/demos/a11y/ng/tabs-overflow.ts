@@ -15,7 +15,7 @@ import { ClrTabsModule } from '@clr/angular';
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [A11yModule, ClrTabsModule, CommonModule],
 })
 export class ExampleComponent {}

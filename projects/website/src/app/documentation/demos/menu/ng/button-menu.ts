@@ -14,7 +14,7 @@ import { ClarityModule } from '@clr/angular';
   selector: 'clr-button-menu-demo',
   standalone: true,
   imports: [CommonModule, ClarityModule, AppfxMenuModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: 'button-menu.html',
 })
 export class ButtonMenuDemoComponent {

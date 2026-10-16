@@ -21,7 +21,7 @@ export class ProjectNameModel implements StepModel {
   selector: 'clr-demo-stepper-step1',
   standalone: true,
   imports: [FormsModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="clr-form-group">
       <label class="clr-control-label" for="proj-name">Project Name</label>
@@ -45,7 +45,7 @@ export class TeamModel implements StepModel {
   selector: 'clr-demo-stepper-step2',
   standalone: true,
   imports: [FormsModule],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="clr-form-group">
       <label class="clr-control-label" for="team-select">Assign Team</label>
@@ -75,7 +75,7 @@ export class ProjectWorkflowModel {
   selector: 'clr-basic-stepper-demo',
   standalone: true,
   imports: [CommonModule, AppfxStepperModule, StepperStep1Component, StepperStep2Component],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <appfx-stepper [steps]="steps" [wizardModel]="model" (onFinish)="onFinish()"></appfx-stepper>
 

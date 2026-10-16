@@ -17,7 +17,7 @@ import { DatagridLocalStorageService } from './persistance-datagrid-local-storag
   imports: [AppfxDatagridModule, ClrAlertModule],
   standalone: true,
   templateUrl: './persistance.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [
     Inventory,
     {
