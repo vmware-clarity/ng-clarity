@@ -155,6 +155,11 @@ export interface ThemeColors {
 
 // @public
 export interface ThemeCssValidation {
+    duplicateThemeBlocks: ThemeType[];
+    duplicateTokens: {
+        theme: ThemeType;
+        tokenName: string;
+    }[];
     malformedDeclarations: string[];
     valid: boolean;
 }

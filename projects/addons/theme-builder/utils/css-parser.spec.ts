@@ -104,6 +104,8 @@ describe('parseGeneratedCSS', () => {
 });
 
 describe('validateGeneratedCSS', () => {
+  const NO_ISSUES = { malformedDeclarations: [], duplicateThemeBlocks: [], duplicateTokens: [] };
+
   function changedStruct(): CdsThemeStructure {
     const struct = emptyStruct();
     struct.light.primary[0].color = new HslColor(10.5, 20.25, 30);
@@ -113,19 +115,21 @@ describe('validateGeneratedCSS', () => {
 
   it('accepts CSS produced by generateCSS', () => {
     const css = generateCSS(changedStruct()).join('\n');
-    expect(validateGeneratedCSS(css)).toEqual({ valid: true, malformedDeclarations: [] });
+    expect(validateGeneratedCSS(css)).toEqual({ valid: true, ...NO_ISSUES });
   });
 
   it("rejects generateCSS's output for an unchanged theme", () => {
     const css = generateCSS(emptyStruct()).join('\n');
-    expect(validateGeneratedCSS(css)).toEqual({ valid: false, malformedDeclarations: [] });
+    expect(validateGeneratedCSS(css)).toEqual({ valid: false, ...NO_ISSUES });
   });
 
   it('accepts hsl() with or without deg, separated by commas or whitespace', () => {
     for (const value of ['hsl(281deg, 50%, 20%)', 'hsl(281, 50%, 20%)', 'hsl(281 50% 20%)', 'hsl(281deg 50% 20%)']) {
       const css = `[cds-theme~='light'] {\n  --cds-alias-primary: ${value};\n}`;
 
-      expect(validateGeneratedCSS(css)).withContext(value).toEqual({ valid: true, malformedDeclarations: [] });
+      expect(validateGeneratedCSS(css))
+        .withContext(value)
+        .toEqual({ valid: true, ...NO_ISSUES });
       expect(colorsByName(parseGeneratedCSS(css).light.primary))
         .withContext(value)
         .toEqual({ '--cds-alias-primary': new HslColor(281, 50, 20) });
@@ -142,6 +146,7 @@ describe('validateGeneratedCSS', () => {
 }`;
 
     expect(validateGeneratedCSS(css)).toEqual({
+      ...NO_ISSUES,
       valid: false,
       malformedDeclarations: [
         '--cds-alias-primary: hsl(1.2.3deg abc% 150%)',
@@ -176,9 +181,39 @@ describe('validateGeneratedCSS', () => {
     expect(validateGeneratedCSS(css).valid).toBe(true);
   });
 
+  it('lists a token declared twice for the same theme', () => {
+    const css = `[cds-theme~='light'] {
+  --cds-alias-primary: hsl(10deg, 50%, 40%);
+  --cds-alias-primary: hsl(160deg, 69%, 36%);
+}
+[cds-theme~='dark'] {
+  --cds-alias-primary: hsl(160deg, 69%, 53%);
+}`;
+
+    expect(validateGeneratedCSS(css)).toEqual({
+      ...NO_ISSUES,
+      valid: false,
+      duplicateTokens: [{ theme: 'light', tokenName: '--cds-alias-primary' }],
+    });
+  });
+
+  it('lists a theme block that appears more than once, and the tokens it repeats', () => {
+    const css = [...generateCSS(changedStruct()), ...generateCSS(changedStruct())].join('\n');
+
+    expect(validateGeneratedCSS(css)).toEqual({
+      ...NO_ISSUES,
+      valid: false,
+      duplicateThemeBlocks: ['light', 'dark'],
+      duplicateTokens: [
+        { theme: 'light', tokenName: '--cds-alias-primary' },
+        { theme: 'dark', tokenName: '--cds-alias-primary' },
+      ],
+    });
+  });
+
   it('rejects CSS with no recognized theme colors', () => {
     for (const css of ['body { color: red; }', "[cds-theme~='light'] { --cds-alias-primary: hsl(10deg, 20%, 30%);"]) {
-      expect(validateGeneratedCSS(css)).toEqual({ valid: false, malformedDeclarations: [] });
+      expect(validateGeneratedCSS(css)).toEqual({ valid: false, ...NO_ISSUES });
     }
   });
 });

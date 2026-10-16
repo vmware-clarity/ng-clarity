@@ -72,16 +72,36 @@
   <div class="modal-body">
     @if (importValidation && !importValidation.valid) {
       <clr-alert clrAlertType="danger" [clrAlertClosable]="false" cds-layout="m-b:md">
-        <clr-alert-item>
-          <span class="alert-text">Malformed CSS detected.</span>
-        </clr-alert-item>
-        @for (declaration of importValidation.malformedDeclarations; track $index) {
+        @if (
+          importValidation.malformedDeclarations.length ||
+          importValidation.duplicateThemeBlocks.length ||
+          importValidation.duplicateTokens.length
+        ) {
           <clr-alert-item>
-            <span class="alert-text">
-              <code>{{ declaration }}</code>
-            </span>
+            <span class="alert-text">Malformed CSS detected.</span>
           </clr-alert-item>
-        } @empty {
+          @for (declaration of importValidation.malformedDeclarations; track $index) {
+            <clr-alert-item>
+              <span class="alert-text">
+                <code>{{ declaration }}</code>
+              </span>
+            </clr-alert-item>
+          }
+          @for (theme of importValidation.duplicateThemeBlocks; track theme) {
+            <clr-alert-item>
+              <span class="alert-text">
+                Duplicate theme block: <code>[cds-theme~='{{ theme }}']</code>
+              </span>
+            </clr-alert-item>
+          }
+          @for (duplicate of importValidation.duplicateTokens; track $index) {
+            <clr-alert-item>
+              <span class="alert-text">
+                Duplicate token in {{ duplicate.theme }} theme: <code>{{ duplicate.tokenName }}</code>
+              </span>
+            </clr-alert-item>
+          }
+        } @else {
           <clr-alert-item>
             <span class="alert-text">No Clarity theme colors found.</span>
           </clr-alert-item>

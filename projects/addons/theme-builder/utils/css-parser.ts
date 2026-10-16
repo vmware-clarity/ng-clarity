@@ -48,6 +48,10 @@ export interface ThemeCssValidation {
   valid: boolean;
   /** Theme-block declarations that aren't in an accepted shape (see `HSL_REGEX`), as written. */
   malformedDeclarations: string[];
+  /** Themes whose `[cds-theme~='light'|'dark']` block appears more than once. */
+  duplicateThemeBlocks: ThemeType[];
+  /** Tokens declared more than once for the same theme, listed once each. */
+  duplicateTokens: { theme: ThemeType; tokenName: string }[];
 }
 
 interface ThemeDeclaration {
@@ -90,15 +94,40 @@ export function parseGeneratedCSS(css: string): CdsThemeStructure {
  * Checks that `css` can be imported, before it's applied. It's malformed when a theme color
  * in a `[cds-theme~='light'|'dark']` block, or any `hsl()` value there, isn't in an accepted
  * `hsl()` shape (see `HSL_REGEX`; saturation and lightness within 0–100), or when a block
- * holds anything other than a custom-property declaration.
+ * holds anything other than a custom-property declaration. Each theme block may appear only
+ * once, and each token only once per theme; repeats are reported and make the CSS invalid.
  * CSS with no recognized theme color at all (including `generateCSS`'s output for an
  * unchanged theme) is rejected too, since importing it would only reset the colors.
  */
 export function validateGeneratedCSS(css: string): ThemeCssValidation {
   const malformedDeclarations: string[] = [];
+  const duplicateThemeBlocks: ThemeType[] = [];
+  const duplicateTokens: ThemeCssValidation['duplicateTokens'] = [];
+  const seenThemes = new Set<ThemeType>();
+  const seenTokens = { light: new Set<string>(), dark: new Set<string>() };
   let recognizedTokens = 0;
 
+  for (const blockMatch of css.matchAll(THEME_BLOCK_REGEX)) {
+    const theme = blockMatch[1] as ThemeType;
+
+    if (seenThemes.has(theme) && !duplicateThemeBlocks.includes(theme)) {
+      duplicateThemeBlocks.push(theme);
+    }
+
+    seenThemes.add(theme);
+  }
+
   for (const declaration of readThemeDeclarations(css)) {
+    const { theme, tokenName } = declaration;
+
+    if (tokenName && seenTokens[theme].has(tokenName)) {
+      if (!duplicateTokens.some(d => d.theme === theme && d.tokenName === tokenName)) {
+        duplicateTokens.push({ theme, tokenName });
+      }
+    } else if (tokenName) {
+      seenTokens[theme].add(tokenName);
+    }
+
     if (!declaration.wellFormed) {
       malformedDeclarations.push(declaration.source);
     } else if (declaration.group) {
@@ -106,9 +135,10 @@ export function validateGeneratedCSS(css: string): ThemeCssValidation {
     }
   }
 
-  const valid = !malformedDeclarations.length && recognizedTokens > 0;
+  const valid =
+    !malformedDeclarations.length && !duplicateThemeBlocks.length && !duplicateTokens.length && recognizedTokens > 0;
 
-  return { valid, malformedDeclarations };
+  return { valid, malformedDeclarations, duplicateThemeBlocks, duplicateTokens };
 }
 
 function readThemeDeclarations(css: string): ThemeDeclaration[] {
