@@ -49,8 +49,10 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     constructor();
     // (undocumented)
     activePreset: ThemePreset | null;
+    // Warning: (ae-forgotten-export) The symbol "ThemeType" needs to be exported by the entry point clr-addons-theme-builder.d.ts
+    //
     // (undocumented)
-    activeTheme: 'light' | 'dark';
+    activeTheme: ThemeType;
     applyPreset(preset: ThemePreset): void;
     // (undocumented)
     applyPreviewStyles(): void;

@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { ThemeType } from '@clr/angular';
+
 import { Color } from './color';
 import { TOKEN_KEYS } from './presets';
 import { CdsThemeStructure } from './types';
@@ -49,7 +51,7 @@ export interface ThemeCssValidation {
 }
 
 interface ThemeDeclaration {
-  theme: 'light' | 'dark';
+  theme: ThemeType;
   /** Group in `TOKEN_KEYS`, or `undefined` when the token isn't a theme color. */
   group: string | undefined;
   tokenName: string;
@@ -113,7 +115,7 @@ function readThemeDeclarations(css: string): ThemeDeclaration[] {
   const declarations: ThemeDeclaration[] = [];
 
   for (const blockMatch of css.matchAll(THEME_BLOCK_REGEX)) {
-    const theme = blockMatch[1] as 'light' | 'dark';
+    const theme = blockMatch[1] as ThemeType;
     const body = blockMatch[2].replace(COMMENT_REGEX, '');
 
     for (const rawDeclaration of body.split(';')) {

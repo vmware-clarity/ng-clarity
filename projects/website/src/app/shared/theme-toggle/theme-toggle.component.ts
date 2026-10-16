@@ -6,12 +6,10 @@
  */
 
 import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
-import { ClarityIcons, ClrIcon, moonIcon, sunIcon } from '@clr/angular';
+import { ClarityIcons, ClrIcon, moonIcon, sunIcon, ThemeType } from '@clr/angular';
 import { Observable, Subscription } from 'rxjs';
 
 import { ThemeLockService } from './theme-lock.service';
-
-type ThemeType = 'light' | 'dark';
 
 const themeLocalStorageKey = 'theme';
 

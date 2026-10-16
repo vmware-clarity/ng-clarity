@@ -16,6 +16,7 @@ import {
   homeIcon,
   moonIcon,
   sunIcon,
+  ThemeType,
   undoIcon,
   userIcon,
 } from '@clr/angular';
@@ -51,7 +52,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   // Set to null when the user manually edits any color.
   activePreset: ThemePreset | null = null;
 
-  activeTheme: 'light' | 'dark' = 'light';
+  activeTheme: ThemeType = 'light';
 
   // Forces black text on the warning color for legibility — toggled via the "Warning text override" switch.
   warningTextOverrideEnabled = true;
@@ -287,7 +288,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
    * present is then applied on top, so an explicit variant override isn't lost to that
    * derivation. Assumes the theme's colors were already reset by the caller.
    */
-  private applyGroupOverrides(theme: 'light' | 'dark', key: string, overrides: Color[]): void {
+  private applyGroupOverrides(theme: ThemeType, key: string, overrides: Color[]): void {
     const colorGroup = this.colorStruct[theme][key];
 
     if (!colorGroup) {
