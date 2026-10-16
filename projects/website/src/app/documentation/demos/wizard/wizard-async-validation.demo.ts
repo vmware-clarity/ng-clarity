@@ -19,7 +19,7 @@ import {
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrAlertModule,
@@ -37,6 +37,8 @@ import {
   imports: [ClrAlertModule, ClrSpinnerModule, ClrWizardModule, ClrFormsModule, FormsModule],
 })
 export class ExampleComponent {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
   @ViewChild('myForm', { static: true }) formData: any;
 
@@ -61,6 +63,8 @@ export class ExampleComponent {
         this.errorFlag = true;
       }
       this.loadingFlag = false;
+
+      this.changeDetectorRef.markForCheck();
     }, 1000);
   }
 }

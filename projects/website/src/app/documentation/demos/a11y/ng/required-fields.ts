@@ -15,7 +15,7 @@ import { ClrCommonFormsModule, ClrInputModule, ClrTabsModule } from '@clr/angula
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [A11yModule, ClrCommonFormsModule, ClrInputModule, ClrTabsModule],
 })
 export class ExampleComponent {

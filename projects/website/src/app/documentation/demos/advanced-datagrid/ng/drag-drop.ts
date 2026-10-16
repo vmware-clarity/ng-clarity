@@ -36,7 +36,7 @@ import { Inventory, VmItem } from './inventory/inventory';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [Inventory],
 })
 export class DragDropGridDemoComponent {

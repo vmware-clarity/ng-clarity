@@ -51,7 +51,7 @@ import { User } from '../inventory/user';
       }
     `,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   host: {
     '[class.color-filter]': 'true',
   },

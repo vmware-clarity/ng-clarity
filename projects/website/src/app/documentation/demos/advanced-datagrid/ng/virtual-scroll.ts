@@ -18,7 +18,7 @@ import { FetchResult, Inventory, VmItem } from './inventory/inventory';
   imports: [AppfxDatagridModule, GridConfigFormComponent],
   standalone: true,
   templateUrl: './virtual-scroll.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ExportProviderService, Inventory],
 })
 export class VirtualScrollGridDemoComponent {

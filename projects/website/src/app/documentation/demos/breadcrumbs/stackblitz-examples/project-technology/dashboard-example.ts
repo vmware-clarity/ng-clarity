@@ -7,5 +7,5 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-@Component({ changeDetection: ChangeDetectionStrategy.Eager, template: '<p>Dashboard Example</p>' })
+@Component({ changeDetection: ChangeDetectionStrategy.OnPush, template: '<p>Dashboard Example</p>' })
 export class DashboardExample {}

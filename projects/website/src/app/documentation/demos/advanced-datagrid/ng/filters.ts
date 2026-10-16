@@ -128,7 +128,7 @@ export class CustomUserService extends DatagridFiltersUserService {
   imports: [AppfxDatagridModule, ClarityModule, FormsModule],
   standalone: true,
   templateUrl: './filters.html',
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [Inventory, { provide: DatagridFiltersUserService, useClass: CustomUserService }],
 })
 export class FiltersGridComponent {

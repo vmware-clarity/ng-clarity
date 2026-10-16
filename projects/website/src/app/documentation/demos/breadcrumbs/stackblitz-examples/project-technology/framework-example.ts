@@ -7,5 +7,5 @@
 
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
-@Component({ changeDetection: ChangeDetectionStrategy.Eager, template: '<p>Framework Example</p>' })
+@Component({ changeDetection: ChangeDetectionStrategy.OnPush, template: '<p>Framework Example</p>' })
 export class FrameworkExample {}

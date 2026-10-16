@@ -11,7 +11,7 @@ import { AppfxCardContainerModule } from '@clr/addons/card-container';
 @Component({
   selector: 'appfx-demo-summary-card',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card">
       <div class="card-header">Summary</div>
@@ -27,7 +27,7 @@ export class SummaryCardComponent {}
 @Component({
   selector: 'appfx-demo-note-card',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card">
       <div class="card-header">Notes</div>
@@ -43,7 +43,7 @@ export class NotesCardComponent {}
 @Component({
   selector: 'appfx-demo-tags-card',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card">
       <div class="card-header">Tags</div>
@@ -59,7 +59,7 @@ export class TagsCardComponent {}
 @Component({
   selector: 'appfx-demo-dynamic-card',
   standalone: true,
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <div class="card">
       <div class="card-header">Dynamic</div>
@@ -79,7 +79,7 @@ export class DynamicCardComponent {}
     TagsCardComponent,
     DynamicCardComponent,
   ],
-  changeDetection: ChangeDetectionStrategy.Eager,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   templateUrl: './basic-card-container.html',
 })
 export class BasicCardContainerDemoComponent {
