@@ -175,7 +175,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   presetSwatchColor(preset: ThemePreset): string | undefined {
     const primary = preset.light?.primary;
 
-    if (!primary) {
+    if (!primary?.length) {
       return undefined;
     }
 

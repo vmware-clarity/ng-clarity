@@ -350,6 +350,14 @@ describe('ThemeBuilderComponent', () => {
 
       expect(this.component.presetSwatchColor(preset)).toBeUndefined();
     });
+
+    it('returns undefined when the preset has an empty primary group', function (this: ThisTest) {
+      this.fixture.detectChanges(false);
+
+      const preset: ThemePreset = { name: 'Empty primary', light: { primary: [] }, dark: {} };
+
+      expect(this.component.presetSwatchColor(preset)).toBeUndefined();
+    });
   });
 });
 
