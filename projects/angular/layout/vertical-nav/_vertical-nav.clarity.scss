@@ -101,8 +101,26 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
       }
     }
 
+    // The height animates to and from `auto` where the browser supports `interpolate-size`. Children that are not
+    // removed when the group closes are hidden once collapsed.
     .nav-group-children {
       overflow-y: hidden;
+      height: 0;
+      visibility: hidden;
+      interpolate-size: allow-keywords;
+      transition:
+        height tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out,
+        visibility 0s tokens.$cds-global-animation-duration-quick;
+
+      &.is-expanded {
+        height: auto;
+        visibility: visible;
+        transition-delay: 0s;
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        transition: none;
+      }
     }
 
     .nav-trigger,

@@ -9,8 +9,8 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
+import { delay, enableCssAnimations } from '@clr/angular/testing';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionPanel } from './accordion-panel';
@@ -92,7 +92,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [CollapsiblePanelService, IfExpandService],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(ClrAccordionPanel);
@@ -133,7 +133,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent, TestNoBindingComponent],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(TestComponent);
@@ -211,7 +211,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent, TestNoBindingComponent, TestNestedAccordionComponent],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(TestComponent);
@@ -319,5 +319,65 @@ describe('ClrAccordionPanel', () => {
 
       expect(nestedPanelHeading).toBeNull();
     });
+  });
+});
+
+describe('ClrAccordionPanel with animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [ClrAccordionModule],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  function content(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.clr-accordion-content');
+  }
+
+  async function render(open: boolean) {
+    fixture.componentInstance.open = open;
+    fixture.detectChanges();
+    await delay();
+  }
+
+  it('does not animate the content open on the first render', async () => {
+    await render(true);
+    expect(content().classList).not.toContain('clr-expand-enter');
+  });
+
+  it('expands the content when the panel opens', async () => {
+    await render(false);
+    await render(true);
+    expect(content().classList).toContain('clr-expand-enter');
+    expect(
+      content()
+        .getAnimations()
+        .map(animation => (animation as CSSAnimation).animationName)
+    ).toEqual(['clr-expand']);
+  });
+
+  it('expands the content of a panel open on the first render when it opens again', async () => {
+    await render(true);
+    await render(false);
+    await render(true);
+    expect(content().classList).toContain('clr-expand-enter');
+  });
+
+  it('removes the content as soon as the panel closes', async () => {
+    await render(true);
+    fixture.componentInstance.open = false;
+    fixture.detectChanges();
+    expect(content()).toBeNull();
   });
 });

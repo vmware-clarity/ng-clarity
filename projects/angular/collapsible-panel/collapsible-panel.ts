@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Directive, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
+import { afterNextRender, ChangeDetectorRef, Directive, EventEmitter, OnInit, SimpleChanges } from '@angular/core';
 import { IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
@@ -13,12 +13,21 @@ import { filter, tap } from 'rxjs/operators';
 import { CollapsiblePanelModel } from './models/collapsible-panel.model';
 import { CollapsiblePanelService } from './providers/collapsible-panel.service';
 
+/**
+ * Base class of the accordion and stepper panels.
+ *
+ * The content of a panel expands with the `clr-expand-enter` CSS animation, bound in the template with
+ * `<div [animate.enter]="expandClass">` (and can collapse with `animate.leave="clr-collapse-leave"`).
+ */
 @Directive()
 export abstract class CollapsiblePanel implements OnInit {
   panelOpen = false;
   panelOpenChange = new EventEmitter<boolean>();
 
   panel: Observable<CollapsiblePanelModel>;
+
+  /** Enter animation of the content: none for the content open on the first render. */
+  protected expandClass = '';
 
   protected _panelIndex: number;
   private _id = uniqueIdFactory();
@@ -27,7 +36,14 @@ export abstract class CollapsiblePanel implements OnInit {
     protected panelService: CollapsiblePanelService,
     protected ifExpandService: IfExpandService,
     protected cdr: ChangeDetectorRef
-  ) {}
+  ) {
+    // Not for the content open on the first render (see `emitPanelChange`).
+    afterNextRender(() => {
+      if (!this.panelOpen) {
+        this.expandClass = 'clr-expand-enter';
+      }
+    });
+  }
 
   get id(): string {
     return this._id;
@@ -80,6 +96,10 @@ export abstract class CollapsiblePanel implements OnInit {
 
     if (panel.open) {
       this.ifExpandService.expanded = true;
+    } else if (this.ifExpandService.expanded) {
+      // Content open on the first render animates from its next opening.
+      this.expandClass = 'clr-expand-enter';
+      this.collapsePanelOnAnimationDone(panel);
     }
   }
 

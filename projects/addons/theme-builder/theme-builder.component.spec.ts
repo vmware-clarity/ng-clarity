@@ -7,7 +7,6 @@
 
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ThemeBuilderComponent } from './theme-builder.component';
 import { Color } from './utils/color';
@@ -30,7 +29,7 @@ export interface ThisTest {
 
 describe('ThemeBuilderComponent', () => {
   beforeEach(function (this: ThisTest) {
-    TestBed.configureTestingModule({ imports: [ThemeBuilderComponent, NoopAnimationsModule] });
+    TestBed.configureTestingModule({ imports: [ThemeBuilderComponent] });
     this.fixture = TestBed.createComponent(ThemeBuilderComponent);
     this.component = this.fixture.componentInstance;
   });
@@ -194,7 +193,7 @@ describe('ThemeBuilderComponent with projected content', () => {
   let fixture: ComponentFixture<ProjectedContentHostComponent>;
 
   beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [ProjectedContentHostComponent, NoopAnimationsModule] });
+    TestBed.configureTestingModule({ imports: [ProjectedContentHostComponent] });
     fixture = TestBed.createComponent(ProjectedContentHostComponent);
   });
 

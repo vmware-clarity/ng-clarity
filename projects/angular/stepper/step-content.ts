@@ -11,6 +11,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
   selector: 'clr-step-content',
   template: `<ng-content></ng-content>`,
   changeDetection: ChangeDetectionStrategy.OnPush,
+  // `*clrIfExpanded` removes the content when the step closes: it stays displayed while the step collapses.
+  host: { 'animate.leave': 'clr-collapse-hold-leave' },
   standalone: false,
 })
 export class ClrStepContent {}

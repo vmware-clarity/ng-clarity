@@ -4,7 +4,6 @@
 
 ```ts
 
-import * as _angular_animations from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
@@ -14,7 +13,7 @@ import { OnInit } from '@angular/core';
 import { SimpleChanges } from '@angular/core';
 import { Subject } from 'rxjs';
 
-// @public (undocumented)
+// @public
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
@@ -23,6 +22,7 @@ export abstract class CollapsiblePanel implements OnInit {
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
     // (undocumented)
     abstract get disabled(): boolean;
+    protected expandClass: string;
     // (undocumented)
     abstract getContentId(id: string): string;
     // (undocumented)
@@ -58,11 +58,13 @@ export abstract class CollapsiblePanel implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanel, never>;
 }
 
-// @public (undocumented)
-export const collapsiblePanelAnimation: _angular_animations.AnimationTriggerMetadata[];
+// Warning: (ae-forgotten-export) The symbol "ClrAnimationTriggerMetadata" needs to be exported by the entry point clr-angular-collapsible-panel.d.ts
+//
+// @public @deprecated (undocumented)
+export const collapsiblePanelAnimation: ClrAnimationTriggerMetadata[];
 
-// @public (undocumented)
-export const collapsiblePanelExpandAnimation: _angular_animations.AnimationTriggerMetadata[];
+// @public @deprecated (undocumented)
+export const collapsiblePanelExpandAnimation: ClrAnimationTriggerMetadata[];
 
 // @public (undocumented)
 export class CollapsiblePanelGroupModel {
@@ -125,14 +127,16 @@ export class CollapsiblePanelService {
     static ɵprov: i0.ɵɵInjectableDeclaration<CollapsiblePanelService>;
 }
 
-// @public (undocumented)
-export const panelCollapseTransition: _angular_animations.AnimationTransitionMetadata;
+// Warning: (ae-forgotten-export) The symbol "ClrAnimationTransitionMetadata" needs to be exported by the entry point clr-angular-collapsible-panel.d.ts
+//
+// @public @deprecated (undocumented)
+export const panelCollapseTransition: ClrAnimationTransitionMetadata;
 
-// @public (undocumented)
-export const panelExpandTransition: _angular_animations.AnimationTransitionMetadata;
+// @public @deprecated (undocumented)
+export const panelExpandTransition: ClrAnimationTransitionMetadata;
 
-// @public (undocumented)
-export const skipInitialRenderTrigger: _angular_animations.AnimationTriggerMetadata;
+// @public @deprecated (undocumented)
+export const skipInitialRenderTrigger: ClrAnimationTriggerMetadata;
 
 // (No @packageDocumentation comment for this package)
 

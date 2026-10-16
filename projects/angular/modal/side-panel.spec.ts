@@ -8,9 +8,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityIcons, pinIcon, unpinIcon } from '@clr/angular/icon';
-import { delay, expectActiveElementToBe } from '@clr/angular/testing';
+import { delay, enableCssAnimations, expectActiveElementToBe } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
 import { ClrSidePanel } from './side-panel';
@@ -62,6 +61,19 @@ class TestDefaultsComponent {
   opened = true;
 }
 
+@Component({
+  template: `
+    <clr-side-panel [(clrSidePanelOpen)]="opened" [clrSidePanelPosition]="position">
+      <div class="side-panel-body">Body</div>
+    </clr-side-panel>
+  `,
+  standalone: false,
+})
+class PositionTestComponent {
+  opened = false;
+  position = 'right';
+}
+
 describe('Side Panel', () => {
   let fixture: ComponentFixture<TestComponent>;
   let compiled: HTMLElement;
@@ -69,7 +81,7 @@ describe('Side Panel', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrSidePanelModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrSidePanelModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
@@ -284,5 +296,43 @@ describe('Side Panel', () => {
     new ClrSidePanelModule();
 
     expect(ClarityIcons.addIcons).toHaveBeenCalledWith(pinIcon, unpinIcon);
+  });
+});
+
+describe('Side Panel with animations', () => {
+  let fixture: ComponentFixture<PositionTestComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [CdkTrapFocusModule, ClrSidePanelModule],
+      declarations: [PositionTestComponent],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(PositionTestComponent);
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  async function openAt(position: string) {
+    fixture.componentInstance.position = position;
+    fixture.detectChanges();
+    fixture.componentInstance.opened = true;
+    fixture.detectChanges();
+    await delay();
+  }
+
+  it('slides in from the right', async () => {
+    await openAt('right');
+    expect(fixture.nativeElement.querySelector('.modal-dialog').classList).toContain('clr-fade-slide-left-enter');
+  });
+
+  it('slides in from the bottom', async () => {
+    await openAt('bottom');
+    expect(fixture.nativeElement.querySelector('.modal-dialog').classList).toContain('clr-fade-slide-up-enter');
   });
 });

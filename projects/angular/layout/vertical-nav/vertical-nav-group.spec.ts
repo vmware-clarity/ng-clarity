@@ -8,9 +8,8 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
-import { delay } from '@clr/angular/testing';
+import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
@@ -25,7 +24,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrVerticalNavModule, ClrIcon, NoopAnimationsModule],
+        imports: [ClrVerticalNavModule, ClrIcon],
         declarations: [GroupInternalsTestComponent, IfExpandedTestComponent, TemplateAPITestComponent],
         providers: [VerticalNavService, VerticalNavGroupRegistrationService],
       });
@@ -235,6 +234,68 @@ export default function (): void {
       });
     });
   });
+
+  describe('Vertical Nav Group with animations', () => {
+    let fixture: ComponentFixture<AnimatedGroupTestComponent>;
+    let restoreAnimations: () => void;
+
+    beforeEach(async () => {
+      restoreAnimations = enableCssAnimations();
+      TestBed.configureTestingModule({
+        imports: [ClrVerticalNavModule, ClrIcon],
+        declarations: [AnimatedGroupTestComponent],
+        animationsEnabled: true,
+      });
+      fixture = TestBed.createComponent(AnimatedGroupTestComponent);
+      fixture.detectChanges();
+      await delay();
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+      restoreAnimations();
+    });
+
+    function children(): HTMLElement {
+      return fixture.nativeElement.querySelector('.nav-group-children');
+    }
+
+    function heightTransitions(): Animation[] {
+      return children()
+        .getAnimations()
+        .filter(animation => (animation as CSSTransition).transitionProperty === 'height');
+    }
+
+    it('animates the height of the children when the group expands', () => {
+      // A transition starts from the last computed style: compute the collapsed one first.
+      void getComputedStyle(children()).height;
+      fixture.componentInstance.navGroup.toggleExpand();
+      fixture.detectChanges();
+
+      expect(heightTransitions().length).toBe(1);
+    });
+
+    it('keeps the children displayed while the group collapses', async () => {
+      const navGroup = fixture.componentInstance.navGroup;
+      navGroup.toggleExpand();
+      fixture.detectChanges();
+      finishAnimations(fixture.nativeElement);
+
+      navGroup.toggleExpand();
+      fixture.detectChanges();
+
+      expect(navGroup.expanded).toBeFalse();
+      expect(heightTransitions().length).toBe(1);
+      expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).not.toBeNull();
+
+      finishAnimations(fixture.nativeElement);
+      // Angular removes the element on the `animationend` event, dispatched with the next frame.
+      await new Promise(resolve => requestAnimationFrame(resolve));
+      await delay();
+
+      expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).toBeNull();
+    });
+  });
 }
 
 @Component({
@@ -294,4 +355,21 @@ class TemplateAPITestComponent {
   updateExpanded(value: boolean) {
     this.expandedChange = value;
   }
+}
+
+@Component({
+  template: `
+    <clr-vertical-nav>
+      <clr-vertical-nav-group #group>
+        Group
+        <clr-vertical-nav-group-children *clrIfExpanded>
+          <a href="#" clrVerticalNavLink>Link</a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
+    </clr-vertical-nav>
+  `,
+  standalone: false,
+})
+class AnimatedGroupTestComponent {
+  @ViewChild('group') navGroup: ClrVerticalNavGroup;
 }
