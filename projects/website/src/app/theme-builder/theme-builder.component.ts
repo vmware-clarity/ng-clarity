@@ -70,6 +70,9 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   clearPresetsModalOpen = false;
 
+  /** `true` when the last attempt to save a preset couldn't write to `localStorage`. */
+  saveStorageFailed = false;
+
   /** Presets saved in `localStorage`; reloaded only after a save or a clear. */
   savedPresets: ThemePreset[] = [];
   /** Built-in presets followed by `savedPresets`, as passed to the theme builder. */
@@ -114,6 +117,7 @@ export class ThemeBuilderComponent implements OnDestroy {
 
   openSaveModal(): void {
     this.presetName = '';
+    this.saveStorageFailed = false;
     this.saveModalOpen = true;
   }
 
@@ -130,9 +134,14 @@ export class ThemeBuilderComponent implements OnDestroy {
     };
     const withoutExistingNamesake = this.savedPresets.filter(saved => saved.name !== name);
 
-    localStorage.setItem(CUSTOM_PRESETS_STORAGE_KEY, JSON.stringify([...withoutExistingNamesake, preset]));
-    this.refreshSavedPresets();
+    try {
+      localStorage.setItem(CUSTOM_PRESETS_STORAGE_KEY, JSON.stringify([...withoutExistingNamesake, preset]));
+    } catch {
+      this.saveStorageFailed = true;
+      return;
+    }
 
+    this.refreshSavedPresets();
     this.saveModalOpen = false;
   }
 
@@ -166,7 +175,12 @@ export class ThemeBuilderComponent implements OnDestroy {
   }
 
   clearCustomPresets(): void {
-    localStorage.removeItem(CUSTOM_PRESETS_STORAGE_KEY);
+    try {
+      localStorage.removeItem(CUSTOM_PRESETS_STORAGE_KEY);
+    } catch {
+      console.warn('Theme builder: could not clear saved presets, browser storage is blocked.');
+    }
+
     this.refreshSavedPresets();
     this.clearPresetsModalOpen = false;
     this.cd.detectChanges();
@@ -206,13 +220,26 @@ export class ThemeBuilderComponent implements OnDestroy {
     this.presets = [...PRESETS, ...this.savedPresets];
   }
 
+  /**
+   * Reads the saved presets. Stored data that isn't JSON, or that `rehydratePreset` can't
+   * walk, is cleared from `localStorage`.
+   */
   private loadSavedPresets(): ThemePreset[] {
+    let raw: string | null;
+
     try {
-      const raw = localStorage.getItem(CUSTOM_PRESETS_STORAGE_KEY);
+      raw = localStorage.getItem(CUSTOM_PRESETS_STORAGE_KEY);
+    } catch {
+      console.warn('Theme builder: browser storage is inaccessible, so saved presets are unavailable.');
+      return [];
+    }
+
+    try {
       const parsed = raw ? (JSON.parse(raw) as ThemePreset[]) : [];
 
       return this.rehydratePreset(parsed);
     } catch {
+      localStorage.removeItem(CUSTOM_PRESETS_STORAGE_KEY);
       return [];
     }
   }

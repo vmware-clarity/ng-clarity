@@ -54,6 +54,13 @@
 <clr-modal [(clrModalOpen)]="saveModalOpen">
   <div class="modal-title">Save current theme configuration as preset</div>
   <div class="modal-body">
+    @if (saveStorageFailed) {
+      <clr-alert clrAlertType="danger" [clrAlertClosable]="false" cds-layout="m-b:md">
+        <clr-alert-item>
+          <span class="alert-text">Saving presets isn't possible in this browser. Its storage is full or blocked.</span>
+        </clr-alert-item>
+      </clr-alert>
+    }
     <clr-input-container cds-layout="m-t:none">
       <label>Preset name</label>
       <input clrInput [(ngModel)]="presetName" />
