@@ -32,112 +32,114 @@ class TestComponent {
   id = 'test-id';
 }
 
-export default function (): void {
-  describe('Combobox Option Component', () => {
-    const helpers = createTestHelpers();
+describe('Combobox component', () => {
+  describe('Directives', () => {
+    describe('Combobox Option Component', () => {
+      const helpers = createTestHelpers();
 
-    let context: TestContext<ClrOption<string>, TestComponent>;
-    let popoverService: ClrPopoverService;
-    let optionSelectionService: OptionSelectionService<string>;
+      let context: TestContext<ClrOption<string>, TestComponent>;
+      let popoverService: ClrPopoverService;
+      let optionSelectionService: OptionSelectionService<string>;
 
-    describe('View Basics', () => {
-      beforeEach(() => {
-        context = helpers.createOnly<ClrOption<string>, TestComponent>(ClrOption, TestComponent, []);
-        popoverService = context.getClarityProvider(ClrPopoverService);
-        optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
-        optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>() as ComboboxModel<string>;
+      describe('View Basics', () => {
+        beforeEach(() => {
+          context = helpers.createOnly<ClrOption<string>, TestComponent>(ClrOption, TestComponent, []);
+          popoverService = context.getClarityProvider(ClrPopoverService);
+          optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
+          optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>() as ComboboxModel<string>;
+        });
+
+        afterEach(() => {
+          popoverService.open = false;
+          context.detectChanges();
+        });
+
+        it('projects content', () => {
+          expect(context.clarityElement.textContent.trim()).toMatch('Test');
+        });
+
+        it('adds the active class on the option when it is clicked', () => {
+          let option: HTMLElement = context.clarityElement;
+          expect(option.classList.contains('active')).toBe(false);
+
+          option.click();
+          context.detectChanges();
+
+          option = context.clarityElement;
+          expect(option.classList.contains('active')).toBe(true);
+        });
+
+        it('has and manages a "clr-focus" class', () => {
+          const focusHandler: ComboboxFocusHandler<any> = context.getClarityProvider(ComboboxFocusHandler);
+          expect(context.clarityElement.classList).not.toContain('clr-focus');
+          focusHandler.pseudoFocus.select(context.clarityDirective.optionProxy);
+          context.detectChanges();
+          expect(context.clarityElement.classList).toContain('clr-focus');
+        });
       });
 
-      afterEach(() => {
-        popoverService.open = false;
-        context.detectChanges();
+      describe('Typescript API', () => {
+        beforeEach(() => {
+          context = helpers.createOnly<ClrOption<string>, TestComponent>(ClrOption, TestComponent, []);
+          popoverService = context.getClarityProvider(ClrPopoverService);
+          optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
+          optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>();
+        });
+
+        afterEach(() => {
+          popoverService.open = false;
+          context.detectChanges();
+        });
+
+        it('calls to update the selection when an option is clicked', () => {
+          vi.spyOn(optionSelectionService, 'select').mockImplementation(() => undefined);
+
+          context.clarityDirective.elRef.nativeElement.click();
+
+          expect(optionSelectionService.select).toHaveBeenCalled();
+        });
+
+        it('provides a ref to the ElementRef of the option', () => {
+          expect(context.clarityDirective.elRef).toBeDefined();
+        });
+
+        it('updates the selection when a new value is received', () => {
+          expect(context.testComponent.option.selected).toBe(false);
+
+          optionSelectionService.select('Test');
+
+          expect(context.testComponent.option.selected).toBe(true);
+
+          // Even if the option is clicked multiple times
+          optionSelectionService.select('Test');
+
+          expect(context.testComponent.option.selected).toBe(true);
+
+          optionSelectionService.select('Fake Test');
+
+          expect(context.testComponent.option.selected).toBe(false);
+        });
       });
 
-      it('projects content', () => {
-        expect(context.clarityElement.textContent.trim()).toMatch('Test');
-      });
+      describe('Template API', () => {
+        beforeEach(() => {
+          context = helpers.createOnly<ClrOption<string>, TestComponent>(ClrOption, TestComponent, []);
+        });
 
-      it('adds the active class on the option when it is clicked', () => {
-        let option: HTMLElement = context.clarityElement;
-        expect(option.classList.contains('active')).toBe(false);
+        it('defines optionProxy', () => {
+          expect(context.clarityDirective.optionProxy).toBeDefined();
+          expect(context.clarityDirective.optionProxy.id).toEqual('test-id');
+          expect(context.clarityDirective.optionProxy.value).toEqual('Test');
+        });
 
-        option.click();
-        context.detectChanges();
-
-        option = context.clarityElement;
-        expect(option.classList.contains('active')).toBe(true);
-      });
-
-      it('has and manages a "clr-focus" class', () => {
-        const focusHandler: ComboboxFocusHandler<any> = context.getClarityProvider(ComboboxFocusHandler);
-        expect(context.clarityElement.classList).not.toContain('clr-focus');
-        focusHandler.pseudoFocus.select(context.clarityDirective.optionProxy);
-        context.detectChanges();
-        expect(context.clarityElement.classList).toContain('clr-focus');
-      });
-    });
-
-    describe('Typescript API', () => {
-      beforeEach(() => {
-        context = helpers.createOnly<ClrOption<string>, TestComponent>(ClrOption, TestComponent, []);
-        popoverService = context.getClarityProvider(ClrPopoverService);
-        optionSelectionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
-        optionSelectionService.selectionModel = new SingleSelectComboboxModel<string>();
-      });
-
-      afterEach(() => {
-        popoverService.open = false;
-        context.detectChanges();
-      });
-
-      it('calls to update the selection when an option is clicked', () => {
-        spyOn(optionSelectionService, 'select');
-
-        context.clarityDirective.elRef.nativeElement.click();
-
-        expect(optionSelectionService.select).toHaveBeenCalled();
-      });
-
-      it('provides a ref to the ElementRef of the option', () => {
-        expect(context.clarityDirective.elRef).toBeDefined();
-      });
-
-      it('updates the selection when a new value is received', () => {
-        expect(context.testComponent.option.selected).toBe(false);
-
-        optionSelectionService.select('Test');
-
-        expect(context.testComponent.option.selected).toBe(true);
-
-        // Even if the option is clicked multiple times
-        optionSelectionService.select('Test');
-
-        expect(context.testComponent.option.selected).toBe(true);
-
-        optionSelectionService.select('Fake Test');
-
-        expect(context.testComponent.option.selected).toBe(false);
-      });
-    });
-
-    describe('Template API', () => {
-      beforeEach(() => {
-        context = helpers.createOnly<ClrOption<string>, TestComponent>(ClrOption, TestComponent, []);
-      });
-
-      it('defines optionProxy', () => {
-        expect(context.clarityDirective.optionProxy).toBeDefined();
-        expect(context.clarityDirective.optionProxy.id).toEqual('test-id');
-        expect(context.clarityDirective.optionProxy.value).toEqual('Test');
-      });
-
-      it('optionProxy id and value can be redefined', () => {
-        context.testComponent.id = 'another-id';
-        context.testComponent.value = 'Another Test';
-        context.detectChanges();
-        expect(context.clarityDirective.optionProxy.id).toEqual('another-id');
-        expect(context.clarityDirective.optionProxy.value).toEqual('Another Test');
+        it('optionProxy id and value can be redefined', () => {
+          context.testComponent.id = 'another-id';
+          context.testComponent.value = 'Another Test';
+          context.detectChanges();
+          expect(context.clarityDirective.optionProxy.id).toEqual('another-id');
+          expect(context.clarityDirective.optionProxy.value).toEqual('Another Test');
+        });
       });
     });
   });
-}
+});

@@ -73,7 +73,7 @@ describe('Directive: IfTabActive', () => {
     });
 
     it('notifies subscribers for active tab change', () => {
-      spyOn(component, 'onTabActiveChange').and.callThrough();
+      vi.spyOn(component, 'onTabActiveChange');
       tabHelper.clickLink(1);
       fixture.detectChanges();
       expect(component.onTabActiveChange).toHaveBeenCalledWith(true);
@@ -84,7 +84,7 @@ describe('Directive: IfTabActive', () => {
   });
 
   it('can activate tab from parent component by set activateTab to true', () => {
-    spyOn(component, 'onTabActiveChange').and.callThrough();
+    vi.spyOn(component, 'onTabActiveChange');
     const tab1 = tabHelper.getLinkList()[0];
     const tab2 = tabHelper.getLinkList()[1];
     const toggleClass = 'activeTab';

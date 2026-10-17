@@ -44,7 +44,7 @@ interface TestContext {
   testBtnGroup: ClrButtonGroup;
 }
 
-export default function (): void {
+describe('Button Group Directives', () => {
   describe('ButtonGroupFocusHandler', () => {
     let testContext: TestContext;
     beforeEach(() => {
@@ -84,7 +84,7 @@ export default function (): void {
       });
 
       it('registers the container to the FocusService', () => {
-        const spy = spyOn(testContext.focusService, 'registerContainer');
+        const spy = vi.spyOn(testContext.focusService, 'registerContainer').mockImplementation(() => undefined);
         testContext.focusHandler.initialize({ menu: testContext.menu, menuToggle: testContext.menuToggle });
         expect(spy).toHaveBeenCalled();
       });
@@ -126,4 +126,4 @@ export default function (): void {
       });
     });
   });
-}
+});

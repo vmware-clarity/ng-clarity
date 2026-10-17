@@ -14,7 +14,7 @@ import { ClrAlertsPager } from './alerts-pager';
 import { ClrEmphasisModule } from '../emphasis.module';
 import { MultiAlertService } from './providers/multi-alert.service';
 
-export default function () {
+describe('Alert Tests', () => {
   describe('ClrAlerts pager component', () => {
     let testContext: any;
     beforeEach(() => {
@@ -36,7 +36,7 @@ export default function () {
       });
 
       it('page up calls the multi alert service', () => {
-        spyOn(service, 'next').and.callFake(() => {
+        vi.spyOn(service, 'next').mockImplementation(() => {
           // Do nothing
         });
         component.pageUp();
@@ -44,7 +44,7 @@ export default function () {
       });
 
       it('page down calls the multi alert service', () => {
-        spyOn(service, 'previous').and.callFake(() => {
+        vi.spyOn(service, 'previous').mockImplementation(() => {
           // Do nothingno
         });
         component.pageDown();
@@ -146,7 +146,7 @@ export default function () {
       });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-alerts-pager [(clrCurrentAlertIndex)]="index"></clr-alerts-pager>`,

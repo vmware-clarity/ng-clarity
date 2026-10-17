@@ -34,136 +34,138 @@ const PROVIDERS_NEEDED = [
   DetailService,
 ];
 
-export default function (): void {
-  describe('DatagridHideableColumn directive', function () {
-    let fixture: ComponentFixture<any>;
-    let columnsService: ColumnsService;
-    let testSugaredComponent: HideableSugaredTest;
-    let testDesugaredComponent: HideableDesugeredTest;
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('DatagridHideableColumn directive', function () {
+      let fixture: ComponentFixture<any>;
+      let columnsService: ColumnsService;
+      let testSugaredComponent: HideableSugaredTest;
+      let testDesugaredComponent: HideableDesugeredTest;
 
-    let column1HeaderRendererDE: DebugElement;
-    let column2HeaderRendererDE: DebugElement;
-    let column3HeaderRendererDE: DebugElement;
+      let column1HeaderRendererDE: DebugElement;
+      let column2HeaderRendererDE: DebugElement;
+      let column3HeaderRendererDE: DebugElement;
 
-    let column1HeaderRenderer: DatagridHeaderRenderer;
-    let column2HeaderRenderer: DatagridHeaderRenderer;
-    let column3HeaderRenderer: DatagridHeaderRenderer;
+      let column1HeaderRenderer: DatagridHeaderRenderer;
+      let column2HeaderRenderer: DatagridHeaderRenderer;
+      let column3HeaderRenderer: DatagridHeaderRenderer;
 
-    describe('Without Column', function () {
-      it('should throw an error with a message', function () {
-        expect(function () {
+      describe('Without Column', function () {
+        it('should throw an error with a message', function () {
+          expect(function () {
+            TestBed.configureTestingModule({
+              imports: [ClrDatagridModule],
+              declarations: [HideableNotInsideColumnTest],
+              providers: PROVIDERS_NEEDED,
+            });
+            TestBed.createComponent(HideableNotInsideColumnTest);
+          }).toThrowError('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.');
+        });
+      });
+
+      describe('Sugered', function () {
+        beforeEach(function () {
           TestBed.configureTestingModule({
             imports: [ClrDatagridModule],
-            declarations: [HideableNotInsideColumnTest],
+            declarations: [HideableSugaredTest],
             providers: PROVIDERS_NEEDED,
           });
-          TestBed.createComponent(HideableNotInsideColumnTest);
-        }).toThrowError('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.');
-      });
-    });
+          fixture = TestBed.createComponent(HideableSugaredTest);
+          columnsService = fixture.debugElement.injector.get(ColumnsService);
+          testSugaredComponent = fixture.componentInstance;
 
-    describe('Sugered', function () {
-      beforeEach(function () {
-        TestBed.configureTestingModule({
-          imports: [ClrDatagridModule],
-          declarations: [HideableSugaredTest],
-          providers: PROVIDERS_NEEDED,
+          column1HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[0];
+          column2HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[1];
+          column3HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[2];
+
+          column1HeaderRenderer = column1HeaderRendererDE.injector.get(DatagridHeaderRenderer);
+          column2HeaderRenderer = column2HeaderRendererDE.injector.get(DatagridHeaderRenderer);
+          column3HeaderRenderer = column3HeaderRendererDE.injector.get(DatagridHeaderRenderer);
+
+          column1HeaderRenderer.setColumnState(0);
+          column2HeaderRenderer.setColumnState(1);
+          column3HeaderRenderer.setColumnState(2);
         });
-        fixture = TestBed.createComponent(HideableSugaredTest);
-        columnsService = fixture.debugElement.injector.get(ColumnsService);
-        testSugaredComponent = fixture.componentInstance;
 
-        column1HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[0];
-        column2HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[1];
-        column3HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[2];
+        it('sets its template and hidden state to column state', function () {
+          testSugaredComponent.hideFirst = true;
 
-        column1HeaderRenderer = column1HeaderRendererDE.injector.get(DatagridHeaderRenderer);
-        column2HeaderRenderer = column2HeaderRendererDE.injector.get(DatagridHeaderRenderer);
-        column3HeaderRenderer = column3HeaderRendererDE.injector.get(DatagridHeaderRenderer);
-
-        column1HeaderRenderer.setColumnState(0);
-        column2HeaderRenderer.setColumnState(1);
-        column3HeaderRenderer.setColumnState(2);
-      });
-
-      it('sets its template and hidden state to column state', function () {
-        testSugaredComponent.hideFirst = true;
-
-        fixture.detectChanges();
-        expect(columnsService.columns[0].value.titleTemplateRef).not.toBeUndefined();
-        expect(columnsService.columns[0].value.hidden).toBeTruthy();
-        expect(columnsService.columns[1].value.titleTemplateRef).not.toBeUndefined();
-        expect(columnsService.columns[1].value.hidden).toBeFalsy();
-        expect(columnsService.columns[2].value.titleTemplateRef).toBeUndefined();
-      });
-
-      it('set hidden state through clrDgHideableColumn input', function () {
-        testSugaredComponent.hideFirst = true;
-        fixture.detectChanges();
-        expect(columnsService.columns[0].value.hidden).toBeTruthy();
-        testSugaredComponent.hideFirst = false;
-        fixture.detectChanges();
-        expect(columnsService.columns[0].value.hidden).toBeFalsy();
-      });
-    });
-
-    describe('De-sugered', function () {
-      beforeEach(function () {
-        TestBed.configureTestingModule({
-          imports: [ClrDatagridModule],
-          declarations: [HideableDesugeredTest],
-          providers: PROVIDERS_NEEDED,
+          fixture.detectChanges();
+          expect(columnsService.columns[0].value.titleTemplateRef).not.toBeUndefined();
+          expect(columnsService.columns[0].value.hidden).toBeTruthy();
+          expect(columnsService.columns[1].value.titleTemplateRef).not.toBeUndefined();
+          expect(columnsService.columns[1].value.hidden).toBeFalsy();
+          expect(columnsService.columns[2].value.titleTemplateRef).toBeUndefined();
         });
-        fixture = TestBed.createComponent(HideableDesugeredTest);
-        columnsService = fixture.debugElement.injector.get(ColumnsService);
-        testDesugaredComponent = fixture.componentInstance;
 
-        column1HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[0];
-        column2HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[1];
-
-        column1HeaderRenderer = column1HeaderRendererDE.injector.get(DatagridHeaderRenderer);
-        column2HeaderRenderer = column2HeaderRendererDE.injector.get(DatagridHeaderRenderer);
-
-        // The following part is handled By MainRenderer. So since we don't have MainRenderer in this test,
-        // we handle them on our own.
-        column1HeaderRenderer.setColumnState(0);
-        column2HeaderRenderer.setColumnState(1);
+        it('set hidden state through clrDgHideableColumn input', function () {
+          testSugaredComponent.hideFirst = true;
+          fixture.detectChanges();
+          expect(columnsService.columns[0].value.hidden).toBeTruthy();
+          testSugaredComponent.hideFirst = false;
+          fixture.detectChanges();
+          expect(columnsService.columns[0].value.hidden).toBeFalsy();
+        });
       });
 
-      it('sets its template and hidden state to column state', function () {
-        testDesugaredComponent.hideSecond = true;
+      describe('De-sugered', function () {
+        beforeEach(function () {
+          TestBed.configureTestingModule({
+            imports: [ClrDatagridModule],
+            declarations: [HideableDesugeredTest],
+            providers: PROVIDERS_NEEDED,
+          });
+          fixture = TestBed.createComponent(HideableDesugeredTest);
+          columnsService = fixture.debugElement.injector.get(ColumnsService);
+          testDesugaredComponent = fixture.componentInstance;
 
-        fixture.detectChanges();
-        expect(columnsService.columns[0].value.titleTemplateRef).not.toBeUndefined();
-        expect(columnsService.columns[0].value.hidden).toBeFalsy('Defaults to false if given no input value.');
-        expect(columnsService.columns[1].value.titleTemplateRef).not.toBeUndefined();
-        expect(columnsService.columns[1].value.hidden).toBeTruthy();
-      });
+          column1HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[0];
+          column2HeaderRendererDE = fixture.debugElement.queryAll(By.directive(DatagridHeaderRenderer))[1];
 
-      it('can emit its state from desuraged template', function () {
-        testDesugaredComponent.hideSecond = true;
-        fixture.detectChanges();
-        expect(columnsService.columns[1].value.titleTemplateRef).not.toBeUndefined();
-        expect(columnsService.columns[1].value.hidden).toBeTruthy();
-        columnsService.emitStateChangeAt(1, { hidden: false, changes: [DatagridColumnChanges.HIDDEN] });
-        fixture.detectChanges();
-        expect(testDesugaredComponent.hideSecond).toBeFalsy();
-        columnsService.emitStateChangeAt(1, { hidden: true, changes: [DatagridColumnChanges.HIDDEN] });
-        fixture.detectChanges();
-        expect(testDesugaredComponent.hideSecond).toBeTruthy();
-      });
+          column1HeaderRenderer = column1HeaderRendererDE.injector.get(DatagridHeaderRenderer);
+          column2HeaderRenderer = column2HeaderRendererDE.injector.get(DatagridHeaderRenderer);
 
-      it('set hidden state through clrDgHidden input', function () {
-        testDesugaredComponent.hideSecond = true;
-        fixture.detectChanges();
-        expect(columnsService.columns[1].value.hidden).toBeTruthy();
-        testDesugaredComponent.hideSecond = false;
-        fixture.detectChanges();
-        expect(columnsService.columns[1].value.hidden).toBeFalsy();
+          // The following part is handled By MainRenderer. So since we don't have MainRenderer in this test,
+          // we handle them on our own.
+          column1HeaderRenderer.setColumnState(0);
+          column2HeaderRenderer.setColumnState(1);
+        });
+
+        it('sets its template and hidden state to column state', function () {
+          testDesugaredComponent.hideSecond = true;
+
+          fixture.detectChanges();
+          expect(columnsService.columns[0].value.titleTemplateRef).not.toBeUndefined();
+          expect(columnsService.columns[0].value.hidden, 'Defaults to false if given no input value.').toBeFalsy();
+          expect(columnsService.columns[1].value.titleTemplateRef).not.toBeUndefined();
+          expect(columnsService.columns[1].value.hidden).toBeTruthy();
+        });
+
+        it('can emit its state from desuraged template', function () {
+          testDesugaredComponent.hideSecond = true;
+          fixture.detectChanges();
+          expect(columnsService.columns[1].value.titleTemplateRef).not.toBeUndefined();
+          expect(columnsService.columns[1].value.hidden).toBeTruthy();
+          columnsService.emitStateChangeAt(1, { hidden: false, changes: [DatagridColumnChanges.HIDDEN] });
+          fixture.detectChanges();
+          expect(testDesugaredComponent.hideSecond).toBeFalsy();
+          columnsService.emitStateChangeAt(1, { hidden: true, changes: [DatagridColumnChanges.HIDDEN] });
+          fixture.detectChanges();
+          expect(testDesugaredComponent.hideSecond).toBeTruthy();
+        });
+
+        it('set hidden state through clrDgHidden input', function () {
+          testDesugaredComponent.hideSecond = true;
+          fixture.detectChanges();
+          expect(columnsService.columns[1].value.hidden).toBeTruthy();
+          testDesugaredComponent.hideSecond = false;
+          fixture.detectChanges();
+          expect(columnsService.columns[1].value.hidden).toBeFalsy();
+        });
       });
     });
   });
-}
+});
 
 @Component({
   template: `<ng-container *clrDgHideableColumn>Why am I not inside a datagrid column?</ng-container>`,

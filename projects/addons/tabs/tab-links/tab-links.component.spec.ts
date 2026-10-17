@@ -38,7 +38,7 @@ describe('TabLinks', () => {
     testContext.title = 'Step Title';
     testContext.component.title = testContext.title;
 
-    spyOn(testContext.component.openedChange, 'emit').and.callThrough();
+    vi.spyOn(testContext.component.openedChange, 'emit');
     testContext.fixture.detectChanges();
   });
 

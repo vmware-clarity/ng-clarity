@@ -15,27 +15,25 @@ import { DatagridIfExpandService } from '../datagrid-if-expanded.service';
 import { DetailService } from './detail.service';
 import { ExpandableRowsCount } from './global-expandable-rows';
 
-export default function (): void {
-  describe('DatagridDetailRegisterer directive', () => {
-    const helpers = createTestHelpers();
+describe('DatagridDetailRegisterer directive', () => {
+  const helpers = createTestHelpers();
 
-    let context: TestContext<ClrDatagrid<void>, FullTest>;
+  let context: TestContext<ClrDatagrid<void>, FullTest>;
 
-    beforeEach(() => {
-      context = helpers.create<ClrDatagrid<void>, FullTest>(ClrDatagrid, FullTest, [
-        ExpandableRowsCount,
-        DatagridIfExpandService,
-        DetailService,
-        IfExpandService,
-        DatagridDetailRegisterer,
-      ]);
-    });
-
-    it('is present', () => {
-      expect(context.getClarityProvider(DatagridDetailRegisterer)).toBeDefined();
-    });
+  beforeEach(() => {
+    context = helpers.create<ClrDatagrid<void>, FullTest>(ClrDatagrid, FullTest, [
+      ExpandableRowsCount,
+      DatagridIfExpandService,
+      DetailService,
+      IfExpandService,
+      DatagridDetailRegisterer,
+    ]);
   });
-}
+
+  it('is present', () => {
+    expect(context.getClarityProvider(DatagridDetailRegisterer)).toBeDefined();
+  });
+});
 
 // more of an integration test than anything else
 @Component({

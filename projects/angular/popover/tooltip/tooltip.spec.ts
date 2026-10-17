@@ -29,7 +29,7 @@ interface TooltipContext extends TestContext<ClrTooltip, SimpleTest> {
   tooltipIdService: TooltipIdService;
 }
 
-export default function (): void {
+describe('Tooltip', () => {
   describe('Tooltip component', () => {
     let testContext: TooltipContext;
 
@@ -56,4 +56,4 @@ export default function (): void {
       });
     });
   });
-}
+});

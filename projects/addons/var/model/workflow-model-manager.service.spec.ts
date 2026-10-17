@@ -8,6 +8,7 @@
 import { Component } from '@angular/core';
 import { of, throwError } from 'rxjs';
 import { take } from 'rxjs/operators';
+import type { Mock } from 'vitest';
 
 import { StepInternal } from './step';
 import { ModelChanges } from './step-interfaces';
@@ -184,8 +185,8 @@ interface ThisTest {
   step3Model: MockStep3Model;
   step3: StepInternal;
   wizardModel: WorkflowModel;
-  onModelChangeSpy: jasmine.Spy;
-  onStepChangeSpy: jasmine.Spy;
+  onModelChangeSpy: Mock;
+  onStepChangeSpy: Mock;
 }
 
 function createWorkflowModel(): WorkflowModel {
@@ -224,8 +225,8 @@ describe('appfx-workflow-model-manager.service.spec', () => {
       model: testContext.step2Model,
       componentClass: MockComponent,
     };
-    testContext.onModelChangeSpy = spyOn(testContext.mgr.onModelChange$, 'next').and.callThrough();
-    testContext.onStepChangeSpy = spyOn(testContext.mgr.onStepChange$, 'next').and.callThrough();
+    testContext.onModelChangeSpy = vi.spyOn(testContext.mgr.onModelChange$, 'next');
+    testContext.onStepChangeSpy = vi.spyOn(testContext.mgr.onStepChange$, 'next');
   });
 
   afterEach(() => {
@@ -312,7 +313,7 @@ describe('appfx-workflow-model-manager.service.spec', () => {
               result = pendingStep;
             },
             () => {
-              fail('should never reach here');
+              throw new Error('should never reach here');
             }
           );
         expect(result).toEqual({ pendingStep: testContext.step1 });
@@ -335,7 +336,7 @@ describe('appfx-workflow-model-manager.service.spec', () => {
           .pipe(take(1))
           .subscribe(
             res => (result = res),
-            () => fail('should never reach here')
+            () => expect.fail('should never reach here')
           );
         const stepModelChanges: ModelChanges = {
           var1: new ModelChange('var1', '', 'var1'),
@@ -371,13 +372,13 @@ describe('appfx-workflow-model-manager.service.spec', () => {
               result = pendingStep;
             },
             () => {
-              fail('should never reach here');
+              throw new Error('should never reach here');
             }
           );
         expect(testContext.step1Model.var6.value).toEqual('var1'); // verify @out external mapping
         // transition to step2
-        testContext.onModelChangeSpy.calls.reset();
-        testContext.onStepChangeSpy.calls.reset();
+        testContext.onModelChangeSpy.mockClear();
+        testContext.onStepChangeSpy.mockClear();
         testContext.step1Model.var2.value = 'var2';
         testContext.step1Model.var4.value = 'var4';
         testContext.step1Model.var5.value = testContext.step1Model.var1;
@@ -393,7 +394,7 @@ describe('appfx-workflow-model-manager.service.spec', () => {
               result = pendingStep;
             },
             () => {
-              fail('should never reach here');
+              throw new Error('should never reach here');
             }
           );
         const stepModelChanges: ModelChanges = {
@@ -528,7 +529,7 @@ describe('appfx-workflow-model-manager.service.spec', () => {
 
       it(`WHEN there is change in Var with @outputMapping Mapping,
                THEN ejectPropertiesFromCurrentStep should emit changes`, () => {
-        testContext.onModelChangeSpy.calls.reset();
+        testContext.onModelChangeSpy.mockClear();
         testContext.step1Model.var2.value = 'var2';
         expect(testContext.onModelChangeSpy).toHaveBeenCalledWith([new ModelChange('var2', '', 'var2')]);
         testContext.mgr.ejectPropertiesFromCurrentStep(testContext.step1);

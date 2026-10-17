@@ -416,8 +416,8 @@ describe('appfx-wizard', () => {
     });
 
     it("WHEN 'Next' is clicked THEN validate() and activate() methods are called", () => {
-      spyOn(testContext.component, 'onWizardCommit').and.callThrough();
-      spyOn(testContext.component, 'onWizardPageActivated').and.callThrough();
+      vi.spyOn(testContext.component, 'onWizardCommit');
+      vi.spyOn(testContext.component, 'onWizardPageActivated');
 
       testContext.fixture.detectChanges();
 
@@ -492,7 +492,7 @@ describe('appfx-wizard', () => {
     });
 
     it("WHEN 'Back' is clicked THEN onBack method is called", () => {
-      spyOn(testContext.component, 'onWizardBack').and.callThrough();
+      vi.spyOn(testContext.component, 'onWizardBack');
 
       testContext.fixture.detectChanges();
 
@@ -717,7 +717,7 @@ describe('appfx-wizard', () => {
       expect(testContext.wizardHelper.activePageTitle).toEqual(page3Title);
     });
     it('WHEN last page becomes relevant, after finish', () => {
-      spyOn(testContext.component.onFinish, 'emit').and.callThrough();
+      vi.spyOn(testContext.component.onFinish, 'emit');
       testContext.page3.isSkipped = true;
       testContext.page3.isRelevant = Var.from(testContext.wizardModel.dep1).by(dep1 => of(dep1));
       testContext.wizardModel.dep1.value = false;

@@ -14,7 +14,7 @@ import { ClrIcon } from '@clr/angular/icon';
 
 import { ClrPassword } from './password';
 import { ClrPasswordContainer } from './password-container';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -66,7 +66,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('ClrPassword', () => {
   describe('ClrPasswordContainer', () => {
     ContainerNoLabelSpec(ClrPasswordContainer, ClrPassword, NoLabelTest);
     TemplateDrivenSpec(ClrPasswordContainer, ClrPassword, TemplateDrivenTest, '.clr-input-wrapper [clrPassword]');
@@ -112,4 +112,4 @@ export default function (): void {
       });
     });
   });
-}
+});

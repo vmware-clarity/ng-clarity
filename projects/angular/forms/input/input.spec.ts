@@ -13,7 +13,7 @@ import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 
 import { ClrInput } from './input';
 import { ClrInputContainer } from './input-container';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input type="text" clrInput />`,
@@ -41,7 +41,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Input component', () => {
   describe('Input directive', () => {
     ControlStandaloneSpec(StandaloneUseTest);
     TemplateDrivenSpec(ClrInputContainer, ClrInput, TemplateDrivenTest, 'clr-input');
@@ -49,7 +49,7 @@ export default function (): void {
     inputSpec('tempate-driven', ClrInputContainer, ClrInput, TemplateDrivenTest);
     inputSpec('reactive', ClrInputContainer, ClrInput, ReactiveTest);
   });
-}
+});
 
 function inputSpec(description, testContainer, testControl, testComponent) {
   describe('Input specific value change tests ' + description, () => {

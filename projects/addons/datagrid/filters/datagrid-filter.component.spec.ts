@@ -133,7 +133,7 @@ describe('DatagridFilterComponent', () => {
       testContext.fixture.componentInstance.stringFilterType = new CaseInsensitiveContainsStringFilter('propA');
       testContext.fixture.componentInstance.value = 'abc';
 
-      spyOn(testContext.caseInsensitiveContainsStringFilter, 'accepts').and.returnValue(true);
+      vi.spyOn(testContext.caseInsensitiveContainsStringFilter, 'accepts').mockReturnValue(true);
 
       expect(testContext.fixture.componentInstance.accepts(item)).toBeTruthy();
     });
@@ -146,7 +146,7 @@ describe('DatagridFilterComponent', () => {
       testContext.fixture.componentInstance.stringFilterType = new CaseInsensitiveContainsStringFilter('propA');
       testContext.fixture.componentInstance.value = 'abcd';
 
-      spyOn(testContext.caseInsensitiveContainsStringFilter, 'accepts').and.returnValue(false);
+      vi.spyOn(testContext.caseInsensitiveContainsStringFilter, 'accepts').mockReturnValue(false);
 
       expect(testContext.fixture.componentInstance.accepts(item)).toBeFalsy();
     });
@@ -156,7 +156,7 @@ describe('DatagridFilterComponent', () => {
     const input: HTMLElement = testContext.fixture.nativeElement.querySelector('input');
     let changesFlag = false;
 
-    spyOn(testContext.fixture.componentInstance.filterValueChange, 'emit').and.callThrough();
+    vi.spyOn(testContext.fixture.componentInstance.filterValueChange, 'emit');
 
     testContext.fixture.componentInstance.changes.subscribe(() => (changesFlag = true));
 
@@ -171,7 +171,7 @@ describe('DatagridFilterComponent', () => {
   it('should focus the input field when the filter dropdown is opened', fakeAsync(() => {
     const input: HTMLElement = testContext.fixture.nativeElement.querySelector('input');
 
-    spyOn(input, 'focus');
+    vi.spyOn(input, 'focus').mockImplementation(() => undefined);
 
     expect(input).toBeTruthy();
 

@@ -7,26 +7,28 @@
 
 import { ComboboxContainerService } from './combobox-container.service';
 
-export default function () {
-  describe('Container Service', () => {
-    let containerService: ComboboxContainerService;
+describe('Combobox component', () => {
+  describe('Providers', () => {
+    describe('Container Service', () => {
+      let containerService: ComboboxContainerService;
 
-    beforeEach(() => {
-      containerService = new ComboboxContainerService();
-    });
+      beforeEach(() => {
+        containerService = new ComboboxContainerService();
+      });
 
-    it('can change the default offset value', () => {
-      // this is shared between components, so we add protection in case of future implementation changes
-      expect(containerService.labelOffset).toBe(0);
-      containerService.labelOffset = 42;
-      expect(containerService.labelOffset).toBe(42);
-    });
+      it('can change the default offset value', () => {
+        // this is shared between components, so we add protection in case of future implementation changes
+        expect(containerService.labelOffset).toBe(0);
+        containerService.labelOffset = 42;
+        expect(containerService.labelOffset).toBe(42);
+      });
 
-    it('can change the default label text value', () => {
-      // this is shared between components, so we add protection in case of future implementation changes
-      expect(containerService.labelText).toBe(undefined);
-      containerService.labelText = 'life, universe and everything';
-      expect(containerService.labelText).toBe('life, universe and everything');
+      it('can change the default label text value', () => {
+        // this is shared between components, so we add protection in case of future implementation changes
+        expect(containerService.labelText).toBe(undefined);
+        containerService.labelText = 'life, universe and everything';
+        expect(containerService.labelText).toBe('life, universe and everything');
+      });
     });
   });
-}
+});

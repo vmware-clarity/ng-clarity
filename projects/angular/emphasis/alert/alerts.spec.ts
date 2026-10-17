@@ -13,7 +13,7 @@ import { ClrAlert } from './alert';
 import { ClrAlerts } from './alerts';
 import { MultiAlertService } from './providers/multi-alert.service';
 
-export default function () {
+describe('Alert Tests', () => {
   describe('ClrAlerts component', () => {
     let testContext: any;
     beforeEach(() => {
@@ -273,7 +273,7 @@ export default function () {
       // test will pass if no error is thrown
     });
   });
-}
+});
 
 @Component({
   template: `

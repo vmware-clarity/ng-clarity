@@ -20,69 +20,71 @@ import { DatagridRenderOrganizer } from '../render/render-organizer';
 })
 class TestComponent {}
 
-export default function (): void {
-  describe('Column Resizer Service', function () {
-    let columnResizerService: ColumnResizerService;
-    let datagridRenderOrganizer: DatagridRenderOrganizer;
+describe('Datagrid', () => {
+  describe('Providers', () => {
+    describe('Column Resizer Service', function () {
+      let columnResizerService: ColumnResizerService;
+      let datagridRenderOrganizer: DatagridRenderOrganizer;
 
-    let fixture: ComponentFixture<any>;
-    let columnHostEl: HTMLElement;
+      let fixture: ComponentFixture<any>;
+      let columnHostEl: HTMLElement;
 
-    beforeEach(function () {
-      TestBed.configureTestingModule({ declarations: [TestComponent] });
+      beforeEach(function () {
+        TestBed.configureTestingModule({ declarations: [TestComponent] });
 
-      fixture = TestBed.createComponent(TestComponent);
-      fixture.detectChanges();
+        fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
 
-      columnHostEl = fixture.nativeElement;
-      columnResizerService = fixture.debugElement.injector.get(ColumnResizerService);
-      datagridRenderOrganizer = fixture.debugElement.injector.get(DatagridRenderOrganizer);
-    });
+        columnHostEl = fixture.nativeElement;
+        columnResizerService = fixture.debugElement.injector.get(ColumnResizerService);
+        datagridRenderOrganizer = fixture.debugElement.injector.get(DatagridRenderOrganizer);
+      });
 
-    afterEach(() => {
-      fixture.destroy();
-    });
+      afterEach(() => {
+        fixture.destroy();
+      });
 
-    it('provides the minimum column width', function () {
-      expect(columnResizerService.minColumnWidth).toBe(96);
-      columnHostEl.style.minWidth = '123px';
-      expect(columnResizerService.minColumnWidth).toBe(123);
-    });
+      it('provides the minimum column width', function () {
+        expect(columnResizerService.minColumnWidth).toBe(96);
+        columnHostEl.style.minWidth = '123px';
+        expect(columnResizerService.minColumnWidth).toBe(123);
+      });
 
-    it('provides correct maximum range for resizing', function () {
-      columnResizerService.startResize();
-      // MAX_RESIZE_RANGE = COLUMN_WIDTH - MIN_COLUMN_WIDTH
-      expect(columnResizerService.maxResizeRange).toBe(104);
-    });
+      it('provides correct maximum range for resizing', function () {
+        columnResizerService.startResize();
+        // MAX_RESIZE_RANGE = COLUMN_WIDTH - MIN_COLUMN_WIDTH
+        expect(columnResizerService.maxResizeRange).toBe(104);
+      });
 
-    it('provides correct resized width', function () {
-      columnResizerService.startResize();
-      expect(columnResizerService.resizedBy).toBe(0);
-      columnResizerService.calculateResize(123);
-      expect(columnResizerService.resizedBy).toBe(123);
-    });
+      it('provides correct resized width', function () {
+        columnResizerService.startResize();
+        expect(columnResizerService.resizedBy).toBe(0);
+        columnResizerService.calculateResize(123);
+        expect(columnResizerService.resizedBy).toBe(123);
+      });
 
-    it('provides minimum column width if maximum resize range gets exceeded', function () {
-      columnResizerService.startResize();
-      expect(columnResizerService.resizedBy).toBe(0);
-      columnResizerService.calculateResize(-123);
-      expect(columnResizerService.resizedBy).toBe(-columnResizerService.maxResizeRange);
-      expect(columnResizerService.widthAfterResize).toBe(columnResizerService.minColumnWidth);
-    });
+      it('provides minimum column width if maximum resize range gets exceeded', function () {
+        columnResizerService.startResize();
+        expect(columnResizerService.resizedBy).toBe(0);
+        columnResizerService.calculateResize(-123);
+        expect(columnResizerService.resizedBy).toBe(-columnResizerService.maxResizeRange);
+        expect(columnResizerService.widthAfterResize).toBe(columnResizerService.minColumnWidth);
+      });
 
-    it('provides boolean value of whether resize is within maximum range or not', function () {
-      columnResizerService.startResize();
-      expect(columnResizerService.isWithinMaxResizeRange).toBeTrue();
-      columnResizerService.calculateResize(-123);
-      expect(columnResizerService.isWithinMaxResizeRange).toBeFalse();
-      columnResizerService.calculateResize(123);
-      expect(columnResizerService.isWithinMaxResizeRange).toBeTrue();
-    });
+      it('provides boolean value of whether resize is within maximum range or not', function () {
+        columnResizerService.startResize();
+        expect(columnResizerService.isWithinMaxResizeRange).toBe(true);
+        columnResizerService.calculateResize(-123);
+        expect(columnResizerService.isWithinMaxResizeRange).toBe(false);
+        columnResizerService.calculateResize(123);
+        expect(columnResizerService.isWithinMaxResizeRange).toBe(true);
+      });
 
-    it('triggers datagrid render resize process', function () {
-      spyOn(datagridRenderOrganizer, 'resize');
-      columnResizerService.endResize();
-      expect(datagridRenderOrganizer.resize).toHaveBeenCalled();
+      it('triggers datagrid render resize process', function () {
+        vi.spyOn(datagridRenderOrganizer, 'resize').mockImplementation(() => undefined);
+        columnResizerService.endResize();
+        expect(datagridRenderOrganizer.resize).toHaveBeenCalled();
+      });
     });
   });
-}
+});

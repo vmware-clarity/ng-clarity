@@ -36,13 +36,14 @@ import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { ClrStepperModule, ClrStepperPanel, StepperPanelModel, StepperService } from '@clr/angular/stepper';
 import { Observable, of, Subject } from 'rxjs';
 import { first } from 'rxjs/operators';
+import type { Mock } from 'vitest';
 
 import { MockStepperStateService } from './mock/stepper.mock';
 import { StepperStateService } from './state/stepper-state.service';
 import { StepperComponent } from './stepper.component';
 import { SummaryService } from './summary/summary.service';
 
-import Spy = jasmine.Spy;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 class MockWizardModel {
   contextObjectId: Var<string> = Var.of('vm-11');
@@ -326,9 +327,9 @@ describe('Stepper', () => {
     });
 
     it('THEN first step is set as initial and activate function are triggered', () => {
-      spyOn(testContext.stateService, 'stepActivated').and.callThrough();
-      spyOn(testContext.component, 'onStepActivated').and.callThrough();
-      spyOn(testContext.workflowModelManager, 'injectPropertiesToPendingStep').and.callThrough();
+      vi.spyOn(testContext.stateService, 'stepActivated');
+      vi.spyOn(testContext.component, 'onStepActivated');
+      vi.spyOn(testContext.workflowModelManager, 'injectPropertiesToPendingStep');
 
       testContext.fixture.detectChanges();
 
@@ -350,9 +351,9 @@ describe('Stepper', () => {
     it('THEN on model change the steps are invalidated', () => {
       testContext.fixture.detectChanges();
 
-      spyOn(testContext.stateService, 'resetNextStepsValidStates').and.callThrough();
-      spyOn(testContext.component['stepperService'], 'resetPanels').and.callThrough();
-      spyOn(testContext.component['stepperService'], 'overrideInitialPanel').and.callThrough();
+      vi.spyOn(testContext.stateService, 'resetNextStepsValidStates');
+      vi.spyOn(testContext.component['stepperService'], 'resetPanels');
+      vi.spyOn(testContext.component['stepperService'], 'overrideInitialPanel');
 
       testContext.step1Model.newVmId.value = 'vm-12';
 
@@ -404,10 +405,10 @@ describe('Stepper', () => {
       it('THEN the step is validated, step model properties ejected and stepper service next triggered', () => {
         testContext.fixture.detectChanges();
 
-        spyOn(testContext.stateService, 'markStepValid').and.callThrough();
-        spyOn(testContext.workflowModelManager, 'ejectPropertiesFromCurrentStep').and.callThrough();
-        spyOn(testContext.relevanceService, 'checkComplete$').and.callThrough();
-        spyOn(testContext.component.form.controls['step0'], 'setErrors').and.callThrough();
+        vi.spyOn(testContext.stateService, 'markStepValid');
+        vi.spyOn(testContext.workflowModelManager, 'ejectPropertiesFromCurrentStep');
+        vi.spyOn(testContext.relevanceService, 'checkComplete$');
+        vi.spyOn(testContext.component.form.controls['step0'], 'setErrors');
 
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
@@ -420,7 +421,7 @@ describe('Stepper', () => {
         expect(testContext.relevanceService.checkComplete$).toHaveBeenCalled();
         expect(testContext.component.form.controls['step0'].setErrors).toHaveBeenCalledWith(null);
 
-        spyOn(testContext.component.form.controls['step2'], 'setErrors').and.callThrough();
+        vi.spyOn(testContext.component.form.controls['step2'], 'setErrors');
 
         const nextButtonStep2 = queryNextButton();
         nextButtonStep2.click();
@@ -432,20 +433,19 @@ describe('Stepper', () => {
         expect(testContext.relevanceService.checkComplete$).toHaveBeenCalledTimes(1);
 
         expect(testContext.step2Model.validateCallsCount).toEqual(1);
-        expect((testContext.stateService.markStepValid as Spy).calls.all()[1].args[0]).toEqual(
-          testContext.step2,
-          false
+        expect(vi.mocked(testContext.stateService.markStepValid as Spy).mock.calls[1][0], String(false)).toEqual(
+          testContext.step2
         );
-        expect(testContext.component.form.controls['step2'].setErrors).toHaveBeenCalledWith(jasmine.anything());
+        expect(testContext.component.form.controls['step2'].setErrors).toHaveBeenCalledWith(expect.anything());
       });
 
       it('THEN next step is activated', () => {
         testContext.fixture.detectChanges();
 
         const indexOfFirstIncompleteStep = 2;
-        spyOn(testContext.stateService, 'getIndexOfFirstIncompleteStep').and.returnValue(indexOfFirstIncompleteStep);
-        spyOn(testContext.component['stepperService'], 'overrideInitialPanel').and.callThrough();
-        spyOn(testContext.component, 'onStepActivated').and.callThrough();
+        vi.spyOn(testContext.stateService, 'getIndexOfFirstIncompleteStep').mockReturnValue(indexOfFirstIncompleteStep);
+        vi.spyOn(testContext.component['stepperService'], 'overrideInitialPanel');
+        vi.spyOn(testContext.component, 'onStepActivated');
 
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
@@ -472,9 +472,9 @@ describe('Stepper', () => {
         flush();
         testContext.fixture.detectChanges();
 
-        spyOn(testContext.component, 'onFormSubmit').and.callThrough();
-        spyOn(testContext.stateService, 'areAllStepsCompleted').and.callThrough();
-        spyOn(testContext.component.onFinish, 'emit').and.callThrough();
+        vi.spyOn(testContext.component, 'onFormSubmit');
+        vi.spyOn(testContext.stateService, 'areAllStepsCompleted');
+        vi.spyOn(testContext.component.onFinish, 'emit');
 
         const finishButton = queryNextButton();
         finishButton.click();
@@ -495,9 +495,9 @@ describe('Stepper', () => {
         flush();
         testContext.fixture.detectChanges();
 
-        spyOn(testContext.component, 'onFormSubmit').and.callThrough();
-        spyOn(testContext.stateService, 'areAllStepsCompleted').and.returnValue(true);
-        spyOn(testContext.component.onFinish, 'emit').and.callThrough();
+        vi.spyOn(testContext.component, 'onFormSubmit');
+        vi.spyOn(testContext.stateService, 'areAllStepsCompleted').mockReturnValue(true);
+        vi.spyOn(testContext.component.onFinish, 'emit');
 
         const finishButton = queryNextButton();
         finishButton.click();
@@ -513,8 +513,8 @@ describe('Stepper', () => {
       it('WHEN stateService reports that not all steps are completed THEN onFinish is not emitted', () => {
         testContext.fixture.detectChanges();
 
-        spyOn(testContext.stateService, 'areAllStepsCompleted').and.returnValue(false);
-        spyOn(testContext.component.onFinish, 'emit').and.callThrough();
+        vi.spyOn(testContext.stateService, 'areAllStepsCompleted').mockReturnValue(false);
+        vi.spyOn(testContext.component.onFinish, 'emit');
 
         testContext.component.onFormSubmit();
 
@@ -625,12 +625,12 @@ describe('Stepper', () => {
     });
 
     describe('Back and Cancel Buttons', () => {
-      let onCancelSpy: jasmine.Spy;
+      let onCancelSpy: Mock;
       let queryBackButton: () => DebugElement;
       let queryCancelButton: () => DebugElement;
 
       beforeEach(() => {
-        onCancelSpy = spyOn(testContext.component.onCancel, 'emit');
+        onCancelSpy = vi.spyOn(testContext.component.onCancel, 'emit').mockImplementation(() => undefined);
         queryBackButton = () => testContext.fixture.debugElement.query(By.css('button[clrStepButton="previous"]'));
         queryCancelButton = () =>
           testContext.fixture.debugElement.query(By.css('button.btn-link:not([clrStepButton])'));
@@ -672,7 +672,7 @@ describe('Stepper', () => {
 
       it('THEN Back button is visible on the second visible step and has the correct style', fakeAsync(() => {
         testContext.component.showBackButton = true;
-        spyOn(testContext.stateService, 'isFirstVisibleStep').and.callFake((index: number) => {
+        vi.spyOn(testContext.stateService, 'isFirstVisibleStep').mockImplementation((index: number) => {
           return index === 0;
         });
         testContext.fixture.detectChanges();

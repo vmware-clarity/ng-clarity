@@ -44,7 +44,7 @@ describe('Loading directive', () => {
   });
 
   it('ignores successive inputs with the same value', () => {
-    spyOn(testContext.listener, 'loadingStateChange');
+    vi.spyOn(testContext.listener, 'loadingStateChange').mockImplementation(() => undefined);
     testContext.testComponent.loading = false;
     testContext.fixture.detectChanges();
     testContext.testComponent.loading = false;

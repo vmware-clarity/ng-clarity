@@ -9,6 +9,7 @@ import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import type { Mock } from 'vitest';
 
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import { PropertyViewSectionsExpandedStateManager } from '../property-view-sections-expanded-state.manager';
@@ -16,7 +17,7 @@ import { PropertyViewCategoryModel, PropertyViewModel, PropertyViewModelType } f
 import { PropertyViewCategoryComponent } from './property-view-category.component';
 import { PropertyViewComponent } from './property-view.component';
 
-import Spy = jasmine.Spy;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 @Component({
   selector: 'appfx-property-view-category',
@@ -121,8 +122,8 @@ describe('PropertyViewComponent', () => {
     });
 
     testContext.propertyViewConfigProvider = {
-      getConfig: jasmine.createSpy('getConfig').and.returnValue(undefined),
-      setConfig: jasmine.createSpy('setConfig'),
+      getConfig: vi.fn().mockReturnValue(undefined),
+      setConfig: vi.fn(),
     };
     // Override the provider in PropertyViewPropertyComponent. Note that this is
     // different from changing the provider in TestBed.configureTestingModule
@@ -360,73 +361,73 @@ describe('PropertyViewComponent', () => {
 
   describe('expanded state manager', () => {
     it('should be updated with empty categories when input data is undefined', () => {
-      const updateSpy = spyOn(testContext.expandedStateManager, 'update');
+      const updateSpy = vi.spyOn(testContext.expandedStateManager, 'update').mockImplementation(() => undefined);
 
       testContext.component.data = undefined;
       testContext.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(1);
-      expect(updateSpy.calls.all()[0].args).toEqual(<any>[[]]);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(1);
+      expect(vi.mocked(updateSpy).mock.calls[0]).toEqual(<any>[[]]);
     });
 
     it('should be updated with empty categories when input data is null', () => {
-      const updateSpy = spyOn(testContext.expandedStateManager, 'update');
+      const updateSpy = vi.spyOn(testContext.expandedStateManager, 'update').mockImplementation(() => undefined);
 
       testContext.component.data = null;
       testContext.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(1);
-      expect(updateSpy.calls.all()[0].args).toEqual(<any>[[]]);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(1);
+      expect(vi.mocked(updateSpy).mock.calls[0]).toEqual(<any>[[]]);
     });
 
     it('should be updated with correct categories when input data is defined', () => {
-      const updateSpy = spyOn(testContext.expandedStateManager, 'update');
+      const updateSpy = vi.spyOn(testContext.expandedStateManager, 'update').mockImplementation(() => undefined);
 
       testContext.component.data = testContext.createData({
         categories: [cat1Data, cat3Data],
       });
       testContext.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(1);
-      expect(updateSpy.calls.all()[0].args).toEqual(<any>[[cat1Data, cat3Data]]);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(1);
+      expect(vi.mocked(updateSpy).mock.calls[0]).toEqual(<any>[[cat1Data, cat3Data]]);
     });
 
     it('should be updated with correct categories when input data changes', () => {
-      const updateSpy = spyOn(testContext.expandedStateManager, 'update');
+      const updateSpy = vi.spyOn(testContext.expandedStateManager, 'update').mockImplementation(() => undefined);
 
       testContext.component.data = undefined;
       testContext.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(1);
-      expect(updateSpy.calls.argsFor(0)).toEqual(<any>[[]]);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(1);
+      expect(vi.mocked(updateSpy).mock.calls[0]).toEqual(<any>[[]]);
 
       testContext.component.data = testContext.createData({
         categories: [cat2Data, cat3Data],
       });
       testContext.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(2);
-      expect(updateSpy.calls.argsFor(1)).toEqual(<any>[[cat2Data, cat3Data]]);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(2);
+      expect(vi.mocked(updateSpy).mock.calls[1]).toEqual(<any>[[cat2Data, cat3Data]]);
 
       testContext.component.data = testContext.createData({
         categories: [cat3Data, cat1Data],
       });
       testContext.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(3);
-      expect(updateSpy.calls.argsFor(2)).toEqual(<any>[[cat3Data, cat1Data]]);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(3);
+      expect(vi.mocked(updateSpy).mock.calls[2]).toEqual(<any>[[cat3Data, cat1Data]]);
 
       testContext.component.data = null;
       testContext.fixture.detectChanges();
-      expect(updateSpy.calls.count()).toEqual(4);
-      expect(updateSpy.calls.argsFor(3)).toEqual(<any>[[]]);
+      expect(vi.mocked(updateSpy).mock.calls.length).toEqual(4);
+      expect(vi.mocked(updateSpy).mock.calls[3]).toEqual(<any>[[]]);
     });
   });
 
   describe('property view config provider', () => {
     it('setConfig() should be called when PropertyViewComponent.config is set', () => {
       testContext.fixture.detectChanges();
-      expect(testContext.propertyViewConfigProvider.setConfig.calls.count()).toEqual(0);
+      expect(vi.mocked(testContext.propertyViewConfigProvider.setConfig).mock.calls.length).toEqual(0);
 
       testContext.component.config = {
         propertyKeyWidthInRem: 10,
       };
-      expect(testContext.propertyViewConfigProvider.setConfig.calls.count()).toEqual(1);
-      expect(testContext.propertyViewConfigProvider.setConfig.calls.mostRecent().args).toEqual([
+      expect(vi.mocked(testContext.propertyViewConfigProvider.setConfig).mock.calls.length).toEqual(1);
+      expect(vi.mocked(testContext.propertyViewConfigProvider.setConfig).mock.lastCall).toEqual([
         {
           propertyKeyWidthInRem: 10,
         },

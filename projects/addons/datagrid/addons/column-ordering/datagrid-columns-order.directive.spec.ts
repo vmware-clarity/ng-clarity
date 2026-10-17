@@ -215,7 +215,7 @@ describe('DatagridColumnsOrderDirective', () => {
 
       dropOnto(testContext, 2, 0);
 
-      expect(emitted).toBeFalse();
+      expect(emitted).toBe(false);
     });
 
     it('still reorders the columns that stay on the same side of it', () => {
@@ -239,12 +239,12 @@ describe('DatagridColumnsOrderDirective', () => {
     it('moves left and right by one step, the same as the keyboard path', () => {
       const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
 
-      expect(directive.canMoveColumn(1, ColumnMoveDirection.Left)).toBeTrue();
+      expect(directive.canMoveColumn(1, ColumnMoveDirection.Left)).toBe(true);
       directive.moveColumnTo(1, ColumnMoveDirection.Left);
       testContext.fixture.detectChanges();
       expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
 
-      expect(directive.canMoveColumn(0, ColumnMoveDirection.Right)).toBeTrue();
+      expect(directive.canMoveColumn(0, ColumnMoveDirection.Right)).toBe(true);
       directive.moveColumnTo(0, ColumnMoveDirection.Right);
       testContext.fixture.detectChanges();
       expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
@@ -253,8 +253,8 @@ describe('DatagridColumnsOrderDirective', () => {
     it('cannot move left from the start, or right from the end', () => {
       const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
 
-      expect(directive.canMoveColumn(0, ColumnMoveDirection.Left)).toBeFalse();
-      expect(directive.canMoveColumn(2, ColumnMoveDirection.Right)).toBeFalse();
+      expect(directive.canMoveColumn(0, ColumnMoveDirection.Left)).toBe(false);
+      expect(directive.canMoveColumn(2, ColumnMoveDirection.Right)).toBe(false);
       // A refused move must not silently reorder anything.
       directive.moveColumnTo(0, ColumnMoveDirection.Left);
       directive.moveColumnTo(2, ColumnMoveDirection.Right);
@@ -294,7 +294,7 @@ describe('DatagridColumnsOrderDirective', () => {
 
         // Name is pinned and rendered first, so the rendered order is Name | State Status. State's
         // own neighbour to the right is Status, and that step has to be offered.
-        expect(directive.canMoveColumn(1, ColumnMoveDirection.Right)).toBeTrue();
+        expect(directive.canMoveColumn(1, ColumnMoveDirection.Right)).toBe(true);
         directive.moveColumnTo(1, ColumnMoveDirection.Right);
         testContext.fixture.detectChanges();
 
@@ -305,10 +305,10 @@ describe('DatagridColumnsOrderDirective', () => {
         const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
 
         // State is the first loose column, so there is nothing to its left on its own side.
-        expect(directive.canMoveColumn(1, ColumnMoveDirection.Left)).toBeFalse();
+        expect(directive.canMoveColumn(1, ColumnMoveDirection.Left)).toBe(false);
         // Name is pinned, so it has no move to make.
-        expect(directive.canMoveColumn(0, ColumnMoveDirection.Left)).toBeFalse();
-        expect(directive.canMoveColumn(0, ColumnMoveDirection.Right)).toBeFalse();
+        expect(directive.canMoveColumn(0, ColumnMoveDirection.Left)).toBe(false);
+        expect(directive.canMoveColumn(0, ColumnMoveDirection.Right)).toBe(false);
       });
 
       // A pinned column cannot be moved at all, not even inside the sticky container next to another
@@ -320,11 +320,11 @@ describe('DatagridColumnsOrderDirective', () => {
 
         const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
         [ColumnMoveDirection.Left, ColumnMoveDirection.Right].forEach(direction => {
-          expect(directive.canMoveColumn(0, direction)).withContext(`Name ${direction}`).toBeFalse();
-          expect(directive.canMoveColumn(1, direction)).withContext(`State ${direction}`).toBeFalse();
+          expect(directive.canMoveColumn(0, direction), `Name ${direction}`).toBe(false);
+          expect(directive.canMoveColumn(1, direction), `State ${direction}`).toBe(false);
         });
 
-        expect(directive.moveColumnTo(1, ColumnMoveDirection.Left)).toBeFalse();
+        expect(directive.moveColumnTo(1, ColumnMoveDirection.Left)).toBe(false);
         testContext.fixture.detectChanges();
 
         expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
@@ -338,8 +338,8 @@ describe('DatagridColumnsOrderDirective', () => {
         testContext.fixture.detectChanges();
 
         const directive = testContext.datagridHostComponent.dgColumnsOrderDirective;
-        expect(directive.canMoveColumn(2, ColumnMoveDirection.Left)).toBeFalse();
-        expect(directive.canMoveColumn(2, ColumnMoveDirection.Right)).toBeFalse();
+        expect(directive.canMoveColumn(2, ColumnMoveDirection.Left)).toBe(false);
+        expect(directive.canMoveColumn(2, ColumnMoveDirection.Right)).toBe(false);
       });
     });
   });

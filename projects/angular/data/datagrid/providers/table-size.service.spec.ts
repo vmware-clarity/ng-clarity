@@ -54,38 +54,40 @@ const PROVIDERS_NEEDED = [
   ColumnsService,
 ];
 
-export default function (): void {
-  describe('TableSizeService', () => {
-    let testContext: TestContext;
-    beforeEach(() => {
-      testContext = {} as TestContext;
-    });
-
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [ClrDatagridModule],
-        declarations: [TestComponent],
-        providers: [PROVIDERS_NEEDED],
+describe('Datagrid', () => {
+  describe('Providers', () => {
+    describe('TableSizeService', () => {
+      let testContext: TestContext;
+      beforeEach(() => {
+        testContext = {} as TestContext;
       });
-      testContext.fixture = TestBed.createComponent(TestComponent);
-      testContext.sizeService = testContext.fixture.debugElement.injector.get(TableSizeService);
-      testContext.fixture.detectChanges();
-      testContext.table = testContext.fixture.elementRef.nativeElement.children[0]; // reference to the TestComponnt table
-      testContext.sizeService.tableRef = testContext.table; // setting service up with the component table for testing
-    });
 
-    it('sets a tableRef property with an elementReference', () => {
-      const untypedContext: any = testContext;
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ClrDatagridModule],
+          declarations: [TestComponent],
+          providers: [PROVIDERS_NEEDED],
+        });
+        testContext.fixture = TestBed.createComponent(TestComponent);
+        testContext.sizeService = testContext.fixture.debugElement.injector.get(TableSizeService);
+        testContext.fixture.detectChanges();
+        testContext.table = testContext.fixture.elementRef.nativeElement.children[0]; // reference to the TestComponnt table
+        testContext.sizeService.tableRef = testContext.table; // setting service up with the component table for testing
+      });
 
-      // sizeService.tableRef is set in beforeEach
-      expect(untypedContext.sizeService.tableRef).toBeDefined();
-    });
+      it('sets a tableRef property with an elementReference', () => {
+        const untypedContext: any = testContext;
 
-    it('calculates the correct column drag height', () => {
-      expect(testContext.sizeService.getColumnDragHeight()).toEqual('300px');
-      testContext.fixture.componentInstance.height = 422;
-      testContext.fixture.detectChanges();
-      expect(testContext.sizeService.getColumnDragHeight()).toEqual('422px');
+        // sizeService.tableRef is set in beforeEach
+        expect(untypedContext.sizeService.tableRef).toBeDefined();
+      });
+
+      it('calculates the correct column drag height', () => {
+        expect(testContext.sizeService.getColumnDragHeight()).toEqual('300px');
+        testContext.fixture.componentInstance.height = 422;
+        testContext.fixture.detectChanges();
+        expect(testContext.sizeService.getColumnDragHeight()).toEqual('422px');
+      });
     });
   });
-}
+});

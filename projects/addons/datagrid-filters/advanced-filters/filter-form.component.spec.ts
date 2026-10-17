@@ -66,7 +66,7 @@ describe('FilterFormComponent', () => {
     expect(formActionButtons[0].disabled).toBeTruthy();
   });
   it('emits cancel event on cancel button click', () => {
-    spyOn(testContext.component, 'onCancelButtonClick');
+    vi.spyOn(testContext.component, 'onCancelButtonClick').mockImplementation(() => undefined);
     const formActionButtons: HTMLInputElement[] =
       testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
     formActionButtons[1].click();
@@ -74,7 +74,7 @@ describe('FilterFormComponent', () => {
     expect(testContext.component.onCancelButtonClick).toHaveBeenCalledTimes(1);
   });
   it('emits apply event on apply button click ', () => {
-    spyOn(testContext.component, 'onApplyButtonClick');
+    vi.spyOn(testContext.component, 'onApplyButtonClick').mockImplementation(() => undefined);
     const formActionButtons: HTMLInputElement[] =
       testContext.fixture.debugElement.nativeElement.querySelectorAll('button');
     formActionButtons[0].click();

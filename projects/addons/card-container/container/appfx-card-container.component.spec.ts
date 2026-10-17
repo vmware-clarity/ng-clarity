@@ -71,8 +71,8 @@ describe('AppfxCardContainerComponent', () => {
 
   it('should insert card to container', fakeAsync(() => {
     const card = sampleCards[0];
-    spyOn(component, 'insertCardToContainer' as any).and.returnValue({});
-    spyOn(mockContainerService, 'addCard');
+    vi.spyOn(component, 'insertCardToContainer' as any).mockReturnValue({});
+    vi.spyOn(mockContainerService, 'addCard').mockImplementation(() => undefined);
     component.cards.push(card);
     fixture.detectChanges();
     component.ngDoCheck();
@@ -88,8 +88,8 @@ describe('AppfxCardContainerComponent', () => {
         hidden: true,
         id: 'card-1',
       };
-      spyOn(mockContainerService, 'toggleCardVisibility').and.returnValue(card);
-      spyOn(component, <never>'removeCardFromContainer').and.callThrough();
+      vi.spyOn(mockContainerService, 'toggleCardVisibility').mockReturnValue(card);
+      vi.spyOn(component, <never>'removeCardFromContainer');
 
       component.onToggleCardVisibility('card-1');
 
@@ -102,8 +102,8 @@ describe('AppfxCardContainerComponent', () => {
         hidden: false,
         id: 'card-1',
       };
-      spyOn(mockContainerService, 'toggleCardVisibility').and.returnValue(card);
-      spyOn(component, <never>'insertCardToContainer').and.callThrough();
+      vi.spyOn(mockContainerService, 'toggleCardVisibility').mockReturnValue(card);
+      vi.spyOn(component, <never>'insertCardToContainer');
 
       component.onToggleCardVisibility('card-1');
 

@@ -130,7 +130,7 @@ describe('datagridPage directive', () => {
       providers: [{ provide: DatagridStrings, useClass: DatagridStrings }],
     }).overrideProvider(ExportProviderService, {
       useValue: {
-        exportUIOnlyData: jasmine.createSpy('exportUIOnlyData'),
+        exportUIOnlyData: vi.fn(),
       },
     });
   });

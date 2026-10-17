@@ -643,7 +643,7 @@ describe('PropertyViewSectionBuilder', function () {
           clickHandler: (): void => undefined,
         };
 
-        spyOn(sectionBuilder, 'getActions').and.returnValue([action1, action2]);
+        vi.spyOn(sectionBuilder, 'getActions').mockReturnValue([action1, action2]);
 
         const modelActions = sectionBuilder.build().actions;
         expect(modelActions.length).toEqual(2);
@@ -661,7 +661,7 @@ describe('PropertyViewSectionBuilder', function () {
         const propertyBuilder2 = new PropertyViewPropertyBuilder(nullSectionBuilder);
         const messageBuilder2 = new PropertyViewMessageBuilder(nullSectionBuilder);
 
-        spyOn(sectionBuilder, 'getContentBuilders').and.returnValue([
+        vi.spyOn(sectionBuilder, 'getContentBuilders').mockReturnValue([
           propertyBuilder1,
           messageBuilder1,
           propertyBuilder2,
@@ -707,7 +707,7 @@ describe('PropertyViewSectionBuilder', function () {
         },
       ];
 
-      spyOn(sectionBuilder, 'getActions').and.returnValue(actions);
+      vi.spyOn(sectionBuilder, 'getActions').mockReturnValue(actions);
 
       const sectionBuilderClone1 = sectionBuilder.clone(nullCategoryBuilder);
       const sectionBuilderClone2 = sectionBuilder.clone(nullCategoryBuilder);
@@ -730,20 +730,22 @@ describe('PropertyViewSectionBuilder', function () {
       const sectionBuilder = new PropertyViewSectionBuilder(nullCategoryBuilder, '');
 
       const propertyBuilder = new PropertyViewPropertyBuilder(nullSectionBuilder);
-      const propertyBuilderCloneSpy = spyOn(propertyBuilder, 'clone').and.callThrough();
+      const propertyBuilderCloneSpy = vi.spyOn(propertyBuilder, 'clone');
 
       const messageBuilder = new PropertyViewMessageBuilder(nullSectionBuilder);
-      const messageBuilderCloneSpy = spyOn(messageBuilder, 'clone').and.callThrough();
+      const messageBuilderCloneSpy = vi.spyOn(messageBuilder, 'clone');
 
-      spyOn(sectionBuilder, 'getContentBuilders').and.returnValue([propertyBuilder, messageBuilder]);
+      vi.spyOn(sectionBuilder, 'getContentBuilders').mockReturnValue([propertyBuilder, messageBuilder]);
 
       const sectionBuilderClone = sectionBuilder.clone(nullCategoryBuilder);
-      expect(propertyBuilderCloneSpy.calls.mostRecent().args).toEqual([sectionBuilderClone]);
-      expect(messageBuilderCloneSpy.calls.mostRecent().args).toEqual([sectionBuilderClone]);
+      expect(vi.mocked(propertyBuilderCloneSpy).mock.lastCall).toEqual([sectionBuilderClone]);
+      expect(vi.mocked(messageBuilderCloneSpy).mock.lastCall).toEqual([sectionBuilderClone]);
 
       const sectionBuilderCloneContentBuilders = sectionBuilderClone.getContentBuilders();
-      const propertyBuilderClone: PropertyViewPropertyBuilder = propertyBuilderCloneSpy.calls.mostRecent().returnValue;
-      const messageBuilderClone: PropertyViewMessageBuilder = messageBuilderCloneSpy.calls.mostRecent().returnValue;
+
+      const propertyBuilderClone: PropertyViewPropertyBuilder = propertyBuilderCloneSpy.mock.results.at(-1)?.value;
+
+      const messageBuilderClone: PropertyViewMessageBuilder = messageBuilderCloneSpy.mock.results.at(-1)?.value;
       expect(sectionBuilderCloneContentBuilders.length).toEqual(2);
       expect(sectionBuilderCloneContentBuilders[0]).toBe(propertyBuilderClone);
       expect(sectionBuilderCloneContentBuilders[1]).toBe(messageBuilderClone);

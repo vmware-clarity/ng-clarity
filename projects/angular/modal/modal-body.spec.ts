@@ -22,8 +22,8 @@ describe('ClrModalBody Directive', () => {
     // patching ResizeObserver appears to be the workaround now https://github.com/angular/angular/issues/31695
 
     (ResizeObserver as unknown) = class {
-      observe = jasmine.createSpy('observe');
-      disconnect = jasmine.createSpy('disconnect');
+      observe = vi.fn();
+      disconnect = vi.fn();
 
       constructor(c: () => void) {
         resizeObserverCallback = c;
@@ -74,14 +74,14 @@ describe('ClrModalBody Directive', () => {
 
   it('should not run change detection when the mouseup or mousedown event occurs', () => {
     const appRef = TestBed.inject(ApplicationRef);
-    const spy = spyOn(appRef, 'tick');
+    const spy = vi.spyOn(appRef, 'tick').mockImplementation(() => undefined);
 
     modalBodyEl.dispatchEvent(new Event('mousedown'));
     modalBodyEl.dispatchEvent(new Event('mouseup'));
     modalBodyEl.dispatchEvent(new Event('mousedown'));
     modalBodyEl.dispatchEvent(new Event('mouseup'));
 
-    expect(spy.calls.count()).toEqual(0);
+    expect(vi.mocked(spy).mock.calls.length).toEqual(0);
   });
 });
 

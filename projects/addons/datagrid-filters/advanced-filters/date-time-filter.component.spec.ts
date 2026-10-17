@@ -10,6 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ClrInputModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
+import type { Mock } from 'vitest';
 
 import { DatagridFiltersStrings } from '../datagrid-filters-strings.service';
 import { DateTimeFilterComponent } from './date-time-filter.component';
@@ -17,7 +18,7 @@ import { FilterFormComponent } from './filter-form.component';
 import { ComparisonOperator, LogicalOperator, TimeSpan } from '../model/datagrid-filters.enums';
 import { DateTimePropertyDefinition, PropertyFilter, PropertyPredicate } from '../model/datagrid-filters.interfaces';
 
-import Spy = jasmine.Spy;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 const augustNinth = '2023-08-09';
 const dateTimePropertyName = 'lastUpdated';
@@ -154,9 +155,9 @@ export interface ThisTest {
 }
 
 function mockCurrentTime(): void {
-  jasmine.clock().uninstall();
-  jasmine.clock().install();
-  jasmine.clock().mockDate(baseTime);
+  vi.useRealTimers();
+  vi.useFakeTimers();
+  vi.setSystemTime(baseTime);
 }
 
 describe('DateTimeFilterComponent', () => {
@@ -174,12 +175,12 @@ describe('DateTimeFilterComponent', () => {
     testContext.fixture = TestBed.createComponent(DateTimeFilterComponent);
     testContext.component = testContext.fixture.componentInstance;
     testContext.component.filterProperty = dateTimeProperty;
-    testContext.dateOffsetSpy = spyOn(Date.prototype, 'getTimezoneOffset').and.returnValue(-360);
+    testContext.dateOffsetSpy = vi.spyOn(Date.prototype, 'getTimezoneOffset').mockReturnValue(-360);
     mockCurrentTime();
   });
 
   afterEach(() => {
-    jasmine.clock().uninstall();
+    vi.useRealTimers();
     testContext.fixture.destroy();
   });
   describe('in normal mode', () => {
@@ -198,7 +199,7 @@ describe('DateTimeFilterComponent', () => {
       expect(testContext.component.dateTimeFilterForm.valid).toBeFalsy();
     });
     it('emits an empty event on cancel', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const cancelDateTimeFilterButton = testContext.fixture.debugElement.nativeElement.querySelector(
         'button[data-test-id=cancelBtn]'
       );
@@ -210,7 +211,7 @@ describe('DateTimeFilterComponent', () => {
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith();
     });
     it('emits a property filter event on submit with operator equals', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const submitDateTimeFilterButton: HTMLButtonElement =
         testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
       expect(submitDateTimeFilterButton).toBeTruthy();
@@ -242,7 +243,7 @@ describe('DateTimeFilterComponent', () => {
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(equalsPropertyFilter);
     });
     it('emits a property filter event on submit with operator after', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const afterPropertyFilter = new PropertyFilter();
       afterPropertyFilter.criteria = [afterPredicate];
       const submitDateTimeFilterButton: HTMLButtonElement =
@@ -267,7 +268,7 @@ describe('DateTimeFilterComponent', () => {
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(afterPropertyFilter);
     });
     it('emits a property filter event on submit with operator custom range', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       testContext.component.timePredicate = true;
 
       const submitDateTimeFilterButton: HTMLButtonElement =
@@ -320,7 +321,7 @@ describe('DateTimeFilterComponent', () => {
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(customRangePropertyFilter);
     });
     it('emits a property filter event on submit with relative operator', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const submitDateTimeFilterButton: HTMLButtonElement =
         testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
 
@@ -363,7 +364,7 @@ describe('DateTimeFilterComponent', () => {
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(lastYearPropertyFilter);
     });
     it('emits a property filter event on submit with time span operator', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const submitDateTimeFilterButton: HTMLButtonElement =
         testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
 
@@ -488,12 +489,12 @@ describe('DateTimeFilterComponent', () => {
       // When includeSeconds is true, the component expects the input to contain the seconds
       testContext.component.dateTimeFilterForm.controls['timeValue'].setValue('12:30:45');
 
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       testContext.component.onApplyButtonClick();
 
       // Assert
-      const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
-      const emittedFilter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+      const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
+      const emittedFilter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
       const primaryPredicate = emittedFilter.criteria[0];
 
       // Should contain the explicit seconds provided, not appended with :00
@@ -502,14 +503,14 @@ describe('DateTimeFilterComponent', () => {
     });
 
     it('should submit form when Enter key is pressed and form is valid', () => {
-      spyOn(testContext.component, 'onApplyButtonClick');
+      vi.spyOn(testContext.component, 'onApplyButtonClick').mockImplementation(() => undefined);
 
       // Arrange: Make form valid
       testContext.component.dateTimeFilterForm.controls['dateValue'].setValue('2023-01-01');
 
       const event = new KeyboardEvent('keypress', { key: 'Enter' });
-      spyOn(event, 'stopPropagation');
-      spyOn(event, 'preventDefault');
+      vi.spyOn(event, 'stopPropagation').mockImplementation(() => undefined);
+      vi.spyOn(event, 'preventDefault').mockImplementation(() => undefined);
 
       // Act
       testContext.component.onInputKeyPress(event);
@@ -521,7 +522,7 @@ describe('DateTimeFilterComponent', () => {
     });
 
     it('should NOT submit form when Enter key is pressed and form is invalid', () => {
-      spyOn(testContext.component, 'onApplyButtonClick');
+      vi.spyOn(testContext.component, 'onApplyButtonClick').mockImplementation(() => undefined);
 
       // Arrange: Make form invalid (dateValue is required by default)
       testContext.component.dateTimeFilterForm.controls['dateValue'].setValue('');
@@ -540,21 +541,21 @@ describe('DateTimeFilterComponent', () => {
       testContext.component.isCustomRangePredicate = true; // To test removal of 'To' controls
       testContext.component.enableTimePredicate();
 
-      expect(testContext.component.dateTimeFilterForm.contains('timeValue')).toBeTrue();
-      expect(testContext.component.dateTimeFilterForm.contains('timeValueTo')).toBeTrue();
+      expect(testContext.component.dateTimeFilterForm.contains('timeValue')).toBe(true);
+      expect(testContext.component.dateTimeFilterForm.contains('timeValueTo')).toBe(true);
 
       // Act
       testContext.component.disableTimePredicate();
 
       // Assert
-      expect(testContext.component.timePredicate).toBeFalse();
-      expect(testContext.component.dateTimeFilterForm.contains('timeValue')).toBeFalse();
-      expect(testContext.component.dateTimeFilterForm.contains('timeValueTo')).toBeFalse();
+      expect(testContext.component.timePredicate).toBe(false);
+      expect(testContext.component.dateTimeFilterForm.contains('timeValue')).toBe(false);
+      expect(testContext.component.dateTimeFilterForm.contains('timeValueTo')).toBe(false);
     });
 
     describe('getSinglePredicate switch cases', () => {
       it('should handle Before operator', () => {
-        spyOn(testContext.component.filterCriteriaChange, 'emit');
+        vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
 
         // Act
         testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.Before);
@@ -562,8 +563,8 @@ describe('DateTimeFilterComponent', () => {
         testContext.component.onApplyButtonClick();
 
         // Assert
-        const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
-        const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+        const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
+        const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
 
         // Before 2023-08-09 means < 2023-08-09T00:00:00
         expect(filter.criteria[0].operator).toEqual(ComparisonOperator.LessThan);
@@ -571,7 +572,7 @@ describe('DateTimeFilterComponent', () => {
       });
 
       it('should handle BeforeOrEqualTo operator', () => {
-        spyOn(testContext.component.filterCriteriaChange, 'emit');
+        vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
 
         // Act
         testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.BeforeOrEqualTo);
@@ -579,8 +580,8 @@ describe('DateTimeFilterComponent', () => {
         testContext.component.onApplyButtonClick();
 
         // Assert
-        const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
-        const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+        const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
+        const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
 
         // BeforeOrEqualTo uses getFromDateTimePredicate(true), which adds 1 day (if no time)
         // So <= 08-09 effectively becomes < 08-10
@@ -589,7 +590,7 @@ describe('DateTimeFilterComponent', () => {
       });
 
       it('should handle After operator', () => {
-        spyOn(testContext.component.filterCriteriaChange, 'emit');
+        vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
 
         // Act
         testContext.component.dateTimeFilterForm.controls['operator'].setValue(ComparisonOperator.After);
@@ -597,8 +598,8 @@ describe('DateTimeFilterComponent', () => {
         testContext.component.onApplyButtonClick();
 
         // Assert
-        const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
-        const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+        const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
+        const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
 
         // After uses getFromDateTimePredicate(true), adding 1 day
         // After 08-09 effectively means >= 08-10
@@ -608,7 +609,7 @@ describe('DateTimeFilterComponent', () => {
     });
 
     it('should handle getToDateTimePredicate else block (CustomRange without Time)', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
 
       // Arrange
       testContext.component.timePredicate = false; // Ensure we hit the 'else' block
@@ -625,8 +626,8 @@ describe('DateTimeFilterComponent', () => {
       testContext.component.onApplyButtonClick();
 
       // Assert
-      const emitSpy = testContext.component.filterCriteriaChange.emit as jasmine.Spy;
-      const filter = emitSpy.calls.mostRecent().args[0] as PropertyFilter;
+      const emitSpy = testContext.component.filterCriteriaChange.emit as Mock;
+      const filter = vi.mocked(emitSpy).mock.lastCall[0] as PropertyFilter;
 
       // Index 0 is Primary (From), Index 1 is Secondary (To)
       const toPredicate = filter.criteria[1];

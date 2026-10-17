@@ -68,7 +68,7 @@ describe('DataGridFiltersComponent', () => {
     expect(filterSelect.options.length).toEqual(2);
   });
   it('clears quick filter on mode switch', () => {
-    spyOn(testContext.component.searchTermChange, 'emit');
+    vi.spyOn(testContext.component.searchTermChange, 'emit').mockImplementation(() => undefined);
     testContext.component.searchTerm = 'Test';
     testContext.component['lastSearchTerm'] = 'Test';
     testContext.component.selectedFilterMode = FilterMode.Advanced;
@@ -76,15 +76,15 @@ describe('DataGridFiltersComponent', () => {
     expect(testContext.component.searchTermChange.emit).toHaveBeenCalledWith('');
   });
   it('clears advanced filters on mode switch', () => {
-    spyOn(testContext.component.propertyFiltersChange, 'emit');
+    vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
     testContext.component['appliedFiltersCount'] = 3;
     testContext.component.selectedFilterMode = FilterMode.Quick;
     testContext.component.onFilterModeChange();
     expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([]);
   });
   it('emits an event on search term change', fakeAsync(() => {
-    spyOn(testContext.component, 'onSearchTermChanged').and.callThrough();
-    spyOn(testContext.component.searchTermChange, 'emit');
+    vi.spyOn(testContext.component, 'onSearchTermChanged');
+    vi.spyOn(testContext.component.searchTermChange, 'emit').mockImplementation(() => undefined);
     testContext.fixture.detectChanges();
     const filterInput: HTMLInputElement = testContext.fixture.debugElement.nativeElement.querySelector('input');
     filterInput.value = testInput;
@@ -99,8 +99,8 @@ describe('DataGridFiltersComponent', () => {
     expect(testContext.component.searchTermChange.emit).toHaveBeenCalledWith(testInput);
   }));
   it('emits an event on enter key press', () => {
-    spyOn(testContext.component, 'onSearchInputKeyPress').and.callThrough();
-    spyOn(testContext.component.searchTermChange, 'emit');
+    vi.spyOn(testContext.component, 'onSearchInputKeyPress');
+    vi.spyOn(testContext.component.searchTermChange, 'emit').mockImplementation(() => undefined);
     const keyDownEvent: KeyboardEvent = new KeyboardEvent('keydown', {
       key: 'Enter',
     });

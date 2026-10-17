@@ -234,8 +234,8 @@ describe('ColumnOrderDirective', () => {
     testContext.fixture.detectChanges();
     const firstColumnElement = testContext.datagridHostComponent.content.elementRefs.get(0).nativeElement;
     const secondColumnElement = testContext.datagridHostComponent.content.elementRefs.get(1).nativeElement;
-    spyOn(firstColumnElement, 'focus');
-    spyOn(secondColumnElement, 'focus');
+    vi.spyOn(firstColumnElement, 'focus').mockImplementation(() => undefined);
+    vi.spyOn(secondColumnElement, 'focus').mockImplementation(() => undefined);
     service.grabbedColumn.next(testContext.datagridHostComponent.columns[1]);
     service.focusGrabbedColumn.next();
 

@@ -144,7 +144,7 @@ describe('NavLevelDirective', () => {
       });
 
       it('should call showNavigation()', () => {
-        spyOn(testContext.clarityDirective, 'showNavigation');
+        vi.spyOn(testContext.clarityDirective, 'showNavigation').mockImplementation(() => undefined);
         testContext.clarityDirective.open();
         expect(testContext.clarityDirective.showNavigation).toHaveBeenCalled();
       });
@@ -156,7 +156,7 @@ describe('NavLevelDirective', () => {
       });
 
       it('should call showCloseButton()', () => {
-        spyOn(testContext.clarityDirective, 'showCloseButton');
+        vi.spyOn(testContext.clarityDirective, 'showCloseButton').mockImplementation(() => undefined);
         testContext.clarityDirective.open();
         expect(testContext.clarityDirective.showCloseButton).toHaveBeenCalled();
       });
@@ -173,7 +173,7 @@ describe('NavLevelDirective', () => {
       });
 
       it('should call hideNavigation()', () => {
-        const spy = spyOn(testContext.clarityDirective, 'hideNavigation');
+        const spy = vi.spyOn(testContext.clarityDirective, 'hideNavigation').mockImplementation(() => undefined);
         testContext.clarityDirective.close();
         expect(spy).toHaveBeenCalled();
       });
@@ -181,11 +181,11 @@ describe('NavLevelDirective', () => {
       it('should call removeFocusTrap()', () => {
         const cdkTrapFocus = getCdkTrapFocus(testContext.clarityDirective);
         testContext.clarityDirective.close();
-        expect(cdkTrapFocus.enabled).toBeFalse();
+        expect(cdkTrapFocus.enabled).toBe(false);
       });
 
       it('should call hideCloseButton()', () => {
-        const spy = spyOn(testContext.clarityDirective, 'hideCloseButton');
+        const spy = vi.spyOn(testContext.clarityDirective, 'hideCloseButton').mockImplementation(() => undefined);
         testContext.clarityDirective.close();
         expect(spy).toHaveBeenCalled();
       });

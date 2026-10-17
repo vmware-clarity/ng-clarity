@@ -23,30 +23,32 @@ interface TestContext {
   wrapper: WrappedCell;
 }
 
-export default function (): void {
-  describe('WrappedCell', () => {
-    let testContext: TestContext;
-    beforeEach(() => {
-      testContext = {} as TestContext;
-    });
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('WrappedCell', () => {
+      let testContext: TestContext;
+      beforeEach(() => {
+        testContext = {} as TestContext;
+      });
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({ declarations: [WrappedCell, WrappedCellTest] });
-      testContext.fixture = TestBed.createComponent(WrappedCellTest);
-      testContext.wrapper = testContext.fixture.componentInstance.wrapper;
-      testContext.fixture.detectChanges();
-    });
+      beforeEach(() => {
+        TestBed.configureTestingModule({ declarations: [WrappedCell, WrappedCellTest] });
+        testContext.fixture = TestBed.createComponent(WrappedCellTest);
+        testContext.wrapper = testContext.fixture.componentInstance.wrapper;
+        testContext.fixture.detectChanges();
+      });
 
-    it('should have a cellView', () => {
-      expect(testContext.wrapper.cellView).toBeDefined();
-    });
+      it('should have a cellView', () => {
+        expect(testContext.wrapper.cellView).toBeDefined();
+      });
 
-    it('should have a templateRef to the portal', () => {
-      expect(testContext.wrapper.templateRef).toBeDefined();
-    });
+      it('should have a templateRef to the portal', () => {
+        expect(testContext.wrapper.templateRef).toBeDefined();
+      });
 
-    it('projects content into the template', () => {
-      expect(testContext.wrapper.cellView.rootNodes[0].textContent.trim()).toBe('Hello World!');
+      it('projects content into the template', () => {
+        expect(testContext.wrapper.cellView.rootNodes[0].textContent.trim()).toBe('Hello World!');
+      });
     });
   });
-}
+});

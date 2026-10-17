@@ -18,233 +18,242 @@ import { DateNavigationService } from './providers/date-navigation.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
-export default function () {
-  describe('Day Component', () => {
-    const helpers = createTestHelpers();
+describe('Datepicker', () => {
+  describe('Components', () => {
+    describe('Day Component', () => {
+      const helpers = createTestHelpers();
 
-    let context: TestContext<ClrDay, TestComponent>;
+      let context: TestContext<ClrDay, TestComponent>;
 
-    beforeEach(() => {
-      context = helpers.create(ClrDay, TestComponent, [
-        LocaleHelperService,
-        DateNavigationService,
-        ClrPopoverService,
-        DateFormControlService,
-        DateIOService,
-        ViewManagerService,
-      ]);
-    });
-
-    describe('View Basics', () => {
-      it('renders the content based on the input provided', () => {
-        expect(context.clarityElement.textContent.trim()).toMatch('1');
-
-        context.testComponent.dayView = new DayViewModel(new DayModel(2018, 0, 25), false, false, false, false, false);
-        context.detectChanges();
-
-        expect(context.clarityElement.textContent.trim()).toMatch('25');
+      beforeEach(() => {
+        context = helpers.create(ClrDay, TestComponent, [
+          LocaleHelperService,
+          DateNavigationService,
+          ClrPopoverService,
+          DateFormControlService,
+          DateIOService,
+          ViewManagerService,
+        ]);
       });
 
-      it('renders one button based on the input provided', () => {
-        expect(context.clarityElement.children.length).toBe(1);
-        expect(context.clarityElement.children[0].tagName).toBe('BUTTON');
+      describe('View Basics', () => {
+        it('renders the content based on the input provided', () => {
+          expect(context.clarityElement.textContent.trim()).toMatch('1');
+
+          context.testComponent.dayView = new DayViewModel(
+            new DayModel(2018, 0, 25),
+            false,
+            false,
+            false,
+            false,
+            false
+          );
+          context.detectChanges();
+
+          expect(context.clarityElement.textContent.trim()).toMatch('25');
+        });
+
+        it('renders one button based on the input provided', () => {
+          expect(context.clarityElement.children.length).toBe(1);
+          expect(context.clarityElement.children[0].tagName).toBe('BUTTON');
+        });
+
+        it("adds the .is-today class to the button when the input provided is today's day view", () => {
+          const button: HTMLButtonElement = context.clarityElement.children[0];
+          expect(button.classList.contains('is-today')).toBe(false);
+          context.testComponent.dayView.isTodaysDate = true;
+
+          context.detectChanges();
+          expect(button.classList.contains('is-today')).toBe(true);
+
+          context.testComponent.dayView.isTodaysDate = false;
+
+          context.detectChanges();
+          expect(button.classList.contains('is-today')).toBe(false);
+        });
+
+        it('adds the .is-selected class to the button when the input day view is selected', () => {
+          const button: HTMLButtonElement = context.clarityElement.children[0];
+          expect(button.classList.contains('is-selected')).toBe(false);
+          context.testComponent.dayView.isSelected = true;
+
+          context.detectChanges();
+          expect(button.classList.contains('is-selected')).toBe(true);
+
+          context.testComponent.dayView.isSelected = false;
+
+          context.detectChanges();
+          expect(button.classList.contains('is-selected')).toBe(false);
+        });
+
+        it('adds the .is-excluded class to the button when the input day view is excluded', () => {
+          const button: HTMLButtonElement = context.clarityElement.children[0];
+          expect(button.classList.contains('is-excluded')).toBe(false);
+          context.testComponent.dayView.isExcluded = true;
+
+          context.detectChanges();
+          expect(button.classList.contains('is-excluded')).toBe(true);
+
+          context.testComponent.dayView.isExcluded = false;
+
+          context.detectChanges();
+          expect(button.classList.contains('is-excluded')).toBe(false);
+        });
+
+        it('adds the .is-disabled class to the button when the input day view is disabled', () => {
+          const button: HTMLButtonElement = context.clarityElement.children[0];
+          expect(button.classList.contains('is-disabled')).toBe(false);
+          context.testComponent.dayView.isDisabled = true;
+
+          context.detectChanges();
+          expect(button.classList.contains('is-disabled')).toBe(true);
+
+          context.testComponent.dayView.isDisabled = false;
+
+          context.detectChanges();
+          expect(button.classList.contains('is-disabled')).toBe(false);
+        });
+
+        it('sets the right tabindex if the day is focusable', () => {
+          const button: HTMLButtonElement = context.clarityElement.children[0];
+          expect(button.tabIndex).toBe(-1);
+
+          context.testComponent.dayView.isFocusable = true;
+          context.detectChanges();
+          expect(button.tabIndex).toBe(0);
+
+          context.testComponent.dayView.isFocusable = false;
+          context.detectChanges();
+          expect(button.tabIndex).toBe(-1);
+        });
+
+        it('updates the date when a button in the day component is clicked', () => {
+          vi.spyOn(context.clarityDirective, 'selectDay').mockImplementation(() => undefined);
+          const button: HTMLButtonElement = context.clarityElement.children[0];
+
+          button.click();
+          context.detectChanges();
+
+          expect(context.clarityDirective.selectDay).toHaveBeenCalled();
+        });
+
+        it('sets arria-current on the button correctly', () => {
+          const button: HTMLButtonElement = context.clarityElement.children[0];
+
+          context.testComponent.dayView.isTodaysDate = true;
+
+          context.detectChanges();
+          expect(button.attributes['aria-current'].value).toBe('date');
+
+          context.testComponent.dayView.isTodaysDate = false;
+
+          context.detectChanges();
+          expect(button.attributes['aria-current'].value).toBe('false');
+        });
+
+        it('sets the correct value for the aria-label attribute', () => {
+          const dayBtn: HTMLButtonElement = context.clarityElement.children[0];
+          const dvm: DayViewModel = context.clarityDirective.dayView;
+          expect(dayBtn.attributes['aria-label'].value).toEqual(dvm.dayModel.toDateString());
+        });
+
+        it('sets the correct value for the aria-label attribute when the date is selected', () => {
+          const dayBtn: HTMLButtonElement = context.clarityElement.children[0];
+          const dvm: DayViewModel = context.clarityDirective.dayView;
+
+          context.testComponent.dayView.isSelected = true;
+
+          context.detectChanges();
+          expect(dayBtn.attributes['aria-label'].value).toEqual(`${dvm.dayModel.toDateString()} - Selected`);
+        });
+
+        it('sets aria-selected when the date is selected', () => {
+          const button: HTMLButtonElement = context.clarityElement.children[0];
+          expect(button.attributes['aria-selected'].value).toBe('false');
+          context.testComponent.dayView.isSelected = true;
+
+          context.detectChanges();
+          expect(button.attributes['aria-selected'].value).toBe('true');
+        });
+
+        it('updates the focusable date when a button is focused', () => {
+          vi.spyOn(context.clarityDirective, 'onDayViewFocus').mockImplementation(() => undefined);
+          const button: HTMLButtonElement = context.clarityElement.children[0];
+
+          button.focus();
+          context.detectChanges();
+
+          expect(context.clarityDirective.onDayViewFocus).toHaveBeenCalled();
+        });
       });
 
-      it("adds the .is-today class to the button when the input provided is today's day view", () => {
-        const button: HTMLButtonElement = context.clarityElement.children[0];
-        expect(button.classList.contains('is-today')).toBe(false);
-        context.testComponent.dayView.isTodaysDate = true;
+      describe('Template API', () => {
+        it('supports an Input for DayViewModel', () => {
+          expect(context.clarityDirective.dayView).not.toBeUndefined();
 
-        context.detectChanges();
-        expect(button.classList.contains('is-today')).toBe(true);
-
-        context.testComponent.dayView.isTodaysDate = false;
-
-        context.detectChanges();
-        expect(button.classList.contains('is-today')).toBe(false);
+          expect(context.clarityDirective.dayView.dayModel.date).toBe(1);
+          expect(context.clarityDirective.dayView.dayModel.month).toBe(0);
+          expect(context.clarityDirective.dayView.dayModel.year).toBe(2018);
+          expect(context.clarityDirective.dayView.isTodaysDate).toBe(false);
+          expect(context.clarityDirective.dayView.isSelected).toBe(false);
+          expect(context.clarityDirective.dayView.isExcluded).toBe(false);
+          expect(context.clarityDirective.dayView.isFocusable).toBe(false);
+        });
       });
 
-      it('adds the .is-selected class to the button when the input day view is selected', () => {
-        const button: HTMLButtonElement = context.clarityElement.children[0];
-        expect(button.classList.contains('is-selected')).toBe(false);
-        context.testComponent.dayView.isSelected = true;
+      describe('Typescript API', () => {
+        it('updates the selected day when a Date is selected', () => {
+          const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
+          const testDayView: DayViewModel = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
+          vi.spyOn(context.clarityDirective.onSelectDay, 'emit').mockImplementation(() => undefined);
 
-        context.detectChanges();
-        expect(button.classList.contains('is-selected')).toBe(true);
+          expect(dateNavigationService.selectedDay).toBeUndefined();
 
-        context.testComponent.dayView.isSelected = false;
+          context.clarityDirective.dayView = testDayView;
+          context.clarityDirective.selectDay();
+          context.detectChanges();
+          expect(context.clarityDirective.onSelectDay.emit).toHaveBeenCalled();
+        });
 
-        context.detectChanges();
-        expect(button.classList.contains('is-selected')).toBe(false);
-      });
+        it('closes the popover when a Date is selected', () => {
+          const popoverService = context.getClarityProvider(ClrPopoverService);
+          expect(popoverService.open).toBeFalsy();
 
-      it('adds the .is-excluded class to the button when the input day view is excluded', () => {
-        const button: HTMLButtonElement = context.clarityElement.children[0];
-        expect(button.classList.contains('is-excluded')).toBe(false);
-        context.testComponent.dayView.isExcluded = true;
+          const testDayView: DayViewModel = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
 
-        context.detectChanges();
-        expect(button.classList.contains('is-excluded')).toBe(true);
+          context.clarityDirective.dayView = testDayView;
+          context.clarityDirective.selectDay();
+          context.detectChanges();
 
-        context.testComponent.dayView.isExcluded = false;
+          expect(popoverService.open).toBe(false);
+        });
 
-        context.detectChanges();
-        expect(button.classList.contains('is-excluded')).toBe(false);
-      });
+        it('updates the focusedDay when a day is focused', () => {
+          const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
+          const testDayView: DayViewModel = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
 
-      it('adds the .is-disabled class to the button when the input day view is disabled', () => {
-        const button: HTMLButtonElement = context.clarityElement.children[0];
-        expect(button.classList.contains('is-disabled')).toBe(false);
-        context.testComponent.dayView.isDisabled = true;
+          expect(dateNavigationService.focusedDay).toBeUndefined();
 
-        context.detectChanges();
-        expect(button.classList.contains('is-disabled')).toBe(true);
+          context.clarityDirective.dayView = testDayView;
+          context.clarityDirective.onDayViewFocus();
+          context.detectChanges();
 
-        context.testComponent.dayView.isDisabled = false;
+          expect(dateNavigationService.focusedDay).not.toBeUndefined();
+          expect(dateNavigationService.focusedDay.date).toBe(testDayView.dayModel.date);
+          expect(dateNavigationService.focusedDay.month).toBe(testDayView.dayModel.month);
+          expect(dateNavigationService.focusedDay.year).toBe(testDayView.dayModel.year);
+        });
 
-        context.detectChanges();
-        expect(button.classList.contains('is-disabled')).toBe(false);
-      });
+        it('marks the date control as dirty when a date is selected', () => {
+          vi.spyOn(context.clarityDirective.onSelectDay, 'emit').mockImplementation(() => undefined);
 
-      it('sets the right tabindex if the day is focusable', () => {
-        const button: HTMLButtonElement = context.clarityElement.children[0];
-        expect(button.tabIndex).toBe(-1);
-
-        context.testComponent.dayView.isFocusable = true;
-        context.detectChanges();
-        expect(button.tabIndex).toBe(0);
-
-        context.testComponent.dayView.isFocusable = false;
-        context.detectChanges();
-        expect(button.tabIndex).toBe(-1);
-      });
-
-      it('updates the date when a button in the day component is clicked', () => {
-        spyOn(context.clarityDirective, 'selectDay');
-        const button: HTMLButtonElement = context.clarityElement.children[0];
-
-        button.click();
-        context.detectChanges();
-
-        expect(context.clarityDirective.selectDay).toHaveBeenCalled();
-      });
-
-      it('sets arria-current on the button correctly', () => {
-        const button: HTMLButtonElement = context.clarityElement.children[0];
-
-        context.testComponent.dayView.isTodaysDate = true;
-
-        context.detectChanges();
-        expect(button.attributes['aria-current'].value).toBe('date');
-
-        context.testComponent.dayView.isTodaysDate = false;
-
-        context.detectChanges();
-        expect(button.attributes['aria-current'].value).toBe('false');
-      });
-
-      it('sets the correct value for the aria-label attribute', () => {
-        const dayBtn: HTMLButtonElement = context.clarityElement.children[0];
-        const dvm: DayViewModel = context.clarityDirective.dayView;
-        expect(dayBtn.attributes['aria-label'].value).toEqual(dvm.dayModel.toDateString());
-      });
-
-      it('sets the correct value for the aria-label attribute when the date is selected', () => {
-        const dayBtn: HTMLButtonElement = context.clarityElement.children[0];
-        const dvm: DayViewModel = context.clarityDirective.dayView;
-
-        context.testComponent.dayView.isSelected = true;
-
-        context.detectChanges();
-        expect(dayBtn.attributes['aria-label'].value).toEqual(`${dvm.dayModel.toDateString()} - Selected`);
-      });
-
-      it('sets aria-selected when the date is selected', () => {
-        const button: HTMLButtonElement = context.clarityElement.children[0];
-        expect(button.attributes['aria-selected'].value).toBe('false');
-        context.testComponent.dayView.isSelected = true;
-
-        context.detectChanges();
-        expect(button.attributes['aria-selected'].value).toBe('true');
-      });
-
-      it('updates the focusable date when a button is focused', () => {
-        spyOn(context.clarityDirective, 'onDayViewFocus');
-        const button: HTMLButtonElement = context.clarityElement.children[0];
-
-        button.focus();
-        context.detectChanges();
-
-        expect(context.clarityDirective.onDayViewFocus).toHaveBeenCalled();
-      });
-    });
-
-    describe('Template API', () => {
-      it('supports an Input for DayViewModel', () => {
-        expect(context.clarityDirective.dayView).not.toBeUndefined();
-
-        expect(context.clarityDirective.dayView.dayModel.date).toBe(1);
-        expect(context.clarityDirective.dayView.dayModel.month).toBe(0);
-        expect(context.clarityDirective.dayView.dayModel.year).toBe(2018);
-        expect(context.clarityDirective.dayView.isTodaysDate).toBe(false);
-        expect(context.clarityDirective.dayView.isSelected).toBe(false);
-        expect(context.clarityDirective.dayView.isExcluded).toBe(false);
-        expect(context.clarityDirective.dayView.isFocusable).toBe(false);
-      });
-    });
-
-    describe('Typescript API', () => {
-      it('updates the selected day when a Date is selected', () => {
-        const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
-        const testDayView: DayViewModel = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
-        spyOn(context.clarityDirective.onSelectDay, 'emit');
-
-        expect(dateNavigationService.selectedDay).toBeUndefined();
-
-        context.clarityDirective.dayView = testDayView;
-        context.clarityDirective.selectDay();
-        context.detectChanges();
-        expect(context.clarityDirective.onSelectDay.emit).toHaveBeenCalled();
-      });
-
-      it('closes the popover when a Date is selected', () => {
-        const popoverService = context.getClarityProvider(ClrPopoverService);
-        expect(popoverService.open).toBeFalsy();
-
-        const testDayView: DayViewModel = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
-
-        context.clarityDirective.dayView = testDayView;
-        context.clarityDirective.selectDay();
-        context.detectChanges();
-
-        expect(popoverService.open).toBe(false);
-      });
-
-      it('updates the focusedDay when a day is focused', () => {
-        const dateNavigationService: DateNavigationService = context.getClarityProvider(DateNavigationService);
-        const testDayView: DayViewModel = new DayViewModel(new DayModel(2018, 0, 1), false, false, false, false);
-
-        expect(dateNavigationService.focusedDay).toBeUndefined();
-
-        context.clarityDirective.dayView = testDayView;
-        context.clarityDirective.onDayViewFocus();
-        context.detectChanges();
-
-        expect(dateNavigationService.focusedDay).not.toBeUndefined();
-        expect(dateNavigationService.focusedDay.date).toBe(testDayView.dayModel.date);
-        expect(dateNavigationService.focusedDay.month).toBe(testDayView.dayModel.month);
-        expect(dateNavigationService.focusedDay.year).toBe(testDayView.dayModel.year);
-      });
-
-      it('marks the date control as dirty when a date is selected', () => {
-        spyOn(context.clarityDirective.onSelectDay, 'emit');
-
-        context.clarityDirective.selectDay();
-        expect(context.clarityDirective.onSelectDay.emit).toHaveBeenCalled();
+          context.clarityDirective.selectDay();
+          expect(context.clarityDirective.onSelectDay.emit).toHaveBeenCalled();
+        });
       });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-day [clrDayView]="dayView"></clr-day>`,

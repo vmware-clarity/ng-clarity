@@ -71,7 +71,11 @@ class MockElementRef extends ElementRef {
 class DummyIfTabActiveDirective {
   @Input() activeClass: string;
 
-  constructor(@Host() @Self() private tab: ClrTab) {}
+  constructor(
+    @Host()
+    @Self()
+    private tab: ClrTab
+  ) {}
 
   @Input()
   set activateTab(value: boolean) {
@@ -132,8 +136,8 @@ describe('Appfx Tabs', () => {
     testContext.component = testContext.fixture.componentInstance;
     testContext.component.model = testContext.tabsModel;
 
-    spyOn(testContext.modelManager, 'injectPropertiesToPendingStep').and.callThrough();
-    spyOn(testContext.modelManager, 'ejectPropertiesFromCurrentStep').and.callThrough();
+    vi.spyOn(testContext.modelManager, 'injectPropertiesToPendingStep');
+    vi.spyOn(testContext.modelManager, 'ejectPropertiesFromCurrentStep');
 
     testContext.fixture.detectChanges();
   });
@@ -310,7 +314,7 @@ describe('Appfx Tabs', () => {
 
       expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(true);
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[1]);
-      expect(isValid).withContext('All steps should be valid').toBeTruthy();
+      expect(isValid, 'All steps should be valid').toBeTruthy();
     });
 
     it('validates all visited pages when validate$ is called and navigates to the invalid page', waitForAsync(() => {
@@ -322,9 +326,10 @@ describe('Appfx Tabs', () => {
 
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
-      expect(testContext.steps.map(step => (step.model as MockStepModel).isValidated))
-        .withContext('First page should be validated')
-        .toEqual([true, false, false]);
+      expect(
+        testContext.steps.map(step => (step.model as MockStepModel).isValidated),
+        'First page should be validated'
+      ).toEqual([true, false, false]);
 
       expect((testContext.steps[2].model as MockStepModel).isActivated).toEqual(true);
 
@@ -349,7 +354,7 @@ describe('Appfx Tabs', () => {
       expect(testContext.modelManager.injectPropertiesToPendingStep).toHaveBeenCalledWith(testContext.steps[2]);
 
       // The validate$ returns false
-      expect(isValid).withContext('The third page should be invalid').toBeFalsy();
+      expect(isValid, 'The third page should be invalid').toBeFalsy();
     }));
 
     it('does not validate pages when validate$ is called, one step is invalid and disableTabsContent = true', () => {
@@ -374,7 +379,7 @@ describe('Appfx Tabs', () => {
 
       expect((testContext.steps[1].model as MockStepModel).isValidated).toEqual(false);
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[1]);
-      expect(isValid).withContext('The second page should be valid').toBeTruthy();
+      expect(isValid, 'The second page should be valid').toBeTruthy();
     });
 
     it('validates the active pages when validateActiveTab$ is called and current tab is valid', waitForAsync(() => {
@@ -386,13 +391,12 @@ describe('Appfx Tabs', () => {
 
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
-      expect(testContext.steps.map(step => (step.model as MockStepModel).isValidated))
-        .withContext('Only first page should be validated')
-        .toEqual([true, false, false]);
+      expect(
+        testContext.steps.map(step => (step.model as MockStepModel).isValidated),
+        'Only first page should be validated'
+      ).toEqual([true, false, false]);
 
-      expect((testContext.steps[2].model as MockStepModel).isActivated)
-        .withContext('Third page should be activated')
-        .toEqual(true);
+      expect((testContext.steps[2].model as MockStepModel).isActivated, 'Third page should be activated').toEqual(true);
 
       // Go to the second valid page
       testContext.component.onStepActiveChange(testContext.steps[1], true);
@@ -400,9 +404,7 @@ describe('Appfx Tabs', () => {
 
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[2]);
 
-      expect((testContext.steps[2].model as MockStepModel).isValidated)
-        .withContext('Third page should be validated')
-        .toEqual(true);
+      expect((testContext.steps[2].model as MockStepModel).isValidated, 'Third page should be validated').toEqual(true);
 
       let isValid = false;
       testContext.component
@@ -413,7 +415,7 @@ describe('Appfx Tabs', () => {
         });
       testContext.fixture.detectChanges();
 
-      expect(isValid).withContext('The second page should be valid').toBeTrue();
+      expect(isValid, 'The second page should be valid').toBe(true);
     }));
 
     it('validates the active pages when validateActiveTab$ is called and current tab is invalid', waitForAsync(() => {
@@ -425,9 +427,10 @@ describe('Appfx Tabs', () => {
 
       expect(testContext.modelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.steps[0]);
 
-      expect(testContext.steps.map(step => (step.model as MockStepModel).isValidated))
-        .withContext('Only first page should be validated')
-        .toEqual([true, false, false]);
+      expect(
+        testContext.steps.map(step => (step.model as MockStepModel).isValidated),
+        'Only first page should be validated'
+      ).toEqual([true, false, false]);
 
       let isValid = true;
       testContext.component
@@ -438,13 +441,14 @@ describe('Appfx Tabs', () => {
         });
       testContext.fixture.detectChanges();
 
-      expect(isValid).withContext('The third page should not be valid').toBeFalse();
+      expect(isValid, 'The third page should not be valid').toBe(false);
     }));
 
     function verifyAllStepPagesNotValidated(steps: Step[]) {
-      expect(steps.map(step => (step.model as MockStepModel).isValidated))
-        .withContext('All pages should not be validated')
-        .toEqual([false, false, false]);
+      expect(
+        steps.map(step => (step.model as MockStepModel).isValidated),
+        'All pages should not be validated'
+      ).toEqual([false, false, false]);
     }
   });
 

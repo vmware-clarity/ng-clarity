@@ -32,7 +32,7 @@ describe('ExportDatagridComponent', () => {
   });
 
   it('emits export event for all items on click with an export type ALL', () => {
-    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    vi.spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit').mockImplementation(() => undefined);
     testContext.exportDatagridHostComponent.onExportClick(testContext.exportDatagridHostComponent.exportType.ALL);
     testContext.fixture.componentInstance.exportStatus.exportType =
       testContext.exportDatagridHostComponent.exportType.ALL;
@@ -42,7 +42,7 @@ describe('ExportDatagridComponent', () => {
   });
 
   it('emits export event for filtered items on click with an export type MATCHING_FILTERS', () => {
-    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    vi.spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit').mockImplementation(() => undefined);
     testContext.exportDatagridHostComponent.onExportClick(
       testContext.exportDatagridHostComponent.exportType.MATCHING_FILTERS
     );
@@ -54,7 +54,7 @@ describe('ExportDatagridComponent', () => {
   });
 
   it('emits export event for selected items on click with an export type SELECTED_ONLY', () => {
-    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    vi.spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit').mockImplementation(() => undefined);
     testContext.exportDatagridHostComponent.onExportClick(
       testContext.exportDatagridHostComponent.exportType.SELECTED_ONLY
     );
@@ -66,7 +66,7 @@ describe('ExportDatagridComponent', () => {
   });
 
   it('emits export event for all items if no selected or filtered items', () => {
-    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    vi.spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit').mockImplementation(() => undefined);
     testContext.exportDatagridHostComponent.allItemsCount = 10;
     testContext.exportDatagridHostComponent.filteredItemsCount = 0;
     testContext.exportDatagridHostComponent.selectedItemsCount = 0;
@@ -80,7 +80,7 @@ describe('ExportDatagridComponent', () => {
   });
 
   it('does not emit export event if there are selected or filtered items', () => {
-    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    vi.spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit').mockImplementation(() => undefined);
     testContext.exportDatagridHostComponent.allItemsCount = 10;
     testContext.exportDatagridHostComponent.filteredItemsCount = 5;
     testContext.exportDatagridHostComponent.selectedItemsCount = 3;
@@ -91,7 +91,7 @@ describe('ExportDatagridComponent', () => {
   });
 
   it('emits export event for selected items when exportType SELECTED_ONLY', () => {
-    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    vi.spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit').mockImplementation(() => undefined);
     testContext.exportDatagridHostComponent.selectedItemsCount = 5;
 
     testContext.exportDatagridHostComponent.onExportClick(
@@ -105,7 +105,7 @@ describe('ExportDatagridComponent', () => {
   });
 
   it('emits export event for filtered items when exportType MATCHING_FILTERS', () => {
-    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    vi.spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit').mockImplementation(() => undefined);
     testContext.exportDatagridHostComponent.filteredItemsCount = 8;
 
     testContext.exportDatagridHostComponent.onExportClick(
@@ -119,12 +119,12 @@ describe('ExportDatagridComponent', () => {
   });
 
   it('sets export inProgress status to true and emits correct status', () => {
-    spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit');
+    vi.spyOn(testContext.exportDatagridHostComponent.exportEventEmitter, 'emit').mockImplementation(() => undefined);
     testContext.exportDatagridHostComponent.exportStatus.inProgress = true;
 
     testContext.exportDatagridHostComponent.onExportClick(testContext.exportDatagridHostComponent.exportType.ALL);
 
-    expect(testContext.exportDatagridHostComponent.exportStatus.inProgress).toBeTrue();
+    expect(testContext.exportDatagridHostComponent.exportStatus.inProgress).toBe(true);
     expect(testContext.exportDatagridHostComponent.exportEventEmitter.emit).toHaveBeenCalledWith(
       testContext.exportDatagridHostComponent.exportStatus
     );

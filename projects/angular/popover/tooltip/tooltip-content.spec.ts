@@ -56,7 +56,7 @@ class SimpleTest {
   size: string;
 }
 
-export default function (): void {
+describe('Tooltip', () => {
   describe('TooltipContent component', () => {
     describe('Template API', () => {
       describe('defaults', () => {
@@ -238,4 +238,4 @@ export default function (): void {
       });
     });
   });
-}
+});

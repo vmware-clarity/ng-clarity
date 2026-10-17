@@ -92,7 +92,7 @@ describe('Mappings', () => {
       .to('prop2');
     try {
       mappings.validate(new StepModel2());
-      fail('should never reach here');
+      throw new Error('should never reach here');
     } catch (e) {
       expect((e as Error).message).toEqual(`No @In or @Out decorator found for property names ["var3","var4"]`);
     }
@@ -101,7 +101,7 @@ describe('Mappings', () => {
   it('throws error, if mapping is defined more than once for same step model property ', () => {
     try {
       new Mappings<StepModel, WizardModel>().mapStepProp('var1').to('prop1').mapStepProp('var1').to('prop2');
-      fail('should never reach here');
+      throw new Error('should never reach here');
     } catch (e) {
       expect((e as Error).message).toEqual(`A mapping for property var1 is defined more than once.`);
     }
@@ -110,7 +110,7 @@ describe('Mappings', () => {
   it('throws error, if mapping is defined more than once for same wizard model property ', () => {
     try {
       new Mappings<StepModel, WizardModel>().mapStepProp('var1').to('prop1').mapStepProp('var2').to('prop1');
-      fail('should never reach here');
+      throw new Error('should never reach here');
     } catch (e) {
       expect((e as Error).message).toEqual(`A mapping for property prop1 is defined more than once.`);
     }

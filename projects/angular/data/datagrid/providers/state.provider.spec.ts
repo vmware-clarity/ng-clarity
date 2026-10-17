@@ -13,66 +13,68 @@ import { Sort } from './sort';
 import { StateDebouncer } from './state-debouncer.provider';
 import { StateProvider } from './state.provider';
 
-export default function (): void {
-  describe('State Provider', function () {
-    let subscriptions: Subscription[] = [];
-    const page = new Page(new StateDebouncer());
-    let stateProviderInstance: StateProvider<any>;
+describe('Datagrid', () => {
+  describe('Providers', () => {
+    describe('State Provider', function () {
+      let subscriptions: Subscription[] = [];
+      const page = new Page(new StateDebouncer());
+      let stateProviderInstance: StateProvider<any>;
 
-    beforeEach(function () {
-      stateProviderInstance = new StateProvider(
-        new FiltersProvider(new Page(new StateDebouncer()), new StateDebouncer()),
-        new Sort(new StateDebouncer()),
-        page,
-        new StateDebouncer()
-      );
-    });
-
-    afterEach(function () {
-      subscriptions.forEach(sub => sub.unsubscribe());
-      subscriptions = [];
-    });
-
-    it('has empty state upon uninitiated constructor parameters', function () {
-      expect(stateProviderInstance.state).toEqual({});
-    });
-
-    it('has proper page info in state upon page update', function () {
-      page.size = 20;
-      page.current = 2;
-
-      expect(stateProviderInstance.state.page).toEqual({
-        size: 20,
-        current: 2,
-        from: 20,
-        to: 39,
+      beforeEach(function () {
+        stateProviderInstance = new StateProvider(
+          new FiltersProvider(new Page(new StateDebouncer()), new StateDebouncer()),
+          new Sort(new StateDebouncer()),
+          page,
+          new StateDebouncer()
+        );
       });
 
-      page.totalItems = 50;
-
-      expect(stateProviderInstance.state.page).toEqual({
-        size: 20,
-        current: 2,
-        from: 20,
-        to: 39,
+      afterEach(function () {
+        subscriptions.forEach(sub => sub.unsubscribe());
+        subscriptions = [];
       });
 
-      page.totalItems = 9;
-
-      expect(stateProviderInstance.state.page).toEqual({
-        size: 20,
-        current: 1,
-        from: 0,
-        to: 8,
+      it('has empty state upon uninitiated constructor parameters', function () {
+        expect(stateProviderInstance.state).toEqual({});
       });
 
-      page.totalItems = 0;
-      expect(stateProviderInstance.state.page).toEqual({
-        size: 20,
-        current: 1,
-        from: -1,
-        to: -1,
+      it('has proper page info in state upon page update', function () {
+        page.size = 20;
+        page.current = 2;
+
+        expect(stateProviderInstance.state.page).toEqual({
+          size: 20,
+          current: 2,
+          from: 20,
+          to: 39,
+        });
+
+        page.totalItems = 50;
+
+        expect(stateProviderInstance.state.page).toEqual({
+          size: 20,
+          current: 2,
+          from: 20,
+          to: 39,
+        });
+
+        page.totalItems = 9;
+
+        expect(stateProviderInstance.state.page).toEqual({
+          size: 20,
+          current: 1,
+          from: 0,
+          to: 8,
+        });
+
+        page.totalItems = 0;
+        expect(stateProviderInstance.state.page).toEqual({
+          size: 20,
+          current: 1,
+          from: -1,
+          to: -1,
+        });
       });
     });
   });
-}
+});

@@ -211,7 +211,7 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       ],
     }).overrideProvider(ExportProviderService, {
       useValue: {
-        exportUIOnlyData: jasmine.createSpy('exportUIOnlyData'),
+        exportUIOnlyData: vi.fn(),
       },
     });
 
@@ -221,7 +221,9 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
 
   it('is called when datagrid items changed is emitted and there are already selected items in the grid', () => {
     testContext.fixture.detectChanges(false);
-    spyOn(testContext.appfxDatagridHostComponent.directive, 'updateSelectedItems');
+    vi.spyOn(testContext.appfxDatagridHostComponent.directive, 'updateSelectedItems').mockImplementation(
+      () => undefined
+    );
     const gridData = testContext.appfxDatagridHostComponent.data;
     testContext.fixture.detectChanges(false);
     expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
@@ -379,7 +381,9 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     it('calls onSelectedItemsChange() method of datagrid when grid items are updated', fakeAsync(() => {
       testContext.selectRows([0, 1]);
       testContext.verifySelectedRows([0, 1]);
-      spyOn(testContext.appfxDatagridHostComponent.datagridComponent, 'onSelectedItemsChange');
+      vi.spyOn(testContext.appfxDatagridHostComponent.datagridComponent, 'onSelectedItemsChange').mockImplementation(
+        () => undefined
+      );
       //Simulate data refresh by create new instances of data
       testContext.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
         return { ...item };
@@ -459,7 +463,9 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
     tick();
 
     testContext.fixture.detectChanges(false);
-    spyOn(testContext.appfxDatagridHostComponent.directive, 'updateSelectedItems');
+    vi.spyOn(testContext.appfxDatagridHostComponent.directive, 'updateSelectedItems').mockImplementation(
+      () => undefined
+    );
     const gridData = testContext.appfxDatagridHostComponent.data;
     testContext.fixture.detectChanges(false);
     tick();

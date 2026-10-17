@@ -160,7 +160,7 @@ describe('CompositeFiltersComponent', () => {
     expect(clearAllButtonElement).toBeTruthy();
   });
   it('emits property filter change event', () => {
-    spyOn(testContext.component.propertyFiltersChange, 'emit');
+    vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
     testContext.component.onFilterCriteriaChange(stringPropertyFilter);
     expect(testContext.component.propertyFilters.length).toEqual(1);
     expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([stringPropertyFilter]);
@@ -187,7 +187,7 @@ describe('CompositeFiltersComponent', () => {
     expect(testContext.component.propertyFiltersChange.emit).toHaveBeenCalledWith([enumPropertyFilter]);
   });
   it('removes all filters on clear all click', () => {
-    spyOn(testContext.component.propertyFiltersChange, 'emit');
+    vi.spyOn(testContext.component.propertyFiltersChange, 'emit').mockImplementation(() => undefined);
     testContext.component.propertyFilters.push(stringPropertyFilter);
     testContext.component.propertyFilters.push(enumPropertyFilter);
     testContext.fixture.detectChanges();

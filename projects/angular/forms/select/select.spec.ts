@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrSelect } from './select';
 import { ClrSelectContainer } from './select-container';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<select clrSelect></select>`,
@@ -38,10 +38,10 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Select component', () => {
   describe('Select directive', () => {
     ControlStandaloneSpec(StandaloneUseTest);
     TemplateDrivenSpec(ClrSelectContainer, ClrSelect, TemplateDrivenTest, 'clr-select');
     ReactiveSpec(ClrSelectContainer, ClrSelect, ReactiveTest, 'clr-select');
   });
-}
+});

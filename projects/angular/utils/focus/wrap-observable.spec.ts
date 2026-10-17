@@ -15,7 +15,7 @@ interface TestContext {
   log: string[];
 }
 
-export default function (): void {
+describe('Focus management', () => {
   describe('wrapObservable()', () => {
     let testContext: TestContext;
     beforeEach(() => {
@@ -59,4 +59,4 @@ export default function (): void {
       expect(testContext.log).toEqual(['Hello', 'World']);
     });
   });
-}
+});

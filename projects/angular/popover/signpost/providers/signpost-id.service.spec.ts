@@ -13,7 +13,7 @@ interface TestContext {
   idService: SignpostIdService;
 }
 
-export default function (): void {
+describe('Signpost', () => {
   describe('Signpost Id Service', () => {
     let testContext: TestContext;
     beforeEach(() => {
@@ -39,4 +39,4 @@ export default function (): void {
       expect(idObservable instanceof Observable).toBe(true);
     });
   });
-}
+});

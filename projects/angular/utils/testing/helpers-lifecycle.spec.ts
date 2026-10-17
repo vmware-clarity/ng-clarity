@@ -7,8 +7,9 @@
 
 import { Component, Directive, Injectable } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
+import type { Mock } from 'vitest';
 
-import { createTestHelpers, spec, TestContext } from './helpers.spec';
+import { createTestHelpers, spec, TestContext } from './helpers';
 
 @Injectable()
 class TestService {
@@ -38,13 +39,42 @@ class TestHost {
 })
 class TestWrapper {}
 
+@Component({ template: '' })
+class TeardownTestHost {
+  destroyed = false;
+
+  ngOnDestroy() {
+    this.destroyed = true;
+  }
+}
+
+describe('Test environment teardown', () => {
+  let previousHost: TeardownTestHost;
+
+  beforeEach(() => {
+    if (previousHost) {
+      expect(previousHost.destroyed).toBe(true);
+    }
+    TestBed.configureTestingModule({ imports: [TeardownTestHost] });
+    previousHost = TestBed.createComponent(TeardownTestHost).componentInstance;
+  });
+
+  it('creates a fresh host', () => {
+    expect(previousHost.destroyed).toBe(false);
+  });
+
+  it('destroys the previous fixture before starting another test', () => {
+    expect(previousHost.destroyed).toBe(false);
+  });
+});
+
 describe('Test context helpers', () => {
   describe('spec', () => {
     const contexts = new Set<TestContext<TestDirective, TestHost>>();
     const getContext = spec(TestDirective, TestHost);
 
     beforeEach(() => {
-      expect(contexts.has(getContext())).toBeFalse();
+      expect(contexts.has(getContext())).toBe(false);
       contexts.add(getContext());
       expect(getContext().testComponent.value).toBe('initial');
     });
@@ -52,14 +82,14 @@ describe('Test context helpers', () => {
     it('exposes the initialized fixture through a closure', () => {
       const context = getContext();
       expect(context.fixture.componentInstance).toBe(context.testComponent);
-      expect(context.clarityDirective).toEqual(jasmine.any(TestDirective));
+      expect(context.clarityDirective).toEqual(expect.any(TestDirective));
       context.testComponent.value = 'changed';
       context.detectChanges();
       expect(context.clarityElement.textContent).toBe('changed');
     });
 
     it('creates a fresh context for each test', () => {
-      expect(getContext()).toEqual(jasmine.any(TestContext));
+      expect(getContext()).toEqual(expect.any(TestContext));
     });
   });
 
@@ -82,7 +112,7 @@ describe('Test context helpers', () => {
   });
 
   describe('fixture factories', () => {
-    let destroy: jasmine.Spy;
+    let destroy: Mock;
 
     afterEach(() => {
       expect(destroy).toHaveBeenCalled();
@@ -93,8 +123,8 @@ describe('Test context helpers', () => {
 
       it('creates and cleans up a fixture with extra directives', () => {
         const context = helpers.create(TestDirective, TestHost, [], [TestDirective]);
-        destroy = spyOn(context.fixture, 'destroy').and.callThrough();
-        expect(context.clarityDirective).toEqual(jasmine.any(TestDirective));
+        destroy = vi.spyOn(context.fixture, 'destroy');
+        expect(context.clarityDirective).toEqual(expect.any(TestDirective));
       });
     });
 
@@ -103,8 +133,8 @@ describe('Test context helpers', () => {
 
       it('declares the directive without importing ClarityModule', () => {
         const context = helpers.createOnly(TestDirective, TestHost);
-        destroy = spyOn(context.fixture, 'destroy').and.callThrough();
-        expect(context.clarityDirective).toEqual(jasmine.any(TestDirective));
+        destroy = vi.spyOn(context.fixture, 'destroy');
+        expect(context.clarityDirective).toEqual(expect.any(TestDirective));
       });
     });
 
@@ -119,7 +149,7 @@ describe('Test context helpers', () => {
           [TestHost, TestDirective],
           [{ provide: TestService, useValue: { value: 'component override' } }]
         );
-        destroy = spyOn(context.fixture, 'destroy').and.callThrough();
+        destroy = vi.spyOn(context.fixture, 'destroy');
         expect(context.getClarityProvider(TestService).value).toBe('component override');
       });
     });
@@ -135,7 +165,7 @@ describe('Test context helpers', () => {
           [TestDirective],
           [{ provide: TestService, useValue: { value: 'directive override' } }]
         );
-        destroy = spyOn(context.fixture, 'destroy').and.callThrough();
+        destroy = vi.spyOn(context.fixture, 'destroy');
         expect(context.getClarityProvider(TestService).value).toBe('directive override');
       });
     });

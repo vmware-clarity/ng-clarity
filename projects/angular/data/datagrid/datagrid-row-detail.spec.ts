@@ -10,60 +10,62 @@ import { createTestHelpers, TestContext } from '@clr/angular/testing';
 
 import { DatagridIfExpandService } from './datagrid-if-expanded.service';
 import { ClrDatagridRowDetail } from './datagrid-row-detail';
-import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers';
 
-export default function (): void {
-  describe('ClrDatagridRowDetail component', () => {
-    const helpers = createTestHelpers();
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('ClrDatagridRowDetail component', () => {
+      const helpers = createTestHelpers();
 
-    let context: TestContext<ClrDatagridRowDetail, FullTest>;
+      let context: TestContext<ClrDatagridRowDetail, FullTest>;
 
-    beforeEach(() => {
-      context = helpers.create(ClrDatagridRowDetail, FullTest, DATAGRID_SPEC_PROVIDERS);
-    });
-
-    it('projects content', () => {
-      expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
-    });
-
-    it('adds the .datagrid-row-flex class to the host', () => {
-      expect(context.clarityElement.classList.contains('datagrid-row-flex')).toBe(true);
-    });
-
-    it('adds the .datagrid-row-detail class to the host', () => {
-      expect(context.clarityElement.classList.contains('datagrid-row-detail')).toBe(true);
-    });
-
-    it('updates the Expand provider with the [clrDgReplace] input', () => {
-      const expand: DatagridIfExpandService = context.getClarityProvider(DatagridIfExpandService);
-      let expandState = false;
-      expand.replace.subscribe(state => {
-        expandState = state;
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridRowDetail, FullTest, DATAGRID_SPEC_PROVIDERS);
       });
-      expect(expandState).toBe(false);
-      context.testComponent.replace = true;
-      context.detectChanges();
-      expect(expandState).toBe(true);
-    });
 
-    it('should add helper text', () => {
-      const rows: HTMLElement[] = context.clarityElement.querySelectorAll('.clr-sr-only');
+      it('projects content', () => {
+        expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+      });
 
-      expect(rows[0].innerText.trim()).toBe(
-        "Beginning of Expandable row content Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button"
-      );
-      expect(rows[1].innerText.trim()).toBe('End of Expandable row content');
-    });
+      it('adds the .datagrid-row-flex class to the host', () => {
+        expect(context.clarityElement.classList.contains('datagrid-row-flex')).toBe(true);
+      });
 
-    it('should add id to the root element', () => {
-      expect(context.clarityElement.getAttribute('id')).not.toBeNull();
-    });
+      it('adds the .datagrid-row-detail class to the host', () => {
+        expect(context.clarityElement.classList.contains('datagrid-row-detail')).toBe(true);
+      });
 
-    it('should have role=row', () => {
-      expect(context.clarityElement.getAttribute('role')).toBe('row');
+      it('updates the Expand provider with the [clrDgReplace] input', () => {
+        const expand: DatagridIfExpandService = context.getClarityProvider(DatagridIfExpandService);
+        let expandState = false;
+        expand.replace.subscribe(state => {
+          expandState = state;
+        });
+        expect(expandState).toBe(false);
+        context.testComponent.replace = true;
+        context.detectChanges();
+        expect(expandState).toBe(true);
+      });
+
+      it('should add helper text', () => {
+        const rows: HTMLElement[] = context.clarityElement.querySelectorAll('.clr-sr-only');
+
+        expect(rows[0].innerText.trim()).toBe(
+          "Beginning of Expandable row content Screen reader table commands may not work for viewing expanded content, please use your screen reader's browse mode to read the content exposed by this button"
+        );
+        expect(rows[1].innerText.trim()).toBe('End of Expandable row content');
+      });
+
+      it('should add id to the root element', () => {
+        expect(context.clarityElement.getAttribute('id')).not.toBeNull();
+      });
+
+      it('should have role=row', () => {
+        expect(context.clarityElement.getAttribute('role')).toBe('row');
+      });
     });
   });
-}
+});
 
 @Component({
   template: `

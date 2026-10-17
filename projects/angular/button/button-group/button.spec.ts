@@ -74,7 +74,7 @@ export class ButtonViewTestComponent {
 })
 class TestButtonWithRouterLinkActiveComponent {}
 
-export default function (): void {
+describe('Button Group Directives', () => {
   describe('Buttons', () => {
     let fixture: ComponentFixture<any>;
     let debugEl: DebugElement;
@@ -210,7 +210,7 @@ export default function (): void {
       it('updates the button in group service when the inMenu input changes', () => {
         const buttonInGroupService: ButtonInGroupService =
           debugEl.injector.get<ButtonInGroupService>(ButtonInGroupService);
-        spyOn(buttonInGroupService, 'updateButtonGroup');
+        vi.spyOn(buttonInGroupService, 'updateButtonGroup').mockImplementation(() => undefined);
 
         componentInstance.button1.inMenu = true;
         expect(buttonInGroupService.updateButtonGroup).toHaveBeenCalled();
@@ -297,9 +297,9 @@ export default function (): void {
       });
 
       it('does not set the routerLinkActive classes when no button is active', async () => {
-        expect(buttons[0].classList.contains('btn-primary')).toBeFalse();
-        expect(buttons[1].classList.contains('btn-primary')).toBeFalse();
-        expect(buttons[2].classList.contains('btn-primary')).toBeFalse();
+        expect(buttons[0].classList.contains('btn-primary')).toBe(false);
+        expect(buttons[1].classList.contains('btn-primary')).toBe(false);
+        expect(buttons[2].classList.contains('btn-primary')).toBe(false);
       });
 
       it('sets the routerLinkActive classes only on the active button', async () => {
@@ -307,10 +307,10 @@ export default function (): void {
         await fixture.whenStable();
         fixture.detectChanges();
 
-        expect(buttons[0].classList.contains('btn-primary')).toBeTrue();
-        expect(buttons[1].classList.contains('btn-primary')).toBeFalse();
-        expect(buttons[2].classList.contains('btn-primary')).toBeFalse();
+        expect(buttons[0].classList.contains('btn-primary')).toBe(true);
+        expect(buttons[1].classList.contains('btn-primary')).toBe(false);
+        expect(buttons[2].classList.contains('btn-primary')).toBe(false);
       });
     });
   });
-}
+});

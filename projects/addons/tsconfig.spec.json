@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "../../out-tsc/spec",
-    "types": ["jasmine"]
+    "types": ["vitest/globals"]
   },
-  "include": ["./**/*.ts"]
+  "include": ["./**/*.ts"],
+  "files": ["../test-setup.ts", "../test-providers.ts"]
 }

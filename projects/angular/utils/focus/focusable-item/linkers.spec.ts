@@ -10,7 +10,7 @@ import { FocusableItem } from './focusable-item';
 import { MockFocusableItem } from './focusable-item.mock';
 import { Linkers } from './linkers';
 
-export default function (): void {
+describe('Focus management', () => {
   describe('linkParent()', () => {
     it('links the list of items to the parent according to the given direction', () => {
       const parent = new MockFocusableItem('parent');
@@ -58,4 +58,4 @@ export default function (): void {
       expect(testContext.third.down).toBeUndefined();
     });
   });
-}
+});

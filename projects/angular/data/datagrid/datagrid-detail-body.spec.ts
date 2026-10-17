@@ -12,28 +12,26 @@ import { ClrDatagridDetailBody } from './datagrid-detail-body';
 
 const content = 'Detail Pane';
 
-export default function (): void {
-  describe('ClrDatagridDetailBody component', () => {
-    const helpers = createTestHelpers();
+describe('ClrDatagridDetailBody component', () => {
+  const helpers = createTestHelpers();
 
-    describe('View', () => {
-      let context: TestContext<ClrDatagridDetailBody, FullTest>;
+  describe('View', () => {
+    let context: TestContext<ClrDatagridDetailBody, FullTest>;
 
-      beforeEach(() => {
-        context = helpers.create(ClrDatagridDetailBody, FullTest);
-        context.detectChanges();
-      });
+    beforeEach(() => {
+      context = helpers.create(ClrDatagridDetailBody, FullTest);
+      context.detectChanges();
+    });
 
-      it('should wire up host bindings', () => {
-        expect(context.clarityElement.className).toContain('datagrid-detail-body');
-      });
+    it('should wire up host bindings', () => {
+      expect(context.clarityElement.className).toContain('datagrid-detail-body');
+    });
 
-      it('projects content into the detail pane ', () => {
-        expect(context.clarityElement.innerHTML).toContain(content);
-      });
+    it('projects content into the detail pane ', () => {
+      expect(context.clarityElement.innerHTML).toContain(content);
     });
   });
-}
+});
 
 @Component({
   template: `<clr-dg-detail-body>${content}</clr-dg-detail-body>`,

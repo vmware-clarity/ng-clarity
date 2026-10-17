@@ -16,64 +16,66 @@ import { Page } from './providers/page';
 import { Sort } from './providers/sort';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 
-export default function (): void {
-  describe('ClrDatagridPlaceholder component', () => {
-    const helpers = createTestHelpers();
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('ClrDatagridPlaceholder component', () => {
+      const helpers = createTestHelpers();
 
-    let testContext: any;
-    beforeEach(() => {
-      testContext = {};
-    });
-
-    describe('Typescript API', () => {
+      let testContext: any;
       beforeEach(() => {
-        testContext.pageProvider = new Page(new StateDebouncer());
-        testContext.itemsProvider = new Items(null, null, testContext.pageProvider);
-        testContext.component = new ClrDatagridPlaceholder(testContext.itemsProvider);
+        testContext = {};
       });
 
-      it('detects if the Datagrid is empty', () => {
-        expect(testContext.component.emptyDatagrid).toBe(true);
-        testContext.itemsProvider.all = new Array(1);
-        expect(testContext.component.emptyDatagrid).toBe(false);
-        testContext.itemsProvider.all = [];
-        expect(testContext.component.emptyDatagrid).toBe(true);
-      });
-    });
+      describe('Typescript API', () => {
+        beforeEach(() => {
+          testContext.pageProvider = new Page(new StateDebouncer());
+          testContext.itemsProvider = new Items(null, null, testContext.pageProvider);
+          testContext.component = new ClrDatagridPlaceholder(testContext.itemsProvider);
+        });
 
-    describe('View', () => {
-      let context: TestContext<ClrDatagridPlaceholder<void>, SimpleTest>;
-      let itemsProvider: Items<void>;
-
-      beforeEach(() => {
-        context = helpers.create<ClrDatagridPlaceholder<void>, SimpleTest>(ClrDatagridPlaceholder, SimpleTest, [
-          Items,
-          Page,
-          Sort,
-          FiltersProvider,
-          StateDebouncer,
-        ]);
-        itemsProvider = TestBed.inject(Items);
+        it('detects if the Datagrid is empty', () => {
+          expect(testContext.component.emptyDatagrid).toBe(true);
+          testContext.itemsProvider.all = new Array(1);
+          expect(testContext.component.emptyDatagrid).toBe(false);
+          testContext.itemsProvider.all = [];
+          expect(testContext.component.emptyDatagrid).toBe(true);
+        });
       });
 
-      it('is empty when there are items', () => {
-        itemsProvider.all = new Array(1);
-        context.detectChanges();
-        expect(context.clarityElement.textContent.trim()).toMatch('');
-      });
+      describe('View', () => {
+        let context: TestContext<ClrDatagridPlaceholder<void>, SimpleTest>;
+        let itemsProvider: Items<void>;
 
-      it('is empty when the data is loading', () => {
-        itemsProvider.loading = true;
-        context.detectChanges();
-        expect(context.clarityElement.textContent.trim()).toMatch('');
-      });
+        beforeEach(() => {
+          context = helpers.create<ClrDatagridPlaceholder<void>, SimpleTest>(ClrDatagridPlaceholder, SimpleTest, [
+            Items,
+            Page,
+            Sort,
+            FiltersProvider,
+            StateDebouncer,
+          ]);
+          itemsProvider = TestBed.inject(Items);
+        });
 
-      it('projects content when there are no items', () => {
-        expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+        it('is empty when there are items', () => {
+          itemsProvider.all = new Array(1);
+          context.detectChanges();
+          expect(context.clarityElement.textContent.trim()).toMatch('');
+        });
+
+        it('is empty when the data is loading', () => {
+          itemsProvider.loading = true;
+          context.detectChanges();
+          expect(context.clarityElement.textContent.trim()).toMatch('');
+        });
+
+        it('projects content when there are no items', () => {
+          expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+        });
       });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-dg-placeholder>Hello world</clr-dg-placeholder>`,

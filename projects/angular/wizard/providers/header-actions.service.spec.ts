@@ -12,7 +12,7 @@ import { ClrWizard } from '../wizard';
 import { HeaderActionService } from './header-actions.service';
 import { WizardNavigationService } from './wizard-navigation.service';
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('Header Actions Service', () => {
     const helpers = createTestHelpers();
 
@@ -47,4 +47,4 @@ export default function (): void {
       expect(headerActionService.showWizardHeaderActions).toBe(true);
     });
   });
-}
+});

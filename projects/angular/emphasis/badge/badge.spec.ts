@@ -45,7 +45,7 @@ describe('ClrBadge component', () => {
       const badgeElement = fixture.nativeElement.querySelector('.badge');
       expect(badgeElement).not.toBeNull();
 
-      expect(badgeElement.textContent).toBeEmptyString();
+      expect(badgeElement.textContent).toBe('');
 
       const newBadgeText = '15';
       fixture.componentInstance.content = newBadgeText;

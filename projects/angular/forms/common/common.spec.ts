@@ -85,7 +85,7 @@ class WithWrapperNoId {}
 })
 class WithWrapperWithId {}
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('Common forms integration', () => {
     function assertMatching<T>(testComponent: Type<T>, projectedLabels: boolean, expectedId?: string) {
       return function () {
@@ -97,7 +97,7 @@ export default function (): void {
           expectedId = wrapperDebug.injector.get(ControlIdService).id;
         }
         const input = fixture.nativeElement.querySelector('input');
-        expect(input.getAttribute('id')).toBe(expectedId, 'input has the wrong id attribute');
+        expect(input.getAttribute('id'), 'input has the wrong id attribute').toBe(expectedId);
 
         const labels = ['#container-view-label-before', '#container-view-label-after'];
         if (projectedLabels) {
@@ -105,7 +105,7 @@ export default function (): void {
         }
         for (const labelSelector of labels) {
           const label = fixture.nativeElement.querySelector(labelSelector);
-          expect(label.getAttribute('for')).toBe(expectedId, labelSelector + ' has the wrong for attribute');
+          expect(label.getAttribute('for'), labelSelector + ' has the wrong for attribute').toBe(expectedId);
         }
       };
     }
@@ -118,4 +118,4 @@ export default function (): void {
 
     it('works with an explicit wrapper and with an id', assertMatching(WithWrapperWithId, true, 'hello'));
   });
-}
+});

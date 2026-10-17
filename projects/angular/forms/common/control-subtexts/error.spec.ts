@@ -8,6 +8,7 @@
 import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { ClrIcon } from '@clr/angular/icon';
 
 import { CONTROL_SUFFIX } from '../abstract-control';
 import { ClrControlError } from './error';
@@ -20,7 +21,7 @@ import { ControlIdService } from '../providers/control-id.service';
 })
 class SimpleTest {}
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrControlError', () => {
     describe('General:', () => {
       let fixture: ComponentFixture<SimpleTest>;
@@ -28,6 +29,7 @@ export default function (): void {
 
       beforeEach(function () {
         TestBed.configureTestingModule({
+          imports: [ClrIcon],
           declarations: [ClrControlError, SimpleTest],
           providers: [ControlIdService],
         });
@@ -41,7 +43,7 @@ export default function (): void {
       });
 
       it('adds the .clr-subtext-wrapper class to host', function () {
-        expect(element.classList.contains('clr-subtext-wrapper')).toBeTrue();
+        expect(element.classList.contains('clr-subtext-wrapper')).toBe(true);
       });
 
       it('should add id to host', function () {
@@ -56,6 +58,7 @@ export default function (): void {
 
       beforeEach(async function () {
         TestBed.configureTestingModule({
+          imports: [ClrIcon],
           declarations: [ClrControlError, SimpleTest],
           providers: [ControlIdService, ContainerIdService],
         }).compileComponents();
@@ -70,4 +73,4 @@ export default function (): void {
       });
     });
   });
-}
+});

@@ -223,7 +223,7 @@ describe('datagrid-preserve-selection-directive.server-side', () => {
       ],
     }).overrideProvider(ExportProviderService, {
       useValue: {
-        exportUIOnlyData: jasmine.createSpy('exportUIOnlyData'),
+        exportUIOnlyData: vi.fn(),
       },
     });
 

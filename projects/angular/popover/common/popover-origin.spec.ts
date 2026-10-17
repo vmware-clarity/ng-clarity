@@ -21,41 +21,43 @@ class TestHost {
   @ViewChild('testOrigin', { read: ElementRef, static: true }) origin: ElementRef<HTMLButtonElement>;
 }
 
-export default function (): void {
-  describe('ClrPopoverOrigin', () => {
-    type Context = TestContext<ClrPopoverOrigin, TestHost> & {
-      popoverService: ClrPopoverService;
-    };
+describe('ClrPopover', () => {
+  describe('Directive', () => {
+    describe('ClrPopoverOrigin', () => {
+      type Context = TestContext<ClrPopoverOrigin, TestHost> & {
+        popoverService: ClrPopoverService;
+      };
 
-    describe('Template API', () => {
-      let testContext: Context;
+      describe('Template API', () => {
+        let testContext: Context;
 
-      const getContext = spec(ClrPopoverOrigin, TestHost, undefined);
-      beforeEach(() => {
-        testContext = getContext() as Context;
+        const getContext = spec(ClrPopoverOrigin, TestHost, undefined);
+        beforeEach(() => {
+          testContext = getContext() as Context;
+        });
+
+        beforeEach(() => {
+          testContext.popoverService = testContext.getClarityProvider(ClrPopoverService);
+          testContext.detectChanges();
+        });
+
+        it('registers the element as the popover origin', () => {
+          expect(testContext.popoverService.origin).toEqual(testContext.testComponent.origin);
+        });
       });
 
-      beforeEach(() => {
-        testContext.popoverService = testContext.getClarityProvider(ClrPopoverService);
-        testContext.detectChanges();
-      });
+      describe('View Basics', () => {
+        let testContext: Context;
 
-      it('registers the element as the popover origin', () => {
-        expect(testContext.popoverService.origin).toEqual(testContext.testComponent.origin);
-      });
-    });
+        const getContext = spec(ClrPopoverOrigin, TestHost, undefined);
+        beforeEach(() => {
+          testContext = getContext() as Context;
+        });
 
-    describe('View Basics', () => {
-      let testContext: Context;
-
-      const getContext = spec(ClrPopoverOrigin, TestHost, undefined);
-      beforeEach(() => {
-        testContext = getContext() as Context;
-      });
-
-      it('adds the clr-popover-origin classname', () => {
-        expect(testContext.clarityElement.classList).toContain('clr-popover-origin');
+        it('adds the clr-popover-origin classname', () => {
+          expect(testContext.clarityElement.classList).toContain('clr-popover-origin');
+        });
       });
     });
   });
-}
+});

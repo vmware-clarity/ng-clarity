@@ -32,7 +32,7 @@ describe('PropertyViewService', () => {
     it('should return a PropertyViewBuilder', () => {
       const propertyViewBuilder = testContext.propertyViewService.createPropertyViewBuilder();
 
-      expect(propertyViewBuilder).toEqual(jasmine.any(PropertyViewBuilder));
+      expect(propertyViewBuilder).toEqual(expect.any(PropertyViewBuilder));
     });
 
     it('should return a new PropertyViewBuilder instance on each invocation', () => {

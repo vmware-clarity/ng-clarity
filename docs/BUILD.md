@@ -25,7 +25,7 @@ projects
 
 ## Build Process
 
-The build scripts in this repository have been designed to work with Node.js v16 or later.
+The build scripts in this repository have been designed to work with Node.js 24 (see `.nvmrc`).
 
 The build process consists of the following five stages. Each stage can be ran individually or all stages could be executed by running `npm run build:ci`. This is useful when submitting pull requests, because `npm run build:ci` is essentially the same command the CI system will run.
 
@@ -41,6 +41,10 @@ The build process consists of the following five stages. Each stage can be ran i
 3. `npm run build`: builds all projects
 
 4. `npm run test`: verifies all tests pass
+   - Install Chromium first with `npx playwright install chromium`. The library suites run in a real browser through Vitest and Playwright.
+
+   - See [Vitest test infrastructure](VITEST_MIGRATION_PLAN.md) for headless runs, coverage thresholds, and reproducing randomized failures.
+
    - `npm run test:watch`: runs a watcher on all tests
 
 5. `npm run public-api:check`: verifies the public API has not changed

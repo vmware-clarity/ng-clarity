@@ -7,28 +7,30 @@
 
 import { NestedProperty } from './nested-property';
 
-export default function (): void {
-  describe('NestedProperty (internal)', () => {
-    let testContext: any;
-    beforeEach(() => {
-      testContext = {};
-    });
+describe('Datagrid', () => {
+  describe('Built-in', () => {
+    describe('NestedProperty (internal)', () => {
+      let testContext: any;
+      beforeEach(() => {
+        testContext = {};
+      });
 
-    it('accesses root properties', () => {
-      testContext.property = new NestedProperty('a');
-      expect(testContext.property.getPropValue({ a: 42 })).toBe(42);
-    });
+      it('accesses root properties', () => {
+        testContext.property = new NestedProperty('a');
+        expect(testContext.property.getPropValue({ a: 42 })).toBe(42);
+      });
 
-    it('accesses deep properties', () => {
-      testContext.property = new NestedProperty('my.deep.prop');
-      expect(testContext.property.getPropValue({ my: { deep: { prop: 42 } } })).toBe(42);
-    });
+      it('accesses deep properties', () => {
+        testContext.property = new NestedProperty('my.deep.prop');
+        expect(testContext.property.getPropValue({ my: { deep: { prop: 42 } } })).toBe(42);
+      });
 
-    it('returns gracefully undefined when any of the intermediate properties is missing', () => {
-      testContext.property = new NestedProperty('my.deep.prop');
-      expect(testContext.property.getPropValue({})).toBeUndefined();
-      expect(testContext.property.getPropValue({ my: {} })).toBeUndefined();
-      expect(testContext.property.getPropValue({ my: { deep: {} } })).toBeUndefined();
+      it('returns gracefully undefined when any of the intermediate properties is missing', () => {
+        testContext.property = new NestedProperty('my.deep.prop');
+        expect(testContext.property.getPropValue({})).toBeUndefined();
+        expect(testContext.property.getPropValue({ my: {} })).toBeUndefined();
+        expect(testContext.property.getPropValue({ my: { deep: {} } })).toBeUndefined();
+      });
     });
   });
-}
+});

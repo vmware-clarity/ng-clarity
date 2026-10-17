@@ -65,7 +65,7 @@ describe('PropertyViewMessageComponent', () => {
     testContext.component.data = testContext.createData({});
     testContext.fixture.detectChanges();
     expect(testContext.element.children.length).toEqual(1);
-    expect(testContext.element.children[0]).toEqual(jasmine.any(HTMLTableCellElement));
+    expect(testContext.element.children[0]).toEqual(expect.any(HTMLTableCellElement));
     expect(testContext.element.children[0].getAttribute('colspan')).toEqual('2');
   });
 

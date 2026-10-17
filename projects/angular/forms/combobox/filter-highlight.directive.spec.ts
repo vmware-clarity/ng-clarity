@@ -22,24 +22,26 @@ import { OptionSelectionService } from './providers/option-selection.service';
 })
 class TestComponent {}
 
-export default function () {
-  // Temporarily disabled while the directive is being verified to be properly sanitized.
-  describe('Highlight directive', () => {
-    const helpers = createTestHelpers();
+describe('Combobox component', () => {
+  describe('Directives', () => {
+    // Temporarily disabled while the directive is being verified to be properly sanitized.
+    describe('Highlight directive', () => {
+      const helpers = createTestHelpers();
 
-    let context: TestContext<ClrFilterHighlight<string>, TestComponent>;
-    let optionService: OptionSelectionService<string>;
+      let context: TestContext<ClrFilterHighlight<string>, TestComponent>;
+      let optionService: OptionSelectionService<string>;
 
-    beforeEach(() => {
-      context = helpers.createOnly<ClrFilterHighlight<string>, TestComponent>(ClrFilterHighlight, TestComponent, [
-        OptionSelectionService,
-      ]);
-      optionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
-    });
+      beforeEach(() => {
+        context = helpers.createOnly<ClrFilterHighlight<string>, TestComponent>(ClrFilterHighlight, TestComponent, [
+          OptionSelectionService,
+        ]);
+        optionService = context.getClarityProvider(OptionSelectionService) as OptionSelectionService<string>;
+      });
 
-    it('highlights the search text inside the element content', () => {
-      optionService.currentInput = 'needle';
-      expect(context.testElement.innerHTML).toContain('hay <b>needle</b> hay <b>needle</b> hay');
+      it('highlights the search text inside the element content', () => {
+        optionService.currentInput = 'needle';
+        expect(context.testElement.innerHTML).toContain('hay <b>needle</b> hay <b>needle</b> hay');
+      });
     });
   });
-}
+});

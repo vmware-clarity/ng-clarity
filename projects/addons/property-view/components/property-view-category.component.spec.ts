@@ -150,15 +150,15 @@ describe('PropertyViewCategoryComponent', () => {
       expect(testContext.getTableElement()).not.toEqual(null);
       expect(testContext.getSectionsDebugElements().length).toEqual(3);
       expect(testContext.getSectionsDebugElements()[0].componentInstance).toEqual(
-        jasmine.any(PropertyViewSectionMockComponent)
+        expect.any(PropertyViewSectionMockComponent)
       );
       expect(testContext.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
       expect(testContext.getSectionsDebugElements()[1].componentInstance).toEqual(
-        jasmine.any(PropertyViewSectionMockComponent)
+        expect.any(PropertyViewSectionMockComponent)
       );
       expect(testContext.getSectionsDebugElements()[1].componentInstance.data).toBe(sec2Data);
       expect(testContext.getSectionsDebugElements()[2].componentInstance).toEqual(
-        jasmine.any(PropertyViewSectionMockComponent)
+        expect.any(PropertyViewSectionMockComponent)
       );
       expect(testContext.getSectionsDebugElements()[2].componentInstance.data).toBe(sec3Data);
     }
@@ -195,7 +195,7 @@ describe('PropertyViewCategoryComponent', () => {
 
   it('should set sections expanded input from expanded state manager', () => {
     const sectionsExpandedState = {} as any;
-    spyOn(testContext.expandedStateManager, 'getSectionExpandedState').and.callFake(<any>((
+    vi.spyOn(testContext.expandedStateManager, 'getSectionExpandedState').mockImplementation(<any>((
       categoryId: string,
       sectionId: string
     ) => {
@@ -231,7 +231,9 @@ describe('PropertyViewCategoryComponent', () => {
   });
 
   it('should call expanded state manager setSectionExpandedUserState() method when section expandedChange output is triggered', () => {
-    const setSectionExpandedUserStateSpy = spyOn(testContext.expandedStateManager, 'setSectionExpandedUserState');
+    const setSectionExpandedUserStateSpy = vi
+      .spyOn(testContext.expandedStateManager, 'setSectionExpandedUserState')
+      .mockImplementation(() => undefined);
     testContext.component.data = testContext.createData({
       content: [sec1Data, sec2Data, sec3Data],
     });
@@ -244,10 +246,10 @@ describe('PropertyViewCategoryComponent', () => {
     testContext.getSectionsDebugElements()[1].triggerEventHandler('expandedChange', true);
     testContext.getSectionsDebugElements()[2].triggerEventHandler('expandedChange', true);
     testContext.getSectionsDebugElements()[2].triggerEventHandler('expandedChange', false);
-    expect(setSectionExpandedUserStateSpy.calls.count()).toEqual(4);
-    expect(setSectionExpandedUserStateSpy.calls.argsFor(0)).toEqual(['cat', 'sec-1', false]);
-    expect(setSectionExpandedUserStateSpy.calls.argsFor(1)).toEqual(['cat', 'sec-2', true]);
-    expect(setSectionExpandedUserStateSpy.calls.argsFor(2)).toEqual(['cat', 'sec-3', true]);
-    expect(setSectionExpandedUserStateSpy.calls.argsFor(3)).toEqual(['cat', 'sec-3', false]);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls.length).toEqual(4);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls[0]).toEqual(['cat', 'sec-1', false]);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls[1]).toEqual(['cat', 'sec-2', true]);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls[2]).toEqual(['cat', 'sec-3', true]);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls[3]).toEqual(['cat', 'sec-3', false]);
   });
 });

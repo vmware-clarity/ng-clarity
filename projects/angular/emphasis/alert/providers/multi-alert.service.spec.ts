@@ -12,7 +12,7 @@ import { ClrEmphasisModule } from '../../emphasis.module';
 import { ClrAlert } from '../alert';
 import { MultiAlertService } from './multi-alert.service';
 
-export default function () {
+describe('Alert Tests', () => {
   describe('Multi Alert provider', function () {
     let queryList: QueryList<ClrAlert>;
     let alert: ComponentFixture<ClrAlert>;
@@ -99,7 +99,7 @@ export default function () {
         changesEmitted = true;
       });
       alert.componentInstance.close();
-      expect(changesEmitted).toBeTrue();
+      expect(changesEmitted).toBe(true);
     });
 
     it('updates current alert when alerts programmatically closed', function () {
@@ -110,7 +110,7 @@ export default function () {
       alert.componentInstance.closed = true;
       expect(multiAlertService.current).toBe(0);
       expect(multiAlertService.currentAlert).toBe(anotherAlert.componentInstance);
-      expect(changesEmitted).toBeTrue();
+      expect(changesEmitted).toBe(true);
     });
   });
-}
+});

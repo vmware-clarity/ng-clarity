@@ -58,254 +58,19 @@ class TestComponent {
   }
 }
 
-export default function (): void {
-  describe('Combobox Component', function () {
-    let clarityElement: HTMLElement;
-    let popoverService: ClrPopoverService;
-    let selectionService: OptionSelectionService<string>;
-    let fixture: ComponentFixture<TestComponent>;
-    let clarityDirective: ClrCombobox<string>;
+describe('Combobox component', () => {
+  describe('Directives', () => {
+    describe('Combobox Component', function () {
+      let clarityElement: HTMLElement;
+      let popoverService: ClrPopoverService;
+      let selectionService: OptionSelectionService<string>;
+      let fixture: ComponentFixture<TestComponent>;
+      let clarityDirective: ClrCombobox<string>;
 
-    beforeEach(function () {
-      TestBed.configureTestingModule({
-        imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule, ClrPopoverContent],
-        declarations: [TestComponent],
-        providers: [
-          OptionSelectionService,
-          IF_ACTIVE_ID_PROVIDER,
-          FOCUS_SERVICE_PROVIDER,
-          COMBOBOX_FOCUS_HANDLER_PROVIDER,
-        ],
-      });
-
-      fixture = TestBed.createComponent(TestComponent);
-      const comboboxDebugElement = fixture.debugElement.query(By.directive(ClrCombobox));
-      clarityDirective = comboboxDebugElement.componentInstance;
-      clarityElement = comboboxDebugElement.nativeElement;
-      selectionService = comboboxDebugElement.injector.get(OptionSelectionService) as OptionSelectionService<string>;
-      popoverService = comboboxDebugElement.injector.get(ClrPopoverService);
-
-      fixture.detectChanges();
-    });
-
-    afterEach(function () {
-      popoverService.open = false;
-      fixture.detectChanges();
-    });
-
-    describe('Typescript API', function () {
-      it('implements method that updates the model', () => {
-        clarityDirective.writeValue('test');
-        expect(selectionService.selectionModel.containsItem('test')).toBeTrue();
-      });
-
-      it('has method to unselect value after deletion', () => {
-        selectionService.select('test');
-        expect(selectionService.selectionModel.containsItem('test')).toBeTrue();
-        clarityDirective.unselect('test');
-        expect(selectionService.selectionModel.containsItem('test')).toBeFalse();
-      });
-
-      it('has open state read-only property', () => {
-        expect(clarityDirective.openState).toBeFalsy();
-        popoverService.open = true;
-        expect(clarityDirective.openState).toBeTrue();
-      });
-
-      it('has associated form control', () => {
-        expect(clarityDirective.control).toBeTruthy();
-      });
-
-      it('does not close panel on clear', () => {
-        popoverService.open = true;
-        clarityDirective.writeValue(null);
-        expect(clarityDirective.openState).toBeTrue();
-      });
-
-      it('closes panel on selection', () => {
-        popoverService.open = true;
-        selectionService.select('test');
-        expect(clarityDirective.openState).toBeFalse();
-      });
-
-      it('does not close panel on selection if multiselect', () => {
-        clarityDirective.multiSelect = true;
-        popoverService.open = true;
-        selectionService.select('test');
-        expect(clarityDirective.openState).toBeTrue();
-      });
-
-      // The forms framework has some inner asychronisity, which requires the async/whenStable
-      // approach in the following tests
-      it('sets selection model based on selection binding', async () => {
-        fixture.componentInstance.selection = 'test';
-        fixture.detectChanges();
-        await fixture.whenStable();
-        expect(selectionService.selectionModel.containsItem('test')).toBeTrue();
-      });
-
-      it('clears selection model', async () => {
-        fixture.componentInstance.selection = null;
-        fixture.detectChanges();
-        await fixture.whenStable();
-        expect(selectionService.selectionModel.isEmpty()).toBeTrue();
-      });
-    });
-
-    describe('Template API', function () {
-      it('defaults to single model', () => {
-        expect(selectionService.selectionModel instanceof SingleSelectComboboxModel).toBeTrue();
-      });
-
-      it('can change to multi model', () => {
-        fixture.componentInstance.multi = true;
-        fixture.detectChanges();
-        expect(selectionService.selectionModel instanceof MultiSelectComboboxModel).toBeTrue();
-      });
-
-      it('notifies on input changes', () => {
-        expect(fixture.componentInstance.inputValue).toBeFalsy();
-        clarityDirective.searchText = 'test';
-        fixture.detectChanges();
-        expect(fixture.componentInstance.inputValue).toBe('test');
-      });
-
-      it('notifies on open changes', () => {
-        expect(fixture.componentInstance.openState).toBeFalsy();
-        popoverService.open = true;
-        expect(fixture.componentInstance.openState).toBeTrue();
-      });
-    });
-
-    describe('View Basics', () => {
-      it('adds the .clr-combobox class on the host', () => {
-        expect(clarityElement.classList.contains('clr-combobox')).toBe(true);
-      });
-
-      it('has a generated id', () => {
-        expect(clarityElement.hasAttribute('id')).toBeTrue();
-      });
-
-      it('contains an editable input', () => {
-        const input = clarityElement.querySelector('.clr-combobox-input');
-        expect(input).not.toBeNull();
-      });
-
-      it('keep input value on blur if combobox is editable', async () => {
-        fixture.componentInstance.editable = true;
-        const input = clarityElement.querySelector('.clr-combobox-input') as HTMLInputElement;
-        expect(input).not.toBeNull();
-        input.value = '4';
-        input.dispatchEvent(new Event('change'));
-        expect(input.value).toBe('4');
-        input.blur();
-        expect(input.value).toBe('4');
-      });
-
-      it('clear input value on blur if combobox is not editable', async () => {
-        fixture.componentInstance.editable = false;
-        popoverService.open = true;
-        const input = clarityElement.querySelector('.clr-combobox-input') as HTMLInputElement;
-        expect(input).not.toBeNull();
-        input.value = '4';
-        input.dispatchEvent(new Event('change'));
-        expect(input.value).toBe('4');
-        input.blur();
-        await delay(100);
-        expect(input.value).toBe('');
-      });
-
-      it('contains a options menu trigger', () => {
-        expect(clarityElement.querySelector('.clr-combobox-trigger')).not.toBeNull();
-      });
-
-      it('opens the menu on the trigger click', () => {
-        const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-trigger');
-        expect(popoverService.open).toBe(false);
-        trigger.click();
-        expect(popoverService.open).toBe(true);
-      });
-
-      it('has aria-owns attribute', () => {
-        const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
-        expect(trigger.hasAttribute('aria-owns')).toBeTrue();
-        expect(trigger.getAttribute('aria-owns')).toContain('clr-options-');
-      });
-
-      it('has aria-expanded attribute', () => {
-        const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
-        expect(trigger.hasAttribute('aria-expanded')).toBeTrue();
-        expect(trigger.getAttribute('aria-expanded')).toEqual('false');
-        popoverService.open = true;
-        fixture.detectChanges();
-        expect(trigger.getAttribute('aria-expanded')).toEqual('true');
-      });
-
-      it('should pass placeholder to internal input', () => {
-        fixture.componentInstance.placeholder = 'hello world';
-        fixture.detectChanges();
-        const combobox: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
-        expect(combobox.getAttribute('placeholder')).toEqual('hello world');
-      });
-
-      it('should disable openClose button', async function () {
-        fixture.componentInstance.disabled = true;
-        fixture.detectChanges();
-        await delay();
-        fixture.detectChanges();
-        const button: HTMLButtonElement = clarityElement.querySelector('.clr-combobox-trigger');
-        expect(button.disabled).toBeTruthy();
-      });
-    });
-
-    describe('clrEditableResolverFn', () => {
-      it('sets the editableResolver on the optionSelectionService', () => {
-        const resolver = (input: string) => input;
-        clarityDirective.editableResolver = resolver;
-        expect(selectionService.editableResolver).toBe(resolver);
-      });
-
-      it('returns the same item by default when no resolver is provided', () => {
-        const result = selectionService.editableResolver('test');
-        expect(result).toEqual('test');
-      });
-    });
-
-    describe('clrComboboxIdentityFn', () => {
-      interface Item {
-        id: number;
-        label: string;
-      }
-      const options: Item[] = [
-        { id: 1, label: 'One' },
-        { id: 2, label: 'Two' },
-        { id: 3, label: 'Three' },
-      ];
-      const identityFn = (item: Item) => item.id;
-
-      @Component({
-        template: `
-          <clr-combobox [(ngModel)]="selection" [clrComboboxIdentityFn]="identityFn">
-            <clr-options>
-              @for (opt of options; track opt.id) {
-                <clr-option [clrValue]="opt">{{ opt.label }}</clr-option>
-              }
-            </clr-options>
-          </clr-combobox>
-        `,
-        standalone: false,
-      })
-      class IdentityTestComponent {
-        selection: Item | null = null;
-        options = options;
-        identityFn = identityFn;
-      }
-
-      it('pre-selection works when writeValue has same identity as option (different ref)', async () => {
-        TestBed.resetTestingModule();
+      beforeEach(function () {
         TestBed.configureTestingModule({
           imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule, ClrPopoverContent],
-          declarations: [IdentityTestComponent],
+          declarations: [TestComponent],
           providers: [
             OptionSelectionService,
             IF_ACTIVE_ID_PROVIDER,
@@ -313,20 +78,269 @@ export default function (): void {
             COMBOBOX_FOCUS_HANDLER_PROVIDER,
           ],
         });
-        const identityFixture = TestBed.createComponent(IdentityTestComponent);
-        const comboboxDE = identityFixture.debugElement.query(By.directive(ClrCombobox));
-        const selectionService = comboboxDE.injector.get(OptionSelectionService) as OptionSelectionService<Item>;
-        identityFixture.detectChanges();
-        await identityFixture.whenStable();
 
-        // writeValue with object that has same id as options[0] but different ref (e.g. from API)
-        const preSelected = { id: 1, label: 'One' };
-        (comboboxDE.componentInstance as ClrCombobox<Item>).writeValue(preSelected);
-        identityFixture.detectChanges();
+        fixture = TestBed.createComponent(TestComponent);
+        const comboboxDebugElement = fixture.debugElement.query(By.directive(ClrCombobox));
+        clarityDirective = comboboxDebugElement.componentInstance;
+        clarityElement = comboboxDebugElement.nativeElement;
+        selectionService = comboboxDebugElement.injector.get(OptionSelectionService) as OptionSelectionService<string>;
+        popoverService = comboboxDebugElement.injector.get(ClrPopoverService);
 
-        // Option with value options[0] should be considered selected (same identity)
-        expect(selectionService.selectionModel.containsItem(options[0])).toBeTrue();
+        fixture.detectChanges();
+      });
+
+      afterEach(function () {
+        popoverService.open = false;
+        fixture.detectChanges();
+      });
+
+      describe('Typescript API', function () {
+        it('implements method that updates the model', () => {
+          clarityDirective.writeValue('test');
+          expect(selectionService.selectionModel.containsItem('test')).toBe(true);
+        });
+
+        it('has method to unselect value after deletion', () => {
+          selectionService.select('test');
+          expect(selectionService.selectionModel.containsItem('test')).toBe(true);
+          clarityDirective.unselect('test');
+          expect(selectionService.selectionModel.containsItem('test')).toBe(false);
+        });
+
+        it('has open state read-only property', () => {
+          expect(clarityDirective.openState).toBeFalsy();
+          popoverService.open = true;
+          expect(clarityDirective.openState).toBe(true);
+        });
+
+        it('has associated form control', () => {
+          expect(clarityDirective.control).toBeTruthy();
+        });
+
+        it('does not close panel on clear', () => {
+          popoverService.open = true;
+          clarityDirective.writeValue(null);
+          expect(clarityDirective.openState).toBe(true);
+        });
+
+        it('closes panel on selection', () => {
+          popoverService.open = true;
+          selectionService.select('test');
+          expect(clarityDirective.openState).toBe(false);
+        });
+
+        it('does not close panel on selection if multiselect', () => {
+          clarityDirective.multiSelect = true;
+          popoverService.open = true;
+          selectionService.select('test');
+          expect(clarityDirective.openState).toBe(true);
+        });
+
+        // The forms framework has some inner asychronisity, which requires the async/whenStable
+        // approach in the following tests
+        it('sets selection model based on selection binding', async () => {
+          fixture.componentInstance.selection = 'test';
+          fixture.detectChanges();
+          await fixture.whenStable();
+          expect(selectionService.selectionModel.containsItem('test')).toBe(true);
+        });
+
+        it('clears selection model', async () => {
+          fixture.componentInstance.selection = null;
+          fixture.detectChanges();
+          await fixture.whenStable();
+          expect(selectionService.selectionModel.isEmpty()).toBe(true);
+        });
+      });
+
+      describe('Template API', function () {
+        it('defaults to single model', () => {
+          expect(selectionService.selectionModel instanceof SingleSelectComboboxModel).toBe(true);
+        });
+
+        it('can change to multi model', () => {
+          fixture.componentInstance.multi = true;
+          fixture.detectChanges();
+          expect(selectionService.selectionModel instanceof MultiSelectComboboxModel).toBe(true);
+        });
+
+        it('notifies on input changes', () => {
+          expect(fixture.componentInstance.inputValue).toBeFalsy();
+          clarityDirective.searchText = 'test';
+          fixture.detectChanges();
+          expect(fixture.componentInstance.inputValue).toBe('test');
+        });
+
+        it('notifies on open changes', () => {
+          expect(fixture.componentInstance.openState).toBeFalsy();
+          popoverService.open = true;
+          expect(fixture.componentInstance.openState).toBe(true);
+        });
+      });
+
+      describe('View Basics', () => {
+        it('adds the .clr-combobox class on the host', () => {
+          expect(clarityElement.classList.contains('clr-combobox')).toBe(true);
+        });
+
+        it('has a generated id', () => {
+          expect(clarityElement.hasAttribute('id')).toBe(true);
+        });
+
+        it('contains an editable input', () => {
+          const input = clarityElement.querySelector('.clr-combobox-input');
+          expect(input).not.toBeNull();
+        });
+
+        it('keep input value on blur if combobox is editable', async () => {
+          fixture.componentInstance.editable = true;
+          const input = clarityElement.querySelector('.clr-combobox-input') as HTMLInputElement;
+          expect(input).not.toBeNull();
+          input.value = '4';
+          input.dispatchEvent(new Event('change'));
+          expect(input.value).toBe('4');
+          input.blur();
+          expect(input.value).toBe('4');
+        });
+
+        it('clear input value on blur if combobox is not editable', async () => {
+          fixture.componentInstance.editable = false;
+          await fixture.whenStable();
+          popoverService.open = true;
+          fixture.detectChanges();
+          await fixture.whenStable();
+          const input = clarityElement.querySelector('.clr-combobox-input') as HTMLInputElement;
+          expect(input).not.toBeNull();
+          input.focus();
+          input.value = '4';
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+          fixture.detectChanges();
+          expect(input.value).toBe('4');
+          expect(clarityDirective.searchText).toBe('4');
+          expect(popoverService.open).toBe(true);
+          input.dispatchEvent(new FocusEvent('blur', { bubbles: true, relatedTarget: document.body }));
+          input.blur();
+          expect(popoverService.open).toBe(false);
+          expect(clarityDirective.searchText).toBe('');
+          fixture.detectChanges();
+          await fixture.whenStable();
+          fixture.detectChanges();
+          expect(input.value).toBe('');
+        });
+
+        it('contains a options menu trigger', () => {
+          expect(clarityElement.querySelector('.clr-combobox-trigger')).not.toBeNull();
+        });
+
+        it('opens the menu on the trigger click', () => {
+          const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-trigger');
+          expect(popoverService.open).toBe(false);
+          trigger.click();
+          expect(popoverService.open).toBe(true);
+        });
+
+        it('has aria-owns attribute', () => {
+          const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
+          expect(trigger.hasAttribute('aria-owns')).toBe(true);
+          expect(trigger.getAttribute('aria-owns')).toContain('clr-options-');
+        });
+
+        it('has aria-expanded attribute', () => {
+          const trigger: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
+          expect(trigger.hasAttribute('aria-expanded')).toBe(true);
+          expect(trigger.getAttribute('aria-expanded')).toEqual('false');
+          popoverService.open = true;
+          fixture.detectChanges();
+          expect(trigger.getAttribute('aria-expanded')).toEqual('true');
+        });
+
+        it('should pass placeholder to internal input', () => {
+          fixture.componentInstance.placeholder = 'hello world';
+          fixture.detectChanges();
+          const combobox: HTMLElement = clarityElement.querySelector('.clr-combobox-input');
+          expect(combobox.getAttribute('placeholder')).toEqual('hello world');
+        });
+
+        it('should disable openClose button', async function () {
+          fixture.componentInstance.disabled = true;
+          fixture.detectChanges();
+          await delay();
+          fixture.detectChanges();
+          const button: HTMLButtonElement = clarityElement.querySelector('.clr-combobox-trigger');
+          expect(button.disabled).toBeTruthy();
+        });
+      });
+
+      describe('clrEditableResolverFn', () => {
+        it('sets the editableResolver on the optionSelectionService', () => {
+          const resolver = (input: string) => input;
+          clarityDirective.editableResolver = resolver;
+          expect(selectionService.editableResolver).toBe(resolver);
+        });
+
+        it('returns the same item by default when no resolver is provided', () => {
+          const result = selectionService.editableResolver('test');
+          expect(result).toEqual('test');
+        });
+      });
+
+      describe('clrComboboxIdentityFn', () => {
+        interface Item {
+          id: number;
+          label: string;
+        }
+        const options: Item[] = [
+          { id: 1, label: 'One' },
+          { id: 2, label: 'Two' },
+          { id: 3, label: 'Three' },
+        ];
+        const identityFn = (item: Item) => item.id;
+
+        @Component({
+          template: `
+            <clr-combobox [(ngModel)]="selection" [clrComboboxIdentityFn]="identityFn">
+              <clr-options>
+                @for (opt of options; track opt.id) {
+                  <clr-option [clrValue]="opt">{{ opt.label }}</clr-option>
+                }
+              </clr-options>
+            </clr-combobox>
+          `,
+          standalone: false,
+        })
+        class IdentityTestComponent {
+          selection: Item | null = null;
+          options = options;
+          identityFn = identityFn;
+        }
+
+        it('pre-selection works when writeValue has same identity as option (different ref)', async () => {
+          TestBed.resetTestingModule();
+          TestBed.configureTestingModule({
+            imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule, ClrPopoverContent],
+            declarations: [IdentityTestComponent],
+            providers: [
+              OptionSelectionService,
+              IF_ACTIVE_ID_PROVIDER,
+              FOCUS_SERVICE_PROVIDER,
+              COMBOBOX_FOCUS_HANDLER_PROVIDER,
+            ],
+          });
+          const identityFixture = TestBed.createComponent(IdentityTestComponent);
+          const comboboxDE = identityFixture.debugElement.query(By.directive(ClrCombobox));
+          const selectionService = comboboxDE.injector.get(OptionSelectionService) as OptionSelectionService<Item>;
+          identityFixture.detectChanges();
+          await identityFixture.whenStable();
+
+          // writeValue with object that has same id as options[0] but different ref (e.g. from API)
+          const preSelected = { id: 1, label: 'One' };
+          (comboboxDE.componentInstance as ClrCombobox<Item>).writeValue(preSelected);
+          identityFixture.detectChanges();
+
+          // Option with value options[0] should be considered selected (same identity)
+          expect(selectionService.selectionModel.containsItem(options[0])).toBe(true);
+        });
       });
     });
   });
-}
+});

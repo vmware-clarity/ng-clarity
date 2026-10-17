@@ -21,7 +21,7 @@ interface Context extends TestContext<ClrSignpost, TestDefaultSignpost | TestCus
   signpostIdService: SignpostIdService;
 }
 
-export default function (): void {
+describe('Signpost', () => {
   describe('Signpost', () => {
     describe('default trigger', () => {
       let testContext: Context;
@@ -85,6 +85,7 @@ export default function (): void {
         it('has a ' + name + ' signpost content position', async () => {
           const untypedContext: any = testContext;
 
+          untypedContext.testElement.style.padding = '300px';
           untypedContext.testComponent.position = name;
           untypedContext.detectChanges();
 
@@ -100,7 +101,7 @@ export default function (): void {
 
           const signpostContent = document.body.querySelector('.clr-signpost-container');
           expect(signpostContent).not.toBeNull();
-          expect(signpostContent.classList).toContain(name);
+          await vi.waitFor(() => expect(signpostContent.classList).toContain(name));
         });
       }
     });
@@ -248,17 +249,15 @@ export default function (): void {
           .getAttribute('aria-controls');
         const contentId = element.querySelector('.signpost-content').getAttribute('id');
 
-        expect(id).toBe(
-          contentId,
-          'ClrSignpostContent id is out of sync (content gets a new id each time it is created)'
+        expect(id, 'ClrSignpostContent id is out of sync (content gets a new id each time it is created)').toBe(
+          contentId
         );
-        expect(id).toBe(
-          triggerControlsValue,
+        expect(
+          id,
           'ClrSignpost id does not match the signpost trigger aria-controls value on the signpost trigger'
-        );
-        expect(id).toBe(
-          closeControlsValue,
-          'ClrSignpost id does not match the aria-controls value on the close button'
+        ).toBe(triggerControlsValue);
+        expect(id, 'ClrSignpost id does not match the aria-controls value on the close button').toBe(
+          closeControlsValue
         );
       }
 
@@ -291,7 +290,7 @@ export default function (): void {
       });
     });
   });
-}
+});
 
 @Component({
   template: `

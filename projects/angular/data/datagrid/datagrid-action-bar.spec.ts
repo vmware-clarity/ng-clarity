@@ -15,27 +15,29 @@ import { Page } from './providers/page';
 import { Selection } from './providers/selection';
 import { Sort } from './providers/sort';
 
-export default function (): void {
-  describe('DatagridActionBar component', () => {
-    const helpers = createTestHelpers();
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('DatagridActionBar component', () => {
+      const helpers = createTestHelpers();
 
-    let context: TestContext<ClrDatagridActionBar, SimpleTest>;
+      let context: TestContext<ClrDatagridActionBar, SimpleTest>;
 
-    beforeEach(() => {
-      context = helpers.create(ClrDatagridActionBar, SimpleTest, [Selection, Items, FiltersProvider, Sort, Page]);
-    });
+      beforeEach(() => {
+        context = helpers.create(ClrDatagridActionBar, SimpleTest, [Selection, Items, FiltersProvider, Sort, Page]);
+      });
 
-    afterEach(() => {
-      context.fixture.destroy();
-      const popoverContent = document.querySelectorAll('.clr-popover-content');
-      popoverContent.forEach(content => document.body.removeChild(content));
-    });
+      afterEach(() => {
+        context.fixture.destroy();
+        const popoverContent = document.querySelectorAll('.clr-popover-content');
+        popoverContent.forEach(content => document.body.removeChild(content));
+      });
 
-    it('projects content', () => {
-      expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+      it('projects content', () => {
+        expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+      });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-dg-action-bar>Hello world</clr-dg-action-bar>`,

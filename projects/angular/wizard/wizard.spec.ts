@@ -16,7 +16,7 @@ import { DynamicWizardTestComponent } from './test-components/dynamic-wizard.moc
 import { UnopenedWizardTestComponent } from './test-components/unopened-wizard.mock';
 import { ClrWizard } from './wizard';
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('Wizard', () => {
     const helpers = createTestHelpers();
 
@@ -37,38 +37,38 @@ export default function (): void {
 
         describe('open', () => {
           it('should set this._open', () => {
-            expect(wizard._open).toBe(false, 'hidden wizard._open should be false');
+            expect(wizard._open, 'hidden wizard._open should be false').toBe(false);
             wizard.open();
-            expect(wizard._open).toBe(true, 'visible wizard._open should be true');
+            expect(wizard._open, 'visible wizard._open should be true').toBe(true);
           });
 
           it('should handle two way binding on clrWizardOpen', () => {
-            expect(wizard._open).toBe(false, 'hidden wizard._open should be false');
-            expect(component.open).toBe(false, 'component binding is set to false');
+            expect(wizard._open, 'hidden wizard._open should be false').toBe(false);
+            expect(component.open, 'component binding is set to false').toBe(false);
             component.open = true;
             context.detectChanges();
-            expect(wizard._open).toBe(true, 'hidden wizard._open should be true');
-            expect(component.open).toBe(true, 'component binding is set to true');
+            expect(wizard._open, 'hidden wizard._open should be true').toBe(true);
+            expect(component.open, 'component binding is set to true').toBe(true);
           });
         });
 
         describe('close', () => {
           it('should set this._open', () => {
-            expect(wizard._open).toBe(false, 'hidden wizard._open should be false');
+            expect(wizard._open, 'hidden wizard._open should be false').toBe(false);
             wizard.open();
-            expect(wizard._open).toBe(true, 'visible wizard._open should be true');
+            expect(wizard._open, 'visible wizard._open should be true').toBe(true);
             wizard.close();
-            expect(wizard._open).toBe(false, 'closed wizard._open should be false');
+            expect(wizard._open, 'closed wizard._open should be false').toBe(false);
           });
 
           it('should not do anything if stop navigation is set', () => {
             wizard.open();
-            expect(wizard._open).toBe(true, 'visible wizard._open should be true');
+            expect(wizard._open, 'visible wizard._open should be true').toBe(true);
 
             wizard.stopNavigation = true;
             wizard.close();
 
-            expect(wizard._open).toBe(true, 'wizard._open should not have changed');
+            expect(wizard._open, 'wizard._open should not have changed').toBe(true);
           });
 
           it('should not close on escape if clrWizardClosable is set to false', () => {
@@ -87,7 +87,7 @@ export default function (): void {
 
         describe('toggle', () => {
           it('should call .open() if passed true', () => {
-            spyOn(wizard, 'open');
+            vi.spyOn(wizard, 'open').mockImplementation(() => undefined);
             wizard.toggle(false);
             expect(wizard.open).not.toHaveBeenCalled();
             wizard.toggle(true);
@@ -95,7 +95,7 @@ export default function (): void {
           });
 
           it('should call .close() if passed false', () => {
-            spyOn(wizard, 'close');
+            vi.spyOn(wizard, 'close').mockImplementation(() => undefined);
             wizard.toggle(true);
             expect(wizard.close).not.toHaveBeenCalled();
             wizard.toggle(false);
@@ -124,19 +124,19 @@ export default function (): void {
           it('should match the navService', () => {
             let currentPagesMatch: boolean;
             currentPagesMatch = wizard.currentPage === wizardNavigationService.currentPage;
-            expect(currentPagesMatch).toBe(true, 'current pages init as expected');
+            expect(currentPagesMatch, 'current pages init as expected').toBe(true);
             wizard.next();
             context.detectChanges();
             currentPagesMatch = wizard.currentPage === wizardNavigationService.currentPage;
-            expect(currentPagesMatch).toBe(true, 'current pages match after navigation');
+            expect(currentPagesMatch, 'current pages match after navigation').toBe(true);
           });
         });
 
         describe('isLast', () => {
           it('should return false if current page is not the last page', () => {
             const lastPage = pageCollectionService.lastPage;
-            expect(wizard.currentPage).not.toBe(lastPage, 'verify currentPage is not the last page');
-            expect(wizard.isLast).toBe(false, 'isLast should return false');
+            expect(wizard.currentPage, 'verify currentPage is not the last page').not.toBe(lastPage);
+            expect(wizard.isLast, 'isLast should return false').toBe(false);
           });
 
           it('should return true if current page is the last page', () => {
@@ -145,8 +145,8 @@ export default function (): void {
             // set last page
             wizardNavigationService.currentPage = lastPage;
             context.detectChanges();
-            expect(wizard.currentPage).toBe(lastPage, 'verify currentPage is the last page');
-            expect(wizard.isLast).toBe(true, 'isLast should return true');
+            expect(wizard.currentPage, 'verify currentPage is the last page').toBe(lastPage);
+            expect(wizard.isLast, 'isLast should return true').toBe(true);
           });
         });
 
@@ -156,20 +156,20 @@ export default function (): void {
             // move wizard off first page
             wizard.next();
             context.detectChanges();
-            expect(wizard.currentPage).not.toBe(firstPage, 'verify currentPage is not the first page');
-            expect(wizard.isFirst).toBe(false, 'isFirst should return false');
+            expect(wizard.currentPage, 'verify currentPage is not the first page').not.toBe(firstPage);
+            expect(wizard.isFirst, 'isFirst should return false').toBe(false);
           });
 
           it('should return true if current page is the last page', () => {
             const firstPage = pageCollectionService.firstPage;
-            expect(wizard.currentPage).toBe(firstPage, 'verify currentPage is the first page');
-            expect(wizard.isFirst).toBe(true, 'isFirst should return true');
+            expect(wizard.currentPage, 'verify currentPage is the first page').toBe(firstPage);
+            expect(wizard.isFirst, 'isFirst should return true').toBe(true);
           });
         });
 
         describe('previous', () => {
           it('should call the navService', () => {
-            spyOn(wizardNavigationService, 'previous');
+            vi.spyOn(wizardNavigationService, 'previous').mockImplementation(() => undefined);
             wizard.previous();
             expect(wizardNavigationService.previous).toHaveBeenCalledTimes(1);
           });
@@ -177,24 +177,24 @@ export default function (): void {
 
         describe('next', () => {
           it('should call the navService to emit checks and events if told to', () => {
-            spyOn(wizardNavigationService, 'next');
-            spyOn(wizard, 'forceNext');
+            vi.spyOn(wizardNavigationService, 'next').mockImplementation(() => undefined);
+            vi.spyOn(wizard, 'forceNext').mockImplementation(() => undefined);
             wizard.next(false);
             expect(wizardNavigationService.next).toHaveBeenCalledTimes(1);
             expect(wizard.forceNext).not.toHaveBeenCalled();
           });
 
           it('should call forceNext if told not to emit checks and events', () => {
-            spyOn(wizardNavigationService, 'next');
-            spyOn(wizard, 'forceNext');
+            vi.spyOn(wizardNavigationService, 'next').mockImplementation(() => undefined);
+            vi.spyOn(wizard, 'forceNext').mockImplementation(() => undefined);
             wizard.next(true);
             expect(wizardNavigationService.next).not.toHaveBeenCalled();
             expect(wizard.forceNext).toHaveBeenCalledTimes(1);
           });
 
           it('should call forceNext by default', () => {
-            spyOn(wizardNavigationService, 'next');
-            spyOn(wizard, 'forceNext');
+            vi.spyOn(wizardNavigationService, 'next').mockImplementation(() => undefined);
+            vi.spyOn(wizard, 'forceNext').mockImplementation(() => undefined);
             wizard.next();
             expect(wizardNavigationService.next).not.toHaveBeenCalled();
             expect(wizard.forceNext).toHaveBeenCalledTimes(1);
@@ -204,13 +204,13 @@ export default function (): void {
         describe('goTo', () => {
           it('should call the navService', () => {
             const testId = pageCollectionService.lastPage.id;
-            spyOn(wizardNavigationService, 'goTo');
+            vi.spyOn(wizardNavigationService, 'goTo').mockImplementation(() => undefined);
             wizard.goTo(testId);
             expect(wizardNavigationService.goTo).toHaveBeenCalledWith(testId);
           });
 
           it('should early return if not given a page id', () => {
-            spyOn(wizardNavigationService, 'goTo');
+            vi.spyOn(wizardNavigationService, 'goTo').mockImplementation(() => undefined);
             wizard.goTo(null);
             wizard.goTo('');
             expect(wizardNavigationService.goTo).not.toHaveBeenCalled();
@@ -220,17 +220,17 @@ export default function (): void {
         describe('reset', () => {
           it('should call the pageCollection and update the nav', () => {
             const firstPage = pageCollectionService.firstPage;
-            spyOn(pageCollectionService, 'reset').and.callThrough();
-            spyOn(wizard.onReset, 'emit');
-            expect(wizard.currentPage).toBe(firstPage, 'inits as expected');
+            vi.spyOn(pageCollectionService, 'reset');
+            vi.spyOn(wizard.onReset, 'emit').mockImplementation(() => undefined);
+            expect(wizard.currentPage, 'inits as expected').toBe(firstPage);
             wizard.next();
             context.detectChanges();
-            expect(wizard.currentPage).not.toBe(firstPage, 'navigates as expected');
+            expect(wizard.currentPage, 'navigates as expected').not.toBe(firstPage);
             wizard.reset();
             expect(pageCollectionService.reset).toHaveBeenCalledTimes(1);
             expect(wizard.onReset.emit).toHaveBeenCalledTimes(1);
             context.detectChanges();
-            expect(wizard.currentPage).toBe(firstPage, 'resets to first page');
+            expect(wizard.currentPage, 'resets to first page').toBe(firstPage);
           });
         });
       });
@@ -252,7 +252,7 @@ export default function (): void {
       describe('Current page onchange', () => {
         it('should emit pageOnLoad when wizard is created', () => {
           context.detectChanges();
-          expect(context.testComponent._firstPageLoaded).toBe(1, 'only once when created');
+          expect(context.testComponent._firstPageLoaded, 'only once when created').toBe(1);
         });
 
         it('should emit page on load when navigating', () => {
@@ -262,48 +262,48 @@ export default function (): void {
         });
 
         it('should notify clrWizardCurrentPageChange output', () => {
-          expect(context.testComponent._currentPageChange).toBe(1, 'only initial load');
+          expect(context.testComponent._currentPageChange, 'only initial load').toBe(1);
           wizard.next();
-          expect(context.testComponent._currentPageChange).toBe(2, 'increases with move forward');
+          expect(context.testComponent._currentPageChange, 'increases with move forward').toBe(2);
           wizard.next();
-          expect(context.testComponent._currentPageChange).toBe(3, 'increases with move forward');
+          expect(context.testComponent._currentPageChange, 'increases with move forward').toBe(3);
           wizard.previous();
-          expect(context.testComponent._currentPageChange).toBe(4, 'increases with move backward');
+          expect(context.testComponent._currentPageChange, 'increases with move backward').toBe(4);
         });
 
         it('should notify clrWizardOnNext output', () => {
-          expect(context.testComponent._movedForward).toBe(0, 'initial load');
+          expect(context.testComponent._movedForward, 'initial load').toBe(0);
           // need to do event emissions here, so passing false
           wizard.next(false);
-          expect(context.testComponent._movedForward).toBe(1, 'increases with move forward');
+          expect(context.testComponent._movedForward, 'increases with move forward').toBe(1);
           // need to do event emissions here, so passing false
           wizard.next(false);
-          expect(context.testComponent._movedForward).toBe(2, 'increases with move forward');
+          expect(context.testComponent._movedForward, 'increases with move forward').toBe(2);
           wizard.previous();
-          expect(context.testComponent._movedForward).toBe(2, 'stays put with move backward');
+          expect(context.testComponent._movedForward, 'stays put with move backward').toBe(2);
         });
 
         it('should notify clrWizardOnPrevious output', () => {
-          expect(context.testComponent._movedBackward).toBe(0, 'initial load');
+          expect(context.testComponent._movedBackward, 'initial load').toBe(0);
           wizard.next();
-          expect(context.testComponent._movedBackward).toBe(0, 'stays put with move forward');
+          expect(context.testComponent._movedBackward, 'stays put with move forward').toBe(0);
           wizard.next();
-          expect(context.testComponent._movedBackward).toBe(0, 'stays put with move forward');
+          expect(context.testComponent._movedBackward, 'stays put with move forward').toBe(0);
           wizard.previous();
-          expect(context.testComponent._movedBackward).toBe(1, 'increases with move backward');
+          expect(context.testComponent._movedBackward, 'increases with move backward').toBe(1);
           wizard.previous();
-          expect(context.testComponent._movedBackward).toBe(2, 'increases with move backward');
+          expect(context.testComponent._movedBackward, 'increases with move backward').toBe(2);
         });
       });
 
       describe('Projection', () => {
         it('wizard title is projected', () => {
           let val = context.testElement.querySelector('.clr-wizard-title').textContent.trim();
-          expect(val).toBe(context.testComponent.projectedTitle, 'projects as expected');
+          expect(val, 'projects as expected').toBe(context.testComponent.projectedTitle);
           context.testComponent.projectedTitle = 'OHAI';
           context.detectChanges();
           val = context.testElement.querySelector('.clr-wizard-title').textContent.trim();
-          expect(val).toBe('OHAI', 'updates as expected');
+          expect(val, 'updates as expected').toBe('OHAI');
         });
 
         it('wizard title has default heading level', () => {
@@ -343,19 +343,19 @@ export default function (): void {
 
         it('content title should reflect current page and changes with it', () => {
           let val = context.testElement.querySelector('.clr-wizard-page-title-text').textContent.trim();
-          expect(val).toBe('Longer Title for Page 1', 'inits as expected');
+          expect(val, 'inits as expected').toBe('Longer Title for Page 1');
 
           wizard.next();
           context.detectChanges();
 
           val = context.testElement.querySelector('.clr-wizard-page-title-text').textContent.trim();
-          expect(val).toBe(context.testComponent.projectedPageTitle, 'projects as expected');
+          expect(val, 'projects as expected').toBe(context.testComponent.projectedPageTitle);
 
           context.testComponent.projectedPageTitle = 'OHAI';
           context.detectChanges();
 
           val = context.testElement.querySelector('.clr-wizard-page-title-text').textContent.trim();
-          expect(val).toBe('OHAI', 'updates as expected');
+          expect(val, 'updates as expected').toBe('OHAI');
         });
 
         describe('Content', () => {
@@ -372,13 +372,13 @@ export default function (): void {
 
             // page 3 has projected content
             val = context.testElement.querySelector('.clr-wizard-page.active').textContent.trim();
-            expect(val).toBe(context.testComponent.projectedContent, 'projects as expected');
+            expect(val, 'projects as expected').toBe(context.testComponent.projectedContent);
 
             context.testComponent.projectedContent = 'OHAI';
             context.detectChanges();
 
             val = context.testElement.querySelector('.clr-wizard-page.active').textContent.trim();
-            expect(val).toBe('OHAI', 'updates as expected');
+            expect(val, 'updates as expected').toBe('OHAI');
           });
 
           it('content can lazy load if needed', async () => {
@@ -388,14 +388,14 @@ export default function (): void {
             context.detectChanges();
 
             val = context.testElement.querySelector('.clr-wizard-page.active').textContent.trim();
-            expect(val).toBe(context.testComponent.lazyLoadContent, 'projects as expected');
+            expect(val, 'projects as expected').toBe(context.testComponent.lazyLoadContent);
 
             context.testComponent.doLazyLoad();
             await delay();
             context.detectChanges();
 
             val = context.testElement.querySelector('.clr-wizard-page.active').textContent.trim();
-            expect(val).toBe('Content loaded!', 'updates as expected');
+            expect(val, 'updates as expected').toBe('Content loaded!');
           });
         });
 
@@ -445,13 +445,13 @@ export default function (): void {
           it('button text is projected as expected', () => {
             const previous = context.testElement.querySelector('.clr-wizard-btn--secondary');
             let val = previous.textContent.trim();
-            expect(val).toBe(context.testComponent.projectedButton, 'projects as expected');
+            expect(val, 'projects as expected').toBe(context.testComponent.projectedButton);
 
             context.testComponent.projectedButton = 'OHAI';
             context.detectChanges();
 
             val = previous.textContent.trim();
-            expect(val).toBe('OHAI', 'updates as expected');
+            expect(val, 'updates as expected').toBe('OHAI');
           });
 
           it('page buttons override default wizard buttons', () => {
@@ -481,23 +481,23 @@ export default function (): void {
         it('clrWizardOnCancel output is fired when cancel button is clicked', () => {
           const cancel: HTMLElement = context.testElement.querySelector('.clr-wizard-btn--tertiary');
 
-          expect(context.testComponent._cancelled).toBe(0, 'verify initial state');
+          expect(context.testComponent._cancelled, 'verify initial state').toBe(0);
           cancel.click();
           context.detectChanges();
-          expect(context.testComponent._cancelled).toBe(1, 'cancel button worked');
+          expect(context.testComponent._cancelled, 'cancel button worked').toBe(1);
         });
 
         it('clrWizardOnCancel output is fired when close X is clicked', () => {
           const closeBtn: HTMLElement = context.testElement.querySelector('button.close');
-          expect(context.testComponent._cancelled).toBe(0, 'verify initial state');
+          expect(context.testComponent._cancelled, 'verify initial state').toBe(0);
 
           closeBtn.click();
           context.detectChanges();
-          expect(context.testComponent._cancelled).toBe(1, 'close X worked');
+          expect(context.testComponent._cancelled, 'close X worked').toBe(1);
         });
 
         it('clrWizardOnCancel output is not fired when wizard is closed by finish button', () => {
-          expect(context.testComponent._cancelled).toBe(0, 'verify initial state');
+          expect(context.testComponent._cancelled, 'verify initial state').toBe(0);
 
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
@@ -506,12 +506,12 @@ export default function (): void {
           context.detectChanges();
 
           // also validates that custom button worked...
-          expect(context.testComponent._cancelled).toBe(0, 'finish button did not fire cancel');
-          expect(wizard._open).toBe(false, 'custom finish closed the wizard');
+          expect(context.testComponent._cancelled, 'finish button did not fire cancel').toBe(0);
+          expect(wizard._open, 'custom finish closed the wizard').toBe(false);
         });
 
         it('clrWizardOnFinish output is fired', () => {
-          expect(context.testComponent._finished).toBe(0, 'verify initial state');
+          expect(context.testComponent._finished, 'verify initial state').toBe(0);
 
           wizard.pageCollection.lastPage.makeCurrent();
           context.detectChanges();
@@ -520,7 +520,7 @@ export default function (): void {
           context.detectChanges();
 
           // also validates that custom button worked...
-          expect(context.testComponent._finished).toBe(1, 'finish button fired event');
+          expect(context.testComponent._finished, 'finish button fired event').toBe(1);
         });
       });
 
@@ -538,13 +538,13 @@ export default function (): void {
           let expected = wizpages === pagecollection;
           const origPageCount = wizard.pageCollection.pagesCount + 0;
 
-          expect(expected).toBe(true, 'inits as the same');
+          expect(expected, 'inits as the same').toBe(true);
           context.testComponent.showExtraPage = true;
           context.detectChanges();
 
           expected = wizpages === pagecollection;
           expect(wizard.pageCollection.pagesCount).not.toEqual(origPageCount);
-          expect(expected).toBe(true, 'updates as expected');
+          expect(expected, 'updates as expected').toBe(true);
         });
       });
 
@@ -552,14 +552,14 @@ export default function (): void {
         it('navService.wizardHasAltCancel is set to wizard.stopCancel and updates dynamically', () => {
           let val = wizard.navService.wizardHasAltCancel;
           let expected = wizard.stopCancel;
-          expect(val).toBe(expected, 'inits as expected');
+          expect(val, 'inits as expected').toBe(expected);
 
           wizard.stopCancel = true;
           context.detectChanges();
 
           val = wizard.navService.wizardHasAltCancel;
           expected = true;
-          expect(val).toBe(expected, 'updates as expected');
+          expect(val, 'updates as expected').toBe(expected);
         });
       });
 
@@ -567,14 +567,14 @@ export default function (): void {
         it('navService.wizardHasAltNext is set to wizard.stopNext and updates dynamically', () => {
           let val = wizard.navService.wizardHasAltNext;
           let expected = wizard.stopNext;
-          expect(val).toBe(expected, 'inits as expected');
+          expect(val, 'inits as expected').toBe(expected);
 
           wizard.stopNext = true;
           context.detectChanges();
 
           val = wizard.navService.wizardHasAltNext;
           expected = true;
-          expect(val).toBe(expected, 'updates as expected');
+          expect(val, 'updates as expected').toBe(expected);
         });
       });
 
@@ -582,14 +582,14 @@ export default function (): void {
         it('navService.wizardStopNavigation is set to wizard.stopNavigation and updates dynamically', () => {
           let val = wizard.navService.wizardStopNavigation;
           let expected = wizard.stopNavigation;
-          expect(val).toBe(expected, 'inits as expected');
+          expect(val, 'inits as expected').toBe(expected);
 
           wizard.stopNavigation = true;
           context.detectChanges();
 
           val = wizard.navService.wizardStopNavigation;
           expected = true;
-          expect(val).toBe(expected, 'updates as expected');
+          expect(val, 'updates as expected').toBe(expected);
         });
       });
 
@@ -597,14 +597,14 @@ export default function (): void {
         it('navService.forceForwardNavigation is set to wizard.forceForward and updates dynamically', () => {
           let val = wizard.navService.forceForwardNavigation;
           let expected = wizard.forceForward;
-          expect(val).toBe(expected, 'inits as expected');
+          expect(val, 'inits as expected').toBe(expected);
 
           wizard.forceForward = true;
           context.detectChanges();
 
           val = wizard.navService.forceForwardNavigation;
           expected = true;
-          expect(val).toBe(expected, 'updates as expected');
+          expect(val, 'updates as expected').toBe(expected);
         });
       });
 
@@ -615,7 +615,7 @@ export default function (): void {
           context.testComponent.mySize = 'lg';
           context.detectChanges();
           expect(wizard.size).toBe('lg');
-          expect(wizardModal.classList.contains('modal-lg')).toBeTrue();
+          expect(wizardModal.classList.contains('modal-lg')).toBe(true);
         });
       });
 
@@ -624,20 +624,20 @@ export default function (): void {
           wizard.close();
           context.detectChanges();
           context.testComponent._openChange = 0;
-          expect(context.testComponent._openChange).toBe(0, 'make sure we have reset');
+          expect(context.testComponent._openChange, 'make sure we have reset').toBe(0);
           wizard.open();
           context.detectChanges();
-          expect(context.testComponent._openChange).toBe(1, 'make sure we have reset');
+          expect(context.testComponent._openChange, 'make sure we have reset').toBe(1);
         });
       });
 
       describe('Closing', () => {
         it('emits clrWizardOpenChange output', () => {
           context.testComponent._openChange = 0;
-          expect(context.testComponent._openChange).toBe(0, 'make sure we have reset');
+          expect(context.testComponent._openChange, 'make sure we have reset').toBe(0);
           wizard.close();
           context.detectChanges();
-          expect(context.testComponent._openChange).toBe(1, 'make sure we have reset');
+          expect(context.testComponent._openChange, 'make sure we have reset').toBe(1);
         });
       });
 
@@ -688,23 +688,23 @@ export default function (): void {
         expect(wizard.pageCollection.pagesCount).toBe(3);
 
         checkme = context.testElement.querySelector('#clr-wizard-page-1');
-        expect(checkme.textContent.trim()).toBe('Content for page 1', 'page 1 content ok');
+        expect(checkme.textContent.trim(), 'page 1 content ok').toBe('Content for page 1');
 
         checkme = context.testElement.querySelector('#clr-wizard-page-2');
-        expect(checkme.textContent.trim()).toBe('Content for page 2', 'page 2 content ok');
+        expect(checkme.textContent.trim(), 'page 2 content ok').toBe('Content for page 2');
 
         checkme = context.testElement.querySelector('#clr-wizard-page-4');
-        expect(checkme.textContent.trim()).toBe('Content for page 4', 'page 4 content ok');
+        expect(checkme.textContent.trim(), 'page 4 content ok').toBe('Content for page 4');
 
         // NOW THE STEPNAV
         checkme = context.testElement.querySelector('#clr-wizard-step-1 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 1', 'step 1 ok');
+        expect(checkme.textContent.trim(), 'step 1 ok').toBe('Page 1');
 
         checkme = context.testElement.querySelector('#clr-wizard-step-2 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 2', 'step 2 ok');
+        expect(checkme.textContent.trim(), 'step 2 ok').toBe('Page 2');
 
         checkme = context.testElement.querySelector('#clr-wizard-step-4 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 4', 'step 4 ok');
+        expect(checkme.textContent.trim(), 'step 4 ok').toBe('Page 4');
       });
 
       it('content can be changed dynamically', () => {
@@ -717,29 +717,29 @@ export default function (): void {
 
         expect(wizard.pageCollection.pagesCount).toBe(4);
         checkme = context.testElement.querySelector('#clr-wizard-page-1');
-        expect(checkme.textContent.trim()).toBe('Content for page 1', 'page 1 content ok');
+        expect(checkme.textContent.trim(), 'page 1 content ok').toBe('Content for page 1');
 
         checkme = context.testElement.querySelector('#clr-wizard-page-2');
-        expect(checkme.textContent.trim()).toBe('Content for page 2', 'page 2 content ok');
+        expect(checkme.textContent.trim(), 'page 2 content ok').toBe('Content for page 2');
 
         checkme = context.testElement.querySelector('#clr-wizard-page-3');
-        expect(checkme.textContent.trim()).toBe('Content for page 3', 'page 3 content ok');
+        expect(checkme.textContent.trim(), 'page 3 content ok').toBe('Content for page 3');
 
         checkme = context.testElement.querySelector('#clr-wizard-page-4');
-        expect(checkme.textContent.trim()).toBe('Content for page 4', 'page 4 content ok');
+        expect(checkme.textContent.trim(), 'page 4 content ok').toBe('Content for page 4');
 
         // NOW THE STEPNAV
         checkme = context.testElement.querySelector('#clr-wizard-step-1 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 1', 'step 1 ok');
+        expect(checkme.textContent.trim(), 'step 1 ok').toBe('Page 1');
 
         checkme = context.testElement.querySelector('#clr-wizard-step-2 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 2', 'step 2 ok');
+        expect(checkme.textContent.trim(), 'step 2 ok').toBe('Page 2');
 
         checkme = context.testElement.querySelector('#clr-wizard-step-3 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 3', 'step 3 ok');
+        expect(checkme.textContent.trim(), 'step 3 ok').toBe('Page 3');
 
         checkme = context.testElement.querySelector('#clr-wizard-step-4 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 4', 'step 4 ok');
+        expect(checkme.textContent.trim(), 'step 4 ok').toBe('Page 4');
 
         // dynamically hiding a page
         context.testComponent.showSecondPage = false;
@@ -747,29 +747,29 @@ export default function (): void {
 
         expect(wizard.pageCollection.pagesCount).toBe(3);
         checkme = context.testElement.querySelector('#clr-wizard-page-1');
-        expect(checkme.textContent.trim()).toBe('Content for page 1', 'page 1 content ok');
+        expect(checkme.textContent.trim(), 'page 1 content ok').toBe('Content for page 1');
 
         checkme = context.testElement.querySelector('#clr-wizard-page-2');
         expect(checkme).toBeNull();
 
         checkme = context.testElement.querySelector('#clr-wizard-page-3');
-        expect(checkme.textContent.trim()).toBe('Content for page 3', 'page 3 content ok');
+        expect(checkme.textContent.trim(), 'page 3 content ok').toBe('Content for page 3');
 
         checkme = context.testElement.querySelector('#clr-wizard-page-4');
-        expect(checkme.textContent.trim()).toBe('Content for page 4', 'page 4 content ok');
+        expect(checkme.textContent.trim(), 'page 4 content ok').toBe('Content for page 4');
 
         // NOW THE STEPNAV
         checkme = context.testElement.querySelector('#clr-wizard-step-1 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 1', 'step 1 ok');
+        expect(checkme.textContent.trim(), 'step 1 ok').toBe('Page 1');
 
         checkme = context.testElement.querySelector('#clr-wizard-step-2 .clr-wizard-stepnav-link-title');
         expect(checkme).toBeNull();
 
         checkme = context.testElement.querySelector('#clr-wizard-step-3 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 3', 'step 3 ok');
+        expect(checkme.textContent.trim(), 'step 3 ok').toBe('Page 3');
 
         checkme = context.testElement.querySelector('#clr-wizard-step-4 .clr-wizard-stepnav-link-title');
-        expect(checkme.textContent.trim()).toBe('Page 4', 'step 4 ok');
+        expect(checkme.textContent.trim(), 'step 4 ok').toBe('Page 4');
       });
 
       it('should survive if there are no pages', () => {
@@ -827,4 +827,4 @@ export default function (): void {
       });
     });
   });
-}
+});

@@ -8,28 +8,26 @@
 import { IfExpandService } from './if-expanded.service';
 import { ClrLoadingState } from '../loading/loading';
 
-export default function (): void {
-  describe('Expand provider', () => {
-    let testContext: any;
-    beforeEach(() => {
-      testContext = {};
-    });
-
-    beforeEach(() => {
-      testContext.expand = new IfExpandService();
-    });
-
-    it('starts with the correct default settings', () => {
-      expect(testContext.expand.expandable).toBe(0, 'not expandable');
-      expect(testContext.expand.loading).toBe(false, 'already loaded');
-      expect(testContext.expand.expanded).toBe(false, 'collapsed');
-    });
-
-    it('implements LoadingListener', () => {
-      testContext.expand.loadingStateChange(ClrLoadingState.LOADING);
-      expect(testContext.expand.loading).toBe(true);
-      testContext.expand.loadingStateChange(ClrLoadingState.DEFAULT);
-      expect(testContext.expand.loading).toBe(false);
-    });
+describe('Expand provider', () => {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
   });
-}
+
+  beforeEach(() => {
+    testContext.expand = new IfExpandService();
+  });
+
+  it('starts with the correct default settings', () => {
+    expect(testContext.expand.expandable, 'not expandable').toBe(0);
+    expect(testContext.expand.loading, 'already loaded').toBe(false);
+    expect(testContext.expand.expanded, 'collapsed').toBe(false);
+  });
+
+  it('implements LoadingListener', () => {
+    testContext.expand.loadingStateChange(ClrLoadingState.LOADING);
+    expect(testContext.expand.loading).toBe(true);
+    testContext.expand.loadingStateChange(ClrLoadingState.DEFAULT);
+    expect(testContext.expand.loading).toBe(false);
+  });
+});

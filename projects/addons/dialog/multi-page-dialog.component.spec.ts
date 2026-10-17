@@ -115,10 +115,10 @@ describe('Appfx Multi Page Dialog', () => {
       onSubmit: () => of({}),
       onCancel: () => of({}),
     } as CloseHandler;
-    spyOn(testContext.component.openedChange, 'emit').and.callThrough();
-    spyOn(testContext.component.onClose, 'emit').and.callThrough();
-    spyOn(testContext.component.closeHandler, 'onSubmit').and.callThrough();
-    spyOn(testContext.component.closeHandler as any, 'onCancel').and.callThrough();
+    vi.spyOn(testContext.component.openedChange, 'emit');
+    vi.spyOn(testContext.component.onClose, 'emit');
+    vi.spyOn(testContext.component.closeHandler, 'onSubmit');
+    vi.spyOn(testContext.component.closeHandler as any, 'onCancel');
 
     testContext.fixture.detectChanges();
   });
@@ -145,7 +145,7 @@ describe('Appfx Multi Page Dialog', () => {
     describe('WHEN onCancel throws error', () => {
       beforeEach(() => {
         testContext.component.closeHandler.onCancel = () => throwError(errorMessage);
-        spyOn(testContext.component.closeHandler as any, 'onCancel').and.callThrough();
+        vi.spyOn(testContext.component.closeHandler as any, 'onCancel');
         testContext.fixture.detectChanges();
         testContext.component.onCancelButtonClick();
         testContext.fixture.detectChanges();
@@ -175,7 +175,7 @@ describe('Appfx Multi Page Dialog', () => {
     describe('WHEN onCancel throws error', () => {
       beforeEach(() => {
         testContext.component.closeHandler.onCancel = () => throwError(errorMessage);
-        spyOn(testContext.component.closeHandler as any, 'onCancel').and.callThrough();
+        vi.spyOn(testContext.component.closeHandler as any, 'onCancel');
         testContext.fixture.detectChanges();
         testContext.component.onModalOpenChange(false);
       });
@@ -286,7 +286,7 @@ describe('Appfx Multi Page Dialog', () => {
     });
 
     it('closes the dialog when when the OK button is clicked and all steps are valid', () => {
-      spyOn(testContext.component.tabs, 'validate$').and.returnValue(of(true));
+      vi.spyOn(testContext.component.tabs, 'validate$').mockReturnValue(of(true));
 
       testContext.component.onOkButtonClick();
       expect(testContext.component.closeHandler.onSubmit).toHaveBeenCalled();
@@ -296,7 +296,7 @@ describe('Appfx Multi Page Dialog', () => {
 
     it('does not close the dialog when the OK button is clicked and onSubmit closeHandler throws Error', () => {
       testContext.component.closeHandler.onSubmit = () => throwError(errorMessage);
-      spyOn(testContext.component.closeHandler, 'onSubmit').and.callThrough();
+      vi.spyOn(testContext.component.closeHandler, 'onSubmit');
 
       testContext.fixture.detectChanges();
       testContext.component.onOkButtonClick();
@@ -308,7 +308,7 @@ describe('Appfx Multi Page Dialog', () => {
 
     it(`validates all visited pages when OK is clicked
             and does not call onSubmit when #tabs.validate$ return false`, fakeAsync(() => {
-      spyOn(testContext.component.tabs, 'validate$').and.returnValue(of(false));
+      vi.spyOn(testContext.component.tabs, 'validate$').mockReturnValue(of(false));
 
       testContext.component.onOkButtonClick();
       testContext.fixture.detectChanges();

@@ -13,7 +13,7 @@ interface TestContext {
   idService: TooltipIdService;
 }
 
-export default function (): void {
+describe('Tooltip', () => {
   describe('Tooltip Id Service', () => {
     let testContext: TestContext;
     beforeEach(() => {
@@ -39,4 +39,4 @@ export default function (): void {
       expect(idObservable instanceof Observable).toBe(true);
     });
   });
-}
+});

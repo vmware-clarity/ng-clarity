@@ -21,29 +21,31 @@ import { ClrCombobox } from './combobox';
 })
 class TestSelectWithMenu {}
 
-export default function (): void {
-  describe('Select with Menu', () => {
-    const helpers = createTestHelpers();
+describe('Combobox component', () => {
+  describe('Integration Tests', () => {
+    describe('Select with Menu', () => {
+      const helpers = createTestHelpers();
 
-    let context: TestContext<ClrCombobox<string>, TestSelectWithMenu>;
-    let popoverService: ClrPopoverService;
+      let context: TestContext<ClrCombobox<string>, TestSelectWithMenu>;
+      let popoverService: ClrPopoverService;
 
-    beforeEach(() => {
-      context = helpers.create<ClrCombobox<string>, TestSelectWithMenu>(ClrCombobox, TestSelectWithMenu, [], []);
-      popoverService = context.getClarityProvider(ClrPopoverService);
-      popoverService.open = true;
-      context.detectChanges();
-    });
+      beforeEach(() => {
+        context = helpers.create<ClrCombobox<string>, TestSelectWithMenu>(ClrCombobox, TestSelectWithMenu, [], []);
+        popoverService = context.getClarityProvider(ClrPopoverService);
+        popoverService.open = true;
+        context.detectChanges();
+      });
 
-    afterEach(() => {
-      popoverService.open = false;
-      context.detectChanges();
-    });
+      afterEach(() => {
+        popoverService.open = false;
+        context.detectChanges();
+      });
 
-    it('renders the menu projected by the consumer', () => {
-      const menus = document.body.querySelectorAll('clr-options');
-      expect(menus.length).toBe(1);
-      expect(menus[0].classList.contains('test')).toBe(true);
+      it('renders the menu projected by the consumer', () => {
+        const menus = document.body.querySelectorAll('clr-options');
+        expect(menus.length).toBe(1);
+        expect(menus[0].classList.contains('test')).toBe(true);
+      });
     });
   });
-}
+});

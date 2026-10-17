@@ -37,7 +37,7 @@ export class TestNativeDatalist {}
 
 type Context = TestContext<ClrDatalist, TestDatalistId>;
 
-export default function (): void {
+describe('ClrDatalist', () => {
   describe('Clarity Datalist Element', () => {
     let testContext: Context;
 
@@ -75,4 +75,4 @@ export default function (): void {
       expect(nativeDatalist).toBeTruthy();
     });
   });
-}
+});

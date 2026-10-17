@@ -21,7 +21,7 @@ import { ClrPopoverContent } from '@clr/angular/popover';
 
 import { ClrNumberInput } from './number-input';
 import { ClrNumberInputContainer } from './number-input-container';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -84,7 +84,7 @@ class ReactiveTest {
 })
 class NoInputTest {}
 
-export default function (): void {
+describe('Number Input component', () => {
   describe('ClrNumberInput', () => {
     ContainerNoLabelSpec(ClrNumberInputContainer, ClrNumberInput, NoLabelTest);
     TemplateDrivenSpec(
@@ -110,8 +110,8 @@ export default function (): void {
 
       it('should not throw when input ContentChild is undefined', () => {
         expect(() => fixture.detectChanges()).not.toThrow();
-        expect(containerEl.classList.contains('clr-form-control-readonly')).toBeFalse();
+        expect(containerEl.classList.contains('clr-form-control-readonly')).toBe(false);
       });
     });
   });
-}
+});

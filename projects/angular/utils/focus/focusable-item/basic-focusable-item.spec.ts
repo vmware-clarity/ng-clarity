@@ -24,7 +24,7 @@ interface TestContext {
   id: string;
 }
 
-export default function (): void {
+describe('Focus management', () => {
   describe('Basic focusable item', () => {
     let testContext: TestContext;
     beforeEach(() => {
@@ -73,4 +73,4 @@ export default function (): void {
       expect(clicks).toBe(2);
     });
   });
-}
+});

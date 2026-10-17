@@ -13,85 +13,85 @@ import { DetailService } from './providers/detail.service';
 
 const content = 'Detail Pane';
 
-export default function (): void {
-  describe('ClrIfDetail Directive', function () {
-    let fixture, testElement;
-    let detailService: DetailService;
-    let testComponent: IfDetailTest;
+describe('ClrIfDetail Directive', function () {
+  let fixture, testElement;
+  let detailService: DetailService;
+  let testComponent: IfDetailTest;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        declarations: [ClrIfDetail, IfDetailTest],
-        providers: [DetailService],
-      });
-      fixture = TestBed.createComponent(IfDetailTest);
-      testComponent = fixture.debugElement.componentInstance;
-      testElement = fixture.debugElement.nativeElement;
-      detailService = TestBed.inject(DetailService);
-      spyOn(detailService, 'close').and.callThrough();
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [ClrIfDetail, IfDetailTest],
+      providers: [DetailService],
+    });
+    fixture = TestBed.createComponent(IfDetailTest);
+    testComponent = fixture.debugElement.componentInstance;
+    testElement = fixture.debugElement.nativeElement;
+    detailService = TestBed.inject(DetailService);
+    vi.spyOn(detailService, 'close');
+    fixture.detectChanges();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  describe('Typescript API', () => {
+    it('should initialize the detail service', () => {
+      expect(detailService.close).toHaveBeenCalled();
+    });
+
+    it('should project input state', () => {
+      const input = `${content}${content}`;
+      testComponent.detailState = input;
       fixture.detectChanges();
+      expect(testElement.querySelector('.detail-model').textContent).toBe(input);
     });
 
-    afterEach(() => {
-      fixture.destroy();
+    it('should emit changes', () => {
+      expect(testComponent.detailState).toBeNull();
+      detailService.open(content);
+      fixture.detectChanges();
+      expect(testComponent.detailState).toEqual(content);
+      detailService.close();
+      fixture.detectChanges();
+      expect(testComponent.detailState).toBeNull();
     });
 
-    describe('Typescript API', () => {
-      it('should initialize the detail service', () => {
-        expect(detailService.close).toHaveBeenCalled();
-      });
-
-      it('should project input state', () => {
-        const input = `${content}${content}`;
-        testComponent.detailState = input;
-        fixture.detectChanges();
-        expect(testElement.innerHTML).toContain(input);
-      });
-
-      it('should emit changes', () => {
-        expect(testComponent.detailState).toBeNull();
-        detailService.open(content);
-        fixture.detectChanges();
-        expect(testComponent.detailState).toEqual(content);
-        detailService.close();
-        fixture.detectChanges();
-        expect(testComponent.detailState).toBeNull();
-      });
-
-      it('should not update the service when showing the panel through state change', () => {
-        spyOn(detailService, 'toggle');
-        spyOn(testComponent.detail.stateChange, 'emit').and.callThrough();
-        detailService.open(content);
-        fixture.detectChanges();
-        expect(detailService.toggle).not.toHaveBeenCalled();
-        expect(testComponent.detail.stateChange.emit).toHaveBeenCalledWith(testComponent.detailState);
-      });
-    });
-
-    describe('Template API', () => {
-      it('should show and hide the panel', () => {
-        expect(testElement.innerHTML).not.toContain(content);
-        detailService.open({});
-        fixture.detectChanges();
-        expect(testElement.innerHTML).toContain(content);
-        detailService.close();
-        fixture.detectChanges();
-        expect(testElement.innerHTML).not.toContain(content);
-      });
-
-      it('should update the service when input changes', () => {
-        spyOn(detailService, 'toggle').and.callThrough();
-        testComponent.detailState = true;
-        fixture.detectChanges();
-        expect(detailService.toggle).toHaveBeenCalled();
-        expect(testElement.innerHTML).toContain(content);
-      });
+    it('should not update the service when showing the panel through state change', () => {
+      vi.spyOn(detailService, 'toggle').mockImplementation(() => undefined);
+      vi.spyOn(testComponent.detail.stateChange, 'emit');
+      detailService.open(content);
+      fixture.detectChanges();
+      expect(detailService.toggle).not.toHaveBeenCalled();
+      expect(testComponent.detail.stateChange.emit).toHaveBeenCalledWith(testComponent.detailState);
     });
   });
-}
+
+  describe('Template API', () => {
+    it('should show and hide the panel', () => {
+      expect(testElement.innerHTML).not.toContain(content);
+      detailService.open({});
+      fixture.detectChanges();
+      expect(testElement.innerHTML).toContain(content);
+      detailService.close();
+      fixture.detectChanges();
+      expect(testElement.innerHTML).not.toContain(content);
+    });
+
+    it('should update the service when input changes', () => {
+      vi.spyOn(detailService, 'toggle');
+      testComponent.detailState = true;
+      fixture.detectChanges();
+      expect(detailService.toggle).toHaveBeenCalled();
+      expect(testElement.innerHTML).toContain(content);
+    });
+  });
+});
 
 @Component({
-  template: `<ng-template [(clrIfDetail)]="detailState">${content}</ng-template>`,
+  template: `<ng-template [(clrIfDetail)]="detailState" let-state
+    >${content}<span class="detail-model">{{ state }}</span></ng-template
+  >`,
   standalone: false,
 })
 class IfDetailTest {

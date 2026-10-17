@@ -13,51 +13,49 @@ import { DetailService } from './providers/detail.service';
 
 const content = 'Detail Pane';
 
-export default function (): void {
-  describe('ClrDatagridDetailHeader component', () => {
-    const helpers = createTestHelpers();
+describe('ClrDatagridDetailHeader component', () => {
+  const helpers = createTestHelpers();
 
-    describe('Typescript API', () => {
-      let context: TestContext<ClrDatagridDetailHeader, FullTest>;
+  describe('Typescript API', () => {
+    let context: TestContext<ClrDatagridDetailHeader, FullTest>;
 
-      beforeEach(() => {
-        context = helpers.create(ClrDatagridDetailHeader, FullTest, [DetailService]);
-        context.detectChanges();
-      });
-
-      it('should wire up host bindings', () => {
-        expect(context.clarityElement.className).toContain('datagrid-detail-header');
-      });
+    beforeEach(() => {
+      context = helpers.create(ClrDatagridDetailHeader, FullTest, [DetailService]);
+      context.detectChanges();
     });
 
-    describe('View', () => {
-      let context: TestContext<ClrDatagridDetailHeader, FullTest>;
-      let detailService: DetailService;
-
-      beforeEach(() => {
-        context = helpers.create(ClrDatagridDetailHeader, FullTest, [DetailService]);
-        detailService = context.getClarityProvider(DetailService);
-        context.detectChanges();
-      });
-
-      it('projects content into the detail pane when open', () => {
-        expect(context.clarityElement.innerHTML).toContain(content);
-      });
-
-      it('calls service when closing using close button', () => {
-        spyOn(detailService, 'close');
-        context.testElement.querySelector('.btn').click();
-        context.detectChanges();
-        expect(detailService.close).toHaveBeenCalled();
-      });
-
-      it(' -- titleId() should return formatted id', () => {
-        const detailId = detailService.id;
-        expect(context.testElement.querySelector('.datagrid-detail-header-title').id).toEqual(detailId + '-title');
-      });
+    it('should wire up host bindings', () => {
+      expect(context.clarityElement.className).toContain('datagrid-detail-header');
     });
   });
-}
+
+  describe('View', () => {
+    let context: TestContext<ClrDatagridDetailHeader, FullTest>;
+    let detailService: DetailService;
+
+    beforeEach(() => {
+      context = helpers.create(ClrDatagridDetailHeader, FullTest, [DetailService]);
+      detailService = context.getClarityProvider(DetailService);
+      context.detectChanges();
+    });
+
+    it('projects content into the detail pane when open', () => {
+      expect(context.clarityElement.innerHTML).toContain(content);
+    });
+
+    it('calls service when closing using close button', () => {
+      vi.spyOn(detailService, 'close').mockImplementation(() => undefined);
+      context.testElement.querySelector('.btn').click();
+      context.detectChanges();
+      expect(detailService.close).toHaveBeenCalled();
+    });
+
+    it(' -- titleId() should return formatted id', () => {
+      const detailId = detailService.id;
+      expect(context.testElement.querySelector('.datagrid-detail-header-title').id).toEqual(detailId + '-title');
+    });
+  });
+});
 
 @Component({
   template: `<clr-dg-detail-header>${content}</clr-dg-detail-header>`,

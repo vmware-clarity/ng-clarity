@@ -11,10 +11,14 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
+import { ClrStackViewModule } from '@clr/angular/data/stack-view';
 import { ClrAlertModule } from '@clr/angular/emphasis/alert';
+import { ClrIcon } from '@clr/angular/icon';
 import { Observable, of } from 'rxjs';
+import type { Mock } from 'vitest';
 
 import { StepContainerComponent } from './step-container.component';
+import { ErrorComponent } from '../error/error.component';
 import { ActivationError } from '../error/interfaces';
 import { OnStepActivate, OnStepValidate, StepModelHolder } from '../model/step-interfaces';
 import { StepValidationState } from '../model/step-validation-state';
@@ -24,7 +28,7 @@ import {
   ValidationBannerInternalComponent,
 } from './validation-banner/validation-banner.component';
 
-import Spy = jasmine.Spy;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 class MockPageModel implements StepModel {
   loading = false;
@@ -77,8 +81,13 @@ describe('wizard-page-container.component.spec', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrAlertModule, NoopAnimationsModule, ThisTestModule],
-      declarations: [StepContainerComponent, ValidationBannerComponent, ValidationBannerInternalComponent],
+      imports: [CommonModule, ClrIcon, ClrStackViewModule, ClrAlertModule, NoopAnimationsModule, ThisTestModule],
+      declarations: [
+        ErrorComponent,
+        StepContainerComponent,
+        ValidationBannerComponent,
+        ValidationBannerInternalComponent,
+      ],
     });
 
     testContext.fixture = TestBed.createComponent(StepContainerComponent);
@@ -349,7 +358,7 @@ describe('wizard-page-container.component.spec', () => {
 
     it('THEN the page should not render validation banner when messages are empty.', () => {
       testContext.pageModel.validationState = new StepValidationState();
-      spyOn(testContext.pageModel.validationState, 'isEmpty').and.returnValue(true);
+      vi.spyOn(testContext.pageModel.validationState, 'isEmpty').mockReturnValue(true);
       testContext.fixture.detectChanges();
 
       const validationBanner = testContext.fixture.debugElement.query(
@@ -360,7 +369,7 @@ describe('wizard-page-container.component.spec', () => {
 
     it('THEN the page should render validation banner when messages are not empty.', () => {
       testContext.pageModel.validationState = new StepValidationState();
-      spyOn(testContext.pageModel.validationState, 'isEmpty').and.returnValue(false);
+      vi.spyOn(testContext.pageModel.validationState, 'isEmpty').mockReturnValue(false);
       testContext.fixture.detectChanges();
 
       const validationBanner = testContext.fixture.debugElement.query(
@@ -391,7 +400,7 @@ describe('wizard-page-container.component.spec', () => {
 
     describe('WHEN retry button clicked', () => {
       beforeEach(() => {
-        spyOn(testContext.component.onRetry, 'emit').and.callThrough();
+        vi.spyOn(testContext.component.onRetry, 'emit');
       });
 
       it('should emit onRetry event', () => {

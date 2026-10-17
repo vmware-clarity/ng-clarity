@@ -24,67 +24,69 @@ class TestComponent {
   readonly formControl = new FormControl();
 }
 
-export default function () {
-  describe('Date Input Validator', () => {
-    let fixture: ComponentFixture<TestComponent>;
+describe('Datepicker', () => {
+  describe('Components', () => {
+    describe('Date Input Validator', () => {
+      let fixture: ComponentFixture<TestComponent>;
 
-    beforeEach(() => {
-      TestBed.configureTestingModule({
-        imports: [ReactiveFormsModule, ClrDatepickerModule],
-        declarations: [TestComponent],
-        providers: [DateNavigationService],
+      beforeEach(() => {
+        TestBed.configureTestingModule({
+          imports: [ReactiveFormsModule, ClrDatepickerModule],
+          declarations: [TestComponent],
+          providers: [DateNavigationService],
+        });
+
+        fixture = TestBed.createComponent(TestComponent);
       });
 
-      fixture = TestBed.createComponent(TestComponent);
-    });
+      it('should not allow a date less than the min date', () => {
+        fixture.componentInstance.formControl.setValue('12/31/2021');
+        fixture.detectChanges();
 
-    it('should not allow a date less than the min date', () => {
-      fixture.componentInstance.formControl.setValue('12/31/2021');
-      fixture.detectChanges();
+        const expectedErrors = {
+          min: {
+            min: new Date(2022, 0, 1).toLocaleDateString(),
+            actual: new Date(2021, 11, 31).toLocaleDateString(),
+          },
+        };
 
-      const expectedErrors = {
-        min: {
-          min: new Date(2022, 0, 1).toLocaleDateString(),
-          actual: new Date(2021, 11, 31).toLocaleDateString(),
-        },
-      };
+        expect(fixture.componentInstance.formControl.errors).toEqual(expectedErrors);
+      });
 
-      expect(fixture.componentInstance.formControl.errors).toEqual(expectedErrors);
-    });
+      it('should allow a date equal to the min date', () => {
+        fixture.componentInstance.formControl.setValue('01/01/2022');
+        fixture.detectChanges();
 
-    it('should allow a date equal to the min date', () => {
-      fixture.componentInstance.formControl.setValue('01/01/2022');
-      fixture.detectChanges();
+        expect(fixture.componentInstance.formControl.errors).toBeNull();
+      });
 
-      expect(fixture.componentInstance.formControl.errors).toBeNull();
-    });
+      it('should allow a date between the min and max dates', () => {
+        fixture.componentInstance.formControl.setValue('06/01/2022');
+        fixture.detectChanges();
 
-    it('should allow a date between the min and max dates', () => {
-      fixture.componentInstance.formControl.setValue('06/01/2022');
-      fixture.detectChanges();
+        expect(fixture.componentInstance.formControl.errors).toBeNull();
+      });
 
-      expect(fixture.componentInstance.formControl.errors).toBeNull();
-    });
+      it('should allow a date equal to the max date', () => {
+        fixture.componentInstance.formControl.setValue('12/31/2022');
+        fixture.detectChanges();
 
-    it('should allow a date equal to the max date', () => {
-      fixture.componentInstance.formControl.setValue('12/31/2022');
-      fixture.detectChanges();
+        expect(fixture.componentInstance.formControl.errors).toBeNull();
+      });
 
-      expect(fixture.componentInstance.formControl.errors).toBeNull();
-    });
+      it('should not allow a date greater than the max date', () => {
+        fixture.componentInstance.formControl.setValue('01/01/2023');
+        fixture.detectChanges();
 
-    it('should not allow a date greater than the max date', () => {
-      fixture.componentInstance.formControl.setValue('01/01/2023');
-      fixture.detectChanges();
+        const expectedErrors = {
+          max: {
+            max: new Date(2022, 11, 31).toLocaleDateString(),
+            actual: new Date(2023, 0, 1).toLocaleDateString(),
+          },
+        };
 
-      const expectedErrors = {
-        max: {
-          max: new Date(2022, 11, 31).toLocaleDateString(),
-          actual: new Date(2023, 0, 1).toLocaleDateString(),
-        },
-      };
-
-      expect(fixture.componentInstance.formControl.errors).toEqual(expectedErrors);
+        expect(fixture.componentInstance.formControl.errors).toEqual(expectedErrors);
+      });
     });
   });
-}
+});

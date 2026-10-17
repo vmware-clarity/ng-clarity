@@ -40,7 +40,7 @@ class TestTimelineStep {
 })
 class TestTimelineStepContent {}
 
-export default function (): void {
+describe('Timeline', () => {
   describe('ClrTimelineStep component', () => {
     describe('Typescript API', () => {
       let step: ClrTimelineStep;
@@ -228,4 +228,4 @@ export default function (): void {
       });
     });
   });
-}
+});

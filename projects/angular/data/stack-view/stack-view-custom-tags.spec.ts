@@ -19,7 +19,7 @@ import { ClrStackViewModule } from './stack-view.module';
 })
 class TestComponent {}
 
-export default function (): void {
+describe('Stack View directives', () => {
   'use strict';
   describe('StackView Label', () => {
     let fixture: ComponentFixture<any>;
@@ -55,4 +55,4 @@ export default function (): void {
       expect(testme.getAttribute('id')).toBe('ohai');
     });
   });
-}
+});

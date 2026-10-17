@@ -132,7 +132,7 @@ describe('PropertyViewCategoryBuilder', function () {
       const sectionBuilder = new PropertyViewSectionBuilder(nullCategoryBuilder, 'section');
       const expectedSectionBuilderClone = new PropertyViewSectionBuilder(nullCategoryBuilder, 'section');
 
-      spyOn(sectionBuilder, 'clone').and.returnValue(expectedSectionBuilderClone);
+      vi.spyOn(sectionBuilder, 'clone').mockReturnValue(expectedSectionBuilderClone);
 
       categoryBuilder.cloneAndAddBuilder(sectionBuilder);
 
@@ -151,12 +151,12 @@ describe('PropertyViewCategoryBuilder', function () {
   describe('cloneAndAddBuilders() method', function () {
     it('should invoke cloneAndAddBuilder() method for each argument PropertyViewSectionBuilder instance', function () {
       const categoryBuilder = new PropertyViewCategoryBuilder(nullPropertyViewBuilder, 'id');
-      const cloneAndAddBuilderSpy = spyOn(categoryBuilder, 'cloneAndAddBuilder');
+      const cloneAndAddBuilderSpy = vi.spyOn(categoryBuilder, 'cloneAndAddBuilder').mockImplementation(() => undefined);
 
       categoryBuilder.cloneAndAddBuilders(<any>['section-1', 'section-2']);
-      expect(cloneAndAddBuilderSpy.calls.count()).toEqual(2);
-      expect(cloneAndAddBuilderSpy.calls.argsFor(0)).toEqual(<any>['section-1']);
-      expect(cloneAndAddBuilderSpy.calls.argsFor(1)).toEqual(<any>['section-2']);
+      expect(vi.mocked(cloneAndAddBuilderSpy).mock.calls.length).toEqual(2);
+      expect(vi.mocked(cloneAndAddBuilderSpy).mock.calls[0]).toEqual(<any>['section-1']);
+      expect(vi.mocked(cloneAndAddBuilderSpy).mock.calls[1]).toEqual(<any>['section-2']);
     });
 
     it('should return the PropertyViewCategoryBuilder instance', function () {
@@ -208,7 +208,7 @@ describe('PropertyViewCategoryBuilder', function () {
         const sectionBuilder1 = new PropertyViewSectionBuilder(nullCategoryBuilder, 'section-1');
         const sectionBuilder2 = new PropertyViewSectionBuilder(nullCategoryBuilder, 'section-2');
 
-        spyOn(categoryBuilder, 'getAllSections').and.returnValue([sectionBuilder1, sectionBuilder2]);
+        vi.spyOn(categoryBuilder, 'getAllSections').mockReturnValue([sectionBuilder1, sectionBuilder2]);
 
         expect(categoryBuilder.build().content).toEqual([sectionBuilder1.build(), sectionBuilder2.build()]);
       });
@@ -230,20 +230,22 @@ describe('PropertyViewCategoryBuilder', function () {
       const categoryBuilder = new PropertyViewCategoryBuilder(nullPropertyViewBuilder, '');
 
       const sectionBuilder1 = new PropertyViewSectionBuilder(nullCategoryBuilder, 'section-1');
-      const sectionBuilder1CloneSpy = spyOn(sectionBuilder1, 'clone').and.callThrough();
+      const sectionBuilder1CloneSpy = vi.spyOn(sectionBuilder1, 'clone');
 
       const sectionBuilder2 = new PropertyViewSectionBuilder(nullCategoryBuilder, 'section-2');
-      const sectionBuilder2CloneSpy = spyOn(sectionBuilder2, 'clone').and.callThrough();
+      const sectionBuilder2CloneSpy = vi.spyOn(sectionBuilder2, 'clone');
 
-      spyOn(categoryBuilder, 'getAllSections').and.returnValue([sectionBuilder1, sectionBuilder2]);
+      vi.spyOn(categoryBuilder, 'getAllSections').mockReturnValue([sectionBuilder1, sectionBuilder2]);
 
       const categoryBuilderClone = categoryBuilder.clone(nullPropertyViewBuilder);
-      expect(sectionBuilder1CloneSpy.calls.mostRecent().args).toEqual([categoryBuilderClone]);
-      expect(sectionBuilder2CloneSpy.calls.mostRecent().args).toEqual([categoryBuilderClone]);
+      expect(vi.mocked(sectionBuilder1CloneSpy).mock.lastCall).toEqual([categoryBuilderClone]);
+      expect(vi.mocked(sectionBuilder2CloneSpy).mock.lastCall).toEqual([categoryBuilderClone]);
 
       const categoryBuilderCloneSections = categoryBuilderClone.getAllSections();
-      const sectionBuilder1Clone: PropertyViewSectionBuilder = sectionBuilder1CloneSpy.calls.mostRecent().returnValue;
-      const sectionBuilder2Clone: PropertyViewSectionBuilder = sectionBuilder2CloneSpy.calls.mostRecent().returnValue;
+
+      const sectionBuilder1Clone: PropertyViewSectionBuilder = sectionBuilder1CloneSpy.mock.results.at(-1)?.value;
+
+      const sectionBuilder2Clone: PropertyViewSectionBuilder = sectionBuilder2CloneSpy.mock.results.at(-1)?.value;
       expect(categoryBuilderCloneSections.length).toEqual(2);
       expect(categoryBuilderCloneSections[0]).toBe(sectionBuilder1Clone);
       expect(categoryBuilderCloneSections[1]).toBe(sectionBuilder2Clone);

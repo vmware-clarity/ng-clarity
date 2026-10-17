@@ -54,7 +54,7 @@ describe('ClrAccordion', () => {
     });
 
     it('should set the accordion strategy for the accordion service', () => {
-      spyOn(accordionService, 'setStrategy');
+      vi.spyOn(accordionService, 'setStrategy').mockImplementation(() => undefined);
       accordion.ngOnInit();
       expect(accordionService.setStrategy).toHaveBeenCalled();
     });
@@ -148,7 +148,7 @@ describe('ClrAccordion', () => {
       const localAccordionService = localFixture.debugElement
         .query(By.directive(ClrAccordion))
         .injector.get(AccordionService);
-      spyOn(localAccordionService, 'setStrategy');
+      vi.spyOn(localAccordionService, 'setStrategy').mockImplementation(() => undefined);
 
       localFixture.detectChanges();
 
@@ -156,7 +156,7 @@ describe('ClrAccordion', () => {
     });
 
     it('should call setStrategy again when multiPanel input changes after initial render', () => {
-      spyOn(accordionService, 'setStrategy');
+      vi.spyOn(accordionService, 'setStrategy').mockImplementation(() => undefined);
 
       testComponent.multi = true;
       fixture.detectChanges();
@@ -165,7 +165,7 @@ describe('ClrAccordion', () => {
     });
 
     it('should reorder panels when panel content children has changed', async () => {
-      spyOn(accordionService, 'updatePanelOrder');
+      vi.spyOn(accordionService, 'updatePanelOrder').mockImplementation(() => undefined);
       testComponent.showSecondStep = false;
       fixture.detectChanges();
       await delay();

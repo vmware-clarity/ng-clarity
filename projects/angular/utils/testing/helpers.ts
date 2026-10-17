@@ -10,7 +10,6 @@ import { ComponentFixture, TestBed, TestModuleMetadata } from '@angular/core/tes
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
-// import { reportSlowSpecs } from "./slow-specs.spec";
 
 export class TestContext<D, C> {
   fixture: ComponentFixture<C>;
@@ -229,17 +228,10 @@ export async function animationFrameTick(fixture?: ComponentFixture<any>) {
   }
 }
 
-/*
- * uncomment the line below to show how long it takes specs to run
- * need to also uncomment the import up top.
- * would be nice to be able to pass karma/jasmine a flag to turn this off and on.
- */
-// reportSlowSpecs();
-
 export function expectActiveElementToBe(element: Element, failOutput = null): void {
-  expect(document.activeElement).withContext(failOutput).toBe(element);
+  expect(document.activeElement, failOutput).toBe(element);
 }
 
 export function expectActiveElementNotToBe(element: Element, failOutput = null): void {
-  expect(document.activeElement).withContext(failOutput).not.toBe(element);
+  expect(document.activeElement, failOutput).not.toBe(element);
 }

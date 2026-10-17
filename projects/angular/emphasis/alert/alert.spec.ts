@@ -45,7 +45,7 @@ class TestComponent {
   alertMsg = 'This is an alert!';
 }
 
-export default function (): void {
+describe('Alert Tests', () => {
   describe('Alert', () => {
     let fixture: ComponentFixture<any>;
     let compiled: any;
@@ -197,4 +197,4 @@ export default function (): void {
       expect(compiled.querySelector('.alert-lightweight')).not.toBeNull();
     });
   });
-}
+});

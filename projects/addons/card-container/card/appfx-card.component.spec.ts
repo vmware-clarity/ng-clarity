@@ -72,7 +72,7 @@ describe('AppfxCardComponent', () => {
 
   it('should create component card when id and componentClass is present', () => {
     const cardViewContainer = (component as any).cardViewContainer;
-    spyOn(cardViewContainer, 'createComponent').and.callThrough();
+    vi.spyOn(cardViewContainer, 'createComponent');
 
     component.card = {
       id: sampleCardId,
@@ -86,7 +86,7 @@ describe('AppfxCardComponent', () => {
 
   it('should not create component card when id and componentClass is not present', () => {
     const cardViewContainer = (component as any).cardViewContainer;
-    spyOn(cardViewContainer, 'createComponent').and.callThrough();
+    vi.spyOn(cardViewContainer, 'createComponent');
 
     component.card = { id: sampleCardId } as AppfxCardInternal;
     component.ngOnInit();
@@ -95,21 +95,21 @@ describe('AppfxCardComponent', () => {
   });
 
   it('when called isSelectedCard should call a11yService isSelectedCard', () => {
-    spyOn(a11yService, 'isSelected').and.callThrough();
+    vi.spyOn(a11yService, 'isSelected');
     const isSelected = component.isSelected;
     expect(isSelected).toBeFalsy();
     expect(a11yService.isSelected).toHaveBeenCalledWith(sampleCardId);
   });
 
   it('when called isDraggableOver should call a11yService isDraggableOver', () => {
-    spyOn(a11yService, 'isDraggableOver').and.callThrough();
+    vi.spyOn(a11yService, 'isDraggableOver');
     const isDraggableOver = component.isDraggableOver;
     expect(isDraggableOver).toBeFalsy();
     expect(a11yService.isDraggableOver).toHaveBeenCalledWith(sampleCardId);
   });
 
   it('when called ngAfterViewInit should call layoutService updateCardSize to update card sizes', () => {
-    spyOn(layoutService, 'updateCardSize').and.callThrough();
+    vi.spyOn(layoutService, 'updateCardSize');
     component.ngAfterViewInit();
     expect(layoutService.updateCardSize).toHaveBeenCalled();
   });
@@ -129,7 +129,7 @@ describe('AppfxCardComponent', () => {
       },
     } as unknown as AppfxCardInternal;
     component.ngOnInit();
-    spyOn(layoutService, 'updateCardSize').and.callThrough();
+    vi.spyOn(layoutService, 'updateCardSize');
     zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
     expect(layoutService.updateCardSize).toHaveBeenCalled();
   });
@@ -149,25 +149,25 @@ describe('AppfxCardComponent', () => {
       },
     } as unknown as AppfxCardInternal;
     component.ngOnInit();
-    spyOn(layoutService, 'updateCardSize').and.callThrough();
+    vi.spyOn(layoutService, 'updateCardSize');
     zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
     expect(layoutService.updateCardSize).not.toHaveBeenCalled();
   });
 
   it('when called onDragStart should call dragDropService onDragStart', () => {
-    spyOn(dragDropService, 'onDragStart').and.callThrough();
+    vi.spyOn(dragDropService, 'onDragStart');
     component.onDragStart();
     expect(dragDropService.onDragStart).toHaveBeenCalledWith(sampleCardId);
   });
 
   it('when called onDrop should call dragDropService onDragDrop', () => {
-    spyOn(dragDropService, 'onDragDrop').and.callThrough();
+    vi.spyOn(dragDropService, 'onDragDrop');
     component.onDrop();
     expect(dragDropService.onDragDrop).toHaveBeenCalledWith(sampleCardId);
   });
 
   it('when called selectCard should call a11yService selectCard', () => {
-    spyOn(a11yService, 'selectCard').and.callThrough();
+    vi.spyOn(a11yService, 'selectCard');
     const keyEvent: any = document.createEvent('CustomEvent');
     keyEvent.key = a11ykeys.enter; // Enter Key
     keyEvent.initEvent('keyup', true, true);
@@ -176,7 +176,7 @@ describe('AppfxCardComponent', () => {
   });
 
   it('when called moveDropPositionBackwards should call a11yService moveDropPosition', () => {
-    spyOn(a11yService, 'moveDropPosition').and.callThrough();
+    vi.spyOn(a11yService, 'moveDropPosition');
     const keyEvent: any = document.createEvent('CustomEvent');
     keyEvent.key = a11ykeys.arrowLeft; // Enter Key
     keyEvent.initEvent('keyup', true, true);
@@ -185,7 +185,7 @@ describe('AppfxCardComponent', () => {
   });
 
   it('when called moveDropPositionForwards should call a11yService moveDropPosition', () => {
-    spyOn(a11yService, 'moveDropPosition').and.callThrough();
+    vi.spyOn(a11yService, 'moveDropPosition');
     const keyEvent: any = document.createEvent('CustomEvent');
     keyEvent.key = a11ykeys.arrowRight; // Enter Key
     keyEvent.initEvent('keyup', true, true);
@@ -194,7 +194,7 @@ describe('AppfxCardComponent', () => {
   });
 
   it('when called onDropHandleKeyUp should call a11yService selectCard', () => {
-    spyOn(a11yService, 'selectCard').and.callFake(() => {});
+    vi.spyOn(a11yService, 'selectCard').mockImplementation(() => {});
     const keyEvent = new KeyboardEvent('keyup', {
       key: 'Enter',
     });

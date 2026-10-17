@@ -34,7 +34,7 @@ describe('Directive: FilterPopoverReposition', () => {
   });
 
   it('is called during ngAfterViewInit', () => {
-    spyOn(window, 'getComputedStyle').and.returnValue(style);
+    vi.spyOn(window, 'getComputedStyle').mockReturnValue(style);
     directive.ngAfterViewInit();
     expect(window.getComputedStyle).toHaveBeenCalled();
   });

@@ -11,12 +11,13 @@ import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
+import type { Mock } from 'vitest';
 
 import { ClrStackBlock } from './stack-block';
 import { ClrStackView } from './stack-view';
 import { ClrStackViewModule } from './stack-view.module';
 
-import Spy = jasmine.Spy;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 @Component({
   template: `
@@ -128,7 +129,7 @@ class BlocksWithIinteractiveElements {
   testExpanded = false;
 }
 
-export default function (): void {
+describe('Stack View directives', () => {
   'use strict';
   describe('StackBlock', () => {
     let fixture: ComponentFixture<any>;
@@ -452,7 +453,7 @@ export default function (): void {
         fixture = TestBed.createComponent(BlocksWithIinteractiveElements);
         fixture.whenRenderingDone();
         fixture.detectChanges();
-        spy = spyOn(fixture.componentInstance.testBlockInstance, 'toggleExpand').and.callThrough();
+        spy = vi.spyOn(fixture.componentInstance.testBlockInstance, 'toggleExpand');
       });
 
       it('Events sent through input element should NOT expand block', () => {
@@ -545,4 +546,4 @@ export default function (): void {
       });
     });
   });
-}
+});

@@ -19,194 +19,197 @@ import { DatepickerFocusService } from './providers/datepicker-focus.service';
 import { LocaleHelperService } from './providers/locale-helper.service';
 import { ViewManagerService } from './providers/view-manager.service';
 
-export default function () {
-  describe('Daypicker Component', () => {
-    const helpers = createTestHelpers();
+describe('Datepicker', () => {
+  describe('Components', () => {
+    describe('Daypicker Component', () => {
+      const helpers = createTestHelpers();
 
-    let context: TestContext<ClrDaypicker, TestComponent>;
-    let viewManagerService: ViewManagerService;
-    let localeHelperService: LocaleHelperService;
-    let dateNavigationService: DateNavigationService;
+      let context: TestContext<ClrDaypicker, TestComponent>;
+      let viewManagerService: ViewManagerService;
+      let localeHelperService: LocaleHelperService;
+      let dateNavigationService: DateNavigationService;
 
-    beforeEach(() => {
-      dateNavigationService = new DateNavigationService();
-      // Initializing selected day just to make sure that previous and next month tests become easier
-      dateNavigationService.selectedDay = new DayModel(2015, 1, 1);
-      dateNavigationService.initializeCalendar();
+      beforeEach(() => {
+        dateNavigationService = new DateNavigationService();
+        // Initializing selected day just to make sure that previous and next month tests become easier
+        dateNavigationService.selectedDay = new DayModel(2015, 1, 1);
+        dateNavigationService.initializeCalendar();
 
-      context = helpers.create(ClrDaypicker, TestComponent, [
-        { provide: DateNavigationService, useValue: dateNavigationService },
-        DateIOService,
-        ClrPopoverService,
-        ViewManagerService,
-        LocaleHelperService,
-        DatepickerFocusService,
-        DateFormControlService,
-        ClrCommonStringsService,
-      ]);
-      viewManagerService = context.getClarityProvider(ViewManagerService);
-      localeHelperService = context.getClarityProvider(LocaleHelperService);
-    });
-
-    describe('View Basics', () => {
-      it('calls to open the month picker when the monthpicker trigger is clicked', () => {
-        spyOn(context.clarityDirective, 'changeToMonthView');
-        const button: HTMLButtonElement = context.clarityElement.querySelector('.monthpicker-trigger');
-
-        expect(button).not.toBeNull();
-
-        button.click();
-        context.detectChanges();
-
-        expect(context.clarityDirective.changeToMonthView).toHaveBeenCalled();
+        context = helpers.create(ClrDaypicker, TestComponent, [
+          { provide: DateNavigationService, useValue: dateNavigationService },
+          DateIOService,
+          ClrPopoverService,
+          ViewManagerService,
+          LocaleHelperService,
+          DatepickerFocusService,
+          DateFormControlService,
+          ClrCommonStringsService,
+        ]);
+        viewManagerService = context.getClarityProvider(ViewManagerService);
+        localeHelperService = context.getClarityProvider(LocaleHelperService);
       });
 
-      it('calls to open the year picker when the yearpicker trigger is clicked', () => {
-        spyOn(context.clarityDirective, 'changeToYearView');
-        const button: HTMLButtonElement = context.clarityElement.querySelector('.yearpicker-trigger');
+      describe('View Basics', () => {
+        it('calls to open the month picker when the monthpicker trigger is clicked', () => {
+          vi.spyOn(context.clarityDirective, 'changeToMonthView').mockImplementation(() => undefined);
+          const button: HTMLButtonElement = context.clarityElement.querySelector('.monthpicker-trigger');
 
-        expect(button).not.toBeNull();
+          expect(button).not.toBeNull();
 
-        button.click();
-        context.detectChanges();
+          button.click();
+          context.detectChanges();
 
-        expect(context.clarityDirective.changeToYearView).toHaveBeenCalled();
+          expect(context.clarityDirective.changeToMonthView).toHaveBeenCalled();
+        });
+
+        it('calls to open the year picker when the yearpicker trigger is clicked', () => {
+          vi.spyOn(context.clarityDirective, 'changeToYearView').mockImplementation(() => undefined);
+          const button: HTMLButtonElement = context.clarityElement.querySelector('.yearpicker-trigger');
+
+          expect(button).not.toBeNull();
+
+          button.click();
+          context.detectChanges();
+
+          expect(context.clarityDirective.changeToYearView).toHaveBeenCalled();
+        });
+
+        it('calls to navigate to the previous month', () => {
+          vi.spyOn(context.clarityDirective, 'previousMonth').mockImplementation(() => undefined);
+          const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
+          const button = switchers.children[0] as HTMLButtonElement;
+
+          button.click();
+          context.detectChanges();
+
+          expect(context.clarityDirective.previousMonth).toHaveBeenCalled();
+        });
+
+        it('calls to navigate to the current month', () => {
+          vi.spyOn(context.clarityDirective, 'currentMonth').mockImplementation(() => undefined);
+          const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
+          const button = switchers.children[1] as HTMLButtonElement;
+
+          button.click();
+          context.detectChanges();
+
+          expect(context.clarityDirective.currentMonth).toHaveBeenCalled();
+        });
+
+        it('calls to navigate to the next month', () => {
+          vi.spyOn(context.clarityDirective, 'nextMonth').mockImplementation(() => undefined);
+          const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
+          const button = switchers.children[2] as HTMLButtonElement;
+
+          button.click();
+          context.detectChanges();
+
+          expect(context.clarityDirective.nextMonth).toHaveBeenCalled();
+        });
+
+        it('has correct title and aria-label for monthpicker button', () => {
+          const button: HTMLButtonElement = context.clarityElement.querySelector('.monthpicker-trigger');
+          const currentMonth =
+            localeHelperService.localeMonthsAbbreviated[dateNavigationService.displayedCalendar.month];
+          const expectedString = `Select month, the current month is ${currentMonth}`;
+          expect(button.title).toEqual(expectedString);
+          expect(button.attributes['aria-label'].value).toEqual(expectedString);
+        });
+
+        it('has correct title and aria-label for yearpicker button', () => {
+          const button: HTMLButtonElement = context.clarityElement.querySelector('.yearpicker-trigger');
+          const currentYear = dateNavigationService.displayedCalendar.year;
+          const expectedString = `Select year, the current year is ${currentYear}`;
+          expect(button.title).toEqual(expectedString);
+          expect(button.attributes['aria-label'].value).toEqual(expectedString);
+        });
+
+        it('sets the correct aria-label value on the previous month button', () => {
+          const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
+          const previousButton = switchers.children[0] as HTMLButtonElement;
+          expect(previousButton.attributes['aria-label'].value).toEqual('Previous month');
+        });
+
+        it('sets the correct aria-label value on the current month button', () => {
+          const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
+          const currentButton = switchers.children[1] as HTMLButtonElement;
+          expect(currentButton.attributes['aria-label'].value).toEqual('Current month');
+        });
+
+        it('sets the correct aria-label value on the next month button', () => {
+          const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
+          const nextButton = switchers.children[2] as HTMLButtonElement;
+          expect(nextButton.attributes['aria-label'].value).toEqual('Next month');
+        });
+
+        it('should have text based boundaries for screen readers', () => {
+          const srOnlyElements: HTMLDivElement[] = context.clarityElement.querySelectorAll('.clr-sr-only');
+
+          expect(srOnlyElements[0].innerText).toBe('Beginning of Modal Content');
+          expect(srOnlyElements[1].innerText).toBe('End of Modal Content');
+        });
       });
 
-      it('calls to navigate to the previous month', () => {
-        spyOn(context.clarityDirective, 'previousMonth');
-        const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
-        const button = switchers.children[0] as HTMLButtonElement;
+      describe('Typescript API', () => {
+        it('moves to the month view', () => {
+          expect(viewManagerService.isDayView).toBe(true);
 
-        button.click();
-        context.detectChanges();
+          context.clarityDirective.changeToMonthView();
+          context.detectChanges();
 
-        expect(context.clarityDirective.previousMonth).toHaveBeenCalled();
-      });
+          expect(viewManagerService.isDayView).toBe(false);
+          expect(viewManagerService.isMonthView).toBe(true);
+        });
 
-      it('calls to navigate to the current month', () => {
-        spyOn(context.clarityDirective, 'currentMonth');
-        const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
-        const button = switchers.children[1] as HTMLButtonElement;
+        it('moves to the year view', () => {
+          expect(viewManagerService.isDayView).toBe(true);
 
-        button.click();
-        context.detectChanges();
+          context.clarityDirective.changeToYearView();
+          context.detectChanges();
 
-        expect(context.clarityDirective.currentMonth).toHaveBeenCalled();
-      });
+          expect(viewManagerService.isDayView).toBe(false);
+          expect(viewManagerService.isYearView).toBe(true);
+        });
 
-      it('calls to navigate to the next month', () => {
-        spyOn(context.clarityDirective, 'nextMonth');
-        const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
-        const button = switchers.children[2] as HTMLButtonElement;
+        it('moves to the previous month', () => {
+          const initialMonth: string = localeHelperService.localeMonthsAbbreviated[1];
+          expect(context.clarityDirective.calendarMonth).toBe(initialMonth);
+          expect(context.clarityDirective.calendarYear).toBe(2015);
 
-        button.click();
-        context.detectChanges();
+          context.clarityDirective.previousMonth();
 
-        expect(context.clarityDirective.nextMonth).toHaveBeenCalled();
-      });
+          expect(context.clarityDirective.calendarMonth).toBe('Jan');
+          expect(context.clarityDirective.calendarYear).toBe(2015);
+        });
 
-      it('has correct title and aria-label for monthpicker button', () => {
-        const button: HTMLButtonElement = context.clarityElement.querySelector('.monthpicker-trigger');
-        const currentMonth = localeHelperService.localeMonthsAbbreviated[dateNavigationService.displayedCalendar.month];
-        const expectedString = `Select month, the current month is ${currentMonth}`;
-        expect(button.title).toEqual(expectedString);
-        expect(button.attributes['aria-label'].value).toEqual(expectedString);
-      });
+        it('moves to the next month', () => {
+          const initialMonth: string = localeHelperService.localeMonthsAbbreviated[1];
+          expect(context.clarityDirective.calendarMonth).toBe(initialMonth);
+          expect(context.clarityDirective.calendarYear).toBe(2015);
 
-      it('has correct title and aria-label for yearpicker button', () => {
-        const button: HTMLButtonElement = context.clarityElement.querySelector('.yearpicker-trigger');
-        const currentYear = dateNavigationService.displayedCalendar.year;
-        const expectedString = `Select year, the current year is ${currentYear}`;
-        expect(button.title).toEqual(expectedString);
-        expect(button.attributes['aria-label'].value).toEqual(expectedString);
-      });
+          context.clarityDirective.nextMonth();
 
-      it('sets the correct aria-label value on the previous month button', () => {
-        const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
-        const previousButton = switchers.children[0] as HTMLButtonElement;
-        expect(previousButton.attributes['aria-label'].value).toEqual('Previous month');
-      });
+          expect(context.clarityDirective.calendarMonth).toBe('Mar');
+          expect(context.clarityDirective.calendarYear).toBe(2015);
+        });
 
-      it('sets the correct aria-label value on the current month button', () => {
-        const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
-        const currentButton = switchers.children[1] as HTMLButtonElement;
-        expect(currentButton.attributes['aria-label'].value).toEqual('Current month');
-      });
+        it('moves to the current month', () => {
+          const initialMonth: string = localeHelperService.localeMonthsAbbreviated[1];
+          expect(context.clarityDirective.calendarMonth).toBe(initialMonth);
+          expect(context.clarityDirective.calendarYear).toBe(2015);
 
-      it('sets the correct aria-label value on the next month button', () => {
-        const switchers: HTMLElement = context.clarityElement.querySelector('.calendar-switchers');
-        const nextButton = switchers.children[2] as HTMLButtonElement;
-        expect(nextButton.attributes['aria-label'].value).toEqual('Next month');
-      });
+          context.clarityDirective.currentMonth();
 
-      it('should have text based boundaries for screen readers', () => {
-        const srOnlyElements: HTMLDivElement[] = context.clarityElement.querySelectorAll('.clr-sr-only');
+          const date: Date = new Date();
+          const currentMonth: string = localeHelperService.localeMonthsAbbreviated[date.getMonth()];
 
-        expect(srOnlyElements[0].innerText).toBe('Beginning of Modal Content');
-        expect(srOnlyElements[1].innerText).toBe('End of Modal Content');
-      });
-    });
-
-    describe('Typescript API', () => {
-      it('moves to the month view', () => {
-        expect(viewManagerService.isDayView).toBe(true);
-
-        context.clarityDirective.changeToMonthView();
-        context.detectChanges();
-
-        expect(viewManagerService.isDayView).toBe(false);
-        expect(viewManagerService.isMonthView).toBe(true);
-      });
-
-      it('moves to the year view', () => {
-        expect(viewManagerService.isDayView).toBe(true);
-
-        context.clarityDirective.changeToYearView();
-        context.detectChanges();
-
-        expect(viewManagerService.isDayView).toBe(false);
-        expect(viewManagerService.isYearView).toBe(true);
-      });
-
-      it('moves to the previous month', () => {
-        const initialMonth: string = localeHelperService.localeMonthsAbbreviated[1];
-        expect(context.clarityDirective.calendarMonth).toBe(initialMonth);
-        expect(context.clarityDirective.calendarYear).toBe(2015);
-
-        context.clarityDirective.previousMonth();
-
-        expect(context.clarityDirective.calendarMonth).toBe('Jan');
-        expect(context.clarityDirective.calendarYear).toBe(2015);
-      });
-
-      it('moves to the next month', () => {
-        const initialMonth: string = localeHelperService.localeMonthsAbbreviated[1];
-        expect(context.clarityDirective.calendarMonth).toBe(initialMonth);
-        expect(context.clarityDirective.calendarYear).toBe(2015);
-
-        context.clarityDirective.nextMonth();
-
-        expect(context.clarityDirective.calendarMonth).toBe('Mar');
-        expect(context.clarityDirective.calendarYear).toBe(2015);
-      });
-
-      it('moves to the current month', () => {
-        const initialMonth: string = localeHelperService.localeMonthsAbbreviated[1];
-        expect(context.clarityDirective.calendarMonth).toBe(initialMonth);
-        expect(context.clarityDirective.calendarYear).toBe(2015);
-
-        context.clarityDirective.currentMonth();
-
-        const date: Date = new Date();
-        const currentMonth: string = localeHelperService.localeMonthsAbbreviated[date.getMonth()];
-
-        expect(context.clarityDirective.calendarMonth).toBe(currentMonth);
-        expect(context.clarityDirective.calendarYear).toBe(date.getFullYear());
+          expect(context.clarityDirective.calendarMonth).toBe(currentMonth);
+          expect(context.clarityDirective.calendarYear).toBe(date.getFullYear());
+        });
       });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-daypicker></clr-daypicker>`,

@@ -104,7 +104,7 @@ describe('ClrFocusOnViewInit', () => {
       component.displayNoExistingTabindex = true;
       fixture.detectChanges();
       const appRef = TestBed.inject(ApplicationRef);
-      spyOn(appRef, 'tick');
+      vi.spyOn(appRef, 'tick').mockImplementation(() => undefined);
       expect(component.focusOnItElRef.nativeElement.getAttribute('tabindex')).toBe('-1');
       component.buttonElRef.nativeElement.focus();
       expect(component.focusOnItElRef.nativeElement.getAttribute('tabindex')).toBeNull();

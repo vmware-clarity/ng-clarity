@@ -215,7 +215,7 @@ describe('DatagridComponent', () => {
   it('emits change event when column definitions are set', () => {
     const untypedContext: any = testContext;
 
-    spyOn(untypedContext.component, 'onColumnDefsChange');
+    vi.spyOn(untypedContext.component, 'onColumnDefsChange').mockImplementation(() => undefined);
     untypedContext.component.columnsDefs = untypedContext.columnsDefs;
     untypedContext.fixture.detectChanges(false);
     expect(untypedContext.component.onColumnDefsChange).toHaveBeenCalledWith(untypedContext.columnsDefs);
@@ -225,7 +225,7 @@ describe('DatagridComponent', () => {
     const untypedContext: any = testContext;
 
     const pageSize = 10;
-    spyOn(untypedContext.component, 'onPageSizeChange');
+    vi.spyOn(untypedContext.component, 'onPageSizeChange').mockImplementation(() => undefined);
     untypedContext.component.appfxDatagridComponent.pageSize = pageSize;
     untypedContext.fixture.detectChanges(false);
     expect(untypedContext.component.onPageSizeChange).toHaveBeenCalledWith(pageSize);
@@ -448,7 +448,7 @@ describe('DatagridComponent', () => {
   it('updates data in a datagrid with virtual scrolling', () => {
     const untypedContext: any = testContext;
 
-    spyOn(untypedContext.component, 'refreshVirtualGridData');
+    vi.spyOn(untypedContext.component, 'refreshVirtualGridData').mockImplementation(() => undefined);
     untypedContext.component.selectionType = SelectionType.None;
     untypedContext.component.columnsDefs = untypedContext.columnsDefs;
     untypedContext.component.virtualScrolling = true;
@@ -611,7 +611,7 @@ describe('DatagridComponent', () => {
           });
 
           // descending sorted status column
-          spyOn(subjectColumnDefinition.sortComparator, 'compare').and.callThrough();
+          vi.spyOn(subjectColumnDefinition.sortComparator, 'compare');
           gridHelper.sortByColumnIndex(subjectColumnIndex);
           untypedContext.fixture.detectChanges();
 
@@ -626,7 +626,7 @@ describe('DatagridComponent', () => {
           const untypedContext: any = testContext;
 
           const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
-          spyOn(untypedContext.component, 'columnSortOrderChange');
+          vi.spyOn(untypedContext.component, 'columnSortOrderChange').mockImplementation(() => undefined);
           gridHelper.sortByColumn(untypedContext.columnsDefs[2].displayName);
           untypedContext.fixture.detectChanges(false);
           const expectedColumnSortOrdeChange: ColumnSortOrder = {
@@ -709,7 +709,7 @@ describe('DatagridComponent', () => {
           const untypedContext: any = testContext;
 
           const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
-          spyOn(untypedContext.component, 'columnSortOrderChange');
+          vi.spyOn(untypedContext.component, 'columnSortOrderChange').mockImplementation(() => undefined);
           gridHelper.sortByColumn(untypedContext.columnsDefs[0].displayName);
           untypedContext.fixture.detectChanges(false);
           const expectedColumnSortOrdeChange: ColumnSortOrder = {
@@ -887,13 +887,13 @@ describe('DatagridComponent', () => {
       });
 
       it('pins the column and reports it through columnPinnedChange', () => {
-        spyOn(testContext.component, 'columnPinnedChange');
+        vi.spyOn(testContext.component, 'columnPinnedChange').mockImplementation(() => undefined);
 
         toggleMenu(testContext.fixture, 1);
         menuItem('Pin Column').click();
         testContext.fixture.detectChanges();
 
-        expect(testContext.columnsDefs[1].pinned).toBeTrue();
+        expect(testContext.columnsDefs[1].pinned).toBe(true);
         expect(testContext.component.columnPinnedChange).toHaveBeenCalledWith({
           pinned: true,
           column: testContext.columnsDefs[1],
@@ -904,7 +904,7 @@ describe('DatagridComponent', () => {
         toggleMenu(testContext.fixture, 1);
         menuItem('Pin Column').click();
         testContext.fixture.detectChanges();
-        expect(testContext.columnsDefs[1].pinned).toBeTrue();
+        expect(testContext.columnsDefs[1].pinned).toBe(true);
 
         // The menu stays open after Pin Column is clicked ([clrCloseMenuOnItemClick]="false"), and
         // its label is reactive to the pinned state, so the same still-open menu now offers Unpin
@@ -912,7 +912,7 @@ describe('DatagridComponent', () => {
         menuItem('Unpin Column').click();
         testContext.fixture.detectChanges();
 
-        expect(testContext.columnsDefs[1].pinned).toBeFalse();
+        expect(testContext.columnsDefs[1].pinned).toBe(false);
       });
     });
 
@@ -1018,13 +1018,13 @@ describe('DatagridComponent', () => {
         toggleMenu(testContext.fixture, 0);
 
         expect(menuItem('Copy values').getAttribute('title')).toBe('Copies the column values');
-        expect(menuItem('About column').hasAttribute('title')).toBeFalse();
+        expect(menuItem('About column').hasAttribute('title')).toBe(false);
       });
 
       // The grid-wide and per-column lists are merged, so the same id can come from both. The actions
       // are tracked by identity, not by id, so that neither drops one of them nor warns about it.
       it('renders a column action that reuses the id of a grid action', () => {
-        const warn = spyOn(console, 'warn');
+        const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
         testContext.columnsDefs[1].actions = [{ id: 'copy', label: 'Copy state', enabled: true }];
         testContext.fixture.detectChanges();
 
@@ -1033,7 +1033,7 @@ describe('DatagridComponent', () => {
         const labels = menuItemLabels();
         expect(labels).toContain('Copy values');
         expect(labels).toContain('Copy state');
-        expect(warn.calls.allArgs().some(args => String(args[0]).includes('NG0955'))).toBeFalse();
+        expect(vi.mocked(warn).mock.calls.some(args => String(args[0]).includes('NG0955'))).toBe(false);
       });
 
       // Custom actions leave clrCanClosePopover at its default, so unlike the move actions, which are
@@ -1177,7 +1177,7 @@ describe('DatagridComponent', () => {
 
         const columnActions = testContext.fixture.debugElement.queryAll(By.directive(ClrDatagridColumnActions))[0]
           .componentInstance as ClrDatagridColumnActions;
-        const repositionMenu = spyOn(columnActions, 'repositionMenu').and.callThrough();
+        const repositionMenu = vi.spyOn(columnActions, 'repositionMenu');
 
         toggleMenu(testContext.fixture, 0);
         expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
@@ -1297,7 +1297,7 @@ describe('DatagridComponent', () => {
       // The menu item is only marked disabled, not natively disabled, so it still receives the click -
       // which must not move the column either.
       it('does not move a pinned column when its move action is clicked anyway', () => {
-        spyOn(testContext.component, 'onColumnOrderChange');
+        vi.spyOn(testContext.component, 'onColumnOrderChange').mockImplementation(() => undefined);
 
         clickMove(testContext.fixture, 0, 'Move Right');
 
@@ -1495,10 +1495,10 @@ describe('DatagridComponent', () => {
         // Only a column that is not rendered yet needs the rebuild. A move or a hide keeps the other
         // column views, so the actions menu stays open and anchored on a move.
         it('does not rebuild the column views for a move or a hide', () => {
-          const rebuildColumnViews = spyOn<any>(
+          const rebuildColumnViews = vi.spyOn<any, any>(
             testContext.component.appfxDatagridComponent,
             'rebuildColumnViews'
-          ).and.callThrough();
+          );
 
           testContext.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[2].nativeElement.click();
           testContext.fixture.detectChanges();
@@ -1723,7 +1723,7 @@ describe('DatagridComponent', () => {
         const untypedContext: any = testContext;
 
         const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
-        spyOn(untypedContext.component, 'onColumnHiddenStateChange');
+        vi.spyOn(untypedContext.component, 'onColumnHiddenStateChange').mockImplementation(() => undefined);
         gridHelper.getFooter().openShowHideColumnsMenu();
         untypedContext.fixture.detectChanges();
 
@@ -1771,7 +1771,7 @@ describe('DatagridComponent', () => {
 
           const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
           gridHelper.openFilter('Name');
-          spyOn(untypedContext.component, 'onColumnFilterChange').and.callThrough();
+          vi.spyOn(untypedContext.component, 'onColumnFilterChange');
           untypedContext.fixture.detectChanges();
           const filterInput: FilterInputTestHelper = gridHelper.getFilterInput();
           filterInput.inputText('vm1', 'keyup');
@@ -1902,7 +1902,7 @@ describe('DatagridComponent', () => {
       it('emits reorder change event', () => {
         const untypedContext: any = testContext;
 
-        spyOn(untypedContext.component, 'onColumnOrderChange');
+        vi.spyOn(untypedContext.component, 'onColumnOrderChange').mockImplementation(() => undefined);
         const hostElement = untypedContext.fixture.debugElement.query(By.directive(CdkDropList));
         const cdkDropList = hostElement.injector.get(CdkDropList);
         const newColumnIndex = cdkDropList.getSortedItems().findIndex((item: any) => {
@@ -1961,7 +1961,7 @@ describe('DatagridComponent', () => {
       const groupService = TestBed.inject(DragAndDropGroupService);
       const mockGroupItems = ['first-element', 'second-element'] as unknown[] as CdkDropList[];
       const mockGroupId = 'inventory';
-      spyOn(groupService, 'getGroupItems').and.returnValue(mockGroupItems);
+      vi.spyOn(groupService, 'getGroupItems').mockReturnValue(mockGroupItems);
 
       const result = untypedContext.component.appfxDatagridComponent.dropGroup(mockGroupId);
       expect(result).toEqual(mockGroupItems);
@@ -1979,7 +1979,7 @@ describe('DatagridComponent', () => {
 
     it('when returns false', fakeAsync(() => {
       const untypedContext: any = testContext;
-      spyOn(untypedContext.component, 'isRowLocked').and.returnValue(false);
+      vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(false);
       untypedContext.fixture.detectChanges(false);
       tick();
 
@@ -1996,7 +1996,7 @@ describe('DatagridComponent', () => {
 
     it('when returns true', fakeAsync(() => {
       const untypedContext: any = testContext;
-      spyOn(untypedContext.component, 'isRowLocked').and.returnValue(true);
+      vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(true);
       untypedContext.fixture.detectChanges(false);
       tick();
 
@@ -2030,7 +2030,7 @@ describe('DatagridComponent', () => {
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
-      spyOn(testContext.component, 'changeSelection');
+      vi.spyOn(testContext.component, 'changeSelection').mockImplementation(() => undefined);
       gridHelper.getRows()[0].click();
 
       testContext.fixture.detectChanges(false);
@@ -2053,7 +2053,7 @@ describe('DatagridComponent', () => {
       testContext.fixture.detectChanges();
       tick();
 
-      spyOn(testContext.component, 'changeSelection');
+      vi.spyOn(testContext.component, 'changeSelection').mockImplementation(() => undefined);
       const gridHelper = new GridHelper(testContext.fixture.debugElement);
       gridHelper.getRows()[0].click();
       testContext.fixture.detectChanges();
@@ -2162,14 +2162,14 @@ describe('DatagridComponent', () => {
       testContext.component.appfxDatagridComponent.onModelChange();
       tick();
       testContext.fixture.detectChanges();
-      spyOn(testContext.component, 'changeSelection');
+      vi.spyOn(testContext.component, 'changeSelection').mockImplementation(() => undefined);
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeFalsy();
 
       const rows = gridHelper.getRows();
       expect(rows.length).toBeGreaterThan(0);
       rows.forEach((row, i) => {
-        expect(row.isRowClickable()).toBeFalsy(`Row ${i} should not be clickable`);
-        expect(row.isSelectionAvailable()).toBeFalsy(`Row ${i} should not have selection available`);
+        expect(row.isRowClickable(), `Row ${i} should not be clickable`).toBeFalsy();
+        expect(row.isSelectionAvailable(), `Row ${i} should not have selection available`).toBeFalsy();
       });
       expect(testContext.component.changeSelection).not.toHaveBeenCalled();
     }));
@@ -2180,22 +2180,22 @@ describe('DatagridComponent', () => {
       const untypedContext: any = testContext;
 
       // required to execute the async callbacks in Clarity's Datagrid component
-      jasmine.clock().uninstall();
-      jasmine.clock().install();
+      vi.useRealTimers();
+      vi.useFakeTimers();
       untypedContext.component.selectionType = SelectionType.Multi;
       untypedContext.component.columnsDefs = untypedContext.columnsDefs;
       untypedContext.component.data = untypedContext.data;
       untypedContext.component.appfxDatagridComponent.ngOnInit();
       untypedContext.fixture.detectChanges(false);
-      jasmine.clock().tick(10);
+      vi.advanceTimersByTime(10);
       untypedContext.fixture.detectChanges();
       untypedContext.component.appfxDatagridComponent.selectedItems = []; // reset
       untypedContext.fixture.detectChanges(false);
-      jasmine.clock().tick(10);
+      vi.advanceTimersByTime(10);
     });
 
     afterEach(() => {
-      jasmine.clock().uninstall();
+      vi.useRealTimers();
     });
 
     it('let the user to select several items', () => {
@@ -2204,14 +2204,14 @@ describe('DatagridComponent', () => {
       const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       gridHelper.getRows()[0].click();
 
-      jasmine.clock().tick(10);
+      vi.advanceTimersByTime(10);
       untypedContext.fixture.detectChanges(false);
       expect(gridHelper.getSelectedRows().length).toBe(1);
-      spyOn(untypedContext.component, 'changeSelection');
+      vi.spyOn(untypedContext.component, 'changeSelection').mockImplementation(() => undefined);
       gridHelper.getRows()[2].click();
-      jasmine.clock().tick(10);
+      vi.advanceTimersByTime(10);
       untypedContext.fixture.detectChanges();
-      jasmine.clock().tick(10);
+      vi.advanceTimersByTime(10);
       expect(gridHelper.getSelectedRows().length).toBe(2);
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
@@ -2286,9 +2286,9 @@ describe('DatagridComponent', () => {
       untypedContext.component.trackByProperty = 'name';
       untypedContext.component.dataRange = { total: 5, skip: 0, data: untypedContext.data };
 
-      jasmine.clock().tick(10);
+      vi.advanceTimersByTime(10);
       untypedContext.fixture.detectChanges();
-      spyOn(untypedContext.component, 'changeSelection');
+      vi.spyOn(untypedContext.component, 'changeSelection').mockImplementation(() => undefined);
       const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       //Select All
       gridHelper.getSelectAllElement()?.click();
@@ -2374,8 +2374,8 @@ describe('DatagridComponent', () => {
       untypedContext.component.appfxDatagridComponent.selectionType = SelectionType.None;
       untypedContext.component.appfxDatagridComponent.singleRowActions = untypedContext.actions;
       untypedContext.component.appfxDatagridComponent.ngOnChanges(simpleChange);
-      spyOn(untypedContext.component, 'onRowActionOverflowOpen');
-      spyOn(untypedContext.component, 'onActionClick');
+      vi.spyOn(untypedContext.component, 'onRowActionOverflowOpen').mockImplementation(() => undefined);
+      vi.spyOn(untypedContext.component, 'onActionClick').mockImplementation(() => undefined);
       untypedContext.component.appfxDatagridComponent.onModelChange();
 
       untypedContext.fixture.detectChanges(false);
@@ -2399,7 +2399,7 @@ describe('DatagridComponent', () => {
       const untypedContext: any = testContext;
 
       untypedContext.component.appfxDatagridComponent.actionBarActions = untypedContext.actions;
-      spyOn(untypedContext.component, 'onActionClick');
+      vi.spyOn(untypedContext.component, 'onActionClick').mockImplementation(() => undefined);
       untypedContext.component.appfxDatagridComponent.ngOnInit();
       untypedContext.fixture.detectChanges(false);
       const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
@@ -2436,7 +2436,7 @@ describe('DatagridComponent', () => {
         ],
         showFooter: true,
       };
-      spyOn(untypedContext.component, 'onActionClick');
+      vi.spyOn(untypedContext.component, 'onActionClick').mockImplementation(() => undefined);
       untypedContext.component.appfxDatagridComponent.ngOnInit();
       untypedContext.fixture.detectChanges(false);
       const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
@@ -2473,7 +2473,7 @@ describe('DatagridComponent', () => {
         ],
         showFooter: true,
       };
-      spyOn(untypedContext.component, 'onActionClick');
+      vi.spyOn(untypedContext.component, 'onActionClick').mockImplementation(() => undefined);
       untypedContext.component.appfxDatagridComponent.ngOnInit();
       untypedContext.fixture.detectChanges(false);
       const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
@@ -2547,7 +2547,7 @@ describe('DatagridComponent', () => {
         }
       });
 
-      spyOn(testContext.component, 'refreshGridData');
+      vi.spyOn(testContext.component, 'refreshGridData').mockImplementation(() => undefined);
       gridHelper.getFooter().clickNextPaginationButton();
       testContext.fixture.detectChanges();
       rows = gridHelper.getRows();
@@ -2672,7 +2672,7 @@ describe('DatagridComponent', () => {
       untypedContext.component.appfxDatagridComponent.footerModel = {
         enableCustomExport: true,
       };
-      spyOn(untypedContext.component, 'onExportDataEvent');
+      vi.spyOn(untypedContext.component, 'onExportDataEvent').mockImplementation(() => undefined);
       const mockStatus: ExportStatus = {
         inProgress: false,
         exportType: ExportType.ALL,
@@ -2689,7 +2689,7 @@ describe('DatagridComponent', () => {
           customExport: true,
         },
       };
-      spyOn(untypedContext.component, 'onExportDataEvent');
+      vi.spyOn(untypedContext.component, 'onExportDataEvent').mockImplementation(() => undefined);
 
       const mockStatus: ExportStatus = {
         inProgress: false,
@@ -2705,7 +2705,7 @@ describe('DatagridComponent', () => {
 
       const hostElement = untypedContext.fixture.debugElement.query(By.directive(DatagridComponent));
       const exportProviderService = hostElement.injector.get(ExportProviderService);
-      const exportSpy = spyOn(exportProviderService, 'exportUIOnlyData');
+      const exportSpy = vi.spyOn(exportProviderService, 'exportUIOnlyData').mockImplementation(() => undefined);
       const clientSideExportConfig: ClientSideExportConfig = {
         exportedFileName: 'test-export-filename',
         columnDefinitions: untypedContext.columnsDefs,
@@ -2727,12 +2727,12 @@ describe('DatagridComponent', () => {
 
       const hostElement = untypedContext.fixture.debugElement.query(By.directive(DatagridComponent));
       const exportProviderService = hostElement.injector.get(ExportProviderService);
-      const exportSpy = spyOn(exportProviderService, 'exportUIOnlyData');
+      const exportSpy = vi.spyOn(exportProviderService, 'exportUIOnlyData').mockImplementation(() => undefined);
       untypedContext.component.appfxDatagridComponent.footerModel = {
         enableCustomExport: undefined,
         clientSideExportConfig: undefined,
       };
-      spyOn(untypedContext.component, 'onExportDataEvent');
+      vi.spyOn(untypedContext.component, 'onExportDataEvent').mockImplementation(() => undefined);
       untypedContext.component.appfxDatagridComponent.onExportEvent({} as ExportStatus);
       expect(untypedContext.component.onExportDataEvent).not.toHaveBeenCalled();
       expect(exportSpy).not.toHaveBeenCalled();
@@ -2754,7 +2754,7 @@ describe('DatagridComponent', () => {
       const untypedContext: any = testContext;
 
       untypedContext.fixture.detectChanges(false);
-      spyOn(untypedContext.component, 'onOpenContextMenu');
+      vi.spyOn(untypedContext.component, 'onOpenContextMenu').mockImplementation(() => undefined);
       const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getRows()[0].isSelected()).toBeFalsy();
       untypedContext.fixture.debugElement
@@ -2772,7 +2772,7 @@ describe('DatagridComponent', () => {
       const untypedContext: any = testContext;
 
       untypedContext.fixture.detectChanges(false);
-      spyOn(untypedContext.component, 'onOpenContextMenu');
+      vi.spyOn(untypedContext.component, 'onOpenContextMenu').mockImplementation(() => undefined);
       const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getRows()[0].isSelected()).toBeFalsy();
       const rows = untypedContext.fixture.debugElement.queryAll(By.css('clr-datagrid clr-dg-row'));
@@ -2818,7 +2818,7 @@ describe('DatagridComponent', () => {
 
       untypedContext.component.appfxDatagridComponent.filterMode = FilterMode.Quick;
       untypedContext.fixture.detectChanges(false);
-      spyOn(untypedContext.component, 'onSearchTermChange');
+      vi.spyOn(untypedContext.component, 'onSearchTermChange').mockImplementation(() => undefined);
       untypedContext.component.appfxDatagridComponent.onAdvancedSearchTermChange('test');
       untypedContext.fixture.detectChanges();
       expect(untypedContext.component.onSearchTermChange).toHaveBeenCalledWith('test');
@@ -2829,7 +2829,7 @@ describe('DatagridComponent', () => {
 
       untypedContext.component.appfxDatagridComponent.filterMode = FilterMode.Advanced;
       untypedContext.fixture.detectChanges(false);
-      spyOn(untypedContext.component, 'onAdvancedFilterChange');
+      vi.spyOn(untypedContext.component, 'onAdvancedFilterChange').mockImplementation(() => undefined);
       const propertyFilters: PropertyFilter[] = [new PropertyFilter()];
       untypedContext.component.appfxDatagridComponent.onAdvancedFilterCriteriaChange(propertyFilters);
       untypedContext.fixture.detectChanges();
@@ -2969,7 +2969,7 @@ describe('DatagridComponent', () => {
       testContext.fixture.detectChanges();
 
       // Verify row is expanded
-      expect(rows[0].isExpanded()).toBe(true, 'Row should be expanded initially');
+      expect(rows[0].isExpanded(), 'Row should be expanded initially').toBe(true);
       const originalRowElement = rows[0].getElement();
 
       // Update data with new references but same 'id' values
@@ -2984,10 +2984,10 @@ describe('DatagridComponent', () => {
       const updatedRows = gridHelper.getRows();
 
       // Verify the first row is still expanded
-      expect(updatedRows[0].isExpanded()).toBe(true, 'Row should remain expanded after data refresh');
+      expect(updatedRows[0].isExpanded(), 'Row should remain expanded after data refresh').toBe(true);
 
       // Verify it's the exact same DOM element (not recreated)
-      expect(updatedRows[0].getElement()).toBe(originalRowElement, 'Row DOM element should not be recreated');
+      expect(updatedRows[0].getElement(), 'Row DOM element should not be recreated').toBe(originalRowElement);
     }));
 
     it('should have aria description', () => {

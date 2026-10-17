@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { Component, Input, NgModule, SimpleChange, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import type { Mock } from 'vitest';
 
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import {
@@ -21,7 +22,7 @@ import {
 } from '../property-view.model';
 import { PropertyViewPropertyComponent } from './property-view-property.component';
 
-import Spy = jasmine.Spy;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 interface ThisTest {
   fixture: ComponentFixture<PropertyViewPropertyComponent>;
@@ -161,7 +162,7 @@ describe('PropertyViewPropertyComponent', () => {
     });
 
     testContext.propertyViewConfigProvider = {
-      getConfig: jasmine.createSpy('getConfig').and.returnValue(undefined),
+      getConfig: vi.fn().mockReturnValue(undefined),
     };
     // Override the provider in PropertyViewPropertyComponent. Note that this is
     // different from changing the provider in TestBed.configureTestingModule
@@ -322,13 +323,13 @@ describe('PropertyViewPropertyComponent', () => {
       });
 
       it('should be the default one when PropertyViewConfigProvider.getConfig() returns undefined', () => {
-        testContext.propertyViewConfigProvider.getConfig.and.returnValue(undefined);
+        testContext.propertyViewConfigProvider.getConfig.mockReturnValue(undefined);
         testContext.fixture.detectChanges();
         expect(testContext.getKeyContentElements()[0].style.width).toEqual('');
       });
 
       it('should be the default one when PropertyViewConfigProvider.getConfig().propertyKeyWidthInRem is undefined', () => {
-        testContext.propertyViewConfigProvider.getConfig.and.returnValue({
+        testContext.propertyViewConfigProvider.getConfig.mockReturnValue({
           propertyKeyWidthInRem: undefined,
         });
         testContext.fixture.detectChanges();
@@ -336,7 +337,7 @@ describe('PropertyViewPropertyComponent', () => {
       });
 
       it('should be the value of PropertyViewConfigProvider.getConfig().propertyKeyWidthInRem', () => {
-        testContext.propertyViewConfigProvider.getConfig.and.returnValue({
+        testContext.propertyViewConfigProvider.getConfig.mockReturnValue({
           propertyKeyWidthInRem: 10,
         });
         testContext.fixture.detectChanges();
@@ -575,9 +576,9 @@ describe('PropertyViewPropertyComponent', () => {
 
         it("should invoke link's clickHandler() when link element is clicked", () => {
           const link1 = { clickHandler: (): any => null };
-          const link1ClickHandlerSpy = spyOn(link1, 'clickHandler');
+          const link1ClickHandlerSpy = vi.spyOn(link1, 'clickHandler').mockImplementation(() => undefined);
           const link2 = { clickHandler: (): any => null };
-          const link2ClickHandlerSpy = spyOn(link2, 'clickHandler');
+          const link2ClickHandlerSpy = vi.spyOn(link2, 'clickHandler').mockImplementation(() => undefined);
 
           testContext.setData({
             content: [
@@ -594,12 +595,12 @@ describe('PropertyViewPropertyComponent', () => {
           testContext.fixture.detectChanges();
           expect(testContext.getValueLinkElements(0).length).toEqual(1);
           testContext.getValueLinkElements(0)[0].click();
-          expect(link1ClickHandlerSpy.calls.count()).toEqual(1);
-          expect(link1ClickHandlerSpy.calls.mostRecent().args).toEqual([]);
+          expect(vi.mocked(link1ClickHandlerSpy).mock.calls.length).toEqual(1);
+          expect(vi.mocked(link1ClickHandlerSpy).mock.lastCall).toEqual([]);
           expect(testContext.getValueLinkElements(1).length).toEqual(1);
           testContext.getValueLinkElements(1)[0].click();
-          expect(link2ClickHandlerSpy.calls.count()).toEqual(1);
-          expect(link2ClickHandlerSpy.calls.mostRecent().args).toEqual([]);
+          expect(vi.mocked(link2ClickHandlerSpy).mock.calls.length).toEqual(1);
+          expect(vi.mocked(link2ClickHandlerSpy).mock.lastCall).toEqual([]);
         });
 
         it('should be displayed after icon', () => {

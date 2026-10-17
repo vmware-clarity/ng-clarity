@@ -158,7 +158,7 @@ describe('ManageFilterComponent', () => {
     testContext.fixture.destroy();
   });
   it('manages string property filter', () => {
-    spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName');
+    vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(() => undefined);
     testContext.component.propertyFilter = stringPropertyFilter;
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
     testContext.fixture.detectChanges();
@@ -192,7 +192,7 @@ describe('ManageFilterComponent', () => {
     expect(testContext.component.secondaryConditionDisplayText).toEqual('Equals: Normal');
   });
   it('manages numeric property filter', () => {
-    spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName');
+    vi.spyOn(testContext.component.filterStrings, 'getConjoinerDisplayName').mockImplementation(() => undefined);
     testContext.component.propertyFilter = numericPropertyFilter;
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
     numericProperty.selectedValue = [176, 50];
@@ -224,7 +224,7 @@ describe('ManageFilterComponent', () => {
     });
   });
   it('removes string property filter', () => {
-    spyOn(testContext.component.filterCriteriaChange, 'emit');
+    vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
     testContext.component.propertyFilter = stringPropertyFilter;
     stringPropertyFilter.criteria = [stringPredicate1, stringPredicate2];
     testContext.fixture.detectChanges();
@@ -247,7 +247,7 @@ describe('ManageFilterComponent', () => {
     expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith(modifiedPropertyFilter);
   });
   it('removes numeric property filter', () => {
-    spyOn(testContext.component.filterCriteriaChange, 'emit');
+    vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
     testContext.component.propertyFilter = numericPropertyFilter;
     numericPropertyFilter.criteria = [numericPredicate1, numericPredicate2];
     testContext.fixture.detectChanges();

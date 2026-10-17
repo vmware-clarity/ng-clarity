@@ -9,6 +9,7 @@ import { Component, Directive, ElementRef, Injector, NgModule, Renderer2, Type, 
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 import { ClrHostWrappingModule, HostWrapper } from '@clr/angular/utils';
 
@@ -262,7 +263,7 @@ interface TestContext {
   layoutService?: LayoutService;
 }
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('WrappedFormControl', () => {
     let testContext: TestContext;
     beforeEach(() => {
@@ -271,7 +272,7 @@ export default function (): void {
 
     function setupTest<T>(testContext: TestContext, testComponent: Type<T>, testControl: any, includeProviders = true) {
       TestBed.configureTestingModule({
-        imports: [WrappedFormControlTestModule, FormsModule, ReactiveFormsModule],
+        imports: [ClrIcon, WrappedFormControlTestModule, FormsModule, ReactiveFormsModule],
         declarations: [testComponent, ClrControlError, ClrControlHelper, ClrControlSuccess],
         providers: includeProviders ? [MarkControlService, ControlClassService, NgControlService, LayoutService] : [],
       });
@@ -305,13 +306,13 @@ export default function (): void {
 
       it('returns not found if provider is missing', () => {
         setupTest(testContext, WithWrapperNoId, TestControl, false);
-        expect(testContext.control.getProviderFromContainer(MarkControlService, false)).toBeFalse();
+        expect(testContext.control.getProviderFromContainer(MarkControlService, false)).toBe(false);
       });
     });
 
     describe('with an explicit wrapper', () => {
       it('uses HostWrapper to inject the ControlIdService', () => {
-        spyOn(HostWrapper.prototype, 'get').and.callThrough();
+        vi.spyOn(HostWrapper.prototype, 'get');
         setupTest(testContext, WithWrapperNoId, TestControl);
         expect(HostWrapper.prototype.get).toHaveBeenCalledWith(ControlIdService);
       });
@@ -330,7 +331,7 @@ export default function (): void {
 
     describe('without an explicit wrapper', () => {
       it('uses HostWrapper to inject the ControlIdService', () => {
-        spyOn(HostWrapper.prototype, 'get').and.callThrough();
+        vi.spyOn(HostWrapper.prototype, 'get');
         setupTest(testContext, NoWrapperNoId, TestControl);
         expect(HostWrapper.prototype.get).toHaveBeenCalledWith(ControlIdService);
       });
@@ -357,7 +358,7 @@ export default function (): void {
 
     describe('with a real NgControl', () => {
       it('sets the control class', () => {
-        spyOn(ControlClassService.prototype, 'initControlClass').and.callThrough();
+        vi.spyOn(ControlClassService.prototype, 'initControlClass');
         setupTest(testContext, WithControl, TestControl3);
         expect(ControlClassService.prototype.initControlClass).toHaveBeenCalled();
       });
@@ -371,14 +372,14 @@ export default function (): void {
       });
 
       it('sets the control on ngControlService', () => {
-        spyOn(NgControlService.prototype, 'addControl').and.callThrough();
+        vi.spyOn(NgControlService.prototype, 'addControl');
         setupTest(testContext, WithControl, TestControl3);
         expect(NgControlService.prototype.addControl).toHaveBeenCalled();
       });
 
       it('triggers status changes on blur', () => {
         setupTest(testContext, WithControl, TestControl3);
-        spyOn(TestControl3.prototype, 'triggerValidation').and.callThrough();
+        vi.spyOn(TestControl3.prototype, 'triggerValidation');
         testContext.input.focus();
         testContext.input.blur();
         testContext.fixture.detectChanges();
@@ -403,7 +404,7 @@ export default function (): void {
     describe('with dynamic controls', () => {
       it('with form-control directive', () => {
         setupTest(testContext, WithDynamicFormControl, TestControl3);
-        spyOn<any>(TestControl3.prototype, 'triggerValidation').and.callThrough();
+        vi.spyOn<any, any>(TestControl3.prototype, 'triggerValidation');
         testContext.fixture.componentInstance.addControl();
         testContext.fixture.detectChanges();
         expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
@@ -411,7 +412,7 @@ export default function (): void {
 
       it('with ng-control directive', () => {
         setupTest(testContext, WithDynamicNgControl, TestControl3);
-        spyOn(TestControl3.prototype, 'triggerValidation').and.callThrough();
+        vi.spyOn(TestControl3.prototype, 'triggerValidation');
         testContext.fixture.componentInstance.addControl();
         testContext.fixture.detectChanges();
         expect(TestControl3.prototype.triggerValidation).toHaveBeenCalled();
@@ -510,4 +511,4 @@ export default function (): void {
       });
     });
   });
-}
+});

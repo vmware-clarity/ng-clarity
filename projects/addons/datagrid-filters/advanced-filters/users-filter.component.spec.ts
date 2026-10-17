@@ -44,11 +44,13 @@ describe('UsersFilterComponent', () => {
 
   beforeEach(async () => {
     userServiceMock = {
-      getDomains: jasmine.createSpy('getDomains').and.returnValue(of(mockDomains)),
-      searchUsers: jasmine.createSpy('searchUsers').and.returnValue(of(mockUsers)),
+      getDomains: vi.fn().mockReturnValue(of(mockDomains)),
+      searchUsers: vi.fn().mockReturnValue(of(mockUsers)),
     };
 
-    cdrMock = jasmine.createSpyObj('ChangeDetectorRef', ['markForCheck']);
+    cdrMock = {
+      markForCheck: vi.fn().mockName('ChangeDetectorRef.markForCheck'),
+    };
 
     await TestBed.configureTestingModule({
       declarations: [UsersFilterComponent, FilterFormComponent],
@@ -119,11 +121,11 @@ describe('UsersFilterComponent', () => {
       component.onOptionChange(2);
       fixture.detectChanges();
 
-      const spy = spyOn(component.filterCriteriaChange, 'emit');
+      const spy = vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       component.onApplyButtonClick();
 
       expect(spy).toHaveBeenCalled();
-      const emittedFilter = spy.calls.mostRecent().args[0];
+      const emittedFilter = vi.mocked(spy).mock.lastCall[0];
 
       // Verify it emits both the original and the newly added predicate
       expect(emittedFilter?.criteria.length).toBe(2);
@@ -159,11 +161,11 @@ describe('UsersFilterComponent', () => {
       component.usersSelectionForm.get('userOperator')?.setValue(ComparisonOperator.DoesNotEqual);
       fixture.detectChanges();
 
-      const spy = spyOn(component.filterCriteriaChange, 'emit');
+      const spy = vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       component.onApplyButtonClick();
 
       expect(spy).toHaveBeenCalled();
-      const emittedFilter = spy.calls.mostRecent().args[0];
+      const emittedFilter = vi.mocked(spy).mock.lastCall[0];
 
       // Verify the top-level operator changed to 'And' (mapping for DoesNotEqual)
       expect(emittedFilter?.operator).toBe(LogicalOperator.And);
@@ -193,14 +195,14 @@ describe('UsersFilterComponent', () => {
       });
 
       expect(component.usersSelectionForm.get('userOperator')?.value).toBe(ComparisonOperator.DoesNotEqual);
-      expect(component.selectedValues.has('dave@example.com')).toBeTrue();
+      expect(component.selectedValues.has('dave@example.com')).toBe(true);
     });
   });
 
   describe('Search Logic', () => {
     it('should search users when searchTerm changes (debounced)', fakeAsync(() => {
       const searchTerm = 'al';
-      userServiceMock.searchUsers.calls.reset();
+      userServiceMock.searchUsers.mockClear();
       component.usersSelectionForm.get('searchTerm')?.setValue(searchTerm);
 
       // Should not call immediately
@@ -214,7 +216,7 @@ describe('UsersFilterComponent', () => {
     }));
 
     it('should handle search errors gracefully by returning search term as fallback', fakeAsync(() => {
-      userServiceMock.searchUsers.and.returnValue(throwError({ status: 500 }));
+      userServiceMock.searchUsers.mockReturnValue(throwError({ status: 500 }));
       const searchTerm = 'unknown_user';
 
       component.usersSelectionForm.get('searchTerm')?.setValue(searchTerm);
@@ -233,7 +235,7 @@ describe('UsersFilterComponent', () => {
     });
 
     it('should re-trigger search when domain changes', fakeAsync(() => {
-      userServiceMock.searchUsers.calls.reset();
+      userServiceMock.searchUsers.mockClear();
 
       // Change domain
       component.usersSelectionForm.get('domain')?.setValue(exampleDomain);
@@ -257,7 +259,7 @@ describe('UsersFilterComponent', () => {
       checkboxCtrl.setValue(true);
       component.onOptionChange(index);
 
-      expect(component.selectedValues.has('alice')).toBeTrue();
+      expect(component.selectedValues.has('alice')).toBe(true);
     });
 
     it('should remove user from selectedValues when unchecked', () => {
@@ -272,7 +274,7 @@ describe('UsersFilterComponent', () => {
       checkboxCtrl.setValue(false);
       component.onOptionChange(index);
 
-      expect(component.selectedValues.has('alice')).toBeFalse();
+      expect(component.selectedValues.has('alice')).toBe(false);
     });
 
     it('should handle Select All toggling', () => {
@@ -281,7 +283,7 @@ describe('UsersFilterComponent', () => {
       component.onSelectAllChange();
 
       expect(component.selectedValues.size).toBe(3); // alice, bob, charlie
-      expect(component.optionsFormArray.controls.every(c => c.value === true)).toBeTrue();
+      expect(component.optionsFormArray.controls.every(c => c.value === true)).toBe(true);
 
       // Deselect All
       component.usersSelectionForm.get('selectAll')?.setValue(false);
@@ -297,13 +299,13 @@ describe('UsersFilterComponent', () => {
         component.onOptionChange(i);
       });
 
-      expect(component.usersSelectionForm.get('selectAll')?.value).toBeTrue();
+      expect(component.usersSelectionForm.get('selectAll')?.value).toBe(true);
 
       // Uncheck one
       component.optionsFormArray.at(0).setValue(false);
       component.onOptionChange(0);
 
-      expect(component.usersSelectionForm.get('selectAll')?.value).toBeFalse();
+      expect(component.usersSelectionForm.get('selectAll')?.value).toBe(false);
     });
   });
 
@@ -319,7 +321,7 @@ describe('UsersFilterComponent', () => {
 
     it('should show only pageSize items initially', () => {
       expect(component.visibleUsers.length).toBe(50);
-      expect(component.hasMoreItems).toBeTrue();
+      expect(component.hasMoreItems).toBe(true);
     });
 
     it('should load next page when loadMore is called', () => {
@@ -327,7 +329,7 @@ describe('UsersFilterComponent', () => {
       component.loadMore(event);
 
       expect(component.visibleUsers.length).toBe(60); // 50 + 10 remaining
-      expect(component.hasMoreItems).toBeFalse();
+      expect(component.hasMoreItems).toBe(false);
     });
   });
 
@@ -335,7 +337,7 @@ describe('UsersFilterComponent', () => {
     it('should display search term as an option if it is not in the results', fakeAsync(() => {
       // Scenario: User searches for "frank", API returns empty or other users.
       // The code forces "frank" to appear as a selectable option if not matched.
-      userServiceMock.searchUsers.and.returnValue(of([]));
+      userServiceMock.searchUsers.mockReturnValue(of([]));
       const term = 'frank';
 
       component.usersSelectionForm.get('searchTerm')?.setValue(term);
@@ -347,7 +349,7 @@ describe('UsersFilterComponent', () => {
 
     it('should NOT duplicate search term if it IS in the results', fakeAsync(() => {
       // Search "alice", API returns "alice"
-      userServiceMock.searchUsers.and.returnValue(of(['alice']));
+      userServiceMock.searchUsers.mockReturnValue(of(['alice']));
       const term = 'alice';
 
       component.usersSelectionForm.get('searchTerm')?.setValue(term);
@@ -360,7 +362,7 @@ describe('UsersFilterComponent', () => {
 
   describe('Form Submission', () => {
     it('should emit filter criteria on apply', () => {
-      const spy = spyOn(component.filterCriteriaChange, 'emit');
+      const spy = vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
 
       // Select user
       component.selectedValues.add(alice);
@@ -369,14 +371,14 @@ describe('UsersFilterComponent', () => {
       component.onApplyButtonClick();
 
       expect(spy).toHaveBeenCalled();
-      const emittedFilter = spy.calls.mostRecent().args[0];
+      const emittedFilter = vi.mocked(spy).mock.lastCall[0];
       expect(emittedFilter?.operator).toBe(LogicalOperator.Or); // Equals -> OR
       expect(emittedFilter?.criteria.length).toBe(1);
       expect(emittedFilter?.criteria[0].value).toBe(alice);
     });
 
     it('should emit undefined/void on cancel', () => {
-      const spy = spyOn(component.filterCriteriaChange, 'emit');
+      const spy = vi.spyOn(component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       component.onCancelButtonClick();
       expect(spy).toHaveBeenCalledWith(); // no args
     });
@@ -384,21 +386,21 @@ describe('UsersFilterComponent', () => {
     it('should be invalid if no users selected', () => {
       component.selectedValues.clear();
       component.usersSelectionForm.updateValueAndValidity();
-      expect(component.usersSelectionForm.valid).toBeFalse();
-      expect(component.usersSelectionForm.errors?.['required']).toBeTrue();
+      expect(component.usersSelectionForm.valid).toBe(false);
+      expect(component.usersSelectionForm.errors?.['required']).toBe(true);
     });
   });
 
   describe('Error Handling', () => {
     it('should handle domain loading error', fakeAsync(() => {
-      userServiceMock.getDomains.and.returnValue(throwError('Network Error'));
+      userServiceMock.getDomains.mockReturnValue(throwError('Network Error'));
       // Trigger ngOnInit again to test the flow
       component.ngOnInit();
       // domains stream is subscribed in loadDomains
       tick(200);
 
       expect(component.errorRetrievingDomains).toBe(datagridFiltersStrings.errorLoadingDomains);
-      expect(component.isLoading).toBeFalse();
+      expect(component.isLoading).toBe(false);
     }));
   });
 
@@ -464,7 +466,7 @@ describe('UsersFilterComponent', () => {
 
     it('should return empty array if error occurs and search term is empty', fakeAsync(() => {
       // Mock error
-      userServiceMock.searchUsers.and.returnValue(throwError('Error'));
+      userServiceMock.searchUsers.mockReturnValue(throwError('Error'));
 
       // Set empty search term
       component.usersSelectionForm.get('searchTerm')?.setValue('');

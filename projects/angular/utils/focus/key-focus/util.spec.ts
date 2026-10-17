@@ -26,11 +26,11 @@ describe('preventArrowKeyScroll', () => {
       },
     };
 
-    spyOn(mockEvent, 'preventDefault');
+    vi.spyOn(mockEvent, 'preventDefault').mockImplementation(() => undefined);
     preventArrowKeyScroll(mockEvent as KeyboardEvent);
     expect(mockEvent.preventDefault).toHaveBeenCalled();
 
-    spyOn(mockIncorrectKeyCodeEvent, 'preventDefault');
+    vi.spyOn(mockIncorrectKeyCodeEvent, 'preventDefault').mockImplementation(() => undefined);
     preventArrowKeyScroll(mockIncorrectKeyCodeEvent as KeyboardEvent);
     expect(mockIncorrectKeyCodeEvent.preventDefault).not.toHaveBeenCalled();
   });

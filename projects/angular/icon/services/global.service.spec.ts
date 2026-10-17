@@ -55,7 +55,7 @@ describe('Global State Service', () => {
   });
 
   it('.log() should log state to the console', () => {
-    const spy = spyOn(console, 'log');
+    const spy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
     GlobalStateService.log();
     expect(spy).toHaveBeenCalled();
   });

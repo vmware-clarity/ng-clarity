@@ -12,119 +12,121 @@ import { ClrDatagridPageSize } from './datagrid-page-size';
 import { Page } from './providers/page';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 
-export default function (): void {
-  describe('ClrDatagridPageSize component', () => {
-    const helpers = createTestHelpers();
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('ClrDatagridPageSize component', () => {
+      const helpers = createTestHelpers();
 
-    describe('Template API', () => {
-      let context: TestContext<ClrDatagridPageSize, FullTest>;
-
-      beforeEach(() => {
-        context = helpers.create(ClrDatagridPageSize, FullTest, [Page, StateDebouncer]);
-      });
-
-      it('receives an input for page size options', () => {
-        context.testComponent.pageSizeOptions = [10, 20, 50, 100];
-        context.detectChanges();
-        expect(context.clarityDirective.pageSizeOptions).toEqual([10, 20, 50, 100]);
-      });
-
-      it('receives an input for page size options id', () => {
-        context.testComponent.pageSizeOptionsId = 'some-id';
-        context.detectChanges();
-        expect(context.clarityDirective.pageSizeOptionsId).toEqual('some-id');
-      });
-    });
-
-    describe('View', () => {
-      describe('Default View Without Input Test', () => {
-        let context: TestContext<ClrDatagridPageSize, SimpleTest>;
-
-        beforeEach(() => {
-          context = helpers.create<ClrDatagridPageSize, SimpleTest>(ClrDatagridPageSize, SimpleTest, [
-            Page,
-            StateDebouncer,
-          ]);
-        });
-
-        it('displays a select with a default pageSize if no input is given', () => {
-          const select = context.clarityElement.querySelector('select');
-          expect(select).not.toBeNull();
-          expect(select.options.length).toBe(1);
-          expect(select.options[0].innerText).toMatch('0');
-        });
-      });
-      describe('Inside Form Test', () => {
-        let context: TestContext<ClrDatagridPageSize, FormTest>;
-
-        beforeEach(() => {
-          context = helpers.create(ClrDatagridPageSize, FormTest, [Page, StateDebouncer]);
-        });
-
-        it('label should not have col classes when inside a form', () => {
-          const label = context.clarityElement.querySelector('label') as HTMLElement;
-          expect(label).not.toBeNull();
-          expect(label.className.includes('clr-col')).toBeFalse();
-        });
-      });
-
-      describe('Full Test', () => {
+      describe('Template API', () => {
         let context: TestContext<ClrDatagridPageSize, FullTest>;
-        let pageProvider: Page;
 
         beforeEach(() => {
           context = helpers.create(ClrDatagridPageSize, FullTest, [Page, StateDebouncer]);
-          pageProvider = context.getClarityProvider(Page);
         });
 
-        it('projects content before the select element', () => {
-          expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
-        });
-
-        it('displays a select with a default id if none given', () => {
-          const select = context.clarityElement.querySelector('select');
-          expect(select).not.toBeNull();
-          expect(select.id).toBeTruthy();
-        });
-
-        it('displays a select with pageSizeOptionsId as id', () => {
-          const pageSizeOptionsId = 'some-id';
-          context.testComponent.pageSizeOptionsId = pageSizeOptionsId;
-          context.detectChanges();
-          const select = context.clarityElement.querySelector('select');
-          expect(select).not.toBeNull();
-          expect(select.id).toBe(pageSizeOptionsId);
-        });
-
-        it('displays a select with pageSizeOptions as choices', () => {
-          const pageSizeOptions = [10, 20, 50, 100];
-          context.testComponent.pageSizeOptions = pageSizeOptions;
-          context.detectChanges();
-          const select = context.clarityElement.querySelector('select');
-          expect(select).not.toBeNull();
-          expect(select.options.length).toBe(pageSizeOptions.length);
-          for (let i = 0; i < pageSizeOptions.length; i++) {
-            expect(select.options[i].innerText).toMatch(pageSizeOptions[i].toString());
-          }
-        });
-
-        it('updates the page size upon pageSizeOption selection', () => {
-          pageProvider.size = 10;
-          pageProvider.totalItems = 100;
-          pageProvider.current = 1;
+        it('receives an input for page size options', () => {
           context.testComponent.pageSizeOptions = [10, 20, 50, 100];
           context.detectChanges();
+          expect(context.clarityDirective.pageSizeOptions).toEqual([10, 20, 50, 100]);
+        });
 
-          const select = context.clarityElement.querySelector('select');
-          expect(select).not.toBeNull();
-          select.value = '2: 20'; // setting it to the second option, with the expected value syntax when we use [ngValue]
-          select.dispatchEvent(new Event('change'));
-          expect(pageProvider.size).toBe(20);
+        it('receives an input for page size options id', () => {
+          context.testComponent.pageSizeOptionsId = 'some-id';
+          context.detectChanges();
+          expect(context.clarityDirective.pageSizeOptionsId).toEqual('some-id');
+        });
+      });
+
+      describe('View', () => {
+        describe('Default View Without Input Test', () => {
+          let context: TestContext<ClrDatagridPageSize, SimpleTest>;
+
+          beforeEach(() => {
+            context = helpers.create<ClrDatagridPageSize, SimpleTest>(ClrDatagridPageSize, SimpleTest, [
+              Page,
+              StateDebouncer,
+            ]);
+          });
+
+          it('displays a select with a default pageSize if no input is given', () => {
+            const select = context.clarityElement.querySelector('select');
+            expect(select).not.toBeNull();
+            expect(select.options.length).toBe(1);
+            expect(select.options[0].innerText).toMatch('0');
+          });
+        });
+        describe('Inside Form Test', () => {
+          let context: TestContext<ClrDatagridPageSize, FormTest>;
+
+          beforeEach(() => {
+            context = helpers.create(ClrDatagridPageSize, FormTest, [Page, StateDebouncer]);
+          });
+
+          it('label should not have col classes when inside a form', () => {
+            const label = context.clarityElement.querySelector('label') as HTMLElement;
+            expect(label).not.toBeNull();
+            expect(label.className.includes('clr-col')).toBe(false);
+          });
+        });
+
+        describe('Full Test', () => {
+          let context: TestContext<ClrDatagridPageSize, FullTest>;
+          let pageProvider: Page;
+
+          beforeEach(() => {
+            context = helpers.create(ClrDatagridPageSize, FullTest, [Page, StateDebouncer]);
+            pageProvider = context.getClarityProvider(Page);
+          });
+
+          it('projects content before the select element', () => {
+            expect(context.clarityElement.textContent.trim()).toMatch('Hello world');
+          });
+
+          it('displays a select with a default id if none given', () => {
+            const select = context.clarityElement.querySelector('select');
+            expect(select).not.toBeNull();
+            expect(select.id).toBeTruthy();
+          });
+
+          it('displays a select with pageSizeOptionsId as id', () => {
+            const pageSizeOptionsId = 'some-id';
+            context.testComponent.pageSizeOptionsId = pageSizeOptionsId;
+            context.detectChanges();
+            const select = context.clarityElement.querySelector('select');
+            expect(select).not.toBeNull();
+            expect(select.id).toBe(pageSizeOptionsId);
+          });
+
+          it('displays a select with pageSizeOptions as choices', () => {
+            const pageSizeOptions = [10, 20, 50, 100];
+            context.testComponent.pageSizeOptions = pageSizeOptions;
+            context.detectChanges();
+            const select = context.clarityElement.querySelector('select');
+            expect(select).not.toBeNull();
+            expect(select.options.length).toBe(pageSizeOptions.length);
+            for (let i = 0; i < pageSizeOptions.length; i++) {
+              expect(select.options[i].innerText).toMatch(pageSizeOptions[i].toString());
+            }
+          });
+
+          it('updates the page size upon pageSizeOption selection', () => {
+            pageProvider.size = 10;
+            pageProvider.totalItems = 100;
+            pageProvider.current = 1;
+            context.testComponent.pageSizeOptions = [10, 20, 50, 100];
+            context.detectChanges();
+
+            const select = context.clarityElement.querySelector('select');
+            expect(select).not.toBeNull();
+            select.value = '2: 20'; // setting it to the second option, with the expected value syntax when we use [ngValue]
+            select.dispatchEvent(new Event('change'));
+            expect(pageProvider.size).toBe(20);
+          });
         });
       });
     });
   });
-}
+});
 
 @Component({
   template: `<clr-dg-page-size>Hello world</clr-dg-page-size>`,

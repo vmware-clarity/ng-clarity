@@ -23,8 +23,8 @@ describe('ModalStackService', () => {
       },
     };
 
-    const modalCloseSpy = spyOn(modal, 'close').and.callThrough();
-    const removeEventListenerSpy = spyOn(document.body, 'removeEventListener').and.callThrough();
+    const modalCloseSpy = vi.spyOn(modal, 'close');
+    const removeEventListenerSpy = vi.spyOn(document.body, 'removeEventListener');
 
     modalStackService.trackModalOpen(modal);
     document.body.dispatchEvent(new KeyboardEvent('keyup', { key: 'Escape' }));
@@ -48,9 +48,9 @@ describe('ModalStackService', () => {
       },
     };
 
-    const modal1CloseSpy = spyOn(modal1, 'close').and.callThrough();
-    const modal2CloseSpy = spyOn(modal2, 'close').and.callThrough();
-    const removeEventListenerSpy = spyOn(document.body, 'removeEventListener').and.callThrough();
+    const modal1CloseSpy = vi.spyOn(modal1, 'close');
+    const modal2CloseSpy = vi.spyOn(modal2, 'close');
+    const removeEventListenerSpy = vi.spyOn(document.body, 'removeEventListener');
 
     modalStackService.trackModalOpen(modal1);
     modalStackService.trackModalOpen(modal2);
@@ -76,9 +76,9 @@ describe('ModalStackService', () => {
       },
     };
 
-    const modal1CloseSpy = spyOn(modal1, 'close').and.callThrough();
-    const modal2CloseSpy = spyOn(modal2, 'close').and.callThrough();
-    const removeEventListenerSpy = spyOn(document.body, 'removeEventListener').and.callThrough();
+    const modal1CloseSpy = vi.spyOn(modal1, 'close');
+    const modal2CloseSpy = vi.spyOn(modal2, 'close');
+    const removeEventListenerSpy = vi.spyOn(document.body, 'removeEventListener');
 
     modalStackService.trackModalOpen(modal1);
     modalStackService.trackModalOpen(modal2);

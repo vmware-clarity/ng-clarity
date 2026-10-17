@@ -138,7 +138,7 @@ describe('GeneralFilterComponent', () => {
       expect(testContext.component.generalFilterForm.controls['logicalOperator'].value).toEqual(LogicalOperator.And);
     });
     it('emits an empty event on cancel', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const cancelButton = testContext.fixture.debugElement.nativeElement.querySelector(
         'button[data-test-id=cancelBtn]'
       );
@@ -150,7 +150,7 @@ describe('GeneralFilterComponent', () => {
       expect(testContext.component.filterCriteriaChange.emit).toHaveBeenCalledWith();
     });
     it('emits a property filter event on submit', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const submitButton: HTMLButtonElement =
         testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
       expect(submitButton).toBeTruthy();
@@ -338,7 +338,7 @@ describe('GeneralFilterComponent', () => {
       expect(testContext.component.units[0]).toEqual(Unit.GBitPS);
     });
     it('emits a property filter event on submit', () => {
-      spyOn(testContext.component.filterCriteriaChange, 'emit');
+      vi.spyOn(testContext.component.filterCriteriaChange, 'emit').mockImplementation(() => undefined);
       const submitButton: HTMLButtonElement =
         testContext.fixture.debugElement.nativeElement.querySelector(submitBtnSelector);
       expect(submitButton).toBeTruthy();

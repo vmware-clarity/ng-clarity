@@ -258,25 +258,25 @@ describe('PropertyViewSectionComponent', () => {
           title: titleText,
         });
 
-        const emitSpy = spyOn(testContext.component.expandedChange, 'emit');
+        const emitSpy = vi.spyOn(testContext.component.expandedChange, 'emit').mockImplementation(() => undefined);
 
         testContext.component.expanded = true;
         testContext.fixture.detectChanges();
         testContext.getTitleExpandButtonElements()[0].click();
-        expect(emitSpy.calls.count()).toEqual(1);
-        expect(emitSpy.calls.argsFor(0)).toEqual([false]);
+        expect(vi.mocked(emitSpy).mock.calls.length).toEqual(1);
+        expect(vi.mocked(emitSpy).mock.calls[0]).toEqual([false]);
         testContext.getTitleExpandButtonElements()[0].click();
-        expect(emitSpy.calls.count()).toEqual(2);
-        expect(emitSpy.calls.argsFor(1)).toEqual([false]);
+        expect(vi.mocked(emitSpy).mock.calls.length).toEqual(2);
+        expect(vi.mocked(emitSpy).mock.calls[1]).toEqual([false]);
 
         testContext.component.expanded = false;
         testContext.fixture.detectChanges();
         testContext.getTitleExpandButtonElements()[0].click();
-        expect(emitSpy.calls.count()).toEqual(3);
-        expect(emitSpy.calls.argsFor(2)).toEqual([true]);
+        expect(vi.mocked(emitSpy).mock.calls.length).toEqual(3);
+        expect(vi.mocked(emitSpy).mock.calls[2]).toEqual([true]);
         testContext.getTitleExpandButtonElements()[0].click();
-        expect(emitSpy.calls.count()).toEqual(4);
-        expect(emitSpy.calls.argsFor(3)).toEqual([true]);
+        expect(vi.mocked(emitSpy).mock.calls.length).toEqual(4);
+        expect(vi.mocked(emitSpy).mock.calls[3]).toEqual([true]);
       });
     });
 
@@ -444,14 +444,14 @@ describe('PropertyViewSectionComponent', () => {
           isEnabled: true,
           clickHandler: (): void => {},
         };
-        const action1ClickHandlerSpy = spyOn(action1, 'clickHandler');
+        const action1ClickHandlerSpy = vi.spyOn(action1, 'clickHandler').mockImplementation(() => undefined);
 
         const action2 = {
           title: 'action-2',
           isEnabled: true,
           clickHandler: (): void => {},
         };
-        const action2ClickHandlerSpy = spyOn(action2, 'clickHandler');
+        const action2ClickHandlerSpy = vi.spyOn(action2, 'clickHandler').mockImplementation(() => undefined);
 
         testContext.component.data = testContext.createData({
           title: titleText,
@@ -462,16 +462,16 @@ describe('PropertyViewSectionComponent', () => {
         testContext.getTitleActionsDropdownTriggers()[0].click();
         testContext.fixture.detectChanges();
         testContext.getTitleActionsDropdownMenusItems()[0].click();
-        expect(action1ClickHandlerSpy.calls.count()).toEqual(1);
-        expect(action1ClickHandlerSpy.calls.mostRecent().args).toEqual([]);
+        expect(vi.mocked(action1ClickHandlerSpy).mock.calls.length).toEqual(1);
+        expect(vi.mocked(action1ClickHandlerSpy).mock.lastCall).toEqual([]);
         testContext.fixture.detectChanges();
         tick();
 
         testContext.getTitleActionsDropdownTriggers()[0].click();
         testContext.fixture.detectChanges();
         testContext.getTitleActionsDropdownMenusItems()[1].click();
-        expect(action2ClickHandlerSpy.calls.count()).toEqual(1);
-        expect(action2ClickHandlerSpy.calls.mostRecent().args).toEqual([]);
+        expect(vi.mocked(action2ClickHandlerSpy).mock.calls.length).toEqual(1);
+        expect(vi.mocked(action2ClickHandlerSpy).mock.lastCall).toEqual([]);
         flush();
       }));
 
@@ -603,19 +603,19 @@ describe('PropertyViewSectionComponent', () => {
       testContext.fixture.detectChanges();
       expect(testContext.getContentDebugElements().length).toEqual(4);
       expect(testContext.getContentDebugElements()[0].componentInstance).toEqual(
-        jasmine.any(PropertyViewMessageMockComponent)
+        expect.any(PropertyViewMessageMockComponent)
       );
       expect(testContext.getContentDebugElements()[0].componentInstance.data).toBe(message1Data);
       expect(testContext.getContentDebugElements()[1].componentInstance).toEqual(
-        jasmine.any(PropertyViewPropertyMockComponent)
+        expect.any(PropertyViewPropertyMockComponent)
       );
       expect(testContext.getContentDebugElements()[1].componentInstance.data).toBe(property1Data);
       expect(testContext.getContentDebugElements()[2].componentInstance).toEqual(
-        jasmine.any(PropertyViewMessageMockComponent)
+        expect.any(PropertyViewMessageMockComponent)
       );
       expect(testContext.getContentDebugElements()[2].componentInstance.data).toBe(message2Data);
       expect(testContext.getContentDebugElements()[3].componentInstance).toEqual(
-        jasmine.any(PropertyViewPropertyMockComponent)
+        expect.any(PropertyViewPropertyMockComponent)
       );
       expect(testContext.getContentDebugElements()[3].componentInstance.data).toBe(property2Data);
     });
@@ -638,11 +638,11 @@ describe('PropertyViewSectionComponent', () => {
       testContext.fixture.detectChanges();
       expect(testContext.getContentDebugElements().length).toEqual(2);
       expect(testContext.getContentDebugElements()[0].componentInstance).toEqual(
-        jasmine.any(PropertyViewPropertyMockComponent)
+        expect.any(PropertyViewPropertyMockComponent)
       );
       expect(testContext.getContentDebugElements()[0].componentInstance.data).toBe(property1Data);
       expect(testContext.getContentDebugElements()[1].componentInstance).toEqual(
-        jasmine.any(PropertyViewMessageMockComponent)
+        expect.any(PropertyViewMessageMockComponent)
       );
       expect(testContext.getContentDebugElements()[1].componentInstance.data).toBe(message1Data);
 
@@ -652,15 +652,15 @@ describe('PropertyViewSectionComponent', () => {
       testContext.fixture.detectChanges();
       expect(testContext.getContentDebugElements().length).toEqual(3);
       expect(testContext.getContentDebugElements()[0].componentInstance).toEqual(
-        jasmine.any(PropertyViewMessageMockComponent)
+        expect.any(PropertyViewMessageMockComponent)
       );
       expect(testContext.getContentDebugElements()[0].componentInstance.data).toBe(message1Data);
       expect(testContext.getContentDebugElements()[1].componentInstance).toEqual(
-        jasmine.any(PropertyViewMessageMockComponent)
+        expect.any(PropertyViewMessageMockComponent)
       );
       expect(testContext.getContentDebugElements()[1].componentInstance.data).toBe(message2Data);
       expect(testContext.getContentDebugElements()[2].componentInstance).toEqual(
-        jasmine.any(PropertyViewPropertyMockComponent)
+        expect.any(PropertyViewPropertyMockComponent)
       );
       expect(testContext.getContentDebugElements()[2].componentInstance.data).toBe(property2Data);
     });

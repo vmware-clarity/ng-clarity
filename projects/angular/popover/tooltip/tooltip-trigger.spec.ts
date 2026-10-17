@@ -26,7 +26,7 @@ interface TooltipContext extends TestContext<ClrTooltipTrigger, SimpleTest> {
   popoverService: ClrPopoverService;
 }
 
-export default function (): void {
+describe('Tooltip', () => {
   describe('TooltipTrigger component', () => {
     let testContext: TooltipContext;
 
@@ -85,4 +85,4 @@ export default function (): void {
       });
     });
   });
-}
+});

@@ -150,8 +150,8 @@ describe('ExportProviderService', () => {
       exportType: ExportType.ALL,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
     expect(csvHelperService.getData).toHaveBeenCalledWith(
@@ -174,8 +174,8 @@ describe('ExportProviderService', () => {
       exportType: ExportType.SELECTED_ONLY,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
     expect(csvHelperService.getData).toHaveBeenCalledWith(
@@ -200,8 +200,8 @@ describe('ExportProviderService', () => {
         inProgress: false,
         exportType: ExportType.MATCHING_FILTERS,
       };
-      spyOn(csvHelperService, 'getData');
-      spyOn(exportProviderService, 'downloadFile');
+      vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+      vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
       exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
       expect(csvHelperService.getData).toHaveBeenCalledWith(
@@ -228,12 +228,14 @@ describe('ExportProviderService', () => {
       exportType: ExportType.ALL,
     };
 
-    spyOn(csvHelperService, 'getData').and.throwError('Test error');
-    spyOn(exportProviderService as any, 'showExportError');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => {
+      throw new Error('Test error');
+    });
+    vi.spyOn(exportProviderService as any, 'showExportError').mockImplementation(() => undefined);
 
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
-    expect(exportStatus.inProgress).toBeFalse();
+    expect(exportStatus.inProgress).toBe(false);
     expect(exportProviderService['showExportError']).toHaveBeenCalled();
   });
 
@@ -251,8 +253,8 @@ describe('ExportProviderService', () => {
       sortOrder: ClrDatagridSortOrder.DESC,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
 
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
@@ -279,7 +281,7 @@ describe('ExportProviderService', () => {
     });
 
     const exportProviderService = TestBed.inject(ExportProviderService);
-    spyOn(console, 'error');
+    vi.spyOn(console, 'error').mockImplementation(() => undefined);
 
     exportProviderService['showExportError']();
 
@@ -302,8 +304,8 @@ describe('ExportProviderService', () => {
       sortOrder: ClrDatagridSortOrder.ASC,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
 
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 
@@ -333,8 +335,8 @@ describe('ExportProviderService', () => {
       sortOrder: ClrDatagridSortOrder.ASC,
     };
 
-    spyOn(csvHelperService, 'getData');
-    spyOn(exportProviderService, 'downloadFile');
+    vi.spyOn(csvHelperService, 'getData').mockImplementation(() => undefined);
+    vi.spyOn(exportProviderService, 'downloadFile').mockImplementation(() => undefined);
 
     exportProviderService.exportUIOnlyData(testContext.exportProperties, exportStatus, testContext.datagridItemSet);
 

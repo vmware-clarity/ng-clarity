@@ -173,8 +173,8 @@ describe('DatagridActionBarComponent', () => {
       },
     ];
 
-    spyOn(testContext.containerComponent, 'onActionClick');
-    spyOn(testContext.component, 'deriveBaseRootElementSize').and.returnValue(24);
+    vi.spyOn(testContext.containerComponent, 'onActionClick').mockImplementation(() => undefined);
+    vi.spyOn(testContext.component, 'deriveBaseRootElementSize').mockReturnValue(24);
   });
 
   afterEach(() => {

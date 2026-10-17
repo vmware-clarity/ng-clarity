@@ -11,11 +11,12 @@ import { By } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations'; // Needed to recreate issue #1084
 import { SelectionType } from '@clr/angular';
 import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
+import type { Mock } from 'vitest';
 
 import { ClrDatagridColumn } from '../datagrid-column';
 import { ClrDatagridModule } from '../datagrid.module';
 import { DatagridHeaderRenderer } from './header-renderer';
-import { DATAGRID_SPEC_PROVIDERS } from '../helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from '../helpers';
 import { DatagridMainRenderer } from './main-renderer';
 import { DatagridRenderOrganizer } from './render-organizer';
 import { MockDatagridRenderOrganizer } from './render-organizer.mock';
@@ -23,318 +24,322 @@ import { DatagridRowRenderer } from './row-renderer';
 import { DatagridRenderStep } from '../enums/render-step.enum';
 import { ColumnsService } from '../providers/columns.service';
 
-export default function (): void {
-  describe('DatagridMainRenderer directive', () => {
-    const helpers = createTestHelpers();
+describe('Datagrid', () => {
+  describe('Render', () => {
+    describe('DatagridMainRenderer directive', () => {
+      const helpers = createTestHelpers();
 
-    describe('static loading', () => {
-      let context: TestContext<DatagridMainRenderer, StaticTest>;
-      let organizer: MockDatagridRenderOrganizer;
-      let resizeSpy: jasmine.Spy;
-      let computeStateSpy: jasmine.Spy;
-      let columnsService: ColumnsService;
+      describe('static loading', () => {
+        let context: TestContext<DatagridMainRenderer, StaticTest>;
+        let organizer: MockDatagridRenderOrganizer;
+        let resizeSpy: Mock;
+        let computeStateSpy: Mock;
+        let columnsService: ColumnsService;
 
-      beforeEach(async () => {
-        resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
-        context = helpers.createWithOverrideDirective(
-          DatagridMainRenderer,
-          StaticTest,
-          DATAGRID_SPEC_PROVIDERS,
-          [],
-          [{ provide: DatagridRenderOrganizer, useClass: MockDatagridRenderOrganizer }]
-        );
-        organizer = context.getClarityProvider(DatagridRenderOrganizer) as MockDatagridRenderOrganizer;
-        computeStateSpy = spyOn(DatagridHeaderRenderer.prototype, 'getColumnWidthState');
-        columnsService = context.getClarityProvider(ColumnsService);
+        beforeEach(async () => {
+          resizeSpy = vi.spyOn(DatagridRenderOrganizer.prototype, 'resize').mockImplementation(() => undefined);
+          context = helpers.createWithOverrideDirective(
+            DatagridMainRenderer,
+            StaticTest,
+            DATAGRID_SPEC_PROVIDERS,
+            [],
+            [{ provide: DatagridRenderOrganizer, useClass: MockDatagridRenderOrganizer }]
+          );
+          organizer = context.getClarityProvider(DatagridRenderOrganizer) as MockDatagridRenderOrganizer;
+          computeStateSpy = vi
+            .spyOn(DatagridHeaderRenderer.prototype, 'getColumnWidthState')
+            .mockImplementation(() => undefined);
+          columnsService = context.getClarityProvider(ColumnsService);
 
-        context.detectChanges();
-        await delay();
-      });
-      it('triggers the render process on initialization', () => {
-        expect(resizeSpy.calls.count()).toBe(1);
-      });
-
-      it('pushes its header states to the column service', () => {
-        expect(columnsService.columns.length).toBe(2);
-        context.testComponent.secondColumn = false;
-        context.detectChanges();
-        expect(columnsService.columns.length).toBe(1);
-        context.testComponent.secondColumn = true;
-        context.detectChanges();
-        expect(columnsService.columns.length).toBe(2);
-      });
-
-      it('re-triggers the render process whenever the columns change', () => {
-        resizeSpy.calls.reset();
-        expect(resizeSpy.calls.count()).toBe(0);
-        context.testComponent.secondColumn = false;
-        context.detectChanges();
-        expect(resizeSpy.calls.count()).toBe(1);
-        context.testComponent.secondColumn = true;
-        context.detectChanges();
-        expect(resizeSpy.calls.count()).toBe(2);
-      });
-
-      it('does not re-triggers the render process when the rows change', () => {
-        resizeSpy.calls.reset();
-        expect(resizeSpy.calls.count()).toBe(0);
-        context.testComponent.firstRow = false;
-        context.detectChanges();
-        expect(resizeSpy.calls.count()).toBe(0);
-        context.testComponent.firstRow = true;
-        context.detectChanges();
-        expect(resizeSpy.calls.count()).toBe(0);
-      });
-
-      it('computes the widths of the columns when notified', () => {
-        expect(computeStateSpy.calls.count()).toBe(0);
-        // Too lazy to do something other than casting right now.
-        organizer.updateRenderStep.next(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS);
-        expect(computeStateSpy.calls.count()).toBe(
-          context.fixture.debugElement.queryAll(By.directive(ClrDatagridColumn)).length
-        );
-      });
-
-      it('sets the widths of the columns for the other components', () => {
-        const spy = spyOn(columnsService, 'emitStateChange');
-        organizer.updateRenderStep.next(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS);
-        expect(spy).toHaveBeenCalled();
-      });
-    });
-
-    describe('dynamic loading', () => {
-      let context: TestContext<DatagridMainRenderer, DynamicTest>;
-      let resizeSpy, rowsSpy: jasmine.Spy;
-
-      beforeEach(async () => {
-        resizeSpy = spyOn(DatagridRenderOrganizer.prototype, 'resize');
-        rowsSpy = spyOn(DatagridRowRenderer.prototype, 'setCellsState');
-        context = helpers.create(DatagridMainRenderer, DynamicTest);
-
-        context.detectChanges();
-        await delay();
-      });
-      it('does not trigger the render process until the rows are loaded', async () => {
-        expect(resizeSpy.calls.count()).toBe(0);
-        context.testComponent.projected = true;
-        context.detectChanges();
-        await delay();
-        expect(resizeSpy.calls.count()).toBe(1);
-      });
-      it('ignores columns changes until the rows are loaded', async () => {
-        context.testComponent.secondColumn = false;
-        context.detectChanges();
-        await delay();
-        expect(resizeSpy.calls.count()).toBe(0);
-        context.testComponent.projected = true;
-        context.detectChanges();
-        await delay();
-        expect(resizeSpy.calls.count()).toBe(1);
-        context.testComponent.secondColumn = true;
-        context.detectChanges();
-        await delay();
-        expect(resizeSpy.calls.count()).toBe(2);
-      });
-      it('triggers the render process if the rows are given through *clrDgItems', async () => {
-        expect(resizeSpy.calls.count()).toBe(0);
-        context.testComponent.clrDgItems = [1];
-        context.detectChanges();
-        await delay();
-        expect(resizeSpy.calls.count()).toBe(1);
-      });
-      it('tracks changes of cells', () => {
-        context.testComponent.clrDgItems = [0, 1, 2];
-        context.detectChanges();
-        expect(rowsSpy.calls.count()).toBe(3); // Number of rows
-        rowsSpy.calls.reset();
-        context.testComponent.clrDgItems = [3, 4, 5, 6];
-        context.detectChanges();
-        expect(rowsSpy.calls.count()).toBe(4);
-      });
-    });
-
-    describe('smart datagrid width', () => {
-      let context: ComponentFixture<RenderWidthTest>;
-      let containerWidth: number;
-
-      beforeEach(() => {
-        TestBed.configureTestingModule({
-          imports: [BrowserAnimationsModule, ClrDatagridModule],
-          declarations: [RenderWidthTest],
-          providers: DATAGRID_SPEC_PROVIDERS,
+          context.detectChanges();
+          await delay();
         });
-        context = TestBed.createComponent(RenderWidthTest);
-        context.detectChanges();
-        containerWidth = context.componentInstance.container.nativeElement.clientWidth;
-      });
-
-      it('calculates the correct width with no row options', () => {
-        context.componentInstance.currentTest = 'defaultDatagridTest';
-        context.detectChanges();
-        const datagridWidth = context.componentInstance.datagridDefault.nativeElement.clientWidth;
-        expect(containerWidth).toEqual(datagridWidth);
-      });
-
-      it('calculates the correct width when single select is enabled', () => {
-        context.componentInstance.currentTest = 'singleSelectTest';
-        context.detectChanges();
-        const datagridWidth = context.componentInstance.datagridSingleSelect.nativeElement.clientWidth;
-        expect(containerWidth).toEqual(datagridWidth);
-      });
-
-      it('calculates correct width when multi select is enabled', () => {
-        context.componentInstance.currentTest = 'multiSelectTest';
-        context.detectChanges();
-        const datagridWidth = context.componentInstance.datagridMultiSelect.nativeElement.clientWidth;
-        expect(containerWidth).toEqual(datagridWidth);
-      });
-
-      it('calculates correct width when row is expandable', () => {
-        context.componentInstance.currentTest = 'defaultDatagridTest';
-        context.componentInstance.expandable = true;
-        context.detectChanges();
-        const datagridWidth = context.componentInstance.datagridDefault.nativeElement.clientWidth;
-        expect(containerWidth).toEqual(datagridWidth);
-      });
-
-      it('calculates correct width when row has actions', () => {
-        context.componentInstance.currentTest = 'defaultDatagridTest';
-        context.componentInstance.hasActions = true;
-        context.detectChanges();
-        const datagridWidth = context.componentInstance.datagridDefault.nativeElement.clientWidth;
-        expect(containerWidth).toEqual(datagridWidth);
-      });
-    });
-
-    describe('smart datagrid height', () => {
-      let context: ComponentFixture<DatagridHeightTest>;
-
-      beforeEach(() => {
-        TestBed.configureTestingModule({
-          imports: [BrowserAnimationsModule, ClrDatagridModule],
-          declarations: [DatagridHeightTest],
+        it('triggers the render process on initialization', () => {
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(1);
         });
-        context = TestBed.createComponent(DatagridHeightTest);
-        context.detectChanges();
+
+        it('pushes its header states to the column service', () => {
+          expect(columnsService.columns.length).toBe(2);
+          context.testComponent.secondColumn = false;
+          context.detectChanges();
+          expect(columnsService.columns.length).toBe(1);
+          context.testComponent.secondColumn = true;
+          context.detectChanges();
+          expect(columnsService.columns.length).toBe(2);
+        });
+
+        it('re-triggers the render process whenever the columns change', () => {
+          resizeSpy.mockClear();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(0);
+          context.testComponent.secondColumn = false;
+          context.detectChanges();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(1);
+          context.testComponent.secondColumn = true;
+          context.detectChanges();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(2);
+        });
+
+        it('does not re-triggers the render process when the rows change', () => {
+          resizeSpy.mockClear();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(0);
+          context.testComponent.firstRow = false;
+          context.detectChanges();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(0);
+          context.testComponent.firstRow = true;
+          context.detectChanges();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(0);
+        });
+
+        it('computes the widths of the columns when notified', () => {
+          expect(vi.mocked(computeStateSpy).mock.calls.length).toBe(0);
+          // Too lazy to do something other than casting right now.
+          organizer.updateRenderStep.next(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS);
+          expect(vi.mocked(computeStateSpy).mock.calls.length).toBe(
+            context.fixture.debugElement.queryAll(By.directive(ClrDatagridColumn)).length
+          );
+        });
+
+        it('sets the widths of the columns for the other components', () => {
+          const spy = vi.spyOn(columnsService, 'emitStateChange').mockImplementation(() => undefined);
+          organizer.updateRenderStep.next(DatagridRenderStep.COMPUTE_COLUMN_WIDTHS);
+          expect(spy).toHaveBeenCalled();
+        });
       });
 
-      it('sets an initial datagrid height', () => {
-        expect(context.nativeElement.clientHeight).toBeGreaterThan(0);
+      describe('dynamic loading', () => {
+        let context: TestContext<DatagridMainRenderer, DynamicTest>;
+        let resizeSpy, rowsSpy: Mock;
+
+        beforeEach(async () => {
+          resizeSpy = vi.spyOn(DatagridRenderOrganizer.prototype, 'resize').mockImplementation(() => undefined);
+          rowsSpy = vi.spyOn(DatagridRowRenderer.prototype, 'setCellsState').mockImplementation(() => undefined);
+          context = helpers.create(DatagridMainRenderer, DynamicTest);
+
+          context.detectChanges();
+          await delay();
+        });
+        it('does not trigger the render process until the rows are loaded', async () => {
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(0);
+          context.testComponent.projected = true;
+          context.detectChanges();
+          await delay();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(1);
+        });
+        it('ignores columns changes until the rows are loaded', async () => {
+          context.testComponent.secondColumn = false;
+          context.detectChanges();
+          await delay();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(0);
+          context.testComponent.projected = true;
+          context.detectChanges();
+          await delay();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(1);
+          context.testComponent.secondColumn = true;
+          context.detectChanges();
+          await delay();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(2);
+        });
+        it('triggers the render process if the rows are given through *clrDgItems', async () => {
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(0);
+          context.testComponent.clrDgItems = [1];
+          context.detectChanges();
+          await delay();
+          expect(vi.mocked(resizeSpy).mock.calls.length).toBe(1);
+        });
+        it('tracks changes of cells', () => {
+          context.testComponent.clrDgItems = [0, 1, 2];
+          context.detectChanges();
+          expect(vi.mocked(rowsSpy).mock.calls.length).toBe(3); // Number of rows
+          rowsSpy.mockClear();
+          context.testComponent.clrDgItems = [3, 4, 5, 6];
+          context.detectChanges();
+          expect(vi.mocked(rowsSpy).mock.calls.length).toBe(4);
+        });
       });
 
-      it('adjusts datagrid height when items are added or removed', () => {
-        // Tests fix for issue #1084
-        const initHeight = context.nativeElement.clientHeight;
-        const changeBtn = context.nativeElement.querySelector('.btn.btn-sm.btn-outline-primary');
-        changeBtn.click(); // Adds items to the list
-        context.detectChanges();
-        const height2 = context.nativeElement.clientHeight;
-        expect(initHeight).toBeLessThan(height2);
-        changeBtn.click(); // toggle back to initial height
-        context.detectChanges();
-        const finalHeight = context.nativeElement.clientHeight;
-        expect(finalHeight).toEqual(initHeight);
-      });
-    });
+      describe('smart datagrid width', () => {
+        let context: ComponentFixture<RenderWidthTest>;
+        let containerWidth: number;
 
-    describe('smart columns width', () => {
-      let context: TestContext<DatagridMainRenderer, ColumnsWidthTest>;
-      let organizer: DatagridRenderOrganizer;
-      let columnsService: ColumnsService;
+        beforeEach(() => {
+          TestBed.configureTestingModule({
+            imports: [BrowserAnimationsModule, ClrDatagridModule],
+            declarations: [RenderWidthTest],
+            providers: DATAGRID_SPEC_PROVIDERS,
+          });
+          context = TestBed.createComponent(RenderWidthTest);
+          context.detectChanges();
+          containerWidth = context.componentInstance.container.nativeElement.clientWidth;
+        });
 
-      beforeEach(() => {
-        context = helpers.create(DatagridMainRenderer, ColumnsWidthTest);
-        organizer = context.getClarityProvider(DatagridRenderOrganizer);
-        columnsService = context.getClarityProvider(ColumnsService);
-      });
+        it('calculates the correct width with no row options', () => {
+          context.componentInstance.currentTest = 'defaultDatagridTest';
+          context.detectChanges();
+          const datagridWidth = context.componentInstance.datagridDefault.nativeElement.clientWidth;
+          expect(containerWidth).toEqual(datagridWidth);
+        });
 
-      it('gives identical columns the same width', () => {
-        expect(columnsService.columns[0].value.width).toBe(columnsService.columns[1].value.width);
-      });
+        it('calculates the correct width when single select is enabled', () => {
+          context.componentInstance.currentTest = 'singleSelectTest';
+          context.detectChanges();
+          const datagridWidth = context.componentInstance.datagridSingleSelect.nativeElement.clientWidth;
+          expect(containerWidth).toEqual(datagridWidth);
+        });
 
-      it('uses headers content to compute columns width', () => {
-        context.testComponent.firstHeader = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
-        context.detectChanges();
-        organizer.resize();
-        expect(columnsService.columns[0].value.width).toBeGreaterThan(columnsService.columns[1].value.width);
-        context.testComponent.firstHeader = 'AAA';
-        context.testComponent.secondHeader = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
-        context.detectChanges();
-        organizer.resize();
-        expect(columnsService.columns[0].value.width).toBeLessThan(columnsService.columns[1].value.width);
-      });
+        it('calculates correct width when multi select is enabled', () => {
+          context.componentInstance.currentTest = 'multiSelectTest';
+          context.detectChanges();
+          const datagridWidth = context.componentInstance.datagridMultiSelect.nativeElement.clientWidth;
+          expect(containerWidth).toEqual(datagridWidth);
+        });
 
-      it('uses cells content to compute columns width', () => {
-        context.testComponent.firstCell = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
-        context.detectChanges();
-        organizer.resize();
-        expect(columnsService.columns[0].value.width).toBeGreaterThan(columnsService.columns[1].value.width);
-        context.testComponent.firstCell = 'AAA';
-        context.testComponent.secondCell = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
-        context.detectChanges();
-        organizer.resize();
-        expect(columnsService.columns[0].value.width).toBeLessThan(columnsService.columns[1].value.width);
-      });
+        it('calculates correct width when row is expandable', () => {
+          context.componentInstance.currentTest = 'defaultDatagridTest';
+          context.componentInstance.expandable = true;
+          context.detectChanges();
+          const datagridWidth = context.componentInstance.datagridDefault.nativeElement.clientWidth;
+          expect(containerWidth).toEqual(datagridWidth);
+        });
 
-      it('correctly sets strict widths', () => {
-        context.testComponent.fixedWidth = true;
-        context.detectChanges();
-        expect(columnsService.columns[0].value.strictWidth).toBe(42);
-        expect(columnsService.columns[1].value.strictWidth).toBe(0);
-        context.testComponent.fixedWidth = false;
-        context.detectChanges();
-        expect(columnsService.columns[0].value.strictWidth).toBe(0);
-        expect(columnsService.columns[1].value.strictWidth).toBe(0);
-      });
-    });
-
-    describe('detail pane', () => {
-      let context: TestContext<DatagridMainRenderer, DatagridDetailPaneTest>;
-      let columnsService: ColumnsService;
-
-      beforeEach(() => {
-        context = helpers.create(DatagridMainRenderer, DatagridDetailPaneTest);
-        columnsService = context.getClarityProvider(ColumnsService);
-        columnsService.resetToLastCache();
-        spyOn(columnsService, 'resetToLastCache');
-        spyOn(columnsService, 'emitStateChangeAt');
-        context.detectChanges();
+        it('calculates correct width when row has actions', () => {
+          context.componentInstance.currentTest = 'defaultDatagridTest';
+          context.componentInstance.hasActions = true;
+          context.detectChanges();
+          const datagridWidth = context.componentInstance.datagridDefault.nativeElement.clientWidth;
+          expect(containerWidth).toEqual(datagridWidth);
+        });
       });
 
-      it('toggles the detail pane open and emits state changes for each column', () => {
-        context.clarityDirective.toggleDetailPane(true);
-        context.detectChanges();
-        expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
-        expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(1);
+      describe('smart datagrid height', () => {
+        let context: ComponentFixture<DatagridHeightTest>;
+
+        beforeEach(() => {
+          TestBed.configureTestingModule({
+            imports: [BrowserAnimationsModule, ClrDatagridModule],
+            declarations: [DatagridHeightTest],
+          });
+          context = TestBed.createComponent(DatagridHeightTest);
+          context.detectChanges();
+        });
+
+        it('sets an initial datagrid height', () => {
+          expect(context.nativeElement.clientHeight).toBeGreaterThan(0);
+        });
+
+        it('adjusts datagrid height when items are added or removed', () => {
+          // Tests fix for issue #1084
+          const initHeight = context.nativeElement.clientHeight;
+          const changeBtn = context.nativeElement.querySelector('.btn.btn-sm.btn-outline-primary');
+          changeBtn.click(); // Adds items to the list
+          context.detectChanges();
+          const height2 = context.nativeElement.clientHeight;
+          expect(initHeight).toBeLessThan(height2);
+          changeBtn.click(); // toggle back to initial height
+          context.detectChanges();
+          const finalHeight = context.nativeElement.clientHeight;
+          expect(finalHeight).toEqual(initHeight);
+        });
       });
 
-      it('toggles the detail pane open and keeps the first visible column visible', () => {
-        context.fixture.componentInstance.firstColumnHidden = true;
-        context.detectChanges();
+      describe('smart columns width', () => {
+        let context: TestContext<DatagridMainRenderer, ColumnsWidthTest>;
+        let organizer: DatagridRenderOrganizer;
+        let columnsService: ColumnsService;
 
-        context.clarityDirective.toggleDetailPane(true);
-        const visibleColumnsLength = columnsService.visibleColumns.length;
-        expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
-        expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(visibleColumnsLength - 1);
+        beforeEach(() => {
+          context = helpers.create(DatagridMainRenderer, ColumnsWidthTest);
+          organizer = context.getClarityProvider(DatagridRenderOrganizer);
+          columnsService = context.getClarityProvider(ColumnsService);
+        });
+
+        it('gives identical columns the same width', () => {
+          expect(columnsService.columns[0].value.width).toBe(columnsService.columns[1].value.width);
+        });
+
+        it('uses headers content to compute columns width', () => {
+          context.testComponent.firstHeader = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
+          context.detectChanges();
+          organizer.resize();
+          expect(columnsService.columns[0].value.width).toBeGreaterThan(columnsService.columns[1].value.width);
+          context.testComponent.firstHeader = 'AAA';
+          context.testComponent.secondHeader = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
+          context.detectChanges();
+          organizer.resize();
+          expect(columnsService.columns[0].value.width).toBeLessThan(columnsService.columns[1].value.width);
+        });
+
+        it('uses cells content to compute columns width', () => {
+          context.testComponent.firstCell = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
+          context.detectChanges();
+          organizer.resize();
+          expect(columnsService.columns[0].value.width).toBeGreaterThan(columnsService.columns[1].value.width);
+          context.testComponent.firstCell = 'AAA';
+          context.testComponent.secondCell = 'ZZZZZZ ZZZZZZ ZZZZZZ ZZZZZZ';
+          context.detectChanges();
+          organizer.resize();
+          expect(columnsService.columns[0].value.width).toBeLessThan(columnsService.columns[1].value.width);
+        });
+
+        it('correctly sets strict widths', () => {
+          context.testComponent.fixedWidth = true;
+          context.detectChanges();
+          expect(columnsService.columns[0].value.strictWidth).toBe(42);
+          expect(columnsService.columns[1].value.strictWidth).toBe(0);
+          context.testComponent.fixedWidth = false;
+          context.detectChanges();
+          expect(columnsService.columns[0].value.strictWidth).toBe(0);
+          expect(columnsService.columns[1].value.strictWidth).toBe(0);
+        });
       });
 
-      it('toggles the detail pane closed and resets to cache', () => {
-        context.clarityDirective.toggleDetailPane(false);
-        expect(columnsService.resetToLastCache).toHaveBeenCalledTimes(1);
-        expect(columnsService.emitStateChangeAt).not.toHaveBeenCalled();
-      });
+      describe('detail pane', () => {
+        let context: TestContext<DatagridMainRenderer, DatagridDetailPaneTest>;
+        let columnsService: ColumnsService;
 
-      it('toggles the currently active detail item without clearing cache or closing', () => {
-        context.clarityDirective.toggleDetailPane(true);
-        expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
-        expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(1);
-        context.clarityDirective.toggleDetailPane(true);
-        expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
-        expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(1);
+        beforeEach(() => {
+          context = helpers.create(DatagridMainRenderer, DatagridDetailPaneTest);
+          columnsService = context.getClarityProvider(ColumnsService);
+          columnsService.resetToLastCache();
+          vi.spyOn(columnsService, 'resetToLastCache').mockImplementation(() => undefined);
+          vi.spyOn(columnsService, 'emitStateChangeAt').mockImplementation(() => undefined);
+          context.detectChanges();
+        });
+
+        it('toggles the detail pane open and emits state changes for each column', () => {
+          context.clarityDirective.toggleDetailPane(true);
+          context.detectChanges();
+          expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
+          expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(1);
+        });
+
+        it('toggles the detail pane open and keeps the first visible column visible', () => {
+          context.fixture.componentInstance.firstColumnHidden = true;
+          context.detectChanges();
+
+          context.clarityDirective.toggleDetailPane(true);
+          const visibleColumnsLength = columnsService.visibleColumns.length;
+          expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
+          expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(visibleColumnsLength - 1);
+        });
+
+        it('toggles the detail pane closed and resets to cache', () => {
+          context.clarityDirective.toggleDetailPane(false);
+          expect(columnsService.resetToLastCache).toHaveBeenCalledTimes(1);
+          expect(columnsService.emitStateChangeAt).not.toHaveBeenCalled();
+        });
+
+        it('toggles the currently active detail item without clearing cache or closing', () => {
+          context.clarityDirective.toggleDetailPane(true);
+          expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
+          expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(1);
+          context.clarityDirective.toggleDetailPane(true);
+          expect(columnsService.resetToLastCache).not.toHaveBeenCalled();
+          expect(columnsService.emitStateChangeAt).toHaveBeenCalledTimes(1);
+        });
       });
     });
   });
-}
+});
 
 @Component({
   template: `

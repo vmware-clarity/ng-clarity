@@ -128,7 +128,7 @@ describe('ErrorComponent', () => {
     });
 
     it('click, should emit retry event', () => {
-      spyOn(testContext.component.onRetry, 'emit').and.callThrough();
+      vi.spyOn(testContext.component.onRetry, 'emit');
       const button = testContext.fixture.debugElement.query(By.css('div.card-footer.text-right button')).nativeElement;
       button.click();
       expect(testContext.component.onRetry.emit).toHaveBeenCalled();

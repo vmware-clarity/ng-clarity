@@ -40,7 +40,7 @@ class SimpleTest {
   });
 }
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrForm', () => {
     let fixture, directive, layoutService;
 
@@ -89,7 +89,7 @@ export default function (): void {
 
     it('calls markAsTouched', function () {
       const service = directive.injector.get(MarkControlService);
-      spyOn(service, 'markAsTouched');
+      vi.spyOn(service, 'markAsTouched').mockImplementation(() => undefined);
       directive.componentInstance.form.markAsTouched();
       expect(service.markAsTouched).toHaveBeenCalled();
     });
@@ -100,10 +100,10 @@ export default function (): void {
 
     it('responds when the form is submitted', function () {
       fixture.detectChanges();
-      spyOn(directive.componentInstance.form, 'onFormSubmit');
+      vi.spyOn(directive.componentInstance.form, 'onFormSubmit').mockImplementation(() => undefined);
       fixture.componentInstance.submitBtn.nativeElement.click();
       fixture.detectChanges();
       expect(directive.componentInstance.form.onFormSubmit).toHaveBeenCalled();
     });
   });
-}
+});

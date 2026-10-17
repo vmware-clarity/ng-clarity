@@ -16,7 +16,7 @@ import { SignpostFocusManager } from './providers/signpost-focus-manager.service
 import { SignpostIdService } from './providers/signpost-id.service';
 import { ClrSignpostContent } from './signpost-content';
 
-export default function (): void {
+describe('Signpost', () => {
   describe('ClrSignpostContent', () => {
     const helpers = createTestHelpers();
 
@@ -50,7 +50,7 @@ export default function (): void {
       service.open = true;
       closer.click();
       context.detectChanges();
-      expect(service.open).toBeFalse();
+      expect(service.open).toBe(false);
     });
 
     it('takes an input for position', () => {
@@ -63,7 +63,7 @@ export default function (): void {
       expect(context.clarityDirective.position).toBe(ClrPopoverPosition.RIGHT_MIDDLE);
     });
   });
-}
+});
 
 @Component({
   template: `

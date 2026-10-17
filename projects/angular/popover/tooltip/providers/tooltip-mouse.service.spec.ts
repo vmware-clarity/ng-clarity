@@ -10,7 +10,7 @@ import { delay } from '@clr/angular/testing';
 
 import { TooltipMouseService } from './tooltip-mouse.service';
 
-export default function (): void {
+describe('Tooltip', () => {
   describe('Tooltip Mouse Service', () => {
     let popoverService: ClrPopoverService;
     let mouseService: TooltipMouseService;
@@ -58,4 +58,4 @@ export default function (): void {
       expect(popoverService.open).toBe(true);
     });
   });
-}
+});

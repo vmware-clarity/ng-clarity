@@ -39,7 +39,7 @@ class TestComponent {
   @ViewChild(ClrWizardStepnav, { static: true }) stepNav: ClrWizardStepnav;
 }
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('New Wizard Stepnav', () => {
     let fixture: ComponentFixture<any>;
     let debugEl: DebugElement;
@@ -97,4 +97,4 @@ export default function (): void {
       });
     });
   });
-}
+});

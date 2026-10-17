@@ -1,66 +1,87 @@
-# Karma to Vitest migration
+# Vitest test infrastructure
 
-[CDE-3219](https://vmw-jira.broadcom.net/browse/CDE-3219) tracks the v19 test infrastructure work. Keep the following steps separate so the context refactor can be verified on the existing Jasmine runner before changing runners.
+[CDE-3219](https://vmw-jira.broadcom.net/browse/CDE-3219) covers the test infrastructure migration for Clarity v19.
 
-## E8-01: Replace Jasmine's shared context
+## Running the tests
 
-[CDE-3289](https://vmw-jira.broadcom.net/browse/CDE-3289): implemented while retaining Karma and Jasmine.
-
-- Replace Jasmine callback receivers with suite-scoped closure variables, initialized before each test.
-- Make `spec()` return an accessor for the current test's `TestContext`, including deferred initialization with `autoInit: false`.
-- Replace the ambient `addHelpers()` hook with `createTestHelpers()`. Each suite explicitly owns its factory methods and fixture cleanup.
-- Pass context objects explicitly to local helpers that previously needed `.call(this, ...)`.
-- Keep the native `Date` receiver used by the date formatting spy; it is independent of Jasmine's shared context.
-
-For example:
-
-```typescript
-describe('Component', () => {
-  const helpers = createTestHelpers();
-  let context: TestContext<MyComponent, TestHost>;
-
-  beforeEach(() => {
-    context = helpers.create(MyComponent, TestHost);
-  });
-
-  it('renders content', () => {
-    expect(context.clarityElement.textContent).toContain('content');
-  });
-});
-```
-
-The refactor preserves existing test cases, their registration order, and assertions. Helper lifecycle tests cover fresh contexts, deferred initialization, provider overrides, and fixture destruction. Both existing Karma CI targets must pass before proceeding.
-
-## E8-02: Switch runners
-
-[CDE-3290](https://vmw-jira.broadcom.net/browse/CDE-3290): remaining work.
-
-The current inventory is **320 Angular spec files and 131 addons spec files** (451 total, including the new helper lifecycle tests). Schematics and tree-shaking tests already have separate Vitest configurations and are outside this conversion. Earlier estimates of 352 spec files are obsolete.
-
-1. Configure both library test targets with `@angular/build:unit-test` and Vitest's Playwright browser support. Preserve real browser behavior for layout, focus, popovers, and drag and drop tests.
-2. Apply Angular's `refactor-jasmine-vitest` schematic, then review spies, custom matchers, grouped `all.spec.ts` entry points, and test discovery manually.
-3. Move shared setup into the new runner's setup files, retaining Clarity's global styles and the `cds-theme` body attribute.
-4. Decide and validate the timer strategy for `fakeAsync`, `tick`, and `flush`. Do not remove Zone.js setup until affected tests have an equivalent timer and change detection strategy.
-5. Preserve the existing coverage thresholds: statements 89%, branches 80%, functions 90%, and lines 89%.
-6. Update CI commands and development documentation, then remove obsolete Karma and Jasmine dependencies after both suites pass on the new runner.
-
-Estimate the remaining work from the current inventory and the browser/timer compatibility results rather than the older migration branch's time estimates.
-
-## E8-03: Test hygiene
-
-[CDE-3291](https://vmw-jira.broadcom.net/browse/CDE-3291): remaining work.
-
-Enable `destroyAfterEach` and randomized test order, then fix fixture leaks and order dependencies. Verify multiple seeds and make failures reproducible by recording the seed. The E8-01 refactor leaves the existing teardown and ordering settings in place to allow an independent behavior comparison.
-
-## Verification
-
-Run from the worktree with Node.js 24:
+Use Node.js 24 and install the browser once after installing dependencies:
 
 ```shell
-npm run _test:angular
-npm run _test:addons
-npx tsc -p projects/angular/tsconfig.spec.json --noEmit
-npx tsc -p projects/addons/tsconfig.spec.json --noEmit
+npm ci
+npx playwright install chromium
+npm run test
 ```
 
-Run ESLint and Prettier on the changed files as well. After E8-02, update these commands if the test targets or runner options change.
+`npm run test` runs both library suites, schematics tests, and tree-shaking tests. The library suites use Vitest with Playwright Chromium. Their CI configurations run headless; `npm run test:watch` runs the library tests interactively. Schematics and tree-shaking retain their separate Vitest configurations.
+
+For Linux CI, install Chromium's system dependencies too:
+
+```shell
+npx playwright install --with-deps chromium
+```
+
+## E8-01: Explicit test state
+
+[CDE-3289](https://vmw-jira.broadcom.net/browse/CDE-3289) replaces Jasmine's shared callback receiver with closure variables initialized before each test.
+
+- `spec()` returns an accessor for the current test's `TestContext`. Deferred initialization with `autoInit: false` allows TestBed overrides before creating a fixture.
+- `createTestHelpers()` provides suite-owned fixture factories and cleanup.
+- Local helper functions receive explicit arguments instead of relying on `.call(this, ...)`.
+
+The native `Date` receiver used by the date formatting spy is independent of the test runner and remains in place.
+
+## E8-02: Vitest and browser support
+
+[CDE-3290](https://vmw-jira.broadcom.net/browse/CDE-3290) switches both library test targets to `@angular/build:unit-test`.
+
+Each library has a dedicated application build target for its test-specific styles and polyfills. Tests retain JIT compilation for dynamically configured TestBed modules. The published libraries retain their existing build targets.
+
+Shared configuration:
+
+- `vitest.config.mts`: mock restoration, shuffled execution, seed selection, file isolation, and slow-test reporting.
+- `projects/test-setup.ts`: the `cds-theme` body attribute and timer cleanup.
+- `projects/test-providers.ts`: the Zone-based change detection scheduler used by the existing tests.
+- `angular.json`: browser viewport, coverage, setup files, and CI targets.
+
+The existing `fakeAsync`, `tick`, `flush`, and `waitForAsync` tests use the documented `zone.js/plugins/vitest-patch` integration. Tests that use native asynchronous callbacks explicitly await their work. New tests can use native async functions and Vitest timers.
+
+Each spec file registers its own suites. The old `all.spec.ts` aggregators are removed, with their suite names retained in the individual files. Support-only modules use ordinary `.ts` filenames. This avoids empty suites and duplicate registration under Vitest and also enables previously unregistered spec factories.
+
+Karma configuration, reporters, bootstraps, and direct Jasmine/Karma dependencies are removed. ESLint recognizes Vitest globals and rejects focused tests.
+
+## E8-03: Cleanup and randomized order
+
+[CDE-3291](https://vmw-jira.broadcom.net/browse/CDE-3291) enables Angular's default fixture teardown (`destroyAfterEach: true`) and shuffles both files and tests.
+
+Tests must create fresh mutable state in `beforeEach`. Component providers that supply mutable objects should use factories. Resize observers, subscriptions, document styles, and manually inserted elements must be cleaned up. The lifecycle tests verify that Angular destroys fixtures between tests without requiring an explicit helper cleanup call.
+
+Vitest prints the shuffle seed. Reproduce a failure by setting it explicitly:
+
+```shell
+VITEST_SEED=3219 npm run _test:angular
+VITEST_SEED=3219 npm run _test:addons
+```
+
+Without `VITEST_SEED`, a run uses the current timestamp. Run multiple seeds when changing shared test infrastructure.
+
+## Coverage and checks
+
+Both CI targets enforce the original global coverage thresholds with Vitest's V8 provider. Each target measures its own library source; imported code from the other library is measured by that library's suite. Schematics use their separate test target; fixture factories and other test support retain their previous coverage exclusions:
+
+| Statements | Branches | Functions | Lines |
+| ---------- | -------- | --------- | ----- |
+| 89%        | 80%      | 90%       | 89%   |
+
+Reports are written to `coverage/clr-angular` and `coverage/clr-addons` as HTML, LCOV, and a terminal summary.
+
+In addition to the suites, check TypeScript, ESLint, formatting, and the library builds:
+
+```shell
+npx tsc -p projects/angular/tsconfig.spec.json --noEmit
+npx tsc -p projects/addons/tsconfig.spec.json --noEmit
+npm run lint
+npm run _build:angular
+npm run _build:addons
+```
+
+The implementation follows [Angular's Vitest migration guide](https://angular.dev/guide/testing/migrating-to-vitest) and [Vitest's execution sequence configuration](https://vitest.dev/config/sequence).
