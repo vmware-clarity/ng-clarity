@@ -213,9 +213,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   ngOnInit() {
-    // aria-expanded says collapsed; it cannot say whether anything is under the node, and
-    // a lazily loaded subtree is absent from the DOM until it arrives. The loading
-    // indicator is a bare span with no aria-busy, so neither fact is otherwise readable.
+    // `aria-expanded` cannot say whether anything is under the node, and a lazy subtree is absent from the DOM.
     this.teardownElementContext = clrPublishElementContext(this.elementRef.nativeElement, () => {
       const state: Record<string, unknown> = { expandable: !!this.isExpandable() };
       if (this.expandService.loading || this.isModelLoading) {

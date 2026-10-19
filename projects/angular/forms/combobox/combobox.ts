@@ -601,10 +601,7 @@ export class ClrCombobox<T>
     }
   }
 
-  /**
-   * What the combobox publishes beyond its ARIA (see `ClrElementContextCallback`): the
-   * selection and, while there are options, the option list.
-   */
+  /** What the combobox publishes beyond its ARIA: the selection and, while there are options, the option list. */
   private describeForContext(snapshotOptions?: ClrContextSnapshotOptions): {
     type: string;
     state: Record<string, unknown>;
@@ -615,17 +612,14 @@ export class ClrCombobox<T>
     const items = this.options?.items;
     const narrowed = this.optionsNarrowed();
     if (items?.length || narrowed) {
-      // Option content children exist even while the popover is closed. An option the
-      // snapshot excludes is not listed; a redacted one counts, unnamed.
+      // Option content children exist even while the popover is closed.
       const options = (items?.toArray() ?? []).map(option => ({ option, shown: this.optionShown(option, excluded) }));
       const listed = options.filter(entry => entry.shown !== 'excluded');
       const named = listed.filter(entry => entry.shown === 'shown');
-      // A narrowed list says what the user entered, so it goes under keys withheld from
-      // consumers the application does not control, the count too.
+      // A narrowed list reveals what the user typed, so it goes under keys withheld from untrusted consumers.
       const keys = narrowed
         ? { list: 'matchingOptions', redacted: 'redactedMatchingOptions', count: 'matchingOptionCount' }
         : { list: 'options', redacted: 'redactedOptions', count: 'optionCount' };
-      // A summary snapshot counts collections rather than listing them.
       if (snapshotOptions?.collectionItems === 'summary') {
         state[keys.count] = listed.length;
       } else {
@@ -635,12 +629,10 @@ export class ClrCombobox<T>
         }
       }
     } else {
-      // Async comboboxes have no option list until a search loads one.
       state.optionsAvailable = false;
     }
     if (this.optionSelectionService.loading) {
-      // A search is running, so the options are not final. One for typed text is pending
-      // under the withheld key; one with no typed text says nothing of what was typed.
+      // A pending search for typed text goes under the withheld key too.
       if (narrowed && this.optionSelectionService.currentInput) {
         state.matchingOptionsPending = true;
       } else {
@@ -652,11 +644,8 @@ export class ClrCombobox<T>
   }
 
   /**
-   * Whether the rendered options may be only those matching some text the user entered:
-   * - `*clrOptionItems` filters by the typed text while it does not show all options;
-   * - an application listening to `clrInputChange` loads its list for whatever text it
-   *   was last given, which only it knows, so any list counts, as does typed text;
-   * - options written out one by one with no one listening are all rendered.
+   * Whether the rendered options may be only those matching text the user entered
+   * (`*clrOptionItems` filtering, or an app loading options on `clrInputChange`).
    */
   private optionsNarrowed(): boolean {
     const typed = !!this.optionSelectionService.currentInput;
@@ -666,20 +655,11 @@ export class ClrCombobox<T>
     return !!this.optionItems && !this.optionSelectionService.showAllOptions && typed;
   }
 
-  /** The selector for what the snapshot options exclude, on this page. */
   private excludedBy(options?: ClrContextSnapshotOptions): string {
     return clrUsableSelectors(this.el.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
   }
 
-  /**
-   * Whether an option is shown to page-context tooling, judged within the option list
-   * only (the list's overlay is ignored as a whole, since this component publishes it):
-   * - `'excluded'`: the snapshot leaves it out, or it or a group around it is hidden,
-   *   hidden from assistive technology, inert or ignored, as the walk would leave it out;
-   * - `'withheld'`: it or a group around it is redacted, or all its text is withheld, so
-   *   it is counted but not named;
-   * - `'shown'` otherwise.
-   */
+  /** `'excluded'` where the walk would leave the option out, `'withheld'` where it is counted but unnamed. */
   private optionShown(option: ClrOption<T>, excluded: string): 'shown' | 'withheld' | 'excluded' {
     const element: Element = option.elRef.nativeElement;
     const list = element.closest('clr-options');
@@ -709,11 +689,7 @@ export class ClrCombobox<T>
     return verdict;
   }
 
-  /**
-   * The option that holds a value, matched as the selection itself matches it: by
-   * `clrComboboxIdentityFn` as well as by reference, so a model loaded apart from the
-   * options — the same record, another object — is still that option, redaction and all.
-   */
+  /** Matched by `clrComboboxIdentityFn` too, so a model loaded apart from the options still finds its option. */
   private optionFor(value: unknown): ClrOption<T> | undefined {
     return this.options?.items?.find(candidate => this.sameValue(candidate.value, value));
   }
@@ -734,18 +710,12 @@ export class ClrCombobox<T>
     }
   }
 
-  /**
-   * The selection as the user sees it: the option's label when the value matches an
-   * option, the display field otherwise, the value itself as a last resort. `[]` or
-   * `null` when nothing is selected, as the combobox is multi- or single-select.
-   */
+  /** The selection as the user sees it; `[]` or `null` when nothing is selected. */
   private selectedLabels(excluded: string): (string | null)[] | string | null {
     const model = this.optionSelectionService.selectionModel?.model;
     if (model === null || model === undefined) {
       return this.multiSelect ? [] : null;
     }
-    // A selected option the snapshot excludes is not reported; a redacted one, unnamed.
-    // A value no option holds is shown by its own label.
     const names = (Array.isArray(model) ? model : [model])
       .map(value => {
         const option = this.optionFor(value);
@@ -756,12 +726,7 @@ export class ClrCombobox<T>
     return this.multiSelect ? names : (names[0] ?? null);
   }
 
-  /**
-   * An option's visible label, without screen-reader-only additions such as "Selected".
-   * An option that shows no text is named by its value — but not one whose text was
-   * withheld: its value is as often the very thing withheld, an account number shown in a
-   * redacted span.
-   */
+  /** An option's visible label. Not named by its value when its text was withheld: the value may be the secret. */
   private optionLabel(option: ClrOption<T>): string {
     const element: HTMLElement = option.elRef.nativeElement;
     const text = clrNormalizeContextText(
@@ -774,11 +739,7 @@ export class ClrCombobox<T>
     return String(option.value);
   }
 
-  /**
-   * What a selected value is called: its option's label, its `displayField`, or the value
-   * itself when it is plain text or a number. Never the model object itself — it holds
-   * fields the user never sees — so an object without either reads as `null`.
-   */
+  /** Never the model object itself, which holds fields the user never sees. */
   private selectedValueLabel(value: T, option: ClrOption<T> | undefined): string | null {
     if (option) {
       return this.optionLabel(option);

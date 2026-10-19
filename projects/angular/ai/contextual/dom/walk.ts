@@ -932,15 +932,9 @@ function finish(
   return pruneEmpty(described, { foreign: unpruned });
 }
 
-/**
- * A redacted node without the name its markup gives it, when its element publishes a name
- * of its own. A component publishes a name because the markup's says more than it should
- * — a datepicker toggle's names the date the user picked — and the published one is not
- * used either, since inside a redacted region it may be the very content withheld.
- */
+/** In a redacted region, a markup name the element overrides is dropped; both may be the withheld content. */
 function withoutOverriddenLabel(node: ClrComponentContext, element: Element, walk: Walk): ClrComponentContext {
-  // Reading the published label runs the component's whole callback (a datagrid reads
-  // every row), so it is done only for a node that has a label to lose.
+  // Reading the published label runs the whole callback, so only when there is a label to lose.
   if (node.label === undefined || typeof readClrElementContext(element, walk.options)?.label !== 'string') {
     return node;
   }

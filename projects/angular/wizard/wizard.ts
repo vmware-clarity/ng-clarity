@@ -335,15 +335,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   ngAfterContentInit(): void {
-    // Each step's completion and error state lives in a CSS class on its stepnav item.
-    // The icon there does carry an accessible name for it, but the icon sits inside a
-    // button, and a button is described as a leaf — so nothing reaches it. The step
-    // titles are in the DOM and readable; these facts are not. Each step's title is
-    // published with them all the same, read from its stepnav item, so a snapshot that
-    // leaves out the stepnav still says which step is which.
+    // Step state is a CSS class, and its icon sits inside a button, which the walk treats as a leaf.
+    // Titles are included so a snapshot without the stepnav still says which step is which.
     this.teardownElementContext = clrPublishElementContext(this.elementRef.nativeElement, () => {
       const pages = this.pages?.toArray() ?? [];
-      // A closed wizard is not on the page, so its steps are not either.
       if (!pages.length || !this._open) {
         return null;
       }
@@ -621,10 +616,6 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
     this.wizardFinished.emit();
   }
 
-  /**
-   * The title a page's stepnav item shows, as page-context tooling reads it, or nothing
-   * when the item shows none.
-   */
   private stepTitle(page: ClrWizardPage): { title?: string } {
     const id = `${this.pageCollection.getStepItemIdForPage(page)}-step-title`;
     const element = this.elementRef.nativeElement.querySelector(`#${CSS.escape(id)}`);

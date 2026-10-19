@@ -103,11 +103,8 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   override ngOnInit(): void {
     super.ngOnInit();
 
-    // The status is otherwise announced only as a transient live-region message beside
-    // the step, and only when it is complete or in error — so a step that is simply not
-    // started, or currently open, says nothing about itself. Read at snapshot time from
-    // the service, which always holds the current model, rather than remembered from the
-    // template's stream — which has not emitted yet between init and first render.
+    // Otherwise only a transient live-region message announces status. Read from the service, whose stream
+    // has not emitted yet between init and first render.
     this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
       state: { status: this.currentStatus() },
     }));
@@ -159,7 +156,6 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     return this.commonStrings.parse(this.commonStrings.keys.stepError, { STEP: panelNumber.toString() });
   }
 
-  /** The step's status now: the service's panels are held in a subject that replays them at once. */
   private currentStatus(): StepperPanelStatus {
     let status = StepperPanelStatus.Inactive;
     this.stepperService
