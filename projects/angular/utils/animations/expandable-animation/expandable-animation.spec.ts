@@ -11,6 +11,7 @@ import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
 
+import { BaseExpandableAnimation } from './base-expandable-animation';
 import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
 import { ClrExpandableAnimationModule } from './expandable-animation.module';
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
@@ -61,6 +62,65 @@ describe('Expandable animation component', () => {
 describe('Expandable animation directive', () => {
   expandableAnimationSpec(TestComponentDirective, ClrExpandableAnimationDirective);
 });
+describe('Expandable animation component height animation', () => {
+  heightAnimationSpec(TestComponent, ClrExpandableAnimation);
+});
+describe('Expandable animation directive height animation', () => {
+  heightAnimationSpec(TestComponentDirective, ClrExpandableAnimationDirective);
+});
+
+function heightAnimationSpec(testComponent, component) {
+  let expandable: BaseExpandableAnimation;
+  let element: HTMLElement;
+
+  beforeEach(async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrExpandableAnimationModule],
+      declarations: [testComponent],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(testComponent);
+    fixture.detectChanges();
+    await delay();
+
+    const debugElement = fixture.debugElement.query(By.directive(component));
+    element = debugElement.nativeElement;
+    expandable = debugElement.injector.get(component);
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  function heightKeyframes() {
+    return element
+      .getAnimations()
+      .flatMap(animation => (animation.effect as KeyframeEffect).getKeyframes().map(keyframe => keyframe.height));
+  }
+
+  it('animates the height from the start height to the new height', async () => {
+    expandable.updateStartHeight();
+    const collapsedHeight = expandable.startHeight;
+    fixture.componentInstance.data.push({ id: 2, value: 'two' });
+    fixture.componentInstance.expanded = true;
+    fixture.detectChanges();
+    await delay();
+
+    expect(heightKeyframes()).toEqual([`${collapsedHeight}px`, `${collapsedHeight * 2}px`]);
+
+    element.getAnimations().forEach(animation => animation.finish());
+    await delay();
+    expect(expandable.startHeight).toEqual(collapsedHeight * 2);
+  });
+
+  it('does not animate when the trigger does not change', async () => {
+    fixture.componentInstance.data.push({ id: 2, value: 'two' });
+    fixture.detectChanges();
+    await delay();
+
+    expect(element.getAnimations()).toEqual([]);
+  });
+}
 
 function expandableAnimationSpec(testComponent, component) {
   beforeEach(() => {
