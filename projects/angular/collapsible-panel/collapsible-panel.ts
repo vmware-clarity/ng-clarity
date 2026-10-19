@@ -14,7 +14,7 @@ import {
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { collapseHeight, expandHeight, IfExpandService, uniqueIdFactory } from '@clr/angular/utils';
+import { animateHeight, expandHeight, IfExpandService, measureHeight, uniqueIdFactory } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
@@ -30,15 +30,17 @@ export abstract class CollapsiblePanel implements OnInit {
 
   protected _panelIndex: number;
   /**
-   * Set to `true` when the template binds `collapseContent` to the `animate.leave` of the content: the projected
-   * content is then removed once the content is collapsed, instead of when the panel closes.
+   * Set to `true` to collapse the content of a closing panel: the template keeps the content while `contentCollapsing`
+   * is set, and the projected content is removed once the content is collapsed.
    */
   protected animatesCollapse = false;
+  /** Set while the content of a closing panel collapses. */
+  protected contentCollapsing = false;
 
   private _id = uniqueIdFactory();
   private rendered = false;
   /** Set when Angular animates the content, which it does not when animations are disabled or on the server. */
-  private contentAnimated = false;
+  private content: HTMLElement;
 
   constructor(
     protected panelService: CollapsiblePanelService,
@@ -79,17 +81,10 @@ export abstract class CollapsiblePanel implements OnInit {
 
   /** `animate.enter` handler of the content. */
   protected expandContent(event: AnimationCallbackEvent) {
-    this.contentAnimated = true;
+    this.content = event.target as HTMLElement;
     if (this.rendered) {
       expandHeight(event);
     }
-  }
-
-  /** `animate.leave` handler of the content: the projected content is removed once the content is collapsed. */
-  protected collapseContent(event: AnimationCallbackEvent) {
-    // The panel state classes hide the content of a closed panel: it stays displayed while it collapses.
-    (event.target as HTMLElement).style.display = 'block';
-    collapseHeight(event).then(() => this.removeClosedContent());
   }
 
   protected handlePanelInputChanges(changes: SimpleChanges) {
@@ -115,9 +110,42 @@ export abstract class CollapsiblePanel implements OnInit {
 
     if (panel.open) {
       this.ifExpandService.expanded = true;
-    } else if (!this.animatesCollapse || !this.contentAnimated) {
+      if (this.contentCollapsing) {
+        this.contentCollapsing = false;
+        animateHeight(this.content, { from: measureHeight(this.content) });
+      }
+    } else if (this.animatesCollapse && this.content) {
+      if (!this.contentCollapsing) {
+        this.collapseContent();
+      }
+    } else {
       this.removeClosedContent();
     }
+  }
+
+  /**
+   * Not an `animate.leave` handler: Angular cancels the leave animation of an element when the same element of another
+   * instance of the template enters, as the content of the next step does when a step closes.
+   */
+  private collapseContent() {
+    const animation = animateHeight(this.content, { from: measureHeight(this.content), to: 0 });
+    if (!animation) {
+      this.content = null;
+      this.removeClosedContent();
+      return;
+    }
+    this.contentCollapsing = true;
+    animation.finished.then(
+      () => {
+        this.content = null;
+        this.contentCollapsing = false;
+        this.removeClosedContent();
+        this.cdr.markForCheck();
+      },
+      () => {
+        // Canceled: the panel opened again.
+      }
+    );
   }
 
   private removeClosedContent() {

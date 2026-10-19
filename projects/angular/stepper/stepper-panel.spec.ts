@@ -292,4 +292,32 @@ describe('ClrStepper animations', () => {
     expect(stepContent.getAnimations().length).toBe(0);
     stepperFixture.destroy();
   });
+
+  it('collapses the previous step while the next step expands', async () => {
+    TestBed.configureTestingModule({
+      declarations: [StepperTestComponent],
+      imports: [ReactiveFormsModule, ClrStepperModule, ClrConditionalModule],
+      animationsEnabled: true,
+    });
+    const stepperFixture = TestBed.createComponent(StepperTestComponent);
+    stepperFixture.detectChanges();
+    await delay();
+    const stepperService = stepperFixture.debugElement.query(By.directive(ClrStepper)).injector.get(StepperService);
+
+    stepperService.navigateToNextPanel('first');
+    stepperFixture.detectChanges();
+    await delay();
+
+    const [first, second] = stepperFixture.nativeElement.querySelectorAll('.clr-stepper-content');
+    expect(first.textContent).toContain('first step');
+    expect((first.getAnimations()[0].effect as KeyframeEffect).getKeyframes()[1].height).toBe('0px');
+    expect((second.getAnimations()[0].effect as KeyframeEffect).getKeyframes()[0].height).toBe('0px');
+
+    first.getAnimations().forEach((animation: Animation) => animation.finish());
+    await delay();
+    stepperFixture.detectChanges();
+    expect(stepperFixture.nativeElement.querySelectorAll('.clr-stepper-content').length).toBe(1);
+    expect(stepperFixture.nativeElement.textContent).not.toContain('first step');
+    stepperFixture.destroy();
+  });
 });

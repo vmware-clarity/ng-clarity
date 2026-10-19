@@ -21,9 +21,9 @@ export abstract class CollapsiblePanel implements OnInit {
     protected animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
-    protected collapseContent(event: AnimationCallbackEvent): void;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
+    protected contentCollapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
     protected expandContent(event: AnimationCallbackEvent): void;
