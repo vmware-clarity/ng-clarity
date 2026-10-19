@@ -91,7 +91,7 @@ export class AcessibilityAddonDemo extends ClarityDocComponent {
   readonly patternLinks: LinkCardsLink[] = [multiStepPatternLink];
 
   constructor() {
-    super('accessibility');
+    super('a11y');
     ClarityIcons.addIcons(circleIcon, dotCircleIcon, successStandardIcon, errorStandardIcon);
   }
 }

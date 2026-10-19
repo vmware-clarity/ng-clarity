@@ -80,7 +80,10 @@ async function compilePages(aiFiles) {
     const slug = path.parse(pageFilePath).name;
     const { attributes, body } = parseFrontMatter(fs.readFileSync(pageFilePath).toString());
 
-    const extraTransformers = attributes.addLevel3HeadingsToToc ? [addLevel3HeadingsToToc] : [];
+    const extraTransformers = [
+      ...(attributes.addLevel3HeadingsToToc ? [addLevel3HeadingsToToc] : []),
+      ...(attributes.leftAlignTables ? [leftAlignTables] : []),
+    ];
 
     pages[slug] = {
       title: attributes['title'],

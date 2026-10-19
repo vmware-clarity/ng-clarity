@@ -82,7 +82,7 @@ export class WizardAddonDemoComponent extends ClarityDocComponent {
   #inlineMode = false;
 
   constructor(readonly configurationService: WorkflowConfigurationService) {
-    super('wizard-addon');
+    super('advanced-wizard');
   }
 
   get inlineMode(): boolean {
