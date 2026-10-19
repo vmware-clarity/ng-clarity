@@ -30,6 +30,16 @@ import {
   roleCandidateSelector,
 } from './roles';
 import { summarizeRole } from './summarizers';
+import { WRITABLE_ROLES } from './tables/roles';
+import {
+  CELL_SELECTOR,
+  CONTROL_SELECTOR,
+  DESCRIBABLE_SELECTOR,
+  LEGACY_MODAL_SELECTOR,
+  MODAL_SELECTOR,
+  VALUE_CONTROL_SELECTOR,
+} from './tables/selectors';
+import { NAMING_TAGS, PHRASING_TAGS, SKIPPED_TAGS } from './tables/tags';
 import { accessibleText, isVisuallyHidden, MAX_NESTING_DEPTH, truncate } from './text';
 import { isVisible } from './visibility';
 import { stripQueryAndFragment } from '../url';
@@ -45,64 +55,8 @@ export interface ClrContextDomExtractor {
   extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
 }
 
-const WRITABLE_ROLES: ReadonlySet<string> = new Set([
-  'textbox',
-  'searchbox',
-  'combobox',
-  'listbox',
-  'checkbox',
-  'radio',
-  'switch',
-  'slider',
-  'spinbutton',
-  'radiogroup',
-]);
-
 /** Caps the elements one walk reads, so a page of empty wrappers is not read end to end. */
 const MAX_ELEMENTS_VISITED = 25_000;
-
-const SKIPPED_TAGS = new Set(['script', 'style', 'template', 'link', 'meta', 'noscript', 'head']);
-
-/** A described-by target holding a control is real content, walked rather than folded into a description. */
-const CONTROL_SELECTOR = [
-  'a[href]',
-  'button',
-  'input',
-  'select',
-  'textarea',
-  '[tabindex]',
-  '[contenteditable]',
-  '[role="button"]',
-  '[role="link"]',
-  '[role="checkbox"]',
-  '[role="radio"]',
-  '[role="switch"]',
-  '[role="textbox"]',
-  '[role="searchbox"]',
-  '[role="combobox"]',
-  '[role="listbox"]',
-  '[role="menu"]',
-  '[role="menuitem"]',
-  '[role="tab"]',
-  '[role="slider"]',
-  '[role="spinbutton"]',
-  '[role="option"]',
-  '[role="treeitem"]',
-  '[role="grid"]',
-  '[role="table"]',
-  '[role="dialog"]',
-  '[role="alertdialog"]',
-].join(', ');
-
-/** Elements whose text names something else and is never reported as text. */
-const NAMING_TAGS = new Set(['label', 'legend', 'caption', 'figcaption', 'option', 'optgroup', 'datalist', 'title']);
-
-/** Only a dialog that says it is modal; a non-modal dialog or side panel leaves the page in use. */
-const MODAL_SELECTOR = '[role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"], dialog:modal';
-
-/** Fallback for browsers without `:modal`: any open `<dialog>` counts as modal. */
-const LEGACY_MODAL_SELECTOR =
-  '[role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"], dialog[open]';
 
 interface Walk {
   readonly options: Required<ClrContextSnapshotOptions>;
@@ -270,15 +224,17 @@ function rendersOnly(parent: Element, part: Element, excludeSelector: string): b
     if (SKIPPED_TAGS.has(element.tagName.toLowerCase()) || isHiddenFromEngine(element, excludeSelector)) {
       return true;
     }
-    if (CLR_ELEMENT_CONTEXT_PROPERTY in element || element.matches(DESCRIBABLE) || element.querySelector(DESCRIBABLE)) {
+    if (
+      CLR_ELEMENT_CONTEXT_PROPERTY in element ||
+      element.matches(DESCRIBABLE_SELECTOR) ||
+      element.querySelector(DESCRIBABLE_SELECTOR)
+    ) {
       return false;
     }
     // A screen reader's "end of dialog" marker is not content.
     return !MEANINGFUL_TEXT.test(element.textContent ?? '') || isVisuallyHidden(element);
   });
 }
-
-const DESCRIBABLE = `[role], ${CONTROL_SELECTOR}, img, svg, iframe, frame, [aria-label], [aria-labelledby]`;
 
 function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
   return Array.from(modalDialogs(root)).filter(dialog => !isHiddenFromEngine(dialog, excludeSelector));
@@ -546,15 +502,6 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
   }
   return null;
 }
-
-const CELL_SELECTOR = '[role="gridcell"], [role="cell"], td';
-const VALUE_CONTROL_SELECTOR = [
-  'input',
-  'select',
-  'textarea',
-  '[contenteditable]',
-  ...Array.from(WRITABLE_ROLES, role => `[role="${role}"]`),
-].join(', ');
 
 /** Application controls in a summarised collection's cells, which the summary does not cover. */
 function describeCellControls(collection: Element, walk: Walk): ClrComponentContext[] {
@@ -829,34 +776,6 @@ function describeChildren(
   return nodes;
 }
 
-const PHRASING_TAGS = new Set([
-  'abbr',
-  'b',
-  'bdi',
-  'bdo',
-  'cite',
-  'code',
-  'data',
-  'del',
-  'dfn',
-  'em',
-  'i',
-  'ins',
-  'kbd',
-  'mark',
-  'q',
-  's',
-  'samp',
-  'small',
-  'span',
-  'strong',
-  'sub',
-  'sup',
-  'time',
-  'u',
-  'var',
-]);
-
 function isPhrasing(element: Element, walk: Walk): boolean {
   return (
     PHRASING_TAGS.has(element.tagName.toLowerCase()) &&
@@ -866,8 +785,8 @@ function isPhrasing(element: Element, walk: Walk): boolean {
     !element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE) &&
     !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
     !(element.id && walk.labelIds.has(element.id)) &&
-    !element.matches(DESCRIBABLE) &&
-    !element.querySelector(DESCRIBABLE) &&
+    !element.matches(DESCRIBABLE_SELECTOR) &&
+    !element.querySelector(DESCRIBABLE_SELECTOR) &&
     !walk.extractors.some(extractor => element.matches(extractor.selector))
   );
 }

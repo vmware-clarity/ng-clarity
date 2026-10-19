@@ -13,11 +13,10 @@ import {
 
 import { readScope } from './read-scope';
 import { isNameFromContents } from './roles';
-import { accessibleText, ACTION_SELECTOR, isUnrendered, referencedText, truncate } from './text';
-
-const MESSAGE_ROLES = new Set(['alert', 'status']);
-
-const LABELABLE = new Set(['button', 'input', 'meter', 'output', 'progress', 'select', 'textarea']);
+import { MESSAGE_ROLES } from './tables/roles';
+import { ACTION_SELECTOR } from './tables/selectors';
+import { LABELABLE_TAGS } from './tables/tags';
+import { accessibleText, isUnrendered, referencedText, truncate } from './text';
 
 /**
  * The element's accessible name, budgeted: a pragmatic subset of the ARIA name computation.
@@ -54,7 +53,6 @@ export function accessibleName(element: Element, role: string | null, maxTextLen
   }
 
   if (role && isNameFromContents(role)) {
-    // An alert is named by its message, not its actions: "Saved", not "Saved Undo".
     const unread = MESSAGE_ROLES.has(role)
       ? withheld
         ? `${withheld}, ${ACTION_SELECTOR}`
@@ -81,7 +79,7 @@ function nativeName(element: Element, withheld: string): string | null {
   if (tagName === 'figure') {
     return scopedText(element, 'figcaption', withheld);
   }
-  if (LABELABLE.has(tagName)) {
+  if (LABELABLE_TAGS.has(tagName)) {
     return labelText(element, withheld) || inputCaption(element);
   }
   return null;

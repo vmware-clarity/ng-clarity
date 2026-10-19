@@ -5,14 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  CLR_CONTEXT_EDITING_HOST_SELECTOR,
-  CLR_CONTEXT_HIDDEN_SELECTOR,
-  CLR_CONTEXT_IGNORE_SELECTOR,
-  CLR_CONTEXT_REDACT_SELECTOR,
-} from '@clr/angular/utils';
+import { CLR_CONTEXT_HIDDEN_SELECTOR } from '@clr/angular/utils';
 
 import { readScope } from './read-scope';
+import { ACTION_SELECTOR, UNREADABLE_SELECTOR } from './tables/selectors';
 import { isVisible } from './visibility';
 
 /** Normalizes whitespace and truncates to `maxLength`, ending shortened text with an ellipsis. */
@@ -85,31 +81,6 @@ export function accessibleText(element: Element, exclude?: Element, withheld = '
   const visible = textFor(element, exclude, false, withheld);
   return visible.trim() ? visible : textFor(element, exclude, true, withheld);
 }
-
-export const ACTION_SELECTOR = [
-  'a[href]',
-  'button',
-  'input',
-  'select',
-  'textarea',
-  '[contenteditable]',
-  ...[
-    'button',
-    'link',
-    'checkbox',
-    'radio',
-    'switch',
-    'textbox',
-    'searchbox',
-    'combobox',
-    'listbox',
-    'menu',
-    'menuitem',
-    'tab',
-    'slider',
-    'spinbutton',
-  ].map(role => `[role="${role}"]`),
-].join(', ');
 
 /** Script can nest deeper than the parser's 512; deeper content is dropped rather than overflow the stack. */
 export const MAX_NESTING_DEPTH = 512;
@@ -223,9 +194,6 @@ function textOfReferences(document: Document, ids: string, withheld: string, ski
       .join(' ')
   );
 }
-
-/** Never read into names: regions kept from agents, and editing hosts, whose text is a value. */
-const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_EDITING_HOST_SELECTOR}`;
 
 export function isUnrendered(element: Element): boolean {
   return !!element.closest('[hidden]') || !isVisible(element);

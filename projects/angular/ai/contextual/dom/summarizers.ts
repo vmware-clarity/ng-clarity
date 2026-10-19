@@ -14,6 +14,7 @@ import {
 import { accessibleName } from './accessible-name';
 import { ariaEnumValue } from './aria-state';
 import { resolveRole } from './roles';
+import { CELL_SELECTOR, ITEM_CONTAINER_SELECTORS, ITEM_SELECTORS } from './tables/selectors';
 import { isVisible } from './visibility';
 import { ownEntry } from '../lookup';
 
@@ -24,16 +25,6 @@ interface SummaryScope {
   readonly options: Required<ClrContextSnapshotOptions>;
   readonly withheld: string;
 }
-
-const ROLE_SELECTORS: Record<string, string> = {
-  columnheader: '[role="columnheader"], th:not([role]):not([scope="row"]):not([scope="rowgroup"])',
-  row: '[role="row"], tr:not([role])',
-  tab: '[role="tab"]',
-  listitem: '[role="listitem"], li:not([role])',
-  option: '[role="option"], option:not([role])',
-  menuitem: '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]',
-  radio: '[role="radio"], input[type="radio"]:not([role])',
-};
 
 const ROLE_SUMMARIZERS: Record<string, RoleSummarizer> = {
   combobox: summarizeCombobox,
@@ -67,7 +58,7 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
 
   // A header cell in a row that also holds data names that row, not a column.
   const headers = queryRole(element, 'columnheader', scope).filter(
-    header => !header.closest('tr, [role="row"]')?.querySelector(DATA_CELL_SELECTOR)
+    header => !header.closest('tr, [role="row"]')?.querySelector(CELL_SELECTOR)
   );
   const columns = namesOf(headers, element, scope);
   if (columns.length) {
@@ -242,26 +233,13 @@ function summarizeRadiogroup(element: Element, scope: SummaryScope): Record<stri
 
 /** Rows carrying data; a column-header row is not a record. */
 function dataRows(rows: Element[]): Element[] {
-  return rows.filter(row => !row.querySelector(ROLE_SELECTORS.columnheader) || row.querySelector(DATA_CELL_SELECTOR));
+  return rows.filter(row => !row.querySelector(ITEM_SELECTORS.columnheader) || row.querySelector(CELL_SELECTOR));
 }
 
-const DATA_CELL_SELECTOR = 'td, [role="cell"], [role="gridcell"]';
-
-/** Containers per item role, so a nested collection's items are left to it. */
-const CONTAINER_SELECTORS: Record<string, string> = {
-  columnheader: 'table, [role="table"], [role="grid"], [role="treegrid"]',
-  row: 'table, [role="table"], [role="grid"], [role="treegrid"]',
-  tab: '[role="tablist"]',
-  listitem: 'ul, ol, menu, [role="list"]',
-  option: 'select, datalist, [role="listbox"], [role="combobox"]',
-  menuitem: '[role="menu"], [role="menubar"]',
-  radio: '[role="radiogroup"]',
-};
-
 function queryRole(element: Element, role: string, scope: SummaryScope): Element[] {
-  const container = CONTAINER_SELECTORS[role];
+  const container = ITEM_CONTAINER_SELECTORS[role];
   const judgesStyle = STYLE_JUDGED_ROLES.has(role);
-  return Array.from(element.querySelectorAll(ROLE_SELECTORS[role])).filter(
+  return Array.from(element.querySelectorAll(ITEM_SELECTORS[role])).filter(
     item =>
       readable(item, scope) &&
       (!container || item.parentElement?.closest(container) === element) &&

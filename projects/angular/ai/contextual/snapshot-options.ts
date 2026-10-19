@@ -8,6 +8,7 @@
 import { isDevMode } from '@angular/core';
 import { CLR_CONTEXT_DEFAULT_MAX_ITEMS } from '@clr/angular/utils';
 
+import { WRITABLE_ROLES } from './dom/tables/roles';
 import { ClrContextCategory, ClrContextSnapshotOptions } from './interfaces/context.interface';
 import { ownEntry } from './lookup';
 
@@ -33,19 +34,7 @@ export const CLR_CONTEXT_DEFAULT_OPTIONS: Readonly<Required<ClrContextSnapshotOp
 export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonly string[]>> = deepFreeze({
   layout: ['navigation', 'banner', 'contentinfo', 'complementary'],
   actions: ['button', 'link', 'menu', 'menubar', 'menuitem', 'menuitemcheckbox', 'menuitemradio'],
-  forms: [
-    'form',
-    'textbox',
-    'searchbox',
-    'combobox',
-    'listbox',
-    'checkbox',
-    'radio',
-    'radiogroup',
-    'switch',
-    'slider',
-    'spinbutton',
-  ],
+  forms: ['form', ...WRITABLE_ROLES],
   headings: ['heading'],
   collections: ['grid', 'treegrid', 'table', 'list', 'tablist', 'tree'],
   dialogs: ['dialog', 'alertdialog'],

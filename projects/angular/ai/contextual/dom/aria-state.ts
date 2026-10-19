@@ -12,46 +12,18 @@ import {
   ClrContextSnapshotOptions,
 } from '@clr/angular/utils';
 
+import {
+  CONTENT_STATE_KEYS,
+  ENUM_ATTRIBUTES,
+  FLAG_ATTRIBUTES,
+  REDACTED_AUTOCOMPLETE_TOKENS,
+  REDACTED_INPUT_TYPES,
+  TRISTATE_ATTRIBUTES,
+  VALUE_STATE_KEYS,
+  VALUELESS_INPUT_TYPES,
+} from './tables/aria';
+import { CONTENT_ROLES } from './tables/roles';
 import { accessibleText, referencedIds, referencedText, truncate } from './text';
-
-/** Reported only when on: `aria-disabled="false"` says nothing. */
-const FLAG_ATTRIBUTES: Record<string, string> = {
-  'aria-disabled': 'disabled',
-  'aria-readonly': 'readOnly',
-  'aria-required': 'required',
-  'aria-modal': 'modal',
-  'aria-multiselectable': 'multiSelectable',
-  'aria-busy': 'busy',
-};
-
-/** `false` is as meaningful as `true` here: a collapsed panel is real information. */
-const TRISTATE_ATTRIBUTES: Record<string, string> = {
-  'aria-expanded': 'expanded',
-  'aria-selected': 'selected',
-  'aria-checked': 'checked',
-  'aria-pressed': 'pressed',
-};
-
-/** Only values ARIA defines are reported, so page markup cannot grow the snapshot. */
-const ENUM_ATTRIBUTES: { attribute: string; key: string; empty: string; values: string[]; other: string | null }[] = [
-  { attribute: 'aria-sort', key: 'sort', empty: 'none', values: ['ascending', 'descending', 'other'], other: null },
-  {
-    attribute: 'aria-current',
-    key: 'current',
-    empty: 'false',
-    values: ['page', 'step', 'location', 'date', 'time', 'true'],
-    other: 'true',
-  },
-  { attribute: 'aria-live', key: 'live', empty: 'off', values: ['polite', 'assertive'], other: null },
-  {
-    attribute: 'aria-haspopup',
-    key: 'hasPopup',
-    empty: 'false',
-    values: ['true', 'menu', 'listbox', 'tree', 'grid', 'dialog'],
-    other: 'true',
-  },
-  { attribute: 'aria-invalid', key: 'invalid', empty: 'false', values: [], other: 'true' },
-];
 
 export function ariaEnumValue(element: Element, attribute: string): string | null {
   const definition = ENUM_ATTRIBUTES.find(candidate => candidate.attribute === attribute);
@@ -61,25 +33,6 @@ export function ariaEnumValue(element: Element, attribute: string): string | nul
   }
   return definition.values.includes(raw) ? raw : definition.other;
 }
-
-const REDACTED_INPUT_TYPES = new Set(['password', 'file']);
-
-/** `autocomplete` tokens for credentials and payment details, which are never reported. */
-const REDACTED_AUTOCOMPLETE_TOKENS = new Set([
-  'current-password',
-  'new-password',
-  'one-time-code',
-  'cc-number',
-  'cc-exp',
-  'cc-exp-month',
-  'cc-exp-year',
-  'cc-csc',
-  'cc-name',
-  'cc-given-name',
-  'cc-additional-name',
-  'cc-family-name',
-  'cc-type',
-]);
 
 /** The element's ARIA and native state as a flat, JSON-safe object. */
 export function ariaState(
@@ -180,8 +133,6 @@ function assignNativeState(
     state.href = truncate(href, options.maxTextLength);
   }
 }
-
-const VALUELESS_INPUT_TYPES = new Set(['button', 'submit', 'reset', 'image', 'checkbox', 'radio', 'hidden']);
 
 /** Native checked state uses `checked`, like `aria-checked`, and is withheld with the other values. */
 function assignValueState(
@@ -287,16 +238,6 @@ function numberAttribute(element: Element, attribute: string): number | undefine
   return Number.isFinite(value) ? value : undefined;
 }
 
-/** State keys holding what the user entered or chose; withheld together. */
-export const VALUE_STATE_KEYS: readonly string[] = [
-  'value',
-  'selected',
-  'checked',
-  'pressed',
-  'selection',
-  'selectedRows',
-];
-
 const OUTPUT_VALUE_ROLES = new Set(['progressbar', 'meter']);
 
 export function isContentEditable(element: Element): boolean {
@@ -355,45 +296,6 @@ export function withoutStateKeys(
 function isEmptyValue(value: unknown): boolean {
   return value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length);
 }
-
-/**
- * State keys listing what a collection shows; inside a redacted region they go with the values.
- * Addresses count too: a path can carry the account number or token the region withholds.
- */
-const CONTENT_STATE_KEYS: readonly string[] = [
-  'items',
-  'options',
-  'rows',
-  'tabs',
-  'activeTab',
-  'disabledOptions',
-  'href',
-  'url',
-];
-
-/** Roles whose label is their content; in a redacted region it is withheld, unlike a control's label. */
-const CONTENT_ROLES: ReadonlySet<string> = new Set([
-  'text',
-  'heading',
-  'cell',
-  'gridcell',
-  'row',
-  'rowheader',
-  'columnheader',
-  'listitem',
-  'caption',
-  'note',
-  'tooltip',
-  'term',
-  'definition',
-  'paragraph',
-  'blockquote',
-  'status',
-  'alert',
-  'log',
-  'marquee',
-  'option',
-]);
 
 /** Strips values, collection contents and content labels, and marks the node `redacted: true`. */
 export function redactNode(node: ClrComponentContext): ClrComponentContext {

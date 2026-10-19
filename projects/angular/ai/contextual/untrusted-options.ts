@@ -6,6 +6,7 @@
  */
 
 import { withoutStateKeys, withoutValues } from './dom/aria-state';
+import { UNTRUSTED_WITHHELD_STATE_KEYS } from './dom/tables/aria';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 import { BUDGET_KEYS, MAX_LIST_ENTRIES, SWITCH_KEYS } from './snapshot-options';
 
@@ -77,21 +78,6 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
     ),
   };
 }
-
-/**
- * State keys withheld only from untrusted consumers because they reveal what the user chose.
- * Keep in step with the keys `ClrElementContextCallback` lists.
- */
-const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
-  'rows',
-  'filteredColumns',
-  'hiddenColumns',
-  'fileCount',
-  'matchingOptions',
-  'redactedMatchingOptions',
-  'matchingOptionsPending',
-  'matchingOptionCount',
-]);
 
 /**
  * The context with only the route pattern of its address, origins for links and frames, and no title,
