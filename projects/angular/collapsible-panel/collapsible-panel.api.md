@@ -5,6 +5,7 @@
 ```ts
 
 import * as _angular_animations from '@angular/animations';
+import { AnimationCallbackEvent } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
@@ -17,12 +18,15 @@ import { Subject } from 'rxjs';
 // @public (undocumented)
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    protected animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
+    protected collapseContent(event: AnimationCallbackEvent): void;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
     // (undocumented)
     abstract get disabled(): boolean;
+    protected expandContent(event: AnimationCallbackEvent): void;
     // (undocumented)
     abstract getContentId(id: string): string;
     // (undocumented)

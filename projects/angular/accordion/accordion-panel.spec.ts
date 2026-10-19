@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
+import { delay } from '@clr/angular/testing';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionPanel } from './accordion-panel';
@@ -319,5 +320,61 @@ describe('ClrAccordionPanel', () => {
 
       expect(nestedPanelHeading).toBeNull();
     });
+  });
+});
+
+describe('ClrAccordionPanel animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [ClrAccordionModule],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+  });
+
+  function content(): HTMLElement | null {
+    return fixture.nativeElement.querySelector('.clr-accordion-content');
+  }
+
+  async function render(open: boolean) {
+    fixture.componentInstance.open = open;
+    fixture.detectChanges();
+    await delay();
+  }
+
+  it('does not animate the content open on the first render', async () => {
+    await render(true);
+
+    expect(content().getAnimations().length).toBe(0);
+  });
+
+  it('expands the content when the panel opens', async () => {
+    await render(false);
+    await render(true);
+
+    const [animation] = content().getAnimations();
+    expect((animation.effect as KeyframeEffect).getKeyframes()[0].height).toBe('0px');
+  });
+
+  it('expands the content of a panel open on the first render when it opens again', async () => {
+    await render(true);
+    await render(false);
+    await render(true);
+
+    expect(content().getAnimations().length).toBe(1);
+  });
+
+  it('removes the content as soon as the panel closes', async () => {
+    await render(true);
+    await render(false);
+
+    expect(content()).toBeNull();
   });
 });
