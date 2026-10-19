@@ -55,6 +55,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     this.contextRegistry.unregister(this);
   }
 
+  /** The context this element publishes, or `null` when it is ignored. */
   getClrContext(): ClrComponentContext | null {
     const serialized = this.serialized();
     return serialized ? JSON.parse(serialized) : null;

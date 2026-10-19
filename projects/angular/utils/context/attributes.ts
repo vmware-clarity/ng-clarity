@@ -17,8 +17,10 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = 'data-clr-context-redact';
  */
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = 'data-clr-context-ignore';
 
+/** Selector for elements marked with `CLR_CONTEXT_REDACT_ATTRIBUTE`. */
 export const CLR_CONTEXT_REDACT_SELECTOR = `[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`;
 
+/** Selector for elements marked with `CLR_CONTEXT_IGNORE_ATTRIBUTE`. */
 export const CLR_CONTEXT_IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
 
 /** What page-context tooling treats as not on the page; shared so the engine and components agree. */

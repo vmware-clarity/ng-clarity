@@ -65,6 +65,7 @@ export class ClrContextTrackerService implements OnDestroy {
     this.changes$ = this.changesSubject.asObservable();
   }
 
+  /** The latest snapshot, or `null` before tracking starts. */
   get currentContext(): ClrPageContext | null {
     return this.latest;
   }
@@ -133,6 +134,7 @@ export class ClrContextTrackerService implements OnDestroy {
     });
   }
 
+  /** Stops tracking and disconnects the observers. */
   stop(): void {
     this.tracking = false;
     this.observer?.disconnect();
@@ -148,6 +150,7 @@ export class ClrContextTrackerService implements OnDestroy {
     this.clearTimers();
   }
 
+  /** Takes a new snapshot now instead of waiting for a change. */
   refresh(): void {
     this.emit(this.contextEngine.getSnapshot(this.trackingOptions.snapshot));
   }
