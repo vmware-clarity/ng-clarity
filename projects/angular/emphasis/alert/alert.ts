@@ -24,7 +24,6 @@ import { Subscription } from 'rxjs';
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
 
-/** An element, the alert's host or above it, that already announces what changes inside it. */
 const LIVE_REGION_SELECTOR = '[aria-live]:not([aria-live="off"]), [role="alert"], [role="status"], [role="log"]';
 
 @Component({
@@ -38,12 +37,7 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
   @Input() clrCloseButtonAriaLabel: string = this.commonStrings.keys.alertCloseButtonAriaLabel;
-  /**
-   * The live-region role of the alert's content: `'alert'` interrupts, `'status'` waits its
-   * turn, and `null` (or `'none'`) renders none, for an application that announces the
-   * message itself. Left unset — or given anything else, such as the bare attribute — the
-   * alert chooses from its type and placement.
-   */
+  /** Live-region role of the content; `null` or `'none'` renders none. Unset, it follows type and placement. */
   @Input({ alias: 'clrAlertRole', transform: liveRoleAttribute }) liveRole: 'alert' | 'status' | null | undefined =
     undefined;
 
@@ -123,17 +117,13 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  /**
-   * A polite alert announces what changed in it, not the whole alert again: `status` is
-   * atomic by default, and an inline alert typically holds action buttons whose names
-   * would be read out with every update.
-   */
+  /** `status` is atomic by default, which would reread the alert's action buttons on every update. */
   protected get ariaAtomic(): 'false' | null {
     return this.ariaRole === 'status' ? 'false' : null;
   }
 
   ngOnInit() {
-    // ngOnChanges does not run for an alert with no bound inputs, so the role is chosen here too.
+    // ngOnChanges does not run for an alert with no bound inputs.
     this.ariaRole = this.chooseRole();
 
     if (this.multiAlertService) {
@@ -177,21 +167,11 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     this._closedChanged.emit(true);
   }
 
-  /**
-   * An app-level danger or warning is something the user has to deal with now, so it
-   * interrupts; everything else, including any inline alert, where several may render at
-   * once, waits its turn. An alert inside a live region the application already has is
-   * announced by that region, so it adds no role of its own. `clrAlertRole` overrides both.
-   *
-   * Chosen on init and on input changes, not on every check: an alert moved into a live
-   * region later says so with `clrAlertRole`.
-   */
+  /** App-level danger and warning interrupt; others wait. Inside an existing live region, no role is added. */
   private chooseRole(): 'alert' | 'status' | null {
     if (this.liveRole !== undefined) {
       return this.liveRole;
     }
-    // The host counts too, for an application that put `aria-live` on the `clr-alert`
-    // itself; the role this renders is on an element inside it.
     if (this.hostElement.nativeElement.closest(LIVE_REGION_SELECTOR)) {
       return null;
     }
@@ -200,7 +180,6 @@ export class ClrAlert implements OnInit, OnChanges, OnDestroy {
   }
 }
 
-/** `clrAlertRole` as the alert understands it: `'none'` is `null`, anything unknown is unset. */
 function liveRoleAttribute(value: unknown): 'alert' | 'status' | null | undefined {
   if (value === 'alert' || value === 'status') {
     return value;

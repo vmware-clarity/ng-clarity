@@ -67,14 +67,12 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
 
   @ContentChildren(ClrRadio, { descendants: true }) radios: QueryList<ClrRadio>;
 
-  // Only a label that is a direct child of the container names the group. The inherited `label` query also matches the
-  // label inside each radio wrapper, which would give the group the name of its first radio.
+  // Only a direct-child label names the group; the inherited query also matches each radio label.
   @ContentChildren(ClrControlLabel, { descendants: false }) private groupLabels: QueryList<ClrControlLabel>;
 
   private inline = false;
   private _generatedId = uniqueIdFactory();
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
-  // What the application writes or binds on the group itself is kept: see ClrHostAttribute.
   private readonly ariaRequiredAttribute = new ClrHostAttribute(this.host, 'aria-required');
   private readonly ariaInvalidAttribute = new ClrHostAttribute(this.host, 'aria-invalid');
 
@@ -104,13 +102,7 @@ export class ClrRadioContainer extends ClrAbstractContainer implements AfterCont
     }
   }
 
-  /**
-   * The group's requirement and validity, reported once on the `radiogroup`, which is
-   * where ARIA puts them, rather than on each radio. Radios bound with standalone
-   * `ngModel` each carry their own control, so the group is required when any of them is.
-   * Nothing is reported without the role: radios rendered after the container initialised
-   * register their controls but do not give it one.
-   */
+  /** Reported once on the `radiogroup`, where ARIA puts it; standalone `ngModel` radios each have a control. */
   protected get ariaRequired(): string | null {
     return this.ariaRequiredAttribute.value(
       !!this.role && this.controls.some(control => clrHasRequiredValidator(control.control))

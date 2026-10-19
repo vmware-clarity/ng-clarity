@@ -66,8 +66,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     protected renderer: Renderer2,
     protected el: ElementRef<HTMLElement>
   ) {
-    // What the application says about these attributes — written in the template or bound
-    // itself — is kept: see ClrHostAttribute.
+    // Attributes the application writes or binds are kept: see ClrHostAttribute.
     this.ariaInvalidAttribute = new ClrHostAttribute(el?.nativeElement, 'aria-invalid');
     this.ariaRequiredAttribute = new ClrHostAttribute(el?.nativeElement, 'aria-required');
     if (injector) {
@@ -97,11 +96,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  /**
-   * Whether the control is in error, as assistive technology should hear it: invalid and
-   * touched, so a field the user has not reached yet is not announced as wrong. The
-   * container shows its error by the same rule, when it has an error message to show.
-   */
+  /** Invalid and touched, so a field the user has not reached yet is not announced as wrong. */
   protected get controlInvalid(): boolean {
     return !!this.ngControl?.invalid && !!this.ngControl?.touched;
   }
@@ -111,13 +106,7 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     return this.ariaInvalidAttribute.value(this.reportsAriaInvalid() && this.controlInvalid);
   }
 
-  /**
-   * Whether a value is required.
-   *
-   * A `required` attribute in the template is already exposed by the browser, but a
-   * reactive `Validators.required` is not — nothing in the DOM conveys it — so this
-   * reports it explicitly.
-   */
+  /** A reactive `Validators.required` is not in the DOM, unlike the `required` attribute. */
   @HostBinding('attr.aria-required')
   private get hostAriaRequired(): string | null {
     const required = this.reportsAriaRequired() && clrHasRequiredValidator(this.ngControl?.control);
@@ -205,15 +194,12 @@ export class WrappedFormControl<W> implements OnInit, DoCheck, OnDestroy {
     }
   }
 
-  /**
-   * Whether this control reports `aria-invalid` on its host. A control whose host is not
-   * where ARIA expects the state — a radio, whose group reports it once — says no.
-   */
+  /** Whether this control reports `aria-invalid` on its host. */
   protected reportsAriaInvalid(): boolean {
     return true;
   }
 
-  /** Whether this control reports `aria-required` on its host; no for roles that do not support it. */
+  /** Whether this control reports `aria-required` on its host. */
   protected reportsAriaRequired(): boolean {
     return true;
   }

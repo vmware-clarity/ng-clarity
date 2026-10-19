@@ -72,9 +72,7 @@ describe('ClrHostAttribute', () => {
   });
 
   it('yields to a value the application bound before the component first reported', () => {
-    // Angular applies the application's template bindings to an element before the host
-    // bindings of the directives on it, so on the first pass the application's value is
-    // already there, although it was not there when the directive was created.
+    // Application bindings are applied before host bindings, so the value is there on the first pass.
     const attribute = new ClrHostAttribute(element, 'aria-invalid');
     element.setAttribute('aria-invalid', 'spelling');
     expect(bind(attribute, null)).toBe('spelling');

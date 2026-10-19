@@ -35,8 +35,7 @@ export class Selection<T = any> {
 
   private lockedRefs: T[] = []; // Ref of locked items
   private _currentSelectionRefs: T[] = [];
-  // The same refs as a set: every row asks whether it is selected on every check, and a
-  // linear search per row makes that quadratic in a large multi-selection.
+  // A set, so per-row lookups are not quadratic in a large multi-selection.
   private currentSelectionRefSet = new Set<T>();
   private valueCollector = new Subject<T[]>();
   private _selectionType: SelectionType = SelectionType.None;

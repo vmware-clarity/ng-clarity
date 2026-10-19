@@ -71,8 +71,6 @@ import { OptionSelectionService } from './providers/option-selection.service';
   ],
   hostDirectives: [ClrPopoverHostDirective],
   host: {
-    // Kept for applications that styled or queried it; it has never meant that a value is
-    // required, which `aria-required` on the combobox input now reports.
     // @deprecated since v18, remove in v19: select on `aria-required` on the input instead.
     '[class.aria-required]': 'true',
     '[class.clr-combobox]': 'true',
@@ -271,10 +269,7 @@ export class ClrCombobox<T>
     );
   }
 
-  /**
-   * Whether a value must be chosen. This and `aria-invalid` are reported on the element
-   * carrying `role="combobox"`, which is where ARIA requires them, not on the role-less host.
-   */
+  /** ARIA requires `aria-required` and `aria-invalid` on the `role="combobox"` element, not the host. */
   protected get isRequired(): boolean {
     return clrHasRequiredValidator(this.control?.control);
   }

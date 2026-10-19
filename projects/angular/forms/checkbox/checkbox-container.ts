@@ -56,8 +56,7 @@ export class ClrCheckboxContainer extends ClrAbstractContainer implements AfterC
 
   @ContentChildren(ClrCheckbox, { descendants: true }) checkboxes: QueryList<ClrCheckbox>;
 
-  // Only a label that is a direct child of the container names the group. The inherited `label` query also matches the
-  // label inside each checkbox wrapper, which would give the group the name of its first checkbox.
+  // Only a direct-child label names the group; the inherited query also matches each checkbox label.
   @ContentChildren(ClrControlLabel, { descendants: false }) private groupLabels: QueryList<ClrControlLabel>;
 
   private inline = false;

@@ -299,10 +299,7 @@ export interface ClrCommonStrings {
   responsiveNavOverflowClose: string;
   // Vertical Nav
   verticalNavToggle: string;
-  /**
-   * The name of the vertical nav's navigation landmark, when the application gives none.
-   * Screen readers announce the role after it, so it does not repeat "navigation".
-   */
+  /** Name of the vertical nav landmark. Screen readers add the role, so do not repeat "navigation". */
   verticalNavLabel: string;
   /**
    * Timeline Steps

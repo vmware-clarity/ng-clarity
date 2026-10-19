@@ -47,8 +47,7 @@ describe('ClrSidePanel pinned state, as assistive technology sees it', () => {
   afterEach(() => fixture.destroy());
 
   it('reports the pin as a toggle that is currently off', () => {
-    // Pinned state was conveyed only by swapping the icon shape, which neither a screen
-    // reader nor page-context tooling can read.
+    // An icon shape alone is invisible to a screen reader.
     expect(pinButton().getAttribute('aria-pressed')).toBe('false');
   });
 

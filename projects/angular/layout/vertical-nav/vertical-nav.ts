@@ -25,7 +25,6 @@ import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-gr
 import { VerticalNavIconService } from './providers/vertical-nav-icon.service';
 import { VerticalNavService } from './providers/vertical-nav.service';
 
-/** A navigation landmark, explicit or implicit. */
 const LANDMARK_SELECTOR = 'nav, [role="navigation"]';
 
 @Component({
@@ -49,7 +48,6 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
   private _sub: Subscription;
   private readonly roleAttribute: ClrHostAttribute;
   private readonly labelAttribute: ClrHostAttribute;
-  /** Whether a navigation landmark is around the nav or inside it; see {@link hostRole}. */
   private landmarkNearby = false;
 
   constructor(
@@ -57,8 +55,7 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     private _navIconService: VerticalNavIconService,
     private _navGroupRegistrationService: VerticalNavGroupRegistrationService,
     public commonStrings: ClrCommonStringsService,
-    // Optional and last, so that downstream subclasses calling `super()` with the
-    // arguments they passed before keep compiling.
+    // Optional and last, so subclasses calling `super()` keep compiling.
     @Optional() private readonly el?: ElementRef<HTMLElement>,
     @Optional() private readonly changeDetector?: ChangeDetectorRef
   ) {
@@ -100,21 +97,13 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     return !this.collapsed ? 'true' : 'false';
   }
 
-  /**
-   * The vertical nav is a navigation landmark, so assistive technology can jump to or past
-   * it. Left off when a landmark already sits around or inside it, so a page does not end
-   * up with two nested ones; a `role` the application gives the element is kept either way.
-   */
+  /** A navigation landmark, unless one already sits around or inside it; an application `role` is kept. */
   @HostBinding('attr.role')
   private get hostRole(): string | null {
     return this.roleAttribute.value(this.landmarkNearby ? null : 'navigation');
   }
 
-  /**
-   * A navigation landmark is named, so that it can be told apart from the header's: an
-   * `aria-label` or `aria-labelledby` the application gives the element wins, and the
-   * translatable `verticalNavLabel` string is used otherwise, while the nav is a landmark.
-   */
+  /** The landmark's name: the application's `aria-label`/`aria-labelledby`, else `verticalNavLabel`. */
   @HostBinding('attr.aria-label')
   private get hostLabel(): string | null {
     // Host bindings are evaluated in declaration order, so the role above is settled.
@@ -127,18 +116,12 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     this.landmarkNearby = this.nearLandmark();
   }
 
-  /**
-   * A `<nav>` the application projects under an `@if` or a loop comes and goes after the
-   * role is bound, so the nav looks again once each check is done. What it finds is
-   * applied on the next turn: changing a host binding within the check that bound it
-   * would be an expression changed after it was checked.
-   */
+  /** A projected `<nav>` can come and go, so look again after each check and apply on the next turn. */
   ngAfterViewChecked() {
     if (this.nearLandmark() === this.landmarkNearby) {
       return;
     }
-    // A promise rather than `queueMicrotask`, so that under zone.js the change lands in
-    // the zone and the application checks again once it has.
+    // A promise rather than `queueMicrotask`, so the change lands in the zone.
     Promise.resolve().then(() => {
       const nearby = this.nearLandmark();
       if (nearby !== this.landmarkNearby) {
@@ -156,7 +139,6 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
     this.collapsed = !this.collapsed;
   }
 
-  /** Whether a navigation landmark is around the nav or inside it. */
   private nearLandmark(): boolean {
     const host = this.el?.nativeElement;
     return !!host?.parentElement?.closest(LANDMARK_SELECTOR) || !!host?.querySelector(LANDMARK_SELECTOR);
