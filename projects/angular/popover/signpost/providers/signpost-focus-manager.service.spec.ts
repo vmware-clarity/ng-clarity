@@ -27,5 +27,24 @@ export default function (): void {
       expectActiveElementToBe(appendedElement);
       appendedElement.remove();
     });
+
+    it('does not scroll a trigger that was scrolled out of view back into view', () => {
+      const scrollContainer = document.createElement('div');
+      scrollContainer.style.height = '100px';
+      scrollContainer.style.overflow = 'auto';
+      const spacer = document.createElement('div');
+      spacer.style.height = '1000px';
+      appendedElement = document.createElement('button');
+      scrollContainer.append(appendedElement, spacer);
+      document.body.appendChild(scrollContainer);
+      scrollContainer.scrollTop = 500;
+
+      signpostFocusManager.triggerEl = appendedElement;
+      signpostFocusManager.focusTrigger();
+
+      expectActiveElementToBe(appendedElement);
+      expect(scrollContainer.scrollTop).toBe(500);
+      scrollContainer.remove();
+    });
   });
 }

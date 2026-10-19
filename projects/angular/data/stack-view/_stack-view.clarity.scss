@@ -167,7 +167,9 @@
           @include mixins.min-equilateral(density.$clr-base-icon-size-s);
           @include images-mixins.icon-background-styles();
 
-          background-image: icons.generateCaretIcon(accordion-variables.$clr-accordion-text-color);
+          mask: icons.generateCaretIcon();
+          mask-repeat: no-repeat;
+          background-color: stack-view-variables.$clr-stack-view-expandable-row-color;
           transform: rotate(-90deg);
           margin-right: density.$clr-base-layout-space-xs;
         }
@@ -209,6 +211,7 @@
         background-color: stack-view-variables.$clr-stack-view-expanded-row-bg-color;
 
         &::before {
+          background-color: stack-view-variables.$clr-stack-view-expanded-row-color;
           transform: rotate(0deg);
         }
 

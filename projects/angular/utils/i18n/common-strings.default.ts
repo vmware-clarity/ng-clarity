@@ -32,9 +32,14 @@ export const commonStringsDefault: ClrCommonStrings = {
   pickColumns: 'Manage Columns',
   showColumns: 'Show Columns',
   sortColumn: 'Sort Column',
-  // Only the clrDgPinnable toggle used these, so they are disabled along with it.
-  // pinColumn: 'Pin Column',
-  // unpinColumn: 'Unpin Column',
+  sortColumnAscending: 'Sort Ascending',
+  sortColumnDescending: 'Sort Descending',
+  clearColumnSort: 'Clear Sort',
+  filterColumn: 'Filter Column',
+  columnActions: 'Column actions',
+  datagridColumnActionsAriaLabel: '{COLUMN} column actions',
+  pinColumn: 'Pin Column',
+  unpinColumn: 'Unpin Column',
   firstPage: 'First Page',
   lastPage: 'Last Page',
   nextPage: 'Next Page',
@@ -150,4 +155,8 @@ export const commonStringsDefault: ClrCommonStrings = {
   // Breadcrumbs
   breadcrumbsLabel: 'breadcrumbs',
   expandBreadcrumbsLabel: 'Expand breadcrumbs',
+
+  // Card
+  expandCardAriaLabel: 'Expand card',
+  collapseCardAriaLabel: 'Collapse card',
 };

@@ -6,37 +6,100 @@
  */
 
 import { expect, test } from '@playwright/test';
-import { StoryIndex, StoryIndexV3 } from '@storybook/types';
 import * as fs from 'fs';
 import * as path from 'path';
+import type { StoryIndex } from 'storybook/internal/types';
 
+import { density, matrixKey, screenshotExpectOptions, screenshotPathFor, theme } from './helpers/vrt';
 import { screenshotOptions } from './screenshot-options';
-
-const browser = process.env['CLARITY_VRT_BROWSER'];
-const theme = process.env['CLARITY_VRT_THEME'];
-const density = process.env['CLARITY_VRT_DENSITY'];
-const shard = process.env['CLARITY_VRT_SHARD'];
-// The used-screenshot-paths file only needs to be unique per CI job; shard is appended so
-// parallel shards of the same browser/theme/density combo don't write the same filename.
-const matrixKey = shard ? `${browser}-${theme}-${density}-${shard}` : `${browser}-${theme}-${density}`;
 
 const usedScreenshotPaths: string[] = [];
 const indexFilePath = path.join('.', 'dist', 'docs', 'index.json');
 
-const index = JSON.parse(fs.readFileSync(indexFilePath).toString());
+const index: StoryIndex = JSON.parse(fs.readFileSync(indexFilePath).toString());
 
-const stories: any[] = Object.values(convertToIndexV3(index).stories);
+const entries = Object.values(index.entries);
 
-for (const story of stories) {
-  const component = story.kind.split('/')[0];
-  const storyId = story.id;
-  const componentParsed = component.replaceAll(' ', '-').replaceAll('/', '-').toLowerCase();
-  const storyName = storyId.replace(`${componentParsed}-`, '');
-  if (story.id.endsWith('--docs') || !component || excludeTakingScreenshot(componentParsed, storyName)) {
+/**
+ * Snapshot paths are derived from the story file's `importPath`, never from its `title`, so
+ * retitling a story does not move or orphan its committed PNGs.
+ *
+ *   importPath: "./.storybook/stories/components/forms/datepicker/datepicker-opened.stories.ts"
+ *   storyId:    "components-forms-datepicker-opened--month-view"
+ *   group:      "components/forms/datepicker"            <- the directory
+ *   storyName:  "datepicker-opened--month-view"          <- "<file>--<story>"
+ *   snapshot:   "<browser>/components/forms/datepicker/datepicker-opened--month-view-<theme>-<density>.png"
+ *
+ * The file's base name is part of the story name because sibling story files routinely export
+ * the same story names (`side-panel.stories.ts` and `side-panel-inline.stories.ts` share all of
+ * theirs). Without it those stories would share a snapshot path, and the last one written would
+ * silently replace the other's baseline; the duplicate check below guards against that.
+ */
+function groupFor(importPath: string) {
+  return path
+    .dirname(importPath)
+    .replace(/^\.\/?\.storybook\/stories\/?/, '')
+    .replace(/\\/g, '/');
+}
+
+function storyNameFor(importPath: string, storyId: string) {
+  const file = path.basename(importPath).replace(/\.stories\.[jt]sx?$/, '');
+  // indexOf, not split('--'), so a story name that itself contains '--' is not truncated.
+  const separator = storyId.indexOf('--');
+  return `${file}--${storyId.slice(separator + 2)}`;
+}
+
+const usedOptionKeys = new Set<string>();
+
+/**
+ * Merges every `screenshotOptions` entry that covers a story, from the broadest key to the most
+ * specific, so a narrower key overrides a broader one. For `components/forms/datepicker/
+ * datepicker-opened--month-view` the keys are `components`, `components/forms`,
+ * `components/forms/datepicker`, `components/forms/datepicker/datepicker-opened` and the story key.
+ */
+function optionsFor(group: string, storyName: string) {
+  const folders = group.split('/').map((_, index, parts) => parts.slice(0, index + 1).join('/'));
+  const file = storyName.slice(0, storyName.indexOf('--'));
+  const keys = [...folders, `${group}/${file}`, `${group}/${storyName}`].filter(key => key in screenshotOptions);
+  keys.forEach(key => usedOptionKeys.add(key));
+  return Object.assign({}, ...keys.map(key => screenshotOptions[key]));
+}
+
+const takenScreenshotPaths = new Map<string, string>();
+
+for (const entry of entries) {
+  const storyId = entry.id;
+  const group = groupFor(entry.importPath);
+  const storyName = storyNameFor(entry.importPath, storyId);
+  const options = optionsFor(group, storyName);
+  if (storyId.endsWith('--docs')) {
+    continue;
+  }
+  // A story file placed directly in `.storybook/stories/` has no directory to name its snapshot
+  // group. Skipping it would silently leave every story in it without a snapshot, so fail loudly.
+  if (!group) {
+    throw new Error(
+      `Story "${storyId}" comes from "${entry.importPath}", which sits directly in .storybook/stories/. ` +
+        `Move the story file into a directory so its stories get a snapshot group.`
+    );
+  }
+  if (options.exclude) {
     continue;
   }
 
-  const screenshotPath = path.join(browser, componentParsed, `${storyName}-${theme}-${density}.png`);
+  const screenshotPath = screenshotPathFor(group, storyName);
+
+  // Two stories sharing a snapshot path would overwrite each other under --update-snapshots and
+  // leave one of them silently unverified. Fail loudly instead.
+  const owner = takenScreenshotPaths.get(screenshotPath);
+  if (owner) {
+    throw new Error(
+      `Duplicate snapshot path "${screenshotPath}" for stories "${owner}" and "${storyId}". ` +
+        `Rename one of the story exports or move it to its own directory.`
+    );
+  }
+  takenScreenshotPaths.set(screenshotPath, storyId);
+
   usedScreenshotPaths.push(screenshotPath);
 
   test(screenshotPath, async ({ page }) => {
@@ -47,60 +110,32 @@ for (const story of stories) {
       viewMode: 'story',
     });
 
-    const viewport = getPageViewPort(componentParsed, storyName);
-    if (viewport) {
-      page.setViewportSize(viewport);
+    if (options.viewport) {
+      await page.setViewportSize(options.viewport);
     }
 
     await page.goto(`http://localhost:8080/iframe.html?${storyParams}`);
 
-    const fullPage = takeFullPageScreenshot(componentParsed, storyName);
+    for (const selector of options.waitForSelectors ?? []) {
+      await page.locator(selector).waitFor();
+    }
+
+    const fullPage = options.fullPageScreenshot ?? false;
     const screenshotTarget = fullPage ? page : page.locator('body');
 
     await expect(screenshotTarget).toHaveScreenshot(screenshotPath.split(path.sep), {
       fullPage,
-      animations: 'disabled',
-      caret: 'hide',
-      threshold: 0.01,
+      ...screenshotExpectOptions,
+      mask: (options.maskSelectors ?? []).map(selector => page.locator(selector)),
     });
   });
 }
 
-function excludeTakingScreenshot(component: string, storyName: string) {
-  return screenshotOptions[component]?.exclude || screenshotOptions[storyName]?.exclude;
-}
-
-function takeFullPageScreenshot(component: string, storyName: string) {
-  return screenshotOptions[component]?.fullPageScreenshot || screenshotOptions[storyName]?.fullPageScreenshot;
-}
-
-function getPageViewPort(component: string, storyName: string) {
-  return screenshotOptions[component]?.viewport || screenshotOptions[storyName]?.viewport;
-}
-
-function convertToIndexV3(index: StoryIndex): StoryIndexV3 {
-  const { entries } = index;
-  const stories = Object.entries(entries).reduce(
-    (acc, [id, entry]) => {
-      const { type, ...rest } = entry;
-      acc[id] = {
-        ...rest,
-        kind: rest.title,
-        story: rest.name,
-        parameters: {
-          __id: rest.id,
-          docsOnly: type === 'docs',
-          fileName: rest.importPath,
-        },
-      };
-      return acc;
-    },
-    {} as StoryIndexV3['stories']
-  );
-  return {
-    v: 3,
-    stories,
-  };
+// A key that covers no story is a typo or a leftover from a moved story file, and its options
+// would silently stop applying.
+const unusedOptionKeys = Object.keys(screenshotOptions).filter(key => !usedOptionKeys.has(key));
+if (unusedOptionKeys.length) {
+  throw new Error(`tests/screenshot-options.ts has keys that match no story: ${unusedOptionKeys.join(', ')}`);
 }
 
 const usedScreenshotsFilePath = path.join('.', 'tests', 'snapshots', `used-screenshot-paths-${matrixKey}.txt`);

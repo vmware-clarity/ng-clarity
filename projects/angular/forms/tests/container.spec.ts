@@ -6,7 +6,7 @@
  */
 
 import { TestBed } from '@angular/core/testing';
-import { FormsModule, NgControl, ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import {
   ClrCommonFormsModule,
@@ -28,7 +28,7 @@ export function ContainerNoLabelSpec(testContainer, testControl, testComponent):
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ClrPopoverContent],
         declarations: [testContainer, testControl, testComponent],
-        providers: [NgControl, NgControlService, LayoutService, MarkControlService],
+        providers: [NgControlService, LayoutService, MarkControlService],
       });
       fixture = TestBed.createComponent(testComponent);
 
@@ -70,14 +70,7 @@ function fullSpec(description, testContainer, directives: any | any[], testCompo
       TestBed.configureTestingModule({
         imports: [ClrIcon, ClrCommonFormsModule, FormsModule, ReactiveFormsModule, ClrPopoverContent],
         declarations: [testContainer, ...directives, testComponent],
-        providers: [
-          NgControl,
-          NgControlService,
-          LayoutService,
-          MarkControlService,
-          ControlIdService,
-          DatalistIdService,
-        ],
+        providers: [NgControlService, LayoutService, MarkControlService, ControlIdService, DatalistIdService],
       });
       fixture = TestBed.createComponent(testComponent);
 

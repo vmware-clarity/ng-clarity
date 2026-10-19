@@ -6,6 +6,7 @@
  */
 
 import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
+import { fakeAsync, flushMicrotasks } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
@@ -290,6 +291,17 @@ export default function (): void {
         expect(this.clarityElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
       });
 
+      it('shows the spinner once the model starts loading, in a microtask', fakeAsync(function (this: Context) {
+        // The loading state can flip in the middle of a change detection pass, so it is not applied synchronously.
+        this.clarityDirective._model.loading = true;
+        expect(this.clarityDirective.isModelLoading).toBeFalse();
+        // A microtask is enough: no timer per node when a large tree gets created.
+        flushMicrotasks();
+        expect(this.clarityDirective.isModelLoading).toBeTrue();
+        this.detectChanges();
+        expect(this.clarityElement.querySelector('.clr-treenode-spinner')).not.toBeNull();
+      }));
+
       it('expands and collapses when the caret is clicked', function (this: Context) {
         const caret: HTMLElement = this.clarityElement.querySelector('.clr-treenode-caret');
         caret.click();
@@ -568,20 +580,40 @@ export default function (): void {
         expect(focusManager.focusParent).toHaveBeenCalledWith(this.clarityDirective._model);
       });
 
-      it('sets inert on the children container when the node is collapsed to prevent Tab into hidden children', function (this: Context) {
-        const childrenContainer = this.clarityElement.querySelector('.clr-treenode-children') as HTMLElement;
-        // Initially collapsed — inert should be present
-        expect(this.clarityDirective.expanded).toBeFalse();
-        this.detectChanges();
-        expect(childrenContainer.hasAttribute('inert')).toBeTrue();
-        // Expand the node — inert should be removed
+      it('keeps the children out of reach from the moment the node collapses', function (this: Context) {
+        const childrenContainer: HTMLElement = this.clarityElement.querySelector('.clr-treenode-children');
+        const child: HTMLElement = childrenContainer.querySelector('.clr-tree-node-content-container');
+        const canFocus = (element: HTMLElement) => {
+          element.focus();
+          return document.activeElement === element;
+        };
+        // Collapsed from the start
+        expect(canFocus(child)).toBeFalse();
+        // Expanded, the children are reachable right away
         this.clarityDirective.expanded = true;
         this.detectChanges();
-        expect(childrenContainer.hasAttribute('inert')).toBeFalse();
-        // Collapse again — inert should be restored
+        expect(canFocus(child)).toBeTrue();
+        // Collapsed again, they are out of reach at once: no window while the collapse animation runs.
+        // A node gets collapsed from itself (ArrowLeft, or the caret, which focuses the node first).
+        this.clarityDirective.focusTreeNode();
         this.clarityDirective.expanded = false;
         this.detectChanges();
+        expect(canFocus(child)).toBeFalse();
         expect(childrenContainer.hasAttribute('inert')).toBeTrue();
+      });
+
+      it('skips rendering the children once the node has collapsed', async function (this: Context) {
+        const childrenContainer: HTMLElement = this.clarityElement.querySelector('.clr-treenode-children');
+        const contentVisibility = () => getComputedStyle(childrenContainer).contentVisibility;
+        expect(contentVisibility()).toBe('hidden');
+        this.clarityDirective.expanded = true;
+        this.detectChanges();
+        await this.fixture.whenStable();
+        expect(contentVisibility()).toBe('visible');
+        this.clarityDirective.expanded = false;
+        this.detectChanges();
+        await this.fixture.whenStable();
+        expect(contentVisibility()).toBe('hidden');
       });
     });
 

@@ -26,6 +26,7 @@ export class DatagridPinnableColumnsDemo {
   replace = false;
   slowLoad = false;
   removeRowDetail = false;
+  useColumnActions = false;
 
   pinId = true;
   pinName = true;

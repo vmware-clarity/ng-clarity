@@ -7,7 +7,7 @@
 
 import { Component, Type } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
-import { FormControl, FormGroup, FormsModule, NgControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
 import { ClrCommonFormsModule, LayoutService, NgControlService } from '@clr/angular/forms/common';
 import { ClrIcon } from '@clr/angular/icon';
@@ -119,7 +119,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrRadioContainer, ClrRadioWrapper, ClrRadio, testComponent],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [NgControlService, LayoutService],
         });
         const fixture = TestBed.createComponent(testComponent);
         const containerEl = fixture.debugElement.query(By.directive(ClrRadioContainer)).nativeElement;
@@ -161,7 +161,7 @@ export default function (): void {
         TestBed.configureTestingModule({
           imports: [ClrIcon, ClrCommonFormsModule, FormsModule],
           declarations: [ClrRadioContainer, ClrRadioWrapper, ClrRadio, TemplateDrivenTest],
-          providers: [NgControl, NgControlService, LayoutService],
+          providers: [NgControlService, LayoutService],
         });
         fixture = TestBed.createComponent(TemplateDrivenTest);
 

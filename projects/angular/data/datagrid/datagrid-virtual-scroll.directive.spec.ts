@@ -5,6 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { Directionality } from '@angular/cdk/bidi';
+import { ScrollDispatcher, ViewportRuler } from '@angular/cdk/scrolling';
 import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -201,6 +203,86 @@ export default function (): void {
 
       afterEach(() => {
         fixture.destroy();
+      });
+
+      it('leaves the application-wide CDK services alone when the datagrid is destroyed', async function () {
+        // The viewport is built from a hand-made injector. Anything that injector hands out and
+        // that has an `ngOnDestroy` is destroyed with it, so the application's own ScrollDispatcher
+        // and ViewportRuler must not be reachable through it - completing them would stop scroll
+        // and resize notification for every CDK overlay in the application, and completing
+        // Directionality would stop text-direction changes from reaching them.
+        const scrollDispatcher = TestBed.inject(ScrollDispatcher);
+        const viewportRuler = TestBed.inject(ViewportRuler);
+        const directionality = TestBed.inject(Directionality);
+        let scrolledCompleted = false;
+        let viewportChangeCompleted = false;
+        let directionChangeCompleted = false;
+        scrollDispatcher.scrolled(0).subscribe({ complete: () => (scrolledCompleted = true) });
+        viewportRuler.change(0).subscribe({ complete: () => (viewportChangeCompleted = true) });
+        directionality.change.subscribe({ complete: () => (directionChangeCompleted = true) });
+
+        await finishInit(fixture);
+        fixture.destroy();
+
+        expect(scrolledCompleted).withContext('ScrollDispatcher.scrolled() completed').toBe(false);
+        expect(viewportChangeCompleted).withContext('ViewportRuler.change() completed').toBe(false);
+        expect(directionChangeCompleted).withContext('Directionality.change completed').toBe(false);
+      });
+
+      it('tears the virtual-for down before the viewport it reads from', async function () {
+        await finishInit(fixture);
+
+        const cdk = instance.virtualScroll as unknown as {
+          cdkVirtualFor: { ngOnDestroy(): void };
+          virtualScrollViewport: { ngOnDestroy(): void };
+        };
+        const teardownOrder: string[] = [];
+        // Record the order but still run the real teardown, so the instances are really torn down.
+        const recordTeardown = (name: string, instance: { ngOnDestroy(): void }) => {
+          const ngOnDestroy = instance.ngOnDestroy.bind(instance);
+          spyOn(instance, 'ngOnDestroy').and.callFake(() => {
+            teardownOrder.push(name);
+            ngOnDestroy();
+          });
+        };
+        recordTeardown('cdkVirtualFor', cdk.cdkVirtualFor);
+        recordTeardown('viewport', cdk.virtualScrollViewport);
+
+        fixture.destroy();
+
+        expect(teardownOrder).toEqual(['cdkVirtualFor', 'viewport']);
+      });
+
+      it('releases the effect the viewport keeps on the application injector when destroyed', async function () {
+        // `CdkVirtualScrollViewport` creates an effect on the application injector and only destroys
+        // it through the `DestroyRef` of the injector it was created from. While that effect lives it
+        // retains the viewport and, through it, the whole datagrid view tree.
+        await finishInit(fixture);
+
+        const viewport = (
+          instance.virtualScroll as unknown as {
+            virtualScrollViewport: {
+              _changeDetectionNeeded: { set(value: boolean): void };
+              _doChangeDetection(): void;
+            };
+          }
+        ).virtualScrollViewport;
+        const doChangeDetection = spyOn(viewport, '_doChangeDetection').and.callThrough();
+        const triggerViewportEffect = () => {
+          viewport._changeDetectionNeeded.set(false);
+          TestBed.tick();
+          doChangeDetection.calls.reset();
+          viewport._changeDetectionNeeded.set(true);
+          TestBed.tick();
+        };
+
+        triggerViewportEffect();
+        expect(doChangeDetection).withContext('effect runs while the datagrid is alive').toHaveBeenCalled();
+
+        fixture.destroy();
+
+        triggerViewportEffect();
+        expect(doChangeDetection).withContext('effect runs after the datagrid is destroyed').not.toHaveBeenCalled();
       });
 
       it('allows to manually force a refresh of displayed items when data mutates', function () {

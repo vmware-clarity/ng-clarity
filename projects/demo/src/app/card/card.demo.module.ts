@@ -9,6 +9,7 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
+import { CardAngularDemo } from './angular/card-angular';
 import { CardClickableDemo } from './card-clickable';
 import { CardDropdownDemo } from './card-dropdown';
 import { CardGridDemo } from './card-grid';
@@ -34,6 +35,7 @@ import { ROUTING } from './card.demo.routing';
     CardMediaBlockDemo,
     CardDropdownDemo,
     CardListGroupDemo,
+    CardAngularDemo,
   ],
   exports: [
     CardDemo,
@@ -45,6 +47,7 @@ import { ROUTING } from './card.demo.routing';
     CardMediaBlockDemo,
     CardDropdownDemo,
     CardListGroupDemo,
+    CardAngularDemo,
   ],
 })
 export class CardDemoModule {}

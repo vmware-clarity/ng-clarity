@@ -9,6 +9,12 @@
   margin-bottom: var(--cds-global-space-9);
 }
 
+.example-presets {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--cds-global-space-4);
+}
+
 .example-selected-nodes {
   &:not(:last-child)::after {
     content: ', ';

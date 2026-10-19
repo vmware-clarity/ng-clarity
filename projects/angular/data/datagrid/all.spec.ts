@@ -25,6 +25,7 @@ import NestedPropertySpecs from './built-in/nested-property.spec';
 import DatagridActionBarSpecs from './datagrid-action-bar.spec';
 import DatagridActionOverflowSpecs from './datagrid-action-overflow.spec';
 import DatagridCellSpecs from './datagrid-cell.spec';
+import DatagridColumnActionsSpecs from './datagrid-column-actions.spec';
 import DatagridColumnSeparatorSpecs from './datagrid-column-separator.spec';
 import DatagridColumnToggleButtonSpecs from './datagrid-column-toggle-button.spec';
 import DatagridColumnToggleSpecs from './datagrid-column-toggle.spec';
@@ -103,6 +104,7 @@ describe('Datagrid', function () {
     DatagridColumnToggleButtonSpecs();
     DatagridHideableColumnDirectiveSpec();
     DatagridPinnedColumnSpecs();
+    DatagridColumnActionsSpecs();
     WrappedCellSpec();
     WrappedColumnSpec();
     WrappedRowSpec();

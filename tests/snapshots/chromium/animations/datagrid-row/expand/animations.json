@@ -1,0 +1,25 @@
+[
+  {
+    "target": "div.datagrid-row-scrollable.clr-expandable-animation",
+    "name": "",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "linear",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "ease-in-out",
+        "composite": "auto",
+        "height": "33px"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "height": "210.375px"
+      }
+    ]
+  }
+]

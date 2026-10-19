@@ -1,0 +1,50 @@
+[
+  {
+    "target": "div.nav-group-children",
+    "name": "",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 0,
+    "easing": "linear",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "ease-in-out",
+        "composite": "auto",
+        "visibility": "visible",
+        "height": "192px"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "visibility": "hidden",
+        "height": "0px"
+      }
+    ]
+  },
+  {
+    "target": "cds-icon.nav-group-trigger-icon",
+    "name": "transform",
+    "startedAt": 200,
+    "duration": 200,
+    "delay": 0,
+    "easing": "ease-in-out",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "linear",
+        "composite": "auto",
+        "transform": "rotate(180deg)"
+      },
+      {
+        "offset": 1,
+        "easing": "linear",
+        "composite": "auto",
+        "transform": "rotate(90deg)"
+      }
+    ]
+  }
+]

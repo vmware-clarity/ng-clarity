@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, HostListener, Input } from '@angular/core';
 import { ClrBadge } from '@clr/angular/emphasis/badge';
 import { Type } from '@clr/angular/emphasis/common';
 
@@ -37,6 +37,9 @@ export enum ClrLabelColors {
     class: 'label',
     '[class.clickable]': 'clickable',
     '[class.disabled]': 'disabled',
+    '[attr.role]': "clickable ? 'button' : null",
+    '[attr.tabindex]': 'clickable && !disabled ? 0 : null',
+    '[attr.aria-disabled]': "clickable && disabled ? 'true' : null",
     '[class.solid]': 'isSolid',
     '[class]': 'colorClass',
   },
@@ -50,11 +53,34 @@ export class ClrLabel {
   @Input('clrDisabled') disabled = false;
   @Input('clrType') type: Type | string = Type.Outlined;
 
+  constructor(private el: ElementRef<HTMLElement>) {
+    // Capture phase, so it runs before the click handlers that the app binds on the same element.
+    // No removeEventListener needed: the listener lives on the host element and only references this
+    // instance, so both are garbage-collected together once Angular destroys the component.
+    el.nativeElement.addEventListener('click', this.stopClickIfDisabled, true);
+  }
+
   get isSolid() {
     return this.type === Type.Solid;
   }
 
   get colorClass() {
     return this.color ? `label-${this.color}` : '';
+  }
+
+  private stopClickIfDisabled = ($event: MouseEvent) => {
+    if (this.clickable && this.disabled) {
+      $event.preventDefault();
+      $event.stopImmediatePropagation();
+    }
+  };
+
+  @HostListener('keydown.enter', ['$event'])
+  @HostListener('keydown.space', ['$event'])
+  private onActivationKeydown($event: KeyboardEvent) {
+    if (this.clickable && !this.disabled && $event.target === this.el.nativeElement) {
+      $event.preventDefault(); // keep space from scrolling the page
+      this.el.nativeElement.click();
+    }
   }
 }

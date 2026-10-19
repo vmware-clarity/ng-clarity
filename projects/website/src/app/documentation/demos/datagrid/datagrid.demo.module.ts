@@ -16,6 +16,7 @@ import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
 import { DatagridBatchActionDemo } from './batch-action/batch-action';
 import { DatagridBindingPropertiesDemo } from './binding-properties/binding-properties';
 import { DatagridBuiltInFiltersDemo } from './built-in-filters/built-in-filters';
+import { DatagridColumnActionsDemo } from './column-actions/column-actions';
 import { DatagridCompactDemo } from './compact/compact';
 import { DatagridCustomRenderingDemo } from './custom-rendering/custom-rendering';
 import { DatagridCustomSelectAllDemo } from './custom-select-all/custom-select-all';
@@ -194,6 +195,13 @@ const routes: Routes = [
         component: DatagridPinnableColumnsDemo,
         data: {
           demoName: 'Pinnable Columns',
+        },
+      },
+      {
+        path: 'column-actions',
+        component: DatagridColumnActionsDemo,
+        data: {
+          demoName: 'Column Actions',
         },
       },
       {

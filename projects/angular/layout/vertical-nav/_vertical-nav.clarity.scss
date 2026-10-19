@@ -13,6 +13,9 @@
 @use '../../styles/core/tokens/variables.tokens' as tokens;
 @use '../../styles/variables/variables.density' as density;
 
+// The collapse and expand animation.
+$width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
+
 @include meta.load-css('properties.vertical-nav');
 @include mixins.exports('vertical-nav.clarity') {
   .clr-vertical-nav {
@@ -27,7 +30,7 @@
     //Others
     background-color: vertical-nav-variables.$clr-vertical-nav-bg-color;
     will-change: width;
-    transition: width 0.2s ease-in-out;
+    transition: $width-transition;
 
     .nav-divider {
       @include vertical-nav-mixins.vertical-nav-divider();
@@ -380,6 +383,14 @@
 
       //Others
       cursor: pointer;
+      // The transition of the state entered applies: this one when collapsing, the one of .clr-vertical-nav
+      // when expanding (which removes the max-width at once). When collapsing, the max-width switches only
+      // once the width transition ends: applied at once, it would cut it, and the nav would jump to it.
+      // allow-discrete: max-width from `none` cannot be animated, so without it the switch ignores the delay.
+      transition:
+        $width-transition,
+        max-width 0s linear tokens.$cds-global-animation-duration-quick;
+      transition-behavior: allow-discrete;
 
       .nav-icon {
         //Dims

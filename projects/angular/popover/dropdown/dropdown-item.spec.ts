@@ -6,6 +6,7 @@
  */
 
 import { Component } from '@angular/core';
+import { TestBed } from '@angular/core/testing';
 import { spec, TestContext } from '@clr/angular/testing';
 import { FocusableItem } from '@clr/angular/utils';
 
@@ -21,6 +22,12 @@ class SimpleTest {
   disabled: boolean;
   disabledDeprecated: boolean;
 }
+
+@Component({
+  template: `<button clrDropdownItem role="menuitemcheckbox">Hello world</button>`,
+  standalone: false,
+})
+class CustomRoleTest {}
 
 export default function (): void {
   describe('DropdownItem directive', function () {
@@ -71,6 +78,25 @@ export default function (): void {
       this.testComponent.disabled = false;
       this.detectChanges();
       expect(this.getClarityProvider(FocusableItem).disabled).toBe(false);
+    });
+  });
+
+  // A separate module, because the shared spec() helper above instantiates the testing module for
+  // every test in its own describe, and a nested one could no longer configure it.
+  describe('DropdownItem role', function () {
+    // An item that reports a setting rather than performing an action needs one of the checkable
+    // menu roles. Writing it as a plain attribute is not enough on its own: the host binding is
+    // applied after the template attribute and used to hard-code menuitem over it.
+    it('takes the role written on the item', function () {
+      TestBed.configureTestingModule({
+        declarations: [ClrDropdownItem, CustomRoleTest],
+        providers: [{ provide: ClrDropdown, useValue: {} }, ROOT_DROPDOWN_PROVIDER],
+      });
+
+      const fixture = TestBed.createComponent(CustomRoleTest);
+      fixture.detectChanges();
+
+      expect(fixture.nativeElement.querySelector('button').getAttribute('role')).toBe('menuitemcheckbox');
     });
   });
 }

@@ -18,6 +18,7 @@ import {
 } from '@angular/core';
 import { fromEvent, Subscription } from 'rxjs';
 
+import { TreeNodeModel } from './models/tree-node.model';
 import { TREE_FEATURES_PROVIDER, TreeFeaturesService } from './tree-features.service';
 import { TreeFocusManagerService } from './tree-focus-manager.service';
 import { ClrTreeNode } from './tree-node';
@@ -40,6 +41,7 @@ import { ClrTreeNode } from './tree-node';
 export class ClrTree<T> implements AfterContentInit, OnDestroy {
   @ContentChildren(ClrTreeNode) private rootNodes: QueryList<ClrTreeNode<T>>;
 
+  private rootModels: TreeNodeModel<T>[] = [];
   private subscriptions: Subscription[] = [];
   private _isMultiSelectable = false;
 
@@ -90,6 +92,46 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     this.subscriptions.forEach(sub => sub.unsubscribe());
   }
 
+  /**
+   * Expands every expandable node of the tree, without animation. Disabled nodes are left untouched.
+   * Nodes added to the tree afterwards, including lazy-loaded children, come in expanded until any node gets collapsed.
+   */
+  expandAll() {
+    this.setAllExpanded(true);
+  }
+
+  /**
+   * Collapses every node of the tree, without animation. Disabled nodes are left untouched.
+   */
+  collapseAll() {
+    this.setAllExpanded(false);
+  }
+
+  private setAllExpanded(expanded: boolean) {
+    this.featuresService._allExpanded = expanded;
+    this.rootModels.forEach(model => model._setExpandedRecursive(expanded));
+    if (!expanded) {
+      this.reclaimTabStop();
+    }
+  }
+
+  /*
+   * A collapsed subtree is made inert, so the tree's single tab stop must not be left inside one: the host
+   * gives up its own tabindex the first time it is focused, which would leave the whole tree unreachable by
+   * keyboard. Only the roots stay visible after a collapse, so the first one takes the tab stop over.
+   */
+  private reclaimTabStop() {
+    const stranded = this.el.nativeElement.querySelector(
+      '.clr-treenode-children .clr-tree-node-content-container[tabindex="0"]'
+    );
+    if (stranded) {
+      const firstRoot = this.rootNodes.find(node => !node._model.parent);
+      if (firstRoot) {
+        firstRoot._takeTabStop();
+      }
+    }
+  }
+
   private setMultiSelectable() {
     if (this.featuresService.selectable && this.rootNodes.length > 0) {
       this._isMultiSelectable = true;
@@ -104,6 +146,7 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
     // if node has no parent, it's a root node
     // for recursive tree, this.rootNodes registers also nested children
     // so we have to use filter to extract the ones that are truly root nodes
-    this.focusManagerService.rootNodeModels = this.rootNodes.map(node => node._model).filter(node => !node.parent);
+    this.rootModels = this.rootNodes.map(node => node._model).filter(node => !node.parent);
+    this.focusManagerService.rootNodeModels = this.rootModels;
   }
 }

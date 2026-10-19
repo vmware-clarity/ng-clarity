@@ -17,6 +17,7 @@ import { DatagridBasicOnPushDemo } from './basic-with-on-push/basic-on-push';
 import { DatagridBasicOnPushWrapperDemo } from './basic-with-on-push/basic-on-push-wrapper';
 import { DatagridBindingPropertiesDemo } from './binding-properties/binding-properties';
 import { DatagridBuiltInFiltersDemo } from './built-in-filters/built-in-filters';
+import { DatagridColumnActionsDemo } from './column-actions/column-actions';
 import { DatagridColumnSizingDemo } from './column-sizing/column-sizing';
 import { DatagridCompactDemo } from './compact/compact';
 import { DatagridConditionalSelectionsDemo } from './conditional-selection/conditional-selection';
@@ -92,6 +93,7 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridPlaceholderDemo,
     DatagridScrollingDemo,
     DatagridColumnSizingDemo,
+    DatagridColumnActionsDemo,
     DatagridPinnableColumnsDemo,
     DatagridExpandableRowsDemo,
     DatagridPerformanceDemo,

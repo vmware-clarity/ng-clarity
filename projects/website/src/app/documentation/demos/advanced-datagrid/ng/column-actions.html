@@ -1,0 +1,29 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="card card-block">
+  <p class="card-text">Last pin change: {{ lastPinnedChange || 'none yet' }}</p>
+  <p class="card-text">Last order change: {{ lastOrderChange || 'none yet' }}</p>
+  <p class="card-text">Last action: {{ lastActionClick || 'none yet' }}</p>
+</div>
+
+<appfx-datagrid
+  [gridItems]="vms"
+  [columns]="columns"
+  [selectedItems]="selectedVms"
+  [selectionType]="SelectionType.Multi"
+  [layoutModel]="{ stretchToParentHeight: false }"
+  [footerModel]="{ showFooter: true }"
+  [pageSize]="10"
+  [enableColumnActions]="true"
+  [columnActions]="columnActions"
+  (selectedItemsChange)="onSelectedItemsChange($event)"
+  (columnPinnedChange)="onColumnPinnedChange($event)"
+  (columnOrderChange)="onColumnOrderChange($event)"
+  (actionClick)="onActionClick($event)"
+>
+</appfx-datagrid>

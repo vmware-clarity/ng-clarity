@@ -261,6 +261,25 @@ export default function (): void {
       expectActiveElementToBe(dropdownItem);
     });
 
+    it('leaves focus on the submenu item that opening it focused', async () => {
+      const dropdownToggle: HTMLElement = compiled.querySelector('.dropdown-toggle');
+      dropdownToggle.click();
+      fixture.detectChanges();
+      await delay();
+
+      const nestedToggle: HTMLElement = document.body.querySelector('.nested') as HTMLElement;
+      nestedToggle.focus();
+
+      nestedToggle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
+      fixture.detectChanges();
+      await delay();
+      fixture.detectChanges();
+      await delay();
+
+      const nestedItem: HTMLElement = document.body.querySelector('.nested-item') as HTMLElement;
+      expectActiveElementToBe(nestedItem);
+    });
+
     it('declares a FocusService provider', () => {
       const focusService = fixture.debugElement.query(By.directive(ClrDropdown)).injector.get(FocusService, null);
       expect(focusService).not.toBeNull();

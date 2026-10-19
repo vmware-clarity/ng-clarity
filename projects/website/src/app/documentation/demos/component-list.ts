@@ -12,6 +12,8 @@ export interface ComponentListElement {
   text: string;
   type: string;
   storybookPath?: string;
+  /** For addons: the url of the Clarity component the addon is built on. */
+  basedOn?: string;
 }
 
 export const COMPONENT_MAP = new Map<string, ComponentListElement>();

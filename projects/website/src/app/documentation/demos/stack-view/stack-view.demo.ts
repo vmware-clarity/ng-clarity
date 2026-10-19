@@ -6,7 +6,14 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrAlertModule, ClrIcon, ClrIconModule, ClrStackViewModule } from '@clr/angular';
+import {
+  ClarityIcons,
+  ClrAlertModule,
+  ClrIcon,
+  ClrIconModule,
+  ClrStackViewModule,
+  exclamationTriangleIcon,
+} from '@clr/angular';
 
 import { RemoveStackViewHeadingsDirective } from './remove-stack-view-headings.directive';
 import { StackViewAngularBasicDemo } from './stack-view-angular-basic';
@@ -43,5 +50,7 @@ import { ClarityDocComponent } from '../clarity-doc';
 export class StackViewDemo extends ClarityDocComponent {
   constructor() {
     super('stack-view');
+
+    ClarityIcons.addIcons(exclamationTriangleIcon);
   }
 }

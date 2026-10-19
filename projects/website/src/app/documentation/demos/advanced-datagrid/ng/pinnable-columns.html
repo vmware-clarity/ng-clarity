@@ -7,12 +7,12 @@
 
 <div class="card card-block">
   <p class="card-text">Pinned columns: {{ pinnedColumns || 'none' }}</p>
-  <!-- Disabled with clrDgPinnable: <p class="card-text">Last change: {{ lastPinnedChange || 'none yet' }}</p> -->
+  <p class="card-text">Last change: {{ lastPinnedChange || 'none yet' }}</p>
 </div>
 
 <!--
-  Disabled with clrDgPinnable. Restoring it means putting this back on the grid below:
-    (columnPinnedChange)="onColumnPinnedChange($event)"
+  enableColumnActions is what renders the menu that carries Pin Column, so a pinnable column needs it
+  to give the user anything to work.
 -->
 <appfx-datagrid
   [gridItems]="vms"
@@ -22,6 +22,8 @@
   [layoutModel]="{ stretchToParentHeight: false }"
   [footerModel]="{ showFooter: true }"
   [pageSize]="10"
+  [enableColumnActions]="true"
   (selectedItemsChange)="onSelectedItemsChange($event)"
+  (columnPinnedChange)="onColumnPinnedChange($event)"
 >
 </appfx-datagrid>
