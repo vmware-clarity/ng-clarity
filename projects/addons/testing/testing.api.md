@@ -11,6 +11,7 @@ import { AfterViewInit } from '@angular/core';
 import * as _angular_animations from '@angular/animations';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
 import { AnimationBuilder } from '@angular/animations';
+import { AnimationCallbackEvent } from '@angular/core';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';

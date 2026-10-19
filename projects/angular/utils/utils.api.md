@@ -9,6 +9,7 @@ import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import * as _angular_animations from '@angular/animations';
 import { AnimationBuilder } from '@angular/animations';
+import { AnimationCallbackEvent } from '@angular/core';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -36,6 +37,13 @@ import { Subscription } from 'rxjs';
 import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
+
+// @public
+export function animateHeight(element: HTMLElement, input: {
+    from: number;
+    to?: number;
+    easing?: string;
+}): Animation | null;
 
 // @public (undocumented)
 export enum ArrowKeyDirection {
@@ -423,6 +431,21 @@ export class ClrFocusOnViewInitModule {
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
 
 // @public
+export class ClrHeightAnimation {
+    animateEnter: boolean;
+    // (undocumented)
+    protected collapse(event: AnimationCallbackEvent): void;
+    // (undocumented)
+    protected expand(event: AnimationCallbackEvent): void;
+    // (undocumented)
+    static ngAcceptInputType_animateEnter: unknown;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrHeightAnimation, "[clrHeightAnimation]", never, { "animateEnter": { "alias": "clrHeightAnimation"; "required": false; }; }, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeightAnimation, never>;
+}
+
+// @public
 export class ClrHostWrappingModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
@@ -661,6 +684,9 @@ export class ClrTemplateRefModule {
 // @public (undocumented)
 export function collapse(): AnimationMetadata[];
 
+// @public
+export function collapseHeight(input: AnimationCallbackEvent): Promise<void>;
+
 // @public (undocumented)
 export const commonStringsDefault: ClrCommonStrings;
 
@@ -714,6 +740,9 @@ export class EmptyAnchor {
 
 // @public (undocumented)
 export const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
+
+// @public
+export function expandHeight(input: AnimationCallbackEvent): void;
 
 // @public (undocumented)
 export const EXTRA_LARGE_BREAKPOINT = 1200;
@@ -890,6 +919,9 @@ export abstract class LoadingListener {
     // (undocumented)
     abstract loadingStateChange(state: ClrLoadingState | string): void;
 }
+
+// @public
+export function measureHeight(element: HTMLElement): number;
 
 // @public (undocumented)
 export const MEDIUM_BREAKPOINT = 768;

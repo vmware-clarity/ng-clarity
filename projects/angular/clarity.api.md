@@ -12,6 +12,7 @@ import { AfterViewInit } from '@angular/core';
 import * as _angular_animations from '@angular/animations';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
 import { AnimationBuilder } from '@angular/animations';
+import { AnimationCallbackEvent } from '@angular/core';
 import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
 import { AnimationMetadata } from '@angular/animations';
 import { ApplicationRef } from '@angular/core';
@@ -272,6 +273,13 @@ export const angleIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const angleIconName = "angle";
+
+// @public
+export function animateHeight(element: HTMLElement, input: {
+    from: number;
+    to?: number;
+    easing?: string;
+}): Animation | null;
 
 // @public (undocumented)
 export const animationIcon: IconShapeTuple;
@@ -3976,6 +3984,21 @@ export class ClrHeader implements OnDestroy {
 }
 
 // @public
+export class ClrHeightAnimation {
+    animateEnter: boolean;
+    // (undocumented)
+    protected collapse(event: AnimationCallbackEvent): void;
+    // (undocumented)
+    protected expand(event: AnimationCallbackEvent): void;
+    // (undocumented)
+    static ngAcceptInputType_animateEnter: unknown;
+    // (undocumented)
+    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrHeightAnimation, "[clrHeightAnimation]", never, { "animateEnter": { "alias": "clrHeightAnimation"; "required": false; }; }, {}, never, never, true, never>;
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeightAnimation, never>;
+}
+
+// @public
 export class ClrHostWrappingModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
@@ -6965,6 +6988,9 @@ export const collapseCardIcon: IconShapeTuple;
 // @public (undocumented)
 export const collapseCardIconName = "collapse-card";
 
+// @public
+export function collapseHeight(input: AnimationCallbackEvent): Promise<void>;
+
 // @public (undocumented)
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
@@ -7849,6 +7875,9 @@ export const expandCardIcon: IconShapeTuple;
 // @public (undocumented)
 export const expandCardIconName = "expand-card";
 
+// @public
+export function expandHeight(input: AnimationCallbackEvent): void;
+
 // @public (undocumented)
 export const exportIcon: IconShapeTuple;
 
@@ -8722,6 +8751,9 @@ export class MarkControlService {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<MarkControlService>;
 }
+
+// @public
+export function measureHeight(element: HTMLElement): number;
 
 // @public (undocumented)
 export const mediaChangerIcon: IconShapeTuple;
