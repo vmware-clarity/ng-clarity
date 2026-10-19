@@ -834,16 +834,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     const state: Record<string, unknown> = {};
     const excluded = this.excludedBy(snapshotOptions);
 
-    // A paginated or server-driven grid holds only the current page, and `aria-rowcount`
-    // is set only in virtual-scroll mode, so only the component knows the total. It is
-    // named apart from the `rowCount` the engine reads off the grid, a different number.
+    // A paginated grid holds one page and sets `aria-rowcount` only when virtual, so only it knows the total.
+    // Named apart from the engine's `rowCount`, which is a different number.
     const total = this.page.size > 0 ? this.page.totalItems : 0;
     if (total > 0) {
       state.totalRows = total;
     }
 
-    // The rows by their content, so a reader can tell them apart, and the selection in
-    // the same terms, both bounded by the collection budget.
     if (this.selection.selectable) {
       state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
       const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
@@ -869,14 +866,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         .map(column => this.columnName(column, excluded))
         .filter((name): name is string => !!name);
 
-    // A filter's state is a CSS class on its toggle, and its value lives in a popover
-    // that is absent from the DOM while closed.
+    // A filter's value lives in a popover that is absent from the DOM while closed.
     const filtered = columnNames(column => !!column.filter?.isActive());
     if (filtered.length) {
       state.filteredColumns = filtered;
     }
 
-    // A hidden column is not rendered at all, so nothing in the DOM says it exists.
+    // A hidden column is not rendered, so nothing in the DOM says it exists.
     const hidden = columnNames(column => column.isHidden);
     if (hidden.length) {
       state.hiddenColumns = hidden;
@@ -885,12 +881,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return Object.keys(state).length ? { state } : null;
   }
 
-  /**
-   * A column by its header text, or by its field when the header says nothing, so that an
-   * agent can pair it with the columns it lists. Not named at all when the application or
-   * the snapshot keeps it out, or when its header text is all withheld: the field would
-   * name the very thing withheld.
-   */
+  /** Not named when kept out or when its header text is withheld: the field would name what is withheld. */
   private columnName(column: ClrDatagridColumn<T>, excluded: string): string | null {
     const title = column.titleContainer?.nativeElement;
     if (!title) {
@@ -975,11 +966,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return this.rowCells(row, excluded).join(' | ');
   }
 
-  /**
-   * Whether the header, or anything up to the grid, is withheld or excluded. Between the
-   * column and the grid only what the application marks counts: the grid hides itself from
-   * assistive technology while a detail pane is open, and its columns are still the same.
-   */
+  /** Only marks up to the grid count: the grid hides itself from AT while a detail pane is open. */
   private columnKeptOut(title: Element, excluded: string): boolean {
     const column = title.closest('clr-dg-column');
     const grid: HTMLElement = this.el.nativeElement;
@@ -993,17 +980,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     return false;
   }
 
-  /** The elements a snapshot with these options leaves out, as one selector, or `''`. */
   private excludedBy(options: { excludeSelectors?: readonly string[] } | null | undefined): string {
     return clrUsableSelectors(this.el.nativeElement, options?.excludeSelectors ?? []);
   }
 
-  /**
-   * The row's content cells, as the user sees them: not the selection or action cells the
-   * grid adds, not hidden columns, not the cells of its expanded detail, and not a cell
-   * withheld or excluded. Only what lies between a cell and its row counts, for the same
-   * reason as in `columnKeptOut`.
-   */
+  /** The row's content cells as the user sees them, without grid-added, hidden, detail or withheld cells. */
   private rowCells(row: ClrDatagridRow<T>, excluded: string): string[] {
     const cached = this.rowCellsCache?.get(row);
     if (cached && cached.excluded === excluded) {
@@ -1053,18 +1034,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 }
 
-/** What an application marks to keep from agents: a redacted or an ignored region. */
 const CLR_CONTEXT_MARKED_SELECTOR = `${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_IGNORE_SELECTOR}`;
 
-/** The selectors as one list, leaving out empty ones such as an `excluded` of `''`. */
 function selectorList(...selectors: string[]): string {
   return selectors.filter(Boolean).join(', ');
 }
 
-/**
- * The labels of the first rows, stopping at `limit` so later rows are never read. A row
- * with an empty label is left out: listing it would still say it is there.
- */
+/** A row with an empty label is left out: listing it would still say it is there. */
 function firstRowLabels<R>(rows: R[], label: (row: R) => string, limit: number): string[] {
   const labels: string[] = [];
   for (const row of rows) {
@@ -1079,11 +1055,8 @@ function firstRowLabels<R>(rows: R[], label: (row: R) => string, limit: number):
   return labels;
 }
 
-/** A header's text, without screen-reader additions or what the snapshot excludes. */
 function headerText(title: Element, excluded: string): string {
-  // Exclusions are matched in the rendered header, where a selector that names what is
-  // around it still matches. The text is read from a detached copy: a hidden column's
-  // header is `display: none`, and `clrContextText` judges style only on connected nodes.
+  // Read from a detached copy: a hidden column's header is `display: none`, and style is judged only when connected.
   const skip = selectorList('.clr-sr-only', excluded);
   const descendants = Array.from(title.querySelectorAll('*'));
   const copy = title.cloneNode(true) as Element;

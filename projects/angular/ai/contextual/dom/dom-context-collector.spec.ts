@@ -19,12 +19,7 @@ function collectComponents(root: ParentNode, options?: ClrContextSnapshotOptions
   return clrCollectDomContextTree(root, options).components;
 }
 
-/**
- * A component that renders more than one reportable part (e.g. a datagrid's grid and its
- * footer, tabs' tablist and its active panel) nests them under one wrapper node instead of
- * listing them as flat siblings, so tests that look for "is there a context of type X
- * anywhere on the page" must search the whole tree, not just its top level.
- */
+/** Several reportable parts of one component are nested under a wrapper, so search the whole tree. */
 function findContext(
   contexts: ClrComponentContext[],
   predicate: (context: ClrComponentContext) => boolean
@@ -323,10 +318,7 @@ describe('DOM context collector - controls nested inside content leaves', () => 
   afterEach(() => root.remove());
 
   it('reports a button nested inside a heading, the exact shape of the combobox demo page', () => {
-    // <h2>Combobox <button (click)="disabled = !disabled">Toggle Disabled</button></h2>:
-    // ordinary markup pairing a section title with an unrelated action. Before this fix,
-    // "heading" being a leaf role meant the button was invisible to every consumer, not
-    // merely folded into the heading's label.
+    // A section title paired with an unrelated action: the button must still be reported.
     root.innerHTML = '<h2>Combobox <button class="btn btn-sm btn-primary">Toggle Disabled</button></h2>';
 
     const heading = collectComponents(root).find(c => c.type === 'heading');

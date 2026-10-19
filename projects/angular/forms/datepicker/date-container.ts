@@ -219,9 +219,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
   set actionButton(button: ElementRef<HTMLButtonElement>) {
     this.toggleButton = button;
     this.teardownToggleContext?.();
-    // The toggle's name says which date is selected, which is what the user entered.
-    // Page-context tooling is given the name without the date; the date input reports
-    // the value itself, where it is withheld like any other value.
+    // The toggle's name contains the selected date, which is user input; the date input reports it as a value.
     this.teardownToggleContext = button
       ? clrPublishElementContext(button.nativeElement, () => ({
           label: this.commonStrings.keys.datepickerToggleChooseDateLabel,

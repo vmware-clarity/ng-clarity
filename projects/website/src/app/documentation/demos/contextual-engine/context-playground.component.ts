@@ -20,7 +20,6 @@ import {
   ClrPageContext,
 } from '@clr/angular/ai';
 
-/** Every category, with what it stands for, in the order the controls show them. */
 const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
   { name: 'layout', covers: 'header, navigation, footer, side panels' },
   { name: 'actions', covers: 'buttons, links, menus' },
@@ -34,12 +33,7 @@ const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
   { name: 'frames', covers: 'embedded frames' },
 ];
 
-/**
- * A live playground for the snapshot options: every control maps to one option, the
- * snapshot of the surrounding page is taken again on each change, and the result is
- * shown with its size — so the effect of each option is visible on the page it is on.
- * The playground itself is marked `data-clr-context-ignore` so it never describes itself.
- */
+/** Live playground for the snapshot options; marked `data-clr-context-ignore` so it never describes itself. */
 @Component({
   selector: 'clr-context-playground',
   standalone: true,
@@ -49,7 +43,7 @@ const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
   styleUrls: ['./context-playground.component.scss'],
 })
 export class ContextPlaygroundComponent implements OnInit {
-  /** The largest component budget the controls allow, so a playground cannot flood a page. */
+  /** Caps the component budget so a playground cannot flood a page. */
   @Input() maxBudget = 1000;
 
   readonly categories = CATEGORIES;
@@ -84,7 +78,6 @@ export class ContextPlaygroundComponent implements OnInit {
     this.run();
   }
 
-  /** Fills the controls from a preset, then snapshots. */
   applyPreset(preset: ClrContextPreset | 'custom'): void {
     this.preset = preset;
     if (preset === 'custom') {
@@ -114,13 +107,11 @@ export class ContextPlaygroundComponent implements OnInit {
     this.run();
   }
 
-  /** A control changed by hand: the preset no longer describes the controls. */
   edited(): void {
     this.preset = 'custom';
     this.run();
   }
 
-  /** The options the controls currently describe, as they would be passed to the engine. */
   currentOptions(): ClrContextSnapshotOptions {
     const options: ClrContextSnapshotOptions = {
       maxComponents: Math.min(this.maxComponents, this.maxBudget),
@@ -157,7 +148,6 @@ export class ContextPlaygroundComponent implements OnInit {
     return options;
   }
 
-  /** Snapshots the page with the current options and reports what changed since the last run. */
   run(): void {
     const options = this.currentOptions();
     const snapshot = this.contextEngine.getSnapshot(options);

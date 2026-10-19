@@ -6,20 +6,11 @@
  */
 
 /**
- * Whether the element is rendered and can be seen, as assistive technology judges it:
- * `display: none`, `visibility: hidden`, `content-visibility: hidden` and full
- * transparency all hide it. `checkVisibility` without options only covers the first.
- *
- * Geometry is deliberately not judged. A control clipped to nothing, sized to zero or
- * moved off screen is still in the accessibility tree — and that is how custom checkboxes,
- * radios and toggles, Clarity's among them, draw their own box over a native input that is
- * visually hidden but is what a screen reader and the form binding use. What an
- * application wants kept from agents it marks `data-clr-context-ignore`.
+ * Whether the element can be seen, as assistive technology judges it. Geometry is not judged:
+ * custom checkboxes draw over a visually hidden native input that is still in the accessibility tree.
  */
 export function isVisible(element: Element): boolean {
-  // An element with `display: contents` has no box of its own, so it never reads as
-  // visible, but it hides nothing itself: its children render in its place. It shows
-  // exactly when its parent does — a loop rather than recursion, however deep they nest.
+  // `display: contents` has no box but hides nothing; it shows exactly when its parent does.
   for (let current: Element | null = element; current; current = current.parentElement) {
     // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.
     if (checkVisibility(current, true)) {
@@ -32,12 +23,7 @@ export function isVisible(element: Element): boolean {
   return true;
 }
 
-/**
- * `Element.checkVisibility`, with or without judging `visibility` and opacity. Where the
- * method is missing — jsdom, which applications' unit tests run in, and older browsers —
- * the same questions are answered from computed style, so a snapshot taken there works
- * rather than throws.
- */
+/** `Element.checkVisibility`, falling back to computed style where it is missing (jsdom, older browsers). */
 export function checkVisibility(element: Element, judgeVisibility: boolean): boolean {
   const native = (element as HTMLElement).checkVisibility;
   if (typeof native === 'function') {

@@ -7,10 +7,8 @@ with nothing extra to install.
 The entry point currently ships the **contextual engine**: it gives AI agents structured,
 up-to-date context about the page an application is currently showing — the active route, the
 components rendered right now and their state, as a tree in which every control sits where it is
-on the page, and any semantic annotations the application provides. Collections are summarised
-rather than listed: a table or grid reports its columns, its row count and the form controls in
-its cells, and no other cell content, buttons and links included. UI building blocks for AI chat surfaces are planned under
-the same entry point.
+on the page, and any semantic annotations the application provides. UI building blocks for AI chat
+surfaces are planned under the same entry point.
 
 ## Quickstart
 
@@ -65,9 +63,6 @@ export class FirewallComponent {
   cluster = 'alpha';
 }
 ```
-
-The directive annotates markup in the application's own templates, while the optional
-`window.clrContext()` accessor is what agents outside the application call to read the page.
 
 ### Writing back
 

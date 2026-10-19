@@ -110,9 +110,7 @@ export class ClrAlert implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    // Which of danger, warning, success, info or neutral this is lives in a CSS class,
-    // which nothing can read semantically, so the component reports it directly.
-    // A dismissed alert is no longer on the page, so it says nothing.
+    // The alert type is only a CSS class, so the component reports it.
     this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () =>
       this._closed ? null : { state: { severity: this.alertType } }
     );

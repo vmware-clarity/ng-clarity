@@ -8,17 +8,7 @@
 import { isContentEditable } from './aria-state';
 import { ownEntry } from '../lookup';
 
-/**
- * Mapping from HTML element to the ARIA role it carries implicitly, following HTML-AAM.
- *
- * This is the collector's one lookup table, and it is defined by the HTML and ARIA
- * specifications rather than by any component library — which is what lets one
- * implementation describe Clarity Angular components, `@clr/ui` CSS-only markup, other
- * component libraries and plain semantic HTML alike.
- *
- * Elements whose role depends on their attributes (`input`, `select`, `section`, `a`,
- * `img`) are resolved in {@link resolveRole} rather than listed here.
- */
+/** Implicit ARIA role per HTML element, per HTML-AAM. Attribute-dependent ones are in {@link resolveRole}. */
 const IMPLICIT_ROLES_BY_TAG: Record<string, string> = {
   article: 'article',
   aside: 'complementary',
@@ -64,14 +54,8 @@ const IMPLICIT_ROLES_BY_TAG: Record<string, string> = {
 };
 
 /**
- * Roles an `<input>` carries, by its `type`. Types absent here have no ARIA role.
- *
- * Two entries go beyond HTML-AAM, which gives password and file inputs no role at all. A
- * field with no role and no label would vanish from a snapshot, and an agent asked to
- * fill a login form must at least learn that a password field exists — its value is
- * withheld regardless (see `isRedacted`). A password field behaves as a textbox for the
- * user typing into it; a file input is exposed by browsers as the button that opens the
- * picker.
+ * Roles an `<input>` carries by `type`. Password and file get one beyond HTML-AAM so they don't
+ * vanish from a snapshot; their values are still withheld (see `isRedacted`).
  */
 const INPUT_ROLES_BY_TYPE: Record<string, string> = {
   button: 'button',
@@ -91,27 +75,14 @@ const INPUT_ROLES_BY_TYPE: Record<string, string> = {
   url: 'textbox',
 };
 
-/** `<input>` types that are a combobox when they have a `list` of suggestions. */
 const SUGGESTING_INPUT_TYPES = new Set(['text', 'search', 'url', 'tel', 'email']);
 
-/** `<input>` types that deliberately have no role: they expose no useful semantics. */
 const ROLELESS_INPUT_TYPES = new Set(['hidden', 'color']);
 
-/**
- * Sectioning ancestors that turn a `<header>` or `<footer>` into a plain container: only
- * a page-level one is the banner or contentinfo landmark, per HTML-AAM.
- */
+/** Only a page-level `<header>`/`<footer>` is a landmark, per HTML-AAM. */
 const SECTIONING_SELECTOR = 'article, aside, main, nav, section';
 
-/**
- * Roles that may take their accessible name from their own text, per ARIA's
- * "name from author and contents".
- *
- * A superset of {@link LEAF_ROLES}: a table cell or a list item names itself from its
- * text without being a single control, and a grid that is not summarised still needs its
- * rows walked. Keeping the two questions apart is what stops a container from absorbing
- * the whole page as its label while still letting a cell report what it says.
- */
+/** Roles named from their own text (ARIA "name from contents"); a superset of {@link LEAF_ROLES}. */
 const NAME_FROM_CONTENTS = new Set([
   'alert',
   'button',
@@ -139,10 +110,7 @@ const NAME_FROM_CONTENTS = new Set([
   'treeitem',
 ]);
 
-/**
- * Roles describing a single control or a self-contained message, where descending would
- * only repeat what the label already says.
- */
+/** Roles of a single control or message, where descending would only repeat the label. */
 const LEAF_ROLES = new Set([
   'alert',
   'button',
@@ -172,13 +140,7 @@ const LEAF_ROLES = new Set([
   'treeitem',
 ]);
 
-/**
- * Leaf roles that describe a unit of content rather than a single widget. Their name
- * already carries the text inside them, but markup routinely nests a separate control in
- * one — a heading with a button, an alert with a dismiss action, a tree item with its
- * link — and the walk must still find it. Nothing inside a widget leaf, such as a button
- * or a checkbox, has semantics of its own.
- */
+/** Leaf roles that may still nest a separate control, such as a heading with a button. */
 const CONTENT_LEAF_ROLES = new Set([
   'heading',
   'status',
@@ -187,34 +149,19 @@ const CONTENT_LEAF_ROLES = new Set([
   'caption',
   'definition',
   'tooltip',
-  // A tree item names itself from its text, but holds the link it navigates by and the
-  // items nested under it.
   'treeitem',
 ]);
 
-/** Longer than the longest ARIA role, `menuitemcheckbox`, with room for DPUB and graphics roles. */
 const MAX_ROLE_LENGTH = 32;
 
-/**
- * Roles an editing host may keep: those of a field the user types into. Any other role on
- * one — `document`, `heading`, `presentation` — would have what the user typed read as
- * prose or as a name.
- */
+/** An editing host with any other role would have what the user typed read as prose. */
 const TEXT_ENTRY_ROLES = new Set(['textbox', 'searchbox', 'combobox']);
 
-/** The two spellings of "this element carries no semantics of its own". */
 const PRESENTATIONAL_ROLES = new Set(['presentation', 'none']);
 
-/**
- * The ARIA role an element carries, explicit or implicit, or `null` when it has none.
- *
- * An explicit `role` wins, except on an editing host, which is a text field whatever else
- * it says it is. Because `role` accepts a fallback list, only the first token is honored —
- * the same way assistive technology resolves it.
- */
+/** The element's explicit or implicit ARIA role, or `null`. Only the first token of `role` counts, as for AT. */
 export function resolveRole(element: Element): string | null {
-  // A token longer than any ARIA role is not one, and page markup must not be able to
-  // inflate a snapshot through it: the element falls back to its implicit role.
+  // A token longer than any ARIA role falls back to the implicit role, so markup cannot inflate a snapshot.
   const explicit = element.getAttribute('role')?.trim().split(/\s+/)[0];
   if (
     explicit &&
@@ -226,32 +173,23 @@ export function resolveRole(element: Element): string | null {
   return implicitRole(element);
 }
 
-/** Whether a role describes a single control or message the walk should not descend into. */
 export function isLeafRole(role: string): boolean {
   return LEAF_ROLES.has(role);
 }
 
-/** Whether a role may take its accessible name from its own text content. */
 export function isNameFromContents(role: string): boolean {
   return NAME_FROM_CONTENTS.has(role);
 }
 
-/** Whether a leaf role may still contain a genuinely separate, independent control. */
 export function mayContainControls(role: string): boolean {
   return CONTENT_LEAF_ROLES.has(role);
 }
 
-/** Whether a role means "ignore this element but keep looking at its children". */
 export function isPresentationalRole(role: string): boolean {
   return PRESENTATIONAL_ROLES.has(role);
 }
 
-/**
- * A selector matching every element that may resolve to one of `roles` — any explicit
- * role, and the elements whose implicit role could be one of them — or `''` for no roles.
- * Checking {@link resolveRole} on what it matches, rather than on every element, is what
- * keeps a search for a role proportional to the elements that could have it.
- */
+/** Selector for every element that may resolve to one of `roles`, or `''` for none. */
 export function roleCandidateSelector(roles: ReadonlySet<string>): string {
   if (!roles.size) {
     return '';
@@ -273,7 +211,6 @@ export function roleCandidateSelector(roles: ReadonlySet<string>): string {
     selectors.add('select');
   }
   if (anyOf('combobox')) {
-    // A text field with a list of suggestions.
     selectors.add('input[list]');
   }
   if (anyOf('link')) {
@@ -297,8 +234,7 @@ export function roleCandidateSelector(roles: ReadonlySet<string>): string {
 function implicitRole(element: Element): string | null {
   const tagName = element.tagName.toLowerCase();
 
-  // An editing host is a text field whatever element it is drawn on: what a rich-text
-  // editor holds was typed by the user, and must be treated as a value, never as prose.
+  // An editing host holds user input, so it is a text field whatever element it is drawn on.
   if (isContentEditable(element)) {
     return 'textbox';
   }
@@ -307,26 +243,22 @@ function implicitRole(element: Element): string | null {
     case 'input':
       return inputRole(element as HTMLInputElement);
     case 'select':
-      // A dropdown presents one value at a time; an expanded or multiple select is a list.
       return (element as HTMLSelectElement).multiple || (element as HTMLSelectElement).size > 1
         ? 'listbox'
         : 'combobox';
     case 'a':
     case 'area':
-      // Only a navigable anchor is a link; without href it is a placeholder.
       return element.hasAttribute('href') ? 'link' : null;
     case 'img':
-      // `alt=""` is the author declaring the image decorative.
+      // `alt=""` marks the image decorative.
       return element.getAttribute('alt') === '' ? 'presentation' : 'img';
     case 'section':
     case 'aside':
-      // A generic landmark only earns its role once it is named, otherwise every
-      // wrapper section would surface as an indistinguishable region.
+      // An unnamed section is not a region, or every wrapper would surface as one.
       return tagName === 'aside' || hasNameAttribute(element)
         ? (ownEntry(IMPLICIT_ROLES_BY_TAG, tagName) ?? null)
         : null;
     case 'th': {
-      // A header cell at the start of a row names that row, not a column.
       const scope = element.getAttribute('scope')?.toLowerCase();
       return scope === 'row' || scope === 'rowgroup' ? 'rowheader' : 'columnheader';
     }
@@ -344,20 +276,14 @@ function inputRole(input: HTMLInputElement): string | null {
   if (ROLELESS_INPUT_TYPES.has(type)) {
     return null;
   }
-  // A text field offering suggestions from a `<datalist>` is a combobox (HTML-AAM), and
-  // is summarised with the options it offers.
   if (input.hasAttribute('list') && SUGGESTING_INPUT_TYPES.has(type)) {
     return 'combobox';
   }
-  // Date and time inputs have no agreed ARIA role; treat anything unlisted as a textbox,
-  // which is how they behave for a user typing into them.
+  // Date and time inputs have no agreed ARIA role; they behave as a textbox.
   return ownEntry(INPUT_ROLES_BY_TYPE, type) ?? 'textbox';
 }
 
-/**
- * Whether an element carries a name directly. Deliberately narrower than full accessible
- * name computation, which depends on role resolution and would make this circular.
- */
+/** Narrower than the full name computation, which depends on the role and would be circular. */
 function hasNameAttribute(element: Element): boolean {
   return (
     !!element.getAttribute('aria-label')?.trim() ||

@@ -59,8 +59,7 @@ import {
   host: {
     '[attr.role]': '"list"',
     '[class.clr-file-list]': 'true',
-    // Each entry names a file the user chose, and the list's `itemCount` is not withheld;
-    // the container publishes the count instead.
+    // Each entry names a file the user chose; the container publishes the count instead.
     'data-clr-context-ignore': '',
   },
   standalone: false,
