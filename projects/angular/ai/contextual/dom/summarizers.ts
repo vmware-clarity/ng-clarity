@@ -17,28 +17,14 @@ import { resolveRole } from './roles';
 import { isVisible } from './visibility';
 import { ownEntry } from '../lookup';
 
-/**
- * Produces a compact description of a whole subtree, keyed on ARIA role.
- *
- * Summarizers exist for roles whose children are a homogeneous collection: describing a
- * grid row by row would bury the useful facts and blow any budget, while "these columns,
- * this many rows, two selected, sorted by name" is what an agent actually needs. A role
- * whose summary says something is not descended into — except a list, whose links are
- * still reported (see the walk).
- *
- * Roles absent here are described by walking them, which is the right default: a dialog
- * or a form contains arbitrary content whose structure matters.
- */
+/** Describes a homogeneous collection by its ARIA role, so a grid is not walked row by row. */
 export type RoleSummarizer = (element: Element, scope: SummaryScope) => Record<string, unknown>;
 
-/** What a summary is taken with: the snapshot's options, and what it may not read. */
 interface SummaryScope {
   readonly options: Required<ClrContextSnapshotOptions>;
-  /** Selector for elements the snapshot leaves out (its `excludeSelectors`), or `''`. */
   readonly withheld: string;
 }
 
-/** Selectors matching a role explicitly or through the element's implicit role. */
 const ROLE_SELECTORS: Record<string, string> = {
   columnheader: '[role="columnheader"], th:not([role]):not([scope="row"]):not([scope="rowgroup"])',
   row: '[role="row"], tr:not([role])',
@@ -61,16 +47,7 @@ const ROLE_SUMMARIZERS: Record<string, RoleSummarizer> = {
   radiogroup: summarizeRadiogroup,
 };
 
-/**
- * The summary for this element's role, or `null` when there is nothing to summarise —
- * either because the role has no summarizer or because the summarizer found none of the
- * items it understands. In both cases the element should be walked instead: a `<div
- * role="list">` whose items are custom elements rather than list items still has
- * content, and a summary that says nothing must not make it disappear.
- *
- * `withheld` selects elements the snapshot leaves out: they are not items, and their
- * text is not read into any item's name.
- */
+/** The summary for this element's role, or `null` when there is none and the element should be walked. */
 export function summarizeRole(
   element: Element,
   role: string | null,
@@ -97,13 +74,8 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
     state.columns = columns;
   }
 
-  // A paginated or virtualised grid holds only the current page, so its own declared
-  // count is the only honest total. `aria-rowcount="-1"` means "unknown", and an absent
-  // attribute must not be read as zero, so both fall back to counting what is rendered.
-  // The declared count is reported as declared: the producers that set it (Clarity's
-  // virtual scroll among them) declare the data rows, which is also what the fallback
-  // counts. Only this table's rows count, for the total and for the selection: a selected
-  // tab or option inside a cell is not a row.
+  // A paginated grid holds one page, so its declared count is the honest total;
+  // `aria-rowcount="-1"` or no attribute falls back to counting rendered rows.
   const rows = queryRole(element, 'row', scope);
   const declared = element.getAttribute('aria-rowcount');
   const total = declared === null ? Number.NaN : Number(declared);
@@ -123,15 +95,10 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
   return state;
 }
 
-/**
- * Whether item lists are wanted at all. In summary mode a collection reports what it is
- * and what is selected — counts, the active tab, the chosen value — and nothing more.
- */
 function listsItems(options: Required<ClrContextSnapshotOptions>): boolean {
   return options.collectionItems !== 'summary';
 }
 
-/** How many entries a collection holds, and their names unless only a summary is wanted. */
 function counted(
   entries: Element[],
   countKey: string,
@@ -152,8 +119,7 @@ function summarizeTablist(element: Element, scope: SummaryScope): Record<string,
     return {};
   }
   const state = counted(tabs, 'tabCount', 'tabs', element, scope);
-  // Looked for among all the tabs, not the reported few: the active one being past the
-  // budget must not read as "nothing is selected".
+  // The active tab may be past the budget, so it is looked for among all tabs.
   const active = tabs.find(tab => tab.getAttribute('aria-selected') === 'true');
   const activeName = active ? nameOf(active, element, scope) : null;
   if (activeName !== null) {
@@ -162,14 +128,8 @@ function summarizeTablist(element: Element, scope: SummaryScope): Record<string,
   return state;
 }
 
-/**
- * A list is summarised by its items' text but, unlike the other collections, is still
- * walked afterwards (see the walk): a navigation list's links are the point of it, and
- * the summary alone would lose where they go.
- */
+/** A list is still walked after its summary: its links are the point of it. */
 function summarizeList(element: Element, scope: SummaryScope): Record<string, unknown> {
-  // Only this list's own items: a nested list is summarised when the walk reaches it,
-  // and counting its items here would both inflate the count and name them twice.
   const items = queryRole(element, 'listitem', scope);
   if (!items.length) {
     return {};
@@ -177,17 +137,7 @@ function summarizeList(element: Element, scope: SummaryScope): Record<string, un
   return counted(items, 'itemCount', 'items', element, scope);
 }
 
-/**
- * A collapsed dropdown's choices, which are the whole point of it and are not otherwise
- * reachable: `combobox` is a leaf role, so nothing descends into a `<select>`'s options.
- *
- * The choices are authored markup describing what the UI permits, not anything a user
- * typed — the same reasoning that reports `min`, `max` and `pattern`. An agent needs
- * them to propose a legal value at all.
- *
- * Three shapes are covered: a native `<select>`, a combobox that owns a separate listbox
- * through `aria-owns`/`aria-controls`, and an input backed by a `<datalist>`.
- */
+/** `combobox` is a leaf role, so its choices are only reachable here; they are authored markup, not user input. */
 function summarizeCombobox(element: Element, scope: SummaryScope): Record<string, unknown> {
   const choices = comboboxChoices(element, scope);
   if (!choices.length) {
@@ -211,8 +161,6 @@ function comboboxChoices(element: Element, scope: SummaryScope): Element[] {
   if (listId) {
     const datalist = document.getElementById(listId);
     if (datalist) {
-      // A datalist is never rendered, so only what keeps the list itself from the engine
-      // counts, not whether it shows.
       return Array.from(datalist.querySelectorAll('option')).filter(option => readable(option, scope));
     }
   }
@@ -233,11 +181,7 @@ function summarizeOptions(element: Element, scope: SummaryScope): Record<string,
   return summarizeChoices(element, queryRole(element, 'option', scope), isSelectedOption, scope);
 }
 
-/**
- * A menu's commands. Menu items are not options — a different role, deliberately, in
- * ARIA — so they need looking for by name; a menu summarised through the option
- * selector would report nothing and hide every command it offers.
- */
+/** Menu items are not options, so a menu needs its own summarizer. */
 function summarizeMenu(element: Element, scope: SummaryScope): Record<string, unknown> {
   return summarizeChoices(
     element,
@@ -261,8 +205,6 @@ function summarizeChoices(
   if (selected.length) {
     state.selected = selected;
   }
-  // A choice that cannot currently be taken is still listed, since it tells an agent
-  // what the UI can do, but proposing it would fail.
   const disabled = namesOf(
     entries.filter(entry => entry.getAttribute('aria-disabled') === 'true' || (entry as HTMLOptionElement).disabled),
     collection,
@@ -274,10 +216,7 @@ function summarizeChoices(
   return state;
 }
 
-/**
- * Whether an option is selected. A native `<option>` carries its selection as a
- * property the browser maintains; the browser never sets `aria-selected` on it.
- */
+/** The browser never sets `aria-selected` on a native `<option>`. */
 function isSelectedOption(entry: Element): boolean {
   if (entry.tagName.toLowerCase() === 'option') {
     return (entry as HTMLOptionElement).selected;
@@ -301,24 +240,14 @@ function summarizeRadiogroup(element: Element, scope: SummaryScope): Record<stri
   return state;
 }
 
-/**
- * The rows carrying data. A row made of column headers names the columns rather than
- * holding a record, and counting it would misreport the size of the data. A row header
- * (`<th scope="row">`) names its own row and does not make it a header row.
- */
+/** Rows carrying data; a column-header row is not a record. */
 function dataRows(rows: Element[]): Element[] {
-  // A row that also holds data cells is a record whose first cell happens to be a header
-  // (`<th>` without `scope="row"`).
   return rows.filter(row => !row.querySelector(ROLE_SELECTORS.columnheader) || row.querySelector(DATA_CELL_SELECTOR));
 }
 
 const DATA_CELL_SELECTOR = 'td, [role="cell"], [role="gridcell"]';
 
-/**
- * The collection an item of each role belongs to, so that a nested collection's items
- * are left to that collection: a sub-list's entries, the rows of a table inside an
- * expanded row, the options of a listbox inside a menu.
- */
+/** Containers per item role, so a nested collection's items are left to it. */
 const CONTAINER_SELECTORS: Record<string, string> = {
   columnheader: 'table, [role="table"], [role="grid"], [role="treegrid"]',
   row: 'table, [role="table"], [role="grid"], [role="treegrid"]',
@@ -329,10 +258,6 @@ const CONTAINER_SELECTORS: Record<string, string> = {
   radio: '[role="radiogroup"]',
 };
 
-/**
- * The elements of a role inside `element` that belong to it: not hidden, not in an
- * ignored or excluded region, and not part of a collection nested inside this one.
- */
 function queryRole(element: Element, role: string, scope: SummaryScope): Element[] {
   const container = CONTAINER_SELECTORS[role];
   const judgesStyle = STYLE_JUDGED_ROLES.has(role);
@@ -344,28 +269,14 @@ function queryRole(element: Element, role: string, scope: SummaryScope): Element
   );
 }
 
-/**
- * Roles whose items are left out when a style hides them — a datagrid column hidden with
- * `display: none`, a tab or list item a stylesheet removed — as well as when an attribute
- * does. Not rows, which are counted, and where a style check per row would be a layout
- * read per record; nor options and radios, which are never rendered in a closed dropdown
- * or are drawn over by a custom control, and are what the collection offers all the same.
- */
+/** Roles hidden by a style are left out too; rows are not checked, to avoid a layout read per record. */
 const STYLE_JUDGED_ROLES = new Set(['columnheader', 'tab', 'listitem', 'menuitem']);
 
-/** Items the user cannot see, or the snapshot leaves out, are not part of what a collection offers. */
 function readable(item: Element, scope: SummaryScope): boolean {
   return !item.closest(CLR_CONTEXT_HIDDEN_SELECTOR) && !(scope.withheld && item.closest(scope.withheld));
 }
 
-/**
- * An item's name, or `null` when the item sits in a region the application marked
- * `data-clr-context-redact` inside the collection — a list with one sensitive entry, a
- * tab named after an account. Such an item still counts, as a redacted field is still
- * described, but what it says is withheld. A region around the whole collection is not
- * decided here: the walk redacts the collection's node, contents and all, while its
- * column names — which name fields rather than show values — stay.
- */
+/** `null` for an item in a redacted region inside the collection: it still counts, but its name is withheld. */
 function nameOf(item: Element, collection: Element, scope: SummaryScope): string | null {
   const redacting = item.closest(CLR_CONTEXT_REDACT_SELECTOR);
   if (redacting && !redacting.contains(collection)) {
@@ -374,7 +285,6 @@ function nameOf(item: Element, collection: Element, scope: SummaryScope): string
   return accessibleName(item, resolveRole(item), scope.options.maxTextLength, scope.withheld);
 }
 
-/** The names of the first items the budget allows, leaving out those withheld. */
 function namesOf(items: Element[], collection: Element, scope: SummaryScope): string[] {
   return items
     .slice(0, scope.options.maxItemsPerCollection)

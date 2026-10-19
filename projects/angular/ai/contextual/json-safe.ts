@@ -5,27 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/** How deep a component's state, or a form control's value or errors, is kept. */
 export const STATE_DEPTH = 3;
 
-/** How deep a route's data is kept: a route says what it is in a level or two. */
 export const ROUTE_DATA_DEPTH = 2;
 
-/**
- * How deep an annotation a provider contributes is copied, counting the annotation
- * itself: its state keeps several levels of whatever the application describes.
- */
 export const REGION_DEPTH = 10;
 
 /**
- * Reduces a value to its JSON-serializable subset, dropping functions, class instances
- * and anything nested deeper than `depth`. Used wherever application data — route
- * configuration, a form control's value or errors — is put into a snapshot or a result,
- * where only plain values belong and a component reference or a factory would be useless
- * and potentially huge.
- *
- * Empty arrays and objects are dropped unless `keepEmpty` is set, which is what a
- * reported value needs: an empty selection is `[]`, not "nothing to say".
+ * Reduces a value to its JSON-serializable subset, at most `depth` levels deep.
+ * Empty arrays and objects are dropped unless `keepEmpty` is set.
  */
 export function jsonSafe(value: unknown, depth: number, keepEmpty = false): unknown {
   if (value === null || typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean') {
@@ -51,11 +39,7 @@ export function jsonSafe(value: unknown, depth: number, keepEmpty = false): unkn
   return undefined;
 }
 
-/**
- * Sets `target[key]` as a plain own property. Defined rather than assigned: an own
- * `__proto__` key, which `JSON.parse` can produce, would otherwise set the target's
- * prototype instead of copying the key.
- */
+/** Defined rather than assigned: an own `__proto__` key from `JSON.parse` would otherwise set the prototype. */
 export function defineOwn(target: object, key: string, value: unknown): void {
   Object.defineProperty(target, key, { value, enumerable: true, writable: true, configurable: true });
 }

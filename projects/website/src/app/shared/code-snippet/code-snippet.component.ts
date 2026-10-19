@@ -99,8 +99,7 @@ export class CodeSnippetComponent {
       this.highlightedCode = undefined;
       return;
     }
-    // A language without a loaded grammar is shown as plain text: Prism throws for it, which
-    // would take the whole page's rendering down with it.
+    // Prism throws for a language without a loaded grammar, so show it as plain text.
     const grammar = prismjs.languages[language];
     this.highlightedCode = grammar ? prismjs.highlight(code, grammar, language) : escapeHtml(code);
   }

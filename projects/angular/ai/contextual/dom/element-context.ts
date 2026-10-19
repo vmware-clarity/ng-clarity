@@ -11,11 +11,7 @@ import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext, ClrContextSnapshotOp
 import { truncate } from './text';
 import { defineOwn, jsonSafe, STATE_DEPTH } from '../json-safe';
 
-/**
- * Reads an element's published context, if any. A callback that throws is treated as
- * having nothing to say — one broken publisher must not break the snapshot — and in
- * development says so on the console, so the component's author hears of it.
- */
+/** Reads an element's published context. A callback that throws counts as nothing, with a dev-mode warning. */
 export function readClrElementContext(
   element: Element,
   options: Required<ClrContextSnapshotOptions>
@@ -33,7 +29,6 @@ export function readClrElementContext(
   }
 }
 
-/** In development, says on the console that what an element published was left out, and why. */
 function warnLeftOut(element: Element, error: unknown): void {
   if (isDevMode()) {
     console.warn(
@@ -43,11 +38,7 @@ function warnLeftOut(element: Element, error: unknown): void {
   }
 }
 
-/**
- * Merges an element's published context over a DOM-extracted one. Published values win
- * — the component knows itself better than the markup does — and states are merged
- * key-wise. What is published is reduced first (see {@link publishedNode}).
- */
+/** Merges an element's published context over the DOM-extracted one; published values win. */
 export function mergeElementContext(
   base: ClrComponentContext,
   element: Element,
@@ -61,8 +52,6 @@ export function mergeElementContext(
   try {
     own = publishedParts(published, options, PUBLISHED_DEPTH);
   } catch (error) {
-    // Reading what was published can throw too — a getter in its state — and counts as
-    // having published nothing.
     warnLeftOut(element, error);
     return base;
   }
@@ -82,17 +71,11 @@ export function mergeElementContext(
   return merged;
 }
 
-/** How many levels of children a publisher or an extractor may nest. */
 const PUBLISHED_DEPTH = 4;
 
 /**
- * A node as application code published or extracted it, reduced to what a snapshot may
- * carry: a string `type` (without one there is no node), a string `element` and `label`
- * with the label held to the text budget, state reduced to its plain, serialisable part
- * with long strings shortened and lists held to the collection budget, and children
- * reduced the same way, a few levels deep. Anything else is dropped — a DOM element, a
- * function, a circular object, an unknown key — because a snapshot is data other code
- * serialises and sends.
+ * A node as application code published it, reduced to plain, budgeted, serialisable data.
+ * A snapshot is data other code serialises and sends, so anything else is dropped.
  */
 export function publishedNode(
   value: unknown,
@@ -154,8 +137,7 @@ function publishedParts(
     }
   }
   if (depth > 0 && Array.isArray(source['children'])) {
-    // Children a component publishes are not walked, so they are not counted against the
-    // component budget either; the collection budget bounds them instead.
+    // Published children are not walked, so the collection budget bounds them instead.
     parts.children = source['children']
       .slice(0, options.maxItemsPerCollection)
       .map(child => publishedNode(child, options, depth - 1))
@@ -164,10 +146,8 @@ function publishedParts(
   return parts;
 }
 
-/** The longest a published `type` or `element` name may be. */
 const MAX_TYPE_LENGTH = 64;
 
-/** Serialisable data with strings held to the text budget and lists to the collection budget. */
 function bounded(value: unknown, options: Required<ClrContextSnapshotOptions>): unknown {
   if (typeof value === 'string') {
     return truncate(value, options.maxTextLength);

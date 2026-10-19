@@ -14,24 +14,8 @@ export { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
 
 /**
- * Describes everything rendered under `root`, as a tree, by reading the accessibility
- * tree, and says whether the component budget ran out before all of it was described.
- *
- * Clarity components, `@clr/ui` CSS-only markup, other component libraries and plain
- * semantic HTML are all described by the same code: a role means the same thing wherever
- * it appears. Components contribute only what a role cannot express, by publishing
- * through `clrPublishElementContext`.
- *
- * A button or link is reported wherever it actually is in the tree — inside the dialog,
- * the heading, the alert that owns it — never pulled out into a separate flattened list.
- * Nesting is the only representation of "this belongs to that": an agent looking for
- * what it can invoke inside a specific dialog walks that dialog's own `children`, the
- * same way it would read the rendered page. The exception is a summarised collection: a
- * table or grid reports its columns, row count and the form controls in its cells, and
- * no other cell content, buttons and links included.
- *
- * `customExtractors` cover the remainder — markup carrying neither a role nor an
- * accessible name, such as a bare `<div class="card">`.
+ * Describes everything rendered under `root` as a tree, and whether the budget ran out.
+ * `customExtractors` describe markup with neither a role nor an accessible name.
  */
 export function clrCollectDomContextTree(
   root: ParentNode,

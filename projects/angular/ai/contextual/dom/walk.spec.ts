@@ -383,8 +383,7 @@ describe('collectContextTree', () => {
   });
 
   it('reports a control nested inside a heading, rather than swallowing it into the label', () => {
-    // The literal case this guards: a heading whose text is a name plus a genuinely
-    // separate, independently focusable button — ordinary, valid markup.
+    // A heading's text plus a separate, focusable button is ordinary markup.
     const [heading] = collect('<h2>Combobox <button>Toggle Disabled</button></h2>');
 
     expect(heading.type).toBe('heading');
@@ -415,12 +414,8 @@ describe('collectContextTree', () => {
   });
 
   it("keeps a component's parts together when it renders more than one of them", () => {
-    // A custom element with no role of its own is normally transparent — its lone
-    // reportable descendant stands in for it directly. But when it renders more than
-    // one independently reportable piece, flattening them out would scatter one
-    // component into unrelated-looking siblings. This is deliberately generic markup —
-    // no Clarity tag names — because the rule has to hold for any component shaped
-    // this way, not just the ones we happened to test.
+    // A role-less custom element rendering several reportable parts is wrapped, not flattened.
+    // Generic markup on purpose: the rule must hold for any component shaped this way.
     const nodes = collect('<my-widget><div role="grid"></div><my-widget-footer>3 items</my-widget-footer></my-widget>');
 
     expect(nodes.length).toBe(1);
@@ -431,8 +426,6 @@ describe('collectContextTree', () => {
   });
 
   it('stays transparent when a component renders exactly one reportable piece', () => {
-    // Regression guard: this is the existing, already-tested single-branch case and
-    // must not start wrapping unnecessarily.
     const [node] = collect('<my-widget><div role="grid"></div></my-widget>');
 
     expect(node.type).toBe('grid');

@@ -12,10 +12,7 @@ import { ClrContext } from '@clr/angular/ai';
 
 import { DEMO_HOSTS, DemoHost } from '../hosts';
 
-/**
- * A page section with the kinds of UI an agent reads: an alert, a datagrid with
- * selection, actions, and a modal — annotated with what only the application knows.
- */
+/** An alert, a selectable datagrid, actions and a modal, annotated with what only the app knows. */
 @Component({
   selector: 'clr-context-inventory',
   standalone: true,

@@ -85,9 +85,6 @@ const SNAPSHOT_SHAPE_EXAMPLE = `
 }
 `;
 
-// A button or link is reported exactly where it is in the DOM — the alert's own dismiss
-// button is nested under it, above — never pulled into a separate flat list.
-
 const TRACKER_EXAMPLE = `
 import { Component, DestroyRef, inject, OnInit } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';

@@ -12,25 +12,10 @@ import { ClrComponentContext, ClrContextProvider } from './interfaces/context.in
 import { ClrContextRegistryService } from './providers/context-registry.service';
 
 /**
- * Annotates a piece of UI with semantic context for AI agents — the knowledge only the
- * application has, such as what a section is for:
- *
+ * Annotates a piece of UI with context for AI agents, such as what a section is for:
  * ```html
  * <section clrContext="Firewall rules for the selected cluster" [clrContextState]="{ cluster: clusterName }">
  * ```
- *
- * The annotation is part of snapshots only while this element exists: it registers when
- * the directive initializes and unregisters when it is destroyed, and its inputs are
- * read at snapshot time, so snapshots never contain outdated annotations.
- *
- * The directive is standalone: a standalone component imports `ClrContext` directly, and an
- * NgModule application can keep importing `ClrContextModule`. It annotates markup in the
- * application's own templates, while the optional `window.clrContext()` accessor is what agents
- * outside the application call to read the page.
- *
- * Changes to the annotation are also announced to whatever keeps a snapshot current —
- * whether the state object was replaced or edited in place — because they alter no DOM
- * and would otherwise go unnoticed until something else on the page changed.
  */
 @Directive({
   selector: '[clrContext]',
@@ -54,14 +39,11 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
   }
 
   ngDoCheck(): void {
-    // An annotation inside an ignored region never reaches a snapshot, so its changes are
-    // no reason to take one: a chat panel marked ignore must not re-trigger tracking.
+    // An annotation inside an ignored region never reaches a snapshot, so its changes don't count.
     if (this.anchor()?.closest(CLR_CONTEXT_IGNORE_SELECTOR)) {
       return;
     }
-    // Serialised on every check to notice a state object edited in place. The state an
-    // annotation carries is meant to be small — a few fields — so this stays cheap; an
-    // application that annotates a large object should hand over a new one instead.
+    // Serialised on every check to catch a state object edited in place; keep the state small.
     const current = this.serialized();
     if (current !== this.lastReported) {
       this.lastReported = current;
@@ -73,11 +55,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     this.contextRegistry.unregister(this);
   }
 
-  /** The annotation as a context node, or `null` while it has neither label nor state. */
   getClrContext(): ClrComponentContext | null {
-    // A copy, parsed from the serialised form the change check already computes: the
-    // tracker compares snapshots, and a state object edited in place would otherwise
-    // read as unchanged on both sides.
     const serialized = this.serialized();
     return serialized ? JSON.parse(serialized) : null;
   }
@@ -96,22 +74,16 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     return context;
   }
 
-  /** The annotation as it would appear in a snapshot; what "changed" is measured against. */
   private serialized(): string {
     try {
       const annotation = this.annotation();
       return annotation ? JSON.stringify(annotation) : '';
     } catch {
-      // A state that cannot be serialised cannot appear in a snapshot either.
       return '';
     }
   }
 
-  /**
-   * The element the annotation sits on. On an `<ng-container>`, which renders no element
-   * of its own, that is the element it sits in, so the annotation still follows the rules
-   * of the page around it: left out where that is hidden, stripped where it is redacted.
-   */
+  /** On an `<ng-container>`, the element it sits in. */
   private anchor(): Element | null {
     const node: Node | undefined = this.host?.nativeElement;
     return node?.nodeType === Node.ELEMENT_NODE ? (node as Element) : (node?.parentElement ?? null);
