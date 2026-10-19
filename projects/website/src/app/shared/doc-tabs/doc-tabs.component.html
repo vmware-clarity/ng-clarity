@@ -15,6 +15,22 @@
           <clr-icon shape="arrow" class="arrow-icon"></clr-icon>
         </a>
       }
+      @if (type === 'addons') {
+        <p class="dox-header-note" cds-text="body">
+          <span class="label label-purple">Addon</span>
+          Part of the optional <code cds-text="code">&#64;clr/addons</code> package.
+          @if (basedOn) {
+            Built on the <a [routerLink]="['/documentation', basedOn.url]">{{ basedOn.text }}</a> component.
+          }
+          <a routerLink="/pages/addons">What are addons?</a>
+        </p>
+      }
+      @for (addon of addons; track addon.url) {
+        <p class="dox-header-note" cds-text="body">
+          Need more? The <a [routerLink]="['/documentation', addon.url]">{{ addon.text }}</a> addon builds on this
+          component.
+        </p>
+      }
       <clr-tabs class="dox-tabs clr-mt-16px">
         <clr-tab>
           <a clrTabLink [routerLink]="[componentURL]" (keyup.space)="$any($event.target).click()">Overview</a>

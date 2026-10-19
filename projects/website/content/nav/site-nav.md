@@ -53,6 +53,9 @@ groups:
         url: /documentation/onboarding
   - label: Components
   - label: Addons
+    links:
+      - label: Overview
+        url: /pages/addons
   - label: AI
     links:
       - label: Contextual Engine

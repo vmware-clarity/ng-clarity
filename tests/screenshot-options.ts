@@ -13,119 +13,104 @@ import { ScreenshotOptions } from './helpers/screenshot-options.interface';
  * as the default implementation only takes a screenshot of the body element and if the element being
  * tested extends beyond that element it will be clipped.
  *
- * Each key in the object below is either a component name or a story name. The case/spelling of the name
- * should come from the URL, see the examples below:
+ * Keys are derived from the story file's path under `.storybook/stories/`, not from the story's
+ * `title` — see the comment in tests/visual-snapshots.spec.ts. A key covers:
  *
- * /?path=/story/header-headers-static--header-static => component name: header, story name: headers-static--header-static
- * /?path=/story/datepicker-datepicker--datepicker => component name: datepicker, story name: datepicker--datepicker
+ *   `<folder>`                       every story in that folder and its subfolders
+ *   `<folder>/<file>`                every story in one story file
+ *   `<folder>/<file>--<story-name>`  one story
  *
- * If a component name is used, all stories under that component name will use the options specified.
+ * For example, `.storybook/stories/components/forms/datepicker/datepicker-opened.stories.ts`
+ * exporting `MonthView` is covered by `components/forms/datepicker`,
+ * `components/forms/datepicker/datepicker-opened` and
+ * `components/forms/datepicker/datepicker-opened--month-view`.
+ *
+ * When several keys cover a story, they are merged and the more specific key wins. Use the
+ * broadest key that covers only the stories that need the option. A key that covers no story
+ * fails the test run.
+ *
+ * The matching snapshot lands at `tests/snapshots/<browser>/<key>-<theme>-<density>.png`, so a key
+ * can be read straight off a snapshot path (and vice versa).
  */
 export const screenshotOptions: ScreenshotOptions = {
-  'popover--popover': {
+  'components/overlays/popover/popover--popover': {
     // The popover overlay attaches asynchronously after the story renders; on slow machines
     // the screenshot occasionally caught the story before the overlay appeared.
     waitForSelectors: ['#hello_world'],
   },
-  'dialog--default': {
+  'addons/dialog': {
     fullPageScreenshot: true,
   },
-  'dialog--vertical-tabs': {
+  // The old flat `dropdown/` directory is now two groups; both keep the full-page screenshot.
+  'components/overlays/dropdown': {
     fullPageScreenshot: true,
   },
-  'dialog--submit-default': {
+  'patterns/dropdown-combinations': {
     fullPageScreenshot: true,
   },
-  dropdown: {
+  'components/navigation/header/header-static': {
     fullPageScreenshot: true,
   },
-  'headers-static--header-static': {
+  'components/forms/combobox/combobox--loading': {
     fullPageScreenshot: true,
   },
-  'combobox--loading': {
+  'components/forms/combobox/combobox--no-results': {
     fullPageScreenshot: true,
   },
-  'combobox--no-results': {
+  'components/forms/combobox/combobox--opened': {
     fullPageScreenshot: true,
   },
-  'combobox--opened': {
+  'components/forms/combobox/combobox--opened-multi-line-items': {
     fullPageScreenshot: true,
   },
-  'combobox--opened-multi-line-items': {
-    fullPageScreenshot: true,
-  },
-  'header--collapsed': {
+  'components/navigation/header/header--collapsed': {
     viewport: { width: 500, height: 300 },
   },
-  'timeline--horizontal-layout-with-long-text': {
+  'components/timeline/timeline--horizontal-layout-with-long-text': {
     viewport: { width: 1000, height: 400 },
   },
-  'header-responsive-nav--level-1-nav-open': {
+  'components/navigation/header/header-responsive-nav': {
     viewport: { width: 500, height: 400 },
     fullPageScreenshot: true,
   },
-  'header-responsive-nav--level-2-nav-open': {
-    viewport: { width: 500, height: 400 },
+  'patterns/application-layout': {
     fullPageScreenshot: true,
   },
-  'application--default': {
+  'patterns/application-layout/application-layout--default': {
     exclude: true,
   },
-  'application--first-navigation-only': {
+  'components/overlays/modal/modal--open-small-modal': {
     fullPageScreenshot: true,
   },
-  'application--no-navigations': {
+  'components/overlays/modal/modal--open-medium-modal': {
     fullPageScreenshot: true,
   },
-  'modal--open-small-modal': {
+  'components/overlays/modal/modal--open-large-modal': {
     fullPageScreenshot: true,
   },
-  'modal--open-medium-modal': {
+  'components/overlays/modal/modal--open-extra-large-modal': {
     fullPageScreenshot: true,
   },
-  'modal--open-large-modal': {
+  'components/overlays/modal/modal--open-full-screen-modal': {
     fullPageScreenshot: true,
   },
-  'modal--open-extra-large-modal': {
+  'components/signpost/signpost--opened': {
     fullPageScreenshot: true,
   },
-  'modal--open-full-screen-modal': {
+  'components/alert/standard-alert--with-open-actions-dropdown': {
     fullPageScreenshot: true,
   },
-  'signpost--opened': {
+  'components/alert/standard-alert--with-long-content-and-open-actions-dropdown': {
     fullPageScreenshot: true,
   },
-  'standard-alerts--with-open-actions-dropdown': {
+  'components/flows/wizard': {
     fullPageScreenshot: true,
   },
-  'standard-alerts--with-long-content-and-open-actions-dropdown': {
+  'components/forms/datepicker/datepicker-opened': {
     fullPageScreenshot: true,
   },
-  wizard: {
-    fullPageScreenshot: true,
-  },
-  'opened--datepicker': {
-    fullPageScreenshot: true,
-  },
-  'opened--default-date': {
-    fullPageScreenshot: true,
-  },
-  'opened--min-date': {
-    fullPageScreenshot: true,
-  },
-  'opened--max-date': {
-    fullPageScreenshot: true,
-  },
-  'opened--action-buttons': {
-    fullPageScreenshot: true,
-  },
-  'opened--month-view': {
-    fullPageScreenshot: true,
-  },
-  'opened--year-view': {
-    fullPageScreenshot: true,
-  },
-  'opened--predefined-date-ranges-open': {
-    fullPageScreenshot: true,
+  // A disabled datepicker never opens, so its baseline is the body-only screenshot.
+  'components/forms/datepicker/datepicker-opened--disabled': {
+    fullPageScreenshot: false,
   },
 };
