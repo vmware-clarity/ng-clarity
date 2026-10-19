@@ -6,7 +6,7 @@
  */
 
 import { Component } from '@angular/core';
-import { AppfxCardContainerModule } from '@clr/addons/card-container';
+import { AppfxCard, AppfxCardContainerModule } from '@clr/addons/card-container';
 
 import { DynamicCardComponent } from './cards/dynamic/dynamic.component';
 import { NotesCardComponent } from './cards/notes/notes.component';
@@ -26,7 +26,7 @@ import { TagsCardComponent } from './cards/tags/tags.component';
   templateUrl: './card-container.demo.html',
 })
 export class CardContainerDemo {
-  cards: any[] = [
+  cards: AppfxCard[] = [
     { id: 'summary', title: 'Summary', unitWidth: 2, unitHeight: 4, componentClass: SummaryCardComponent },
     { id: 'notes', title: 'Notes', unitWidth: 1, unitHeight: 4, componentClass: NotesCardComponent },
     { id: 'tags', title: 'Tags', unitWidth: 1, unitHeight: 4, componentClass: TagsCardComponent },

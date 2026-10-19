@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "node16",
+    "moduleResolution": "node16",
     "target": "es2020",
     "lib": ["es2020"],
     "outDir": "../../../dist/clr-angular/schematics",
@@ -13,5 +13,5 @@
     "sourceMap": true
   },
   "include": ["./**/*.ts"],
-  "exclude": ["**/*.spec.ts", "**/*.vitest.ts"]
+  "exclude": ["**/*.spec.ts", "**/*.vitest.ts", "vitest.config.ts"]
 }

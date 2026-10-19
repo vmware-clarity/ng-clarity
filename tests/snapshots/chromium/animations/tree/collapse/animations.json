@@ -12,15 +12,15 @@
         "offset": 0,
         "easing": "linear",
         "composite": "auto",
-        "height": "0px",
-        "contentVisibility": "visible"
+        "contentVisibility": "visible",
+        "height": "0px"
       },
       {
         "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "height": "224px",
-        "contentVisibility": "visible"
+        "contentVisibility": "visible",
+        "height": "224px"
       }
     ]
   }

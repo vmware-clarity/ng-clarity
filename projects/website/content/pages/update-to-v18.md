@@ -32,7 +32,7 @@ After aligning package versions, run `ng update @clr/angular`. Migration schemat
 
 ## Angular Support
 
-Clarity v18 upgrades to Angular 21. This is the minimum supported Angular version.
+Clarity v18 upgrades to Angular 21. This is the minimum supported Angular version. Angular 22 is supported as of v18.4.0.
 
 ## Dependency Changes
 
