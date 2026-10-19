@@ -5,10 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { AnimationCallbackEvent, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { animateHeight, ClrHeightAnimation } from './height-animation';
+import { animateHeight, ClrHeightAnimation, collapseHeight } from './height-animation';
 import { delay } from '../testing/helpers.spec';
 
 @Component({
@@ -149,5 +149,29 @@ describe('animateHeight', () => {
 
   it('does not animate when the height does not change', () => {
     expect(animateHeight(element, { from: 80, to: 80 })).toBeNull();
+  });
+
+  describe('outside of a browser', () => {
+    const { getComputedStyle } = window;
+    const serverElement = {} as HTMLElement;
+
+    beforeEach(() => {
+      window.getComputedStyle = undefined;
+    });
+
+    afterEach(() => {
+      window.getComputedStyle = getComputedStyle;
+    });
+
+    it('does not animate', () => {
+      expect(animateHeight(serverElement, { from: 0 })).toBeNull();
+    });
+
+    it('completes the collapse at once', async () => {
+      const animationComplete = jasmine.createSpy('animationComplete');
+      await collapseHeight({ target: serverElement, animationComplete } as AnimationCallbackEvent);
+
+      expect(animationComplete).toHaveBeenCalled();
+    });
   });
 });

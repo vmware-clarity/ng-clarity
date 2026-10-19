@@ -79,11 +79,14 @@ export function animateHeight(
   element: HTMLElement,
   { from, to, easing }: { from: number; to?: number; easing?: string }
 ): Animation | null {
+  if (typeof element.animate !== 'function') {
+    return null;
+  }
   runningAnimations.get(element)?.cancel();
   runningAnimations.delete(element);
   to ??= measureHeight(element);
 
-  if (from === to || typeof element.animate !== 'function') {
+  if (from === to) {
     return null;
   }
   const timing = readAnimationTiming(element);
@@ -106,8 +109,14 @@ export function animateHeight(
   }
 }
 
-/** The height of the element as it is rendered, running animations included, with its fractional part. */
+/**
+ * The height of the element as it is rendered, running animations included, with its fractional part. It is 0 outside
+ * of a browser.
+ */
 export function measureHeight(element: HTMLElement): number {
+  if (typeof getComputedStyle !== 'function') {
+    return 0;
+  }
   const height = parseFloat(getComputedStyle(element).height);
   return Number.isFinite(height) ? height : 0;
 }
