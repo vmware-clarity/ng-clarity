@@ -7,7 +7,9 @@
 
 import { Route } from '@angular/router';
 
+import { attempt } from './attempt';
 import { ClrAvailableRoute } from './interfaces/context.interface';
+import { stripQueryAndFragment } from './url';
 
 /**
  * The router configuration flattened to navigable path patterns, without wildcards, redirects or custom matchers.
@@ -98,17 +100,13 @@ export function routePatternFor(config: Route[], path: string): string | null {
     }
     return null;
   };
-  const segments = path.split(/[?#]/)[0].split('/').filter(Boolean).map(decodeSegment);
+  const segments = stripQueryAndFragment(path).split('/').filter(Boolean).map(decodeSegment);
   const pattern = match(config, segments, []);
   return pattern ? pattern.join('/') : null;
 }
 
 function decodeSegment(segment: string): string {
-  try {
-    return decodeURIComponent(segment);
-  } catch {
-    return segment;
-  }
+  return attempt(() => decodeURIComponent(segment), segment);
 }
 
 function loadedChildren(entry: Route): Route[] | null {

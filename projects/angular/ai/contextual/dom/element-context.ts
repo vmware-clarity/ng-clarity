@@ -130,7 +130,7 @@ function publishedParts(
   const state = source['state'];
   if (state && typeof state === 'object' && !Array.isArray(state)) {
     for (const [key, entry] of Object.entries(state)) {
-      const safe = bounded(jsonSafe(entry, STATE_DEPTH, true), options);
+      const safe = jsonSafe(entry, STATE_DEPTH, true, options);
       if (safe !== undefined) {
         defineOwn(ownState, key, safe);
       }
@@ -147,20 +147,3 @@ function publishedParts(
 }
 
 const MAX_TYPE_LENGTH = 64;
-
-function bounded(value: unknown, options: Required<ClrContextSnapshotOptions>): unknown {
-  if (typeof value === 'string') {
-    return truncate(value, options.maxTextLength);
-  }
-  if (Array.isArray(value)) {
-    return value.slice(0, options.maxItemsPerCollection).map(entry => bounded(entry, options));
-  }
-  if (value && typeof value === 'object') {
-    const result: Record<string, unknown> = {};
-    for (const [key, entry] of Object.entries(value)) {
-      defineOwn(result, key, bounded(entry, options));
-    }
-    return result;
-  }
-  return value;
-}

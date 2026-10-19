@@ -6,6 +6,7 @@
  */
 
 import { ClrComponentContext, ClrPageContext } from './interfaces/context.interface';
+import { serialize } from './json-safe';
 
 /** A node whose own state changed between two snapshots, without its children. */
 export interface ClrComponentContextChange {
@@ -101,12 +102,4 @@ function withoutChildren(node: ClrComponentContext): ClrComponentContext {
   const shallow = { ...node };
   delete shallow.children;
   return shallow;
-}
-
-function serialize(value: unknown): string {
-  try {
-    return JSON.stringify(value ?? null);
-  } catch {
-    return '';
-  }
 }
