@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { attempt } from '../attempt';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options';
 import { contextForUntrustedCaller, sanitizeUntrustedSnapshotOptions } from '../untrusted-options';
@@ -386,10 +387,6 @@ function normalizedOrigin(entry: string): string {
 }
 
 function originOf(entry: string): string | null {
-  try {
-    const origin = new URL(entry).origin;
-    return origin === 'null' ? null : origin;
-  } catch {
-    return null;
-  }
+  const origin = attempt(() => new URL(entry).origin, null);
+  return origin === 'null' ? null : origin;
 }
