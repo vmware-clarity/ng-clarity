@@ -5,11 +5,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<h4>Loading Buttons</h4>
-<button [clrLoading]="validateState" class="btn btn-primary" (click)="validateDemo()">Validate</button>
-<button [clrLoading]="submitState" type="submit" class="btn btn-success-outline" (click)="submitDemo()">Submit</button>
-
-<h4>Loading Buttons with Disabled Input</h4>
+<h4>Loading buttons with disabled input</h4>
 <button
   [clrLoading]="disabledState"
   [disabled]="disabledStateDisabled"
@@ -17,7 +13,7 @@
   class="btn btn-primary"
   (click)="disabledDemo()"
 >
-  <cds-icon shape="home"></cds-icon>
+  <clr-icon shape="home"></clr-icon>
   Disable After Success
 </button>
 <button
@@ -30,15 +26,24 @@
   Enable After Success
 </button>
 
-<h4>Small Loading Buttons</h4>
+<h4>Small loading buttons</h4>
 <button [clrLoading]="validateSmState" class="btn btn-sm btn-info-outline" (click)="validateSmDemo()">
-  <cds-icon shape="home"></cds-icon>
+  <clr-icon shape="home"></clr-icon>
   Validate
 </button>
-<button [clrLoading]="submitSmState" type="submit" class="btn btn-sm btn-success-outline" (click)="submitSmDemo()">
-  <cds-icon shape="home"></cds-icon>
+<button
+  [clrLoading]="submitSmState"
+  type="submit"
+  class="btn btn-sm btn-success-outline"
+  (click)="submitSmDemo()"
+>
+  <clr-icon shape="home"></clr-icon>
   Submit
 </button>
-<button [clrLoading]="validateFalsyState" class="btn btn-sm btn-info-outline" (click)="validateFalsyDemo()">
+<button
+  [clrLoading]="validateFalsyState"
+  class="btn btn-sm btn-info-outline"
+  (click)="validateFalsyDemo()"
+>
   Validate
 </button>
