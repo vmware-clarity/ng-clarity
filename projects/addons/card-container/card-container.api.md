@@ -18,17 +18,13 @@ import { CdkDropList } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ChangeDetectorRef } from '@angular/core';
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { Directionality } from '@angular/cdk/bidi';
 import { DoCheck } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
-import { DragDrop } from '@angular/cdk/drag-drop';
-import { DragDropConfig } from '@angular/cdk/drag-drop';
 import { ElementRef } from '@angular/core';
 import { EmbeddedViewRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
 import { FactoryProvider } from '@angular/core';
 import { FlexibleConnectedPositionStrategyOrigin } from '@angular/cdk/overlay';
-import { FocusTrapFactory } from '@angular/cdk/a11y';
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import * as i7 from '@angular/common';
@@ -122,7 +118,7 @@ export class AppfxCardContainerComponent implements OnInit, DoCheck {
     // Warning: (ae-forgotten-export) The symbol "PersistenceService" needs to be exported by the entry point clr-addons-card-container.d.ts
     constructor(containerService: ContainerService, persistenceService: PersistenceService, iterableDiffers: IterableDiffers);
     // (undocumented)
-    cards: AppfxCardInternal[];
+    cards: AppfxCard[];
     // (undocumented)
     containerCards: AppfxCardInternal[];
     // (undocumented)

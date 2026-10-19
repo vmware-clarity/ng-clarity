@@ -19,6 +19,7 @@ export * from './calendar';
 export * from './day';
 export * from './datepicker-action-buttons';
 export * from './interfaces/day-of-week.interface';
+export { DateRangeOption } from './interfaces/date-range.interface';
 export * from './enums/weekday.enum';
 
 export * from './datepicker.module';
