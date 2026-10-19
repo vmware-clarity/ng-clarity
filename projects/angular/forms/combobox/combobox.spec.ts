@@ -9,7 +9,6 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent, ClrPopoverService } from '@clr/angular/popover/common';
 import { delay } from '@clr/angular/testing';
@@ -68,7 +67,7 @@ export default function (): void {
 
     beforeEach(function () {
       TestBed.configureTestingModule({
-        imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule, ClrPopoverContent],
+        imports: [ClrComboboxModule, ClrIcon, FormsModule, ClrPopoverContent],
         declarations: [TestComponent],
         providers: [
           OptionSelectionService,
@@ -304,7 +303,7 @@ export default function (): void {
       it('pre-selection works when writeValue has same identity as option (different ref)', async () => {
         TestBed.resetTestingModule();
         TestBed.configureTestingModule({
-          imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule, ClrPopoverContent],
+          imports: [ClrComboboxModule, ClrIcon, FormsModule, ClrPopoverContent],
           declarations: [IdentityTestComponent],
           providers: [
             OptionSelectionService,

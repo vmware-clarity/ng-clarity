@@ -8,7 +8,6 @@ import 'zone.js';
 import { loadCoreIconSet, loadEssentialIconSet } from '@clr/angular';
 import { setCompodocJson } from '@storybook/addon-docs/angular';
 import { applicationConfig } from '@storybook/angular';
-import { provideAnimations } from '@angular/platform-browser/animations';
 
 import docs from '../documentation.json';
 import { DENSITY, THEMES } from './helpers/constants';
@@ -147,7 +146,7 @@ export const decorators = [
   themeDecorator,
   densityDecorator,
   applicationConfig({
-    providers: [provideAnimations(), provideZoneChangeDetection({ eventCoalescing: true })],
+    providers: [provideZoneChangeDetection({ eventCoalescing: true })],
   }),
 ];
 
