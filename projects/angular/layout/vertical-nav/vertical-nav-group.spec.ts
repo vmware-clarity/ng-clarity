@@ -235,6 +235,85 @@ export default function (): void {
       });
     });
   });
+
+  describe('Vertical Nav Group animations', () => {
+    let fixture: ComponentFixture<AnimatedGroupTestComponent>;
+
+    beforeEach(async () => {
+      TestBed.configureTestingModule({
+        imports: [ClrVerticalNavModule, ClrIcon],
+        declarations: [AnimatedGroupTestComponent],
+        animationsEnabled: true,
+      });
+      fixture = TestBed.createComponent(AnimatedGroupTestComponent);
+      fixture.detectChanges();
+      await delay();
+    });
+
+    afterEach(() => {
+      fixture.destroy();
+    });
+
+    function children(): HTMLElement {
+      return fixture.nativeElement.querySelector('.nav-group-children');
+    }
+
+    function heightKeyframes() {
+      return children()
+        .getAnimations()
+        .flatMap(animation => (animation.effect as KeyframeEffect).getKeyframes().map(keyframe => keyframe.height));
+    }
+
+    async function toggle() {
+      fixture.componentInstance.navGroup.toggleExpand();
+      fixture.detectChanges();
+      await delay();
+    }
+
+    it('expands the children from 0 to their height', async () => {
+      await toggle();
+
+      const [from, to] = heightKeyframes();
+      expect(from).toBe('0px');
+      expect(parseFloat(to as string)).toBeGreaterThan(0);
+    });
+
+    it('closes the group once its children are collapsed', async () => {
+      const navGroup = fixture.componentInstance.navGroup;
+      await toggle();
+      children()
+        .getAnimations()
+        .forEach(animation => animation.finish());
+      await toggle();
+
+      expect(heightKeyframes()[1]).toBe('0px');
+      expect(navGroup.expanded).toBeTrue();
+      expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).not.toBeNull();
+
+      children()
+        .getAnimations()
+        .forEach(animation => animation.finish());
+      await delay();
+      fixture.detectChanges();
+
+      expect(navGroup.expanded).toBeFalse();
+      expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).toBeNull();
+    });
+
+    it('stays open when expanded again while its children collapse', async () => {
+      const navGroup = fixture.componentInstance.navGroup;
+      await toggle();
+      await toggle();
+      await toggle();
+      children()
+        .getAnimations()
+        .forEach(animation => animation.finish());
+      await delay();
+
+      expect(navGroup.expanded).toBeTrue();
+      expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).not.toBeNull();
+    });
+  });
 }
 
 @Component({
@@ -294,4 +373,21 @@ class TemplateAPITestComponent {
   updateExpanded(value: boolean) {
     this.expandedChange = value;
   }
+}
+
+@Component({
+  template: `
+    <clr-vertical-nav>
+      <clr-vertical-nav-group #group>
+        Group
+        <clr-vertical-nav-group-children *clrIfExpanded>
+          <a href="#" clrVerticalNavLink>Link</a>
+        </clr-vertical-nav-group-children>
+      </clr-vertical-nav-group>
+    </clr-vertical-nav>
+  `,
+  standalone: false,
+})
+class AnimatedGroupTestComponent {
+  @ViewChild('group') navGroup: ClrVerticalNavGroup;
 }
