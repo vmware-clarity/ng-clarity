@@ -138,6 +138,7 @@ export class ClrContextEngineService implements OnDestroy {
     });
   }
 
+  /** Removes the accessor added by `enableGlobalAccess`. */
   disableGlobalAccess(): void {
     const window = this.browserWindow();
     if (window && this.globalProperty) {
