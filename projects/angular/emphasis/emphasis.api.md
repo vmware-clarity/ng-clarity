@@ -248,6 +248,7 @@ export class ClrEmphasisModule {
 
 // @public (undocumented)
 export class ClrLabel {
+    constructor(el: ElementRef<HTMLElement>);
     // (undocumented)
     badgeText: string;
     // (undocumented)

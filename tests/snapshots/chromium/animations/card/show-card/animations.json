@@ -12,15 +12,15 @@
         "offset": 0,
         "easing": "ease-in",
         "composite": "auto",
-        "opacity": "0",
-        "transform": "translateX(-100%)"
+        "transform": "translateX(-100%)",
+        "opacity": "0"
       },
       {
         "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "translateX(0%)"
+        "transform": "translateX(0%)",
+        "opacity": "1"
       }
     ]
   }

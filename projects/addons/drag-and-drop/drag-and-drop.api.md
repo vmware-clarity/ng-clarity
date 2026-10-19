@@ -10,7 +10,7 @@ import * as i0 from '@angular/core';
 // @public
 export class DragAndDropGroupService {
     addGroupItem(group: string, item: CdkDropList): void;
-    getGroupItems(group: string): readonly CdkDropList[];
+    getGroupItems(group: string): CdkDropList[];
     removeGroupItem(group: string, item: CdkDropList): void;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<DragAndDropGroupService, never>;
