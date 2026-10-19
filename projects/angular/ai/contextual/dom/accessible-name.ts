@@ -5,11 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  CLR_CONTEXT_EDITING_HOST_SELECTOR,
-  CLR_CONTEXT_HIDDEN_SELECTOR,
-  CLR_CONTEXT_REDACT_SELECTOR,
-} from '@clr/angular/utils';
+import { CLR_CONTEXT_EDITING_HOST_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
 
 import { readScope } from './read-scope';
 import { isNameFromContents } from './roles';
@@ -17,6 +13,7 @@ import { MESSAGE_ROLES } from './tables/roles';
 import { ACTION_SELECTOR } from './tables/selectors';
 import { LABELABLE_TAGS } from './tables/tags';
 import { accessibleText, isUnrendered, referencedText, truncate } from './text';
+import { isHiddenFromContext, isRedactedWithin } from './visibility';
 
 /**
  * The element's accessible name, budgeted: a pragmatic subset of the ARIA name computation.
@@ -114,20 +111,13 @@ function scopedText(element: Element, selector: string, withheld: string): strin
 
 /** Whether a label, legend or caption may name `named`: not when hidden, unreadable, or itself redacted. */
 function readableNameSource(source: Element, named: Element, withheld: string): boolean {
-  if (source.closest(CLR_CONTEXT_HIDDEN_SELECTOR) || source.closest(CLR_CONTEXT_EDITING_HOST_SELECTOR)) {
-    return false;
-  }
-  if (isUnrendered(source)) {
-    return false;
-  }
-  if (withheld && source.closest(withheld)) {
-    return false;
-  }
-  if (source.matches(CLR_CONTEXT_REDACT_SELECTOR)) {
-    return false;
-  }
-  const redacting = source.closest(CLR_CONTEXT_REDACT_SELECTOR);
-  return !redacting || redacting.contains(named);
+  return (
+    !isHiddenFromContext(source, withheld) &&
+    !source.closest(CLR_CONTEXT_EDITING_HOST_SELECTOR) &&
+    !isUnrendered(source) &&
+    !source.matches(CLR_CONTEXT_REDACT_SELECTOR) &&
+    !isRedactedWithin(source, named)
+  );
 }
 
 function labelText(control: Element, withheld: string): string | null {

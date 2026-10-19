@@ -5,17 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  CLR_CONTEXT_HIDDEN_SELECTOR,
-  CLR_CONTEXT_REDACT_SELECTOR,
-  ClrContextSnapshotOptions,
-} from '@clr/angular/utils';
+import { getAriaReferenceIds } from '@angular/cdk/a11y';
+import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
 import { ariaEnumValue } from './aria-state';
 import { resolveRole } from './roles';
 import { CELL_SELECTOR, ITEM_CONTAINER_SELECTORS, ITEM_SELECTORS } from './tables/selectors';
-import { isVisible } from './visibility';
+import { isHiddenFromContext, isRedactedWithin, isVisible } from './visibility';
 import { ownEntry } from '../lookup';
 
 /** Describes a homogeneous collection by its ARIA role, so a grid is not walked row by row. */
@@ -152,12 +149,14 @@ function comboboxChoices(element: Element, scope: SummaryScope): Element[] {
   if (listId) {
     const datalist = document.getElementById(listId);
     if (datalist) {
-      return Array.from(datalist.querySelectorAll('option')).filter(option => readable(option, scope));
+      return Array.from(datalist.querySelectorAll('option')).filter(
+        option => !isHiddenFromContext(option, scope.withheld)
+      );
     }
   }
 
-  const ownedIds = `${element.getAttribute('aria-owns') ?? ''} ${element.getAttribute('aria-controls') ?? ''}`.trim();
-  for (const id of ownedIds.split(/\s+/).filter(Boolean)) {
+  const ownedIds = [...getAriaReferenceIds(element, 'aria-owns'), ...getAriaReferenceIds(element, 'aria-controls')];
+  for (const id of ownedIds) {
     const owned = document.getElementById(id);
     const listed = owned ? queryRole(owned, 'option', scope) : [];
     if (listed.length) {
@@ -241,7 +240,7 @@ function queryRole(element: Element, role: string, scope: SummaryScope): Element
   const judgesStyle = STYLE_JUDGED_ROLES.has(role);
   return Array.from(element.querySelectorAll(ITEM_SELECTORS[role])).filter(
     item =>
-      readable(item, scope) &&
+      !isHiddenFromContext(item, scope.withheld) &&
       (!container || item.parentElement?.closest(container) === element) &&
       (!judgesStyle || isVisible(item))
   );
@@ -250,14 +249,9 @@ function queryRole(element: Element, role: string, scope: SummaryScope): Element
 /** Roles hidden by a style are left out too; rows are not checked, to avoid a layout read per record. */
 const STYLE_JUDGED_ROLES = new Set(['columnheader', 'tab', 'listitem', 'menuitem']);
 
-function readable(item: Element, scope: SummaryScope): boolean {
-  return !item.closest(CLR_CONTEXT_HIDDEN_SELECTOR) && !(scope.withheld && item.closest(scope.withheld));
-}
-
 /** `null` for an item in a redacted region inside the collection: it still counts, but its name is withheld. */
 function nameOf(item: Element, collection: Element, scope: SummaryScope): string | null {
-  const redacting = item.closest(CLR_CONTEXT_REDACT_SELECTOR);
-  if (redacting && !redacting.contains(collection)) {
+  if (isRedactedWithin(item, collection)) {
     return null;
   }
   return accessibleName(item, resolveRole(item), scope.options.maxTextLength, scope.withheld);

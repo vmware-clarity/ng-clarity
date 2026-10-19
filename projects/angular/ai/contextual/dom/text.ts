@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { getAriaReferenceIds } from '@angular/cdk/a11y';
 import { CLR_CONTEXT_HIDDEN_SELECTOR } from '@clr/angular/utils';
 
 import { readScope } from './read-scope';
 import { ACTION_SELECTOR, UNREADABLE_SELECTOR } from './tables/selectors';
-import { isVisible } from './visibility';
+import { isHiddenFromContext, isVisible } from './visibility';
 
 /** Normalizes whitespace and truncates to `maxLength`, ending shortened text with an ellipsis. */
 export function truncate(text: string, maxLength: number): string {
@@ -42,11 +43,7 @@ function computedStyle(element: Element): CSSStyleDeclaration | null {
 }
 
 function isExcludedFromName(element: Element, style: CSSStyleDeclaration | null, includeClipped: boolean): boolean {
-  if (
-    element.getAttribute('aria-hidden') === 'true' ||
-    element.hasAttribute('hidden') ||
-    element.hasAttribute('inert')
-  ) {
+  if (element.matches(CLR_CONTEXT_HIDDEN_SELECTOR)) {
     return true;
   }
   if (!style) {
@@ -156,8 +153,8 @@ export function referencedText(
   withheld = '',
   skip: readonly string[] = []
 ): string {
-  const ids = element.getAttribute(attribute)?.trim();
-  if (!ids) {
+  const ids = getAriaReferenceIds(element, attribute);
+  if (!ids.length) {
     return '';
   }
   const following = followingReference;
@@ -169,14 +166,9 @@ export function referencedText(
   }
 }
 
-export function referencedIds(element: Element, attribute: string): string[] {
-  return (element.getAttribute(attribute) ?? '').split(/\s+/).filter(id => id);
-}
-
-function textOfReferences(document: Document, ids: string, withheld: string, skip: readonly string[]): string {
+function textOfReferences(document: Document, ids: string[], withheld: string, skip: readonly string[]): string {
   return (
     ids
-      .split(/\s+/)
       .filter(id => !skip.includes(id))
       .map(id => document.getElementById(id))
       // Page content can point `aria-describedby` at anything, so hidden or unreadable targets are
@@ -185,8 +177,7 @@ function textOfReferences(document: Document, ids: string, withheld: string, ski
         (referenced): referenced is HTMLElement =>
           !!referenced &&
           !referenced.closest(UNREADABLE_SELECTOR) &&
-          !referenced.closest(CLR_CONTEXT_HIDDEN_SELECTOR) &&
-          !(withheld && referenced.closest(withheld)) &&
+          !isHiddenFromContext(referenced, withheld) &&
           !isUnrendered(referenced)
       )
       .map(referenced => accessibleText(referenced, undefined, withheld).trim())

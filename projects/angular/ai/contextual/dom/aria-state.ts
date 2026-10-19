@@ -5,12 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  CLR_CONTEXT_HIDDEN_SELECTOR,
-  CLR_CONTEXT_REDACT_SELECTOR,
-  ClrComponentContext,
-  ClrContextSnapshotOptions,
-} from '@clr/angular/utils';
+import { getAriaReferenceIds } from '@angular/cdk/a11y';
+import { CLR_CONTEXT_REDACT_SELECTOR, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import {
   CONTENT_STATE_KEYS,
@@ -23,7 +19,8 @@ import {
   VALUELESS_INPUT_TYPES,
 } from './tables/aria';
 import { CONTENT_ROLES } from './tables/roles';
-import { accessibleText, referencedIds, referencedText, truncate } from './text';
+import { accessibleText, referencedText, truncate } from './text';
+import { isHiddenFromContext, isRedactedWithin } from './visibility';
 
 export function ariaEnumValue(element: Element, attribute: string): string | null {
   const definition = ENUM_ATTRIBUTES.find(candidate => candidate.attribute === attribute);
@@ -77,7 +74,7 @@ export function ariaState(
 
   // Messages wired by `aria-describedby` are read there, so they do not show up as stray nodes;
   // `aria-errormessage` becomes `error` and only while the field is invalid.
-  const errorIds = state.invalid === true ? referencedIds(element, 'aria-errormessage') : [];
+  const errorIds = state.invalid === true ? getAriaReferenceIds(element, 'aria-errormessage') : [];
   const description = truncate(referencedText(element, 'aria-describedby', withheld, errorIds), options.maxTextLength);
   if (description) {
     state.description = description;
@@ -191,7 +188,7 @@ function assignValueState(
   if (tagName === 'select') {
     // An option's `value` may be an internal key (`[ngValue]` renders "3: Object"), so its text is used.
     const chosen = Array.from((element as HTMLSelectElement).selectedOptions)
-      .filter(option => optionReadable(option, element, withheld))
+      .filter(option => !isHiddenFromContext(option, withheld) && !isRedactedWithin(option, element))
       .map(option => truncate(option.label || option.text, options.maxTextLength));
     if ((element as HTMLSelectElement).multiple) {
       state.value = chosen.slice(0, options.maxItemsPerCollection);
@@ -199,18 +196,6 @@ function assignValueState(
       state.value = chosen[0];
     }
   }
-}
-
-function optionReadable(option: Element, select: Element, withheld: string): boolean {
-  if (option.closest(CLR_CONTEXT_HIDDEN_SELECTOR) || (withheld && option.closest(withheld))) {
-    return false;
-  }
-  for (let current: Element | null = option; current && current !== select; current = current.parentElement) {
-    if (current.matches(CLR_CONTEXT_REDACT_SELECTOR)) {
-      return false;
-    }
-  }
-  return true;
 }
 
 /** Whether this control's value must be withheld, whatever the caller asked for. */
