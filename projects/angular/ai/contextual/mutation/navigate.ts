@@ -23,17 +23,14 @@ import {
 
 import { ClrNavigationOutcome } from './mutation.interface';
 
-/** A route pattern's path segments with its parameters filled in, or why it could not be filled. */
 export type ClrFilledPath =
   | { segments: string[]; missing?: never; invalid?: never }
   | { missing: string; segments?: never; invalid?: never }
   | { invalid: string; segments?: never; missing?: never };
 
 /**
- * Fills a route pattern's `:param` segments from the values given: `clusters/:id` with
- * `{ id: '42' }` is `['clusters', '42']`. Each value is one segment, literally — a slash
- * or a space in it stays part of that segment — and `.` or `..` is refused, because the
- * router would read it as a step up the path and arrive at a route nobody classified.
+ * Fills `:param` segments, one literal segment per value. `.` and `..` are refused: the router would
+ * step up the path to a route nobody classified.
  */
 export function fillRoutePath(pattern: string, params: Record<string, string> = {}): ClrFilledPath {
   const segments: string[] = [];
@@ -55,10 +52,7 @@ export function fillRoutePath(pattern: string, params: Record<string, string> = 
   return { segments };
 }
 
-/**
- * The URL tree for literal path segments. Built directly rather than through
- * `createUrlTree`, which would split a segment at its slashes and read `..` as a step up.
- */
+/** Built directly: `createUrlTree` would split at slashes and read `..` as a step up. */
 export function urlTreeFor(segments: string[], queryParams: Record<string, string> = {}): UrlTree {
   const children: Record<string, UrlSegmentGroup> = segments.length
     ? {
@@ -71,23 +65,17 @@ export function urlTreeFor(segments: string[], queryParams: Record<string, strin
   return new UrlTree(new UrlSegmentGroup([], children), queryParams);
 }
 
-/** How long a navigation may take before it is reported as not having settled. */
 const NAVIGATION_TIMEOUT_MS = 60_000;
 
 export interface ClrNavigationReport {
   outcome: ClrNavigationOutcome;
-  /** The router URL once the navigation has settled. */
   url: string;
   detail?: string;
 }
 
 /**
- * Navigates and reports what actually happened, from the router's event stream rather
- * than its promise. The promise resolves `true` when a guard redirected the user
- * elsewhere, because the redirect target did activate, and `false` when the navigation
- * was skipped as a no-op, so it cannot tell an agent whether it is where it asked to be.
- * The events can, and a redirect is followed to wherever it ends up so the reported URL
- * is the one the user is looking at.
+ * Navigates and reports the outcome from the router's events: its promise is `true` after a redirect
+ * and `false` for a skipped no-op.
  */
 export function navigateAndReport(router: Router, target: UrlTree, zone: NgZone): Promise<ClrNavigationReport> {
   const requested = router.serializeUrl(target);
@@ -105,9 +93,7 @@ export function navigateAndReport(router: Router, target: UrlTree, zone: NgZone)
     };
     const subscription = router.events.subscribe((event: RouterEvent) => {
       if (event instanceof NavigationStart) {
-        // This navigation, recognised by where it is going — not whichever navigation
-        // happens to start next — and, after a guard redirected it, the redirect's own
-        // navigation, followed to see where the user ends up.
+        // This navigation, by destination, and after a guard redirect, the redirect's own navigation.
         if ((id === null && event.url === requested) || redirected) {
           id = event.id;
           redirected = false;
@@ -144,9 +130,7 @@ export function navigateAndReport(router: Router, target: UrlTree, zone: NgZone)
       }
     });
 
-    // A guard waiting on the user can hold a navigation indefinitely; the agent is told it
-    // has not settled rather than left waiting for good. Timed outside the zone, so the
-    // pending timer does not keep the application from being stable meanwhile.
+    // A guard waiting on the user can hold a navigation indefinitely. Timed outside the zone to keep the app stable.
     timer = zone.runOutsideAngular(() =>
       setTimeout(
         () =>
@@ -161,8 +145,6 @@ export function navigateAndReport(router: Router, target: UrlTree, zone: NgZone)
 
     router.navigateByUrl(target).then(
       () => {
-        // The events normally settle this first; should none have, the URL decides. Outside
-        // the zone, as the expiry is: waiting is not work for change detection.
         zone.runOutsideAngular(() =>
           setTimeout(() => {
             if (!subscription.closed) {
@@ -177,7 +159,6 @@ export function navigateAndReport(router: Router, target: UrlTree, zone: NgZone)
   });
 }
 
-/** What a cancelled navigation reports, by why it was cancelled. */
 function cancellation(code: NavigationCancellationCode | undefined): { outcome: ClrNavigationOutcome; detail: string } {
   switch (code) {
     case NavigationCancellationCode.GuardRejected:

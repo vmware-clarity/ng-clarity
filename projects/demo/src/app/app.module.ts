@@ -31,12 +31,8 @@ import { LandingComponent } from './landing.component';
   imports: [BrowserAnimationsModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
   providers: [
     cdsThemePathLocationStrategyProvider,
-    // Enables the mutation engine (see the contextual demo). The application, not the
-    // engine, says what each operation would do, and it allows only what it names: the
-    // fields inside an element marked `data-agent-fill` may be filled, which is reversible
-    // since the previous value comes back with the result. Leaving the page is worth a
-    // question, which the person answers, and only without query parameters, which the
-    // agent would choose. Everything else is forbidden.
+    // Demo mutation policy: fields inside `data-agent-fill` are reversible, leaving the page without
+    // query parameters needs confirmation, and everything else is forbidden.
     provideClrMutationPolicy({
       classify: target => {
         if (target.operation === 'navigate') {

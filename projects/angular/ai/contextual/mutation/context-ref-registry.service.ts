@@ -12,17 +12,10 @@ import { topmostModal } from './writability';
 import { offersWrite } from './write';
 import { ClrContextRefSink } from '../dom/walk';
 
-/** What a ref stands for: the node as a snapshot last showed it, and the elements behind it. */
 export interface ContextRefTarget {
-  /**
-   * Outermost first: the custom element that renders the control and carries its form
-   * binding, then the element inside it that carries the role. Whichever of them has a
-   * binding or a published mutator is the one to write to.
-   */
+  /** Outermost first: the custom element with the form binding, then the element with the role. */
   elements: Element[];
-  /** The node's `type` in the snapshot — the role, or what the component published. */
   type: string;
-  /** The node's `label` in the snapshot, which is what an agent refers to it by. */
   label?: string;
 }
 
@@ -32,37 +25,19 @@ interface StoredTarget {
   label?: string;
 }
 
-/** Length of the random part of a ref: enough that one cannot be guessed, short enough to read. */
+/** Long enough not to be guessed, short enough to read. */
 const REF_RANDOM_LENGTH = 8;
 
 /**
- * Keeps the refs snapshots hand out, and resolves them back to elements.
- *
- * A ref is stable: the same element gets the same ref in every snapshot, whoever took
- * it and with whatever options, for as long as the document holds the element. It
- * resolves for as long as the element is connected; whether the element may be written
- * to right now — shown, enabled, not redacted — is decided when a write is attempted,
- * not by which snapshot happened to be taken last. A ref is random, so one can only be
- * recalled from a snapshot, never worked out from another.
- *
- * A snapshot hands out a ref only where a write could get somewhere: to a node whose
- * elements carry a form binding or write themselves, and that no open modal dialog
- * stands in front of. A ref is still a candidate rather than a promise: the write may be
- * refused for what is true when it is attempted.
- *
- * Elements are held weakly: a ref to UI that has been removed never keeps it alive.
+ * Hands out refs and resolves them back to elements. A ref is stable per element, random so it can
+ * only be recalled from a snapshot, and held weakly.
  */
 @Injectable({ providedIn: 'root' })
 export class ContextRefRegistryService {
   private readonly refsByElement = new WeakMap<Element, string>();
   private readonly targets = new Map<string, StoredTarget>();
 
-  /**
-   * A sink for one walk. What it collects is recorded once the walk is committed, and
-   * not before, so a snapshot that fails midway records nothing. Committing takes the
-   * refs off the nodes, in the tree the walk produced, that `offered` turns down — by
-   * default, those the engine could not write through (see {@link offersWrite}).
-   */
+  /** A sink for one walk, recorded only once the walk commits, so a failed snapshot records nothing. */
   begin(
     offered: (target: ContextRefTarget) => boolean = offersWrite
   ): ClrContextRefSink & { commit(components?: ClrComponentContext[]): void } {
@@ -74,9 +49,7 @@ export class ContextRefRegistryService {
           collected.set(node.ref, { elements: [element], type: node.type, label: node.label });
           return;
         }
-        // The walk finishes a node once per element that produced it, innermost first;
-        // an outer element is a second way to reach the same node's binding, and the
-        // outer finish is the node as the snapshot will show it.
+        // Finished innermost first; the outer finish is the node as the snapshot shows it.
         const target = collected.get(node.ref);
         if (target) {
           if (!target.elements.includes(element)) {
@@ -88,7 +61,6 @@ export class ContextRefRegistryService {
       },
       commit: (components = []) => {
         const withheld = new Set<string>();
-        // Refs never reach into a frame, so the walk's elements share one document.
         let modal: Element | null | undefined;
         for (const [ref, target] of collected) {
           const control = target.elements[target.elements.length - 1];
@@ -111,7 +83,6 @@ export class ContextRefRegistryService {
     };
   }
 
-  /** The elements behind a ref, or `null` when it was never handed out or its element is gone. */
   resolve(ref: string): ContextRefTarget | null {
     const stored = this.targets.get(ref);
     if (!stored) {
@@ -124,7 +95,6 @@ export class ContextRefRegistryService {
     return { elements: elements as Element[], type: stored.type, label: stored.label };
   }
 
-  /** Forgets refs whose elements have left the document. */
   private prune(): void {
     for (const [ref, stored] of this.targets) {
       if (stored.elements.some(element => !element.deref()?.isConnected)) {
@@ -145,7 +115,6 @@ export class ContextRefRegistryService {
   }
 }
 
-/** Takes these refs off the nodes carrying them. */
 function withoutRefs(nodes: ClrComponentContext[], refs: ReadonlySet<string>): void {
   for (const node of nodes) {
     if (node.ref && refs.has(node.ref)) {

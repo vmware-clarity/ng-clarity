@@ -8,21 +8,11 @@
 import { isRedacted } from '../dom/aria-state';
 import { isHiddenFromEngine, openModalDialogs } from '../dom/walk';
 
-/** Why an element that a ref points at must not be written to right now. */
 export type ClrWriteObstacle = 'hidden' | 'redacted' | 'disabled' | 'readOnly';
 
 /**
- * The reason the mutation engine must not write to this element, or `null` when there
- * is none. The rules are the read half's: what a snapshot would not show — hidden,
- * inert, ignored, or inside a region the application marked sensitive — the engine does
- * not write, so that a field a person cannot see cannot be filled on their behalf. A
- * field behind an open modal dialog is refused too: the person cannot reach it. A
- * disabled or read-only control is refused for the same reason a user could not type
- * into it.
- *
- * `knownModals`, when given, are the only modal dialogs that count: those open before the
- * application was asked to confirm. The dialog it asked in may still be open, or leaving,
- * when the answer arrives, and must not stand in the way of what the person just agreed to.
+ * Why the engine must not write to this element, or `null`: what a snapshot would not show, behind a modal,
+ * or disabled. `knownModals` excludes the dialog the application used to ask for confirmation.
  */
 export function writeObstacle(element: Element, knownModals?: ReadonlySet<Element>): ClrWriteObstacle | null {
   if (isHiddenFromEngine(element)) {
@@ -50,10 +40,6 @@ export function writeObstacle(element: Element, knownModals?: ReadonlySet<Elemen
   return null;
 }
 
-/**
- * The open modal dialog the person is acting in, if any: the topmost of those open, or of
- * `knownModals` when given. Nothing outside it can be reached.
- */
 export function topmostModal(document: Document, knownModals?: ReadonlySet<Element>): Element | null {
   const modals = openModalDialogs(document).filter(dialog => !knownModals || knownModals.has(dialog));
   return modals[modals.length - 1] ?? null;

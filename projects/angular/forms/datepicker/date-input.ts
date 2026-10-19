@@ -288,13 +288,7 @@ export abstract class ClrDateInputBase
     }
   }
 
-  /**
-   * A value set on the form control while the field has focus — by the application, or
-   * by an agent while the caret is still in the field — reaches the picker too, which
-   * the value changes above skip while the user types. Only writes to the model are
-   * heard here: Angular hands what the user types to the model without calling these
-   * listeners, so typing is left alone until the field is left.
-   */
+  /** A model write while the field has focus reaches the picker too; typing does not call these listeners. */
   private listenForModelWritesWhileFocused(): Subscription {
     const control = this.control.control as FormControl | null;
     if (typeof control?.registerOnChange !== 'function') {
@@ -352,13 +346,7 @@ export abstract class ClrDateInputBase
     }
   }
 
-  /**
-   * Says how this input is written to, through the element mutator contract in
-   * `@clr/angular/utils`: its form control holds the date as the locale's display
-   * string, which is not something an agent has. Given a `Date`, an ISO date or a
-   * string already in the display format, this returns what the control takes; anything
-   * else is refused with the accepted forms named.
-   */
+  /** Mutator: the form control holds the locale's display string, so a `Date` or ISO date is converted. */
   private publishMutator() {
     this.teardownElementMutator = clrPublishElementMutator(this.el.nativeElement, {
       coerce: (proposed: unknown): ClrElementMutation => {
@@ -369,7 +357,6 @@ export abstract class ClrDateInputBase
         if (!date) {
           return { refused: `A date is expected: ${this.dateIOService.placeholderText}, or ISO YYYY-MM-DD.` };
         }
-        // The date as a person reads it in this locale, whatever form the agent gave it in.
         const display = this.dateIOService.toLocaleDisplayFormatString(date);
         return { value: this.usingNativeDatepicker() ? isoDateString(date) : display, display };
       },
@@ -387,20 +374,13 @@ export abstract class ClrDateInputBase
     }
     const text = proposed.trim();
     if (/^\d{4}-\d{2}-\d{2}T/.test(text)) {
-      // A date-time given for a date names its day as written: models send midnight UTC
-      // (`2026-03-06T00:00:00Z`) meaning the 6th, which would be the 5th anywhere west of
-      // Greenwich if the instant were placed in the user's time zone. The rest must still
-      // be a valid moment.
+      // A date-time names its day as written: midnight UTC meaning the 6th would be the 5th west of Greenwich.
       return Number.isNaN(new Date(text).getTime()) ? null : isoDate(text.slice(0, 10));
     }
     return isoDate(text) ?? this.dateIOService.getDateValueFromDateString(text);
   }
 
-  /**
-   * The date a form control's value stands for. The native picker's control holds an ISO
-   * date, which the locale's display-format parser would read as nonsense in most locales
-   * and blank the field with; the Clarity picker's holds the display format.
-   */
+  /** The native picker's control holds an ISO date, which the display-format parser would blank. */
   private dateFromControlValue(value: unknown): Date | null {
     if (this.usingNativeDatepicker() && typeof value === 'string') {
       const date = isoDate(value.trim());
@@ -414,17 +394,13 @@ export abstract class ClrDateInputBase
   protected abstract updateDayModel(dayModel: DayModel): void;
 }
 
-/**
- * An ISO calendar date (`2026-03-06`) as a local date, or `null` for anything else or an
- * impossible date. Read as local: `new Date('2026-03-06')` is UTC midnight, which is the
- * evening before in half the world.
- */
+/** Read as local: `new Date('2026-03-06')` is UTC midnight, the evening before in half the world. */
 function isoDate(text: string): Date | null {
   const iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(text);
   if (!iso) {
     return null;
   }
-  // Set through `setFullYear`: the `Date` constructor reads the years 0 to 99 as 1900 to 1999.
+  // `setFullYear`, since the `Date` constructor reads years 0 to 99 as 1900 to 1999.
   const date = new Date(2000, 0, 1);
   date.setFullYear(+iso[1], +iso[2] - 1, +iso[3]);
   return date.getFullYear() === +iso[1] && date.getMonth() === +iso[2] - 1 && date.getDate() === +iso[3] ? date : null;

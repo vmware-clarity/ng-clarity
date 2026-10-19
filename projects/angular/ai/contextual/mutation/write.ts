@@ -28,29 +28,15 @@ import { jsonSafe, STATE_DEPTH } from '../json-safe';
 import { ownEntry } from '../lookup';
 import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 
-/** The longest a label in a result or a refusal may be: the default text budget. */
 const MAX_LABEL_LENGTH = CLR_CONTEXT_DEFAULT_OPTIONS.maxTextLength;
 
 /**
- * How a control takes a value once the engine has it:
- *
- * - `custom` — the component writes it itself, through a published `write`.
- * - `select` — the `<option>` is chosen in the DOM and the accessor supplies the value,
- *   which for an `[ngValue]` binding is an object the engine could not construct.
- * - `radiogroup` — the radio is chosen by its label and its own control takes its value.
- * - `radio` — a lone radio with a ref of its own; its control takes the radio's value.
- * - `choice` — a custom element rendering a radio group, whose control takes the label
- *   of the radio chosen.
- * - `checkbox` — a native checkbox; the control takes a boolean.
- * - `boolean`, `number`, `text` — the control takes the primitive. `boolean` is a custom
- *   control rendering a checkbox or switch.
- * - `typed` — a native date, time, month, week or colour input, which takes only the
- *   exact format the browser accepts.
+ * How a control takes a value: written by the component (`custom`), chosen in the DOM (`select`,
+ * radios), or set on the form control as a primitive or in a browser-exact format (`typed`).
  */
 type ControlKind =
   'custom' | 'select' | 'radiogroup' | 'radio' | 'choice' | 'checkbox' | 'boolean' | 'number' | 'typed' | 'text';
 
-/** Native input types that accept only one exact string format. */
 const TYPED_INPUTS: Record<string, string> = {
   date: 'YYYY-MM-DD',
   time: 'HH:MM',
@@ -60,30 +46,25 @@ const TYPED_INPUTS: Record<string, string> = {
   color: '#rrggbb',
 };
 
-/** An element a ref resolved to, with everything a write needs to know about it. */
 export interface WriteTarget {
-  /** The element carrying the form binding or the published mutator. */
   element: Element;
-  /** The element carrying the role, which is what the user sees and what is checked for obstacles. */
+  /** The element with the role: what the user sees and what is checked for obstacles. */
   control: Element;
   label: string;
   type: string;
   kind: ControlKind;
   ngControl: NgControl | null;
   mutator: ClrElementMutator | null;
-  /** The snapshot options the write is judged against, handed to the element's mutator. */
   options?: Required<ClrContextSnapshotOptions>;
-  /** The only modal dialogs that count as obstacles, when not all open ones do (see `writeObstacle`). */
+  /** The only modal dialogs that count as obstacles, when not all open ones do. */
   knownModals?: ReadonlySet<Element>;
 }
 
 export type TargetResolution = { target: WriteTarget } | { refused: ClrMutationRefusal; detail: string };
 
-/** A proposal turned into what the control takes, and into what a person would call it. */
 export type Coerced =
   { value: unknown; display: unknown; refused?: never } | { refused: string; value?: never; display?: never };
 
-/** What a write did, before the engine adds which operation and ref it was for. */
 export interface WriteOutcome {
   applied: boolean;
   value?: unknown;
@@ -95,11 +76,8 @@ export interface WriteOutcome {
 }
 
 /**
- * What Angular's select accessors (`SelectControlValueAccessor` and
- * `SelectMultipleControlValueAccessor`) keep for their own `change` and `blur` listeners.
- * These are implementation fields, not documented API — verified against
- * `@angular/forms` 21.2 — and a spec (write.spec.ts, "Angular's select accessors") fails
- * should they be renamed; until then every select write would be refused as unsupported.
+ * Private fields of Angular's select accessors (verified against `@angular/forms` 21.2);
+ * write.spec.ts fails if they are renamed.
  */
 interface SelectAccessor {
   onChange?: (value: unknown) => void;
@@ -122,7 +100,6 @@ const STRUCTURED_VALUE_DETAIL =
 const CHOICE_VALUE_DETAIL =
   'The group holds something other than one of its radios’ labels, so choosing one by its label would store the wrong thing. It can publish a mutator (clrPublishElementMutator from @clr/angular/utils).';
 
-/** Elements that say themselves what value they take, rather than through the role of what they render. */
 const NATIVE_CONTROLS: ReadonlySet<string> = new Set(['input', 'select', 'textarea']);
 
 const OBSTACLE_DETAILS = {
@@ -133,10 +110,8 @@ const OBSTACLE_DETAILS = {
 } as const;
 
 /**
- * Finds what a ref's elements amount to: the outermost element with a form binding or a
- * published mutator is what gets written to; the innermost is what the user sees.
- * `application` is the Angular application the engine belongs to: a control another
- * application on the same page owns is that application's to fill, under its own policy.
+ * The outermost bound element is written to; the innermost is what the user sees. A control
+ * owned by another Angular application on the page is that application's to fill.
  */
 export function resolveWriteTarget(
   ref: ContextRefTarget,
@@ -165,7 +140,6 @@ export function resolveWriteTarget(
     const mutator = readElementMutator(element);
     const ngControl = formControlOn(element);
     const bound = ngControl?.control;
-    // A component that writes itself is not judged by a form control it may also carry.
     const refusal = bindingRefusal(element, mutator?.write ? null : bound, application);
     if (refusal) {
       return refusal;
@@ -187,9 +161,7 @@ export function resolveWriteTarget(
         detail: 'This select applies its value only when its form is submitted, which the engine never does.',
       };
     }
-    // A custom control judged by the role it renders is taken to hold what that role
-    // shows: text, a number, a label. One whose form control holds an object or a list —
-    // an autocomplete keeping the chosen record — would have it replaced by a string.
+    // A custom control judged by its role holds text; one whose model holds an object would get a string.
     if (!NATIVE_CONTROLS.has(element.tagName.toLowerCase()) && !mutator?.coerce && isStructured(bound?.value)) {
       return { refused: 'unsupported', detail: STRUCTURED_VALUE_DETAIL };
     }
@@ -206,32 +178,22 @@ export function resolveWriteTarget(
   return { refused: 'unbound', detail: UNBOUND_DETAIL };
 }
 
-/**
- * Whether a node's elements are something the engine could write to at all: one of them
- * carries a form binding or writes itself, or the node is a radio group whose radios
- * carry one. What else stands in the way — a disabled control, a role that says nothing
- * about its value — is judged when a write is attempted, as it may change before then.
- */
+/** Whether a node could be written to at all; disabled and similar states are judged at write time. */
 export function offersWrite(ref: ContextRefTarget): boolean {
   return !!boundElementOf(ref.elements) || !!boundRadioOf(ref.elements[ref.elements.length - 1]);
 }
 
-/** The outermost element that carries a form binding or a published `write`, which is what a write goes through. */
 function boundElementOf(elements: Element[]): Element | undefined {
   return elements.find(element => readElementMutator(element)?.write || formControlOn(element)?.control);
 }
 
-/**
- * A radio group is summarised rather than walked, so its ref is the group's; the binding
- * is on the radios inside it.
- */
+/** A radio group is summarised, so its ref is the group's while the binding is on the radios. */
 function boundRadioOf(control: Element): HTMLInputElement | undefined {
   return resolveRole(control) === 'radiogroup'
     ? radiosOf(control).find(each => formControlOn(each)?.control)
     : undefined;
 }
 
-/** Why a bound element cannot be written to: another application renders it, or its form control is disabled. */
 function bindingRefusal(
   element: Element,
   bound: AbstractControl | null | undefined,
@@ -244,16 +206,8 @@ function bindingRefusal(
 }
 
 /**
- * Whether the description an agent gave names the node. It must say every word of the
- * label, and may add filler — articles, "field", the node's type — but nothing else:
- * "email" does not name "Email address" nor "Confirm email", "last name" does not name
- * "Name", and "the wrong email" or "not email, the password" do not name "Email". Every
- * word being required is what tells a field from its pair in any language ("E-Mail
- * bestätigen", "Nouveau mot de passe"); the English lists below add what word order
- * cannot: a negating word is allowed only where the label itself says it ("Other
- * income"). A label the snapshot cut short (ending in "…") is matched on the words it
- * kept, and the description may go on where the label was cut. A node without a name can
- * only be described by nothing, or by what it is ("grid").
+ * Whether the description names the node: every word of the label, plus only filler. Requiring every word
+ * tells "Email" from "Confirm email" in any language; a label cut with "…" is matched on the words kept.
  */
 export function descriptionMatches(description: unknown, label: string, type = ''): boolean {
   if (typeof description !== 'string') {
@@ -269,11 +223,9 @@ export function descriptionMatches(description: unknown, label: string, type = '
     return false;
   }
   const cut = label.trimEnd().endsWith('…');
-  // The last word of a cut label may itself be cut; only whole words are compared.
+  // The last word of a cut label may itself be cut.
   const actual = cut ? labelWords.slice(0, -1) : labelWords;
-  // Not covered by `said` below: that lets a word of the type go unsaid, and a
-  // distinguishing word must be said even when the type contains it ("start" in a
-  // `date-range-start`).
+  // A distinguishing word must be said even when the type contains it ("start" in `date-range-start`).
   if (actual.some(word => (DISTINGUISHING_WORDS.has(word) || NEGATING_WORDS.has(word)) && !given.includes(word))) {
     return false;
   }
@@ -285,7 +237,6 @@ export function descriptionMatches(description: unknown, label: string, type = '
   return said && given.some(word => actual.includes(word)) && !extra;
 }
 
-/** Words that describe the node rather than name it, and so do not count as extra. */
 const FILLER_WORDS: ReadonlySet<string> = new Set([
   'the',
   'a',
@@ -310,10 +261,7 @@ const FILLER_WORDS: ReadonlySet<string> = new Set([
   'that',
 ]);
 
-/**
- * Words that tell a field from its pair — "Email" and "Confirm email", "Name" and "Last
- * name", a billing and a shipping address. Where a label has one, a description must too.
- */
+/** Words that tell a field from its pair, such as "Email" and "Confirm email"; a description must repeat them. */
 const DISTINGUISHING_WORDS: ReadonlySet<string> = new Set([
   'confirm',
   'confirmation',
@@ -343,15 +291,11 @@ const DISTINGUISHING_WORDS: ReadonlySet<string> = new Set([
   'maximum',
 ]);
 
-/** Words that turn a description into one of something else. */
 const NEGATING_WORDS: ReadonlySet<string> = new Set(['not', 'no', 'wrong', 'other', 'except', 'instead', 'never']);
 
 /**
- * What the form control will receive for a coerced value, where that is known before
- * writing: a radio group takes the chosen radio's value. A native select maps its options
- * to model values inside Angular's accessor, so its model value is only known once written.
- * A component that translates the value itself is not asked: its model may hold what it
- * keeps from agents — a selection they were never shown, fields of an option's object.
+ * What the form control will receive, where known before writing. A component that translates
+ * the value itself is not asked: its model may hold what it keeps from agents.
  */
 export function modelValueOf(target: WriteTarget, value: unknown): unknown {
   if (target.kind === 'radiogroup') {
@@ -360,11 +304,7 @@ export function modelValueOf(target: WriteTarget, value: unknown): unknown {
   return target.kind === 'select' || target.mutator?.coerce ? undefined : value;
 }
 
-/**
- * What the control would be given for a proposal, and what a person would call it: the
- * component's own coercion when it published one, the primitive its kind takes
- * otherwise. `null` proposes clearing.
- */
+/** What the control would be given for a proposal, and what a person would call it; `null` clears. */
 export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
   const mutator = target.mutator;
   if (mutator?.coerce) {
@@ -372,10 +312,7 @@ export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
     if (coerced.refused !== undefined) {
       return { refused: coerced.refused };
     }
-    // What the component says the value is called — an option's label, the date as the
-    // field shows it — is what the policy is shown, never the value itself, which may
-    // keep a selection the agent was never shown. A component written through its own
-    // `write` translates in agent terms — a datagrid's rows by their full labels.
+    // The policy is shown the component's display value, never the model, which may hold an unseen selection.
     if (coerced.display !== undefined) {
       return { value: coerced.value, display: plain(coerced.display) };
     }
@@ -420,8 +357,7 @@ export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
       }
       if (typeof proposed === 'string' || typeof proposed === 'number' || typeof proposed === 'boolean') {
         const text = String(proposed);
-        // A person typing stops at the field's `maxlength`; the model must not hold more
-        // than the field would have let them enter. Counted as the browser counts it.
+        // The model must not hold more than the field's `maxlength` would let a person type.
         const limit = maxLengthOf(target.element);
         if (limit !== null && text.length > limit) {
           return { refused: `The text must be at most ${limit} characters.` };
@@ -432,7 +368,6 @@ export function coerceValue(target: WriteTarget, proposed: unknown): Coerced {
   }
 }
 
-/** A text field's `maxlength`, or `null` when it sets none. */
 function maxLengthOf(element: Element): number | null {
   const tagName = element.tagName.toLowerCase();
   if (tagName !== 'input' && tagName !== 'textarea') {
@@ -443,10 +378,8 @@ function maxLengthOf(element: Element): number | null {
 }
 
 /**
- * Writes a coerced value the way a user's input would arrive, then reports what is
- * true now. The control is marked dirty and touched first, as a user leaving the field
- * would leave it, so that the single value change that follows is validated, shown and
- * emitted once — `valueChanges`, `ngModelChange` and Clarity's error messages alike.
+ * Writes the value as user input would arrive. Marked dirty and touched first, so the change is validated,
+ * shown and emitted once.
  */
 export function writeValue(target: WriteTarget, coerced: { value: unknown; display: unknown }): WriteOutcome {
   const previous = readValue(target);
@@ -472,8 +405,7 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
   }
   const valueBefore: unknown = control.value;
   const modelBefore = serialized(valueBefore);
-  // A write that is refused or throws leaves the control as the user left it: its value,
-  // and neither dirty nor touched unless it was.
+  // A refused or throwing write leaves the control as the user left it.
   const wasDirty = control.dirty;
   const wasTouched = control.touched;
   const rollback = (bound: AbstractControl) => {
@@ -494,9 +426,7 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
       !(target.element as HTMLSelectElement).multiple &&
       coerced.display === null
     ) {
-      // A one-line select with no option chosen chooses its first again — the browser
-      // does — so a cleared one is told through its control that it holds nothing: the
-      // accessor then shows no option, or the one bound to `null` if there is one.
+      // A one-line select re-chooses its first option, so a cleared one is told through its control.
       control.setValue(null);
     } else if (target.kind === 'select' && accessor) {
       const taken = writeSelect(target.element as HTMLSelectElement, control, accessor, coerced, previous, modelBefore);
@@ -508,8 +438,7 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
       control.setValue(coerced.value);
     }
   } catch (error) {
-    // `setValue` hands the value to the view before it validates, so a throw leaves the
-    // refused value shown: it is put back quietly, through the accessor if that works.
+    // `setValue` updates the view before validating, so a throw is undone quietly.
     try {
       control.setValue(valueBefore, { emitEvent: false });
     } catch {
@@ -527,19 +456,14 @@ export function writeValue(target: WriteTarget, coerced: { value: unknown; displ
   return outcome;
 }
 
-/** A select's accessor, when it keeps the `change` listener a write is handed to (see `SelectAccessor`). */
 function selectAccessorOf(target: WriteTarget): BoundSelectAccessor | null {
   const accessor = target.ngControl?.valueAccessor as SelectAccessor | null | undefined;
   return typeof accessor?.onChange === 'function' ? (accessor as BoundSelectAccessor) : null;
 }
 
 /**
- * Chooses a native select's options and hands them to its accessor the way its own
- * `change` listener would, so it maps them back to the bound values — without
- * dispatching DOM events, which would also run whatever `(change)` or `(blur)` handler
- * the application attached. A control that updates on blur is told the field was left.
- * Returns whether the form control took the value; when it did not, or the accessor
- * threw, the select shows the options it showed before.
+ * Hands the chosen options to the accessor as its `change` listener would, without dispatching DOM events
+ * that would run the application's own handlers.
  */
 function writeSelect(
   select: HTMLSelectElement,
@@ -571,7 +495,6 @@ function writeSelect(
   return true;
 }
 
-/** The control's value in the terms an agent sees: labels for choices, primitives otherwise. */
 export function readValue(target: WriteTarget): unknown {
   if (target.mutator?.read) {
     try {
@@ -600,10 +523,7 @@ export function readValue(target: WriteTarget): unknown {
   }
 }
 
-/**
- * Asks Angular to check the view that shows this element on its next pass, which a view
- * under an `OnPush` parent would otherwise skip: the value it shows changed from outside.
- */
+/** Marks the view for check, which an `OnPush` parent would otherwise skip. */
 export function markViewForCheck(element: Element): void {
   try {
     getDebugNode(element)?.injector.get(ChangeDetectorRef, null)?.markForCheck();
@@ -612,7 +532,6 @@ export function markViewForCheck(element: Element): void {
   }
 }
 
-/** The form control bound on this element itself — not one inherited from an ancestor. */
 function formControlOn(element: Element): NgControl | null {
   try {
     return getDebugNode(element)?.injector.get(NgControl, null, { self: true }) ?? null;
@@ -621,7 +540,6 @@ function formControlOn(element: Element): NgControl | null {
   }
 }
 
-/** Whether the element is rendered by the same Angular application as the engine. */
 function sameApplication(element: Element, application: ApplicationRef | null): boolean {
   if (!application) {
     return true;
@@ -633,11 +551,7 @@ function sameApplication(element: Element, application: ApplicationRef | null): 
   }
 }
 
-/**
- * The kind of value a bound element takes. A native element says so itself; a custom
- * element carrying the binding — a third-party toggle, a slider wrapper — is judged by
- * the role of what it renders, and one whose role says nothing is not guessed at.
- */
+/** A custom element is judged by the role of what it renders; a role that says nothing is not guessed at. */
 function kindFor(bound: Element, rendered: Element, type: string): ControlKind | null {
   const tag = bound.tagName.toLowerCase();
   if (tag === 'select') {
@@ -685,10 +599,7 @@ function coerceNumber(target: WriteTarget, proposed: unknown): Coerced {
   if (typeof number !== 'number' || !Number.isFinite(number)) {
     return { refused: 'A number is expected.' };
   }
-  // A native input states its bounds; a range input clamps silently and Angular's min and
-  // max validators do not apply to it, so a value outside them would reach the model only.
-  // A custom slider or spinbutton states them through ARIA on the element carrying its
-  // role, which is where the snapshot reads them from too.
+  // A range input clamps silently and Angular's min/max validators skip it, so bounds are checked here.
   const input = target.element.tagName.toLowerCase() === 'input' ? (target.element as HTMLInputElement) : null;
   const [min, max] = input
     ? nativeBounds(input)
@@ -711,13 +622,11 @@ function coerceNumber(target: WriteTarget, proposed: unknown): Coerced {
   return { value: number, display: number };
 }
 
-/** A native input's bounds, `NaN` where it sets none; a range input has the browser's defaults. */
 function nativeBounds(input: HTMLInputElement): [number, number] {
   const [min, max] = input.type === 'range' ? [0, 100] : [NaN, NaN];
   return [input.min !== '' ? Number(input.min) : min, input.max !== '' ? Number(input.max) : max];
 }
 
-/** A bound an ARIA attribute states, or `NaN` when it states none. */
 function ariaBound(element: Element, attribute: string): number {
   const raw = element.getAttribute(attribute);
   return raw?.trim() ? Number(raw) : NaN;
@@ -732,13 +641,11 @@ function coerceTyped(target: WriteTarget, proposed: unknown): Coerced {
   if (typeof proposed !== 'string') {
     return { refused: `A value in the form ${format} is expected.` };
   }
-  // The browser's own sanitisation decides: a value it would clear is one the field
-  // cannot show, and the model must not hold what the screen does not.
+  // The browser's sanitisation decides: the model must not hold what the field cannot show.
   const probe = input.ownerDocument.createElement('input');
   probe.type = input.type;
   probe.value = proposed;
-  // A colour is written in lower case whatever case it is given in: `#AABBCC` is valid,
-  // and the field shows `#aabbcc`, which is what the model then holds.
+  // A colour input lowercases, so compare in lowercase.
   const sameValue = input.type === 'color' ? probe.value === proposed.toLowerCase() : probe.value === proposed;
   if (!sameValue) {
     return { refused: `A value in the form ${format} is expected.` };
@@ -748,11 +655,9 @@ function coerceTyped(target: WriteTarget, proposed: unknown): Coerced {
 
 function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {
   const select = target.element as HTMLSelectElement;
-  // Only the options the snapshot named can be chosen, or named in a refusal; an option
-  // it left out that is selected stays selected, cleared or not.
+  // An option the snapshot left out that is selected stays selected.
   const kept = select.multiple ? Array.from(select.selectedOptions).filter(option => !choiceShown(option, target)) : [];
-  // One choice at a time: replacing one the agent was never shown would change what it
-  // cannot see, and could not undo.
+  // Replacing a choice the agent was never shown would change what it cannot see or undo.
   if (!select.multiple && Array.from(select.selectedOptions).some(option => choiceKept(option, target))) {
     return { refused: KEPT_CHOICE_DETAIL };
   }
@@ -768,7 +673,7 @@ function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {
   const options: HTMLOptionElement[] = [];
   for (const entry of wanted) {
     const matches = all.filter(candidate => optionMatches(candidate, entry));
-    // Two options can read the same: only a value naming exactly one of them tells which.
+    // Two options can read the same: only a value naming exactly one tells which.
     const byValue = matches.filter(
       candidate =>
         typeof entry === 'string' && clrNormalizeContextText(candidate.value) === clrNormalizeContextText(entry)
@@ -815,10 +720,6 @@ function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
   return { value: chosen, display: radioLabel(chosen) };
 }
 
-/**
- * Chooses a radio of a custom radio group by the label the snapshot showed, and gives the
- * group's control that label, which is what a group that passed `holdsChoiceLabel` takes.
- */
 function coerceChoice(target: WriteTarget, proposed: unknown): Coerced {
   const radios = customRadiosOf(target.control);
   if (radios.some(radio => radio.getAttribute('aria-checked') === 'true' && choiceKept(radio, target))) {
@@ -845,7 +746,6 @@ function coerceChoice(target: WriteTarget, proposed: unknown): Coerced {
   return { value: label, display: label };
 }
 
-/** Whether a custom radio group's control holds nothing, or the label of one of its radios. */
 function holdsChoiceLabel(group: Element, value: unknown): boolean {
   if (value === null || value === undefined || value === '') {
     return true;
@@ -860,16 +760,11 @@ function customRadiosOf(group: Element): Element[] {
   return Array.from(group.querySelectorAll('[role="radio"]'));
 }
 
-/** Whether a value is an object or a list, rather than a primitive. */
 function isStructured(value: unknown): boolean {
   return value !== null && typeof value === 'object';
 }
 
-/**
- * Whether a choice is kept from agents — excluded, or redacted — as opposed to merely
- * not shown: a hidden placeholder option ("Choose…") is no secret, and a write may
- * replace it.
- */
+/** Excluded or redacted, as opposed to merely hidden: a hidden "Choose…" placeholder may be replaced. */
 function choiceKept(choice: Element, target: WriteTarget): boolean {
   const excluded = withheldBy(choice, target.options);
   if (excluded && choice.closest(excluded)) {
@@ -883,21 +778,14 @@ function choiceKept(choice: Element, target: WriteTarget): boolean {
   return false;
 }
 
-/**
- * Whether a snapshot names this choice — an option or a radio — so that an agent may pick
- * it, and a refusal may list it: not kept from agents, and not withheld itself. The
- * control around it was judged already.
- */
 function choiceShown(choice: Element, target: WriteTarget): boolean {
   return !choiceKept(choice, target) && !choice.matches(CLR_CONTEXT_WITHHELD_SELECTOR);
 }
 
-/** Whether a person could pick this option: not disabled, alone or through its group, and shown. */
 function optionUsable(option: HTMLOptionElement): boolean {
   return !option.disabled && !option.hidden && !option.closest('optgroup[disabled], [hidden]');
 }
 
-/** The value a radio's control receives when it is chosen: the bound one, else the DOM one. */
 function radioValue(radio: HTMLInputElement): unknown {
   const accessor = formControlOn(radio)?.valueAccessor as { value?: unknown } | null | undefined;
   return accessor && 'value' in accessor && accessor.value !== undefined ? accessor.value : radio.value;
@@ -911,15 +799,10 @@ function radioLabelWithin(radio: HTMLInputElement, withheld = ''): string {
   return accessibleName(radio, 'radio', MAX_LABEL_LENGTH, withheld) || radio.value;
 }
 
-/** Selects what the options leave out, so that no label read here quotes it. */
 function withheldBy(element: Element, options?: Required<ClrContextSnapshotOptions>): string {
   return options ? clrUsableSelectors(element.ownerDocument, options.excludeSelectors) : '';
 }
 
-/**
- * The name a node is known by when the snapshot gave it none: the accessible name of
- * the element carrying the role, or of the host that renders it.
- */
 function labelOf(elements: Element[], withheld: string): string {
   for (let index = elements.length - 1; index >= 0; index--) {
     const element = elements[index];
@@ -951,7 +834,6 @@ function listLabels(labels: string[]): string {
     : listed.join(', ');
 }
 
-/** The words of a text, for comparing descriptions: letters and digits, lowercased. */
 function words(text: string): string[] {
   return text
     .toLowerCase()
@@ -959,7 +841,6 @@ function words(text: string): string[] {
     .filter(Boolean);
 }
 
-/** A value as a result reports it: its plain, serialisable part, with an empty selection kept as `[]`. */
 function plain(value: unknown): unknown {
   if (value === undefined || value === null) {
     return null;
@@ -976,7 +857,6 @@ function serialized(value: unknown): string {
   }
 }
 
-/** A component's own coercion or write, with a throw reported as a refusal rather than propagated. */
 function safely(operation: () => ClrElementMutation | undefined): ClrElementMutation {
   try {
     const outcome = operation();

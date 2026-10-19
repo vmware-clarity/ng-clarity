@@ -43,8 +43,7 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
 export class ClrContextEngineService implements OnDestroy {
   private readonly customExtractors: ClrContextDomExtractor[] = [];
   private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
-  // Refs are handed out only while there is a policy to write under: readers who never
-  // write pay nothing for them.
+  // Refs are handed out only under a policy, so readers who never write pay nothing.
   private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
   private readonly refs = inject(ContextRefRegistryService);
   private readonly locationStrategy = inject(LocationStrategy, { optional: true });

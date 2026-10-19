@@ -19,18 +19,13 @@ import { Subscription } from 'rxjs';
 
 import { DEMO_HOSTS, DemoHost } from '../hosts';
 
-/** A node in the page's snapshot that the mutation engine could write to. */
 interface WritableTarget {
   ref: string;
   type: string;
   label: string;
 }
 
-/**
- * Drives the mutation engine against a form the way an agent's client would: the
- * controls on the left send one operation at a time, the form on the right shows what
- * that did, and the readout under it shows what the application's own model holds.
- */
+/** Drives the mutation engine against a form the way an agent's client would. */
 @Component({
   selector: 'clr-contextual-mutation-demo',
   standalone: true,
@@ -74,9 +69,7 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // The refs an agent can use come from the latest snapshot, which the tracker keeps
-    // current as the page changes. The tracker is shared with the app-shell inspector: it
-    // stops once neither needs it.
+    // The tracker is shared with the app-shell inspector and stops once neither needs it.
     const tracking = this.contextTracker.track({ snapshot: { maxComponents: 500 } });
     this.trackingSubscription = tracking.subscribe(snapshot => {
       this.writableTargets = writableTargets(snapshot.components);
@@ -112,7 +105,6 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
     this.noteChanges++;
   }
 
-  /** The application's own model: the form group's value, the template-driven note, the selection. */
   readout(): string {
     const { files, password, ...values } = this.form.value;
     return JSON.stringify(
@@ -131,11 +123,6 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
     return this.writableTargets.find(target => target.ref === ref)?.label ?? '';
   }
 
-  /**
-   * What an agent's client does: hand the engine the operation and show what came back.
-   * The report's snapshot and change are left out here; the form itself shows the page
-   * as it is now.
-   */
   private applyOperation(operation: ClrMutationOperation): void {
     this.mutationResult = 'Applying…';
     this.mutationEngine.apply([operation]).then(report => {
@@ -145,7 +132,6 @@ export class ContextualMutationDemo implements OnInit, OnDestroy {
   }
 }
 
-/** Every node carrying a ref, in document order, with what the agent would call it. */
 function writableTargets(nodes: ClrComponentContext[]): WritableTarget[] {
   return nodes.flatMap(node => [
     ...(node.ref ? [{ ref: node.ref, type: node.type, label: node.label ?? '' }] : []),
@@ -153,7 +139,6 @@ function writableTargets(nodes: ClrComponentContext[]): WritableTarget[] {
   ]);
 }
 
-/** A typed value where the text is JSON — an array, a boolean, a number — and the text otherwise. */
 function proposal(text: string): unknown {
   const trimmed = text.trim();
   if (/^(\[|true$|false$|null$|-?\d+(\.\d+)?$)/.test(trimmed)) {

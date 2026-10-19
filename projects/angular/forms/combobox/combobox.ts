@@ -661,12 +661,8 @@ export class ClrCombobox<T>
   }
 
   /**
-   * Says how this combobox is written to: its form control holds an option's value,
-   * which may be an object, while an agent knows the option by the label it saw in the
-   * published context. Given a label (one per item for multi-select) this returns the
-   * option's value for the engine to write through the form control; a label no option
-   * has is refused with the options named, so a value the component would otherwise
-   * accept silently never reaches the model. Read back, the selection is labels again.
+   * Mutator: the form control holds an option's value while an agent knows its label, so labels are
+   * mapped to values and unknown labels are refused with the options named.
    */
   private publishMutator(host: HTMLElement) {
     this.teardownElementMutator = clrPublishElementMutator(host, {
@@ -678,21 +674,17 @@ export class ClrCombobox<T>
     });
   }
 
-  /** The option values a proposal of labels names, or why it names none the agent may choose. */
   private coerceSelection(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation {
     const excluded = this.excludedBy(options);
-    // A value no option holds is shown by its own label.
     const hidden = this.selectedValues().filter(value => {
       const option = this.optionFor(value);
       return !!option && this.optionShown(option, excluded) !== 'shown';
     });
-    // One choice at a time: replacing one the agent was never shown would change what it
-    // cannot see, and could not undo. In a multi-select, such a selection stays as it is.
+    // Replacing a choice the agent was never shown would change what it cannot see or undo.
     if (!this.multiSelect && hidden.length) {
       return { refused: 'The current choice is kept from agents, and cannot be changed by one.' };
     }
-    // The display is what the agent asked for, by the labels it knows: the selection it
-    // was never shown is kept in the value and left out of what it is shown.
+    // The selection the agent was never shown stays in the value and out of the display.
     if (proposed === null || proposed === undefined || proposed === '') {
       return { value: this.multiSelect ? hidden : null, display: this.multiSelect ? [] : null };
     }
@@ -700,13 +692,11 @@ export class ClrCombobox<T>
     if (!this.multiSelect && proposals.length > 1) {
       return { refused: 'The combobox takes one option.' };
     }
-    // Only the options the snapshot named can be chosen, or named in a refusal.
     const items = (this.options?.items?.toArray() ?? []).filter(
       option => this.optionShown(option, excluded) === 'shown'
     );
     const values: T[] = [...hidden];
     const labels: string[] = [];
-    // Naming an option twice, or by its label and its value, chooses it once, as the user can.
     const choose = (value: T, label: string) => {
       if (!values.some(chosen => this.sameValue(chosen, value))) {
         values.push(value);
@@ -724,7 +714,6 @@ export class ClrCombobox<T>
       if (option) {
         choose(option.value, this.optionLabel(option));
       } else if (this.editable && typeof proposal === 'string' && proposal.trim()) {
-        // An editable combobox takes what the user types, as it would from the keyboard.
         const text = proposal.trim();
         choose(this.optionSelectionService.editableResolver(text), text);
       } else if (!items.length) {
@@ -818,11 +807,7 @@ export class ClrCombobox<T>
     return this.multiSelect ? names : (names[0] ?? null);
   }
 
-  /**
-   * The options a proposal names. Two can read the same — two people called "John Smith",
-   * a label that is another option's value — and only one naming them exactly tells
-   * which is meant: the one whose label is the proposal, else the one whose value is.
-   */
+  /** Two options can read the same; prefer an exact label match, then an exact value match. */
   private matchingOptions(items: ClrOption<T>[], proposal: unknown): ClrOption<T>[] {
     let matches = items.filter(candidate => this.optionMatches(candidate, proposal));
     if (matches.length > 1 && typeof proposal === 'string') {

@@ -48,22 +48,14 @@ export interface ClrContextDomExtractor {
 }
 
 /**
- * Receives, for every described node, the element it was produced from — so that a
- * later operation can find the element again from the node's `ref`. The walk calls it
- * innermost element first: a node folded into the custom element that renders it is
- * noted once for the role-bearing element and once for the host, which is how the host
- * that carries the form binding is reachable from a node the DOM attributed to an
- * element inside it.
+ * Receives each described node with its element, innermost first, so a host carrying the
+ * form binding is reachable from a node attributed to an element inside it.
  */
 export interface ClrContextRefSink {
   note(node: ClrComponentContext, element: Element): void;
 }
 
-/**
- * Roles an agent can propose a value for. A node with one of these roles is offered to
- * the ref sink, which keeps a ref only where a write could get somewhere; whether one
- * succeeds is decided when it is attempted, with the reason when it is not.
- */
+/** Roles an agent can propose a value for; such nodes are offered to the ref sink. */
 const WRITABLE_ROLES: ReadonlySet<string> = new Set([
   'textbox',
   'searchbox',
@@ -144,14 +136,9 @@ interface Walk {
   elementDepth: number;
   /** Shared across the whole walk, probes included. */
   visited: { count: number };
-  /** Greater than zero while inside an embedded frame's document. */
   frameDepth: number;
-  /**
-   * Greater than zero while inside a custom element that published how it is written
-   * to: the component owns writing, so the controls it renders get no refs of their own.
-   */
+  /** Inside a component that publishes its own writing, so its rendered controls get no refs. */
   mutatorDepth: number;
-  /** Where refs go, when the snapshot is to carry them. */
   readonly refs: ClrContextRefSink | null;
 }
 
@@ -217,14 +204,8 @@ export function isHiddenFromEngine(element: Element, excludeSelector = ''): bool
 }
 
 /**
- * Whether a snapshot with these options leaves the element out on purpose: it matches or
- * sits in one of the `excludeSelectors`, in or under an excluded role (a category is a
- * set of roles), renders one itself — a datagrid host renders the grid it is written
- * through, while an input in one of its cells is the application's content —
- * or lies outside every `rootSelector` root. What is hidden, inert, ignored or
- * behind a modal is judged separately, by {@link isHiddenFromEngine} and the modal check.
- * The mutation engine uses this so that it never writes what such a snapshot would not
- * show, whatever snapshot the ref came from.
+ * Whether a snapshot with these options leaves the element out on purpose (excluded selector or role,
+ * or outside the roots), so the mutation engine never writes what such a snapshot would not show.
  */
 export function isOutsideSnapshot(element: Element, options: Required<ClrContextSnapshotOptions>): boolean {
   const excludeSelector = clrUsableSelectors(element.ownerDocument, options.excludeSelectors);
@@ -414,11 +395,7 @@ function within<T>(walk: Walk, counters: readonly DepthCounter[], describe: () =
   }
 }
 
-/**
- * Describes what a custom element renders, noting when the element is a component that
- * is written to as one thing and owns what it renders (see `ClrElementMutator.ownsContents`),
- * so that nothing it renders is offered for writing on its own.
- */
+/** Notes a component that owns what it renders, so nothing inside is offered for writing on its own. */
 function withinComponent<T>(element: Element, walk: Walk, describe: () => T): T {
   return within(walk, ownsContents(element) ? ['mutatorDepth'] : [], describe);
 }
@@ -621,9 +598,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
     }
     walk.remaining--;
     const wrapper: ClrComponentContext = { type: 'group', element: tagName, children: rendered };
-    // A component that is written to as one thing is named by the control it renders
-    // — a combobox by the input the user types into — so the node carrying its ref
-    // carries the name an agent would refer to it by.
+    // A component written to as one thing is named by the control it renders, as an agent would refer to it.
     if (ownsContents(element)) {
       const named = rendered.find(part => part.label && WRITABLE_ROLES.has(part.type));
       if (named) {
@@ -1067,11 +1042,7 @@ function rendersExcludedRole(element: Element, walk: Walk): boolean {
   return false;
 }
 
-/**
- * Whether the element itself renders the descendant, rather than another component
- * inside it: no custom element stands between them. A datagrid renders its grid; the
- * input in one of its cells belongs to the cell, which holds the application's content.
- */
+/** No custom element between them: a datagrid renders its grid, not the input in one of its cells. */
 function isRenderedBy(descendant: Element, element: Element): boolean {
   let owner: Element | null = descendant.parentElement;
   while (owner && owner !== element && !isCustomElementTag(owner)) {
@@ -1148,13 +1119,8 @@ function pruneEmpty(context: ClrComponentContext, { foreign = false } = {}): Clr
 }
 
 /**
- * Gives a node a ref when it is something an agent could propose a value for — a
- * writable role, or an element that published how it is written to — and records the
- * element behind it. A node that already has a ref, because it was finished once for
- * the element inside and is now being finished for the host that renders it, keeps the
- * ref and gains the host as a second way to find its binding. Nothing inside a frame, a
- * redacted region or a component that owns its contents gets a ref: the engine never
- * writes there, so nothing should invite it to.
+ * Gives a writable node a ref and records its element; a node finished again for its host keeps the ref.
+ * Nothing in a frame, a redacted region or a component that owns its contents gets one.
  */
 function noteRef(node: ClrComponentContext, element: Element, walk: Walk): void {
   if (!walk.refs || walk.probing || walk.frameDepth > 0 || walk.redactedDepth > 0 || walk.mutatorDepth > 0) {
@@ -1168,14 +1134,7 @@ function noteRef(node: ClrComponentContext, element: Element, walk: Walk): void 
   }
 }
 
-/**
- * A component written to as one thing that says it is the control it renders — a
- * combobox host publishing itself as a combobox — would otherwise list that control
- * twice, once as itself and once as its rendered part with the same role and name. The
- * part is folded into the host, which speaks for it: the host's own state is what the
- * component publishes, and the part's — the typed text, whether the popup is open — is
- * the component's internals. Whatever the part contains takes its place.
- */
+/** Folds a host's rendered part with the same role and name into the host, so the control is not listed twice. */
 function foldRenderedControl(node: ClrComponentContext, walk: Walk): ClrComponentContext {
   const children = node.children ?? [];
   const index = children.findIndex(
@@ -1189,12 +1148,10 @@ function foldRenderedControl(node: ClrComponentContext, walk: Walk): ClrComponen
   if (!children.length) {
     delete node.children;
   }
-  // The part was counted against the budget, which it no longer uses.
   walk.remaining++;
   return node;
 }
 
-/** Whether an element is a component written to as one thing, whose rendered controls are its own internals. */
 function ownsContents(element: Element): boolean {
   return CLR_ELEMENT_MUTATOR_PROPERTY in element && readElementMutator(element)?.ownsContents === true;
 }

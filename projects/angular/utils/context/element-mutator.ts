@@ -9,83 +9,32 @@ import { ClrContextSnapshotOptions } from './context.interface';
 import { publishOnElement } from './publish';
 
 /**
- * Name of the element property through which a component says how it is written to,
- * the way {@link CLR_ELEMENT_CONTEXT_PROPERTY} says what it is.
- *
- * Most controls need nothing here: their form control takes the value an agent proposes
- * as it is. The property exists for the ones whose model is not what an agent sees — a
- * combobox stores an option's value while an agent knows its label, a date input stores
- * a locale string while an agent has a date — and for state that is not a form control
- * at all, such as which datagrid rows are selected.
- *
- * Like the context property, this is a plain property carrying plain functions: a
- * component assigns it on its own host element and removes it on destroy, and the
- * mutation engine consults it before writing. Publishing costs one import.
+ * Host element property through which a component says how it is written to, when its model is not
+ * what an agent sees (a combobox's option value, a date input's locale string, datagrid selection).
  */
 export const CLR_ELEMENT_MUTATOR_PROPERTY = 'clrElementMutator';
 
 /**
- * The outcome of turning a proposed value into one the element takes, or of writing it:
- * the value, or the reason the element cannot take what was proposed. A refusal is
- * expected to be actionable — it names the labels that would have been accepted, say —
- * because an agent repairs from a reason and can only retry blindly from an error.
- *
- * `display`, from `coerce`, is the value in the terms an agent and a person use — the
- * option's label, the date as the field shows it — which is what the application's
- * policy judges and what a confirmation shows. It must hold nothing the published
- * context withholds: `value` may keep a selection the agent was never shown, and the
- * display leaves it out. Without one the engine shows the proposal as the agent gave it.
+ * A coerced or written value, or an actionable refusal. `display` is the value in agent terms, shown to
+ * the policy, and must hold nothing the published context withholds.
  */
 export type ClrElementMutation =
   | { value: unknown; display?: unknown; refused?: undefined }
   | { refused: string; value?: undefined; display?: undefined };
 
-/**
- * What a component publishes through {@link CLR_ELEMENT_MUTATOR_PROPERTY}. Every member
- * is optional; a component publishes only what its form control cannot do on its own.
- *
- * Each call receives the snapshot options the write is judged against — the
- * application's, with any the caller gave over them — so a component that names what an
- * agent may pick from its content, a datagrid's rows, leaves out what those options
- * exclude, as the snapshot did.
- */
+/** What a component publishes through {@link CLR_ELEMENT_MUTATOR_PROPERTY}; every member is optional. */
 export interface ClrElementMutator {
-  /**
-   * `true` when the component is written to as one thing and the controls it renders are
-   * its own internals — a combobox's search input, which carries a form binding of its
-   * own that is not the value. Nothing inside such a component is offered for writing
-   * separately. Leave it unset for a component whose contents are the application's own
-   * — a datagrid's cells hold whatever controls the application put there.
-   */
+  /** `true` when the component is written as one thing and its rendered controls are internals. */
   ownsContents?: boolean;
-  /**
-   * Turns what an agent proposes — an option's label, a date in any form — into the
-   * value the element's form control takes, or refuses. `null` proposes clearing the
-   * control and is passed through so the component can say what "empty" is for it.
-   * The engine then writes the result through the form control as usual — or, for a
-   * component that also publishes {@link write}, hands it to `write`: there `coerce`
-   * judges a write without making it, so a plan sees the refusal the write would meet.
-   */
+  /** Turns an agent's proposal into the value the form control takes, or refuses; `null` proposes clearing. */
   coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
-  /**
-   * Writes the proposal directly, for state that no form control holds — a datagrid's
-   * row selection. Returns what is now true, in the terms an agent sees. When present,
-   * the engine writes through this rather than through a form control.
-   */
+  /** Writes the proposal directly, for state no form control holds, such as datagrid selection. */
   write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
-  /**
-   * The element's current value in the terms an agent sees — labels rather than option
-   * values — for reading back after a write. Without it the engine reads the form
-   * control's value.
-   */
+  /** The current value in agent terms, read back after a write. */
   read?(options?: Required<ClrContextSnapshotOptions>): unknown;
 }
 
-/**
- * Publishes a component's mutator on its host element and returns the teardown to call
- * on destroy. The teardown only removes the mutator it published, so a stale teardown
- * cannot unpublish a newer one.
- */
+/** Publishes a mutator on the host element. The teardown only removes the mutator it published. */
 export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void {
   return publishOnElement(host, CLR_ELEMENT_MUTATOR_PROPERTY, mutator);
 }
