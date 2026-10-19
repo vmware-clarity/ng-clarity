@@ -303,12 +303,25 @@ export default function (): void {
     it('stays open when expanded again while its children collapse', async () => {
       const navGroup = fixture.componentInstance.navGroup;
       await toggle();
+      children()
+        .getAnimations()
+        .forEach(animation => animation.finish());
       await toggle();
+      children()
+        .getAnimations()
+        .forEach(animation => {
+          animation.pause();
+          animation.currentTime = 100;
+        });
+
       await toggle();
+      const [from] = heightKeyframes();
+      expect(parseFloat(from as string)).toBeGreaterThan(0);
       children()
         .getAnimations()
         .forEach(animation => animation.finish());
       await delay();
+      fixture.detectChanges();
 
       expect(navGroup.expanded).toBeTrue();
       expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).not.toBeNull();

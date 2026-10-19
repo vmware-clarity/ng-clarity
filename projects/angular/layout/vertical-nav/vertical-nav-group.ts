@@ -180,7 +180,8 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   }
 
   toggleExpand(): void {
-    if (this.expanded) {
+    // Not `expanded`, which stays true while the children collapse: toggling again then expands the group back.
+    if (this.expandAnimationState === EXPANDED_STATE) {
       this.collapseGroup();
     } else {
       // If nav is collasped, first open the nav
