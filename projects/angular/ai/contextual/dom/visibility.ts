@@ -5,6 +5,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { CLR_CONTEXT_HIDDEN_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
+
+/** Whether the element is in hidden, inert or ignored markup, or in a region `withheld` selects. */
+export function isHiddenFromContext(element: Element, withheld = ''): boolean {
+  return !!element.closest(CLR_CONTEXT_HIDDEN_SELECTOR) || (!!withheld && !!element.closest(withheld));
+}
+
+/** {@link isHiddenFromContext} judged on the element alone, for a walk that has already judged its ancestors. */
+export function hidesFromContext(element: Element, withheld = ''): boolean {
+  return element.matches(CLR_CONTEXT_HIDDEN_SELECTOR) || (!!withheld && element.matches(withheld));
+}
+
+/** Whether a redacted region holds `item` but not `container`, so the item's text is withheld from it. */
+export function isRedactedWithin(item: Element, container: Element): boolean {
+  const redacting = item.closest(CLR_CONTEXT_REDACT_SELECTOR);
+  return !!redacting && !redacting.contains(container);
+}
+
 /**
  * Whether the element can be seen, as assistive technology judges it. Geometry is not judged:
  * custom checkboxes draw over a visually hidden native input that is still in the accessibility tree.
