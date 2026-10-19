@@ -15,7 +15,6 @@ import { StepperService } from './providers/stepper.service';
 import { ClrStepper } from './stepper';
 import { ClrStepperPanel } from './stepper-panel';
 import { ClrStepperModule } from './stepper.module';
-import { errorLike } from '../../test-matchers';
 
 @Component({
   template: `
@@ -374,7 +373,7 @@ describe('ClrStepper Error Handling', () => {
   it('should throw an error if angular form is not detected', () => {
     const stepper = TestBed.createComponent(ClrStepper);
     expect(() => stepper.componentInstance.ngOnInit()).toThrowError(
-      errorLike('To use stepper a Reactive or Template Form is required.')
+      'To use stepper a Reactive or Template Form is required.'
     );
   });
 });

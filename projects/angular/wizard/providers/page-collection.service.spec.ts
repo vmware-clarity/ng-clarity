@@ -11,7 +11,6 @@ import { BasicWizardTestComponent } from '../test-components/basic-wizard.mock';
 import { ClrWizard } from '../wizard';
 import { ClrWizardPage } from '../wizard-page';
 import { PageCollectionService } from './page-collection.service';
-import { errorLike } from '../../../test-matchers';
 
 describe('New Wizard Tests', () => {
   describe('Page Collection Service', () => {
@@ -54,14 +53,14 @@ describe('New Wizard Tests', () => {
 
       expect(function () {
         pageCollectionService.getPageById(nonExistingPageId);
-      }).toThrowError(errorLike('No page can be found with the id ' + nonExistingPageId + '.'));
+      }).toThrowError('No page can be found with the id ' + nonExistingPageId + '.');
 
       // Manually setting this id to make multiple pages have the same id.
       pageCollectionService.getPageById(lastPageId)._id = firstPageIdNumber;
 
       expect(function () {
         pageCollectionService.getPageById(firstPageId);
-      }).toThrowError(errorLike('More than one page has the requested id ' + firstPageId + '.'));
+      }).toThrowError('More than one page has the requested id ' + firstPageId + '.');
     });
 
     it('.getPageByIndex() should return the index of the wizard page', () => {
@@ -70,11 +69,11 @@ describe('New Wizard Tests', () => {
 
       expect(function () {
         pageCollectionService.getPageByIndex(-20);
-      }).toThrowError(errorLike('Cannot retrieve page with index of -20'));
+      }).toThrowError('Cannot retrieve page with index of -20');
 
       expect(function () {
         pageCollectionService.getPageByIndex(10);
-      }).toThrowError(errorLike('Page index is greater than length of pages array.'));
+      }).toThrowError('Page index is greater than length of pages array.');
     });
 
     it('.getPageIndex() should return the index of a wizard page', () => {

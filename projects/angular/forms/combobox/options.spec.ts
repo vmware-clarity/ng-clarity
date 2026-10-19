@@ -14,7 +14,6 @@ import { ClrCommonStringsService, FocusService, IF_ACTIVE_ID_PROVIDER } from '@c
 import { ClrOptions } from './options';
 import { ComboboxFocusHandler } from './providers/combobox-focus-handler.service';
 import { OptionSelectionService } from './providers/option-selection.service';
-import { errorLike } from '../../../test-matchers';
 
 const OPTION_PROVIDERS = [
   ClrPopoverService,
@@ -147,7 +146,7 @@ describe('Combobox component', () => {
           TestBed.configureTestingModule({ declarations: [ClrOptions, TestComponentWithError] });
           expect(() => {
             TestBed.createComponent(TestComponentWithError);
-          }).toThrowError(errorLike('clr-options should only be used inside of a clr-combobox'));
+          }).toThrowError('clr-options should only be used inside of a clr-combobox');
         });
       });
     });

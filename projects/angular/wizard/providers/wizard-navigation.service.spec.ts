@@ -12,7 +12,6 @@ import { ClrWizard } from '../wizard';
 import { ClrWizardPage } from '../wizard-page';
 import { PageCollectionService } from './page-collection.service';
 import { WizardNavigationService } from './wizard-navigation.service';
-import { errorLike } from '../../../test-matchers';
 
 describe('New Wizard Tests', () => {
   describe('Wizard Navigation Service', () => {
@@ -352,7 +351,7 @@ describe('New Wizard Tests', () => {
       expect(wizardNavigationService.currentPage).toEqual(testPage);
       expect(() => {
         wizardNavigationService.forceNext();
-      }).toThrowError(errorLike());
+      }).toThrowError();
     });
 
     it('.forceNext() should do nothing if stop navigation is set', () => {

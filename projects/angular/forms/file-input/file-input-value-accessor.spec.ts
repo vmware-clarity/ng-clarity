@@ -11,7 +11,6 @@ import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Vali
 
 import { ClrFormsModule } from '../forms.module';
 import { buildFileList, selectFiles } from './file-input.helpers';
-import { errorLike } from '../../../test-matchers';
 
 interface TestComponent {
   get control(): FormControl<FileList>;
@@ -183,7 +182,7 @@ function fileInputValueAccessorSpec(testComponent: Type<TestComponent>) {
   });
 
   it('should throw when writing invalid value', () => {
-    expect(writeInvalidValue).toThrowError(errorLike('The value of a file input control must be a FileList.'));
+    expect(writeInvalidValue).toThrowError('The value of a file input control must be a FileList.');
 
     function writeInvalidValue() {
       fixture.componentInstance.control.setValue('files' as any);

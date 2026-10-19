@@ -6,7 +6,6 @@
  */
 
 import { StepperModel } from './stepper.model';
-import { errorLike } from '../../../test-matchers';
 import { StepperPanelStatus } from '../enums/stepper-panel-status.enum';
 
 describe('StepperModel', () => {
@@ -90,7 +89,7 @@ describe('StepperModel', () => {
     stepper.addPanel(step1Id);
     stepper.addPanel(step2Id);
     stepper.addPanel(step3Id);
-    expect(() => stepper.resetPanels()).not.toThrowError(errorLike());
+    expect(() => stepper.resetPanels()).not.toThrowError();
   });
 
   it('should allow user to open and close a previously completed step', () => {

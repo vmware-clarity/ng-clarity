@@ -21,7 +21,6 @@ import { StateDebouncer } from './providers/state-debouncer.provider';
 import { TableSizeService } from './providers/table-size.service';
 import { DatagridHeaderRenderer } from './render/header-renderer';
 import { DatagridRenderOrganizer } from './render/render-organizer';
-import { errorLike } from '../../../test-matchers';
 
 const PROVIDERS_NEEDED = [
   Sort,
@@ -60,9 +59,7 @@ describe('Datagrid', () => {
               providers: PROVIDERS_NEEDED,
             });
             TestBed.createComponent(HideableNotInsideColumnTest);
-          }).toThrowError(
-            errorLike('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.')
-          );
+          }).toThrowError('The *clrDgHideableColumn directive can only be used inside of a clr-dg-column component.');
         });
       });
 

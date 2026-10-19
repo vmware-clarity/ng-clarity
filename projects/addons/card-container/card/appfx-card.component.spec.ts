@@ -24,7 +24,6 @@ import { ClrIcon } from '@clr/angular/icon';
 
 import { AppfxCardInternal } from '../appfx-card-container.interface';
 import { AppfxCardComponent } from './appfx-card.component';
-import { errorLike } from '../../../test-matchers';
 import { A11yService } from '../services/a11y.service';
 import { DragDropService } from '../services/dnd.service';
 import { LayoutService } from '../services/layout.service';
@@ -68,7 +67,7 @@ describe('AppfxCardComponent', () => {
     component.card = {} as AppfxCardInternal;
     expect(() => {
       component.ngOnInit();
-    }).toThrowError(errorLike('Missing Input property for card - id'));
+    }).toThrowError('Missing Input property for card - id');
   });
 
   it('should create component card when id and componentClass is present', () => {

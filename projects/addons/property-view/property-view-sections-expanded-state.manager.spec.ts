@@ -9,7 +9,6 @@ import { TestBed } from '@angular/core/testing';
 
 import { PropertyViewSectionsExpandedStateManager } from './property-view-sections-expanded-state.manager';
 import { PropertyViewCategoryModel, PropertyViewModelType, PropertyViewSectionModel } from './property-view.model';
-import { errorLike } from '../../test-matchers';
 
 interface ThisTest {
   createCategoryData: (overrides: Partial<PropertyViewCategoryModel>) => PropertyViewCategoryModel;
@@ -112,10 +111,10 @@ describe('PropertyViewSectionsExpandedStateManager', () => {
 
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')
-      ).toThrowError(errorLike());
+      ).toThrowError();
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-1')
-      ).toThrowError(errorLike());
+      ).toThrowError();
       expect(testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-2')).toEqual(
         false
       );
@@ -185,24 +184,24 @@ describe('PropertyViewSectionsExpandedStateManager', () => {
       testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-1')
-      ).toThrowError(errorLike('Unknown category ID: cat-1'));
+      ).toThrowError('Unknown category ID: cat-1');
 
       testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-3', 'sec-1')
-      ).toThrowError(errorLike('Unknown category ID: cat-3'));
+      ).toThrowError('Unknown category ID: cat-3');
     });
 
     it('should fail when section does not exist', () => {
       testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-2', 'sec-3')
-      ).toThrowError(errorLike('Unknown section ID: sec-3'));
+      ).toThrowError('Unknown section ID: sec-3');
 
       testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.getSectionExpandedState('cat-1', 'sec-2')
-      ).toThrowError(errorLike('Unknown section ID: sec-2'));
+      ).toThrowError('Unknown section ID: sec-2');
     });
 
     it('should return the data state when user state was not set', () => {
@@ -253,24 +252,24 @@ describe('PropertyViewSectionsExpandedStateManager', () => {
       testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-1', true)
-      ).toThrowError(errorLike('Unknown category ID: cat-1'));
+      ).toThrowError('Unknown category ID: cat-1');
 
       testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-3', 'sec-1', true)
-      ).toThrowError(errorLike('Unknown category ID: cat-3'));
+      ).toThrowError('Unknown category ID: cat-3');
     });
 
     it('should fail when section does not exist', () => {
       testContext.propertyViewSectionsExpandedStateManager.update(testContext.getSubsetData());
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-2', 'sec-3', true)
-      ).toThrowError(errorLike('Unknown section ID: sec-3'));
+      ).toThrowError('Unknown section ID: sec-3');
 
       testContext.propertyViewSectionsExpandedStateManager.update(testContext.getMainData());
       expect(() =>
         testContext.propertyViewSectionsExpandedStateManager.setSectionExpandedUserState('cat-1', 'sec-2', true)
-      ).toThrowError(errorLike('Unknown section ID: sec-2'));
+      ).toThrowError('Unknown section ID: sec-2');
     });
 
     it('should update the user-set state', () => {

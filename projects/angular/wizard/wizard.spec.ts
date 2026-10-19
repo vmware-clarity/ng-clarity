@@ -15,7 +15,6 @@ import { DynamicEmptyWizardTestComponent } from './test-components/dynamic-empty
 import { DynamicWizardTestComponent } from './test-components/dynamic-wizard.mock';
 import { UnopenedWizardTestComponent } from './test-components/unopened-wizard.mock';
 import { ClrWizard } from './wizard';
-import { errorLike } from '../../test-matchers';
 
 describe('New Wizard Tests', () => {
   describe('Wizard', () => {
@@ -778,7 +777,7 @@ describe('New Wizard Tests', () => {
         expect(function () {
           context.testComponent.pages = [];
           context.detectChanges();
-        }).not.toThrowError(errorLike());
+        }).not.toThrowError();
         expect(wizard.pageCollection.pagesCount).toBe(0);
       });
     });

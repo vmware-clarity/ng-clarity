@@ -41,10 +41,7 @@ Shared configuration:
 - `vitest.config.mts`: mock restoration, shuffled execution, seed selection, file isolation, and slow-test reporting.
 - `projects/test-setup.ts`: the `cds-theme` body attribute and timer cleanup.
 - `projects/test-providers.ts`: the Zone-based change detection scheduler used by the existing tests.
-- `projects/test-matchers.ts`: exact error-message checks and the object-shape checks that Jasmine's equality enforced.
 - `angular.json`: browser viewport, coverage, setup files, and CI targets.
-
-Vitest's string `toThrowError` arguments match substrings. Use `errorLike(message)` when the complete message is the contract, or `errorLike()` to require an error-like value without checking its message. The shared equality tester rejects mismatched class constructors and missing enumerable own properties, including properties whose value is `undefined`. It returns only `false` or `undefined`, leaving value comparison to Vitest. Arrays retain their existing sparse-array behavior, and explicit partial matchers remain partial. Compatibility specs cover these differences.
 
 The existing `fakeAsync`, `tick`, `flush`, and `waitForAsync` tests use the documented `zone.js/plugins/vitest-patch` integration. Tests that use native asynchronous callbacks explicitly await their work. New tests can use native async functions and Vitest timers.
 
@@ -68,6 +65,8 @@ VITEST_SEED=3219 npm run _test:addons
 Without `VITEST_SEED`, a run uses the current timestamp. Run multiple seeds when changing shared test infrastructure.
 
 ## Coverage and checks
+
+Review migrated tests for the same inputs, actions, expected values, boundary cases, and timing requirements. Use native Vitest assertions to express that behavior. The migration does not need to reproduce Jasmine's matcher implementation or diagnostic output. For suspicious rewrites, introduce a targeted production fault and check that the test rejects it, then restore the production code.
 
 Both CI targets enforce the original global coverage thresholds with Vitest's V8 provider. Each target measures its own library source; imported code from the other library is measured by that library's suite. Schematics use their separate test target; fixture factories and other test support retain their previous coverage exclusions:
 

@@ -12,7 +12,6 @@ import { ClrIcon } from '@clr/angular/icon';
 import { ClrTabsModule } from '@clr/angular/layout/tabs';
 
 import { TabsHelper } from './tabs-helper';
-import { errorLike } from '../../../test-matchers';
 
 @Component({
   selector: 'appfx-mock-tabs',
@@ -72,9 +71,7 @@ describe('TabsHelper', () => {
   it('should throw an error if no tabs are found', () => {
     const emptyDebugElement = new DebugElement(document.createElement('div'));
 
-    expect(() => new TabsHelper(emptyDebugElement)).toThrowError(
-      errorLike('No tabs found under passed context element')
-    );
+    expect(() => new TabsHelper(emptyDebugElement)).toThrowError('No tabs found under passed context element');
   });
 
   it('should throw an error if multiple tabs are found', () => {
@@ -82,7 +79,7 @@ describe('TabsHelper', () => {
     multipleTabsComponent.detectChanges();
 
     expect(() => new TabsHelper(multipleTabsComponent.debugElement)).toThrowError(
-      errorLike('Unable to isolate targeted instance of tabs widget')
+      'Unable to isolate targeted instance of tabs widget'
     );
   });
 
@@ -118,7 +115,7 @@ describe('TabsHelper', () => {
   });
 
   it('should throw error when clicking invalid tab index', () => {
-    expect(() => tabsHelper.clickLink(-1)).toThrowError(errorLike('No tab link found at index -1'));
+    expect(() => tabsHelper.clickLink(-1)).toThrowError('No tab link found at index -1');
   });
 
   it('should check if tabs are visible', () => {

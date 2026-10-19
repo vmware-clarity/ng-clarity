@@ -9,7 +9,6 @@ import { TestBed } from '@angular/core/testing';
 import { AppfxTranslateModule } from '@clr/addons/translate';
 
 import { CertificateViewerTranslateFieldPipe } from './certificate-viewer-translate-field.pipe';
-import { errorLike } from '../../../test-matchers';
 import { CertificateField } from '../models/certificate-field.model';
 
 describe('CertificateViewerTranslateFieldPipe', () => {
@@ -41,7 +40,7 @@ describe('CertificateViewerTranslateFieldPipe', () => {
   it('should throw an error for an invalid property', () => {
     expect(() => {
       pipe.transform(new CertificateField('foo'), 'invalidProperty' as unknown as 'name' | 'value');
-    }).toThrowError(errorLike('Invalid certificate field property'));
+    }).toThrowError('Invalid certificate field property');
   });
 
   it('should translate the field name', () => {

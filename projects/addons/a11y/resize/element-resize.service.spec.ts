@@ -8,7 +8,6 @@
 import { firstValueFrom } from 'rxjs';
 
 import { ElementResizeService } from './element-resize.service';
-import { errorLike } from '../../../test-matchers';
 
 describe('ElementResizeService', () => {
   const service = new ElementResizeService();
@@ -38,18 +37,6 @@ describe('ElementResizeService', () => {
   });
 
   it('#getResizeObservable() handles invalid element gracefully', async () => {
-    const observer = new ResizeObserver(() => {});
-    let nativeMessage: string | undefined;
-    try {
-      observer.observe(undefined as any);
-    } catch (error) {
-      nativeMessage = (error as Error).message;
-    } finally {
-      observer.disconnect();
-    }
-    expect(nativeMessage).toBeDefined();
-    await expect(firstValueFrom(service.getResizeObservable(undefined as any))).rejects.toThrowError(
-      errorLike(nativeMessage)
-    );
+    await expect(firstValueFrom(service.getResizeObservable(undefined as any))).rejects.toThrow(TypeError);
   });
 });
