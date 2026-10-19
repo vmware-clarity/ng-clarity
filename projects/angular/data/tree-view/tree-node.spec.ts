@@ -42,6 +42,22 @@ class TestComponent {
 
 @Component({
   template: `
+    <clr-tree-node #node [clrExpanded]="true">
+      Parent
+      <clr-tree-node>
+        Child
+        <clr-tree-node>Grandchild</clr-tree-node>
+      </clr-tree-node>
+    </clr-tree-node>
+  `,
+  standalone: false,
+})
+class NestedTestComponent {
+  @ViewChild('node') tree: ClrTreeNode<void>;
+}
+
+@Component({
+  template: `
     <clr-tree-node>
       <a href="href" class="clr-treenode-link" [class.active]="active">Hello world</a>
     </clr-tree-node>
@@ -732,6 +748,43 @@ export default function (): void {
         await delay();
 
         expect(children().getAnimations()).toEqual([]);
+      });
+
+      it('settles the children at once when all the descendants are collapsed while they animate', async function () {
+        await expand(true);
+        children()
+          .getAnimations()
+          .forEach(animation => animation.pause());
+
+        fixture.componentInstance.tree.collapseDescendants();
+        fixture.detectChanges();
+        await delay();
+
+        expect(children().getAnimations()).toEqual([]);
+      });
+
+      it('does not start the animation of a toggle followed by a bulk change before the next render', async function () {
+        fixture.destroy();
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [ClrTreeViewModule, ClrIcon],
+          declarations: [NestedTestComponent],
+          providers: [TreeFocusManagerService],
+          animationsEnabled: true,
+        });
+        const nestedFixture = TestBed.createComponent(NestedTestComponent);
+        nestedFixture.detectChanges();
+        await delay();
+        const parent = nestedFixture.componentInstance.tree;
+        const parentChildren: HTMLElement = nestedFixture.nativeElement.querySelector('.clr-treenode-children');
+
+        parent.expanded = false;
+        parent.expandDescendants();
+        nestedFixture.detectChanges();
+        await delay();
+
+        expect(parentChildren.getAnimations()).toEqual([]);
+        nestedFixture.destroy();
       });
     });
   });

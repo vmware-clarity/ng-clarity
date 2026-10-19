@@ -82,6 +82,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
    * enabled, as Angular calls `animate.enter` handlers only then.
    */
   protected animatesChildren = false;
+  /** The latest expand or collapse of the children, so that an earlier one does not start its animation after it. */
+  private childrenHeightChange: object;
 
   private bulkChange = false;
   private skipAnimation = false;
@@ -212,7 +214,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       this.expandService.expandChange.subscribe(value => {
         // Bulk operations (expand all, expand descendants) do not animate hundreds of nested nodes at once.
         this.skipAnimation = this.bulkChange;
-        if (this.animatesChildren && !this.skipAnimation) {
+        if (this.animatesChildren) {
           this.animateChildrenHeight();
         }
         this.expandedChange.emit(value);
@@ -483,10 +485,25 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
   }
 
   /** Animates the children from their current height to the one they have once the change is rendered. */
+  /** Animates the children to their new height, or settles them at once on a bulk change, replacing the earlier change. */
   private animateChildrenHeight() {
     const children = this.children.nativeElement;
+    const change = (this.childrenHeightChange = {});
+    if (this.skipAnimation) {
+      children.getAnimations().forEach(animation => animation.cancel());
+      return;
+    }
     const from = measureHeight(children);
-    afterNextRender({ read: () => animateHeight(children, { from, easing: 'linear' }) }, { injector: this.injector });
+    afterNextRender(
+      {
+        read: () => {
+          if (change === this.childrenHeightChange) {
+            animateHeight(children, { from, easing: 'linear' });
+          }
+        },
+      },
+      { injector: this.injector }
+    );
   }
 }
 
