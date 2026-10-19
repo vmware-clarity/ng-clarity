@@ -6,10 +6,10 @@
  */
 
 import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
-import { fakeAsync, flushMicrotasks } from '@angular/core/testing';
+import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
-import { expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
+import { delay, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, IfExpandService, Keys } from '@clr/angular/utils';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
@@ -648,6 +648,90 @@ export default function (): void {
       it('removes the tree node link from the native tab sequence to prevent a double-Tab stop', function (this: Context) {
         const link: HTMLElement = this.clarityElement.querySelector('.clr-treenode-link');
         expect(link.getAttribute('tabindex')).toBe('-1');
+      });
+    });
+
+    describe('Animations', function () {
+      let fixture: ComponentFixture<TestComponent>;
+
+      beforeEach(function () {
+        TestBed.configureTestingModule({
+          imports: [ClrTreeViewModule, ClrIcon],
+          declarations: [TestComponent],
+          providers: [TreeFocusManagerService],
+          animationsEnabled: true,
+        });
+        fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
+        return delay();
+      });
+
+      afterEach(function () {
+        fixture.destroy();
+      });
+
+      function children(): HTMLElement {
+        return fixture.nativeElement.querySelector('.clr-treenode-children');
+      }
+
+      function heightKeyframes() {
+        return children()
+          .getAnimations()
+          .flatMap(animation => (animation.effect as KeyframeEffect).getKeyframes().map(keyframe => keyframe.height));
+      }
+
+      async function expand(expanded: boolean) {
+        fixture.componentInstance.expanded = expanded;
+        fixture.detectChanges();
+        await delay();
+      }
+
+      it('expands the children from 0 to their height', async function () {
+        await expand(true);
+
+        const [from, to] = heightKeyframes();
+        expect(from).toBe('0px');
+        expect(parseFloat(to as string)).toBeGreaterThan(0);
+      });
+
+      it('collapses the children to 0, keeping them rendered', async function () {
+        await expand(true);
+        children()
+          .getAnimations()
+          .forEach(animation => animation.finish());
+        await expand(false);
+
+        expect(heightKeyframes()[1]).toBe('0px');
+        expect(getComputedStyle(children()).contentVisibility).toBe('visible');
+
+        children()
+          .getAnimations()
+          .forEach(animation => animation.finish());
+        expect(getComputedStyle(children()).contentVisibility).toBe('hidden');
+      });
+
+      it('does not animate the children when animations are disabled', async function () {
+        fixture.destroy();
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [ClrTreeViewModule, ClrIcon],
+          declarations: [TestComponent],
+          providers: [TreeFocusManagerService],
+        });
+        fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
+        await delay();
+        await expand(true);
+
+        expect(children().getAnimations()).toEqual([]);
+      });
+
+      it('does not animate the children when all the descendants are expanded at once', async function () {
+        fixture.componentInstance.tree.expandDescendants();
+        fixture.detectChanges();
+        await delay();
+
+        expect(children().getAnimations()).toEqual([]);
       });
     });
   });

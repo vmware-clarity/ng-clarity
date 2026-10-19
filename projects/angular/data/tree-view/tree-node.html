@@ -71,8 +71,10 @@
   </ng-template>
 </div>
 <div
+  #children
   class="clr-treenode-children"
-  [@toggleChildrenAnim]="childrenAnimationState"
+  [class.is-expanded]="expandService.expanded"
+  (animate.enter)="animatesChildren = true"
   [attr.role]="isExpandable() && !featuresService.recursion ? 'group' : null"
   [attr.inert]="expandService.expanded ? null : ''"
 >
