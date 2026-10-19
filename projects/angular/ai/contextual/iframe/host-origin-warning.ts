@@ -9,11 +9,7 @@ import { isDevMode } from '@angular/core';
 
 let warned = false;
 
-/**
- * In development, says once on the console that a request without `hostOrigin` trusts
- * whichever page embeds the frame: any site that can embed it can answer with a context
- * of its own making, and steer what consumes it.
- */
+/** Warns once in development: without `hostOrigin`, any site embedding the frame can answer with its own context. */
 export function warnNoHostOrigin(): void {
   if (!warned && isDevMode()) {
     warned = true;
@@ -24,7 +20,7 @@ export function warnNoHostOrigin(): void {
   }
 }
 
-/** Lets the next request without `hostOrigin` warn again. For specs only; not exported from the package. */
+/** For specs only; not exported from the package. */
 export function resetNoHostOriginWarning(): void {
   warned = false;
 }

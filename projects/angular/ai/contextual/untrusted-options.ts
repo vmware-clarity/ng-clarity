@@ -121,10 +121,7 @@ export function withoutUrlDetails(
   return shared;
 }
 
-/**
- * The context as a consumer the application does not control may see it: without what
- * the user typed and without the address details, unless the host shares them.
- */
+/** The context as an untrusted consumer may see it, unless the host shares more. */
 export function contextForUntrustedCaller(
   context: ClrPageContext,
   share: { shareFormValues?: boolean; shareFullUrl?: boolean },

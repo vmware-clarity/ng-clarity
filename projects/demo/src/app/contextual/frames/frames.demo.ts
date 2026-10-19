@@ -22,16 +22,10 @@ const EMBEDDED_CHAT_PAGE = `
       <button id="ask" style="padding: 6px 12px">Request host page context</button>
       <pre id="out" style="background: #f4f4f4; padding: 8px; white-space: pre-wrap"></pre>
       <script>
-        // What a hand-written client must do: an unguessable request id, an answer
-        // accepted only from the window that was asked and only from its origin, and a
-        // request addressed to that origin rather than broadcast.
-        // This page is a srcdoc of the host, so it shares the host's origin; its address,
-        // about:srcdoc, has none (location.origin is "null"), so the origin is read from
-        // the window. A page served on its own would name its host's origin as a constant.
+        // A hand-written client: unguessable id, answers only from the asked window and origin.
+        // This srcdoc page shares the host's origin, but location.origin is "null", so read it from the window.
         var hostOrigin = window.origin;
-        // An unguessable id. crypto.randomUUID() exists only in a secure context (HTTPS or
-        // localhost), and this demo may be opened over plain HTTP on a LAN address, so it falls
-        // back to crypto.getRandomValues(), which is available everywhere.
+        // randomUUID() needs a secure context, and the demo may be served over plain HTTP.
         function newRequestId() {
           if (typeof crypto.randomUUID === 'function') {
             return crypto.randomUUID();
@@ -68,22 +62,11 @@ const EMBEDDED_CHAT_PAGE = `
 `;
 
 /**
- * The third-party plugin is the same static asset served from a different origin: the
- * host name is swapped to another name for this machine, which the browser treats as a
- * different origin. Which alternate name actually answers depends on what the dev server
- * listens on — `localhost` may resolve to `::1` while `127.0.0.1` refuses — so the
- * candidates are probed and the first one that responds is used.
- *
- * This only ever works on a developer's own machine, where the demo is one of these
- * names and another is a second origin for the same server. It is therefore never
- * attempted from a deployed copy of this demo: a page on a public origin that requests a
- * loopback address makes the browser ask the reader for permission to reach other
- * services on their device, which is an alarming question to answer on someone else's
- * behalf, and nothing here would be found anyway.
+ * The third-party plugin is the same asset served from another loopback name, i.e. another origin.
+ * Only tried from a dev server: on a public origin the browser would ask the reader for local network access.
  */
 const ALTERNATE_HOSTS = ['127.0.0.1', '[::1]', 'localhost'];
 
-/** Whether this page is itself served from a loopback name, i.e. from a dev server. */
 function servedFromLoopback(): boolean {
   const host = new URL(document.baseURI).hostname;
   return ALTERNATE_HOSTS.includes(host) || /^127\./.test(host);
@@ -98,7 +81,6 @@ function alternateOrigins(): URL[] {
   });
 }
 
-/** Whether a server answers at all at this URL; an opaque cross-origin response is enough. */
 async function reachable(href: string): Promise<boolean> {
   try {
     await fetch(href, { mode: 'no-cors', cache: 'no-store' });
@@ -133,8 +115,6 @@ export class ContextualFramesDemo implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    // Answer context requests from the embedded frames below. The third-party plugin's
-    // origin is added once it is known (see resolveThirdPartyPlugin).
     this.contextEngine.enableFrameBridge();
     this.resolveThirdPartyPlugin();
   }
@@ -146,21 +126,18 @@ export class ContextualFramesDemo implements OnInit, OnDestroy {
 
   private async resolveThirdPartyPlugin(): Promise<void> {
     if (!this.servedLocally) {
-      // Nothing is asked of the network away from a dev machine; see ALTERNATE_HOSTS.
       this.thirdPartyProbed = true;
       return;
     }
     for (const candidate of alternateOrigins()) {
       const found = await reachable(candidate.href);
-      // The page may have been left while the probe waited; a bridge opened now would
-      // outlive it and keep answering frames.
+      // The page may have been left while the probe waited; don't open a bridge that outlives it.
       if (this.destroyed) {
         return;
       }
       if (found) {
         this.thirdPartyOrigin = candidate.origin;
         this.thirdPartyPluginUrl = this.sanitizer.bypassSecurityTrustResourceUrl(candidate.href);
-        // The bridge serves only origins it is told about: name the plugin's.
         this.contextEngine.enableFrameBridge({ allowedOrigins: [window.location.origin, candidate.origin] });
         break;
       }

@@ -10,35 +10,19 @@ import { capSnapshotOptions, resolveSnapshotOptions } from '../snapshot-options'
 import { contextForUntrustedCaller, sanitizeUntrustedSnapshotOptions } from '../untrusted-options';
 import { warnNoHostOrigin } from './host-origin-warning';
 
-/**
- * Identifier of the cross-frame context protocol. The protocol is plain,
- * framework-agnostic JSON over `postMessage`, so UI running inside an iframe — a chat
- * widget, another UI library, anything — can request context from the hosting page
- * without depending on Angular or Clarity. Implementations in other languages or
- * frameworks only need to reproduce the two message shapes below.
- *
- * This is a discriminator, never a secret: it ships in the client bundle, so any script
- * can read it. Nothing here relies on it being unknown.
- */
+/** Identifier of the framework-agnostic `postMessage` context protocol. A discriminator, never a secret. */
 export const CLR_CONTEXT_PROTOCOL = 'ui-context/v1';
 
-/** Longest request id a frame may send. Ids are only correlators, never payloads. */
 const MAX_REQUEST_ID_LENGTH = 128;
 
-/** Shortest gap between two snapshots served to the same frame. */
 const DEFAULT_MIN_REQUEST_INTERVAL_MS = 200;
 
-/**
- * Most snapshots served to all frames together within one interval. The per-frame
- * throttle bounds each frame; this bounds their sum, so a document nesting many frames
- * cannot multiply its way past the per-frame floor.
- */
+/** Most snapshots served to all frames together per interval, so nesting frames cannot multiply the limit. */
 const MAX_REQUESTS_PER_INTERVAL = 5;
 
-/** How long a frame waits for the host's answer before giving up. */
 const DEFAULT_REQUEST_TIMEOUT_MS = 2000;
 
-/** Longest delay a browser timer holds; a longer one overflows and fires at once. */
+/** A longer browser timer delay overflows and fires at once. */
 const MAX_TIMER_DELAY_MS = 2 ** 31 - 1;
 
 /** Message an embedded frame posts to its parent to ask for the page context. */
@@ -49,12 +33,7 @@ export interface ClrContextFrameRequest {
   kind: 'context-request';
   /** Correlates a response with its request. */
   requestId: string;
-  /**
-   * Snapshot options the requester wants applied. Only the keys in
-   * `CLR_CONTEXT_UNTRUSTED_OPTION_KEYS` are honoured — budgets, categories, roles,
-   * focus and collection mode, never selectors — and only to ask for less than the
-   * host allows.
-   */
+  /** Snapshot options to apply; only `CLR_CONTEXT_UNTRUSTED_OPTION_KEYS`, and only to ask for less. */
   options?: ClrContextSnapshotOptions;
 }
 
@@ -72,95 +51,43 @@ export interface ClrContextFrameResponse {
 
 /** How a host page serves context to the frames it embeds; see `enableFrameBridge`. */
 export interface ClrContextFrameHostOptions {
-  /**
-   * Origins allowed to request context. Defaults to the host page's own origin.
-   *
-   * A `'*'` entry is ignored: serving every origin is a decision that has to be made
-   * deliberately through {@link allowAnyOrigin}, not by a string in a list. A list that
-   * names no usable origin at all is a configuration error and is refused outright,
-   * rather than quietly serving nobody.
-   */
+  /** Origins allowed to request context. Defaults to the page's own; `'*'` entries are ignored. */
   allowedOrigins?: string[];
 
-  /**
-   * Serve any origin that asks. Only set this when snapshots are known to contain
-   * nothing an arbitrary embedded document should not see. Only frames embedded in this
-   * page are served, and never one with an opaque origin, such as a frame sandboxed
-   * without `allow-same-origin`.
-   */
+  /** Serve any origin that asks, only when snapshots hold nothing an arbitrary frame should not see. */
   allowAnyOrigin?: boolean;
 
-  /**
-   * Share the full URL — its path, query string and fragment — and the route's
-   * parameters, query parameters and data. Off by default, when a frame learns only the
-   * route's pattern (`reset/:token`): paths and queries routinely carry tenant and record
-   * identifiers and occasionally credentials, and an embedded document needs none of
-   * them to know which page it is on.
-   */
+  /** Share the full URL and route parameters and data. Off by default. */
   shareFullUrl?: boolean;
 
-  /**
-   * Share what the user has typed. Off by default: the application sees its own form
-   * contents as a matter of course, but an embedded document has no claim to them.
-   *
-   * Fields are described either way — label, type, permitted values, validation state —
-   * so a frame still learns the shape of a form without learning its contents.
-   */
+  /** Share what the user has typed. Off by default. */
   shareFormValues?: boolean;
 
-  /**
-   * The most a frame may ask for. A frame's own budgets are honoured only up to these:
-   * it can request a smaller snapshot than the host allows, never a larger one, so the
-   * cost of serving a frame stays the host's decision.
-   */
+  /** The most a frame may ask for; it can request less, never more. */
   snapshot?: ClrContextSnapshotOptions;
 
-  /**
-   * Shortest gap between two snapshots served to the same frame, in milliseconds.
-   * Defaults to 200, so a frame in a loop cannot keep the host's main thread busy. At most
-   * five snapshots are served per interval across all frames together; the rest go
-   * unanswered. `0` turns off both limits.
-   */
+  /** Shortest gap in milliseconds between snapshots served to one frame. Default `200`; `0` turns off throttling. */
   minRequestIntervalMs?: number;
 }
 
 /** How an embedded page asks its host for context; see `requestHostContext`. */
 export interface ClrContextFrameRequestOptions {
-  /**
-   * Window to ask for context. Defaults to `window.parent`. Another window is asked at
-   * its own origin when this document can read it, and otherwise needs `hostOrigin`.
-   */
+  /** Window to ask for context. Defaults to `window.parent`. */
   targetWindow?: Window;
   /**
-   * The host page's origin: where the request is addressed, and the only origin an
-   * answer is accepted from. Defaults to the origin of the document that embedded this
-   * one. Anything that is not an origin rejects the request.
-   *
-   * Set it for any UI that can be embedded by more than one site: without it, whatever
-   * page embeds this one is trusted to answer, made-up context included.
+   * The host's origin, and the only one an answer is accepted from. Set it for UI embeddable by
+   * more than one site, or any embedding page can answer with made-up context.
    */
   hostOrigin?: string;
-  /**
-   * How long to wait for an answer before resolving with `null`. Defaults to `2000`,
-   * which is also used for anything that is not a positive, finite number.
-   */
+  /** Milliseconds to wait before resolving with `null`. Default `2000`. */
   timeoutMs?: number;
   /** Snapshot budgets the host should apply. */
   options?: ClrContextSnapshotOptions;
 }
 
 /**
- * Serves page context to embedded frames; `ClrContextEngineService.enableFrameBridge`
- * runs one around the engine's snapshot. Context is computed per request and never
- * cached or broadcast, so an embedded agent always sees the page as it currently is.
- *
- * A frame is trusted less than the application that embeds it: it does not receive what
- * the user has typed, nor the URL's query string, it cannot ask for a larger snapshot
- * than the host allows, and it cannot ask faster than
- * {@link ClrContextFrameHostOptions.minRequestIntervalMs}.
- *
- * Not exported from the package: the engine is the only way to construct one, so the
- * application-wide options always apply.
+ * Serves page context to embedded frames, which get no form values, no full URL and no more than the host allows.
+ * Not exported: only the engine constructs one, so the application-wide options apply.
  */
 export class ClrContextFrameHost {
   private readonly allowedOrigins: string[];
@@ -184,11 +111,7 @@ export class ClrContextFrameHost {
     this.allowedOrigins = allowedOriginsFrom(options, hostWindow.location.origin, this.allowAnyOrigin);
     this.shareFullUrl = options.shareFullUrl === true;
     this.shareFormValues = options.shareFormValues === true;
-    // Resolved, so a budget or switch the host left unset is the default rather than
-    // "whatever a frame asks for": a frame cannot turn on `includeRoutes` or raise
-    // `maxComponents` past what the engine would give anyone by default. An exclusion
-    // list that is not one was already reported when the engine laid it over the
-    // application's options.
+    // Resolved, so an unset budget is the default rather than whatever a frame asks for.
     this.snapshotCeiling = resolveSnapshotOptions(options.snapshot);
     const interval = options.minRequestIntervalMs;
     this.minRequestIntervalMs =
@@ -197,12 +120,10 @@ export class ClrContextFrameHost {
         : DEFAULT_MIN_REQUEST_INTERVAL_MS;
   }
 
-  /** Starts listening for requests from embedded frames. Adding the same listener twice is a no-op. */
   start(): void {
     this.hostWindow.addEventListener('message', this.messageListener);
   }
 
-  /** Stops listening; requests that arrive afterwards go unanswered. */
   stop(): void {
     this.hostWindow.removeEventListener('message', this.messageListener);
   }
@@ -217,9 +138,7 @@ export class ClrContextFrameHost {
       return;
     }
 
-    // Nothing a frame sends may take the host's listener down with it: a snapshot that
-    // fails to build, or a response the browser refuses to clone, is that one request's
-    // problem. The frame times out; the host keeps serving.
+    // A failing snapshot or uncloneable response is that request's problem; the host keeps serving.
     try {
       const requested = capSnapshotOptions(sanitizeUntrustedSnapshotOptions(event.data.options), this.snapshotCeiling);
       const response: ClrContextFrameResponse = {
@@ -228,8 +147,7 @@ export class ClrContextFrameHost {
         requestId: event.data.requestId,
         context: this.contextForFrame(requested),
       };
-      // Addressed to the origin that asked. Never '*': between the request and the answer
-      // a frame can navigate, and '*' would deliver the page context wherever it went.
+      // Never '*': the frame can navigate between request and answer.
       source.postMessage(response, { targetOrigin: event.origin });
     } catch {
       // Deliberately swallowed: see above.
@@ -237,30 +155,21 @@ export class ClrContextFrameHost {
   }
 
   private isServableOrigin(origin: string): boolean {
-    // An opaque origin — a sandboxed frame without `allow-same-origin`, a `data:`
-    // document — reports itself as "null", which cannot be named as a postMessage
-    // target. Answering one would mean posting to '*', so it is refused instead.
+    // An opaque origin reports "null", which cannot be a postMessage target; answering would need '*'.
     if (!origin || origin === 'null') {
       return false;
     }
     return this.allowAnyOrigin || this.allowedOrigins.includes(origin);
   }
 
-  /**
-   * The child of this window that `source` sits in, at any depth, or `null` when it is
-   * not inside this window. The bridge serves the UI a page embeds, never a window that
-   * merely shares an allowed origin — a popup opened on this page, another tab, or a page
-   * that opened this one — which could otherwise read the signed-in user's context.
-   */
+  /** The child frame `source` sits in, or `null`: a popup or tab sharing an allowed origin is not served. */
   private embeddedFrameOf(source: Window): Window | null {
-    // A top-level window is its own parent, so this window would pass for its own child.
+    // A top-level window is its own parent.
     if (source === this.hostWindow) {
       return null;
     }
     let frame = source;
     try {
-      // `parent` is readable across origins; it is one of the properties the browser
-      // exposes on a cross-origin window.
       while (frame.parent !== this.hostWindow) {
         if (!frame.parent || frame.parent === frame) {
           return null;
@@ -273,15 +182,13 @@ export class ClrContextFrameHost {
     return frame;
   }
 
-  /** Whether to serve `frame` now, counting the snapshot against its allowance if so. */
   private admit(frame: Window): boolean {
     if (this.minRequestIntervalMs <= 0) {
       return true;
     }
     // A monotonic clock: a wall clock set back would throttle every frame until it caught up.
     const now = performance.now();
-    // Keyed by the top-level embedded frame: frames a frame nests share its allowance,
-    // so spawning frames buys no more snapshots than one frame gets.
+    // Nested frames share their top-level frame's allowance.
     const previous = this.lastServedAt.get(frame);
     if (previous !== undefined && now - previous < this.minRequestIntervalMs) {
       return false;
@@ -298,7 +205,6 @@ export class ClrContextFrameHost {
     return true;
   }
 
-  /** The snapshot as a frame is allowed to see it, leaving the original untouched. */
   private contextForFrame(options?: ClrContextSnapshotOptions): ClrPageContext {
     const share = { shareFormValues: this.shareFormValues, shareFullUrl: this.shareFullUrl };
     return contextForUntrustedCaller(
@@ -311,18 +217,8 @@ export class ClrContextFrameHost {
 }
 
 /**
- * Requests the hosting page's context from inside an embedded frame. Resolves with
- * `null` when the host does not answer (e.g. it does not serve frames, this frame's
- * origin is not allowed, or it asked again too soon), so embedded UI can
- * degrade gracefully. Rejects when the request cannot be made at all: a `hostOrigin`
- * that is not an origin, or `options` the browser cannot send in a message.
- *
- * The answer is only accepted from the window that was asked, and from the origin the
- * request was addressed to. A browser sets `event.source` and a page cannot forge it,
- * which is what stops a sibling frame from answering in the host's place — sibling
- * frames can reach each other through `parent.frames`, so without this a fabricated page
- * context could be fed to whatever consumes it. The origin check covers the other way
- * round: the right window having navigated somewhere else in between.
+ * Requests the host page's context from inside a frame. Resolves `null` when the host does not answer;
+ * rejects when the request cannot be made. Answers are accepted only from the asked window and origin.
  */
 export async function clrRequestHostContext(
   options: ClrContextFrameRequestOptions = {}
@@ -365,8 +261,7 @@ export async function clrRequestHostContext(
     }, requestTimeout(options.timeoutMs));
 
     window.addEventListener('message', responseListener);
-    // A request the browser cannot send — `options` holding something it cannot clone —
-    // will never be answered, so it is not left listening until the timeout.
+    // An uncloneable request is never answered, so don't wait for the timeout.
     try {
       targetWindow.postMessage(request, { targetOrigin });
     } catch (error) {
@@ -376,15 +271,10 @@ export async function clrRequestHostContext(
   });
 }
 
-/**
- * Where a request to `targetWindow` is addressed, and so the only origin an answer is
- * accepted from: `'*'` only when this document has no origin to name. Throws when the
- * request cannot be addressed.
- */
+/** Where the request is addressed, and the only origin an answer is accepted from. */
 function targetOriginFor(options: ClrContextFrameRequestOptions, targetWindow: Window): string {
   if (options.hostOrigin) {
-    // Normalised as the host normalises its allow-list: `https://app.example/` would
-    // otherwise never equal the origin an answer carries, and every request would time out.
+    // Normalised like the host's allow-list, or a trailing `/` would make every request time out.
     const hostOrigin = originOf(options.hostOrigin);
     if (!hostOrigin) {
       throw new Error(`clrRequestHostContext: "${options.hostOrigin}" is not an origin, such as https://app.example.`);
@@ -392,8 +282,7 @@ function targetOriginFor(options: ClrContextFrameRequestOptions, targetWindow: W
     return hostOrigin;
   }
   if (targetWindow !== window.parent) {
-    // The embedder's origin says nothing about another window: a request addressed to it
-    // would be dropped by the browser, and the call would time out without saying why.
+    // The embedder's origin says nothing about another window.
     const origin = readableOrigin(targetWindow);
     if (!origin) {
       throw new Error('clrRequestHostContext: a targetWindow other than the parent needs a hostOrigin to be asked.');
@@ -404,12 +293,7 @@ function targetOriginFor(options: ClrContextFrameRequestOptions, targetWindow: W
   return embedderOrigin() ?? ownOrigin();
 }
 
-/**
- * How long to wait for an answer. Anything but a positive, finite number falls back to the
- * default: a timer given `NaN`, a negative or an infinite delay fires at once, and the
- * request would resolve `null` before the host could answer. A delay longer than a timer
- * can hold also fires at once, so it is held to the longest one.
- */
+/** A non-positive, non-finite or too-long delay fires at once, so fall back to the default or the maximum. */
 function requestTimeout(timeoutMs: number | undefined): number {
   if (typeof timeoutMs !== 'number' || !Number.isFinite(timeoutMs) || timeoutMs <= 0) {
     return DEFAULT_REQUEST_TIMEOUT_MS;
@@ -417,7 +301,6 @@ function requestTimeout(timeoutMs: number | undefined): number {
   return Math.min(timeoutMs, MAX_TIMER_DELAY_MS);
 }
 
-/** Whether an inbound message is a context request this host should answer. */
 function isContextRequest(value: unknown): value is ClrContextFrameRequest {
   if (!value || typeof value !== 'object') {
     return false;
@@ -432,7 +315,6 @@ function isContextRequest(value: unknown): value is ClrContextFrameRequest {
   );
 }
 
-/** Whether an inbound message is the answer to this particular request. */
 function isContextResponse(value: unknown, requestId: string): value is ClrContextFrameResponse {
   if (!value || typeof value !== 'object') {
     return false;
@@ -447,11 +329,7 @@ function isContextResponse(value: unknown, requestId: string): value is ClrConte
   );
 }
 
-/**
- * An unguessable correlator. A predictable id — a counter, a timestamp — could be guessed
- * in a few thousand attempts, which is all a sibling frame needs to answer a request it
- * cannot see. `randomUUID` exists only in a secure context; `getRandomValues` everywhere.
- */
+/** Unguessable, so a sibling frame cannot answer a request it cannot see. `randomUUID` needs a secure context. */
 function newRequestId(): string {
   if (typeof crypto.randomUUID === 'function') {
     return crypto.randomUUID();
@@ -459,21 +337,12 @@ function newRequestId(): string {
   return Array.from(crypto.getRandomValues(new Uint8Array(16)), byte => byte.toString(16).padStart(2, '0')).join('');
 }
 
-/**
- * The origin of the document that embedded this one, when the browser disclosed it, or
- * `null`. `ancestorOrigins` (not in every browser) names the embedder even after an
- * in-frame navigation or under a no-referrer policy; otherwise the referrer, whose origin
- * the default referrer policy discloses across sites, is the embedder.
- */
+/** The embedder's origin from `ancestorOrigins` or the referrer, or `null`. */
 function embedderOrigin(): string | null {
   return originOf(window.location.ancestorOrigins?.[0] ?? '') ?? originOf(document.referrer);
 }
 
-/**
- * A window's origin where this document may read it — a same-origin window — or `null`.
- * An `about:blank` or `srcdoc` frame reports no origin of its own but shares this
- * document's, which reading its location proves, so it is addressed at this one.
- */
+/** A same-origin window's origin, or `null`; an `about:blank` or `srcdoc` frame shares this document's. */
 function readableOrigin(target: Window): string | null {
   try {
     const origin = target.location.origin;
@@ -486,22 +355,13 @@ function readableOrigin(target: Window): string | null {
   }
 }
 
-/**
- * This document's origin, used to address the request. A sandboxed or `data:` document
- * has no origin to name; the request carries only budgets, so a wildcard is acceptable
- * there and is the only thing a browser will deliver.
- */
+/** A sandboxed or `data:` document has no origin; the request carries only budgets, so `'*'` is fine there. */
 function ownOrigin(): string {
   const origin = window.location.origin;
   return origin && origin !== 'null' ? origin : '*';
 }
 
-/**
- * The origins a host serves. A wildcard in the list is dropped rather than honoured, so a
- * configuration copied from somewhere permissive cannot quietly open the page up. Without
- * a list, the page's own origin is served, unless it has none (a `file://` or sandboxed
- * page). A list that leaves nobody to serve is refused, unless every origin is served.
- */
+/** Wildcards are dropped so a copied permissive config cannot open the page; an empty result is refused. */
 function allowedOriginsFrom(options: ClrContextFrameHostOptions, ownOrigin: string, allowAnyOrigin: boolean): string[] {
   const allowed = (options.allowedOrigins || (ownOrigin === 'null' ? [] : [ownOrigin]))
     .filter(origin => origin !== '*')
@@ -516,12 +376,7 @@ function allowedOriginsFrom(options: ClrContextFrameHostOptions, ownOrigin: stri
   return allowed;
 }
 
-/**
- * An allowed origin as a browser reports one: `https://chat.example/` or
- * `https://Chat.Example` would otherwise never equal the `https://chat.example` a message
- * carries, and the frame would silently go unserved. Anything that is not an origin — a
- * relative path, `null`, a typo — is refused when the host is created.
- */
+/** Normalised so `https://Chat.Example/` matches the origin a message carries; a non-origin is refused. */
 function normalizedOrigin(entry: string): string {
   const origin = originOf(entry);
   if (!origin) {
@@ -530,7 +385,6 @@ function normalizedOrigin(entry: string): string {
   return origin;
 }
 
-/** The origin an address names, or `null` when it names none: a path, `null`, a typo. */
 function originOf(entry: string): string | null {
   try {
     const origin = new URL(entry).origin;

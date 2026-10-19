@@ -159,26 +159,15 @@ export class ClrContextEngineService implements OnDestroy {
     this.globalProperty = null;
   }
 
-  /**
-   * Starts answering context requests from embedded frames, so UI hosted in an iframe
-   * (a chat surface, an embedded tool) can pull this page's context through
-   * `postMessage`. Each request is answered with a freshly computed snapshot.
-   *
-   * By default only frames from the page's own origin are served; pass
-   * `allowedOrigins` to serve trusted cross-origin frames.
-   */
+  /** Answers context requests from embedded frames over `postMessage`; by default only same-origin frames. */
   enableFrameBridge(options?: ClrContextFrameHostOptions): void {
     const window = this.browserWindow();
     if (!window) {
       return;
     }
-    // The host caps each frame's request against `options.snapshot`; the application's
-    // own options are the ceiling above that, so a frame cannot undo them either. An
-    // exclusion list in `options.snapshot` that is not a list is reported here, once.
+    // The application's options cap what the host allows, so a frame cannot undo them either.
     const ceiling = this.untrustedCeiling(options?.snapshot);
-    // Built before the running bridge is stopped: the constructor refuses a configuration
-    // that is not usable, and a refused one should leave the frames already served as
-    // they were rather than silently cut off.
+    // Built before the running bridge stops, so a refused configuration leaves current frames served.
     const frameHost = new ClrContextFrameHost(
       snapshotOptions => this.getSnapshot(capSnapshotOptions(snapshotOptions, ceiling)),
       window,
@@ -187,8 +176,7 @@ export class ClrContextEngineService implements OnDestroy {
     );
     this.disableFrameBridge();
     this.frameHost = frameHost;
-    // Outside the zone: every `message` on the page reaches the listener, and answering
-    // one changes nothing the application renders, so none should check the application.
+    // Every `message` on the page reaches the listener, and answering renders nothing.
     this.zone.runOutsideAngular(() => frameHost.start());
   }
 
@@ -198,11 +186,7 @@ export class ClrContextEngineService implements OnDestroy {
     this.frameHost = null;
   }
 
-  /**
-   * Requests the context of the page hosting this application, for applications that
-   * themselves run inside an iframe. Resolves with `null` when there is no hosting
-   * page or it does not serve context.
-   */
+  /** Requests the hosting page's context from inside an iframe; `null` when there is none or it does not answer. */
   requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null> {
     if (!this.browserWindow()) {
       return Promise.resolve(null);
