@@ -9862,6 +9862,9 @@ export const textIcon: IconShapeTuple;
 export const textIconName = "text";
 
 // @public (undocumented)
+export type ThemeType = 'light' | 'dark';
+
+// @public (undocumented)
 export const thermometerIcon: IconShapeTuple;
 
 // @public (undocumented)
