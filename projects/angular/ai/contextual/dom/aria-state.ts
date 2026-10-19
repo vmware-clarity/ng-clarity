@@ -102,8 +102,7 @@ function assignNativeState(
   if ((tagName === 'details' || tagName === 'dialog') && element.hasAttribute('open')) {
     state.open = true;
   }
-  // `:disabled` also covers a control inside a disabled fieldset, which the property does not.
-  if ('disabled' in element && ((element as HTMLInputElement).disabled || element.matches(':disabled'))) {
+  if (isNativelyDisabled(element)) {
     state.disabled = true;
   }
   if ('required' in element && (element as HTMLInputElement).required) {
@@ -199,6 +198,11 @@ function assignValueState(
       state.value = chosen[0];
     }
   }
+}
+
+/** `:disabled` also covers a control inside a disabled fieldset, which the property does not. */
+export function isNativelyDisabled(element: Element): boolean {
+  return 'disabled' in element && ((element as HTMLInputElement).disabled || element.matches(':disabled'));
 }
 
 /** Whether this control's value must be withheld, whatever the caller asked for. */

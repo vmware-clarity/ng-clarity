@@ -160,20 +160,9 @@ export function isOutsideSnapshot(element: Element, options: Required<ClrContext
     return true;
   }
   if (options.excludeRoles.length) {
-    const excluded = new Set(options.excludeRoles);
-    if (hasExcludedRole(element, excluded)) {
-      return true;
-    }
-    const candidates = roleCandidateSelector(excluded);
-    if (
-      candidates &&
-      Array.from(element.querySelectorAll(candidates)).some(
-        inner =>
-          excluded.has(resolveRole(inner) ?? '') &&
-          !isLeftOutAnyway(inner, excludeSelector) &&
-          isRenderedBy(inner, element)
-      )
-    ) {
+    const excludeRoles = new Set(options.excludeRoles);
+    const excluding = { excludeRoles, excludeRoleCandidates: roleCandidateSelector(excludeRoles), excludeSelector };
+    if (hasExcludedRole(element, excludeRoles) || holdsExcludedRole(element, excluding, true)) {
       return true;
     }
   }
@@ -901,7 +890,11 @@ function listOf(node: ClrComponentContext | null): ClrComponentContext[] {
  * Whether the element holds an excluded role the walk would otherwise show; with `renderedOnly`,
  * only one its own template renders (the grid in `clr-datagrid`).
  */
-function holdsExcludedRole(element: Element, walk: Walk, renderedOnly = false): boolean {
+function holdsExcludedRole(
+  element: Element,
+  walk: Pick<Walk, 'excludeRoles' | 'excludeRoleCandidates' | 'excludeSelector'>,
+  renderedOnly = false
+): boolean {
   if (!walk.excludeRoleCandidates) {
     return false;
   }

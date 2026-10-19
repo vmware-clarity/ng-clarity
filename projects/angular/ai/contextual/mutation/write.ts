@@ -21,6 +21,7 @@ import {
 import { ContextRefTarget } from './context-ref-registry.service';
 import { ClrMutationRefusal } from './mutation.interface';
 import { writeObstacle } from './writability';
+import { attempt } from '../attempt';
 import { accessibleName } from '../dom/accessible-name';
 import { readElementMutator } from '../dom/element-mutator';
 import { resolveRole } from '../dom/roles';
@@ -533,22 +534,14 @@ export function markViewForCheck(element: Element): void {
 }
 
 function formControlOn(element: Element): NgControl | null {
-  try {
-    return getDebugNode(element)?.injector.get(NgControl, null, { self: true }) ?? null;
-  } catch {
-    return null;
-  }
+  return attempt(() => getDebugNode(element)?.injector.get(NgControl, null, { self: true }) ?? null, null);
 }
 
 function sameApplication(element: Element, application: ApplicationRef | null): boolean {
   if (!application) {
     return true;
   }
-  try {
-    return getDebugNode(element)?.injector.get(ApplicationRef, null) === application;
-  } catch {
-    return false;
-  }
+  return attempt(() => getDebugNode(element)?.injector.get(ApplicationRef, null) === application, false);
 }
 
 /** A custom element is judged by the role of what it renders; a role that says nothing is not guessed at. */

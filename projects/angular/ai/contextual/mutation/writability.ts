@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { isRedacted } from '../dom/aria-state';
+import { isNativelyDisabled, isRedacted } from '../dom/aria-state';
 import { isHiddenFromEngine, openModalDialogs } from '../dom/walk';
 
 export type ClrWriteObstacle = 'hidden' | 'redacted' | 'disabled' | 'readOnly';
@@ -25,10 +25,7 @@ export function writeObstacle(element: Element, knownModals?: ReadonlySet<Elemen
   if (isRedacted(element)) {
     return 'redacted';
   }
-  if (
-    element.getAttribute('aria-disabled') === 'true' ||
-    ('disabled' in element && ((element as HTMLInputElement).disabled || element.matches(':disabled')))
-  ) {
+  if (element.getAttribute('aria-disabled') === 'true' || isNativelyDisabled(element)) {
     return 'disabled';
   }
   if (
