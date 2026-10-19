@@ -89,9 +89,11 @@ export const SECTIONING_SELECTOR = 'article, aside, main, nav, section';
 /** Never read into names: regions kept from agents, and editing hosts, whose text is a value. */
 export const UNREADABLE_SELECTOR = `${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}, ${CLR_CONTEXT_EDITING_HOST_SELECTOR}`;
 
+const COLUMN_HEADER_CELL = `th:not([role])${ROW_HEADER_SCOPES.map(scope => `:not([scope="${scope}"])`).join('')}`;
+
 /** The items a collection summary counts, per item role. */
 export const ITEM_SELECTORS: Readonly<Record<string, string>> = {
-  columnheader: `${roleSelector('columnheader')}, th:not([role])${ROW_HEADER_SCOPES.map(scope => `:not([scope="${scope}"])`).join('')}`,
+  columnheader: `${roleSelector('columnheader')}, ${COLUMN_HEADER_CELL}`,
   row: roleSelector('row'),
   tab: roleSelector('tab'),
   listitem: roleSelector('listitem'),
