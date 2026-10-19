@@ -25,7 +25,7 @@ describe('Datagrid', () => {
       it('compares according to the current comparator', () => {
         testContext.sortInstance.comparator = testContext.comparator;
         expect(testContext.sortInstance.compare(1, 10)).toBeLessThan(0);
-        expect(testContext.sortInstance.compare(4, 4)).toBeCloseTo(0);
+        expect(testContext.sortInstance.compare(4, 4) === 0).toBe(true);
         expect(testContext.sortInstance.compare(42, 3)).toBeGreaterThan(0);
       });
 
@@ -33,7 +33,7 @@ describe('Datagrid', () => {
         testContext.sortInstance.comparator = testContext.comparator;
         testContext.sortInstance.reverse = true;
         expect(testContext.sortInstance.compare(1, 10)).toBeGreaterThan(0);
-        expect(testContext.sortInstance.compare(4, 4)).toBeCloseTo(0);
+        expect(testContext.sortInstance.compare(4, 4) === 0).toBe(true);
         expect(testContext.sortInstance.compare(42, 3)).toBeLessThan(0);
       });
 

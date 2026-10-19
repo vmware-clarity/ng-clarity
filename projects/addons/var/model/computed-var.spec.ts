@@ -6,7 +6,7 @@
  */
 
 import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
-import { firstValueFrom, of, Subject, throwError } from 'rxjs';
+import { of, Subject, throwError } from 'rxjs';
 import { delay, take, tap } from 'rxjs/operators';
 
 import { ComputedVar, ComputeStrategy, SimpleVar, Var } from './var';
@@ -99,7 +99,7 @@ describe('computed-var.spec', () => {
   });
 
   describe('ComputedVar without dependencies', () => {
-    it("'value$' emits immediately", async () => {
+    it("'value$' emits immediately", () => {
       const model = new MockWorkflowModel();
       model.cp1 = new ComputedVar<string>({
         dependsOn: [],
@@ -109,8 +109,14 @@ describe('computed-var.spec', () => {
         },
       });
 
-      expect(await firstValueFrom(model.cp1.value$)).toEqual(fnResult);
-      expect(model.cp1InvocationCount).toEqual(1);
+      const values: string[] = [];
+      const subscription = model.cp1.value$.subscribe(value => values.push(value));
+      try {
+        expect(values).toEqual([fnResult]);
+        expect(model.cp1InvocationCount).toEqual(1);
+      } finally {
+        subscription.unsubscribe();
+      }
     });
 
     it('2 subscriptions will invoke fn only once', () => {

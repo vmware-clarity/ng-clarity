@@ -8,6 +8,7 @@
 import { PropertyViewBuilder } from './property-view-builder';
 import { PropertyViewCategoryBuilder } from './property-view-category-builder';
 import { PropertyViewSectionBuilder } from './property-view-section-builder';
+import { errorLike } from '../../../test-matchers';
 
 describe('PropertyViewBuilder', function () {
   const nullPropertyViewBuilder: PropertyViewBuilder = <any>null;
@@ -78,23 +79,23 @@ describe('PropertyViewBuilder', function () {
       const propertyViewBuilder = new PropertyViewBuilder();
 
       expect(() => propertyViewBuilder.category(category1, Number.POSITIVE_INFINITY)).toThrowError(
-        'Invalid insertion index Infinity. Insertion index must be an integer in the range [0, 0].'
+        errorLike('Invalid insertion index Infinity. Insertion index must be an integer in the range [0, 0].')
       );
 
       expect(() => propertyViewBuilder.category(category1, Number.NEGATIVE_INFINITY)).toThrowError(
-        'Invalid insertion index -Infinity. Insertion index must be an integer in the range [0, 0].'
+        errorLike('Invalid insertion index -Infinity. Insertion index must be an integer in the range [0, 0].')
       );
 
       expect(() => propertyViewBuilder.category(category1, 3.5)).toThrowError(
-        'Invalid insertion index 3.5. Insertion index must be an integer in the range [0, 0].'
+        errorLike('Invalid insertion index 3.5. Insertion index must be an integer in the range [0, 0].')
       );
 
       expect(() => propertyViewBuilder.category(category1, -1)).toThrowError(
-        'Invalid insertion index -1. Insertion index must be an integer in the range [0, 0].'
+        errorLike('Invalid insertion index -1. Insertion index must be an integer in the range [0, 0].')
       );
 
       expect(() => propertyViewBuilder.category(category1, 1)).toThrowError(
-        'Invalid insertion index 1. Insertion index must be an integer in the range [0, 0].'
+        errorLike('Invalid insertion index 1. Insertion index must be an integer in the range [0, 0].')
       );
     });
 
@@ -219,7 +220,9 @@ describe('PropertyViewBuilder', function () {
       const propertyViewBuilder = new PropertyViewBuilder();
       propertyViewBuilder.category('all');
 
-      expect(() => propertyViewBuilder.generateAllCategory('')).toThrowError(`Category 'all' already exists.`);
+      expect(() => propertyViewBuilder.generateAllCategory('')).toThrowError(
+        errorLike(`Category 'all' already exists.`)
+      );
     });
 
     it('should create an "all" category' + ' with the supplied title', function () {

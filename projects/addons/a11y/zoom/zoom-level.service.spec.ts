@@ -57,9 +57,9 @@ describe('ZoomLevelService', () => {
   });
 
   describe('when document body size is greater than 575 px and less than 1200 px', () => {
-    it('zoom level is `2x`', async () => {
+    it.each([576, 1199])('zoom level is `2x` at %i px', async width => {
       const nextZoomLevel = firstValueFrom(testContext.zoomLevelService.onChange);
-      document.documentElement.style.width = '1199px';
+      document.documentElement.style.width = `${width}px`;
       expect(await nextZoomLevel).toEqual(ZoomLevel.x2);
     });
   });

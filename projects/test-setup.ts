@@ -5,6 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { sameObjectShape } from './test-matchers';
+
+expect.addEqualityTesters([sameObjectShape]);
+
 afterEach(() => {
   vi.useRealTimers();
 });

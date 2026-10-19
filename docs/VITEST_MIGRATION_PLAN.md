@@ -41,7 +41,10 @@ Shared configuration:
 - `vitest.config.mts`: mock restoration, shuffled execution, seed selection, file isolation, and slow-test reporting.
 - `projects/test-setup.ts`: the `cds-theme` body attribute and timer cleanup.
 - `projects/test-providers.ts`: the Zone-based change detection scheduler used by the existing tests.
+- `projects/test-matchers.ts`: exact error-message checks and the object-shape checks that Jasmine's equality enforced.
 - `angular.json`: browser viewport, coverage, setup files, and CI targets.
+
+Vitest's string `toThrowError` arguments match substrings. Use `errorLike(message)` when the complete message is the contract, or `errorLike()` to require an error-like value without checking its message. The shared equality tester rejects mismatched class constructors and missing enumerable own properties, including properties whose value is `undefined`. It returns only `false` or `undefined`, leaving value comparison to Vitest. Arrays retain their existing sparse-array behavior, and explicit partial matchers remain partial. Compatibility specs cover these differences.
 
 The existing `fakeAsync`, `tick`, `flush`, and `waitForAsync` tests use the documented `zone.js/plugins/vitest-patch` integration. Tests that use native asynchronous callbacks explicitly await their work. New tests can use native async functions and Vitest timers.
 

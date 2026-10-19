@@ -13,6 +13,7 @@ import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 
 import { MenuComponent } from './menu.component';
 import { MenuActionComponent } from './model/menu-action.component';
+import { errorLike } from '../../test-matchers';
 
 describe('MenuComponent', () => {
   let component: MenuComponent;
@@ -121,6 +122,6 @@ describe('MenuComponent', () => {
       component.menuItems.notifyOnChanges();
       component.ngAfterContentInit();
       tick();
-    }).toThrowError();
+    }).toThrowError(errorLike());
   }));
 });

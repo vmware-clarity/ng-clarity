@@ -9,6 +9,7 @@ import { PropertyViewModelType } from '../property-view.model';
 import { PropertyViewBuilder } from './property-view-builder';
 import { PropertyViewCategoryBuilder } from './property-view-category-builder';
 import { PropertyViewSectionBuilder } from './property-view-section-builder';
+import { errorLike } from '../../../test-matchers';
 
 describe('PropertyViewCategoryBuilder', function () {
   const nullPropertyViewBuilder: PropertyViewBuilder = <any>null;
@@ -107,7 +108,7 @@ describe('PropertyViewCategoryBuilder', function () {
         const duplicateIdSectionBuilder = new PropertyViewSectionBuilder(nullCategoryBuilder, 'section');
 
         expect(() => categoryBuilder.cloneAndAddBuilder(duplicateIdSectionBuilder)).toThrowError(
-          `Section 'section' already exists.`
+          errorLike(`Section 'section' already exists.`)
         );
       }
     );
@@ -122,7 +123,7 @@ describe('PropertyViewCategoryBuilder', function () {
         const existingSection = categoryBuilder.section('section');
 
         expect(() => categoryBuilder.cloneAndAddBuilder(existingSection)).toThrowError(
-          `Section 'section' already exists.`
+          errorLike(`Section 'section' already exists.`)
         );
       }
     );
