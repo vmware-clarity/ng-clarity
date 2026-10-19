@@ -35,6 +35,7 @@ export * from './cdk/cdk-drag.module';
 export * from './cdk/cdk-trap-focus.module';
 export * from './destroy';
 export * from './types/heading-level';
+export * from './types/theme-type';
 export * from './enums/keys.enum';
 export * from './enums/position.enum';
 export * from './chocolate/willy-wonka';
