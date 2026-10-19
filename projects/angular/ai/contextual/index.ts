@@ -19,8 +19,7 @@ export {
   clrContextPreset,
 } from './snapshot-options';
 export type { ClrContextPreset } from './snapshot-options';
-// The publishing contract lives in @clr/angular/utils, so components publish without
-// depending on this entry point; it is re-exported here so readers find it in one place.
+// Re-exported from @clr/angular/utils, where components publish without depending on this entry point.
 export { CLR_ELEMENT_CONTEXT_PROPERTY, clrPublishElementContext } from '@clr/angular/utils';
 export type { ClrElementContextCallback } from '@clr/angular/utils';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';

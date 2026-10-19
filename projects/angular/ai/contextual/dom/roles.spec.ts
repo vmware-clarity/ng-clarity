@@ -127,10 +127,7 @@ describe('isLeafRole and isNameFromContents are different questions', () => {
 
 describe('mayContainControls', () => {
   it('lets a heading contain a genuinely separate control, such as a button', () => {
-    // <h2>Combobox <button>Toggle Disabled</button></h2> is ordinary, valid markup: the
-    // button is a real, independently focusable control, not part of the heading's own
-    // widget. Swallowing it into the heading's label would make it invisible everywhere,
-    // not just under-described.
+    // A button inside a heading is a separate control, not part of the heading's label.
     expect(mayContainControls('heading')).toBe(true);
   });
 

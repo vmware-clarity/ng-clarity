@@ -20,17 +20,8 @@ import { ClrComponentContext, ClrPageContext } from '../interfaces/context.inter
 class RoutedComponent {}
 
 /*
- * The tracker paces its scrapes with `setTimeout` (a debounce and a max-wait bound), so
- * these specs drive time themselves rather than waiting on the wall clock: every count is
- * asserted at an exact point on the tracker's own schedule.
- *
- * `jasmine.clock()` cannot be used here — zone.js replaces the global timers after
- * Jasmine has booted, and the clock refuses to install over them — so a minimal fake
- * stands in for `setTimeout`/`clearTimeout`; Jasmine restores both after every spec.
- *
- * A `MutationObserver` reports on a microtask, not synchronously, so after changing the
- * DOM a spec lets it deliver (`flushMutations`) before advancing time;
- * `input`/`change` events and registry notifications reach the tracker synchronously.
+ * The tracker's timers are faked here: zone.js replaces the global timers after Jasmine boots, so
+ * `jasmine.clock()` refuses to install. MutationObserver delivers on a microtask; see `flushMutations`.
  */
 
 interface FakeTimer {
@@ -87,10 +78,8 @@ function advanceTimers(ms: number): void {
 const realSetTimeout = window.setTimeout.bind(window);
 
 /**
- * Lets pending MutationObserver callbacks run. They are delivered on a native microtask,
- * which a zone-aware `await` does not wait for — zone.js drains its own promise queue
- * synchronously — so this yields to the next task instead: the browser always delivers
- * pending mutation records before running another task. This waits on no amount of time.
+ * Yields to the next task: mutation records arrive on a native microtask, which a zone-aware `await`
+ * does not wait for.
  */
 function flushMutations(): Promise<void> {
   return new Promise(resolve => realSetTimeout(resolve));

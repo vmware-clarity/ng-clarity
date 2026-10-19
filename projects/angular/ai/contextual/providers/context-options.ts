@@ -10,35 +10,21 @@ import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders } from '
 import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
 import { clrContextPreset, ClrContextPreset, warnIfExclusionsAreNotLists, withCallOptions } from '../snapshot-options';
 
-/**
- * Application-wide snapshot options. Whatever is provided here is what every snapshot
- * starts from — the engine, the tracker and the global accessor all read it — and
- * options passed to an individual call are applied over it.
- */
+/** Application-wide snapshot options that every snapshot starts from. */
 export const CLR_CONTEXT_OPTIONS = new InjectionToken<ClrContextSnapshotOptions>('CLR_CONTEXT_OPTIONS');
 
 /**
- * Configures, once for the whole application, what a snapshot collects:
- *
+ * Configures snapshot options for the whole application, from a preset, options or both:
  * ```ts
  * provideClrContextOptions('interactive', { excludeSelectors: ['clr-header'] });
- * provideClrContextOptions({ maxComponents: 200, includeText: false });
  * ```
- *
- * A preset name gives a starting bundle (see `CLR_CONTEXT_PRESETS`); the overrides are
- * applied over it, or over explicit options, the way a call's options are: budgets and
- * switches replace, exclusion lists add.
- *
- * Provide it at application level (`bootstrapApplication` or the root module's
- * `providers`): the engine is root-provided and reads the root injector only. The return
- * type keeps it out of a component's `providers`, where it would be silently ignored.
+ * Provide it at application level: the engine is root-provided and reads only the root injector.
  */
 export function provideClrContextOptions(
   options: ClrContextPreset | ClrContextSnapshotOptions,
   overrides: ClrContextSnapshotOptions = {}
 ): EnvironmentProviders {
   if (typeof options !== 'string') {
-    // Overrides are checked as they are applied; the options they go over are not.
     warnIfExclusionsAreNotLists(options);
   }
   const resolved =

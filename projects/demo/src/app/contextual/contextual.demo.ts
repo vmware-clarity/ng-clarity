@@ -18,9 +18,7 @@ export class ContextualDemo implements OnInit, OnDestroy {
   constructor(private contextEngine: ClrContextEngineService) {}
 
   ngOnInit(): void {
-    // Let browser-driving agents query any of these pages through window.clrContext().
-    // The engine will not replace a global it does not own — an element with that id is
-    // one — and the demo pages work without the accessor, so it is only a convenience.
+    // The engine won't replace a global it does not own, e.g. an element with that id.
     try {
       this.contextEngine.enableGlobalAccess();
     } catch (error) {

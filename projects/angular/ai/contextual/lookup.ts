@@ -5,13 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-/**
- * The entry a table itself defines for `key`, or `undefined`.
- *
- * Roles, tag names and input types come from page markup, and a plain object also answers
- * to the names it inherits: `role="constructor"` or `role="hasOwnProperty"` would otherwise
- * look up a function of `Object.prototype`.
- */
+/** Own entry only: `role="constructor"` must not find a function on `Object.prototype`. */
 export function ownEntry<T>(table: Readonly<Record<string, T>>, key: string): T | undefined {
   return Object.hasOwn(table, key) ? table[key] : undefined;
 }
