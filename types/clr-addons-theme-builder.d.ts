@@ -1,6 +1,6 @@
 import * as i0 from '@angular/core';
 import { OnInit, AfterViewInit, EventEmitter, ElementRef } from '@angular/core';
-import { ClrTimelineStepState } from '@clr/angular';
+import { ThemeType, ClrTimelineStepState } from '@clr/angular';
 
 interface WcagLevel {
     label: string;
@@ -49,11 +49,11 @@ declare class OklchColor {
     constructor(l: number, c: number, h: number);
 }
 interface ThemeColors {
-    primary?: Color;
-    info?: Color;
-    success?: Color;
-    warning?: Color;
-    danger?: Color;
+    primary?: Color[];
+    info?: Color[];
+    success?: Color[];
+    warning?: Color[];
+    danger?: Color[];
 }
 interface ThemePreset {
     name: string;
@@ -130,7 +130,7 @@ declare class ThemeBuilderComponent implements OnInit, AfterViewInit {
     previewWrapper: ElementRef<HTMLElement>;
     previewDarkWrapper: ElementRef<HTMLElement>;
     activePreset: ThemePreset | null;
-    activeTheme: 'light' | 'dark';
+    activeTheme: ThemeType;
     warningTextOverrideEnabled: boolean;
     colorStruct: CdsThemeStructure;
     backgrounds: CdsThemeStructure<Color>;
@@ -156,7 +156,8 @@ declare class ThemeBuilderComponent implements OnInit, AfterViewInit {
     /**
      * Presets available in the preset selector. Defaults to Clarity's built-in preset list.
      * The Clarity Default preset is always prepended, so it's guaranteed to remain available
-     * as a fallback even when a custom list is provided.
+     * as a fallback even when a custom list is provided. Preset names are unique, ignoring
+     * case (see `uniquePresets`).
      */
     get presets(): ThemePreset[];
     set presets(value: ThemePreset[]);
@@ -166,21 +167,80 @@ declare class ThemeBuilderComponent implements OnInit, AfterViewInit {
     ngAfterViewInit(): void;
     toggleActiveTheme(): void;
     setCurrentColor(colorVariant: Color, hex: string, colorGroup?: Color[]): void;
+    /**
+     * Applies a preset. Each group in `preset.light`/`preset.dark` is a `Color[]` — the
+     * same shape as `colorStruct` — since a preset can now specify a full set of variants
+     * per group, not just the base color. The base token (if included) is applied first
+     * and drives `colorBuilder`'s tint/shade/dark derivation; any other color present in
+     * the group is then applied on top, so an explicit variant override isn't lost to
+     * that derivation.
+     */
     applyPreset(preset: ThemePreset): void;
+    /** Swatch color for a preset card. */
+    presetSwatchColor(preset: ThemePreset): string | undefined;
+    /**
+     * Re-applies previously generated CSS (e.g. the output of the `generatedCSS` event,
+     * pasted back in by the user) by parsing it into a `CdsThemeStructure` (see
+     * `parseGeneratedCSS`), grouped exactly like `colorStruct`. Applied the same way as a
+     * preset (see `applyGroupOverrides`). CSS that `validateGeneratedCSS` rejects is not
+     * applied at all, so the current colors are left untouched.
+     *
+     * @returns `true` when the CSS was applied, `false` when it was rejected as malformed.
+     */
+    importCSS(css: string): boolean;
     resetAllThemeColors(theme: string): void;
     resetColor($event: Event, color: Color, colorGroup?: Color[]): void;
     onWarningTextOverrideChange(): void;
     applyPreviewStyles(): void;
+    /**
+     * Applies a set of color overrides (from a preset or imported CSS) onto one token
+     * group of `colorStruct`. The base token (if present among `overrides`) is applied
+     * first and drives `colorBuilder`'s tint/shade/dark derivation; any other override
+     * present is then applied on top, so an explicit variant override isn't lost to that
+     * derivation. Assumes the theme's colors were already reset by the caller.
+     */
+    private applyGroupOverrides;
     private getContrast;
     private refreshThemeColors;
     private resetActivePreset;
     private colorBuilder;
     private buildColorStructure;
+    /**
+     * Keeps one preset per name, ignoring case, and warns about each duplicate. The first preset
+     * with a name wins, so the Clarity Default preset and the presets listed before a duplicate
+     * can't be overridden.
+     */
+    private uniquePresets;
     static ɵfac: i0.ɵɵFactoryDeclaration<ThemeBuilderComponent, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ThemeBuilderComponent, "clr-theme-builder", never, { "presets": { "alias": "presets"; "required": false; }; }, { "generatedCSS": "generatedCSS"; }, never, ["*"], true, never>;
 }
 
+/** Result of `validateGeneratedCSS`. */
+interface ThemeCssValidation {
+    /** `true` when the CSS can be imported as is. */
+    valid: boolean;
+    /** Theme-block declarations that aren't in an accepted shape (see `HSL_REGEX`), as written. */
+    malformedDeclarations: string[];
+    /** Themes whose `[cds-theme~='light'|'dark']` block appears more than once. */
+    duplicateThemeBlocks: ThemeType[];
+    /** Tokens declared more than once for the same theme, listed once each. */
+    duplicateTokens: {
+        theme: ThemeType;
+        tokenName: string;
+    }[];
+}
+/**
+ * Checks that `css` can be imported, before it's applied. It's malformed when a theme color
+ * in a `[cds-theme~='light'|'dark']` block, or any `hsl()` value there, isn't in an accepted
+ * `hsl()` shape (see `HSL_REGEX`; saturation and lightness within 0–100), or when a block
+ * holds anything other than a custom-property declaration. Each theme block may appear only
+ * once, and each token only once per theme; repeats are reported and make the CSS invalid.
+ * CSS with no recognized theme color at all (including `generateCSS`'s output for an
+ * unchanged theme) is rejected too, since importing it would only reset the colors.
+ */
+declare function validateGeneratedCSS(css: string): ThemeCssValidation;
+
 declare const PRESETS: ThemePreset[];
 
-export { Color, PRESETS, ThemeBuilderComponent };
-export type { ThemeColor, ThemeColors, ThemePreset };
+export { Color, PRESETS, ThemeBuilderComponent, validateGeneratedCSS };
+export type { ThemeColor, ThemeColors, ThemeCssValidation, ThemePreset };
