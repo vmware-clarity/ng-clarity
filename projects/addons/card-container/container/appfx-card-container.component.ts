@@ -19,7 +19,7 @@ import {
 } from '@angular/core';
 import { filter, map, take, tap } from 'rxjs/operators';
 
-import { AppfxCardInternal, AppfxContainerPersistenceStore } from '../appfx-card-container.interface';
+import { AppfxCard, AppfxCardInternal, AppfxContainerPersistenceStore } from '../appfx-card-container.interface';
 import { AppfxCardComponent } from '../card/appfx-card.component';
 import { A11yService } from '../services/a11y.service';
 import { ContainerService } from '../services/container.service';
@@ -55,7 +55,7 @@ import { AppfxCardContainerStore } from '../utils/appfx-card-container-store';
 export class AppfxCardContainerComponent implements OnInit, DoCheck {
   @Input() containerId: string;
 
-  @Input() cards: AppfxCardInternal[] = [];
+  @Input() cards: AppfxCard[] = [];
 
   @Input() persistenceStore?: AppfxContainerPersistenceStore;
 
@@ -67,7 +67,7 @@ export class AppfxCardContainerComponent implements OnInit, DoCheck {
 
   @ViewChild('cardContainer', { read: ViewContainerRef, static: true }) private cardContainer: ViewContainerRef;
 
-  private readonly differ: IterableDiffer<AppfxCardInternal>;
+  private readonly differ: IterableDiffer<AppfxCard>;
 
   constructor(
     private containerService: ContainerService,
@@ -89,9 +89,9 @@ export class AppfxCardContainerComponent implements OnInit, DoCheck {
     const changes = this.differ.diff(this.cards);
     if (changes) {
       // insert card into container
-      changes.forEachAddedItem((record: IterableChangeRecord<AppfxCardInternal>) => this.addDynamicCard(record.item));
+      changes.forEachAddedItem((record: IterableChangeRecord<AppfxCard>) => this.addDynamicCard(record.item));
       // remove card from container
-      changes.forEachRemovedItem((record: IterableChangeRecord<AppfxCardInternal>) =>
+      changes.forEachRemovedItem((record: IterableChangeRecord<AppfxCard>) =>
         this.removeCardFromContainer(record.item)
       );
     }
@@ -151,7 +151,7 @@ export class AppfxCardContainerComponent implements OnInit, DoCheck {
       .subscribe();
   }
 
-  private addDynamicCard(card: AppfxCardInternal): void {
+  private addDynamicCard(card: AppfxCard): void {
     if (this.containerService.getCardById(card.id)) {
       return;
     }
@@ -194,7 +194,7 @@ export class AppfxCardContainerComponent implements OnInit, DoCheck {
     this.containerService.updateCard(card);
   }
 
-  private removeCardFromContainer(card: AppfxCardInternal, hideOnly: boolean = false): void {
+  private removeCardFromContainer(card: AppfxCard, hideOnly: boolean = false): void {
     const containerCard = this.containerService.getCardById(card.id);
     if (!containerCard) {
       return;
@@ -217,7 +217,7 @@ export class AppfxCardContainerComponent implements OnInit, DoCheck {
     this.containerCards = [...this.containerService.getContainerCards()];
   }
 
-  private trackByFn(index: number, item: AppfxCardInternal): string {
+  private trackByFn(index: number, item: AppfxCard): string {
     return item.id;
   }
 }

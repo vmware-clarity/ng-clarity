@@ -29,50 +29,50 @@ const SUCCESS = 2;
 /** The components whose animations moved from `@angular/animations` to CSS animations, by name. */
 export const animationScenarios: Record<string, AnimationScenario> = {
   modal: {
-    story: 'modal-modal--modal',
+    story: 'components-overlays-modal--modal',
     steps: { open: 'text=Open Modal', close: '.modal .close' },
   },
   'side-panel': {
-    story: 'modal-side-panel--side-panel',
+    story: 'components-overlays-side-panel--side-panel',
     steps: { open: 'text=Open Side Panel', close: '.modal .close' },
   },
   // The story renders the side panel open.
   'side-panel-bottom': {
-    story: 'modal-side-panel--side-panel-bottom-medium',
+    story: 'components-overlays-side-panel--side-panel-bottom-medium',
     steps: { close: '.modal .close', open: 'text=Open Side Panel' },
   },
   accordion: {
-    story: 'accordion-accordion--default',
+    story: 'components-accordion--default',
     steps: { expand: '.clr-accordion-header-button', collapse: '.clr-accordion-header-button' },
   },
   // A nested stepper: each step opens the next step of the inner stepper, then of the outer stepper.
   stepper: {
-    story: 'stepper-stepper--nested-stepper',
+    story: 'components-flows-stepper--nested-stepper',
     steps: { 'inner-step-2': 'text=next', 'outer-step-2': 'text=next', 'outer-step-3': 'text=next' },
   },
   tree: {
-    story: 'tree-tree--tree-view',
+    story: 'components-data-tree--tree-view',
     steps: { expand: '.clr-treenode-caret', collapse: '.clr-treenode-caret' },
   },
   // Collapses the whole vertical nav to the left, then expands it.
   'vertical-nav': {
-    story: 'vertical-nav-vertical-nav--collapsible-with-icons',
+    story: 'components-navigation-vertical-nav--collapsible-with-icons',
     steps: { collapse: '.nav-trigger', expand: '.nav-trigger' },
   },
   'vertical-nav-group': {
-    story: 'vertical-nav-vertical-nav-group--nav-group-collapsed-with-icons',
+    story: 'components-navigation-vertical-nav-group--nav-group-collapsed-with-icons',
     steps: { expand: '.nav-group-trigger', collapse: '.nav-group-trigger' },
   },
   'stack-block': {
-    story: 'stack-view-stack-block--stack-view-collapsed',
+    story: 'components-data-stack-view-stack-block--stack-view-collapsed',
     steps: { expand: '.stack-block-label', collapse: '.stack-block-label' },
   },
   'datagrid-row': {
-    story: 'datagrid-expandable-rows--expandable-rows',
+    story: 'components-data-datagrid-expandable-row--expandable-rows',
     steps: { expand: '.datagrid-expandable-caret-button', collapse: '.datagrid-expandable-caret-button' },
   },
   'loading-button': {
-    story: 'button-button-loading-states--button-loading-states',
+    story: 'components-button-buttons-loading--button-loading-states',
     steps: { loading: { validateState: LOADING }, success: { validateState: SUCCESS } },
   },
   // The first setting of the dropdown shows / hides the last card.

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 import { cardDefaults } from '../appfx-card-container-constants';
-import { AppfxCardInternal, AppfxCardSettings } from '../appfx-card-container.interface';
+import { AppfxCard, AppfxCardInternal, AppfxCardSettings } from '../appfx-card-container.interface';
 import { PersistenceService } from './persistence.service';
 
 /**
@@ -27,10 +27,10 @@ export class ContainerService {
   /**
    * Initialize container service by adding list of cards and persistence service instance.
    */
-  initialize(cardContainer: ViewContainerRef, cards: AppfxCardInternal[]) {
+  initialize(cardContainer: ViewContainerRef, cards: AppfxCard[]) {
     this.cardContainer = cardContainer;
     // add unique cards
-    cards.forEach((card: AppfxCardInternal) => this.addCard(card));
+    cards.forEach((card: AppfxCard) => this.addCard(card));
   }
 
   /**
@@ -54,7 +54,7 @@ export class ContainerService {
    * Fetches card order, hidden properties from the persistence service and apply it to card.
    * if card is hidden before filters it accordingly so that container will not insert it.
    */
-  getCardWithOrder(card: AppfxCardInternal): Observable<AppfxCardInternal> {
+  getCardWithOrder(card: AppfxCard): Observable<AppfxCardInternal> {
     return this.persistenceService
       .retrieve()
       .pipe(map((cardSettings: AppfxCardSettings[]) => this.applyCardSettings(card, cardSettings)));
@@ -167,11 +167,13 @@ export class ContainerService {
    * Adds card to the container list of cards of the container service.
    * Container cards contains all the available cards within container visible as well as hidden.
    */
-  addCard(card: AppfxCardInternal): void {
+  addCard(card: AppfxCard): void {
     if (this.getCardById(card.id)) {
       throw new Error(`Card with id '${card.id}' already exist`);
     }
-    this.containerCards = [...this.containerCards, card];
+    // the internal properties (order, hidden, view) are set on the same object by applyCardSettings
+    // and by the container once the card is inserted into the view
+    this.containerCards = [...this.containerCards, card as AppfxCardInternal];
   }
 
   /**
@@ -185,11 +187,12 @@ export class ContainerService {
    * Updates card settings properties like order, hidden.
    * If none available in the persistence store cardDefaults are used.
    */
-  private applyCardSettings(card: AppfxCardInternal, cardSettings: AppfxCardSettings[]): AppfxCardInternal {
+  private applyCardSettings(card: AppfxCard, cardSettings: AppfxCardSettings[]): AppfxCardInternal {
     const cardSetting = cardSettings.find((setting: AppfxCardSettings) => setting.id === card.id);
-    card.order = cardSetting?.order ?? cardDefaults.order;
-    card.hidden = cardSetting?.hidden ?? cardDefaults.hidden;
-    return card;
+    const cardWithSettings = card as AppfxCardInternal;
+    cardWithSettings.order = cardSetting?.order ?? cardDefaults.order;
+    cardWithSettings.hidden = cardSetting?.hidden ?? cardDefaults.hidden;
+    return cardWithSettings;
   }
 
   /**

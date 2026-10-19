@@ -95,7 +95,7 @@ export class DragDropGridDemoComponent {
     if (!group) {
       return [];
     }
-    return (this.groupService?.getGroupItems(group) || []) as CdkDropList[];
+    return this.groupService?.getGroupItems(group) ?? [];
   }
 
   protected drop(event: CdkDragDrop<any[]>) {
