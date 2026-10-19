@@ -211,6 +211,48 @@ describe('Loading Buttons with animations', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toBe(ClrLoadingState.DEFAULT);
   });
+
+  it('goes back to its default state when the button is hidden during the check mark animation', async () => {
+    fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    fixture.detectChanges();
+    await delay();
+
+    fixture.nativeElement.querySelector('button').style.display = 'none';
+    // The animation is canceled when the style is next updated.
+    await new Promise(resolve => requestAnimationFrame(resolve));
+    await delay();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.buttonState as ClrLoadingState).toBe(ClrLoadingState.DEFAULT);
+  });
+
+  it('does not end a later success state when the check mark of an earlier one is done', async () => {
+    fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    fixture.detectChanges();
+    await delay();
+    const firstCheck = fixture.nativeElement.querySelector('.spinner-check');
+    fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
+    fixture.detectChanges();
+    fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    fixture.detectChanges();
+    await delay();
+
+    finishAnimations(firstCheck);
+    await delay();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.buttonState).toBe(ClrLoadingState.SUCCESS);
+  });
+
+  it('does not change its state once destroyed', async () => {
+    fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    fixture.detectChanges();
+    await delay();
+    const button = fixture.componentInstance.loadingButtonInstance;
+
+    fixture.destroy();
+    spyOn(button.clrLoadingChange, 'emit');
+    await delay();
+    expect(button.clrLoadingChange.emit).not.toHaveBeenCalled();
+  });
 });
 
 @Component({

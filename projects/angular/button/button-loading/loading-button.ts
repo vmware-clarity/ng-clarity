@@ -9,6 +9,7 @@ import {
   afterNextRender,
   ChangeDetectorRef,
   Component,
+  DestroyRef,
   ElementRef,
   EventEmitter,
   inject,
@@ -40,7 +41,6 @@ const MIN_BUTTON_WIDTH = 42;
             #checkMark
             animate.leave="clr-loading-btn-leave"
             class="spinner spinner-inline spinner-check clr-loading-btn-check"
-            (animationend)="checkMarkDone()"
           ></span>
         }
         @case (buttonState.DEFAULT) {
@@ -68,25 +68,28 @@ export class ClrLoadingButton implements LoadingListener {
 
   private readonly injector = inject(Injector);
   private readonly cdr = inject(ChangeDetectorRef);
+  private checkMarkElement: HTMLElement | undefined;
 
   constructor(
     public el: ElementRef<HTMLButtonElement>,
     private renderer: Renderer2
   ) {
     afterNextRender(() => (this.enterClass = 'clr-loading-btn-enter'));
+    inject(DestroyRef).onDestroy(() => (this.checkMarkElement = undefined));
   }
 
-  // The button goes back to its default state once the check mark animation (see `_buttons.clarity.scss`) is done,
-  // or right away when it does not animate (animations turned off, hidden button).
+  // The button goes back to its default state once the check mark animation (see `_buttons.clarity.scss`) is over:
+  // done, canceled (hidden button) or not started at all (animations turned off).
   @ViewChild('checkMark')
   private set checkMark(checkMark: ElementRef<HTMLElement> | undefined) {
-    if (checkMark) {
+    const element = (this.checkMarkElement = checkMark?.nativeElement);
+    if (element) {
       afterNextRender(
         () => {
-          if (!checkMark.nativeElement.getAnimations().length) {
-            // Not while rendering: the state change is emitted to the parent.
-            Promise.resolve().then(() => this.checkMarkDone());
-          }
+          // Settled in a microtask at the earliest: the state change is emitted to the parent, not while rendering.
+          Promise.allSettled(element.getAnimations().map(animation => animation.finished)).then(() =>
+            this.checkMarkDone(element)
+          );
         },
         { injector: this.injector }
       );
@@ -124,8 +127,9 @@ export class ClrLoadingButton implements LoadingListener {
     this.clrLoadingChange.emit(state);
   }
 
-  protected checkMarkDone() {
-    if (this.state === ClrLoadingState.SUCCESS) {
+  /** Goes back to the default state, unless the check mark is gone: the success state is over already. */
+  private checkMarkDone(checkMark: HTMLElement) {
+    if (checkMark === this.checkMarkElement && this.state === ClrLoadingState.SUCCESS) {
       this.loadingStateChange(ClrLoadingState.DEFAULT);
       this.cdr.markForCheck();
     }
