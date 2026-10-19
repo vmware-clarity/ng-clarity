@@ -11,27 +11,21 @@ import { UNTRUSTED_WITHHELD_STATE_KEYS } from './dom/tables/aria';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 import { BUDGET_KEYS, MAX_LIST_ENTRIES, SWITCH_KEYS } from './snapshot-options';
 
+type OptionKey = keyof ClrContextSnapshotOptions;
+
+const UNTRUSTED_LIST_KEYS: readonly OptionKey[] = ['excludeCategories', 'excludeRoles'];
+
+const ENUM_KEYS: readonly OptionKey[] = ['focus', 'collectionItems'];
+
 /** Snapshot budgets a caller the application does not control may set; content rules are not negotiable. */
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[] = Object.freeze([
-  'maxTextLength',
-  'maxItemsPerCollection',
-  'maxComponents',
-  'maxDepth',
-  'includeDomComponents',
-  'includeText',
-  'includeFrames',
-  'includeRoutes',
-  'excludeCategories',
-  'excludeRoles',
-  'focus',
-  'collectionItems',
-] as const);
+  ...BUDGET_KEYS,
+  ...SWITCH_KEYS,
+  ...UNTRUSTED_LIST_KEYS,
+  ...ENUM_KEYS,
+]);
 
 const MAX_ENUM_LENGTH = 32;
-
-const ENUM_KEYS: readonly string[] = ['focus', 'collectionItems'];
-
-const UNTRUSTED_LIST_KEYS: readonly string[] = ['excludeCategories', 'excludeRoles'];
 
 /** Reduces an untrusted caller's options to typed budgets, so no getter, object, `NaN` or selector gets through. */
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
@@ -49,7 +43,7 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
   return sanitized as ClrContextSnapshotOptions;
 }
 
-function acceptedValue(key: string, value: unknown): unknown {
+function acceptedValue(key: OptionKey, value: unknown): unknown {
   if (typeof value === 'number') {
     return Number.isFinite(value) && (BUDGET_KEYS as readonly string[]).includes(key) ? value : undefined;
   }

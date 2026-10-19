@@ -45,7 +45,21 @@ export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonl
 });
 
 const CATEGORY_NAMES = Object.keys(CLR_CONTEXT_CATEGORIES) as ClrContextCategory[];
-const EXCLUSION_KEYS = ['excludeCategories', 'excludeRoles', 'excludeSelectors'] as const;
+
+type BudgetKey = 'maxTextLength' | 'maxItemsPerCollection' | 'maxComponents' | 'maxDepth';
+
+/** A non-finite budget would never run out and the whole document would be walked. */
+const BUDGET_RANGES: Record<BudgetKey, { min: number; max: number }> = {
+  maxTextLength: { min: 1, max: 10_000 },
+  maxItemsPerCollection: { min: 1, max: 1_000 },
+  maxComponents: { min: 0, max: 10_000 },
+  maxDepth: { min: 0, max: 100 },
+};
+
+export const BUDGET_KEYS = Object.keys(BUDGET_RANGES) as BudgetKey[];
+export const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames', 'includeRoutes'] as const;
+const LIST_KEYS = ['excludeRoles', 'excludeSelectors'] as const;
+const EXCLUSION_KEYS = ['excludeCategories', ...LIST_KEYS] as const;
 
 function isExclusionKey(key: string): key is (typeof EXCLUSION_KEYS)[number] {
   return (EXCLUSION_KEYS as readonly string[]).includes(key);
@@ -149,20 +163,6 @@ export function withCallOptions(
   }
   return effective;
 }
-
-type BudgetKey = 'maxTextLength' | 'maxItemsPerCollection' | 'maxComponents' | 'maxDepth';
-
-/** A non-finite budget would never run out and the whole document would be walked. */
-const BUDGET_RANGES: Record<BudgetKey, { min: number; max: number }> = {
-  maxTextLength: { min: 1, max: 10_000 },
-  maxItemsPerCollection: { min: 1, max: 1_000 },
-  maxComponents: { min: 0, max: 10_000 },
-  maxDepth: { min: 0, max: 100 },
-};
-
-export const BUDGET_KEYS = Object.keys(BUDGET_RANGES) as BudgetKey[];
-export const SWITCH_KEYS = ['includeDomComponents', 'includeText', 'includeFrames', 'includeRoutes'] as const;
-const LIST_KEYS = ['excludeRoles', 'excludeSelectors'] as const;
 
 /** Most entries in an untrusted caller's role list; the application's own lists are never cut. */
 export const MAX_LIST_ENTRIES = 50;
