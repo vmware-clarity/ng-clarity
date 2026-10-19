@@ -15,14 +15,9 @@ export interface ClrComponentContextChange {
   after: ClrComponentContext;
 }
 
-/**
- * What changed between two snapshots. A consumer in a conversation sends this rather
- * than the whole page each turn: "a dialog opened with these controls", "this field's
- * value changed", "that alert went away" — which is what keeps a model's context from
- * filling up with the same page described over and over.
- */
+/** What changed between two snapshots, so a conversation can send the difference instead of the page. */
 export interface ClrContextChange {
-  /** The snapshot before, or `null` for the first one — in which case everything is `added`. */
+  /** The previous snapshot, or `null` for the first, where everything is `added`. */
   previous: ClrPageContext | null;
   /** The snapshot the change leads to. */
   current: ClrPageContext;
@@ -40,12 +35,7 @@ export interface ClrContextChange {
   titleChanged: boolean;
 }
 
-/**
- * Compares two snapshots, matching nodes level by level by what they are — role,
- * rendering element and label — since snapshots carry no ids. Two nodes at the same
- * level that read alike are counted as the same node in order of appearance, which is
- * what a reader would do too.
- */
+/** Compares two snapshots, matching nodes level by level by role, element and label, since nodes have no ids. */
 export function clrDiffContext(previous: ClrPageContext | null, current: ClrPageContext): ClrContextChange {
   const change: ClrContextChange = {
     previous,
@@ -95,7 +85,6 @@ function diffLevel(before: ClrComponentContext[], after: ClrComponentContext[], 
   }
 }
 
-/** Nodes of one level by identity, with a running index so look-alikes stay distinct. */
 function keyed(nodes: ClrComponentContext[]): Map<string, ClrComponentContext> {
   const seen = new Map<string, number>();
   const result = new Map<string, ClrComponentContext>();

@@ -9,13 +9,7 @@ import { withoutStateKeys, withoutValues } from './dom/aria-state';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from './interfaces/context.interface';
 import { BUDGET_KEYS, MAX_LIST_ENTRIES, SWITCH_KEYS } from './snapshot-options';
 
-/**
- * Snapshot budgets a caller the application does not control — an embedded frame, a
- * script calling the global accessor — is allowed to set.
- *
- * Budgets are all a caller may influence. What a snapshot is allowed to contain is not
- * negotiable from the outside — see {@link withoutFormValues}.
- */
+/** Snapshot budgets a caller the application does not control may set; content rules are not negotiable. */
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[] = Object.freeze([
   'maxTextLength',
   'maxItemsPerCollection',
@@ -31,23 +25,13 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapsh
   'collectionItems',
 ] as const);
 
-/** The longest an enumeration value — `focus`, `collectionItems`, a role or category name — may be. */
 const MAX_ENUM_LENGTH = 32;
 
-/** The options that take one value from a fixed set; any other option given a string drops it. */
 const ENUM_KEYS: readonly string[] = ['focus', 'collectionItems'];
 
-/** The options that take a list; any other option given a list drops it, and these drop anything else. */
 const UNTRUSTED_LIST_KEYS: readonly string[] = ['excludeCategories', 'excludeRoles'];
 
-/**
- * Reduces whatever an untrusted caller passed to the budgets it is allowed to set,
- * discarding everything else. Each option keeps only the kind of value it takes, so a
- * caller cannot smuggle a getter or an object through — nor a `NaN` or an `Infinity`,
- * which a budget check would never see as exhausted. What survives is still held to its
- * range when the snapshot is built. Selectors are not accepted from an untrusted caller
- * at all.
- */
+/** Reduces an untrusted caller's options to typed budgets, so no getter, object, `NaN` or selector gets through. */
 export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextSnapshotOptions | undefined {
   if (!options || typeof options !== 'object') {
     return undefined;
@@ -63,11 +47,6 @@ export function sanitizeUntrustedSnapshotOptions(options?: unknown): ClrContextS
   return sanitized as ClrContextSnapshotOptions;
 }
 
-/**
- * What an untrusted caller's value for an option is kept as: a finite number for a
- * budget, a boolean for a switch, a short string for an enumeration and a bounded list of
- * short strings for roles and categories. `undefined` for anything else.
- */
 function acceptedValue(key: string, value: unknown): unknown {
   if (typeof value === 'number') {
     return Number.isFinite(value) && (BUDGET_KEYS as readonly string[]).includes(key) ? value : undefined;
@@ -76,11 +55,9 @@ function acceptedValue(key: string, value: unknown): unknown {
     return (SWITCH_KEYS as readonly string[]).includes(key) ? value : undefined;
   }
   if (typeof value === 'string') {
-    // Enumerations; anything that is not one of the values is dropped when resolved.
     return value.length <= MAX_ENUM_LENGTH && ENUM_KEYS.includes(key) ? value : undefined;
   }
   if (Array.isArray(value) && UNTRUSTED_LIST_KEYS.includes(key)) {
-    // Roles and categories; a selector is not accepted from here at all.
     return value
       .filter(entry => typeof entry === 'string' && entry.length <= MAX_ENUM_LENGTH)
       .slice(0, MAX_LIST_ENTRIES);
@@ -89,21 +66,8 @@ function acceptedValue(key: string, value: unknown): unknown {
 }
 
 /**
- * The same context with everything the user entered taken out — what they typed, which
- * options they chose, which boxes they ticked — for a consumer the application does not
- * control: an embedded frame, a script calling the global accessor.
- *
- * Fields keep their label, type, constraints and validation state, so such a consumer
- * still learns the shape of a form; it just does not learn its contents. `withheld: true`
- * marks a field whose value was withheld; an empty field carries no marker, so such a
- * consumer can still tell which fields are filled. The rows a
- * selectable grid lists, which exist to name a selection, go with the selection, and so do
- * a grid's filtered and hidden columns, how many files a file input holds, and the
- * options a combobox narrowed to what the user typed.
- *
- * Regions are left as they are, state included: those come from the application's own
- * `clrContext` annotations, so whatever is in them was put there deliberately, for every
- * consumer.
+ * The context without what the user entered, for a consumer the application does not control.
+ * Fields keep their shape and are marked `withheld: true`; annotation regions are left as published.
  */
 export function withoutFormValues(context: ClrPageContext): ClrPageContext {
   return {
@@ -115,15 +79,8 @@ export function withoutFormValues(context: ClrPageContext): ClrPageContext {
 }
 
 /**
- * State keys that are not values but still say what the user chose: the rows a selectable
- * grid lists so that a row can be named for selection — the grid's content, cell by cell,
- * where any other grid tells such a consumer only its columns and how many rows it has —
- * which columns of a grid are filtered or hidden, how many files a file input holds, and
- * the options a combobox lists, how many there are or are redacted and whether more are
- * still loading, while they are narrowed to what the user typed or picked.
- * Withheld, from any node, only from untrusted consumers: the application's own code is
- * told all of them. With `VALUE_STATE_KEYS`, these are the keys `ClrElementContextCallback`
- * lists for publishers and extractors; keep that list in step.
+ * State keys withheld only from untrusted consumers because they reveal what the user chose.
+ * Keep in step with the keys `ClrElementContextCallback` lists.
  */
 const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
   'rows',
@@ -137,21 +94,8 @@ const UNTRUSTED_WITHHELD_STATE_KEYS: readonly string[] = Object.freeze([
 ]);
 
 /**
- * The same context with only as much of the address as says which page this is: the
- * route's pattern (`reset/:token`) rather than the path it matched (`reset/4f9c…`), no
- * query string, fragment, route parameters or route data; links to the application as
- * the route pattern they match, and links elsewhere and frames as their origin. Paths,
- * parameters and queries routinely carry record identifiers, tenant identifiers and
- * occasionally credentials — a reset token, an invitation code, a signed download — none
- * of which a consumer the application does not control needs to know where the user is.
- * The document title goes too: it names the record on screen as often as the page.
- *
- * A page that matches no configured route — or an application without a router — has no
- * pattern to stand for its path, so only the origin is left of its address.
- *
- * `baseUrl` is what the page's relative links resolve against — the document's base URI,
- * which a `<base href>` moves away from the page's own address. It defaults to the page's
- * address.
+ * The context with only the route pattern of its address, origins for links and frames, and no title,
+ * for an untrusted consumer: paths and queries carry ids, tokens and signed links.
  */
 export function withoutUrlDetails(
   context: ClrPageContext,
@@ -168,8 +112,6 @@ export function withoutUrlDetails(
   } else {
     delete shared.route;
   }
-  // The same reasoning applies to the page's links and frames: an invitation, a reset
-  // link, a record's page carry their secret in the path as often as in the query.
   const origin = originOf(context.url);
   // A base on another origin is not this page's: relative links resolve against the page.
   const resolveAgainst = baseUrl && originOf(baseUrl) === origin ? baseUrl : (context.url ?? null);
@@ -179,17 +121,12 @@ export function withoutUrlDetails(
   return shared;
 }
 
-/** What reducing an address needs to know about the page it is on. */
 interface AddressScope {
-  /** The page's origin: a link elsewhere keeps only its own. */
   origin: string | null;
-  /** What a relative address resolves against. */
   resolveAgainst: string | null;
-  /** The configured pattern an address on this origin leads to, or `null`. */
   routePattern?: (url: URL) => string | null;
 }
 
-/** The URL's origin with `path` in place of its own path, query and fragment. */
 function withPath(url: string, path: string): string {
   try {
     return `${new URL(url).origin}/${path}`;
@@ -206,21 +143,13 @@ function originOf(url: string | undefined): string | null {
   }
 }
 
-/**
- * A node's addresses as an untrusted caller may see them. A link to this application
- * becomes the route pattern it matches, and is dropped when it matches none; a link
- * elsewhere, and a frame, keep only their origin; a `mailto:` or `tel:` link keeps only
- * its scheme. A frame's document title is dropped.
- */
 function withoutAddressDetails(node: ClrComponentContext, scope: AddressScope): ClrComponentContext {
   let result = node;
   const state = node.state;
-  // A frame whose document is an editing host reads as a textbox, so the frame is
-  // recognised by the element that renders it as well as by its type.
+  // A frame whose document is an editing host reads as a textbox, so match on the element too.
   const frame = node.type === 'frame' || node.element === 'iframe' || node.element === 'frame';
   if (state && (typeof state['href'] === 'string' || typeof state['url'] === 'string' || (frame && 'title' in state))) {
     const reduced: Record<string, unknown> = { ...state };
-    // A frame's document title goes with the page's own.
     if (frame) {
       delete reduced['title'];
     }

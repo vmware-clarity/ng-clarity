@@ -6,42 +6,23 @@
  */
 
 /**
- * Marks an element whose value — and the values of everything inside it — must never
- * appear in a context snapshot. Use it for anything sensitive that the input type alone
- * does not reveal: an account number or an API token in a plain text field.
- *
- * The element is still described, so an agent knows it exists and that its value is
- * being withheld rather than being absent. Components that know they hold a secret
- * (a password field, whichever `type` it currently shows) set it on themselves.
+ * Marks an element whose value, and everything inside it, never appears in a snapshot.
+ * The element is still described, so an agent knows the value is withheld rather than absent.
  */
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = 'data-clr-context-redact';
 
 /**
- * Elements carrying this attribute — and everything inside them — are invisible to the
- * engine: the collector never describes them, text they hold is never borrowed as
- * another element's name or description, and the context tracker ignores their
- * mutations. Put it on UI that consumes context (an AI chat panel, a debug view) so it
- * neither describes itself into the page context nor triggers tracking feedback loops.
+ * Elements carrying this attribute, and everything inside them, are invisible to the engine and the tracker.
+ * Put it on UI that consumes context, such as a chat panel, to avoid feedback loops.
  */
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = 'data-clr-context-ignore';
 
-/** Matches an element marked {@link CLR_CONTEXT_REDACT_ATTRIBUTE}; with `closest`, one inside a redacted region. */
 export const CLR_CONTEXT_REDACT_SELECTOR = `[${CLR_CONTEXT_REDACT_ATTRIBUTE}]`;
 
-/** Matches an element marked {@link CLR_CONTEXT_IGNORE_ATTRIBUTE}; with `closest`, one inside an ignored region. */
 export const CLR_CONTEXT_IGNORE_SELECTOR = `[${CLR_CONTEXT_IGNORE_ATTRIBUTE}]`;
 
-/**
- * What page-context tooling treats as not on the page: hidden, hidden from assistive
- * technology, inert, or marked ignored — along with everything inside it. The contextual
- * engine and the components that publish context to it test against this one selector,
- * so they never disagree about what an agent may see.
- */
+/** What page-context tooling treats as not on the page; shared so the engine and components agree. */
 export const CLR_CONTEXT_HIDDEN_SELECTOR = `[hidden], [aria-hidden="true"], [inert], ${CLR_CONTEXT_IGNORE_SELECTOR}`;
 
-/**
- * An editing host: an element with `contenteditable` in any spelling but `false`. What
- * it holds was typed by the user — a value, like a text field's — never text to read into
- * a label, a name or a description.
- */
+/** An editing host; what it holds is user input, never text to read into a name. */
 export const CLR_CONTEXT_EDITING_HOST_SELECTOR = '[contenteditable]:not([contenteditable="false" i])';

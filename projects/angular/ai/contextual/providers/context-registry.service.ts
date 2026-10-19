@@ -11,27 +11,13 @@ import { Observable, Subject } from 'rxjs';
 import { ClrComponentContext, ClrContextProvider } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH } from '../json-safe';
 
-/**
- * How a snapshot treats one annotation, decided from the element it sits on (or `null`
- * when it did not say): reported, left out, or reported without its state.
- */
+/** Decides, from the element an annotation sits on, whether it is kept, dropped or stripped of state. */
 export type ClrContextRegionFilter = (element: Element | null) => 'keep' | 'drop' | 'redact';
 
-/**
- * Root registry of everything currently able to contribute context to a page snapshot.
- *
- * Providers register when they enter the page and unregister when they are destroyed,
- * so the registry only ever knows about UI that exists right now. Context itself is
- * never stored here — providers are polled at snapshot time — which prevents stale
- * information from accumulating.
- */
+/** Registry of live context providers; they are polled at snapshot time, so nothing goes stale. */
 @Injectable({ providedIn: 'root' })
 export class ClrContextRegistryService {
-  /**
-   * Emits whenever a provider joins, leaves, or reports that what it contributes has
-   * changed. Context that lives only in application state changes without touching the
-   * DOM, so anything keeping a snapshot current has nothing else to watch for it.
-   */
+  /** Emits when a provider joins, leaves or reports a change, which may not touch the DOM. */
   readonly changes$: Observable<void>;
 
   private readonly providers: ClrContextProvider[] = [];
@@ -42,14 +28,7 @@ export class ClrContextRegistryService {
     this.changes$ = this.changesSubject.asObservable();
   }
 
-  /**
-   * Registers a context provider. Call the returned function (or `unregister`) when the
-   * provider leaves the page, typically from `ngOnDestroy`.
-   *
-   * `element` is where the annotation sits on the page. Given it, the annotation follows
-   * the rules the page's own elements follow: it is left out of a snapshot that would
-   * leave the element out, and reported without its state inside a redacted region.
-   */
+  /** Registers a provider and returns its teardown; with `element`, it follows that element's visibility. */
   register(provider: ClrContextProvider, element?: Element): () => void {
     if (element) {
       this.elements.set(provider, element);
@@ -75,16 +54,7 @@ export class ClrContextRegistryService {
     this.changesSubject.next();
   }
 
-  /**
-   * Polls all live providers for their current context. Providers that return `null`
-   * or throw are skipped so a single faulty provider cannot break a snapshot. `filter`
-   * decides, from where each annotation sits, whether it is reported at all.
-   *
-   * Each context is handed out as a copy of its plain, serialisable part: a provider may
-   * return an object it keeps, or one holding live application state, and a snapshot
-   * goes to code the application does not control, which must not be able to reach
-   * into either.
-   */
+  /** Polls live providers, skipping ones that return `null` or throw, and returns detached copies. */
   collect(filter?: ClrContextRegionFilter): ClrComponentContext[] {
     const contexts: ClrComponentContext[] = [];
     for (const provider of this.providers) {
@@ -98,20 +68,18 @@ export class ClrContextRegistryService {
           contexts.push(verdict === 'redact' ? withheldState(context) : context);
         }
       } catch {
-        // A provider that fails to describe itself should not break the whole snapshot.
+        // A faulty provider must not break the whole snapshot.
       }
     }
     return contexts;
   }
 }
 
-/** A detached copy of what a provider returned, or `null` when that is not a context at all. */
 function copied(context: ClrComponentContext | null): ClrComponentContext | null {
   const copy = jsonSafe(context, REGION_DEPTH, true) as ClrComponentContext | undefined;
   return copy && typeof copy === 'object' && typeof copy.type === 'string' ? copy : null;
 }
 
-/** An annotation reported from inside a redacted region: what it is, not what it holds. */
 function withheldState(context: ClrComponentContext): ClrComponentContext {
   const reported: ClrComponentContext = { type: context.type, state: { redacted: true } };
   if (context.label) {
