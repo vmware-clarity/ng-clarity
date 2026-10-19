@@ -12,8 +12,10 @@ import { defer, EMPTY, Observable, ReplaySubject, Subject, Subscription } from '
 
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
+import { attempt } from '../attempt';
 import { ClrContextChange, clrDiffContext } from '../diff';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
+import { serialize } from '../json-safe';
 
 /** How the tracker paces its snapshots and what each one collects; see `start`. */
 export interface ClrContextTrackingOptions {
@@ -155,7 +157,7 @@ export class ClrContextTrackerService implements OnDestroy {
     this.emit(this.contextEngine.getSnapshot(this.trackingOptions.snapshot));
   }
 
-  private emit(snapshot: ClrPageContext, serialized: string | null = serialize(snapshot)): void {
+  private emit(snapshot: ClrPageContext, serialized: string | null = serializeSnapshot(snapshot)): void {
     const previous = this.latest;
     this.latest = snapshot;
     this.latestSerialized = serialized;
@@ -203,7 +205,7 @@ export class ClrContextTrackerService implements OnDestroy {
     }
     try {
       const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
-      const serialized = serialize(snapshot);
+      const serialized = serializeSnapshot(snapshot);
       if (serialized === null || serialized !== this.latestSerialized) {
         this.zone.run(() => this.emit(snapshot, serialized));
       }
@@ -318,12 +320,8 @@ function allFrames(root: Document): HTMLIFrameElement[] {
 }
 
 function readableDocument(frame: HTMLIFrameElement): Document | null {
-  try {
-    const contents = frame.contentDocument;
-    return contents?.body ? contents : null;
-  } catch {
-    return null;
-  }
+  const contents = attempt(() => frame.contentDocument, null);
+  return contents?.body ? contents : null;
 }
 
 function isInsideIgnoredRegion(node: Node): boolean {
@@ -348,10 +346,6 @@ function isPlacementOnly(record: MutationRecord): boolean {
 }
 
 /** The snapshot as text without its timestamp, or `null` when it cannot be serialised. */
-function serialize(snapshot: ClrPageContext): string | null {
-  try {
-    return JSON.stringify({ ...snapshot, collectedAt: undefined });
-  } catch {
-    return null;
-  }
+function serializeSnapshot(snapshot: ClrPageContext): string | null {
+  return serialize({ ...snapshot, collectedAt: undefined });
 }

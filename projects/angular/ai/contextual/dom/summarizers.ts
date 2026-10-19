@@ -5,16 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import {
-  CLR_CONTEXT_HIDDEN_SELECTOR,
-  CLR_CONTEXT_REDACT_SELECTOR,
-  ClrContextSnapshotOptions,
-} from '@clr/angular/utils';
+import { getAriaReferenceIds } from '@angular/cdk/a11y';
+import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
 import { ariaEnumValue } from './aria-state';
 import { resolveRole } from './roles';
-import { isVisible } from './visibility';
+import { CELL_SELECTOR, ITEM_CONTAINER_SELECTORS, ITEM_SELECTORS } from './tables/selectors';
+import { isHiddenFromContext, isRedactedWithin, isVisible } from './visibility';
 import { ownEntry } from '../lookup';
 
 /** Describes a homogeneous collection by its ARIA role, so a grid is not walked row by row. */
@@ -24,16 +22,6 @@ interface SummaryScope {
   readonly options: Required<ClrContextSnapshotOptions>;
   readonly withheld: string;
 }
-
-const ROLE_SELECTORS: Record<string, string> = {
-  columnheader: '[role="columnheader"], th:not([role]):not([scope="row"]):not([scope="rowgroup"])',
-  row: '[role="row"], tr:not([role])',
-  tab: '[role="tab"]',
-  listitem: '[role="listitem"], li:not([role])',
-  option: '[role="option"], option:not([role])',
-  menuitem: '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]',
-  radio: '[role="radio"], input[type="radio"]:not([role])',
-};
 
 const ROLE_SUMMARIZERS: Record<string, RoleSummarizer> = {
   combobox: summarizeCombobox,
@@ -67,7 +55,7 @@ function summarizeGrid(element: Element, scope: SummaryScope): Record<string, un
 
   // A header cell in a row that also holds data names that row, not a column.
   const headers = queryRole(element, 'columnheader', scope).filter(
-    header => !header.closest('tr, [role="row"]')?.querySelector(DATA_CELL_SELECTOR)
+    header => !header.closest('tr, [role="row"]')?.querySelector(CELL_SELECTOR)
   );
   const columns = namesOf(headers, element, scope);
   if (columns.length) {
@@ -161,12 +149,14 @@ function comboboxChoices(element: Element, scope: SummaryScope): Element[] {
   if (listId) {
     const datalist = document.getElementById(listId);
     if (datalist) {
-      return Array.from(datalist.querySelectorAll('option')).filter(option => readable(option, scope));
+      return Array.from(datalist.querySelectorAll('option')).filter(
+        option => !isHiddenFromContext(option, scope.withheld)
+      );
     }
   }
 
-  const ownedIds = `${element.getAttribute('aria-owns') ?? ''} ${element.getAttribute('aria-controls') ?? ''}`.trim();
-  for (const id of ownedIds.split(/\s+/).filter(Boolean)) {
+  const ownedIds = [...getAriaReferenceIds(element, 'aria-owns'), ...getAriaReferenceIds(element, 'aria-controls')];
+  for (const id of ownedIds) {
     const owned = document.getElementById(id);
     const listed = owned ? queryRole(owned, 'option', scope) : [];
     if (listed.length) {
@@ -242,28 +232,15 @@ function summarizeRadiogroup(element: Element, scope: SummaryScope): Record<stri
 
 /** Rows carrying data; a column-header row is not a record. */
 function dataRows(rows: Element[]): Element[] {
-  return rows.filter(row => !row.querySelector(ROLE_SELECTORS.columnheader) || row.querySelector(DATA_CELL_SELECTOR));
+  return rows.filter(row => !row.querySelector(ITEM_SELECTORS.columnheader) || row.querySelector(CELL_SELECTOR));
 }
 
-const DATA_CELL_SELECTOR = 'td, [role="cell"], [role="gridcell"]';
-
-/** Containers per item role, so a nested collection's items are left to it. */
-const CONTAINER_SELECTORS: Record<string, string> = {
-  columnheader: 'table, [role="table"], [role="grid"], [role="treegrid"]',
-  row: 'table, [role="table"], [role="grid"], [role="treegrid"]',
-  tab: '[role="tablist"]',
-  listitem: 'ul, ol, menu, [role="list"]',
-  option: 'select, datalist, [role="listbox"], [role="combobox"]',
-  menuitem: '[role="menu"], [role="menubar"]',
-  radio: '[role="radiogroup"]',
-};
-
 function queryRole(element: Element, role: string, scope: SummaryScope): Element[] {
-  const container = CONTAINER_SELECTORS[role];
+  const container = ITEM_CONTAINER_SELECTORS[role];
   const judgesStyle = STYLE_JUDGED_ROLES.has(role);
-  return Array.from(element.querySelectorAll(ROLE_SELECTORS[role])).filter(
+  return Array.from(element.querySelectorAll(ITEM_SELECTORS[role])).filter(
     item =>
-      readable(item, scope) &&
+      !isHiddenFromContext(item, scope.withheld) &&
       (!container || item.parentElement?.closest(container) === element) &&
       (!judgesStyle || isVisible(item))
   );
@@ -272,14 +249,9 @@ function queryRole(element: Element, role: string, scope: SummaryScope): Element
 /** Roles hidden by a style are left out too; rows are not checked, to avoid a layout read per record. */
 const STYLE_JUDGED_ROLES = new Set(['columnheader', 'tab', 'listitem', 'menuitem']);
 
-function readable(item: Element, scope: SummaryScope): boolean {
-  return !item.closest(CLR_CONTEXT_HIDDEN_SELECTOR) && !(scope.withheld && item.closest(scope.withheld));
-}
-
 /** `null` for an item in a redacted region inside the collection: it still counts, but its name is withheld. */
 function nameOf(item: Element, collection: Element, scope: SummaryScope): string | null {
-  const redacting = item.closest(CLR_CONTEXT_REDACT_SELECTOR);
-  if (redacting && !redacting.contains(collection)) {
+  if (isRedactedWithin(item, collection)) {
     return null;
   }
   return accessibleName(item, resolveRole(item), scope.options.maxTextLength, scope.withheld);

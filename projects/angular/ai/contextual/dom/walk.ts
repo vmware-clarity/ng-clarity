@@ -5,9 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { getAriaReferenceIds } from '@angular/cdk/a11y';
 import {
-  CLR_CONTEXT_HIDDEN_SELECTOR,
-  CLR_CONTEXT_IGNORE_ATTRIBUTE,
   CLR_CONTEXT_IGNORE_SELECTOR,
   CLR_CONTEXT_REDACT_ATTRIBUTE,
   CLR_CONTEXT_REDACT_SELECTOR,
@@ -30,8 +29,19 @@ import {
   roleCandidateSelector,
 } from './roles';
 import { summarizeRole } from './summarizers';
+import { WRITABLE_ROLES } from './tables/roles';
+import {
+  CELL_SELECTOR,
+  CONTROL_SELECTOR,
+  DESCRIBABLE_SELECTOR,
+  LEGACY_MODAL_SELECTOR,
+  MODAL_SELECTOR,
+  VALUE_CONTROL_SELECTOR,
+} from './tables/selectors';
+import { NAMING_TAGS, PHRASING_TAGS, SKIPPED_TAGS } from './tables/tags';
 import { accessibleText, isVisuallyHidden, MAX_NESTING_DEPTH, truncate } from './text';
-import { isVisible } from './visibility';
+import { hidesFromContext, isHiddenFromContext, isVisible } from './visibility';
+import { attempt } from '../attempt';
 import { stripQueryAndFragment } from '../url';
 
 /**
@@ -45,64 +55,8 @@ export interface ClrContextDomExtractor {
   extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
 }
 
-const WRITABLE_ROLES: ReadonlySet<string> = new Set([
-  'textbox',
-  'searchbox',
-  'combobox',
-  'listbox',
-  'checkbox',
-  'radio',
-  'switch',
-  'slider',
-  'spinbutton',
-  'radiogroup',
-]);
-
 /** Caps the elements one walk reads, so a page of empty wrappers is not read end to end. */
 const MAX_ELEMENTS_VISITED = 25_000;
-
-const SKIPPED_TAGS = new Set(['script', 'style', 'template', 'link', 'meta', 'noscript', 'head']);
-
-/** A described-by target holding a control is real content, walked rather than folded into a description. */
-const CONTROL_SELECTOR = [
-  'a[href]',
-  'button',
-  'input',
-  'select',
-  'textarea',
-  '[tabindex]',
-  '[contenteditable]',
-  '[role="button"]',
-  '[role="link"]',
-  '[role="checkbox"]',
-  '[role="radio"]',
-  '[role="switch"]',
-  '[role="textbox"]',
-  '[role="searchbox"]',
-  '[role="combobox"]',
-  '[role="listbox"]',
-  '[role="menu"]',
-  '[role="menuitem"]',
-  '[role="tab"]',
-  '[role="slider"]',
-  '[role="spinbutton"]',
-  '[role="option"]',
-  '[role="treeitem"]',
-  '[role="grid"]',
-  '[role="table"]',
-  '[role="dialog"]',
-  '[role="alertdialog"]',
-].join(', ');
-
-/** Elements whose text names something else and is never reported as text. */
-const NAMING_TAGS = new Set(['label', 'legend', 'caption', 'figcaption', 'option', 'optgroup', 'datalist', 'title']);
-
-/** Only a dialog that says it is modal; a non-modal dialog or side panel leaves the page in use. */
-const MODAL_SELECTOR = '[role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"], dialog:modal';
-
-/** Fallback for browsers without `:modal`: any open `<dialog>` counts as modal. */
-const LEGACY_MODAL_SELECTOR =
-  '[role="dialog"][aria-modal="true"], [role="alertdialog"][aria-modal="true"], dialog[open]';
 
 interface Walk {
   readonly options: Required<ClrContextSnapshotOptions>;
@@ -175,13 +129,7 @@ export function collectContextTreeWithin(
 
 /** Whether the walk would leave this element out, judged from the element and its ancestry. */
 export function isHiddenFromEngine(element: Element, excludeSelector = ''): boolean {
-  if (!element.isConnected || element.closest(CLR_CONTEXT_HIDDEN_SELECTOR)) {
-    return true;
-  }
-  if (excludeSelector && element.closest(excludeSelector)) {
-    return true;
-  }
-  return !isVisible(element);
+  return !element.isConnected || isHiddenFromContext(element, excludeSelector) || !isVisible(element);
 }
 
 export interface ClrContextScope {
@@ -270,15 +218,17 @@ function rendersOnly(parent: Element, part: Element, excludeSelector: string): b
     if (SKIPPED_TAGS.has(element.tagName.toLowerCase()) || isHiddenFromEngine(element, excludeSelector)) {
       return true;
     }
-    if (CLR_ELEMENT_CONTEXT_PROPERTY in element || element.matches(DESCRIBABLE) || element.querySelector(DESCRIBABLE)) {
+    if (
+      CLR_ELEMENT_CONTEXT_PROPERTY in element ||
+      element.matches(DESCRIBABLE_SELECTOR) ||
+      element.querySelector(DESCRIBABLE_SELECTOR)
+    ) {
       return false;
     }
     // A screen reader's "end of dialog" marker is not content.
     return !MEANINGFUL_TEXT.test(element.textContent ?? '') || isVisuallyHidden(element);
   });
 }
-
-const DESCRIBABLE = `[role], ${CONTROL_SELECTOR}, img, svg, iframe, frame, [aria-label], [aria-labelledby]`;
 
 function openModalDialogs(root: ParentNode, excludeSelector = ''): Element[] {
   return Array.from(modalDialogs(root)).filter(dialog => !isHiddenFromEngine(dialog, excludeSelector));
@@ -349,10 +299,8 @@ function collectReferencedIds(root: ParentNode, walk: Walk): void {
       if (isHiddenFromEngine(element, walk.excludeSelector) || !reports(element)) {
         continue;
       }
-      for (const id of (element.getAttribute(attribute) ?? '').trim().split(/\s+/)) {
-        if (id) {
-          into.add(id);
-        }
+      for (const id of getAriaReferenceIds(element, attribute)) {
+        into.add(id);
       }
     }
   };
@@ -401,7 +349,7 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
 function describeVisible(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
   const extractor = walk.extractors.find(candidate => element.matches(candidate.selector));
   if (extractor) {
-    const extracted = extractSafely(extractor, element as HTMLElement, walk);
+    const extracted = attempt(() => extractor.extract(element as HTMLElement, walk.options), null);
     const described = extracted ? publishedNode(extracted, walk.options) : null;
     if (!described) {
       return describeChildren(element, walk, owner);
@@ -472,7 +420,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     node.label = fallbackLabel;
   }
   // Summarising collections keeps a ten-thousand-row grid from producing ten thousand nodes.
-  const summary = summarizeSafely(element, role, walk);
+  const summary = attempt(() => summarizeRole(element, role, walk.options, walk.excludeSelector), null);
   const state = { ...ariaState(element, walk.options, redacted, walk.excludeSelector), ...summary };
   if (Object.keys(state).length) {
     node.state = state;
@@ -520,7 +468,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
  */
 function describeAnonymousCustomElement(element: Element, tagName: string, walk: Walk): ClrComponentContext[] | null {
   const rendered = describeChildren(element, walk, element);
-  const published = !rendered.length || !rendersExcludedRole(element, walk);
+  const published = !rendered.length || !holdsExcludedRole(element, walk, true);
   if (rendered.length === 1) {
     const only = rendered[0];
     if (only.type === 'text' && !only.children && !only.state) {
@@ -546,15 +494,6 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
   }
   return null;
 }
-
-const CELL_SELECTOR = '[role="gridcell"], [role="cell"], td';
-const VALUE_CONTROL_SELECTOR = [
-  'input',
-  'select',
-  'textarea',
-  '[contenteditable]',
-  ...Array.from(WRITABLE_ROLES, role => `[role="${role}"]`),
-].join(', ');
 
 /** Application controls in a summarised collection's cells, which the summary does not cover. */
 function describeCellControls(collection: Element, walk: Walk): ClrComponentContext[] {
@@ -652,9 +591,9 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
 
   const node: ClrComponentContext = { type: 'frame', element: frame.tagName.toLowerCase() };
   const state: Record<string, unknown> = {};
-  const contents = frameDocument(frame);
+  const contents = attempt(() => frame.contentDocument, null);
   const roots = contents ? [contents.documentElement, contents.body].filter(root => !!root) : [];
-  const ignored = roots.some(root => hidesDocument(root, walk));
+  const ignored = roots.some(root => hidesFromContext(root, walk.excludeSelector));
   const redacted = walk.redactedDepth > 0 || roots.some(root => root.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE));
   // The document title may be a record's name, so it is kept apart as `title` and withheld when redacted.
   const label = nameSafely(frame, null, walk);
@@ -716,16 +655,6 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
   return listOf(finish(node, frame, walk));
 }
 
-function hidesDocument(root: Element, walk: Walk): boolean {
-  return (
-    root.hasAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE) ||
-    root.getAttribute('aria-hidden') === 'true' ||
-    root.hasAttribute('hidden') ||
-    root.hasAttribute('inert') ||
-    (!!walk.excludeSelector && root.matches(walk.excludeSelector))
-  );
-}
-
 /** The initial blank document has a body too, so the body alone does not tell. */
 function isStillNavigating(frame: HTMLIFrameElement, contents: Document): boolean {
   const src = frame.getAttribute('src');
@@ -734,41 +663,13 @@ function isStillNavigating(frame: HTMLIFrameElement, contents: Document): boolea
   );
 }
 
-function extractSafely(
-  extractor: ClrContextDomExtractor,
-  element: HTMLElement,
-  walk: Walk
-): ClrComponentContext | null {
-  try {
-    return extractor.extract(element, walk.options);
-  } catch {
-    return null;
-  }
-}
-
-function summarizeSafely(element: Element, role: string | null, walk: Walk): Record<string, unknown> | null {
-  try {
-    return summarizeRole(element, role, walk.options, walk.excludeSelector);
-  } catch {
-    return null;
-  }
-}
-
+/** A name that cannot be computed truncates the snapshot rather than break it. */
 function nameSafely(element: Element, role: string | null, walk: Walk): string {
-  try {
-    return accessibleName(element, role, walk.options.maxTextLength, walk.excludeSelector);
-  } catch {
+  const name = attempt(() => accessibleName(element, role, walk.options.maxTextLength, walk.excludeSelector), null);
+  if (name === null) {
     walk.truncated = true;
-    return '';
   }
-}
-
-function frameDocument(frame: HTMLIFrameElement): Document | null {
-  try {
-    return frame.contentDocument;
-  } catch {
-    return null;
-  }
+  return name ?? '';
 }
 
 function describeNested(
@@ -829,34 +730,6 @@ function describeChildren(
   return nodes;
 }
 
-const PHRASING_TAGS = new Set([
-  'abbr',
-  'b',
-  'bdi',
-  'bdo',
-  'cite',
-  'code',
-  'data',
-  'del',
-  'dfn',
-  'em',
-  'i',
-  'ins',
-  'kbd',
-  'mark',
-  'q',
-  's',
-  'samp',
-  'small',
-  'span',
-  'strong',
-  'sub',
-  'sup',
-  'time',
-  'u',
-  'var',
-]);
-
 function isPhrasing(element: Element, walk: Walk): boolean {
   return (
     PHRASING_TAGS.has(element.tagName.toLowerCase()) &&
@@ -866,8 +739,8 @@ function isPhrasing(element: Element, walk: Walk): boolean {
     !element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE) &&
     !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
     !(element.id && walk.labelIds.has(element.id)) &&
-    !element.matches(DESCRIBABLE) &&
-    !element.querySelector(DESCRIBABLE) &&
+    !element.matches(DESCRIBABLE_SELECTOR) &&
+    !element.querySelector(DESCRIBABLE_SELECTOR) &&
     !walk.extractors.some(extractor => element.matches(extractor.selector))
   );
 }
@@ -931,38 +804,32 @@ function listOf(node: ClrComponentContext | null): ClrComponentContext[] {
   return node ? [node] : [];
 }
 
-/** Whether the component's own template renders an excluded role (the grid in `clr-datagrid`). */
-function rendersExcludedRole(element: Element, walk: Walk): boolean {
+/**
+ * Whether the element holds an excluded role the walk would otherwise show; with `renderedOnly`,
+ * only one its own template renders (the grid in `clr-datagrid`).
+ */
+function holdsExcludedRole(element: Element, walk: Walk, renderedOnly = false): boolean {
   if (!walk.excludeRoleCandidates) {
     return false;
   }
-  for (const descendant of Array.from(element.querySelectorAll(walk.excludeRoleCandidates))) {
+  return Array.from(element.querySelectorAll(walk.excludeRoleCandidates)).some(descendant => {
     const role = resolveRole(descendant);
-    if (!role || !walk.excludeRoles.has(role) || isLeftOutAnyway(descendant, walk.excludeSelector)) {
-      continue;
-    }
-    let owner: Element | null = descendant.parentElement;
-    while (owner && owner !== element && !isCustomElementTag(owner)) {
-      owner = owner.parentElement;
-    }
-    if (owner === element) {
-      return true;
-    }
-  }
-  return false;
+    return (
+      !!role &&
+      walk.excludeRoles.has(role) &&
+      !isLeftOutAnyway(descendant, walk.excludeSelector) &&
+      (!renderedOnly || isRenderedBy(descendant, element))
+    );
+  });
 }
 
-function holdsExcludedRole(element: Element, walk: Walk): boolean {
-  if (!walk.excludeRoleCandidates) {
-    return false;
+/** No custom element between them: a datagrid renders its grid, not the input in one of its cells. */
+function isRenderedBy(descendant: Element, element: Element): boolean {
+  let owner: Element | null = descendant.parentElement;
+  while (owner && owner !== element && !isCustomElementTag(owner)) {
+    owner = owner.parentElement;
   }
-  for (const descendant of Array.from(element.querySelectorAll(walk.excludeRoleCandidates))) {
-    const role = resolveRole(descendant);
-    if (role && walk.excludeRoles.has(role) && !isLeftOutAnyway(descendant, walk.excludeSelector)) {
-      return true;
-    }
-  }
-  return false;
+  return owner === element;
 }
 
 function isLeftOutAnyway(element: Element, excludeSelector: string): boolean {
@@ -973,17 +840,7 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
   if (SKIPPED_TAGS.has(element.tagName.toLowerCase())) {
     return true;
   }
-  if (element.hasAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE)) {
-    return true;
-  }
-  if (walk.excludeSelector && element.matches(walk.excludeSelector)) {
-    return true;
-  }
-  if (
-    element.getAttribute('aria-hidden') === 'true' ||
-    element.hasAttribute('hidden') ||
-    element.hasAttribute('inert')
-  ) {
+  if (hidesFromContext(element, walk.excludeSelector)) {
     return true;
   }
   // Only role-less text without controls folds into a description; page content can point
