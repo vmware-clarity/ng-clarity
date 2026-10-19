@@ -76,8 +76,11 @@ export class ClrModal implements OnChanges, OnDestroy {
     //
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // (undocumented)
-    fadeDone(e: AnimationEvent_2): void;
+    protected get dialogEnterClass(): string;
+    // @deprecated (undocumented)
+    fadeDone(_e: {
+        toState: string;
+    }): void;
     // (undocumented)
     get fadeMove(): string;
     set fadeMove(move: string);
