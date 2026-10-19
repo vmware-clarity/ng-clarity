@@ -18,7 +18,12 @@ const themeLocalStorageKey = 'theme';
   template: `
     <button
       class="btn btn-link nav-link"
-      [attr.aria-label]="'toggle to ' + (theme === 'light' ? 'dark' : 'light') + ' theme'"
+      [attr.aria-label]="
+        themeLockService.lightThemeLocked()
+          ? 'theme toggle, locked to light theme'
+          : 'toggle to ' + (theme === 'light' ? 'dark' : 'light') + ' theme'
+      "
+      [attr.aria-disabled]="themeLockService.lightThemeLocked()"
       [class.disabled]="themeLockService.lightThemeLocked()"
       (click)="toggleTheme()"
       (mouseenter)="themeIconInverse = true"
