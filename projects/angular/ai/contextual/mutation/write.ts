@@ -9,7 +9,6 @@ import { ApplicationRef, ChangeDetectorRef, getDebugNode } from '@angular/core';
 import { AbstractControl, NgControl } from '@angular/forms';
 import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
-  CLR_CONTEXT_REDACT_SELECTOR,
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrContextSnapshotOptions,
   ClrElementMutation,
@@ -26,6 +25,7 @@ import { attempt } from '../attempt';
 import { accessibleName } from '../dom/accessible-name';
 import { readElementMutator } from '../dom/element-mutator';
 import { resolveRole } from '../dom/roles';
+import { isRedactedWithin } from '../dom/visibility';
 import { jsonSafe, STATE_DEPTH } from '../json-safe';
 import { ownEntry } from '../lookup';
 import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
@@ -431,12 +431,9 @@ function writeSelect(
 }
 
 export function readValue(target: WriteTarget): unknown {
-  if (target.mutator?.read) {
-    try {
-      return plain(target.mutator.read(target.options));
-    } catch {
-      return null;
-    }
+  const mutator = target.mutator;
+  if (mutator?.read) {
+    return attempt(() => plain(mutator.read?.(target.options)), null);
   }
   switch (target.kind) {
     case 'select': {
@@ -460,11 +457,8 @@ export function readValue(target: WriteTarget): unknown {
 
 /** Marks the view for check, which an `OnPush` parent would otherwise skip. */
 export function markViewForCheck(element: Element): void {
-  try {
-    getDebugNode(element)?.injector.get(ChangeDetectorRef, null)?.markForCheck();
-  } catch {
-    // An element Angular does not render has no view to check.
-  }
+  // An element Angular does not render has no view to check.
+  attempt(() => getDebugNode(element)?.injector.get(ChangeDetectorRef, null)?.markForCheck(), undefined);
 }
 
 function formControlOn(element: Element): NgControl | null {
@@ -697,12 +691,7 @@ function choiceKept(choice: Element, target: WriteTarget): boolean {
   if (excluded && choice.closest(excluded)) {
     return true;
   }
-  for (let current: Element | null = choice; current && current !== target.control; current = current.parentElement) {
-    if (current.matches(CLR_CONTEXT_REDACT_SELECTOR)) {
-      return true;
-    }
-  }
-  return false;
+  return isRedactedWithin(choice, target.control);
 }
 
 function choiceShown(choice: Element, target: WriteTarget): boolean {

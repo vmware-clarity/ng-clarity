@@ -36,6 +36,7 @@ import {
   WriteTarget,
   writeValue,
 } from './write';
+import { attempt } from '../attempt';
 import { ClrContextChange, clrDiffContext } from '../diff';
 import { isOutsideSnapshot, openModalDialogs } from '../dom/walk';
 import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
@@ -108,11 +109,8 @@ export class ClrMutationEngineService {
       snapshot,
       changes: withoutSnapshots(clrDiffContext(before, snapshot)),
     };
-    try {
-      this.policy?.announce?.(report);
-    } catch {
-      // The application's announcement failing must not lose the report.
-    }
+    // The application's announcement failing must not lose the report.
+    attempt(() => this.policy?.announce?.(report), undefined);
     return report;
   }
 
@@ -359,12 +357,8 @@ export class ClrMutationEngineService {
   }
 
   private classify(target: ClrMutationTarget): ClrMutationConsequence {
-    try {
-      const verdict = this.policy?.classify(target);
-      return verdict === 'reversible' || verdict === 'consequential' ? verdict : 'forbidden';
-    } catch {
-      return 'forbidden';
-    }
+    const verdict = attempt(() => this.policy?.classify(target), 'forbidden');
+    return verdict === 'reversible' || verdict === 'consequential' ? verdict : 'forbidden';
   }
 
   private verdict(consequence: ClrMutationConsequence): Refused | null {
