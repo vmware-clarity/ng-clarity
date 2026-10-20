@@ -13,7 +13,7 @@
   [cdkDropListConnectedTo]="cdkDropGroup"
   [class.draggable-over]="isDraggableOver"
   (cdkDropListDropped)="onDrop()"
-  animate.enter="clr-fade-slide-right-enter"
+  [animate.enter]="enterClass"
 >
   <div
     tabindex="0"

@@ -27,6 +27,7 @@ import {
   defaultMissingTranslationHandler,
 } from '@clr/addons/translate';
 import { ClarityIcons, dragHandleIcon } from '@clr/angular/icon';
+import { noopAnimations } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -74,6 +75,9 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(CdkDropList, { static: true }) readonly dropList: CdkDropList;
 
   dragDropEnabled: boolean = true;
+
+  /** Cards slide in, unless the application turned animations off with `provideNoopAnimations()`. */
+  protected readonly enterClass = noopAnimations() ? '' : 'clr-fade-slide-right-enter';
 
   @ViewChild(CdkDrag, { read: ElementRef }) private cdkDragElementRefs: ElementRef;
 
