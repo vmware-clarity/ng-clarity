@@ -6,11 +6,14 @@
  */
 
 import {
+  afterNextRender,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
+  inject,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -19,7 +22,7 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { ClrCommonStringsService, ScrollingService, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, noopAnimations, ScrollingService, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ModalStackService } from './modal-stack.service';
@@ -74,6 +77,8 @@ export class ClrModal implements OnChanges, OnDestroy {
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
   @ViewChild('dialog') private readonly dialogElementRef: ElementRef<HTMLElement>;
 
+  private readonly injector = inject(Injector);
+  private readonly noopAnimations = noopAnimations();
   private destroyed = false;
   /** Set when the modal closes, until it opens again: identifies the closing to notify. */
   private closeRequest: object | null = null;
@@ -96,12 +101,18 @@ export class ClrModal implements OnChanges, OnDestroy {
     return this.configuration.backdrop;
   }
 
-  /** Class animating the dialog in, meant for its `animate.enter` binding. Empty when animations are skipped. */
+  /** Class animating the dialog in, meant for its `animate.enter` binding. Empty when animations are skipped or off. */
   protected get dialogEnterClass(): string {
-    return FADE_MOVE_ENTER_CLASSES[this.fadeMove] ?? '';
+    return this.noopAnimations ? '' : (FADE_MOVE_ENTER_CLASSES[this.fadeMove] ?? '');
   }
 
-  // Detect when _open is set to true and set no-scrolling to true
+  /** Class animating the backdrop in, meant for its `animate.enter` binding. Empty when animations are off. */
+  protected get backdropEnterClass(): string {
+    return this.noopAnimations ? '' : 'clr-fade-enter';
+  }
+
+  // Track the opening and closing driven by the clrModalOpen input: page scrolling, the modal stack and the
+  // clrModalOpenChange(false) notification (emitted on an input-driven close too, as before).
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
     if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
@@ -166,7 +177,8 @@ export class ClrModal implements OnChanges, OnDestroy {
   }
 
   /**
-   * Emits `clrModalOpenChange(false)` once the closing change is checked (the modal may be closed while its parent is).
+   * Emits `clrModalOpenChange(false)` after the closing render, once the dialog is removed and the focus trap has given
+   * the focus back, so that a handler can move the focus elsewhere.
    * Once per closing, and not when the modal was not rendered, opens again in between, or is destroyed.
    */
   private notifyClosing() {
@@ -174,11 +186,14 @@ export class ClrModal implements OnChanges, OnDestroy {
       return;
     }
     const closeRequest = (this.closeRequest = {});
-    Promise.resolve().then(() => {
-      if (closeRequest === this.closeRequest && !this.destroyed) {
-        this._openChanged.emit(false);
-        this.modalStackService.trackModalClose(this);
-      }
-    });
+    afterNextRender(
+      () => {
+        if (closeRequest === this.closeRequest && !this.destroyed) {
+          this._openChanged.emit(false);
+          this.modalStackService.trackModalClose(this);
+        }
+      },
+      { injector: this.injector }
+    );
   }
 }

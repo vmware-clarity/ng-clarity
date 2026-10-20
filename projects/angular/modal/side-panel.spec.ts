@@ -164,11 +164,6 @@ describe('Side Panel', () => {
     expect(fixture.componentInstance.opened).toBe(true);
     sidePanel.close();
     fixture.detectChanges();
-
-    // We make sure to wait for the animation to be over before emitting the output
-
-    // todo: uncomment this after animation bug is fixed https://github.com/angular/angular/issues/15798
-    // expect(fixture.componentInstance.opened).toBe(true);
     await delay();
     expect(fixture.componentInstance.opened).toBe(false);
   });

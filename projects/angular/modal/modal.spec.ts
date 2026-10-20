@@ -8,6 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay, enableCssAnimations, expectActiveElementToBe, finishAnimations } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
@@ -134,10 +135,11 @@ describe('Modal', () => {
   });
 
   it('emits clrModalOpenChange only once when the two-way binding propagates the closing', async () => {
-    // Mimics an application: close() runs from an event handler, the notification microtask updates the
-    // two-way bound property and only then does change detection see the input flip to false.
+    // The closing render emits the notification, which updates the two-way bound property, and the next change
+    // detection feeds the input back as false.
     spyOn(modal._openChanged, 'emit').and.callThrough();
     modal.close();
+    fixture.detectChanges();
     await delay();
     expect(fixture.componentInstance.opened).toBe(false);
 
@@ -185,11 +187,6 @@ describe('Modal', () => {
     expect(fixture.componentInstance.opened).toBe(true);
     modal.close();
     fixture.detectChanges();
-
-    // We make sure to wait for the animation to be over before emitting the output
-
-    // todo: uncomment this after animation bug is fixed https://github.com/angular/angular/issues/15798
-    // expect(fixture.componentInstance.opened).toBe(true);
     await delay();
     expect(fixture.componentInstance.opened).toBe(false);
   });
@@ -430,6 +427,27 @@ describe('Modal with animations', () => {
     expect(document.activeElement).toBe(opener);
   });
 
+  it('keeps the focus a clrModalOpenChange handler moves elsewhere', async () => {
+    const handlerTarget = document.createElement('button');
+    document.body.appendChild(handlerTarget);
+    query('.to-focus').focus();
+    await open();
+    await fixture.whenStable();
+    modal._openChanged.subscribe((opened: boolean) => {
+      if (!opened) {
+        handlerTarget.focus();
+      }
+    });
+
+    // As in an application: close() from an event handler, then its microtasks, then change detection.
+    modal.close();
+    await Promise.resolve();
+    fixture.detectChanges();
+
+    expect(document.activeElement).toBe(handlerTarget);
+    handlerTarget.remove();
+  });
+
   it('gives the focus back when destroyed while open', async () => {
     const opener = query('.to-focus');
     opener.focus();
@@ -450,5 +468,33 @@ describe('Modal with animations', () => {
     await delay();
 
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
+  });
+});
+
+describe('Modal with noop animations', () => {
+  let fixture: ComponentFixture<TestComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(async () => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [CdkTrapFocusModule, ClrModalModule],
+      declarations: [TestComponent],
+      providers: [provideNoopAnimations()],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+    await delay();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  it('does not animate the dialog or the backdrop in', () => {
+    expect(fixture.nativeElement.querySelector('.modal-dialog').classList).not.toContain('clr-fade-slide-down-enter');
+    expect(fixture.nativeElement.querySelector('.modal-backdrop').classList).not.toContain('clr-fade-enter');
   });
 });
