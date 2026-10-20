@@ -9,11 +9,12 @@ Clarity v19 upgrades its build toolchain to Angular 22 and TypeScript 6.
 
 ## Node.js requirements
 
-Before updating to Clarity v19, use Node.js 24.15.0 or later in the 24.x release line, or Node.js 26.0.0 or later.
-These versions meet the [Angular 22 Node.js requirements](https://angular.dev/reference/versions).
+Before updating to Clarity v19, use a Node.js version supported by Angular 22 (`^22.22.3 || ^24.15.0 || >=26.0.0`).
+See the [Angular 22 Node.js requirements](https://angular.dev/reference/versions).
 
-For Clarity contributors, the repository also requires npm 11.0.0 or later. Its `.nvmrc` file pins Node.js 24.15.0
-for local development and CI. Run `nvm install` and `nvm use` from the repository root to select that version.
+Clarity contributors need Node.js `^24.15.0 || >=26.0.0` and npm 11.0.0 or later to work on the repository. Its
+`.nvmrc` file pins Node.js 24.15.0 for local development and CI. Run `nvm install` and `nvm use` from the repository
+root to select that version.
 
 ## Angular and package requirements
 
@@ -21,11 +22,18 @@ Clarity v19 requires Angular 22. Angular 21 applications must upgrade Angular be
 Angular framework and CDK peer dependencies are bounded to `^22.0.0`.
 
 `@clr/angular` declares its Angular animations, CDK, common, core, forms, platform-browser and router peers,
-along with RxJS `^7.8.0`. `@clr/addons` requires the corresponding Clarity v19 Angular package; published releases
-pin this peer to the matching release version, including prereleases.
+along with RxJS `^7.8.0`.
+
+`@clr/ui`, `@clr/angular` and `@clr/addons` are released together with the same version number. Published releases
+pin `@clr/angular`'s `@clr/ui` peer and `@clr/addons`' `@clr/angular` peer to that exact version, including
+prereleases. Always update the three packages together to the same version; mixing versions fails peer dependency
+resolution.
 
 Both libraries declare `tslib` as a runtime dependency. `@clr/addons` also declares `reflect-metadata`, used by
 its workflow input and output mappings. These runtime dependencies are installed with the packages.
+
+The certificate viewer in `@clr/addons` needs `asn1js` `^3.0.6` and `pkijs` `^3.2.5`. They are optional peer
+dependencies of `@clr/addons`, so install them only if your application uses the certificate viewer.
 
 ## CDK constructor changes
 
