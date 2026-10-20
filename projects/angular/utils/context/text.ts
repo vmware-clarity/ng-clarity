@@ -6,6 +6,7 @@
  */
 
 import { CLR_CONTEXT_WITHHELD_SELECTOR } from './attributes';
+import { BLOCK_TAGS } from './tags';
 
 /** Text as page-context tooling compares it, shared so components and the engine agree on matches. */
 export function clrNormalizeContextText(text: string, lowercase = true): string {
@@ -50,43 +51,6 @@ function textWithin(element: Element, skip: ((descendant: Element) => boolean) |
   });
   return text;
 }
-
-const BLOCK_TAGS = new Set([
-  'address',
-  'article',
-  'aside',
-  'blockquote',
-  'br',
-  'dd',
-  'div',
-  'dl',
-  'dt',
-  'fieldset',
-  'figcaption',
-  'figure',
-  'footer',
-  'form',
-  'h1',
-  'h2',
-  'h3',
-  'h4',
-  'h5',
-  'h6',
-  'header',
-  'hr',
-  'li',
-  'main',
-  'nav',
-  'ol',
-  'p',
-  'pre',
-  'section',
-  'table',
-  'td',
-  'th',
-  'tr',
-  'ul',
-]);
 
 function isBlock(element: Element, style: CSSStyleDeclaration | null): boolean {
   const tagName = element.tagName.toLowerCase();
