@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { PRESETS, ThemePreset } from '@clr/addons/theme-builder';
 
@@ -45,6 +45,7 @@ export class ExampleComponent {
     '[class.dox-content-panel]': 'true',
   },
   imports: [DocTabsComponent, DocTabComponent, StackblitzExampleComponent, RouterLink],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ThemeBuilderAddonDemo extends ClarityDocComponent {
   defaultHtml = DEFAULT_HTML;

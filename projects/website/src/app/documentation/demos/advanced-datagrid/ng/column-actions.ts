@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ActionClickEvent,
   ActionDefinition,
@@ -25,6 +25,7 @@ import { Inventory, VmItem } from './inventory/inventory';
   standalone: true,
   templateUrl: './column-actions.html',
   providers: [Inventory],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ColumnActionsGridDemoComponent {
   vms: VmItem[] = [];

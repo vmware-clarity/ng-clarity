@@ -265,7 +265,13 @@ module.exports = [
   },
 
   {
-    files: ['projects/angular/**/*.ts', 'projects/addons/**/*.ts'],
+    files: [
+      'projects/angular/**/*.ts',
+      'projects/addons/**/*.ts',
+      'projects/demo/**/*.ts',
+      'projects/website/**/*.ts',
+      '.storybook/**/*.ts',
+    ],
     rules: { 'ng-clarity-eslint-rules/explicit-change-detection': 'error' },
   },
 

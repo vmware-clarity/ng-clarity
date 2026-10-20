@@ -6,7 +6,7 @@
  */
 
 import { NgFor, NgIf } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClrAccordionModule } from '@clr/angular';
 
 @Component({
@@ -28,6 +28,7 @@ import { ClrAccordionModule } from '@clr/angular';
     </clr-accordion>
   `,
   imports: [NgFor, NgIf, ClrAccordionModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AccordionPanelStorybookComponent {
   @Input() clrAccordionPanelOpen = false;

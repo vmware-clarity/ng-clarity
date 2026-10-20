@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { AppfxCertificateViewerModule } from '@clr/addons/certificate-viewer';
 
 import googleCerts from '../../../../projects/website/src/app/documentation/demos/certificate-viewer/certs/google-certs.json';
@@ -24,6 +24,7 @@ import googleCerts from '../../../../projects/website/src/app/documentation/demo
       ></appfx-certificate-viewer>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CertViewerStoryWrapperComponent {
   @Input() pemChain: string[] = googleCerts;
