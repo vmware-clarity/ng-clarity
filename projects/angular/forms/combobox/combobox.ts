@@ -793,11 +793,7 @@ export class ClrCombobox<T>
 
   /** The selection as the user sees it; `[]` or `null` when nothing is selected. */
   private selectedLabels(excluded: string): (string | null)[] | string | null {
-    const model = this.optionSelectionService.selectionModel?.model;
-    if (model === null || model === undefined) {
-      return this.multiSelect ? [] : null;
-    }
-    const names = (Array.isArray(model) ? model : [model])
+    const names = this.selectedValues()
       .map(value => {
         const option = this.optionFor(value);
         return { value, option, shown: option ? this.optionShown(option, excluded) : 'shown' };

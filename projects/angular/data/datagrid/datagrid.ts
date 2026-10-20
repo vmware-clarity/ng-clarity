@@ -824,17 +824,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
 
     if (this.selection.selectable) {
       state.selectionMode = this.selection.selectionType === SelectionType.Single ? 'single' : 'multi';
-      const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
-      const label = (row: ClrDatagridRow<T>) => this.rowLabel(row, excluded);
-      const rows = this.rows.toArray();
+      const maxItems = this.budgetOf(snapshotOptions);
       if (snapshotOptions?.collectionItems !== 'summary') {
-        state.rows = firstRowLabels(rows, label, maxItems);
+        state.rows = firstRowLabels(this.rows.toArray(), row => this.rowLabel(row, excluded), maxItems);
       }
-      const selected = firstRowLabels(
-        rows.filter(row => this.selection.isSelected(row.item)),
-        label,
-        maxItems
-      );
+      const selected = this.selectedRowLabels(excluded, maxItems);
       if (selected.length) {
         state.selection = selected;
       }
@@ -925,12 +919,16 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   private readSelection(excluded: string, limit = CLR_CONTEXT_DEFAULT_MAX_ITEMS): string | string[] | null {
-    const selected = firstRowLabels(
+    const selected = this.selectedRowLabels(excluded, limit);
+    return this.selection.selectionType === SelectionType.Single ? (selected[0] ?? null) : selected;
+  }
+
+  private selectedRowLabels(excluded: string, limit: number): string[] {
+    return firstRowLabels(
       this.rows.toArray().filter(row => this.selection.isSelected(row.item)),
       row => this.rowLabel(row, excluded),
       limit
     );
-    return this.selection.selectionType === SelectionType.Single ? (selected[0] ?? null) : selected;
   }
 
   private rowLabel(row: ClrDatagridRow<T>, excluded: string): string {
