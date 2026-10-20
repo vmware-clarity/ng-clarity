@@ -48,7 +48,6 @@ import {
   ClrContextSnapshotOptions,
   clrContextText,
   ClrLoadingState,
-  clrNormalizeContextText,
   clrPublishElementContext,
   clrUsableSelectors,
   FOCUS_SERVICE_PROVIDER,
@@ -729,10 +728,7 @@ export class ClrCombobox<T>
   /** An option's visible label. Not named by its value when its text was withheld: the value may be the secret. */
   private optionLabel(option: ClrOption<T>): string {
     const element: HTMLElement = option.elRef.nativeElement;
-    const text = clrNormalizeContextText(
-      clrContextText(element, descendant => descendant.classList.contains('clr-sr-only')),
-      false
-    );
+    const text = clrContextText(element, descendant => descendant.classList.contains('clr-sr-only'));
     if (text || element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)) {
       return text;
     }

@@ -23,13 +23,7 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import {
-  ClrCommonStringsService,
-  clrContextText,
-  clrNormalizeContextText,
-  clrPublishElementContext,
-  uniqueIdFactory,
-} from '@clr/angular/utils';
+import { ClrCommonStringsService, clrContextText, clrPublishElementContext, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -619,7 +613,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   private stepTitle(page: ClrWizardPage): { title?: string } {
     const id = `${this.pageCollection.getStepItemIdForPage(page)}-step-title`;
     const element = this.elementRef.nativeElement.querySelector(`#${CSS.escape(id)}`);
-    const title = element ? clrNormalizeContextText(clrContextText(element), false) : '';
+    const title = element ? clrContextText(element) : '';
     return title ? { title } : {};
   }
 }

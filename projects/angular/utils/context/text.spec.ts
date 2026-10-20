@@ -29,7 +29,7 @@ describe('clrContextText', () => {
 
   const read = (html: string) => {
     host.innerHTML = html;
-    return clrNormalizeContextText(clrContextText(host), false);
+    return clrContextText(host);
   };
 
   it('reads what it can of content nested deeper than the stack holds', () => {
@@ -39,7 +39,7 @@ describe('clrContextText', () => {
       innermost = innermost.appendChild(document.createElement('span'));
     }
     innermost.textContent = 'leaf';
-    expect(clrNormalizeContextText(clrContextText(host), false)).toBe('Top');
+    expect(clrContextText(host)).toBe('Top');
   });
 
   it('leaves out text hidden by style as well as by attribute', () => {
@@ -59,6 +59,6 @@ describe('clrContextText', () => {
   it('reads markup that is not on the page, judging no style', () => {
     const detached = document.createElement('div');
     detached.innerHTML = '<span style="display: none">Kept</span><p>Alpha</p><p>Beta</p>';
-    expect(clrNormalizeContextText(clrContextText(detached), false)).toBe('Kept Alpha Beta');
+    expect(clrContextText(detached)).toBe('Kept Alpha Beta');
   });
 });

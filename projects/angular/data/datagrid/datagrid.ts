@@ -38,7 +38,6 @@ import {
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
   clrContextText,
-  clrNormalizeContextText,
   clrPublishElementContext,
   clrUsableSelectors,
   uniqueIdFactory,
@@ -796,12 +795,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         const nearest = cell.closest(leftOut);
         return !nearest || !host.contains(nearest);
       })
-      .map(cell =>
-        clrNormalizeContextText(
-          clrContextText(cell, element => element.matches(withheld)),
-          false
-        )
-      )
+      .map(cell => clrContextText(cell, element => element.matches(withheld)))
       .filter(Boolean);
   }
 }
@@ -834,8 +828,5 @@ function headerText(title: Element, excluded: string): string {
   const copy = title.cloneNode(true) as Element;
   const copies = Array.from(copy.querySelectorAll('*'));
   const skipped = new Set(copies.filter((_, index) => descendants[index].matches(skip)));
-  return clrNormalizeContextText(
-    clrContextText(copy, descendant => skipped.has(descendant)),
-    false
-  );
+  return clrContextText(copy, descendant => skipped.has(descendant));
 }

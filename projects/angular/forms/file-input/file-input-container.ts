@@ -12,12 +12,7 @@ import {
   ControlIdService,
   NgControlService,
 } from '@clr/angular/forms/common';
-import {
-  ClrCommonStringsService,
-  clrContextText,
-  clrNormalizeContextText,
-  clrPublishElementContext,
-} from '@clr/angular/utils';
+import { ClrCommonStringsService, clrContextText, clrPublishElementContext } from '@clr/angular/utils';
 
 import { ClrFileInput } from './file-input';
 import { selectFiles } from './file-input.helpers';
@@ -128,7 +123,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     return {
       type: 'group',
       element: 'clr-file-input-container',
-      label: label ? clrNormalizeContextText(clrContextText(label), false) : '',
+      label: label ? clrContextText(label) : '',
       state,
     };
   });
