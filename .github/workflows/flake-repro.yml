@@ -3,7 +3,7 @@ name: Flake Repro (website datagrid custom-filtering)
 # PR Website Visual Regression Test job, with tests/website/flake-probe.ts recording the column measurements.
 on:
   push:
-    branches: ['flake/website-datagrid-custom-filtering-repro']
+    branches: ['flake/website-datagrid-custom-filtering-repro', 'flake/website-datagrid-custom-filtering-repro-ng22']
   workflow_dispatch:
 concurrency:
   group: flake-repro-${{ github.ref }}
