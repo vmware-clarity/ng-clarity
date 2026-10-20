@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { fakeAsync, tick, waitForAsync } from '@angular/core/testing';
+import { fakeAsync, tick } from '@angular/core/testing';
 import { of, Subject, throwError } from 'rxjs';
 import { delay, take, tap } from 'rxjs/operators';
 
@@ -171,7 +171,7 @@ describe('computed-var.spec', () => {
       expect(err).toBeDefined();
     });
 
-    it('throws error if compute function throws error', waitForAsync(() => {
+    it('throws error if compute function throws error', () => {
       const model = new MockWorkflowModel();
       model.cp1 = new ComputedVar<string>({
         dependsOn: [],
@@ -188,7 +188,7 @@ describe('computed-var.spec', () => {
       } finally {
         subscription.unsubscribe();
       }
-    }));
+    });
   });
 
   describe('ComputedVar --> SimpleVar', () => {
