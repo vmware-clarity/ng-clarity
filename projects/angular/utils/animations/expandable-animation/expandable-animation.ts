@@ -21,7 +21,7 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
     `,
   ],
   providers: [DomAdapter],
-  host: { '(animate.enter)': 'animates = true' },
+  host: { '(animate.enter)': 'animates = !noopAnimations' },
   standalone: false,
 })
 export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {

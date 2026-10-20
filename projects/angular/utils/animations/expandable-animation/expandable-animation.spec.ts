@@ -8,7 +8,7 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule, provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
 
 import { BaseExpandableAnimation } from './base-expandable-animation';
@@ -68,6 +68,40 @@ describe('Expandable animation component height animation', () => {
 describe('Expandable animation directive height animation', () => {
   heightAnimationSpec(TestComponentDirective, ClrExpandableAnimationDirective);
 });
+describe('Expandable animation component with noop animations', () => {
+  noopAnimationsSpec(TestComponent, ClrExpandableAnimation);
+});
+describe('Expandable animation directive with noop animations', () => {
+  noopAnimationsSpec(TestComponentDirective, ClrExpandableAnimationDirective);
+});
+
+function noopAnimationsSpec(testComponent, component) {
+  it('does not animate the height', async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrExpandableAnimationModule],
+      declarations: [testComponent],
+      providers: [provideNoopAnimations()],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(testComponent);
+    fixture.detectChanges();
+    await delay();
+    const debugElement = fixture.debugElement.query(By.directive(component));
+    const element: HTMLElement = debugElement.nativeElement;
+    const expandable: BaseExpandableAnimation = debugElement.injector.get(component);
+
+    expandable.updateStartHeight();
+    const collapsedHeight = expandable.startHeight;
+    fixture.componentInstance.data.push({ id: 2, value: 'two' });
+    fixture.componentInstance.expanded = true;
+    fixture.detectChanges();
+    await delay();
+
+    expect(element.getAnimations()).toEqual([]);
+    expect(expandable.startHeight).toEqual(collapsedHeight * 2);
+    fixture.destroy();
+  });
+}
 
 function heightAnimationSpec(testComponent, component) {
   let expandable: BaseExpandableAnimation;

@@ -29,7 +29,7 @@ const UNUSED_ANIMATION_BUILDER = new InjectionToken<unknown>('UNUSED_ANIMATION_B
   providers: [DomAdapter],
   host: {
     '[class.clr-expandable-animation]': 'true',
-    '(animate.enter)': 'animates = true',
+    '(animate.enter)': 'animates = !noopAnimations',
   },
   standalone: false,
 })

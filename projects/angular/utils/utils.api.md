@@ -71,6 +71,7 @@ export class BaseExpandableAnimation {
     protected element: ElementRef<HTMLElement>;
     // (undocumented)
     initAnimationEffects(): void;
+    protected readonly noopAnimations: boolean;
     // (undocumented)
     protected renderer: Renderer2;
     // (undocumented)

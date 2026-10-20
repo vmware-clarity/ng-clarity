@@ -9,16 +9,21 @@ import { Directive, ElementRef, Renderer2 } from '@angular/core';
 
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
 import { animateHeight } from '../height-animation';
+import { noopAnimations } from '../noop-animations';
 
 @Directive()
 export class BaseExpandableAnimation {
   startHeight = 0;
 
   /**
-   * Set when Angular adds the element (see the `animate.enter` host listener): once it is rendered, and only when
-   * animations are enabled, as Angular calls `animate.enter` handlers only then.
+   * Set when Angular adds the element (see the `animate.enter` host listener), so that nothing animates on the first
+   * render. Angular calls `animate.enter` handlers only when animations are enabled, and the listener leaves it unset
+   * with `provideNoopAnimations()` or `NoopAnimationsModule`.
    */
   protected animates = false;
+
+  /** Whether the application turned animations off with `provideNoopAnimations()` or `NoopAnimationsModule`. */
+  protected readonly noopAnimations = noopAnimations();
 
   constructor(
     protected element: ElementRef<HTMLElement>,
