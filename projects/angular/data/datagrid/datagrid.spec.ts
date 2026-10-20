@@ -69,7 +69,7 @@ class FullTest {
 
   disableFocus = false;
   loading = false;
-  selected: number[];
+  selected: number[] | undefined;
   selectionType: SelectionType = SelectionType.None;
 
   nbRefreshed = 0;
@@ -686,6 +686,27 @@ export default function (): void {
         context.testComponent.selected = [5];
         context.detectChanges();
         expect(selection.current).toEqual([5]);
+      });
+
+      it('treats an undefined selection as empty', async function () {
+        const selection = context.getClarityProvider(Selection);
+        context.testComponent.selectionType = SelectionType.Multi;
+        context.testComponent.selected = [2];
+        context.detectChanges();
+        await delay();
+        expect(selection.current).toEqual([2]);
+
+        context.testComponent.selected = undefined;
+        context.detectChanges();
+        await delay();
+        expect(selection.current).toEqual([]);
+        // Let the two-way binding settle, as the application's change detection would.
+        context.detectChanges();
+
+        selection.setSelected(1, true);
+        context.detectChanges();
+        await delay();
+        expect(context.testComponent.selected).toEqual([1]);
       });
 
       describe('clrDgRefresh output', function () {
