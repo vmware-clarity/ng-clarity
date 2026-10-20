@@ -1,0 +1,86 @@
+name: Flake Repro (website datagrid custom-filtering)
+# TEMPORARY: reproduces the flaky website/datagrid/code-custom-filtering snapshot in the same environment as the
+# PR Website Visual Regression Test job, with tests/website/flake-probe.ts recording the column measurements.
+on:
+  push:
+    branches: ['flake/website-datagrid-custom-filtering-repro']
+  workflow_dispatch:
+concurrency:
+  group: flake-repro-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  build-website:
+    name: Build Website
+    timeout-minutes: 30
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci --ignore-scripts
+      - run: npm run _build:website
+      - uses: actions/upload-artifact@v4
+        with:
+          name: website-build
+          path: dist/website/
+          retention-days: 3
+
+  repro:
+    name: Repro (${{ matrix.mode }} ${{ matrix.rep }})
+    needs: build-website
+    timeout-minutes: 45
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { mode: datagrid, rep: 1 }
+          - { mode: datagrid, rep: 2 }
+          - { mode: datagrid, rep: 3 }
+          - { mode: datagrid, rep: 4 }
+          - { mode: datagrid, rep: 5 }
+          - { mode: datagrid, rep: 6 }
+          - { mode: full, rep: 1 }
+          - { mode: full, rep: 2 }
+    env:
+      CLARITY_VRT_BROWSER: chromium
+      CLARITY_VRT_THEME: dark
+      CLARITY_VRT_DENSITY: compact
+      CLARITY_VRT_SUITE: website
+      FLAKE_PROBE: '1'
+      FLAKE_PROBE_JOB: ${{ matrix.mode }}-${{ matrix.rep }}-run${{ github.run_attempt }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - uses: actions/download-artifact@v4
+        with:
+          name: website-build
+          path: dist/website/
+      - name: Run (datagrid page, repeated)
+        if: ${{ matrix.mode == 'datagrid' }}
+        continue-on-error: true
+        run: npx playwright test -g "chromium/website/datagrid$" --repeat-each 12 --retries 0 --reporter line
+      - name: Run (full website suite)
+        if: ${{ matrix.mode == 'full' }}
+        continue-on-error: true
+        run: npx playwright test --retries 0 --reporter line
+      - name: Summary
+        if: ${{ !cancelled() }}
+        run: node tests/website/flake-probe-summary.mjs test-results/flake-probe | tee -a "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: flake-probe-${{ matrix.mode }}-${{ matrix.rep }}-run${{ github.run_attempt }}
+          path: |
+            test-results/flake-probe/
+            test-results/**/*custom-filtering*
+          retention-days: 7
