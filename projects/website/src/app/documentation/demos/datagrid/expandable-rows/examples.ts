@@ -46,7 +46,7 @@ const lazyLoadingRow = `
 const lazyLoadingTs = `
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { ClrConditionalModule, ClrDatagridModule, ClrLoading } from '@clr/angular';
+import { ClrConditionalModule, ClrDatagridModule } from '@clr/angular';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
 import { ExpandableRowComponent } from './expandableRowComponent';
