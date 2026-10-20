@@ -120,7 +120,8 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   @Input('clrVerticalNavGroupExpanded')
   set userExpandedInput(value: boolean | string) {
     value = !!value;
-    if (this.expanded !== value) {
+    // Compared with the requested state: `expanded` stays true while the children collapse.
+    if ((this.expandAnimationState === EXPANDED_STATE) !== value) {
       // We have to call toggleExpand because some cases require animations to occur first
       // Directly setting the Expand service value skips the animation and can result in
       // nodes in the DOM but the nav group still being collapsed
@@ -200,7 +201,11 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     }
     const children = this.children.nativeElement;
     const from = measureHeight(children);
-    afterNextRender({ read: () => animateHeight(children, { from }) }, { injector: this.injector });
+    afterNextRender(
+      // Not when collapsed again before the render: the expand would cancel the collapse, leaving the group open.
+      { read: () => this.expandAnimationState === EXPANDED_STATE && animateHeight(children, { from }) },
+      { injector: this.injector }
+    );
   }
 
   private closeGroup() {

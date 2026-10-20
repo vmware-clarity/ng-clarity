@@ -326,6 +326,45 @@ export default function (): void {
       expect(navGroup.expanded).toBeTrue();
       expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).not.toBeNull();
     });
+
+    it('keeps collapsing when its input is set to false while its children collapse', async () => {
+      const navGroup = fixture.componentInstance.navGroup;
+      await toggle();
+      finishChildrenAnimations();
+      await toggle();
+
+      navGroup.userExpandedInput = false;
+      fixture.detectChanges();
+      await delay();
+      finishChildrenAnimations();
+      await delay();
+      fixture.detectChanges();
+
+      expect(navGroup.expanded).toBeFalse();
+    });
+
+    it('closes when expanded and collapsed again before the next render', async () => {
+      const navGroup = fixture.componentInstance.navGroup;
+      await toggle();
+      finishChildrenAnimations();
+
+      navGroup.toggleExpand();
+      navGroup.toggleExpand();
+      navGroup.toggleExpand();
+      fixture.detectChanges();
+      await delay();
+      finishChildrenAnimations();
+      await delay();
+      fixture.detectChanges();
+
+      expect(navGroup.expanded).toBeFalse();
+    });
+
+    function finishChildrenAnimations() {
+      children()
+        .getAnimations()
+        .forEach(animation => animation.finish());
+    }
   });
 }
 
