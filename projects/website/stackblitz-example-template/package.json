@@ -14,9 +14,9 @@
     "@angular/forms": "PLACEHOLDER",
     "@angular/platform-browser": "PLACEHOLDER",
     "@angular/router": "PLACEHOLDER",
-    "@clr/angular": "latest",
-    "@clr/ui": "latest",
-    "@clr/addons": "latest",
+    "@clr/angular": "^19.0.0-0",
+    "@clr/ui": "^19.0.0-0",
+    "@clr/addons": "^19.0.0-0",
     "rxjs": "PLACEHOLDER",
     "tslib": "PLACEHOLDER"
   },
@@ -27,7 +27,7 @@
     "typescript": "PLACEHOLDER"
   },
   "overrides": {
-    "esbuild": "npm:esbuild-wasm@0.28.2"
+    "esbuild": "PLACEHOLDER"
   },
   "stackblitz": {
     "installDependencies": false,
