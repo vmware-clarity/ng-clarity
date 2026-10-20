@@ -9,12 +9,21 @@ import {
   afterNextRender,
   AnimationCallbackEvent,
   ChangeDetectorRef,
+  DestroyRef,
   Directive,
   EventEmitter,
+  inject,
   OnInit,
   SimpleChanges,
 } from '@angular/core';
-import { animateHeight, expandHeight, IfExpandService, measureHeight, uniqueIdFactory } from '@clr/angular/utils';
+import {
+  animateHeight,
+  expandHeight,
+  IfExpandService,
+  measureHeight,
+  noopAnimations,
+  uniqueIdFactory,
+} from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { filter, tap } from 'rxjs/operators';
 
@@ -38,9 +47,14 @@ export abstract class CollapsiblePanel implements OnInit {
   protected contentCollapsing = false;
 
   private _id = uniqueIdFactory();
-  private rendered = false;
-  /** Set when Angular animates the content, which it does not when animations are disabled or on the server. */
-  private content: HTMLElement;
+  private panelRendered = false;
+  /**
+   * Set when Angular animates the content, which it does not when animations are disabled or on the server, and when
+   * the application uses Noop animations.
+   */
+  private collapsibleContent: HTMLElement;
+  private readonly noopPanelAnimations = noopAnimations();
+  private readonly panelDestroyRef = inject(DestroyRef);
 
   constructor(
     protected panelService: CollapsiblePanelService,
@@ -48,7 +62,7 @@ export abstract class CollapsiblePanel implements OnInit {
     protected cdr: ChangeDetectorRef
   ) {
     // The content of a panel open on the first render shows without animation.
-    afterNextRender(() => (this.rendered = true));
+    afterNextRender(() => (this.panelRendered = true));
   }
 
   get id(): string {
@@ -81,8 +95,11 @@ export abstract class CollapsiblePanel implements OnInit {
 
   /** `animate.enter` handler of the content. */
   protected expandContent(event: AnimationCallbackEvent) {
-    this.content = event.target as HTMLElement;
-    if (this.rendered) {
+    if (this.noopPanelAnimations) {
+      return;
+    }
+    this.collapsibleContent = event.target as HTMLElement;
+    if (this.panelRendered) {
       expandHeight(event);
     }
   }
@@ -112,9 +129,9 @@ export abstract class CollapsiblePanel implements OnInit {
       this.ifExpandService.expanded = true;
       if (this.contentCollapsing) {
         this.contentCollapsing = false;
-        animateHeight(this.content, { from: measureHeight(this.content) });
+        animateHeight(this.collapsibleContent, { from: measureHeight(this.collapsibleContent) });
       }
-    } else if (this.animatesCollapse && this.content) {
+    } else if (this.animatesCollapse && this.collapsibleContent) {
       if (!this.contentCollapsing) {
         this.collapseContent();
       }
@@ -128,16 +145,17 @@ export abstract class CollapsiblePanel implements OnInit {
    * instance of the template enters, as the content of the next step does when a step closes.
    */
   private collapseContent() {
-    const animation = animateHeight(this.content, { from: measureHeight(this.content), to: 0 });
+    const animation = animateHeight(this.collapsibleContent, { from: measureHeight(this.collapsibleContent), to: 0 });
     if (!animation) {
-      this.content = null;
       this.removeClosedContent();
       return;
     }
     this.contentCollapsing = true;
     animation.finished.then(
       () => {
-        this.content = null;
+        if (this.panelDestroyRef.destroyed) {
+          return;
+        }
         this.contentCollapsing = false;
         this.removeClosedContent();
         this.cdr.markForCheck();
@@ -150,6 +168,7 @@ export abstract class CollapsiblePanel implements OnInit {
 
   private removeClosedContent() {
     if (!this.panelOpen) {
+      this.collapsibleContent = null;
       this.ifExpandService.expanded = false;
     }
   }

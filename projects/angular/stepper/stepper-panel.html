@@ -47,9 +47,11 @@
     [attr.aria-labelledby]="getHeaderId(panel.templateId)"
   >
     @if (panel.open || contentCollapsing) {
+    <!-- The content of a closed panel is hidden by its styles, so it is shown while it collapses. -->
     <div
       class="clr-stepper-content"
       [style.display]="contentCollapsing ? 'block' : null"
+      [attr.inert]="contentCollapsing ? '' : null"
       (animate.enter)="expandContent($event)"
     >
       <div class="clr-stepper-inner-content">

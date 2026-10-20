@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Injectable, ViewChild } from '@angular/core';
+import { Component, Injectable, Provider, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule, provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
-import { ClrConditionalModule } from '@clr/angular/utils';
+import { ClrConditionalModule, IfExpandService } from '@clr/angular/utils';
 import { BehaviorSubject, Subject } from 'rxjs';
 
 import { StepperPanelStatus } from './enums/stepper-panel-status.enum';
@@ -189,10 +189,11 @@ describe('ClrStep animations', () => {
   let fixture: ComponentFixture<ExpandableContentTestComponent>;
   let stepperService: MockStepperService;
 
-  function setup(animationsEnabled: boolean) {
+  function setup(animationsEnabled: boolean, providers: Provider[] = []) {
     TestBed.configureTestingModule({
       declarations: [ExpandableContentTestComponent],
       imports: [ReactiveFormsModule, ClrStepperModule, ClrConditionalModule],
+      providers,
       animationsEnabled,
     });
     TestBed.overrideComponent(ClrStepper, {
@@ -272,6 +273,33 @@ describe('ClrStep animations', () => {
 
     expect(content()).toBeNull();
     expect(fixture.nativeElement.textContent).not.toContain('step content');
+  });
+
+  it('does not animate the content with Noop animations', async () => {
+    setup(true, [provideNoopAnimations()]);
+    await openStep(true);
+
+    expect(content().getAnimations().length).toBe(0);
+
+    await openStep(false);
+
+    expect(content()).toBeNull();
+    expect(fixture.nativeElement.textContent).not.toContain('step content');
+  });
+
+  it('does not close the projected content once the step is destroyed while it collapses', async () => {
+    setup(true);
+    await openStep(true);
+    finishAnimations();
+    await openStep(false);
+    const ifExpandService = fixture.debugElement.query(By.directive(ClrStepperPanel)).injector.get(IfExpandService);
+    const [animation] = content().getAnimations();
+
+    fixture.destroy();
+    animation.finish();
+    await delay();
+
+    expect(ifExpandService.expanded).toBe(true);
   });
 });
 

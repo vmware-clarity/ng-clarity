@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule, provideNoopAnimations } from '@angular/platform-browser/animations';
 import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { delay } from '@clr/angular/testing';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
@@ -376,5 +376,25 @@ describe('ClrAccordionPanel animations', () => {
     await render(false);
 
     expect(content()).toBeNull();
+  });
+});
+
+describe('ClrAccordionPanel with Noop animations', () => {
+  it('does not expand the content', async () => {
+    TestBed.configureTestingModule({
+      declarations: [TestComponent],
+      imports: [ClrAccordionModule],
+      providers: [provideNoopAnimations()],
+      animationsEnabled: true,
+    });
+    const fixture = TestBed.createComponent(TestComponent);
+    fixture.detectChanges();
+    await delay();
+    fixture.componentInstance.open = true;
+    fixture.detectChanges();
+    await delay();
+
+    expect(fixture.nativeElement.querySelector('.clr-accordion-content').getAnimations().length).toBe(0);
+    fixture.destroy();
   });
 });
