@@ -204,7 +204,8 @@ if (changedIndex !== -1) {
   for (const apiFile of changedApi) {
     const dir = path.dirname(apiFile);
     const lib = apiFile.split('/')[1];
-    const skillsForApi = files.filter(f => !f.agents && rel(f.file).startsWith(`${dir}/`));
+    // a skill covers the reports in its own folder and those of every entry point it imports or cites
+    const skillsForApi = files.filter(f => !f.agents && (rel(f.file).startsWith(`${dir}/`) || dependsOn(f, dir)));
     const agentsForLib = files.filter(f => f.agents && f.lib === lib);
 
     console.log(`  ${apiFile}`);
@@ -223,6 +224,15 @@ console.log(
       }.`
 );
 process.exit(problems ? 1 : 0);
+
+// Entry points a skill cites, as `@clr/<lib>/<entry-point>` imports or `@clr/<lib>/types/clr-<lib>-<entry-point>.d.ts`
+// paths, resolved to their source folders (e.g. the dialog skill uses `@clr/addons/var`, so it depends on projects/addons/var).
+function dependsOn(entry, apiDir) {
+  const text = fs.readFileSync(entry.file, 'utf8');
+  return [...text.matchAll(/@clr\/(angular|addons)\/(?:types\/clr-(?:angular|addons)-)?([a-z][a-z0-9-]*)/g)].some(
+    ([, lib, entryPoint]) => `projects/${lib}/${entryPoint}` === apiDir
+  );
+}
 
 // Names inside inline code and code blocks: ClrFoo / AppfxFoo classes, clrFoo / appfxFoo inputs, clr-foo / appfx-foo selectors.
 function extractApiNames(markdown) {
