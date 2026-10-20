@@ -1045,6 +1045,9 @@ export class TemplateRefContainer {
 }
 
 // @public (undocumented)
+export type ThemeType = 'light' | 'dark';
+
+// @public (undocumented)
 export function tokenFactory(): number;
 
 // @public (undocumented)
