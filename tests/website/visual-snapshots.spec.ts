@@ -9,7 +9,13 @@ import { expect, Page, Request, test } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { flakeProbeEnabled, installFlakeProbe, recordFlakeProbe } from './flake-probe';
+import {
+  flakeForceEnabled,
+  flakeProbeEnabled,
+  forceSlowBadgeFont,
+  installFlakeProbe,
+  recordFlakeProbe,
+} from './flake-probe';
 import { websiteScreenshotOptions } from './screenshot-options';
 import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
 import { browser, density, matrixKey, screenshotExpectOptions, screenshotPathFor, theme } from '../helpers/vrt';
@@ -143,6 +149,9 @@ test.beforeEach(async ({ page, context }) => {
 
   if (flakeProbeEnabled) {
     await installFlakeProbe(page);
+  }
+  if (flakeForceEnabled) {
+    await forceSlowBadgeFont(page);
   }
 });
 

@@ -157,3 +157,37 @@ export async function recordFlakeProbe(page: Page, testInfo: TestInfo, view: str
     JSON.stringify(record) + '\n'
   );
 }
+
+export const flakeForceEnabled = process.env['FLAKE_FORCE'] === '1';
+const slowFontPath = '/__flake__/metropolis-500.woff';
+const slowFontDelayMs = Number(process.env['FLAKE_FORCE_DELAY_MS'] ?? 3000);
+
+/**
+ * Forces the suspected trigger deterministically. The weight-500 Metropolis face (the datagrid badges) is declared
+ * twice, inline in index.html (critical CSS) and in the async styles-*.css, both as base64 data. In the bad CI runs
+ * neither copy had finished loading when the datagrid measured its columns, so the badge text was sized from the
+ * fallback font and the datagrid kept those widths. Here every declaration of that face loads from a URL that
+ * answers only after FLAKE_FORCE_DELAY_MS, so every datagrid measures inside that window.
+ */
+export async function forceSlowBadgeFont(page: Page) {
+  let fontBytes: Buffer | undefined;
+  const face500 =
+    /(@font-face\{font-family:Metropolis;src:url\()data:application\/font-woff;charset=utf-8;base64,([A-Za-z0-9+/=]+)(\) format\("woff"\);font-weight:500;)/g;
+  await page.route('**/*', async route => {
+    const type = route.request().resourceType();
+    if (type !== 'document' && type !== 'stylesheet') {
+      return route.fallback();
+    }
+    const response = await route.fetch();
+    const text = await response.text();
+    const rewritten = text.replace(face500, (_match, before: string, base64: string, after: string) => {
+      fontBytes = Buffer.from(base64, 'base64');
+      return `${before}${slowFontPath}${after}`;
+    });
+    await route.fulfill({ response, body: rewritten });
+  });
+  await page.route(`**${slowFontPath}`, async route => {
+    await new Promise(resolve => setTimeout(resolve, slowFontDelayMs));
+    await route.fulfill({ status: 200, contentType: 'font/woff', body: fontBytes });
+  });
+}
