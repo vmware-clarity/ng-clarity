@@ -99,9 +99,8 @@ const exampleHtml = `
 
   @if (!isServerDriven && users) {
     <clr-datagrid
-      [clrDgSelected]="selected ?? []"
-      (clrDgSelectedChange)="selected = $event"
-      [clrDgSelectionType]="selected ? 'multi' : 'none'"
+      [(clrDgSelected)]="selected"
+      [clrDgSelectionType]="'multi'"
       [clrDgItemsIdentityFn]="trackUserItemById"
     >
       <clr-dg-column>User ID</clr-dg-column>
@@ -149,9 +148,8 @@ const exampleHtml = `
 
   @if (isServerDriven) {
     <clr-datagrid
-      [clrDgSelected]="selected ?? []"
-      (clrDgSelectedChange)="selected = $event"
-      [clrDgSelectionType]="selected ? 'multi' : 'none'"
+      [(clrDgSelected)]="selected"
+      [clrDgSelectionType]="'multi'"
       (clrDgRefresh)="refresh($event)"
       [clrDgLoading]="loading"
       [clrDgItemsIdentityFn]="trackUserItemById"

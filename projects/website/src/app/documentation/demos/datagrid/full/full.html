@@ -68,12 +68,7 @@
     </p>
   </div>
   } @if (!isServerDriven && users) {
-  <clr-datagrid
-    [clrDgSelectionType]="selected ? 'multi' : 'none'"
-    [clrDgSelected]="selected ?? []"
-    (clrDgSelectedChange)="selected = $event"
-    [clrDgItemsIdentityFn]="trackUserItemById"
-  >
+  <clr-datagrid [clrDgSelectionType]="'multi'" [(clrDgSelected)]="selected" [clrDgItemsIdentityFn]="trackUserItemById">
     <clr-dg-column>User ID</clr-dg-column>
     <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
     <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
@@ -113,9 +108,8 @@
   </clr-datagrid>
   } @if (isServerDriven) {
   <clr-datagrid
-    [clrDgSelected]="selected ?? []"
-    (clrDgSelectedChange)="selected = $event"
-    [clrDgSelectionType]="selected ? 'multi' : 'none'"
+    [(clrDgSelected)]="selected"
+    [clrDgSelectionType]="'multi'"
     (clrDgRefresh)="refresh($event)"
     [clrDgLoading]="loading"
     [clrDgItemsIdentityFn]="trackUserItemById"
