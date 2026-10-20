@@ -65,7 +65,7 @@ jobs:
           mkdir -p flake-out
           for i in 1 2; do
             npx playwright test -g "chromium/website/datagrid$" --update-snapshots --reporter dot > flake-out/run-$i.log 2>&1 || true
-            changed=$(git status --porcelain -- tests/snapshots | grep '\.png | awk '{print $2}')
+            changed=$(git status --porcelain -- tests/snapshots | grep '\.png$' | awk '{print $2}')
             echo "force ${{ matrix.force }} rep ${{ matrix.rep }} iteration $i changed: ${changed:-none}" | tee -a flake-out/summary.txt
             for f in $changed; do
               echo "  $(git hash-object "$f") $f" | tee -a flake-out/summary.txt
