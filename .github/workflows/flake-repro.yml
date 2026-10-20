@@ -29,23 +29,25 @@ jobs:
           path: dist/website/
           retention-days: 3
 
-  # Faithful: the unmodified spec and the exact command of the PR Website Visual Regression Test job
-  # (--update-snapshots, the config's retries), no probe. Each runner repeats the full suite and records which
-  # snapshots the run changed, restoring tests/snapshots in between.
+  # Faithful: the exact command of the PR Website Visual Regression Test job (--update-snapshots, the config's
+  # retries), with the light probe recording the custom-filtering measurements and a JSON report of which tests ran
+  # when. Each runner repeats the full suite and records which snapshots the run changed, restoring
+  # tests/snapshots in between.
   faithful:
     name: Faithful ${{ matrix.rep }}
     needs: build-website
-    timeout-minutes: 45
+    timeout-minutes: 60
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        rep: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]
+        rep: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
     env:
       CLARITY_VRT_BROWSER: chromium
       CLARITY_VRT_THEME: dark
       CLARITY_VRT_DENSITY: compact
       CLARITY_VRT_SUITE: website
+      FLAKE_PROBE: '1'
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -58,11 +60,13 @@ jobs:
         with:
           name: website-build
           path: dist/website/
-      - name: Run the full website suite 3 times
+      - name: Run the full website suite 5 times
         run: |
           mkdir -p flake-out
-          for i in 1 2 3; do
-            npx playwright test --update-snapshots --reporter dot > flake-out/run-$i.log 2>&1 || true
+          for i in 1 2 3 4 5; do
+            FLAKE_PROBE_JOB=rep${{ matrix.rep }}-iter$i PLAYWRIGHT_JSON_OUTPUT_FILE=flake-out/report-$i.json \
+              npx playwright test --update-snapshots --reporter dot,json > flake-out/run-$i.log 2>&1 || true
+            cp test-results/flake-probe/*.jsonl flake-out/ 2>/dev/null || true
             changed=$(git status --porcelain -- tests/snapshots | grep '\.png$' | awk '{print $2}')
             echo "rep ${{ matrix.rep }} iteration $i changed: ${changed:-none}" | tee -a flake-out/summary.txt
             for f in $changed; do

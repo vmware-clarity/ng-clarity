@@ -84,6 +84,8 @@ export async function installFlakeProbe(page: Page) {
                   return null;
                 }
                 const badge = cell.querySelector('.badge');
+                // getComputedStyle only for the cell that sets the column width, to keep the probe light.
+                const detailed = (cell.textContent ?? '').includes('Venomoth');
                 return {
                   text: JSON.stringify(cell.textContent),
                   nodes: [...cell.childNodes].map(n =>
@@ -92,10 +94,10 @@ export async function installFlakeProbe(page: Page) {
                   sw: sw(cell),
                   content: contentWidth(cell),
                   styleW: (cell as HTMLElement).style.width,
-                  cellFont: font(cell),
+                  cellFont: detailed ? font(cell) : undefined,
                   badgeW: rect(badge),
                   badgeContent: badge ? contentWidth(badge) : null,
-                  badgeFont: badge ? font(badge) : null,
+                  badgeFont: detailed && badge ? font(badge) : undefined,
                   badgeClass: badge?.className,
                 };
               }),
