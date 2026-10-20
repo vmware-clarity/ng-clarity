@@ -3984,21 +3984,6 @@ export class ClrHeader implements OnDestroy {
 }
 
 // @public
-export class ClrHeightAnimation {
-    animateEnter: boolean;
-    // (undocumented)
-    protected collapse(event: AnimationCallbackEvent): void;
-    // (undocumented)
-    protected expand(event: AnimationCallbackEvent): void;
-    // (undocumented)
-    static ngAcceptInputType_animateEnter: unknown;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrHeightAnimation, "[clrHeightAnimation]", never, { "animateEnter": { "alias": "clrHeightAnimation"; "required": false; }; }, {}, never, never, true, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeightAnimation, never>;
-}
-
-// @public
 export class ClrHostWrappingModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
@@ -6988,9 +6973,6 @@ export const collapseCardIcon: IconShapeTuple;
 // @public (undocumented)
 export const collapseCardIconName = "collapse-card";
 
-// @public
-export function collapseHeight(input: AnimationCallbackEvent): Promise<void>;
-
 // @public (undocumented)
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
@@ -8986,6 +8968,9 @@ export const nodesIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const nodesIconName = "nodes";
+
+// @public
+export function noopAnimations(): boolean;
 
 // @public (undocumented)
 export const noteIcon: IconShapeTuple;

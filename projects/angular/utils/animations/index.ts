@@ -11,4 +11,5 @@ export * from './expandable-animation/index';
 export * from './fade/index';
 export * from './fade-slide/index';
 export * from './height-animation';
+export * from './noop-animations';
 export * from './slide/index';

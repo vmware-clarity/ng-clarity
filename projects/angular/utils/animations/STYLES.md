@@ -8,7 +8,7 @@
 
 ## CSS Classes
 
-The enter / leave classes are meant for Angular's `animate.enter` and `animate.leave` bindings, but they are plain CSS animations and can be applied by any other means. Slides are skipped when the user prefers reduced motion.
+The enter / leave classes are meant for Angular's `animate.enter` and `animate.leave` bindings, but they are plain CSS animations and can be applied by any other means. Slides are skipped when the user prefers reduced motion; the fade-slides then only fade.
 
 | Class name                         | Description                                                                        |
 | ---------------------------------- | ---------------------------------------------------------------------------------- |

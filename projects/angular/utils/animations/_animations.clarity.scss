@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use 'sass:map';
 @use '../../styles/mixins';
 @use 'mixins.animations' as animation-mixins;
 @use '../../styles/variables/variables.density' as density;
@@ -128,15 +129,22 @@ $clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
   }
   /* stylelint-enable at-rule-prelude-no-invalid */
 
-  // Slides are motion: skip them when the user asked for reduced motion. The end state of the animations is kept, and
-  // they still complete (right away), so the elements they apply to are still removed.
+  // Slides are motion: skip them when the user asked for reduced motion, keeping the fade of the fade-slides. The end
+  // state of the animations is kept, and they still complete (right away), so the elements they apply to are still
+  // removed.
   @media (prefers-reduced-motion: reduce) {
-    @each $direction in up, down, left, right {
+    @each $direction in map.keys($clr-slide-transforms) {
       .clr-slide-#{$direction}-enter,
-      .clr-slide-#{$direction}-leave,
-      .clr-fade-slide-#{$direction}-enter,
-      .clr-fade-slide-#{$direction}-leave {
+      .clr-slide-#{$direction}-leave {
         animation-duration: 0s;
+      }
+
+      .clr-fade-slide-#{$direction}-enter {
+        animation-name: clr-fade-in;
+      }
+
+      .clr-fade-slide-#{$direction}-leave {
+        animation-name: clr-fade-out;
       }
     }
   }

@@ -431,21 +431,6 @@ export class ClrFocusOnViewInitModule {
 export function clrFocusServiceFactory(existing: FocusService, renderer: Renderer2): FocusService;
 
 // @public
-export class ClrHeightAnimation {
-    animateEnter: boolean;
-    // (undocumented)
-    protected collapse(event: AnimationCallbackEvent): void;
-    // (undocumented)
-    protected expand(event: AnimationCallbackEvent): void;
-    // (undocumented)
-    static ngAcceptInputType_animateEnter: unknown;
-    // (undocumented)
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ClrHeightAnimation, "[clrHeightAnimation]", never, { "animateEnter": { "alias": "clrHeightAnimation"; "required": false; }; }, {}, never, never, true, never>;
-    // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrHeightAnimation, never>;
-}
-
-// @public
 export class ClrHostWrappingModule {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrHostWrappingModule, never>;
@@ -683,9 +668,6 @@ export class ClrTemplateRefModule {
 
 // @public (undocumented)
 export function collapse(): AnimationMetadata[];
-
-// @public
-export function collapseHeight(input: AnimationCallbackEvent): Promise<void>;
 
 // @public (undocumented)
 export const commonStringsDefault: ClrCommonStrings;
@@ -978,6 +960,9 @@ export class MockFocusableItem implements FocusableItem {
     // (undocumented)
     up?: FocusableItem | Observable<FocusableItem>;
 }
+
+// @public
+export function noopAnimations(): boolean;
 
 // @public (undocumented)
 export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {

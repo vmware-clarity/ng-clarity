@@ -5,89 +5,28 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationCallbackEvent, Component } from '@angular/core';
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { AnimationCallbackEvent } from '@angular/core';
 
-import { animateHeight, ClrHeightAnimation, collapseHeight } from './height-animation';
-import { delay } from '../testing/helpers.spec';
+import { animateHeight, expandHeight } from './height-animation';
 
-@Component({
-  template: `
-    <div class="host" style="--cds-global-animation-duration-quick: 0.2s">
-      @if (shown) {
-        <div class="content" [clrHeightAnimation]="animateEnter" style="height: 100px"></div>
-      }
-    </div>
-  `,
-  imports: [ClrHeightAnimation],
-})
-class TestComponent {
-  shown = false;
-  animateEnter = true;
+function keyframes(animation: Animation) {
+  return (animation.effect as KeyframeEffect).getKeyframes();
 }
 
 function heightKeyframes(animation: Animation) {
-  return (animation.effect as KeyframeEffect).getKeyframes().map(keyframe => keyframe.height);
+  return keyframes(animation).map(keyframe => keyframe.height);
 }
 
-describe('ClrHeightAnimation', () => {
-  let fixture: ComponentFixture<TestComponent>;
+describe('expandHeight', () => {
+  it('expands the added element from 0 to its height', () => {
+    const element = document.createElement('div');
+    element.style.cssText = 'height: 100px; --cds-global-animation-duration-quick: 0.2s';
+    document.body.appendChild(element);
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({ imports: [TestComponent], animationsEnabled: true });
-    fixture = TestBed.createComponent(TestComponent);
-    fixture.detectChanges();
-  });
+    expandHeight({ target: element } as unknown as AnimationCallbackEvent);
 
-  afterEach(() => {
-    fixture.destroy();
-  });
-
-  function content(): HTMLElement | null {
-    return fixture.nativeElement.querySelector('.content');
-  }
-
-  async function show(shown: boolean) {
-    fixture.componentInstance.shown = shown;
-    fixture.detectChanges();
-    await delay();
-  }
-
-  it('expands the element from 0 to its height when it is added', async () => {
-    await show(true);
-
-    const animations = content().getAnimations();
-    expect(animations.length).toBe(1);
-    expect(heightKeyframes(animations[0])).toEqual(['0px', '100px']);
-  });
-
-  it('adds the element without animation when the input is false', async () => {
-    fixture.componentInstance.animateEnter = false;
-    await show(true);
-
-    expect(content().getAnimations().length).toBe(0);
-  });
-
-  it('collapses the element to 0 before it is removed', async () => {
-    await show(true);
-    content().getAnimations()[0].finish();
-    await show(false);
-
-    const animations = content().getAnimations();
-    expect(heightKeyframes(animations[0])).toEqual(['100px', '0px']);
-
-    animations[0].finish();
-    await delay();
-    expect(content()).toBeNull();
-  });
-
-  it('removes the element at once when there is nothing to animate', async () => {
-    await show(true);
-    content().getAnimations()[0].finish();
-    content().style.setProperty('--cds-global-animation-duration-quick', '0s');
-    await show(false);
-
-    expect(content()).toBeNull();
+    expect(heightKeyframes(element.getAnimations()[0])).toEqual(['0px', '100px']);
+    element.remove();
   });
 });
 
@@ -108,6 +47,8 @@ describe('animateHeight', () => {
     const animation = animateHeight(element, { from: 20, to: 80 });
 
     expect(heightKeyframes(animation)).toEqual(['20px', '80px']);
+    // `clip`, not `hidden`, which would loosen the `position: sticky` descendants (datagrid pinned columns, CDE-3127).
+    expect(keyframes(animation).map(keyframe => keyframe.overflow)).toEqual(['clip', 'clip']);
     expect(animation.effect.getComputedTiming().duration).toBe(200);
     animation.finish();
     expect(element.getAnimations().length).toBe(0);
@@ -133,6 +74,12 @@ describe('animateHeight', () => {
     const animation = animateHeight(element, { from: 0, to: 80, easing: 'linear' });
 
     expect(animation.effect.getTiming().easing).toBe('linear');
+  });
+
+  it('reads a duration token in milliseconds, whatever its case', () => {
+    element.style.setProperty('--cds-global-animation-duration-quick', '150MS');
+
+    expect(animateHeight(element, { from: 0, to: 80 }).effect.getComputedTiming().duration).toBe(150);
   });
 
   it('does not animate when the duration is 0', () => {
@@ -165,13 +112,6 @@ describe('animateHeight', () => {
 
     it('does not animate', () => {
       expect(animateHeight(serverElement, { from: 0 })).toBeNull();
-    });
-
-    it('completes the collapse at once', async () => {
-      const animationComplete = jasmine.createSpy('animationComplete');
-      await collapseHeight({ target: serverElement, animationComplete } as AnimationCallbackEvent);
-
-      expect(animationComplete).toHaveBeenCalled();
     });
   });
 });
