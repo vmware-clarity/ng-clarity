@@ -182,6 +182,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Subscriptions to all the services and queries changes
    */
   private _subscriptions: Subscription[] = [];
+  private focusToRestore: HTMLElement | null = null;
   private _virtualScrollSubscriptions: Subscription[] = [];
 
   /**
@@ -360,11 +361,13 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
             this._displayedRows.remove(i);
           }
         }
-        // Moving the rows takes the focus away from them, e.g. from the toggle of a tree row whose
-        // children just came in, so it is given back.
+        // Only the rows that are not in their place yet are moved: moving a row takes the focus away
+        // from it, and moving all of them on every change gets slow with many rows, as in a tree.
         const focused = this.focusedElement();
-        this.rows.forEach(row => {
-          this._displayedRows.insert(row._view);
+        this.rows.forEach((row, index) => {
+          if (this._displayedRows.indexOf(row._view) !== index) {
+            this._displayedRows.insert(row._view, index);
+          }
         });
         if (focused?.isConnected && focused !== this.focusedElement()) {
           focused.focus({ preventScroll: true });
@@ -429,6 +432,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       }),
       // A subscription that listens for displayMode changes on the datagrid
       this.displayMode.view.subscribe(viewChange => {
+        // Moving the rows between modes takes the focus away from them, e.g. from the button that
+        // the detail pane gives it back to when it closes, so it is given back once they are on display.
+        this.focusToRestore = this.focusedElement() || this.focusToRestore;
         // Remove any projected columns from the projectedDisplayColumns container
         for (let i = this._projectedDisplayColumns.length; i > 0; i--) {
           this._projectedDisplayColumns.detach();
@@ -465,6 +471,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.rows.forEach(row => {
             this._displayedRows.insert(row._view);
           });
+          this.restoreFocus();
           // The row controls are only laid out in this mode, and this is also the point where
           // their number can have changed.
           this.updateRowControlsWidth();
@@ -590,6 +597,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     const node = this.tree.nodeFor(item);
     if (node) {
       this.tree.setExpanded(node, expanded);
+    }
+  }
+
+  // Gives the focus back to the element that lost it while the rows were moved, unless the user has
+  // put it somewhere else in the meantime.
+  private restoreFocus() {
+    const element = this.focusToRestore;
+    this.focusToRestore = null;
+    const active = this.el.nativeElement.ownerDocument.activeElement;
+    if (element?.isConnected && (!active || active === this.el.nativeElement.ownerDocument.body)) {
+      element.focus({ preventScroll: true });
     }
   }
 

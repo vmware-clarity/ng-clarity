@@ -256,39 +256,85 @@
     }
   }
 
-  // Tree rows: the tree cell is indented by its depth and starts with the expand toggle, which sits
-  // in the indentation so the content of every level lines up past it. In a column narrower than the
-  // indentation, the indentation shrinks to what fits instead of making the cell wider than its
-  // header, and the toggle stays just before the content.
+  // Tree rows: the content of a tree cell is indented by the depth of its row, and the expand toggle
+  // sits in the indentation, so the content of every level lines up past it. The indentation is inside
+  // the cell, which keeps the padding of its header: a squeezed column shrinks its cells like its
+  // header. When the column is too narrow for the full indentation, every level gets a share of what
+  // there is, deeper levels a larger one, so the hierarchy still shows. The text stays on one line.
   .datagrid .datagrid-cell.datagrid-tree-cell {
-    $indentation: calc(
-      #{tables-variables.$clr-table-cell-horizontal-padding} + (var(--clr-datagrid-tree-level, 0) + 1) *
-        #{datagrid-variables.$clr-datagrid-tree-indent}
-    );
-    $room: calc(
-      var(--clr-datagrid-cell-width, #{$indentation}) - #{tables-variables.$clr-table-cell-horizontal-padding}
-    );
+    overflow: hidden;
+  }
 
-    --clr-datagrid-tree-cell-indentation: max(0px, min(#{$indentation}, #{$room}));
+  .datagrid-tree-cell-content {
+    $indent: datagrid-variables.$clr-datagrid-tree-indent;
+    $level: var(--clr-datagrid-tree-level, 0);
 
     position: relative;
+    // Percentages are of the cell's content width; one indent of it is kept for the text.
+    margin-inline-start: max(
+      0px,
+      min(calc((#{$level} + 1) * #{$indent}), calc((100% - #{$indent}) * (#{$level} + 1) / (#{$level} + 2)))
+    );
+    text-align: start;
+  }
+
+  .datagrid-tree-cell-text {
     overflow: hidden;
-    padding-inline-start: var(--clr-datagrid-tree-cell-indentation);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  // A tree row whose children are loading: a bar runs along its bottom edge until they come in, in
+  // the colour of a looping progress bar.
+  .datagrid-row-master[aria-busy='true'] {
+    position: relative;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      inset-block-end: 0;
+      height: tokens.$cds-alias-object-border-width-200;
+      // A third of the row wide, in an image three rows wide that slides across the row.
+      background: linear-gradient(to right, transparent 45%, tokens.$cds-alias-status-info 45% 55%, transparent 55%)
+        100% 0 / 300% 100% no-repeat;
+      animation: clr-datagrid-tree-loading 1.5s linear infinite;
+      pointer-events: none;
+      // Over the pinned and sticky cells of the row, which come before it, and under the header.
+      z-index: map.get(variables.$clr-layers, datagrid-row-sticky);
+    }
+
+    &:dir(rtl)::after {
+      animation-direction: reverse;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      &::after {
+        animation: none;
+        background: tokens.$cds-alias-status-info;
+      }
+    }
+  }
+
+  @keyframes clr-datagrid-tree-loading {
+    to {
+      background-position: 0 0;
+    }
   }
 
   .datagrid .datagrid-tree-toggle {
     @include mixins.clr-no-styles-button();
 
+    // A square as wide as the indentation, centred on the content.
     position: absolute;
-    inset-block: 0;
-    inset-inline-start: max(
-      0px,
-      var(--clr-datagrid-tree-cell-indentation) - #{datagrid-variables.$clr-datagrid-tree-indent}
-    );
+    inset-block-start: 50%;
+    inset-inline-end: 100%;
+    translate: 0 -50%;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     width: datagrid-variables.$clr-datagrid-tree-indent;
+    height: datagrid-variables.$clr-datagrid-tree-indent;
     color: datagrid-variables.$clr-datagrid-icon-color;
     cursor: pointer;
 
@@ -1098,6 +1144,9 @@
 
   // @deprecated CSS rule `.datagrid-compact { ... }` in favor of compact mode in density theme
   .datagrid-compact {
+    // The tree geometry of the compact density.
+    --clr-datagrid-tree-indent: #{mixins.baselinePx(20)};
+
     .datagrid {
       margin-top: datagrid-variables.$clr-datagrid-compact-margin-top;
     }

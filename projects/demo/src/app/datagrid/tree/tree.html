@@ -10,8 +10,10 @@
 <h3>Pagination</h3>
 
 <p>
-  Root rows come one page at a time through <code class="clr-code">(clrDgRefresh)</code>. Children are fetched the first
-  time a row is expanded.
+  Root rows come one page at a time through <code class="clr-code">(clrDgRefresh)</code>, sorted by the server. Children
+  are fetched the first time a row is expanded, kept for when the page is shown again, and sorted by the datagrid.
+  Selecting a row with its descendants selects the descendants that are loaded; the ones that load later come in
+  selected.
 </p>
 
 <clr-radio-container clrInline>
@@ -48,12 +50,12 @@
   [clrDgLoading]="loading"
   (clrDgRefresh)="refresh($event)"
 >
-  <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="320">Name</clr-dg-column>
-  <clr-dg-column [style.width.px]="140">Kind</clr-dg-column>
-  <clr-dg-column [style.width.px]="140">Status</clr-dg-column>
-  <clr-dg-column [style.width.px]="400">CPU %</clr-dg-column>
-  <clr-dg-column [style.width.px]="400">Memory (GB)</clr-dg-column>
-  <clr-dg-column [style.width.px]="400">Children</clr-dg-column>
+  <clr-dg-column [clrDgPinned]="pinName" clrDgSortBy="name" [style.width.px]="320">Name</clr-dg-column>
+  <clr-dg-column clrDgSortBy="kind" [style.width.px]="140">Kind</clr-dg-column>
+  <clr-dg-column clrDgSortBy="status" [style.width.px]="140">Status</clr-dg-column>
+  <clr-dg-column clrDgSortBy="cpu" [style.width.px]="400">CPU %</clr-dg-column>
+  <clr-dg-column clrDgSortBy="memory" [style.width.px]="400">Memory (GB)</clr-dg-column>
+  <clr-dg-column clrDgSortBy="childCount" [style.width.px]="400">Children</clr-dg-column>
 
   <clr-dg-row
     *clrDgTreeItems="let resource of roots; children: getChildren; expandable: expandable; selects: selects"
@@ -81,6 +83,7 @@
 
   <clr-dg-footer>
     <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="total">
+      <clr-dg-page-size [clrPageSizeOptions]="[5, 10, 20, 50]">Datacenters per page</clr-dg-page-size>
       {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ total }} datacenters
     </clr-dg-pagination>
   </clr-dg-footer>

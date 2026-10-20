@@ -28,40 +28,47 @@ import { WrappedCell } from './wrapped-cell';
 export interface DatagridTreeRow {
   readonly _treeNode: DatagridTreeNode<unknown> | undefined;
   readonly _treeCells: ClrDatagridCell[];
+  readonly _treeLabelCell: ClrDatagridCell | undefined;
 }
 
 @Component({
   selector: 'clr-dg-cell',
   template: `
+    <ng-template #content><ng-content></ng-content></ng-template>
     @if (treeNode; as node) {
-      @if (node.expandable) {
-        <!-- Named "Expand <cell text>": the hidden word, then the cell itself. -->
-        <span hidden [id]="treeId + '-action'">
-          {{ node.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand }}
-        </span>
-        <button
-          #treeToggle
-          type="button"
-          class="datagrid-tree-toggle"
-          tabindex="-1"
-          [attr.aria-labelledby]="treeId + '-action ' + treeId"
-          [attr.aria-expanded]="node.expanded"
-          (click)="toggle($event, node)"
-          (keydown)="onToggleKeydown($event, node)"
-          (focus)="toggleFocused = true"
-          (blur)="toggleFocused = false"
-        >
-          <cds-icon shape="angle" [direction]="node.expanded ? 'down' : 'right'"></cds-icon>
-        </button>
-      }
+      <!-- The content is indented by the depth of the row, and the toggle sits in the indentation. -->
+      <div class="datagrid-tree-cell-content">
+        @if (node.expandable) {
+          <!-- Named "Expand <row>": the hidden word, then the leading cell of the row. -->
+          <span hidden [id]="_treeId + '-action'">
+            {{ node.expanded ? commonStrings.keys.collapse : commonStrings.keys.expand }}
+          </span>
+          <button
+            #treeToggle
+            type="button"
+            class="datagrid-tree-toggle"
+            tabindex="-1"
+            [attr.aria-labelledby]="_treeId + '-action ' + (_treeRow?._treeLabelCell?._treeId ?? _treeId)"
+            [attr.aria-expanded]="node.expanded"
+            (click)="toggle($event, node)"
+            (keydown)="onToggleKeydown($event, node)"
+            (focus)="toggleFocused = true"
+            (blur)="toggleFocused = false"
+          >
+            <cds-icon shape="angle" [direction]="node.expanded ? 'down' : 'right'"></cds-icon>
+          </button>
+        }
+        <div class="datagrid-tree-cell-text"><ng-container [ngTemplateOutlet]="content"></ng-container></div>
+      </div>
+    } @else {
+      <ng-container [ngTemplateOutlet]="content"></ng-container>
     }
-    <ng-content></ng-content>
   `,
   host: {
     '[class.datagrid-cell]': 'true',
     '[class.datagrid-tree-cell]': '!!treeNode',
     '[style.--clr-datagrid-tree-level]': 'treeNode ? treeNode.level - 1 : null',
-    '[attr.id]': 'treeNode ? treeId : null',
+    '[attr.id]': '_treeRow ? _treeId : null',
     '[class.datagrid-signpost-trigger]': 'signpost.length > 0',
     role: 'gridcell',
   },
@@ -83,8 +90,12 @@ export class ClrDatagridCell implements OnInit {
    */
   _treeRow: DatagridTreeRow | null = null;
 
+  /**
+   * The id of the cell in a tree row, by which the toggles of the row are named.
+   */
+  readonly _treeId = uniqueIdFactory();
+
   protected commonStrings = inject(ClrCommonStringsService);
-  protected treeId = uniqueIdFactory();
   protected toggleFocused = false;
 
   private wrappedInjector: Injector;
@@ -132,15 +143,15 @@ export class ClrDatagridCell implements OnInit {
   }
 
   /**
-   * The treegrid keys: Right expands a collapsed row and Left collapses an expanded one (mirrored in
-   * right-to-left). Otherwise the arrows move between cells as usual.
+   * The treegrid keys: Right expands a collapsed row and Left collapses an expanded one. Otherwise the
+   * arrows move between cells as usual. Like that cell navigation, the keys are not mirrored in
+   * right-to-left, so a key does the same thing whichever cell it is pressed in.
    */
   protected onToggleKeydown(event: KeyboardEvent, node: DatagridTreeNode<unknown>) {
     if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') {
       return;
     }
-    const rtl = getComputedStyle(this.el.nativeElement).direction === 'rtl';
-    const expand = (event.key === 'ArrowRight') !== rtl;
+    const expand = event.key === 'ArrowRight';
     if (node.expanded === expand) {
       return;
     }

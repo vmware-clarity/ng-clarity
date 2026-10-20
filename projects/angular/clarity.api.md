@@ -2383,8 +2383,7 @@ export class ClrDatagridCell implements OnInit {
     protected toggle(event: MouseEvent, node: DatagridTreeNode<unknown>): void;
     // (undocumented)
     protected toggleFocused: boolean;
-    // (undocumented)
-    protected treeId: string;
+    readonly _treeId: string;
     // Warning: (ae-forgotten-export) The symbol "DatagridTreeNode" needs to be exported by the entry point clr-angular.d.ts
     protected get treeNode(): DatagridTreeNode<unknown> | undefined;
     _treeRow: DatagridTreeRow | null;
@@ -2999,8 +2998,11 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     toggle(selected?: boolean): void;
     // (undocumented)
     toggleExpand(event: MouseEvent): void;
+    // (undocumented)
+    protected readonly tree: DatagridTreeService<T>;
     get _treeCells(): ClrDatagridCell[];
     protected get treeIndeterminate(): boolean;
+    get _treeLabelCell(): ClrDatagridCell | undefined;
     get _treeNode(): DatagridTreeNode<T> | undefined;
     // (undocumented)
     get _view(): any;
@@ -3140,19 +3142,21 @@ export interface ClrDatagridTreeExpandedChange<T> {
 //
 // @public
 export class ClrDatagridTreeItems<T> extends DatagridTreeRenderer<T> {
+    constructor();
     // (undocumented)
     expandable: (item: T) => boolean;
     // (undocumented)
     getChildren: ClrDatagridTreeChildrenLoader<T>;
     // (undocumented)
     static ngTemplateContextGuard<T>(_dir: ClrDatagridTreeItems<T>, _ctx: unknown): _ctx is NgForOfContext<T>;
+    // Warning: (ae-forgotten-export) The symbol "FocusedCell" needs to be exported by the entry point clr-angular.d.ts
+    //
     // (undocumented)
-    protected render(items: T[]): void;
+    protected render(items: T[], focus: FocusedCell<T> | null): void;
     // (undocumented)
     roots: T[];
     selects: ClrDatagridTreeSelection;
-    // (undocumented)
-    set trackBy(value: TrackByFunction<T>);
+    set trackBy(value: TrackByFunction<T> | undefined);
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrDatagridTreeItems<any>, "[clrDgTreeItems][clrDgTreeItemsOf]", never, { "roots": { "alias": "clrDgTreeItemsOf"; "required": false; }; "getChildren": { "alias": "clrDgTreeItemsChildren"; "required": false; }; "expandable": { "alias": "clrDgTreeItemsExpandable"; "required": false; }; "selects": { "alias": "clrDgTreeItemsSelects"; "required": false; }; "trackBy": { "alias": "clrDgTreeItemsTrackBy"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
@@ -3242,8 +3246,7 @@ export class ClrDatagridVirtualTree<T> extends DatagridTreeRenderer<T> {
     expandable: (item: T) => boolean;
     // (undocumented)
     getChildren: ClrDatagridTreeChildrenLoader<T>;
-    // (undocumented)
-    protected render(items: T[]): void;
+    protected render(items: T[], focus: FocusedCell<T> | null): void;
     // (undocumented)
     roots: T[];
     // (undocumented)
@@ -7604,6 +7607,8 @@ export class DatagridStringFilter<T = any> extends DatagridFilterRegistrar<T, Da
 export interface DatagridTreeRow {
     // (undocumented)
     readonly _treeCells: ClrDatagridCell[];
+    // (undocumented)
+    readonly _treeLabelCell: ClrDatagridCell | undefined;
     // (undocumented)
     readonly _treeNode: DatagridTreeNode<unknown> | undefined;
 }

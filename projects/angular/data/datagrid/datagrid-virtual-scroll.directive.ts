@@ -347,7 +347,10 @@ export class ClrDatagridVirtualScrollDirective<T> implements AfterViewInit, DoCh
       items = Array(this.totalItems);
     }
 
-    items.splice(skip, data.length, ...data);
+    // A loop instead of splice(skip, n, ...data): spreading a large range overflows the call stack.
+    for (let i = 0; i < data.length; i++) {
+      items[skip + i] = data[i];
+    }
 
     this.cdkVirtualForOf = Array.from(items);
   }

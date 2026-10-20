@@ -70,8 +70,8 @@
   </clr-checkbox-container>
 </form>
 
-<!-- Rebuilt with the backend, so the virtual scroll starts over with the new tree. -->
-@for (backend of [backend]; track backend) {
+<!-- A new datagrid for a new tree or row height, so the virtual scroll starts over. -->
+@for (grid of [grid]; track grid.generation) {
 <clr-datagrid
   [class.datagrid-compact]="compact"
   [clrDgSelectionType]="selectionType"
@@ -106,7 +106,8 @@
   </ng-template>
 
   <clr-dg-footer>
-    @if (range) { Rendered rows {{ range.start + 1 }} - {{ range.end }}. } {{ selected.length }} selected.
+    @if (range && backend.roots.length) { Rendered rows {{ range.start + 1 }} - {{ range.end }}. } {{ selected.length }}
+    selected.
   </clr-dg-footer>
 </clr-datagrid>
 }

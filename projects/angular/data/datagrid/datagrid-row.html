@@ -14,9 +14,9 @@
   [class.datagrid-row-detail-open]="detailService.isRowOpen(item)"
   [attr.aria-level]="_treeNode?.level"
   [attr.aria-expanded]="_treeNode?.expandable ? _treeNode.expanded : null"
-  [attr.aria-posinset]="_treeNode?.posInSet"
-  [attr.aria-setsize]="_treeNode?.setSize"
-  [attr.aria-busy]="_treeNode?.loading || null"
+  [attr.aria-posinset]="_treeNode ? tree.posInSet(_treeNode) : null"
+  [attr.aria-setsize]="_treeNode ? tree.setSize(_treeNode) : null"
+  [attr.aria-busy]="(_treeNode?.loading && _treeNode.expanded) || null"
 >
   <div class="datagrid-row-sticky">
     <!-- Sticky elements here -->

@@ -107,6 +107,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
   @ViewChild('fixedCellTemplate') _fixedCellTemplate: TemplateRef<any>;
 
+  protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService, { optional: true });
+
   private _item: T;
   private _selected = false;
   private _detailOpenLabel = '';
@@ -125,7 +127,6 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
 
   // By default, every item is selectable; it becomes not selectable only if it's explicitly set to false
   private _selectable: boolean | string = true;
-  private tree = inject<DatagridTreeService<T>>(DatagridTreeService, { optional: true });
 
   constructor(
     public selection: Selection<T>,
@@ -283,6 +284,20 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     }
     const first = cells.findIndex((_, index) => visible(index));
     return cells.slice(Math.max(first, 0), Math.max(first, 0) + 1);
+  }
+
+  /**
+   * The cell that names the row for its toggles: the first visible one as the user sees the row, so
+   * pinned cells come first. A toggle in a column like Status then reads "Expand Datacenter 1", not
+   * "Expand Running".
+   */
+  get _treeLabelCell(): ClrDatagridCell | undefined {
+    const columns = this.columnsService.columns;
+    const cells = this.dgCells?.toArray() || [];
+    const visible = cells
+      .map((cell, index) => ({ cell, column: columns[index]?.value }))
+      .filter(({ column }) => !column?.hidden);
+    return (visible.find(({ column }) => column?.pinned) || visible[0])?.cell;
   }
 
   /**

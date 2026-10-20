@@ -20,7 +20,9 @@ import { ColumnState } from '../interfaces/column-state.interface';
  * What selecting a row of a tree selects, in multi-selection:
  * - `self` (default): only the row itself, like any datagrid row.
  * - `descendants`: the row and all of its loaded descendants; a parent is selected when all of its
- *   children are and indeterminate when only some are, like the tree view.
+ *   children are and indeterminate when only some are, like the tree view. Descendants that are not
+ *   loaded yet are not in the selection: they come in selected when they load. Switching to this mode
+ *   gives the rows that are already selected their loaded descendants.
  *
  * Single selection always selects one row, whatever this says.
  */
@@ -52,9 +54,8 @@ export class DatagridTreeNode<T> {
   loading = false;
   /** `null` until the children are fetched for the first time. */
   children: DatagridTreeNode<T>[] | null = null;
-  /** Position among its siblings, 1-based, for `aria-posinset`. */
-  posInSet = 1;
-  setSize = 1;
+  /** Position among its siblings on display, 0-based. */
+  index = 0;
 
   constructor(
     public item: T,
@@ -94,6 +95,11 @@ export class DatagridTreeService<T = any> implements OnDestroy {
   private expandedRefs = new Set<any>();
   /** Items whose children came back empty; they stay leaves when the roots are replaced. */
   private leafRefs = new Set<any>();
+  /**
+   * The children fetched for each item, kept when its row goes away, so coming back to a page or
+   * refreshing the roots shows them again without fetching them again.
+   */
+  private loaded = new Map<any, T[]>();
   /** Child requests in flight, by item. The answer goes to whichever node has the item by then. */
   private loads = new Map<any, Subscription>();
   private _visible: T[] = [];
@@ -137,16 +143,20 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     isExpandable: (item: T) => boolean,
     selects: ClrDatagridTreeSelection
   ) {
+    const cascaded = this.cascadesSelection;
     this.getChildren = getChildren;
     this.isExpandable = isExpandable;
     this.selects = selects || 'self';
     this.setRoots(roots);
+    // Rows selected on their own until now take their descendants along, and their ancestors settle.
+    if (this.cascadesSelection && !cascaded && this.selection.current?.length) {
+      this.setSelected(this.selection.current || [], true);
+    }
   }
 
   setRoots(items: T[]) {
-    const previous = this.nodes;
     this.nodes = new Map();
-    this.roots = this.adopt(items || [], null, previous);
+    this.roots = this.adopt(items || [], null);
     // Requests for rows that are gone are of no use anymore.
     this.loads.forEach((load, ref) => {
       if (!this.nodes.has(ref)) {
@@ -154,6 +164,10 @@ export class DatagridTreeService<T = any> implements OnDestroy {
       }
     });
     this.update();
+  }
+
+  identify(item: T): any {
+    return this.items.identifyBy(item);
   }
 
   nodeFor(item: T): DatagridTreeNode<T> | undefined {
@@ -185,6 +199,11 @@ export class DatagridTreeService<T = any> implements OnDestroy {
    */
   reload(item?: T) {
     const targets = item ? [this.nodeFor(item)].filter(Boolean) : this.roots;
+    if (!item) {
+      // Children of rows on other pages are stale too.
+      this.loaded.clear();
+      this.leafRefs.clear();
+    }
     targets.forEach(node => {
       this.forget(node);
       if (node.expanded) {
@@ -241,6 +260,19 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     );
   }
 
+  /**
+   * The position of a row among its siblings, for `aria-posinset` and `aria-setsize`. Roots count
+   * across pages, so screen readers hear "3 of 23", not "3 of 10". Read on every check, as the total
+   * comes in after the roots.
+   */
+  posInSet(node: DatagridTreeNode<T>): number {
+    return node.parent ? node.index + 1 : Math.max(this.page.firstItem, 0) + node.index + 1;
+  }
+
+  setSize(node: DatagridTreeNode<T>): number {
+    return node.parent ? node.parent.children.length : Math.max(this.page.totalItems, this.roots.length);
+  }
+
   isIndeterminate(item: T): boolean {
     if (this.indeterminateFor?.selection !== this.selection.current || this.indeterminateFor?.tree !== this._visible) {
       this.indeterminateFor = { selection: this.selection.current, tree: this._visible };
@@ -271,24 +303,16 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     this.loadError.complete();
   }
 
-  private adopt(
-    items: T[],
-    parent: DatagridTreeNode<T> | null,
-    previous: Map<any, DatagridTreeNode<T>>
-  ): DatagridTreeNode<T>[] {
+  private adopt(items: T[], parent: DatagridTreeNode<T> | null): DatagridTreeNode<T>[] {
     const level = parent ? parent.level + 1 : 1;
     return items.map(item => {
       const ref = this.items.identifyBy(item);
       const expandable = !this.leafRefs.has(ref) && (!this.isExpandable || this.isExpandable(item));
       const node = new DatagridTreeNode(item, parent, level, expandable);
-      const old = previous.get(ref);
-      // A node that was already loaded keeps its children; an expanded one that wasn't fetches them now.
-      if (old?.children) {
-        node.children = this.adopt(
-          old.children.map(child => child.item),
-          node,
-          previous
-        );
+      // An item that was already loaded keeps its children; an expanded one that wasn't fetches them now.
+      const children = this.loaded.get(ref);
+      if (children) {
+        node.children = this.adopt(children, node);
       }
       node.expanded = node.expandable && this.expandedRefs.has(ref);
       node.loading = this.loads.has(ref);
@@ -312,6 +336,7 @@ export class DatagridTreeService<T = any> implements OnDestroy {
       this.nodes.delete(this.items.identifyBy(child.item));
     });
     node.children = null;
+    this.loaded.delete(ref);
     this.leafRefs.delete(ref);
     node.expandable = !this.isExpandable || this.isExpandable(node.item);
   }
@@ -351,7 +376,8 @@ export class DatagridTreeService<T = any> implements OnDestroy {
 
   private receive(node: DatagridTreeNode<T>, value: ClrDatagridTreeChildren<T>) {
     node.loading = false;
-    node.children = this.adopt(value || [], node, new Map());
+    this.loaded.set(this.items.identifyBy(node.item), value || []);
+    node.children = this.adopt(value || [], node);
     // Children of a selected parent come in selected.
     if (this.cascadesSelection && node.children.length && this.selection.isSelected(node.item)) {
       this.setSelected([node.item], true);
@@ -392,12 +418,8 @@ export class DatagridTreeService<T = any> implements OnDestroy {
     const walk = (siblings: DatagridTreeNode<T>[], parent: DatagridTreeNode<T> | null) => {
       // The roots come sorted from the server with the page; only children are sorted here.
       const ordered = comparator && parent ? siblings.slice().sort((a, b) => comparator(a.item, b.item)) : siblings;
-      // Roots count across pages, so screen readers hear "3 of 23", not "3 of 10".
-      const offset = parent ? 0 : Math.max(this.page.firstItem, 0);
-      const size = parent ? ordered.length : Math.max(this.page.totalItems, ordered.length);
       ordered.forEach((node, index) => {
-        node.posInSet = offset + index + 1;
-        node.setSize = size;
+        node.index = index;
         visible.push(node.item);
         if (node.expanded && node.children) {
           walk(node.children, node);

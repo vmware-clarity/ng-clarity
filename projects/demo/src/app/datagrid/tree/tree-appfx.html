@@ -59,6 +59,8 @@
   [layoutModel]="{ stretchToParentHeight: false }"
   [footerModel]="{ showFooter: true }"
   [pageSize]="10"
+  [pageSizeOptions]="[5, 10, 20, 50]"
+  [datagridLabels]="labels"
   (refreshGridData)="refresh($event)"
   (selectedItemsChange)="selected = $event"
   (columnOrderChange)="onColumnOrderChange($event)"

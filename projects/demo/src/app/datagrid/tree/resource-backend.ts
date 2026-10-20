@@ -45,7 +45,8 @@ export class ResourceBackend {
     // `from` is -1 until the datagrid knows the total, so the page number is the reliable input.
     const size = state.page?.size || 10;
     const from = ((state.page?.current || 1) - 1) * size;
-    return this.answer({ items: this.roots.slice(from, from + size), total: this.roots.length });
+    const roots = this.sorted(state.sort);
+    return this.answer({ items: roots.slice(from, from + size), total: roots.length });
   }
 
   children(parent: Resource): Observable<Resource[]> {
@@ -54,6 +55,18 @@ export class ResourceBackend {
       this.make(`${parent.id}-${i + 1}`, `${kind} ${i + 1}`, kind, i + 1)
     );
     return this.answer(items);
+  }
+
+  // The datagrid sorts the children it has itself; the roots are sorted here, across pages.
+  private sorted(sort: ClrDatagridStateInterface['sort']): Resource[] {
+    const field = sort?.by as keyof Resource;
+    if (typeof field !== 'string') {
+      return this.roots;
+    }
+    const direction = sort.reverse ? -1 : 1;
+    return [...this.roots].sort(
+      (a, b) => direction * String(a[field]).localeCompare(String(b[field]), undefined, { numeric: true })
+    );
   }
 
   private answer<R>(value: R): Observable<R> {

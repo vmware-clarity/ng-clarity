@@ -22,9 +22,19 @@ export class DatagridTreeVirtualDemo {
   selectionType: 'multi' | 'single' | 'none' = 'multi';
   selects: 'self' | 'descendants' = 'self';
   pinName = true;
-  compact = false;
   height = 32;
-  range: ListRange;
+  range: ListRange | undefined;
+  grid = { generation: 0 };
+  private _compact = false;
+
+  // The virtual scroll takes its row height when it is created.
+  get compact() {
+    return this._compact;
+  }
+  set compact(value: boolean) {
+    this._compact = value;
+    this.renew();
+  }
 
   identity = (resource: Resource) => resource.id;
   expandable = (resource: Resource) => resource.childCount > 0;
@@ -33,5 +43,11 @@ export class DatagridTreeVirtualDemo {
   rebuild() {
     this.selected = [];
     this.backend = new ResourceBackend({ ...this.options });
+    this.renew();
+  }
+
+  private renew() {
+    this.range = undefined;
+    this.grid = { generation: this.grid.generation + 1 };
   }
 }
