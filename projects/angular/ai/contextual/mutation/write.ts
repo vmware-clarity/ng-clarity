@@ -20,6 +20,7 @@ import {
 
 import { ContextRefTarget } from './context-ref-registry.service';
 import { ClrMutationRefusal } from './mutation.interface';
+import { DISTINGUISHING_WORDS, FILLER_WORDS, NATIVE_CONTROLS, NEGATING_WORDS, TYPED_INPUTS } from './tables';
 import { writeObstacle } from './writability';
 import { attempt } from '../attempt';
 import { accessibleName } from '../dom/accessible-name';
@@ -37,15 +38,6 @@ const MAX_LABEL_LENGTH = CLR_CONTEXT_DEFAULT_OPTIONS.maxTextLength;
  */
 type ControlKind =
   'custom' | 'select' | 'radiogroup' | 'radio' | 'choice' | 'checkbox' | 'boolean' | 'number' | 'typed' | 'text';
-
-const TYPED_INPUTS: Record<string, string> = {
-  date: 'YYYY-MM-DD',
-  time: 'HH:MM',
-  month: 'YYYY-MM',
-  week: 'YYYY-W##',
-  'datetime-local': 'YYYY-MM-DDTHH:MM',
-  color: '#rrggbb',
-};
 
 export interface WriteTarget {
   element: Element;
@@ -100,8 +92,6 @@ const STRUCTURED_VALUE_DETAIL =
 
 const CHOICE_VALUE_DETAIL =
   'The group holds something other than one of its radios’ labels, so choosing one by its label would store the wrong thing. It can publish a mutator (clrPublishElementMutator from @clr/angular/utils).';
-
-const NATIVE_CONTROLS: ReadonlySet<string> = new Set(['input', 'select', 'textarea']);
 
 const OBSTACLE_DETAILS = {
   hidden: 'The control is not currently shown to the user, or sits behind an open modal dialog.',
@@ -237,62 +227,6 @@ export function descriptionMatches(description: unknown, label: string, type = '
   const extra = given.some(word => !actual.includes(word) && !FILLER_WORDS.has(word) && !typeWords.includes(word));
   return said && given.some(word => actual.includes(word)) && !extra;
 }
-
-const FILLER_WORDS: ReadonlySet<string> = new Set([
-  'the',
-  'a',
-  'an',
-  'field',
-  'input',
-  'box',
-  'control',
-  'value',
-  'option',
-  'dropdown',
-  'select',
-  'textbox',
-  'checkbox',
-  'toggle',
-  'of',
-  'for',
-  'in',
-  'on',
-  'my',
-  'this',
-  'that',
-]);
-
-/** Words that tell a field from its pair, such as "Email" and "Confirm email"; a description must repeat them. */
-const DISTINGUISHING_WORDS: ReadonlySet<string> = new Set([
-  'confirm',
-  'confirmation',
-  'repeat',
-  'retype',
-  'new',
-  'old',
-  'current',
-  'previous',
-  'first',
-  'middle',
-  'last',
-  'billing',
-  'shipping',
-  'primary',
-  'secondary',
-  'home',
-  'work',
-  'mobile',
-  'start',
-  'end',
-  'from',
-  'to',
-  'min',
-  'max',
-  'minimum',
-  'maximum',
-]);
-
-const NEGATING_WORDS: ReadonlySet<string> = new Set(['not', 'no', 'wrong', 'other', 'except', 'instead', 'never']);
 
 /**
  * What the form control will receive, where known before writing. A component that translates
