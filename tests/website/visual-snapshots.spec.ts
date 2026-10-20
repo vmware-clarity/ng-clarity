@@ -9,7 +9,7 @@ import { expect, Page, Request, test } from '@playwright/test';
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { flakeProbeEnabled, flakeProbeView, installFlakeProbe, recordFlakeProbe } from './flake-probe';
+import { flakeProbeEnabled, installFlakeProbe, recordFlakeProbe } from './flake-probe';
 import { websiteScreenshotOptions } from './screenshot-options';
 import { ScreenshotOptions } from '../helpers/screenshot-options.interface';
 import { browser, density, matrixKey, screenshotExpectOptions, screenshotPathFor, theme } from '../helpers/vrt';
@@ -245,9 +245,7 @@ async function capturePage(page: Page, pageName: string, view: string, route: st
     // Soft, so one mismatching capture does not skip the remaining captures of the page.
     const errorsBefore = test.info().errors.length;
     await expect.soft(page).toHaveScreenshot(screenshotPath.split(path.sep), screenshotOptions);
-    if (view === flakeProbeView) {
-      await recordFlakeProbe(page, test.info(), view, test.info().errors.length > errorsBefore);
-    }
+    await recordFlakeProbe(page, test.info(), `${pageName}-${view}`, test.info().errors.length > errorsBefore);
     return true;
   }
 

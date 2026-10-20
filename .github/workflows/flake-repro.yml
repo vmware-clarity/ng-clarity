@@ -34,14 +34,15 @@ jobs:
   # when. Each runner repeats the full suite and records which snapshots the run changed, restoring
   # tests/snapshots in between.
   faithful:
-    name: Faithful ${{ matrix.rep }}
+    name: Faithful ${{ matrix.rep }} (workers ${{ matrix.workers }})
     needs: build-website
     timeout-minutes: 60
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        rep: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+        rep: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+        workers: ['default', '6']
     env:
       CLARITY_VRT_BROWSER: chromium
       CLARITY_VRT_THEME: dark
@@ -64,11 +65,11 @@ jobs:
         run: |
           mkdir -p flake-out
           for i in 1 2 3 4 5; do
-            FLAKE_PROBE_JOB=rep${{ matrix.rep }}-iter$i PLAYWRIGHT_JSON_OUTPUT_FILE=flake-out/report-$i.json \
-              npx playwright test --update-snapshots --reporter dot,json > flake-out/run-$i.log 2>&1 || true
+            FLAKE_PROBE_JOB=rep${{ matrix.rep }}-w${{ matrix.workers }}-iter$i PLAYWRIGHT_JSON_OUTPUT_FILE=flake-out/report-$i.json \
+              npx playwright test --update-snapshots --reporter dot,json ${{ matrix.workers != 'default' && format('--workers {0}', matrix.workers) || '' }} > flake-out/run-$i.log 2>&1 || true
             cp test-results/flake-probe/*.jsonl flake-out/ 2>/dev/null || true
             changed=$(git status --porcelain -- tests/snapshots | grep '\.png$' | awk '{print $2}')
-            echo "rep ${{ matrix.rep }} iteration $i changed: ${changed:-none}" | tee -a flake-out/summary.txt
+            echo "rep ${{ matrix.rep }} workers ${{ matrix.workers }} iteration $i changed: ${changed:-none}" | tee -a flake-out/summary.txt
             for f in $changed; do
               cp "$f" "flake-out/iter$i-$(echo "$f" | tr '/' '_')"
             done
@@ -79,6 +80,6 @@ jobs:
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: faithful-${{ matrix.rep }}-run${{ github.run_attempt }}
+          name: faithful-${{ matrix.rep }}-w${{ matrix.workers }}-run${{ github.run_attempt }}
           path: flake-out/
           retention-days: 7

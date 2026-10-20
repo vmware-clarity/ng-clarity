@@ -18,7 +18,6 @@ import * as fs from 'fs';
 import * as path from 'path';
 
 export const flakeProbeEnabled = process.env['FLAKE_PROBE'] === '1';
-export const flakeProbeView = 'code-custom-filtering';
 
 const outputDir = path.join('.', 'test-results', 'flake-probe');
 
@@ -138,6 +137,11 @@ export async function recordFlakeProbe(page: Page, testInfo: TestInfo, view: str
       }));
     return { grids, measurements: w.__flakeProbe, events: w.__flakeEvents };
   });
+
+  // Only views that show the Pokemon users grid are of interest.
+  if (!final.grids.length) {
+    return;
+  }
 
   fs.mkdirSync(outputDir, { recursive: true });
   const record = {
