@@ -18,11 +18,13 @@ tester.run('explicit-change-detection', rule, {
     "import { Component } from '@angular/core'; @Component({changeDetection: ChangeDetectionStrategy.Eager}) class Test {}",
     "import { Component as C } from '@angular/core'; @C({changeDetection: ChangeDetectionStrategy.OnPush}) class Test {}",
     "import * as ng from '@angular/core'; @ng.Component({changeDetection: ng.ChangeDetectionStrategy.Eager}) class Test {}",
+    "import { Component } from '@angular/core'; @Component({'changeDetection': ChangeDetectionStrategy.Eager}) class Test {}",
     "import { Component } from 'another-library'; @Component({}) class Test {}",
     "import { Directive } from '@angular/core'; @Directive({}) class Test {}",
   ],
   invalid: [
     "import { Component } from '@angular/core'; @Component({}) class Test {}",
+    "import { Component } from '@angular/core'; @Component() class Test {}",
     "import { Component as C } from '@angular/core'; @C({}) class Test {}",
     "import * as ng from '@angular/core'; @ng.Component({}) class Test {}",
     "import { Component } from '@angular/core'; @Component(metadata) class Test {}",

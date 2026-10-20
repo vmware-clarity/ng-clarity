@@ -6,7 +6,7 @@
  */
 
 import { NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 @Component({
   selector: 'storybook-link',
@@ -22,6 +22,7 @@ import { Component, Input } from '@angular/core';
     }"
     >Test Link</a
   >`,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class LinkStorybookComponent {
   @Input() active = false;

@@ -8,9 +8,12 @@
 module.exports = {
   meta: {
     type: 'problem',
+    docs: {
+      description: 'Require an explicit changeDetection in @Component metadata',
+    },
     schema: [],
     messages: {
-      missing: 'Declare changeDetection explicitly so library behavior does not depend on consumer defaults.',
+      missing: 'Declare changeDetection explicitly so behavior does not depend on the Angular default strategy.',
     },
   },
   create(context) {

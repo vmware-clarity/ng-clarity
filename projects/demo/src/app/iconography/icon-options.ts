@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   chartCollectionIcons as ChartShapes,
   commerceCollectionIcons as CommerceShapes,
@@ -24,6 +24,7 @@ import {
   styleUrls: ['./iconography.demo.scss'],
   templateUrl: './icon-options.demo.html',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class IconOptionsDemo {
   shape = 'info-circle';

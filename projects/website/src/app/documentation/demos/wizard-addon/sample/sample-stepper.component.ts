@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, inject, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject, Input, OnInit } from '@angular/core';
 import { AppfxStepperModule } from '@clr/addons/stepper';
 import { ModelChange, Step } from '@clr/addons/var';
 
@@ -17,6 +17,7 @@ import { SampleWorkflowService } from '../../_utils/sample-workflow/sample-workf
   standalone: true,
   imports: [AppfxStepperModule],
   templateUrl: 'sample-stepper.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SampleStepperComponent implements OnInit {
   @Input() vcMoRef: string;
