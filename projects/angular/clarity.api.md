@@ -6332,6 +6332,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     // (undocumented)
     nodeId: string;
     // (undocumented)
+    protected readonly noopAnimations: boolean;
+    // (undocumented)
     onKeyDown(event: KeyboardEvent): void;
     // (undocumented)
     get selected(): ClrSelectedState | boolean;

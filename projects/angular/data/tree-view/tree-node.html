@@ -74,7 +74,7 @@
   #children
   class="clr-treenode-children"
   [class.is-expanded]="expandService.expanded"
-  (animate.enter)="animatesChildren = true"
+  (animate.enter)="animatesChildren = !noopAnimations"
   [attr.role]="isExpandable() && !featuresService.recursion ? 'group' : null"
   [attr.inert]="expandService.expanded ? null : ''"
 >

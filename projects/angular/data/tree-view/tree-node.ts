@@ -34,6 +34,7 @@ import {
   Keys,
   LoadingListener,
   measureHeight,
+  noopAnimations,
   preventArrowKeyScroll,
   uniqueIdFactory,
 } from '@clr/angular/utils';
@@ -79,9 +80,11 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   /**
    * Set when Angular adds the children (see the template): once the node is rendered, and only when animations are
-   * enabled, as Angular calls `animate.enter` handlers only then.
+   * enabled, as Angular calls `animate.enter` handlers only then. Never set under `provideNoopAnimations()`, which
+   * Angular's `animate.enter` does not honour.
    */
   protected animatesChildren = false;
+  protected readonly noopAnimations = noopAnimations();
   /** The latest expand or collapse of the children, so that an earlier one does not start its animation after it. */
   private childrenHeightChange: object;
 
@@ -484,12 +487,13 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     }
   }
 
-  /** Animates the children from their current height to the one they have once the change is rendered. */
   /** Animates the children to their new height, or settles them at once on a bulk change, replacing the earlier change. */
   private animateChildrenHeight() {
     const children = this.children.nativeElement;
     const change = (this.childrenHeightChange = {});
-    if (this.skipAnimation) {
+    // A lazy recursive tree removes the children on collapse, so there is nothing to collapse.
+    const clearsChildren = !this.expanded && this.featuresService.recursion && !this.featuresService.eager;
+    if (this.skipAnimation || clearsChildren) {
       children.getAnimations().forEach(animation => animation.cancel());
       return;
     }
@@ -498,6 +502,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
       {
         read: () => {
           if (change === this.childrenHeightChange) {
+            // Linear, as the former Angular animation.
             animateHeight(children, { from, easing: 'linear' });
           }
         },
