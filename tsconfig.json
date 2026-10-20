@@ -22,8 +22,7 @@
       "@clr/addons": ["./projects/addons/index.ts"],
       "@clr/addons/*": ["./projects/addons/*"],
       "@clr/angular/testing": ["./projects/angular/utils/testing"]
-    },
-    "skipLibCheck": true
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
