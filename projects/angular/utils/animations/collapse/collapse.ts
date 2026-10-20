@@ -14,7 +14,7 @@ import {
 } from '../animation-metadata';
 import { defaultAnimationTiming } from '../constants';
 
-/** @deprecated Clarity no longer uses Angular animations; use `animateHeight()` or `clrHeightAnimation` instead. */
+/** @deprecated Clarity no longer uses Angular animations; use `animateHeight()` instead. */
 export function collapse(): ClrAnimationMetadata[] {
   'use strict';
   return [
