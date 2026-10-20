@@ -7,6 +7,7 @@
 
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay, enableCssAnimations, finishAnimations } from '@clr/angular/testing';
 import { ClrLoadingModule, ClrLoadingState } from '@clr/angular/utils';
 
@@ -102,6 +103,20 @@ describe('Loading Buttons', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
     expect(fixture.componentInstance.loadingButtonInstance.el.nativeElement.style.length).toBe(0);
+  });
+
+  it('goes back to the DEFAULT state without the Web Animations API (jsdom)', async () => {
+    const getAnimations = Element.prototype.getAnimations;
+    (Element.prototype as any).getAnimations = undefined;
+    try {
+      fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+      fixture.detectChanges();
+      await delay();
+      fixture.detectChanges();
+      expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
+    } finally {
+      Element.prototype.getAnimations = getAnimations;
+    }
   });
 
   it('hides spinner when [(clrButtonState)] value is DEFAULT', () => {
@@ -218,8 +233,8 @@ describe('Loading Buttons with animations', () => {
     await delay();
 
     fixture.nativeElement.querySelector('button').style.display = 'none';
-    // The animation is canceled when the style is next updated.
-    await new Promise(resolve => requestAnimationFrame(resolve));
+    // The animation is canceled when the style is next updated, which reading the animations forces.
+    fixture.nativeElement.querySelector('.spinner-check').getAnimations();
     await delay();
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState as ClrLoadingState).toBe(ClrLoadingState.DEFAULT);
@@ -241,17 +256,83 @@ describe('Loading Buttons with animations', () => {
     fixture.detectChanges();
     expect(fixture.componentInstance.buttonState).toBe(ClrLoadingState.SUCCESS);
   });
+});
 
+// Without the `clrLoading` directive, which sets the button back to its default state when it is destroyed.
+describe('Loading Button driven as a loading listener', () => {
   it('does not change its state once destroyed', async () => {
-    fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    const restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [ClrLoadingButtonModule],
+      declarations: [ListenerTestLoadingButtonComponent],
+      animationsEnabled: true,
+    });
+    const fixture = TestBed.createComponent(ListenerTestLoadingButtonComponent);
+    fixture.detectChanges();
+    const button = fixture.componentInstance.loadingButtonInstance;
+    button.loadingStateChange(ClrLoadingState.SUCCESS);
     fixture.detectChanges();
     await delay();
-    const button = fixture.componentInstance.loadingButtonInstance;
+    const check = fixture.nativeElement.querySelector('.spinner-check');
 
     fixture.destroy();
     spyOn(button.clrLoadingChange, 'emit');
+    finishAnimations(check);
+    // A finished CSS animation dispatches its `animationend` event on the next frame.
+    await new Promise(resolve => requestAnimationFrame(resolve));
     await delay();
     expect(button.clrLoadingChange.emit).not.toHaveBeenCalled();
+    restoreAnimations();
+  });
+});
+
+describe('Loading Buttons with Noop animations', () => {
+  let fixture: ComponentFixture<TestLoadingButtonComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(async () => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [ClrLoadingModule, ClrLoadingButtonModule],
+      declarations: [TestLoadingButtonComponent],
+      providers: [provideNoopAnimations()],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(TestLoadingButtonComponent);
+    fixture.detectChanges();
+    await delay();
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  it('does not animate the spinner or its content', async () => {
+    fixture.componentInstance.buttonState = ClrLoadingState.LOADING;
+    fixture.detectChanges();
+    await delay();
+    expect(fixture.nativeElement.querySelector('.spinner').classList).not.toContain('clr-loading-btn-enter');
+
+    fixture.componentInstance.buttonState = ClrLoadingState.DEFAULT;
+    fixture.detectChanges();
+    await delay();
+    expect(fixture.nativeElement.querySelector('.spinner')).toBeNull();
+    expect(fixture.nativeElement.querySelector('.clr-loading-btn-content').classList).not.toContain(
+      'clr-loading-btn-enter'
+    );
+  });
+
+  it('goes back to its default state at once after the success state', async () => {
+    fixture.componentInstance.buttonState = ClrLoadingState.SUCCESS;
+    fixture.detectChanges();
+    expect(fixture.nativeElement.querySelector('.spinner-check').classList).not.toContain('clr-loading-btn-check');
+
+    await delay();
+    fixture.detectChanges();
+    expect(fixture.componentInstance.buttonState as ClrLoadingState).toEqual(ClrLoadingState.DEFAULT);
+    await delay(); // the check mark is removed right after the render, without a leave animation
+    expect(fixture.nativeElement.querySelector('.spinner-check')).toBeNull();
   });
 });
 
@@ -265,6 +346,14 @@ class TestLoadingButtonComponent {
   buttonState: ClrLoadingState = ClrLoadingState.DEFAULT;
   disabled = false;
   buttonContent = 'Test 1';
+}
+
+@Component({
+  template: `<button clrLoading>Test</button>`,
+  standalone: false,
+})
+class ListenerTestLoadingButtonComponent {
+  @ViewChild(ClrLoadingButton) loadingButtonInstance: ClrLoadingButton;
 }
 
 @Component({

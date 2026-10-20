@@ -19,7 +19,7 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ClrLoadingState, LoadingListener } from '@clr/angular/utils';
+import { ClrLoadingState, LoadingListener, noopAnimations } from '@clr/angular/utils';
 
 // minimum width to fit loading spinner
 const MIN_BUTTON_WIDTH = 42;
@@ -30,17 +30,14 @@ const MIN_BUTTON_WIDTH = 42;
     <span>
       @switch (state) {
         @case (buttonState.LOADING) {
-          <span
-            [animate.enter]="enterClass"
-            animate.leave="clr-loading-btn-leave"
-            class="spinner spinner-inline"
-          ></span>
+          <span [animate.enter]="enterClass" [animate.leave]="leaveClass" class="spinner spinner-inline"></span>
         }
         @case (buttonState.SUCCESS) {
           <span
             #checkMark
-            animate.leave="clr-loading-btn-leave"
-            class="spinner spinner-inline spinner-check clr-loading-btn-check"
+            [animate.leave]="leaveClass"
+            [class]="checkMarkClass"
+            class="spinner spinner-inline spinner-check"
           ></span>
         }
         @case (buttonState.DEFAULT) {
@@ -65,6 +62,8 @@ export class ClrLoadingButton implements LoadingListener {
 
   /** Enter animation of the spinner and the button content: none on the first render. */
   protected enterClass = '';
+  protected readonly leaveClass: string;
+  protected readonly checkMarkClass: string;
 
   private readonly injector = inject(Injector);
   private readonly cdr = inject(ChangeDetectorRef);
@@ -74,7 +73,13 @@ export class ClrLoadingButton implements LoadingListener {
     public el: ElementRef<HTMLButtonElement>,
     private renderer: Renderer2
   ) {
-    afterNextRender(() => (this.enterClass = 'clr-loading-btn-enter'));
+    // No animations at all with `provideNoopAnimations()`: the success state then ends at once.
+    const noop = noopAnimations();
+    this.leaveClass = noop ? '' : 'clr-loading-btn-leave';
+    this.checkMarkClass = noop ? '' : 'clr-loading-btn-check';
+    if (!noop) {
+      afterNextRender(() => (this.enterClass = 'clr-loading-btn-enter'));
+    }
     inject(DestroyRef).onDestroy(() => (this.checkMarkElement = undefined));
   }
 
@@ -87,9 +92,9 @@ export class ClrLoadingButton implements LoadingListener {
       afterNextRender(
         () => {
           // Settled in a microtask at the earliest: the state change is emitted to the parent, not while rendering.
-          Promise.allSettled(element.getAnimations().map(animation => animation.finished)).then(() =>
-            this.checkMarkDone(element)
-          );
+          // `getAnimations()` is missing in some test environments, such as jsdom.
+          const animations = element.getAnimations?.() ?? [];
+          Promise.allSettled(animations.map(animation => animation.finished)).then(() => this.checkMarkDone(element));
         },
         { injector: this.injector }
       );
