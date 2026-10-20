@@ -537,7 +537,7 @@ export const StatusIndicators: Story = {
 ```
 
 **Do not use `play` for assertions.** A story is a fixture, not a test. Behavioural assertions belong in the
-component's Karma spec under `projects/angular/`, where they run in the test suite, report failures usefully,
+component's Vitest spec under `projects/angular/` (see [Testing](TESTING.md)), where they run in the test suite, report failures usefully,
 and do not cost 8 PNGs.
 
 **A `play` function that runs before a screenshot must leave the UI deterministic.** This is the part that

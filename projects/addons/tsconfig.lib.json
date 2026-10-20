@@ -31,5 +31,5 @@
     "skipMetadataEmit": false
   },
   "include": ["**/*.ts"],
-  "exclude": ["test.ts", "**/*.spec.ts"]
+  "exclude": ["**/*.spec.ts"]
 }

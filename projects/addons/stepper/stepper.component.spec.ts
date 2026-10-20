@@ -433,9 +433,10 @@ describe('Stepper', () => {
         expect(testContext.relevanceService.checkComplete$).toHaveBeenCalledTimes(1);
 
         expect(testContext.step2Model.validateCallsCount).toEqual(1);
-        expect(vi.mocked(testContext.stateService.markStepValid as Spy).mock.calls[1][0], String(false)).toEqual(
-          testContext.step2
-        );
+        expect(vi.mocked(testContext.stateService.markStepValid as Spy).mock.calls[1]).toEqual([
+          testContext.step2,
+          false,
+        ]);
         expect(testContext.component.form.controls['step2'].setErrors).toHaveBeenCalledWith(expect.anything());
       });
 

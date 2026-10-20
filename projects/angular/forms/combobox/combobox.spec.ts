@@ -218,6 +218,7 @@ describe('Combobox component', () => {
           expect(input.value).toBe('4');
           expect(clarityDirective.searchText).toBe('4');
           expect(popoverService.open).toBe(true);
+          // Supply an outside focus target explicitly: browser-runner iframes can otherwise report a null relatedTarget.
           input.dispatchEvent(new FocusEvent('blur', { bubbles: true, relatedTarget: document.body }));
           input.blur();
           expect(popoverService.open).toBe(false);

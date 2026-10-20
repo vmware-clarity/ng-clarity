@@ -173,8 +173,17 @@ describe('Dropdown', () => {
         it('properly resets children', () => {
           testContext.focusHandler.addChildren(testContext.children);
           testContext.focusHandler.resetChildren();
-          testContext.focusHandler.down.subscribe(() => expect.fail('Expected no pointer down.'));
-          testContext.focusHandler.up.subscribe(() => expect.fail('Expected no pointer up.'));
+          const down = vi.fn();
+          const up = vi.fn();
+          const downSubscription = testContext.focusHandler.down.subscribe(down);
+          const upSubscription = testContext.focusHandler.up.subscribe(up);
+          try {
+            expect(down).not.toHaveBeenCalled();
+            expect(up).not.toHaveBeenCalled();
+          } finally {
+            downSubscription.unsubscribe();
+            upSubscription.unsubscribe();
+          }
         });
 
         it('opens the dropdown when trying to go down or up', () => {

@@ -251,7 +251,11 @@ describe('New Wizard Tests', () => {
     let testComponent: TypescriptTestComponent;
     let testWizardPage: ClrWizardPage;
     let otherWizardPage: ClrWizardPage;
-    const pageCollection = new MyPageCollectionMock();
+    let pageCollection: MyPageCollectionMock;
+
+    beforeEach(() => {
+      pageCollection = new MyPageCollectionMock();
+    });
     let navService: WizardNavigationService;
 
     describe('Numeric id bug', () => {

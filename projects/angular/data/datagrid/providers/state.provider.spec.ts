@@ -17,10 +17,11 @@ describe('Datagrid', () => {
   describe('Providers', () => {
     describe('State Provider', function () {
       let subscriptions: Subscription[] = [];
-      const page = new Page(new StateDebouncer());
+      let page: Page;
       let stateProviderInstance: StateProvider<any>;
 
       beforeEach(function () {
+        page = new Page(new StateDebouncer());
         stateProviderInstance = new StateProvider(
           new FiltersProvider(new Page(new StateDebouncer()), new StateDebouncer()),
           new Sort(new StateDebouncer()),

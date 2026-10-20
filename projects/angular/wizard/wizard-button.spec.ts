@@ -58,8 +58,8 @@ describe('New Wizard Tests', () => {
       let fixture: ComponentFixture<any>;
       let buttonDebugEl: DebugElement;
       let buttonComponent: ClrWizardButton;
-      const navService = new NavServiceMock();
-      const buttonHub = new ButtonHubMock();
+      let navService: NavServiceMock;
+      let buttonHub: ButtonHubMock;
 
       @Component({
         template: `<clr-wizard-button></clr-wizard-button>`,
@@ -108,6 +108,8 @@ describe('New Wizard Tests', () => {
       }
 
       beforeEach(() => {
+        navService = new NavServiceMock();
+        buttonHub = new ButtonHubMock();
         navService.currentPage = new MockPage(0);
 
         TestBed.configureTestingModule({
@@ -802,11 +804,13 @@ describe('New Wizard Tests', () => {
       let fixture: ComponentFixture<any>;
       let buttonDebugEl: DebugElement;
       let buttonComponent: ClrWizardButton;
-      const navService = new NavServiceMock();
-      const buttonHub = new ButtonHubMock();
+      let navService: NavServiceMock;
+      let buttonHub: ButtonHubMock;
       let myTestComponent: ViewTestComponent;
 
       beforeEach(() => {
+        navService = new NavServiceMock();
+        buttonHub = new ButtonHubMock();
         navService.currentPage = new MockPage(0);
 
         TestBed.configureTestingModule({
@@ -973,13 +977,15 @@ describe('New Wizard Tests', () => {
       let fixture: ComponentFixture<any>;
       let buttonDebugEl: DebugElement;
       let buttonComponent: ClrWizardButton;
-      const navService = new NavServiceMock();
-      const buttonHub = new ButtonHubMock();
+      let navService: NavServiceMock;
+      let buttonHub: ButtonHubMock;
       let myTestComponent: ViewTestComponent;
       let buttonElement: HTMLElement;
       let actualButton: HTMLElement;
 
       beforeEach(() => {
+        navService = new NavServiceMock();
+        buttonHub = new ButtonHubMock();
         navService.currentPage = new MockPage(0);
 
         TestBed.configureTestingModule({

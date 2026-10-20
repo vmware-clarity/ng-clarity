@@ -179,14 +179,15 @@ describe('computed-var.spec', () => {
           return throwError('error');
         },
       });
-      model.cp1.value$.subscribe({
-        next() {
-          throw new Error('should never reach here');
-        },
-        error(err: unknown) {
-          expect(err).toEqual('error');
-        },
-      });
+      const next = vi.fn();
+      const error = vi.fn();
+      const subscription = model.cp1.value$.subscribe({ next, error });
+      try {
+        expect(next).not.toHaveBeenCalled();
+        expect(error).toHaveBeenCalledExactlyOnceWith('error');
+      } finally {
+        subscription.unsubscribe();
+      }
     }));
   });
 

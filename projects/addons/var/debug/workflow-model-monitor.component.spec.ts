@@ -17,9 +17,10 @@ describe('WorkflowModelMonitor', () => {
   let mockModelManager: WorkflowModelManager;
   let component: WorkflowModelMonitorComponent;
   let fixture: ComponentFixture<WorkflowModelMonitorComponent>;
-  const onStepChange$ = new Subject();
+  let onStepChange$: Subject<unknown>;
 
   beforeEach(() => {
+    onStepChange$ = new Subject();
     mockModelManager = {
       onModelChange$: new Subject(),
       onStepChange$: onStepChange$,

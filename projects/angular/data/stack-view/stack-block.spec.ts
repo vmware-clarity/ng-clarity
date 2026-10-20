@@ -434,8 +434,8 @@ describe('Stack View directives', () => {
 
     describe('Space interaction with elements', () => {
       let spy: Spy<any>;
-      const keyDown = new KeyboardEvent('keydown', { key: Keys.Space, bubbles: true });
-      const keyUp = new KeyboardEvent('keyup', { key: Keys.Space, bubbles: true });
+      let keyDown: KeyboardEvent;
+      let keyUp: KeyboardEvent;
 
       function executeElementTest(elementName: string) {
         const element = fixture.nativeElement.querySelector(elementName) as HTMLElement;
@@ -450,6 +450,8 @@ describe('Stack View directives', () => {
       }
 
       beforeEach(async () => {
+        keyDown = new KeyboardEvent('keydown', { key: Keys.Space, bubbles: true });
+        keyUp = new KeyboardEvent('keyup', { key: Keys.Space, bubbles: true });
         fixture = TestBed.createComponent(BlocksWithIinteractiveElements);
         fixture.whenRenderingDone();
         fixture.detectChanges();

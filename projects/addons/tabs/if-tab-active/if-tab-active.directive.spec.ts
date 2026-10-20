@@ -44,6 +44,7 @@ describe('Directive: IfTabActive', () => {
   }
 
   beforeEach(() => {
+    TestBed.configureTestingModule({ imports: [TestComponent] });
     fixture = TestBed.createComponent(TestComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();

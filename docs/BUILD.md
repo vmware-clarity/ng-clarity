@@ -43,7 +43,7 @@ The build process consists of the following five stages. Each stage can be ran i
 4. `npm run test`: verifies all tests pass
    - Install Chromium first with `npx playwright install chromium`. The library suites run in a real browser through Vitest and Playwright.
 
-   - See [Vitest test infrastructure](VITEST_MIGRATION_PLAN.md) for headless runs, coverage thresholds, and reproducing randomized failures.
+   - See [Testing](TESTING.md) for headless runs, coverage thresholds, and reproducing randomized failures.
 
    - `npm run test:watch`: runs a watcher on all tests
 

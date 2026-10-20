@@ -2181,7 +2181,7 @@ describe('DatagridComponent', () => {
 
       // required to execute the async callbacks in Clarity's Datagrid component
       vi.useRealTimers();
-      vi.useFakeTimers();
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval'] });
       untypedContext.component.selectionType = SelectionType.Multi;
       untypedContext.component.columnsDefs = untypedContext.columnsDefs;
       untypedContext.component.data = untypedContext.data;

@@ -50,7 +50,11 @@ describe('New Wizard Tests', () => {
     let testItemComponent: ClrWizardStepnavItem;
     let debugEl: DebugElement;
     let myStepnavItem: HTMLElement;
-    const pageCollection = new PageCollectionMock();
+    let pageCollection: PageCollectionMock;
+
+    beforeEach(() => {
+      pageCollection = new PageCollectionMock();
+    });
 
     beforeEach(() => {
       TestBed.configureTestingModule({

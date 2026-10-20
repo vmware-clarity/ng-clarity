@@ -7,7 +7,11 @@
 
 import { defineConfig } from 'vitest/config';
 
-const seed = Number(process.env['VITEST_SEED'] ?? Date.now());
+const seedValue = process.env['VITEST_SEED'] ?? String(Date.now());
+const seed = Number(seedValue);
+if (seedValue.trim() === '' || !Number.isSafeInteger(seed) || seed < 0) {
+  throw new Error('VITEST_SEED must be a non-negative safe integer.');
+}
 
 export default defineConfig({
   test: {
@@ -17,6 +21,7 @@ export default defineConfig({
     sequence: { shuffle: true, seed },
     // Run browser files sequentially so focus tests do not compete between iframes.
     fileParallelism: false,
-    isolate: true,
+    // Match Angular's shared browser environment; fixtures still tear down after every test.
+    isolate: false,
   },
 });

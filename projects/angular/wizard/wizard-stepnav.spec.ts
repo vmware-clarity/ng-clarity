@@ -44,7 +44,11 @@ describe('New Wizard Tests', () => {
     let fixture: ComponentFixture<any>;
     let debugEl: DebugElement;
     let myStepnavEl: HTMLElement;
-    const pageCollection = new StepnavPageCollection();
+    let pageCollection: StepnavPageCollection;
+
+    beforeEach(() => {
+      pageCollection = new StepnavPageCollection();
+    });
 
     beforeEach(() => {
       TestBed.configureTestingModule({

@@ -5,15 +5,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { MockInstance } from 'vitest';
+
 import { Closable, ModalStackService } from './modal-stack.service';
 
 const PLATFORM_BROWSER_ID = 'browser';
 
 describe('ModalStackService', () => {
   let modalStackService: ModalStackService;
+  let addEventListenerSpy: MockInstance<HTMLElement['addEventListener']>;
 
   beforeEach(() => {
     modalStackService = new ModalStackService(PLATFORM_BROWSER_ID);
+    addEventListenerSpy = vi.spyOn(document.body, 'addEventListener');
+  });
+
+  afterEach(() => {
+    addEventListenerSpy.mock.calls.forEach(([type, listener, options]) => {
+      document.body.removeEventListener(type, listener, options);
+    });
   });
 
   it('should close the open modal when the escape key is pressed', () => {
@@ -32,7 +42,10 @@ describe('ModalStackService', () => {
     expect(modalCloseSpy).toHaveBeenCalled();
 
     // ensure the keyup event listener is removed
-    expect(removeEventListenerSpy).toHaveBeenCalled();
+    const removedKeyUpListeners = removeEventListenerSpy.mock.calls
+      .filter(([type]) => type === 'keyup')
+      .map(([, listener]) => listener);
+    expect(removedKeyUpListeners).toContain(addEventListenerSpy.mock.calls[0][1]);
   });
 
   it('should close only the top modal when the escape key is pressed', () => {
@@ -60,7 +73,11 @@ describe('ModalStackService', () => {
     expect(modal1CloseSpy).not.toHaveBeenCalled();
 
     // ensure the keyup event listener is not removed (there is still an open modal)
-    expect(removeEventListenerSpy).not.toHaveBeenCalled();
+    // Other fixtures can have listeners too; this stack must retain its own listener.
+    const removedKeyUpListeners = removeEventListenerSpy.mock.calls
+      .filter(([type]) => type === 'keyup')
+      .map(([, listener]) => listener);
+    expect(removedKeyUpListeners).not.toContain(addEventListenerSpy.mock.calls[0][1]);
   });
 
   it('should close two open modals when the escape key is pressed twice', () => {
@@ -89,6 +106,9 @@ describe('ModalStackService', () => {
     expect(modal1CloseSpy).toHaveBeenCalled();
 
     // ensure the keyup event listener is removed
-    expect(removeEventListenerSpy).toHaveBeenCalled();
+    const removedKeyUpListeners = removeEventListenerSpy.mock.calls
+      .filter(([type]) => type === 'keyup')
+      .map(([, listener]) => listener);
+    expect(removedKeyUpListeners).toContain(addEventListenerSpy.mock.calls[0][1]);
   });
 });
