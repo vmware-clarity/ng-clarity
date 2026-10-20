@@ -24,7 +24,7 @@ From the repo root:
 npm run check-for-ai-skill-changes
 ```
 
-It runs `npm run public-api:update`, then the checker with `--changed`, which lists the reports that differ from `HEAD`: the ones the update just rewrote. To also include report changes already committed on your branch, run the checker with the branch your PR targets, e.g. `node .claude/skills/update-ai-skills/check-ai-skills.js --changed origin/next`.
+It runs `npm run public-api:update`, then the checker with `--changed`, which lists the reports that differ from `HEAD`: the ones the update just rewrote. To also include report changes already committed on your branch, run the checker with the branch your PR targets, e.g. `node .agents/skills/update-ai-skills/check-ai-skills.js --changed origin/next`.
 
 The guidance check needs a local, up-to-date clone of clarity-guidance. It looks in `../clarity-guidance` next to this repo by default; pass `--guidance <dir>` otherwise. If it is missing, the check is skipped — ask the user for the path instead of guessing.
 
@@ -78,7 +78,7 @@ For each changed CIP:
 ## 4. Verify
 
 ```bash
-node .claude/skills/update-ai-skills/check-ai-skills.js
+node .agents/skills/update-ai-skills/check-ai-skills.js
 AI_CHECK="$(mktemp -d)"
 node scripts/copy-ai-files.js angular "$AI_CHECK/clr-angular"
 node scripts/copy-ai-files.js addons "$AI_CHECK/clr-addons"

@@ -2,18 +2,22 @@
 
 ## Public Packages
 
-This repository contains the code for two public packages:
+This repository contains the code for three public packages:
 
 - `@clr/ui` - Clarity UI package, which is a standalone CSS library for Clarity styles
 
-- `@clr/angular` - Clarity Angular package, which depends upon the other two packages to implement a set of Angular components
+- `@clr/angular` - Clarity Angular package, a set of Angular components
+
+- `@clr/addons` - Addons for Clarity, a set of `appfx-` Angular components
 
 ## Project Structure
 
-This repository consists of three projects:
+This repository consists of five projects:
 
 ```bash
 projects
+
+├── addons # Clarity addons (@clr/addons)
 
 ├── angular # All Angular Clarity components and styles (@clr/angular)
 
@@ -21,11 +25,13 @@ projects
 
 ├── ui # Extracted global CSS (@clr/ui)
 
+├── website # The Clarity website
+
 ```
 
 ## Build Process
 
-The build scripts in this repository have been designed to work with Node.js v16 or later.
+The build scripts in this repository require Node.js v24 or later and npm v11 or later.
 
 The build process consists of the following five stages. Each stage can be ran individually or all stages could be executed by running `npm run build:ci`. This is useful when submitting pull requests, because `npm run build:ci` is essentially the same command the CI system will run.
 
@@ -48,18 +54,16 @@ The build process consists of the following five stages. Each stage can be ran i
 
 Other commands
 
-- `npm run commit`: launches an interactive prompt to help format commit messages.
+- `npm run start`: serves Storybook for `@clr/angular`
 
-- `npm run preview`: performs a dry-run of the release process and shows you what a release would look like (branch must exist remotely).
+- `npm run start:demo`: serves and launches the demo project
 
-- `npm run start`: serves and launches the demo project
+- `npm run start:website`: serves the website
 
 ## Commit Hooks
 
-This repository uses Husky to execute the following client-side commit hooks.
+This repository uses Husky to execute the following client-side commit hook.
 
-- `pre-commit`: Before performing a commit, all staged files will be automatically linted.
-
-- `commit-msg`: All commit messages will be validated to ensure they conform this repository's commit message conventions. Non-conforming commits will be automatically blocked.
+- `pre-commit`: Before performing a commit, all staged files will be automatically linted (ESLint, Stylelint, and Prettier, through lint-staged).
 
 Although it is typically not recommended, you may bypass the commit hooks by adding the `--no-verify` flag to you `git commit` command.

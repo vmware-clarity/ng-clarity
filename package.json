@@ -9,9 +9,8 @@
   "scripts": {
     "build": "npm-run-all _build:angular _build:addons _build:ui _build:storybook _build:demo _build:website",
     "build:ci": "npm-run-all clean lint build test public-api:check",
-    "check-for-ai-skill-changes": "npm run public-api:update && node .claude/skills/update-ai-skills/check-ai-skills.js --changed",
+    "check-for-ai-skill-changes": "npm run public-api:update && node .agents/skills/update-ai-skills/check-ai-skills.js --changed",
     "clean": "rimraf dist",
-    "commit": "cz --signoff",
     "lint": "npm-run-all _lint:code _lint:styles _lint:format _lint:format-stories _lint:format-code-examples",
     "lint:fix": "npm-run-all _lint:code:fix _lint:styles:fix _lint:format:fix _lint:format-stories:fix _lint:format-code-examples:fix",
     "lint:changed": "npm-run-all _lint:code:changed _lint:styles:changed _lint:format:changed _lint:format-stories:changed _lint:format-code-examples:changed",
