@@ -540,6 +540,8 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
+    protected readonly noopAnimations: boolean;
+    // (undocumented)
     toggleExpand(): void;
     // (undocumented)
     set userExpandedInput(value: boolean | string);

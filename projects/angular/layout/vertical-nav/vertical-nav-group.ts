@@ -20,7 +20,13 @@ import {
   Output,
   ViewChild,
 } from '@angular/core';
-import { animateHeight, ClrCommonStringsService, IfExpandService, measureHeight } from '@clr/angular/utils';
+import {
+  animateHeight,
+  ClrCommonStringsService,
+  IfExpandService,
+  measureHeight,
+  noopAnimations,
+} from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
@@ -41,10 +47,11 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   @Output('clrVerticalNavGroupExpandedChange') expandedChange = new EventEmitter<boolean>(true);
 
   /**
-   * Set when Angular adds the children container (see the template): once the group is rendered, and only when
-   * animations are enabled, as Angular calls `animate.enter` handlers only then.
+   * Set when Angular adds the children container (see the template), once the group is rendered. Not with the noop
+   * animations, nor when animations are disabled with `ANIMATIONS_DISABLED`: Angular then calls no `animate.enter` handler.
    */
   protected animatesChildren = false;
+  protected readonly noopAnimations = noopAnimations();
 
   private wasExpanded = false;
   private _subscriptions: Subscription[] = [];
@@ -75,6 +82,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
           if (_navService.collapsed) {
             _navService.collapsed = false;
           }
+          this.animateChildrenExpand();
           this.expandAnimationState = EXPANDED_STATE;
         } else if (!value && this.expandAnimationState === EXPANDED_STATE) {
           this.expandAnimationState = COLLAPSED_STATE;
@@ -153,7 +161,11 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   }
 
   expandGroup(): void {
-    this.animateChildrenExpand();
+    // Setting `expanded` animates the children through the expandChange subscription, except when it stays true
+    // while the children collapse.
+    if (this.expanded) {
+      this.animateChildrenExpand();
+    }
     this.expanded = true;
     this.expandAnimationState = EXPANDED_STATE;
   }

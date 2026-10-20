@@ -8,7 +8,7 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { NoopAnimationsModule, provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 import { IfExpandService } from '@clr/angular/utils';
@@ -360,11 +360,51 @@ export default function (): void {
       expect(navGroup.expanded).toBeFalse();
     });
 
+    it('expands the children when clrIfExpanded is set', async () => {
+      fixture.componentInstance.expanded = true;
+      fixture.detectChanges();
+      await delay();
+
+      const [from, to] = heightKeyframes();
+      expect(from).toBe('0px');
+      expect(parseFloat(to as string)).toBeGreaterThan(0);
+    });
+
     function finishChildrenAnimations() {
       children()
         .getAnimations()
         .forEach(animation => animation.finish());
     }
+  });
+
+  describe('Vertical Nav Group with the noop animations', () => {
+    it('expands and collapses the children without animating them', async () => {
+      TestBed.configureTestingModule({
+        imports: [ClrVerticalNavModule, ClrIcon],
+        declarations: [AnimatedGroupTestComponent],
+        providers: [provideNoopAnimations()],
+        animationsEnabled: true,
+      });
+      const fixture = TestBed.createComponent(AnimatedGroupTestComponent);
+      fixture.detectChanges();
+      await delay();
+      const navGroup = fixture.componentInstance.navGroup;
+      const children: HTMLElement = fixture.nativeElement.querySelector('.nav-group-children');
+
+      navGroup.toggleExpand();
+      fixture.detectChanges();
+      await delay();
+      expect(children.getAnimations().length).toBe(0);
+      expect(navGroup.expanded).toBeTrue();
+
+      navGroup.toggleExpand();
+      fixture.detectChanges();
+      expect(children.getAnimations().length).toBe(0);
+      expect(navGroup.expanded).toBeFalse();
+      expect(fixture.nativeElement.querySelector('clr-vertical-nav-group-children')).toBeNull();
+
+      fixture.destroy();
+    });
   });
 }
 
@@ -432,7 +472,7 @@ class TemplateAPITestComponent {
     <clr-vertical-nav>
       <clr-vertical-nav-group #group>
         Group
-        <clr-vertical-nav-group-children *clrIfExpanded>
+        <clr-vertical-nav-group-children *clrIfExpanded="expanded">
           <a href="#" clrVerticalNavLink>Link</a>
         </clr-vertical-nav-group-children>
       </clr-vertical-nav-group>
@@ -442,4 +482,6 @@ class TemplateAPITestComponent {
 })
 class AnimatedGroupTestComponent {
   @ViewChild('group') navGroup: ClrVerticalNavGroup;
+
+  expanded = false;
 }
