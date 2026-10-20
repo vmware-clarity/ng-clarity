@@ -15,11 +15,11 @@ export function clrNormalizeContextText(text: string, lowercase = true): string 
 }
 
 /**
- * The text an element shows, without redacted, ignored or hidden descendants. Style is only judged
- * while the element is on the page; a closed combobox's options are read from markup.
+ * The text an element shows, without redacted, ignored or hidden descendants, with whitespace collapsed.
+ * Style is only judged while the element is on the page; a closed combobox's options are read from markup.
  */
 export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string {
-  return textWithin(element, skip, 0);
+  return clrNormalizeContextText(textWithin(element, skip, 0), false);
 }
 
 /** Script can nest deeper than the parser's 512; deeper content is dropped rather than overflow the stack. */
