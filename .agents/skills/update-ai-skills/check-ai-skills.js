@@ -10,7 +10,7 @@
 // Also checks the design guidance (https://guidance.clarity.design) cited by skills against a local clone of
 // https://github.com/vmware-clarity/clarity-guidance: reports cited CIPs that were updated after the date in the
 // skill's `guidance-<id>: '<date>'` metadata keys, CIPs that no longer exist, and guidance links not listed in metadata.
-// Usage (from the repo root): node .claude/skills/update-ai-skills/check-ai-skills.js [--changed <base-ref>] [--guidance <dir>]
+// Usage (from the repo root): node .agents/skills/update-ai-skills/check-ai-skills.js [--changed <base-ref>] [--guidance <dir>]
 //   --changed [ref]    also list which skill files cover each *.api.md that differs from <ref> (default: HEAD, i.e.
 //                      the reports `npm run public-api:update` just rewrote)
 //   --guidance <dir>   clarity-guidance clone (default: ../clarity-guidance next to this repo; skipped if absent)
