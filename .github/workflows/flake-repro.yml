@@ -1,6 +1,6 @@
 name: Flake Repro (website datagrid custom-filtering)
 # TEMPORARY: reproduces the flaky website/datagrid/code-custom-filtering snapshot in the same environment as the
-# PR Website Visual Regression Test job, with tests/website/flake-probe.ts recording the column measurements.
+# PR Website Visual Regression Test job. On this branch (next, Angular 21): a prediction round for the root cause.
 on:
   push:
     branches: ['flake/website-datagrid-custom-filtering-repro']
@@ -29,8 +29,12 @@ jobs:
           path: dist/website/
           retention-days: 3
 
-  repro:
-    name: Repro (${{ matrix.mode }} ${{ matrix.rep }})
+  # Predictions of the root cause (datagrid measures its columns once; if the badge font is not loaded yet, the
+  # widths come from the fallback font): with FLAKE_FORCE=1 (weight-500 Metropolis served slowly from a URL),
+  # every chromium variant and firefox regenerate their Pokemon-grid snapshots; with FLAKE_FORCE=0 nothing changes.
+  # On next (Angular 21), chromium dark compact must regenerate the same images as on the Angular 22 branch.
+  predict:
+    name: ${{ matrix.browser }} ${{ matrix.theme }} ${{ matrix.density }} force=${{ matrix.force }}
     needs: build-website
     timeout-minutes: 45
     runs-on: ubuntu-24.04
@@ -38,21 +42,19 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - { mode: datagrid, rep: 1 }
-          - { mode: datagrid, rep: 2 }
-          - { mode: datagrid, rep: 3 }
-          - { mode: datagrid, rep: 4 }
-          - { mode: datagrid, rep: 5 }
-          - { mode: datagrid, rep: 6 }
-          - { mode: full, rep: 1 }
-          - { mode: full, rep: 2 }
+          - { browser: chromium, theme: dark, density: compact, force: '1' }
+          - { browser: chromium, theme: light, density: compact, force: '1' }
+          - { browser: chromium, theme: dark, density: default, force: '1' }
+          - { browser: chromium, theme: light, density: default, force: '1' }
+          - { browser: firefox, theme: dark, density: compact, force: '1' }
+          - { browser: chromium, theme: dark, density: compact, force: '0' }
+          - { browser: firefox, theme: dark, density: compact, force: '0' }
     env:
-      CLARITY_VRT_BROWSER: chromium
-      CLARITY_VRT_THEME: dark
-      CLARITY_VRT_DENSITY: compact
+      CLARITY_VRT_BROWSER: ${{ matrix.browser }}
+      CLARITY_VRT_THEME: ${{ matrix.theme }}
+      CLARITY_VRT_DENSITY: ${{ matrix.density }}
       CLARITY_VRT_SUITE: website
-      FLAKE_PROBE: '1'
-      FLAKE_PROBE_JOB: ${{ matrix.mode }}-${{ matrix.rep }}-run${{ github.run_attempt }}
+      FLAKE_FORCE: ${{ matrix.force }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -60,27 +62,26 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'npm'
       - run: npm ci --ignore-scripts
-      - run: npx playwright install --with-deps chromium
+      - run: npx playwright install --with-deps ${{ matrix.browser }}
       - uses: actions/download-artifact@v4
         with:
           name: website-build
           path: dist/website/
-      - name: Run (datagrid page, repeated)
-        if: ${{ matrix.mode == 'datagrid' }}
-        continue-on-error: true
-        run: npx playwright test -g "chromium/website/datagrid$" --repeat-each 12 --retries 0 --reporter line
-      - name: Run (full website suite)
-        if: ${{ matrix.mode == 'full' }}
-        continue-on-error: true
-        run: npx playwright test --retries 0 --reporter line
-      - name: Summary
-        if: ${{ !cancelled() }}
-        run: node tests/website/flake-probe-summary.mjs test-results/flake-probe | tee -a "$GITHUB_STEP_SUMMARY"
+      - name: Run the datagrid page
+        run: |
+          mkdir -p flake-out
+          npx playwright test -g "${{ matrix.browser }}/website/datagrid$" --update-snapshots --reporter dot > flake-out/run.log 2>&1 || true
+          changed=$(git status --porcelain -- tests/snapshots | grep '\.png$' | awk '{print $2}')
+          echo "${{ matrix.browser }} ${{ matrix.theme }} ${{ matrix.density }} force=${{ matrix.force }} changed: ${changed:-none}" | tee -a flake-out/summary.txt
+          for f in $changed; do
+            echo "  $(git hash-object "$f") $f" | tee -a flake-out/summary.txt
+            cp "$f" "flake-out/$(echo "$f" | tr '/' '_')"
+          done
+          tail -3 flake-out/run.log | tee -a flake-out/summary.txt
+          cat flake-out/summary.txt >> "$GITHUB_STEP_SUMMARY"
       - uses: actions/upload-artifact@v4
         if: ${{ !cancelled() }}
         with:
-          name: flake-probe-${{ matrix.mode }}-${{ matrix.rep }}-run${{ github.run_attempt }}
-          path: |
-            test-results/flake-probe/
-            test-results/**/*custom-filtering*
+          name: predict-${{ matrix.browser }}-${{ matrix.theme }}-${{ matrix.density }}-force${{ matrix.force }}
+          path: flake-out/
           retention-days: 7
