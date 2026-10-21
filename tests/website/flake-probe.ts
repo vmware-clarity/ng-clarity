@@ -45,6 +45,23 @@ export async function installFlakeProbe(page: Page) {
       }
     }).observe(document, { subtree: true, attributes: true, attributeFilter: ['media'] });
 
+    // Main-thread long tasks and paints, on the same time base as the events (ms after this init script ran).
+    w.__flakeT0 = t0;
+    try {
+      new PerformanceObserver(list => {
+        for (const e of list.getEntries()) {
+          event(`longtask start=${Math.round(e.startTime - t0)} dur=${Math.round(e.duration)}`);
+        }
+      }).observe({ type: 'longtask', buffered: true });
+      new PerformanceObserver(list => {
+        for (const e of list.getEntries()) {
+          event(`paint ${e.name} start=${Math.round(e.startTime - t0)}`);
+        }
+      }).observe({ type: 'paint', buffered: true });
+    } catch {
+      event('performance observers unavailable');
+    }
+
     const scrollWidth = Object.getOwnPropertyDescriptor(Element.prototype, 'scrollWidth') as PropertyDescriptor;
     const sw = (el: Element) => (scrollWidth.get as () => number).call(el);
     const titles = 'User,Name,Creation,Pokemon,Favorite';
@@ -100,7 +117,7 @@ export async function installFlakeProbe(page: Page) {
                   badgeClass: badge?.className,
                 };
               }),
-              fonts: [...document.fonts].map(f => f.weight + f.status[0]).join(' '),
+              fonts: [...document.fonts].map(f => `${f.weight}:${f.status}`).join(' '),
               fontsStatus: document.fonts.status,
               sheets: document.styleSheets.length,
               stylesMedia: (document.querySelector('link[href^="styles-"]') as HTMLLinkElement | null)?.media,
@@ -135,7 +152,16 @@ export async function recordFlakeProbe(page: Page, testInfo: TestInfo, view: str
           r.querySelectorAll('clr-dg-cell')[1]?.textContent?.trim()
         ),
       }));
-    return { grids, measurements: w.__flakeProbe, events: w.__flakeEvents };
+    const t0 = w.__flakeT0 ?? 0;
+    const at = (v: number) => Math.round(v - t0);
+    const nav = performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming | undefined;
+    const navigation = nav
+      ? `responseEnd=${at(nav.responseEnd)} domInteractive=${at(nav.domInteractive)} dcl=${at(nav.domContentLoadedEventStart)} load=${at(nav.loadEventStart)}`
+      : null;
+    const resources = (performance.getEntriesByType('resource') as PerformanceResourceTiming[])
+      .filter(r => /\.(js|css|woff2?)$/.test(r.name.split('?')[0]))
+      .map(r => `${r.name.split('/').pop()} ${r.initiatorType} start=${at(r.startTime)} end=${at(r.responseEnd)}`);
+    return { grids, measurements: w.__flakeProbe, events: w.__flakeEvents, navigation, resources };
   });
 
   // Only views that show the Pokemon users grid are of interest.
