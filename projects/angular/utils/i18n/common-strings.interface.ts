@@ -392,4 +392,29 @@ export interface ClrCommonStrings {
    * Aria label of a collapsible card's toggle button while the card is expanded
    */
   collapseCardAriaLabel: string;
+
+  // Advanced filters: operator labels. The same operator can have a different label per field type.
+  advancedFilterContains: string;
+  advancedFilterNotContains: string;
+  advancedFilterEquals: string;
+  advancedFilterNotEquals: string;
+  advancedFilterStartsWith: string;
+  advancedFilterEndsWith: string;
+  advancedFilterIsEmpty: string;
+  advancedFilterEqualTo: string;
+  advancedFilterNotEqualTo: string;
+  advancedFilterLessThan: string;
+  advancedFilterLessThanOrEqual: string;
+  advancedFilterGreaterThan: string;
+  advancedFilterGreaterThanOrEqual: string;
+  advancedFilterBetween: string;
+  advancedFilterTrue: string;
+  advancedFilterFalse: string;
+  advancedFilterOnDate: string;
+  advancedFilterBefore: string;
+  advancedFilterBeforeOrEqual: string;
+  advancedFilterAfter: string;
+  advancedFilterAfterOrEqual: string;
+  advancedFilterBetweenDates: string;
+  advancedFilterInSet: string;
 }
