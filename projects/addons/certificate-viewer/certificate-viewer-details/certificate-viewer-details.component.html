@@ -19,7 +19,7 @@
 
   <clr-tree class="content">
     <clr-tree-node
-      *clrRecursiveFor="let certificate of certificateChain?.rootCertificate; getChildren: getNextCertificate"
+      *clrRecursiveFor="let certificate of certificateChain?.rootCertificate ?? null; getChildren: getNextCertificate"
       [clrExpanded]="true"
     >
       <button
@@ -49,7 +49,7 @@
 
   <clr-tree class="content">
     <clr-tree-node
-      *clrRecursiveFor="let field of this.selectedCertificate?.rootField; getChildren: getFieldsChildren"
+      *clrRecursiveFor="let field of this.selectedCertificate?.rootField ?? null; getChildren: getFieldsChildren"
       [clrExpanded]="true"
     >
       <button

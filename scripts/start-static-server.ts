@@ -5,12 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import * as express from 'express';
+import express from 'express';
 import * as path from 'path';
 
 // Serves a built app directory for the visual regression tests.
 //
-// Usage: ts-node ./scripts/start-static-server.ts <root> <port> [--spa]
+// Usage: node --experimental-strip-types ./scripts/start-static-server.ts <root> <port> [--spa]
 //
 // --spa: fall back to index.html for unknown paths. The website is a single-page application,
 // so its routes must resolve to index.html (the same behavior as the redirect rule in

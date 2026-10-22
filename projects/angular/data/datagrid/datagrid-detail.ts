@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, Input } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrDatagridDetailHeader } from './datagrid-detail-header';
@@ -39,6 +39,7 @@ import { DEFAULT_DETAIL_WIDTH, DetailService, MAX_DETAIL_WIDTH, MIN_DETAIL_WIDTH
     }
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrDatagridDetail {
   @Input('clrDetailAriaLabelledBy') ariaLabelledBy: string;

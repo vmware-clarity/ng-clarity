@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrTimelineStepHeader } from './timeline-step-header';
@@ -42,6 +42,7 @@ export default function (): void {
 
 @Component({
   template: `<clr-timeline-step-header>Header Content</clr-timeline-step-header>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestTimelineStepHeader {}

@@ -133,8 +133,8 @@ async function compileStackBlitzExampleTemplate() {
 
   for (const dependency of Object.keys(templatePackageManifest.dependencies || {})) {
     if (clarityPackages.includes(dependency)) {
-      // @clr/* versions stay as CLARITY_VERSION_PLACEHOLDER and are patched
-      // post-release in the CI workflow with the actual released version
+      // @clr/* keep the template's range on the documented major, prereleases included. The three packages are
+      // released together, so they resolve to the same version.
       continue;
     }
     if (repoDeps[dependency]) {
@@ -148,6 +148,17 @@ async function compileStackBlitzExampleTemplate() {
         templatePackageManifest.devDependencies[devDependency] = repoDeps[devDependency];
       }
     }
+  }
+
+  if (templatePackageManifest.overrides?.esbuild) {
+    // StackBlitz WebContainers can't run esbuild's native binary, so the template swaps in esbuild-wasm. It has to
+    // match the esbuild version that @angular/build pins, taken from the lockfile so build updates keep it in sync.
+    const repoLockfile = require(path.resolve(PROJECT_ROOT, '../../package-lock.json'));
+    const esbuildVersion = repoLockfile.packages['node_modules/@angular/build']?.dependencies?.esbuild;
+    if (!esbuildVersion) {
+      throw new Error('Cannot find the esbuild version of @angular/build in package-lock.json');
+    }
+    templatePackageManifest.overrides.esbuild = `npm:esbuild-wasm@${esbuildVersion}`;
   }
 
   files['package.json'] = JSON.stringify(templatePackageManifest, undefined, 2);

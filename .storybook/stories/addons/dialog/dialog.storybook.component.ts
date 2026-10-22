@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AppfxMultiPageDialogModule } from '@clr/addons/dialog';
 import { Step, StepModel, StepModelHolder, TabLayout, Var } from '@clr/addons/var';
 
@@ -36,6 +36,7 @@ class DialogWorkflowModel {}
       />
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DialogNameStepComponent implements StepModelHolder {
   model: NameModel;
@@ -46,6 +47,7 @@ export class DialogNameStepComponent implements StepModelHolder {
   standalone: true,
   imports: [CommonModule],
   template: '<p>Ready to complete.</p>',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DialogReviewStepComponent {}
 
@@ -66,6 +68,7 @@ export class DialogReviewStepComponent {}
       [showTabLinks]="showTabLinks"
     ></appfx-dialog>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DialogStoryWrapperComponent implements OnInit {
   title = 'Dialog Title';

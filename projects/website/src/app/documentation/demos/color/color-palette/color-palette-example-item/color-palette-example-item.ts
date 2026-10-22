@@ -7,7 +7,7 @@
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
 import { NgClass, NgStyle } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import { CssVariablePipe } from '../../../../../shared/pipes/css-variable.pipe';
 
@@ -15,6 +15,7 @@ import { CssVariablePipe } from '../../../../../shared/pipes/css-variable.pipe';
   selector: 'clr-color-palette-example-item',
   templateUrl: './color-palette-example-item.html',
   styleUrl: 'color-palette-example-item.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, NgStyle, CssVariablePipe],
 })
 export class ColorPaletteExampleItem {

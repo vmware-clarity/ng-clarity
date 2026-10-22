@@ -5,7 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, EmbeddedViewRef, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EmbeddedViewRef,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 import { AppfxCard } from '@clr/addons/card-container';
 
 // mock for container service
@@ -61,6 +68,7 @@ export class MockRenderer2 {
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   styles: [
     '.scrollable { overflow: auto; position: absolute; left: 0; right: 0; top: 0; bottom: 0; max-height: 20px; }',
   ],
@@ -72,6 +80,7 @@ export class MockCardContainerComponent {
 // Sample Card to test scenarios
 @Component({
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="card">
       <div class="card-header">
@@ -93,6 +102,7 @@ export class SampleCardComponent {
 // Sample Card to without footer test scenarios
 @Component({
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="card">
       <div class="card-header">
@@ -113,6 +123,7 @@ export class SampleCardWithoutFooterComponent {
 // Sample Card to without header test scenarios
 @Component({
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="card">
       <div class="card-block">

@@ -9,6 +9,7 @@ import type { QueryList } from '@angular/core';
 import {
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -55,6 +56,7 @@ import { SummaryModel } from './summary/summary.model';
  */
 @Component({
   selector: 'appfx-wizard',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   templateUrl: 'wizard.component.html',
   styleUrls: ['wizard.component.scss'],
@@ -603,7 +605,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
 /**
  * Reason for Wizard close.
  */
-export const enum Reason {
+export enum Reason {
   /**
    * Wizard closed by clicking finish button.
    */

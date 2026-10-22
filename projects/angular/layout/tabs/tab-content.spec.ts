@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild, ViewContainerRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, ViewContainerRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IF_ACTIVE_ID_PROVIDER, IfActiveService } from '@clr/angular/utils';
 
@@ -15,6 +15,7 @@ import { ClrTabContent } from './tab-content';
 @Component({
   selector: 'test-wrapper',
   template: `<ng-container #tabContentViewContainer></ng-container>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestWrapper {
@@ -32,6 +33,7 @@ class TestWrapper {
       <clr-tab-content>Content1</clr-tab-content>
     </test-wrapper>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {}

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { arrowIcon, ClarityIcons, ClrIcon } from '@clr/angular';
 
@@ -22,6 +22,7 @@ export interface LinkCardsLink {
   selector: 'app-link-cards',
   templateUrl: './link-cards.component.html',
   styleUrl: './link-cards.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterModule, ClrIcon, ThemedImageComponent],
 })
 export class LinkCardsComponent {

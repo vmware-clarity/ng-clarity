@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -27,6 +27,7 @@ const dangerText = 'Error in step {STEP}';
       </clr-stepper-panel>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class TestClrStepperComponent {

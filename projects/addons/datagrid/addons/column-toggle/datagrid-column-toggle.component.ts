@@ -6,7 +6,17 @@
  */
 
 import { CdkConnectedOverlay, ConnectionPositionPair } from '@angular/cdk/overlay';
-import { Component, ElementRef, EventEmitter, HostBinding, Input, OnDestroy, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
+} from '@angular/core';
 
 import { DatagridStrings } from '../../i18n/datagrid-strings.service';
 import { ColumnHiddenState } from '../../interfaces/column-state';
@@ -17,6 +27,7 @@ import { ColumnDefinition } from '../../shared/column/column-definitions';
   standalone: false,
   templateUrl: 'datagrid-column-toggle.component.html',
   styleUrls: ['datagrid-column-toggle.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridColumnToggleComponent implements OnDestroy {
   @HostBinding('class') layoutClass = 'column-switch-wrapper';

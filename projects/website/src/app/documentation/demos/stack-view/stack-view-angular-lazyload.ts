@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } from '@clr/angular';
 
 import { RemoveStackViewHeadingsDirective } from './remove-stack-view-headings.directive';
@@ -52,7 +52,7 @@ const EXAMPLE = `
 `;
 
 const CODE = `
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrModalModule, ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } from '@clr/angular';
 
@@ -64,6 +64,8 @@ import { ClrModalModule, ClrSpinnerModule, ClrStackBlock, ClrStackViewModule } f
   imports: [FormsModule, ClrStackViewModule, ClrModalModule, ClrSpinnerModule],
 })
 export class ExampleComponent {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   @ViewChild('lazyBlock', { static: true }) lazyBlock!: ClrStackBlock;
 
   editModal = false;
@@ -97,6 +99,8 @@ export class ExampleComponent {
         { title: 'Sub-label 2', content: 'Sub-content 2' },
         { title: 'Sub-label 3', content: 'Sub-content 3' },
       ];
+
+      this.changeDetectorRef.markForCheck();
     }, 2000);
   }
 }
@@ -106,6 +110,7 @@ export class ExampleComponent {
   selector: 'clr-stack-view-angular-lazyload-demo',
   templateUrl: './stack-view-angular-lazyload.html',
   styleUrl: './stack-view.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrStackViewModule, RemoveStackViewHeadingsDirective, ClrSpinnerModule, StackblitzExampleComponent],
 })
 export class StackViewAngularLazyloadDemo extends StackViewNgDemo {

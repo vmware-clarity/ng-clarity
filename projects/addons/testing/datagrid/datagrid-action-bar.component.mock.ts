@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ActionDefinition } from '@clr/addons/datagrid';
 
 @Component({
   selector: 'appfx-datagrid-action-bar',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @for (action of actions; track action) {
       <button

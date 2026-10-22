@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -13,6 +13,7 @@ import { ClrCardBody } from './card-body';
 import { ClrCardModule } from './card.module';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<clr-card-body>Hello world</clr-card-body>`,
   standalone: false,
 })
