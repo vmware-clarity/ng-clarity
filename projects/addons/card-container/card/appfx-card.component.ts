@@ -5,7 +5,6 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, style, transition, trigger } from '@angular/animations';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import {
   AfterViewInit,
@@ -28,6 +27,7 @@ import {
   defaultMissingTranslationHandler,
 } from '@clr/addons/translate';
 import { ClarityIcons, dragHandleIcon } from '@clr/angular/icon';
+import { noopAnimations } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -59,15 +59,6 @@ import { LayoutService } from '../services/layout.service';
       useValue: translations,
     },
   ],
-  animations: [
-    trigger('cardAnimation', [
-      transition(':enter', [
-        style({ opacity: 0, transform: 'translateX(-100%)' }),
-        animate('200ms ease-in', style({ opacity: 1, transform: 'translateX(0%)' })),
-      ]),
-      transition(':leave', [animate('200ms ease-in', style({ opacity: 0, transform: 'translateX(0%)' }))]),
-    ]),
-  ],
 })
 export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   /**
@@ -84,6 +75,9 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   @ViewChild(CdkDropList, { static: true }) readonly dropList: CdkDropList;
 
   dragDropEnabled: boolean = true;
+
+  /** Cards slide in, unless the application turned animations off with `provideNoopAnimations()`. */
+  protected readonly enterClass = noopAnimations() ? '' : 'clr-fade-slide-right-enter';
 
   @ViewChild(CdkDrag, { read: ElementRef }) private cdkDragElementRefs: ElementRef;
 

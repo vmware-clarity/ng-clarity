@@ -9,8 +9,7 @@ import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import * as _angular_animations from '@angular/animations';
-import { AnimationBuilder } from '@angular/animations';
-import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
+import { AnimationCallbackEvent } from '@angular/core';
 import { AnimationMetadata } from '@angular/animations';
 import { ApplicationRef } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -515,12 +514,15 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point clr-angular-layout.d.ts
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService" needs to be exported by the entry point clr-angular-layout.d.ts
     constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
+    protected animatesChildren: boolean;
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // (undocumented)
-    expandAnimationDone($event: AnimationEvent_2): void;
+    // @deprecated (undocumented)
+    expandAnimationDone(_$event: {
+        toState: string;
+    }): void;
     // (undocumented)
     get expandAnimationState(): string;
     set expandAnimationState(value: string);
@@ -535,6 +537,8 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    protected readonly noopAnimations: boolean;
     // (undocumented)
     toggleExpand(): void;
     // (undocumented)
