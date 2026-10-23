@@ -102,6 +102,17 @@ export function withoutUrlDetails(
   return shared;
 }
 
+/** The context as an untrusted consumer may see it, unless the host shares more. */
+export function contextForUntrustedCaller(
+  context: ClrPageContext,
+  share: { shareFormValues?: boolean; shareFullUrl?: boolean },
+  routePattern?: (url: URL) => string | null,
+  baseUrl?: string
+): ClrPageContext {
+  const shared = share.shareFormValues ? context : withoutFormValues(context);
+  return share.shareFullUrl ? shared : withoutUrlDetails(shared, routePattern, baseUrl);
+}
+
 interface AddressScope {
   origin: string | null;
   resolveAgainst: string | null;
