@@ -10,6 +10,7 @@ import { ClrAccordionModule, ClrDatagridModule, ClrIfExpanded } from '@clr/angul
 
 import { AngularAccordionDemo } from './angular-accordion.demo';
 import { ApiAccordionDemo } from './api-accordion.demo';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ComponentList, NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
@@ -36,6 +37,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     ApiAccordionDemo,
     StyleDocsComponent,
     NestingTableComponent,
+    AiSkillComponent,
   ],
 })
 export class AccordionDemo extends ClarityDocComponent {

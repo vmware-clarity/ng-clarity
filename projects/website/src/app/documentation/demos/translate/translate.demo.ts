@@ -31,6 +31,7 @@ import {
   successStandardIcon,
 } from '@clr/angular';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -80,6 +81,7 @@ const DefaultTs = require('!raw-loader!./ng/default.ts').default;
     FormsModule,
     StackblitzExampleComponent,
     AppfxTranslateModule,
+    AiSkillComponent,
   ],
 })
 export class TranslateAddonDemo extends ClarityDocComponent {

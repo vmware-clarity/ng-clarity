@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { LayoutAllDemo } from './layout-all';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -31,6 +32,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     ThemedImageComponent,
     DoDontComponent,
     StyleDocsComponent,
+    AiSkillComponent,
   ],
 })
 export class AppLayoutDemo extends ClarityDocComponent {
