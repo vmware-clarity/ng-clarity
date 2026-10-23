@@ -4375,11 +4375,16 @@ export class ClrLoadingButton implements LoadingListener {
     // (undocumented)
     buttonState: typeof ClrLoadingState;
     // (undocumented)
+    protected readonly checkMarkClass: string;
+    // (undocumented)
     clrLoadingChange: EventEmitter<ClrLoadingState>;
     // (undocumented)
     disabled: boolean;
     // (undocumented)
     el: ElementRef<HTMLButtonElement>;
+    protected enterClass: string;
+    // (undocumented)
+    protected readonly leaveClass: string;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
