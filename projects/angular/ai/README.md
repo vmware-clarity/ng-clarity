@@ -116,7 +116,7 @@ in front of the model could then fill any bound field on the page, including one
 The engine describes UI by reading the **accessibility tree** rather than Clarity-specific
 selectors, so it covers Clarity Angular components, `@clr/ui` CSS-only markup, other component
 libraries and plain semantic HTML with one implementation. Components publish only the state ARIA
-cannot express, through `clrPublishElementContext` from `@clr/angular/utils` — which is why a
+cannot express, through `publishElementContext` from `@clr/angular/utils` — which is why a
 component that publishes context does not depend on this entry point.
 
 Through custom extractors it also reaches other UI libraries. Callers the application does not
@@ -133,7 +133,7 @@ excluded or redacted control, option, radio or row; size budgets and summary mod
 snapshot lists, not what can be written); and does nothing at all until the application provides a
 `ClrMutationPolicy` classifying what each operation would do. Components whose value is not what an
 agent sees — the combobox, the date input, the datagrid's row selection — say how they are written
-to through `clrPublishElementMutator` from `@clr/angular/utils`.
+to through `publishElementMutator` from `@clr/angular/utils`.
 
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
 model, never instructions: delimit it in prompts, and let the policy judge each operation's target

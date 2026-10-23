@@ -813,7 +813,7 @@
   </thead>
   <tbody>
     <tr>
-      <td class="left"><b cds-text="medium">clrPublishElementContext(host, callback)</b></td>
+      <td class="left"><b cds-text="medium">publishElementContext(host, callback)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
         Publishes a callback on the host element, returning the teardown to run on destroy. The teardown removes only
@@ -825,7 +825,7 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">clrPublishElementMutator(host, mutator)</b></td>
+      <td class="left"><b cds-text="medium">publishElementMutator(host, mutator)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
         Says how the component is written to, for the mutation engine. <code cds-text="code">coerce(proposed)</code>
@@ -840,7 +840,7 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">clrContextText(element, skip?)</b></td>
+      <td class="left"><b cds-text="medium">contextText(element, skip?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
       <td class="left">
         The text an element shows, as a publisher may report it: text inside a redacted or ignored descendant, text
@@ -850,7 +850,7 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">clrNormalizeContextText(text, lowercase?)</b></td>
+      <td class="left"><b cds-text="medium">normalizeContextText(text, lowercase?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
       <td class="left">
         Text as the engine compares it — whitespace collapsed, and lowercased unless told otherwise — so a publisher and
@@ -858,7 +858,7 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">clrUsableSelectors(root, selectors)</b></td>
+      <td class="left"><b cds-text="medium">usableSelectors(root, selectors)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">string</code></td>
       <td class="left">
         The selectors <code cds-text="code">root</code>'s document accepts, joined into one, or

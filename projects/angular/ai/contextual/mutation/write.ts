@@ -13,8 +13,8 @@ import {
   ClrContextSnapshotOptions,
   ClrElementMutation,
   ClrElementMutator,
-  clrNormalizeContextText,
-  clrUsableSelectors,
+  normalizeContextText,
+  usableSelectors,
 } from '@clr/angular/utils';
 
 import { ContextRefTarget } from './context-ref-registry.service';
@@ -88,10 +88,10 @@ const UNBOUND_DETAIL =
 const KEPT_CHOICE_DETAIL = 'The current choice is kept from agents, and cannot be changed by one.';
 
 const STRUCTURED_VALUE_DETAIL =
-  'The control holds an object or a list, which the value its role suggests would replace. It can publish a mutator (clrPublishElementMutator from @clr/angular/utils).';
+  'The control holds an object or a list, which the value its role suggests would replace. It can publish a mutator (publishElementMutator from @clr/angular/utils).';
 
 const CHOICE_VALUE_DETAIL =
-  'The group holds something other than one of its radios’ labels, so choosing one by its label would store the wrong thing. It can publish a mutator (clrPublishElementMutator from @clr/angular/utils).';
+  'The group holds something other than one of its radios’ labels, so choosing one by its label would store the wrong thing. It can publish a mutator (publishElementMutator from @clr/angular/utils).';
 
 const OBSTACLE_DETAILS = {
   hidden: 'The control is not currently shown to the user, or sits behind an open modal dialog.',
@@ -143,7 +143,7 @@ export function resolveWriteTarget(
       return {
         refused: 'unsupported',
         detail:
-          'This custom control does not say how it is written to. It can publish a mutator (clrPublishElementMutator from @clr/angular/utils).',
+          'This custom control does not say how it is written to. It can publish a mutator (publishElementMutator from @clr/angular/utils).',
       };
     }
     if (kind === 'select' && bound?.updateOn === 'submit') {
@@ -596,8 +596,7 @@ function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {
     const matches = all.filter(candidate => optionMatches(candidate, entry));
     // Two options can read the same: only a value naming exactly one tells which.
     const byValue = matches.filter(
-      candidate =>
-        typeof entry === 'string' && clrNormalizeContextText(candidate.value) === clrNormalizeContextText(entry)
+      candidate => typeof entry === 'string' && normalizeContextText(candidate.value) === normalizeContextText(entry)
     );
     const option = matches.length > 1 ? (byValue.length === 1 ? byValue[0] : undefined) : matches[0];
     if (matches.length > 1 && !option) {
@@ -629,8 +628,7 @@ function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {
   const radioLabel = (radio: HTMLInputElement) => radioLabelWithin(radio, withheld);
   const usable = radios.filter(radio => !writeObstacle(radio, target.knownModals));
   const chosen = radios.find(
-    radio =>
-      typeof proposed === 'string' && clrNormalizeContextText(radioLabel(radio)) === clrNormalizeContextText(proposed)
+    radio => typeof proposed === 'string' && normalizeContextText(radioLabel(radio)) === normalizeContextText(proposed)
   );
   if (!chosen) {
     return { refused: `No such option. The options are: ${listLabels(usable.map(radioLabel))}.` };
@@ -655,7 +653,7 @@ function coerceChoice(target: WriteTarget, proposed: unknown): Coerced {
   const labelOfRadio = (radio: Element) => accessibleName(radio, 'radio', MAX_LABEL_LENGTH, withheld);
   const chosen = shown.find(
     radio =>
-      typeof proposed === 'string' && clrNormalizeContextText(labelOfRadio(radio)) === clrNormalizeContextText(proposed)
+      typeof proposed === 'string' && normalizeContextText(labelOfRadio(radio)) === normalizeContextText(proposed)
   );
   if (!chosen) {
     return { refused: `No such option. The options are: ${listLabels(usable.map(labelOfRadio))}.` };
@@ -672,9 +670,9 @@ function holdsChoiceLabel(group: Element, value: unknown): boolean {
     return true;
   }
   const labels = customRadiosOf(group).map(radio =>
-    clrNormalizeContextText(accessibleName(radio, 'radio', MAX_LABEL_LENGTH))
+    normalizeContextText(accessibleName(radio, 'radio', MAX_LABEL_LENGTH))
   );
-  return typeof value === 'string' && labels.includes(clrNormalizeContextText(value));
+  return typeof value === 'string' && labels.includes(normalizeContextText(value));
 }
 
 function customRadiosOf(group: Element): Element[] {
@@ -716,7 +714,7 @@ function radioLabelWithin(radio: HTMLInputElement, withheld = ''): string {
 }
 
 function withheldBy(element: Element, options?: Required<ClrContextSnapshotOptions>): string {
-  return options ? clrUsableSelectors(element.ownerDocument, options.excludeSelectors) : '';
+  return options ? usableSelectors(element.ownerDocument, options.excludeSelectors) : '';
 }
 
 function labelOf(elements: Element[], withheld: string): string {
@@ -734,8 +732,8 @@ function optionMatches(option: HTMLOptionElement, proposed: unknown): boolean {
   if (typeof proposed !== 'string') {
     return false;
   }
-  const wanted = clrNormalizeContextText(proposed);
-  return clrNormalizeContextText(optionLabel(option)) === wanted || clrNormalizeContextText(option.value) === wanted;
+  const wanted = normalizeContextText(proposed);
+  return normalizeContextText(optionLabel(option)) === wanted || normalizeContextText(option.value) === wanted;
 }
 
 function optionLabel(option: HTMLOptionElement): string {

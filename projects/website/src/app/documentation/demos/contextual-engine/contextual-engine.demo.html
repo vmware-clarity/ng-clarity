@@ -269,9 +269,9 @@
     <p class="clr-mt-16px" cds-text="body">
       Some state lives only inside component instances — a combobox's options render in a popover, yet the component
       always knows them. Any component can publish that truth with
-      <code cds-text="code">clrPublishElementContext</code> from <code cds-text="code">&#64;clr/angular/utils</code>.
-      The collector calls it while scraping and merges the result over what the DOM showed. The combobox, datagrid,
-      wizard, stepper panel, timeline step, tree node, alert, file input and datepicker ship this built in; the
+      <code cds-text="code">publishElementContext</code> from <code cds-text="code">&#64;clr/angular/utils</code>. The
+      collector calls it while scraping and merges the result over what the DOM showed. The combobox, datagrid, wizard,
+      stepper panel, timeline step, tree node, alert, file input and datepicker ship this built in; the
       <a routerLink="/documentation/contextual-engine/api" fragment="published-state">API tab</a> lists what each
       publishes.
     </p>
@@ -525,7 +525,7 @@
         A combobox of your own whose popover lists only the options matching what the user typed tells every consumer
         what was typed through those options. Mark the popover <code cds-text="code">data-clr-context-ignore</code>, as
         <code cds-text="code">clr-combobox</code> does, and publish the options through
-        <code cds-text="code">clrPublishElementContext</code> as <code cds-text="code">matchingOptions</code> (or
+        <code cds-text="code">publishElementContext</code> as <code cds-text="code">matchingOptions</code> (or
         <code cds-text="code">matchingOptionCount</code>), which the engine withholds from consumers you do not control;
         a key of your own is shared with them.
       </li>
@@ -570,9 +570,9 @@
     </ul>
     <p class="clr-mt-16px" cds-text="body">
       A component whose value is not what an agent sees, or whose state is not a form control at all, says how it is
-      written to with <code cds-text="code">clrPublishElementMutator</code> from
+      written to with <code cds-text="code">publishElementMutator</code> from
       <code cds-text="code">&#64;clr/angular/utils</code> — the mirror of
-      <code cds-text="code">clrPublishElementContext</code>. <code cds-text="code">ClrCombobox</code>,
+      <code cds-text="code">publishElementContext</code>. <code cds-text="code">ClrCombobox</code>,
       <code cds-text="code">ClrDateInput</code> and <code cds-text="code">ClrDatagrid</code> ship this built in.
     </p>
     <div class="clr-mt-16px">

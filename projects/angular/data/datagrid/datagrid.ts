@@ -37,13 +37,13 @@ import {
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
-  clrContextText,
   ClrElementMutation,
-  clrNormalizeContextText,
-  clrPublishElementContext,
-  clrPublishElementMutator,
-  clrUsableSelectors,
+  contextText,
+  normalizeContextText,
+  publishElementContext,
+  publishElementMutator,
   uniqueIdFactory,
+  usableSelectors,
 } from '@clr/angular/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
@@ -325,7 +325,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngAfterContentInit() {
-    this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions =>
+    this.teardownElementContext = publishElementContext(this.el.nativeElement, snapshotOptions =>
       this.withRowCells(() => this.describeForContext(snapshotOptions))
     );
 
@@ -710,7 +710,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     if (this.teardownElementMutator) {
       return;
     }
-    this.teardownElementMutator = clrPublishElementMutator(this.el.nativeElement, {
+    this.teardownElementMutator = publishElementMutator(this.el.nativeElement, {
       // `coerce` judges a write without making it, so a plan sees the refusal the write would meet.
       coerce: (proposed, options): ClrElementMutation =>
         this.withRowCells(() => {
@@ -893,15 +893,15 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     const rows = this.rows.toArray().filter(row => !!this.rowLabel(row, excluded));
     const wanted =
       typeof label === 'string' || typeof label === 'number' || typeof label === 'boolean'
-        ? clrNormalizeContextText(String(label))
+        ? normalizeContextText(String(label))
         : '';
     if (!wanted) {
       return { refused: 'A row is named by its content, as the published rows list it.' };
     }
-    const byLabel = rows.filter(row => clrNormalizeContextText(this.rowLabel(row, excluded)) === wanted);
+    const byLabel = rows.filter(row => normalizeContextText(this.rowLabel(row, excluded)) === wanted);
     const matches = byLabel.length
       ? byLabel
-      : rows.filter(row => this.rowCells(row, excluded).some(cell => clrNormalizeContextText(cell) === wanted));
+      : rows.filter(row => this.rowCells(row, excluded).some(cell => normalizeContextText(cell) === wanted));
     if (matches.length === 1) {
       return { row: matches[0] };
     }
@@ -950,7 +950,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   private excludedBy(options: { excludeSelectors?: readonly string[] } | null | undefined): string {
-    return clrUsableSelectors(this.el.nativeElement, options?.excludeSelectors ?? []);
+    return usableSelectors(this.el.nativeElement, options?.excludeSelectors ?? []);
   }
 
   /** The row's content cells as the user sees them, without grid-added, hidden, detail or withheld cells. */
@@ -989,7 +989,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         const nearest = cell.closest(leftOut);
         return !nearest || !host.contains(nearest);
       })
-      .map(cell => clrContextText(cell, element => element.matches(withheld)))
+      .map(cell => contextText(cell, element => element.matches(withheld)))
       .filter(Boolean);
   }
 }
@@ -1022,5 +1022,5 @@ function headerText(title: Element, excluded: string): string {
   const copy = title.cloneNode(true) as Element;
   const copies = Array.from(copy.querySelectorAll('*'));
   const skipped = new Set(copies.filter((_, index) => descendants[index].matches(skip)));
-  return clrContextText(copy, descendant => skipped.has(descendant));
+  return contextText(copy, descendant => skipped.has(descendant));
 }

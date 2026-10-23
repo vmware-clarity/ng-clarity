@@ -35,6 +35,6 @@ export interface ClrElementMutator {
 }
 
 /** Publishes a mutator on the host element. The teardown only removes the mutator it published. */
-export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void {
+export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void {
   return publishOnElement(host, CLR_ELEMENT_MUTATOR_PROPERTY, mutator);
 }

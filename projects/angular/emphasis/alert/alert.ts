@@ -17,7 +17,7 @@ import {
   Output,
   Renderer2,
 } from '@angular/core';
-import { ClrCommonStringsService, clrPublishElementContext } from '@clr/angular/utils';
+import { ClrCommonStringsService, publishElementContext } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
@@ -111,7 +111,7 @@ export class ClrAlert implements OnInit, OnDestroy {
 
   ngOnInit() {
     // The alert type is only a CSS class, so the component reports it.
-    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () =>
+    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () =>
       this._closed ? null : { state: { severity: this.alertType } }
     );
 

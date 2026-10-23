@@ -10,7 +10,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityModule } from '@clr/angular';
-import { ClrComponentContext, ClrContextSnapshotOptions, clrPublishElementContext } from '@clr/angular/utils';
+import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext } from '@clr/angular/utils';
 
 import { clrCollectDomContextTree } from './dom-context-collector';
 
@@ -147,7 +147,7 @@ describe('DOM context collector - Clarity Angular components', () => {
     const closed = document.createElement('clr-closed-widget');
     host.appendChild(closed);
     document.body.appendChild(host);
-    const teardown = clrPublishElementContext(closed, () => null);
+    const teardown = publishElementContext(closed, () => null);
     try {
       expect(collectComponents(host)).toEqual([]);
     } finally {
@@ -434,7 +434,7 @@ describe('DOM context collector - component-published context', () => {
 
   it('merges what a component publishes over what the DOM shows', () => {
     root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
-    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       label: 'Component label',
       state: { options: ['a', 'b', 'c'], loaded: true },
     }));
@@ -448,7 +448,7 @@ describe('DOM context collector - component-published context', () => {
 
   it('lets a publisher supply the options a closed popover does not render', () => {
     root.innerHTML = '<label for="f">Fruit</label><fake-combobox><input id="f" role="combobox" /></fake-combobox>';
-    clrPublishElementContext(root.querySelector('fake-combobox') as Element, () => ({
+    publishElementContext(root.querySelector('fake-combobox') as Element, () => ({
       state: { options: ['Apple', 'Pear'], value: 'Apple' },
     }));
 
@@ -462,7 +462,7 @@ describe('DOM context collector - component-published context', () => {
   it('treats a publisher that throws as having nothing to add', () => {
     spyOn(console, 'warn');
     root.innerHTML = '<clr-fake-widget aria-label="DOM label">content</clr-fake-widget>';
-    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => {
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => {
       throw new Error('broken publisher');
     });
 
@@ -478,7 +478,7 @@ describe('DOM context collector - component-published context', () => {
 
   it('never lets a publisher hand out a ref, which only the engine may mint', () => {
     root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
-    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       ref: 'e-forged',
       children: [{ type: 'button', label: 'Delete', ref: 'e-other' }],
     }));
@@ -495,7 +495,7 @@ describe('DOM context collector - component-published context', () => {
     const host = root.querySelector('clr-fake-widget') as Element;
     const circular: Record<string, unknown> = {};
     circular['self'] = circular;
-    clrPublishElementContext(host, () => ({
+    publishElementContext(host, () => ({
       children: [
         { type: 'option', label: 'A', state: { node: host, fn: () => 1, circular, name: 'x'.repeat(500) } },
         { type: 42, label: 'no type' } as never,
@@ -517,7 +517,7 @@ describe('DOM context collector - component-published context', () => {
 
   it('holds published labels and strings to the text budget', () => {
     root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
-    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       label: 'L'.repeat(300),
       state: { rows: ['R'.repeat(300)] },
     }));
@@ -532,7 +532,7 @@ describe('DOM context collector - component-published context', () => {
     root.innerHTML = '<clr-fake-widget aria-label="Widget">content</clr-fake-widget>';
     const circular: Record<string, unknown> = { name: 'loop' };
     circular['self'] = circular;
-    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       state: { model: circular, count: 2 },
     }));
 
@@ -546,11 +546,11 @@ describe('DOM context collector - component-published context', () => {
     root.innerHTML =
       '<fake-combobox><input role="combobox" aria-label="Fruit" /></fake-combobox>' +
       '<fake-grid><div role="grid" aria-label="Hosts"><div role="row"><div role="gridcell">secret-host-01</div></div></div></fake-grid>';
-    clrPublishElementContext(root.querySelector('fake-combobox') as Element, () => ({
+    publishElementContext(root.querySelector('fake-combobox') as Element, () => ({
       type: 'combobox',
       state: { options: ['Apple', 'Pear'] },
     }));
-    clrPublishElementContext(root.querySelector('fake-grid') as Element, () => ({ state: { totalRows: 2 } }));
+    publishElementContext(root.querySelector('fake-grid') as Element, () => ({ state: { totalRows: 2 } }));
 
     const json = JSON.stringify(collectComponents(root, { excludeCategories: ['collections', 'forms'] }));
 
@@ -562,7 +562,7 @@ describe('DOM context collector - component-published context', () => {
   it('publishes nothing but the redaction from inside a redacted region', () => {
     root.innerHTML =
       '<div data-clr-context-redact><clr-fake-widget aria-label="Payment card">content</clr-fake-widget></div>';
-    clrPublishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
+    publishElementContext(root.querySelector('clr-fake-widget') as Element, () => ({
       label: 'Visa ending 4111',
       state: { value: '4111 1111 1111 1111', options: ['4111 1111 1111 1111'] },
     }));

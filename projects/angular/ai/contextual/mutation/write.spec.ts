@@ -23,7 +23,7 @@ import { ClrCommonFormsModule } from '@clr/angular/forms/common';
 import { ClrInputModule } from '@clr/angular/forms/input';
 import { ClrRadioModule } from '@clr/angular/forms/radio';
 import { ClrSelectModule } from '@clr/angular/forms/select';
-import { clrPublishElementContext } from '@clr/angular/utils';
+import { publishElementContext } from '@clr/angular/utils';
 
 import { allRefs, findNode, refOf, settle } from './helpers.spec';
 import { ClrMutationEngineService } from './mutation-engine.service';
@@ -168,7 +168,7 @@ class AppOwner extends KeptValue<{ id: number; name: string }> {}
 })
 class AppRename implements OnDestroy {
   @Input() control = new FormControl('');
-  private readonly unpublish = clrPublishElementContext(inject(ElementRef).nativeElement, () => ({
+  private readonly unpublish = publishElementContext(inject(ElementRef).nativeElement, () => ({
     state: { step: 1 },
   }));
 
@@ -416,7 +416,7 @@ describe('ClrMutationEngineService write path', () => {
       const result = await set('Rating', 5);
 
       expect(result.refused).toBe('unsupported');
-      expect(result.detail).toContain('clrPublishElementMutator');
+      expect(result.detail).toContain('publishElementMutator');
       expect(host.form.value.rating).toBe(3);
     });
 
@@ -441,7 +441,7 @@ describe('ClrMutationEngineService write path', () => {
       const result = await set('Owner', 'Ada');
 
       expect(result.refused).toBe('unsupported');
-      expect(result.detail).toContain('clrPublishElementMutator');
+      expect(result.detail).toContain('publishElementMutator');
       expect(host.form.value.owner).toEqual({ id: 7, name: 'Grace' });
     });
 
@@ -459,7 +459,7 @@ describe('ClrMutationEngineService write path', () => {
       const result = await set('Size code', 'L');
 
       expect(result.refused).toBe('unsupported');
-      expect(result.detail).toContain('clrPublishElementMutator');
+      expect(result.detail).toContain('publishElementMutator');
       expect(host.form.value.sizeCode).toBe(2);
     });
 

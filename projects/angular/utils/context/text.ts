@@ -9,7 +9,7 @@ import { CLR_CONTEXT_WITHHELD_SELECTOR } from './attributes';
 import { BLOCK_TAGS } from './tags';
 
 /** Text as page-context tooling compares it, shared so components and the engine agree on matches. */
-export function clrNormalizeContextText(text: string, lowercase = true): string {
+export function normalizeContextText(text: string, lowercase = true): string {
   const collapsed = text.replace(/\s+/g, ' ').trim();
   return lowercase ? collapsed.toLowerCase() : collapsed;
 }
@@ -18,8 +18,8 @@ export function clrNormalizeContextText(text: string, lowercase = true): string 
  * The text an element shows, without redacted, ignored or hidden descendants, with whitespace collapsed.
  * Style is only judged while the element is on the page; a closed combobox's options are read from markup.
  */
-export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string {
-  return clrNormalizeContextText(textWithin(element, skip, 0), false);
+export function contextText(element: Element, skip?: (descendant: Element) => boolean): string {
+  return normalizeContextText(textWithin(element, skip, 0), false);
 }
 
 /** Script can nest deeper than the parser's 512; deeper content is dropped rather than overflow the stack. */

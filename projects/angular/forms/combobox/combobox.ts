@@ -46,17 +46,17 @@ import {
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
-  clrContextText,
   ClrElementMutation,
   ClrLoadingState,
-  clrNormalizeContextText,
-  clrPublishElementContext,
-  clrPublishElementMutator,
-  clrUsableSelectors,
+  contextText,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
+  normalizeContextText,
+  publishElementContext,
+  publishElementMutator,
+  usableSelectors,
 } from '@clr/angular/utils';
 import { debounceTime, Subject } from 'rxjs';
 
@@ -291,7 +291,7 @@ export class ClrCombobox<T>
 
   ngAfterContentInit() {
     this.initializeSubscriptions();
-    this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions =>
+    this.teardownElementContext = publishElementContext(this.el.nativeElement, snapshotOptions =>
       this.describeForContext(snapshotOptions)
     );
     this.publishMutator(this.el.nativeElement);
@@ -665,7 +665,7 @@ export class ClrCombobox<T>
    * mapped to values and unknown labels are refused with the options named.
    */
   private publishMutator(host: HTMLElement) {
-    this.teardownElementMutator = clrPublishElementMutator(host, {
+    this.teardownElementMutator = publishElementMutator(host, {
       // The search input inside carries a form binding of its own, which is not the value.
       ownsContents: true,
       coerce: (proposed: unknown, options?: Required<ClrContextSnapshotOptions>) =>
@@ -729,7 +729,7 @@ export class ClrCombobox<T>
   }
 
   private excludedBy(options?: ClrContextSnapshotOptions): string {
-    return clrUsableSelectors(this.el.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
+    return usableSelectors(this.el.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
   }
 
   /** `'excluded'` where the walk would leave the option out, `'withheld'` where it is counted but unnamed. */
@@ -807,13 +807,13 @@ export class ClrCombobox<T>
   private matchingOptions(items: ClrOption<T>[], proposal: unknown): ClrOption<T>[] {
     let matches = items.filter(candidate => this.optionMatches(candidate, proposal));
     if (matches.length > 1 && typeof proposal === 'string') {
-      const wanted = clrNormalizeContextText(proposal);
-      const byLabel = matches.filter(candidate => clrNormalizeContextText(this.optionLabel(candidate)) === wanted);
+      const wanted = normalizeContextText(proposal);
+      const byLabel = matches.filter(candidate => normalizeContextText(this.optionLabel(candidate)) === wanted);
       matches = byLabel.length ? byLabel : matches;
       const byValue = matches.filter(
         candidate =>
           (typeof candidate.value === 'string' || typeof candidate.value === 'number') &&
-          clrNormalizeContextText(String(candidate.value)) === wanted
+          normalizeContextText(String(candidate.value)) === wanted
       );
       matches = byValue.length ? byValue : matches;
     }
@@ -824,22 +824,22 @@ export class ClrCombobox<T>
     if (typeof proposal !== 'string') {
       return this.sameValue(option.value, proposal);
     }
-    const wanted = clrNormalizeContextText(proposal);
-    if (clrNormalizeContextText(this.optionLabel(option)) === wanted) {
+    const wanted = normalizeContextText(proposal);
+    if (normalizeContextText(this.optionLabel(option)) === wanted) {
       return true;
     }
     const value = option.value;
     if (typeof value === 'string' || typeof value === 'number') {
-      return clrNormalizeContextText(String(value)) === wanted;
+      return normalizeContextText(String(value)) === wanted;
     }
     const display = this.selectedValueLabel(value, this.optionFor(value));
-    return typeof display === 'string' && clrNormalizeContextText(display) === wanted;
+    return typeof display === 'string' && normalizeContextText(display) === wanted;
   }
 
   /** An option's visible label. Not named by its value when its text was withheld: the value may be the secret. */
   private optionLabel(option: ClrOption<T>): string {
     const element: HTMLElement = option.elRef.nativeElement;
-    const text = clrContextText(element, descendant => descendant.classList.contains('clr-sr-only'));
+    const text = contextText(element, descendant => descendant.classList.contains('clr-sr-only'));
     if (text || element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)) {
       return text;
     }

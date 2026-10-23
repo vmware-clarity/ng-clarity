@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrElementMutator, clrPublishElementMutator } from './element-mutator';
+import { CLR_ELEMENT_MUTATOR_PROPERTY, ClrElementMutator, publishElementMutator } from './element-mutator';
 
 function readElementMutator(element: Element): ClrElementMutator | null {
   return ((element as Element & Record<string, unknown>)[CLR_ELEMENT_MUTATOR_PROPERTY] as ClrElementMutator) ?? null;
 }
 
-describe('clrPublishElementMutator', () => {
+describe('publishElementMutator', () => {
   let host: HTMLElement;
 
   beforeEach(() => {
@@ -21,13 +21,13 @@ describe('clrPublishElementMutator', () => {
   it('makes the mutator discoverable on the host element', () => {
     const mutator = { coerce: (proposed: unknown) => ({ value: proposed }) };
 
-    clrPublishElementMutator(host, mutator);
+    publishElementMutator(host, mutator);
 
     expect(readElementMutator(host)).toBe(mutator);
   });
 
   it('removes the mutator when the returned teardown runs', () => {
-    const teardown = clrPublishElementMutator(host, { read: () => null });
+    const teardown = publishElementMutator(host, { read: () => null });
 
     teardown();
 
@@ -36,9 +36,9 @@ describe('clrPublishElementMutator', () => {
   });
 
   it('does not let a stale teardown remove a newer mutator', () => {
-    const staleTeardown = clrPublishElementMutator(host, { read: () => 'old' });
+    const staleTeardown = publishElementMutator(host, { read: () => 'old' });
     const newer = { read: () => 'new' };
-    clrPublishElementMutator(host, newer);
+    publishElementMutator(host, newer);
 
     staleTeardown();
 
@@ -55,7 +55,7 @@ describe('clrPublishElementMutator', () => {
       return option ? { value: option.id, display: option.label } : { refused: 'No such option.' };
     };
     const typed: ClrElementMutator = { coerce };
-    clrPublishElementMutator(host, {
+    publishElementMutator(host, {
       coerce: proposed => {
         const option = options.find(each => each.label === proposed);
         return option ? { value: option.id, display: option.label } : { refused: 'No such option.' };

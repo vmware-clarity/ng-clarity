@@ -7,7 +7,7 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { Component, ContentChild, ElementRef, Inject, Input, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
-import { clrPublishElementContext } from '@clr/angular/utils';
+import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
 import { TimelineIconAttributeService } from './providers/timeline-icon-attribute.service';
@@ -70,7 +70,7 @@ export class ClrTimelineStep implements OnDestroy {
 
     // Lists are summarised by item name, so the icon's accessible name never reaches a snapshot.
     if (this.hostElement) {
-      this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
+      this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
         state: { status: this.state },
       }));
     }

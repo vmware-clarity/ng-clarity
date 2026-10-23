@@ -27,7 +27,7 @@ import {
 } from '@angular/core';
 import { FormControl, NgControl } from '@angular/forms';
 import { FormsFocusService, WrappedFormControl } from '@clr/angular/forms/common';
-import { ClrElementMutation, clrPublishElementMutator, isBooleanAttributeSet } from '@clr/angular/utils';
+import { ClrElementMutation, isBooleanAttributeSet, publishElementMutator } from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -348,7 +348,7 @@ export abstract class ClrDateInputBase
 
   /** Mutator: the form control holds the locale's display string, so a `Date` or ISO date is converted. */
   private publishMutator() {
-    this.teardownElementMutator = clrPublishElementMutator(this.el.nativeElement, {
+    this.teardownElementMutator = publishElementMutator(this.el.nativeElement, {
       coerce: (proposed: unknown): ClrElementMutation => {
         if (proposed === null || proposed === '') {
           return { value: '', display: '' };

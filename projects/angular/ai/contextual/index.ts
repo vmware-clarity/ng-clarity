@@ -23,8 +23,8 @@ export type { ClrContextPreset } from './snapshot-options';
 export {
   CLR_ELEMENT_CONTEXT_PROPERTY,
   CLR_ELEMENT_MUTATOR_PROPERTY,
-  clrPublishElementContext,
-  clrPublishElementMutator,
+  publishElementContext,
+  publishElementMutator,
 } from '@clr/angular/utils';
 export type { ClrElementContextCallback, ClrElementMutation, ClrElementMutator } from '@clr/angular/utils';
 export { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_REDACT_ATTRIBUTE } from '@clr/angular/utils';
