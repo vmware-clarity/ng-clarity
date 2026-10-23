@@ -7,7 +7,7 @@
 
 import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders } from '@angular/core';
 
-import { ClrContextSnapshotOptions } from '../interfaces/context.interface';
+import { ClrApplicationContext, ClrContextSnapshotOptions } from '../interfaces/context.interface';
 import { clrContextPreset, ClrContextPreset, warnIfExclusionsAreNotLists, withCallOptions } from '../snapshot-options';
 
 /** Application-wide snapshot options that every snapshot starts from. */
@@ -30,4 +30,25 @@ export function provideClrContextOptions(
   const resolved =
     typeof options === 'string' ? clrContextPreset(options, overrides) : withCallOptions(options, overrides);
   return makeEnvironmentProviders([{ provide: CLR_CONTEXT_OPTIONS, useValue: resolved }]);
+}
+
+/** The application's identity, and where its view id and metadata come from. */
+export interface ClrContextApplicationOptions extends ClrApplicationContext {
+  /** The current view's id; checked before the route's `data.viewId`. */
+  viewId?: () => string | null | undefined;
+  /** Metadata about the current view, as a small serializable object. */
+  metadata?: () => Record<string, unknown> | null | undefined;
+}
+
+/** The application every snapshot describes. */
+export const CLR_CONTEXT_APPLICATION = new InjectionToken<ClrContextApplicationOptions>('CLR_CONTEXT_APPLICATION');
+
+/**
+ * Identifies the application in every snapshot:
+ * ```ts
+ * provideClrContextApplication({ id: 'inventory', version: '2.4.0', viewId: () => currentView() });
+ * ```
+ */
+export function provideClrContextApplication(application: ClrContextApplicationOptions): EnvironmentProviders {
+  return makeEnvironmentProviders([{ provide: CLR_CONTEXT_APPLICATION, useValue: application }]);
 }

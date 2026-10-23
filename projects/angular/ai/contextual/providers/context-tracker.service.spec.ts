@@ -212,7 +212,7 @@ describe('ClrContextTrackerService', () => {
   it('does not re-scrape when a style only moves or resizes something, and does when it hides it', async () => {
     const widget = addWidget('Popover');
     tracker.start({ debounceMs: 20 });
-    const scrapes = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.callThrough();
+    const scrapes = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshotAsync').and.callThrough();
 
     (widget as HTMLElement).style.left = '10px';
     (widget as HTMLElement).style.width = '120px';
@@ -555,7 +555,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     frame.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
     await loadFrame('<p>Streaming</p>');
     tracker.start({ debounceMs: 10 });
-    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.callThrough();
+    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshotAsync').and.callThrough();
 
     addFrameButton('Token');
     frameBody().ownerDocument.querySelector('p')?.append(' more');
@@ -568,7 +568,7 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     await loadFrame('<button>Run</button>');
     tracker.start({ debounceMs: 10 });
     const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
-    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.throwError('boom');
+    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshotAsync').and.throwError('boom');
 
     addFrameButton('Stop');
     await elapse(10);
@@ -686,6 +686,58 @@ describe('ClrContextTrackerService, reporting what changed', () => {
       expect(changes[1].current.title).toBe('Hosts (3 alerts)');
     } finally {
       document.title = originalTitle;
+    }
+  });
+});
+
+describe('ClrContextTrackerService, asynchronous providers and shadow roots', () => {
+  let tracker: ClrContextTrackerService;
+  let emitted: ClrPageContext[];
+
+  beforeEach(() => {
+    useFakeTimers();
+    TestBed.configureTestingModule({});
+    tracker = TestBed.inject(ClrContextTrackerService);
+    emitted = [];
+    tracker.context$.subscribe(context => emitted.push(context));
+  });
+
+  afterEach(() => tracker.stop());
+
+  it('emits again once an asynchronous provider answers', async () => {
+    let answer: (context: ClrComponentContext) => void = () => undefined;
+    const unregister = TestBed.inject(ClrContextRegistryService).register({
+      getClrContext: () => new Promise<ClrComponentContext>(resolve => (answer = resolve)),
+    });
+    try {
+      tracker.start();
+      expect(emitted[0].regions).toEqual([{ type: 'region', state: { loading: true } }]);
+
+      answer({ type: 'region', label: 'Answered' });
+      await flushMutations();
+
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    } finally {
+      unregister();
+    }
+  });
+
+  it('scrapes after a change inside an open shadow root', async () => {
+    const host = document.createElement('shadow-host');
+    const root = host.attachShadow({ mode: 'open' });
+    root.innerHTML = '<button>Before</button>';
+    document.body.appendChild(host);
+    try {
+      tracker.start({ debounceMs: 10 });
+      const countAfterStart = emitted.length;
+
+      (root.querySelector('button') as HTMLButtonElement).textContent = 'After';
+      await elapse(10);
+
+      expect(emitted.length).toBe(countAfterStart + 1);
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+    } finally {
+      host.remove();
     }
   });
 });

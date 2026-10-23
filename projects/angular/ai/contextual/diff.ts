@@ -28,9 +28,9 @@ export interface ClrContextChange {
   removed: ClrComponentContext[];
   /** Nodes present in both whose own state differs. Their children are compared separately. */
   changed: ClrComponentContextChange[];
-  /** Whether the route or URL differs. */
+  /** Whether the route, URL or view id differs. */
   routeChanged: boolean;
-  /** Whether the application's annotations differ. */
+  /** Whether the application's annotations or metadata differ. */
   regionsChanged: boolean;
   /** Whether the document title differs. */
   titleChanged: boolean;
@@ -44,8 +44,15 @@ export function clrDiffContext(previous: ClrPageContext | null, current: ClrPage
     added: [],
     removed: [],
     changed: [],
-    routeChanged: !previous || serialize(previous.route) !== serialize(current.route) || previous.url !== current.url,
-    regionsChanged: !previous || serialize(previous.regions) !== serialize(current.regions),
+    routeChanged:
+      !previous ||
+      serialize(previous.route) !== serialize(current.route) ||
+      previous.url !== current.url ||
+      previous.viewId !== current.viewId,
+    regionsChanged:
+      !previous ||
+      serialize(previous.regions) !== serialize(current.regions) ||
+      serialize(previous.metadata) !== serialize(current.metadata),
     titleChanged: !previous || previous.title !== current.title,
   };
   diffLevel(previous?.components ?? [], current.components, change);

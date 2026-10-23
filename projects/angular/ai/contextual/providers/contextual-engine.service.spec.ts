@@ -10,7 +10,7 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
 
-import { CLR_CONTEXT_OPTIONS, provideClrContextOptions } from './context-options';
+import { CLR_CONTEXT_OPTIONS, provideClrContextApplication, provideClrContextOptions } from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
@@ -759,5 +759,136 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
     const after = engine.getSnapshot({ includeDomComponents: false, includeRoutes: true }).availableRoutes;
     expect(after).toContain({ path: 'billing/invoices', title: 'Invoices' });
     expect(after?.some(route => route.lazy)).toBe(false);
+  });
+});
+
+describe('ClrContextEngineService, identifying the application and view', () => {
+  const quiet = { includeDomComponents: false };
+
+  afterEach(() => removeGlobal('testClrContext'));
+
+  it('versions every snapshot and names the host when no application is provided', () => {
+    TestBed.configureTestingModule({});
+    const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot(quiet);
+
+    expect(snapshot.schemaVersion).toBe('1');
+    expect(snapshot.application).toEqual({ id: document.location.hostname });
+    expect(snapshot.viewId).toBeUndefined();
+    expect(snapshot.metadata).toBeUndefined();
+  });
+
+  it('reports the provided application, view id and serializable metadata', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideClrContextApplication({
+          id: 'inventory',
+          version: '2.4.0',
+          viewId: () => 'host-list',
+          metadata: () => ({ purpose: 'Lists hosts', load: () => 'not serializable' }),
+        }),
+      ],
+    });
+    const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot(quiet);
+
+    expect(snapshot.application).toEqual({ id: 'inventory', version: '2.4.0' });
+    expect(snapshot.viewId).toBe('host-list');
+    expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
+  });
+
+  it('takes the view id from the provider first, then from the deepest route', async () => {
+    let provided: string | undefined = 'from-provider';
+    TestBed.configureTestingModule({
+      providers: [
+        provideClrContextApplication({ id: 'inventory', viewId: () => provided }),
+        provideRouter([
+          {
+            path: 'hosts',
+            data: { viewId: 'hosts' },
+            children: [{ path: ':id', component: RoutedComponent, data: { viewId: 'host-detail' } }],
+          },
+        ]),
+      ],
+    });
+    const engine = TestBed.inject(ClrContextEngineService);
+    await TestBed.inject(Router).navigateByUrl('/hosts/7');
+
+    expect(engine.getSnapshot(quiet).viewId).toBe('from-provider');
+    provided = undefined;
+    expect(engine.getSnapshot(quiet).viewId).toBe('host-detail');
+  });
+
+  it('survives a provider that throws', () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideClrContextApplication({
+          id: 'inventory',
+          viewId: () => {
+            throw new Error('broken');
+          },
+          metadata: () => {
+            throw new Error('broken');
+          },
+        }),
+      ],
+    });
+    const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot(quiet);
+
+    expect(snapshot.viewId).toBeUndefined();
+    expect(snapshot.metadata).toBeUndefined();
+  });
+
+  it('shares the application and view id with the global accessor', () => {
+    TestBed.configureTestingModule({
+      providers: [provideClrContextApplication({ id: 'inventory', version: '2.4.0', viewId: () => 'host-list' })],
+    });
+    TestBed.inject(ClrContextEngineService).enableGlobalAccess('testClrContext');
+    const snapshot = globalAccessor()(quiet);
+
+    expect(snapshot.application).toEqual({ id: 'inventory', version: '2.4.0' });
+    expect(snapshot.viewId).toBe('host-list');
+  });
+});
+
+describe('ClrContextEngineService, asynchronous providers', () => {
+  let engine: ClrContextEngineService;
+  let registry: ClrContextRegistryService;
+  const quiet = { includeDomComponents: false };
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({});
+    engine = TestBed.inject(ClrContextEngineService);
+    registry = TestBed.inject(ClrContextRegistryService);
+  });
+
+  it('reports a pending provider as loading in a synchronous snapshot', () => {
+    registry.register({ getClrContext: () => new Promise<null>(() => undefined) });
+
+    expect(engine.getSnapshot(quiet).regions).toEqual([{ type: 'region', state: { loading: true } }]);
+  });
+
+  it('merges what an asynchronous provider resolves to', async () => {
+    registry.register({ getClrContext: () => ({ type: 'region', label: 'sync' }) });
+    registry.register({ getClrContext: async () => ({ type: 'region', label: 'async' }) });
+
+    const snapshot = await engine.getSnapshotAsync(quiet);
+
+    expect(snapshot.regions).toEqual([
+      { type: 'region', label: 'sync' },
+      { type: 'region', label: 'async' },
+    ]);
+  });
+
+  it('reports a provider that does not answer in time as unavailable', async () => {
+    registry.register({ getClrContext: () => new Promise<null>(() => undefined) });
+
+    const snapshot = await engine.getSnapshotAsync(quiet, 10);
+
+    expect(snapshot.regions).toEqual([{ type: 'region', state: { unavailable: true } }]);
+  });
+
+  it('leaves out a provider that rejects', async () => {
+    registry.register({ getClrContext: () => Promise.reject(new Error('offline')) });
+
+    expect((await engine.getSnapshotAsync(quiet)).regions).toEqual([]);
   });
 });

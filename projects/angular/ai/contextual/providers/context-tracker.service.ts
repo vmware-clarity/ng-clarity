@@ -14,6 +14,7 @@ import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
 import { attempt } from '../attempt';
 import { ClrContextChange, clrDiffContext } from '../diff';
+import { closestAcrossShadow, openShadowRoots } from '../dom/shadow';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { serialize } from '../json-safe';
 
@@ -48,9 +49,13 @@ export class ClrContextTrackerService implements OnDestroy {
   private maxWaitTimer: ReturnType<typeof setTimeout> | null = null;
   private stopListeningForValues: (() => void) | null = null;
   private readonly frames = new Map<HTMLIFrameElement, TrackedFrame>();
+  /** Observers do not cross shadow boundaries, so each open shadow root gets its own. */
+  private readonly shadowObservers = new Map<ShadowRoot, MutationObserver>();
   private registrySubscription: Subscription | null = null;
   private latest: ClrPageContext | null = null;
   private latestSerialized: string | null = null;
+  /** Bumped by each scrape and by `stop`, so a slower earlier scrape never overwrites a newer one. */
+  private scrapeRun = 0;
   private destroyed = false;
   private sharedUsers = 0;
   private sharedStarted = false;
@@ -101,6 +106,7 @@ export class ClrContextTrackerService implements OnDestroy {
     this.zone.runOutsideAngular(() => {
       this.observer = this.observeDocument(this.document);
       this.observeFrames();
+      this.observeShadowRoots();
 
       this.stopListeningForValues = listenForValues(this.document.body, event => this.onValueChange(event));
 
@@ -139,6 +145,7 @@ export class ClrContextTrackerService implements OnDestroy {
   /** Stops tracking and disconnects the observers. */
   stop(): void {
     this.tracking = false;
+    this.scrapeRun++;
     this.observer?.disconnect();
     this.observer = null;
     this.stopListeningForValues?.();
@@ -147,14 +154,22 @@ export class ClrContextTrackerService implements OnDestroy {
       this.detachFrame(frame, tracked);
     }
     this.frames.clear();
+    for (const observer of this.shadowObservers.values()) {
+      observer.disconnect();
+    }
+    this.shadowObservers.clear();
     this.registrySubscription?.unsubscribe();
     this.registrySubscription = null;
     this.clearTimers();
   }
 
-  /** Takes a new snapshot now instead of waiting for a change. */
+  /** Takes a new snapshot now instead of waiting for a change; asynchronous providers follow when they answer. */
   refresh(): void {
-    this.emit(this.contextEngine.getSnapshot(this.trackingOptions.snapshot));
+    const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
+    this.emit(snapshot);
+    if (snapshot.regions.some(region => region.state?.['loading'] === true)) {
+      this.zone.runOutsideAngular(() => this.scrape());
+    }
   }
 
   private emit(snapshot: ClrPageContext, serialized: string | null = serializeSnapshot(snapshot)): void {
@@ -198,13 +213,17 @@ export class ClrContextTrackerService implements OnDestroy {
     });
   }
 
-  private scrape(): void {
+  private async scrape(): Promise<void> {
     this.clearTimers();
     if (!this.tracking) {
       return;
     }
+    const run = ++this.scrapeRun;
     try {
-      const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
+      const snapshot = await this.contextEngine.getSnapshotAsync(this.trackingOptions.snapshot);
+      if (run !== this.scrapeRun) {
+        return;
+      }
       const serialized = serializeSnapshot(snapshot);
       if (serialized === null || serialized !== this.latestSerialized) {
         this.zone.run(() => this.emit(snapshot, serialized));
@@ -212,14 +231,24 @@ export class ClrContextTrackerService implements OnDestroy {
     } catch (error) {
       this.errorHandler.handleError(error);
     } finally {
-      this.zone.runOutsideAngular(() => this.observeFrames());
+      this.zone.runOutsideAngular(() => {
+        this.observeFrames();
+        // A shadow root found only now may have rendered since the scrape.
+        if (this.observeShadowRoots()) {
+          this.scheduleScrape();
+        }
+      });
     }
   }
 
   private observeDocument(target: Document): MutationObserver {
-    const observer = new MutationObserver(records => this.onMutations(records));
     // The title lives in the head, so the whole document is observed.
-    observer.observe(target.documentElement, {
+    return this.observeTree(target.documentElement);
+  }
+
+  private observeTree(target: Node): MutationObserver {
+    const observer = new MutationObserver(records => this.onMutations(records));
+    observer.observe(target, {
       childList: true,
       subtree: true,
       attributes: true,
@@ -267,6 +296,29 @@ export class ClrContextTrackerService implements OnDestroy {
         this.frames.delete(frame);
       }
     }
+  }
+
+  /** Observes open shadow roots in the page and its readable frames; returns whether any are new. */
+  private observeShadowRoots(): boolean {
+    if (!this.tracking) {
+      return false;
+    }
+    const documents = [this.document, ...Array.from(this.frames.values(), tracked => tracked.document)];
+    const present = new Set(documents.flatMap(contents => (contents ? openShadowRoots(contents) : [])));
+    let added = false;
+    for (const root of present) {
+      if (!this.shadowObservers.has(root)) {
+        this.shadowObservers.set(root, this.observeTree(root));
+        added = true;
+      }
+    }
+    for (const [root, observer] of this.shadowObservers) {
+      if (!present.has(root)) {
+        observer.disconnect();
+        this.shadowObservers.delete(root);
+      }
+    }
+    return added;
   }
 
   private detachFrame(frame: HTMLIFrameElement, tracked: TrackedFrame): void {
@@ -326,8 +378,11 @@ function readableDocument(frame: HTMLIFrameElement): Document | null {
 
 function isInsideIgnoredRegion(node: Node): boolean {
   // A node in a frame is an instance of that window's Element, so `instanceof` would fail.
-  const element = node.nodeType === Node.ELEMENT_NODE ? (node as Element) : node.parentElement;
-  return !!element?.closest(CLR_CONTEXT_IGNORE_SELECTOR);
+  const element =
+    node.nodeType === Node.ELEMENT_NODE
+      ? (node as Element)
+      : (node.parentElement ?? (node.getRootNode() as Partial<ShadowRoot>).host ?? null);
+  return !!element && !!closestAcrossShadow(element, CLR_CONTEXT_IGNORE_SELECTOR);
 }
 
 const VISIBILITY_DECLARATIONS = /(?:^|;)\s*(?:display|visibility|opacity|content-visibility)\s*:[^;]*/gi;
