@@ -6,11 +6,12 @@
  */
 
 import { NgModule } from '@angular/core';
+import { ClrAdvancedFiltersModule } from '@clr/angular/data/advanced-filters';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { ClrStackViewModule } from '@clr/angular/data/stack-view';
 import { ClrTreeViewModule } from '@clr/angular/data/tree-view';
 
 @NgModule({
-  exports: [ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule],
+  exports: [ClrAdvancedFiltersModule, ClrDatagridModule, ClrStackViewModule, ClrTreeViewModule],
 })
 export class ClrDataModule {}
