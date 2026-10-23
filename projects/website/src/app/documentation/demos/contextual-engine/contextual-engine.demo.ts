@@ -143,10 +143,10 @@ export class AppModule {}
 `;
 
 const ELEMENT_CONTEXT_EXAMPLE = `
-import { clrPublishElementContext } from '@clr/angular/utils';
+import { publishElementContext } from '@clr/angular/utils';
 
 // In the component that knows more than its markup shows:
-this.teardown = clrPublishElementContext(hostElement, () => ({
+this.teardown = publishElementContext(hostElement, () => ({
   type: 'combobox',
   state: {
     options: this.choices.map(choice => choice.label),

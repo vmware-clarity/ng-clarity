@@ -67,7 +67,7 @@ export class FirewallComponent {
 The engine describes UI by reading the **accessibility tree** rather than Clarity-specific
 selectors, so it covers Clarity Angular components, `@clr/ui` CSS-only markup, other component
 libraries and plain semantic HTML with one implementation. Components publish only the state ARIA
-cannot express, through `clrPublishElementContext` from `@clr/angular/utils` — which is why a
+cannot express, through `publishElementContext` from `@clr/angular/utils` — which is why a
 component that publishes context does not depend on this entry point.
 
 Through custom extractors it also reaches other UI libraries. Callers the application does not

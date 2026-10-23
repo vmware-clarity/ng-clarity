@@ -5,9 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrElementContextCallback, clrPublishElementContext } from './element-context';
+import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrElementContextCallback, publishElementContext } from './element-context';
 
-describe('clrPublishElementContext', () => {
+describe('publishElementContext', () => {
   let host: HTMLElement;
 
   beforeEach(() => {
@@ -23,13 +23,13 @@ describe('clrPublishElementContext', () => {
   it('makes the callback discoverable on the host element', () => {
     const callback: ClrElementContextCallback = () => ({ type: 'combobox' });
 
-    clrPublishElementContext(host, callback);
+    publishElementContext(host, callback);
 
     expect(publishedOn(host)).toBe(callback);
   });
 
   it('removes the callback when the returned teardown runs', () => {
-    const teardown = clrPublishElementContext(host, () => ({ type: 'combobox' }));
+    const teardown = publishElementContext(host, () => ({ type: 'combobox' }));
     expect(CLR_ELEMENT_CONTEXT_PROPERTY in host).toBe(true, 'expected the callback to be published first');
 
     teardown();
@@ -40,8 +40,8 @@ describe('clrPublishElementContext', () => {
   it('replaces a previously published callback', () => {
     const second: ClrElementContextCallback = () => ({ type: 'datagrid' });
 
-    clrPublishElementContext(host, () => ({ type: 'combobox' }));
-    clrPublishElementContext(host, second);
+    publishElementContext(host, () => ({ type: 'combobox' }));
+    publishElementContext(host, second);
 
     expect(publishedOn(host)).toBe(second);
   });
@@ -49,8 +49,8 @@ describe('clrPublishElementContext', () => {
   it('leaves a newer callback in place when an older teardown runs', () => {
     const newer: ClrElementContextCallback = () => ({ type: 'datagrid' });
 
-    const staleTeardown = clrPublishElementContext(host, () => ({ type: 'combobox' }));
-    clrPublishElementContext(host, newer);
+    const staleTeardown = publishElementContext(host, () => ({ type: 'combobox' }));
+    publishElementContext(host, newer);
     staleTeardown();
 
     expect(publishedOn(host)).toBe(newer);
