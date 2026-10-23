@@ -9,7 +9,6 @@ import { Component, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { IfActiveService } from '@clr/angular/utils';
 
-import { TabsWillyWonka } from './chocolate/tabs-willy-wonka';
 import { TabsLayout } from './enums/tabs-layout.enum';
 import { TabsService } from './providers/tabs.service';
 import { ClrTabLink } from './tab-link.directive';
@@ -41,7 +40,7 @@ describe('TabLink Directive', () => {
     TestBed.configureTestingModule({
       imports: [ClrTabsModule],
       declarations: [TestComponent],
-      providers: [IfActiveService, TabsService, TabsWillyWonka, TABS_ID_PROVIDER],
+      providers: [IfActiveService, TabsService, TABS_ID_PROVIDER],
     });
 
     fixture = TestBed.createComponent(TestComponent);

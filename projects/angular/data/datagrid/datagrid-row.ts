@@ -17,6 +17,7 @@ import {
   Inject,
   Injector,
   Input,
+  Optional,
   Output,
   QueryList,
   Renderer2,
@@ -125,20 +126,31 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   private _selectable: boolean | string = true;
 
   constructor(
-    public selection: Selection<T>,
-    public rowActionService: RowActionService,
-    public globalExpandable: ExpandableRowsCount,
+    @Optional() public selection: Selection<T>,
+    @Optional() public rowActionService: RowActionService,
+    @Optional() public globalExpandable: ExpandableRowsCount,
     public expand: DatagridIfExpandService,
-    public detailService: DetailService,
-    private displayMode: DisplayModeService,
+    @Optional() public detailService: DetailService,
+    @Optional() private displayMode: DisplayModeService,
     private vcr: ViewContainerRef,
     renderer: Renderer2,
     public el: ElementRef<HTMLElement>,
     public commonStrings: ClrCommonStringsService,
-    private items: Items,
-    private columnsService: ColumnsService,
+    @Optional() private items: Items,
+    @Optional() private columnsService: ColumnsService,
     @Inject(DOCUMENT) private document: any
   ) {
+    if (
+      !selection ||
+      !rowActionService ||
+      !globalExpandable ||
+      !detailService ||
+      !displayMode ||
+      !items ||
+      !columnsService
+    ) {
+      throw new Error('clr-dg-row should only be used inside of clr-datagrid');
+    }
     nbRow++;
     this.id = 'clr-dg-row' + nbRow;
     this.radioId = 'clr-dg-row-rd' + nbRow;

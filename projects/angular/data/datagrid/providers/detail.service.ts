@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { ModalStackService } from '@clr/angular/modal';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -24,16 +24,20 @@ export class DetailService {
   private toggleState = false;
   private cache: any;
   private button: HTMLButtonElement;
-  private _enabled = false;
+  private readonly _enabled = signal(false);
   private _state = new BehaviorSubject<boolean | null>(this.toggleState);
 
   constructor(private readonly modalStackService: ModalStackService) {}
 
+  /**
+   * Whether the datagrid has a detail pane (`*clrIfDetail`). Signal-backed, so views reading it are
+   * refreshed when a detail pane is added or removed after they were checked.
+   */
   get enabled(): boolean {
-    return this._enabled;
+    return this._enabled();
   }
   set enabled(state: boolean) {
-    this._enabled = state;
+    this._enabled.set(state);
   }
 
   get preventFocusScroll(): boolean {

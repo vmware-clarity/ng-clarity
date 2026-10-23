@@ -16,6 +16,7 @@ import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionPanel } from './accordion-panel';
 import { ClrAccordionModule } from './accordion.module';
+import { AccordionService } from './providers/accordion.service';
 
 @Component({
   template: `
@@ -92,7 +93,11 @@ describe('ClrAccordionPanel', () => {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        providers: [CollapsiblePanelService, IfExpandService],
+        providers: [
+          CollapsiblePanelService,
+          IfExpandService,
+          { provide: AccordionService, useExisting: CollapsiblePanelService },
+        ],
         imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
