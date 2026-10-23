@@ -676,9 +676,6 @@ export enum ClrPosition {
     TOP_RIGHT = 2
 }
 
-// @public
-export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
-
 // @public (undocumented)
 export class ClrRovingTabindex extends ClrKeyFocus {
     constructor(elementRef: ElementRef<HTMLElement>, renderer: Renderer2);
@@ -717,9 +714,6 @@ export class ClrTemplateRefModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2.CommonModule], [typeof TemplateRefContainer]>;
 }
-
-// @public
-export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export function collapse(): AnimationMetadata[];
@@ -1046,6 +1040,9 @@ export class OutsideClick implements OnDestroy {
 // @public (undocumented)
 export function preventArrowKeyScroll(event: KeyboardEvent): void;
 
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
 // @public (undocumented)
 export class ScrollingService {
     constructor(_document: any);
@@ -1083,6 +1080,9 @@ export function triggerAllFormControlValidation(formGroup: FormGroup): void;
 
 // @public (undocumented)
 export function uniqueIdFactory(): string;
+
+// @public
+export function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export class WillyWonka implements AfterViewChecked {
