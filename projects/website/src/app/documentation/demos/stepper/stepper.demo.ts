@@ -12,6 +12,7 @@ import { ClrCommonFormsModule, ClrInputModule, ClrPasswordModule, ClrStepperModu
 import { AngularStepperApiDemo } from './angular-stepper-api.demo';
 import { AngularStepperReactiveDemo } from './angular-stepper-reactive.demo';
 import { AngularStepperTemplateDemo } from './angular-stepper-template.demo';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabActiveDirective } from '../../../shared/doc-tabs/doc-tab-active.directive';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -43,6 +44,7 @@ import { multiStepPatternLink } from '../pattern-links';
     AngularStepperReactiveDemo,
     AngularStepperTemplateDemo,
     AngularStepperApiDemo,
+    AiSkillComponent,
   ],
 })
 export class StepperDemo extends ClarityDocComponent {

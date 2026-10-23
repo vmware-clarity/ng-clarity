@@ -30,6 +30,7 @@ import { NavigationTypesDemo } from './navigation-types.demo';
 import { ResponsiveNav1Demo } from './responsive-nav1';
 import { ResponsiveNav2Demo } from './responsive-nav2';
 import { SmallScreenNavDemo } from './small-screen-nav';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
@@ -60,6 +61,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     NavigationTypesDemo,
     LargeScreenNavDemo,
     SmallScreenNavDemo,
+    AiSkillComponent,
   ],
 })
 export class NavigationDemo extends ClarityDocComponent {

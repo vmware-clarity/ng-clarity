@@ -9,6 +9,7 @@ import { Component } from '@angular/core';
 import { AppfxCardContainerModule } from '@clr/addons/card-container';
 import { ClarityModule } from '@clr/angular';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -50,6 +51,7 @@ export class MyModule {}
     NotesCardComponent,
     TagsCardComponent,
     DynamicCardComponent,
+    AiSkillComponent,
   ],
 })
 export class CardContainerDemoComponent extends ClarityDocComponent {

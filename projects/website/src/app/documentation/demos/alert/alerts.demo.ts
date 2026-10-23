@@ -22,6 +22,7 @@ import { AlertContentAreaDemo } from './static/alert-content-area';
 import { AlertModalsDemo } from './static/alert-modals';
 import { AlertSizesDemo } from './static/alert-sizes';
 import { AlertStylesDemo } from './static/alert-styles';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { disableFocusTrapProvider } from '../../../shared/disable-focus-trap/disable-focus-trap.provider';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -66,6 +67,7 @@ import { notificationsPatternLink } from '../pattern-links';
     RouterLink,
     StyleDocsComponent,
     NestingTableComponent,
+    AiSkillComponent,
   ],
 })
 export class AlertsDemo extends ClarityDocComponent {

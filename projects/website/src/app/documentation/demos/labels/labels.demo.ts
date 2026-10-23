@@ -18,6 +18,7 @@ import { LabelsColorOptionsDemo } from './labels-color-options';
 import { LabelsDefaultDemo } from './labels-default';
 import { LabelsStatusDemo } from './labels-status';
 import { LabelsWithBadgesDemo } from './labels-with-badges';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -48,6 +49,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     LabelsWithBadgesDemo,
     StyleDocsComponent,
     LabelAngularClickableDemo,
+    AiSkillComponent,
   ],
 })
 export class LabelsDemo extends ClarityDocComponent {

@@ -20,6 +20,7 @@ import { ProgressBarLoopDemo } from './progress-bar-loop';
 import { ProgressBarStaticDemo } from './progress-bar-static';
 import { ProgressBarStaticCardsDemo } from './progress-bar-static-cards';
 import { ProgressBarStoryDemo } from './progress-bar-story';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { AnimatedExampleComponent } from '../../../shared/animated-example/animated-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -70,6 +71,7 @@ export const OPTIONAL_PERCENTAGE_LABEL = `
     ProgressBarInlineDemo,
     ProgressBarInlineCardsDemo,
     StyleDocsComponent,
+    AiSkillComponent,
   ],
 })
 export class ProgressBarsDemo extends ClarityDocComponent {
