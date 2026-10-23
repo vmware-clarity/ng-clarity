@@ -12,7 +12,7 @@ import {
   ControlIdService,
   NgControlService,
 } from '@clr/angular/forms/common';
-import { ClrCommonStringsService, clrContextText, clrPublishElementContext } from '@clr/angular/utils';
+import { ClrCommonStringsService, contextText, publishElementContext } from '@clr/angular/utils';
 
 import { ClrFileInput } from './file-input';
 import { selectFiles } from './file-input.helpers';
@@ -111,7 +111,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   private readonly hostElement = inject<ElementRef<HTMLElement>>(ElementRef);
 
   // File names are user input, so only the count is published, under a withheld key.
-  private readonly teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => {
+  private readonly teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => {
     const state: Record<string, unknown> = {
       fileCount: this.fileInput?.elementRef.nativeElement.files?.length ?? 0,
       redacted: true,
@@ -123,7 +123,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     return {
       type: 'group',
       element: 'clr-file-input-container',
-      label: label ? clrContextText(label) : '',
+      label: label ? contextText(label) : '',
       state,
     };
   });

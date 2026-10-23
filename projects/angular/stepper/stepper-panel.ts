@@ -25,8 +25,8 @@ import { FormGroupName, NgModelGroup } from '@angular/forms';
 import { CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
 import {
   ClrCommonStringsService,
-  clrPublishElementContext,
   IfExpandService,
+  publishElementContext,
   triggerAllFormControlValidation,
 } from '@clr/angular/utils';
 import { Observable, Subscription } from 'rxjs';
@@ -105,7 +105,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
 
     // Otherwise only a transient live-region message announces status. Read from the service, whose stream
     // has not emitted yet between init and first render.
-    this.teardownElementContext = clrPublishElementContext(this.hostElement.nativeElement, () => ({
+    this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
       state: { status: this.currentStatus() },
     }));
     this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext, ClrContextSnapshotOptions, clrPublishElementContext } from '@clr/angular/utils';
+import { ClrComponentContext, ClrContextSnapshotOptions, publishElementContext } from '@clr/angular/utils';
 
 import { withoutValues } from './aria-state';
 import { ClrContextTreeResult, collectContextTreeWithin } from './walk';
@@ -532,7 +532,7 @@ describe('collectContextTree, what a summary must not hide', () => {
   it('leaves out what a component fails to publish, and says so on the console in development', () => {
     const warn = spyOn(console, 'warn');
     container.innerHTML = '<my-widget aria-label="Widget"><button>Go</button></my-widget>';
-    clrPublishElementContext(container.querySelector('my-widget') as Element, () => {
+    publishElementContext(container.querySelector('my-widget') as Element, () => {
       throw new Error('publisher broke');
     });
 
@@ -1257,10 +1257,10 @@ describe('collectContextTree, markup it did not expect', () => {
       <x-tabs><x-panel><div role="grid"><div role="row"><div role="gridcell">b</div></div></div></x-panel>
         <div role="tablist"><div role="tab">Overview</div></div></x-tabs>`;
     const teardowns = [
-      clrPublishElementContext(container.querySelector('x-grid') as Element, () => ({
+      publishElementContext(container.querySelector('x-grid') as Element, () => ({
         state: { rows: ['secret-row-1'], selection: ['secret-row-1'] },
       })),
-      clrPublishElementContext(container.querySelector('x-tabs') as Element, () => ({ state: { panels: 2 } })),
+      publishElementContext(container.querySelector('x-tabs') as Element, () => ({ state: { panels: 2 } })),
     ];
     try {
       const json = JSON.stringify(collectContextTreeWithin(container, budgets()).components);
@@ -1449,7 +1449,7 @@ describe('collectContextTree, names, text and state an agent would otherwise mis
       </div></my-dialog-host></my-flow>`;
 
     function publishSteps(): void {
-      clrPublishElementContext(container.querySelector('my-flow') as Element, () => ({ state: { stepCount: 2 } }));
+      publishElementContext(container.querySelector('my-flow') as Element, () => ({ state: { stepCount: 2 } }));
     }
 
     it('starts from the outermost component the dialog is all of, keeping what it publishes and its tag', () => {

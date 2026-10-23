@@ -21,7 +21,7 @@ import {
   ClrPopoverType,
   DROPDOWN_POSITIONS,
 } from '@clr/angular/popover/common';
-import { ClrCommonStringsService, clrPublishElementContext } from '@clr/angular/utils';
+import { ClrCommonStringsService, publishElementContext } from '@clr/angular/utils';
 import { startWith } from 'rxjs/operators';
 
 import { ClrWeekday } from './enums/weekday.enum';
@@ -221,7 +221,7 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     this.teardownToggleContext?.();
     // The toggle's name contains the selected date, which is user input; the date input reports it as a value.
     this.teardownToggleContext = button
-      ? clrPublishElementContext(button.nativeElement, () => ({
+      ? publishElementContext(button.nativeElement, () => ({
           label: this.commonStrings.keys.datepickerToggleChooseDateLabel,
         }))
       : undefined;

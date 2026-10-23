@@ -28,12 +28,12 @@ import {
 } from '@angular/core';
 import {
   ClrCommonStringsService,
-  clrPublishElementContext,
   IfExpandService,
   isKeyEitherLetterOrNumber,
   Keys,
   LoadingListener,
   preventArrowKeyScroll,
+  publishElementContext,
   uniqueIdFactory,
 } from '@clr/angular/utils';
 import { asapScheduler, Subject, Subscription } from 'rxjs';
@@ -214,7 +214,7 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
 
   ngOnInit() {
     // `aria-expanded` cannot say whether anything is under the node, and a lazy subtree is absent from the DOM.
-    this.teardownElementContext = clrPublishElementContext(this.elementRef.nativeElement, () => {
+    this.teardownElementContext = publishElementContext(this.elementRef.nativeElement, () => {
       const state: Record<string, unknown> = { expandable: !!this.isExpandable() };
       if (this.expandService.loading || this.isModelLoading) {
         state.loading = true;

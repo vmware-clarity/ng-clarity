@@ -37,10 +37,10 @@ import {
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
-  clrContextText,
-  clrPublishElementContext,
-  clrUsableSelectors,
+  contextText,
+  publishElementContext,
   uniqueIdFactory,
+  usableSelectors,
 } from '@clr/angular/utils';
 import { combineLatest, fromEvent, merge, of, Subscription } from 'rxjs';
 import { debounceTime, switchMap } from 'rxjs/operators';
@@ -316,7 +316,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   ngAfterContentInit() {
-    this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions =>
+    this.teardownElementContext = publishElementContext(this.el.nativeElement, snapshotOptions =>
       this.describeForContext(snapshotOptions)
     );
 
@@ -779,7 +779,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   private excludedBy(options: { excludeSelectors?: readonly string[] } | null | undefined): string {
-    return clrUsableSelectors(this.el.nativeElement, options?.excludeSelectors ?? []);
+    return usableSelectors(this.el.nativeElement, options?.excludeSelectors ?? []);
   }
 
   /** The row's content cells as the user sees them, without grid-added, hidden, detail or withheld cells. */
@@ -795,7 +795,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
         const nearest = cell.closest(leftOut);
         return !nearest || !host.contains(nearest);
       })
-      .map(cell => clrContextText(cell, element => element.matches(withheld)))
+      .map(cell => contextText(cell, element => element.matches(withheld)))
       .filter(Boolean);
   }
 }
@@ -828,5 +828,5 @@ function headerText(title: Element, excluded: string): string {
   const copy = title.cloneNode(true) as Element;
   const copies = Array.from(copy.querySelectorAll('*'));
   const skipped = new Set(copies.filter((_, index) => descendants[index].matches(skip)));
-  return clrContextText(copy, descendant => skipped.has(descendant));
+  return contextText(copy, descendant => skipped.has(descendant));
 }

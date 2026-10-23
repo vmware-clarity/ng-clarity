@@ -13,7 +13,7 @@ import {
   CLR_ELEMENT_CONTEXT_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
-  clrUsableSelectors,
+  usableSelectors,
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
@@ -99,10 +99,10 @@ export function collectContextTreeWithin(
   const excludeRoles = new Set(options.excludeRoles);
   const walk: Walk = {
     options,
-    extractors: extractors.filter(extractor => clrUsableSelectors(root, [extractor.selector])),
+    extractors: extractors.filter(extractor => usableSelectors(root, [extractor.selector])),
     excludeRoles,
     excludeRoleCandidates: roleCandidateSelector(excludeRoles),
-    excludeSelector: clrUsableSelectors(root, options.excludeSelectors),
+    excludeSelector: usableSelectors(root, options.excludeSelectors),
     describedByIds: new Set(),
     labelIds: new Set(),
     remaining: options.maxComponents,
@@ -139,7 +139,7 @@ export interface ClrContextScope {
 
 /** The whole page, the `rootSelector` roots, or with modal focus the topmost open dialog inside them. */
 export function engineScope(root: ParentNode, options: Required<ClrContextSnapshotOptions>): ClrContextScope {
-  const excludeSelector = clrUsableSelectors(root, options.excludeSelectors);
+  const excludeSelector = usableSelectors(root, options.excludeSelectors);
   const excludedRoles = new Set(options.excludeRoles);
   const roots = options.rootSelector ? selectedRoots(root, options.rootSelector, excludeSelector, excludedRoles) : null;
   if (options.focus === 'modal') {
@@ -160,7 +160,7 @@ function selectedRoots(
   excludeSelector: string,
   excludedRoles: ReadonlySet<string>
 ): Element[] {
-  const selector = clrUsableSelectors(root, [rootSelector]);
+  const selector = usableSelectors(root, [rootSelector]);
   const roots = selector ? Array.from(root.querySelectorAll(selector)) : [];
   // What keeps a region from the engine holds however the walk is pointed at it.
   return roots.filter(

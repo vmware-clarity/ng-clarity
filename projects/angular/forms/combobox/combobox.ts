@@ -46,14 +46,14 @@ import {
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
-  clrContextText,
   ClrLoadingState,
-  clrPublishElementContext,
-  clrUsableSelectors,
+  contextText,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
   Keys,
   LoadingListener,
+  publishElementContext,
+  usableSelectors,
 } from '@clr/angular/utils';
 import { debounceTime, Subject } from 'rxjs';
 
@@ -287,7 +287,7 @@ export class ClrCombobox<T>
 
   ngAfterContentInit() {
     this.initializeSubscriptions();
-    this.teardownElementContext = clrPublishElementContext(this.el.nativeElement, snapshotOptions =>
+    this.teardownElementContext = publishElementContext(this.el.nativeElement, snapshotOptions =>
       this.describeForContext(snapshotOptions)
     );
 
@@ -655,7 +655,7 @@ export class ClrCombobox<T>
   }
 
   private excludedBy(options?: ClrContextSnapshotOptions): string {
-    return clrUsableSelectors(this.el.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
+    return usableSelectors(this.el.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
   }
 
   /** `'excluded'` where the walk would leave the option out, `'withheld'` where it is counted but unnamed. */
@@ -728,7 +728,7 @@ export class ClrCombobox<T>
   /** An option's visible label. Not named by its value when its text was withheld: the value may be the secret. */
   private optionLabel(option: ClrOption<T>): string {
     const element: HTMLElement = option.elRef.nativeElement;
-    const text = clrContextText(element, descendant => descendant.classList.contains('clr-sr-only'));
+    const text = contextText(element, descendant => descendant.classList.contains('clr-sr-only'));
     if (text || element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)) {
       return text;
     }

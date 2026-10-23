@@ -5,19 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { clrContextText, clrNormalizeContextText } from './text';
+import { contextText, normalizeContextText } from './text';
 
-describe('clrNormalizeContextText', () => {
+describe('normalizeContextText', () => {
   it('collapses and trims whitespace and lowercases', () => {
-    expect(clrNormalizeContextText('  Beta \n  Cluster ')).toBe('beta cluster');
+    expect(normalizeContextText('  Beta \n  Cluster ')).toBe('beta cluster');
   });
 
   it('keeps the case when asked to', () => {
-    expect(clrNormalizeContextText('  Beta \t Cluster', false)).toBe('Beta Cluster');
+    expect(normalizeContextText('  Beta \t Cluster', false)).toBe('Beta Cluster');
   });
 });
 
-describe('clrContextText', () => {
+describe('contextText', () => {
   let host: HTMLElement;
 
   beforeEach(() => {
@@ -29,7 +29,7 @@ describe('clrContextText', () => {
 
   const read = (html: string) => {
     host.innerHTML = html;
-    return clrContextText(host);
+    return contextText(host);
   };
 
   it('reads what it can of content nested deeper than the stack holds', () => {
@@ -39,7 +39,7 @@ describe('clrContextText', () => {
       innermost = innermost.appendChild(document.createElement('span'));
     }
     innermost.textContent = 'leaf';
-    expect(clrContextText(host)).toBe('Top');
+    expect(contextText(host)).toBe('Top');
   });
 
   it('leaves out text hidden by style as well as by attribute', () => {
@@ -59,6 +59,6 @@ describe('clrContextText', () => {
   it('reads markup that is not on the page, judging no style', () => {
     const detached = document.createElement('div');
     detached.innerHTML = '<span style="display: none">Kept</span><p>Alpha</p><p>Beta</p>';
-    expect(clrContextText(detached)).toBe('Kept Alpha Beta');
+    expect(contextText(detached)).toBe('Kept Alpha Beta');
   });
 });
