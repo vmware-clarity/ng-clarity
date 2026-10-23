@@ -17,6 +17,7 @@ import { SidePanelAngularPinnedDemo } from './side-panel-angular-pinned-demo';
 import { SidePanelAngularSizeDemo } from './side-panel-angular-size-demo';
 import { SidePanelAngularStaticBackdropDemo } from './side-panel-angular-static-backdrop-demo';
 import { SidePanelSizeDesignDemo } from './side-panel-size-design';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -45,6 +46,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     SidePanelAngularSizeDemo,
     SidePanelAngularStaticBackdropDemo,
     SidePanelAngularAlternateCloseDemo,
+    AiSkillComponent,
   ],
 })
 export class SidePanelDemo extends ClarityDocComponent {

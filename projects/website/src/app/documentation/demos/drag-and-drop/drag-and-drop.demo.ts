@@ -8,6 +8,7 @@
 import { Component } from '@angular/core';
 import { circleIcon, ClarityIcons, dotCircleIcon, errorStandardIcon, successStandardIcon } from '@clr/angular';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -21,7 +22,7 @@ import { multiStepPatternLink } from '../pattern-links';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [DocTabsComponent, DocTabComponent],
+  imports: [DocTabsComponent, DocTabComponent, AiSkillComponent],
 })
 export class DragAndDropDemo extends ClarityDocComponent {
   readonly patternLinks: LinkCardsLink[] = [multiStepPatternLink];

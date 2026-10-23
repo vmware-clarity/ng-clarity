@@ -31,6 +31,7 @@ import { ButtonStatesDemo } from './button-states';
 import { IconButtonsDemo } from './icon-buttons';
 import { InverseButtonDemo } from './inverse-button';
 import { RealButtonDemo } from './real-button';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -64,6 +65,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     IconButtonsDemo,
     ButtonLoadingDemo,
     StyleDocsComponent,
+    AiSkillComponent,
     NestingTableComponent,
   ],
 })
