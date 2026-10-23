@@ -147,6 +147,30 @@ export class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
     static ɵfac: i0.ɵɵFactoryDeclaration<CdkTrapFocusModule_CdkTrapFocus, never>;
 }
 
+// @public
+export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
+
+// @public
+export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+
+// @public
+export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
+
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
 
@@ -335,6 +359,15 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
 }
 
+// @public
+export interface ClrComponentContext {
+    children?: ClrComponentContext[];
+    element?: string;
+    label?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -346,6 +379,27 @@ export class ClrConditionalModule {
 }
 
 // @public
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export interface ClrContextSnapshotOptions {
+    collectionItems?: 'all' | 'summary';
+    excludeCategories?: ClrContextCategory[];
+    excludeRoles?: string[];
+    excludeSelectors?: string[];
+    focus?: 'page' | 'modal';
+    includeDomComponents?: boolean;
+    includeFrames?: boolean;
+    includeRoutes?: boolean;
+    includeText?: boolean;
+    maxComponents?: number;
+    maxDepth?: number;
+    maxItemsPerCollection?: number;
+    maxTextLength?: number;
+    rootSelector?: string;
+}
+
+// @public
 export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
@@ -354,6 +408,9 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrDestroyService>;
 }
+
+// @public
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
 
 // @public (undocumented)
 export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
@@ -1005,6 +1062,9 @@ export class OutsideClick implements OnDestroy {
 // @public (undocumented)
 export function preventArrowKeyScroll(event: KeyboardEvent): void;
 
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
 // @public (undocumented)
 export class ScrollingService {
     constructor(_document: any);
@@ -1045,6 +1105,9 @@ export function triggerAllFormControlValidation(formGroup: FormGroup): void;
 
 // @public (undocumented)
 export function uniqueIdFactory(): string;
+
+// @public
+export function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export class WillyWonka implements AfterViewChecked {
