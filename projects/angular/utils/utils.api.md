@@ -174,6 +174,9 @@ export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
+// @public
+export const CLR_ELEMENT_MUTATOR_PROPERTY = "clrElementMutator";
+
 // @public (undocumented)
 export const CLR_LOADING_DIRECTIVES: Type<any>[];
 
@@ -367,6 +370,7 @@ export interface ClrComponentContext {
     children?: ClrComponentContext[];
     element?: string;
     label?: string;
+    ref?: string;
     state?: Record<string, unknown>;
     type: string;
 }
@@ -414,6 +418,25 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 
 // @public
 export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+
+// @public
+export type ClrElementMutation = {
+    value: unknown;
+    display?: unknown;
+    refused?: undefined;
+} | {
+    refused: string;
+    value?: undefined;
+    display?: undefined;
+};
+
+// @public
+export interface ClrElementMutator {
+    coerce?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+    ownsContents?: boolean;
+    read?(options?: Required<ClrContextSnapshotOptions>): unknown;
+    write?(proposed: unknown, options?: Required<ClrContextSnapshotOptions>): ClrElementMutation;
+}
 
 // @public (undocumented)
 export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
@@ -1073,6 +1096,9 @@ export function preventArrowKeyScroll(event: KeyboardEvent): void;
 
 // @public
 export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // @public (undocumented)
 export class ScrollingService {

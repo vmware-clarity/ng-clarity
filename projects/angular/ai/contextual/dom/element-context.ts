@@ -75,7 +75,7 @@ const PUBLISHED_DEPTH = 4;
 
 /**
  * A node as application code published it, reduced to plain, budgeted, serialisable data.
- * A snapshot is data other code serialises and sends, so anything else is dropped.
+ * Anything else is dropped, including a `ref`, which only the walk hands out.
  */
 export function publishedNode(
   value: unknown,

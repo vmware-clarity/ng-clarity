@@ -10,6 +10,7 @@ import { RouterModule, Routes } from '@angular/router';
 
 import { ContextualDemo } from './contextual.demo';
 import { ContextualLiveDemo } from './inventory/live.demo';
+import { ContextualMutationDemo } from './mutation/mutation.demo';
 
 const ROUTES: Routes = [
   {
@@ -18,6 +19,7 @@ const ROUTES: Routes = [
     children: [
       { path: '', redirectTo: 'live', pathMatch: 'full' },
       { path: 'live', component: ContextualLiveDemo },
+      { path: 'mutation', component: ContextualMutationDemo },
     ],
   },
 ];
