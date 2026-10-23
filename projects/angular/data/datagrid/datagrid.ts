@@ -18,6 +18,7 @@ import {
   EventEmitter,
   forwardRef,
   Inject,
+  inject,
   Input,
   NgZone,
   OnDestroy,
@@ -55,6 +56,7 @@ import { Sort } from './providers/sort';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
+import { ClrDatagridTreeExpandedChange, ClrDatagridTreeLoadError, DatagridTreeService } from './providers/tree.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { CellCoordinates, KeyNavigationGridController } from './utils/key-navigation-grid.controller';
 
@@ -77,6 +79,7 @@ import { CellCoordinates, KeyNavigationGridController } from './utils/key-naviga
     ColumnsService,
     DisplayModeService,
     KeyNavigationGridController,
+    DatagridTreeService,
   ],
   host: {
     '[class.datagrid-host]': 'true',
@@ -109,6 +112,18 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   @Input('clrDgCustomSelectAllEnabled') customSelectAllEnabled = false;
   @Input('clrDgSelectAllDisabled') selectAllDisabled = false;
   @Output('clrDgCustomSelectAll') customSelectAll = new EventEmitter<boolean>();
+
+  /**
+   * Emits when a row of a tree is expanded or collapsed, by the user or because its children came
+   * back empty or failed to load.
+   */
+  @Output('clrDgTreeExpandedChange') treeExpandedChange = new EventEmitter<ClrDatagridTreeExpandedChange<T>>();
+
+  /**
+   * Emits when the children of a tree row fail to load. The row is collapsed again, so opening it
+   * retries.
+   */
+  @Output('clrDgTreeLoadError') treeLoadError = new EventEmitter<ClrDatagridTreeLoadError<T>>();
 
   /**
    * Expose virtual scroll directive for applications to access its public methods
@@ -158,6 +173,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   /* reference to the enum so that template can access */
   SELECTION_TYPE = SelectionType;
 
+  protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService);
+
   @ViewChild('selectAllCheckbox') private selectAllCheckbox: ElementRef<HTMLInputElement>;
   @ViewChild('rowControls', { read: ElementRef }) private rowControls: ElementRef<HTMLElement>;
 
@@ -165,6 +182,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    * Subscriptions to all the services and queries changes
    */
   private _subscriptions: Subscription[] = [];
+  private focusToRestore: HTMLElement | null = null;
   private _virtualScrollSubscriptions: Subscription[] = [];
 
   /**
@@ -208,6 +226,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     private columnsService: ColumnsService
   ) {
     const datagridId = uniqueIdFactory();
+
+    this._subscriptions.push(
+      this.tree.expandedChange.subscribe(change => this.treeExpandedChange.emit(change)),
+      this.tree.loadError.subscribe(error => this.treeLoadError.emit(error))
+    );
 
     this.selectAllId = 'clr-dg-select-all-' + datagridId;
     detailService.id = datagridId;
@@ -289,7 +312,11 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
        * It's strange, but it lets us have an indeterminate state where only
        * some of the items are selected.
        */
-      this.selection.toggleAll();
+      if (this.tree.cascadesSelection) {
+        this.tree.toggleAll();
+      } else {
+        this.selection.toggleAll();
+      }
     }
   }
 
@@ -334,9 +361,17 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
             this._displayedRows.remove(i);
           }
         }
-        this.rows.forEach(row => {
-          this._displayedRows.insert(row._view);
+        // Only the rows that are not in their place yet are moved: moving a row takes the focus away
+        // from it, and moving all of them on every change gets slow with many rows, as in a tree.
+        const focused = this.focusedElement();
+        this.rows.forEach((row, index) => {
+          if (this._displayedRows.indexOf(row._view) !== index) {
+            this._displayedRows.insert(row._view, index);
+          }
         });
+        if (focused?.isConnected && focused !== this.focusedElement()) {
+          focused.focus({ preventScroll: true });
+        }
         this.updateDetailState();
 
         // retain active cell when navigating with Up/Down Arrows, PageUp and PageDown buttons in virtual scroller
@@ -397,6 +432,9 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       }),
       // A subscription that listens for displayMode changes on the datagrid
       this.displayMode.view.subscribe(viewChange => {
+        // Moving the rows between modes takes the focus away from them, e.g. from the button that
+        // the detail pane gives it back to when it closes, so it is given back once they are on display.
+        this.focusToRestore = this.focusedElement() || this.focusToRestore;
         // Remove any projected columns from the projectedDisplayColumns container
         for (let i = this._projectedDisplayColumns.length; i > 0; i--) {
           this._projectedDisplayColumns.detach();
@@ -433,6 +471,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
           this.rows.forEach(row => {
             this._displayedRows.insert(row._view);
           });
+          this.restoreFocus();
           // The row controls are only laid out in this mode, and this is also the point where
           // their number can have changed.
           this.updateRowControlsWidth();
@@ -541,6 +580,41 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
    */
   dataChanged() {
     this.items.refresh();
+  }
+
+  /**
+   * Fetches the children of `item` again, or of the whole tree when no item is given. Loaded
+   * children are kept while the roots are refreshed, so call this when their data changes too.
+   */
+  reloadChildren(item?: T) {
+    this.tree.reload(item);
+  }
+
+  /**
+   * Expands or collapses the row of `item` in a tree, if it is loaded and can have children.
+   */
+  setTreeItemExpanded(item: T, expanded: boolean) {
+    const node = this.tree.nodeFor(item);
+    if (node) {
+      this.tree.setExpanded(node, expanded);
+    }
+  }
+
+  // Gives the focus back to the element that lost it while the rows were moved, unless the user has
+  // put it somewhere else in the meantime.
+  private restoreFocus() {
+    const element = this.focusToRestore;
+    this.focusToRestore = null;
+    const active = this.el.nativeElement.ownerDocument.activeElement;
+    if (element?.isConnected && (!active || active === this.el.nativeElement.ownerDocument.body)) {
+      element.focus({ preventScroll: true });
+    }
+  }
+
+  // The element in the datagrid that has the focus, if any.
+  private focusedElement(): HTMLElement | null {
+    const active = this.el.nativeElement.ownerDocument.activeElement as HTMLElement | null;
+    return active && this.el.nativeElement.contains(active) ? active : null;
   }
 
   private destroyFixedColumnViews() {

@@ -1,0 +1,113 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h3>Virtual scroll</h3>
+
+<p>
+  <code class="clr-code">[clrVirtualTreeOf]</code> on a <code class="clr-code">ClrVirtualScroll</code> template renders
+  the expanded tree as one long list: all the roots are in memory, children are fetched on expand.
+</p>
+
+<form clrForm clrLayout="horizontal">
+  <clr-number-input-container>
+    <label>Datacenters</label>
+    <input clrNumberInput type="number" name="roots" min="0" [(ngModel)]="options.roots" />
+  </clr-number-input-container>
+  <clr-number-input-container>
+    <label>Children per row</label>
+    <input clrNumberInput type="number" name="children" min="0" [(ngModel)]="options.children" />
+  </clr-number-input-container>
+  <clr-number-input-container>
+    <label>Backend latency (ms)</label>
+    <input clrNumberInput type="number" name="latency" min="0" [(ngModel)]="options.latency" />
+  </clr-number-input-container>
+  <button type="button" class="btn btn-sm" (click)="rebuild()">Rebuild the tree</button>
+
+  <clr-radio-container clrInline>
+    <label>Selection</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="virtual-selection" value="multi" [(ngModel)]="selectionType" />
+      <label>Multi</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="virtual-selection" value="single" [(ngModel)]="selectionType" />
+      <label>Single</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="virtual-selection" value="none" [(ngModel)]="selectionType" />
+      <label>None</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+  <clr-radio-container clrInline>
+    <label>Selecting a row selects</label>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="virtual-selects" value="self" [(ngModel)]="selects" />
+      <label>The row only</label>
+    </clr-radio-wrapper>
+    <clr-radio-wrapper>
+      <input type="radio" clrRadio name="virtual-selects" value="descendants" [(ngModel)]="selects" />
+      <label>The row and its descendants</label>
+    </clr-radio-wrapper>
+  </clr-radio-container>
+  <clr-number-input-container>
+    <label>Grid height (rem)</label>
+    <input clrNumberInput type="number" name="height" min="10" [(ngModel)]="height" />
+  </clr-number-input-container>
+  <clr-checkbox-container clrInline>
+    <label>Display</label>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="virtual-pin" [(ngModel)]="pinName" />
+      <label>Pin the name column</label>
+    </clr-checkbox-wrapper>
+    <clr-checkbox-wrapper>
+      <input type="checkbox" clrCheckbox name="virtual-compact" [(ngModel)]="compact" />
+      <label>Compact rows</label>
+    </clr-checkbox-wrapper>
+  </clr-checkbox-container>
+</form>
+
+<!-- A new datagrid for a new tree or row height, so the virtual scroll starts over. -->
+@for (grid of [grid]; track grid.generation) {
+<clr-datagrid
+  [class.datagrid-compact]="compact"
+  [clrDgSelectionType]="selectionType"
+  [(clrDgSelected)]="selected"
+  [clrDgItemsIdentityFn]="identity"
+  [style.height.rem]="height"
+>
+  <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="320">Name</clr-dg-column>
+  <clr-dg-column [style.width.px]="140">Kind</clr-dg-column>
+  <clr-dg-column [style.width.px]="140">Status</clr-dg-column>
+  <clr-dg-column [style.width.px]="300">CPU %</clr-dg-column>
+  <clr-dg-column [style.width.px]="300">Memory (GB)</clr-dg-column>
+  <clr-dg-column [style.width.px]="300">Children</clr-dg-column>
+
+  <ng-template
+    ClrVirtualScroll
+    let-resource
+    [clrVirtualTreeOf]="backend.roots"
+    [clrVirtualTreeChildren]="getChildren"
+    [clrVirtualTreeExpandable]="expandable"
+    [clrVirtualTreeSelects]="selects"
+    (renderedRangeChange)="range = $event"
+  >
+    <clr-dg-row [clrDgItem]="resource">
+      <clr-dg-cell>{{ resource.name }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.kind }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.status }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.cpu }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.memory }}</clr-dg-cell>
+      <clr-dg-cell>{{ resource.childCount }}</clr-dg-cell>
+    </clr-dg-row>
+  </ng-template>
+
+  <clr-dg-footer>
+    @if (range && backend.roots.length) { Rendered rows {{ range.start + 1 }} - {{ range.end }}. } {{ selected.length }}
+    selected.
+  </clr-dg-footer>
+</clr-datagrid>
+}
