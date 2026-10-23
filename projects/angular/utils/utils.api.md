@@ -394,9 +394,6 @@ export interface ClrContextSnapshotOptions {
 }
 
 // @public
-export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string;
-
-// @public
 export class ClrDestroyService extends Subject<void> implements OnDestroy {
     // (undocumented)
     ngOnDestroy(): void;
@@ -644,9 +641,6 @@ export enum ClrLoadingState {
     SUCCESS = 2
 }
 
-// @public
-export function clrNormalizeContextText(text: string, lowercase?: boolean): string;
-
 // @public (undocumented)
 export class ClrOutsideClickModule {
     // (undocumented)
@@ -684,9 +678,6 @@ export enum ClrPosition {
     // (undocumented)
     TOP_RIGHT = 2
 }
-
-// @public
-export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
 
 // @public (undocumented)
 export class ClrRovingTabindex extends ClrKeyFocus {
@@ -727,9 +718,6 @@ export class ClrTemplateRefModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTemplateRefModule, [typeof TemplateRefContainer], [typeof i2.CommonModule], [typeof TemplateRefContainer]>;
 }
 
-// @public
-export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string;
-
 // @public (undocumented)
 export function collapse(): AnimationMetadata[];
 
@@ -738,6 +726,9 @@ export const commonStringsDefault: ClrCommonStrings;
 
 // @public (undocumented)
 export const CONDITIONAL_DIRECTIVES: Type<any>[];
+
+// @public
+export function contextText(element: Element, skip?: (descendant: Element) => boolean): string;
 
 // @public (undocumented)
 export function customFocusableItemProvider<T>(implementation: Type<T>): (Type<T> | {
@@ -1019,6 +1010,9 @@ export class MockFocusableItem implements FocusableItem {
     up?: FocusableItem | Observable<FocusableItem>;
 }
 
+// @public
+export function normalizeContextText(text: string, lowercase?: boolean): string;
+
 // @public (undocumented)
 export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
     protected constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
@@ -1054,6 +1048,9 @@ export class OutsideClick implements OnDestroy {
 
 // @public (undocumented)
 export function preventArrowKeyScroll(event: KeyboardEvent): void;
+
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
 
 // @public (undocumented)
 export class ScrollingService {
@@ -1092,6 +1089,9 @@ export function triggerAllFormControlValidation(formGroup: FormGroup): void;
 
 // @public (undocumented)
 export function uniqueIdFactory(): string;
+
+// @public
+export function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export class WillyWonka implements AfterViewChecked {

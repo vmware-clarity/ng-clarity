@@ -2157,9 +2157,6 @@ export interface ClrContextSnapshotOptions {
     rootSelector?: string;
 }
 
-// @public
-export function clrContextText(element: Element, skip?: (descendant: Element) => boolean): string;
-
 // @public (undocumented)
 export class ClrControl extends WrappedFormControl<ClrControlContainer> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLElement>);
@@ -4700,9 +4697,6 @@ export class ClrNavLevel implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavLevel, never>;
 }
 
-// @public
-export function clrNormalizeContextText(text: string, lowercase?: boolean): string;
-
 // @public (undocumented)
 export class ClrNumberInput extends WrappedFormControl<ClrNumberInputContainer> {
     constructor(focusService: FormsFocusService, vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
@@ -5250,9 +5244,6 @@ export class ClrProgressBarModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof ClrProgressBar], [typeof i2.CommonModule], [typeof ClrProgressBar]>;
 }
-
-// @public
-export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
 
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
@@ -6446,9 +6437,6 @@ export class ClrTreeViewModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i5.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
 }
 
-// @public
-export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string;
-
 // @public (undocumented)
 export class ClrVerticalNav implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavService" needs to be exported by the entry point clr-angular.d.ts
@@ -7224,6 +7212,9 @@ export const containerVolumeIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const containerVolumeIconName = "container-volume";
+
+// @public
+export function contextText(element: Element, skip?: (descendant: Element) => boolean): string;
 
 // @public (undocumented)
 export const contractIcon: IconShapeTuple;
@@ -9033,6 +9024,9 @@ export const nodesIcon: IconShapeTuple;
 // @public (undocumented)
 export const nodesIconName = "nodes";
 
+// @public
+export function normalizeContextText(text: string, lowercase?: boolean): string;
+
 // @public (undocumented)
 export const noteIcon: IconShapeTuple;
 
@@ -9272,6 +9266,9 @@ export const processOnVmIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const processOnVmIconName = "process-on-vm";
+
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
 
 // @public (undocumented)
 export const qrCodeIcon: IconShapeTuple;
@@ -10182,6 +10179,9 @@ export const uploadIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const uploadIconName = "upload";
+
+// @public
+export function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export const usbIcon: IconShapeTuple;
