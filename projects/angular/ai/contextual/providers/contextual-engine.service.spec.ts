@@ -219,7 +219,12 @@ describe('ClrContextEngineService', () => {
         frame.remove();
       });
 
-      it('serves snapshots to embedded frames only while the frame bridge is enabled', () => {
+      /** Lets the bridge finish its asynchronous snapshot and answer. */
+      function answered(): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve));
+      }
+
+      it('serves snapshots to embedded frames only while the frame bridge is enabled', async () => {
         // A title of its own, so the assertion below proves the bridge withholds it rather
         // than passing because the test page happens to have none.
         const title = document.title;
@@ -228,6 +233,7 @@ describe('ClrContextEngineService', () => {
         engine.enableFrameBridge();
         requestFrom('frame-request-1');
         document.title = title;
+        await answered();
 
         expect(postMessage).toHaveBeenCalledWith(
           jasmine.objectContaining({
@@ -240,11 +246,12 @@ describe('ClrContextEngineService', () => {
 
         engine.disableFrameBridge();
         requestFrom('frame-request-1');
+        await answered();
 
         expect(postMessage).toHaveBeenCalledTimes(1);
       });
 
-      it('serves a frame what the global accessor serves, withheld markers included', () => {
+      it('serves a frame what the global accessor serves, withheld markers included', async () => {
         const form = document.createElement('div');
         form.innerHTML =
           '<label for="filled">Token</label><input id="filled" value="user-typed-secret" />' +
@@ -256,6 +263,7 @@ describe('ClrContextEngineService', () => {
           engine.enableFrameBridge();
           engine.enableGlobalAccess('testClrContext');
           requestFrom('frame-request-parity');
+          await answered();
           const viaAccessor = globalAccessor()();
           const viaFrame = postMessage.calls.mostRecent().args[0].context as ClrPageContext;
 
@@ -270,11 +278,12 @@ describe('ClrContextEngineService', () => {
         }
       });
 
-      it('keeps the running frame bridge when a new configuration is refused', () => {
+      it('keeps the running frame bridge when a new configuration is refused', async () => {
         engine.enableFrameBridge();
         expect(() => engine.enableFrameBridge({ allowedOrigins: ['chat.example'] })).toThrowError(/not an origin/);
 
         requestFrom('frame-request-3');
+        await answered();
 
         expect(postMessage).toHaveBeenCalledWith(
           jasmine.objectContaining({ kind: 'context-response', requestId: 'frame-request-3' }),
