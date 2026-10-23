@@ -5,10 +5,8 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import SelectContainerSpecs from './select-container.spec';
-import SelectSpecs from './select.spec';
-
-describe('Select component', function () {
-  SelectContainerSpecs();
-  SelectSpecs();
+afterEach(() => {
+  vi.useRealTimers();
 });
+
+document.body.setAttribute('cds-theme', '');

@@ -19,7 +19,12 @@ interface ThisTest {
 }
 
 describe('TabLinks', () => {
-  beforeEach(function (this: ThisTest) {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [ClrIcon],
       declarations: [TabLinksComponent],
@@ -27,57 +32,57 @@ describe('TabLinks', () => {
     });
   });
 
-  beforeEach(function (this: ThisTest) {
-    this.fixture = TestBed.createComponent(TabLinksComponent);
-    this.component = this.fixture.componentInstance;
-    this.title = 'Step Title';
-    this.component.title = this.title;
+  beforeEach(() => {
+    testContext.fixture = TestBed.createComponent(TabLinksComponent);
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.title = 'Step Title';
+    testContext.component.title = testContext.title;
 
-    spyOn(this.component.openedChange, 'emit').and.callThrough();
-    this.fixture.detectChanges();
+    vi.spyOn(testContext.component.openedChange, 'emit');
+    testContext.fixture.detectChanges();
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 
-  it('showTabLinks is false by default', function (this: ThisTest) {
-    expect(this.component.opened).toBeFalsy();
+  it('showTabLinks is false by default', () => {
+    expect(testContext.component.opened).toBeFalsy();
   });
 
-  it('`Show tabs` burger icon is visible by default', function (this: ThisTest) {
-    const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+  it('`Show tabs` burger icon is visible by default', () => {
+    const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
     const isVisible = getComputedStyle(showTabsIcon.nativeElement)['display'] !== 'none';
     expect(isVisible).toBeTruthy();
   });
 
-  it('tab name is visible in the header', function (this: ThisTest) {
-    const activeTabTitle = this.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement.innerText;
-    expect(activeTabTitle).toEqual(this.title);
+  it('tab name is visible in the header', () => {
+    const activeTabTitle = testContext.fixture.debugElement.query(By.css(`.nav-step-title`)).nativeElement.innerText;
+    expect(activeTabTitle).toEqual(testContext.title);
   });
 
   describe('when `Show tabs` burger icon is clicked', () => {
-    beforeEach(function (this: ThisTest) {
-      const showTabsIcon = this.fixture.debugElement.query(By.css(`.btn-show-tabs`));
+    beforeEach(() => {
+      const showTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-show-tabs`));
       showTabsIcon.nativeElement.click();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
     });
 
-    it('showTabLinks should emit true', function (this: ThisTest) {
-      expect(this.component.opened).toBeTruthy();
-      expect(this.component.openedChange.emit).toHaveBeenCalledWith(true);
+    it('showTabLinks should emit true', () => {
+      expect(testContext.component.opened).toBeTruthy();
+      expect(testContext.component.openedChange.emit).toHaveBeenCalledWith(true);
     });
 
     describe('when `Close tabs` icon is clicked', () => {
-      beforeEach(function (this: ThisTest) {
-        const closeTabsIcon = this.fixture.debugElement.query(By.css(`.btn-close-tabs`));
+      beforeEach(() => {
+        const closeTabsIcon = testContext.fixture.debugElement.query(By.css(`.btn-close-tabs`));
         closeTabsIcon.nativeElement.click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
       });
 
-      it('showTabLinks should emit false', function (this: ThisTest) {
-        expect(this.component.opened).toBeFalsy();
-        expect(this.component.openedChange.emit).toHaveBeenCalledWith(false);
+      it('showTabLinks should emit false', () => {
+        expect(testContext.component.opened).toBeFalsy();
+        expect(testContext.component.openedChange.emit).toHaveBeenCalledWith(false);
       });
     });
   });

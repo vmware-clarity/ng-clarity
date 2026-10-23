@@ -39,12 +39,16 @@ class TestComponent {
   @ViewChild(ClrWizardStepnav, { static: true }) stepNav: ClrWizardStepnav;
 }
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('New Wizard Stepnav', () => {
     let fixture: ComponentFixture<any>;
     let debugEl: DebugElement;
     let myStepnavEl: HTMLElement;
-    const pageCollection = new StepnavPageCollection();
+    let pageCollection: StepnavPageCollection;
+
+    beforeEach(() => {
+      pageCollection = new StepnavPageCollection();
+    });
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -97,4 +101,4 @@ export default function (): void {
       });
     });
   });
-}
+});

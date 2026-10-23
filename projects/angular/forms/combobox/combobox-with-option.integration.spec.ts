@@ -7,7 +7,7 @@
 
 import { Component } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import { delay, TestContext } from '@clr/angular/testing';
+import { createTestHelpers, delay, TestContext } from '@clr/angular/testing';
 
 import { ClrCombobox } from './combobox';
 
@@ -22,45 +22,49 @@ import { ClrCombobox } from './combobox';
 })
 class TestOptionSelection {}
 
-export default function (): void {
-  describe('Rendering Selected Option', function () {
-    let context: TestContext<ClrCombobox<string>, TestOptionSelection>;
-    let popoverService: ClrPopoverService;
+describe('Combobox component', () => {
+  describe('Integration Tests', () => {
+    describe('Rendering Selected Option', () => {
+      const helpers = createTestHelpers();
 
-    beforeEach(function () {
-      context = this.create(ClrCombobox, TestOptionSelection, [], []);
-      popoverService = context.getClarityProvider(ClrPopoverService);
-      popoverService.open = true;
-      context.detectChanges();
-    });
+      let context: TestContext<ClrCombobox<string>, TestOptionSelection>;
+      let popoverService: ClrPopoverService;
 
-    afterEach(function () {
-      popoverService.open = false;
-      context.detectChanges();
-    });
+      beforeEach(() => {
+        context = helpers.create<ClrCombobox<string>, TestOptionSelection>(ClrCombobox, TestOptionSelection, [], []);
+        popoverService = context.getClarityProvider(ClrPopoverService);
+        popoverService.open = true;
+        context.detectChanges();
+      });
 
-    it('renders the selected option in the input when it is clicked', async function () {
-      const options = document.body.querySelectorAll('.clr-combobox-option');
-      const selection: HTMLInputElement = context.clarityElement.querySelector('.clr-combobox-input');
+      afterEach(() => {
+        popoverService.open = false;
+        context.detectChanges();
+      });
 
-      expect(selection.value).toMatch('');
-      (options[0] as HTMLElement).click();
-      context.detectChanges();
-      await delay();
-      expect(selection.value).toMatch(/Option 1/);
-    });
-    it('clears the previous selection and renders the new selection', async function () {
-      const options = document.body.querySelectorAll('.clr-combobox-option');
-      const selection: HTMLInputElement = context.clarityElement.querySelector('.clr-combobox-input');
-      (options[0] as HTMLElement).click();
-      context.detectChanges();
-      await delay();
-      expect(selection.value).toMatch(/Option 1/);
-      popoverService.open = true;
-      (options[1] as HTMLElement).click();
-      context.detectChanges();
-      await delay();
-      expect(selection.value).toMatch(/Option 2/);
+      it('renders the selected option in the input when it is clicked', async () => {
+        const options = document.body.querySelectorAll('.clr-combobox-option');
+        const selection: HTMLInputElement = context.clarityElement.querySelector('.clr-combobox-input');
+
+        expect(selection.value).toMatch('');
+        (options[0] as HTMLElement).click();
+        context.detectChanges();
+        await delay();
+        expect(selection.value).toMatch(/Option 1/);
+      });
+      it('clears the previous selection and renders the new selection', async () => {
+        const options = document.body.querySelectorAll('.clr-combobox-option');
+        const selection: HTMLInputElement = context.clarityElement.querySelector('.clr-combobox-input');
+        (options[0] as HTMLElement).click();
+        context.detectChanges();
+        await delay();
+        expect(selection.value).toMatch(/Option 1/);
+        popoverService.open = true;
+        (options[1] as HTMLElement).click();
+        context.detectChanges();
+        await delay();
+        expect(selection.value).toMatch(/Option 2/);
+      });
     });
   });
-}
+});

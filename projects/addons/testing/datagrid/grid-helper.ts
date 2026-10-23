@@ -96,14 +96,14 @@ export class GridHelper {
     // these columns are present
     if (Array.isArray(includeLabelList)) {
       gridHeaderLabelList.forEach((headerLabel, index) => {
-        expect(headerLabel).toEqual(includeLabelList[index], `Cannot find "${headerLabel}" column.`);
+        expect(headerLabel).toEqual(includeLabelList[index]);
       });
     }
 
     // these columns are not present ( in the DOM ). Currently ignores hidden attribute
     if (Array.isArray(excludeLabelList)) {
       excludeLabelList.forEach(undefinedLabel => {
-        expect(gridHeaderLabelList.indexOf(undefinedLabel)).toBeLessThan(0, `There is a "${undefinedLabel}" column.`);
+        expect(gridHeaderLabelList.indexOf(undefinedLabel)).toBeLessThan(0);
       });
     }
   }
@@ -510,7 +510,7 @@ export class GridRowTestHelper {
               )
             ).toBe(false);
           } else {
-            expect(gridCell.getElement()).toBeNull(`There is no cell at position index ${index}.`);
+            expect(gridCell.getElement()).toBeNull();
           }
         }
       });
@@ -524,7 +524,7 @@ export class GridRowTestHelper {
           expect(gridCell.getText()).not.toEqual(String(cellValue));
         } else {
           // undefined means the cell must not be present
-          expect(gridCell.getElement()).not.toBeNull(`There is a no cell at position index ${index}.`);
+          expect(gridCell.getElement()).not.toBeNull();
         }
       });
     }

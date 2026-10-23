@@ -36,14 +36,14 @@ describe('MenuOutletService', () => {
   it('should attach and detach menu', () => {
     const menuComponentRef: ComponentRef<Menu> = {
       instance: {
-        show: jasmine.createSpy(),
+        show: vi.fn(),
         closed: of({}),
       },
     } as unknown as ComponentRef<Menu>;
 
     service.menuOutlet = TestBed.inject(MenuOutletComponent);
-    spyOn(service.menuOutlet, 'attachMenu');
-    spyOn(service.menuOutlet, 'detachMenu');
+    vi.spyOn(service.menuOutlet, 'attachMenu').mockImplementation(() => undefined);
+    vi.spyOn(service.menuOutlet, 'detachMenu').mockImplementation(() => undefined);
 
     service.showMenu(menuComponentRef, {} as Event, 0, 0);
 
@@ -54,7 +54,7 @@ describe('MenuOutletService', () => {
 
   it('should close menu', () => {
     service.menuOutlet = TestBed.inject(MenuOutletComponent);
-    spyOn(service.menuOutlet, 'detachMenu');
+    vi.spyOn(service.menuOutlet, 'detachMenu').mockImplementation(() => undefined);
 
     service.closeMenu();
 

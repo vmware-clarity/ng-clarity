@@ -83,6 +83,6 @@ describe('Directive: DismissableDirective', () => {
     component.show = false;
     fixture.detectChanges();
     expect(fixture.nativeElement.querySelector('cds-icon')).toBeNull();
-    expect(document.body.contains(icon)).toBeFalse();
+    expect(document.body.contains(icon)).toBe(false);
   });
 });

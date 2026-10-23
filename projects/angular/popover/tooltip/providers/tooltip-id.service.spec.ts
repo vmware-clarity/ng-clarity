@@ -13,25 +13,30 @@ interface TestContext {
   idService: TooltipIdService;
 }
 
-export default function (): void {
-  describe('Tooltip Id Service', function () {
-    beforeEach(function (this: TestContext) {
-      this.idService = new TooltipIdService();
+describe('Tooltip', () => {
+  describe('Tooltip Id Service', () => {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
     });
 
-    it('should set an id', function (this: TestContext) {
+    beforeEach(() => {
+      testContext.idService = new TooltipIdService();
+    });
+
+    it('should set an id', () => {
       let currentId;
-      this.idService.id.subscribe(newId => {
+      testContext.idService.id.subscribe(newId => {
         currentId = newId;
       });
-      this.idService.updateId('clr-id-1');
+      testContext.idService.updateId('clr-id-1');
       expect(currentId).toBe('clr-id-1');
     });
 
-    it('exposes and observable for latest id', function (this: TestContext) {
-      const idObservable = this.idService.id;
+    it('exposes and observable for latest id', () => {
+      const idObservable = testContext.idService.id;
       expect(idObservable).toBeDefined();
       expect(idObservable instanceof Observable).toBe(true);
     });
   });
-}
+});

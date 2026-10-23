@@ -14,7 +14,7 @@ import { ClrIcon } from '@clr/angular/icon';
 
 import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
-import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input clrDatalistInput />`,
@@ -58,7 +58,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('ClrDatalist', () => {
   describe('ClrDatalistInput', () => {
     describe('invalid use', () => {
       it('should throw an error when used without a datalist container', () => {
@@ -95,4 +95,4 @@ export default function (): void {
       });
     });
   });
-}
+});

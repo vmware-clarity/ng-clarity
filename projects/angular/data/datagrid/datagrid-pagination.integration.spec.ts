@@ -49,29 +49,36 @@ class InstantiationCounter {
   }
 }
 
-export default function (): void {
-  describe('ClrDatagridPagination component integration', function () {
-    type Context = TestContext<ClrDatagridPagination, IntegrationTest>;
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('ClrDatagridPagination component integration', () => {
+      let testContext: Context;
 
-    spec(
-      ClrDatagridPagination,
-      IntegrationTest,
-      ClrDatagridModule,
-      { declarations: [InstantiationCounter], imports: [NoopAnimationsModule] },
-      false
-    );
+      type Context = TestContext<ClrDatagridPagination, IntegrationTest>;
 
-    it('sets the page size a single time on initialization', function (this: Context) {
-      const spy = spyOnProperty(Page.prototype, 'size', 'set').and.callThrough();
-      this.init();
-      expect(spy).toHaveBeenCalledTimes(1);
-      expect(spy).toHaveBeenCalledWith(20);
-    });
+      const getContext = spec(
+        ClrDatagridPagination,
+        IntegrationTest,
+        ClrDatagridModule,
+        { declarations: [InstantiationCounter], imports: [NoopAnimationsModule] },
+        false
+      );
+      beforeEach(() => {
+        testContext = getContext() as Context;
+      });
 
-    it('only instantiates rows that need to be displayed', function (this: Context) {
-      InstantiationCounter.total = 0;
-      this.init();
-      expect(InstantiationCounter.total).toBe(20);
+      it('sets the page size a single time on initialization', () => {
+        const spy = vi.spyOn(Page.prototype, 'size', 'set');
+        testContext.init();
+        expect(spy).toHaveBeenCalledTimes(1);
+        expect(spy).toHaveBeenCalledWith(20);
+      });
+
+      it('only instantiates rows that need to be displayed', () => {
+        InstantiationCounter.total = 0;
+        testContext.init();
+        expect(InstantiationCounter.total).toBe(20);
+      });
     });
   });
-}
+});

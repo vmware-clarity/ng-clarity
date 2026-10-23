@@ -96,7 +96,7 @@ class DynamicErrorTypeTest implements OnInit {
   }
 }
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrIfError', () => {
     describe('invalid use', () => {
       it('throws error when used outside of a control container', () => {
@@ -303,4 +303,4 @@ export default function (): void {
       });
     });
   });
-}
+});

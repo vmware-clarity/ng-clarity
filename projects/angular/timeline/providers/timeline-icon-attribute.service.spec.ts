@@ -10,7 +10,7 @@ import { ClrCommonStringsService } from '@clr/angular/utils';
 import { TimelineIconAttributeService } from './timeline-icon-attribute.service';
 import { ClrTimelineStepState } from '../enums/timeline-step-state.enum';
 
-export default function (): void {
+describe('Timeline', () => {
   describe('Timeline icon attribute service', () => {
     const timelineIconAttributeService = new TimelineIconAttributeService(new ClrCommonStringsService());
 
@@ -39,4 +39,4 @@ export default function (): void {
       expect(timelineIconAttributeService.getAriaLabel(ClrTimelineStepState.ERROR)).toEqual('Error');
     });
   });
-}
+});

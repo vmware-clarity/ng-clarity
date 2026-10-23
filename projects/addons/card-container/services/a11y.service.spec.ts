@@ -37,8 +37,8 @@ describe('#A11yService', () => {
 
   describe('when call selectCard', () => {
     it('then should not select card if card order is default one', () => {
-      spyOn(containerService, 'getCardOrder').and.callFake((id: string) => cardIdToOrder[id]);
-      spyOn(a11yService, 'getOutOfA11yMode');
+      vi.spyOn(containerService, 'getCardOrder').mockImplementation((id: string) => cardIdToOrder[id]);
+      vi.spyOn(a11yService, 'getOutOfA11yMode').mockImplementation(() => undefined);
       // try to select card with default order
       a11yService.selectCard('cardWithDefaultOrder');
       // should not select default order card
@@ -52,8 +52,8 @@ describe('#A11yService', () => {
     });
 
     it('then should enter in a11y mode on first enter', () => {
-      spyOn(containerService, 'getCardOrder').and.returnValue(2);
-      spyOn(a11yService, 'getOutOfA11yMode');
+      vi.spyOn(containerService, 'getCardOrder').mockReturnValue(2);
+      vi.spyOn(a11yService, 'getOutOfA11yMode').mockImplementation(() => undefined);
       a11yService.selectCard(sampleCards[0].id);
       // current drag element order
       expect(a11yService.isSelected(sampleCards[0].id)).toBeTruthy();
@@ -68,10 +68,10 @@ describe('#A11yService', () => {
     });
 
     it('then should move card in a11y mode on second enter', () => {
-      spyOn(containerService, 'getCardOrder').and.callFake((id: string) => cardIdToOrder[id]);
-      spyOn(containerService, 'moveCard').and.callThrough();
-      spyOn(containerService, 'getVisibleCardsCount').and.returnValue(4);
-      spyOn(a11yService, 'getOutOfA11yMode');
+      vi.spyOn(containerService, 'getCardOrder').mockImplementation((id: string) => cardIdToOrder[id]);
+      vi.spyOn(containerService, 'moveCard');
+      vi.spyOn(containerService, 'getVisibleCardsCount').mockReturnValue(4);
+      vi.spyOn(a11yService, 'getOutOfA11yMode').mockImplementation(() => undefined);
 
       // first select card with order 0
       a11yService.selectCard(sampleCards[0].id);
@@ -103,9 +103,9 @@ describe('#A11yService', () => {
 
   describe('when call moveDropPosition', () => {
     it('with rightKey then should move drop element forward', () => {
-      spyOn(containerService, 'getCardOrder').and.callFake((id: string) => cardIdToOrder[id]);
+      vi.spyOn(containerService, 'getCardOrder').mockImplementation((id: string) => cardIdToOrder[id]);
       // set total 3 cards in container
-      spyOn(containerService, 'getVisibleCardsCount').and.returnValue(3);
+      vi.spyOn(containerService, 'getVisibleCardsCount').mockReturnValue(3);
 
       // first select card with order 0
       a11yService.selectCard(sampleCards[0].id);
@@ -128,9 +128,9 @@ describe('#A11yService', () => {
     });
 
     it('with left ArrowKey then should move drop element forward', () => {
-      spyOn(containerService, 'getCardOrder').and.callFake((id: string) => cardIdToOrder[id]);
+      vi.spyOn(containerService, 'getCardOrder').mockImplementation((id: string) => cardIdToOrder[id]);
       // set total 3 cards in container
-      spyOn(containerService, 'getVisibleCardsCount').and.returnValue(3);
+      vi.spyOn(containerService, 'getVisibleCardsCount').mockReturnValue(3);
 
       // first select card with order 0
       a11yService.selectCard(sampleCards[0].id);
@@ -157,7 +157,7 @@ describe('#A11yService', () => {
     });
 
     it('with a11yMode false should not call getVisibleCardsCount', () => {
-      spyOn(containerService, 'getVisibleCardsCount').and.returnValue(3);
+      vi.spyOn(containerService, 'getVisibleCardsCount').mockReturnValue(3);
 
       // set a11yMode false
       a11yService.getOutOfA11yMode();

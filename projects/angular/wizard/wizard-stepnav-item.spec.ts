@@ -44,13 +44,17 @@ class TestComponent implements AfterContentInit {
   }
 }
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('New Wizard Stepnav Item', () => {
     let fixture: ComponentFixture<any>;
     let testItemComponent: ClrWizardStepnavItem;
     let debugEl: DebugElement;
     let myStepnavItem: HTMLElement;
-    const pageCollection = new PageCollectionMock();
+    let pageCollection: PageCollectionMock;
+
+    beforeEach(() => {
+      pageCollection = new PageCollectionMock();
+    });
 
     beforeEach(() => {
       TestBed.configureTestingModule({
@@ -77,7 +81,9 @@ export default function (): void {
     describe('Typescript API', () => {
       describe('id', () => {
         it('should call page collection service for step item id', () => {
-          const pageCollectionSpy = spyOn(testItemComponent.pageCollection, 'getStepItemIdForPage');
+          const pageCollectionSpy = vi
+            .spyOn(testItemComponent.pageCollection, 'getStepItemIdForPage')
+            .mockImplementation(() => undefined);
           testItemComponent.page._id = 'try-a-different-id';
           fixture.detectChanges();
           expect(pageCollectionSpy).toHaveBeenCalledWith(testItemComponent.page);
@@ -96,7 +102,7 @@ export default function (): void {
 
         beforeEach(() => {
           fakeOutPage.reset();
-          navServiceSpy = spyOn(testItemComponent.navService, 'goTo');
+          navServiceSpy = vi.spyOn(testItemComponent.navService, 'goTo').mockImplementation(() => undefined);
         });
 
         it('should not call to navService if disabled', () => {
@@ -141,13 +147,13 @@ export default function (): void {
       describe('isDisabled', () => {
         it('should update false/true when page is updated', () => {
           // mock inits/resets with all false
-          expect(testItemComponent.isDisabled).toBe(false, 'inits as false');
+          expect(testItemComponent.isDisabled, 'inits as false').toBe(false);
           fakeOutPage.disabled = true;
           fixture.detectChanges();
-          expect(testItemComponent.isDisabled).toBe(true, 'updates when page is updated');
+          expect(testItemComponent.isDisabled, 'updates when page is updated').toBe(true);
           fakeOutPage.reset();
           fixture.detectChanges();
-          expect(testItemComponent.isDisabled).toBe(false, 'resets when page is reset');
+          expect(testItemComponent.isDisabled, 'resets when page is reset').toBe(false);
         });
 
         it('should return true if navService is set to stop navigation', () => {
@@ -173,13 +179,13 @@ export default function (): void {
       describe('isCurrent', () => {
         it('should update false/true when page is updated', () => {
           // mock inits/resets with all false
-          expect(testItemComponent.isCurrent).toBe(false, 'inits as false');
+          expect(testItemComponent.isCurrent, 'inits as false').toBe(false);
           fakeOutPage.current = true;
           fixture.detectChanges();
-          expect(testItemComponent.isCurrent).toBe(true, 'updates when page is updated');
+          expect(testItemComponent.isCurrent, 'updates when page is updated').toBe(true);
           fakeOutPage.reset();
           fixture.detectChanges();
-          expect(testItemComponent.isCurrent).toBe(false, 'resets when page is reset');
+          expect(testItemComponent.isCurrent, 'resets when page is reset').toBe(false);
         });
 
         it('should throw an error if page is not present', () => {
@@ -193,13 +199,13 @@ export default function (): void {
       describe('isComplete', () => {
         it('should update false/true when page is updated', () => {
           // mock inits/resets with all false
-          expect(testItemComponent.isComplete).toBe(false, 'inits as false');
+          expect(testItemComponent.isComplete, 'inits as false').toBe(false);
           fakeOutPage.completed = true;
           fixture.detectChanges();
-          expect(testItemComponent.isComplete).toBe(true, 'updates when page is updated');
+          expect(testItemComponent.isComplete, 'updates when page is updated').toBe(true);
           fakeOutPage.reset();
           fixture.detectChanges();
-          expect(testItemComponent.isComplete).toBe(false, 'resets when page is reset');
+          expect(testItemComponent.isComplete, 'resets when page is reset').toBe(false);
         });
 
         it('should throw an error if page is not present', () => {
@@ -213,31 +219,31 @@ export default function (): void {
       describe('hasError', () => {
         it('should update false/true when page is updated', () => {
           // mock inits/resets with all false
-          expect(testItemComponent.hasError).toBe(false, 'inits as false');
+          expect(testItemComponent.hasError, 'inits as false').toBe(false);
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
           fixture.detectChanges();
-          expect(testItemComponent.hasError).toBe(true, 'updates when page is updated');
+          expect(testItemComponent.hasError, 'updates when page is updated').toBe(true);
           fakeOutPage.reset();
           fixture.detectChanges();
-          expect(testItemComponent.hasError).toBe(false, 'resets when page is reset');
+          expect(testItemComponent.hasError, 'resets when page is reset').toBe(false);
         });
 
         it('should not be updated if isComplete is not true', () => {
           // mock inits/resets with all false
-          expect(testItemComponent.hasError).toBe(false, 'inits as false');
+          expect(testItemComponent.hasError, 'inits as false').toBe(false);
           fakeOutPage.hasError = true;
           fixture.detectChanges();
-          expect(testItemComponent.hasError).toBe(false, 'not updating when page is updated');
+          expect(testItemComponent.hasError, 'not updating when page is updated').toBe(false);
         });
       });
 
       describe('canNavigate', () => {
         it('should update false/true when previous page is updated', () => {
           // default in the mock returns true
-          expect(testItemComponent.canNavigate).toBe(true, 'inits as true');
+          expect(testItemComponent.canNavigate, 'inits as true').toBe(true);
           pageCollection._previousPageIsCompleted = false;
-          expect(testItemComponent.canNavigate).toBe(false, 'changed to false, returns false');
+          expect(testItemComponent.canNavigate, 'changed to false, returns false').toBe(false);
         });
 
         it('should throw an error if page is not present', () => {
@@ -258,10 +264,10 @@ export default function (): void {
         it('projects page nav title as expected', () => {
           const titleElement = myStepnavItem.querySelector('.clr-wizard-stepnav-link-title');
 
-          expect(titleElement.textContent.trim()).toBe(expectedInitialTitle, 'projects initial value');
+          expect(titleElement.textContent.trim(), 'projects initial value').toBe(expectedInitialTitle);
           fixture.componentInstance.projector = 'bar';
           fixture.detectChanges();
-          expect(titleElement.textContent.trim()).toBe(expectedUpdatedTitle, 'projects updated value');
+          expect(titleElement.textContent.trim(), 'projects updated value').toBe(expectedUpdatedTitle);
         });
       });
     });
@@ -269,15 +275,18 @@ export default function (): void {
     describe('View and Behavior', () => {
       describe('Renders as expected', () => {
         it('should have id', () => {
-          expect(myStepnavItem.hasAttribute('id')).toBeTruthy('stepnav item should have an id');
+          expect(myStepnavItem.hasAttribute('id'), 'stepnav item should have an id').toBeTruthy();
           const myId = myStepnavItem.getAttribute('id');
-          expect(myId).toBe('mock-id', 'stepnav item id should contain id');
+          expect(myId, 'stepnav item id should contain id').toBe('mock-id');
         });
 
         it('should have aria-controls attribute', () => {
-          expect(myStepnavItem.hasAttribute('aria-controls')).toBeTruthy('stepnav item should have aria-controls attr');
+          expect(
+            myStepnavItem.hasAttribute('aria-controls'),
+            'stepnav item should have aria-controls attr'
+          ).toBeTruthy();
           const myAriaControls = myStepnavItem.getAttribute('aria-controls');
-          expect(myAriaControls).toBe('this-is-my-page-id-0', 'aria-controls should contain page id');
+          expect(myAriaControls, 'aria-controls should contain page id').toBe('this-is-my-page-id-0');
         });
 
         it('should have aria-labelledby attribute on the button', () => {
@@ -306,160 +315,155 @@ export default function (): void {
         });
 
         it('should have clr-nav-link and nav-item classes', () => {
-          expect(myStepnavItem.classList.contains('nav-item')).toBe(true, 'stepnav item has .nav-item class');
-          expect(myStepnavItem.classList.contains('clr-nav-link')).toBe(true, 'stepnav item has .clr-nav-link class');
+          expect(myStepnavItem.classList.contains('nav-item'), 'stepnav item has .nav-item class').toBe(true);
+          expect(myStepnavItem.classList.contains('clr-nav-link'), 'stepnav item has .clr-nav-link class').toBe(true);
         });
 
         it('aria-current should be false if page is not current', () => {
-          expect(myStepnavItem.hasAttribute('aria-current')).toBeTruthy('stepnav item has aria-current attr');
-          expect(myStepnavItem.getAttribute('aria-current')).toBe(
-            'false',
-            'aria-current should be false if page not current'
+          expect(myStepnavItem.hasAttribute('aria-current'), 'stepnav item has aria-current attr').toBeTruthy();
+          expect(myStepnavItem.getAttribute('aria-current'), 'aria-current should be false if page not current').toBe(
+            'false'
           );
         });
 
         it('aria-current should be true if page is current', () => {
           fakeOutPage.current = true;
           fixture.detectChanges();
-          expect(myStepnavItem.hasAttribute('aria-current')).toBeTruthy('stepnav item has aria-current attr');
-          expect(myStepnavItem.getAttribute('aria-current')).toBe(
-            'step',
-            'aria-current should be set if page is current'
+          expect(myStepnavItem.hasAttribute('aria-current'), 'stepnav item has aria-current attr').toBeTruthy();
+          expect(myStepnavItem.getAttribute('aria-current'), 'aria-current should be set if page is current').toBe(
+            'step'
           );
         });
 
         it('aria-current should update with page current state', () => {
-          expect(myStepnavItem.hasAttribute('aria-current')).toBeTruthy('stepnav item has aria-current attr');
-          expect(myStepnavItem.getAttribute('aria-current')).toBe(
-            'false',
-            'aria-current should be false if page not current'
+          expect(myStepnavItem.hasAttribute('aria-current'), 'stepnav item has aria-current attr').toBeTruthy();
+          expect(myStepnavItem.getAttribute('aria-current'), 'aria-current should be false if page not current').toBe(
+            'false'
           );
           fakeOutPage.current = true;
           fixture.detectChanges();
-          expect(myStepnavItem.hasAttribute('aria-current')).toBeTruthy('stepnav item has aria-current attr');
-          expect(myStepnavItem.getAttribute('aria-current')).toBe(
-            'step',
-            'aria-current should be true if page is current'
+          expect(myStepnavItem.hasAttribute('aria-current'), 'stepnav item has aria-current attr').toBeTruthy();
+          expect(myStepnavItem.getAttribute('aria-current'), 'aria-current should be true if page is current').toBe(
+            'step'
           );
         });
 
         it('should not have .active class if page is not current', () => {
-          expect(myStepnavItem.classList.contains('active')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('active'),
             'stepnav item does not have .active class when page is not current'
-          );
+          ).toBe(false);
         });
 
         it('should have .active class if page is current', () => {
           fakeOutPage.current = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('active')).toBe(
-            true,
+          expect(
+            myStepnavItem.classList.contains('active'),
             'stepnav item has .active class when page is current'
-          );
+          ).toBe(true);
         });
 
         it('should toggle .active class with page current state', () => {
-          expect(myStepnavItem.classList.contains('active')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('active'),
             'stepnav item does not have .active class when page is not current'
-          );
+          ).toBe(false);
           fakeOutPage.current = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('active')).toBe(
-            true,
+          expect(
+            myStepnavItem.classList.contains('active'),
             'stepnav item has .active class when page is current'
-          );
+          ).toBe(true);
         });
 
         it('should not have .disabled class if page is not disabled', () => {
-          expect(myStepnavItem.classList.contains('disabled')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('disabled'),
             'stepnav item does not have .disabled class when page is not disabled'
-          );
+          ).toBe(false);
         });
 
         it('should have .disabled class if page is disabled', () => {
           fakeOutPage.disabled = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('disabled')).toBe(
-            true,
+          expect(
+            myStepnavItem.classList.contains('disabled'),
             'stepnav item has .disabled class when page is disabled'
-          );
+          ).toBe(true);
         });
 
         it('should have .disabled class if navService is set to stop navigation', () => {
           testItemComponent.navService.wizardStopNavigation = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('disabled')).toBe(
-            true,
+          expect(
+            myStepnavItem.classList.contains('disabled'),
             'stepnav item has .disabled class when page is disabled'
-          );
+          ).toBe(true);
         });
 
         it('should toggle .disabled class with page disabled state', () => {
-          expect(myStepnavItem.classList.contains('disabled')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('disabled'),
             'stepnav item does not have .disabled class when page is not disabled'
-          );
+          ).toBe(false);
           fakeOutPage.disabled = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('disabled')).toBe(
-            true,
+          expect(
+            myStepnavItem.classList.contains('disabled'),
             'stepnav item has .disabled class when page is disabled'
-          );
+          ).toBe(true);
         });
 
         it('should not have .complete class if page is not completed', () => {
-          expect(myStepnavItem.classList.contains('complete')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('complete'),
             'stepnav item does not have .complete class when page is not completed'
-          );
+          ).toBe(false);
         });
 
         it('should have .complete class if page is completed', () => {
           fakeOutPage.completed = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('complete')).toBe(
-            true,
+          expect(
+            myStepnavItem.classList.contains('complete'),
             'stepnav item has .complete class when page is completed'
-          );
+          ).toBe(true);
         });
 
         it('should toggle .complete class with page completed state', () => {
-          expect(myStepnavItem.classList.contains('complete')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('complete'),
             'stepnav item does not have .complete class when page is not completed'
-          );
+          ).toBe(false);
           fakeOutPage.completed = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('complete')).toBe(
-            true,
+          expect(
+            myStepnavItem.classList.contains('complete'),
             'stepnav item has .complete class when page is completed'
-          );
+          ).toBe(true);
         });
 
         it('should have .error class if page has an error', () => {
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('error')).toBe(
-            true,
+          expect(
+            myStepnavItem.classList.contains('error'),
             'stepnav item has .error class when page has an error'
-          );
+          ).toBe(true);
         });
 
         it('should toggle .error class with page error state', () => {
-          expect(myStepnavItem.classList.contains('error')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('error'),
             'stepnav item does not have .error class when page has no error'
-          );
+          ).toBe(false);
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('error')).toBe(
-            true,
-            'stepnav item has .error class when page has error'
+          expect(myStepnavItem.classList.contains('error'), 'stepnav item has .error class when page has error').toBe(
+            true
           );
         });
 
@@ -467,31 +471,31 @@ export default function (): void {
           fakeOutPage.completed = false;
           fakeOutPage.hasError = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('error')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('error'),
             'stepnav item does not have .error class when page has an error and page is not completed'
-          );
+          ).toBe(false);
         });
 
         it('should not toggle .error class with page error state when page is not completed', () => {
-          expect(myStepnavItem.classList.contains('error')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('error'),
             'stepnav item does not have .error class when page has no error'
-          );
+          ).toBe(false);
           fakeOutPage.completed = false;
           fakeOutPage.hasError = true;
           fixture.detectChanges();
-          expect(myStepnavItem.classList.contains('error')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('error'),
             'stepnav item does not have .error class when page has error and page is not completed'
-          );
+          ).toBe(false);
         });
 
         it('should have a cds-icon when page has an error', () => {
-          expect(myStepnavItem.classList.contains('error')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('error'),
             'stepnav item does not have .error class when page has no error'
-          );
+          ).toBe(false);
           fakeOutPage.completed = true;
           fakeOutPage.hasError = true;
           fixture.detectChanges();
@@ -502,10 +506,10 @@ export default function (): void {
         });
 
         it('should have a cds-icon when page has is complete', () => {
-          expect(myStepnavItem.classList.contains('error')).toBe(
-            false,
+          expect(
+            myStepnavItem.classList.contains('error'),
             'stepnav item does not have .error class when page has no error'
-          );
+          ).toBe(false);
           fakeOutPage.completed = true;
           fakeOutPage.hasError = false;
           fixture.detectChanges();
@@ -523,7 +527,7 @@ export default function (): void {
         beforeEach(() => {
           fakeOutPage.reset();
           fixture.detectChanges();
-          navServiceSpy = spyOn(testItemComponent.navService, 'goTo');
+          navServiceSpy = vi.spyOn(testItemComponent.navService, 'goTo').mockImplementation(() => undefined);
           myClickTarget = myStepnavItem.querySelector('button');
         });
 
@@ -588,4 +592,4 @@ export default function (): void {
       });
     });
   });
-}
+});

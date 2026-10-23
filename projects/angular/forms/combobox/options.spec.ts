@@ -8,7 +8,7 @@
 import { Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
-import { TestContext } from '@clr/angular/testing';
+import { createTestHelpers, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, FocusService, IF_ACTIVE_ID_PROVIDER } from '@clr/angular/utils';
 
 import { ClrOptions } from './options';
@@ -53,94 +53,102 @@ class TestComponentWithChild {
 })
 class TestComponentWithError {}
 
-export default function (): void {
-  describe('Select Options Menu Component', function () {
-    let context:
-      TestContext<ClrOptions<string>, TestComponent> | TestContext<ClrOptions<string>, TestComponentWithChild>;
-    let popoverService: ClrPopoverService;
+describe('Combobox component', () => {
+  describe('Directives', () => {
+    describe('Select Options Menu Component', () => {
+      const helpers = createTestHelpers();
 
-    describe('View Basics', function () {
-      beforeEach(function () {
-        context = this.createOnly(ClrOptions, TestComponent, []);
-        popoverService = context.getClarityProvider(ClrPopoverService);
-      });
+      let context:
+        TestContext<ClrOptions<string>, TestComponent> | TestContext<ClrOptions<string>, TestComponentWithChild>;
+      let popoverService: ClrPopoverService;
 
-      afterEach(function () {
-        popoverService.open = false;
-        context.detectChanges();
-      });
-
-      it('projects content', function () {
-        const menu = context.testElement.querySelector('clr-options');
-        expect(menu.textContent).toMatch(/Test/);
-      });
-
-      it('has the correct class', function () {
-        const menu = context.testElement.querySelector('clr-options');
-        expect(menu.classList.contains('clr-combobox-options')).toBe(true);
-      });
-
-      it('does not close the menu when you click on the menu', () => {
-        popoverService.open = true;
-        const menu = context.testElement.querySelector('clr-options');
-        menu.click();
-
-        expect(popoverService.open).toBe(true);
-      });
-
-      it('handles loading and no-result states', function () {
-        const selectionService: OptionSelectionService<any> = context.getClarityProvider(OptionSelectionService);
-        selectionService.loading = true;
-        context.fixture.detectChanges();
-        const menu = context.testElement.querySelector('clr-options');
-        expect(menu.textContent).toMatch(/Loading/);
-        expect(menu.textContent).toMatch(/Searching for matches for/);
-        selectionService.loading = false;
-        context.fixture.detectChanges();
-        expect(menu.textContent).toMatch(/No results/);
-      });
-    });
-
-    describe('Template API', function () {
-      describe('Plain text content', function () {
-        beforeEach(function () {
-          context = this.createOnly(ClrOptions, TestComponent, []);
+      describe('View Basics', () => {
+        beforeEach(() => {
+          context = helpers.createOnly<ClrOptions<string>, TestComponent>(ClrOptions, TestComponent, []);
+          popoverService = context.getClarityProvider(ClrPopoverService);
         });
 
-        it('has a searchText method', function () {
-          const searchText = context.clarityDirective.searchText('test');
-          expect(searchText).toEqual('Searching for matches for "test"');
-        });
-      });
-
-      describe('ClrOption content', function () {
-        beforeEach(function () {
-          context = this.create(ClrOptions, TestComponentWithChild, []);
-        });
-
-        it('can add option items', function () {
-          expect(context.clarityDirective.items.length).toBe(1);
-          (context.testComponent as TestComponentWithChild).showOption = false;
+        afterEach(() => {
+          popoverService.open = false;
           context.detectChanges();
-          expect(context.clarityDirective.items.length).toBe(0);
         });
 
-        it('has "emptyOptions" field that depend on the items', function () {
-          expect(context.clarityDirective.emptyOptions).toBeFalse();
-          (context.testComponent as TestComponentWithChild).showOption = false;
-          context.detectChanges();
-          expect(context.clarityDirective.emptyOptions).toBeTrue();
+        it('projects content', () => {
+          const menu = context.testElement.querySelector('clr-options');
+          expect(menu.textContent).toMatch(/Test/);
+        });
+
+        it('has the correct class', () => {
+          const menu = context.testElement.querySelector('clr-options');
+          expect(menu.classList.contains('clr-combobox-options')).toBe(true);
+        });
+
+        it('does not close the menu when you click on the menu', () => {
+          popoverService.open = true;
+          const menu = context.testElement.querySelector('clr-options');
+          menu.click();
+
+          expect(popoverService.open).toBe(true);
+        });
+
+        it('handles loading and no-result states', () => {
+          const selectionService: OptionSelectionService<any> = context.getClarityProvider(OptionSelectionService);
+          selectionService.loading = true;
+          context.fixture.detectChanges();
+          const menu = context.testElement.querySelector('clr-options');
+          expect(menu.textContent).toMatch(/Loading/);
+          expect(menu.textContent).toMatch(/Searching for matches for/);
+          selectionService.loading = false;
+          context.fixture.detectChanges();
+          expect(menu.textContent).toMatch(/No results/);
         });
       });
-    });
 
-    describe('Error Condition', function () {
-      it('throws an error when options menu is not used inside of clr-combobox', function () {
-        TestBed.configureTestingModule({ declarations: [ClrOptions, TestComponentWithError] });
-        expect(() => {
-          TestBed.createComponent(TestComponentWithError);
-        }).toThrowError('clr-options should only be used inside of a clr-combobox');
+      describe('Template API', () => {
+        describe('Plain text content', () => {
+          beforeEach(() => {
+            context = helpers.createOnly<ClrOptions<string>, TestComponent>(ClrOptions, TestComponent, []);
+          });
+
+          it('has a searchText method', () => {
+            const searchText = context.clarityDirective.searchText('test');
+            expect(searchText).toEqual('Searching for matches for "test"');
+          });
+        });
+
+        describe('ClrOption content', () => {
+          beforeEach(() => {
+            context = helpers.create<ClrOptions<string>, TestComponentWithChild>(
+              ClrOptions,
+              TestComponentWithChild,
+              []
+            );
+          });
+
+          it('can add option items', () => {
+            expect(context.clarityDirective.items.length).toBe(1);
+            (context.testComponent as TestComponentWithChild).showOption = false;
+            context.detectChanges();
+            expect(context.clarityDirective.items.length).toBe(0);
+          });
+
+          it('has "emptyOptions" field that depend on the items', () => {
+            expect(context.clarityDirective.emptyOptions).toBe(false);
+            (context.testComponent as TestComponentWithChild).showOption = false;
+            context.detectChanges();
+            expect(context.clarityDirective.emptyOptions).toBe(true);
+          });
+        });
+      });
+
+      describe('Error Condition', () => {
+        it('throws an error when options menu is not used inside of clr-combobox', () => {
+          TestBed.configureTestingModule({ declarations: [ClrOptions, TestComponentWithError] });
+          expect(() => {
+            TestBed.createComponent(TestComponentWithError);
+          }).toThrowError('clr-options should only be used inside of a clr-combobox');
+        });
       });
     });
   });
-}
+});

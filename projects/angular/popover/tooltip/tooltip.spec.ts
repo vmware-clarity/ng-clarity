@@ -29,24 +29,31 @@ interface TooltipContext extends TestContext<ClrTooltip, SimpleTest> {
   tooltipIdService: TooltipIdService;
 }
 
-export default function (): void {
-  describe('Tooltip component', function () {
-    spec(ClrTooltip, SimpleTest, ClrTooltipModule, { providers: [TooltipIdService] });
+describe('Tooltip', () => {
+  describe('Tooltip component', () => {
+    let testContext: TooltipContext;
 
-    beforeEach(function (this: TooltipContext) {
-      this.tooltipIdService = this.getClarityProvider(TooltipIdService);
+    const getContext = spec(ClrTooltip, SimpleTest, ClrTooltipModule, { providers: [TooltipIdService] });
+    beforeEach(() => {
+      testContext = getContext() as TooltipContext;
     });
 
-    describe('TypeScript API', function (this: TooltipContext) {
-      it('provides a TooltipIdService', function (this: TooltipContext) {
-        expect(this.tooltipIdService).toBeDefined();
+    beforeEach(() => {
+      testContext.tooltipIdService = testContext.getClarityProvider(TooltipIdService);
+    });
+
+    describe('TypeScript API', () => {
+      it('provides a TooltipIdService', () => {
+        expect(testContext.tooltipIdService).toBeDefined();
       });
     });
 
-    describe('Simple', function (this: TooltipContext) {
-      it('projects trigger content', function () {
-        expect(this.clarityElement.textContent).toMatch(/Hello/);
+    describe('Simple', () => {
+      it('projects trigger content', () => {
+        const untypedContext: any = testContext;
+
+        expect(untypedContext.clarityElement.textContent).toMatch(/Hello/);
       });
     });
   });
-}
+});

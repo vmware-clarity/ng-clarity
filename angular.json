@@ -101,21 +101,36 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "styles": ["projects/ui/src/clr-ui.scss"],
-            "main": "projects/angular/test.ts",
+            "buildTarget": "clr-angular:test-build",
             "tsConfig": "projects/angular/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "codeCoverage": true,
-            "watch": true,
-            "sourceMap": true
+            "runner": "vitest",
+            "runnerConfig": "vitest.config.mts",
+            "setupFiles": ["projects/test-setup.ts"],
+            "providersFile": "projects/test-providers.ts",
+            "browsers": ["chromium"],
+            "coverage": true,
+            "coverageThresholds": {
+              "statements": 89,
+              "branches": 80,
+              "functions": 90,
+              "lines": 89
+            },
+            "coverageReporters": ["html", "text-summary", "lcov"],
+            "coverageExclude": [
+              "projects/angular/schematics/**",
+              "projects/angular/utils/testing/**",
+              "projects/angular/forms/tests/**",
+              "projects/angular/data/datagrid/helpers.ts"
+            ],
+            "exclude": ["schematics/**"],
+            "browserViewport": "1280x1024"
           },
           "configurations": {
             "ci": {
               "watch": false,
-              "sourceMap": false,
-              "browsers": "ChromeHeadless"
+              "browsers": ["chromiumHeadless"]
             }
           }
         },
@@ -139,6 +154,16 @@
             "compodoc": true,
             "compodocArgs": ["-p", "./projects/angular/tsconfig.lib.json", "-e", "json", "-d", "."],
             "styles": [".storybook/public/preview.css", "projects/ui/src/clr-ui.scss"]
+          }
+        },
+        "test-build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "tsConfig": "projects/angular/tsconfig.spec.json",
+            "outputPath": "dist/test-build/angular",
+            "styles": ["projects/ui/src/clr-ui.scss"],
+            "polyfills": ["zone.js", "zone.js/testing", "zone.js/plugins/vitest-patch"],
+            "aot": false
           }
         }
       }
@@ -250,23 +275,46 @@
           }
         },
         "test": {
-          "builder": "@angular/build:karma",
+          "builder": "@angular/build:unit-test",
           "options": {
-            "styles": ["projects/ui/src/clr-ui.scss"],
-            "main": "projects/addons/test.ts",
+            "buildTarget": "clr-addons:test-build",
             "tsConfig": "projects/addons/tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
-            "codeCoverage": true,
-            "watch": true,
-            "sourceMap": true,
-            "codeCoverageExclude": ["projects/addons/**/*.mock.ts", "projects/addons/testing/datagrid/grid-helper.ts"]
+            "runner": "vitest",
+            "runnerConfig": "vitest.config.mts",
+            "setupFiles": ["projects/test-setup.ts"],
+            "providersFile": "projects/test-providers.ts",
+            "browsers": ["chromium"],
+            "coverage": true,
+            "coverageThresholds": {
+              "statements": 89,
+              "branches": 80,
+              "functions": 90,
+              "lines": 89
+            },
+            "coverageReporters": ["html", "text-summary", "lcov"],
+            "coverageExclude": [
+              "projects/angular/**",
+              "**/*.mock.ts",
+              "projects/addons/testing/datagrid/grid-helper.ts"
+            ],
+            "exclude": [],
+            "browserViewport": "1280x1024"
           },
           "configurations": {
             "ci": {
               "watch": false,
-              "sourceMap": false,
-              "browsers": "ChromeHeadless"
+              "browsers": ["chromiumHeadless"]
             }
+          }
+        },
+        "test-build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "tsConfig": "projects/addons/tsconfig.spec.json",
+            "outputPath": "dist/test-build/addons",
+            "styles": ["projects/ui/src/clr-ui.scss"],
+            "polyfills": ["zone.js", "zone.js/testing", "zone.js/plugins/vitest-patch"],
+            "aot": false
           }
         }
       }

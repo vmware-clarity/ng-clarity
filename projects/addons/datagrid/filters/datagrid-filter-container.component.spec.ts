@@ -64,7 +64,7 @@ describe('DatagridFilterContainer', () => {
     const filterComponent = fixture.debugElement.query(By.directive(MockFilterComponent));
     const filterInstance = filterComponent.componentInstance as MockFilterComponent;
 
-    const filterValueChangeSpy = spyOn(component.filterValueChange, 'emit');
+    const filterValueChangeSpy = vi.spyOn(component.filterValueChange, 'emit').mockImplementation(() => undefined);
     filterInstance.changes.next('newTestValue');
 
     expect(filterValueChangeSpy).toHaveBeenCalledWith('newTestValue');

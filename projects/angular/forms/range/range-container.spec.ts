@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrRange } from './range';
 import { ClrRangeContainer } from './range-container';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -61,10 +61,10 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Radio component', () => {
   describe('ClrRangeContainer', () => {
     ContainerNoLabelSpec(ClrRangeContainer, ClrRange, NoLabelTest);
     TemplateDrivenSpec(ClrRangeContainer, ClrRange, SimpleTest, '.clr-range-wrapper [clrRange]');
     ReactiveSpec(ClrRangeContainer, ClrRange, ReactiveTest, '.clr-range-wrapper [clrRange]');
   });
-}
+});

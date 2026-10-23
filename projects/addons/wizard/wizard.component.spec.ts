@@ -231,11 +231,16 @@ interface ThisTest {
 class AppfxWizardTestModule {}
 
 describe('appfx-wizard', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
   const page1Title = 'Page 1 Title';
   const page2Title = 'Page 2 Title';
   const page3Title = 'Page 3 Title';
   const page4Title = 'Page 4 Title';
-  beforeEach(function (this: ThisTest) {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         ClrAlertModule,
@@ -274,24 +279,24 @@ describe('appfx-wizard', () => {
       },
     });
 
-    this.pageOneText = 'I am page 1';
-    this.pageTwoText = 'I am page 2';
+    testContext.pageOneText = 'I am page 1';
+    testContext.pageTwoText = 'I am page 2';
 
-    this.fixture = TestBed.createComponent(WizardComponent);
-    this.component = this.fixture.componentInstance;
+    testContext.fixture = TestBed.createComponent(WizardComponent);
+    testContext.component = testContext.fixture.componentInstance;
 
-    this.wizardModel = new MockWizardModel();
+    testContext.wizardModel = new MockWizardModel();
 
-    this.page1Model = new MockPage1Model();
-    this.page2Model = new MockPage2Model();
-    this.page3Model = new MockPage3Model();
-    this.page4Model = new MockPage4Model();
+    testContext.page1Model = new MockPage1Model();
+    testContext.page2Model = new MockPage2Model();
+    testContext.page3Model = new MockPage3Model();
+    testContext.page4Model = new MockPage4Model();
 
-    this.page1 = {
+    testContext.page1 = {
       title: page1Title,
       navTitle: 'Page 1 Nav',
       componentClass: MockPage1Component,
-      model: this.page1Model,
+      model: testContext.page1Model,
       mappings: new Mappings<MockPage1Model, MockWizardModel>()
         .mapStepProp('vmId')
         .to('contextObjectId')
@@ -301,69 +306,71 @@ describe('appfx-wizard', () => {
         .to('isPage2Relevant'),
     };
 
-    this.page2 = {
+    testContext.page2 = {
       title: page2Title,
       navTitle: 'Page 2 Nav',
       componentClass: MockPage2Component,
-      model: this.page2Model,
+      model: testContext.page2Model,
       mappings: new Mappings<MockPage2Model, MockWizardModel>().mapStepProp('newVmId').to('newContextObjectId'),
     };
 
-    this.page3 = {
+    testContext.page3 = {
       title: page3Title,
       navTitle: 'Page 3 Nav',
       componentClass: MockPage3Component,
-      model: this.page3Model,
+      model: testContext.page3Model,
     };
 
-    this.page4 = {
+    testContext.page4 = {
       title: page4Title,
       navTitle: 'Page 4 Nav',
       componentClass: MockPage4Component,
-      model: this.page4Model,
+      model: testContext.page4Model,
     };
 
-    this.workflowService = new MockWorkflowService();
-    this.workflowService.addWorkflow('main', [this.page1, this.page2]);
-    this.workflowService.switchToWorkflow('main');
+    testContext.workflowService = new MockWorkflowService();
+    testContext.workflowService.addWorkflow('main', [testContext.page1, testContext.page2]);
+    testContext.workflowService.switchToWorkflow('main');
 
-    this.component.title = 'JS Unit Tested Wizard';
-    this.component.wizardModel = this.wizardModel;
-    this.component.pages = this.workflowService.flow;
+    testContext.component.title = 'JS Unit Tested Wizard';
+    testContext.component.wizardModel = testContext.wizardModel;
+    testContext.component.pages = testContext.workflowService.flow;
 
-    this.wizardHelper = new WizardHelper(this.fixture.debugElement.query(By.css('clr-wizard')));
-    this.strings = TestBed.inject(WorkflowStrings);
-    expect(this.strings).toBeDefined();
+    testContext.wizardHelper = new WizardHelper(testContext.fixture.debugElement.query(By.css('clr-wizard')));
+    testContext.strings = TestBed.inject(WorkflowStrings);
+    expect(testContext.strings).toBeDefined();
   });
 
-  afterEach(function (this: any) {
-    this.fixture.destroy();
+  afterEach(() => {
+    const untypedContext: any = testContext;
+
+    untypedContext.fixture.destroy();
   });
 
   describe('WHEN the Component is rendered', () => {
-    it('THEN the wizard is visible', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.isVisible).toEqual(true);
+    it('THEN the wizard is visible', () => {
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.isVisible).toEqual(true);
     });
 
-    it('THEN the page titles are visible in the TOC component', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.pageNavTitles).toEqual([this.page1.navTitle, this.page2.navTitle]);
+    it('THEN the page titles are visible in the TOC component', () => {
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.pageNavTitles).toEqual([testContext.page1.navTitle, testContext.page2.navTitle]);
     });
 
-    it("THEN the size of the modal is 'lg' by default", function (this: ThisTest) {
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.size).toEqual('lg');
+    it("THEN the size of the modal is 'lg' by default", () => {
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.size).toEqual('lg');
     });
 
     describe('WHEN the size input of the wizard is changed', () => {
-      beforeEach(function (this: ThisTest) {
-        this.component.size = 'xl';
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.component.size = 'xl';
+        testContext.fixture.detectChanges();
       });
 
-      it('THEN the new size is applied to the wizard', function (this: ThisTest) {
-        expect(this.wizardHelper.size).toEqual('xl');
+      it('THEN the new size is applied to the wizard', () => {
+        expect(testContext.wizardHelper.size).toEqual('xl');
       });
     });
 
@@ -373,183 +380,185 @@ describe('appfx-wizard', () => {
         contextObjectId: Var.of('vm-11'),
         newContextObjectId: Var.of('host-11'),
       };
-      beforeEach(function (this: ThisTest) {
-        this.component.configService.debug = true;
-        this.component.modelMgr.model = mockDebugModel;
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.component.configService.debug = true;
+        testContext.component.modelMgr.model = mockDebugModel;
+        testContext.fixture.detectChanges();
       });
 
-      it('THEN should render mock popup', fakeAsync(function (this: ThisTest) {
-        this.fixture.detectChanges();
+      it('THEN should render mock popup', fakeAsync(() => {
+        testContext.fixture.detectChanges();
         tick();
 
-        const popupElement = this.fixture.debugElement.query(By.css('appfx-model-popup')).componentInstance;
+        const popupElement = testContext.fixture.debugElement.query(By.css('appfx-model-popup')).componentInstance;
         expect(popupElement).toBeDefined();
         expect(popupElement.modelMgr.model).toEqual(mockDebugModel);
       }));
     });
 
-    it("THEN the first page is rendered AND it's title is selected AND page.activate() lifecycle is invoked", function (this: ThisTest) {
-      expect(this.page1Model.activateCallsCount).toEqual(0);
+    it("THEN the first page is rendered AND it's title is selected AND page.activate() lifecycle is invoked", () => {
+      expect(testContext.page1Model.activateCallsCount).toEqual(0);
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      expect(this.wizardHelper.activePageTitle).toEqual(this.page1.title);
-      expect(this.wizardHelper.activePageNavTitle).toEqual(this.page1.navTitle);
+      expect(testContext.wizardHelper.activePageTitle).toEqual(testContext.page1.title);
+      expect(testContext.wizardHelper.activePageNavTitle).toEqual(testContext.page1.navTitle);
 
-      expect(this.page1Model.activateCallsCount).toEqual(1);
+      expect(testContext.page1Model.activateCallsCount).toEqual(1);
     });
 
-    it('THEN the buttons are correctly rendered', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.visibleButtons.length).toBe(2);
+    it('THEN the buttons are correctly rendered', () => {
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.visibleButtons.length).toBe(2);
 
-      expect(this.wizardHelper.cancelButtonText).toEqual(this.strings.cancel.toUpperCase());
-      expect(this.wizardHelper.nextButtonText).toEqual(this.strings.next.toUpperCase());
+      expect(testContext.wizardHelper.cancelButtonText).toEqual(testContext.strings.cancel.toUpperCase());
+      expect(testContext.wizardHelper.nextButtonText).toEqual(testContext.strings.next.toUpperCase());
     });
 
-    it("WHEN 'Next' is clicked THEN validate() and activate() methods are called", function (this: ThisTest) {
-      spyOn(this.component, 'onWizardCommit').and.callThrough();
-      spyOn(this.component, 'onWizardPageActivated').and.callThrough();
+    it("WHEN 'Next' is clicked THEN validate() and activate() methods are called", () => {
+      vi.spyOn(testContext.component, 'onWizardCommit');
+      vi.spyOn(testContext.component, 'onWizardPageActivated');
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      expect(this.page1Model.validateCallsCount).toEqual(0);
-      expect(this.page2Model.activateCallsCount).toEqual(0);
+      expect(testContext.page1Model.validateCallsCount).toEqual(0);
+      expect(testContext.page2Model.activateCallsCount).toEqual(0);
 
-      this.wizardHelper.next();
-      expect(this.component.onWizardCommit).toHaveBeenCalled();
-      expect(this.component.onWizardPageActivated).toHaveBeenCalled();
+      testContext.wizardHelper.next();
+      expect(testContext.component.onWizardCommit).toHaveBeenCalled();
+      expect(testContext.component.onWizardPageActivated).toHaveBeenCalled();
 
-      expect(this.page1Model.validateCallsCount).toEqual(1);
-      expect(this.page2Model.activateCallsCount).toEqual(1);
+      expect(testContext.page1Model.validateCallsCount).toEqual(1);
+      expect(testContext.page2Model.activateCallsCount).toEqual(1);
     });
 
-    it("WHEN 'Cancel' is clicked THEN onClose event is emitted", function (this: ThisTest) {
-      this.fixture.detectChanges();
+    it("WHEN 'Cancel' is clicked THEN onClose event is emitted", () => {
+      testContext.fixture.detectChanges();
 
       let invoked = false;
-      this.component.onClose.subscribe(() => (invoked = true));
+      testContext.component.onClose.subscribe(() => (invoked = true));
 
-      this.wizardHelper.cancel();
+      testContext.wizardHelper.cancel();
 
       expect(invoked).toEqual(true);
     });
 
-    it('THEN the displays correctly a loading indicator if requested to do so', function (this: ThisTest) {
-      this.fixture.detectChanges();
+    it('THEN the displays correctly a loading indicator if requested to do so', () => {
+      testContext.fixture.detectChanges();
 
       // Initially indicator should be hidden
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(false);
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
 
       // Show indicator when the wizard reports loading
-      this.component.loading = true;
-      this.fixture.detectChanges();
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(true);
+      testContext.component.loading = true;
+      testContext.fixture.detectChanges();
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
       // Hide indicator
-      this.component.loading = false;
-      this.fixture.detectChanges();
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(false);
+      testContext.component.loading = false;
+      testContext.fixture.detectChanges();
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
 
       // Show indicator when the page model reports loading
-      this.page1Model.loading = true;
-      this.fixture.detectChanges();
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(true);
+      testContext.page1Model.loading = true;
+      testContext.fixture.detectChanges();
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
       // Hide indicator
-      this.page1Model.loading = false;
-      this.fixture.detectChanges();
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(false);
+      testContext.page1Model.loading = false;
+      testContext.fixture.detectChanges();
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
     });
   });
 
   describe('WHEN we go to the next page', () => {
-    beforeEach(function (this: ThisTest) {
-      this.fixture.detectChanges();
-      this.wizardHelper.next();
+    beforeEach(() => {
+      testContext.fixture.detectChanges();
+      testContext.wizardHelper.next();
     });
 
-    it('THEN the selected navigation AND the page title are correct', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.activePageTitle).toEqual(this.page2.title);
-      expect(this.wizardHelper.activePageNavTitle).toEqual(this.page2.navTitle);
+    it('THEN the selected navigation AND the page title are correct', () => {
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.activePageTitle).toEqual(testContext.page2.title);
+      expect(testContext.wizardHelper.activePageNavTitle).toEqual(testContext.page2.navTitle);
     });
 
-    it('THEN the buttons are correctly rendered', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.cancelButtonText).toEqual(this.strings.cancel.toUpperCase());
-      expect(this.wizardHelper.backButtonText).toEqual(this.strings.back.toUpperCase());
+    it('THEN the buttons are correctly rendered', () => {
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.cancelButtonText).toEqual(testContext.strings.cancel.toUpperCase());
+      expect(testContext.wizardHelper.backButtonText).toEqual(testContext.strings.back.toUpperCase());
       // we have only 2 pages so the second is last
-      expect(this.wizardHelper.finishButtonText).toEqual(this.strings.finish.toUpperCase());
+      expect(testContext.wizardHelper.finishButtonText).toEqual(testContext.strings.finish.toUpperCase());
     });
 
-    it("WHEN 'Back' is clicked THEN onBack method is called", function (this: ThisTest) {
-      spyOn(this.component, 'onWizardBack').and.callThrough();
+    it("WHEN 'Back' is clicked THEN onBack method is called", () => {
+      vi.spyOn(testContext.component, 'onWizardBack');
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      this.wizardHelper.back();
-      expect(this.component.onWizardBack).toHaveBeenCalled();
+      testContext.wizardHelper.back();
+      expect(testContext.component.onWizardBack).toHaveBeenCalled();
     });
 
-    it('THEN activate(changes) should receive correct data', function (this: ThisTest) {
+    it('THEN activate(changes) should receive correct data', () => {
       // currently in page 2
       let changes: ModelChanges = {};
       changes['vmId'] = new ModelChange('vmId', undefined, 'vm-11');
-      expect(this.page1Model.changes).toEqual(changes);
-      expect(this.page2Model.changes).toEqual({}); // no update to newVmId
-      this.wizardHelper.back();
-      expect(this.page1Model.changes).toEqual({}); // revisit page1
-      this.page1Model.newVmId = 'updatedVmId'; // update page model newVmId
-      this.wizardHelper.next(); // revisit page2 with changes
+      expect(testContext.page1Model.changes).toEqual(changes);
+      expect(testContext.page2Model.changes).toEqual({}); // no update to newVmId
+      testContext.wizardHelper.back();
+      expect(testContext.page1Model.changes).toEqual({}); // revisit page1
+      testContext.page1Model.newVmId = 'updatedVmId'; // update page model newVmId
+      testContext.wizardHelper.next(); // revisit page2 with changes
       changes = {};
       changes['newVmId'] = new ModelChange('newVmId', undefined, 'updatedVmId');
-      expect(this.page2Model.changes).toEqual(changes);
-      this.wizardHelper.back();
-      expect(this.page1Model.changes).toEqual({});
-      this.wizardHelper.next();
-      expect(this.page1Model.changes).toEqual({});
+      expect(testContext.page2Model.changes).toEqual(changes);
+      testContext.wizardHelper.back();
+      expect(testContext.page1Model.changes).toEqual({});
+      testContext.wizardHelper.next();
+      expect(testContext.page1Model.changes).toEqual({});
     });
   });
 
   describe('WHEN a page has cancelable validation', () => {
-    it('THEN should render cancel validation button ', function (this: ThisTest) {
-      this.component.pages = [this.page4, this.page1];
-      this.fixture.detectChanges();
-      this.wizardHelper.next();
-      this.fixture.detectChanges();
+    it('THEN should render cancel validation button ', () => {
+      testContext.component.pages = [testContext.page4, testContext.page1];
+      testContext.fixture.detectChanges();
+      testContext.wizardHelper.next();
+      testContext.fixture.detectChanges();
 
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(true);
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
-      expect(this.fixture.debugElement.query(By.css('appfx-spinner button.btn')).nativeElement.innerText).toEqual(
-        this.page4Model.cancelableValidation?.cancelButtonLabel?.toUpperCase()
-      );
+      expect(
+        testContext.fixture.debugElement.query(By.css('appfx-spinner button.btn')).nativeElement.innerText
+      ).toEqual(testContext.page4Model.cancelableValidation?.cancelButtonLabel?.toUpperCase());
 
-      this.fixture.debugElement.query(By.css('appfx-spinner button.btn')).nativeElement.click();
-      this.fixture.detectChanges();
+      testContext.fixture.debugElement.query(By.css('appfx-spinner button.btn')).nativeElement.click();
+      testContext.fixture.detectChanges();
 
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(false);
-      expect(this.page4Model.canceledValidationCallsCount).toEqual(1);
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
+      expect(testContext.page4Model.canceledValidationCallsCount).toEqual(1);
     });
   });
 
   describe('WHEN Finish is clicked', () => {
-    it('THEN onFinish() and onClose() events are emitted', function (this: any) {
-      this.fixture.detectChanges();
+    it('THEN onFinish() and onClose() events are emitted', () => {
+      const untypedContext: any = testContext;
 
-      this.wizardHelper.next();
+      untypedContext.fixture.detectChanges();
 
-      this.fixture.detectChanges();
+      untypedContext.wizardHelper.next();
+
+      untypedContext.fixture.detectChanges();
 
       let ok = false;
       let ok2 = false;
-      this.component.onFinish.subscribe(() => (ok = true));
-      this.component.onClose.subscribe(() => (ok2 = true));
+      untypedContext.component.onFinish.subscribe(() => (ok = true));
+      untypedContext.component.onClose.subscribe(() => (ok2 = true));
 
-      this.wizardHelper.finish();
+      untypedContext.wizardHelper.finish();
 
-      this.fixture.detectChanges();
+      untypedContext.fixture.detectChanges();
 
       expect(ok).toBe(true);
       expect(ok2).toBe(true);
@@ -559,342 +568,350 @@ describe('appfx-wizard', () => {
   describe('WHEN closeHandle handler is set', () => {
     const customError = 'Custom validation error';
 
-    it('WHEN onSubmit throws error THEN error is set', function (this: any) {
-      this.component.closeHandler = {
+    it('WHEN onSubmit throws error THEN error is set', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.closeHandler = {
         onSubmit: () => {
           return throwError(() => new Error(customError));
         },
       };
 
-      this.fixture.detectChanges();
-      this.wizardHelper.next();
-      this.component.onWizardCommit();
+      untypedContext.fixture.detectChanges();
+      untypedContext.wizardHelper.next();
+      untypedContext.component.onWizardCommit();
 
-      expect(this.component.closeHandlerValidationState.errors).toEqual([customError]);
+      expect(untypedContext.component.closeHandlerValidationState.errors).toEqual([customError]);
     });
 
-    it('WHEN onSubmit returns preventDisplayingWizardError THEN error is not set', function (this: any) {
-      this.component.closeHandler = {
+    it('WHEN onSubmit returns preventDisplayingWizardError THEN error is not set', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.closeHandler = {
         onSubmit: () => {
           return throwError(() => preventDisplayingWizardError);
         },
       };
 
-      this.fixture.detectChanges();
-      this.wizardHelper.next();
-      this.component.onWizardCommit();
+      untypedContext.fixture.detectChanges();
+      untypedContext.wizardHelper.next();
+      untypedContext.component.onWizardCommit();
 
-      expect(this.component.closeHandlerValidationState.errors).toEqual([]);
+      expect(untypedContext.component.closeHandlerValidationState.errors).toEqual([]);
     });
 
-    it('WHEN onCancel throws error THEN error is set', function (this: any) {
-      this.component.closeHandler = {
+    it('WHEN onCancel throws error THEN error is set', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.closeHandler = {
         onCancel: () => {
           return throwError(() => new Error(customError));
         },
       };
 
-      this.fixture.detectChanges();
-      this.component.onWizardCancel();
+      untypedContext.fixture.detectChanges();
+      untypedContext.component.onWizardCancel();
 
-      expect(this.component.closeHandlerValidationState.errors).toEqual([customError]);
+      expect(untypedContext.component.closeHandlerValidationState.errors).toEqual([customError]);
     });
 
-    it('WHEN onCancel returns preventDisplayingWizardError THEN error is not set', function (this: any) {
-      this.component.closeHandler = {
+    it('WHEN onCancel returns preventDisplayingWizardError THEN error is not set', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.closeHandler = {
         onCancel: () => {
           return throwError(() => preventDisplayingWizardError);
         },
       };
 
-      this.fixture.detectChanges();
-      this.component.onWizardCancel();
+      untypedContext.fixture.detectChanges();
+      untypedContext.component.onWizardCancel();
 
-      expect(this.component.closeHandlerValidationState.errors).toEqual([]);
+      expect(untypedContext.component.closeHandlerValidationState.errors).toEqual([]);
     });
   });
 
   describe('WHEN the models have inject/eject properties', () => {
-    beforeEach(function (this: ThisTest) {
-      this.page1Model.vmId = undefined;
-      this.page1Model.newVmId = undefined;
-      this.page2Model.newVmId = undefined;
+    beforeEach(() => {
+      testContext.page1Model.vmId = undefined;
+      testContext.page1Model.newVmId = undefined;
+      testContext.page2Model.newVmId = undefined;
     });
 
     describe('WHEN a page is activated', () => {
-      beforeEach(function (this: ThisTest) {
-        expect(this.page1Model.vmId).toBeUndefined();
+      beforeEach(() => {
+        expect(testContext.page1Model.vmId).toBeUndefined();
 
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
       });
 
-      it('THEN the wizard model properties are injected into the page model', function (this: ThisTest) {
+      it('THEN the wizard model properties are injected into the page model', () => {
         // The data was injected from the wizard model into the page 1 model
-        expect(this.page1Model.vmId).toEqual('vm-11');
+        expect(testContext.page1Model.vmId).toEqual('vm-11');
 
         // The second page model is still not affected as the page is not active yet
-        expect(this.page2Model.newVmId).toBeUndefined();
+        expect(testContext.page2Model.newVmId).toBeUndefined();
       });
 
       describe('AND LATER a page is de-activated', () => {
-        it('THEN the page model properties are injected into the wizard model', function (this: ThisTest) {
-          this.page1Model.newVmId = 'vm-12';
+        it('THEN the page model properties are injected into the wizard model', () => {
+          testContext.page1Model.newVmId = 'vm-12';
 
-          expect(this.wizardModel.newContextObjectId).toEqual('host-11');
-          expect(this.page2Model.newVmId).toBeUndefined();
+          expect(testContext.wizardModel.newContextObjectId).toEqual('host-11');
+          expect(testContext.page2Model.newVmId).toBeUndefined();
 
           // Press the Next button
-          const nextButton = this.fixture.debugElement.queryAll(
+          const nextButton = testContext.fixture.debugElement.queryAll(
             By.css('clr-wizard-button[aria-hidden=false] button')
           )[1];
           nextButton.triggerEventHandler('click', null);
 
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
 
           // From page1 the data was outjected into the wizard model
-          expect(this.wizardModel.newContextObjectId).toEqual('vm-12');
+          expect(testContext.wizardModel.newContextObjectId).toEqual('vm-12');
 
           // From the wizard model was injected into page 2
-          expect(this.page2Model.newVmId).toEqual('vm-12');
+          expect(testContext.page2Model.newVmId).toEqual('vm-12');
         });
       });
     });
   });
 
   describe('WHEN compute function executed', () => {
-    beforeEach(function (this: ThisTest) {
-      this.page1.isRelevant = Var.from(this.wizardModel.dep1).by(dep1 => of(dep1));
-      this.component.pages = this.workflowService.flow;
+    beforeEach(() => {
+      testContext.page1.isRelevant = Var.from(testContext.wizardModel.dep1).by(dep1 => of(dep1));
+      testContext.component.pages = testContext.workflowService.flow;
     });
-    it('page relevance should be evaluated again', function (this: ThisTest) {
-      expect(this.page1.isSkipped).toEqual(true);
+    it('page relevance should be evaluated again', () => {
+      expect(testContext.page1.isSkipped).toEqual(true);
       // this should update isSkipped property
-      this.wizardModel.dep1.value = true;
-      expect(this.page1.isSkipped).toEqual(false);
+      testContext.wizardModel.dep1.value = true;
+      expect(testContext.page1.isSkipped).toEqual(false);
       // this should update isSkipped property again
-      this.wizardModel.dep1.value = false;
-      expect(this.page1.isSkipped).toEqual(true);
+      testContext.wizardModel.dep1.value = false;
+      expect(testContext.page1.isSkipped).toEqual(true);
     });
   });
 
   describe('Relevance checks', () => {
-    it('WHEN Page 1 is not relevant, THEN should display page2', function (this: ThisTest) {
-      this.page1.isRelevant = Var.of(false);
-      this.component.pages = this.workflowService.flow;
-      expect(this.component.pages.length).toEqual(2);
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.pageNavTitles.length).toEqual(1);
-      expect(this.wizardHelper.activePageTitle).toEqual(page2Title);
+    it('WHEN Page 1 is not relevant, THEN should display page2', () => {
+      testContext.page1.isRelevant = Var.of(false);
+      testContext.component.pages = testContext.workflowService.flow;
+      expect(testContext.component.pages.length).toEqual(2);
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.pageNavTitles.length).toEqual(1);
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
     });
-    it('WHEN next page becomes irrelevant, after page1 commit', function (this: ThisTest) {
-      this.page2.isRelevant = this.wizardModel.isPage2Relevant;
-      this.component.pages = [this.page1, this.page2, this.page3];
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.pageNavTitles.length).toEqual(3);
-      expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+    it('WHEN next page becomes irrelevant, after page1 commit', () => {
+      testContext.page2.isRelevant = testContext.wizardModel.isPage2Relevant;
+      testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.pageNavTitles.length).toEqual(3);
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
       // This should skip page 2 because, it become irrelevant
-      this.page1Model.showPage2 = false;
-      this.wizardHelper.next();
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.pageNavTitles.length).toEqual(2);
-      expect(this.wizardHelper.activePageTitle).toEqual(page3Title);
+      testContext.page1Model.showPage2 = false;
+      testContext.wizardHelper.next();
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.pageNavTitles.length).toEqual(2);
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page3Title);
     });
-    it('WHEN last page becomes relevant, after finish', function (this: ThisTest) {
-      spyOn(this.component.onFinish, 'emit').and.callThrough();
-      this.page3.isSkipped = true;
-      this.page3.isRelevant = Var.from(this.wizardModel.dep1).by(dep1 => of(dep1));
-      this.wizardModel.dep1.value = false;
-      this.component.pages = [this.page1, this.page2, this.page3];
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.pageNavTitles.length).toEqual(2);
-      expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
-      this.wizardHelper.next();
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.pageNavTitles.length).toEqual(2);
-      expect(this.wizardHelper.activePageTitle).toEqual(page2Title);
-      this.wizardModel.dep1.value = true;
-      this.wizardHelper.finish();
-      this.fixture.detectChanges();
+    it('WHEN last page becomes relevant, after finish', () => {
+      vi.spyOn(testContext.component.onFinish, 'emit');
+      testContext.page3.isSkipped = true;
+      testContext.page3.isRelevant = Var.from(testContext.wizardModel.dep1).by(dep1 => of(dep1));
+      testContext.wizardModel.dep1.value = false;
+      testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.pageNavTitles.length).toEqual(2);
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
+      testContext.wizardHelper.next();
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.pageNavTitles.length).toEqual(2);
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
+      testContext.wizardModel.dep1.value = true;
+      testContext.wizardHelper.finish();
+      testContext.fixture.detectChanges();
       // This should add one more page, last page become relevant.
-      expect(this.wizardHelper.pageNavTitles.length).toEqual(3);
-      expect(this.wizardHelper.activePageTitle).toEqual(page3Title);
-      this.wizardHelper.finish();
-      expect(this.component.onFinish.emit).toHaveBeenCalledTimes(1);
+      expect(testContext.wizardHelper.pageNavTitles.length).toEqual(3);
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page3Title);
+      testContext.wizardHelper.finish();
+      expect(testContext.component.onFinish.emit).toHaveBeenCalledTimes(1);
     });
   });
 
   describe('Step Navigation ->', () => {
-    beforeEach(function (this: ThisTest) {
-      this.component.pages = [this.page1, this.page2, this.page3];
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
+      testContext.fixture.detectChanges();
     });
 
-    it('WHEN rendered, Only step 1 is enabled', function (this: ThisTest) {
-      expect(this.wizardHelper.pageNavTitles.length).toEqual(3);
-      expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-      expect(this.wizardHelper.isStepNavEnabled(1)).toBeFalsy();
-      expect(this.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
+    it('WHEN rendered, Only step 1 is enabled', () => {
+      expect(testContext.wizardHelper.pageNavTitles.length).toEqual(3);
+      expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+      expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeFalsy();
+      expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
     });
 
-    it('activate should be called for step1', function (this: ThisTest) {
-      expect(this.page1Model.activateCallsCount).toEqual(1);
-      expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+    it('activate should be called for step1', () => {
+      expect(testContext.page1Model.activateCallsCount).toEqual(1);
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
     });
 
     describe('Go to step2 using Next button ->', () => {
-      beforeEach(function (this: ThisTest) {
-        this.wizardHelper.next();
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.wizardHelper.next();
+        testContext.fixture.detectChanges();
       });
 
-      it('Only step 3 is disabled', function (this: ThisTest) {
-        expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-        expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-        expect(this.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
+      it('Only step 3 is disabled', () => {
+        expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+        expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+        expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
       });
 
-      it('activate should be called for step2', function (this: ThisTest) {
-        expect(this.page2Model.activateCallsCount).toEqual(1);
-        expect(this.wizardHelper.activePageTitle).toEqual(page2Title);
+      it('activate should be called for step2', () => {
+        expect(testContext.page2Model.activateCallsCount).toEqual(1);
+        expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
       });
 
-      it('validate should be called for step1', function (this: ThisTest) {
-        expect(this.page1Model.validateCallsCount).toEqual(1);
+      it('validate should be called for step1', () => {
+        expect(testContext.page1Model.validateCallsCount).toEqual(1);
       });
 
       describe('Go to step3 using Next button ->', () => {
-        beforeEach(function (this: ThisTest) {
-          this.wizardHelper.next();
-          this.fixture.detectChanges();
+        beforeEach(() => {
+          testContext.wizardHelper.next();
+          testContext.fixture.detectChanges();
         });
 
-        it('All step Nav should be enabled', function (this: ThisTest) {
-          expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-          expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-          expect(this.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
+        it('All step Nav should be enabled', () => {
+          expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+          expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+          expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
         });
 
-        it('activate should be called for step3', function (this: ThisTest) {
-          expect(this.page3Model.activateCallsCount).toEqual(1);
-          expect(this.wizardHelper.activePageTitle).toEqual(page3Title);
+        it('activate should be called for step3', () => {
+          expect(testContext.page3Model.activateCallsCount).toEqual(1);
+          expect(testContext.wizardHelper.activePageTitle).toEqual(page3Title);
         });
 
-        it('validate should be called for step2', function (this: ThisTest) {
-          expect(this.page2Model.validateCallsCount).toEqual(1);
+        it('validate should be called for step2', () => {
+          expect(testContext.page2Model.validateCallsCount).toEqual(1);
         });
 
         describe('Go back to step 1 using Step Nav ->', () => {
-          beforeEach(function (this: ThisTest) {
-            this.wizardHelper.navigateToStep(0);
-            this.fixture.detectChanges();
+          beforeEach(() => {
+            testContext.wizardHelper.navigateToStep(0);
+            testContext.fixture.detectChanges();
           });
 
-          it('All step Nav should be enabled', function (this: ThisTest) {
-            expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-            expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-            expect(this.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
+          it('All step Nav should be enabled', () => {
+            expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+            expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+            expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
           });
 
-          it('activate should be called for step1', function (this: ThisTest) {
-            expect(this.page1Model.activateCallsCount).toEqual(2);
-            expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+          it('activate should be called for step1', () => {
+            expect(testContext.page1Model.activateCallsCount).toEqual(2);
+            expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
           });
 
-          it('validate should NOT be called for step3', function (this: ThisTest) {
-            expect(this.page3Model.validateCallsCount).toEqual(0);
+          it('validate should NOT be called for step3', () => {
+            expect(testContext.page3Model.validateCallsCount).toEqual(0);
           });
 
           describe('Go to step 2 using Step Nav ->', () => {
-            beforeEach(function (this: ThisTest) {
-              this.wizardHelper.navigateToStep(1);
-              this.fixture.detectChanges();
+            beforeEach(() => {
+              testContext.wizardHelper.navigateToStep(1);
+              testContext.fixture.detectChanges();
             });
 
-            it('All step Nav should be enabled', function (this: ThisTest) {
-              expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-              expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-              expect(this.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
+            it('All step Nav should be enabled', () => {
+              expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+              expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+              expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
             });
 
-            it('activate should be called for step2', function (this: ThisTest) {
-              expect(this.page2Model.activateCallsCount).toEqual(2);
-              expect(this.wizardHelper.activePageTitle).toEqual(page2Title);
+            it('activate should be called for step2', () => {
+              expect(testContext.page2Model.activateCallsCount).toEqual(2);
+              expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
             });
 
-            it('validate should be called for step1', function (this: ThisTest) {
-              expect(this.page1Model.validateCallsCount).toEqual(2);
+            it('validate should be called for step1', () => {
+              expect(testContext.page1Model.validateCallsCount).toEqual(2);
             });
           });
 
           describe('Go to step 3 using Step Nav ->', () => {
-            beforeEach(function (this: ThisTest) {
-              this.wizardHelper.navigateToStep(2);
-              this.fixture.detectChanges();
+            beforeEach(() => {
+              testContext.wizardHelper.navigateToStep(2);
+              testContext.fixture.detectChanges();
             });
 
-            it('All step Nav should be enabled', function (this: ThisTest) {
-              expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-              expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-              expect(this.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
+            it('All step Nav should be enabled', () => {
+              expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+              expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+              expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
             });
 
-            it('activate should be called for step3', function (this: ThisTest) {
-              expect(this.page3Model.activateCallsCount).toEqual(2);
-              expect(this.wizardHelper.activePageTitle).toEqual(page3Title);
+            it('activate should be called for step3', () => {
+              expect(testContext.page3Model.activateCallsCount).toEqual(2);
+              expect(testContext.wizardHelper.activePageTitle).toEqual(page3Title);
             });
 
-            it('validate should be called for step1', function (this: ThisTest) {
-              expect(this.page1Model.validateCallsCount).toEqual(2);
+            it('validate should be called for step1', () => {
+              expect(testContext.page1Model.validateCallsCount).toEqual(2);
             });
           });
 
           describe('Step 1 is invalid ->', () => {
-            beforeEach(function (this: ThisTest) {
-              this.page1Model.validationResult = false;
-              this.fixture.detectChanges();
+            beforeEach(() => {
+              testContext.page1Model.validationResult = false;
+              testContext.fixture.detectChanges();
             });
 
             describe('Go to step 2 using Step Nav ->', () => {
-              beforeEach(function (this: ThisTest) {
-                this.wizardHelper.navigateToStep(1);
-                this.fixture.detectChanges();
+              beforeEach(() => {
+                testContext.wizardHelper.navigateToStep(1);
+                testContext.fixture.detectChanges();
               });
 
-              it('All step Nav should be enabled', function (this: ThisTest) {
-                expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-                expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-                expect(this.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
+              it('All step Nav should be enabled', () => {
+                expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+                expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+                expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
               });
 
-              it('activate should NOT be called for step2', function (this: ThisTest) {
-                expect(this.page2Model.activateCallsCount).toEqual(1);
-                expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+              it('activate should NOT be called for step2', () => {
+                expect(testContext.page2Model.activateCallsCount).toEqual(1);
+                expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
               });
 
-              it('validate should be called for step1', function (this: ThisTest) {
-                expect(this.page1Model.validateCallsCount).toEqual(2);
+              it('validate should be called for step1', () => {
+                expect(testContext.page1Model.validateCallsCount).toEqual(2);
               });
             });
 
             describe('Go to step 3 using Step Nav ->', () => {
-              beforeEach(function (this: ThisTest) {
-                this.wizardHelper.navigateToStep(2);
-                this.fixture.detectChanges();
+              beforeEach(() => {
+                testContext.wizardHelper.navigateToStep(2);
+                testContext.fixture.detectChanges();
               });
 
-              it('All step Nav should be enabled', function (this: ThisTest) {
-                expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-                expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-                expect(this.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
+              it('All step Nav should be enabled', () => {
+                expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+                expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+                expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeTruthy();
               });
 
-              it('activate should NOT be called for step3', function (this: ThisTest) {
-                expect(this.page3Model.activateCallsCount).toEqual(1);
-                expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+              it('activate should NOT be called for step3', () => {
+                expect(testContext.page3Model.activateCallsCount).toEqual(1);
+                expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
               });
 
-              it('validate should be called for step1', function (this: ThisTest) {
-                expect(this.page1Model.validateCallsCount).toEqual(2);
+              it('validate should be called for step1', () => {
+                expect(testContext.page1Model.validateCallsCount).toEqual(2);
               });
             });
           });
@@ -902,101 +919,101 @@ describe('appfx-wizard', () => {
       });
 
       describe('Go back to step 1 using Step Nav ->', () => {
-        beforeEach(function (this: ThisTest) {
-          this.wizardHelper.navigateToStep(0);
-          this.fixture.detectChanges();
+        beforeEach(() => {
+          testContext.wizardHelper.navigateToStep(0);
+          testContext.fixture.detectChanges();
         });
 
-        it('Only step 3 is disabled', function (this: ThisTest) {
-          expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-          expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-          expect(this.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
+        it('Only step 3 is disabled', () => {
+          expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+          expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+          expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
         });
 
-        it('activate should be called for step1', function (this: ThisTest) {
-          expect(this.page1Model.activateCallsCount).toEqual(2);
-          expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+        it('activate should be called for step1', () => {
+          expect(testContext.page1Model.activateCallsCount).toEqual(2);
+          expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
         });
 
-        it('validate should NOT be called for step2', function (this: ThisTest) {
-          expect(this.page2Model.validateCallsCount).toEqual(0);
+        it('validate should NOT be called for step2', () => {
+          expect(testContext.page2Model.validateCallsCount).toEqual(0);
         });
 
         describe('WHEN there is a change in wizard model ->', () => {
-          beforeEach(function (this: ThisTest) {
-            this.page1Model.var1Value = 1;
+          beforeEach(() => {
+            testContext.page1Model.var1Value = 1;
           });
 
           describe('Go to step2 using Step Nav ->', () => {
-            beforeEach(function (this: ThisTest) {
-              this.wizardHelper.navigateToStep(1);
-              this.fixture.detectChanges();
+            beforeEach(() => {
+              testContext.wizardHelper.navigateToStep(1);
+              testContext.fixture.detectChanges();
             });
 
-            it('Only step 1 is enabled', function (this: ThisTest) {
-              expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-              expect(this.wizardHelper.isStepNavEnabled(1)).toBeFalsy();
-              expect(this.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
+            it('Only step 1 is enabled', () => {
+              expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+              expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeFalsy();
+              expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
             });
 
-            it('activate should NOT be called for step2', function (this: ThisTest) {
-              expect(this.page2Model.activateCallsCount).toEqual(1);
-              expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+            it('activate should NOT be called for step2', () => {
+              expect(testContext.page2Model.activateCallsCount).toEqual(1);
+              expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
             });
 
-            it('validate should be called for step1', function (this: ThisTest) {
-              expect(this.page1Model.validateCallsCount).toEqual(2);
+            it('validate should be called for step1', () => {
+              expect(testContext.page1Model.validateCallsCount).toEqual(2);
             });
           });
         });
 
         describe('Go to step2 using Step Nav ->', () => {
-          beforeEach(function (this: ThisTest) {
-            this.wizardHelper.navigateToStep(1);
-            this.fixture.detectChanges();
+          beforeEach(() => {
+            testContext.wizardHelper.navigateToStep(1);
+            testContext.fixture.detectChanges();
           });
 
-          it('Only step 3 is disabled', function (this: ThisTest) {
-            expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-            expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-            expect(this.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
+          it('Only step 3 is disabled', () => {
+            expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+            expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+            expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
           });
 
-          it('activate should be called for step2', function (this: ThisTest) {
-            expect(this.page2Model.activateCallsCount).toEqual(2);
-            expect(this.wizardHelper.activePageTitle).toEqual(page2Title);
+          it('activate should be called for step2', () => {
+            expect(testContext.page2Model.activateCallsCount).toEqual(2);
+            expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
           });
 
-          it('validate should be called for step1', function (this: ThisTest) {
-            expect(this.page1Model.validateCallsCount).toEqual(2);
+          it('validate should be called for step1', () => {
+            expect(testContext.page1Model.validateCallsCount).toEqual(2);
           });
         });
       });
 
       describe('Step2 is invalid ->', () => {
-        beforeEach(function (this: ThisTest) {
-          this.page2Model.validationResult = false;
+        beforeEach(() => {
+          testContext.page2Model.validationResult = false;
         });
 
         describe('Go back to step 1 using Step Nav, Step2 is invalid ->', () => {
-          beforeEach(function (this: ThisTest) {
-            this.wizardHelper.navigateToStep(0);
-            this.fixture.detectChanges();
+          beforeEach(() => {
+            testContext.wizardHelper.navigateToStep(0);
+            testContext.fixture.detectChanges();
           });
 
-          it('Only step 3 is disabled', function (this: ThisTest) {
-            expect(this.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
-            expect(this.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
-            expect(this.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
+          it('Only step 3 is disabled', () => {
+            expect(testContext.wizardHelper.isStepNavEnabled(0)).toBeTruthy();
+            expect(testContext.wizardHelper.isStepNavEnabled(1)).toBeTruthy();
+            expect(testContext.wizardHelper.isStepNavEnabled(2)).toBeFalsy();
           });
 
-          it('activate should be called for step1', function (this: ThisTest) {
-            expect(this.page1Model.activateCallsCount).toEqual(2);
-            expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+          it('activate should be called for step1', () => {
+            expect(testContext.page1Model.activateCallsCount).toEqual(2);
+            expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
           });
 
-          it('validate should NOT be called for step2', function (this: ThisTest) {
-            expect(this.page1Model.validateCallsCount).toEqual(1);
+          it('validate should NOT be called for step2', () => {
+            expect(testContext.page1Model.validateCallsCount).toEqual(1);
           });
         });
       });
@@ -1004,223 +1021,223 @@ describe('appfx-wizard', () => {
   });
 
   describe('WHEN StepModel.readyToComplete=false', () => {
-    beforeEach(function (this: ThisTest) {
-      this.fixture.detectChanges();
-      this.wizardHelper.next();
-      this.fixture.detectChanges(); // in Step 2
-      this.page2Model.readyToComplete = false;
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.fixture.detectChanges();
+      testContext.wizardHelper.next();
+      testContext.fixture.detectChanges(); // in Step 2
+      testContext.page2Model.readyToComplete = false;
+      testContext.fixture.detectChanges();
     });
 
-    it('Next button should be disabled', function (this: ThisTest) {
-      expect(this.wizardHelper.activePageTitle).toEqual(page2Title);
-      expect(this.component.isNextButtonDisabled).toEqual(true);
+    it('Next button should be disabled', () => {
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
+      expect(testContext.component.isNextButtonDisabled).toEqual(true);
     });
 
-    it('Cannot go to Next step', function (this: ThisTest) {
-      this.wizardHelper.next();
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.activePageTitle).toEqual(page2Title);
+    it('Cannot go to Next step', () => {
+      testContext.wizardHelper.next();
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
     });
 
-    it('Can go to Previous step', function (this: ThisTest) {
-      this.wizardHelper.back();
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+    it('Can go to Previous step', () => {
+      testContext.wizardHelper.back();
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
     });
   });
 
   describe('WHEN StepValidationState.isValid()=false', () => {
-    beforeEach(function (this: ThisTest) {
-      this.fixture.detectChanges();
-      this.wizardHelper.next();
-      this.fixture.detectChanges(); // in Step 2
-      this.page2Model.validationState.errors = ['Error Message'];
-      this.fixture.detectChanges();
+    beforeEach(() => {
+      testContext.fixture.detectChanges();
+      testContext.wizardHelper.next();
+      testContext.fixture.detectChanges(); // in Step 2
+      testContext.page2Model.validationState.errors = ['Error Message'];
+      testContext.fixture.detectChanges();
     });
 
-    it('Next button should be enabled', function (this: ThisTest) {
-      expect(this.wizardHelper.activePageTitle).toEqual(page2Title);
-      expect(this.component.isNextButtonDisabled).toEqual(false);
+    it('Next button should be enabled', () => {
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
+      expect(testContext.component.isNextButtonDisabled).toEqual(false);
     });
 
-    it('Cannot go to Next step', function (this: ThisTest) {
-      this.wizardHelper.next();
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.activePageTitle).toEqual(page2Title);
+    it('Cannot go to Next step', () => {
+      testContext.wizardHelper.next();
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page2Title);
     });
 
-    it('Can go to Previous step', function (this: ThisTest) {
-      this.wizardHelper.back();
-      this.fixture.detectChanges();
-      expect(this.wizardHelper.activePageTitle).toEqual(page1Title);
+    it('Can go to Previous step', () => {
+      testContext.wizardHelper.back();
+      testContext.fixture.detectChanges();
+      expect(testContext.wizardHelper.activePageTitle).toEqual(page1Title);
     });
   });
 
   describe('WHEN Step#summary is defined', () => {
-    beforeEach(function (this: ThisTest) {
-      this.page1.summary = (builder: PropertyViewSectionBuilder): PropertyViewSectionModel => {
+    beforeEach(() => {
+      testContext.page1.summary = (builder: PropertyViewSectionBuilder): PropertyViewSectionModel => {
         return builder.build();
       };
-      this.page2.summary = (builder: PropertyViewSectionBuilder): PropertyViewSectionModel => {
+      testContext.page2.summary = (builder: PropertyViewSectionBuilder): PropertyViewSectionModel => {
         return builder.build();
       };
-      this.component.pages = [this.page1, this.page2, this.page3];
-      this.fixture.detectChanges();
+      testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
+      testContext.fixture.detectChanges();
     });
 
-    it('THEN, SummaryComponent should be appended', function (this: ThisTest) {
-      expect(this.component.pages.length).toEqual(4);
-      expect(this.component.pages[3].componentClass).toEqual(SummaryComponent);
+    it('THEN, SummaryComponent should be appended', () => {
+      expect(testContext.component.pages.length).toEqual(4);
+      expect(testContext.component.pages[3].componentClass).toEqual(SummaryComponent);
     });
 
     describe('WHEN all pages are relevant', () => {
-      it('THEN, appfx-summary should be rendered in last step', function (this: ThisTest) {
-        this.wizardHelper.next();
-        this.wizardHelper.next();
-        this.wizardHelper.next();
-        expect(this.wizardHelper.activePageTitle).toEqual('Ready To Complete');
-        expect(this.fixture.debugElement.query(By.css('appfx-summary'))).toBeDefined();
+      it('THEN, appfx-summary should be rendered in last step', () => {
+        testContext.wizardHelper.next();
+        testContext.wizardHelper.next();
+        testContext.wizardHelper.next();
+        expect(testContext.wizardHelper.activePageTitle).toEqual('Ready To Complete');
+        expect(testContext.fixture.debugElement.query(By.css('appfx-summary'))).toBeDefined();
       });
 
-      it('THEN, should have section from all pages', function (this: ThisTest) {
-        this.wizardHelper.next();
-        this.wizardHelper.next();
-        this.wizardHelper.next();
-        const propertyViewSections = ((this.component.pages[3] as any)['modelInstance'] as SummaryModel).data
+      it('THEN, should have section from all pages', () => {
+        testContext.wizardHelper.next();
+        testContext.wizardHelper.next();
+        testContext.wizardHelper.next();
+        const propertyViewSections = ((testContext.component.pages[3] as any)['modelInstance'] as SummaryModel).data
           .categories[0].content;
 
         expect(propertyViewSections.length).toEqual(2);
-        expect(propertyViewSections[0].title).toEqual(this.page1.navTitle as string);
-        expect(propertyViewSections[1].title).toEqual(this.page2.navTitle as string);
+        expect(propertyViewSections[0].title).toEqual(testContext.page1.navTitle as string);
+        expect(propertyViewSections[1].title).toEqual(testContext.page2.navTitle as string);
       });
     });
 
     describe('WHEN some pages are NOT relevant', () => {
-      beforeEach(function (this: ThisTest) {
-        this.page2.isRelevant = Var.of(false);
-        this.component.pages = [this.page1, this.page2, this.page3];
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.page2.isRelevant = Var.of(false);
+        testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
+        testContext.fixture.detectChanges();
       });
 
-      it('THEN, appfx-summary should be rendered in last step', function (this: ThisTest) {
-        this.wizardHelper.next();
-        this.wizardHelper.next();
-        expect(this.wizardHelper.activePageTitle).toEqual('Ready To Complete');
-        expect(this.fixture.debugElement.query(By.css('appfx-summary'))).toBeDefined();
+      it('THEN, appfx-summary should be rendered in last step', () => {
+        testContext.wizardHelper.next();
+        testContext.wizardHelper.next();
+        expect(testContext.wizardHelper.activePageTitle).toEqual('Ready To Complete');
+        expect(testContext.fixture.debugElement.query(By.css('appfx-summary'))).toBeDefined();
       });
 
-      it('THEN, should have section from only relevant pages', function (this: ThisTest) {
-        this.wizardHelper.next();
-        this.wizardHelper.next();
-        this.wizardHelper.next();
-        const propertyViewSections = ((this.component.pages[3] as any)['modelInstance'] as SummaryModel).data
+      it('THEN, should have section from only relevant pages', () => {
+        testContext.wizardHelper.next();
+        testContext.wizardHelper.next();
+        testContext.wizardHelper.next();
+        const propertyViewSections = ((testContext.component.pages[3] as any)['modelInstance'] as SummaryModel).data
           .categories[0].content;
         expect(propertyViewSections.length).toEqual(1);
-        expect(propertyViewSections[0].title).toEqual(this.page1.navTitle as string);
+        expect(propertyViewSections[0].title).toEqual(testContext.page1.navTitle as string);
       });
 
-      it('THEN, should have isSkpped state equal to true if all pages with summary are not relevant', function (this: ThisTest) {
-        expect((<StepInternal>this.component.pages[3]).isSkipped).toEqual(false);
-        this.page1.isRelevant = Var.of(false);
-        this.component.pages = [this.page1, this.page2, this.page3];
-        this.fixture.detectChanges();
-        expect((<StepInternal>this.component.pages[3]).isSkipped).toEqual(true);
+      it('THEN, should have isSkpped state equal to true if all pages with summary are not relevant', () => {
+        expect((<StepInternal>testContext.component.pages[3]).isSkipped).toEqual(false);
+        testContext.page1.isRelevant = Var.of(false);
+        testContext.component.pages = [testContext.page1, testContext.page2, testContext.page3];
+        testContext.fixture.detectChanges();
+        expect((<StepInternal>testContext.component.pages[3]).isSkipped).toEqual(true);
       });
     });
   });
 
   describe('zoom accessibility', () => {
-    beforeEach(function (this: ThisTest) {
-      this.component.pages = [this.page1, this.page2];
-      this.zoomLevelService = TestBed.inject(ZoomLevelService);
+    beforeEach(() => {
+      testContext.component.pages = [testContext.page1, testContext.page2];
+      testContext.zoomLevelService = TestBed.inject(ZoomLevelService);
     });
 
     describe('zoom2x', () => {
-      beforeEach(function (this: ThisTest) {
-        this.zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x2);
+        testContext.fixture.detectChanges();
       });
 
-      it('step nav panel is hidden by default', function (this: ThisTest) {
-        expect(this.wizardHelper.isNavVisible()).toBeFalsy();
+      it('step nav panel is hidden by default', () => {
+        expect(testContext.wizardHelper.isNavVisible()).toBeFalsy();
       });
 
-      it('`Show step nav` burger icon is visible by default', function (this: ThisTest) {
-        expect(this.wizardHelper.isShowNavIconVisible()).toBeTruthy();
+      it('`Show step nav` burger icon is visible by default', () => {
+        expect(testContext.wizardHelper.isShowNavIconVisible()).toBeTruthy();
       });
 
-      it('page name is prefixed by visible page index', function (this: ThisTest) {
-        expect(this.wizardHelper.activePageTitle).toEqual('1.\xA0' + this.page1.title);
+      it('page name is prefixed by visible page index', () => {
+        expect(testContext.wizardHelper.activePageTitle).toEqual('1.\xA0' + testContext.page1.title);
 
-        this.wizardHelper.next();
+        testContext.wizardHelper.next();
 
-        expect(this.wizardHelper.activePageTitle).toEqual('2.\xA0' + this.page2.title);
+        expect(testContext.wizardHelper.activePageTitle).toEqual('2.\xA0' + testContext.page2.title);
       });
 
       describe('when `Show step nav` burger icon is clicked', () => {
-        beforeEach(function (this: ThisTest) {
-          this.wizardHelper.showNavigator();
-          this.fixture.detectChanges();
+        beforeEach(() => {
+          testContext.wizardHelper.showNavigator();
+          testContext.fixture.detectChanges();
         });
 
-        it('step nav panel is opened', function (this: ThisTest) {
-          expect(this.wizardHelper.isNavVisible()).toBeTruthy();
+        it('step nav panel is opened', () => {
+          expect(testContext.wizardHelper.isNavVisible()).toBeTruthy();
         });
 
         describe('when `Close step nav` icon icon is clicked', () => {
-          beforeEach(function (this: ThisTest) {
-            this.wizardHelper.closeNavigator();
-            this.fixture.detectChanges();
+          beforeEach(() => {
+            testContext.wizardHelper.closeNavigator();
+            testContext.fixture.detectChanges();
           });
 
-          it('step nav panel is closed', function (this: ThisTest) {
-            expect(this.wizardHelper.isNavVisible()).toBeFalsy();
+          it('step nav panel is closed', () => {
+            expect(testContext.wizardHelper.isNavVisible()).toBeFalsy();
           });
         });
       });
     });
 
     describe('zoom4x', () => {
-      beforeEach(function (this: ThisTest) {
-        this.zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.zoomLevelService['resizeSubject'].next(ZoomLevel.x4);
+        testContext.fixture.detectChanges();
       });
 
-      it('step nav panel is hidden by default', function (this: ThisTest) {
-        expect(this.wizardHelper.isNavVisible()).toBeFalsy();
+      it('step nav panel is hidden by default', () => {
+        expect(testContext.wizardHelper.isNavVisible()).toBeFalsy();
       });
 
-      it('`Show step nav` burger icon is visible by default', function (this: ThisTest) {
-        expect(this.wizardHelper.isShowNavIconVisible()).toBeTruthy();
+      it('`Show step nav` burger icon is visible by default', () => {
+        expect(testContext.wizardHelper.isShowNavIconVisible()).toBeTruthy();
       });
 
-      it('page name is prefixed by visible page index', function (this: ThisTest) {
-        expect(this.wizardHelper.activePageTitle).toEqual('1.\xA0' + this.page1.title);
+      it('page name is prefixed by visible page index', () => {
+        expect(testContext.wizardHelper.activePageTitle).toEqual('1.\xA0' + testContext.page1.title);
 
-        this.wizardHelper.next();
+        testContext.wizardHelper.next();
 
-        expect(this.wizardHelper.activePageTitle).toEqual('2.\xA0' + this.page2.title);
+        expect(testContext.wizardHelper.activePageTitle).toEqual('2.\xA0' + testContext.page2.title);
       });
 
       describe('when `Show step nav` burger icon is clicked', () => {
-        beforeEach(function (this: ThisTest) {
-          this.wizardHelper.showNavigator();
-          this.fixture.detectChanges();
+        beforeEach(() => {
+          testContext.wizardHelper.showNavigator();
+          testContext.fixture.detectChanges();
         });
 
-        it('step nav panel is opened', function (this: ThisTest) {
-          expect(this.wizardHelper.isNavVisible()).toBeTruthy();
+        it('step nav panel is opened', () => {
+          expect(testContext.wizardHelper.isNavVisible()).toBeTruthy();
         });
 
         describe('when `Close step nav` icon icon is clicked', () => {
-          beforeEach(function (this: ThisTest) {
-            this.wizardHelper.closeNavigator();
-            this.fixture.detectChanges();
+          beforeEach(() => {
+            testContext.wizardHelper.closeNavigator();
+            testContext.fixture.detectChanges();
           });
 
-          it('step nav panel is closed', function (this: ThisTest) {
-            expect(this.wizardHelper.isNavVisible()).toBeFalsy();
+          it('step nav panel is closed', () => {
+            expect(testContext.wizardHelper.isNavVisible()).toBeFalsy();
           });
         });
       });
@@ -1228,33 +1245,34 @@ describe('appfx-wizard', () => {
   });
 
   describe('Footer API', () => {
-    it('WHEN footer config is NOT provided THEN no footer component is rendered', function (this: ThisTest) {
-      expect(this.fixture.debugElement.query(By.css('.appfx-wizard-footer-component'))).toBeNull();
+    it('WHEN footer config is NOT provided THEN no footer component is rendered', () => {
+      expect(testContext.fixture.debugElement.query(By.css('.appfx-wizard-footer-component'))).toBeNull();
     });
 
     describe('WHEN footer config is provided', () => {
-      beforeEach(function (this: ThisTest) {
-        this.component.footer = { componentClass: MockFooterComponent };
-        this.fixture.detectChanges();
+      beforeEach(() => {
+        testContext.component.footer = { componentClass: MockFooterComponent };
+        testContext.fixture.detectChanges();
       });
 
-      it('THEN the footer inputs are updated when the step changes', function (this: ThisTest) {
+      it('THEN the footer inputs are updated when the step changes', () => {
         const getFooterInstance = () =>
-          this.fixture.debugElement.query(By.directive(MockFooterComponent)).componentInstance as MockFooterComponent;
+          testContext.fixture.debugElement.query(By.directive(MockFooterComponent))
+            .componentInstance as MockFooterComponent;
 
         const footer = getFooterInstance();
         expect(footer.currentStep).toBeDefined();
-        expect(footer.currentStep.title).toEqual(this.page1.title);
+        expect(footer.currentStep.title).toEqual(testContext.page1.title);
         expect(footer.steps).toBeDefined();
         expect(footer.steps.length).toEqual(2);
-        expect(footer.workflowModel).toBe(this.wizardModel);
+        expect(footer.workflowModel).toBe(testContext.wizardModel);
 
-        this.wizardHelper.next();
-        this.fixture.detectChanges();
+        testContext.wizardHelper.next();
+        testContext.fixture.detectChanges();
 
         const updatedFooter = getFooterInstance();
-        expect(updatedFooter.currentStep.title).toEqual(this.page2.title);
-        expect(updatedFooter.workflowModel).toBe(this.wizardModel);
+        expect(updatedFooter.currentStep.title).toEqual(testContext.page2.title);
+        expect(updatedFooter.workflowModel).toBe(testContext.wizardModel);
       });
     });
   });

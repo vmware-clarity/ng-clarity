@@ -7,6 +7,7 @@
 
 import { Component, NgModule } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
+import type { Mock } from 'vitest';
 
 import { AppfxTranslateModule } from './translate.module';
 import {
@@ -174,10 +175,10 @@ describe('Service: Translate', () => {
     });
 
     describe('and the language is changed', () => {
-      let languageChangedSpy: jasmine.Spy;
+      let languageChangedSpy: Mock;
 
       beforeEach(inject([AppfxTranslateService], (service: AppfxTranslateService) => {
-        languageChangedSpy = jasmine.createSpy('next');
+        languageChangedSpy = vi.fn();
         const subscription = service.localeChanged$.subscribe({ next: languageChangedSpy });
         service.locale = AppfxLocale.Es;
         subscription.unsubscribe();
@@ -272,10 +273,10 @@ describe('Service: Translate', () => {
   describe('when a custom missing translations hook is specified', () => {
     const testTranslations = {};
     const testInterpolations = {};
-    let missingTranslationSpy: jasmine.Spy;
+    let missingTranslationSpy: Mock;
 
     beforeEach(() => {
-      missingTranslationSpy = jasmine.createSpy('missingTranslation');
+      missingTranslationSpy = vi.fn();
 
       TestBed.configureTestingModule({
         providers: [

@@ -15,7 +15,7 @@ import { Keys } from '@clr/angular/utils';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 import { ClrDatagridVirtualScrollDirective } from './datagrid-virtual-scroll.directive';
-import { DATAGRID_SPEC_PROVIDERS } from './helpers.spec';
+import { DATAGRID_SPEC_PROVIDERS } from './helpers';
 import { ClarityModule } from '../../clr-angular.module';
 import { ClrDatagridVirtualScrollRangeInterface } from './interfaces/virtual-scroll-data-range.interface';
 
@@ -159,234 +159,251 @@ class FullTest implements OnInit {
   }
 }
 
-export default function (): void {
-  describe('ClrDatagrid virtual scroller', function () {
-    async function finishInit(fixture: ComponentFixture<any>) {
-      // On the first cycle we render and measure the viewport.
-      fixture.detectChanges();
-      await delay();
+describe('Datagrid', () => {
+  describe('Components', () => {
+    describe('ClrDatagrid virtual scroller', function () {
+      async function finishInit(fixture: ComponentFixture<any>) {
+        // On the first cycle we render and measure the viewport.
+        fixture.detectChanges();
+        await delay();
 
-      // On the second cycle we render the items.
-      fixture.detectChanges();
-      await delay();
+        // On the second cycle we render the items.
+        fixture.detectChanges();
+        await delay();
 
-      // Flush the initial fake scroll event.
-      // animationFrameScheduler.flush();
-      await delay();
-      fixture.detectChanges();
-    }
-    async function waitRequiredCycles(fixture: ComponentFixture<any>) {
-      await delay(500);
-      await fixture.whenStable();
-      await fixture.whenRenderingDone();
-      fixture.detectChanges();
-    }
+        // Flush the initial fake scroll event.
+        // animationFrameScheduler.flush();
+        await delay();
+        fixture.detectChanges();
+      }
+      async function waitRequiredCycles(fixture: ComponentFixture<any>) {
+        await delay(500);
+        await fixture.whenStable();
+        await fixture.whenRenderingDone();
+        fixture.detectChanges();
+      }
 
-    describe('Typescript API', function () {
-      let fixture: ComponentFixture<any>;
-      let compiled: any;
-      let instance: any;
+      describe('Typescript API', function () {
+        let fixture: ComponentFixture<any>;
+        let compiled: any;
+        let instance: any;
 
-      beforeEach(async function () {
-        await TestBed.configureTestingModule({
-          imports: [ClarityModule, NoopAnimationsModule],
-          declarations: [FullTest, ClrDatagridVirtualScrollDirective],
-          schemas: [CUSTOM_ELEMENTS_SCHEMA],
-          providers: DATAGRID_SPEC_PROVIDERS,
-        }).compileComponents();
+        beforeEach(async function () {
+          await TestBed.configureTestingModule({
+            imports: [ClarityModule, NoopAnimationsModule],
+            declarations: [FullTest, ClrDatagridVirtualScrollDirective],
+            schemas: [CUSTOM_ELEMENTS_SCHEMA],
+            providers: DATAGRID_SPEC_PROVIDERS,
+          }).compileComponents();
 
-        fixture = TestBed.createComponent(FullTest);
+          fixture = TestBed.createComponent(FullTest);
 
-        compiled = fixture.nativeElement;
-        instance = fixture.componentInstance;
-      });
+          compiled = fixture.nativeElement;
+          instance = fixture.componentInstance;
+        });
 
-      afterEach(() => {
-        fixture.destroy();
-      });
+        afterEach(() => {
+          fixture.destroy();
+        });
 
-      it('leaves the application-wide CDK services alone when the datagrid is destroyed', async function () {
-        // The viewport is built from a hand-made injector. Anything that injector hands out and
-        // that has an `ngOnDestroy` is destroyed with it, so the application's own ScrollDispatcher
-        // and ViewportRuler must not be reachable through it - completing them would stop scroll
-        // and resize notification for every CDK overlay in the application, and completing
-        // Directionality would stop text-direction changes from reaching them.
-        const scrollDispatcher = TestBed.inject(ScrollDispatcher);
-        const viewportRuler = TestBed.inject(ViewportRuler);
-        const directionality = TestBed.inject(Directionality);
-        let scrolledCompleted = false;
-        let viewportChangeCompleted = false;
-        let directionChangeCompleted = false;
-        scrollDispatcher.scrolled(0).subscribe({ complete: () => (scrolledCompleted = true) });
-        viewportRuler.change(0).subscribe({ complete: () => (viewportChangeCompleted = true) });
-        directionality.change.subscribe({ complete: () => (directionChangeCompleted = true) });
+        it('leaves the application-wide CDK services alone when the datagrid is destroyed', async function () {
+          // The viewport is built from a hand-made injector. Anything that injector hands out and
+          // that has an `ngOnDestroy` is destroyed with it, so the application's own ScrollDispatcher
+          // and ViewportRuler must not be reachable through it - completing them would stop scroll
+          // and resize notification for every CDK overlay in the application, and completing
+          // Directionality would stop text-direction changes from reaching them.
+          const scrollDispatcher = TestBed.inject(ScrollDispatcher);
+          const viewportRuler = TestBed.inject(ViewportRuler);
+          const directionality = TestBed.inject(Directionality);
+          let scrolledCompleted = false;
+          let viewportChangeCompleted = false;
+          let directionChangeCompleted = false;
+          scrollDispatcher.scrolled(0).subscribe({ complete: () => (scrolledCompleted = true) });
+          viewportRuler.change(0).subscribe({ complete: () => (viewportChangeCompleted = true) });
+          directionality.change.subscribe({ complete: () => (directionChangeCompleted = true) });
 
-        await finishInit(fixture);
-        fixture.destroy();
+          await finishInit(fixture);
+          fixture.destroy();
 
-        expect(scrolledCompleted).withContext('ScrollDispatcher.scrolled() completed').toBe(false);
-        expect(viewportChangeCompleted).withContext('ViewportRuler.change() completed').toBe(false);
-        expect(directionChangeCompleted).withContext('Directionality.change completed').toBe(false);
-      });
+          expect(scrolledCompleted, 'ScrollDispatcher.scrolled() completed').toBe(false);
+          expect(viewportChangeCompleted, 'ViewportRuler.change() completed').toBe(false);
+          expect(directionChangeCompleted, 'Directionality.change completed').toBe(false);
+        });
 
-      it('tears the virtual-for down before the viewport it reads from', async function () {
-        await finishInit(fixture);
+        it('tears the virtual-for down before the viewport it reads from', async function () {
+          await finishInit(fixture);
 
-        const cdk = instance.virtualScroll as unknown as {
-          cdkVirtualFor: { ngOnDestroy(): void };
-          virtualScrollViewport: { ngOnDestroy(): void };
-        };
-        const teardownOrder: string[] = [];
-        // Record the order but still run the real teardown, so the instances are really torn down.
-        const recordTeardown = (name: string, instance: { ngOnDestroy(): void }) => {
-          const ngOnDestroy = instance.ngOnDestroy.bind(instance);
-          spyOn(instance, 'ngOnDestroy').and.callFake(() => {
-            teardownOrder.push(name);
-            ngOnDestroy();
-          });
-        };
-        recordTeardown('cdkVirtualFor', cdk.cdkVirtualFor);
-        recordTeardown('viewport', cdk.virtualScrollViewport);
-
-        fixture.destroy();
-
-        expect(teardownOrder).toEqual(['cdkVirtualFor', 'viewport']);
-      });
-
-      it('releases the effect the viewport keeps on the application injector when destroyed', async function () {
-        // `CdkVirtualScrollViewport` creates an effect on the application injector and only destroys
-        // it through the `DestroyRef` of the injector it was created from. While that effect lives it
-        // retains the viewport and, through it, the whole datagrid view tree.
-        await finishInit(fixture);
-
-        const viewport = (
-          instance.virtualScroll as unknown as {
-            virtualScrollViewport: {
-              _changeDetectionNeeded: { set(value: boolean): void };
-              _doChangeDetection(): void;
+          const cdk = instance.virtualScroll as unknown as {
+            cdkVirtualFor: {
+              ngOnDestroy(): void;
             };
-          }
-        ).virtualScrollViewport;
-        const doChangeDetection = spyOn(viewport, '_doChangeDetection').and.callThrough();
-        const triggerViewportEffect = () => {
-          viewport._changeDetectionNeeded.set(false);
-          TestBed.tick();
-          doChangeDetection.calls.reset();
-          viewport._changeDetectionNeeded.set(true);
-          TestBed.tick();
-        };
+            virtualScrollViewport: {
+              ngOnDestroy(): void;
+            };
+          };
+          const teardownOrder: string[] = [];
+          // Record the order but still run the real teardown, so the instances are really torn down.
+          const recordTeardown = (
+            name: string,
+            instance: {
+              ngOnDestroy(): void;
+            }
+          ) => {
+            const ngOnDestroy = instance.ngOnDestroy.bind(instance);
+            vi.spyOn(instance, 'ngOnDestroy').mockImplementation(() => {
+              teardownOrder.push(name);
+              ngOnDestroy();
+            });
+          };
+          recordTeardown('cdkVirtualFor', cdk.cdkVirtualFor);
+          recordTeardown('viewport', cdk.virtualScrollViewport);
 
-        triggerViewportEffect();
-        expect(doChangeDetection).withContext('effect runs while the datagrid is alive').toHaveBeenCalled();
+          fixture.destroy();
 
-        fixture.destroy();
+          expect(teardownOrder).toEqual(['cdkVirtualFor', 'viewport']);
+        });
 
-        triggerViewportEffect();
-        expect(doChangeDetection).withContext('effect runs after the datagrid is destroyed').not.toHaveBeenCalled();
-      });
+        it('releases the effect the viewport keeps on the application injector when destroyed', async function () {
+          // `CdkVirtualScrollViewport` creates an effect on the application injector and only destroys
+          // it through the `DestroyRef` of the injector it was created from. While that effect lives it
+          // retains the viewport and, through it, the whole datagrid view tree.
+          await finishInit(fixture);
 
-      it('allows to manually force a refresh of displayed items when data mutates', function () {
-        fixture.detectChanges();
+          const viewport = (
+            instance.virtualScroll as unknown as {
+              virtualScrollViewport: {
+                _changeDetectionNeeded: {
+                  set(value: boolean): void;
+                };
+                _doChangeDetection(): void;
+              };
+            }
+          ).virtualScrollViewport;
+          const doChangeDetection = vi.spyOn(viewport, '_doChangeDetection');
+          const triggerViewportEffect = () => {
+            viewport._changeDetectionNeeded.set(false);
+            TestBed.tick();
+            doChangeDetection.mockClear();
+            viewport._changeDetectionNeeded.set(true);
+            TestBed.tick();
+          };
 
-        expect(instance.virtualScroll.items.all.length).toBe(1000);
+          triggerViewportEffect();
+          expect(doChangeDetection, 'effect runs while the datagrid is alive').toHaveBeenCalled();
 
-        expect(instance.virtualScroll.maxBufferPx).toBe(400);
-        instance.virtualScroll.maxBufferPx = 600;
-        expect(instance.virtualScroll.maxBufferPx).toBe(600);
+          fixture.destroy();
 
-        expect(instance.virtualScroll.minBufferPx).toBe(200);
-        instance.virtualScroll.minBufferPx = 300;
-        expect(instance.virtualScroll.minBufferPx).toBe(300);
+          triggerViewportEffect();
+          expect(doChangeDetection, 'effect runs after the datagrid is destroyed').not.toHaveBeenCalled();
+        });
 
-        expect(instance.virtualScroll.itemSize).toBe(25);
-        instance.virtualScroll.itemSize = 20;
-        expect(instance.virtualScroll.itemSize).toBe(20);
+        it('allows to manually force a refresh of displayed items when data mutates', function () {
+          fixture.detectChanges();
 
-        expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(4000);
-        instance.virtualScroll.cdkVirtualForTemplateCacheSize = 5000;
-        expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
+          expect(instance.virtualScroll.items.all.length).toBe(1000);
 
-        expect(instance.virtualScroll.totalItems).toBeUndefined();
-        instance.totalRows = 5000;
-        fixture.detectChanges();
-        expect(instance.virtualScroll.totalItems).toBe(5000);
+          expect(instance.virtualScroll.maxBufferPx).toBe(400);
+          instance.virtualScroll.maxBufferPx = 600;
+          expect(instance.virtualScroll.maxBufferPx).toBe(600);
 
-        expect(instance.virtualScroll.persistItems).toBe(true);
-        instance.persistItems = false;
-        fixture.detectChanges();
-        expect(instance.virtualScroll.persistItems).toBe(false);
+          expect(instance.virtualScroll.minBufferPx).toBe(200);
+          instance.virtualScroll.minBufferPx = 300;
+          expect(instance.virtualScroll.minBufferPx).toBe(300);
 
-        fixture.destroy();
-      });
+          expect(instance.virtualScroll.itemSize).toBe(25);
+          instance.virtualScroll.itemSize = 20;
+          expect(instance.virtualScroll.itemSize).toBe(20);
 
-      it('Spy on Scroll to index', async () => {
-        fixture.detectChanges();
-        const spyVirtualScroll = spyOn(instance.virtualScroll, 'scrollToIndex');
+          expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(4000);
+          instance.virtualScroll.cdkVirtualForTemplateCacheSize = 5000;
+          expect(instance.virtualScroll.cdkVirtualForTemplateCacheSize).toBe(5000);
 
-        instance.virtualScroll.scrollToIndex(300);
-        fixture.detectChanges();
-        expect(spyVirtualScroll).toHaveBeenCalledWith(300);
+          expect(instance.virtualScroll.totalItems).toBeUndefined();
+          instance.totalRows = 5000;
+          fixture.detectChanges();
+          expect(instance.virtualScroll.totalItems).toBe(5000);
 
-        instance.virtualScroll.scrollToIndex(0);
-        fixture.detectChanges();
-        expect(spyVirtualScroll).toHaveBeenCalledWith(0);
+          expect(instance.virtualScroll.persistItems).toBe(true);
+          instance.persistItems = false;
+          fixture.detectChanges();
+          expect(instance.virtualScroll.persistItems).toBe(false);
 
-        fixture.destroy();
-      });
+          fixture.destroy();
+        });
 
-      it('Spy on update data range', async () => {
-        fixture.detectChanges();
-        const spyVirtualScroll = spyOn(instance.virtualScroll, 'updateDataRange');
+        it('Spy on Scroll to index', async () => {
+          fixture.detectChanges();
+          const spyVirtualScroll = vi
+            .spyOn(instance.virtualScroll, 'scrollToIndex')
+            .mockImplementation(() => undefined);
 
-        let dataRange = {
-          total: 500,
-          skip: 100,
-          data: Array(100),
-        };
+          instance.virtualScroll.scrollToIndex(300);
+          fixture.detectChanges();
+          expect(spyVirtualScroll).toHaveBeenCalledWith(300);
 
-        instance.updateDataRange(dataRange);
-        fixture.detectChanges();
-        expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
+          instance.virtualScroll.scrollToIndex(0);
+          fixture.detectChanges();
+          expect(spyVirtualScroll).toHaveBeenCalledWith(0);
 
-        dataRange = {
-          total: 1000,
-          skip: 500,
-          data: Array(200),
-        };
+          fixture.destroy();
+        });
 
-        instance.updateDataRange(dataRange);
-        fixture.detectChanges();
-        expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
+        it('Spy on update data range', async () => {
+          fixture.detectChanges();
+          const spyVirtualScroll = vi
+            .spyOn(instance.virtualScroll, 'updateDataRange')
+            .mockImplementation(() => undefined);
 
-        fixture.destroy();
-      });
+          let dataRange = {
+            total: 500,
+            skip: 100,
+            data: Array(100),
+          };
 
-      it('Moves focus on PageDown and PageUp', async () => {
-        await finishInit(fixture);
-        fixture.autoDetectChanges();
-        await waitRequiredCycles(fixture);
-        const grid = compiled.querySelector('[role=grid]');
-        // need to start with this cell exactly, because it has tabindex=0
-        const headerCheckboxCell = grid.querySelector('[role=columnheader].datagrid-select');
-        headerCheckboxCell.focus();
-        await waitRequiredCycles(fixture);
-        expectActiveElementToBe(headerCheckboxCell);
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        await waitRequiredCycles(fixture);
-        // Row 14
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[8], 'PageDown, cells[8], Row 14');
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
-        await waitRequiredCycles(fixture);
+          instance.updateDataRange(dataRange);
+          fixture.detectChanges();
+          expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
 
-        // Row 28
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[8], 'PageDown, cells[8], Row 28');
-        grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
-        await waitRequiredCycles(fixture);
+          dataRange = {
+            total: 1000,
+            skip: 500,
+            data: Array(200),
+          };
 
-        // Row 19
-        expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[16], 'PageUp, cells[16], Row 19');
-        fixture.changeDetectorRef.detach();
+          instance.updateDataRange(dataRange);
+          fixture.detectChanges();
+          expect(spyVirtualScroll).toHaveBeenCalledWith(dataRange.skip, dataRange.data);
+
+          fixture.destroy();
+        });
+
+        it('Moves focus on PageDown and PageUp', async () => {
+          await finishInit(fixture);
+          fixture.autoDetectChanges();
+          await waitRequiredCycles(fixture);
+          const grid = compiled.querySelector('[role=grid]');
+          // need to start with this cell exactly, because it has tabindex=0
+          const headerCheckboxCell = grid.querySelector('[role=columnheader].datagrid-select');
+          headerCheckboxCell.focus();
+          await waitRequiredCycles(fixture);
+          expectActiveElementToBe(headerCheckboxCell);
+          grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+          await waitRequiredCycles(fixture);
+          // Row 14
+          expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[8], 'PageDown, cells[8], Row 14');
+          grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageDown }));
+          await waitRequiredCycles(fixture);
+
+          // Row 28
+          expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[8], 'PageDown, cells[8], Row 28');
+          grid.dispatchEvent(new KeyboardEvent('keydown', { key: Keys.PageUp }));
+          await waitRequiredCycles(fixture);
+
+          // Row 19
+          expectActiveElementToBe(grid.querySelectorAll('[type=checkbox]')[16], 'PageUp, cells[16], Row 19');
+          fixture.changeDetectorRef.detach();
+        });
       });
     });
   });
-}
+});

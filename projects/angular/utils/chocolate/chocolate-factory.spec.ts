@@ -12,37 +12,44 @@ import { By } from '@angular/platform-browser';
 import { OompaLoompa } from './oompa-loompa';
 import { WillyWonka } from './willy-wonka';
 
-describe('Chocolate factory', function () {
+describe('Chocolate factory', () => {
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
   // Can't use the helpers right now because they don't offer a way to declare more than one component for the test.
   // I've been meaning to go back on them for a while now.
 
-  describe('projected content', function () {
-    beforeEach(function () {
+  describe('projected content', () => {
+    beforeEach(() => {
       TestBed.configureTestingModule({ declarations: [ChocolateTest, ChocolateParent, ChocolateChild] });
-      this.fixture = TestBed.createComponent(ChocolateTest);
-      this.fixture.detectChanges();
-      this.testComponent = this.fixture.componentInstance;
+      testContext.fixture = TestBed.createComponent(ChocolateTest);
+      testContext.fixture.detectChanges();
+      testContext.testComponent = testContext.fixture.componentInstance;
     });
 
-    afterEach(function () {
-      this.fixture.destroy();
+    afterEach(() => {
+      testContext.fixture.destroy();
     });
 
-    it('handles chocolate', function () {
-      this.testComponent.children.push(0);
-      expect(() => this.fixture.detectChanges()).not.toThrow();
+    it('handles chocolate', () => {
+      testContext.testComponent.children.push(0);
+      expect(() => testContext.fixture.detectChanges()).not.toThrow();
     });
 
-    it('only detects changes on out-of-date views', function () {
-      const parent: ChocolateParent = this.fixture.debugElement.query(By.directive(ChocolateParent)).componentInstance;
-      const children: ChocolateChild[] = this.fixture.debugElement
+    it('only detects changes on out-of-date views', () => {
+      const parent: ChocolateParent = testContext.fixture.debugElement.query(
+        By.directive(ChocolateParent)
+      ).componentInstance;
+      const children: ChocolateChild[] = testContext.fixture.debugElement
         .queryAll(By.directive(ChocolateChild))
         .map((child: any) => child.componentInstance);
       parent.changes = 0;
       children.forEach(child => (child.changes = 0));
 
-      this.testComponent.children.push(0);
-      this.fixture.detectChanges();
+      testContext.testComponent.children.push(0);
+      testContext.fixture.detectChanges();
 
       /*
        * We have one extra change detection for each because of dev mode
@@ -55,9 +62,9 @@ describe('Chocolate factory', function () {
       expect(children.map(child => child.changes)).toEqual([2, 3]);
     });
 
-    it('properly cleans up when components are destroyed', function () {
-      this.testComponent.children.pop();
-      expect(() => this.fixture.detectChanges()).not.toThrow();
+    it('properly cleans up when components are destroyed', () => {
+      testContext.testComponent.children.pop();
+      expect(() => testContext.fixture.detectChanges()).not.toThrow();
     });
   });
 });

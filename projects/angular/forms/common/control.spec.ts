@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrControl } from './control';
 import { ClrControlContainer } from './control-container';
-import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control.spec';
+import { ControlStandaloneSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/control';
 
 @Component({
   template: `<input type="text" clrControl />`,
@@ -40,10 +40,8 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
-  describe('Input directive', () => {
-    ControlStandaloneSpec(StandaloneUseTest);
-    TemplateDrivenSpec(ClrControlContainer, ClrControl, TemplateDrivenTest, 'clr-input');
-    ReactiveSpec(ClrControlContainer, ClrControl, ReactiveTest, 'clr-input');
-  });
-}
+describe('Input directive', () => {
+  ControlStandaloneSpec(StandaloneUseTest);
+  TemplateDrivenSpec(ClrControlContainer, ClrControl, TemplateDrivenTest, 'clr-input');
+  ReactiveSpec(ClrControlContainer, ClrControl, ReactiveTest, 'clr-input');
+});

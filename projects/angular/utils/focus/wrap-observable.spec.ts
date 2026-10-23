@@ -15,43 +15,48 @@ interface TestContext {
   log: string[];
 }
 
-export default function (): void {
-  describe('wrapObservable()', function () {
-    beforeEach(function (this: TestContext) {
-      this.log = [];
-      this.original = new Subject<string>();
-      this.wrapped = wrapObservable(
-        this.original,
-        () => this.log.push('Subscribed'),
-        () => this.log.push('Unsubscribed')
+describe('Focus management', () => {
+  describe('wrapObservable()', () => {
+    let testContext: TestContext;
+    beforeEach(() => {
+      testContext = {} as TestContext;
+    });
+
+    beforeEach(() => {
+      testContext.log = [];
+      testContext.original = new Subject<string>();
+      testContext.wrapped = wrapObservable(
+        testContext.original,
+        () => testContext.log.push('Subscribed'),
+        () => testContext.log.push('Unsubscribed')
       );
     });
 
-    afterEach(function (this: TestContext) {
-      this.original.complete();
+    afterEach(() => {
+      testContext.original.complete();
     });
 
-    it('executes the onSubscribe function on subscription', function (this: TestContext) {
-      expect(this.log).toEqual([]);
-      this.wrapped.subscribe(value => this.log.push(value));
-      expect(this.log).toEqual(['Subscribed']);
+    it('executes the onSubscribe function on subscription', () => {
+      expect(testContext.log).toEqual([]);
+      testContext.wrapped.subscribe(value => testContext.log.push(value));
+      expect(testContext.log).toEqual(['Subscribed']);
     });
 
-    it('executes the onUnsubscribe function on unsubscription', function (this: TestContext) {
-      expect(this.log).toEqual([]);
-      const subscription = this.wrapped.subscribe(value => this.log.push(value));
-      this.log.length = 0;
+    it('executes the onUnsubscribe function on unsubscription', () => {
+      expect(testContext.log).toEqual([]);
+      const subscription = testContext.wrapped.subscribe(value => testContext.log.push(value));
+      testContext.log.length = 0;
       subscription.unsubscribe();
-      expect(this.log).toEqual(['Unsubscribed']);
+      expect(testContext.log).toEqual(['Unsubscribed']);
     });
 
-    it('emits the same values as the original observable', function (this: TestContext) {
-      this.wrapped.subscribe(value => this.log.push(value));
-      this.log.length = 0;
-      this.original.next('Hello');
-      expect(this.log).toEqual(['Hello']);
-      this.original.next('World');
-      expect(this.log).toEqual(['Hello', 'World']);
+    it('emits the same values as the original observable', () => {
+      testContext.wrapped.subscribe(value => testContext.log.push(value));
+      testContext.log.length = 0;
+      testContext.original.next('Hello');
+      expect(testContext.log).toEqual(['Hello']);
+      testContext.original.next('World');
+      expect(testContext.log).toEqual(['Hello', 'World']);
     });
   });
-}
+});

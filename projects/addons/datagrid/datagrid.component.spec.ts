@@ -65,7 +65,14 @@ interface DatagridSpecContext {
 }
 
 describe('DatagridComponent', () => {
-  beforeEach(function (this: any) {
+  let testContext: DatagridSpecContext;
+  beforeEach(() => {
+    testContext = {} as DatagridSpecContext;
+  });
+
+  beforeEach(() => {
+    const untypedContext: any = testContext;
+
     TestBed.configureTestingModule({
       imports: [
         ClrCheckboxModule,
@@ -105,7 +112,7 @@ describe('DatagridComponent', () => {
       ],
     });
 
-    this.columnsDefs = [
+    untypedContext.columnsDefs = [
       {
         displayName: 'Name',
         field: 'name',
@@ -124,7 +131,7 @@ describe('DatagridComponent', () => {
       },
     ] as Array<ColumnDefinition<any>>;
 
-    this.data = [
+    untypedContext.data = [
       {
         status: 'unknown',
         name: 'vm0',
@@ -151,7 +158,7 @@ describe('DatagridComponent', () => {
       },
     ];
 
-    this.actions = [
+    untypedContext.actions = [
       {
         id: 'cloneId',
         label: 'Clone',
@@ -172,64 +179,74 @@ describe('DatagridComponent', () => {
       },
     ];
 
-    this.fixture = TestBed.createComponent(DatagridHostComponent);
-    this.component = this.fixture.componentInstance;
-    this.dgStrings = TestBed.inject(DatagridStrings);
+    untypedContext.fixture = TestBed.createComponent(DatagridHostComponent);
+    untypedContext.component = untypedContext.fixture.componentInstance;
+    untypedContext.dgStrings = TestBed.inject(DatagridStrings);
   });
 
-  afterEach(function (this: any) {
-    this.actions = null;
-    this.columnsDefs = null;
-    this.data = null;
-    this.component.columnsDefs = null;
-    this.component.data = null;
-    this.component = null;
-    this.fixture.destroy();
+  afterEach(() => {
+    const untypedContext: any = testContext;
+
+    untypedContext.actions = null;
+    untypedContext.columnsDefs = null;
+    untypedContext.data = null;
+    untypedContext.component.columnsDefs = null;
+    untypedContext.component.data = null;
+    untypedContext.component = null;
+    untypedContext.fixture.destroy();
   });
 
-  it('has the right columns', function (this: any) {
-    this.component.columnsDefs = this.columnsDefs;
-    this.fixture.detectChanges(false);
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+  it('has the right columns', () => {
+    const untypedContext: any = testContext;
+
+    untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+    untypedContext.fixture.detectChanges(false);
+    const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
 
     const headers = gridHelper.getHeaders();
     headers.forEach((columnName: string, index: number) => {
-      expect(columnName).toEqual(this.columnsDefs[index].displayName);
+      expect(columnName).toEqual(untypedContext.columnsDefs[index].displayName);
     });
 
     const rows = gridHelper.getRows();
     expect(rows.length).toEqual(0);
   });
 
-  it('emits change event when column definitions are set', function (this: any) {
-    spyOn(this.component, 'onColumnDefsChange');
-    this.component.columnsDefs = this.columnsDefs;
-    this.fixture.detectChanges(false);
-    expect(this.component.onColumnDefsChange).toHaveBeenCalledWith(this.columnsDefs);
+  it('emits change event when column definitions are set', () => {
+    const untypedContext: any = testContext;
+
+    vi.spyOn(untypedContext.component, 'onColumnDefsChange').mockImplementation(() => undefined);
+    untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+    untypedContext.fixture.detectChanges(false);
+    expect(untypedContext.component.onColumnDefsChange).toHaveBeenCalledWith(untypedContext.columnsDefs);
   });
 
-  it('emits change event when page size is set', function (this: any) {
+  it('emits change event when page size is set', () => {
+    const untypedContext: any = testContext;
+
     const pageSize = 10;
-    spyOn(this.component, 'onPageSizeChange');
-    this.component.appfxDatagridComponent.pageSize = pageSize;
-    this.fixture.detectChanges(false);
-    expect(this.component.onPageSizeChange).toHaveBeenCalledWith(pageSize);
+    vi.spyOn(untypedContext.component, 'onPageSizeChange').mockImplementation(() => undefined);
+    untypedContext.component.appfxDatagridComponent.pageSize = pageSize;
+    untypedContext.fixture.detectChanges(false);
+    expect(untypedContext.component.onPageSizeChange).toHaveBeenCalledWith(pageSize);
   });
 
-  it('has the right rows', function (this: any) {
-    this.component.selectionType = SelectionType.None;
-    this.component.columnsDefs = this.columnsDefs;
-    this.component.data = this.data;
-    this.fixture.detectChanges(true); // data received, update view
+  it('has the right rows', () => {
+    const untypedContext: any = testContext;
 
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+    untypedContext.component.selectionType = SelectionType.None;
+    untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+    untypedContext.component.data = untypedContext.data;
+    untypedContext.fixture.detectChanges(true); // data received, update view
+
+    const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
     const rows = gridHelper.getRows();
 
-    expect(rows.length).toEqual(this.data.length);
+    expect(rows.length).toEqual(untypedContext.data.length);
 
     rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
-      const expectedRow = this.data[rowIndex];
-      for (const columnDef of this.columnsDefs) {
+      const expectedRow = untypedContext.data[rowIndex];
+      for (const columnDef of untypedContext.columnsDefs) {
         expect(row.getCell(columnDef.displayName).getCellWrapperElement()?.textContent?.trim()).toEqual(
           expectedRow[columnDef.field]
         );
@@ -237,7 +254,9 @@ describe('DatagridComponent', () => {
     });
   });
 
-  it('updates the grid cells in the grid rows when the grid data are changed and trackByProperty is specified', function (this: any) {
+  it('updates the grid cells in the grid rows when the grid data are changed and trackByProperty is specified', () => {
+    const untypedContext: any = testContext;
+
     const columns = [
       {
         displayName: 'Name',
@@ -257,12 +276,12 @@ describe('DatagridComponent', () => {
     // monitor a change field example: nested property 'identity' > 'value'
     const trackByPropertyPath = ['identity', 'value'];
     const propSeparator = '.';
-    this.component.trackByProperty = trackByPropertyPath.join(propSeparator);
-    this.component.selectionType = SelectionType.None;
-    this.component.columnsDefs = columns;
-    this.component.data = this.data;
+    untypedContext.component.trackByProperty = trackByPropertyPath.join(propSeparator);
+    untypedContext.component.selectionType = SelectionType.None;
+    untypedContext.component.columnsDefs = columns;
+    untypedContext.component.data = untypedContext.data;
 
-    this.fixture.detectChanges(true); // data received, update view
+    untypedContext.fixture.detectChanges(true); // data received, update view
 
     // for example, "identity" is part of data, but not required to be displayed in grid
     const newData = [
@@ -296,17 +315,17 @@ describe('DatagridComponent', () => {
       },
     ];
 
-    this.component.data = newData;
-    this.fixture.detectChanges(true);
+    untypedContext.component.data = newData;
+    untypedContext.fixture.detectChanges(true);
 
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+    const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
     const rows = gridHelper.getRows();
 
-    expect(rows.length).toEqual(this.data.length);
+    expect(rows.length).toEqual(untypedContext.data.length);
 
     rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
       const expectedRow = newData[rowIndex] as any;
-      for (const columnDef of this.columnsDefs) {
+      for (const columnDef of untypedContext.columnsDefs) {
         let expectedValue;
         if (columnDef.displayName === 'Status') {
           const status = expectedRow[columnDef.field];
@@ -329,41 +348,41 @@ describe('DatagridComponent', () => {
     });
   });
 
-  it('has correct placeholder text with default value', function (this: DatagridSpecContext) {
-    this.component.selectionType = SelectionType.None;
-    this.component.columnsDefs = this.columnsDefs;
-    this.fixture.detectChanges(false); // data received, update view
+  it('has correct placeholder text with default value', () => {
+    testContext.component.selectionType = SelectionType.None;
+    testContext.component.columnsDefs = testContext.columnsDefs;
+    testContext.fixture.detectChanges(false); // data received, update view
 
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+    const gridHelper = new GridHelper(testContext.fixture.debugElement);
     const rows = gridHelper.getRows();
 
     expect(rows.length).toEqual(0);
     expect(gridHelper.getPlaceholder().getElement()).toBeTruthy();
-    expect(gridHelper.getPlaceholder().getText()).toContain(this.dgStrings.noItemsFound);
+    expect(gridHelper.getPlaceholder().getText()).toContain(testContext.dgStrings.noItemsFound);
   });
 
-  it('has correct placeholder text with custom value', function (this: DatagridSpecContext) {
-    this.component.selectionType = SelectionType.None;
-    this.component.columnsDefs = this.columnsDefs;
+  it('has correct placeholder text with custom value', () => {
+    testContext.component.selectionType = SelectionType.None;
+    testContext.component.columnsDefs = testContext.columnsDefs;
     const customPlaceholderText = 'Custom no items found text';
-    this.component.datagridLabels = {
+    testContext.component.datagridLabels = {
       noItemsFound: customPlaceholderText,
     };
-    this.fixture.detectChanges(false); // data received, update view
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+    testContext.fixture.detectChanges(false); // data received, update view
+    const gridHelper = new GridHelper(testContext.fixture.debugElement);
     const rows = gridHelper.getRows();
     expect(rows.length).toEqual(0);
     expect(gridHelper.getPlaceholder().getElement()).toBeTruthy();
     expect(gridHelper.getPlaceholder().getText()).toContain(customPlaceholderText);
   });
 
-  it('should project custom placeholder content when provided', function (this: DatagridSpecContext) {
-    this.component.columnsDefs = this.columnsDefs;
+  it('should project custom placeholder content when provided', () => {
+    testContext.component.columnsDefs = testContext.columnsDefs;
     // Set empty data to show placeholder
-    this.component.data = [];
-    this.fixture.detectChanges();
+    testContext.component.data = [];
+    testContext.fixture.detectChanges();
 
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+    const gridHelper = new GridHelper(testContext.fixture.debugElement);
     const placeholderElement = gridHelper.getPlaceholder().getElement();
 
     expect(placeholderElement).toBeTruthy();
@@ -381,28 +400,30 @@ describe('DatagridComponent', () => {
     expect(customButton?.classList.contains('btn-primary')).toBeTruthy();
   });
 
-  it('has the right row details', function (this: any) {
-    const allGridData = [...this.data];
+  it('has the right row details', () => {
+    const untypedContext: any = testContext;
+
+    const allGridData = [...untypedContext.data];
     allGridData.push({
       status: 'Error',
       name: 'vm5',
       powerState: PowerState.off,
       rowDetailRenderer: RowDetailRendererComponent,
     });
-    this.fixture.detectChanges();
-    this.component.selectionType = SelectionType.None;
-    this.component.columnsDefs = this.columnsDefs;
-    this.component.data = allGridData;
-    this.component.appfxDatagridComponent.rowDetailContent = undefined;
-    this.fixture.detectChanges(false);
+    untypedContext.fixture.detectChanges();
+    untypedContext.component.selectionType = SelectionType.None;
+    untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+    untypedContext.component.data = allGridData;
+    untypedContext.component.appfxDatagridComponent.rowDetailContent = undefined;
+    untypedContext.fixture.detectChanges(false);
 
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+    const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
     const rows = gridHelper.getRows();
     expect(rows.length).toEqual(allGridData.length);
 
     rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
       const expectedRow = allGridData[rowIndex];
-      for (const columnDef of this.columnsDefs) {
+      for (const columnDef of untypedContext.columnsDefs) {
         expect(row.getCell(columnDef.displayName).getCellWrapperElement().textContent?.trim()).toEqual(
           expectedRow[columnDef.field]
         );
@@ -411,54 +432,60 @@ describe('DatagridComponent', () => {
     });
   });
 
-  it('updates data in an empty datagrid', function (this: any) {
-    this.component.selectionType = SelectionType.None;
-    this.component.columnsDefs = this.columnsDefs;
-    this.fixture.detectChanges(false);
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+  it('updates data in an empty datagrid', () => {
+    const untypedContext: any = testContext;
+
+    untypedContext.component.selectionType = SelectionType.None;
+    untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+    untypedContext.fixture.detectChanges(false);
+    const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
     expect(gridHelper.getRows().length).toEqual(0);
-    this.component.data = this.data;
-    this.fixture.detectChanges();
+    untypedContext.component.data = untypedContext.data;
+    untypedContext.fixture.detectChanges();
     expect(gridHelper.getRows().length).toEqual(4);
   });
 
-  it('updates data in a datagrid with virtual scrolling', function (this: any) {
-    spyOn(this.component, 'refreshVirtualGridData');
-    this.component.selectionType = SelectionType.None;
-    this.component.columnsDefs = this.columnsDefs;
-    this.component.virtualScrolling = true;
-    this.component.trackByProperty = 'name';
-    this.fixture.detectChanges(false);
-    this.component.appfxDatagridComponent.renderedRangeChange({ start: 0, end: 10 });
-    this.component.dataRange = { total: 5, skip: 0, data: this.data };
-    this.fixture.detectChanges();
-    expect(this.component.refreshVirtualGridData).toHaveBeenCalledWith({
+  it('updates data in a datagrid with virtual scrolling', () => {
+    const untypedContext: any = testContext;
+
+    vi.spyOn(untypedContext.component, 'refreshVirtualGridData').mockImplementation(() => undefined);
+    untypedContext.component.selectionType = SelectionType.None;
+    untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+    untypedContext.component.virtualScrolling = true;
+    untypedContext.component.trackByProperty = 'name';
+    untypedContext.fixture.detectChanges(false);
+    untypedContext.component.appfxDatagridComponent.renderedRangeChange({ start: 0, end: 10 });
+    untypedContext.component.dataRange = { total: 5, skip: 0, data: untypedContext.data };
+    untypedContext.fixture.detectChanges();
+    expect(untypedContext.component.refreshVirtualGridData).toHaveBeenCalledWith({
       page: { from: 0, size: 10 },
     });
-    expect(this.component.virtualScrolling).toEqual(true);
-    expect(this.component.appfxDatagridComponent.dataRange).toEqual({
+    expect(untypedContext.component.virtualScrolling).toEqual(true);
+    expect(untypedContext.component.appfxDatagridComponent.dataRange).toEqual({
       total: 5,
       skip: 0,
-      data: this.data,
+      data: untypedContext.data,
     });
   });
 
-  it('should render rows when serverDrivenDatagrid is true and virtualScrolling is false', function (this: any) {
-    this.component.selectionType = SelectionType.None;
-    this.component.columnsDefs = this.columnsDefs;
-    this.component.data = this.data;
-    this.component.serverDrivenDatagrid = true;
-    this.component.virtualScrolling = false;
-    this.fixture.detectChanges(true);
+  it('should render rows when serverDrivenDatagrid is true and virtualScrolling is false', () => {
+    const untypedContext: any = testContext;
 
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+    untypedContext.component.selectionType = SelectionType.None;
+    untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+    untypedContext.component.data = untypedContext.data;
+    untypedContext.component.serverDrivenDatagrid = true;
+    untypedContext.component.virtualScrolling = false;
+    untypedContext.fixture.detectChanges(true);
+
+    const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
     const rows = gridHelper.getRows();
 
-    expect(rows.length).toEqual(this.data.length);
+    expect(rows.length).toEqual(untypedContext.data.length);
 
     rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
-      const expectedRow = this.data[rowIndex];
-      for (const columnDef of this.columnsDefs) {
+      const expectedRow = untypedContext.data[rowIndex];
+      for (const columnDef of untypedContext.columnsDefs) {
         expect(row.getCell(columnDef.displayName).getCellWrapperElement().textContent?.trim()).toEqual(
           expectedRow[columnDef.field]
         );
@@ -466,7 +493,9 @@ describe('DatagridComponent', () => {
     });
   });
 
-  it('can render cell data with the help of column renderer', function (this: any) {
+  it('can render cell data with the help of column renderer', () => {
+    const untypedContext: any = testContext;
+
     const testColumnsDefs: Array<ColumnDefinition<any>> = [
       {
         displayName: 'Name',
@@ -496,17 +525,17 @@ describe('DatagridComponent', () => {
       (col: ColumnDefinition<any>) => col.field === sortByColumnField
     );
 
-    this.component.columnsDefs = testColumnsDefs;
-    this.component.data = this.data;
-    this.fixture.detectChanges(false);
+    untypedContext.component.columnsDefs = testColumnsDefs;
+    untypedContext.component.data = untypedContext.data;
+    untypedContext.fixture.detectChanges(false);
 
-    const subjectColumnIndex = this.component.appfxDatagridComponent.visibleColumns.findIndex(
+    const subjectColumnIndex = untypedContext.component.appfxDatagridComponent.visibleColumns.findIndex(
       (col: ColumnDefinition<any>) => col === subjectColumnDefinition
     );
-    const gridHelper = new GridHelper(this.fixture.debugElement);
+    const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
     const rows = gridHelper.getRows();
 
-    expect(rows.length).toEqual(this.data.length);
+    expect(rows.length).toEqual(untypedContext.data.length);
 
     rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
       const statusValue = row
@@ -523,47 +552,57 @@ describe('DatagridComponent', () => {
       uid: string;
     }
 
-    beforeEach(function (this: UidSpecContext) {
-      this.uid = (this.component.appfxDatagridComponent as any).uid;
+    beforeEach(() => {
+      const typedContext = testContext as unknown as UidSpecContext;
+
+      typedContext.uid = (typedContext.component.appfxDatagridComponent as any).uid;
     });
 
-    it('is used by buildRowDetailContentId', function (this: UidSpecContext) {
-      expect(this.component.appfxDatagridComponent.buildRowDetailContentId(123)).toContain(this.uid);
+    it('is used by buildRowDetailContentId', () => {
+      const typedContext = testContext as unknown as UidSpecContext;
+
+      expect(typedContext.component.appfxDatagridComponent.buildRowDetailContentId(123)).toContain(typedContext.uid);
     });
   });
 
   describe('column', () => {
     describe('sort', () => {
-      describe('WHEN sortComparator is passed to one of the columns', function () {
-        beforeEach(function (this: any) {
-          this.component.selectionType = SelectionType.Multi;
-          this.component.columnsDefs = this.columnsDefs;
-          this.component.data = this.data;
+      describe('WHEN sortComparator is passed to one of the columns', () => {
+        beforeEach(() => {
+          const untypedContext: any = testContext;
 
-          this.fixture.detectChanges(false);
+          untypedContext.component.selectionType = SelectionType.Multi;
+          untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+          untypedContext.component.data = untypedContext.data;
+
+          untypedContext.fixture.detectChanges(false);
         });
 
-        it('that column is sortable and others columns are not sortable', function (this: any) {
-          const gridHelper = new GridHelper(this.fixture.debugElement);
-          expect(gridHelper.isColumnSortable(this.columnsDefs[0].displayName)).toBeFalsy();
-          expect(gridHelper.isColumnSortable(this.columnsDefs[1].displayName)).toBeFalsy();
-          expect(gridHelper.isColumnSortable(this.columnsDefs[2].displayName)).toBeTruthy();
+        it('that column is sortable and others columns are not sortable', () => {
+          const untypedContext: any = testContext;
+
+          const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
+          expect(gridHelper.isColumnSortable(untypedContext.columnsDefs[0].displayName)).toBeFalsy();
+          expect(gridHelper.isColumnSortable(untypedContext.columnsDefs[1].displayName)).toBeFalsy();
+          expect(gridHelper.isColumnSortable(untypedContext.columnsDefs[2].displayName)).toBeTruthy();
         });
 
-        it('can sort by column using the defined sortComparator', function (this: any) {
+        it('can sort by column using the defined sortComparator', () => {
+          const untypedContext: any = testContext;
+
           const states: string[] = ['unknown', 'green', 'green', 'red']; // missing data value placed upfront for ascending
           const sortByColumnField = 'status';
-          const subjectColumnDefinition = this.columnsDefs.find(
+          const subjectColumnDefinition = untypedContext.columnsDefs.find(
             (col: ColumnDefinition<any>) => col.field === sortByColumnField
           );
-          const subjectColumnIndex = this.columnsDefs.findIndex(
+          const subjectColumnIndex = untypedContext.columnsDefs.findIndex(
             (col: ColumnDefinition<any>) => col === subjectColumnDefinition
           );
-          const gridHelper = new GridHelper(this.fixture.debugElement);
+          const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
 
           // ascending sorted status column
           gridHelper.sortByColumnIndex(subjectColumnIndex);
-          this.fixture.detectChanges(false);
+          untypedContext.fixture.detectChanges(false);
 
           gridHelper.getRows().forEach((row: GridRowTestHelper, rowIndex: number) => {
             expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
@@ -572,9 +611,9 @@ describe('DatagridComponent', () => {
           });
 
           // descending sorted status column
-          spyOn(subjectColumnDefinition.sortComparator, 'compare').and.callThrough();
+          vi.spyOn(subjectColumnDefinition.sortComparator, 'compare');
           gridHelper.sortByColumnIndex(subjectColumnIndex);
-          this.fixture.detectChanges();
+          untypedContext.fixture.detectChanges();
 
           gridHelper.getRows().forEach((row: GridRowTestHelper, rowIndex: number) => {
             expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
@@ -583,25 +622,29 @@ describe('DatagridComponent', () => {
           });
         });
 
-        it('column sort order change is emitted when sort by column', function (this: any) {
-          const gridHelper = new GridHelper(this.fixture.debugElement);
-          spyOn(this.component, 'columnSortOrderChange');
-          gridHelper.sortByColumn(this.columnsDefs[2].displayName);
-          this.fixture.detectChanges(false);
+        it('column sort order change is emitted when sort by column', () => {
+          const untypedContext: any = testContext;
+
+          const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
+          vi.spyOn(untypedContext.component, 'columnSortOrderChange').mockImplementation(() => undefined);
+          gridHelper.sortByColumn(untypedContext.columnsDefs[2].displayName);
+          untypedContext.fixture.detectChanges(false);
           const expectedColumnSortOrdeChange: ColumnSortOrder = {
             sortOrder: ClrDatagridSortOrder.ASC,
-            column: this.columnsDefs[2],
+            column: untypedContext.columnsDefs[2],
           };
-          expect(this.component.columnSortOrderChange).toHaveBeenCalledWith(expectedColumnSortOrdeChange);
-          expect(this.columnsDefs[2].defaultSortOrder).toEqual(ClrDatagridSortOrder.ASC);
-          expect(this.columnsDefs[0].defaultSortOrder).toEqual(ClrDatagridSortOrder.UNSORTED);
-          expect(this.columnsDefs[1].defaultSortOrder).toEqual(ClrDatagridSortOrder.UNSORTED);
+          expect(untypedContext.component.columnSortOrderChange).toHaveBeenCalledWith(expectedColumnSortOrdeChange);
+          expect(untypedContext.columnsDefs[2].defaultSortOrder).toEqual(ClrDatagridSortOrder.ASC);
+          expect(untypedContext.columnsDefs[0].defaultSortOrder).toEqual(ClrDatagridSortOrder.UNSORTED);
+          expect(untypedContext.columnsDefs[1].defaultSortOrder).toEqual(ClrDatagridSortOrder.UNSORTED);
         });
       });
 
-      describe('WHEN sortAndFilterByField is passed to one of the columns', function () {
-        beforeEach(function (this: any) {
-          this.columnsDefs = [
+      describe('WHEN sortAndFilterByField is passed to one of the columns', () => {
+        beforeEach(() => {
+          const untypedContext: any = testContext;
+
+          untypedContext.columnsDefs = [
             {
               displayName: 'Name',
               field: 'name',
@@ -618,28 +661,32 @@ describe('DatagridComponent', () => {
               field: 'status',
             },
           ] as Array<ColumnDefinition<any>>;
-          this.component.selectionType = SelectionType.Multi;
-          this.component.columnsDefs = this.columnsDefs;
-          this.component.data = this.data;
+          untypedContext.component.selectionType = SelectionType.Multi;
+          untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+          untypedContext.component.data = untypedContext.data;
 
-          this.fixture.detectChanges(false);
+          untypedContext.fixture.detectChanges(false);
         });
 
-        it('that column is sortable and others columns are not sortable', function (this: any) {
-          const gridHelper = new GridHelper(this.fixture.debugElement);
-          expect(gridHelper.isColumnSortable(this.columnsDefs[0].displayName)).toBeTruthy();
-          expect(gridHelper.isColumnSortable(this.columnsDefs[1].displayName)).toBeFalsy();
-          expect(gridHelper.isColumnSortable(this.columnsDefs[2].displayName)).toBeFalsy();
+        it('that column is sortable and others columns are not sortable', () => {
+          const untypedContext: any = testContext;
+
+          const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
+          expect(gridHelper.isColumnSortable(untypedContext.columnsDefs[0].displayName)).toBeTruthy();
+          expect(gridHelper.isColumnSortable(untypedContext.columnsDefs[1].displayName)).toBeFalsy();
+          expect(gridHelper.isColumnSortable(untypedContext.columnsDefs[2].displayName)).toBeFalsy();
         });
 
-        it('can sort the column alphabetically', function (this: any) {
+        it('can sort the column alphabetically', () => {
+          const untypedContext: any = testContext;
+
           const states: string[] = ['vm0', 'vm1', 'vm2', 'vm3'];
           const subjectColumnIndex = 0;
-          const gridHelper = new GridHelper(this.fixture.debugElement);
+          const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
 
           // ascending sorted status column
           gridHelper.sortByColumnIndex(subjectColumnIndex);
-          this.fixture.detectChanges(false);
+          untypedContext.fixture.detectChanges(false);
 
           gridHelper.getRows().forEach((row: GridRowTestHelper, rowIndex: number) => {
             expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
@@ -649,7 +696,7 @@ describe('DatagridComponent', () => {
 
           // descending sorted status column
           gridHelper.sortByColumnIndex(subjectColumnIndex);
-          this.fixture.detectChanges();
+          untypedContext.fixture.detectChanges();
 
           gridHelper.getRows().forEach((row: GridRowTestHelper, rowIndex: number) => {
             expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
@@ -658,16 +705,18 @@ describe('DatagridComponent', () => {
           });
         });
 
-        it('column sort order change is emitted when sort by column', function (this: any) {
-          const gridHelper = new GridHelper(this.fixture.debugElement);
-          spyOn(this.component, 'columnSortOrderChange');
-          gridHelper.sortByColumn(this.columnsDefs[0].displayName);
-          this.fixture.detectChanges(false);
+        it('column sort order change is emitted when sort by column', () => {
+          const untypedContext: any = testContext;
+
+          const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
+          vi.spyOn(untypedContext.component, 'columnSortOrderChange').mockImplementation(() => undefined);
+          gridHelper.sortByColumn(untypedContext.columnsDefs[0].displayName);
+          untypedContext.fixture.detectChanges(false);
           const expectedColumnSortOrdeChange: ColumnSortOrder = {
             sortOrder: 1,
-            column: this.columnsDefs[0],
+            column: untypedContext.columnsDefs[0],
           };
-          expect(this.component.columnSortOrderChange).toHaveBeenCalledWith(expectedColumnSortOrdeChange);
+          expect(untypedContext.component.columnSortOrderChange).toHaveBeenCalledWith(expectedColumnSortOrdeChange);
         });
       });
     });
@@ -690,59 +739,59 @@ describe('DatagridComponent', () => {
         return disabledByColumn;
       }
 
-      beforeEach(function (this: DatagridSpecContext) {
-        this.component.data = this.data;
+      beforeEach(() => {
+        testContext.component.data = testContext.data;
       });
 
-      it('keeps every column draggable when none is pinned', function (this: DatagridSpecContext) {
-        this.component.columnsDefs = this.columnsDefs;
-        this.fixture.detectChanges(false);
+      it('keeps every column draggable when none is pinned', () => {
+        testContext.component.columnsDefs = testContext.columnsDefs;
+        testContext.fixture.detectChanges(false);
 
-        expect(getDragDisabledByColumn(this.fixture)).toEqual({ Name: false, State: false, Status: false });
+        expect(getDragDisabledByColumn(testContext.fixture)).toEqual({ Name: false, State: false, Status: false });
       });
 
       // A pinned column is rendered in the sticky container, outside the group the reorder addon
       // drags within, so it must not be a drag source.
-      it('turns off dragging for a pinned column only', function (this: DatagridSpecContext) {
-        this.columnsDefs[1].pinned = true;
-        this.component.columnsDefs = [...this.columnsDefs];
-        this.fixture.detectChanges(false);
+      it('turns off dragging for a pinned column only', () => {
+        testContext.columnsDefs[1].pinned = true;
+        testContext.component.columnsDefs = [...testContext.columnsDefs];
+        testContext.fixture.detectChanges(false);
 
-        expect(getDragDisabledByColumn(this.fixture)).toEqual({ Name: false, State: true, Status: false });
+        expect(getDragDisabledByColumn(testContext.fixture)).toEqual({ Name: false, State: true, Status: false });
       });
 
-      it('makes the column draggable again once it is unpinned', function (this: DatagridSpecContext) {
-        this.columnsDefs[1].pinned = true;
-        this.component.columnsDefs = [...this.columnsDefs];
-        this.fixture.detectChanges(false);
-        expect(getDragDisabledByColumn(this.fixture)).toEqual({ Name: false, State: true, Status: false });
+      it('makes the column draggable again once it is unpinned', () => {
+        testContext.columnsDefs[1].pinned = true;
+        testContext.component.columnsDefs = [...testContext.columnsDefs];
+        testContext.fixture.detectChanges(false);
+        expect(getDragDisabledByColumn(testContext.fixture)).toEqual({ Name: false, State: true, Status: false });
 
-        this.columnsDefs[1].pinned = false;
-        this.component.columnsDefs = [...this.columnsDefs];
-        this.fixture.detectChanges(false);
+        testContext.columnsDefs[1].pinned = false;
+        testContext.component.columnsDefs = [...testContext.columnsDefs];
+        testContext.fixture.detectChanges(false);
 
-        expect(getDragDisabledByColumn(this.fixture)).toEqual({ Name: false, State: false, Status: false });
+        expect(getDragDisabledByColumn(testContext.fixture)).toEqual({ Name: false, State: false, Status: false });
       });
     });
 
     describe('enableColumnActions', () => {
-      beforeEach(function (this: DatagridSpecContext) {
-        this.component.data = this.data;
-        this.component.columnsDefs = this.columnsDefs;
+      beforeEach(() => {
+        testContext.component.data = testContext.data;
+        testContext.component.columnsDefs = testContext.columnsDefs;
       });
 
-      it('renders no column actions menu by default', function (this: DatagridSpecContext) {
-        this.fixture.detectChanges(false);
+      it('renders no column actions menu by default', () => {
+        testContext.fixture.detectChanges(false);
 
-        expect(this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle')).length).toBe(0);
+        expect(testContext.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle')).length).toBe(0);
       });
 
-      it('renders one menu per column once it is turned on', function (this: DatagridSpecContext) {
-        this.component.enableColumnActions = true;
-        this.fixture.detectChanges(false);
+      it('renders one menu per column once it is turned on', () => {
+        testContext.component.enableColumnActions = true;
+        testContext.fixture.detectChanges(false);
 
-        expect(this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle')).length).toBe(
-          this.columnsDefs.length
+        expect(testContext.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle')).length).toBe(
+          testContext.columnsDefs.length
         );
       });
 
@@ -766,16 +815,16 @@ describe('DatagridComponent', () => {
           return roles;
         }
 
-        function openMenuFor(this: DatagridSpecContext, column: ColumnDefinition<any>): string[] {
-          this.component.enableColumnActions = true;
-          this.component.columnsDefs = [column];
-          this.fixture.detectChanges(false);
+        function openMenuFor(context: DatagridSpecContext, column: ColumnDefinition<any>): string[] {
+          context.component.enableColumnActions = true;
+          context.component.columnsDefs = [column];
+          context.fixture.detectChanges(false);
 
-          return menuRoles(this.fixture);
+          return menuRoles(context.fixture);
         }
 
-        it('is left out on a column that only has a filter', function (this: DatagridSpecContext) {
-          const roles = openMenuFor.call(this, {
+        it('is left out on a column that only has a filter', () => {
+          const roles = openMenuFor(testContext, {
             displayName: 'Only filter',
             field: 'name',
             stringFilter: { accepts: () => true },
@@ -784,8 +833,8 @@ describe('DatagridComponent', () => {
           expect(roles).toEqual(['menuitem', 'menuitem']);
         });
 
-        it('separates the sort actions from the move actions', function (this: DatagridSpecContext) {
-          const roles = openMenuFor.call(this, {
+        it('separates the sort actions from the move actions', () => {
+          const roles = openMenuFor(testContext, {
             displayName: 'Sortable',
             sortAndFilterByField: 'name',
           } as ColumnDefinition<any>);
@@ -793,8 +842,8 @@ describe('DatagridComponent', () => {
           expect(roles).toEqual(['menuitemradio', 'menuitemradio', 'separator', 'menuitem', 'menuitem']);
         });
 
-        it('separates the pin action from the move actions', function (this: DatagridSpecContext) {
-          const roles = openMenuFor.call(this, {
+        it('separates the pin action from the move actions', () => {
+          const roles = openMenuFor(testContext, {
             displayName: 'Pinnable',
             field: 'name',
             pinnable: true,
@@ -819,51 +868,51 @@ describe('DatagridComponent', () => {
         );
       }
 
-      beforeEach(function (this: DatagridSpecContext) {
-        this.component.data = this.data;
+      beforeEach(() => {
+        testContext.component.data = testContext.data;
         // The menu is opt-in, so it has to be switched on for these tests.
-        this.component.enableColumnActions = true;
-        this.columnsDefs[1].pinnable = true;
-        this.component.columnsDefs = this.columnsDefs;
-        this.fixture.detectChanges(false);
+        testContext.component.enableColumnActions = true;
+        testContext.columnsDefs[1].pinnable = true;
+        testContext.component.columnsDefs = testContext.columnsDefs;
+        testContext.fixture.detectChanges(false);
       });
 
-      it('offers Pin Column only on a column marked pinnable', function (this: DatagridSpecContext) {
-        toggleMenu(this.fixture, 0);
+      it('offers Pin Column only on a column marked pinnable', () => {
+        toggleMenu(testContext.fixture, 0);
         expect(menuItem('Pin Column')).toBeUndefined();
-        toggleMenu(this.fixture, 0);
+        toggleMenu(testContext.fixture, 0);
 
-        toggleMenu(this.fixture, 1);
+        toggleMenu(testContext.fixture, 1);
         expect(menuItem('Pin Column')).not.toBeUndefined();
       });
 
-      it('pins the column and reports it through columnPinnedChange', function (this: DatagridSpecContext) {
-        spyOn(this.component, 'columnPinnedChange');
+      it('pins the column and reports it through columnPinnedChange', () => {
+        vi.spyOn(testContext.component, 'columnPinnedChange').mockImplementation(() => undefined);
 
-        toggleMenu(this.fixture, 1);
+        toggleMenu(testContext.fixture, 1);
         menuItem('Pin Column').click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(this.columnsDefs[1].pinned).toBeTrue();
-        expect(this.component.columnPinnedChange).toHaveBeenCalledWith({
+        expect(testContext.columnsDefs[1].pinned).toBe(true);
+        expect(testContext.component.columnPinnedChange).toHaveBeenCalledWith({
           pinned: true,
-          column: this.columnsDefs[1],
+          column: testContext.columnsDefs[1],
         });
       });
 
-      it('unpins the column once it is pinned', function (this: DatagridSpecContext) {
-        toggleMenu(this.fixture, 1);
+      it('unpins the column once it is pinned', () => {
+        toggleMenu(testContext.fixture, 1);
         menuItem('Pin Column').click();
-        this.fixture.detectChanges();
-        expect(this.columnsDefs[1].pinned).toBeTrue();
+        testContext.fixture.detectChanges();
+        expect(testContext.columnsDefs[1].pinned).toBe(true);
 
         // The menu stays open after Pin Column is clicked ([clrCloseMenuOnItemClick]="false"), and
         // its label is reactive to the pinned state, so the same still-open menu now offers Unpin
         // Column - no need to close and reopen anything.
         menuItem('Unpin Column').click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(this.columnsDefs[1].pinned).toBeFalse();
+        expect(testContext.columnsDefs[1].pinned).toBe(false);
       });
     });
 
@@ -885,23 +934,23 @@ describe('DatagridComponent', () => {
         );
       }
 
-      beforeEach(function (this: DatagridSpecContext) {
-        this.component.data = this.data;
-        this.component.enableColumnActions = true;
-        this.component.columnActions = [
+      beforeEach(() => {
+        testContext.component.data = testContext.data;
+        testContext.component.enableColumnActions = true;
+        testContext.component.columnActions = [
           // 'angle' rather than something like 'copy' because cds-icon rewrites the shape of an icon
           // that is not registered to 'unknown', and this asserts the binding, not the icon registry.
           // An application does have to register whatever shape it names here.
           { id: 'copy', label: 'Copy values', enabled: true, icon: 'angle' },
           { id: 'about', label: 'About column', enabled: false },
         ];
-        this.columnsDefs[1].actions = [{ id: 'reset', label: 'Reset State', enabled: true }];
-        this.component.columnsDefs = this.columnsDefs;
-        this.fixture.detectChanges(false);
+        testContext.columnsDefs[1].actions = [{ id: 'reset', label: 'Reset State', enabled: true }];
+        testContext.component.columnsDefs = testContext.columnsDefs;
+        testContext.fixture.detectChanges(false);
       });
 
-      it('offers the grid actions on every column, after the built-in ones', function (this: DatagridSpecContext) {
-        toggleMenu(this.fixture, 0);
+      it('offers the grid actions on every column, after the built-in ones', () => {
+        toggleMenu(testContext.fixture, 0);
         const labels = menuItemLabels();
 
         expect(labels).toContain('Copy values');
@@ -910,44 +959,48 @@ describe('DatagridComponent', () => {
         expect(labels.indexOf('Copy values')).toBeGreaterThan(labels.indexOf('Move Right'));
       });
 
-      it('appends the actions of a single column after the grid ones', function (this: DatagridSpecContext) {
-        toggleMenu(this.fixture, 0);
+      it('appends the actions of a single column after the grid ones', () => {
+        toggleMenu(testContext.fixture, 0);
         expect(menuItemLabels()).not.toContain('Reset State');
-        toggleMenu(this.fixture, 0);
+        toggleMenu(testContext.fixture, 0);
 
-        toggleMenu(this.fixture, 1);
+        toggleMenu(testContext.fixture, 1);
         const labels = menuItemLabels();
         expect(labels).toContain('Reset State');
         expect(labels.indexOf('Reset State')).toBeGreaterThan(labels.indexOf('About column'));
       });
 
-      it('reports a click through actionClick with the column as context', function (this: DatagridSpecContext) {
+      it('reports a click through actionClick with the column as context', () => {
         const received: ActionClickEvent[] = [];
-        this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) => received.push(event));
+        testContext.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) =>
+          received.push(event)
+        );
 
-        toggleMenu(this.fixture, 1);
+        toggleMenu(testContext.fixture, 1);
         menuItem('Reset State').click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
         expect(received.length).toBe(1);
         expect(received[0].action.id).toBe('reset');
-        expect(received[0].context).toBe(this.columnsDefs[1]);
+        expect(received[0].context).toBe(testContext.columnsDefs[1]);
       });
 
-      it('does not report a disabled action', function (this: DatagridSpecContext) {
+      it('does not report a disabled action', () => {
         const received: ActionClickEvent[] = [];
-        this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) => received.push(event));
+        testContext.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) =>
+          received.push(event)
+        );
 
-        toggleMenu(this.fixture, 0);
+        toggleMenu(testContext.fixture, 0);
         expect(menuItem('About column').getAttribute('aria-disabled')).toBe('true');
         menuItem('About column').click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
         expect(received).toEqual([]);
       });
 
-      it('leads an action with its icon when one is given', function (this: DatagridSpecContext) {
-        toggleMenu(this.fixture, 0);
+      it('leads an action with its icon when one is given', () => {
+        toggleMenu(testContext.fixture, 0);
 
         expect(menuItem('Copy values').querySelector('cds-icon')?.getAttribute('shape')).toBe('angle');
         expect(menuItem('About column').querySelector('cds-icon')).toBeNull();
@@ -955,49 +1008,50 @@ describe('DatagridComponent', () => {
 
       // Bound through [attr.title], so an action without a tooltip gets no title at all rather than
       // title="undefined", which would be shown on hover and could be read out as its description.
-      it('only sets a title on an action that has a tooltip', function (this: DatagridSpecContext) {
-        this.component.columnActions = [
+      it('only sets a title on an action that has a tooltip', () => {
+        testContext.component.columnActions = [
           { id: 'copy', label: 'Copy values', enabled: true, tooltip: 'Copies the column values' },
           { id: 'about', label: 'About column', enabled: true },
         ];
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        toggleMenu(this.fixture, 0);
+        toggleMenu(testContext.fixture, 0);
 
         expect(menuItem('Copy values').getAttribute('title')).toBe('Copies the column values');
-        expect(menuItem('About column').hasAttribute('title')).toBeFalse();
+        expect(menuItem('About column').hasAttribute('title')).toBe(false);
       });
 
       // The grid-wide and per-column lists are merged, so the same id can come from both. The actions
       // are tracked by identity, not by id, so that neither drops one of them nor warns about it.
-      it('renders a column action that reuses the id of a grid action', function (this: DatagridSpecContext) {
-        const warn = spyOn(console, 'warn');
-        this.columnsDefs[1].actions = [{ id: 'copy', label: 'Copy state', enabled: true }];
-        this.fixture.detectChanges();
+      it('renders a column action that reuses the id of a grid action', () => {
+        const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
+        testContext.columnsDefs[1].actions = [{ id: 'copy', label: 'Copy state', enabled: true }];
+        testContext.fixture.detectChanges();
 
-        toggleMenu(this.fixture, 1);
+        toggleMenu(testContext.fixture, 1);
 
         const labels = menuItemLabels();
         expect(labels).toContain('Copy values');
         expect(labels).toContain('Copy state');
-        expect(warn.calls.allArgs().some(args => String(args[0]).includes('NG0955'))).toBeFalse();
+        expect(vi.mocked(warn).mock.calls.some(args => String(args[0]).includes('NG0955'))).toBe(false);
       });
 
       // Custom actions leave clrCanClosePopover at its default, so unlike the move actions, which are
       // meant to be repeated, they close the menu once picked.
-      it('closes the menu after an action is clicked', function (this: DatagridSpecContext) {
-        toggleMenu(this.fixture, 1);
+      it('closes the menu after an action is clicked', () => {
+        toggleMenu(testContext.fixture, 1);
         menuItem('Reset State').click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        const trigger = this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[1].nativeElement;
+        const trigger = testContext.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[1]
+          .nativeElement;
         expect(trigger.getAttribute('aria-expanded')).toBe('false');
         expect(menuItem('Reset State')).toBeUndefined();
       });
 
       describe('with children', () => {
-        beforeEach(function (this: DatagridSpecContext) {
-          this.columnsDefs[1].actions = [
+        beforeEach(() => {
+          testContext.columnsDefs[1].actions = [
             {
               id: 'more',
               label: 'More',
@@ -1008,50 +1062,50 @@ describe('DatagridComponent', () => {
               ],
             },
           ];
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         });
 
-        it('opens the children as a nested menu', function (this: DatagridSpecContext) {
-          toggleMenu(this.fixture, 1);
+        it('opens the children as a nested menu', () => {
+          toggleMenu(testContext.fixture, 1);
           expect(menuItemLabels()).not.toContain('Child action');
 
           menuItem('More').click();
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
 
           expect(menuItem('More').getAttribute('aria-haspopup')).toBe('menu');
           expect(menuItem('More').getAttribute('aria-expanded')).toBe('true');
           expect(menuItemLabels()).toContain('Child action');
         });
 
-        it('reports a child through actionClick, not the parent', function (this: DatagridSpecContext) {
+        it('reports a child through actionClick, not the parent', () => {
           const received: ActionClickEvent[] = [];
-          this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) =>
+          testContext.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) =>
             received.push(event)
           );
 
-          toggleMenu(this.fixture, 1);
+          toggleMenu(testContext.fixture, 1);
           menuItem('More').click();
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
           expect(received).toEqual([]);
 
           menuItem('Child action').click();
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
 
           expect(received.length).toBe(1);
           expect(received[0].action.id).toBe('child');
-          expect(received[0].context).toBe(this.columnsDefs[1]);
+          expect(received[0].context).toBe(testContext.columnsDefs[1]);
         });
 
-        it('reaches the action with children by the arrow keys', async function (this: DatagridSpecContext) {
+        it('reaches the action with children by the arrow keys', async () => {
           const settle = async () => {
-            this.fixture.detectChanges();
+            testContext.fixture.detectChanges();
             // The menu moves focus to its first item from a timeout of its own.
             await new Promise(resolve => setTimeout(resolve));
-            this.fixture.detectChanges();
+            testContext.fixture.detectChanges();
           };
           const focusedLabel = () => (document.activeElement as HTMLElement)?.textContent.trim();
 
-          const trigger = this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[1]
+          const trigger = testContext.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[1]
             .nativeElement;
           trigger.focus();
           trigger.click();
@@ -1067,29 +1121,29 @@ describe('DatagridComponent', () => {
           expect(order).toEqual(['Move Left', 'Move Right', 'Copy values', 'About column', 'More', 'Move Left']);
         });
 
-        it('does not report a disabled child', function (this: DatagridSpecContext) {
+        it('does not report a disabled child', () => {
           const received: ActionClickEvent[] = [];
-          this.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) =>
+          testContext.component.appfxDatagridComponent.actionClick.subscribe((event: ActionClickEvent) =>
             received.push(event)
           );
 
-          toggleMenu(this.fixture, 1);
+          toggleMenu(testContext.fixture, 1);
           menuItem('More').click();
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
           expect(menuItem('Disabled child').getAttribute('aria-disabled')).toBe('true');
           menuItem('Disabled child').click();
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
 
           expect(received).toEqual([]);
         });
       });
 
-      it('adds nothing to the menu when no actions are configured', function (this: DatagridSpecContext) {
-        this.component.columnActions = null;
-        this.columnsDefs[1].actions = undefined;
-        this.fixture.detectChanges();
+      it('adds nothing to the menu when no actions are configured', () => {
+        testContext.component.columnActions = null;
+        testContext.columnsDefs[1].actions = undefined;
+        testContext.fixture.detectChanges();
 
-        toggleMenu(this.fixture, 1);
+        toggleMenu(testContext.fixture, 1);
         const labels = menuItemLabels();
         expect(labels).not.toContain('Copy values');
         expect(labels).not.toContain('Reset State');
@@ -1111,42 +1165,42 @@ describe('DatagridComponent', () => {
         );
       }
 
-      beforeEach(function (this: DatagridSpecContext) {
-        this.component.data = this.data;
-        this.component.enableColumnActions = true;
-        this.component.columnsDefs = this.columnsDefs;
-        this.fixture.detectChanges(false);
+      beforeEach(() => {
+        testContext.component.data = testContext.data;
+        testContext.component.enableColumnActions = true;
+        testContext.component.columnsDefs = testContext.columnsDefs;
+        testContext.fixture.detectChanges(false);
       });
 
-      it('re-anchors the menu to the moved column instead of closing it', function (this: DatagridSpecContext) {
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
+      it('re-anchors the menu to the moved column instead of closing it', () => {
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['Name', 'State', 'Status']);
 
-        const columnActions = this.fixture.debugElement.queryAll(By.directive(ClrDatagridColumnActions))[0]
+        const columnActions = testContext.fixture.debugElement.queryAll(By.directive(ClrDatagridColumnActions))[0]
           .componentInstance as ClrDatagridColumnActions;
-        const repositionMenu = spyOn(columnActions, 'repositionMenu').and.callThrough();
+        const repositionMenu = vi.spyOn(columnActions, 'repositionMenu');
 
-        toggleMenu(this.fixture, 0);
+        toggleMenu(testContext.fixture, 0);
         expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
 
         moveButton('Move Right').click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['State', 'Name', 'Status']);
         // Still open, and re-anchored rather than left where the trigger used to be, so the next step
         // can be taken without reopening it.
         expect(document.querySelectorAll('.dropdown-menu').length).toBe(1);
         expect(repositionMenu).toHaveBeenCalled();
       });
 
-      it('keeps the menu usable for a second step', function (this: DatagridSpecContext) {
-        toggleMenu(this.fixture, 0);
+      it('keeps the menu usable for a second step', () => {
+        toggleMenu(testContext.fixture, 0);
         moveButton('Move Right').click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
         moveButton('Move Right').click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['State', 'Status', 'Name']);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['State', 'Status', 'Name']);
       });
     });
 
@@ -1187,17 +1241,17 @@ describe('DatagridComponent', () => {
         return state;
       }
 
-      beforeEach(function (this: DatagridSpecContext) {
-        this.component.data = this.data;
-        this.component.enableColumnActions = true;
-        this.component.columnsDefs = [
+      beforeEach(() => {
+        testContext.component.data = testContext.data;
+        testContext.component.enableColumnActions = true;
+        testContext.component.columnsDefs = [
           { displayName: 'C1', field: 'name', pinnable: true, pinned: true },
           { displayName: 'C2', field: 'powerState', pinnable: true },
           { displayName: 'C3', field: 'status', pinnable: true, pinned: true },
           { displayName: 'C4', field: 'host', sortAndFilterByField: 'host', pinnable: true },
           { displayName: 'C5', field: 'extra', pinnable: true },
         ] as Array<ColumnDefinition<any>>;
-        this.fixture.detectChanges(false);
+        testContext.fixture.detectChanges(false);
       });
 
       function columnByField(fixture: ComponentFixture<DatagridHostComponent>, field: string) {
@@ -1207,60 +1261,60 @@ describe('DatagridComponent', () => {
           .find(column => column.field === field);
       }
 
-      it('renders the pinned columns ahead of the rest', function (this: DatagridSpecContext) {
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C4', 'C5']);
+      it('renders the pinned columns ahead of the rest', () => {
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C4', 'C5']);
       });
 
       // A loose column steps within the scrollable group, so only its real edges are disabled. The
       // regression was that C2 had both directions disabled and C4 had Move Left disabled, because
       // any move spanning a pinned column was refused. A pinned column cannot be moved at all.
-      it('disables both moves on a pinned column, and only the edges on a loose one', function (this: DatagridSpecContext) {
+      it('disables both moves on a pinned column, and only the edges on a loose one', () => {
         // Sticky container: C1 C3.
-        expect(disabledStateOf(this.fixture, 0)).toEqual({ left: 'true', right: 'true' });
-        expect(disabledStateOf(this.fixture, 1)).toEqual({ left: 'true', right: 'true' });
+        expect(disabledStateOf(testContext.fixture, 0)).toEqual({ left: 'true', right: 'true' });
+        expect(disabledStateOf(testContext.fixture, 1)).toEqual({ left: 'true', right: 'true' });
         // Scrollable container: C2 C4 C5.
-        expect(disabledStateOf(this.fixture, 2)).toEqual({ left: 'true', right: 'false' });
-        expect(disabledStateOf(this.fixture, 3)).toEqual({ left: 'false', right: 'false' });
-        expect(disabledStateOf(this.fixture, 4)).toEqual({ left: 'false', right: 'true' });
+        expect(disabledStateOf(testContext.fixture, 2)).toEqual({ left: 'true', right: 'false' });
+        expect(disabledStateOf(testContext.fixture, 3)).toEqual({ left: 'false', right: 'false' });
+        expect(disabledStateOf(testContext.fixture, 4)).toEqual({ left: 'false', right: 'true' });
       });
 
-      it('steps the first loose column past the next one', function (this: DatagridSpecContext) {
-        clickMove(this.fixture, 2, 'Move Right');
+      it('steps the first loose column past the next one', () => {
+        clickMove(testContext.fixture, 2, 'Move Right');
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
       });
 
       // The last loose column used to be movable left exactly once, because the second step would
       // have spanned the pinned column sitting between the two loose ones in the array.
-      it('walks the last loose column across its whole group', function (this: DatagridSpecContext) {
-        clickMove(this.fixture, 4, 'Move Left');
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C5', 'C4']);
+      it('walks the last loose column across its whole group', () => {
+        clickMove(testContext.fixture, 4, 'Move Left');
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C5', 'C4']);
 
-        clickMove(this.fixture, 3, 'Move Left');
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C5', 'C2', 'C4']);
+        clickMove(testContext.fixture, 3, 'Move Left');
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C5', 'C2', 'C4']);
       });
 
       // The menu item is only marked disabled, not natively disabled, so it still receives the click -
       // which must not move the column either.
-      it('does not move a pinned column when its move action is clicked anyway', function (this: DatagridSpecContext) {
-        spyOn(this.component, 'onColumnOrderChange');
+      it('does not move a pinned column when its move action is clicked anyway', () => {
+        vi.spyOn(testContext.component, 'onColumnOrderChange').mockImplementation(() => undefined);
 
-        clickMove(this.fixture, 0, 'Move Right');
+        clickMove(testContext.fixture, 0, 'Move Right');
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C4', 'C5']);
-        expect(this.component.onColumnOrderChange).not.toHaveBeenCalled();
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C4', 'C5']);
+        expect(testContext.component.onColumnOrderChange).not.toHaveBeenCalled();
       });
 
       // The column views are moved rather than recreated, so what the user set on a column stays on it.
-      it('keeps an active sort when a column is moved', function (this: DatagridSpecContext) {
-        columnByField(this.fixture, 'host').sort();
-        this.fixture.detectChanges();
-        expect(columnByField(this.fixture, 'host').sortOrder).toBe(ClrDatagridSortOrder.ASC);
+      it('keeps an active sort when a column is moved', () => {
+        columnByField(testContext.fixture, 'host').sort();
+        testContext.fixture.detectChanges();
+        expect(columnByField(testContext.fixture, 'host').sortOrder).toBe(ClrDatagridSortOrder.ASC);
 
-        clickMove(this.fixture, 2, 'Move Right');
+        clickMove(testContext.fixture, 2, 'Move Right');
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
-        expect(columnByField(this.fixture, 'host').sortOrder).toBe(ClrDatagridSortOrder.ASC);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C2', 'C5']);
+        expect(columnByField(testContext.fixture, 'host').sortOrder).toBe(ClrDatagridSortOrder.ASC);
       });
 
       function columnElementByTitle(fixture: ComponentFixture<DatagridHostComponent>, title: string): HTMLElement {
@@ -1283,53 +1337,55 @@ describe('DatagridComponent', () => {
 
       // Reproduced with a real keyboard resize rather than calling onColumnResize directly, since that
       // only reports a width - it does not drive one.
-      it('keeps a resized width when a column is moved', function (this: DatagridSpecContext) {
-        resizeColumnByKeyboard(this.fixture, 'C2', 1);
-        const resizedWidth = columnElementByTitle(this.fixture, 'C2').style.width;
+      it('keeps a resized width when a column is moved', () => {
+        resizeColumnByKeyboard(testContext.fixture, 'C2', 1);
+        const resizedWidth = columnElementByTitle(testContext.fixture, 'C2').style.width;
         expect(resizedWidth).not.toBe('');
 
-        clickMove(this.fixture, 4, 'Move Left'); // moves C5, unrelated to C2
+        clickMove(testContext.fixture, 4, 'Move Left'); // moves C5, unrelated to C2
 
-        expect(columnElementByTitle(this.fixture, 'C2').style.width).toBe(resizedWidth);
+        expect(columnElementByTitle(testContext.fixture, 'C2').style.width).toBe(resizedWidth);
       });
 
       // The same through the drag and drop path instead of the column actions menu.
-      it('keeps a resized width when a column is reordered by drag and drop', function (this: DatagridSpecContext) {
-        resizeColumnByKeyboard(this.fixture, 'C2', 1);
-        const resizedWidth = columnElementByTitle(this.fixture, 'C2').style.width;
+      it('keeps a resized width when a column is reordered by drag and drop', () => {
+        resizeColumnByKeyboard(testContext.fixture, 'C2', 1);
+        const resizedWidth = columnElementByTitle(testContext.fixture, 'C2').style.width;
         expect(resizedWidth).not.toBe('');
 
         // Drags the loose C4 onto the loose C5's slot - same group, so the drop is not refused.
-        const cdkDropList = this.fixture.debugElement.query(By.directive(CdkDropList)).injector.get(CdkDropList);
+        const cdkDropList = testContext.fixture.debugElement.query(By.directive(CdkDropList)).injector.get(CdkDropList);
         const targetIndex = cdkDropList
           .getSortedItems()
-          .findIndex((item: any) => item.data === this.component.columnsDefs[4]);
+          .findIndex((item: any) => item.data === testContext.component.columnsDefs[4]);
         // CdkDragDrop is a large interface meant for a real drag - cast rather than fill in the rest
         // of it, matching how the plain drag and drop reorder tests above work around the same gap.
         const droppedData = {
-          item: { data: this.component.columnsDefs[3] },
+          item: { data: testContext.component.columnsDefs[3] },
           currentIndex: targetIndex,
         } as any;
         cdkDropList.dropped.next(droppedData);
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C5', 'C4']);
-        expect(columnElementByTitle(this.fixture, 'C2').style.width).toBe(resizedWidth);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C2', 'C5', 'C4']);
+        expect(columnElementByTitle(testContext.fixture, 'C2').style.width).toBe(resizedWidth);
       });
 
-      it('never moves a column out of its own container', function (this: DatagridSpecContext) {
+      it('never moves a column out of its own container', () => {
         const pinnedHeaders = () =>
           Array.from(
-            this.fixture.nativeElement.querySelectorAll('.datagrid-pinned-cells clr-dg-column .datagrid-column-title')
+            testContext.fixture.nativeElement.querySelectorAll(
+              '.datagrid-pinned-cells clr-dg-column .datagrid-column-title'
+            )
           ).map((element: HTMLElement) => element.textContent.trim());
 
         expect(pinnedHeaders()).toEqual(['C1', 'C3']);
 
-        clickMove(this.fixture, 2, 'Move Right');
-        clickMove(this.fixture, 3, 'Move Right');
+        clickMove(testContext.fixture, 2, 'Move Right');
+        clickMove(testContext.fixture, 3, 'Move Right');
 
         expect(pinnedHeaders()).toEqual(['C1', 'C3']);
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C5', 'C2']);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C3', 'C4', 'C5', 'C2']);
       });
     });
 
@@ -1347,25 +1403,25 @@ describe('DatagridComponent', () => {
         );
       }
 
-      beforeEach(function (this: DatagridSpecContext) {
-        this.component.data = this.data;
-        this.component.enableColumnActions = true;
+      beforeEach(() => {
+        testContext.component.data = testContext.data;
+        testContext.component.enableColumnActions = true;
         // Bound as a new array with hidden already set - mutating hidden on an already-bound
         // definition does not recompute visibleColumns, and the column then stays rendered.
-        this.component.columnsDefs = [
+        testContext.component.columnsDefs = [
           { displayName: 'C1', field: 'name', pinnable: true, pinned: true, hidden: true },
           { displayName: 'C2', field: 'powerState' },
           { displayName: 'C3', field: 'status' },
         ] as Array<ColumnDefinition<any>>;
-        this.fixture.detectChanges(false);
+        testContext.fixture.detectChanges(false);
       });
 
-      it('moves the loose columns past it', function (this: DatagridSpecContext) {
-        toggleMenu(this.fixture, 0);
+      it('moves the loose columns past it', () => {
+        toggleMenu(testContext.fixture, 0);
         moveButton('Move Right').click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C3', 'C2']);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C3', 'C2']);
       });
     });
 
@@ -1393,16 +1449,16 @@ describe('DatagridComponent', () => {
         ) as HTMLElement;
       }
 
-      function render(this: DatagridSpecContext, columns: Array<ColumnDefinition<any>>) {
-        this.component.data = this.data;
-        this.component.enableColumnActions = true;
-        this.component.columnsDefs = columns;
-        this.fixture.detectChanges(false);
+      function render(context: DatagridSpecContext, columns: Array<ColumnDefinition<any>>) {
+        context.component.data = context.data;
+        context.component.enableColumnActions = true;
+        context.component.columnsDefs = columns;
+        context.fixture.detectChanges(false);
       }
 
       describe('with two pinned columns', () => {
-        beforeEach(function (this: DatagridSpecContext) {
-          render.call(this, [
+        beforeEach(() => {
+          render(testContext, [
             { displayName: 'C1', field: 'name', pinnable: true, pinned: true },
             { displayName: 'C2', field: 'powerState', pinnable: true, pinned: true },
             { displayName: 'C3', field: 'status', pinnable: true },
@@ -1410,107 +1466,107 @@ describe('DatagridComponent', () => {
           ] as Array<ColumnDefinition<any>>);
         });
 
-        it('shows a pinned column again in front of the other one', function (this: DatagridSpecContext) {
-          setHidden(this.fixture, 'C1', true);
-          setHidden(this.fixture, 'C1', false);
+        it('shows a pinned column again in front of the other one', () => {
+          setHidden(testContext.fixture, 'C1', true);
+          setHidden(testContext.fixture, 'C1', false);
 
-          expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C3', 'C4']);
-          expect(pinnedHeaders(this.fixture)).toEqual(['C1', 'C2']);
+          expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C3', 'C4']);
+          expect(pinnedHeaders(testContext.fixture)).toEqual(['C1', 'C2']);
         });
 
-        it('shows both pinned columns again, the second one first', function (this: DatagridSpecContext) {
-          setHidden(this.fixture, 'C1', true);
-          setHidden(this.fixture, 'C2', true);
-          setHidden(this.fixture, 'C2', false);
-          setHidden(this.fixture, 'C1', false);
+        it('shows both pinned columns again, the second one first', () => {
+          setHidden(testContext.fixture, 'C1', true);
+          setHidden(testContext.fixture, 'C2', true);
+          setHidden(testContext.fixture, 'C2', false);
+          setHidden(testContext.fixture, 'C1', false);
 
-          expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C3', 'C4']);
-          expect(pinnedHeaders(this.fixture)).toEqual(['C1', 'C2']);
+          expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C3', 'C4']);
+          expect(pinnedHeaders(testContext.fixture)).toEqual(['C1', 'C2']);
         });
 
-        it('renders the same columns passed in as new definitions', function (this: DatagridSpecContext) {
-          this.component.columnsDefs = this.component.columnsDefs.map(column => ({ ...column }));
-          this.fixture.detectChanges();
+        it('renders the same columns passed in as new definitions', () => {
+          testContext.component.columnsDefs = testContext.component.columnsDefs.map(column => ({ ...column }));
+          testContext.fixture.detectChanges();
 
-          expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C3', 'C4']);
-          expect(pinnedHeaders(this.fixture)).toEqual(['C1', 'C2']);
+          expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C3', 'C4']);
+          expect(pinnedHeaders(testContext.fixture)).toEqual(['C1', 'C2']);
         });
 
         // Only a column that is not rendered yet needs the rebuild. A move or a hide keeps the other
         // column views, so the actions menu stays open and anchored on a move.
-        it('does not rebuild the column views for a move or a hide', function (this: DatagridSpecContext) {
-          const rebuildColumnViews = spyOn<any>(
-            this.component.appfxDatagridComponent,
+        it('does not rebuild the column views for a move or a hide', () => {
+          const rebuildColumnViews = vi.spyOn<any, any>(
+            testContext.component.appfxDatagridComponent,
             'rebuildColumnViews'
-          ).and.callThrough();
+          );
 
-          this.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[2].nativeElement.click();
-          this.fixture.detectChanges();
+          testContext.fixture.debugElement.queryAll(By.css('.datagrid-column-actions-toggle'))[2].nativeElement.click();
+          testContext.fixture.detectChanges();
           Array.from(document.querySelectorAll<HTMLElement>('.dropdown-menu .dropdown-item'))
             .find(item => item.textContent.trim() === 'Move Right')
             .click();
-          this.fixture.detectChanges();
-          setHidden(this.fixture, 'C3', true);
+          testContext.fixture.detectChanges();
+          setHidden(testContext.fixture, 'C3', true);
 
-          expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C4']);
+          expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C1', 'C2', 'C4']);
           expect(rebuildColumnViews).not.toHaveBeenCalled();
         });
       });
 
-      it('shows a loose column again in front of a pinned one', function (this: DatagridSpecContext) {
-        render.call(this, [
+      it('shows a loose column again in front of a pinned one', () => {
+        render(testContext, [
           { displayName: 'C1', field: 'name', pinnable: true },
           { displayName: 'C2', field: 'powerState', pinnable: true, pinned: true },
           { displayName: 'C3', field: 'status', pinnable: true },
         ] as Array<ColumnDefinition<any>>);
 
-        setHidden(this.fixture, 'C1', true);
-        setHidden(this.fixture, 'C1', false);
+        setHidden(testContext.fixture, 'C1', true);
+        setHidden(testContext.fixture, 'C1', false);
 
-        expect(new GridHelper(this.fixture.debugElement).getHeaders()).toEqual(['C2', 'C1', 'C3']);
+        expect(new GridHelper(testContext.fixture.debugElement).getHeaders()).toEqual(['C2', 'C1', 'C3']);
       });
 
       // Showing a column rebuilds every column view, so the state of the others has to come back from
       // their definitions.
       describe('keeps the state of the other columns', () => {
-        beforeEach(function (this: DatagridSpecContext) {
-          render.call(this, [
+        beforeEach(() => {
+          render(testContext, [
             { displayName: 'Status', field: 'status', pinnable: true, pinned: true },
             { displayName: 'Name', field: 'name', sortAndFilterByField: 'name' },
             { displayName: 'State', field: 'powerState' },
           ] as Array<ColumnDefinition<any>>);
-          setHidden(this.fixture, 'State', true);
+          setHidden(testContext.fixture, 'State', true);
         });
 
-        it('keeps an applied filter', function (this: DatagridSpecContext) {
-          const gridHelper = new GridHelper(this.fixture.debugElement);
+        it('keeps an applied filter', () => {
+          const gridHelper = new GridHelper(testContext.fixture.debugElement);
           gridHelper.openFilter('Name');
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
           gridHelper.getFilterInput().inputText('vm2', 'keyup');
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
           gridHelper.closeFilter();
-          this.fixture.detectChanges();
-          expect(new GridHelper(this.fixture.debugElement).getRows().length).toBe(1);
+          testContext.fixture.detectChanges();
+          expect(new GridHelper(testContext.fixture.debugElement).getRows().length).toBe(1);
 
-          setHidden(this.fixture, 'State', false);
+          setHidden(testContext.fixture, 'State', false);
 
-          expect(new GridHelper(this.fixture.debugElement).getRows().length).toBe(1);
+          expect(new GridHelper(testContext.fixture.debugElement).getRows().length).toBe(1);
         });
 
         // Reproduced with a real keyboard resize, since calling onColumnResize only reports a width.
-        it('keeps a resized width', function (this: DatagridSpecContext) {
-          const handle = columnElementByTitle(this.fixture, 'Name').querySelector<HTMLElement>(
+        it('keeps a resized width', () => {
+          const handle = columnElementByTitle(testContext.fixture, 'Name').querySelector<HTMLElement>(
             '.datagrid-column-handle'
           );
           handle.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true }));
           handle.dispatchEvent(new KeyboardEvent('keyup', { key: 'ArrowRight', bubbles: true }));
-          this.fixture.detectChanges();
-          const resizedWidth = columnElementByTitle(this.fixture, 'Name').style.width;
+          testContext.fixture.detectChanges();
+          const resizedWidth = columnElementByTitle(testContext.fixture, 'Name').style.width;
           expect(resizedWidth).not.toBe('');
 
-          setHidden(this.fixture, 'State', false);
+          setHidden(testContext.fixture, 'State', false);
 
-          expect(columnElementByTitle(this.fixture, 'Name').style.width).toBe(resizedWidth);
+          expect(columnElementByTitle(testContext.fixture, 'Name').style.width).toBe(resizedWidth);
         });
       });
     });
@@ -1522,71 +1578,73 @@ describe('DatagridComponent', () => {
           .map((columnDebugEl: DebugElement) => columnDebugEl.componentInstance.disableUnsort);
       }
 
-      beforeEach(function (this: DatagridSpecContext) {
-        this.component.columnsDefs = this.columnsDefs;
-        this.component.data = this.data;
+      beforeEach(() => {
+        testContext.component.columnsDefs = testContext.columnsDefs;
+        testContext.component.data = testContext.data;
       });
 
-      it('disables unsort for every column by default', function (this: DatagridSpecContext) {
-        this.fixture.detectChanges(false);
-        expect(this.component.appfxDatagridComponent.disableUnsort).toBe(true);
-        expect(getColumnDisableUnsort(this.fixture)).toEqual([true, true, true]);
+      it('disables unsort for every column by default', () => {
+        testContext.fixture.detectChanges(false);
+        expect(testContext.component.appfxDatagridComponent.disableUnsort).toBe(true);
+        expect(getColumnDisableUnsort(testContext.fixture)).toEqual([true, true, true]);
       });
 
-      it('enables unsort for every column when the grid input is false', function (this: DatagridSpecContext) {
-        this.component.disableUnsort = false;
-        this.fixture.detectChanges(false);
-        expect(getColumnDisableUnsort(this.fixture)).toEqual([false, false, false]);
+      it('enables unsort for every column when the grid input is false', () => {
+        testContext.component.disableUnsort = false;
+        testContext.fixture.detectChanges(false);
+        expect(getColumnDisableUnsort(testContext.fixture)).toEqual([false, false, false]);
       });
 
-      it('lets a column re-enable unsort when the grid disables it', function (this: DatagridSpecContext) {
-        this.component.disableUnsort = true;
-        this.columnsDefs[2].disableUnsort = false;
-        this.component.columnsDefs = [...this.columnsDefs];
-        this.fixture.detectChanges(false);
-        expect(getColumnDisableUnsort(this.fixture)).toEqual([true, true, false]);
+      it('lets a column re-enable unsort when the grid disables it', () => {
+        testContext.component.disableUnsort = true;
+        testContext.columnsDefs[2].disableUnsort = false;
+        testContext.component.columnsDefs = [...testContext.columnsDefs];
+        testContext.fixture.detectChanges(false);
+        expect(getColumnDisableUnsort(testContext.fixture)).toEqual([true, true, false]);
       });
 
-      it('lets a column disable unsort when the grid enables it', function (this: DatagridSpecContext) {
-        this.component.disableUnsort = false;
-        this.columnsDefs[2].disableUnsort = true;
-        this.component.columnsDefs = [...this.columnsDefs];
-        this.fixture.detectChanges(false);
-        expect(getColumnDisableUnsort(this.fixture)).toEqual([false, false, true]);
+      it('lets a column disable unsort when the grid enables it', () => {
+        testContext.component.disableUnsort = false;
+        testContext.columnsDefs[2].disableUnsort = true;
+        testContext.component.columnsDefs = [...testContext.columnsDefs];
+        testContext.fixture.detectChanges(false);
+        expect(getColumnDisableUnsort(testContext.fixture)).toEqual([false, false, true]);
       });
 
-      it('keeps a sorted column sorted on the third click when unsort is disabled', function (this: DatagridSpecContext) {
+      it('keeps a sorted column sorted on the third click when unsort is disabled', () => {
         const sortableColumnIndex = 2; // "Status" column defines a sortComparator
-        this.component.disableUnsort = true;
-        this.fixture.detectChanges(false);
-        const gridHelper = new GridHelper(this.fixture.debugElement);
+        testContext.component.disableUnsort = true;
+        testContext.fixture.detectChanges(false);
+        const gridHelper = new GridHelper(testContext.fixture.debugElement);
 
         gridHelper.sortByColumnIndex(sortableColumnIndex); // ascending
         gridHelper.sortByColumnIndex(sortableColumnIndex); // descending
         gridHelper.sortByColumnIndex(sortableColumnIndex); // back to ascending (never unsorted)
-        this.fixture.detectChanges(false);
+        testContext.fixture.detectChanges(false);
 
-        expect(this.columnsDefs[sortableColumnIndex].defaultSortOrder).toEqual(ClrDatagridSortOrder.ASC);
+        expect(testContext.columnsDefs[sortableColumnIndex].defaultSortOrder).toEqual(ClrDatagridSortOrder.ASC);
       });
 
-      it('returns a sorted column to unsorted on the third click when unsort is enabled', function (this: DatagridSpecContext) {
+      it('returns a sorted column to unsorted on the third click when unsort is enabled', () => {
         const sortableColumnIndex = 2; // "Status" column defines a sortComparator
-        this.component.disableUnsort = false;
-        this.fixture.detectChanges(false);
-        const gridHelper = new GridHelper(this.fixture.debugElement);
+        testContext.component.disableUnsort = false;
+        testContext.fixture.detectChanges(false);
+        const gridHelper = new GridHelper(testContext.fixture.debugElement);
 
         gridHelper.sortByColumnIndex(sortableColumnIndex); // ascending
         gridHelper.sortByColumnIndex(sortableColumnIndex); // descending
         gridHelper.sortByColumnIndex(sortableColumnIndex); // unsorted
-        this.fixture.detectChanges(false);
+        testContext.fixture.detectChanges(false);
 
-        expect(this.columnsDefs[sortableColumnIndex].defaultSortOrder).toEqual(ClrDatagridSortOrder.UNSORTED);
+        expect(testContext.columnsDefs[sortableColumnIndex].defaultSortOrder).toEqual(ClrDatagridSortOrder.UNSORTED);
       });
     });
 
     describe('hide', () => {
-      beforeEach(function (this: any) {
-        this.columnsDefs = [
+      beforeEach(() => {
+        const untypedContext: any = testContext;
+
+        untypedContext.columnsDefs = [
           {
             displayName: 'Name',
             field: 'name',
@@ -1609,70 +1667,80 @@ describe('DatagridComponent', () => {
             filter: PowerStateFilterComponent,
           },
         ];
-        this.component.columnsDefs = this.columnsDefs;
-        this.component.data = this.data;
-        this.fixture.detectChanges(false);
-        this.fixture.detectChanges();
-        this.hiddenColumns = () => {
-          return this.component.appfxDatagridComponent.columns
+        untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+        untypedContext.component.data = untypedContext.data;
+        untypedContext.fixture.detectChanges(false);
+        untypedContext.fixture.detectChanges();
+        untypedContext.hiddenColumns = () => {
+          return untypedContext.component.appfxDatagridComponent.columns
             .filter((column: ColumnDefinition<any>) => column.hidden === true)
             .map((column: ColumnDefinition<any>) => column.displayName);
         };
       });
 
-      it('allows creation of grid with hidden columns', function (this: any) {
-        const gridHelper = new GridHelper(this.fixture.debugElement);
-        const hiddenHeaders: string[] = this.hiddenColumns();
+      it('allows creation of grid with hidden columns', () => {
+        const untypedContext: any = testContext;
+
+        const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
+        const hiddenHeaders: string[] = untypedContext.hiddenColumns();
         expect(hiddenHeaders.length).toEqual(1);
-        expect(hiddenHeaders[0]).toEqual(this.columnsDefs[2].displayName);
+        expect(hiddenHeaders[0]).toEqual(untypedContext.columnsDefs[2].displayName);
         const row: GridRowTestHelper = gridHelper.getRows()[0];
         expect(row.getElement().querySelectorAll('clr-dg-cell.datagrid-cell').length).toEqual(3);
       });
 
-      it('allows hide of column', function (this: any) {
-        const gridHelper = new GridHelper(this.fixture.debugElement);
+      it('allows hide of column', () => {
+        const untypedContext: any = testContext;
 
-        let hiddenHeaders: string[] = this.hiddenColumns();
+        const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
+
+        let hiddenHeaders: string[] = untypedContext.hiddenColumns();
         expect(hiddenHeaders.length).toEqual(1);
 
         gridHelper.getFooter().openShowHideColumnsMenu();
-        this.fixture.detectChanges();
-        gridHelper.getFooter().clickShowHideColumnsItem(this.columnsDefs[2].displayName);
-        this.fixture.detectChanges();
-        hiddenHeaders = this.hiddenColumns();
+        untypedContext.fixture.detectChanges();
+        gridHelper.getFooter().clickShowHideColumnsItem(untypedContext.columnsDefs[2].displayName);
+        untypedContext.fixture.detectChanges();
+        hiddenHeaders = untypedContext.hiddenColumns();
         expect(hiddenHeaders.length).toEqual(0);
         const row: GridRowTestHelper = gridHelper.getRows()[0];
         expect(row.getElement().querySelectorAll('clr-dg-cell.datagrid-cell').length).toEqual(4);
       });
 
-      it("doesn't allow hiding non-hideable column", function (this: any) {
-        const gridHelper = new GridHelper(this.fixture.debugElement);
+      it("doesn't allow hiding non-hideable column", () => {
+        const untypedContext: any = testContext;
+
+        const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
         gridHelper.getFooter().openShowHideColumnsMenu();
-        this.fixture.detectChanges();
+        untypedContext.fixture.detectChanges();
         const showHideColumnsItem = gridHelper
           .getFooter()
-          .findShowHideColumnsItemByName(this.columnsDefs[0].displayName);
+          .findShowHideColumnsItemByName(untypedContext.columnsDefs[0].displayName);
         expect(showHideColumnsItem).toBeNull();
       });
 
-      it('column hidden state change is emitted when show column', function (this: any) {
-        const gridHelper = new GridHelper(this.fixture.debugElement);
-        spyOn(this.component, 'onColumnHiddenStateChange');
-        gridHelper.getFooter().openShowHideColumnsMenu();
-        this.fixture.detectChanges();
+      it('column hidden state change is emitted when show column', () => {
+        const untypedContext: any = testContext;
 
-        gridHelper.getFooter().clickShowHideColumnsItem(this.columnsDefs[2].displayName);
-        expect(this.component.onColumnHiddenStateChange).toHaveBeenCalledWith({
+        const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
+        vi.spyOn(untypedContext.component, 'onColumnHiddenStateChange').mockImplementation(() => undefined);
+        gridHelper.getFooter().openShowHideColumnsMenu();
+        untypedContext.fixture.detectChanges();
+
+        gridHelper.getFooter().clickShowHideColumnsItem(untypedContext.columnsDefs[2].displayName);
+        expect(untypedContext.component.onColumnHiddenStateChange).toHaveBeenCalledWith({
           hidden: false,
-          column: this.columnsDefs[2],
+          column: untypedContext.columnsDefs[2],
         });
       });
     });
 
     describe('filter', () => {
-      describe('WHEN filter property is passed to a column', function () {
-        beforeEach(function (this: any) {
-          this.component.columnsDefs = [
+      describe('WHEN filter property is passed to a column', () => {
+        beforeEach(() => {
+          const untypedContext: any = testContext;
+
+          untypedContext.component.columnsDefs = [
             {
               displayName: 'Name',
               field: 'name',
@@ -1694,43 +1762,49 @@ describe('DatagridComponent', () => {
               filter: PowerStateFilterComponent,
             },
           ];
-          this.component.data = this.data;
-          this.fixture.detectChanges(false);
+          untypedContext.component.data = untypedContext.data;
+          untypedContext.fixture.detectChanges(false);
         });
 
-        it('allows filtering', function (this: any) {
-          const gridHelper = new GridHelper(this.fixture.debugElement);
+        it('allows filtering', () => {
+          const untypedContext: any = testContext;
+
+          const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
           gridHelper.openFilter('Name');
-          spyOn(this.component, 'onColumnFilterChange').and.callThrough();
-          this.fixture.detectChanges();
+          vi.spyOn(untypedContext.component, 'onColumnFilterChange');
+          untypedContext.fixture.detectChanges();
           const filterInput: FilterInputTestHelper = gridHelper.getFilterInput();
           filterInput.inputText('vm1', 'keyup');
-          this.fixture.detectChanges();
+          untypedContext.fixture.detectChanges();
           expect(gridHelper.getRows().length).toBe(1);
-          expect(this.component.onColumnFilterChange).toHaveBeenCalledWith({
+          expect(untypedContext.component.onColumnFilterChange).toHaveBeenCalledWith({
             filterValue: 'vm1',
-            column: this.component.columnsDefs[0],
+            column: untypedContext.component.columnsDefs[0],
           });
           gridHelper.closeFilter();
-          this.fixture.detectChanges();
+          untypedContext.fixture.detectChanges();
         });
 
-        it('can use custom filter ', function (this: any) {
-          const gridHelper = new GridHelper(this.fixture.debugElement);
+        it('can use custom filter ', () => {
+          const untypedContext: any = testContext;
+
+          const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
           gridHelper.openFilter('Status');
-          this.fixture.detectChanges();
+          untypedContext.fixture.detectChanges();
           expect(
             document.body.querySelectorAll('.clr-popover-content appfx-dg-filter-container custom-power-state-filter')
               .length
           ).toEqual(1);
           gridHelper.closeFilter();
-          this.fixture.detectChanges();
+          untypedContext.fixture.detectChanges();
         });
       });
 
-      describe('WHEN sortAndFilterByField property is passed to a column', function () {
-        beforeEach(function (this: any) {
-          this.columnsDefs = [
+      describe('WHEN sortAndFilterByField property is passed to a column', () => {
+        beforeEach(() => {
+          const untypedContext: any = testContext;
+
+          untypedContext.columnsDefs = [
             {
               displayName: 'Name',
               field: 'name',
@@ -1750,32 +1824,36 @@ describe('DatagridComponent', () => {
               field: 'status',
             },
           ];
-          this.component.columnsDefs = this.columnsDefs;
-          this.component.data = this.data;
-          this.fixture.detectChanges(false);
+          untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+          untypedContext.component.data = untypedContext.data;
+          untypedContext.fixture.detectChanges(false);
         });
 
-        it('allows filtering by that column', function (this: any) {
-          const gridHelper = new GridHelper(this.fixture.debugElement);
+        it('allows filtering by that column', () => {
+          const untypedContext: any = testContext;
+
+          const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
           gridHelper.openFilter('Name');
-          this.fixture.detectChanges();
+          untypedContext.fixture.detectChanges();
           const filterInput: FilterInputTestHelper = gridHelper.getFilterInput();
           filterInput.inputText('vm2', 'keyup');
-          this.fixture.detectChanges();
+          untypedContext.fixture.detectChanges();
 
           expect(gridHelper.getRows().length).toBe(1);
           expect(gridHelper.getRows()[0].getCellAt(0).getText()).toEqual('vm2');
 
           gridHelper.closeFilter();
-          this.fixture.detectChanges();
+          untypedContext.fixture.detectChanges();
         });
       });
     });
 
     describe('reorder', () => {
-      beforeEach(function (this: any) {
-        this.component.selectionType = SelectionType.Single;
-        this.component.columnsDefs = [
+      beforeEach(() => {
+        const untypedContext: any = testContext;
+
+        untypedContext.component.selectionType = SelectionType.Single;
+        untypedContext.component.columnsDefs = [
           {
             displayName: 'Name',
             field: 'name',
@@ -1789,440 +1867,483 @@ describe('DatagridComponent', () => {
             field: 'status',
           },
         ] as Array<ColumnDefinition<any>>;
-        this.component.data = this.data;
-        this.fixture.detectChanges(false);
+        untypedContext.component.data = untypedContext.data;
+        untypedContext.fixture.detectChanges(false);
       });
 
-      it('with drag and drop', function (this: any) {
-        let gridHelper = new GridHelper(this.fixture.debugElement);
+      it('with drag and drop', () => {
+        const untypedContext: any = testContext;
+
+        let gridHelper = new GridHelper(untypedContext.fixture.debugElement);
         expect(gridHelper.getHeaders()[0]).toEqual('Name');
         expect(gridHelper.getHeaders()[1]).toEqual('State');
         expect(gridHelper.getHeaders()[2]).toEqual('Status');
-        const hostElement = this.fixture.debugElement.query(By.directive(CdkDropList));
+        const hostElement = untypedContext.fixture.debugElement.query(By.directive(CdkDropList));
         const cdkDropList = hostElement.injector.get(CdkDropList);
         //Move first column after the last on
         const newColumnIndex = cdkDropList.getSortedItems().findIndex((item: any) => {
-          return item.data === this.component.columnsDefs[2];
+          return item.data === untypedContext.component.columnsDefs[2];
         });
         const droppedData = {
           item: {
-            data: this.component.columnsDefs[0],
+            data: untypedContext.component.columnsDefs[0],
           },
           currentIndex: newColumnIndex,
         };
         cdkDropList.dropped.next(droppedData);
-        this.fixture.detectChanges();
+        untypedContext.fixture.detectChanges();
 
-        gridHelper = new GridHelper(this.fixture.debugElement);
+        gridHelper = new GridHelper(untypedContext.fixture.debugElement);
         expect(gridHelper.getHeaders()[0]).toEqual('State');
         expect(gridHelper.getHeaders()[1]).toEqual('Status');
         expect(gridHelper.getHeaders()[2]).toEqual('Name');
       });
 
-      it('emits reorder change event', function (this: any) {
-        spyOn(this.component, 'onColumnOrderChange');
-        const hostElement = this.fixture.debugElement.query(By.directive(CdkDropList));
+      it('emits reorder change event', () => {
+        const untypedContext: any = testContext;
+
+        vi.spyOn(untypedContext.component, 'onColumnOrderChange').mockImplementation(() => undefined);
+        const hostElement = untypedContext.fixture.debugElement.query(By.directive(CdkDropList));
         const cdkDropList = hostElement.injector.get(CdkDropList);
         const newColumnIndex = cdkDropList.getSortedItems().findIndex((item: any) => {
-          return item.data === this.component.columnsDefs[2];
+          return item.data === untypedContext.component.columnsDefs[2];
         });
         const droppedData = {
           item: {
-            data: this.component.columnsDefs[0],
+            data: untypedContext.component.columnsDefs[0],
           },
           currentIndex: newColumnIndex,
         };
         cdkDropList.dropped.next(droppedData);
-        this.fixture.detectChanges();
-        expect(this.component.onColumnOrderChange).toHaveBeenCalledWith({
+        untypedContext.fixture.detectChanges();
+        expect(untypedContext.component.onColumnOrderChange).toHaveBeenCalledWith({
           previousIndex: 0,
           currentIndex: 2,
-          columns: [this.component.columnsDefs[1], this.component.columnsDefs[2], this.component.columnsDefs[0]],
+          columns: [
+            untypedContext.component.columnsDefs[1],
+            untypedContext.component.columnsDefs[2],
+            untypedContext.component.columnsDefs[0],
+          ],
         });
       });
     });
   });
 
   describe('drag drop rows', () => {
-    beforeEach(function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
-      this.component.isRowSelectionMode = true;
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.isRowSelectionMode = true;
     });
 
-    it('able to get dragged rows', function (this: any) {
-      const dataGridComponent = this.component.appfxDatagridComponent;
-      const firstRow = this.data[0];
-      dataGridComponent.selectedItems = [this.data[0]];
+    it('able to get dragged rows', () => {
+      const untypedContext: any = testContext;
+
+      const dataGridComponent = untypedContext.component.appfxDatagridComponent;
+      const firstRow = untypedContext.data[0];
+      dataGridComponent.selectedItems = [untypedContext.data[0]];
       dataGridComponent.setDraggedItems(firstRow);
       expect(dataGridComponent.draggedItems.length).toEqual(1);
-      dataGridComponent.selectedItems = [this.data[0], this.data[1]];
+      dataGridComponent.selectedItems = [untypedContext.data[0], untypedContext.data[1]];
       dataGridComponent.setDraggedItems(firstRow);
       expect(dataGridComponent.draggedItems.length).toEqual(2);
-      dataGridComponent.setDraggedItems(this.data[2]);
+      dataGridComponent.setDraggedItems(untypedContext.data[2]);
       expect(dataGridComponent.draggedItems.length).toEqual(1);
     });
   });
 
   describe('#dropGroup', () => {
-    it('should call getGroupItems', function (this: any) {
+    it('should call getGroupItems', () => {
+      const untypedContext: any = testContext;
+
       const groupService = TestBed.inject(DragAndDropGroupService);
       const mockGroupItems = ['first-element', 'second-element'] as unknown[] as CdkDropList[];
       const mockGroupId = 'inventory';
-      spyOn(groupService, 'getGroupItems').and.returnValue(mockGroupItems);
+      vi.spyOn(groupService, 'getGroupItems').mockReturnValue(mockGroupItems);
 
-      const result = this.component.appfxDatagridComponent.dropGroup(mockGroupId);
+      const result = untypedContext.component.appfxDatagridComponent.dropGroup(mockGroupId);
       expect(result).toEqual(mockGroupItems);
       expect(groupService.getGroupItems).toHaveBeenCalledWith(mockGroupId);
     });
   });
 
   describe('is row locked', () => {
-    beforeEach(function (this: any) {
-      this.component.data = this.data;
-      this.component.isRowSelectionMode = true;
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.isRowSelectionMode = true;
     });
 
-    it('when returns false', fakeAsync(function (this: any) {
-      spyOn(this.component, 'isRowLocked').and.returnValue(false);
-      this.fixture.detectChanges(false);
+    it('when returns false', fakeAsync(() => {
+      const untypedContext: any = testContext;
+      vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(false);
+      untypedContext.fixture.detectChanges(false);
       tick();
 
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
       gridHelper.getRows()[0].click();
-      this.fixture.detectChanges(false);
+      untypedContext.fixture.detectChanges(false);
 
       expect(gridHelper.getSelectedRows().length).toBe(1);
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
-      expect(this.component.isRowLocked).toHaveBeenCalledWith(this.data[0]);
+      expect(untypedContext.component.isRowLocked).toHaveBeenCalledWith(untypedContext.data[0]);
     }));
 
-    it('when returns true', fakeAsync(function (this: any) {
-      spyOn(this.component, 'isRowLocked').and.returnValue(true);
-      this.fixture.detectChanges(false);
+    it('when returns true', fakeAsync(() => {
+      const untypedContext: any = testContext;
+      vi.spyOn(untypedContext.component, 'isRowLocked').mockReturnValue(true);
+      untypedContext.fixture.detectChanges(false);
       tick();
 
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
       gridHelper.getRows()[0].click();
-      this.fixture.detectChanges(false);
+      untypedContext.fixture.detectChanges(false);
 
       expect(gridHelper.getRows()[0].isSelectionDisabled).toBeTruthy();
       expect(gridHelper.getRows()[1].isSelectionDisabled).toBeTruthy();
       expect(gridHelper.getRows()[2].isSelectionDisabled).toBeTruthy();
       expect(gridHelper.getRows()[3].isSelectionDisabled).toBeTruthy();
-      expect(this.component.isRowLocked).toHaveBeenCalledWith(this.data[0]);
+      expect(untypedContext.component.isRowLocked).toHaveBeenCalledWith(untypedContext.data[0]);
     }));
   });
 
   describe('Single-selection mode', () => {
-    beforeEach(function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
-      this.component.isRowSelectionMode = true;
-      this.component.appfxDatagridComponent.ngOnInit();
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.isRowSelectionMode = true;
+      untypedContext.component.appfxDatagridComponent.ngOnInit();
     });
 
-    it('is set by default', fakeAsync(function (this: any) {
-      this.fixture.detectChanges(false);
+    it('is set by default', fakeAsync(() => {
+      testContext.fixture.detectChanges(false);
 
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
-      spyOn(this.component, 'changeSelection');
+      vi.spyOn(testContext.component, 'changeSelection').mockImplementation(() => undefined);
       gridHelper.getRows()[0].click();
 
-      this.fixture.detectChanges(false);
+      testContext.fixture.detectChanges(false);
       tick();
 
       expect(gridHelper.getSelectedRows().length).toBe(1);
 
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
-      expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[0]]);
+      expect(testContext.component.changeSelection).toHaveBeenCalledWith([testContext.data[0]]);
       gridHelper.getRows()[2].click();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       tick();
 
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
       expect(gridHelper.getSelectedRows().length).toBe(1);
     }));
 
-    it('let the user to select only one item', fakeAsync(function (this: any) {
-      this.fixture.detectChanges(false);
-      this.fixture.detectChanges();
+    it('let the user to select only one item', fakeAsync(() => {
+      testContext.fixture.detectChanges(false);
+      testContext.fixture.detectChanges();
       tick();
 
-      spyOn(this.component, 'changeSelection');
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      vi.spyOn(testContext.component, 'changeSelection').mockImplementation(() => undefined);
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       gridHelper.getRows()[0].click();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       tick();
 
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
       expect(gridHelper.getSelectedRows().length).toBe(1);
-      expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[0]]);
+      expect(testContext.component.changeSelection).toHaveBeenCalledWith([testContext.data[0]]);
 
       gridHelper.getRows()[2].click();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       tick();
 
       expect(gridHelper.getSelectedRows().length).toBe(1);
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
-      expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[0]]);
+      expect(testContext.component.changeSelection).toHaveBeenCalledWith([testContext.data[0]]);
     }));
 
-    it('can be changed to multi-selection mode and reset to single selection mode', fakeAsync(function (this: any) {
-      this.fixture.detectChanges(false);
+    it('can be changed to multi-selection mode and reset to single selection mode', fakeAsync(() => {
+      testContext.fixture.detectChanges(false);
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeTruthy();
 
-      this.component.appfxDatagridComponent.selectionType = SelectionType.None;
-      this.component.appfxDatagridComponent.onModelChange();
+      testContext.component.appfxDatagridComponent.selectionType = SelectionType.None;
+      testContext.component.appfxDatagridComponent.onModelChange();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeFalsy();
 
-      this.component.appfxDatagridComponent.selectionType = SelectionType.Multi;
+      testContext.component.appfxDatagridComponent.selectionType = SelectionType.Multi;
       tick();
-      this.component.appfxDatagridComponent.onModelChange();
-      this.fixture.detectChanges();
+      testContext.component.appfxDatagridComponent.onModelChange();
+      testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeFalsy();
 
       gridHelper.getRows()[2].click();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
       gridHelper.getRows()[1].click();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(gridHelper.getSelectedRows().length).toBe(2);
-      this.component.appfxDatagridComponent.selectionType = SelectionType.Single;
-      this.component.appfxDatagridComponent.onModelChange();
+      testContext.component.appfxDatagridComponent.selectionType = SelectionType.Single;
+      testContext.component.appfxDatagridComponent.onModelChange();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeTruthy();
     }));
 
-    it('allows selected items to be changed from the host component', fakeAsync(function (this: any) {
-      this.component.appfxDatagridComponent.selectionType = SelectionType.Single;
+    it('allows selected items to be changed from the host component', fakeAsync(() => {
+      testContext.component.appfxDatagridComponent.selectionType = SelectionType.Single;
 
-      this.fixture.detectChanges(false);
+      testContext.fixture.detectChanges(false);
       tick();
-      this.fixture.detectChanges();
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      testContext.fixture.detectChanges();
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       gridHelper.getRows()[0].click();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
 
-      this.component.appfxDatagridComponent.selectedItems = [this.data[3]];
+      testContext.component.appfxDatagridComponent.selectedItems = [testContext.data[3]];
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[3].isSelected()).toBeTruthy();
       expect(gridHelper.getRows()[0].isSelected()).toBeFalsy();
     }));
 
-    it('let the user to select the first item when pre-select first item flag is enabled', function (this: any) {
-      this.component.appfxDatagridComponent.preSelectFirstItem = true;
-      this.fixture.detectChanges(false);
+    it('let the user to select the first item when pre-select first item flag is enabled', () => {
+      const untypedContext: any = testContext;
 
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      untypedContext.component.appfxDatagridComponent.preSelectFirstItem = true;
+      untypedContext.fixture.detectChanges(false);
+
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
     });
   });
 
   describe('None selection mode', () => {
-    beforeEach(function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
-      this.component.appfxDatagridComponent.ngOnInit();
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.appfxDatagridComponent.ngOnInit();
     });
 
-    it('the user can not select an item', fakeAsync(function (this: DatagridSpecContext) {
-      this.fixture.detectChanges(false);
+    it('the user can not select an item', fakeAsync(() => {
+      testContext.fixture.detectChanges(false);
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       gridHelper.getRows()[0].click();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
       expect(gridHelper.getSelectedRows().length).toBe(1);
 
-      this.component.appfxDatagridComponent.selectionType = SelectionType.None;
-      this.component.appfxDatagridComponent.onModelChange();
+      testContext.component.appfxDatagridComponent.selectionType = SelectionType.None;
+      testContext.component.appfxDatagridComponent.onModelChange();
       tick();
-      this.fixture.detectChanges();
-      spyOn(this.component, 'changeSelection');
+      testContext.fixture.detectChanges();
+      vi.spyOn(testContext.component, 'changeSelection').mockImplementation(() => undefined);
       expect(gridHelper.getRows()[2].isRowSingleSelectable()).toBeFalsy();
 
       const rows = gridHelper.getRows();
       expect(rows.length).toBeGreaterThan(0);
       rows.forEach((row, i) => {
-        expect(row.isRowClickable()).toBeFalsy(`Row ${i} should not be clickable`);
-        expect(row.isSelectionAvailable()).toBeFalsy(`Row ${i} should not have selection available`);
+        expect(row.isRowClickable(), `Row ${i} should not be clickable`).toBeFalsy();
+        expect(row.isSelectionAvailable(), `Row ${i} should not have selection available`).toBeFalsy();
       });
-      expect(this.component.changeSelection).not.toHaveBeenCalled();
+      expect(testContext.component.changeSelection).not.toHaveBeenCalled();
     }));
   });
 
   describe('Multi-selection mode', () => {
-    beforeEach(function (this: any) {
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
       // required to execute the async callbacks in Clarity's Datagrid component
-      jasmine.clock().uninstall();
-      jasmine.clock().install();
-      this.component.selectionType = SelectionType.Multi;
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
-      this.component.appfxDatagridComponent.ngOnInit();
-      this.fixture.detectChanges(false);
-      jasmine.clock().tick(10);
-      this.fixture.detectChanges();
-      this.component.appfxDatagridComponent.selectedItems = []; // reset
-      this.fixture.detectChanges(false);
-      jasmine.clock().tick(10);
+      vi.useRealTimers();
+      vi.useFakeTimers({ toFake: ['setTimeout', 'clearTimeout', 'setInterval', 'clearInterval'] });
+      untypedContext.component.selectionType = SelectionType.Multi;
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.appfxDatagridComponent.ngOnInit();
+      untypedContext.fixture.detectChanges(false);
+      vi.advanceTimersByTime(10);
+      untypedContext.fixture.detectChanges();
+      untypedContext.component.appfxDatagridComponent.selectedItems = []; // reset
+      untypedContext.fixture.detectChanges(false);
+      vi.advanceTimersByTime(10);
     });
 
     afterEach(() => {
-      jasmine.clock().uninstall();
+      vi.useRealTimers();
     });
 
-    it('let the user to select several items', function (this: any) {
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    it('let the user to select several items', () => {
+      const untypedContext: any = testContext;
+
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       gridHelper.getRows()[0].click();
 
-      jasmine.clock().tick(10);
-      this.fixture.detectChanges(false);
+      vi.advanceTimersByTime(10);
+      untypedContext.fixture.detectChanges(false);
       expect(gridHelper.getSelectedRows().length).toBe(1);
-      spyOn(this.component, 'changeSelection');
+      vi.spyOn(untypedContext.component, 'changeSelection').mockImplementation(() => undefined);
       gridHelper.getRows()[2].click();
-      jasmine.clock().tick(10);
-      this.fixture.detectChanges();
-      jasmine.clock().tick(10);
+      vi.advanceTimersByTime(10);
+      untypedContext.fixture.detectChanges();
+      vi.advanceTimersByTime(10);
       expect(gridHelper.getSelectedRows().length).toBe(2);
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
-      expect(this.component.changeSelection).toHaveBeenCalledWith([this.data[0], this.data[2]]);
+      expect(untypedContext.component.changeSelection).toHaveBeenCalledWith([
+        untypedContext.data[0],
+        untypedContext.data[2],
+      ]);
     });
 
-    it('selected items can be changed from the host component', function (this: any) {
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    it('selected items can be changed from the host component', () => {
+      const untypedContext: any = testContext;
+
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
-      this.component.appfxDatagridComponent.selectedItems = [this.data[3], this.data[2]];
-      this.fixture.detectChanges();
+      untypedContext.component.appfxDatagridComponent.selectedItems = [untypedContext.data[3], untypedContext.data[2]];
+      untypedContext.fixture.detectChanges();
 
       expect(gridHelper.getSelectedRows().length).toBe(2);
       expect(gridHelper.getRows()[3].isSelected()).toBeTruthy();
       expect(gridHelper.getRows()[2].isSelected()).toBeTruthy();
     });
 
-    it('should set selected items to empty array when selectedItems is undefined', function (this: any) {
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    it('should set selected items to empty array when selectedItems is undefined', () => {
+      const untypedContext: any = testContext;
+
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
-      this.component.appfxDatagridComponent.selectedItems = undefined;
-      this.fixture.detectChanges();
-
-      expect(gridHelper.getSelectedRows().length).toBe(0);
-      expect(gridHelper.getRows()[3].isSelected()).toBeFalsy();
-      expect(gridHelper.getRows()[2].isSelected()).toBeFalsy();
-    });
-
-    it('should set selected items to empty array when selectedItems is array of undefined', function (this: any) {
-      const gridHelper = new GridHelper(this.fixture.debugElement);
-      expect(gridHelper.getSelectedRows().length).toBe(0);
-
-      this.component.appfxDatagridComponent.selectedItems = [undefined];
-      this.fixture.detectChanges();
+      untypedContext.component.appfxDatagridComponent.selectedItems = undefined;
+      untypedContext.fixture.detectChanges();
 
       expect(gridHelper.getSelectedRows().length).toBe(0);
       expect(gridHelper.getRows()[3].isSelected()).toBeFalsy();
       expect(gridHelper.getRows()[2].isSelected()).toBeFalsy();
     });
 
-    it('should deselect all items on "Deselect All" button click', function (this: any) {
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    it('should set selected items to empty array when selectedItems is array of undefined', () => {
+      const untypedContext: any = testContext;
+
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
-      this.component.appfxDatagridComponent.selectedItems = [this.data[3], this.data[2]];
-      this.fixture.detectChanges();
+      untypedContext.component.appfxDatagridComponent.selectedItems = [undefined];
+      untypedContext.fixture.detectChanges();
+
+      expect(gridHelper.getSelectedRows().length).toBe(0);
+      expect(gridHelper.getRows()[3].isSelected()).toBeFalsy();
+      expect(gridHelper.getRows()[2].isSelected()).toBeFalsy();
+    });
+
+    it('should deselect all items on "Deselect All" button click', () => {
+      const untypedContext: any = testContext;
+
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
+      expect(gridHelper.getSelectedRows().length).toBe(0);
+
+      untypedContext.component.appfxDatagridComponent.selectedItems = [untypedContext.data[3], untypedContext.data[2]];
+      untypedContext.fixture.detectChanges();
       expect(gridHelper.getSelectedRows().length).toBe(2);
-      this.component.appfxDatagridComponent.onDeselectAllClick();
-      this.fixture.detectChanges();
+      untypedContext.component.appfxDatagridComponent.onDeselectAllClick();
+      untypedContext.fixture.detectChanges();
 
       expect(gridHelper.getSelectedRows().length).toBe(0);
     });
 
-    it('`Select All` checkbox selects/deselects all rows in virtual datagrid', function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.virtualScrolling = true;
-      this.component.trackByProperty = 'name';
-      this.component.dataRange = { total: 5, skip: 0, data: this.data };
+    it('`Select All` checkbox selects/deselects all rows in virtual datagrid', () => {
+      const untypedContext: any = testContext;
 
-      jasmine.clock().tick(10);
-      this.fixture.detectChanges();
-      spyOn(this.component, 'changeSelection');
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.virtualScrolling = true;
+      untypedContext.component.trackByProperty = 'name';
+      untypedContext.component.dataRange = { total: 5, skip: 0, data: untypedContext.data };
+
+      vi.advanceTimersByTime(10);
+      untypedContext.fixture.detectChanges();
+      vi.spyOn(untypedContext.component, 'changeSelection').mockImplementation(() => undefined);
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       //Select All
       gridHelper.getSelectAllElement()?.click();
-      this.fixture.detectChanges();
+      untypedContext.fixture.detectChanges();
 
-      expect(this.component.appfxDatagridComponent.selectedItems.length).toBe(4);
+      expect(untypedContext.component.appfxDatagridComponent.selectedItems.length).toBe(4);
       expect(gridHelper.getSelectedRows().length).toBe(4);
-      expect(this.component.changeSelection).toHaveBeenCalledWith(this.data);
+      expect(untypedContext.component.changeSelection).toHaveBeenCalledWith(untypedContext.data);
       // Deselect All
       gridHelper.getSelectAllElement()?.click();
-      this.fixture.detectChanges();
+      untypedContext.fixture.detectChanges();
 
       expect(gridHelper.getSelectedRows().length).toBe(0);
-      expect(this.component.changeSelection).toHaveBeenCalledWith([]);
+      expect(untypedContext.component.changeSelection).toHaveBeenCalledWith([]);
     });
   });
 
   describe('Row selection mode', () => {
-    beforeEach(function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
-      this.component.appfxDatagridComponent.ngOnInit();
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.appfxDatagridComponent.ngOnInit();
     });
 
-    it('is set by default', fakeAsync(function (this: any) {
-      this.fixture.detectChanges(false);
+    it('is set by default', fakeAsync(() => {
+      testContext.fixture.detectChanges(false);
       tick();
-      this.fixture.detectChanges();
-      expect(this.component.appfxDatagridComponent.rowSelectionMode).toBeTruthy();
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      testContext.fixture.detectChanges();
+      expect(testContext.component.appfxDatagridComponent.rowSelectionMode).toBeTruthy();
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(0);
       gridHelper.getRows()[0].click();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       expect(gridHelper.getSelectedRows().length).toBe(1);
     }));
 
-    it('can be disabled', fakeAsync(function (this: DatagridSpecContext) {
+    it('can be disabled', fakeAsync(() => {
       const detectChanges = () => {
         tick();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
       };
 
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
 
-      this.component.appfxDatagridComponent.selectionType = SelectionType.Single;
-      this.component.appfxDatagridComponent.rowSelectionMode = true;
+      testContext.component.appfxDatagridComponent.selectionType = SelectionType.Single;
+      testContext.component.appfxDatagridComponent.rowSelectionMode = true;
       detectChanges();
 
       expect(gridHelper.getRows()[0].isRowClickable()).toEqual(true);
       expect(gridHelper.getSelectedRows().length).toBe(0);
 
-      this.component.appfxDatagridComponent.rowSelectionMode = false;
+      testContext.component.appfxDatagridComponent.rowSelectionMode = false;
       detectChanges();
 
       expect(gridHelper.getRows()[0].isRowClickable()).toEqual(false);
@@ -2236,66 +2357,76 @@ describe('DatagridComponent', () => {
   });
 
   describe('Actions', () => {
-    beforeEach(function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
     });
 
-    it('allows creation of datagrid with rows actions', function (this: any) {
+    it('allows creation of datagrid with rows actions', () => {
+      const untypedContext: any = testContext;
+
       const simpleChange: SimpleChanges = {
-        singleRowActions: new SimpleChange(undefined, this.actions, true),
+        singleRowActions: new SimpleChange(undefined, untypedContext.actions, true),
       };
 
-      this.component.appfxDatagridComponent.selectionType = SelectionType.None;
-      this.component.appfxDatagridComponent.singleRowActions = this.actions;
-      this.component.appfxDatagridComponent.ngOnChanges(simpleChange);
-      spyOn(this.component, 'onRowActionOverflowOpen');
-      spyOn(this.component, 'onActionClick');
-      this.component.appfxDatagridComponent.onModelChange();
+      untypedContext.component.appfxDatagridComponent.selectionType = SelectionType.None;
+      untypedContext.component.appfxDatagridComponent.singleRowActions = untypedContext.actions;
+      untypedContext.component.appfxDatagridComponent.ngOnChanges(simpleChange);
+      vi.spyOn(untypedContext.component, 'onRowActionOverflowOpen').mockImplementation(() => undefined);
+      vi.spyOn(untypedContext.component, 'onActionClick').mockImplementation(() => undefined);
+      untypedContext.component.appfxDatagridComponent.onModelChange();
 
-      this.fixture.detectChanges(false);
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      untypedContext.fixture.detectChanges(false);
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       const gridElement: HTMLElement = gridHelper.getRows()[1].getSingleRowActionMenuButton();
       gridElement.click();
-      this.fixture.detectChanges();
+      untypedContext.fixture.detectChanges();
       gridHelper.getRows()[1].clickOnSingleRowActionMenuItem('Delete');
-      expect(this.component.onRowActionOverflowOpen).toHaveBeenCalledWith({
+      expect(untypedContext.component.onRowActionOverflowOpen).toHaveBeenCalledWith({
         open: true,
-        actions: this.actions,
-        context: this.data[1],
+        actions: untypedContext.actions,
+        context: untypedContext.data[1],
       });
-      expect(this.component.onActionClick).toHaveBeenCalledWith({
-        action: this.actions[1],
-        context: this.data[1],
+      expect(untypedContext.component.onActionClick).toHaveBeenCalledWith({
+        action: untypedContext.actions[1],
+        context: untypedContext.data[1],
       });
     });
 
-    it('allows creation of a datagrid with action bar', function (this: any) {
-      this.component.appfxDatagridComponent.actionBarActions = this.actions;
-      spyOn(this.component, 'onActionClick');
-      this.component.appfxDatagridComponent.ngOnInit();
-      this.fixture.detectChanges(false);
-      const gridHelper = new GridHelper(this.fixture.debugElement);
-      gridHelper.clickActionBarButton(this.actions[2].label);
-      expect(this.component.onActionClick).toHaveBeenCalledWith({
-        action: this.actions[2],
+    it('allows creation of a datagrid with action bar', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.appfxDatagridComponent.actionBarActions = untypedContext.actions;
+      vi.spyOn(untypedContext.component, 'onActionClick').mockImplementation(() => undefined);
+      untypedContext.component.appfxDatagridComponent.ngOnInit();
+      untypedContext.fixture.detectChanges(false);
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
+      gridHelper.clickActionBarButton(untypedContext.actions[2].label);
+      expect(untypedContext.component.onActionClick).toHaveBeenCalledWith({
+        action: untypedContext.actions[2],
         context: [],
       });
     });
   });
 
   describe('Footer', () => {
-    it('is visible by default', function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
+    it('is visible by default', () => {
+      const untypedContext: any = testContext;
 
-      this.fixture.detectChanges(false);
-      const gridFooter = new GridHelper(this.fixture.debugElement).getFooter();
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
+
+      untypedContext.fixture.detectChanges(false);
+      const gridFooter = new GridHelper(untypedContext.fixture.debugElement).getFooter();
       expect(gridFooter.getFooterText()).toContain('4 items');
     });
 
-    it('footer actions emit events', function (this: any) {
-      this.component.appfxDatagridComponent.footerModel = {
+    it('footer actions emit events', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.appfxDatagridComponent.footerModel = {
         footerActions: [
           {
             id: 'footer-action-1',
@@ -2305,25 +2436,27 @@ describe('DatagridComponent', () => {
         ],
         showFooter: true,
       };
-      spyOn(this.component, 'onActionClick');
-      this.component.appfxDatagridComponent.ngOnInit();
-      this.fixture.detectChanges(false);
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      vi.spyOn(untypedContext.component, 'onActionClick').mockImplementation(() => undefined);
+      untypedContext.component.appfxDatagridComponent.ngOnInit();
+      untypedContext.fixture.detectChanges(false);
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       const button = gridHelper.findFooterButton(
-        this.component.appfxDatagridComponent.footerModel.footerActions[0].label
+        untypedContext.component.appfxDatagridComponent.footerModel.footerActions[0].label
       );
       expect(button).toBeDefined();
       button?.click();
-      expect(this.component.onActionClick).toHaveBeenCalledWith({
-        action: this.component.appfxDatagridComponent.footerModel.footerActions[0],
+      expect(untypedContext.component.onActionClick).toHaveBeenCalledWith({
+        action: untypedContext.component.appfxDatagridComponent.footerModel.footerActions[0],
         context: [],
       });
     });
 
-    it('footer action with children emits events with correct context', function (this: any) {
-      this.component.appfxDatagridComponent.selectionType = SelectionType.Multi;
-      this.component.data = this.data;
-      this.component.appfxDatagridComponent.footerModel = {
+    it('footer action with children emits events with correct context', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.appfxDatagridComponent.selectionType = SelectionType.Multi;
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.appfxDatagridComponent.footerModel = {
         footerActions: [
           {
             id: 'footer-action-1',
@@ -2340,42 +2473,44 @@ describe('DatagridComponent', () => {
         ],
         showFooter: true,
       };
-      spyOn(this.component, 'onActionClick');
-      this.component.appfxDatagridComponent.ngOnInit();
-      this.fixture.detectChanges(false);
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      vi.spyOn(untypedContext.component, 'onActionClick').mockImplementation(() => undefined);
+      untypedContext.component.appfxDatagridComponent.ngOnInit();
+      untypedContext.fixture.detectChanges(false);
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       gridHelper.getRows().forEach(row => row.select());
       const button = gridHelper.findFooterButton(
-        this.component.appfxDatagridComponent.footerModel.footerActions[0].label
+        untypedContext.component.appfxDatagridComponent.footerModel.footerActions[0].label
       );
       expect(button).toBeDefined();
       button?.click();
-      this.fixture.detectChanges(false);
+      untypedContext.fixture.detectChanges(false);
       const childButton = gridHelper.findFooterDropdownChildButton(
-        this.component.appfxDatagridComponent.footerModel.footerActions[0].children[0].label
+        untypedContext.component.appfxDatagridComponent.footerModel.footerActions[0].children[0].label
       );
       expect(childButton).toBeDefined();
       childButton?.click();
-      expect(this.component.onActionClick).toHaveBeenCalledWith({
-        action: this.component.appfxDatagridComponent.footerModel.footerActions[0].children[0],
-        context: this.component.appfxDatagridComponent.selectedItems,
+      expect(untypedContext.component.onActionClick).toHaveBeenCalledWith({
+        action: untypedContext.component.appfxDatagridComponent.footerModel.footerActions[0].children[0],
+        context: untypedContext.component.appfxDatagridComponent.selectedItems,
       });
     });
 
-    it('can be by hide', function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
-      this.component.appfxDatagridComponent.footerModel = {
+    it('can be by hide', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.appfxDatagridComponent.footerModel = {
         showFooter: false,
       };
 
-      this.fixture.detectChanges(false);
-      const gridFooter = new GridHelper(this.fixture.debugElement).getFooter();
+      untypedContext.fixture.detectChanges(false);
+      const gridFooter = new GridHelper(untypedContext.fixture.debugElement).getFooter();
       expect(gridFooter.getElement()).toBeNull();
     });
 
-    it('supports pagination', function (this: DatagridSpecContext) {
-      const allGridData = [...this.data];
+    it('supports pagination', () => {
+      const allGridData = [...testContext.data];
       allGridData.push(
         {
           status: 'Error',
@@ -2388,62 +2523,68 @@ describe('DatagridComponent', () => {
           powerState: PowerState.on,
         }
       );
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = allGridData;
-      this.component.appfxDatagridComponent.pageSize = 2;
-      this.component.appfxDatagridComponent.totalItems = 6;
+      testContext.component.columnsDefs = testContext.columnsDefs;
+      testContext.component.data = allGridData;
+      testContext.component.appfxDatagridComponent.pageSize = 2;
+      testContext.component.appfxDatagridComponent.totalItems = 6;
 
-      this.fixture.detectChanges(false);
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      testContext.fixture.detectChanges(false);
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       const footerText: string = gridHelper.getFooter().getFooterText();
       expect(footerText).toContain('1 - 2 of 6 items');
       let rows: GridRowTestHelper[] = gridHelper.getRows();
       expect(rows.length).toEqual(2);
 
       rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
-        for (const columnDef of this.columnsDefs) {
-          const expectedRow: any = this.data[rowIndex];
-          const subjectColumnIndex = this.columnsDefs.findIndex((col: ColumnDefinition<any>) => col === columnDef);
+        for (const columnDef of testContext.columnsDefs) {
+          const expectedRow: any = testContext.data[rowIndex];
+          const subjectColumnIndex = testContext.columnsDefs.findIndex(
+            (col: ColumnDefinition<any>) => col === columnDef
+          );
           expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
             expectedRow[columnDef.field]
           );
         }
       });
 
-      spyOn(this.component, 'refreshGridData');
+      vi.spyOn(testContext.component, 'refreshGridData').mockImplementation(() => undefined);
       gridHelper.getFooter().clickNextPaginationButton();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       rows = gridHelper.getRows();
       expect(rows.length).toEqual(2);
 
       rows.forEach((row: GridRowTestHelper, rowIndex: number) => {
-        for (const columnDef of this.columnsDefs) {
-          const expectedRow: any = this.data[rowIndex + 2];
-          const subjectColumnIndex = this.columnsDefs.findIndex((col: ColumnDefinition<any>) => col === columnDef);
+        for (const columnDef of testContext.columnsDefs) {
+          const expectedRow: any = testContext.data[rowIndex + 2];
+          const subjectColumnIndex = testContext.columnsDefs.findIndex(
+            (col: ColumnDefinition<any>) => col === columnDef
+          );
           expect(row.getCellAt(subjectColumnIndex).getCellWrapperElement().textContent?.trim()).toEqual(
             expectedRow[columnDef.field]
           );
         }
       });
 
-      expect(this.component.refreshGridData).toHaveBeenCalledWith({
+      expect(testContext.component.refreshGridData).toHaveBeenCalledWith({
         page: { from: 2, to: 3, size: 2, current: 2 },
       });
     });
 
-    it('can hide column toggle', function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.appfxDatagridComponent.footerModel = {
+    it('can hide column toggle', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.appfxDatagridComponent.footerModel = {
         hideColumnToggle: true,
       };
 
-      this.fixture.detectChanges();
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      untypedContext.fixture.detectChanges();
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
 
       // Verify that column headers are still properly rendered.
       const headers = gridHelper.getHeaders();
       headers.forEach((columnName: string, index: number) => {
-        expect(columnName).toEqual(this.columnsDefs[index].displayName);
+        expect(columnName).toEqual(untypedContext.columnsDefs[index].displayName);
       });
 
       const rows = gridHelper.getRows();
@@ -2453,270 +2594,314 @@ describe('DatagridComponent', () => {
       expect(gridFooter.getElement().querySelector('clr-dg-column-toggle')).toBeNull();
     });
 
-    it('shows correct items count', function (this: any) {
-      const allGridData = [...this.data];
-      this.component.appfxDatagridComponent.getFooterMessage = (totalItems: number): string => {
+    it('shows correct items count', () => {
+      const untypedContext: any = testContext;
+
+      const allGridData = [...untypedContext.data];
+      untypedContext.component.appfxDatagridComponent.getFooterMessage = (totalItems: number): string => {
         return 'items ' + totalItems;
       };
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = allGridData;
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = allGridData;
 
-      this.fixture.detectChanges();
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      untypedContext.fixture.detectChanges();
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
 
       const rows = gridHelper.getRows();
       expect(rows.length).toEqual(4);
 
       const gridFooter = gridHelper.getFooter();
       expect(gridFooter.getElement().textContent).toContain('items ' + 4);
-      this.component.data = this.data.slice(1);
-      this.fixture.detectChanges();
+      untypedContext.component.data = untypedContext.data.slice(1);
+      untypedContext.fixture.detectChanges();
       expect(gridHelper.getFooter().getElement().textContent).toContain('items ' + 3);
     });
 
-    it('shows 1 item if one item', function (this: any) {
-      this.component.virtualScrolling = true;
-      this.fixture.detectChanges();
-      let footerMessage = this.component.appfxDatagridComponent.getFooterMessage(1, undefined, 1, 1);
-      expect(footerMessage).toEqual(this.dgStrings.singleItem);
-      this.component.virtualScrolling = false;
-      this.fixture.detectChanges();
-      footerMessage = this.component.appfxDatagridComponent.getFooterMessage(1, undefined, 1, 1);
-      expect(footerMessage).toEqual(this.dgStrings.singleItem);
+    it('shows 1 item if one item', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.virtualScrolling = true;
+      untypedContext.fixture.detectChanges();
+      let footerMessage = untypedContext.component.appfxDatagridComponent.getFooterMessage(1, undefined, 1, 1);
+      expect(footerMessage).toEqual(untypedContext.dgStrings.singleItem);
+      untypedContext.component.virtualScrolling = false;
+      untypedContext.fixture.detectChanges();
+      footerMessage = untypedContext.component.appfxDatagridComponent.getFooterMessage(1, undefined, 1, 1);
+      expect(footerMessage).toEqual(untypedContext.dgStrings.singleItem);
     });
 
-    it('shows loaded range of records', function (this: any) {
-      this.component.virtualScrolling = true;
-      this.fixture.detectChanges();
+    it('shows loaded range of records', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.virtualScrolling = true;
+      untypedContext.fixture.detectChanges();
       // shows range when virtual scrolling is enabled
-      let footerMessage = this.component.appfxDatagridComponent.getFooterMessage(640, undefined, 66, 109);
+      let footerMessage = untypedContext.component.appfxDatagridComponent.getFooterMessage(640, undefined, 66, 109);
       expect(footerMessage).toEqual('66 - 109 of 640 items');
       // shows total count when virtual scrolling is enabled and loaded items are less than total count
-      footerMessage = this.component.appfxDatagridComponent.getFooterMessage(44, undefined, 66, 109);
+      footerMessage = untypedContext.component.appfxDatagridComponent.getFooterMessage(44, undefined, 66, 109);
       expect(footerMessage).toEqual('44 items');
 
-      this.component.virtualScrolling = false;
-      this.fixture.detectChanges();
+      untypedContext.component.virtualScrolling = false;
+      untypedContext.fixture.detectChanges();
       // shows range when page size is set
-      footerMessage = this.component.appfxDatagridComponent.getFooterMessage(640, 20, 66, 109);
+      footerMessage = untypedContext.component.appfxDatagridComponent.getFooterMessage(640, 20, 66, 109);
       expect(footerMessage).toEqual('66 - 109 of 640 items');
       // shows total count when page size is not set
-      footerMessage = this.component.appfxDatagridComponent.getFooterMessage(640, undefined, 66, 109);
+      footerMessage = untypedContext.component.appfxDatagridComponent.getFooterMessage(640, undefined, 66, 109);
       expect(footerMessage).toEqual('640 items');
     });
 
-    it('should have custom footer text when datagridLabels.footer is set', function (this: any) {
-      this.fixture.detectChanges();
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    it('should have custom footer text when datagridLabels.footer is set', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.fixture.detectChanges();
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getFooter().getFooterText()).toContain('items');
       const customFooterText = 'Apples';
-      this.component.datagridLabels = {
+      untypedContext.component.datagridLabels = {
         footer: customFooterText,
       };
-      this.fixture.detectChanges();
+      untypedContext.fixture.detectChanges();
       expect(gridHelper.getFooter().getFooterText()).toContain(customFooterText);
     });
 
-    it('should emit exportDataEvent if footerModel.enableCustomExport is true', function (this: any) {
-      this.component.appfxDatagridComponent.footerModel = {
+    it('should emit exportDataEvent if footerModel.enableCustomExport is true', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.appfxDatagridComponent.footerModel = {
         enableCustomExport: true,
       };
-      spyOn(this.component, 'onExportDataEvent');
+      vi.spyOn(untypedContext.component, 'onExportDataEvent').mockImplementation(() => undefined);
       const mockStatus: ExportStatus = {
         inProgress: false,
         exportType: ExportType.ALL,
       };
-      this.component.appfxDatagridComponent.onExportEvent(mockStatus);
-      expect(this.component.onExportDataEvent).toHaveBeenCalledWith(mockStatus);
+      untypedContext.component.appfxDatagridComponent.onExportEvent(mockStatus);
+      expect(untypedContext.component.onExportDataEvent).toHaveBeenCalledWith(mockStatus);
     });
 
-    it('should emit exportDataEvent if footerModel.clientSideExportConfig.customExport is true', function (this: any) {
-      this.component.appfxDatagridComponent.footerModel = {
+    it('should emit exportDataEvent if footerModel.clientSideExportConfig.customExport is true', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.appfxDatagridComponent.footerModel = {
         clientSideExportConfig: {
           customExport: true,
         },
       };
-      spyOn(this.component, 'onExportDataEvent');
+      vi.spyOn(untypedContext.component, 'onExportDataEvent').mockImplementation(() => undefined);
 
       const mockStatus: ExportStatus = {
         inProgress: false,
         exportType: ExportType.ALL,
       };
-      this.component.appfxDatagridComponent.onExportEvent(mockStatus);
+      untypedContext.component.appfxDatagridComponent.onExportEvent(mockStatus);
 
-      expect(this.component.onExportDataEvent).toHaveBeenCalledWith(mockStatus);
+      expect(untypedContext.component.onExportDataEvent).toHaveBeenCalledWith(mockStatus);
     });
 
-    it('should call exportUIOnlyData if clientSideExportConfig is present', function (this: any) {
-      const hostElement = this.fixture.debugElement.query(By.directive(DatagridComponent));
+    it('should call exportUIOnlyData if clientSideExportConfig is present', () => {
+      const untypedContext: any = testContext;
+
+      const hostElement = untypedContext.fixture.debugElement.query(By.directive(DatagridComponent));
       const exportProviderService = hostElement.injector.get(ExportProviderService);
-      const exportSpy = spyOn(exportProviderService, 'exportUIOnlyData');
+      const exportSpy = vi.spyOn(exportProviderService, 'exportUIOnlyData').mockImplementation(() => undefined);
       const clientSideExportConfig: ClientSideExportConfig = {
         exportedFileName: 'test-export-filename',
-        columnDefinitions: this.columnsDefs,
+        columnDefinitions: untypedContext.columnsDefs,
       };
-      this.component.appfxDatagridComponent.footerModel = {
+      untypedContext.component.appfxDatagridComponent.footerModel = {
         clientSideExportConfig,
       };
       const mockStatus = {} as ExportStatus;
-      this.component.appfxDatagridComponent.onExportEvent(mockStatus);
+      untypedContext.component.appfxDatagridComponent.onExportEvent(mockStatus);
       expect(exportSpy).toHaveBeenCalledWith(clientSideExportConfig, mockStatus, {
-        totalDatagridItems: this.component.appfxDatagridComponent.gridItems,
-        selectedItems: this.component.appfxDatagridComponent.selectedItems,
+        totalDatagridItems: untypedContext.component.appfxDatagridComponent.gridItems,
+        selectedItems: untypedContext.component.appfxDatagridComponent.selectedItems,
         filteredDatagridItems: [],
       });
     });
 
-    it('should do nothing when enableCustomExport and clientSideExportConfig are not set', function (this: any) {
-      const hostElement = this.fixture.debugElement.query(By.directive(DatagridComponent));
+    it('should do nothing when enableCustomExport and clientSideExportConfig are not set', () => {
+      const untypedContext: any = testContext;
+
+      const hostElement = untypedContext.fixture.debugElement.query(By.directive(DatagridComponent));
       const exportProviderService = hostElement.injector.get(ExportProviderService);
-      const exportSpy = spyOn(exportProviderService, 'exportUIOnlyData');
-      this.component.appfxDatagridComponent.footerModel = {
+      const exportSpy = vi.spyOn(exportProviderService, 'exportUIOnlyData').mockImplementation(() => undefined);
+      untypedContext.component.appfxDatagridComponent.footerModel = {
         enableCustomExport: undefined,
         clientSideExportConfig: undefined,
       };
-      spyOn(this.component, 'onExportDataEvent');
-      this.component.appfxDatagridComponent.onExportEvent({} as ExportStatus);
-      expect(this.component.onExportDataEvent).not.toHaveBeenCalled();
+      vi.spyOn(untypedContext.component, 'onExportDataEvent').mockImplementation(() => undefined);
+      untypedContext.component.appfxDatagridComponent.onExportEvent({} as ExportStatus);
+      expect(untypedContext.component.onExportDataEvent).not.toHaveBeenCalled();
       expect(exportSpy).not.toHaveBeenCalled();
     });
   });
 
   describe('Right click', () => {
-    beforeEach(function (this: any) {
-      this.mockEvent = {
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.mockEvent = {
         preventDefault: function () {},
       };
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
     });
 
-    it('by default select the grid row', function (this: any) {
-      this.fixture.detectChanges(false);
-      spyOn(this.component, 'onOpenContextMenu');
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    it('by default select the grid row', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.fixture.detectChanges(false);
+      vi.spyOn(untypedContext.component, 'onOpenContextMenu').mockImplementation(() => undefined);
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getRows()[0].isSelected()).toBeFalsy();
-      this.fixture.debugElement
+      untypedContext.fixture.debugElement
         .query(By.css('clr-datagrid clr-dg-row'))
-        .triggerEventHandler('contextmenu', this.mockEvent);
-      this.fixture.detectChanges();
+        .triggerEventHandler('contextmenu', untypedContext.mockEvent);
+      untypedContext.fixture.detectChanges();
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
-      expect(this.component.onOpenContextMenu).toHaveBeenCalledWith({
-        event: this.mockEvent,
-        context: [this.data[0]],
+      expect(untypedContext.component.onOpenContextMenu).toHaveBeenCalledWith({
+        event: untypedContext.mockEvent,
+        context: [untypedContext.data[0]],
       });
     });
 
-    it('opens context menu for last clicked row', function (this: any) {
-      this.fixture.detectChanges(false);
-      spyOn(this.component, 'onOpenContextMenu');
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    it('opens context menu for last clicked row', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.fixture.detectChanges(false);
+      vi.spyOn(untypedContext.component, 'onOpenContextMenu').mockImplementation(() => undefined);
+      const gridHelper = new GridHelper(untypedContext.fixture.debugElement);
       expect(gridHelper.getRows()[0].isSelected()).toBeFalsy();
-      const rows = this.fixture.debugElement.queryAll(By.css('clr-datagrid clr-dg-row'));
+      const rows = untypedContext.fixture.debugElement.queryAll(By.css('clr-datagrid clr-dg-row'));
       expect(rows.length).toEqual(gridHelper.getRows().length);
-      rows[0].triggerEventHandler('contextmenu', this.mockEvent);
-      this.fixture.detectChanges();
+      rows[0].triggerEventHandler('contextmenu', untypedContext.mockEvent);
+      untypedContext.fixture.detectChanges();
       expect(gridHelper.getRows()[0].isSelected()).toBeTruthy();
-      expect(this.component.onOpenContextMenu).toHaveBeenCalledWith({
-        event: this.mockEvent,
-        context: [this.data[0]],
+      expect(untypedContext.component.onOpenContextMenu).toHaveBeenCalledWith({
+        event: untypedContext.mockEvent,
+        context: [untypedContext.data[0]],
       });
-      rows[1].triggerEventHandler('contextmenu', this.mockEvent);
-      this.fixture.detectChanges();
+      rows[1].triggerEventHandler('contextmenu', untypedContext.mockEvent);
+      untypedContext.fixture.detectChanges();
       expect(gridHelper.getRows()[0].isSelected()).toBeFalsy();
       expect(gridHelper.getRows()[1].isSelected()).toBeTruthy();
-      expect(this.component.onOpenContextMenu).toHaveBeenCalledWith({
-        event: this.mockEvent,
-        context: [this.data[1]],
+      expect(untypedContext.component.onOpenContextMenu).toHaveBeenCalledWith({
+        event: untypedContext.mockEvent,
+        context: [untypedContext.data[1]],
       });
-      expect(this.component.onOpenContextMenu).toHaveBeenCalledTimes(2);
+      expect(untypedContext.component.onOpenContextMenu).toHaveBeenCalledTimes(2);
     });
 
-    afterEach(function (this: any) {
-      this.mockEvent = null;
+    afterEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.mockEvent = null;
     });
   });
 
   describe('Action bar filter', () => {
-    beforeEach(function (this: any) {
-      this.mockEvent = {
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.mockEvent = {
         preventDefault: function () {},
       };
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
     });
 
-    it('emits change event with the search term', function (this: any) {
-      this.component.appfxDatagridComponent.filterMode = FilterMode.Quick;
-      this.fixture.detectChanges(false);
-      spyOn(this.component, 'onSearchTermChange');
-      this.component.appfxDatagridComponent.onAdvancedSearchTermChange('test');
-      this.fixture.detectChanges();
-      expect(this.component.onSearchTermChange).toHaveBeenCalledWith('test');
+    it('emits change event with the search term', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.appfxDatagridComponent.filterMode = FilterMode.Quick;
+      untypedContext.fixture.detectChanges(false);
+      vi.spyOn(untypedContext.component, 'onSearchTermChange').mockImplementation(() => undefined);
+      untypedContext.component.appfxDatagridComponent.onAdvancedSearchTermChange('test');
+      untypedContext.fixture.detectChanges();
+      expect(untypedContext.component.onSearchTermChange).toHaveBeenCalledWith('test');
     });
 
-    it('emits change event with advanced filters', function (this: any) {
-      this.component.appfxDatagridComponent.filterMode = FilterMode.Advanced;
-      this.fixture.detectChanges(false);
-      spyOn(this.component, 'onAdvancedFilterChange');
+    it('emits change event with advanced filters', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.appfxDatagridComponent.filterMode = FilterMode.Advanced;
+      untypedContext.fixture.detectChanges(false);
+      vi.spyOn(untypedContext.component, 'onAdvancedFilterChange').mockImplementation(() => undefined);
       const propertyFilters: PropertyFilter[] = [new PropertyFilter()];
-      this.component.appfxDatagridComponent.onAdvancedFilterCriteriaChange(propertyFilters);
-      this.fixture.detectChanges();
-      expect(this.component.onAdvancedFilterChange).toHaveBeenCalledWith(propertyFilters);
+      untypedContext.component.appfxDatagridComponent.onAdvancedFilterCriteriaChange(propertyFilters);
+      untypedContext.fixture.detectChanges();
+      expect(untypedContext.component.onAdvancedFilterChange).toHaveBeenCalledWith(propertyFilters);
     });
 
-    afterEach(function (this: any) {
-      this.mockEvent = null;
+    afterEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.mockEvent = null;
     });
   });
 
   describe('Detail pane', () => {
-    beforeEach(function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
-      this.component.appfxDatagridComponent.detailHeader = this.component.detailHeader;
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.appfxDatagridComponent.detailHeader = untypedContext.component.detailHeader;
     });
 
-    it('should be hidden when "detailState" is empty', function (this: any) {
-      this.component.detailState = null;
-      this.fixture.detectChanges(true);
-      const detailPane: DebugElement = this.fixture.debugElement.query(By.css('clr-datagrid clr-dg-detail'));
+    it('should be hidden when "detailState" is empty', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.detailState = null;
+      untypedContext.fixture.detectChanges(true);
+      const detailPane: DebugElement = untypedContext.fixture.debugElement.query(By.css('clr-datagrid clr-dg-detail'));
       expect(detailPane).toBeFalsy();
     });
 
-    it('should be visible when "detailState" not empty', function (this: any) {
-      this.component.detailState = this.component.data[0];
-      this.fixture.detectChanges(true);
-      const detailPane: DebugElement = this.fixture.debugElement.query(By.css('clr-datagrid clr-dg-detail'));
+    it('should be visible when "detailState" not empty', () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.detailState = untypedContext.component.data[0];
+      untypedContext.fixture.detectChanges(true);
+      const detailPane: DebugElement = untypedContext.fixture.debugElement.query(By.css('clr-datagrid clr-dg-detail'));
       expect(detailPane).toBeTruthy();
     });
 
-    it('after hiding, "detailState" should be null in the hosting component', async function (this: any) {
-      this.component.detailState = this.component.data[0];
-      this.fixture.detectChanges(true);
-      const detailPaneCloseBtn: DebugElement = this.fixture.debugElement.query(
+    it('after hiding, "detailState" should be null in the hosting component', async () => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.detailState = untypedContext.component.data[0];
+      untypedContext.fixture.detectChanges(true);
+      const detailPaneCloseBtn: DebugElement = untypedContext.fixture.debugElement.query(
         By.css('clr-datagrid clr-dg-detail clr-dg-detail-header button')
       );
       detailPaneCloseBtn.nativeElement.click();
-      await this.fixture.whenStable();
-      expect(this.component.detailState).toBeNull();
+      await untypedContext.fixture.whenStable();
+      expect(untypedContext.component.detailState).toBeNull();
     });
   });
 
   describe('Expandable rows', () => {
-    beforeEach(function (this: any) {
-      this.component.columnsDefs = this.columnsDefs;
-      this.component.data = this.data;
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.component.data = untypedContext.data;
     });
 
-    it('should be expanded by default when requested', function (this: any) {
-      this.component.rowsExpandedByDefault = true;
-      this.component.appfxDatagridComponent.rowDetailContent = this.component.rowDetailContent;
-      this.fixture.detectChanges(true);
+    it('should be expanded by default when requested', () => {
+      const untypedContext: any = testContext;
 
-      const gridHelper: GridHelper = new GridHelper(this.fixture.debugElement);
+      untypedContext.component.rowsExpandedByDefault = true;
+      untypedContext.component.appfxDatagridComponent.rowDetailContent = untypedContext.component.rowDetailContent;
+      untypedContext.fixture.detectChanges(true);
+
+      const gridHelper: GridHelper = new GridHelper(untypedContext.fixture.debugElement);
       const rows: GridRowTestHelper[] = gridHelper.getRows();
-      expect(rows.length).toEqual(this.data.length);
+      expect(rows.length).toEqual(untypedContext.data.length);
 
       let rowDetailComponent: HTMLElement;
       rows.forEach((row: GridRowTestHelper) => {
@@ -2730,14 +2915,16 @@ describe('DatagridComponent', () => {
       });
     });
 
-    it('should NOT be expanded by default when NOT requested', function (this: any) {
-      this.component.rowsExpandedByDefault = false;
-      this.component.appfxDatagridComponent.rowDetailContent = this.component.rowDetailContent;
-      this.fixture.detectChanges(true);
+    it('should NOT be expanded by default when NOT requested', () => {
+      const untypedContext: any = testContext;
 
-      const gridHelper: GridHelper = new GridHelper(this.fixture.debugElement);
+      untypedContext.component.rowsExpandedByDefault = false;
+      untypedContext.component.appfxDatagridComponent.rowDetailContent = untypedContext.component.rowDetailContent;
+      untypedContext.fixture.detectChanges(true);
+
+      const gridHelper: GridHelper = new GridHelper(untypedContext.fixture.debugElement);
       const rows: GridRowTestHelper[] = gridHelper.getRows();
-      expect(rows.length).toEqual(this.data.length);
+      expect(rows.length).toEqual(untypedContext.data.length);
 
       let rowDetailComponent: HTMLElement;
       rows.forEach((row: GridRowTestHelper) => {
@@ -2748,9 +2935,7 @@ describe('DatagridComponent', () => {
       });
     });
 
-    it('should preserve detail state and not recreate row when items are updated by reference but trackByProperty matches', fakeAsync(function (
-      this: any
-    ) {
+    it('should preserve detail state and not recreate row when items are updated by reference but trackByProperty matches', fakeAsync(() => {
       class TestItem {
         constructor(
           public name: string,
@@ -2764,62 +2949,62 @@ describe('DatagridComponent', () => {
         }
       }
 
-      this.component.trackByProperty = 'id';
-      this.component.appfxDatagridComponent.rowDetailContent = this.component.rowDetailContent;
+      testContext.component.trackByProperty = 'id';
+      testContext.component.appfxDatagridComponent.rowDetailContent = testContext.component.rowDetailContent;
 
-      const allGridData = this.data.map(d => new TestItem(d.name, d.status, d.powerState, d.host));
+      const allGridData = testContext.data.map(d => new TestItem(d.name, d.status, d.powerState, d.host));
       allGridData[0].rowDetailRenderer = RowDetailRendererComponent;
-      this.component.data = allGridData;
+      testContext.component.data = allGridData;
 
-      this.fixture.detectChanges(true);
+      testContext.fixture.detectChanges(true);
       tick();
 
-      const gridHelper: GridHelper = new GridHelper(this.fixture.debugElement);
+      const gridHelper: GridHelper = new GridHelper(testContext.fixture.debugElement);
       const rows: GridRowTestHelper[] = gridHelper.getRows();
 
       // Expand the first row
       rows[0].expand();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
       // Verify row is expanded
-      expect(rows[0].isExpanded()).toBe(true, 'Row should be expanded initially');
+      expect(rows[0].isExpanded(), 'Row should be expanded initially').toBe(true);
       const originalRowElement = rows[0].getElement();
 
       // Update data with new references but same 'id' values
       const newData = allGridData.map(
         item => new TestItem(item.name, item.status, item.powerState, item.host, item.rowDetailRenderer)
       );
-      this.component.data = newData;
-      this.fixture.detectChanges();
+      testContext.component.data = newData;
+      testContext.fixture.detectChanges();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
       const updatedRows = gridHelper.getRows();
 
       // Verify the first row is still expanded
-      expect(updatedRows[0].isExpanded()).toBe(true, 'Row should remain expanded after data refresh');
+      expect(updatedRows[0].isExpanded(), 'Row should remain expanded after data refresh').toBe(true);
 
       // Verify it's the exact same DOM element (not recreated)
-      expect(updatedRows[0].getElement()).toBe(originalRowElement, 'Row DOM element should not be recreated');
+      expect(updatedRows[0].getElement(), 'Row DOM element should not be recreated').toBe(originalRowElement);
     }));
 
-    it('should have aria description', function (this: DatagridSpecContext) {
-      this.component.rowsExpandedByDefault = true;
-      this.component.appfxDatagridComponent.rowDetailContent = this.component.rowDetailContent;
-      this.fixture.detectChanges();
+    it('should have aria description', () => {
+      testContext.component.rowsExpandedByDefault = true;
+      testContext.component.appfxDatagridComponent.rowDetailContent = testContext.component.rowDetailContent;
+      testContext.fixture.detectChanges();
 
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       const rows: GridRowTestHelper[] = gridHelper.getRows();
-      expect(rows.length).toEqual(this.data.length);
+      expect(rows.length).toEqual(testContext.data.length);
 
       rows.forEach((row, i) => {
         expect(row.isRowExpandable()).toBeTruthy();
 
         const rowDetailComponent = row.getElement().querySelector('clr-dg-row-detail') as HTMLElement;
 
-        const contentId = this.component.appfxDatagridComponent.buildRowDetailContentId(i);
+        const contentId = testContext.component.appfxDatagridComponent.buildRowDetailContentId(i);
 
         expect(rowDetailComponent).toBeDefined();
         expect(rowDetailComponent.getAttribute('aria-describedby')).toEqual(contentId);
@@ -2829,23 +3014,25 @@ describe('DatagridComponent', () => {
   });
 
   describe('toggleAll', () => {
-    it('should toggle the allSelected property of clrDatagrid', function (this: any) {
-      this.component.selectionType = SelectionType.Multi;
-      this.component.data = this.data;
-      this.component.columnsDefs = this.columnsDefs;
-      this.fixture.detectChanges();
+    it('should toggle the allSelected property of clrDatagrid', () => {
+      const untypedContext: any = testContext;
 
-      const datagridComponent = this.component.appfxDatagridComponent;
+      untypedContext.component.selectionType = SelectionType.Multi;
+      untypedContext.component.data = untypedContext.data;
+      untypedContext.component.columnsDefs = untypedContext.columnsDefs;
+      untypedContext.fixture.detectChanges();
+
+      const datagridComponent = untypedContext.component.appfxDatagridComponent;
 
       expect((datagridComponent as any).clrDatagrid.allSelected).toBeFalsy();
 
       datagridComponent.toggleAll();
-      this.fixture.detectChanges();
+      untypedContext.fixture.detectChanges();
 
       expect((datagridComponent as any).clrDatagrid.allSelected).toBeTruthy();
 
       datagridComponent.toggleAll();
-      this.fixture.detectChanges();
+      untypedContext.fixture.detectChanges();
 
       expect((datagridComponent as any).clrDatagrid.allSelected).toBeFalsy();
     });

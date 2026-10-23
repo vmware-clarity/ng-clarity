@@ -17,7 +17,10 @@ import { uniqueIdProvider, uniqueIdToken } from './id-generator';
   providers: [uniqueIdProvider],
 })
 class TestOneComponent {
-  constructor(@Inject(uniqueIdToken) readonly uid: string) {}
+  constructor(
+    @Inject(uniqueIdToken)
+    readonly uid: string
+  ) {}
 }
 
 @Component({
@@ -27,7 +30,10 @@ class TestOneComponent {
   providers: [uniqueIdProvider],
 })
 class TestTwoComponent {
-  constructor(@Inject(uniqueIdToken) readonly uid: string) {}
+  constructor(
+    @Inject(uniqueIdToken)
+    readonly uid: string
+  ) {}
 }
 
 describe('id-generator', () => {

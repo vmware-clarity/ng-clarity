@@ -36,13 +36,14 @@ import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
 import { ClrStepperModule, ClrStepperPanel, StepperPanelModel, StepperService } from '@clr/angular/stepper';
 import { Observable, of, Subject } from 'rxjs';
 import { first } from 'rxjs/operators';
+import type { Mock } from 'vitest';
 
 import { MockStepperStateService } from './mock/stepper.mock';
 import { StepperStateService } from './state/stepper-state.service';
 import { StepperComponent } from './stepper.component';
 import { SummaryService } from './summary/summary.service';
 
-import Spy = jasmine.Spy;
+type Spy<T extends (...args: any[]) => any = (...args: any[]) => any> = Mock<T>;
 
 class MockWizardModel {
   contextObjectId: Var<string> = Var.of('vm-11');
@@ -194,10 +195,15 @@ interface ThisTest {
 class AppfxStepperTestModule {}
 
 describe('Stepper', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
   let queryNextButton: () => any;
   let queryStepperButtons: () => DebugElement[];
 
-  beforeEach(function (this: ThisTest) {
+  beforeEach(() => {
     TestBed.configureTestingModule({
       imports: [
         ClrSpinnerModule,
@@ -236,20 +242,20 @@ describe('Stepper', () => {
       },
     });
 
-    this.fixture = TestBed.createComponent(StepperComponent);
-    this.component = this.fixture.componentInstance;
+    testContext.fixture = TestBed.createComponent(StepperComponent);
+    testContext.component = testContext.fixture.componentInstance;
 
-    this.wizardModel = new MockWizardModel();
-    this.step1Model = new MockStep1Model();
-    this.step2Model = new MockStep2Model();
-    this.step3Model = new MockStep3Model();
-    this.step4Model = new MockStep4Model();
+    testContext.wizardModel = new MockWizardModel();
+    testContext.step1Model = new MockStep1Model();
+    testContext.step2Model = new MockStep2Model();
+    testContext.step3Model = new MockStep3Model();
+    testContext.step4Model = new MockStep4Model();
 
-    this.step1 = {
+    testContext.step1 = {
       title: 'Page 1 Title',
       navTitle: 'Page 1 Nav',
       componentClass: MockStep1Component,
-      model: this.step1Model,
+      model: testContext.step1Model,
       mappings: new Mappings<MockStep1Model, MockWizardModel>()
         .mapStepProp('vmId')
         .to('contextObjectId')
@@ -257,7 +263,7 @@ describe('Stepper', () => {
         .to('newContextObjectId'),
     };
 
-    this.skippedStep = {
+    testContext.skippedStep = {
       title: 'Skipped Page Title',
       navTitle: 'Skipped Page Nav',
       componentClass: MockStep3Component,
@@ -265,300 +271,303 @@ describe('Stepper', () => {
       isSkipped: true,
     };
 
-    this.step2 = {
+    testContext.step2 = {
       title: 'Page 2 Title',
       navTitle: 'Page 2 Nav',
       componentClass: MockStep2Component,
-      model: this.step2Model,
+      model: testContext.step2Model,
       mappings: new Mappings<MockStep2Model, MockWizardModel>().mapStepProp('newVmId').to('newContextObjectId'),
     };
-    this.step3 = {
+    testContext.step3 = {
       title: 'Page 3 Title',
       navTitle: 'Page 3 Nav',
       componentClass: MockStep3Component,
-      model: this.step3Model,
+      model: testContext.step3Model,
     };
-    this.step4 = {
+    testContext.step4 = {
       title: 'Page 4 Title',
       navTitle: 'Page 4 Nav',
       componentClass: MockStep4Component,
-      model: this.step4Model,
+      model: testContext.step4Model,
     };
 
-    this.component.wizardModel = this.wizardModel;
-    this.component.steps = [this.step1, this.skippedStep, this.step2, this.step3];
+    testContext.component.wizardModel = testContext.wizardModel;
+    testContext.component.steps = [testContext.step1, testContext.skippedStep, testContext.step2, testContext.step3];
 
-    this.stateService = this.component.stateService;
-    this.workflowModelManager = this.component['modelMgr'];
-    this.relevanceService = this.component['relevanceService'];
+    testContext.stateService = testContext.component.stateService;
+    testContext.workflowModelManager = testContext.component['modelMgr'];
+    testContext.relevanceService = testContext.component['relevanceService'];
 
-    queryNextButton = () => this.fixture.debugElement.nativeElement.querySelector('.clr-step-button');
-    queryStepperButtons = () => this.fixture.debugElement.queryAll(By.css('button.clr-stepper-header-button'));
+    queryNextButton = () => testContext.fixture.debugElement.nativeElement.querySelector('.clr-step-button');
+    queryStepperButtons = () => testContext.fixture.debugElement.queryAll(By.css('button.clr-stepper-header-button'));
   });
 
   describe('when the stepper is rendered', () => {
-    it('THEN displays the loading indicator when needed to do so', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(false);
+    it('THEN displays the loading indicator when needed to do so', () => {
+      testContext.fixture.detectChanges();
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
 
-      this.component.loading = true;
-      this.fixture.detectChanges();
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(true);
+      testContext.component.loading = true;
+      testContext.fixture.detectChanges();
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
-      this.component.loading = false;
-      this.fixture.detectChanges();
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(false);
+      testContext.component.loading = false;
+      testContext.fixture.detectChanges();
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
 
       // Show indicator when the page model reports loading
-      this.step1Model.loading = true;
-      this.fixture.detectChanges();
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(true);
+      testContext.step1Model.loading = true;
+      testContext.fixture.detectChanges();
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
       // Hide indicator
-      this.step1Model.loading = false;
-      this.fixture.detectChanges();
-      expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(false);
+      testContext.step1Model.loading = false;
+      testContext.fixture.detectChanges();
+      expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
     });
 
-    it('THEN first step is set as initial and activate function are triggered', function (this: ThisTest) {
-      spyOn(this.stateService, 'stepActivated').and.callThrough();
-      spyOn(this.component, 'onStepActivated').and.callThrough();
-      spyOn(this.workflowModelManager, 'injectPropertiesToPendingStep').and.callThrough();
+    it('THEN first step is set as initial and activate function are triggered', () => {
+      vi.spyOn(testContext.stateService, 'stepActivated');
+      vi.spyOn(testContext.component, 'onStepActivated');
+      vi.spyOn(testContext.workflowModelManager, 'injectPropertiesToPendingStep');
 
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      expect(this.component.initialStep).toEqual('step0');
-      expect(this.stateService.stepActivated).toHaveBeenCalled();
-      expect(this.component.onStepActivated).toHaveBeenCalled();
-      expect(this.workflowModelManager.injectPropertiesToPendingStep).toHaveBeenCalled();
-      expect(this.step1Model.activateCallsCount).toEqual(1);
+      expect(testContext.component.initialStep).toEqual('step0');
+      expect(testContext.stateService.stepActivated).toHaveBeenCalled();
+      expect(testContext.component.onStepActivated).toHaveBeenCalled();
+      expect(testContext.workflowModelManager.injectPropertiesToPendingStep).toHaveBeenCalled();
+      expect(testContext.step1Model.activateCallsCount).toEqual(1);
     });
 
-    it('THEN a form is created with a formgroup for each step', function (this: ThisTest) {
-      this.fixture.detectChanges();
+    it('THEN a form is created with a formgroup for each step', () => {
+      testContext.fixture.detectChanges();
 
-      this.component.steps.forEach((step: Step, index: number) => {
-        expect(this.component.form.controls['step' + index]).toBeDefined();
+      testContext.component.steps.forEach((step: Step, index: number) => {
+        expect(testContext.component.form.controls['step' + index]).toBeDefined();
       });
     });
 
-    it('THEN on model change the steps are invalidated', function (this: ThisTest) {
-      this.fixture.detectChanges();
+    it('THEN on model change the steps are invalidated', () => {
+      testContext.fixture.detectChanges();
 
-      spyOn(this.stateService, 'resetNextStepsValidStates').and.callThrough();
-      spyOn(this.component['stepperService'], 'resetPanels').and.callThrough();
-      spyOn(this.component['stepperService'], 'overrideInitialPanel').and.callThrough();
+      vi.spyOn(testContext.stateService, 'resetNextStepsValidStates');
+      vi.spyOn(testContext.component['stepperService'], 'resetPanels');
+      vi.spyOn(testContext.component['stepperService'], 'overrideInitialPanel');
 
-      this.step1Model.newVmId.value = 'vm-12';
+      testContext.step1Model.newVmId.value = 'vm-12';
 
-      expect(this.stateService.resetNextStepsValidStates).toHaveBeenCalledWith(this.step1);
-      expect(this.component['stepperService'].resetPanels).toHaveBeenCalled();
-      expect(this.component['stepperService'].overrideInitialPanel).toHaveBeenCalledWith(this.component.initialStep);
+      expect(testContext.stateService.resetNextStepsValidStates).toHaveBeenCalledWith(testContext.step1);
+      expect(testContext.component['stepperService'].resetPanels).toHaveBeenCalled();
+      expect(testContext.component['stepperService'].overrideInitialPanel).toHaveBeenCalledWith(
+        testContext.component.initialStep
+      );
     });
 
-    it('WHEN StepModel.readyToComplete=false, Next button must be disabled', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      this.step1Model.readyToComplete = false;
-      this.fixture.detectChanges();
-      expect(this.component.isNextButtonDisabled(this.step1)).toEqual(true);
+    it('WHEN StepModel.readyToComplete=false, Next button must be disabled', () => {
+      testContext.fixture.detectChanges();
+      testContext.step1Model.readyToComplete = false;
+      testContext.fixture.detectChanges();
+      expect(testContext.component.isNextButtonDisabled(testContext.step1)).toEqual(true);
     });
 
-    it('WHEN StepModel.readyToComplete=true, Next button must be enabled', function (this: ThisTest) {
-      this.fixture.detectChanges();
-      this.step1Model.readyToComplete = true;
-      this.fixture.detectChanges();
-      expect(this.component.isNextButtonDisabled(this.step1)).toEqual(false);
+    it('WHEN StepModel.readyToComplete=true, Next button must be enabled', () => {
+      testContext.fixture.detectChanges();
+      testContext.step1Model.readyToComplete = true;
+      testContext.fixture.detectChanges();
+      expect(testContext.component.isNextButtonDisabled(testContext.step1)).toEqual(false);
     });
 
     describe('WHEN next is clicked', () => {
-      it('WHEN the step has cancelable validation, the cancel validation button is rendered', function (this: ThisTest) {
-        this.component.steps = [this.step4, this.step1];
-        this.fixture.detectChanges();
+      it('WHEN the step has cancelable validation, the cancel validation button is rendered', () => {
+        testContext.component.steps = [testContext.step4, testContext.step1];
+        testContext.fixture.detectChanges();
 
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(true);
+        expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(true);
 
         expect(
-          this.fixture.debugElement.query(By.css('appfx-spinner button.btn')).nativeElement.innerText.toLowerCase()
-        ).toEqual(this.step4Model.cancelableValidation?.cancelButtonLabel);
+          testContext.fixture.debugElement
+            .query(By.css('appfx-spinner button.btn'))
+            .nativeElement.innerText.toLowerCase()
+        ).toEqual(testContext.step4Model.cancelableValidation?.cancelButtonLabel);
 
-        this.fixture.debugElement.query(By.css('appfx-spinner button.btn')).nativeElement.click();
-        this.fixture.detectChanges();
+        testContext.fixture.debugElement.query(By.css('appfx-spinner button.btn')).nativeElement.click();
+        testContext.fixture.detectChanges();
 
-        expect(isLoadingIndicatorVisible(this.fixture.debugElement)).toEqual(false);
-        expect(this.step4Model.canceledValidationCallsCount).toEqual(1);
+        expect(isLoadingIndicatorVisible(testContext.fixture.debugElement)).toEqual(false);
+        expect(testContext.step4Model.canceledValidationCallsCount).toEqual(1);
       });
 
-      it('THEN the step is validated, step model properties ejected and stepper service next triggered', function (this: ThisTest) {
-        this.fixture.detectChanges();
+      it('THEN the step is validated, step model properties ejected and stepper service next triggered', () => {
+        testContext.fixture.detectChanges();
 
-        spyOn(this.stateService, 'markStepValid').and.callThrough();
-        spyOn(this.workflowModelManager, 'ejectPropertiesFromCurrentStep').and.callThrough();
-        spyOn(this.relevanceService, 'checkComplete$').and.callThrough();
-        spyOn(this.component.form.controls['step0'], 'setErrors').and.callThrough();
+        vi.spyOn(testContext.stateService, 'markStepValid');
+        vi.spyOn(testContext.workflowModelManager, 'ejectPropertiesFromCurrentStep');
+        vi.spyOn(testContext.relevanceService, 'checkComplete$');
+        vi.spyOn(testContext.component.form.controls['step0'], 'setErrors');
 
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
 
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(this.step1Model.validateCallsCount).toEqual(1);
-        expect(this.stateService.markStepValid).toHaveBeenCalledWith(this.step1, true);
-        expect(this.workflowModelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(this.step1);
-        expect(this.relevanceService.checkComplete$).toHaveBeenCalled();
-        expect(this.component.form.controls['step0'].setErrors).toHaveBeenCalledWith(null);
+        expect(testContext.step1Model.validateCallsCount).toEqual(1);
+        expect(testContext.stateService.markStepValid).toHaveBeenCalledWith(testContext.step1, true);
+        expect(testContext.workflowModelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledWith(testContext.step1);
+        expect(testContext.relevanceService.checkComplete$).toHaveBeenCalled();
+        expect(testContext.component.form.controls['step0'].setErrors).toHaveBeenCalledWith(null);
 
-        spyOn(this.component.form.controls['step2'], 'setErrors').and.callThrough();
+        vi.spyOn(testContext.component.form.controls['step2'], 'setErrors');
 
         const nextButtonStep2 = queryNextButton();
         nextButtonStep2.click();
 
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(this.stateService.markStepValid).toHaveBeenCalledTimes(2);
-        expect(this.workflowModelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledTimes(1);
-        expect(this.relevanceService.checkComplete$).toHaveBeenCalledTimes(1);
+        expect(testContext.stateService.markStepValid).toHaveBeenCalledTimes(2);
+        expect(testContext.workflowModelManager.ejectPropertiesFromCurrentStep).toHaveBeenCalledTimes(1);
+        expect(testContext.relevanceService.checkComplete$).toHaveBeenCalledTimes(1);
 
-        expect(this.step2Model.validateCallsCount).toEqual(1);
-        expect((this.stateService.markStepValid as Spy).calls.all()[1].args[0]).toEqual(this.step2, false);
-        expect(this.component.form.controls['step2'].setErrors).toHaveBeenCalledWith(jasmine.anything());
+        expect(testContext.step2Model.validateCallsCount).toEqual(1);
+        expect(vi.mocked(testContext.stateService.markStepValid as Spy).mock.calls[1]).toEqual([
+          testContext.step2,
+          false,
+        ]);
+        expect(testContext.component.form.controls['step2'].setErrors).toHaveBeenCalledWith(expect.anything());
       });
 
-      it('THEN next step is activated', function (this: ThisTest) {
-        this.fixture.detectChanges();
+      it('THEN next step is activated', () => {
+        testContext.fixture.detectChanges();
 
         const indexOfFirstIncompleteStep = 2;
-        spyOn(this.stateService, 'getIndexOfFirstIncompleteStep').and.returnValue(indexOfFirstIncompleteStep);
-        spyOn(this.component['stepperService'], 'overrideInitialPanel').and.callThrough();
-        spyOn(this.component, 'onStepActivated').and.callThrough();
+        vi.spyOn(testContext.stateService, 'getIndexOfFirstIncompleteStep').mockReturnValue(indexOfFirstIncompleteStep);
+        vi.spyOn(testContext.component['stepperService'], 'overrideInitialPanel');
+        vi.spyOn(testContext.component, 'onStepActivated');
 
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
 
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(this.stateService.getIndexOfFirstIncompleteStep).toHaveBeenCalled();
-        expect(this.component['stepperService'].overrideInitialPanel).toHaveBeenCalledWith(
+        expect(testContext.stateService.getIndexOfFirstIncompleteStep).toHaveBeenCalled();
+        expect(testContext.component['stepperService'].overrideInitialPanel).toHaveBeenCalledWith(
           'step' + indexOfFirstIncompleteStep
         );
-        expect(this.component.onStepActivated).toHaveBeenCalledWith(this.step2);
-        expect(this.component.initialStep).toEqual('step2');
+        expect(testContext.component.onStepActivated).toHaveBeenCalledWith(testContext.step2);
+        expect(testContext.component.initialStep).toEqual('step2');
       });
     });
 
     describe('WHEN finish is clicked', () => {
-      it('WHEN last step is not valid THEN onFormSubmit and onFinish are not invoked', fakeAsync(function (
-        this: ThisTest
-      ) {
+      it('WHEN last step is not valid THEN onFormSubmit and onFinish are not invoked', fakeAsync(() => {
         // Add only steps that return valid states
-        this.component.steps = [this.step1, this.step2];
-        this.fixture.detectChanges();
+        testContext.component.steps = [testContext.step1, testContext.step2];
+        testContext.fixture.detectChanges();
 
         const nextButton = queryNextButton();
         nextButton.click();
         flush();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        spyOn(this.component, 'onFormSubmit').and.callThrough();
-        spyOn(this.stateService, 'areAllStepsCompleted').and.callThrough();
-        spyOn(this.component.onFinish, 'emit').and.callThrough();
+        vi.spyOn(testContext.component, 'onFormSubmit');
+        vi.spyOn(testContext.stateService, 'areAllStepsCompleted');
+        vi.spyOn(testContext.component.onFinish, 'emit');
 
         const finishButton = queryNextButton();
         finishButton.click();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(this.component.onFormSubmit).not.toHaveBeenCalled();
-        expect(this.component.onFinish.emit).not.toHaveBeenCalled();
+        expect(testContext.component.onFormSubmit).not.toHaveBeenCalled();
+        expect(testContext.component.onFinish.emit).not.toHaveBeenCalled();
         flush();
       }));
 
-      it('WHEN all steps are valid THEN onFormSubmit and onFinish are invoked', fakeAsync(function (this: ThisTest) {
+      it('WHEN all steps are valid THEN onFormSubmit and onFinish are invoked', fakeAsync(() => {
         // Add only steps that return valid states
-        this.component.steps = [this.step1, this.step3];
-        this.fixture.detectChanges();
+        testContext.component.steps = [testContext.step1, testContext.step3];
+        testContext.fixture.detectChanges();
 
         const nextButton = queryNextButton();
         nextButton.click();
         flush();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        spyOn(this.component, 'onFormSubmit').and.callThrough();
-        spyOn(this.stateService, 'areAllStepsCompleted').and.returnValue(true);
-        spyOn(this.component.onFinish, 'emit').and.callThrough();
+        vi.spyOn(testContext.component, 'onFormSubmit');
+        vi.spyOn(testContext.stateService, 'areAllStepsCompleted').mockReturnValue(true);
+        vi.spyOn(testContext.component.onFinish, 'emit');
 
         const finishButton = queryNextButton();
         finishButton.click();
         flush();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
-        expect(this.component.onFormSubmit).toHaveBeenCalled();
-        expect(this.component.onFinish.emit).toHaveBeenCalled();
+        expect(testContext.component.onFormSubmit).toHaveBeenCalled();
+        expect(testContext.component.onFinish.emit).toHaveBeenCalled();
       }));
     });
 
     describe('#onFormSubmit', () => {
-      it('WHEN stateService reports that not all steps are completed THEN onFinish is not emitted', function (this: ThisTest) {
-        this.fixture.detectChanges();
+      it('WHEN stateService reports that not all steps are completed THEN onFinish is not emitted', () => {
+        testContext.fixture.detectChanges();
 
-        spyOn(this.stateService, 'areAllStepsCompleted').and.returnValue(false);
-        spyOn(this.component.onFinish, 'emit').and.callThrough();
+        vi.spyOn(testContext.stateService, 'areAllStepsCompleted').mockReturnValue(false);
+        vi.spyOn(testContext.component.onFinish, 'emit');
 
-        this.component.onFormSubmit();
+        testContext.component.onFormSubmit();
 
-        expect(this.component.onFinish.emit).not.toHaveBeenCalled();
+        expect(testContext.component.onFinish.emit).not.toHaveBeenCalled();
       });
     });
 
     describe('WHEN navigating using step header', () => {
-      beforeEach(fakeAsync(function (this: ThisTest) {
-        this.fixture.detectChanges();
+      beforeEach(fakeAsync(() => {
+        testContext.fixture.detectChanges();
 
         // go to step2 using next
         const nextButtonStep1 = queryNextButton();
         nextButtonStep1.click();
         flush();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
         // go to step3 using next
-        this.step2Model.nextValidationResult = true;
+        testContext.step2Model.nextValidationResult = true;
         const nextButtonStep2 = queryNextButton();
 
         nextButtonStep2.click();
         flush();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
       }));
 
-      it('WHEN click on completed step from incomplete step, should not call validate method on incomplete step', function (this: ThisTest) {
-        expect(this.step3Model.activateCallsCount).toBe(1);
+      it('WHEN click on completed step from incomplete step, should not call validate method on incomplete step', () => {
+        expect(testContext.step3Model.activateCallsCount).toBe(1);
 
         // go back to step1 by click step1 header
         const steps = queryStepperButtons();
         steps[0].nativeElement.click();
-        this.fixture.detectChanges();
-        expect(this.step3Model.validateCallsCount).toEqual(0);
+        testContext.fixture.detectChanges();
+        expect(testContext.step3Model.validateCallsCount).toEqual(0);
       });
 
-      it('WHEN click on completed from completed, should call validate method on current step', function (this: ThisTest) {
+      it('WHEN click on completed from completed, should call validate method on current step', () => {
         // go back to step1 by click step1 header
         const steps = queryStepperButtons();
         steps[0].nativeElement.click(); // go to step 1 first
-        this.fixture.detectChanges();
-        expect(this.step1Model.validateCallsCount).toEqual(1);
+        testContext.fixture.detectChanges();
+        expect(testContext.step1Model.validateCallsCount).toEqual(1);
 
         steps[1].nativeElement.click(); // go to step 2 from step 1
-        this.fixture.detectChanges();
-        expect(this.step1Model.validateCallsCount).toEqual(2);
+        testContext.fixture.detectChanges();
+        expect(testContext.step1Model.validateCallsCount).toEqual(2);
       });
 
-      it('WHEN already completed panel gets expanded, collapsed and then expanded again, it remains open', fakeAsync(function (
-        this: ThisTest
-      ) {
+      it('WHEN already completed panel gets expanded, collapsed and then expanded again, it remains open', fakeAsync(() => {
         const toggleStepState = (index: number) => {
           steps[index].nativeElement.click();
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         };
 
         // go back to step1 by click step1 header
@@ -571,7 +580,7 @@ describe('Stepper', () => {
         // Expand again step1
         toggleStepState(0);
 
-        const clrStepperPanels = this.fixture.debugElement.queryAll(By.directive(ClrStepperPanel));
+        const clrStepperPanels = testContext.fixture.debugElement.queryAll(By.directive(ClrStepperPanel));
 
         const stepperPanel: ClrStepperPanel = clrStepperPanels[0].componentInstance;
         let panelOpen = false;
@@ -584,21 +593,21 @@ describe('Stepper', () => {
         flush();
 
         expect(panelOpen).toBeTruthy();
-        expect(this.component.initialStep).toEqual('step0');
+        expect(testContext.component.initialStep).toEqual('step0');
       }));
 
-      it('WHEN already completed panel gets expanded, last opened step remains incomplete', function (this: ThisTest) {
+      it('WHEN already completed panel gets expanded, last opened step remains incomplete', () => {
         const steps = queryStepperButtons();
 
         const toggleStepState = (index: number) => {
           steps[index].nativeElement.click();
-          this.fixture.detectChanges();
+          testContext.fixture.detectChanges();
         };
 
         // Go back to step1
         toggleStepState(0);
 
-        const clrStepperPanels = this.fixture.debugElement.queryAll(By.directive(ClrStepperPanel));
+        const clrStepperPanels = testContext.fixture.debugElement.queryAll(By.directive(ClrStepperPanel));
 
         // Make sure that clicking on the first panel does not put the last active
         // panel in Complete state.
@@ -617,53 +626,57 @@ describe('Stepper', () => {
     });
 
     describe('Back and Cancel Buttons', () => {
-      let onCancelSpy: jasmine.Spy;
+      let onCancelSpy: Mock;
       let queryBackButton: () => DebugElement;
       let queryCancelButton: () => DebugElement;
 
-      beforeEach(function (this: ThisTest) {
-        onCancelSpy = spyOn(this.component.onCancel, 'emit');
-        queryBackButton = () => this.fixture.debugElement.query(By.css('button[clrStepButton="previous"]'));
-        queryCancelButton = () => this.fixture.debugElement.query(By.css('button.btn-link:not([clrStepButton])'));
+      beforeEach(() => {
+        onCancelSpy = vi.spyOn(testContext.component.onCancel, 'emit').mockImplementation(() => undefined);
+        queryBackButton = () => testContext.fixture.debugElement.query(By.css('button[clrStepButton="previous"]'));
+        queryCancelButton = () =>
+          testContext.fixture.debugElement.query(By.css('button.btn-link:not([clrStepButton])'));
       });
 
-      it('THEN buttons are not rendered by default', function (this: ThisTest) {
-        this.fixture.detectChanges();
+      it('THEN buttons are not rendered by default', () => {
+        testContext.fixture.detectChanges();
         expect(queryBackButton()).toBeNull();
         expect(queryCancelButton()).toBeNull();
       });
 
-      it('THEN Cancel button is visible on all steps when showCancelButton is true and emits event', function (this: ThisTest) {
-        this.component.showCancelButton = true;
-        this.fixture.detectChanges();
+      it('THEN Cancel button is visible on all steps when showCancelButton is true and emits event', () => {
+        testContext.component.showCancelButton = true;
+        testContext.fixture.detectChanges();
 
         const cancelBtn = queryCancelButton();
         expect(cancelBtn).not.toBeNull();
         expect(cancelBtn.nativeElement.innerText.trim().toLowerCase()).toEqual(
-          this.component.workflowStrings.cancel.toLowerCase()
+          testContext.component.workflowStrings.cancel.toLowerCase()
         );
 
         cancelBtn.nativeElement.click();
         expect(onCancelSpy).toHaveBeenCalled();
       });
 
-      it('THEN Back button is not visible on the first visible step even if showBackButton is true', function (this: ThisTest) {
-        this.component.showBackButton = true;
-        this.component.steps = [this.skippedStep, this.step1, this.step2, this.step3];
-        this.fixture.detectChanges();
+      it('THEN Back button is not visible on the first visible step even if showBackButton is true', () => {
+        testContext.component.showBackButton = true;
+        testContext.component.steps = [
+          testContext.skippedStep,
+          testContext.step1,
+          testContext.step2,
+          testContext.step3,
+        ];
+        testContext.fixture.detectChanges();
 
-        expect(this.component.initialStep).toEqual('step1');
+        expect(testContext.component.initialStep).toEqual('step1');
         expect(queryBackButton()).toBeNull();
       });
 
-      it('THEN Back button is visible on the second visible step and has the correct style', fakeAsync(function (
-        this: ThisTest
-      ) {
-        this.component.showBackButton = true;
-        spyOn(this.stateService, 'isFirstVisibleStep').and.callFake((index: number) => {
+      it('THEN Back button is visible on the second visible step and has the correct style', fakeAsync(() => {
+        testContext.component.showBackButton = true;
+        vi.spyOn(testContext.stateService, 'isFirstVisibleStep').mockImplementation((index: number) => {
           return index === 0;
         });
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
 
         // Use the existing "Next" button logic to move to Step 2
         const nextButtonStep1 = queryNextButton();
@@ -671,29 +684,29 @@ describe('Stepper', () => {
 
         // Check that the step is now moved
         flush();
-        this.fixture.detectChanges();
-        this.fixture.detectChanges();
-        expect(this.component.initialStep).toEqual('step2');
+        testContext.fixture.detectChanges();
+        testContext.fixture.detectChanges();
+        expect(testContext.component.initialStep).toEqual('step2');
 
         const backBtn = queryBackButton();
         expect(backBtn).not.toBeNull();
 
         expect(backBtn.attributes['clrStepButton']).toEqual('previous');
         expect(backBtn.nativeElement.innerText.trim().toLowerCase()).toEqual(
-          this.component.workflowStrings.back.toLowerCase()
+          testContext.component.workflowStrings.back.toLowerCase()
         );
       }));
 
-      it('THEN Next button should only have btn-primary class when usePrimaryNextButton is true', function (this: ThisTest) {
-        this.component.usePrimaryNextButton = true;
-        this.fixture.detectChanges();
+      it('THEN Next button should only have btn-primary class when usePrimaryNextButton is true', () => {
+        testContext.component.usePrimaryNextButton = true;
+        testContext.fixture.detectChanges();
 
         const nextButton = queryNextButton();
         // Check if the native element contains the class
         expect(nextButton.classList.contains('btn-primary')).toBeTruthy();
 
-        this.component.usePrimaryNextButton = false;
-        this.fixture.detectChanges();
+        testContext.component.usePrimaryNextButton = false;
+        testContext.fixture.detectChanges();
         expect(nextButton.classList.contains('btn-primary')).toBeFalsy();
       });
     });

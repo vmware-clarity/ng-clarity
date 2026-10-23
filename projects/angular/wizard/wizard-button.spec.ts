@@ -52,14 +52,14 @@ class ViewTestComponent {
   }
 }
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('New Wizard Button', () => {
     describe('Typescript API', () => {
       let fixture: ComponentFixture<any>;
       let buttonDebugEl: DebugElement;
       let buttonComponent: ClrWizardButton;
-      const navService = new NavServiceMock();
-      const buttonHub = new ButtonHubMock();
+      let navService: NavServiceMock;
+      let buttonHub: ButtonHubMock;
 
       @Component({
         template: `<clr-wizard-button></clr-wizard-button>`,
@@ -70,7 +70,7 @@ export default function (): void {
       function runTypeConstantCheck(component: any, fnToTest: any, buttonType: string, typeConstant: any) {
         buttonComponent.type = 'next';
         fixture.detectChanges();
-        expect(buttonComponent.isCancel).toBe(false, 'next button type is not cancel');
+        expect(buttonComponent.isCancel, 'next button type is not cancel').toBe(false);
 
         for (const key in typeConstant) {
           if (Object.prototype.hasOwnProperty.call(typeConstant, key) && key !== buttonType) {
@@ -78,7 +78,7 @@ export default function (): void {
             const testMsg = typeToTest + ' button type is not ' + buttonType;
             component.type = typeToTest;
             fixture.detectChanges();
-            expect(fnToTest).toBe(false, testMsg);
+            expect(fnToTest, testMsg).toBe(false);
           }
         }
       }
@@ -97,17 +97,19 @@ export default function (): void {
 
         component.type = EMPTY_BUTTON_TYPE;
         fixture.detectChanges();
-        expect(myFn).toBe(false, 'empty button type is not ' + buttonType);
+        expect(myFn, 'empty button type is not ' + buttonType).toBe(false);
 
         runTypeConstantCheck(component, myFn, buttonType, DEFAULT_BUTTON_TYPES);
         runTypeConstantCheck(component, myFn, buttonType, CUSTOM_BUTTON_TYPES);
 
         component.type = UNKNOWN_BUTTON_TYPE;
         fixture.detectChanges();
-        expect(myFn).toBe(false, 'unknown button type is not ' + buttonType);
+        expect(myFn, 'unknown button type is not ' + buttonType).toBe(false);
       }
 
       beforeEach(() => {
+        navService = new NavServiceMock();
+        buttonHub = new ButtonHubMock();
         navService.currentPage = new MockPage(0);
 
         TestBed.configureTestingModule({
@@ -259,27 +261,27 @@ export default function (): void {
         it('returns false for all other button types', () => {
           buttonComponent.type = 'custom-custom';
           fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'unknown button type is not primary');
+          expect(buttonComponent.isPrimaryAction, 'unknown button type is not primary').toBe(false);
 
           buttonComponent.type = DEFAULT_BUTTON_TYPES.cancel;
           fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'cancel button is not primary');
+          expect(buttonComponent.isPrimaryAction, 'cancel button is not primary').toBe(false);
 
           buttonComponent.type = CUSTOM_BUTTON_TYPES.cancel;
           fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'custom cancel button is not primary');
+          expect(buttonComponent.isPrimaryAction, 'custom cancel button is not primary').toBe(false);
 
           buttonComponent.type = DEFAULT_BUTTON_TYPES.previous;
           fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'previous button is not primary');
+          expect(buttonComponent.isPrimaryAction, 'previous button is not primary').toBe(false);
 
           buttonComponent.type = CUSTOM_BUTTON_TYPES.previous;
           fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'custom previous button is not primary');
+          expect(buttonComponent.isPrimaryAction, 'custom previous button is not primary').toBe(false);
 
           buttonComponent.type = '';
           fixture.detectChanges();
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'empty button type is not primary');
+          expect(buttonComponent.isPrimaryAction, 'empty button type is not primary').toBe(false);
         });
       });
 
@@ -802,11 +804,13 @@ export default function (): void {
       let fixture: ComponentFixture<any>;
       let buttonDebugEl: DebugElement;
       let buttonComponent: ClrWizardButton;
-      const navService = new NavServiceMock();
-      const buttonHub = new ButtonHubMock();
+      let navService: NavServiceMock;
+      let buttonHub: ButtonHubMock;
       let myTestComponent: ViewTestComponent;
 
       beforeEach(() => {
+        navService = new NavServiceMock();
+        buttonHub = new ButtonHubMock();
         navService.currentPage = new MockPage(0);
 
         TestBed.configureTestingModule({
@@ -832,37 +836,37 @@ export default function (): void {
       describe('type input', () => {
         it('should reflect initted type', () => {
           // button is initted with no type
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'empty type not primary');
-          expect(buttonComponent.isDanger).toBe(false, 'empty type not danger');
-          expect(buttonComponent.isPrevious).toBe(false, 'empty type not previous');
-          expect(buttonComponent.isCancel).toBe(false, 'empty type not cancel');
-          expect(buttonComponent.type).toBe('', 'button type should reflect input value');
+          expect(buttonComponent.isPrimaryAction, 'empty type not primary').toBe(false);
+          expect(buttonComponent.isDanger, 'empty type not danger').toBe(false);
+          expect(buttonComponent.isPrevious, 'empty type not previous').toBe(false);
+          expect(buttonComponent.isCancel, 'empty type not cancel').toBe(false);
+          expect(buttonComponent.type, 'button type should reflect input value').toBe('');
         });
 
         it('should reflect input type it is set to', () => {
           myTestComponent.btnType = 'danger';
           fixture.detectChanges();
-          expect(buttonComponent.type).toBe('danger', 'button type should reflect input value');
-          expect(buttonComponent.isPrimaryAction).toBe(true, 'danger type is primary');
+          expect(buttonComponent.type, 'button type should reflect input value').toBe('danger');
+          expect(buttonComponent.isPrimaryAction, 'danger type is primary').toBe(true);
         });
 
         it('should update type as required', () => {
           myTestComponent.btnType = 'next';
           fixture.detectChanges();
-          expect(buttonComponent.type).toBe('next', 'button type should reflect input value');
-          expect(buttonComponent.isPrimaryAction).toBe(true, 'next type is primary');
+          expect(buttonComponent.type, 'button type should reflect input value').toBe('next');
+          expect(buttonComponent.isPrimaryAction, 'next type is primary').toBe(true);
 
           myTestComponent.btnType = 'danger';
           fixture.detectChanges();
-          expect(buttonComponent.type).toBe('danger', 'button type should reflect input value');
-          expect(buttonComponent.isPrimaryAction).toBe(true, 'danger type is primary');
+          expect(buttonComponent.type, 'button type should reflect input value').toBe('danger');
+          expect(buttonComponent.isPrimaryAction, 'danger type is primary').toBe(true);
         });
 
         it("should not error out if type isn't truthy", () => {
           myTestComponent.btnType = null;
           fixture.detectChanges();
-          expect(buttonComponent.type).toBe(null, 'button type should reflect input');
-          expect(buttonComponent.isPrimaryAction).toBe(false, 'null button type should not be primary');
+          expect(buttonComponent.type, 'button type should reflect input').toBe(null);
+          expect(buttonComponent.isPrimaryAction, 'null button type should not be primary').toBe(false);
         });
       });
 
@@ -875,24 +879,24 @@ export default function (): void {
         it('should update disabled value', () => {
           myTestComponent.disableBtn = true;
           fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(true, 'updates when set');
+          expect(buttonComponent.isDisabled, 'updates when set').toBe(true);
           myTestComponent.disableBtn = false;
           fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(false, 'updates when set back');
+          expect(buttonComponent.isDisabled, 'updates when set back').toBe(false);
         });
 
         it('should render properly even with ngIf is applied', () => {
           // Test when buttons are not ready
           buttonHub.buttonsReady = false;
-          expect(buttonComponent.isDisabled).toBe(false, "should always be false if buttons aren't ready");
+          expect(buttonComponent.isDisabled, "should always be false if buttons aren't ready").toBe(false);
           // Test with buttons ready.
           buttonHub.buttonsReady = true;
           fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(false, 'should be the default value');
+          expect(buttonComponent.isDisabled, 'should be the default value').toBe(false);
           // Test setting to hide
           myTestComponent.disableBtn = true;
           fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(true, 'should now be disabled');
+          expect(buttonComponent.isDisabled, 'should now be disabled').toBe(true);
         });
       });
 
@@ -905,24 +909,24 @@ export default function (): void {
         it('should update hidden value', () => {
           myTestComponent.hideBtn = true;
           fixture.detectChanges();
-          expect(buttonComponent.isHidden).toBe(true, 'updates when set');
+          expect(buttonComponent.isHidden, 'updates when set').toBe(true);
           myTestComponent.hideBtn = false;
           fixture.detectChanges();
-          expect(buttonComponent.isHidden).toBe(false, 'updates when set back');
+          expect(buttonComponent.isHidden, 'updates when set back').toBe(false);
         });
 
         it('binds to the host even with ngIf is applied', () => {
           // Test when buttons are not ready
           buttonHub.buttonsReady = false;
-          expect(buttonComponent.isHidden).toBe(false, "should always be false if buttons aren't ready");
+          expect(buttonComponent.isHidden, "should always be false if buttons aren't ready").toBe(false);
           // Test with buttons ready.
           buttonHub.buttonsReady = true;
           fixture.detectChanges();
-          expect(buttonComponent.isHidden).toBe(false, 'should be the default value');
+          expect(buttonComponent.isHidden, 'should be the default value').toBe(false);
           // Test setting to hide
           myTestComponent.hideBtn = true;
           fixture.detectChanges();
-          expect(buttonComponent.isHidden).toBe(true, 'should now be hidden');
+          expect(buttonComponent.isHidden, 'should now be hidden').toBe(true);
         });
       });
 
@@ -931,40 +935,40 @@ export default function (): void {
           myTestComponent.disableBtn = true;
           fixture.detectChanges();
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(0, 'does not emit click event when set to disabled');
+          expect(myTestComponent.clickCount, 'does not emit click event when set to disabled').toBe(0);
 
           myTestComponent.disableBtn = false;
           navService.currentPage.readyToComplete = false;
           myTestComponent.btnType = 'next';
           fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(true, 'verify that circumstantial disablement occurs');
+          expect(buttonComponent.isDisabled, 'verify that circumstantial disablement occurs').toBe(true);
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(0, 'does not emit click event when set to disabled');
+          expect(myTestComponent.clickCount, 'does not emit click event when set to disabled').toBe(0);
         });
 
         it('should emit event as expected', () => {
           myTestComponent.btnType = 'ohai';
           fixture.detectChanges();
-          expect(buttonComponent.type).toBe('ohai', 'verify custom button type is set');
+          expect(buttonComponent.type, 'verify custom button type is set').toBe('ohai');
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(1, 'emits click event as expected');
-          expect(myTestComponent.lastBtnClicked).toBe('ohai', 'sends button type with event');
+          expect(myTestComponent.clickCount, 'emits click event as expected').toBe(1);
+          expect(myTestComponent.lastBtnClicked, 'sends button type with event').toBe('ohai');
 
           myTestComponent.disableBtn = false;
           navService.currentPage.readyToComplete = true;
           myTestComponent.btnType = 'next';
           fixture.detectChanges();
-          expect(buttonComponent.isDisabled).toBe(false, 'verify button enabled state');
+          expect(buttonComponent.isDisabled, 'verify button enabled state').toBe(false);
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(2, 'emits click event when circumstances allow');
-          expect(myTestComponent.lastBtnClicked).toBe('next', 'sends button type with event');
+          expect(myTestComponent.clickCount, 'emits click event when circumstances allow').toBe(2);
+          expect(myTestComponent.lastBtnClicked, 'sends button type with event').toBe('next');
 
           myTestComponent.btnType = 'danger';
           fixture.detectChanges();
           navService.currentPage.readyToComplete = false;
           buttonComponent.click();
-          expect(myTestComponent.clickCount).toBe(2, 'does not emit click event when' + ' circumstances do not allow');
-          expect(myTestComponent.lastBtnClicked).not.toBe('danger', 'did not send button type');
+          expect(myTestComponent.clickCount, 'does not emit click event when' + ' circumstances do not allow').toBe(2);
+          expect(myTestComponent.lastBtnClicked, 'did not send button type').not.toBe('danger');
         });
       });
     });
@@ -973,13 +977,15 @@ export default function (): void {
       let fixture: ComponentFixture<any>;
       let buttonDebugEl: DebugElement;
       let buttonComponent: ClrWizardButton;
-      const navService = new NavServiceMock();
-      const buttonHub = new ButtonHubMock();
+      let navService: NavServiceMock;
+      let buttonHub: ButtonHubMock;
       let myTestComponent: ViewTestComponent;
       let buttonElement: HTMLElement;
       let actualButton: HTMLElement;
 
       beforeEach(() => {
+        navService = new NavServiceMock();
+        buttonHub = new ButtonHubMock();
         navService.currentPage = new MockPage(0);
 
         TestBed.configureTestingModule({
@@ -1122,7 +1128,9 @@ export default function (): void {
 
       describe('Buttons emit as expected', () => {
         it('enabled buttons should register a click with the buttonService', () => {
-          const buttonHubSpy = spyOn(buttonComponent.buttonService, 'buttonClicked');
+          const buttonHubSpy = vi
+            .spyOn(buttonComponent.buttonService, 'buttonClicked')
+            .mockImplementation(() => undefined);
           myTestComponent.btnType = 'ohai';
           myTestComponent.disableBtn = false;
           fixture.detectChanges();
@@ -1131,7 +1139,9 @@ export default function (): void {
         });
 
         it('disabled buttons should NOT register a click with the buttonService', () => {
-          const buttonHubSpy = spyOn(buttonComponent.buttonService, 'buttonClicked');
+          const buttonHubSpy = vi
+            .spyOn(buttonComponent.buttonService, 'buttonClicked')
+            .mockImplementation(() => undefined);
           myTestComponent.disableBtn = true;
           fixture.detectChanges();
           buttonComponent.click();
@@ -1140,4 +1150,4 @@ export default function (): void {
       });
     });
   });
-}
+});

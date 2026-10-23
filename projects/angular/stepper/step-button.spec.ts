@@ -82,7 +82,7 @@ describe('ClrStepButton Next', () => {
 
   it('should trigger click that sets the next step', () => {
     const stepperService = fixture.debugElement.query(By.directive(ClrStepButton)).injector.get(StepperService);
-    spyOn(stepperService, 'navigateToNextPanel');
+    vi.spyOn(stepperService, 'navigateToNextPanel').mockImplementation(() => undefined);
 
     fixture.nativeElement.querySelector('.clr-step-button').click();
     fixture.detectChanges();
@@ -106,7 +106,7 @@ describe('ClrStepButton Previous', () => {
 
   it('should trigger click that sets the previous step', () => {
     const stepperService = fixture.debugElement.query(By.directive(ClrStepButton)).injector.get(StepperService);
-    spyOn(stepperService, 'navigateToPreviousPanel');
+    vi.spyOn(stepperService, 'navigateToPreviousPanel').mockImplementation(() => undefined);
 
     fixture.nativeElement.querySelector('.clr-step-button').click();
     fixture.detectChanges();

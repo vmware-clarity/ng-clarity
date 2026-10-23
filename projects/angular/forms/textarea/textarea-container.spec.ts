@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrTextarea } from './textarea';
 import { ClrTextareaContainer } from './textarea-container';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -61,10 +61,10 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Textarea component', () => {
   describe('ClrTextareaContainer', () => {
     ContainerNoLabelSpec(ClrTextareaContainer, ClrTextarea, NoLabelTest);
     TemplateDrivenSpec(ClrTextareaContainer, ClrTextarea, SimpleTest, '.clr-textarea-wrapper [clrTextarea]');
     ReactiveSpec(ClrTextareaContainer, ClrTextarea, ReactiveTest, '.clr-textarea-wrapper [clrTextarea]');
   });
-}
+});

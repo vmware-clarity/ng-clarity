@@ -141,40 +141,45 @@ class DatagridForClientSideGridHostComponent {
 }
 
 describe('datagrid-preserve-selection-directive.client-side', () => {
-  beforeEach(function (this: any) {
-    this.moveToTheNextPageAndSelectRows = (selectRows: number[]) => {
-      this.moveToNewPageAndSelectRow(selectRows);
+  let testContext: any;
+  beforeEach(() => {
+    testContext = {};
+  });
+
+  beforeEach(() => {
+    testContext.moveToTheNextPageAndSelectRows = (selectRows: number[]) => {
+      testContext.moveToNewPageAndSelectRow(selectRows);
     };
 
-    this.moveToThePreviousPageAndSelectRows = (selectRows: number[]) => {
-      this.moveToNewPageAndSelectRow(selectRows, true);
+    testContext.moveToThePreviousPageAndSelectRows = (selectRows: number[]) => {
+      testContext.moveToNewPageAndSelectRow(selectRows, true);
     };
-    this.moveToNewPageAndSelectRow = (selectRows: number[], previousPage?: boolean) => {
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    testContext.moveToNewPageAndSelectRow = (selectRows: number[], previousPage?: boolean) => {
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       if (previousPage) {
         gridHelper.getFooter().clickPreviousPaginationButton();
       } else {
         gridHelper.getFooter().clickNextPaginationButton();
       }
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       tick();
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
 
-      this.selectRows(selectRows);
+      testContext.selectRows(selectRows);
     };
 
-    this.selectRows = (selectRows: number[]) => {
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    testContext.selectRows = (selectRows: number[]) => {
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       selectRows.forEach((selectedRowIndex: number) => {
         gridHelper.getRows()[selectedRowIndex].click();
         tick();
-        this.fixture.detectChanges();
+        testContext.fixture.detectChanges();
       });
     };
 
-    this.verifySelectedRows = (selectedRows: number[]) => {
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    testContext.verifySelectedRows = (selectedRows: number[]) => {
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getSelectedRows().length).toBe(selectedRows.length);
       selectedRows.forEach((selectedRowIndex: number) => {
         expect(gridHelper.getRows()[selectedRowIndex].isSelected()).toBeTruthy();
@@ -206,37 +211,39 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
       ],
     }).overrideProvider(ExportProviderService, {
       useValue: {
-        exportUIOnlyData: jasmine.createSpy('exportUIOnlyData'),
+        exportUIOnlyData: vi.fn(),
       },
     });
 
-    this.fixture = TestBed.createComponent(DatagridForClientSideGridHostComponent);
-    this.appfxDatagridHostComponent = this.fixture.componentInstance;
+    testContext.fixture = TestBed.createComponent(DatagridForClientSideGridHostComponent);
+    testContext.appfxDatagridHostComponent = testContext.fixture.componentInstance;
   });
 
-  it('is called when datagrid items changed is emitted and there are already selected items in the grid', function (this: any) {
-    this.fixture.detectChanges(false);
-    spyOn(this.appfxDatagridHostComponent.directive, 'updateSelectedItems');
-    const gridData = this.appfxDatagridHostComponent.data;
-    this.fixture.detectChanges(false);
-    expect(this.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
-    this.appfxDatagridHostComponent.data = [...gridData];
-    this.appfxDatagridHostComponent.selectedItems = [gridData[0]];
-    this.fixture.detectChanges(false);
-    expect(this.appfxDatagridHostComponent.directive.updateSelectedItems).toHaveBeenCalledWith(gridData);
-    expect(this.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(gridData[0]);
+  it('is called when datagrid items changed is emitted and there are already selected items in the grid', () => {
+    testContext.fixture.detectChanges(false);
+    vi.spyOn(testContext.appfxDatagridHostComponent.directive, 'updateSelectedItems').mockImplementation(
+      () => undefined
+    );
+    const gridData = testContext.appfxDatagridHostComponent.data;
+    testContext.fixture.detectChanges(false);
+    expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
+    testContext.appfxDatagridHostComponent.data = [...gridData];
+    testContext.appfxDatagridHostComponent.selectedItems = [gridData[0]];
+    testContext.fixture.detectChanges(false);
+    expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).toHaveBeenCalledWith(gridData);
+    expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(gridData[0]);
   });
 
-  it('preserve selection for all items when uses track by function', function (this: any) {
-    this.appfxDatagridHostComponent.trackByFunction = (index: number, value: any) => {
+  it('preserve selection for all items when uses track by function', () => {
+    testContext.appfxDatagridHostComponent.trackByFunction = (index: number, value: any) => {
       return `${value['status']};${value['host']}`;
     };
-    const gridData = this.appfxDatagridHostComponent.data;
+    const gridData = testContext.appfxDatagridHostComponent.data;
 
-    this.appfxDatagridHostComponent.selectedItems = [gridData[0], gridData[1], gridData[3]];
-    this.fixture.detectChanges(false);
-    expect(this.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(3);
-    this.newData = [
+    testContext.appfxDatagridHostComponent.selectedItems = [gridData[0], gridData[1], gridData[3]];
+    testContext.fixture.detectChanges(false);
+    expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(3);
+    testContext.newData = [
       {
         status: 'unknown',
         name: 'vm0',
@@ -262,25 +269,25 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
         host: '10.23.45.72',
       },
     ];
-    this.appfxDatagridHostComponent.data = this.newData;
+    testContext.appfxDatagridHostComponent.data = testContext.newData;
 
-    this.fixture.detectChanges(false);
+    testContext.fixture.detectChanges(false);
 
-    expect(this.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(2);
-    expect(this.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(this.newData[0]);
-    expect(this.appfxDatagridHostComponent.datagridComponent.selectedItems[1]).toEqual(this.newData[3]);
+    expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(2);
+    expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(testContext.newData[0]);
+    expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[1]).toEqual(testContext.newData[3]);
   });
 
   it(
     'the directive preserve selection for all items ' +
       'which are already selected and found in the new grid items array ' +
       'the old selected items which are not found in the new items array are remove from selection',
-    function (this: any) {
-      const gridData = this.appfxDatagridHostComponent.data;
-      this.appfxDatagridHostComponent.selectedItems = [gridData[0], gridData[1], gridData[3]];
-      this.fixture.detectChanges(false);
-      expect(this.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(3);
-      this.newData = [
+    () => {
+      const gridData = testContext.appfxDatagridHostComponent.data;
+      testContext.appfxDatagridHostComponent.selectedItems = [gridData[0], gridData[1], gridData[3]];
+      testContext.fixture.detectChanges(false);
+      expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(3);
+      testContext.newData = [
         {
           status: 'unknown',
           name: 'vm0',
@@ -306,171 +313,175 @@ describe('datagrid-preserve-selection-directive.client-side', () => {
           host: '10.23.45.72',
         },
       ];
-      this.appfxDatagridHostComponent.data = this.newData;
+      testContext.appfxDatagridHostComponent.data = testContext.newData;
 
-      this.fixture.detectChanges(false);
+      testContext.fixture.detectChanges(false);
 
-      expect(this.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(2);
-      expect(this.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(this.newData[0]);
-      expect(this.appfxDatagridHostComponent.datagridComponent.selectedItems[1]).toEqual(this.newData[3]);
+      expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems.length).toEqual(2);
+      expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[0]).toEqual(testContext.newData[0]);
+      expect(testContext.appfxDatagridHostComponent.datagridComponent.selectedItems[1]).toEqual(testContext.newData[3]);
     }
   );
 
   describe('when the grid is with multi-selection', () => {
-    beforeEach(fakeAsync(function (this: any) {
-      this.appfxDatagridHostComponent.pageSize = 2;
-      this.appfxDatagridHostComponent.data = allGridData;
-      this.fixture.detectChanges(false);
+    beforeEach(fakeAsync(() => {
+      testContext.appfxDatagridHostComponent.pageSize = 2;
+      testContext.appfxDatagridHostComponent.data = allGridData;
+      testContext.fixture.detectChanges(false);
       tick();
     }));
-    it('selection is preserved when move between pages', fakeAsync(function (this: any) {
-      this.selectRows([0, 1]);
-      this.verifySelectedRows([0, 1]);
+    it('selection is preserved when move between pages', fakeAsync(() => {
+      testContext.selectRows([0, 1]);
+      testContext.verifySelectedRows([0, 1]);
 
-      this.moveToTheNextPageAndSelectRows([0]);
-      this.verifySelectedRows([0]);
+      testContext.moveToTheNextPageAndSelectRows([0]);
+      testContext.verifySelectedRows([0]);
 
-      this.moveToTheNextPageAndSelectRows([1]);
-      this.verifySelectedRows([1]);
+      testContext.moveToTheNextPageAndSelectRows([1]);
+      testContext.verifySelectedRows([1]);
 
-      this.moveToTheNextPageAndSelectRows([0, 1]);
-      this.verifySelectedRows([0, 1]);
+      testContext.moveToTheNextPageAndSelectRows([0, 1]);
+      testContext.verifySelectedRows([0, 1]);
 
-      this.moveToThePreviousPageAndSelectRows([]);
-      this.verifySelectedRows([1]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
+      testContext.verifySelectedRows([1]);
 
-      this.moveToTheNextPageAndSelectRows([]);
-      this.verifySelectedRows([0, 1]);
+      testContext.moveToTheNextPageAndSelectRows([]);
+      testContext.verifySelectedRows([0, 1]);
 
-      this.moveToThePreviousPageAndSelectRows([]);
-      this.verifySelectedRows([1]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
+      testContext.verifySelectedRows([1]);
 
-      this.moveToThePreviousPageAndSelectRows([]);
-      this.verifySelectedRows([0]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
+      testContext.verifySelectedRows([0]);
 
-      this.moveToThePreviousPageAndSelectRows([]);
-      this.verifySelectedRows([0, 1]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
+      testContext.verifySelectedRows([0, 1]);
     }));
 
-    it('selection is preserved when refresh data', fakeAsync(function (this: any) {
-      this.selectRows([0, 1]);
-      this.verifySelectedRows([0, 1]);
-      this.moveToTheNextPageAndSelectRows([0]);
-      this.verifySelectedRows([0]);
-      this.moveToThePreviousPageAndSelectRows([]);
-      this.verifySelectedRows([0, 1]);
+    it('selection is preserved when refresh data', fakeAsync(() => {
+      testContext.selectRows([0, 1]);
+      testContext.verifySelectedRows([0, 1]);
+      testContext.moveToTheNextPageAndSelectRows([0]);
+      testContext.verifySelectedRows([0]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
+      testContext.verifySelectedRows([0, 1]);
       //Simulate data refresh by create new instances of data
-      this.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
+      testContext.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
         return { ...item };
       });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       tick();
-      this.fixture.detectChanges();
-      this.verifySelectedRows([0, 1]);
-      this.moveToTheNextPageAndSelectRows([]);
-      this.verifySelectedRows([0]);
+      testContext.fixture.detectChanges();
+      testContext.verifySelectedRows([0, 1]);
+      testContext.moveToTheNextPageAndSelectRows([]);
+      testContext.verifySelectedRows([0]);
     }));
 
-    it('calls onSelectedItemsChange() method of datagrid when grid items are updated', fakeAsync(function (this: any) {
-      this.selectRows([0, 1]);
-      this.verifySelectedRows([0, 1]);
-      spyOn(this.appfxDatagridHostComponent.datagridComponent, 'onSelectedItemsChange');
+    it('calls onSelectedItemsChange() method of datagrid when grid items are updated', fakeAsync(() => {
+      testContext.selectRows([0, 1]);
+      testContext.verifySelectedRows([0, 1]);
+      vi.spyOn(testContext.appfxDatagridHostComponent.datagridComponent, 'onSelectedItemsChange').mockImplementation(
+        () => undefined
+      );
       //Simulate data refresh by create new instances of data
-      this.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
+      testContext.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
         return { ...item };
       });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       tick();
-      expect(this.appfxDatagridHostComponent.datagridComponent.onSelectedItemsChange).toHaveBeenCalled();
+      expect(testContext.appfxDatagridHostComponent.datagridComponent.onSelectedItemsChange).toHaveBeenCalled();
     }));
   });
 
   describe('when the grid is with single selection', () => {
-    beforeEach(fakeAsync(function (this: any) {
-      this.appfxDatagridHostComponent.pageSize = 2;
-      this.appfxDatagridHostComponent.data = allGridData;
-      this.appfxDatagridHostComponent.selectionType = SelectionType.Single;
-      this.fixture.detectChanges();
+    beforeEach(fakeAsync(() => {
+      testContext.appfxDatagridHostComponent.pageSize = 2;
+      testContext.appfxDatagridHostComponent.data = allGridData;
+      testContext.appfxDatagridHostComponent.selectionType = SelectionType.Single;
+      testContext.fixture.detectChanges();
       tick();
     }));
 
-    it('selection is preserved when move between pages', fakeAsync(function (this: any) {
-      const gridHelper = new GridHelper(this.fixture.debugElement);
+    it('selection is preserved when move between pages', fakeAsync(() => {
+      const gridHelper = new GridHelper(testContext.fixture.debugElement);
       expect(gridHelper.getRows()[1].isRowSingleSelectable()).toBeTruthy();
-      this.selectRows([0]);
-      this.verifySelectedRows([0]);
+      testContext.selectRows([0]);
+      testContext.verifySelectedRows([0]);
       //Move to second page
-      this.moveToTheNextPageAndSelectRows([]);
-      this.verifySelectedRows([]);
+      testContext.moveToTheNextPageAndSelectRows([]);
+      testContext.verifySelectedRows([]);
       // Move to first page
-      this.moveToThePreviousPageAndSelectRows([]);
-      this.verifySelectedRows([0]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
+      testContext.verifySelectedRows([0]);
       // Move to second page
-      this.moveToTheNextPageAndSelectRows([1]);
-      this.verifySelectedRows([1]);
+      testContext.moveToTheNextPageAndSelectRows([1]);
+      testContext.verifySelectedRows([1]);
 
       // Move to third page
-      this.moveToTheNextPageAndSelectRows([]);
-      this.verifySelectedRows([]);
+      testContext.moveToTheNextPageAndSelectRows([]);
+      testContext.verifySelectedRows([]);
       // Move to four page
-      this.moveToTheNextPageAndSelectRows([]);
-      this.verifySelectedRows([]);
+      testContext.moveToTheNextPageAndSelectRows([]);
+      testContext.verifySelectedRows([]);
       // Move to third page
-      this.moveToThePreviousPageAndSelectRows([]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
       // Move to second page
-      this.moveToThePreviousPageAndSelectRows([]);
-      this.verifySelectedRows([1]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
+      testContext.verifySelectedRows([1]);
       // Move to first page
-      this.moveToThePreviousPageAndSelectRows([]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
       // Move to second page
-      this.moveToTheNextPageAndSelectRows([]);
-      this.verifySelectedRows([1]);
+      testContext.moveToTheNextPageAndSelectRows([]);
+      testContext.verifySelectedRows([1]);
     }));
 
-    it('selection is preserve when refreshing data', fakeAsync(function (this: any) {
-      this.selectRows([1]);
-      this.verifySelectedRows([1]);
-      this.moveToTheNextPageAndSelectRows([]);
-      this.verifySelectedRows([]);
+    it('selection is preserve when refreshing data', fakeAsync(() => {
+      testContext.selectRows([1]);
+      testContext.verifySelectedRows([1]);
+      testContext.moveToTheNextPageAndSelectRows([]);
+      testContext.verifySelectedRows([]);
 
-      this.moveToThePreviousPageAndSelectRows([]);
-      this.verifySelectedRows([1]);
+      testContext.moveToThePreviousPageAndSelectRows([]);
+      testContext.verifySelectedRows([1]);
       //Simulate data refresh by create new instances of data
-      this.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
+      testContext.appfxDatagridHostComponent.data = allGridData.map((item: any) => {
         return { ...item };
       });
-      this.fixture.detectChanges();
+      testContext.fixture.detectChanges();
       tick();
-      this.fixture.detectChanges();
-      this.verifySelectedRows([1]);
+      testContext.fixture.detectChanges();
+      testContext.verifySelectedRows([1]);
     }));
   });
 
-  it("does not preserve selection when 'preserveExistingSelection' is set to falsy", fakeAsync(function (this: any) {
-    this.appfxDatagridHostComponent.preserveSelection = false;
-    this.appfxDatagridHostComponent.pageSize = 2;
-    this.appfxDatagridHostComponent.data = allGridData;
-    this.fixture.detectChanges(false);
+  it("does not preserve selection when 'preserveExistingSelection' is set to falsy", fakeAsync(() => {
+    testContext.appfxDatagridHostComponent.preserveSelection = false;
+    testContext.appfxDatagridHostComponent.pageSize = 2;
+    testContext.appfxDatagridHostComponent.data = allGridData;
+    testContext.fixture.detectChanges(false);
     tick();
 
-    this.fixture.detectChanges(false);
-    spyOn(this.appfxDatagridHostComponent.directive, 'updateSelectedItems');
-    const gridData = this.appfxDatagridHostComponent.data;
-    this.fixture.detectChanges(false);
+    testContext.fixture.detectChanges(false);
+    vi.spyOn(testContext.appfxDatagridHostComponent.directive, 'updateSelectedItems').mockImplementation(
+      () => undefined
+    );
+    const gridData = testContext.appfxDatagridHostComponent.data;
+    testContext.fixture.detectChanges(false);
     tick();
-    expect(this.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
-    this.appfxDatagridHostComponent.data = [...gridData];
-    this.appfxDatagridHostComponent.selectedItems = [gridData[0]];
-    this.fixture.detectChanges(false);
-    expect(this.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
+    expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
+    testContext.appfxDatagridHostComponent.data = [...gridData];
+    testContext.appfxDatagridHostComponent.selectedItems = [gridData[0]];
+    testContext.fixture.detectChanges(false);
+    expect(testContext.appfxDatagridHostComponent.directive.updateSelectedItems).not.toHaveBeenCalled();
   }));
 
-  afterEach(function (this: any) {
-    this.fixture.destroy();
-    this.appfxDatagridHostComponent.columnsDefs = null;
-    this.appfxDatagridHostComponent.data = null;
-    this.appfxDatagridHostComponent.selectedItems = null;
-    this.appfxDatagridHostComponent = null;
-    this.directive = null;
+  afterEach(() => {
+    testContext.fixture.destroy();
+    testContext.appfxDatagridHostComponent.columnsDefs = null;
+    testContext.appfxDatagridHostComponent.data = null;
+    testContext.appfxDatagridHostComponent.selectedItems = null;
+    testContext.appfxDatagridHostComponent = null;
+    testContext.directive = null;
   });
 });

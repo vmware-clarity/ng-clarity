@@ -47,7 +47,7 @@ describe('ToggleComponent', () => {
   });
 
   it('emits toggleStateChange when the checkbox value changes', () => {
-    spyOn(component.toggleStateChange, 'emit');
+    vi.spyOn(component.toggleStateChange, 'emit').mockImplementation(() => undefined);
 
     component.onToggleStateChanged(true);
 

@@ -5,25 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CDSState, GlobalStateService } from './global.service';
-
-function getMockState(): CDSState {
-  return {
-    iconRegistry: {},
-  };
-}
+import { GlobalStateService } from './global.service';
 
 function resetGlobalState() {
-  // Directly set the private state on the window object
-  if (window.CDS) {
-    (window.CDS._state as any) = getMockState();
-  }
+  GlobalStateService.resetCDSGlobal();
+  GlobalStateService.setupCDSGlobal();
 }
 
 describe('Global State Service', () => {
   beforeEach(() => {
-    // Ensure the global object is set up before each test
-    GlobalStateService.setupCDSGlobal();
     resetGlobalState();
   });
 
@@ -55,7 +45,7 @@ describe('Global State Service', () => {
   });
 
   it('.log() should log state to the console', () => {
-    const spy = spyOn(console, 'log');
+    const spy = vi.spyOn(console, 'log').mockImplementation(() => undefined);
     GlobalStateService.log();
     expect(spy).toHaveBeenCalled();
   });

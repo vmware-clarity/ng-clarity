@@ -49,7 +49,12 @@ interface ThisTest {
   getSectionsDebugElements: () => Array<DebugElement>;
 }
 
-describe('PropertyViewCategoryComponent', function () {
+describe('PropertyViewCategoryComponent', () => {
+  let testContext: ThisTest;
+  beforeEach(() => {
+    testContext = {} as ThisTest;
+  });
+
   const sec1Data: PropertyViewSectionModel = {
     type: PropertyViewModelType.Section,
     id: 'sec-1',
@@ -81,8 +86,8 @@ describe('PropertyViewCategoryComponent', function () {
     content: [],
   };
 
-  beforeEach(function (this: ThisTest) {
-    this.createData = (overrides: Partial<PropertyViewCategoryModel>) => {
+  beforeEach(() => {
+    testContext.createData = (overrides: Partial<PropertyViewCategoryModel>) => {
       const defaultData: PropertyViewCategoryModel = {
         id: 'cat',
         type: PropertyViewModelType.Category,
@@ -91,14 +96,14 @@ describe('PropertyViewCategoryComponent', function () {
       };
       return Object.assign({}, defaultData, overrides);
     };
-    this.getTableElement = () => {
-      return this.element.querySelector('table');
+    testContext.getTableElement = () => {
+      return testContext.element.querySelector('table');
     };
-    this.getSectionsDebugElements = () => {
-      return this.fixture.debugElement.queryAll(By.css('tbody[appfx-property-view-section]'));
+    testContext.getSectionsDebugElements = () => {
+      return testContext.fixture.debugElement.queryAll(By.css('tbody[appfx-property-view-section]'));
     };
 
-    this.expandedStateManager =
+    testContext.expandedStateManager =
       new PropertyViewCategoriesSectionsExpandedStateManagerMock() as never as PropertyViewSectionsExpandedStateManager;
 
     TestBed.configureTestingModule({
@@ -107,7 +112,7 @@ describe('PropertyViewCategoryComponent', function () {
       providers: [
         {
           provide: PropertyViewSectionsExpandedStateManager,
-          useValue: this.expandedStateManager,
+          useValue: testContext.expandedStateManager,
         },
         {
           provide: PropertyViewStrings,
@@ -116,20 +121,20 @@ describe('PropertyViewCategoryComponent', function () {
       ],
     });
 
-    this.fixture = TestBed.createComponent(PropertyViewCategoryComponent);
-    this.component = this.fixture.componentInstance;
-    this.element = this.fixture.nativeElement;
+    testContext.fixture = TestBed.createComponent(PropertyViewCategoryComponent);
+    testContext.component = testContext.fixture.componentInstance;
+    testContext.element = testContext.fixture.nativeElement;
   });
 
-  afterEach(function (this: ThisTest) {
-    this.fixture.destroy();
+  afterEach(() => {
+    testContext.fixture.destroy();
   });
 
-  it('should not render content when input data content is empty', function (this: ThisTest) {
-    this.component.data = this.createData({});
-    this.fixture.detectChanges();
-    expect(this.getTableElement()).toEqual(null);
-    expect(this.getSectionsDebugElements()).toEqual([]);
+  it('should not render content when input data content is empty', () => {
+    testContext.component.data = testContext.createData({});
+    testContext.fixture.detectChanges();
+    expect(testContext.getTableElement()).toEqual(null);
+    expect(testContext.getSectionsDebugElements()).toEqual([]);
   });
 
   it(
@@ -137,66 +142,66 @@ describe('PropertyViewCategoryComponent', function () {
       ' that contains a section component' +
       ' for each section in input data content' +
       ' when input data content is not empty',
-    function (this: ThisTest) {
-      this.component.data = this.createData({
+    () => {
+      testContext.component.data = testContext.createData({
         content: [sec1Data, sec2Data, sec3Data],
       });
-      this.fixture.detectChanges();
-      expect(this.getTableElement()).not.toEqual(null);
-      expect(this.getSectionsDebugElements().length).toEqual(3);
-      expect(this.getSectionsDebugElements()[0].componentInstance).toEqual(
-        jasmine.any(PropertyViewSectionMockComponent)
+      testContext.fixture.detectChanges();
+      expect(testContext.getTableElement()).not.toEqual(null);
+      expect(testContext.getSectionsDebugElements().length).toEqual(3);
+      expect(testContext.getSectionsDebugElements()[0].componentInstance).toEqual(
+        expect.any(PropertyViewSectionMockComponent)
       );
-      expect(this.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
-      expect(this.getSectionsDebugElements()[1].componentInstance).toEqual(
-        jasmine.any(PropertyViewSectionMockComponent)
+      expect(testContext.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
+      expect(testContext.getSectionsDebugElements()[1].componentInstance).toEqual(
+        expect.any(PropertyViewSectionMockComponent)
       );
-      expect(this.getSectionsDebugElements()[1].componentInstance.data).toBe(sec2Data);
-      expect(this.getSectionsDebugElements()[2].componentInstance).toEqual(
-        jasmine.any(PropertyViewSectionMockComponent)
+      expect(testContext.getSectionsDebugElements()[1].componentInstance.data).toBe(sec2Data);
+      expect(testContext.getSectionsDebugElements()[2].componentInstance).toEqual(
+        expect.any(PropertyViewSectionMockComponent)
       );
-      expect(this.getSectionsDebugElements()[2].componentInstance.data).toBe(sec3Data);
+      expect(testContext.getSectionsDebugElements()[2].componentInstance.data).toBe(sec3Data);
     }
   );
 
-  it('should update its content when input data changes', function (this: ThisTest) {
-    this.component.data = this.createData({
+  it('should update its content when input data changes', () => {
+    testContext.component.data = testContext.createData({
       content: [sec1Data],
     });
-    this.fixture.detectChanges();
-    expect(this.getTableElement()).not.toEqual(null);
-    expect(this.getSectionsDebugElements().length).toEqual(1);
-    expect(this.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
+    testContext.fixture.detectChanges();
+    expect(testContext.getTableElement()).not.toEqual(null);
+    expect(testContext.getSectionsDebugElements().length).toEqual(1);
+    expect(testContext.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
 
-    this.component.data = this.createData({
+    testContext.component.data = testContext.createData({
       content: [sec1Data, sec2Data, sec3Data],
     });
-    this.fixture.detectChanges();
-    expect(this.getTableElement()).not.toEqual(null);
-    expect(this.getSectionsDebugElements().length).toEqual(3);
-    expect(this.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
-    expect(this.getSectionsDebugElements()[1].componentInstance.data).toBe(sec2Data);
-    expect(this.getSectionsDebugElements()[2].componentInstance.data).toBe(sec3Data);
+    testContext.fixture.detectChanges();
+    expect(testContext.getTableElement()).not.toEqual(null);
+    expect(testContext.getSectionsDebugElements().length).toEqual(3);
+    expect(testContext.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
+    expect(testContext.getSectionsDebugElements()[1].componentInstance.data).toBe(sec2Data);
+    expect(testContext.getSectionsDebugElements()[2].componentInstance.data).toBe(sec3Data);
 
-    this.component.data = this.createData({
+    testContext.component.data = testContext.createData({
       content: [sec1Data, sec3Data],
     });
-    this.fixture.detectChanges();
-    expect(this.getTableElement()).not.toEqual(null);
-    expect(this.getSectionsDebugElements().length).toEqual(2);
-    expect(this.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
-    expect(this.getSectionsDebugElements()[1].componentInstance.data).toBe(sec3Data);
+    testContext.fixture.detectChanges();
+    expect(testContext.getTableElement()).not.toEqual(null);
+    expect(testContext.getSectionsDebugElements().length).toEqual(2);
+    expect(testContext.getSectionsDebugElements()[0].componentInstance.data).toBe(sec1Data);
+    expect(testContext.getSectionsDebugElements()[1].componentInstance.data).toBe(sec3Data);
   });
 
-  it('should set sections expanded input from expanded state manager', function (this: ThisTest) {
+  it('should set sections expanded input from expanded state manager', () => {
     const sectionsExpandedState = {} as any;
-    spyOn(this.expandedStateManager, 'getSectionExpandedState').and.callFake(<any>((
+    vi.spyOn(testContext.expandedStateManager, 'getSectionExpandedState').mockImplementation(<any>((
       categoryId: string,
       sectionId: string
     ) => {
       return sectionsExpandedState[categoryId][sectionId];
     }));
-    this.component.data = this.createData({
+    testContext.component.data = testContext.createData({
       content: [sec1Data, sec2Data, sec3Data],
     });
 
@@ -205,44 +210,46 @@ describe('PropertyViewCategoryComponent', function () {
       'sec-2': true,
       'sec-3': false,
     };
-    this.fixture.detectChanges();
-    expect(this.getTableElement()).not.toEqual(null);
-    expect(this.getSectionsDebugElements().length).toEqual(3);
-    expect(this.getSectionsDebugElements()[0].componentInstance.expanded).toBe(false);
-    expect(this.getSectionsDebugElements()[1].componentInstance.expanded).toBe(true);
-    expect(this.getSectionsDebugElements()[2].componentInstance.expanded).toBe(false);
+    testContext.fixture.detectChanges();
+    expect(testContext.getTableElement()).not.toEqual(null);
+    expect(testContext.getSectionsDebugElements().length).toEqual(3);
+    expect(testContext.getSectionsDebugElements()[0].componentInstance.expanded).toBe(false);
+    expect(testContext.getSectionsDebugElements()[1].componentInstance.expanded).toBe(true);
+    expect(testContext.getSectionsDebugElements()[2].componentInstance.expanded).toBe(false);
 
     sectionsExpandedState['cat'] = {
       'sec-1': true,
       'sec-2': false,
       'sec-3': true,
     };
-    this.fixture.detectChanges();
-    expect(this.getTableElement()).not.toEqual(null);
-    expect(this.getSectionsDebugElements().length).toEqual(3);
-    expect(this.getSectionsDebugElements()[0].componentInstance.expanded).toBe(true);
-    expect(this.getSectionsDebugElements()[1].componentInstance.expanded).toBe(false);
-    expect(this.getSectionsDebugElements()[2].componentInstance.expanded).toBe(true);
+    testContext.fixture.detectChanges();
+    expect(testContext.getTableElement()).not.toEqual(null);
+    expect(testContext.getSectionsDebugElements().length).toEqual(3);
+    expect(testContext.getSectionsDebugElements()[0].componentInstance.expanded).toBe(true);
+    expect(testContext.getSectionsDebugElements()[1].componentInstance.expanded).toBe(false);
+    expect(testContext.getSectionsDebugElements()[2].componentInstance.expanded).toBe(true);
   });
 
-  it('should call expanded state manager setSectionExpandedUserState() method when section expandedChange output is triggered', function (this: ThisTest) {
-    const setSectionExpandedUserStateSpy = spyOn(this.expandedStateManager, 'setSectionExpandedUserState');
-    this.component.data = this.createData({
+  it('should call expanded state manager setSectionExpandedUserState() method when section expandedChange output is triggered', () => {
+    const setSectionExpandedUserStateSpy = vi
+      .spyOn(testContext.expandedStateManager, 'setSectionExpandedUserState')
+      .mockImplementation(() => undefined);
+    testContext.component.data = testContext.createData({
       content: [sec1Data, sec2Data, sec3Data],
     });
 
-    this.fixture.detectChanges();
-    expect(this.getTableElement()).not.toEqual(null);
-    expect(this.getSectionsDebugElements().length).toEqual(3);
+    testContext.fixture.detectChanges();
+    expect(testContext.getTableElement()).not.toEqual(null);
+    expect(testContext.getSectionsDebugElements().length).toEqual(3);
 
-    this.getSectionsDebugElements()[0].triggerEventHandler('expandedChange', false);
-    this.getSectionsDebugElements()[1].triggerEventHandler('expandedChange', true);
-    this.getSectionsDebugElements()[2].triggerEventHandler('expandedChange', true);
-    this.getSectionsDebugElements()[2].triggerEventHandler('expandedChange', false);
-    expect(setSectionExpandedUserStateSpy.calls.count()).toEqual(4);
-    expect(setSectionExpandedUserStateSpy.calls.argsFor(0)).toEqual(['cat', 'sec-1', false]);
-    expect(setSectionExpandedUserStateSpy.calls.argsFor(1)).toEqual(['cat', 'sec-2', true]);
-    expect(setSectionExpandedUserStateSpy.calls.argsFor(2)).toEqual(['cat', 'sec-3', true]);
-    expect(setSectionExpandedUserStateSpy.calls.argsFor(3)).toEqual(['cat', 'sec-3', false]);
+    testContext.getSectionsDebugElements()[0].triggerEventHandler('expandedChange', false);
+    testContext.getSectionsDebugElements()[1].triggerEventHandler('expandedChange', true);
+    testContext.getSectionsDebugElements()[2].triggerEventHandler('expandedChange', true);
+    testContext.getSectionsDebugElements()[2].triggerEventHandler('expandedChange', false);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls.length).toEqual(4);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls[0]).toEqual(['cat', 'sec-1', false]);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls[1]).toEqual(['cat', 'sec-2', true]);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls[2]).toEqual(['cat', 'sec-3', true]);
+    expect(vi.mocked(setSectionExpandedUserStateSpy).mock.calls[3]).toEqual(['cat', 'sec-3', false]);
   });
 });

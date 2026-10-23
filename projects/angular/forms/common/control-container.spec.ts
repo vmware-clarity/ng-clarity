@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrControl } from './control';
 import { ClrControlContainer } from './control-container';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -63,10 +63,10 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('Forms common utilities', () => {
   describe('ClrControlContainer', () => {
     ContainerNoLabelSpec(ClrControlContainer, ClrControl, NoLabelTest);
     TemplateDrivenSpec(ClrControlContainer, ClrControl, SimpleTest, '.clr-input-wrapper [clrControl]');
     ReactiveSpec(ClrControlContainer, ClrControl, ReactiveTest, '.clr-input-wrapper [clrControl]');
   });
-}
+});

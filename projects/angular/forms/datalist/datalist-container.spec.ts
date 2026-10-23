@@ -10,7 +10,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrDatalistContainer } from './datalist-container';
 import { ClrDatalistInput } from './datalist-input';
-import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container.spec';
+import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests/container';
 
 @Component({
   template: `
@@ -76,7 +76,7 @@ class ReactiveTest {
   });
 }
 
-export default function (): void {
+describe('ClrDatalist', () => {
   describe('ClrDatalistContainer', () => {
     ContainerNoLabelSpec(ClrDatalistContainer, ClrDatalistInput, NoLabelTest);
     TemplateDrivenSpec(
@@ -87,4 +87,4 @@ export default function (): void {
     );
     ReactiveSpec(ClrDatalistContainer, ClrDatalistInput, ReactiveTest, '.clr-input-wrapper [clrDatalistInput]');
   });
-}
+});

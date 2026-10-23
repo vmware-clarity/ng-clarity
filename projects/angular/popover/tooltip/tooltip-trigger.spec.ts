@@ -26,48 +26,63 @@ interface TooltipContext extends TestContext<ClrTooltipTrigger, SimpleTest> {
   popoverService: ClrPopoverService;
 }
 
-export default function (): void {
-  describe('TooltipTrigger component', function (this: TooltipContext) {
-    spec(ClrTooltipTrigger, SimpleTest, ClrTooltipModule, {
+describe('Tooltip', () => {
+  describe('TooltipTrigger component', () => {
+    let testContext: TooltipContext;
+
+    const getContext = spec(ClrTooltipTrigger, SimpleTest, ClrTooltipModule, {
       providers: [ClrPopoverService, TooltipIdService, TooltipMouseService],
     });
-
-    beforeEach(function () {
-      this.popoverService = this.getClarityProvider(ClrPopoverService);
-      this.tooltipIdService = this.getClarityProvider(TooltipIdService);
-      this.detectChanges();
+    beforeEach(() => {
+      testContext = getContext() as TooltipContext;
     });
 
-    describe('TypeScript API', function () {
-      it('notifies the IfOpen service', function () {
-        const toggleService = this.getClarityProvider(ClrPopoverService);
-        this.clarityDirective.showTooltip();
+    beforeEach(() => {
+      const untypedContext: any = testContext;
+
+      untypedContext.popoverService = untypedContext.getClarityProvider(ClrPopoverService);
+      untypedContext.tooltipIdService = untypedContext.getClarityProvider(TooltipIdService);
+      untypedContext.detectChanges();
+    });
+
+    describe('TypeScript API', () => {
+      it('notifies the IfOpen service', () => {
+        const untypedContext: any = testContext;
+
+        const toggleService = untypedContext.getClarityProvider(ClrPopoverService);
+        untypedContext.clarityDirective.showTooltip();
         expect(toggleService.open).toBe(true);
-        this.clarityDirective.hideTooltip();
+        untypedContext.clarityDirective.hideTooltip();
         expect(toggleService.open).toBe(false);
       });
 
-      it('responds to the TooltipIdService', function () {
+      it('responds to the TooltipIdService', () => {
+        const untypedContext: any = testContext;
+
         let testId;
-        this.tooltipIdService.id.subscribe(idChange => {
+        untypedContext.tooltipIdService.id.subscribe(idChange => {
           testId = idChange;
         });
-        expect(this.clarityDirective.ariaDescribedBy).toEqual(testId);
+        expect(untypedContext.clarityDirective.ariaDescribedBy).toEqual(testId);
 
-        this.tooltipIdService.updateId('clr-id-99');
-        this.detectChanges();
-        expect(this.clarityDirective.ariaDescribedBy).toEqual(testId);
+        untypedContext.tooltipIdService.updateId('clr-id-99');
+        untypedContext.detectChanges();
+        expect(untypedContext.clarityDirective.ariaDescribedBy).toEqual(testId);
       });
     });
 
-    describe('View basics', function () {
-      it('has the role of button', function () {
-        expect(this.clarityElement.getAttribute('role')).toEqual('button');
+    describe('View basics', () => {
+      it('has the role of button', () => {
+        const untypedContext: any = testContext;
+
+        expect(untypedContext.clarityElement.getAttribute('role')).toEqual('button');
       });
 
-      it('has a tab index of 0', function () {
-        expect(this.clarityElement.getAttribute('tabindex')).toEqual('0');
+      it('has a tab index of 0', () => {
+        const untypedContext: any = testContext;
+
+        expect(untypedContext.clarityElement.getAttribute('tabindex')).toEqual('0');
       });
     });
   });
-}
+});

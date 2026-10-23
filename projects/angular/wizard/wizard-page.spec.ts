@@ -245,13 +245,17 @@ class IdTestComponent {
   @ViewChildren(ClrWizardPage) pages: QueryList<ClrWizardPage>;
 }
 
-export default function (): void {
+describe('New Wizard Tests', () => {
   describe('ClrWizardPage', () => {
     let fixture: ComponentFixture<any>;
     let testComponent: TypescriptTestComponent;
     let testWizardPage: ClrWizardPage;
     let otherWizardPage: ClrWizardPage;
-    const pageCollection = new MyPageCollectionMock();
+    let pageCollection: MyPageCollectionMock;
+
+    beforeEach(() => {
+      pageCollection = new MyPageCollectionMock();
+    });
     let navService: WizardNavigationService;
 
     describe('Numeric id bug', () => {
@@ -289,7 +293,7 @@ export default function (): void {
 
         const myMungedId = myId.split('-').reverse();
         const generatedId = myMungedId[0];
-        expect(generatedId).toBe('0', 'should pass 0 as id if specified');
+        expect(generatedId, 'should pass 0 as id if specified').toBe('0');
       });
 
       it('should not pass an id of false', () => {
@@ -297,7 +301,7 @@ export default function (): void {
         const myId = firstPage.id;
         const myMungedId = myId.split('-').reverse();
         const generatedId = myMungedId[0];
-        expect(generatedId).not.toBe('false', 'should not pass false as an id');
+        expect(generatedId, 'should not pass false as an id').not.toBe('false');
       });
 
       it('should not pass an id of null', () => {
@@ -305,7 +309,7 @@ export default function (): void {
         const myId = firstPage.id;
         const myMungedId = myId.split('-').reverse();
         const generatedId = myMungedId[0];
-        expect(generatedId).not.toBe('null', 'should not pass null as an id');
+        expect(generatedId, 'should not pass null as an id').not.toBe('null');
       });
 
       it('should not pass an id of empty string', () => {
@@ -313,7 +317,7 @@ export default function (): void {
         const myId = firstPage.id;
         const myMungedId = myId.split('-').reverse();
         const generatedId = myMungedId[0];
-        expect(generatedId).not.toBe('null', 'should not pass null as an id');
+        expect(generatedId, 'should not pass null as an id').not.toBe('null');
       });
 
       it('should not pass an undefined id', () => {
@@ -321,13 +325,13 @@ export default function (): void {
         const myId = firstPage.id;
         const myMungedId = myId.split('-').reverse();
         const generatedId = myMungedId[0];
-        expect(generatedId).not.toBe('undefined', 'should not pass undefined as an id');
+        expect(generatedId, 'should not pass undefined as an id').not.toBe('undefined');
       });
 
       it('should not pass a negative number as an id', () => {
         firstPage._id = -1;
         const myId = firstPage.id;
-        expect(myId).not.toBe('clr-wizard-page--1', 'should not pass a negative number as an id');
+        expect(myId, 'should not pass a negative number as an id').not.toBe('clr-wizard-page--1');
       });
 
       it('should match numeric ids if passed', () => {
@@ -339,7 +343,7 @@ export default function (): void {
 
         myMungedId = myId.split('-').reverse();
         generatedId = myMungedId[0];
-        expect(generatedId).toBe('0', 'first page id should be 0');
+        expect(generatedId, 'first page id should be 0').toBe('0');
 
         myId = secondPage.id;
         myMungedId = myId.split('-').reverse();
@@ -347,7 +351,7 @@ export default function (): void {
 
         myMungedId = myId.split('-').reverse();
         generatedId = myMungedId[0];
-        expect(generatedId).toBe('1', 'should pass 1 as id if specified');
+        expect(generatedId, 'should pass 1 as id if specified').toBe('1');
 
         myId = thirdPage.id;
         myMungedId = myId.split('-').reverse();
@@ -355,7 +359,7 @@ export default function (): void {
 
         myMungedId = myId.split('-').reverse();
         generatedId = myMungedId[0];
-        expect(generatedId).toBe('2', 'should pass 2 as id if specified');
+        expect(generatedId, 'should pass 2 as id if specified').toBe('2');
 
         myId = fourthPage.id;
         myMungedId = myId.split('-').reverse();
@@ -363,7 +367,7 @@ export default function (): void {
 
         myMungedId = myId.split('-').reverse();
         generatedId = myMungedId[0];
-        expect(generatedId).toBe('lastpage', 'should pass string label as id');
+        expect(generatedId, 'should pass string label as id').toBe('lastpage');
       });
     });
 
@@ -393,17 +397,17 @@ export default function (): void {
       describe('id', () => {
         it('should return an indexed id if none is specified', () => {
           const myId = testWizardPage.id;
-          expect(myId).toContain('clr-wizard-page-', 'id should contain prefix');
+          expect(myId, 'id should contain prefix').toContain('clr-wizard-page-');
           const myMungedId = myId.split('-').reverse();
           const mungedIdNaN = isNaN(Number(myMungedId[0]));
-          expect(mungedIdNaN).toBe(false, 'index should be a number');
+          expect(mungedIdNaN, 'index should be a number').toBe(false);
         });
 
         it('should return expected id', () => {
-          expect(testWizardPage.id).toContain('clr-wizard-page-', 'verify default');
+          expect(testWizardPage.id, 'verify default').toContain('clr-wizard-page-');
           testWizardPage._id = 'ohai';
           fixture.detectChanges();
-          expect(testWizardPage.id).toBe('clr-wizard-page-ohai', 'verify custom id');
+          expect(testWizardPage.id, 'verify custom id').toBe('clr-wizard-page-ohai');
         });
       });
 
@@ -411,14 +415,14 @@ export default function (): void {
         it('should reflect nextStepDisabled state', () => {
           // testcomponent's wizard page isn't a part of a wizard so it doesn't preset
           // nextStepDisabled's value
-          expect(testWizardPage.nextStepDisabled).toBe(false, 'nextStepDisabled initialized to false');
-          expect(testWizardPage.readyToComplete).toBe(true, 'readyToComplete ' + 'initialized to true');
+          expect(testWizardPage.nextStepDisabled, 'nextStepDisabled initialized to false').toBe(false);
+          expect(testWizardPage.readyToComplete, 'readyToComplete ' + 'initialized to true').toBe(true);
           testWizardPage.nextStepDisabled = true;
           fixture.detectChanges();
-          expect(testWizardPage.readyToComplete).toBe(
-            false,
+          expect(
+            testWizardPage.readyToComplete,
             'readyToComplete ' + 'reflect update to nextStepDisabled, part 2'
-          );
+          ).toBe(false);
         });
       });
 
@@ -475,12 +479,12 @@ export default function (): void {
           navService.currentPage = otherWizardPage;
           testWizardPage.completed = false;
           fixture.detectChanges();
-          expect(testWizardPage.enabled).toBe(false, 'enabled is set to false');
-          expect(testWizardPage.disabled).toBe(true, 'disabled is true when enabled is false');
+          expect(testWizardPage.enabled, 'enabled is set to false').toBe(false);
+          expect(testWizardPage.disabled, 'disabled is true when enabled is false').toBe(true);
 
           navService.currentPage = testWizardPage;
-          expect(testWizardPage.enabled).toBe(true, 'enabled is set to true');
-          expect(testWizardPage.disabled).toBe(false, 'disabled is false when enabled is true');
+          expect(testWizardPage.enabled, 'enabled is set to true').toBe(true);
+          expect(testWizardPage.disabled, 'disabled is false when enabled is true').toBe(false);
         });
       });
 
@@ -545,8 +549,8 @@ export default function (): void {
       describe('title', () => {
         it('should return page title template ref', () => {
           const testMe = testWizardPage.title;
-          expect(testMe).toBeDefined('title template ref should be a thing');
-          // expect(testMe).toEqual(jasmine.any(TemplateRef), "page title should be a template ref");
+          expect(testMe, 'title template ref should be a thing').toBeDefined();
+          // expect(testMe).toEqual(expect.any(TemplateRef), "page title should be a template ref");
         });
       });
 
@@ -556,18 +560,18 @@ export default function (): void {
           const notToBe = otherWizardPage.title;
 
           // otherpage has a nav title
-          expect(testMe).toBeDefined('nav title template ref should be a thing');
+          expect(testMe, 'nav title template ref should be a thing').toBeDefined();
           // view piece is covered below; for now, we want to test just the API
-          expect(testMe).not.toBe(notToBe, 'expect titles to be different');
+          expect(testMe, 'expect titles to be different').not.toBe(notToBe);
         });
 
         it('should return page title if no page nav title is specified', () => {
           const testMe = testWizardPage.navTitle;
           const expected = testWizardPage.title;
           // testpage has no nav title
-          expect(testMe).toBeDefined('nav title template ref should be a thing');
+          expect(testMe, 'nav title template ref should be a thing').toBeDefined();
           // view piece is covered below; for now, we want to test just the API
-          expect(testMe).toBe(expected, 'expect titles to be the same');
+          expect(testMe, 'expect titles to be the same').toBe(expected);
         });
       });
 
@@ -575,7 +579,7 @@ export default function (): void {
         it('should return page header actions if they are present', () => {
           // other wizard page has header actions
           const testMe = otherWizardPage.headerActions;
-          expect(testMe).toBeDefined('header actions exist');
+          expect(testMe, 'header actions exist').toBeDefined();
         });
 
         it('should return undefined if page header actions are not present', () => {
@@ -603,7 +607,7 @@ export default function (): void {
         it('should return buttons template ref if page has buttons in it', () => {
           // other wizard page has custom buttons
           const test = otherWizardPage.buttons;
-          expect(test).toBeDefined('custom buttons exist');
+          expect(test, 'custom buttons exist').toBeDefined();
         });
 
         it('should return undefined if the page does not have buttons', () => {
@@ -634,7 +638,7 @@ export default function (): void {
         });
 
         it('should emit onLoad event', () => {
-          const eventSpy = spyOn(otherWizardPage.onLoad, 'emit');
+          const eventSpy = vi.spyOn(otherWizardPage.onLoad, 'emit').mockImplementation(() => undefined);
           otherWizardPage.makeCurrent();
           fixture.detectChanges();
           expect(eventSpy).toHaveBeenCalled();
@@ -645,8 +649,8 @@ export default function (): void {
         it('calls to page collection service to retrieve related stepnav item id', () => {
           const testId = testWizardPage.stepItemId;
           const wasCalled = pageCollection.stepItemIdWasCalled;
-          expect(testId).toBe('mock-id', 'make sure it grabbed id as expected');
-          expect(wasCalled).toBe(true, 'page routine went through the page collection');
+          expect(testId, 'make sure it grabbed id as expected').toBe('mock-id');
+          expect(wasCalled, 'page routine went through the page collection').toBe(true);
         });
       });
     });
@@ -683,10 +687,9 @@ export default function (): void {
         it('should allow for setting input through component', () => {
           let nextDisabledVal = templateTestComponent.navTestNextDisabled;
           let wizardPageNextDisabled = navWizardPage.nextStepDisabled;
-          expect(nextDisabledVal).toBe(false, 'expect init value to be false');
-          expect(wizardPageNextDisabled).toBe(
-            nextDisabledVal,
-            'expect component value and wizard page value to be the same'
+          expect(nextDisabledVal, 'expect init value to be false').toBe(false);
+          expect(wizardPageNextDisabled, 'expect component value and wizard page value to be the same').toBe(
+            nextDisabledVal
           );
           templateTestComponent.navTestNextDisabled = true;
           fixture.detectChanges();
@@ -695,19 +698,19 @@ export default function (): void {
           nextDisabledVal = templateTestComponent.navTestNextDisabled;
           wizardPageNextDisabled = navWizardPage.nextStepDisabled;
 
-          expect(nextDisabledVal).toBe(true, 'expect updated value to be true');
-          expect(wizardPageNextDisabled).toBe(
-            nextDisabledVal,
+          expect(nextDisabledVal, 'expect updated value to be true').toBe(true);
+          expect(
+            wizardPageNextDisabled,
             'expect component value and wizard page value to be the same after update'
-          );
+          ).toBe(nextDisabledVal);
         });
 
         it('should notify host component when set from somewhere else', () => {
           const newValue = !templateTestComponent.navTestNextDisabled;
-          const emitSpy = spyOn(navWizardPage.nextStepDisabledChange, 'emit').and.callThrough();
+          const emitSpy = vi.spyOn(navWizardPage.nextStepDisabledChange, 'emit');
           let twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(false, 'do not expect binding to have passed up from page');
+          expect(twoWayBindingTest, 'do not expect binding to have passed up from page').toBe(false);
           expect(emitSpy).not.toHaveBeenCalled();
           navWizardPage.nextStepDisabled = newValue;
 
@@ -716,16 +719,16 @@ export default function (): void {
           // get new value
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(true, 'two-way binding should have notified host');
+          expect(twoWayBindingTest, 'two-way binding should have notified host').toBe(true);
           expect(emitSpy).toHaveBeenCalledWith(newValue);
         });
 
         it('should emit when set through host component', () => {
           const newValue = !templateTestComponent.navTestNextDisabled;
-          const emitSpy = spyOn(navWizardPage.nextStepDisabledChange, 'emit').and.callThrough();
+          const emitSpy = vi.spyOn(navWizardPage.nextStepDisabledChange, 'emit');
           let twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(false, 'do not expect binding to have executed');
+          expect(twoWayBindingTest, 'do not expect binding to have executed').toBe(false);
           expect(emitSpy).not.toHaveBeenCalled();
 
           templateTestComponent.navTestNextDisabled = newValue;
@@ -734,7 +737,7 @@ export default function (): void {
           // get new value
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(true, 'two-way binding should have notified host');
+          expect(twoWayBindingTest, 'two-way binding should have notified host').toBe(true);
           expect(emitSpy).toHaveBeenCalledWith(newValue);
         });
       });
@@ -744,11 +747,11 @@ export default function (): void {
           let hostVal = templateTestComponent.navTestPreviousDisabled;
           let testVal = navWizardPage.previousStepDisabled;
 
-          expect(hostVal).toBe(true, 'expect init value to be true');
-          expect(navWizardPage.previousStepDisabled).toBe(
-            hostVal,
+          expect(hostVal, 'expect init value to be true').toBe(true);
+          expect(
+            navWizardPage.previousStepDisabled,
             'expect component value and wizard page value to be the same'
-          );
+          ).toBe(hostVal);
 
           templateTestComponent.navTestPreviousDisabled = false;
           fixture.detectChanges();
@@ -757,16 +760,16 @@ export default function (): void {
           hostVal = templateTestComponent.navTestPreviousDisabled;
           testVal = navWizardPage.previousStepDisabled;
 
-          expect(hostVal).toBe(false, 'expect updated value to be false');
-          expect(testVal).toBe(hostVal, 'expect component value and wizard page value to be the same after update');
+          expect(hostVal, 'expect updated value to be false').toBe(false);
+          expect(testVal, 'expect component value and wizard page value to be the same after update').toBe(hostVal);
         });
 
         it('should notify host component when set from somewhere else', () => {
           const newValue = !templateTestComponent.navTestPreviousDisabled;
-          const emitSpy = spyOn(navWizardPage.previousStepDisabledChange, 'emit').and.callThrough();
+          const emitSpy = vi.spyOn(navWizardPage.previousStepDisabledChange, 'emit');
           let twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(false, 'do not expect binding to have passed up from page');
+          expect(twoWayBindingTest, 'do not expect binding to have passed up from page').toBe(false);
           expect(emitSpy).not.toHaveBeenCalled();
 
           navWizardPage.previousStepDisabled = newValue;
@@ -775,16 +778,16 @@ export default function (): void {
           // get new vals
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(true, 'two-way binding should have notified host');
+          expect(twoWayBindingTest, 'two-way binding should have notified host').toBe(true);
           expect(emitSpy).toHaveBeenCalledWith(newValue);
         });
 
         it('should emit when set through host component', () => {
           const newValue = !templateTestComponent.navTestPreviousDisabled;
-          const emitSpy = spyOn(navWizardPage.previousStepDisabledChange, 'emit').and.callThrough();
+          const emitSpy = vi.spyOn(navWizardPage.previousStepDisabledChange, 'emit');
           let twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(false, 'do not expect binding to have executed');
+          expect(twoWayBindingTest, 'do not expect binding to have executed').toBe(false);
           expect(emitSpy).not.toHaveBeenCalled();
 
           templateTestComponent.navTestPreviousDisabled = newValue;
@@ -793,7 +796,7 @@ export default function (): void {
           // new vals
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(true, 'two-way binding should have notified host');
+          expect(twoWayBindingTest, 'two-way binding should have notified host').toBe(true);
           expect(emitSpy).toHaveBeenCalledWith(newValue);
         });
       });
@@ -809,8 +812,8 @@ export default function (): void {
           let hostVal = templateTestComponent.navStopCancel;
           let testVal = navWizardPage.stopCancel;
 
-          expect(hostVal).toBe(false, 'expect init value to be false');
-          expect(testVal).toBe(hostVal, 'expect component value and wizard page value to be the same');
+          expect(hostVal, 'expect init value to be false').toBe(false);
+          expect(testVal, 'expect component value and wizard page value to be the same').toBe(hostVal);
 
           templateTestComponent.navStopCancel = false;
           fixture.detectChanges();
@@ -818,16 +821,16 @@ export default function (): void {
           hostVal = templateTestComponent.navStopCancel;
           testVal = navWizardPage.stopCancel;
 
-          expect(hostVal).toBe(false, 'expect updated value to be false');
-          expect(testVal).toBe(hostVal, 'expect component value and wizard page value to be the same after update');
+          expect(hostVal, 'expect updated value to be false').toBe(false);
+          expect(testVal, 'expect component value and wizard page value to be the same after update').toBe(hostVal);
         });
 
         it('should notify host component when set from somewhere else', () => {
           const newValue = !templateTestComponent.navStopCancel;
-          const emitSpy = spyOn(navWizardPage.stopCancelChange, 'emit').and.callThrough();
+          const emitSpy = vi.spyOn(navWizardPage.stopCancelChange, 'emit');
           let twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(false, 'do not expect binding to have passed up from page');
+          expect(twoWayBindingTest, 'do not expect binding to have passed up from page').toBe(false);
           expect(emitSpy).not.toHaveBeenCalled();
 
           navWizardPage.stopCancel = newValue;
@@ -835,16 +838,16 @@ export default function (): void {
 
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(true, 'two-way binding should have notified host');
+          expect(twoWayBindingTest, 'two-way binding should have notified host').toBe(true);
           expect(emitSpy).toHaveBeenCalledWith(newValue);
         });
 
         it('should emit when set through host component', () => {
           const newValue = !templateTestComponent.navStopCancel;
-          const emitSpy = spyOn(navWizardPage.stopCancelChange, 'emit').and.callThrough();
+          const emitSpy = vi.spyOn(navWizardPage.stopCancelChange, 'emit');
           let twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(false, 'do not expect binding to have executed');
+          expect(twoWayBindingTest, 'do not expect binding to have executed').toBe(false);
           expect(emitSpy).not.toHaveBeenCalled();
 
           templateTestComponent.navStopCancel = newValue;
@@ -852,19 +855,19 @@ export default function (): void {
 
           twoWayBindingTest = templateTestComponent.navTwoWayBindingPassed;
 
-          expect(twoWayBindingTest).toBe(true, 'two-way binding should have notified host');
+          expect(twoWayBindingTest, 'two-way binding should have notified host').toBe(true);
           expect(emitSpy).toHaveBeenCalledWith(newValue);
         });
       });
 
       describe('onLoad', () => {
         it('should emit when page is made current and pass page id when emitted', () => {
-          const emitSpy = spyOn(otherWizardPage.onLoad, 'emit').and.callThrough();
-          expect(templateTestComponent.loadedPageId).not.toBe(
-            otherWizardPage.id,
+          const emitSpy = vi.spyOn(otherWizardPage.onLoad, 'emit');
+          expect(
+            templateTestComponent.loadedPageId,
             'other wizard page should not be the current page starting out'
-          );
-          emitSpy.calls.reset();
+          ).not.toBe(otherWizardPage.id);
+          emitSpy.mockClear();
           otherWizardPage.makeCurrent();
           fixture.detectChanges();
           expect(emitSpy).toHaveBeenCalledWith(otherWizardPage.id);
@@ -872,7 +875,7 @@ export default function (): void {
         });
 
         it('should not emit when another page is made current', () => {
-          const emitSpy = spyOn(otherWizardPage.onLoad, 'emit').and.callThrough();
+          const emitSpy = vi.spyOn(otherWizardPage.onLoad, 'emit');
           lifecycleWizardPage.makeCurrent();
           fixture.detectChanges();
           expect(emitSpy).not.toHaveBeenCalled();
@@ -895,8 +898,8 @@ export default function (): void {
           const idToTest = navWizardPage.id;
           const idSplitAndFlipped = idToTest.split('-').reverse();
           const idIndex = Number(idSplitAndFlipped[0]);
-          expect(idToTest).toContain('clr-wizard-page-', 'default id should include expected prefix');
-          expect(isNaN(idIndex)).toBe(false, 'default id should have numeric index');
+          expect(idToTest, 'default id should include expected prefix').toContain('clr-wizard-page-');
+          expect(isNaN(idIndex), 'default id should have numeric index').toBe(false);
         });
       });
 
@@ -959,11 +962,11 @@ export default function (): void {
 
       describe('content', () => {
         it('should display projected content', () => {
-          expect(pageTwo).toBeTruthy('test page should be in wizard');
-          expect(pageTwo.nativeElement.textContent.trim()).toBe(
-            viewTestComponent.projector,
+          expect(pageTwo, 'test page should be in wizard').toBeTruthy();
+          expect(
+            pageTwo.nativeElement.textContent.trim(),
             'projected content should match content in host component'
-          );
+          ).toBe(viewTestComponent.projector);
         });
 
         it('should update projected content', () => {
@@ -975,18 +978,18 @@ export default function (): void {
 
           const updatedContent = pageTwo.nativeElement.textContent.trim();
 
-          expect(updatedContent).not.toBe(oldContent, 'old content should not be there');
-          expect(updatedContent).toBe(newContent, 'projected content should be updated');
+          expect(updatedContent, 'old content should not be there').not.toBe(oldContent);
+          expect(updatedContent, 'projected content should be updated').toBe(newContent);
         });
 
         it('should be able to project other components', () => {
           const myInnerComponent = pageFour.query(By.directive(ClrAlert));
 
-          expect(myInnerComponent).toBeDefined('inner alert component should exist');
-          expect(myInnerComponent.nativeElement.textContent.trim()).toContain(
-            'i believe the answer is 6',
+          expect(myInnerComponent, 'inner alert component should exist').toBeDefined();
+          expect(
+            myInnerComponent.nativeElement.textContent.trim(),
             'content should project through to inner components'
-          );
+          ).toContain('i believe the answer is 6');
         });
 
         it('should allow for asynchronous content', async () => {
@@ -996,7 +999,7 @@ export default function (): void {
           await delay(120);
 
           fixture.detectChanges();
-          expect(viewTestComponent.asyncLoaded).toBe(true, 'make sure async routine ran');
+          expect(viewTestComponent.asyncLoaded, 'make sure async routine ran').toBe(true);
           expect(pageThree.nativeElement.textContent.trim()).toBe('better late than never');
         });
       });
@@ -1018,11 +1021,11 @@ export default function (): void {
 
         it('should have an id even if the id input is not defined', () => {
           idToTest = pageTwo.nativeElement.id;
-          expect(idToTest).toBeDefined('page id is defined by default');
+          expect(idToTest, 'page id is defined by default').toBeDefined();
           idSplitAndFlipped = idToTest.split('-').reverse();
           idIndex = Number(idSplitAndFlipped[0]);
-          expect(idToTest).toContain('clr-wizard-page-', 'default id should include expected prefix');
-          expect(isNaN(idIndex)).toBe(false, 'default id should have numeric index');
+          expect(idToTest, 'default id should include expected prefix').toContain('clr-wizard-page-');
+          expect(isNaN(idIndex), 'default id should have numeric index').toBe(false);
         });
 
         it('should have an id even if id input is changed to falsy', () => {
@@ -1031,10 +1034,10 @@ export default function (): void {
           idToTest = pageOne.nativeElement.id;
           idSplitAndFlipped = idToTest.split('-').reverse();
           idIndex = Number(idSplitAndFlipped[0]);
-          expect(idToTest).toBeDefined('id should still exist');
-          expect(idToTest).not.toBe('clr-wizard-page-null', 'id should not use string value of falsy input');
-          expect(idToTest).toContain('clr-wizard-page-', 'default id should include expected prefix');
-          expect(isNaN(idIndex)).toBe(false, 'default id should have numeric index');
+          expect(idToTest, 'id should still exist').toBeDefined();
+          expect(idToTest, 'id should not use string value of falsy input').not.toBe('clr-wizard-page-null');
+          expect(idToTest, 'default id should include expected prefix').toContain('clr-wizard-page-');
+          expect(isNaN(idIndex), 'default id should have numeric index').toBe(false);
         });
       });
 
@@ -1051,11 +1054,11 @@ export default function (): void {
           const pageTwoTest = pageTwo.nativeElement.getAttribute('aria-hidden');
           const currentPageIdTest = currentPage.id === expectedPage.id;
 
-          expect(currentPageIdTest).toBe(true, 'make sure current page got set as expected');
+          expect(currentPageIdTest, 'make sure current page got set as expected').toBe(true);
 
           // check aria-hidden on non-current page
-          expect(pageOneTest).toBe('true', 'non-current page has aria-hidden true');
-          expect(pageTwoTest).toBe('false', 'current page has aria-hidden false');
+          expect(pageOneTest, 'non-current page has aria-hidden true').toBe('true');
+          expect(pageTwoTest, 'current page has aria-hidden false').toBe('false');
         });
 
         it("aria-labelledby should reflect page's stepItemId", () => {
@@ -1074,8 +1077,8 @@ export default function (): void {
           const labelToTest = pageOne.nativeElement.getAttribute('aria-labelledby');
           const expected = pageColl.getStepItemIdForPage(pageOne.componentInstance);
 
-          expect(labelToTest).toBe(expected, 'updated label should be reflected in component view');
-          expect(labelToTest).toContain('onoez', 'aria-labelledBy should update');
+          expect(labelToTest, 'updated label should be reflected in component view').toBe(expected);
+          expect(labelToTest, 'aria-labelledBy should update').toContain('onoez');
         });
 
         it('should have .clr-wizard-page class', () => {
@@ -1099,25 +1102,25 @@ export default function (): void {
 
           const testIfCurrent = wizard.navService.currentPage === pageToTest;
 
-          expect(testIfCurrent).toBe(true, 'expect page to have been made current');
+          expect(testIfCurrent, 'expect page to have been made current').toBe(true);
 
           previousBtn = debugWiz.nativeElement.querySelector('.clrtest-wizard-previous > button');
-          expect(previousBtn).not.toBe(null, 'expect wizard buttons to be present');
+          expect(previousBtn, 'expect wizard buttons to be present').not.toBe(null);
 
           wizardBtnDisabled = viewTestComponent.wizardPreviousBtn.isDisabled;
-          expect(wizardBtnDisabled).toBe(false, 'expect wizard level button not to be disabled');
+          expect(wizardBtnDisabled, 'expect wizard level button not to be disabled').toBe(false);
 
           previousBtn = debugWiz.nativeElement.querySelector('.clrtest-wizard-previous > button.disabled');
-          expect(previousBtn).toBe(null, 'expect wizard level button to not have disabled class');
+          expect(previousBtn, 'expect wizard level button to not have disabled class').toBe(null);
 
           viewTestComponent.disablePrevious = true;
           fixture.detectChanges();
 
           wizardBtnDisabled = viewTestComponent.wizardPreviousBtn.isDisabled;
-          expect(wizardBtnDisabled).toBe(true, 'expect wizard level button to be disabled');
+          expect(wizardBtnDisabled, 'expect wizard level button to be disabled').toBe(true);
 
           previousBtn = debugWiz.nativeElement.querySelector('.clrtest-wizard-previous > button.disabled');
-          expect(previousBtn).not.toBe(null, 'expect wizard level button to have disabled class');
+          expect(previousBtn, 'expect wizard level button to have disabled class').not.toBe(null);
         });
 
         it('should disable previous button at page level when set ' + 'and page is the current page', () => {
@@ -1135,24 +1138,24 @@ export default function (): void {
           fixture.detectChanges();
 
           const testIfCurrent = wizard.navService.currentPage === pageToTest;
-          expect(testIfCurrent).toBe(true, 'expect page to have been made current');
+          expect(testIfCurrent, 'expect page to have been made current').toBe(true);
 
           previousBtn = debugWiz.nativeElement.querySelector('.clrtest-page-previous-2');
-          expect(previousBtn).not.toBe(null, 'expect page buttons to be present');
+          expect(previousBtn, 'expect page buttons to be present').not.toBe(null);
           wizardBtnDisabled = viewTestComponent.pagePreviousBtn.isDisabled;
-          expect(wizardBtnDisabled).toBe(false, 'expect page level button not to be disabled');
+          expect(wizardBtnDisabled, 'expect page level button not to be disabled').toBe(false);
 
           previousBtn = debugWiz.nativeElement.querySelector('.clrtest-page-previous-2 > button.disabled');
-          expect(previousBtn).toBe(null, 'expect page level button to not have disabled class');
+          expect(previousBtn, 'expect page level button to not have disabled class').toBe(null);
 
           viewTestComponent.disablePrevious = true;
           fixture.detectChanges();
 
           wizardBtnDisabled = viewTestComponent.pagePreviousBtn.isDisabled;
-          expect(wizardBtnDisabled).toBe(true, 'expect page level button to be disabled');
+          expect(wizardBtnDisabled, 'expect page level button to be disabled').toBe(true);
 
           previousBtn = debugWiz.nativeElement.querySelector('.clrtest-page-previous-2 > button.disabled');
-          expect(previousBtn).not.toBe(null, 'expect page level button to have disabled class');
+          expect(previousBtn, 'expect page level button to have disabled class').not.toBe(null);
         });
       });
 
@@ -1168,11 +1171,11 @@ export default function (): void {
           fixture.detectChanges();
 
           const testIfCurrent = wizard.navService.currentPage === pageToTest;
-          expect(testIfCurrent).not.toBe(true, 'expect page not to be current');
+          expect(testIfCurrent, 'expect page not to be current').not.toBe(true);
           const previousBtn = debugWiz.nativeElement.querySelector('.clrtest-page-previous-2 > button');
 
           // absent query result is null
-          expect(previousBtn).toBeNull('page-level buttons should not be here');
+          expect(previousBtn, 'page-level buttons should not be here').toBeNull();
         });
       });
 
@@ -1181,10 +1184,10 @@ export default function (): void {
           const pageToTest = pageOne;
           const wizard = viewTestComponent.testWizard;
           const debugWiz = fixture.debugElement.query(By.directive(ClrWizard));
-          const serviceSpy = spyOn(wizard.navService, 'cancel').and.callThrough();
-          const pageSpy = spyOn(pageToTest.componentInstance.pageOnCancel, 'emit').and.callThrough();
-          const wizardCancelSpy = spyOn(wizard.onCancel, 'emit').and.callThrough();
-          const wizardCloseSpy = spyOn(wizard, 'close').and.callThrough();
+          const serviceSpy = vi.spyOn(wizard.navService, 'cancel');
+          const pageSpy = vi.spyOn(pageToTest.componentInstance.pageOnCancel, 'emit');
+          const wizardCancelSpy = vi.spyOn(wizard.onCancel, 'emit');
+          const wizardCloseSpy = vi.spyOn(wizard, 'close');
 
           // setup
           viewTestComponent.preventCancel = true;
@@ -1192,7 +1195,7 @@ export default function (): void {
 
           const currentPage = wizard.navService.currentPage;
           const expectedCurrent = currentPage === pageToTest.componentInstance;
-          expect(expectedCurrent).toBe(true, 'expect page to be current');
+          expect(expectedCurrent, 'expect page to be current').toBe(true);
 
           const cancelBtn = debugWiz.nativeElement.querySelector('.clrtest-page-cancel > button');
           cancelBtn.click();
@@ -1214,10 +1217,10 @@ export default function (): void {
           const pageToTest = pageOne;
           const wizard = viewTestComponent.testWizard;
           const debugWiz = fixture.debugElement.query(By.directive(ClrWizard));
-          const serviceSpy = spyOn(wizard.navService, 'cancel').and.callThrough();
-          const pageSpy = spyOn(pageToTest.componentInstance.pageOnCancel, 'emit').and.callThrough();
-          const wizardCancelSpy = spyOn(wizard.onCancel, 'emit').and.callThrough();
-          const wizardCloseSpy = spyOn(wizard, 'close').and.callThrough();
+          const serviceSpy = vi.spyOn(wizard.navService, 'cancel');
+          const pageSpy = vi.spyOn(pageToTest.componentInstance.pageOnCancel, 'emit');
+          const wizardCancelSpy = vi.spyOn(wizard.onCancel, 'emit');
+          const wizardCloseSpy = vi.spyOn(wizard, 'close');
 
           // setup
           viewTestComponent.preventCancel = false; // set explicitly
@@ -1225,7 +1228,7 @@ export default function (): void {
 
           const currentPage = wizard.navService.currentPage;
           const expectedCurrent = currentPage === pageToTest.componentInstance;
-          expect(expectedCurrent).toBe(true, 'expect page to be current');
+          expect(expectedCurrent, 'expect page to be current').toBe(true);
 
           const cancelBtn = debugWiz.nativeElement.querySelector('.clrtest-page-cancel > button');
           cancelBtn.click();
@@ -1244,10 +1247,10 @@ export default function (): void {
           const pageToTest = pageTwo;
           const wizard = viewTestComponent.testWizard;
           const debugWiz = fixture.debugElement.query(By.directive(ClrWizard));
-          const serviceSpy = spyOn(wizard.navService, 'cancel').and.callThrough();
-          const pageSpy = spyOn(pageToTest.componentInstance.pageOnCancel, 'emit').and.callThrough();
-          const wizardCancelSpy = spyOn(wizard.onCancel, 'emit').and.callThrough();
-          const wizardCloseSpy = spyOn(wizard, 'close').and.callThrough();
+          const serviceSpy = vi.spyOn(wizard.navService, 'cancel');
+          const pageSpy = vi.spyOn(pageToTest.componentInstance.pageOnCancel, 'emit');
+          const wizardCancelSpy = vi.spyOn(wizard.onCancel, 'emit');
+          const wizardCloseSpy = vi.spyOn(wizard, 'close');
 
           wizard.next();
           fixture.detectChanges();
@@ -1255,7 +1258,7 @@ export default function (): void {
           // setup
           const currentPage = wizard.navService.currentPage;
           const expectedCurrent = currentPage === pageToTest.componentInstance;
-          expect(expectedCurrent).toBe(true, 'expect page to be current');
+          expect(expectedCurrent, 'expect page to be current').toBe(true);
 
           const cancelBtn = debugWiz.nativeElement.querySelector('.clr-test-wizard-cancel > button');
           cancelBtn.click();
@@ -1277,11 +1280,11 @@ export default function (): void {
           const pageToTest = pageFour;
           const wizard = viewTestComponent.testWizard;
           const debugWiz = fixture.debugElement.query(By.directive(ClrWizard));
-          const serviceSpy = spyOn(wizard.navService, 'cancel').and.callThrough();
-          const pageSpy = spyOn(pageToTest.componentInstance.pageOnCancel, 'emit').and.callThrough();
-          const wizardCancelSpy = spyOn(wizard.onCancel, 'emit').and.callThrough();
-          const wizardCloseSpy = spyOn(wizard, 'close').and.callThrough();
-          const componentSpy = spyOn(viewTestComponent, 'altCancel').and.callThrough();
+          const serviceSpy = vi.spyOn(wizard.navService, 'cancel');
+          const pageSpy = vi.spyOn(pageToTest.componentInstance.pageOnCancel, 'emit');
+          const wizardCancelSpy = vi.spyOn(wizard.onCancel, 'emit');
+          const wizardCloseSpy = vi.spyOn(wizard, 'close');
+          const componentSpy = vi.spyOn(viewTestComponent, 'altCancel');
 
           // setup
           wizard.next(); // => page 2
@@ -1294,9 +1297,9 @@ export default function (): void {
 
           const currentPage = wizard.navService.currentPage;
           const expectedCurrent = currentPage === pageToTest.componentInstance;
-          expect(expectedCurrent).toBe(true, 'expect page to be current');
+          expect(expectedCurrent, 'expect page to be current').toBe(true);
 
-          expect(viewTestComponent.altCancelRan).toBe(false, 'verify alt cancel is false');
+          expect(viewTestComponent.altCancelRan, 'verify alt cancel is false').toBe(false);
 
           const cancelBtn = debugWiz.nativeElement.querySelector('.clr-test-wizard-cancel > button');
           cancelBtn.click();
@@ -1317,7 +1320,7 @@ export default function (): void {
           expect(componentSpy).toHaveBeenCalled();
 
           // alt-cancel did work
-          expect(viewTestComponent.altCancelRan).toBe(true, 'alt cancel ran');
+          expect(viewTestComponent.altCancelRan, 'alt cancel ran').toBe(true);
         });
       });
 
@@ -1357,10 +1360,10 @@ export default function (): void {
 
         it('should emit when next button is clicked', () => {
           // need to use innerPage because next doesn't work on last page
-          const clickSpy = spyOn(innerPage.componentInstance.nextButtonClicked, 'emit').and.callThrough();
-          const otherClickSpy = spyOn(endPage.componentInstance.nextButtonClicked, 'emit').and.callThrough();
-          const primaryBtnSpy = spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit').and.callThrough();
-          const commitSpy = spyOn(innerPage.componentInstance.onCommit, 'emit').and.callThrough();
+          const clickSpy = vi.spyOn(innerPage.componentInstance.nextButtonClicked, 'emit');
+          const otherClickSpy = vi.spyOn(endPage.componentInstance.nextButtonClicked, 'emit');
+          const primaryBtnSpy = vi.spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit');
+          const commitSpy = vi.spyOn(innerPage.componentInstance.onCommit, 'emit');
 
           nextBtn.click();
 
@@ -1373,10 +1376,10 @@ export default function (): void {
         });
 
         it('should emit when finish button is clicked', () => {
-          const clickSpy = spyOn(endPage.componentInstance.finishButtonClicked, 'emit').and.callThrough();
-          const otherClickSpy = spyOn(innerPage.componentInstance.nextButtonClicked, 'emit').and.callThrough();
-          const primaryBtnSpy = spyOn(endPage.componentInstance.primaryButtonClicked, 'emit').and.callThrough();
-          const commitSpy = spyOn(endPage.componentInstance.onCommit, 'emit').and.callThrough();
+          const clickSpy = vi.spyOn(endPage.componentInstance.finishButtonClicked, 'emit');
+          const otherClickSpy = vi.spyOn(innerPage.componentInstance.nextButtonClicked, 'emit');
+          const primaryBtnSpy = vi.spyOn(endPage.componentInstance.primaryButtonClicked, 'emit');
+          const commitSpy = vi.spyOn(endPage.componentInstance.onCommit, 'emit');
 
           // need end page for finish button to work
           // have to set up for navigation to end page
@@ -1386,7 +1389,7 @@ export default function (): void {
           wizard.next(); // page 4
 
           // this gets called with .next() to page 3; reset for testing below;
-          otherClickSpy.calls.reset();
+          otherClickSpy.mockClear();
 
           fixture.detectChanges();
 
@@ -1402,9 +1405,9 @@ export default function (): void {
 
         it('should emit when danger button is clicked', () => {
           // need to use innerPage because next doesn't work on last page
-          const clickSpy = spyOn(innerPage.componentInstance.dangerButtonClicked, 'emit').and.callThrough();
-          const primaryBtnSpy = spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit').and.callThrough();
-          const commitSpy = spyOn(innerPage.componentInstance.onCommit, 'emit').and.callThrough();
+          const clickSpy = vi.spyOn(innerPage.componentInstance.dangerButtonClicked, 'emit');
+          const primaryBtnSpy = vi.spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit');
+          const commitSpy = vi.spyOn(innerPage.componentInstance.onCommit, 'emit');
 
           dangerBtn.click();
 
@@ -1415,9 +1418,9 @@ export default function (): void {
 
         it('should not emit when cancel button is clicked', () => {
           // need to use innerPage because next doesn't work on last page
-          const clickSpy = spyOn(innerPage.componentInstance.pageOnCancel, 'emit').and.callThrough();
-          const primaryBtnSpy = spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit').and.callThrough();
-          const commitSpy = spyOn(innerPage.componentInstance.onCommit, 'emit').and.callThrough();
+          const clickSpy = vi.spyOn(innerPage.componentInstance.pageOnCancel, 'emit');
+          const primaryBtnSpy = vi.spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit');
+          const commitSpy = vi.spyOn(innerPage.componentInstance.onCommit, 'emit');
 
           cancelBtn.click();
 
@@ -1428,9 +1431,9 @@ export default function (): void {
 
         it('should not emit when previous button is clicked', () => {
           // need to use innerPage because next doesn't work on last page
-          const clickSpy = spyOn(innerPage.componentInstance.previousButtonClicked, 'emit').and.callThrough();
-          const primaryBtnSpy = spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit').and.callThrough();
-          const commitSpy = spyOn(innerPage.componentInstance.onCommit, 'emit').and.callThrough();
+          const clickSpy = vi.spyOn(innerPage.componentInstance.previousButtonClicked, 'emit');
+          const primaryBtnSpy = vi.spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit');
+          const commitSpy = vi.spyOn(innerPage.componentInstance.onCommit, 'emit');
 
           previousBtn.click();
 
@@ -1441,9 +1444,9 @@ export default function (): void {
 
         it('should not emit when a custom button is clicked', () => {
           // need to use innerPage because next doesn't work on last page
-          const primaryBtnSpy = spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit').and.callThrough();
-          const clickSpy = spyOn(innerPage.componentInstance.customButtonClicked, 'emit').and.callThrough();
-          const commitSpy = spyOn(innerPage.componentInstance.onCommit, 'emit').and.callThrough();
+          const primaryBtnSpy = vi.spyOn(innerPage.componentInstance.primaryButtonClicked, 'emit');
+          const clickSpy = vi.spyOn(innerPage.componentInstance.customButtonClicked, 'emit');
+          const commitSpy = vi.spyOn(innerPage.componentInstance.onCommit, 'emit');
 
           customBtn.click();
 
@@ -1454,4 +1457,4 @@ export default function (): void {
       });
     });
   });
-}
+});

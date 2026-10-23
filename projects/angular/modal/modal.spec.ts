@@ -129,7 +129,7 @@ describe('Modal', () => {
   });
 
   it('should not open if already opened', async () => {
-    spyOn(modal._openChanged, 'emit');
+    vi.spyOn(modal._openChanged, 'emit').mockImplementation(() => undefined);
     modal.open();
     expect(modal._openChanged.emit).not.toHaveBeenCalled();
   });
@@ -148,7 +148,7 @@ describe('Modal', () => {
       disabled: false,
     };
 
-    spyOn(modal._openChanged, 'emit');
+    vi.spyOn(modal._openChanged, 'emit').mockImplementation(() => undefined);
     modal.close();
     modal.fadeDone(fakeAnimationEvent);
     expect(modal._openChanged.emit).toHaveBeenCalledTimes(1);
@@ -156,7 +156,7 @@ describe('Modal', () => {
 
   it('should not close when already closed', async () => {
     fixture.componentInstance.opened = false;
-    spyOn(modal, 'close');
+    vi.spyOn(modal, 'close').mockImplementation(() => undefined);
     expect(modal.close).not.toHaveBeenCalled();
   });
 
@@ -269,7 +269,7 @@ describe('Modal', () => {
     const backdrop: HTMLElement = compiled.querySelector('div.modal-backdrop');
     const modalDialog: HTMLElement = compiled.querySelector('.modal-dialog');
 
-    expect(backdrop.classList.contains('static')).toBeTrue();
+    expect(backdrop.classList.contains('static')).toBe(true);
 
     backdrop.click();
     fixture.detectChanges();
@@ -279,7 +279,7 @@ describe('Modal', () => {
     fixture.detectChanges();
     await fixture.whenStable();
 
-    expect(modalDialog.contains(document.activeElement)).toBeTrue();
+    expect(modalDialog.contains(document.activeElement)).toBe(true);
   });
 
   it('traps user focus', () => {
@@ -343,7 +343,7 @@ describe('Modal', () => {
 
     const maybeTitleWrapper = modalHeader.children[0];
     const maybleCloseButton = modalHeader.children[1];
-    expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBeTrue();
-    expect(maybleCloseButton.classList.contains('close')).toBeTrue();
+    expect(maybeTitleWrapper.classList.contains('modal-title-wrapper')).toBe(true);
+    expect(maybleCloseButton.classList.contains('close')).toBe(true);
   });
 });

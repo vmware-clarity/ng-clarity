@@ -8,7 +8,7 @@
 import { ButtonInGroupService } from './button-in-group.service';
 import { ClrButton } from '../button-group/button';
 
-export default function (): void {
+describe('Button Group Directives', () => {
   describe('Button In Group Service', () => {
     let buttonInGroupService: ButtonInGroupService;
 
@@ -30,4 +30,4 @@ export default function (): void {
       expect(testButton.inMenu).toBe(true);
     });
   });
-}
+});
