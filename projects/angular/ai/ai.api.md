@@ -374,12 +374,6 @@ export interface ClrPageContext {
 }
 
 // @public
-export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
-
-// @public
-export function clrPublishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
-
-// @public
 export interface ClrRouteContext {
     data?: Record<string, unknown>;
     params?: Record<string, string>;
@@ -401,6 +395,12 @@ export function provideClrContextOptions(options: ClrContextPreset | ClrContextS
 
 // @public
 export function provideClrMutationPolicy(policy: ClrMutationPolicy): EnvironmentProviders;
+
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
+// @public
+export function publishElementMutator(host: Element, mutator: ClrElementMutator): () => void;
 
 // (No @packageDocumentation comment for this package)
 
