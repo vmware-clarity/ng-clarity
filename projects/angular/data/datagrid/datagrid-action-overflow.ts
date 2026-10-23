@@ -108,7 +108,7 @@ export class ClrDatagridActionOverflow implements OnDestroy {
   set open(open: boolean) {
     const openState = !!open;
     if (!!openState !== this.open) {
-      // prevents chocolate mess
+      // only react to real changes so we do not re-emit openChange in the same change detection cycle
       this.popoverService.open = openState;
       this.openChange.emit(openState);
       this._open = openState;

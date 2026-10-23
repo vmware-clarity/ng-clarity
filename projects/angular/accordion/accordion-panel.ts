@@ -7,20 +7,24 @@
 
 import {
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ContentChildren,
   EventEmitter,
   HostBinding,
+  Inject,
   Input,
   OnChanges,
+  Optional,
   Output,
   QueryList,
   SimpleChanges,
 } from '@angular/core';
-import { CollapsiblePanel, CollapsiblePanelModel } from '@clr/angular/collapsible-panel';
+import { CollapsiblePanel, CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
 import { ClrAccordionDescription } from './accordion-description';
+import { AccordionService } from './providers/accordion.service';
 
 @Component({
   selector: 'clr-accordion-panel',
@@ -41,6 +45,17 @@ export class ClrAccordionPanel extends CollapsiblePanel implements OnChanges {
   @Input('clrAccordionPanelHeadingLevel') explicitHeadingLevel: HeadingLevel;
 
   @ContentChildren(ClrAccordionDescription) accordionDescription: QueryList<ClrAccordionDescription>;
+
+  constructor(
+    @Optional() @Inject(AccordionService) panelService: CollapsiblePanelService,
+    ifExpandService: IfExpandService,
+    cdr: ChangeDetectorRef
+  ) {
+    if (!panelService) {
+      throw new Error('clr-accordion-panel should only be used inside of clr-accordion');
+    }
+    super(panelService, ifExpandService, cdr);
+  }
 
   ngOnChanges(changes: SimpleChanges) {
     this.handlePanelInputChanges(changes);

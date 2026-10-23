@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { computed } from '@angular/core';
 import { ModalStackService } from '@clr/angular/modal';
 import { expectActiveElementToBe } from '@clr/angular/testing';
 import { Subscription } from 'rxjs';
@@ -72,6 +73,15 @@ export default function (): void {
       expect(provider.enabled).toBeFalse();
       provider.enabled = true;
       expect(provider.enabled).toBeTrue();
+    });
+
+    it('exposes enabled as reactive (signal-backed) state', () => {
+      const enabled = computed(() => provider.enabled);
+      expect(enabled()).toBeFalse();
+      provider.enabled = true;
+      expect(enabled()).toBeTrue();
+      provider.enabled = false;
+      expect(enabled()).toBeFalse();
     });
 
     it('keeps a replacement pane enabled and open when an older pane is removed', () => {
