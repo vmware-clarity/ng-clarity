@@ -16,12 +16,14 @@ import {
   homeIcon,
   moonIcon,
   sunIcon,
+  ThemeType,
   undoIcon,
   userIcon,
 } from '@clr/angular';
 
 import { Color } from './utils/color';
 import { generateCSS } from './utils/css-generator';
+import { parseGeneratedCSS, validateGeneratedCSS } from './utils/css-parser';
 import {
   BACKGROUND_TOKENS,
   CLARITY_DEFAULT_PRESET,
@@ -50,7 +52,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   // Set to null when the user manually edits any color.
   activePreset: ThemePreset | null = null;
 
-  activeTheme: 'light' | 'dark' = 'light';
+  activeTheme: ThemeType = 'light';
 
   // Forces black text on the warning color for legibility — toggled via the "Warning text override" switch.
   warningTextOverrideEnabled = true;
@@ -92,7 +94,8 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   /**
    * Presets available in the preset selector. Defaults to Clarity's built-in preset list.
    * The Clarity Default preset is always prepended, so it's guaranteed to remain available
-   * as a fallback even when a custom list is provided.
+   * as a fallback even when a custom list is provided. Preset names are unique, ignoring
+   * case (see `uniquePresets`).
    */
   @Input()
   get presets(): ThemePreset[] {
@@ -100,7 +103,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
   }
 
   set presets(value: ThemePreset[]) {
-    this._presets = [CLARITY_DEFAULT_PRESET, ...(value ?? [])];
+    this._presets = this.uniquePresets([CLARITY_DEFAULT_PRESET, ...(value ?? [])]);
   }
 
   get isDarkTheme(): boolean {
@@ -140,32 +143,75 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     }
   }
 
+  /**
+   * Applies a preset. Each group in `preset.light`/`preset.dark` is a `Color[]` — the
+   * same shape as `colorStruct` — since a preset can now specify a full set of variants
+   * per group, not just the base color. The base token (if included) is applied first
+   * and drives `colorBuilder`'s tint/shade/dark derivation; any other color present in
+   * the group is then applied on top, so an explicit variant override isn't lost to
+   * that derivation.
+   */
   applyPreset(preset: ThemePreset): void {
     this.activePreset = preset;
 
-    for (const theme of Object.keys(this.activePreset)) {
-      if (theme === 'name') {
-        continue;
-      }
-
+    for (const theme of ['light', 'dark'] as const) {
       this.resetAllThemeColors(theme);
 
-      if (!this.activePreset[theme]) {
+      const themeColors = preset[theme];
+
+      if (!themeColors) {
         continue;
       }
 
-      for (const activePresetKey of Object.keys(this.activePreset[theme])) {
-        const presetColor = this.activePreset[theme][activePresetKey];
-        const activeColor = this.colorStruct[theme][activePresetKey].find(c => c.name === presetColor.name);
-
-        activeColor.color = presetColor.color;
-
-        this.colorBuilder(activeColor, this.colorStruct[theme][activePresetKey], theme === 'dark');
+      for (const key of Object.keys(themeColors)) {
+        this.applyGroupOverrides(theme, key, themeColors[key]);
       }
     }
 
     this.applyPreviewStyles();
     this.refreshThemeColors();
+  }
+
+  /** Swatch color for a preset card. */
+  presetSwatchColor(preset: ThemePreset): string | undefined {
+    const primary = preset.light?.primary;
+
+    if (!primary?.length) {
+      return undefined;
+    }
+
+    return primary[0].hex;
+  }
+
+  /**
+   * Re-applies previously generated CSS (e.g. the output of the `generatedCSS` event,
+   * pasted back in by the user) by parsing it into a `CdsThemeStructure` (see
+   * `parseGeneratedCSS`), grouped exactly like `colorStruct`. Applied the same way as a
+   * preset (see `applyGroupOverrides`). CSS that `validateGeneratedCSS` rejects is not
+   * applied at all, so the current colors are left untouched.
+   *
+   * @returns `true` when the CSS was applied, `false` when it was rejected as malformed.
+   */
+  importCSS(css: string): boolean {
+    if (!validateGeneratedCSS(css).valid) {
+      return false;
+    }
+
+    const parsed = parseGeneratedCSS(css);
+
+    for (const theme of ['light', 'dark'] as const) {
+      this.resetAllThemeColors(theme);
+
+      for (const key of Object.keys(parsed[theme])) {
+        this.applyGroupOverrides(theme, key, parsed[theme][key]);
+      }
+    }
+
+    this.activePreset = null;
+    this.applyPreviewStyles();
+    this.refreshThemeColors();
+
+    return true;
   }
 
   resetAllThemeColors(theme: string) {
@@ -232,6 +278,41 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
             el.style.setProperty(override, `var(${color.name})`);
           }
         });
+      }
+    }
+  }
+
+  /**
+   * Applies a set of color overrides (from a preset or imported CSS) onto one token
+   * group of `colorStruct`. The base token (if present among `overrides`) is applied
+   * first and drives `colorBuilder`'s tint/shade/dark derivation; any other override
+   * present is then applied on top, so an explicit variant override isn't lost to that
+   * derivation. Assumes the theme's colors were already reset by the caller.
+   */
+  private applyGroupOverrides(theme: ThemeType, key: string, overrides: Color[]): void {
+    const colorGroup = this.colorStruct[theme][key];
+
+    if (!colorGroup) {
+      return;
+    }
+
+    const base = overrides.find(c => TOKEN_KEYS.baseTokens.includes(c.name));
+    const activeBase = base ? colorGroup.find(c => c.name === base.name) : undefined;
+
+    if (activeBase) {
+      activeBase.color = base.color;
+      this.colorBuilder(activeBase, colorGroup, theme === 'dark');
+    }
+
+    for (const override of overrides) {
+      if (override === base) {
+        continue;
+      }
+
+      const activeColor = colorGroup.find(c => c.name === override.name);
+
+      if (activeColor) {
+        activeColor.color = override.color;
       }
     }
   }
@@ -341,5 +422,26 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     });
 
     this.refreshThemeColors();
+  }
+
+  /**
+   * Keeps one preset per name, ignoring case, and warns about each duplicate. The first preset
+   * with a name wins, so the Clarity Default preset and the presets listed before a duplicate
+   * can't be overridden.
+   */
+  private uniquePresets(presets: ThemePreset[]): ThemePreset[] {
+    const byName = new Map<string, ThemePreset>();
+
+    for (const preset of presets) {
+      const key = preset.name.toLowerCase();
+
+      if (byName.has(key)) {
+        console.warn(`Theme builder: more than one preset is named "${preset.name}", so only the first one is kept.`);
+      } else {
+        byName.set(key, preset);
+      }
+    }
+
+    return [...byName.values()];
   }
 }

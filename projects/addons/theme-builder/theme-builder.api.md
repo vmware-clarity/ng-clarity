@@ -49,9 +49,10 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     constructor();
     // (undocumented)
     activePreset: ThemePreset | null;
+    // Warning: (ae-forgotten-export) The symbol "ThemeType" needs to be exported by the entry point clr-addons-theme-builder.d.ts
+    //
     // (undocumented)
-    activeTheme: 'light' | 'dark';
-    // (undocumented)
+    activeTheme: ThemeType;
     applyPreset(preset: ThemePreset): void;
     // (undocumented)
     applyPreviewStyles(): void;
@@ -71,6 +72,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     generatedCSS: EventEmitter<string>;
     // (undocumented)
     get generatedCss(): string;
+    importCSS(css: string): boolean;
     // (undocumented)
     get isDarkTheme(): boolean;
     // (undocumented)
@@ -81,6 +83,7 @@ export class ThemeBuilderComponent implements OnInit, AfterViewInit {
     onWarningTextOverrideChange(): void;
     get presets(): ThemePreset[];
     set presets(value: ThemePreset[]);
+    presetSwatchColor(preset: ThemePreset): string | undefined;
     // (undocumented)
     previewDarkWrapper: ElementRef<HTMLElement>;
     // (undocumented)
@@ -139,15 +142,26 @@ export interface ThemeColor {
 // @public (undocumented)
 export interface ThemeColors {
     // (undocumented)
-    danger?: Color;
+    danger?: Color[];
     // (undocumented)
-    info?: Color;
+    info?: Color[];
     // (undocumented)
-    primary?: Color;
+    primary?: Color[];
     // (undocumented)
-    success?: Color;
+    success?: Color[];
     // (undocumented)
-    warning?: Color;
+    warning?: Color[];
+}
+
+// @public
+export interface ThemeCssValidation {
+    duplicateThemeBlocks: ThemeType[];
+    duplicateTokens: {
+        theme: ThemeType;
+        tokenName: string;
+    }[];
+    malformedDeclarations: string[];
+    valid: boolean;
 }
 
 // @public (undocumented)
@@ -159,6 +173,9 @@ export interface ThemePreset {
     // (undocumented)
     name: string;
 }
+
+// @public
+export function validateGeneratedCSS(css: string): ThemeCssValidation;
 
 // (No @packageDocumentation comment for this package)
 

@@ -106,6 +106,11 @@ export const screenshotOptions: ScreenshotOptions = {
   'components/flows/wizard': {
     fullPageScreenshot: true,
   },
+  'components/flows/wizard/wizard--horizontal-wizard-overflow': {
+    // The stepnav scroll buttons are toggled from an IntersectionObserver callback that lands after
+    // the wizard first paints; on slow machines the screenshot occasionally settled without them.
+    waitForSelectors: ['.clr-wizard-stepnav-scroll-button-right'],
+  },
   'components/forms/datepicker/datepicker-opened': {
     fullPageScreenshot: true,
   },
