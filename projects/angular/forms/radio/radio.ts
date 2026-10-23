@@ -27,4 +27,14 @@ export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
   ) {
     super(vcr, ClrRadioWrapper, injector, control, renderer, el);
   }
+
+  /** Suppressed: ARIA puts validity on the `radiogroup`, which `ClrRadioContainer` reports. */
+  protected override reportsAriaInvalid(): boolean {
+    return false;
+  }
+
+  /** Suppressed: the group reports whether a choice is required. */
+  protected override reportsAriaRequired(): boolean {
+    return false;
+  }
 }

@@ -85,6 +85,41 @@ class AriaLabelledByNoCheckboxesTest {}
 
 @Component({
   template: `
+    <clr-checkbox-container>
+      <clr-checkbox-wrapper>
+        <label>Enable backup</label>
+        <input type="checkbox" clrCheckbox name="backup" [(ngModel)]="model" />
+      </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+  `,
+  standalone: false,
+})
+class SingleCheckboxNoGroupLabelTest {
+  model = false;
+}
+
+@Component({
+  template: `
+    <clr-checkbox-container>
+      <clr-checkbox-wrapper>
+        <label>One</label>
+        <input type="checkbox" clrCheckbox name="one" [(ngModel)]="one" />
+      </clr-checkbox-wrapper>
+      <clr-checkbox-wrapper>
+        <label>Two</label>
+        <input type="checkbox" clrCheckbox name="two" [(ngModel)]="two" />
+      </clr-checkbox-wrapper>
+    </clr-checkbox-container>
+  `,
+  standalone: false,
+})
+class MultipleCheckboxesNoGroupLabelTest {
+  one = false;
+  two = false;
+}
+
+@Component({
+  template: `
     <form [formGroup]="form">
       <clr-checkbox-container>
         <label>Hello World</label>
@@ -152,6 +187,29 @@ export default function (): void {
         fixture.componentInstance.labelId = 'my-label';
         fixture.detectChanges();
         expect(containerEl.getAttribute('aria-labelledby')).toBe('my-label');
+      });
+
+      it('names the group by the container label, not by the checkbox label', () => {
+        const { fixture, containerEl } = createFixture(AriaLabelledByTest);
+        fixture.detectChanges();
+        const [groupLabel, checkboxLabel] = containerEl.querySelectorAll('label');
+        expect(groupLabel.textContent.trim()).toBe('My Group');
+        expect(containerEl.getAttribute('aria-labelledby')).toBe(groupLabel.id);
+        expect(containerEl.getAttribute('aria-labelledby')).not.toBe(checkboxLabel.id);
+      });
+
+      it('does not name the group after the label of a single wrapped checkbox', () => {
+        const { fixture, containerEl } = createFixture(SingleCheckboxNoGroupLabelTest);
+        fixture.detectChanges();
+        expect(containerEl.getAttribute('role')).toBe('group');
+        expect(containerEl.getAttribute('aria-labelledby')).toBeNull();
+      });
+
+      it('does not name the group after the first checkbox label when the container has no label', () => {
+        const { fixture, containerEl } = createFixture(MultipleCheckboxesNoGroupLabelTest);
+        fixture.detectChanges();
+        expect(containerEl.getAttribute('role')).toBe('group');
+        expect(containerEl.getAttribute('aria-labelledby')).toBeNull();
       });
 
       it('does not set aria-labelledby when there are no checkboxes', () => {

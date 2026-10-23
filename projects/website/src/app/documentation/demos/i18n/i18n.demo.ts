@@ -349,6 +349,10 @@ export class I18nDemo extends ClarityDocComponent {
       role: 'Applies expanded/collapsed state to an aria-expanded attribute for screen readers when vertical nav button  expands/collapses the entire menu',
     },
     {
+      key: 'verticalNavLabel',
+      role: 'Names the vertical nav’s navigation landmark for screen readers, when the application does not name it itself',
+    },
+    {
       key: 'timelineStepNotStarted',
       role: 'Used in the aria-label for the not started step icon',
     },

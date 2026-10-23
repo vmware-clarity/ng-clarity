@@ -347,3 +347,34 @@ describe('Modal', () => {
     expect(maybleCloseButton.classList.contains('close')).toBeTrue();
   });
 });
+
+@Component({
+  template: `
+    <clr-modal [clrModalOpen]="true" clrModalAriaModal="false" [clrModalOverrideScrollService]="true">
+      <h4 class="modal-title">Beside the page</h4>
+      <div class="modal-body"><button>Inside</button></div>
+    </clr-modal>
+  `,
+  standalone: false,
+})
+class NotModalTestComponent {}
+
+describe('Modal, when it is not modal', () => {
+  it('takes clrModalAriaModal written as an attribute, and drops aria-modal and the focus trap together', async () => {
+    TestBed.configureTestingModule({
+      imports: [ClrModalModule, NoopAnimationsModule],
+      declarations: [NotModalTestComponent],
+    });
+    const fixture = TestBed.createComponent(NotModalTestComponent);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.detectChanges();
+
+    const dialog = fixture.nativeElement.querySelector('[role="dialog"]') as HTMLElement;
+    expect(dialog.hasAttribute('aria-modal')).toBe(false);
+    const anchors = Array.from<HTMLElement>(fixture.nativeElement.querySelectorAll('.cdk-focus-trap-anchor'));
+    expect(anchors.every(anchor => !anchor.hasAttribute('tabindex'))).toBe(true);
+
+    fixture.destroy();
+  });
+});

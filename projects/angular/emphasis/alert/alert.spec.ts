@@ -23,6 +23,7 @@ const CLOSE_ARIA_LABEL = 'Close Test Alert';
       [(clrAlertClosed)]="closed"
       [clrAlertAppLevel]="isAppLevel"
       [clrCloseButtonAriaLabel]="closeAriaLabel"
+      [clrAlertRole]="role"
     >
       <div class="alert-item">
         <span class="alert-text">{{ alertMsg }}</span>
@@ -41,9 +42,21 @@ class TestComponent {
   closed = false;
   isAppLevel = false;
   closeAriaLabel: string = CLOSE_ARIA_LABEL;
+  role: string | null | undefined = undefined;
 
   alertMsg = 'This is an alert!';
 }
+
+@Component({
+  template: `
+    <div aria-live="polite">
+      <clr-alert clrAlertType="info"><div class="alert-item">Saved.</div></clr-alert>
+    </div>
+    <clr-alert id="own" aria-live="polite" clrAlertType="info"><div class="alert-item">Synced.</div></clr-alert>
+  `,
+  standalone: false,
+})
+class LiveRegionTestComponent {}
 
 export default function (): void {
   describe('Alert', () => {
@@ -51,7 +64,10 @@ export default function (): void {
     let compiled: any;
 
     beforeEach(() => {
-      TestBed.configureTestingModule({ imports: [ClrAlertModule], declarations: [TestComponent] });
+      TestBed.configureTestingModule({
+        imports: [ClrAlertModule],
+        declarations: [TestComponent, LiveRegionTestComponent],
+      });
 
       fixture = TestBed.createComponent(TestComponent);
       fixture.detectChanges();
@@ -60,6 +76,78 @@ export default function (): void {
 
     afterEach(() => {
       fixture.destroy();
+    });
+
+    it('announces an inline alert politely, and only what changed in it, not the whole alert again', () => {
+      for (const type of ['info', 'success', 'neutral', 'danger', 'warning']) {
+        fixture.componentInstance.type = type;
+        fixture.detectChanges();
+
+        const alert = compiled.querySelector('.alert');
+        expect(alert.getAttribute('role')).withContext(type).toBe('status');
+        expect(alert.getAttribute('aria-atomic')).withContext(type).toBe('false');
+      }
+    });
+
+    it('announces an app-level error or warning as an assertive alert, with aria-atomic unset', () => {
+      for (const type of ['danger', 'warning']) {
+        fixture.componentInstance.type = type;
+        fixture.componentInstance.isAppLevel = true;
+        fixture.detectChanges();
+
+        const alert = compiled.querySelector('.alert');
+        expect(alert.getAttribute('role')).withContext(type).toBe('alert');
+        expect(alert.hasAttribute('aria-atomic')).withContext(type).toBe(false);
+      }
+    });
+
+    it('updates aria-atomic when an alert turns from assertive to polite and back', () => {
+      fixture.componentInstance.type = 'danger';
+      fixture.componentInstance.isAppLevel = true;
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
+
+      fixture.componentInstance.type = 'info';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').getAttribute('aria-atomic')).toBe('false');
+
+      fixture.componentInstance.type = 'warning';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
+    });
+
+    it('takes the role the application asks for, including none', () => {
+      fixture.componentInstance.type = 'info';
+      fixture.componentInstance.role = 'alert';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
+
+      fixture.componentInstance.role = null;
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').hasAttribute('role')).toBe(false);
+      expect(compiled.querySelector('.alert').hasAttribute('aria-atomic')).toBe(false);
+    });
+
+    it("takes clrAlertRole 'none' as no live region, and anything unknown as unset", () => {
+      fixture.componentInstance.type = 'danger';
+      fixture.componentInstance.isAppLevel = true;
+      fixture.componentInstance.role = 'none';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').hasAttribute('role')).toBe(false);
+
+      fixture.componentInstance.role = '';
+      fixture.detectChanges();
+      expect(compiled.querySelector('.alert').getAttribute('role')).toBe('alert');
+    });
+
+    it('adds no live region of its own inside one the application already has', () => {
+      const live = TestBed.createComponent(LiveRegionTestComponent);
+      live.detectChanges();
+
+      expect(live.nativeElement.querySelector('.alert').hasAttribute('role')).toBe(false);
+      // Nor when the application made the alert itself the live region.
+      expect(live.nativeElement.querySelector('#own .alert').hasAttribute('role')).toBe(false);
+      live.destroy();
     });
 
     it('projects content', () => {

@@ -398,6 +398,13 @@
     <p cds-text="body" class="clr-mt-16px clr-mb-16px">
       The Combobox component contains label, option, helper text, and error.
     </p>
+    <p cds-text="body" class="clr-mb-16px">
+      A required combobox reports it with <code cds-text="code">aria-required</code> on its input, and an invalid one
+      with <code cds-text="code">aria-invalid</code> once the user has touched it. The
+      <code cds-text="code">aria-required</code> CSS class on the <code cds-text="code">clr-combobox</code> host never
+      meant that a value is required; it is deprecated since v18 and will be removed in v19. Select on the input's
+      <code cds-text="code">aria-required</code> attribute instead.
+    </p>
 
     <app-nesting-table
       componentName="Combobox"

@@ -11,6 +11,7 @@ import {
   ElementRef,
   EventEmitter,
   Input,
+  OnChanges,
   OnDestroy,
   OnInit,
   Optional,
@@ -23,21 +24,29 @@ import { Subscription } from 'rxjs';
 import { AlertIconAndTypesService } from './providers/icon-and-types.service';
 import { MultiAlertService } from './providers/multi-alert.service';
 
+const LIVE_REGION_SELECTOR = '[aria-live]:not([aria-live="off"]), [role="alert"], [role="status"], [role="log"]';
+
 @Component({
   selector: 'clr-alert',
   providers: [AlertIconAndTypesService],
   templateUrl: './alert.html',
   standalone: false,
 })
-export class ClrAlert implements OnInit, OnDestroy {
+export class ClrAlert implements OnInit, OnChanges, OnDestroy {
   @Input('clrAlertSizeSmall') isSmall = false;
   @Input('clrAlertClosable') closable = true;
   @Input('clrAlertAppLevel') isAppLevel = false;
   @Input() clrCloseButtonAriaLabel: string = this.commonStrings.keys.alertCloseButtonAriaLabel;
+  /** Live-region role of the content; `null` or `'none'` renders none. Unset, it follows type and placement. */
+  @Input({ alias: 'clrAlertRole', transform: liveRoleAttribute }) liveRole: 'alert' | 'status' | null | undefined =
+    undefined;
 
   @Output('clrAlertClosedChange') _closedChanged = new EventEmitter<boolean>(false);
 
   _closed = false;
+
+  /** How this alert is announced; see `chooseRole`. */
+  protected ariaRole: 'alert' | 'status' | null = null;
 
   private _hidden: boolean;
   private subscriptions: Subscription[] = [];
@@ -108,7 +117,15 @@ export class ClrAlert implements OnInit, OnDestroy {
     }
   }
 
+  /** `status` is atomic by default, which would reread the alert's action buttons on every update. */
+  protected get ariaAtomic(): 'false' | null {
+    return this.ariaRole === 'status' ? 'false' : null;
+  }
+
   ngOnInit() {
+    // ngOnChanges does not run for an alert with no bound inputs.
+    this.ariaRole = this.chooseRole();
+
     if (this.multiAlertService) {
       this.subscriptions.push(
         this.multiAlertService.changes.subscribe(() => {
@@ -116,6 +133,10 @@ export class ClrAlert implements OnInit, OnDestroy {
         })
       );
     }
+  }
+
+  ngOnChanges() {
+    this.ariaRole = this.chooseRole();
   }
 
   ngOnDestroy() {
@@ -145,4 +166,23 @@ export class ClrAlert implements OnInit, OnDestroy {
     }
     this._closedChanged.emit(true);
   }
+
+  /** App-level danger and warning interrupt; others wait. Inside an existing live region, no role is added. */
+  private chooseRole(): 'alert' | 'status' | null {
+    if (this.liveRole !== undefined) {
+      return this.liveRole;
+    }
+    if (this.hostElement.nativeElement.closest(LIVE_REGION_SELECTOR)) {
+      return null;
+    }
+    const urgent = this.alertType === 'danger' || this.alertType === 'warning';
+    return urgent && this.isAppLevel ? 'alert' : 'status';
+  }
+}
+
+function liveRoleAttribute(value: unknown): 'alert' | 'status' | null | undefined {
+  if (value === 'alert' || value === 'status') {
+    return value;
+  }
+  return value === null || value === 'none' ? null : undefined;
 }

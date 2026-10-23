@@ -17,6 +17,7 @@ import * as i6 from '@angular/common';
 import { InjectionToken } from '@angular/core';
 import { NgZone } from '@angular/core';
 import { Observable } from 'rxjs';
+import { OnChanges } from '@angular/core';
 import { OnDestroy } from '@angular/core';
 import { OnInit } from '@angular/core';
 import { Optional } from '@angular/core';
@@ -37,7 +38,7 @@ export const ALERT_TYPES: string[];
 export const CLR_ALERT_DIRECTIVES: Type_2<any>[];
 
 // @public (undocumented)
-export class ClrAlert implements OnInit, OnDestroy {
+export class ClrAlert implements OnInit, OnChanges, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "AlertIconAndTypesService" needs to be exported by the entry point clr-angular-emphasis.d.ts
     // Warning: (ae-forgotten-export) The symbol "MultiAlertService" needs to be exported by the entry point clr-angular-emphasis.d.ts
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-emphasis.d.ts
@@ -49,6 +50,8 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     get alertType(): string;
     set alertType(val: string);
+    protected get ariaAtomic(): 'false' | null;
+    protected ariaRole: 'alert' | 'status' | null;
     // (undocumented)
     closable: boolean;
     // (undocumented)
@@ -73,6 +76,11 @@ export class ClrAlert implements OnInit, OnDestroy {
     set isLightweight(val: boolean);
     // (undocumented)
     isSmall: boolean;
+    liveRole: 'alert' | 'status' | null | undefined;
+    // (undocumented)
+    static ngAcceptInputType_liveRole: unknown;
+    // (undocumented)
+    ngOnChanges(): void;
     // (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
@@ -80,7 +88,7 @@ export class ClrAlert implements OnInit, OnDestroy {
     // (undocumented)
     open(): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrAlert, "clr-alert", never, { "isSmall": { "alias": "clrAlertSizeSmall"; "required": false; }; "closable": { "alias": "clrAlertClosable"; "required": false; }; "isAppLevel": { "alias": "clrAlertAppLevel"; "required": false; }; "clrCloseButtonAriaLabel": { "alias": "clrCloseButtonAriaLabel"; "required": false; }; "liveRole": { "alias": "clrAlertRole"; "required": false; }; "isLightweight": { "alias": "clrAlertLightweight"; "required": false; }; "alertType": { "alias": "clrAlertType"; "required": false; }; "alertIconShape": { "alias": "clrAlertIcon"; "required": false; }; "closed": { "alias": "clrAlertClosed"; "required": false; }; }, { "_closedChanged": "clrAlertClosedChange"; }, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlert, [null, null, { optional: true; }, null, null, null]>;
 }

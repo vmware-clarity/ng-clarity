@@ -23,6 +23,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
             [clrAlertIcon]="clrAlertIcon"
             [clrAlertType]="alert"
             [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
+            [clrAlertRole]="clrAlertRole"
             (clrAlertClosedChange)="clrAlertClosedChange.emit($event)"
           >
             @for (_ of createArray(paginated ? 1 : alertCount); track $index; let i = $index) {
@@ -41,6 +42,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
           [clrAlertIcon]="clrAlertIcon"
           [clrAlertType]="alert"
           [clrCloseButtonAriaLabel]="clrCloseButtonAriaLabel"
+          [clrAlertRole]="clrAlertRole"
           (clrAlertClosedChange)="clrAlertClosedChange.emit($event)"
         >
           @for (_ of createArray(paginated ? 1 : alertCount); track $index; let i = $index) {
@@ -88,6 +90,7 @@ export class AppLevelAlertStorybookComponent extends RenderComponentStorybook {
   // Story inputs matching the original story args
   @Input() clrAlertIcon = null;
   @Input() clrCloseButtonAriaLabel = 'Close alert';
+  @Input() clrAlertRole: 'alert' | 'status' | null | undefined = undefined;
   @Input() clrAlertClosable = false;
   @Input() alertCount = 3;
   @Input() content = 'Hello World!';
