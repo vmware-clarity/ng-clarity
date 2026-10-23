@@ -108,7 +108,11 @@ export default function (): void {
          * we can't use our usual shortcut, we need to rely on @ViewChild.
          * A quick investigation didn't reveal a better solution yet, we might want to look into it more.
          */
-        TestBed.configureTestingModule({ declarations: [ClrIfExpanded, NgIfTest], providers: [IfExpandService] });
+        TestBed.configureTestingModule({
+          imports: [ClrIfExpanded],
+          declarations: [NgIfTest],
+          providers: [IfExpandService],
+        });
         this.fixture = TestBed.createComponent(NgIfTest);
         this.fixture.detectChanges();
         this.testComponent = this.fixture.componentInstance;
@@ -134,7 +138,7 @@ export default function (): void {
 
 @Component({
   template: `<test-counter *clrIfExpanded></test-counter>`,
-  providers: [{ provide: 'counter', useValue: { total: 0 } }],
+  providers: [{ provide: 'counter', useFactory: () => ({ total: 0 }) }],
   standalone: false,
 })
 class SimpleTest {
@@ -145,7 +149,7 @@ class SimpleTest {
 
 @Component({
   template: `<test-counter [clrIfExpanded]></test-counter>`,
-  providers: [{ provide: 'counter', useValue: { total: 0 } }],
+  providers: [{ provide: 'counter', useFactory: () => ({ total: 0 }) }],
   standalone: false,
 })
 class SimpleTemplateTest {

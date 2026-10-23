@@ -4,8 +4,6 @@
 
 ```ts
 
-import { AfterContentChecked } from '@angular/core';
-import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import * as _angular_animations from '@angular/animations';
 import { AnimationCallbackEvent } from '@angular/core';

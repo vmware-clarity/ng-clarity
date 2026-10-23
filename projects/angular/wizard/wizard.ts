@@ -388,7 +388,8 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       this.navService.setFirstPageCurrent();
     }
 
-    // Only render buttons when wizard is opened, to avoid chocolate errors
+    // Only render buttons when wizard is opened, to avoid
+    // ExpressionChangedAfterItHasBeenChecked errors
     this.buttonService.buttonsReady = true;
 
     this._openChanged.emit(true);

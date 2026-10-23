@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EmbeddedViewRef, Inject, Input, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import { Component, EmbeddedViewRef, Inject, Input, OnDestroy, Optional, TemplateRef, ViewChild } from '@angular/core';
 import { IF_ACTIVE_ID, IfActiveService } from '@clr/angular/utils';
 
 import { TabsService } from './providers/tabs.service';
@@ -37,10 +37,13 @@ export class ClrTabContent implements OnDestroy {
   private viewRef: EmbeddedViewRef<ClrTabContent>;
 
   constructor(
-    public ifActiveService: IfActiveService,
-    @Inject(IF_ACTIVE_ID) public id: number,
-    private tabsService: TabsService
+    @Optional() public ifActiveService: IfActiveService,
+    @Optional() @Inject(IF_ACTIVE_ID) public id: number,
+    @Optional() private tabsService: TabsService
   ) {
+    if (!ifActiveService || !tabsService || id === null || id === undefined) {
+      throw new Error('clrTabLink and clr-tab-content should only be used inside of a clr-tabs');
+    }
     if (!this.tabContentId) {
       this.tabContentId = 'clr-tab-content-' + nbTabContentComponents++;
     }

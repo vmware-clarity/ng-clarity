@@ -13,7 +13,6 @@ import { RouterTestingModule } from '@angular/router/testing';
 import { delay } from '@clr/angular/testing';
 
 import { ClrAriaCurrentLink } from './aria-current-link';
-import { MainContainerWillyWonka } from './chocolate/main-container-willy-wonka';
 import { ClrNavigationModule } from './navigation.module';
 @Component({
   template: `
@@ -46,7 +45,6 @@ describe('AriaCurrentLink Directive', () => {
         ]),
       ],
       declarations: [TestComponent, ClrAriaCurrentLink],
-      providers: [MainContainerWillyWonka],
     });
 
     fixture = TestBed.createComponent(TestComponent);

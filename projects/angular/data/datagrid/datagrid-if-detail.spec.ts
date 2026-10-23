@@ -42,10 +42,10 @@ export default function (): void {
       });
 
       it('should project input state', () => {
-        const input = `${content}${content}`;
+        const input = 'projected state';
         testComponent.detailState = input;
         fixture.detectChanges();
-        expect(testElement.innerHTML).toContain(input);
+        expect(testElement.querySelector('.state').textContent).toBe(input);
       });
 
       it('should emit changes', () => {
@@ -91,7 +91,9 @@ export default function (): void {
 }
 
 @Component({
-  template: `<ng-template [(clrIfDetail)]="detailState">${content}</ng-template>`,
+  template: `<ng-template [(clrIfDetail)]="detailState" let-detail
+    >${content}<span class="state">{{ detail }}</span></ng-template
+  >`,
   standalone: false,
 })
 class IfDetailTest {
