@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+@use 'sass:map';
 @use '../../styles/mixins';
 @use 'mixins.animations' as animation-mixins;
 @use '../../styles/variables/variables.density' as density;
@@ -40,5 +41,111 @@ $clr-animation-easing: #{tokens.$cds-global-animation-easing-in-out};
 
   .skeleton-loading {
     @include animation-mixins.skeleton-loading();
+  }
+
+  // Enter / leave animations.
+  //
+  // Meant to be used with Angular's `animate.enter` and `animate.leave` bindings, but they are plain CSS classes and
+  // can be applied by any other means. The distance covered by the slide animations can be customized with the
+  // `--clr-slide-offset` custom property (defaults to 25% of the element's size). It is not inherited, so it has to be
+  // set on the animated element itself.
+  @property --clr-slide-offset {
+    syntax: '<length-percentage>';
+    inherits: false;
+    initial-value: 25%;
+  }
+
+  @keyframes clr-fade-in {
+    from {
+      opacity: 0;
+    }
+  }
+
+  @keyframes clr-fade-out {
+    to {
+      opacity: 0;
+    }
+  }
+
+  .clr-fade-enter {
+    animation: clr-fade-in $clr-animation-duration $clr-animation-easing;
+  }
+
+  .clr-fade-leave {
+    animation: clr-fade-out $clr-animation-duration $clr-animation-easing forwards;
+  }
+
+  $clr-slide-offset: var(--clr-slide-offset, 25%);
+  $clr-slide-transforms: (
+    up: translate(0, $clr-slide-offset),
+    down: translate(0, calc(-1 * #{$clr-slide-offset})),
+    left: translate($clr-slide-offset, 0),
+    right: translate(calc(-1 * #{$clr-slide-offset}), 0),
+  );
+
+  /* stylelint-disable at-rule-prelude-no-invalid -- interpolated keyframes names */
+  @each $direction, $transform in $clr-slide-transforms {
+    @keyframes clr-slide-#{$direction}-in {
+      from {
+        transform: $transform;
+      }
+    }
+
+    @keyframes clr-slide-#{$direction}-out {
+      to {
+        transform: $transform;
+      }
+    }
+
+    @keyframes clr-fade-slide-#{$direction}-in {
+      from {
+        opacity: 0;
+        transform: $transform;
+      }
+    }
+
+    @keyframes clr-fade-slide-#{$direction}-out {
+      to {
+        opacity: 0;
+        transform: $transform;
+      }
+    }
+
+    .clr-slide-#{$direction}-enter {
+      animation: clr-slide-#{$direction}-in $clr-animation-duration $clr-animation-easing;
+    }
+
+    .clr-slide-#{$direction}-leave {
+      animation: clr-slide-#{$direction}-out $clr-animation-duration $clr-animation-easing forwards;
+    }
+
+    .clr-fade-slide-#{$direction}-enter {
+      animation: clr-fade-slide-#{$direction}-in $clr-animation-duration $clr-animation-easing;
+    }
+
+    .clr-fade-slide-#{$direction}-leave {
+      animation: clr-fade-slide-#{$direction}-out $clr-animation-duration $clr-animation-easing forwards;
+    }
+  }
+  /* stylelint-enable at-rule-prelude-no-invalid */
+
+  // Slides are motion: skip them when the user asked for reduced motion, keeping the fade of the fade-slides. The end
+  // state of the animations is kept, and they still complete (right away), so the elements they apply to are still
+  // removed.
+  @media (prefers-reduced-motion: reduce) {
+    @each $direction in map.keys($clr-slide-transforms) {
+      .clr-slide-#{$direction}-enter,
+      .clr-slide-#{$direction}-leave {
+        animation-duration: 0s;
+      }
+
+      .clr-fade-slide-#{$direction}-enter {
+        animation-name: clr-fade-in;
+      }
+
+      .clr-fade-slide-#{$direction}-leave {
+        animation-name: clr-fade-out;
+      }
+    }
   }
 }
