@@ -23,7 +23,7 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import { ClrCommonStringsService, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, contextText, publishElementContext, uniqueIdFactory } from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -167,6 +167,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
 
+  private teardownElementContext?: () => void;
   private _forceForward = false;
   private _stopNext = false;
   private _stopCancel = false;
@@ -328,6 +329,30 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   ngAfterContentInit(): void {
+    // Step state is a CSS class, and its icon sits inside a button, which the walk treats as a leaf.
+    // Titles are included so a snapshot without the stepnav still says which step is which.
+    this.teardownElementContext = publishElementContext(this.elementRef.nativeElement, () => {
+      const pages = this.pages?.toArray() ?? [];
+      if (!pages.length || !this._open) {
+        return null;
+      }
+      const currentStepIndex = pages.findIndex(page => page.current);
+      return {
+        state: {
+          stepCount: pages.length,
+          ...(currentStepIndex >= 0 ? { currentStepIndex } : {}),
+          steps: pages.map((page, index) => ({
+            index,
+            ...this.stepTitle(page),
+            current: page.current,
+            complete: page.completed,
+            error: page.hasError,
+            navigable: page.enabled,
+          })),
+        },
+      };
+    });
+
     this.navService.stepnavLayout = this.stepnavLayout;
     this.pageCollection.pages = this.pages;
     this.headerActionService.wizardHeaderActions = this.headerActions;
@@ -344,6 +369,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
   }
 
   ngOnDestroy(): void {
+    this.teardownElementContext?.();
     this.subscriptions.forEach(s => s.unsubscribe());
   }
 
@@ -582,5 +608,12 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
       this.forceFinish();
     }
     this.wizardFinished.emit();
+  }
+
+  private stepTitle(page: ClrWizardPage): { title?: string } {
+    const id = `${this.pageCollection.getStepItemIdForPage(page)}-step-title`;
+    const element = this.elementRef.nativeElement.querySelector(`#${CSS.escape(id)}`);
+    const title = element ? contextText(element) : '';
+    return title ? { title } : {};
   }
 }

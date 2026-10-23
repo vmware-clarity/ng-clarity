@@ -169,6 +169,9 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
 
 // @public
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public (undocumented)
@@ -737,6 +740,9 @@ export const commonStringsDefault: ClrCommonStrings;
 // @public (undocumented)
 export const CONDITIONAL_DIRECTIVES: Type<any>[];
 
+// @public
+export function contextText(element: Element, skip?: (descendant: Element) => boolean): string;
+
 // @public (undocumented)
 export function customFocusableItemProvider<T>(implementation: Type<T>): (Type<T> | {
     provide: typeof FocusableItem;
@@ -1025,6 +1031,9 @@ export class MockFocusableItem implements FocusableItem {
 
 // @public
 export function noopAnimations(): boolean;
+
+// @public
+export function normalizeContextText(text: string, lowercase?: boolean): string;
 
 // @public (undocumented)
 export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {

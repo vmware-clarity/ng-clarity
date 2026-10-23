@@ -26,7 +26,11 @@ import { ClrPasswordContainer, TOGGLE_SERVICE } from './password-container';
 
 @Directive({
   selector: '[clrPassword]',
-  host: { '[class.clr-input]': 'true' },
+  host: {
+    '[class.clr-input]': 'true',
+    // A secret even while revealed as text; this is CLR_CONTEXT_REDACT_ATTRIBUTE.
+    'data-clr-context-redact': '',
+  },
   standalone: false,
 })
 export class ClrPassword extends WrappedFormControl<ClrPasswordContainer> implements OnInit, OnDestroy {
