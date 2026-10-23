@@ -1,0 +1,84 @@
+name: Verify PR 2803 (forced font repro)
+# TEMPORARY: checks the website font fix of #2803 against the deterministic repro of #2797.
+on:
+  push:
+    branches: ['id008101/font-verify']
+permissions:
+  contents: read
+jobs:
+  build:
+    name: Build Website (${{ matrix.fix }})
+    timeout-minutes: 30
+    runs-on: ubuntu-24.04
+    strategy:
+      matrix:
+        fix: ['with-fix', 'without-fix']
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci --ignore-scripts
+      - name: Revert the fix
+        if: ${{ matrix.fix == 'without-fix' }}
+        run: git checkout origin/next -- projects/website/src/main.ts
+      - run: npm run _build:website
+      - uses: actions/upload-artifact@v4
+        with:
+          name: website-${{ matrix.fix }}
+          path: dist/website/
+          retention-days: 3
+  verify:
+    name: ${{ matrix.fix }} force=${{ matrix.force }}
+    needs: build
+    timeout-minutes: 45
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - { fix: 'with-fix', force: '1' }
+          - { fix: 'without-fix', force: '1' }
+          - { fix: 'with-fix', force: '0' }
+    env:
+      CLARITY_VRT_BROWSER: chromium
+      CLARITY_VRT_THEME: dark
+      CLARITY_VRT_DENSITY: compact
+      CLARITY_VRT_SUITE: website
+      FLAKE_FORCE: ${{ matrix.force }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - uses: actions/download-artifact@v4
+        with:
+          name: website-${{ matrix.fix }}
+          path: dist/website/
+      - name: Run the datagrid page twice
+        run: |
+          mkdir -p flake-out
+          for i in 1 2; do
+            npx playwright test -g "chromium/website/datagrid$" --update-snapshots --reporter dot > flake-out/run-$i.log 2>&1 || true
+            changed=$(git status --porcelain -- tests/snapshots | grep '\.png$' | awk '{print $2}')
+            echo "${{ matrix.fix }} force=${{ matrix.force }} iteration $i changed: ${changed:-none}" | tee -a flake-out/summary.txt
+            for f in $changed; do
+              echo "  $(git hash-object "$f") $f" | tee -a flake-out/summary.txt
+            done
+            tail -2 flake-out/run-$i.log | tee -a flake-out/summary.txt
+            git checkout -- tests/snapshots
+            git clean -fdq -- tests/snapshots
+          done
+          cat flake-out/summary.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: verify-${{ matrix.fix }}-force${{ matrix.force }}
+          path: flake-out/
+          retention-days: 7
