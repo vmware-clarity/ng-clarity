@@ -1494,3 +1494,60 @@ describe('collectContextTree, names, text and state an agent would otherwise mis
     });
   });
 });
+
+describe('collectContextTree, open shadow roots', () => {
+  useContainer();
+
+  /** Renders `light` into a host whose open shadow root holds `shadow`. */
+  function host(shadow: string, light = ''): ClrComponentContext[] {
+    container.innerHTML = `<shadow-host>${light}</shadow-host>`;
+    const root = (container.querySelector('shadow-host') as HTMLElement).attachShadow({ mode: 'open' });
+    root.innerHTML = shadow;
+    return collectContextTreeWithin(container, budgets()).components;
+  }
+
+  function all(nodes: ClrComponentContext[] | undefined): ClrComponentContext[] {
+    return (nodes ?? []).flatMap(node => [node, ...all(node.children)]);
+  }
+
+  it('describes the controls of a form inside the shadow root', () => {
+    const nodes = all(
+      host('<form aria-label="Login"><label>User <input value="ada" /></label><button>Sign in</button></form>')
+    );
+
+    expect(nodes.find(node => node.type === 'form')?.label).toBe('Login');
+    expect(nodes.find(node => node.type === 'textbox')).toEqual(
+      jasmine.objectContaining({ label: 'User', state: jasmine.objectContaining({ value: 'ada' }) })
+    );
+    expect(nodes.find(node => node.type === 'button')?.label).toBe('Sign in');
+  });
+
+  it('describes slotted content once, where it renders', () => {
+    const nodes = all(host('<nav aria-label="Main"><slot></slot></nav>', '<button>Projected</button>'));
+
+    expect(nodes.filter(node => node.label === 'Projected').length).toBe(1);
+    expect(types(nodes.find(node => node.type === 'navigation')?.children)).toEqual(['button']);
+  });
+
+  it('leaves out light DOM that no slot renders', () => {
+    const nodes = all(host('<button>Inside</button>', '<button>Unslotted</button>'));
+
+    expect(nodes.map(node => node.label)).not.toContain('Unslotted');
+  });
+
+  it('resolves label references inside the shadow root', () => {
+    const nodes = all(host('<span id="caption">Hosts</span><div role="list" aria-labelledby="caption"></div>'));
+
+    expect(nodes.find(node => node.type === 'list')?.label).toBe('Hosts');
+  });
+
+  it('withholds values inside a shadow root under a redacted host', () => {
+    container.innerHTML = '<div data-clr-context-redact><shadow-host></shadow-host></div>';
+    const root = (container.querySelector('shadow-host') as HTMLElement).attachShadow({ mode: 'open' });
+    root.innerHTML = '<input aria-label="Secret" value="hunter2" />';
+
+    const nodes = all(collectContextTreeWithin(container, budgets()).components);
+
+    expect(JSON.stringify(nodes)).not.toContain('hunter2');
+  });
+});

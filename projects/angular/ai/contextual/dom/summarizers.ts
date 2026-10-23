@@ -11,6 +11,7 @@ import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 import { accessibleName } from './accessible-name';
 import { ariaEnumValue } from './aria-state';
 import { resolveRole } from './roles';
+import { idScope } from './shadow';
 import { CELL_SELECTOR, ITEM_CONTAINER_SELECTORS, ITEM_SELECTORS } from './tables/selectors';
 import { isHiddenFromContext, isRedactedWithin, isVisible } from './visibility';
 import { ownEntry } from '../lookup';
@@ -143,11 +144,11 @@ function comboboxChoices(element: Element, scope: SummaryScope): Element[] {
     return own;
   }
 
-  const document = element.ownerDocument;
+  const root = idScope(element);
 
   const listId = element.getAttribute('list');
   if (listId) {
-    const datalist = document.getElementById(listId);
+    const datalist = root.getElementById(listId);
     if (datalist) {
       return Array.from(datalist.querySelectorAll('option')).filter(
         option => !isHiddenFromContext(option, scope.withheld)
@@ -157,7 +158,7 @@ function comboboxChoices(element: Element, scope: SummaryScope): Element[] {
 
   const ownedIds = [...getAriaReferenceIds(element, 'aria-owns'), ...getAriaReferenceIds(element, 'aria-controls')];
   for (const id of ownedIds) {
-    const owned = document.getElementById(id);
+    const owned = root.getElementById(id);
     const listed = owned ? queryRole(owned, 'option', scope) : [];
     if (listed.length) {
       return listed;

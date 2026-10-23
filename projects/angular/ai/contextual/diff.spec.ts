@@ -10,7 +10,16 @@ import { ClrComponentContext, ClrPageContext } from './interfaces/context.interf
 
 describe('clrDiffContext', () => {
   function page(components: ClrComponentContext[], overrides: Partial<ClrPageContext> = {}): ClrPageContext {
-    return { title: 'Hosts', url: '/hosts', regions: [], components, collectedAt: 'now', ...overrides };
+    return {
+      schemaVersion: '1',
+      application: { id: 'inventory' },
+      title: 'Hosts',
+      url: '/hosts',
+      regions: [],
+      components,
+      collectedAt: 'now',
+      ...overrides,
+    };
   }
 
   const addButton: ClrComponentContext = { type: 'button', label: 'Add' };

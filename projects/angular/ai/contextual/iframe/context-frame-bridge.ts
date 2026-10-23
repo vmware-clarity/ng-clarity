@@ -103,7 +103,7 @@ export class ClrContextFrameHost {
   private servedInInterval = 0;
 
   constructor(
-    private readonly getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext,
+    private readonly getSnapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext | Promise<ClrPageContext>,
     private readonly hostWindow: Window,
     options: ClrContextFrameHostOptions = {},
     private readonly routePattern?: (url: URL) => string | null
@@ -140,16 +140,24 @@ export class ClrContextFrameHost {
     }
 
     // A failing snapshot or uncloneable response is that request's problem; the host keeps serving.
-    try {
-      const requested = capSnapshotOptions(sanitizeUntrustedSnapshotOptions(event.data.options), this.snapshotCeiling);
+    const answer = (snapshot: ClrPageContext) => {
       const response: ClrContextFrameResponse = {
         protocol: CLR_CONTEXT_PROTOCOL,
         kind: 'context-response',
         requestId: event.data.requestId,
-        context: this.contextForFrame(requested),
+        context: this.contextForFrame(snapshot),
       };
       // Never '*': the frame can navigate between request and answer.
       source.postMessage(response, { targetOrigin: event.origin });
+    };
+    try {
+      const requested = capSnapshotOptions(sanitizeUntrustedSnapshotOptions(event.data.options), this.snapshotCeiling);
+      const snapshot = this.getSnapshot(requested);
+      if (snapshot instanceof Promise) {
+        snapshot.then(answer).catch(() => undefined);
+      } else {
+        answer(snapshot);
+      }
     } catch {
       // Deliberately swallowed: see above.
     }
@@ -206,14 +214,9 @@ export class ClrContextFrameHost {
     return true;
   }
 
-  private contextForFrame(options?: ClrContextSnapshotOptions): ClrPageContext {
+  private contextForFrame(snapshot: ClrPageContext): ClrPageContext {
     const share = { shareFormValues: this.shareFormValues, shareFullUrl: this.shareFullUrl };
-    return contextForUntrustedCaller(
-      this.getSnapshot(options),
-      share,
-      this.routePattern,
-      this.hostWindow.document.baseURI
-    );
+    return contextForUntrustedCaller(snapshot, share, this.routePattern, this.hostWindow.document.baseURI);
   }
 }
 

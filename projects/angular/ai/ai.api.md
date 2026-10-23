@@ -16,6 +16,9 @@ import { Router } from '@angular/router';
 import { Type } from '@angular/core';
 
 // @public
+export const CLR_CONTEXT_APPLICATION: InjectionToken<ClrContextApplicationOptions>;
+
+// @public
 export const CLR_CONTEXT_CATEGORIES: Readonly<Record<ClrContextCategory, readonly string[]>>;
 
 // @public
@@ -34,9 +37,6 @@ export const CLR_CONTEXT_OPTIONS: InjectionToken<ClrContextSnapshotOptions>;
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
-export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
-
-// @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
@@ -44,6 +44,12 @@ export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapsh
 
 // @public
 export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
+
+// @public
+export interface ClrApplicationContext {
+    id: string;
+    version?: string;
+}
 
 // @public
 export interface ClrAvailableRoute {
@@ -90,6 +96,12 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 }
 
 // @public
+export interface ClrContextApplicationOptions extends ClrApplicationContext {
+    metadata?: () => Record<string, unknown> | null | undefined;
+    viewId?: () => string | null | undefined;
+}
+
+// @public
 export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
 
 // @public
@@ -116,53 +128,17 @@ export interface ClrContextDomExtractor {
 // @public
 export class ClrContextEngineService implements OnDestroy {
     constructor(platformId: unknown, document: Document, contextRegistry: ClrContextRegistryService, router: Router | null);
-    disableFrameBridge(): void;
     disableGlobalAccess(): void;
-    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
     enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
     getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
+    getSnapshotAsync(options?: ClrContextSnapshotOptions, timeoutMs?: number): Promise<ClrPageContext>;
     // (undocumented)
     ngOnDestroy(): void;
     registerDomExtractor(extractor: ClrContextDomExtractor): () => void;
-    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextEngineService, [null, null, null, { optional: true; }]>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextEngineService>;
-}
-
-// @public
-export interface ClrContextFrameHostOptions {
-    allowAnyOrigin?: boolean;
-    allowedOrigins?: string[];
-    minRequestIntervalMs?: number;
-    shareFormValues?: boolean;
-    shareFullUrl?: boolean;
-    snapshot?: ClrContextSnapshotOptions;
-}
-
-// @public
-export interface ClrContextFrameRequest {
-    kind: 'context-request';
-    options?: ClrContextSnapshotOptions;
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    requestId: string;
-}
-
-// @public
-export interface ClrContextFrameRequestOptions {
-    hostOrigin?: string;
-    options?: ClrContextSnapshotOptions;
-    targetWindow?: Window;
-    timeoutMs?: number;
-}
-
-// @public
-export interface ClrContextFrameResponse {
-    context: ClrPageContext;
-    kind: 'context-response';
-    protocol: typeof CLR_CONTEXT_PROTOCOL;
-    requestId: string;
 }
 
 // @public
@@ -189,7 +165,7 @@ export function clrContextPreset(preset: ClrContextPreset, overrides?: ClrContex
 
 // @public
 export interface ClrContextProvider {
-    getClrContext(): ClrComponentContext | null;
+    getClrContext(): ClrComponentContext | null | Promise<ClrComponentContext | null>;
 }
 
 // @public
@@ -200,6 +176,7 @@ export class ClrContextRegistryService {
     constructor();
     readonly changes$: Observable<void>;
     collect(filter?: ClrContextRegionFilter): ClrComponentContext[];
+    collectAsync(filter: ClrContextRegionFilter | undefined, timeoutMs: number): Promise<ClrComponentContext[]>;
     notifyChanged(): void;
     register(provider: ClrContextProvider, element?: Element): () => void;
     unregister(provider: ClrContextProvider): void;
@@ -271,19 +248,20 @@ export function clrIsEmptyContextChange(change: ClrContextChange): boolean;
 
 // @public
 export interface ClrPageContext {
+    application: ClrApplicationContext;
     availableRoutes?: ClrAvailableRoute[];
     collectedAt: string;
     components: ClrComponentContext[];
     focus?: 'modal';
+    metadata?: Record<string, unknown>;
     regions: ClrComponentContext[];
     route?: ClrRouteContext;
+    schemaVersion: string;
     title: string;
     truncated?: boolean;
     url?: string;
+    viewId?: string;
 }
-
-// @public
-export function clrRequestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
 
 // @public
 export interface ClrRouteContext {
@@ -293,6 +271,9 @@ export interface ClrRouteContext {
     queryParams?: Record<string, string>;
     url: string;
 }
+
+// @public
+export function provideClrContextApplication(application: ClrContextApplicationOptions): EnvironmentProviders;
 
 // @public
 export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): EnvironmentProviders;

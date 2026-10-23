@@ -8,6 +8,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
+import { attempt } from '../attempt';
 import { ClrComponentContext, ClrContextProvider } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH } from '../json-safe';
 
@@ -54,25 +55,73 @@ export class ClrContextRegistryService {
     this.changesSubject.next();
   }
 
-  /** Polls live providers, skipping ones that return `null` or throw, and returns detached copies. */
+  /** Polls live providers, skipping ones that return `null` or throw; a pending promise is reported as loading. */
   collect(filter?: ClrContextRegionFilter): ClrComponentContext[] {
-    const contexts: ClrComponentContext[] = [];
+    return this.poll(filter).flatMap(({ result, verdict }) => {
+      if (!isPromise(result)) {
+        return listOf(reported(result, verdict));
+      }
+      result.catch(() => undefined);
+      return [{ type: 'region', state: { loading: true } }];
+    });
+  }
+
+  /** Like {@link collect}, awaiting each promise for up to `timeoutMs`; one that takes longer is reported as unavailable. */
+  async collectAsync(filter: ClrContextRegionFilter | undefined, timeoutMs: number): Promise<ClrComponentContext[]> {
+    const settled = await Promise.all(
+      this.poll(filter).map(async ({ result, verdict }) => {
+        if (!isPromise(result)) {
+          return listOf(reported(result, verdict));
+        }
+        const resolved = await withTimeout(result, timeoutMs).catch(() => null);
+        return resolved === TIMED_OUT
+          ? [{ type: 'region', state: { unavailable: true } }]
+          : listOf(reported(resolved, verdict));
+      })
+    );
+    return settled.flat();
+  }
+
+  private poll(filter?: ClrContextRegionFilter): PolledProvider[] {
+    const polled: PolledProvider[] = [];
     for (const provider of this.providers) {
       try {
         const verdict = filter ? filter(this.elements.get(provider) ?? null) : 'keep';
-        if (verdict === 'drop') {
-          continue;
-        }
-        const context = copied(provider.getClrContext());
-        if (context) {
-          contexts.push(verdict === 'redact' ? withheldState(context) : context);
+        if (verdict !== 'drop') {
+          polled.push({ result: provider.getClrContext(), verdict });
         }
       } catch {
         // A faulty provider must not break the whole snapshot.
       }
     }
-    return contexts;
+    return polled;
   }
+}
+
+interface PolledProvider {
+  result: ReturnType<ClrContextProvider['getClrContext']>;
+  verdict: 'keep' | 'redact';
+}
+
+const TIMED_OUT = Symbol('timed out');
+
+function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T | typeof TIMED_OUT> {
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const timeout = new Promise<typeof TIMED_OUT>(resolve => (timer = setTimeout(() => resolve(TIMED_OUT), timeoutMs)));
+  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
+}
+
+function isPromise<T>(value: T | Promise<T>): value is Promise<T> {
+  return typeof (value as Promise<T> | null)?.then === 'function';
+}
+
+function reported(context: ClrComponentContext | null, verdict: 'keep' | 'redact'): ClrComponentContext | null {
+  const copy = attempt(() => copied(context), null);
+  return copy && verdict === 'redact' ? withheldState(copy) : copy;
+}
+
+function listOf(context: ClrComponentContext | null): ClrComponentContext[] {
+  return context ? [context] : [];
 }
 
 function copied(context: ClrComponentContext | null): ClrComponentContext | null {

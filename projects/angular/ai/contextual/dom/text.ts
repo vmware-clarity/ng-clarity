@@ -9,6 +9,7 @@ import { getAriaReferenceIds } from '@angular/cdk/a11y';
 import { CLR_CONTEXT_HIDDEN_SELECTOR } from '@clr/angular/utils';
 
 import { readScope } from './read-scope';
+import { closestAcrossShadow, idScope, IdScope, renderedChildNodes } from './shadow';
 import { ACTION_SELECTOR, UNREADABLE_SELECTOR } from './tables/selectors';
 import { isHiddenFromContext, isVisible } from './visibility';
 
@@ -94,7 +95,7 @@ function textFor(
     return '';
   }
   let text = '';
-  for (const node of Array.from(element.childNodes)) {
+  for (const node of renderedChildNodes(element)) {
     if (node.nodeType === Node.TEXT_NODE) {
       text += node.textContent ?? '';
       continue;
@@ -160,23 +161,23 @@ export function referencedText(
   const following = followingReference;
   followingReference = true;
   try {
-    return textOfReferences(element.ownerDocument, ids, withheld, skip);
+    return textOfReferences(idScope(element), ids, withheld, skip);
   } finally {
     followingReference = following;
   }
 }
 
-function textOfReferences(document: Document, ids: string[], withheld: string, skip: readonly string[]): string {
+function textOfReferences(scope: IdScope, ids: string[], withheld: string, skip: readonly string[]): string {
   return (
     ids
       .filter(id => !skip.includes(id))
-      .map(id => document.getElementById(id))
+      .map(id => scope.getElementById(id))
       // Page content can point `aria-describedby` at anything, so hidden or unreadable targets are
       // skipped (ARIA would include them, which would smuggle in text nobody sees).
       .filter(
         (referenced): referenced is HTMLElement =>
           !!referenced &&
-          !referenced.closest(UNREADABLE_SELECTOR) &&
+          !closestAcrossShadow(referenced, UNREADABLE_SELECTOR) &&
           !isHiddenFromContext(referenced, withheld) &&
           !isUnrendered(referenced)
       )

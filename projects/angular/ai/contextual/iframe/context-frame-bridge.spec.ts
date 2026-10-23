@@ -55,6 +55,8 @@ function dispatchMessage(init: { data: unknown; origin?: string; source?: unknow
 
 describe('Context frame bridge', () => {
   const pageContext: ClrPageContext = {
+    schemaVersion: '1',
+    application: { id: 'inventory' },
     title: 'Host page',
     url: 'https://app.example/clusters/42?tenant=acme&token=secret#details',
     route: {
@@ -101,7 +103,7 @@ describe('Context frame bridge', () => {
     /** Replaces the host with one built from these options, unthrottled unless they say otherwise. */
     function restartHost(
       options: ClrContextFrameHostOptions = {},
-      snapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext = getSnapshot,
+      snapshot: (options?: ClrContextSnapshotOptions) => ClrPageContext | Promise<ClrPageContext> = getSnapshot,
       routePattern?: (url: URL) => string | null
     ): void {
       host.stop();
@@ -125,6 +127,16 @@ describe('Context frame bridge', () => {
       expect(servedContext(frame).components[0].type).toBe('form');
       // The title names what is on screen as often as the page: it goes with the address.
       expect(servedContext(frame).title).toBe('');
+    });
+
+    it('answers once an asynchronous snapshot resolves', async () => {
+      restartHost({}, () => Promise.resolve(JSON.parse(JSON.stringify(pageContext))));
+
+      dispatchRequest(frameRequest('request-async'));
+      expect(frame.postMessage).not.toHaveBeenCalled();
+
+      await Promise.resolve();
+      expect(servedContext(frame).components[0].type).toBe('form');
     });
 
     it('answers only the origin that asked, never every origin', () => {
@@ -389,6 +401,8 @@ describe('Context frame bridge', () => {
         restartHost(
           {},
           () => ({
+            schemaVersion: '1',
+            application: { id: 'inventory' },
             title: 'Host page',
             url: 'https://app.example/reset/4f9c-token',
             regions: [],
