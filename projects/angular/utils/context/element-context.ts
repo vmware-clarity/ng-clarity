@@ -21,6 +21,6 @@ export type ClrElementContextCallback = (
 ) => Partial<ClrComponentContext> | null | undefined;
 
 /** Publishes a context callback on the host element. The teardown only removes the callback it published. */
-export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void {
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void {
   return publishOnElement(host, CLR_ELEMENT_CONTEXT_PROPERTY, callback);
 }

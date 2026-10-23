@@ -8,7 +8,7 @@
 import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
 import { DOCUMENT, inject, Inject, Injectable, NgZone, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
-import { CLR_CONTEXT_REDACT_SELECTOR, clrUsableSelectors } from '@clr/angular/utils';
+import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
 
 import { CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
@@ -201,7 +201,7 @@ export class ClrContextEngineService implements OnDestroy {
       return () => 'keep';
     }
     const scope = engineScope(this.document, options);
-    const excludeSelector = clrUsableSelectors(this.document, options.excludeSelectors);
+    const excludeSelector = usableSelectors(this.document, options.excludeSelectors);
     return element => {
       if (!element) {
         return 'keep';

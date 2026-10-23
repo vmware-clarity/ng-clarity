@@ -6,7 +6,7 @@
  */
 
 /** The selectors `root`'s document accepts, joined, or `''`; one invalid entry drops only itself. */
-export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string {
+export function usableSelectors(root: ParentNode, selectors: readonly string[]): string {
   // Checked against an empty fragment: only syntax matters, and querying the page would cost a walk per selector.
   const document = (root as Node).ownerDocument ?? (root as Document);
   const probe: ParentNode =

@@ -5,26 +5,26 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { clrUsableSelectors } from './selectors';
+import { usableSelectors } from './selectors';
 
-describe('clrUsableSelectors', () => {
+describe('usableSelectors', () => {
   it('joins the selectors the document accepts and drops the rest, one by one', () => {
-    expect(clrUsableSelectors(document, ['header', '[[[', '.secret', ''])).toBe('header, .secret');
+    expect(usableSelectors(document, ['header', '[[[', '.secret', ''])).toBe('header, .secret');
   });
 
   it('is empty when no selector is usable', () => {
-    expect(clrUsableSelectors(document, [])).toBe('');
-    expect(clrUsableSelectors(document, ['[[[', '  '])).toBe('');
+    expect(usableSelectors(document, [])).toBe('');
+    expect(usableSelectors(document, ['[[[', '  '])).toBe('');
   });
 
   it('checks against an element as well as a document', () => {
-    expect(clrUsableSelectors(document.createElement('div'), ['li', ':not('])).toBe('li');
+    expect(usableSelectors(document.createElement('div'), ['li', ':not('])).toBe('li');
   });
 
   it('checks the syntax without searching the page', () => {
     const search = spyOn(document, 'querySelector').and.callThrough();
 
-    expect(clrUsableSelectors(document, ['header', '.secret'])).toBe('header, .secret');
+    expect(usableSelectors(document, ['header', '.secret'])).toBe('header, .secret');
     expect(search).not.toHaveBeenCalled();
   });
 });
