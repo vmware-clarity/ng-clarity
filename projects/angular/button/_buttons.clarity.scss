@@ -29,6 +29,73 @@
     }
   }
 
+  // Loading button (see `ClrLoadingButton`): transitions between the states of a loading button. The spinner keeps its rotation while it fades.
+  $loading-btn-enter: clr-fade-in tokens.$cds-global-animation-duration-quick ease-in
+    tokens.$cds-global-animation-duration-quickest backwards;
+  $loading-btn-leave: clr-fade-out tokens.$cds-global-animation-duration-quickest ease-out forwards;
+  $loading-btn-spin: spin 1s linear infinite; // the rotation of `.spinner`
+
+  .clr-loading-btn-enter {
+    animation: $loading-btn-enter;
+  }
+
+  .spinner.clr-loading-btn-enter {
+    animation: $loading-btn-enter, $loading-btn-spin;
+  }
+
+  .spinner.clr-loading-btn-leave {
+    animation: $loading-btn-leave, $loading-btn-spin;
+  }
+
+  // Check mark bouncing in once the operation succeeded: it stays hidden for the first fifth, then grows past its size
+  // and settles.
+  @keyframes clr-loading-btn-check {
+    0%,
+    20% {
+      transform: scale(0, 0);
+    }
+
+    40% {
+      transform: scale(1.2, 1.2);
+    }
+
+    60% {
+      transform: scale(0.9, 0.9);
+    }
+
+    100% {
+      transform: scale(1, 1);
+    }
+  }
+
+  // Without the bounce for users who prefer reduced motion: the check mark only fades in, at the same time.
+  @keyframes clr-loading-btn-check-reduced {
+    0%,
+    20% {
+      opacity: 0;
+    }
+
+    40%,
+    100% {
+      opacity: 1;
+    }
+  }
+
+  // The button shows its success state for as long as the check mark animates. The duration is fixed rather than
+  // derived from the animation tokens: the low motion theme sets them to a unitless 0, which would drop the animation
+  // and with it the success state.
+  .spinner.spinner-check.clr-loading-btn-check {
+    animation: clr-loading-btn-check 600ms linear;
+
+    @media (prefers-reduced-motion: reduce) {
+      animation-name: clr-loading-btn-check-reduced;
+    }
+
+    &.clr-loading-btn-leave {
+      animation: $loading-btn-leave;
+    }
+  }
+
   a.btn,
   .btn.btn-secondary,
   .btn-secondary .btn {
