@@ -6293,11 +6293,12 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 // @public (undocumented)
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
     constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
+    protected animatesChildren: boolean;
     // (undocumented)
     get ariaSelected(): boolean;
     // (undocumented)
     broadcastFocusOnContainer(): void;
-    // (undocumented)
+    // @deprecated (undocumented)
     get childrenAnimationState(): string;
     // (undocumented)
     set clrForTypeAhead(value: string);
@@ -6341,6 +6342,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     ngOnInit(): void;
     // (undocumented)
     nodeId: string;
+    // (undocumented)
+    protected readonly noopAnimations: boolean;
     // (undocumented)
     onKeyDown(event: KeyboardEvent): void;
     // (undocumented)

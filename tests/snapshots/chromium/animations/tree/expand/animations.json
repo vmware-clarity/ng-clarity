@@ -9,17 +9,19 @@
     "iterations": 1,
     "keyframes": [
       {
-        "offset": 0,
+        "offset": null,
         "easing": "linear",
         "composite": "auto",
-        "overflowY": "visible",
+        "contentVisibility": "visible",
+        "overflow": "clip",
         "height": "224px"
       },
       {
-        "offset": 1,
+        "offset": null,
         "easing": "linear",
         "composite": "auto",
-        "overflowY": "visible",
+        "contentVisibility": "visible",
+        "overflow": "clip",
         "height": "0px"
       }
     ]
