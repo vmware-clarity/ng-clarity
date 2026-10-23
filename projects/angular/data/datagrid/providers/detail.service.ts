@@ -18,6 +18,8 @@ export class DetailService {
   id: string;
   detailWidth = DEFAULT_DETAIL_WIDTH;
 
+  private registeredPanes = 0;
+
   private preventScroll = false;
   private toggleState = false;
   private cache: any;
@@ -51,6 +53,27 @@ export class DetailService {
 
   get isOpen() {
     return this.toggleState === true;
+  }
+
+  /** Register a detail outlet and release it exactly once when its directive is destroyed. */
+  register(): () => void {
+    this.registeredPanes++;
+    this.enabled = true;
+    let registered = true;
+    return () => {
+      if (!registered) {
+        return;
+      }
+      registered = false;
+      if (--this.registeredPanes === 0) {
+        this.enabled = false;
+        if (this.isOpen) {
+          this.close();
+        }
+        this.cache = undefined;
+        this.button = null;
+      }
+    };
   }
 
   open(item: any, button?: HTMLButtonElement) {
