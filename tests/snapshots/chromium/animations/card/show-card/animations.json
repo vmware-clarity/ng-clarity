@@ -1,7 +1,7 @@
 [
   {
     "target": "div.cdk-drop-list.appfx-card.droppable",
-    "name": "",
+    "name": "clr-fade-slide-right-in",
     "startedAt": 0,
     "duration": 200,
     "delay": 0,
@@ -12,14 +12,14 @@
         "offset": 0,
         "easing": "ease-in",
         "composite": "auto",
-        "transform": "translateX(-100%)",
+        "transform": "translate(-100%)",
         "opacity": "0"
       },
       {
         "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
-        "transform": "translateX(0%)",
+        "easing": "ease-in",
+        "composite": "replace",
+        "transform": "none",
         "opacity": "1"
       }
     ]

@@ -1,6 +1,29 @@
 [
   {
     "target": "span.spinner.spinner-inline",
+    "name": "clr-fade-in",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 100,
+    "easing": "linear",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "ease-in",
+        "composite": "auto",
+        "opacity": "0"
+      },
+      {
+        "offset": 1,
+        "easing": "ease-in",
+        "composite": "replace",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "target": "span.spinner.spinner-inline",
     "name": "spin",
     "startedAt": 0,
     "duration": 1000,
@@ -24,6 +47,29 @@
   },
   {
     "target": "span.spinner.spinner-inline",
+    "name": "clr-fade-in",
+    "startedAt": 0,
+    "duration": 200,
+    "delay": 100,
+    "easing": "linear",
+    "iterations": 1,
+    "keyframes": [
+      {
+        "offset": 0,
+        "easing": "ease-in",
+        "composite": "auto",
+        "opacity": "0"
+      },
+      {
+        "offset": 1,
+        "easing": "ease-in",
+        "composite": "replace",
+        "opacity": "1"
+      }
+    ]
+  },
+  {
+    "target": "span.spinner.spinner-inline",
     "name": "spin",
     "startedAt": 0,
     "duration": 1000,
@@ -42,64 +88,6 @@
         "easing": "linear",
         "composite": "auto",
         "transform": "rotate(360deg)"
-      }
-    ]
-  },
-  {
-    "target": "span.spinner.spinner-inline",
-    "name": "",
-    "startedAt": 0,
-    "duration": 300,
-    "delay": 0,
-    "easing": "linear",
-    "iterations": 1,
-    "keyframes": [
-      {
-        "offset": 0,
-        "easing": "linear",
-        "composite": "auto",
-        "opacity": "0"
-      },
-      {
-        "offset": 0.3333333333333333,
-        "easing": "ease-in",
-        "composite": "auto",
-        "opacity": "0"
-      },
-      {
-        "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
-        "opacity": "1"
-      }
-    ]
-  },
-  {
-    "target": "span.spinner.spinner-inline",
-    "name": "",
-    "startedAt": 0,
-    "duration": 300,
-    "delay": 0,
-    "easing": "linear",
-    "iterations": 1,
-    "keyframes": [
-      {
-        "offset": 0,
-        "easing": "linear",
-        "composite": "auto",
-        "opacity": "0"
-      },
-      {
-        "offset": 0.3333333333333333,
-        "easing": "ease-in",
-        "composite": "auto",
-        "opacity": "0"
-      },
-      {
-        "offset": 1,
-        "easing": "linear",
-        "composite": "auto",
-        "opacity": "1"
       }
     ]
   }
