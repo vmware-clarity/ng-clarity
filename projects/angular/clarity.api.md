@@ -5238,9 +5238,6 @@ export class ClrProgressBarModule {
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof ClrProgressBar], [typeof i2.CommonModule], [typeof ClrProgressBar]>;
 }
 
-// @public
-export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
-
 // @public (undocumented)
 export class ClrRadio extends WrappedFormControl<ClrRadioWrapper> {
     constructor(vcr: ViewContainerRef, injector: Injector, control: NgControl, renderer: Renderer2, el: ElementRef<HTMLInputElement>);
@@ -6430,9 +6427,6 @@ export class ClrTreeViewModule {
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTreeViewModule, [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink, typeof RecursiveChildren], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i5.ClrLoadingModule], [typeof ClrTree, typeof ClrTreeNode, typeof ClrRecursiveForOf, typeof ClrTreeNodeLink]>;
 }
-
-// @public
-export function clrUsableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export class ClrVerticalNav implements OnDestroy {
@@ -9258,6 +9252,9 @@ export const processOnVmIcon: IconShapeTuple;
 // @public (undocumented)
 export const processOnVmIconName = "process-on-vm";
 
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
 // @public (undocumented)
 export const qrCodeIcon: IconShapeTuple;
 
@@ -10167,6 +10164,9 @@ export const uploadIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const uploadIconName = "upload";
+
+// @public
+export function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export const usbIcon: IconShapeTuple;

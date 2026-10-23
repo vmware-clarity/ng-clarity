@@ -283,9 +283,6 @@ export interface ClrPageContext {
 }
 
 // @public
-export function clrPublishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
-
-// @public
 export function clrRequestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
 
 // @public
@@ -299,6 +296,9 @@ export interface ClrRouteContext {
 
 // @public
 export function provideClrContextOptions(options: ClrContextPreset | ClrContextSnapshotOptions, overrides?: ClrContextSnapshotOptions): EnvironmentProviders;
+
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
 
 // (No @packageDocumentation comment for this package)
 
