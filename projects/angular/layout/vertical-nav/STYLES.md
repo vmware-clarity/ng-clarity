@@ -39,6 +39,7 @@
 | nav-group-content      | Wrapper for navigation group content                            |
 | nav-group-text         | Navigation group content wrapper text                           |
 | nav-group-children     | Wrapper for navigation group children elements                  |
+| is-expanded            | Set on `nav-group` and `nav-group-children` while expanded      |
 | nav-group-trigger      | Navigation group trigger button for open/close group            |
 | nav-group-trigger-icon | Navigation group trigger button icon                            |
 | nav-btn                | Button to expand vertical nav when collapsed                    |
