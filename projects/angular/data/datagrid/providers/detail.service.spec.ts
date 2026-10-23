@@ -74,6 +74,35 @@ export default function (): void {
       expect(provider.enabled).toBeTrue();
     });
 
+    it('keeps a replacement pane enabled and open when an older pane is removed', () => {
+      const removeOld = provider.register();
+      const removeNew = provider.register();
+      provider.open('replacement');
+      removeOld();
+      removeOld(); // Releasing the same registration twice must not remove the replacement.
+      expect(provider.enabled).toBeTrue();
+      expect(provider.isRowOpen('replacement')).toBeTrue();
+      removeNew();
+      expect(provider.enabled).toBeFalse();
+      expect(provider.isOpen).toBeFalse();
+      expect(provider.state).toBeUndefined();
+    });
+
+    it('returns focus and leaves the modal stack when the last open pane is removed', () => {
+      const stack = new ModalStackService(PLATFORM_SERVER_ID);
+      spyOn(stack, 'trackModalClose').and.callThrough();
+      provider = new DetailService(stack);
+      const remove = provider.register();
+      const button = document.createElement('button');
+      spyOn(button, 'focus');
+      provider.open('value', button);
+      remove();
+      expect(button.focus).toHaveBeenCalled();
+      expect(stack.trackModalClose).toHaveBeenCalledWith(provider);
+      expect(provider.isOpen).toBeFalse();
+      expect(provider.enabled).toBeFalse();
+    });
+
     it('can detect if a row is open', () => {
       expect(provider.isRowOpen('one')).toBeFalse();
       expect(provider.isRowOpen('two')).toBeFalse();
