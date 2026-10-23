@@ -4375,11 +4375,16 @@ export class ClrLoadingButton implements LoadingListener {
     // (undocumented)
     buttonState: typeof ClrLoadingState;
     // (undocumented)
+    protected readonly checkMarkClass: string;
+    // (undocumented)
     clrLoadingChange: EventEmitter<ClrLoadingState>;
     // (undocumented)
     disabled: boolean;
     // (undocumented)
     el: ElementRef<HTMLButtonElement>;
+    protected enterClass: string;
+    // (undocumented)
+    protected readonly leaveClass: string;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -4458,6 +4463,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     get backdrop(): boolean;
     // (undocumented)
     backdropClick(): void;
+    protected get backdropEnterClass(): string;
     // (undocumented)
     bypassScrollService: boolean;
     // (undocumented)
@@ -4468,8 +4474,11 @@ export class ClrModal implements OnChanges, OnDestroy {
     closeButtonAriaLabel: string;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // (undocumented)
-    fadeDone(e: AnimationEvent_2): void;
+    protected get dialogEnterClass(): string;
+    // @deprecated (undocumented)
+    fadeDone(_e: {
+        toState: string;
+    }): void;
     // (undocumented)
     get fadeMove(): string;
     set fadeMove(move: string);
@@ -5821,6 +5830,8 @@ export class ClrStepperModule {
 export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
+    protected animatesCollapse: boolean;
+    // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     disabled: boolean;
@@ -6979,12 +6990,15 @@ export const collapseCardIconName = "collapse-card";
 // @public (undocumented)
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    protected animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
+    protected contentCollapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
+    protected expandContent(event: AnimationCallbackEvent): void;
     // (undocumented)
     abstract getContentId(id: string): string;
     // (undocumented)
