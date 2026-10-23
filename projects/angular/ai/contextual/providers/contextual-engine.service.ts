@@ -10,12 +10,20 @@ import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID 
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
 
-import { CLR_CONTEXT_OPTIONS } from './context-options';
+import { CLR_CONTEXT_APPLICATION, CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
+import { attempt } from '../attempt';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
+import { closestAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
-import { ClrContextSnapshotOptions, ClrPageContext, ClrRouteContext } from '../interfaces/context.interface';
-import { jsonSafe, ROUTE_DATA_DEPTH } from '../json-safe';
+import {
+  ClrApplicationContext,
+  ClrComponentContext,
+  ClrContextSnapshotOptions,
+  ClrPageContext,
+  ClrRouteContext,
+} from '../interfaces/context.interface';
+import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
 import { ContextRefRegistryService } from '../mutation/context-ref-registry.service';
 import { CLR_MUTATION_POLICY } from '../mutation/mutation.interface';
 import { availableRoutes, routePatternFor } from '../routes';
@@ -23,6 +31,12 @@ import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
+
+/** Version of the {@link ClrPageContext} format. */
+const SCHEMA_VERSION = '1';
+
+/** How long `getSnapshotAsync` waits for each asynchronous provider by default. */
+const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
 
 /** A route map cut to a handful of entries would misdescribe where the app can go. */
 const MIN_ROUTE_LIMIT = 50;
@@ -43,6 +57,7 @@ export interface ClrContextGlobalAccessOptions extends ClrContextSnapshotOptions
 export class ClrContextEngineService implements OnDestroy {
   private readonly customExtractors: ClrContextDomExtractor[] = [];
   private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
+  private readonly application = inject(CLR_CONTEXT_APPLICATION, { optional: true });
   // Refs are handed out only under a policy, so readers who never write pay nothing.
   private readonly mutationPolicy = inject(CLR_MUTATION_POLICY, { optional: true });
   private readonly refs = inject(ContextRefRegistryService);
@@ -61,11 +76,24 @@ export class ClrContextEngineService implements OnDestroy {
   }
 
   /**
-   * Takes a fresh snapshot, applying `options` over the application-wide ones.
+   * Takes a fresh snapshot, applying `options` over the application-wide ones; pending providers are reported as loading.
    * With a mutation policy, writable nodes carry a stable `ref`.
    */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
-    return this.snapshot(options, !!this.mutationPolicy);
+    return this.syncSnapshot(options, !!this.mutationPolicy);
+  }
+
+  /** Like {@link getSnapshot}, awaiting asynchronous providers for up to `timeoutMs` each. */
+  async getSnapshotAsync(
+    options?: ClrContextSnapshotOptions,
+    timeoutMs = DEFAULT_SOURCE_TIMEOUT_MS
+  ): Promise<ClrPageContext> {
+    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
+    // Started first, so providers work while the page is walked.
+    const regions = this.contextRegistry.collectAsync(this.regionFilter(resolved), timeoutMs);
+    const snapshot = this.snapshot(resolved, [], !!this.mutationPolicy);
+    snapshot.regions = await regions;
+    return snapshot;
   }
 
   /** Registers a DOM extractor for other libraries' components. Returns a function that removes it. */
@@ -107,7 +135,7 @@ export class ClrContextEngineService implements OnDestroy {
     const ceiling = this.untrustedCeiling(budgets);
     const accessor = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
-      const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), false);
+      const snapshot = this.syncSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), false);
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
       return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
     };
@@ -129,18 +157,36 @@ export class ClrContextEngineService implements OnDestroy {
     this.globalProperty = null;
   }
 
-  private snapshot(options: ClrContextSnapshotOptions | undefined, withRefs: boolean): ClrPageContext {
+  private syncSnapshot(options: ClrContextSnapshotOptions | undefined, withRefs: boolean): ClrPageContext {
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
+    return this.snapshot(resolved, this.contextRegistry.collect(this.regionFilter(resolved)), withRefs);
+  }
+
+  private snapshot(
+    resolved: Required<ClrContextSnapshotOptions>,
+    regions: ClrComponentContext[],
+    withRefs: boolean
+  ): ClrPageContext {
     const snapshot: ClrPageContext = {
+      schemaVersion: SCHEMA_VERSION,
+      application: this.applicationContext(),
       title: this.document.title,
       url: this.currentUrl(),
-      regions: this.contextRegistry.collect(this.regionFilter(resolved)),
+      regions,
       components: [],
       collectedAt: new Date().toISOString(),
     };
     const route = this.routeContext();
     if (route) {
       snapshot.route = route;
+    }
+    const viewId = this.viewId(route);
+    if (viewId) {
+      snapshot.viewId = viewId;
+    }
+    const metadata = attempt(() => jsonSafe(this.application?.metadata?.(), REGION_DEPTH), undefined);
+    if (metadata && typeof metadata === 'object' && !Array.isArray(metadata)) {
+      snapshot.metadata = metadata as Record<string, unknown>;
     }
     if (resolved.includeRoutes && this.router?.config.length) {
       const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
@@ -161,6 +207,24 @@ export class ClrContextEngineService implements OnDestroy {
     return snapshot;
   }
 
+  private applicationContext(): ClrApplicationContext {
+    if (!this.application) {
+      return { id: this.document.location?.hostname ?? '' };
+    }
+    const { id, version } = this.application;
+    return version ? { id, version } : { id };
+  }
+
+  /** The application's own view id first, then the deepest route's `data.viewId`. */
+  private viewId(route: ClrRouteContext | undefined): string | undefined {
+    const provided = attempt(() => this.application?.viewId?.(), undefined);
+    if (typeof provided === 'string' && provided) {
+      return provided;
+    }
+    const routed = route?.data?.['viewId'];
+    return typeof routed === 'string' && routed ? routed : undefined;
+  }
+
   /** Annotations follow their element: left out where it would be, stateless inside a redacted region. */
   private regionFilter(options: Required<ClrContextSnapshotOptions>): ClrContextRegionFilter {
     if (!isPlatformBrowser(this.platformId)) {
@@ -178,7 +242,7 @@ export class ClrContextEngineService implements OnDestroy {
       if (scope.roots && !scope.roots.some(root => root.contains(element) || element.contains(root))) {
         return 'drop';
       }
-      return element.closest(CLR_CONTEXT_REDACT_SELECTOR) ? 'redact' : 'keep';
+      return closestAcrossShadow(element, CLR_CONTEXT_REDACT_SELECTOR) ? 'redact' : 'keep';
     };
   }
 

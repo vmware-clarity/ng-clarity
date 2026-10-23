@@ -9,6 +9,7 @@ import { CLR_CONTEXT_EDITING_HOST_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '
 
 import { readScope } from './read-scope';
 import { isNameFromContents } from './roles';
+import { idScope } from './shadow';
 import { MESSAGE_ROLES } from './tables/roles';
 import { ACTION_SELECTOR } from './tables/selectors';
 import { LABELABLE_TAGS } from './tables/tags';
@@ -137,17 +138,17 @@ function labelOf(control: Element): Element | null {
   if (!scope) {
     return (control as HTMLInputElement).labels?.[0] ?? null;
   }
-  const document = control.ownerDocument;
-  let labels = scope.labels.get(document);
+  const root = idScope(control);
+  let labels = scope.labels.get(root);
   if (!labels) {
     labels = new Map();
-    for (const label of Array.from(document.querySelectorAll('label'))) {
+    for (const label of Array.from(root.querySelectorAll('label'))) {
       const labelled = label.control;
       if (labelled && !labels.has(labelled)) {
         labels.set(labelled, label);
       }
     }
-    scope.labels.set(document, labels);
+    scope.labels.set(root, labels);
   }
   return labels.get(control) ?? null;
 }

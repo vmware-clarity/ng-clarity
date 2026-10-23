@@ -8,6 +8,7 @@
 import { getAriaReferenceIds } from '@angular/cdk/a11y';
 import { CLR_CONTEXT_REDACT_SELECTOR, ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
+import { closestAcrossShadow } from './shadow';
 import {
   CONTENT_STATE_KEYS,
   ENUM_ATTRIBUTES,
@@ -207,7 +208,7 @@ export function isNativelyDisabled(element: Element): boolean {
 
 /** Whether this control's value must be withheld, whatever the caller asked for. */
 export function isRedacted(element: Element, insideRedactedRegion?: boolean): boolean {
-  if (insideRedactedRegion ?? !!element.closest(CLR_CONTEXT_REDACT_SELECTOR)) {
+  if (insideRedactedRegion ?? !!closestAcrossShadow(element, CLR_CONTEXT_REDACT_SELECTOR)) {
     return true;
   }
   const type = element.getAttribute('type')?.toLowerCase();

@@ -7,9 +7,14 @@
 
 import { CLR_CONTEXT_HIDDEN_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
 
+import { closestAcrossShadow, containsAcrossShadow } from './shadow';
+
 /** Whether the element is in hidden, inert or ignored markup, or in a region `withheld` selects. */
 export function isHiddenFromContext(element: Element, withheld = ''): boolean {
-  return !!element.closest(CLR_CONTEXT_HIDDEN_SELECTOR) || (!!withheld && !!element.closest(withheld));
+  return (
+    !!closestAcrossShadow(element, CLR_CONTEXT_HIDDEN_SELECTOR) ||
+    (!!withheld && !!closestAcrossShadow(element, withheld))
+  );
 }
 
 /** {@link isHiddenFromContext} judged on the element alone, for a walk that has already judged its ancestors. */
@@ -19,8 +24,8 @@ export function hidesFromContext(element: Element, withheld = ''): boolean {
 
 /** Whether a redacted region holds `item` but not `container`, so the item's text is withheld from it. */
 export function isRedactedWithin(item: Element, container: Element): boolean {
-  const redacting = item.closest(CLR_CONTEXT_REDACT_SELECTOR);
-  return !!redacting && !redacting.contains(container);
+  const redacting = closestAcrossShadow(item, CLR_CONTEXT_REDACT_SELECTOR);
+  return !!redacting && !containsAcrossShadow(redacting, container);
 }
 
 /**

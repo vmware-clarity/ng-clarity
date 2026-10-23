@@ -34,8 +34,24 @@ export interface ClrAvailableRoute {
   lazy?: boolean;
 }
 
+/** Identifies the application a snapshot describes. */
+export interface ClrApplicationContext {
+  /** A stable id for the application, e.g. `vcenter-ui`. */
+  id: string;
+  /** The application's version, when it reports one. */
+  version?: string;
+}
+
 /** A snapshot of the page context, always computed on demand from the live application. */
 export interface ClrPageContext {
+  /** Version of the snapshot format; it changes when a field changes meaning. */
+  schemaVersion: string;
+  /** The application, from `provideClrContextApplication`; the page's host name when none is provided. */
+  application: ClrApplicationContext;
+  /** The view the user is on, from the application provider or the route's `data.viewId`. */
+  viewId?: string;
+  /** Application metadata about the current view, from the application provider. */
+  metadata?: Record<string, unknown>;
   /** The document title; empty for an untrusted caller unless it shares the full URL. */
   title: string;
   /** The current URL (browser location, or router URL when available). */
@@ -56,8 +72,11 @@ export interface ClrPageContext {
   collectedAt: string;
 }
 
-/** Contributes context to snapshots. Polled at snapshot time; return `null` when there is nothing to report. */
+/**
+ * Contributes context to snapshots. Polled at snapshot time; return `null` when there is nothing to report.
+ * A promise is awaited by `getSnapshotAsync` and reported as loading by `getSnapshot`.
+ */
 export interface ClrContextProvider {
   /** The provider's context as it is now, or `null` when it has nothing to report. */
-  getClrContext(): ClrComponentContext | null;
+  getClrContext(): ClrComponentContext | null | Promise<ClrComponentContext | null>;
 }
