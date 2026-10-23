@@ -184,6 +184,27 @@ columns = [{ displayName: 'State', field: 'state', columnRenderer: StatusCell }]
 
 Persistence needs a `PersistDatagridSettingsService` provided via `appfxDatagridPersistSettingsToken` and a stable `uid` on each column (falls back to `field`, then `displayName`). It is injected optionally, so **missing setup fails silently**.
 
+## Tree data
+
+A server-driven grid renders a tree when it gets `[treeChildren]`: `gridItems` are the roots of the page, children are fetched on first expand.
+
+```html
+<appfx-datagrid
+  [serverDrivenDatagrid]="true"
+  [gridItems]="roots"
+  [totalItems]="total"
+  [columns]="columns"
+  [trackByGridItemProperty]="'id'"
+  [treeChildren]="getChildren"
+  [treeExpandable]="hasChildren"
+  [treeSelects]="'descendants'"
+  (refreshGridData)="onRefresh($event)"
+>
+</appfx-datagrid>
+```
+
+`treeColumn: true` on a `ColumnDefinition` puts the toggle in that column (several allowed; default: the first column). `trackByGridItemProperty` must be unique across the whole tree.
+
 ## Rules
 
 - The component is OnPush: always assign new array/object references for `gridItems`, `columns`, `selectedItems`, `layoutModel`, `footerModel`, and actions. In-place mutation will not refresh.

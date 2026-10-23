@@ -14,6 +14,7 @@ import {
   ElementRef,
   EmbeddedViewRef,
   EventEmitter,
+  inject,
   Inject,
   Injector,
   Input,
@@ -44,6 +45,7 @@ import { ExpandableRowsCount } from './providers/global-expandable-rows';
 import { Items } from './providers/items';
 import { RowActionService } from './providers/row-action-service';
 import { Selection } from './providers/selection';
+import { DatagridTreeNode, DatagridTreeService } from './providers/tree.service';
 import { WrappedRow } from './wrapped-row';
 
 let nbRow = 0;
@@ -104,6 +106,8 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   @ViewChild('scrollableCells', { read: ViewContainerRef }) _scrollableCells: ViewContainerRef;
   @ViewChild('calculatedCells', { read: ViewContainerRef }) _calculatedCells: ViewContainerRef;
   @ViewChild('fixedCellTemplate') _fixedCellTemplate: TemplateRef<any>;
+
+  protected readonly tree = inject<DatagridTreeService<T>>(DatagridTreeService, { optional: true });
 
   private _item: T;
   private _selected = false;
@@ -201,6 +205,12 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     if (this.selection.selectionType === SelectionType.None) {
       this._selected = value as boolean;
     } else {
+      if (this.tree?.cascadesSelection) {
+        // In a tree, a row's selection reaches its descendants and ancestors; ranges don't apply.
+        this.selection.rangeStart = null;
+        this.tree.setSelected([this.item], !!value);
+        return;
+      }
       if (value && this.selection.selectionType === SelectionType.Multi) {
         this.rangeSelect();
       } else {
@@ -251,6 +261,52 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     return this.items.identifyBy;
   }
 
+  /**
+   * The place of this row in the tree, when the datagrid renders one. Read by the row's cells.
+   */
+  get _treeNode(): DatagridTreeNode<T> | undefined {
+    return this.tree?.enabled ? this.tree.nodeFor(this.item) : undefined;
+  }
+
+  /**
+   * The cells that carry the indentation and the expand toggle: those of the tree columns, so they
+   * move with their column when it is reordered or pinned. The tree columns are the ones marked with
+   * `clrDgTreeColumn`, or the first visible column when none of them is visible. Cells match columns
+   * by declaration index, as everywhere else in the datagrid.
+   */
+  get _treeCells(): ClrDatagridCell[] {
+    const columns = this.columnsService.columns;
+    const cells = this.dgCells?.toArray() || [];
+    const visible = (index: number) => !!cells[index] && !columns[index]?.value.hidden;
+    const marked = cells.filter((_, index) => visible(index) && this.tree?.columns.has(columns[index]));
+    if (marked.length) {
+      return marked;
+    }
+    const first = cells.findIndex((_, index) => visible(index));
+    return cells.slice(Math.max(first, 0), Math.max(first, 0) + 1);
+  }
+
+  /**
+   * The cell that names the row for its toggles: the first visible one as the user sees the row, so
+   * pinned cells come first. A toggle in a column like Status then reads "Expand Datacenter 1", not
+   * "Expand Running".
+   */
+  get _treeLabelCell(): ClrDatagridCell | undefined {
+    const columns = this.columnsService.columns;
+    const cells = this.dgCells?.toArray() || [];
+    const visible = cells
+      .map((cell, index) => ({ cell, column: columns[index]?.value }))
+      .filter(({ column }) => !column?.hidden);
+    return (visible.find(({ column }) => column?.pinned) || visible[0])?.cell;
+  }
+
+  /**
+   * Some, but not all, of this row's descendants are selected.
+   */
+  protected get treeIndeterminate(): boolean {
+    return !!this.tree?.cascadesSelection && this.tree.isIndeterminate(this.item);
+  }
+
   openDetails(event: MouseEvent, detailButton: HTMLButtonElement) {
     event.stopPropagation();
 
@@ -263,7 +319,9 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
   }
 
   ngAfterContentInit() {
+    this.markTreeCell();
     this.dgCells.changes.subscribe(() => {
+      this.markTreeCell();
       this.insertCellViews();
     });
   }
@@ -398,6 +456,15 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
       const container = this.columnsService.isPinned(index) ? this._pinnedCells : this._scrollableCells;
       container.insert(cell._view);
     });
+  }
+
+  /**
+   * Lets the cells of a tree row find out which of them carries the toggle. Rows of other
+   * datagrids leave their cells alone, so they pay nothing for trees.
+   */
+  private markTreeCell() {
+    const treeRow = this.tree?.enabled ? this : null;
+    this.dgCells.forEach(cell => (cell._treeRow = treeRow));
   }
 
   private rangeSelect() {

@@ -27,6 +27,7 @@ import { Sort } from './providers/sort';
 import { StateDebouncer } from './providers/state-debouncer.provider';
 import { StateProvider } from './providers/state.provider';
 import { TableSizeService } from './providers/table-size.service';
+import { DatagridTreeService } from './providers/tree.service';
 import { DatagridRenderOrganizer } from './render/render-organizer';
 import { DatagridRowRenderer } from './render/row-renderer';
 import { KeyNavigationGridController } from './utils/key-navigation-grid.controller';
@@ -55,4 +56,5 @@ export const DATAGRID_SPEC_PROVIDERS = [
   DetailService,
   DatagridRowRenderer,
   KeyNavigationGridController,
+  DatagridTreeService,
 ];

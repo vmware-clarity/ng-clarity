@@ -60,7 +60,7 @@ export class KeyNavigationGridController implements OnDestroy {
     keyGridRows: '[role=row]:not(.datagrid-placeholder):not([style*="display: none"])',
     keyGridCells:
       '[role=gridcell]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), [role=columnheader]:not(.datagrid-hidden-column):not(.datagrid-placeholder-content), .datagrid-detail-caret',
-    keyGrid: '[role=grid]',
+    keyGrid: '[role=grid], [role=treegrid]',
   };
   private keyNavUtils: KeyNavigationUtils;
   private listenersAdded = false;

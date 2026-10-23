@@ -178,6 +178,39 @@ Give the grid a fixed height. No pagination with virtual scroll. Virtual scroll 
 
 The directive is `ClrDatagridVirtualScrollDirective` (part of `ClrDatagridModule`); it goes on an `ng-template` with `clrVirtualRowsOf`, and the `clr-dg-row` sits inside that template. There is no `*clrVirtualScrollOf` structural directive on `clr-dg-row`.
 
+## Tree data
+
+Rows with children loaded on demand, in one grid (an ARIA treegrid): use `*clrDgTreeItems` on `clr-dg-row` instead of `*clrDgItems`.
+
+```ts
+roots: Folder[] = [];
+identity = (folder: Folder) => folder.id;
+hasChildren = (folder: Folder) => folder.childCount > 0;
+getChildren = (folder: Folder) => this.api.children(folder.id); // array, Promise or Observable
+```
+
+```html
+<clr-datagrid [clrDgItemsIdentityFn]="identity" (clrDgRefresh)="onRefresh($event)">
+  <clr-dg-column clrDgTreeColumn>Name</clr-dg-column>
+  <clr-dg-column>Size</clr-dg-column>
+  <clr-dg-row
+    *clrDgTreeItems="let folder of roots; children: getChildren; expandable: hasChildren; selects: 'descendants'"
+    [clrDgItem]="folder"
+  >
+    <clr-dg-cell>{{ folder.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ folder.size }}</clr-dg-cell>
+  </clr-dg-row>
+</clr-datagrid>
+```
+
+- The roots are the page: they come sorted and paged through `(clrDgRefresh)`; children are fetched on first expand, kept, and sorted by the datagrid.
+- Always set `[clrDgItemsIdentityFn]`, unique across the whole tree, or rows close on every refresh.
+- `clrDgTreeColumn` puts the toggle and indentation in that column (several allowed; default: first column).
+- `selects`: `'self'` (default) or `'descendants'` (multi-selection cascades to loaded descendants).
+- `(clrDgTreeExpandedChange)`, `(clrDgTreeLoadError)`, and `reloadChildren(item?)` / `setTreeItemExpanded(item, expanded)` on `ClrDatagrid`.
+- Virtual scroll: `[clrVirtualTreeOf]`, `[clrVirtualTreeChildren]`, `[clrVirtualTreeExpandable]`, `[clrVirtualTreeSelects]` on the `ClrVirtualScroll` template instead of `clrVirtualRowsOf`.
+- Do not combine with expandable rows (`clr-dg-row-detail`) or nested datagrids.
+
 ## Rules
 
 - Always include `<clr-dg-placeholder>` for the empty state.

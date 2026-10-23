@@ -5,22 +5,24 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 
 import { DetailService } from './detail.service';
+import { DatagridTreeService } from './tree.service';
 
 @Injectable()
 export class ExpandableRowsCount {
   private expandableCount = 0;
+  private tree = inject(DatagridTreeService, { optional: true });
 
   constructor(private detailService: DetailService) {}
 
   /**
    * false means no rows with action
-   * check if details are on, and disable rows entirely
+   * check if details are on, and disable rows entirely; a tree has no expandable rows
    */
   get hasExpandableRow(): boolean {
-    return !this.detailService.enabled && this.expandableCount > 0;
+    return !this.detailService.enabled && !this.tree?.enabled && this.expandableCount > 0;
   }
 
   register() {

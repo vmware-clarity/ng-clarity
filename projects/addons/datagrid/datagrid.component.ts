@@ -17,6 +17,7 @@ import {
   HostBinding,
   Inject,
   Input,
+  isDevMode,
   OnChanges,
   OnDestroy,
   OnInit,
@@ -35,6 +36,8 @@ import {
   ClrDatagridPagination,
   ClrDatagridSortOrder,
   ClrDatagridStateInterface,
+  ClrDatagridTreeChildrenLoader,
+  ClrDatagridTreeSelection,
   ClrDatagridVirtualScrollRangeInterface,
   SelectionType,
   selectionTypeAttribute,
@@ -411,6 +414,28 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   @Input() gridItems: T[];
 
   /**
+   * Loads the children of a row, which turns a server-driven datagrid with paging into a tree:
+   * `gridItems` are the roots, and a row is expanded with the toggle in its leftmost cell.
+   *
+   * Only works with `serverDrivenDatagrid` and without `virtualScrolling`; other grids ignore it.
+   * A tree has no expandable rows, so `rowDetailContent` is not rendered. Rows are matched by
+   * `trackByGridItemProperty` or `trackByFunction`, which must be unique across the whole tree.
+   */
+  @Input() treeChildren?: ClrDatagridTreeChildrenLoader<T>;
+
+  /**
+   * Whether a row of the tree has children. Without it, every row offers the toggle until its
+   * children turn out to be empty.
+   */
+  @Input() treeExpandable?: (item: T) => boolean;
+
+  /**
+   * What selecting a row of the tree selects: the row only (default), or the row with its loaded
+   * descendants.
+   */
+  @Input() treeSelects?: ClrDatagridTreeSelection;
+
+  /**
    * Emits the updated page size {@link pageSize} to the parent component when changed.
    */
   @Output() pageSizeChange = new EventEmitter<number>();
@@ -536,6 +561,8 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * @type ColumnDefinition
    */
   #dgColumns: ColumnDefinition<T>[];
+  // The column defined first, which carries the tree toggle when no column is a tree column.
+  #firstColumn: ColumnDefinition<T> | undefined;
   #selectionType: SelectionType = SelectionType.Single;
   #selectedItems: T[] = [];
   #rowSelectionMode = true;
@@ -625,6 +652,10 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
   set columns(columns: ColumnDefinition<T>[]) {
     this.#dgColumns = columns;
     if (columns) {
+      // Moving columns hands them back in a new order; the first one keeps the toggle all the same.
+      if (!this.#firstColumn || !columns.includes(this.#firstColumn)) {
+        this.#firstColumn = columns[0];
+      }
       const visibleColumns = columns.filter((column: ColumnDefinition<T>) => !column.hidden);
       if (this.needsColumnViewsRebuild(visibleColumns)) {
         this.rebuildColumnViews(visibleColumns);
@@ -887,6 +918,12 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
     if (changes['singleRowActions']) {
       this.initActionTypes();
     }
+
+    if (this.treeChildren && (!this.serverDrivenDatagrid || this.virtualScrolling) && isDevMode()) {
+      console.warn(
+        'appfx-datagrid: treeChildren needs serverDrivenDatagrid without virtualScrolling; rendering flat rows.'
+      );
+    }
   }
 
   /**
@@ -894,6 +931,22 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
    * The index passed (0) is a dummy value and should not be relied upon.
    */
   trackByGridItemFn = (item: T) => this.trackByFn(0, <T>(item || {}));
+
+  /**
+   * Keeps tree rows across refreshes that return new objects, like the rows of the other modes.
+   */
+  trackByTreeItem: TrackByFunction<T> = (index: number, item: T) => this.trackByFn(index, item);
+
+  /**
+   * Whether the cells of a column carry the tree toggle: the tree columns, else the column defined
+   * first, and the first column on screen while none of those is shown.
+   */
+  isTreeColumn(column: ColumnDefinition<T>): boolean {
+    const marked = this.columns.some(definition => definition.treeColumn)
+      ? (definition: ColumnDefinition<T>) => !!definition.treeColumn
+      : (definition: ColumnDefinition<T>) => definition === this.#firstColumn;
+    return marked(column) || (!this.visibleColumns.some(marked) && column === this.visibleColumns[0]);
+  }
 
   trackByColumnId(index: number, column: ColumnDefinition<T>): string {
     return column.uid || column.displayName;
@@ -1241,8 +1294,11 @@ export class DatagridComponent<T> implements OnInit, OnDestroy, AfterViewInit, O
         return this.trackByGridItemFn(item) === this.trackByGridItemFn(this.detailState as T);
       });
       if (matchingItems.length === 0) {
-        // Hide detail pane when item is no longer present in the dataset
-        this.detailState = null;
+        // Hide detail pane when item is no longer present in the dataset. Child rows of a tree are
+        // not among the roots; the datagrid closes the pane itself when such a row goes away.
+        if (!this.treeChildren) {
+          this.detailState = null;
+        }
       } else {
         this.detailState = matchingItems[0];
         // In order for the datagrid detail caret button to be activated and
