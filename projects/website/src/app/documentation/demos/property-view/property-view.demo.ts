@@ -17,6 +17,7 @@ import {
 } from '@clr/addons/property-view';
 import { ClarityModule } from '@clr/angular';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -53,6 +54,7 @@ export class MyModule {}
     DocTabComponent,
     DocTabsComponent,
     StackblitzExampleComponent,
+    AiSkillComponent,
   ],
 })
 export class PropertyViewAddonDemoComponent extends ClarityDocComponent implements OnInit {

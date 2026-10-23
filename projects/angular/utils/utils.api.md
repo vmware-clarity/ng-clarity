@@ -8,8 +8,7 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import * as _angular_animations from '@angular/animations';
-import { AnimationBuilder } from '@angular/animations';
-import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
+import { AnimationCallbackEvent } from '@angular/core';
 import { AnimationMetadata } from '@angular/animations';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
@@ -37,6 +36,13 @@ import { TemplateRef } from '@angular/core';
 import { Type } from '@angular/core';
 import { ViewContainerRef } from '@angular/core';
 
+// @public
+export function animateHeight(element: HTMLElement, input: {
+    from: number;
+    to?: number;
+    easing?: string;
+}): Animation | null;
+
 // @public (undocumented)
 export enum ArrowKeyDirection {
     // (undocumented)
@@ -55,6 +61,8 @@ export function assertNever(value: never): void;
 // @public (undocumented)
 export class BaseExpandableAnimation {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
+    protected animateFromStartHeight(): void;
+    protected animates: boolean;
     // (undocumented)
     cleanupAnimationEffects(cancelAnimations?: boolean): void;
     // (undocumented)
@@ -63,6 +71,7 @@ export class BaseExpandableAnimation {
     protected element: ElementRef<HTMLElement>;
     // (undocumented)
     initAnimationEffects(): void;
+    protected readonly noopAnimations: boolean;
     // (undocumented)
     protected renderer: Renderer2;
     // (undocumented)
@@ -404,20 +413,25 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
 
 // @public (undocumented)
-export class ClrExpandableAnimation extends BaseExpandableAnimation {
-    // (undocumented)
-    animationDone(event: AnimationEvent_2): void;
-    // (undocumented)
-    animationStart(event: AnimationEvent_2): void;
-    // (undocumented)
+export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
+    // @deprecated (undocumented)
+    animationDone(_event: {
+        fromState: string;
+    }): void;
+    // @deprecated (undocumented)
+    animationStart(_event: {
+        fromState: string;
+    }): void;
     clrExpandTrigger: boolean;
-    // (undocumented)
+    // @deprecated (undocumented)
     get expandAnimation(): {
         value: boolean;
         params: {
             startHeight: number;
         };
     };
+    // (undocumented)
+    ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
@@ -426,19 +440,18 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation {
 
 // @public (undocumented)
 export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, builder: AnimationBuilder);
-    // (undocumented)
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
     expanded: boolean;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
-    // (undocumented)
+    // @deprecated (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     playAnimation(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, [null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -772,6 +785,9 @@ export class EmptyAnchor {
 // @public (undocumented)
 export const EXPANDABLE_ANIMATION_DIRECTIVES: Type<any>[];
 
+// @public
+export function expandHeight(input: AnimationCallbackEvent): void;
+
 // @public (undocumented)
 export const EXTRA_LARGE_BREAKPOINT = 1200;
 
@@ -948,6 +964,9 @@ export abstract class LoadingListener {
     abstract loadingStateChange(state: ClrLoadingState | string): void;
 }
 
+// @public
+export function measureHeight(element: HTMLElement): number;
+
 // @public (undocumented)
 export const MEDIUM_BREAKPOINT = 768;
 
@@ -1003,6 +1022,9 @@ export class MockFocusableItem implements FocusableItem {
     // (undocumented)
     up?: FocusableItem | Observable<FocusableItem>;
 }
+
+// @public
+export function noopAnimations(): boolean;
 
 // @public (undocumented)
 export abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
@@ -1071,6 +1093,9 @@ export class TemplateRefContainer {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<TemplateRefContainer, never>;
 }
+
+// @public (undocumented)
+export type ThemeType = 'light' | 'dark';
 
 // @public (undocumented)
 export function tokenFactory(): number;
