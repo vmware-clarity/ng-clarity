@@ -24,6 +24,7 @@ import { HeaderColorsDemo } from './header-colors';
 import { HeaderLinksDemo } from './header-links';
 import { HeaderTypesDemo } from './header-types';
 import { SubNavDemo } from './sub-nav';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -98,6 +99,7 @@ const EXAMPLE = `
     SubNavDemo,
     StyleDocsComponent,
     NestingTableComponent,
+    AiSkillComponent,
   ],
 })
 export class HeaderDemo extends ClarityDocComponent {

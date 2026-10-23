@@ -9,8 +9,7 @@ import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import * as _angular_animations from '@angular/animations';
-import { AnimationBuilder } from '@angular/animations';
-import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
+import { AnimationCallbackEvent } from '@angular/core';
 import { AnimationMetadata } from '@angular/animations';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -84,6 +83,7 @@ export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
     dropGroup: string;
     // (undocumented)
     readonly dropList: CdkDropList;
+    protected readonly enterClass: string;
     // (undocumented)
     get isDraggableOver(): boolean;
     // (undocumented)

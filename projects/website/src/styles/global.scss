@@ -53,16 +53,6 @@ p.cozy + p {
   }
 }
 
-//Overriding PrismJS styles. This is in code.scss and not in code.clarity.scss because
-//we don't want to override the background in case someone chooses to use
-//another PrismJS theme.
-:not(pre) > code[class*='language-'],
-pre[class*='language-'],
-pre,
-code[class*='language-'] {
-  background: transparent;
-}
-
 @media (width <= 991px) {
   .layout-components {
     .content-area > section {

@@ -11,6 +11,7 @@ import { RouterLink } from '@angular/router';
 import { SpinnerComponentDemo } from './spinner-component';
 import { SpinnerSizesDemo } from './spinner-sizes';
 import { SpinnerTypesDemo } from './spinner-types';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { AnimatedExampleComponent } from '../../../shared/animated-example/animated-example.component';
 import { DocTabActiveDirective } from '../../../shared/doc-tabs/doc-tab-active.directive';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -36,6 +37,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     SpinnerTypesDemo,
     SpinnerSizesDemo,
     StyleDocsComponent,
+    AiSkillComponent,
   ],
 })
 export class SpinnerDemo extends ClarityDocComponent {

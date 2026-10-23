@@ -22,7 +22,7 @@ import {
   ViewChild,
 } from '@angular/core';
 import { FormGroupName, NgModelGroup } from '@angular/forms';
-import { CollapsiblePanel, collapsiblePanelAnimation } from '@clr/angular/collapsible-panel';
+import { CollapsiblePanel } from '@clr/angular/collapsible-panel';
 import {
   ClrCommonStringsService,
   IfExpandService,
@@ -42,7 +42,6 @@ import { ClrStepDescription } from './step-description';
   templateUrl: 'stepper-panel.html',
   host: { '[class.clr-stepper-panel]': 'true' },
   changeDetection: ChangeDetectionStrategy.OnPush,
-  animations: collapsiblePanelAnimation,
   providers: [IfExpandService],
   standalone: false,
 })
@@ -52,6 +51,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
   @HostBinding('class.clr-stepper-panel-disabled') disabled = false;
   readonly PanelStatus = StepperPanelStatus;
   override panel: Observable<StepperPanelModel>;
+  protected override animatesCollapse = true;
 
   private readonly hostElement: ElementRef<HTMLElement> = inject(ElementRef);
   private teardownElementContext?: () => void;
