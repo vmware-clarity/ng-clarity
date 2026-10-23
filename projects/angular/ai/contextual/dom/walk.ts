@@ -28,6 +28,7 @@ import {
   resolveRole,
   roleCandidateSelector,
 } from './roles';
+import { closestAcrossShadow, idScope, IdScope, renderedChildNodes } from './shadow';
 import { summarizeRole } from './summarizers';
 import { WRITABLE_ROLES } from './tables/roles';
 import {
@@ -64,8 +65,8 @@ interface Walk {
   readonly excludeRoles: ReadonlySet<string>;
   readonly excludeRoleCandidates: string;
   readonly excludeSelector: string;
-  describedByIds: Set<string>;
-  labelIds: Set<string>;
+  /** Ids that `aria-describedby` and `aria-labelledby` point at, per document or shadow root. */
+  referencedIds: Map<IdScope, ReferencedIds>;
   /** Component budget left; a probe has its own. */
   remaining: number;
   truncated: boolean;
@@ -103,8 +104,7 @@ export function collectContextTreeWithin(
     excludeRoles,
     excludeRoleCandidates: roleCandidateSelector(excludeRoles),
     excludeSelector: usableSelectors(root, options.excludeSelectors),
-    describedByIds: new Set(),
-    labelIds: new Set(),
+    referencedIds: new Map(),
     remaining: options.maxComponents,
     truncated: false,
     probing: false,
@@ -116,7 +116,8 @@ export function collectContextTreeWithin(
     visited: { count: 0 },
   };
   return withinReadScope(() => {
-    collectReferencedIds(root, walk);
+    const rootScope = root.nodeType === Node.ELEMENT_NODE ? idScope(root as Element) : (root as IdScope);
+    walk.referencedIds.set(rootScope, collectReferencedIds(root, walk));
     const scope = engineScope(root, walk.options);
     const components = describeScope(root, scope.roots, walk);
     const result: ClrContextTreeResult = { components, truncated: walk.truncated };
@@ -271,7 +272,8 @@ function noteUndescribed(element: Element, walk: Walk, owner: Element | null): v
 
 function withinRedactedAncestry<T>(node: ParentNode, walk: Walk, describe: () => T): T {
   const ancestor = node.nodeType === Node.ELEMENT_NODE ? (node as Element).parentElement : null;
-  return within(walk, ancestor?.closest(CLR_CONTEXT_REDACT_SELECTOR) ? ['redactedDepth'] : [], describe);
+  const redacted = !!ancestor && !!closestAcrossShadow(ancestor, CLR_CONTEXT_REDACT_SELECTOR);
+  return within(walk, redacted ? ['redactedDepth'] : [], describe);
 }
 
 type DepthCounter = 'depth' | 'elementDepth' | 'redactedDepth' | 'summarizedListDepth' | 'textDepth';
@@ -289,11 +291,17 @@ function within<T>(walk: Walk, counters: readonly DepthCounter[], describe: () =
   }
 }
 
+interface ReferencedIds {
+  describedBy: Set<string>;
+  labels: Set<string>;
+}
+
 /**
  * `aria-describedby` targets are reported as their control's description, not again on their own;
  * `aria-labelledby` targets are still described, but not as free-standing text.
  */
-function collectReferencedIds(root: ParentNode, walk: Walk): void {
+function collectReferencedIds(root: ParentNode, walk: Walk): ReferencedIds {
+  const ids: ReferencedIds = { describedBy: new Set(), labels: new Set() };
   const collect = (attribute: string, into: Set<string>, reports: (element: Element) => boolean) => {
     for (const element of Array.from(root.querySelectorAll(`[${attribute}]`))) {
       if (isHiddenFromEngine(element, walk.excludeSelector) || !reports(element)) {
@@ -305,13 +313,33 @@ function collectReferencedIds(root: ParentNode, walk: Walk): void {
     }
   };
   const describes = (element: Element) => !!resolveRole(element) || isCustomElementTag(element);
-  collect('aria-describedby', walk.describedByIds, describes);
+  collect('aria-describedby', ids.describedBy, describes);
   collect(
     'aria-errormessage',
-    walk.describedByIds,
+    ids.describedBy,
     element => describes(element) && ariaEnumValue(element, 'aria-invalid') !== null
   );
-  collect('aria-labelledby', walk.labelIds, () => true);
+  collect('aria-labelledby', ids.labels, () => true);
+  return ids;
+}
+
+/** Ids are scoped to a document or shadow root, so each gets its own sets, collected when first reached. */
+function referencedIds(element: Element, walk: Walk): ReferencedIds {
+  const scope = idScope(element);
+  let ids = walk.referencedIds.get(scope);
+  if (!ids) {
+    ids = collectReferencedIds(scope, walk);
+    walk.referencedIds.set(scope, ids);
+  }
+  return ids;
+}
+
+function isDescription(element: Element, walk: Walk): boolean {
+  return !!element.id && referencedIds(element, walk).describedBy.has(element.id);
+}
+
+function isLabel(element: Element, walk: Walk): boolean {
+  return !!element.id && referencedIds(element, walk).labels.has(element.id);
 }
 
 function isCustomElementTag(element: Element): boolean {
@@ -340,7 +368,7 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
   if (element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE)) {
     counters.push('redactedDepth');
   }
-  if (element.id && walk.describedByIds.has(element.id)) {
+  if (isDescription(element, walk)) {
     counters.push('textDepth');
   }
   return within(walk, counters, () => describeVisible(element, walk, owner));
@@ -541,10 +569,10 @@ function isTextBlock(element: Element, walk: Walk): boolean {
   if (!walk.options.includeText || walk.textDepth > 0 || walk.redactedDepth > 0) {
     return false;
   }
-  if (NAMING_TAGS.has(element.tagName.toLowerCase()) || (element.id && walk.labelIds.has(element.id))) {
+  if (NAMING_TAGS.has(element.tagName.toLowerCase()) || isLabel(element, walk)) {
     return false;
   }
-  const hasOwnText = Array.from(element.childNodes).some(
+  const hasOwnText = renderedChildNodes(element).some(
     node => node.nodeType === Node.TEXT_NODE && !!node.textContent?.trim()
   );
   return hasOwnText && !isVisuallyHidden(element);
@@ -629,23 +657,12 @@ function describeFrame(frame: HTMLIFrameElement, walk: Walk): ClrComponentContex
       );
     }
   } else {
-    // Ids are scoped to a document, so the frame gets its own id sets.
-    const hostDescribedByIds = walk.describedByIds;
-    const hostLabelIds = walk.labelIds;
-    walk.describedByIds = new Set();
-    walk.labelIds = new Set();
     const redactedRoot = redacted && walk.redactedDepth === 0;
-    try {
-      collectReferencedIds(contents, walk);
-      const children = within(walk, redactedRoot ? ['redactedDepth'] : [], () =>
-        describeNested(contents.body, walk, null)
-      );
-      if (children.length) {
-        node.children = children;
-      }
-    } finally {
-      walk.describedByIds = hostDescribedByIds;
-      walk.labelIds = hostLabelIds;
+    const children = within(walk, redactedRoot ? ['redactedDepth'] : [], () =>
+      describeNested(contents.body, walk, null)
+    );
+    if (children.length) {
+      node.children = children;
     }
   }
 
@@ -697,7 +714,8 @@ function describeChildren(
 ): ClrComponentContext[] {
   const nodes: ClrComponentContext[] = [];
   const withText = !!looseText && walk.options.includeText && walk.textDepth === 0 && walk.redactedDepth === 0;
-  const children: ChildNode[] = withText ? Array.from(parent.childNodes) : Array.from(parent.children);
+  // An open shadow root renders in place of the light DOM, which shows only through its slots.
+  const children = renderedChildNodes(parent).filter(node => withText || node.nodeType === Node.ELEMENT_NODE);
   let text = '';
   for (let index = 0; index < children.length; index++) {
     const child = children[index];
@@ -738,7 +756,7 @@ function isPhrasing(element: Element, walk: Walk): boolean {
     !element.hasAttribute('aria-live') &&
     !element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE) &&
     !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
-    !(element.id && walk.labelIds.has(element.id)) &&
+    !isLabel(element, walk) &&
     !element.matches(DESCRIBABLE_SELECTOR) &&
     !element.querySelector(DESCRIBABLE_SELECTOR) &&
     !walk.extractors.some(extractor => element.matches(extractor.selector))
@@ -833,7 +851,10 @@ function isRenderedBy(descendant: Element, element: Element): boolean {
 }
 
 function isLeftOutAnyway(element: Element, excludeSelector: string): boolean {
-  return !!element.closest(CLR_CONTEXT_IGNORE_SELECTOR) || (!!excludeSelector && !!element.closest(excludeSelector));
+  return (
+    !!closestAcrossShadow(element, CLR_CONTEXT_IGNORE_SELECTOR) ||
+    (!!excludeSelector && !!closestAcrossShadow(element, excludeSelector))
+  );
 }
 
 function shouldSkipSubtree(element: Element, walk: Walk): boolean {
@@ -845,12 +866,7 @@ function shouldSkipSubtree(element: Element, walk: Walk): boolean {
   }
   // Only role-less text without controls folds into a description; page content can point
   // `aria-describedby` at any id.
-  if (
-    element.id &&
-    walk.describedByIds.has(element.id) &&
-    !element.querySelector(CONTROL_SELECTOR) &&
-    !resolveRole(element)
-  ) {
+  if (isDescription(element, walk) && !element.querySelector(CONTROL_SELECTOR) && !resolveRole(element)) {
     return true;
   }
   return !isVisible(element);
