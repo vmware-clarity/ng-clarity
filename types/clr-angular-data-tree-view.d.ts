@@ -61,6 +61,7 @@ declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit,
     commonStrings: ClrCommonStringsService;
     private focusManager;
     private elementRef;
+    private injector;
     expandable: boolean | undefined;
     selectedChange: EventEmitter<ClrSelectedState>;
     expandedChange: EventEmitter<boolean>;
@@ -69,6 +70,15 @@ declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit,
     nodeId: string;
     contentContainerTabindex: number;
     _model: TreeNodeModel<T>;
+    /**
+     * Set when Angular adds the children (see the template): once the node is rendered, and only when animations are
+     * enabled, as Angular calls `animate.enter` handlers only then. Never set under `provideNoopAnimations()`, which
+     * Angular's `animate.enter` does not honour.
+     */
+    protected animatesChildren: boolean;
+    protected readonly noopAnimations: boolean;
+    /** The latest expand or collapse of the children, so that an earlier one does not start its animation after it. */
+    private childrenHeightChange;
     private bulkChange;
     private skipAnimation;
     private skipEmitChange;
@@ -76,6 +86,7 @@ declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit,
     private typeAheadKeyEvent;
     private subscriptions;
     private contentContainer;
+    private children;
     private treeNodeLinkList;
     constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
     get disabled(): boolean;
@@ -87,6 +98,7 @@ declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit,
     set clrForTypeAhead(value: string);
     get ariaSelected(): boolean;
     get treeNodeLink(): ClrTreeNodeLink;
+    /** @deprecated No longer used: the children animate without Angular animations. To be removed in a future major version. */
     get childrenAnimationState(): string;
     private get isParent();
     ngOnInit(): void;
@@ -117,6 +129,8 @@ declare class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit,
     private expandOrFocusFirstChild;
     private collapseOrFocusParent;
     private triggerDefaultAction;
+    /** Animates the children to their new height, or settles them at once on a bulk change, replacing the earlier change. */
+    private animateChildrenHeight;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTreeNode<any>, [null, { optional: true; skipSelf: true; }, null, null, null, null, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTreeNode<any>, "clr-tree-node", never, { "expandable": { "alias": "clrExpandable"; "required": false; }; "disabled": { "alias": "clrDisabled"; "required": false; }; "selected": { "alias": "clrSelected"; "required": false; }; "expanded": { "alias": "clrExpanded"; "required": false; }; "clrForTypeAhead": { "alias": "clrForTypeAhead"; "required": false; }; }, { "selectedChange": "clrSelectedChange"; "expandedChange": "clrExpandedChange"; }, ["treeNodeLinkList"], ["*", "clr-tree-node", "[clrIfExpanded]"], false, never>;
 }

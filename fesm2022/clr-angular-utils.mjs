@@ -1,9 +1,8 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import { Injectable, EventEmitter, Output, Input, Directive, NgModule, TemplateRef, ViewChild, Component, ElementRef, HostListener, HostBinding, InjectionToken, PLATFORM_ID, DOCUMENT, Inject, ContentChildren, Optional, SkipSelf, Renderer2 } from '@angular/core';
+import { Injectable, EventEmitter, Output, Input, Directive, NgModule, TemplateRef, ViewChild, Component, ElementRef, inject, ANIMATION_MODULE_TYPE, InjectionToken, Optional, Inject, PLATFORM_ID, DOCUMENT, HostListener, ContentChildren, SkipSelf, Renderer2 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import * as i2 from '@angular/animations';
-import { animation, style, animate, state, transition, trigger, useAnimation } from '@angular/animations';
+import { animation, style, animate, state, transition } from '@angular/animations';
 export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';
 import { Subject, fromEvent, Observable, isObservable, of } from 'rxjs';
@@ -440,12 +439,114 @@ function collapse() {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** `animate.enter` handler expanding the added element from 0 to its natural height. */
+function expandHeight({ target }) {
+    animateHeight(target, { from: 0 });
+}
+const runningAnimations = new WeakMap();
+/**
+ * Animates the height of the element from `from` pixels to `to` pixels, or to the height it has once the animation
+ * it started before on the same element is canceled. The content is clipped (`clip` rather than `hidden`, which would
+ * make the element a scroll container and loosen its `position: sticky` descendants), and stays rendered even when
+ * the end state skips it (`content-visibility: hidden`). The animation leaves no style behind: once it is over, the element
+ * shows the style of its end state.
+ *
+ * The duration and easing are the `--cds-global-animation-duration-quick` and `--cds-global-animation-easing-in-out`
+ * tokens of the element, unless `easing` is given. It does not animate, and returns `null`, when the duration is 0
+ * (low motion theme), when the user prefers reduced motion, or outside of a browser.
+ */
+function animateHeight(element, { from, to, easing }) {
+    if (typeof element.animate !== 'function') {
+        return null;
+    }
+    runningAnimations.get(element)?.cancel();
+    runningAnimations.delete(element);
+    to ??= measureHeight(element);
+    if (from === to) {
+        return null;
+    }
+    const timing = readAnimationTiming(element);
+    if (!timing) {
+        return null;
+    }
+    try {
+        const animation = element.animate([
+            { height: `${from}px`, overflow: 'clip', contentVisibility: 'visible' },
+            { height: `${to}px`, overflow: 'clip', contentVisibility: 'visible' },
+        ], { ...timing, ...(easing && { easing }) });
+        runningAnimations.set(element, animation);
+        return animation;
+    }
+    catch {
+        // Invalid customized animation tokens: no animation.
+        return null;
+    }
+}
+/**
+ * The height of the element as it is rendered, running animations included, with its fractional part. It is 0 outside
+ * of a browser.
+ */
+function measureHeight(element) {
+    if (typeof getComputedStyle !== 'function') {
+        return 0;
+    }
+    const height = parseFloat(getComputedStyle(element).height);
+    return Number.isFinite(height) ? height : 0;
+}
+function readAnimationTiming(element) {
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return null;
+    }
+    const style = getComputedStyle(element);
+    const duration = parseDuration(style.getPropertyValue('--cds-global-animation-duration-quick'));
+    const easing = style.getPropertyValue('--cds-global-animation-easing-in-out').trim() || 'ease-in-out';
+    return duration > 0 ? { duration, easing } : null;
+}
+/** Parses a CSS time (`0.2s`, `200ms`) to milliseconds. */
+function parseDuration(value) {
+    const time = value.trim().toLowerCase();
+    const amount = parseFloat(time);
+    if (!Number.isFinite(amount)) {
+        return 0;
+    }
+    return time.endsWith('ms') ? amount : amount * 1000;
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/**
+ * Whether the application turned animations off with `provideNoopAnimations()` or `NoopAnimationsModule`. Angular's
+ * `animate.enter` and `animate.leave` do not honour them, so Clarity components check it to skip their animations,
+ * as they did with `@angular/animations`. To be called in an injection context.
+ */
+function noopAnimations() {
+    return inject(ANIMATION_MODULE_TYPE, { optional: true }) === 'NoopAnimations';
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
 class BaseExpandableAnimation {
     constructor(element, domAdapter, renderer) {
         this.element = element;
         this.domAdapter = domAdapter;
         this.renderer = renderer;
         this.startHeight = 0;
+        /**
+         * Set when Angular adds the element (see the `animate.enter` host listener), so that nothing animates on the first
+         * render. Angular calls `animate.enter` handlers only when animations are enabled, and the listener leaves it unset
+         * with `provideNoopAnimations()` or `NoopAnimationsModule`.
+         */
+        this.animates = false;
+        /** Whether the application turned animations off with `provideNoopAnimations()` or `NoopAnimationsModule`. */
+        this.noopAnimations = noopAnimations();
     }
     updateStartHeight() {
         this.startHeight = this.domAdapter.computedHeight(this.element.nativeElement) || 0;
@@ -466,6 +567,16 @@ class BaseExpandableAnimation {
         if (cancelAnimations) {
             this.cancelElementAnimations();
         }
+    }
+    /**
+     * Animates the height of the element from `startHeight` to its current height, then updates `startHeight`. Call it
+     * once the change is rendered.
+     */
+    animateFromStartHeight() {
+        const animation = this.animates ? animateHeight(this.element.nativeElement, { from: this.startHeight }) : null;
+        (animation?.finished ?? Promise.resolve()).then(() => this.updateStartHeight(), () => {
+            // Canceled by the next animation.
+        });
     }
     cancelElementAnimations() {
         this.element.nativeElement.getAnimations().forEach(animation => {
@@ -490,38 +601,35 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
 class ClrExpandableAnimation extends BaseExpandableAnimation {
     constructor() {
         super(...arguments);
+        /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */
         this.clrExpandTrigger = false;
     }
+    /** @deprecated No longer used: the height animates without Angular animations. To be removed in a future major version. */
     get expandAnimation() {
         return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
     }
-    animationStart(event) {
-        if (event.fromState !== 'void') {
-            this.initAnimationEffects();
+    ngOnChanges(changes) {
+        if (changes['clrExpandTrigger'] && !changes['clrExpandTrigger'].firstChange) {
+            // Once the change is rendered.
+            Promise.resolve().then(() => this.animateFromStartHeight());
         }
     }
-    animationDone(event) {
-        if (event.fromState !== 'void') {
-            this.cleanupAnimationEffects();
-        }
+    /** @deprecated No longer called. To be removed in a future major version. */
+    animationStart(_event) {
+        // Nothing to do.
+    }
+    /** @deprecated No longer called. To be removed in a future major version. */
+    animationDone(_event) {
+        // Nothing to do.
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimation, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrExpandableAnimation, isStandalone: false, selector: "clr-expandable-animation", inputs: { clrExpandTrigger: "clrExpandTrigger" }, host: { listeners: { "@expandAnimation.start": "animationStart($event)", "@expandAnimation.done": "animationDone($event)" }, properties: { "@expandAnimation": "this.expandAnimation" } }, providers: [DomAdapter], usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, styles: [":host{display:block}\n"], animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])] }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrExpandableAnimation, isStandalone: false, selector: "clr-expandable-animation", inputs: { clrExpandTrigger: "clrExpandTrigger" }, host: { listeners: { "animate.enter": "animates = !noopAnimations" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, styles: [":host{display:block}\n"] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimation, decorators: [{
             type: Component,
-            args: [{ selector: 'clr-expandable-animation', template: `<ng-content></ng-content>`, animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])], providers: [DomAdapter], standalone: false, styles: [":host{display:block}\n"] }]
+            args: [{ selector: 'clr-expandable-animation', template: `<ng-content></ng-content>`, providers: [DomAdapter], host: { '(animate.enter)': 'animates = !noopAnimations' }, standalone: false, styles: [":host{display:block}\n"] }]
         }], propDecorators: { clrExpandTrigger: [{
                 type: Input
-            }], expandAnimation: [{
-                type: HostBinding,
-                args: ['@expandAnimation']
-            }], animationStart: [{
-                type: HostListener,
-                args: ['@expandAnimation.start', ['$event']]
-            }], animationDone: [{
-                type: HostListener,
-                args: ['@expandAnimation.done', ['$event']]
             }] } });
 
 /*
@@ -530,33 +638,33 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** Never provided: stands for the `AnimationBuilder` the directive used to be injected with. */
+const UNUSED_ANIMATION_BUILDER = new InjectionToken('UNUSED_ANIMATION_BUILDER');
 class ClrExpandableAnimationDirective extends BaseExpandableAnimation {
-    constructor(element, domAdapter, renderer, builder) {
+    /**
+     * @param _builder Deprecated and ignored: the height no longer animates with Angular animations. Kept so that
+     * subclasses passing an `AnimationBuilder` still compile.
+     */
+    constructor(element, domAdapter, renderer, _builder) {
         super(element, domAdapter, renderer);
-        this.builder = builder;
+        /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */
         this.expanded = false;
     }
     ngOnChanges(changes) {
         if (changes['expanded'] && !changes['expanded'].firstChange) {
+            // Once the change is rendered.
             Promise.resolve().then(() => this.playAnimation());
         }
     }
+    /** @deprecated Kept so that subclasses calling `super.ngOnDestroy()` still compile. */
     ngOnDestroy() {
-        this.player?.destroy();
+        // Nothing to clean up.
     }
     playAnimation() {
-        if (this.player) {
-            this.player.destroy();
-        }
-        this.player = this.builder
-            .build([useAnimation(defaultExpandAnimation, { params: { startHeight: this.startHeight } })])
-            .create(this.element.nativeElement);
-        this.player.onStart(() => this.initAnimationEffects());
-        this.player.onDone(() => this.cleanupAnimationEffects(true));
-        this.player.play();
+        this.animateFromStartHeight();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimationDirective, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }, { token: i2.AnimationBuilder }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrExpandableAnimationDirective, isStandalone: false, selector: "[clrExpandableAnimation]", inputs: { expanded: ["clrExpandableAnimation", "expanded"] }, host: { properties: { "class.clr-expandable-animation": "true" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimationDirective, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }, { token: UNUSED_ANIMATION_BUILDER, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrExpandableAnimationDirective, isStandalone: false, selector: "[clrExpandableAnimation]", inputs: { expanded: ["clrExpandableAnimation", "expanded"] }, host: { listeners: { "animate.enter": "animates = !noopAnimations" }, properties: { "class.clr-expandable-animation": "true" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimationDirective, decorators: [{
             type: Directive,
@@ -565,10 +673,16 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     providers: [DomAdapter],
                     host: {
                         '[class.clr-expandable-animation]': 'true',
+                        '(animate.enter)': 'animates = !noopAnimations',
                     },
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }, { type: i2.AnimationBuilder }], propDecorators: { expanded: [{
+        }], ctorParameters: () => [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }, { type: undefined, decorators: [{
+                    type: Optional
+                }, {
+                    type: Inject,
+                    args: [UNUSED_ANIMATION_BUILDER]
+                }] }], propDecorators: { expanded: [{
                 type: Input,
                 args: ['clrExpandableAnimation']
             }] } });
@@ -2081,5 +2195,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * Generated bundle index. Do not edit.
  */
 
-export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
+export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, animateHeight, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, expandHeight, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, measureHeight, noopAnimations, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
 //# sourceMappingURL=clr-angular-utils.mjs.map

@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { OnInit, ChangeDetectorRef, EventEmitter, SimpleChanges } from '@angular/core';
+import { OnInit, ChangeDetectorRef, EventEmitter, AnimationCallbackEvent, SimpleChanges } from '@angular/core';
 import { IfExpandService } from '@clr/angular/utils';
 import { BehaviorSubject, Observable } from 'rxjs';
 import * as _angular_animations from '@angular/animations';
@@ -47,7 +47,22 @@ declare abstract class CollapsiblePanel implements OnInit {
     panelOpenChange: EventEmitter<boolean>;
     panel: Observable<CollapsiblePanelModel>;
     protected _panelIndex: number;
+    /**
+     * Set to `true` to collapse the content of a closing panel: the template keeps the content while `contentCollapsing`
+     * is set, and the projected content is removed once the content is collapsed.
+     */
+    protected animatesCollapse: boolean;
+    /** Set while the content of a closing panel collapses. */
+    protected contentCollapsing: boolean;
     private _id;
+    private panelRendered;
+    /**
+     * Set when Angular animates the content, which it does not when animations are disabled or on the server, and when
+     * the application uses Noop animations.
+     */
+    private collapsibleContent;
+    private readonly noopPanelAnimations;
+    private readonly panelDestroyRef;
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     get id(): string;
     set id(value: string);
@@ -55,8 +70,16 @@ declare abstract class CollapsiblePanel implements OnInit {
     ngOnInit(): void;
     togglePanel(): void;
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
+    /** `animate.enter` handler of the content. */
+    protected expandContent(event: AnimationCallbackEvent): void;
     protected handlePanelInputChanges(changes: SimpleChanges): void;
     private emitPanelChange;
+    /**
+     * Not an `animate.leave` handler: Angular cancels the leave animation of an element when the same element of another
+     * instance of the template enters, as the content of the next step does when a step closes.
+     */
+    private collapseContent;
+    private removeClosedContent;
     abstract getPanelStateClasses(panel: CollapsiblePanelModel): string;
     abstract getContentId(id: string): string;
     abstract getHeaderId(id: string): string;

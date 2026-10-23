@@ -1,4 +1,3 @@
-import { AnimationEvent } from '@angular/animations';
 import * as i0 from '@angular/core';
 import { OnChanges, OnDestroy, ElementRef, EventEmitter, TemplateRef, SimpleChange, Renderer2, NgZone, Type, OnInit } from '@angular/core';
 import * as i5 from '@clr/angular/utils';
@@ -48,10 +47,20 @@ declare class ClrModal implements OnChanges, OnDestroy {
     bypassScrollService: boolean;
     protected readonly modalContentTemplate: TemplateRef<any>;
     private readonly bodyElementRef;
+    private readonly dialogElementRef;
+    private readonly injector;
+    private readonly noopAnimations;
+    private destroyed;
+    /** Set when the modal closes, until it opens again: identifies the closing to notify. */
+    private closeRequest;
     constructor(_scrollingService: ScrollingService, commonStrings: ClrCommonStringsService, modalStackService: ModalStackService, configuration: ClrModalConfigurationService);
     get fadeMove(): string;
     set fadeMove(move: string);
     get backdrop(): boolean;
+    /** Class animating the dialog in, meant for its `animate.enter` binding. Empty when animations are skipped or off. */
+    protected get dialogEnterClass(): string;
+    /** Class animating the backdrop in, meant for its `animate.enter` binding. Empty when animations are off. */
+    protected get backdropEnterClass(): string;
     ngOnChanges(changes: {
         [propName: string]: SimpleChange;
     }): void;
@@ -59,8 +68,17 @@ declare class ClrModal implements OnChanges, OnDestroy {
     open(): void;
     backdropClick(): void;
     close(): void;
-    fadeDone(e: AnimationEvent): void;
+    /** @deprecated No longer called: `clrModalOpenChange` is emitted when the modal closes. To be removed in a future major version. */
+    fadeDone(_e: {
+        toState: string;
+    }): void;
     scrollTop(): void;
+    /**
+     * Emits `clrModalOpenChange(false)` after the closing render, once the dialog is removed and the focus trap has given
+     * the focus back, so that a handler can move the focus elsewhere.
+     * Once per closing, and not when the modal was not rendered, opens again in between, or is destroyed.
+     */
+    private notifyClosing;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrModal, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrModal, "clr-modal", never, { "_open": { "alias": "clrModalOpen"; "required": false; }; "closable": { "alias": "clrModalClosable"; "required": false; }; "closeButtonAriaLabel": { "alias": "clrModalCloseButtonAriaLabel"; "required": false; }; "size": { "alias": "clrModalSize"; "required": false; }; "staticBackdrop": { "alias": "clrModalStaticBackdrop"; "required": false; }; "skipAnimation": { "alias": "clrModalSkipAnimation"; "required": false; }; "stopClose": { "alias": "clrModalPreventClose"; "required": false; }; "labelledBy": { "alias": "clrModalLabelledById"; "required": false; }; "bypassScrollService": { "alias": "clrModalOverrideScrollService"; "required": false; }; }, { "_openChanged": "clrModalOpenChange"; "altClose": "clrModalAlternateClose"; }, ["modalContentTemplate"], [".leading-button", ".modal-title", ".modal-body", ".modal-footer"], false, never>;
 }

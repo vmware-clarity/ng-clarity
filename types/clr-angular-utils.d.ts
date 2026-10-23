@@ -1,9 +1,9 @@
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, AfterViewInit, QueryList, FactoryProvider, AfterViewChecked, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
+import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, AnimationCallbackEvent, AfterViewInit, QueryList, FactoryProvider, AfterViewChecked, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
 import * as i2 from '@angular/common';
 import * as _angular_animations from '@angular/animations';
-import { AnimationMetadata, AnimationEvent, AnimationBuilder } from '@angular/animations';
+import { AnimationMetadata } from '@angular/animations';
 export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
@@ -124,38 +124,64 @@ declare class BaseExpandableAnimation {
     protected domAdapter: DomAdapter;
     protected renderer: Renderer2;
     startHeight: number;
+    /**
+     * Set when Angular adds the element (see the `animate.enter` host listener), so that nothing animates on the first
+     * render. Angular calls `animate.enter` handlers only when animations are enabled, and the listener leaves it unset
+     * with `provideNoopAnimations()` or `NoopAnimationsModule`.
+     */
+    protected animates: boolean;
+    /** Whether the application turned animations off with `provideNoopAnimations()` or `NoopAnimationsModule`. */
+    protected readonly noopAnimations: boolean;
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
     updateStartHeight(): void;
     initAnimationEffects(): void;
     cleanupAnimationEffects(cancelAnimations?: boolean): void;
+    /**
+     * Animates the height of the element from `startHeight` to its current height, then updates `startHeight`. Call it
+     * once the change is rendered.
+     */
+    protected animateFromStartHeight(): void;
     private cancelElementAnimations;
     static ɵfac: i0.ɵɵFactoryDeclaration<BaseExpandableAnimation, never>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<BaseExpandableAnimation, never, never, {}, {}, never, never, true, never>;
 }
 
-declare class ClrExpandableAnimation extends BaseExpandableAnimation {
+declare class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
+    /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */
     clrExpandTrigger: boolean;
+    /** @deprecated No longer used: the height animates without Angular animations. To be removed in a future major version. */
     get expandAnimation(): {
         value: boolean;
         params: {
             startHeight: number;
         };
     };
-    animationStart(event: AnimationEvent): void;
-    animationDone(event: AnimationEvent): void;
+    ngOnChanges(changes: SimpleChanges): void;
+    /** @deprecated No longer called. To be removed in a future major version. */
+    animationStart(_event: {
+        fromState: string;
+    }): void;
+    /** @deprecated No longer called. To be removed in a future major version. */
+    animationDone(_event: {
+        fromState: string;
+    }): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimation, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
 }
 
 declare class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
-    private builder;
+    /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */
     expanded: boolean;
-    private player;
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, builder: AnimationBuilder);
+    /**
+     * @param _builder Deprecated and ignored: the height no longer animates with Angular animations. Kept so that
+     * subclasses passing an `AnimationBuilder` still compile.
+     */
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
     ngOnChanges(changes: SimpleChanges): void;
+    /** @deprecated Kept so that subclasses calling `super.ngOnDestroy()` still compile. */
     ngOnDestroy(): void;
     playAnimation(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, [null, null, null, { optional: true; }]>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
 }
 
@@ -169,6 +195,37 @@ declare class ClrExpandableAnimationModule {
 declare function fade(opacity?: number): AnimationMetadata[];
 
 declare function fadeSlide(direction: string): AnimationMetadata[];
+
+/** `animate.enter` handler expanding the added element from 0 to its natural height. */
+declare function expandHeight({ target }: AnimationCallbackEvent): void;
+/**
+ * Animates the height of the element from `from` pixels to `to` pixels, or to the height it has once the animation
+ * it started before on the same element is canceled. The content is clipped (`clip` rather than `hidden`, which would
+ * make the element a scroll container and loosen its `position: sticky` descendants), and stays rendered even when
+ * the end state skips it (`content-visibility: hidden`). The animation leaves no style behind: once it is over, the element
+ * shows the style of its end state.
+ *
+ * The duration and easing are the `--cds-global-animation-duration-quick` and `--cds-global-animation-easing-in-out`
+ * tokens of the element, unless `easing` is given. It does not animate, and returns `null`, when the duration is 0
+ * (low motion theme), when the user prefers reduced motion, or outside of a browser.
+ */
+declare function animateHeight(element: HTMLElement, { from, to, easing }: {
+    from: number;
+    to?: number;
+    easing?: string;
+}): Animation | null;
+/**
+ * The height of the element as it is rendered, running animations included, with its fractional part. It is 0 outside
+ * of a browser.
+ */
+declare function measureHeight(element: HTMLElement): number;
+
+/**
+ * Whether the application turned animations off with `provideNoopAnimations()` or `NoopAnimationsModule`. Angular's
+ * `animate.enter` and `animate.leave` do not honour them, so Clarity components check it to skip their animations,
+ * as they did with `@angular/animations`. To be called in an injection context.
+ */
+declare function noopAnimations(): boolean;
 
 declare function slide(direction: string): AnimationMetadata[];
 
@@ -952,5 +1009,5 @@ declare abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
     static ɵdir: i0.ɵɵDirectiveDeclaration<OompaLoompa, never, never, {}, {}, never, never, true, never>;
 }
 
-export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
+export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, animateHeight, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, expandHeight, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, measureHeight, noopAnimations, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
 export type { ClrCommonStrings, HeadingLevel, ThemeType };

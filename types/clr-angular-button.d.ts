@@ -15,8 +15,18 @@ declare class ClrLoadingButton implements LoadingListener {
     clrLoadingChange: EventEmitter<ClrLoadingState>;
     buttonState: typeof ClrLoadingState;
     state: ClrLoadingState;
+    /** Enter animation of the spinner and the button content: none on the first render. */
+    protected enterClass: string;
+    protected readonly leaveClass: string;
+    protected readonly checkMarkClass: string;
+    private readonly injector;
+    private readonly cdr;
+    private checkMarkElement;
     constructor(el: ElementRef<HTMLButtonElement>, renderer: Renderer2);
+    private set checkMark(value);
     loadingStateChange(state: ClrLoadingState): void;
+    /** Goes back to the default state, unless the check mark is gone: the success state is over already. */
+    private checkMarkDone;
     private setExplicitButtonWidth;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrLoadingButton, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrLoadingButton, "button[clrLoading]", never, { "disabled": { "alias": "disabled"; "required": false; }; }, { "clrLoadingChange": "clrLoadingChange"; }, never, ["*"], false, never>;
