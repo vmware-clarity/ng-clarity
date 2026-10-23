@@ -1,0 +1,83 @@
+name: Flake Repro (website datagrid custom-filtering)
+# TEMPORARY: reproduces the flaky website/datagrid/code-custom-filtering snapshot in the same environment as the
+# PR Website Visual Regression Test job. On this branch (next, Angular 21): natural occurrences with a timing probe.
+on:
+  push:
+    branches: ['flake/website-datagrid-custom-filtering-repro']
+  workflow_dispatch:
+concurrency:
+  group: flake-repro-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  build-website:
+    name: Build Website
+    timeout-minutes: 30
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci --ignore-scripts
+      - run: npm run _build:website
+      - uses: actions/upload-artifact@v4
+        with:
+          name: website-build
+          path: dist/website/
+          retention-days: 3
+
+  # Natural: the exact command of the PR Website Visual Regression Test job (--update-snapshots, the config's
+  # retries) on next (Angular 21), with the probe recording the Pokemon-grid measurements plus long tasks, paints and
+  # resource timing. Each runner repeats the full suite and records which snapshots changed (with blob hashes).
+  natural:
+    name: Natural ${{ matrix.rep }}
+    needs: build-website
+    timeout-minutes: 60
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        rep: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+    env:
+      CLARITY_VRT_BROWSER: chromium
+      CLARITY_VRT_THEME: dark
+      CLARITY_VRT_DENSITY: compact
+      CLARITY_VRT_SUITE: website
+      FLAKE_PROBE: '1'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+      - run: npm ci --ignore-scripts
+      - run: npx playwright install --with-deps chromium
+      - uses: actions/download-artifact@v4
+        with:
+          name: website-build
+          path: dist/website/
+      - name: Run the full website suite 5 times
+        run: |
+          mkdir -p flake-out
+          for i in 1 2 3 4 5; do
+            FLAKE_PROBE_JOB=rep${{ matrix.rep }}-iter$i \
+              npx playwright test --update-snapshots --reporter dot > flake-out/run-$i.log 2>&1 || true
+            cp test-results/flake-probe/*.jsonl flake-out/ 2>/dev/null || true
+            changed=$(git status --porcelain -- tests/snapshots | grep '\.png$' | awk '{print $2}')
+            echo "rep ${{ matrix.rep }} iteration $i changed: ${changed:-none}" | tee -a flake-out/summary.txt
+            for f in $changed; do
+              echo "  $(git hash-object "$f") $f" | tee -a flake-out/summary.txt
+            done
+            git checkout -- tests/snapshots
+            git clean -fdq -- tests/snapshots
+          done
+          cat flake-out/summary.txt >> "$GITHUB_STEP_SUMMARY"
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: natural-${{ matrix.rep }}-run${{ github.run_attempt }}
+          path: flake-out/
+          retention-days: 7
