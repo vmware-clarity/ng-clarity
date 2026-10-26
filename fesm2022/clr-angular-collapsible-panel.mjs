@@ -1,7 +1,7 @@
 import * as i0 from '@angular/core';
-import { Injectable, EventEmitter, Directive } from '@angular/core';
+import { Injectable, EventEmitter, inject, DestroyRef, afterNextRender, Directive } from '@angular/core';
 import * as i2 from '@clr/angular/utils';
-import { uniqueIdFactory, defaultAnimationTiming } from '@clr/angular/utils';
+import { uniqueIdFactory, noopAnimations, expandHeight, animateHeight, measureHeight, defaultAnimationTiming } from '@clr/angular/utils';
 import { map, filter, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
@@ -116,7 +116,19 @@ class CollapsiblePanel {
         this.cdr = cdr;
         this.panelOpen = false;
         this.panelOpenChange = new EventEmitter();
+        /**
+         * Set to `true` to collapse the content of a closing panel: the template keeps the content while `contentCollapsing`
+         * is set, and the projected content is removed once the content is collapsed.
+         */
+        this.animatesCollapse = false;
+        /** Set while the content of a closing panel collapses. */
+        this.contentCollapsing = false;
         this._id = uniqueIdFactory();
+        this.panelRendered = false;
+        this.noopPanelAnimations = noopAnimations();
+        this.panelDestroyRef = inject(DestroyRef);
+        // The content of a panel open on the first render shows without animation.
+        afterNextRender(() => (this.panelRendered = true));
     }
     get id() {
         return this._id;
@@ -135,6 +147,16 @@ class CollapsiblePanel {
     collapsePanelOnAnimationDone(panel) {
         if (!panel.open) {
             this.ifExpandService.expanded = false;
+        }
+    }
+    /** `animate.enter` handler of the content. */
+    expandContent(event) {
+        if (this.noopPanelAnimations) {
+            return;
+        }
+        this.collapsibleContent = event.target;
+        if (this.panelRendered) {
+            expandHeight(event);
         }
     }
     handlePanelInputChanges(changes) {
@@ -156,6 +178,46 @@ class CollapsiblePanel {
         }
         if (panel.open) {
             this.ifExpandService.expanded = true;
+            if (this.contentCollapsing) {
+                this.contentCollapsing = false;
+                animateHeight(this.collapsibleContent, { from: measureHeight(this.collapsibleContent) });
+            }
+        }
+        else if (this.animatesCollapse && this.collapsibleContent) {
+            if (!this.contentCollapsing) {
+                this.collapseContent();
+            }
+        }
+        else {
+            this.removeClosedContent();
+        }
+    }
+    /**
+     * Not an `animate.leave` handler: Angular cancels the leave animation of an element when the same element of another
+     * instance of the template enters, as the content of the next step does when a step closes.
+     */
+    collapseContent() {
+        const animation = animateHeight(this.collapsibleContent, { from: measureHeight(this.collapsibleContent), to: 0 });
+        if (!animation) {
+            this.removeClosedContent();
+            return;
+        }
+        this.contentCollapsing = true;
+        animation.finished.then(() => {
+            if (this.panelDestroyRef.destroyed) {
+                return;
+            }
+            this.contentCollapsing = false;
+            this.removeClosedContent();
+            this.cdr.markForCheck();
+        }, () => {
+            // Canceled: the panel opened again.
+        });
+    }
+    removeClosedContent() {
+        if (!this.panelOpen) {
+            this.collapsibleContent = null;
+            this.ifExpandService.expanded = false;
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CollapsiblePanel, deps: [{ token: CollapsiblePanelService }, { token: i2.IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Directive }); }

@@ -1,8 +1,7 @@
 import * as i0 from '@angular/core';
-import { Component, Injectable, EventEmitter, Input, HostBinding, Output, Optional, Inject, Directive, NgModule } from '@angular/core';
-import { trigger, state, style, transition, animate } from '@angular/animations';
+import { Component, Injectable, EventEmitter, inject, Injector, ChangeDetectorRef, afterNextRender, Input, HostBinding, ViewChild, Output, Optional, Inject, Directive, NgModule } from '@angular/core';
 import * as i1 from '@clr/angular/utils';
-import { IfExpandService, uniqueIdFactory, ClrConditionalModule, ClrFocusOnViewInitModule } from '@clr/angular/utils';
+import { noopAnimations, animateHeight, measureHeight, IfExpandService, uniqueIdFactory, ClrConditionalModule, ClrFocusOnViewInitModule } from '@clr/angular/utils';
 import { Subject, fromEvent } from 'rxjs';
 import * as i5 from '@clr/angular/icon';
 import { ClarityIcons, angleIcon, angleDoubleIcon, ClrIcon } from '@clr/angular/icon';
@@ -141,9 +140,17 @@ class ClrVerticalNavGroup {
         this._navService = _navService;
         this.commonStrings = commonStrings;
         this.expandedChange = new EventEmitter(true);
+        /**
+         * Set when Angular adds the children container (see the template), once the group is rendered. Not with the noop
+         * animations, nor when animations are disabled with `ANIMATIONS_DISABLED`: Angular then calls no `animate.enter` handler.
+         */
+        this.animatesChildren = false;
+        this.noopAnimations = noopAnimations();
         this.wasExpanded = false;
         this._subscriptions = [];
         this._expandAnimationState = COLLAPSED_STATE;
+        this.injector = inject(Injector);
+        this.cdr = inject(ChangeDetectorRef);
         _navGroupRegistrationService.registerNavGroup();
         // FIXME: This subscription handles a corner case
         // Vertical Nav collapse requires the animation to run first and then
@@ -156,6 +163,7 @@ class ClrVerticalNavGroup {
                 if (_navService.collapsed) {
                     _navService.collapsed = false;
                 }
+                this.animateChildrenExpand();
                 this.expandAnimationState = EXPANDED_STATE;
             }
             else if (!value && this.expandAnimationState === EXPANDED_STATE) {
@@ -167,7 +175,7 @@ class ClrVerticalNavGroup {
         this._subscriptions.push(_navService.animateOnCollapsed.subscribe((goingToCollapse) => {
             if (goingToCollapse && this.expanded) {
                 this.wasExpanded = true;
-                this.expandAnimationState = COLLAPSED_STATE;
+                this.collapseGroup();
             }
             else if (!goingToCollapse && this.wasExpanded) {
                 this.expandGroup();
@@ -192,7 +200,8 @@ class ClrVerticalNavGroup {
     }
     set userExpandedInput(value) {
         value = !!value;
-        if (this.expanded !== value) {
+        // Compared with the requested state: `expanded` stays true while the children collapse.
+        if ((this.expandAnimationState === EXPANDED_STATE) !== value) {
             // We have to call toggleExpand because some cases require animations to occur first
             // Directly setting the Expand service value skips the animation and can result in
             // nodes in the DOM but the nav group still being collapsed
@@ -212,7 +221,7 @@ class ClrVerticalNavGroup {
         // the expanded property is switched back to collapsed state.
         if (this._navService.collapsed && this.expanded) {
             this.wasExpanded = true;
-            this.expandAnimationState = COLLAPSED_STATE;
+            this.collapseGroup();
         }
     }
     ngOnDestroy() {
@@ -220,23 +229,35 @@ class ClrVerticalNavGroup {
         this._navGroupRegistrationService.unregisterNavGroup();
     }
     expandGroup() {
+        // Setting `expanded` animates the children through the expandChange subscription, except when it stays true
+        // while the children collapse.
+        if (this.expanded) {
+            this.animateChildrenExpand();
+        }
         this.expanded = true;
-        // Expanded animation occurs after Expand.expand is set to true
         this.expandAnimationState = EXPANDED_STATE;
     }
     collapseGroup() {
-        // If a Vertical Nav Group toggle button is clicked while the Vertical Nav is in Collapsed state,
-        // the Vertical Nav should be expanded first.
         this.expandAnimationState = COLLAPSED_STATE;
-    }
-    // closes a group after the collapse animation
-    expandAnimationDone($event) {
-        if ($event.toState === COLLAPSED_STATE) {
-            this.expanded = false;
+        // The group closes, removing its children, once they are collapsed.
+        const children = this.children.nativeElement;
+        const animation = this.animatesChildren ? animateHeight(children, { from: measureHeight(children), to: 0 }) : null;
+        if (animation) {
+            animation.finished.then(() => this.closeGroup(), () => {
+                // Expanded again while collapsing.
+            });
+        }
+        else {
+            this.closeGroup();
         }
     }
+    /** @deprecated No longer called: the group closes once its children are collapsed. To be removed in a future major version. */
+    expandAnimationDone(_$event) {
+        // Nothing to do.
+    }
     toggleExpand() {
-        if (this.expanded) {
+        // Not `expanded`, which stays true while the children collapse: toggling again then expands the group back.
+        if (this.expandAnimationState === EXPANDED_STATE) {
             this.collapseGroup();
         }
         else {
@@ -248,27 +269,35 @@ class ClrVerticalNavGroup {
             this.expandGroup();
         }
     }
+    /** Animates the children from their current height to the one they have once the group is expanded. */
+    animateChildrenExpand() {
+        if (!this.animatesChildren) {
+            return;
+        }
+        const children = this.children.nativeElement;
+        const from = measureHeight(children);
+        afterNextRender(
+        // Not when collapsed again before the render: the expand would cancel the collapse, leaving the group open.
+        { read: () => this.expandAnimationState === EXPANDED_STATE && animateHeight(children, { from }) }, { injector: this.injector });
+    }
+    closeGroup() {
+        if (this.expandAnimationState === COLLAPSED_STATE) {
+            this.expanded = false;
+            this.cdr.markForCheck();
+        }
+    }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrVerticalNavGroup, deps: [{ token: i1.IfExpandService }, { token: VerticalNavGroupRegistrationService }, { token: VerticalNavGroupService }, { token: VerticalNavService }, { token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrVerticalNavGroup, isStandalone: false, selector: "clr-vertical-nav-group", inputs: { userExpandedInput: ["clrVerticalNavGroupExpanded", "userExpandedInput"] }, outputs: { expandedChange: "clrVerticalNavGroupExpandedChange" }, host: { properties: { "class.is-expanded": "this.expanded" }, classAttribute: "nav-group" }, providers: [IfExpandService, VerticalNavGroupService], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"nav-group-content\">\n  <ng-content select=\"[clrVerticalNavLink]\"></ng-content>\n  <button class=\"nav-group-trigger\" type=\"button\" [attr.aria-expanded]=\"expanded\" (click)=\"toggleExpand()\">\n    <ng-content select=\"[clrVerticalNavIcon]\"></ng-content>\n    <div class=\"nav-group-text\">\n      <ng-content></ng-content>\n    </div>\n    <cds-icon shape=\"angle\" class=\"nav-group-trigger-icon\" [direction]=\"expanded ? 'down' : 'right'\"></cds-icon>\n  </button>\n</div>\n<!--TODO: This animation needs to be added to the clr-vertical-nav-group-children component-->\n<div class=\"nav-group-children\" [@clrExpand]=\"expandAnimationState\" (@clrExpand.done)=\"expandAnimationDone($event)\">\n  <ng-content select=\"[clrIfExpanded], clr-vertical-nav-group-children\"></ng-content>\n</div>\n", dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }], animations: [
-            trigger('clrExpand', [
-                state(EXPANDED_STATE, style({ height: '*' })),
-                state(COLLAPSED_STATE, style({ height: 0, visibility: 'hidden' })),
-                transition(`${EXPANDED_STATE} <=> ${COLLAPSED_STATE}`, animate('0.2s ease-in-out')),
-            ]),
-        ] }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrVerticalNavGroup, isStandalone: false, selector: "clr-vertical-nav-group", inputs: { userExpandedInput: ["clrVerticalNavGroupExpanded", "userExpandedInput"] }, outputs: { expandedChange: "clrVerticalNavGroupExpandedChange" }, host: { properties: { "class.is-expanded": "this.expanded" }, classAttribute: "nav-group" }, providers: [IfExpandService, VerticalNavGroupService], viewQueries: [{ propertyName: "children", first: true, predicate: ["children"], descendants: true, static: true }], ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"nav-group-content\">\n  <ng-content select=\"[clrVerticalNavLink]\"></ng-content>\n  <button class=\"nav-group-trigger\" type=\"button\" [attr.aria-expanded]=\"expanded\" (click)=\"toggleExpand()\">\n    <ng-content select=\"[clrVerticalNavIcon]\"></ng-content>\n    <div class=\"nav-group-text\">\n      <ng-content></ng-content>\n    </div>\n    <cds-icon shape=\"angle\" class=\"nav-group-trigger-icon\" [direction]=\"expanded ? 'down' : 'right'\"></cds-icon>\n  </button>\n</div>\n<div\n  #children\n  class=\"nav-group-children\"\n  [class.is-expanded]=\"expanded\"\n  (animate.enter)=\"animatesChildren = !noopAnimations\"\n>\n  <ng-content select=\"[clrIfExpanded], clr-vertical-nav-group-children\"></ng-content>\n</div>\n", dependencies: [{ kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrVerticalNavGroup, decorators: [{
             type: Component,
-            args: [{ selector: 'clr-vertical-nav-group', providers: [IfExpandService, VerticalNavGroupService], animations: [
-                        trigger('clrExpand', [
-                            state(EXPANDED_STATE, style({ height: '*' })),
-                            state(COLLAPSED_STATE, style({ height: 0, visibility: 'hidden' })),
-                            transition(`${EXPANDED_STATE} <=> ${COLLAPSED_STATE}`, animate('0.2s ease-in-out')),
-                        ]),
-                    ], host: { class: 'nav-group' }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"nav-group-content\">\n  <ng-content select=\"[clrVerticalNavLink]\"></ng-content>\n  <button class=\"nav-group-trigger\" type=\"button\" [attr.aria-expanded]=\"expanded\" (click)=\"toggleExpand()\">\n    <ng-content select=\"[clrVerticalNavIcon]\"></ng-content>\n    <div class=\"nav-group-text\">\n      <ng-content></ng-content>\n    </div>\n    <cds-icon shape=\"angle\" class=\"nav-group-trigger-icon\" [direction]=\"expanded ? 'down' : 'right'\"></cds-icon>\n  </button>\n</div>\n<!--TODO: This animation needs to be added to the clr-vertical-nav-group-children component-->\n<div class=\"nav-group-children\" [@clrExpand]=\"expandAnimationState\" (@clrExpand.done)=\"expandAnimationDone($event)\">\n  <ng-content select=\"[clrIfExpanded], clr-vertical-nav-group-children\"></ng-content>\n</div>\n" }]
+            args: [{ selector: 'clr-vertical-nav-group', providers: [IfExpandService, VerticalNavGroupService], host: { class: 'nav-group' }, standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n<div class=\"nav-group-content\">\n  <ng-content select=\"[clrVerticalNavLink]\"></ng-content>\n  <button class=\"nav-group-trigger\" type=\"button\" [attr.aria-expanded]=\"expanded\" (click)=\"toggleExpand()\">\n    <ng-content select=\"[clrVerticalNavIcon]\"></ng-content>\n    <div class=\"nav-group-text\">\n      <ng-content></ng-content>\n    </div>\n    <cds-icon shape=\"angle\" class=\"nav-group-trigger-icon\" [direction]=\"expanded ? 'down' : 'right'\"></cds-icon>\n  </button>\n</div>\n<div\n  #children\n  class=\"nav-group-children\"\n  [class.is-expanded]=\"expanded\"\n  (animate.enter)=\"animatesChildren = !noopAnimations\"\n>\n  <ng-content select=\"[clrIfExpanded], clr-vertical-nav-group-children\"></ng-content>\n</div>\n" }]
         }], ctorParameters: () => [{ type: i1.IfExpandService }, { type: VerticalNavGroupRegistrationService }, { type: VerticalNavGroupService }, { type: VerticalNavService }, { type: i1.ClrCommonStringsService }], propDecorators: { expandedChange: [{
                 type: Output,
                 args: ['clrVerticalNavGroupExpandedChange']
+            }], children: [{
+                type: ViewChild,
+                args: ['children', { static: true }]
             }], expanded: [{
                 type: HostBinding,
                 args: ['class.is-expanded']

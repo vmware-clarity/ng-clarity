@@ -87,6 +87,7 @@ declare class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     disabled: boolean;
     readonly PanelStatus: typeof StepperPanelStatus;
     panel: Observable<StepperPanelModel>;
+    protected animatesCollapse: boolean;
     private subscriptions;
     constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     get id(): string;

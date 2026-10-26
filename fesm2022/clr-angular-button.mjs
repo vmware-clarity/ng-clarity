@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Injectable, EventEmitter, Input, ViewChild, Output, Optional, SkipSelf, Component, ContentChildren, NgModule } from '@angular/core';
+import { Injectable, EventEmitter, Input, ViewChild, Output, Optional, SkipSelf, Component, ContentChildren, NgModule, inject, Injector, ChangeDetectorRef, afterNextRender, DestroyRef } from '@angular/core';
 import * as i6 from '@clr/angular/icon';
 import { ClrIcon, ClarityIcons, ellipsisHorizontalIcon } from '@clr/angular/icon';
 import * as i5 from '@angular/common';
@@ -7,11 +7,10 @@ import { CommonModule } from '@angular/common';
 import * as i2 from '@clr/angular/popover/common';
 import { ClrPopoverType, ClrPopoverPosition, DROPDOWN_POSITIONS, ClrPopoverHostDirective, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import * as i3 from '@clr/angular/utils';
-import { uniqueIdFactory, ClrLoadingState, LoadingListener, Linkers, ClrDestroyService, FOCUS_SERVICE_PROVIDER } from '@clr/angular/utils';
+import { uniqueIdFactory, ClrLoadingState, LoadingListener, Linkers, ClrDestroyService, FOCUS_SERVICE_PROVIDER, noopAnimations } from '@clr/angular/utils';
 import * as i1 from '@angular/router';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
-import { trigger, transition, style, animate, keyframes } from '@angular/animations';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -496,6 +495,31 @@ class ClrLoadingButton {
         this.clrLoadingChange = new EventEmitter(false);
         this.buttonState = ClrLoadingState;
         this.state = ClrLoadingState.DEFAULT;
+        /** Enter animation of the spinner and the button content: none on the first render. */
+        this.enterClass = '';
+        this.injector = inject(Injector);
+        this.cdr = inject(ChangeDetectorRef);
+        // No animations at all with `provideNoopAnimations()`: the success state then ends at once.
+        const noop = noopAnimations();
+        this.leaveClass = noop ? '' : 'clr-loading-btn-leave';
+        this.checkMarkClass = noop ? '' : 'clr-loading-btn-check';
+        if (!noop) {
+            afterNextRender(() => (this.enterClass = 'clr-loading-btn-enter'));
+        }
+        inject(DestroyRef).onDestroy(() => (this.checkMarkElement = undefined));
+    }
+    // The button goes back to its default state once the check mark animation (see `_buttons.clarity.scss`) is over:
+    // done, canceled (hidden button) or not started at all (animations turned off).
+    set checkMark(checkMark) {
+        const element = (this.checkMarkElement = checkMark?.nativeElement);
+        if (element) {
+            afterNextRender(() => {
+                // Settled in a microtask at the earliest: the state change is emitted to the parent, not while rendering.
+                // `getAnimations()` is missing in some test environments, such as jsdom.
+                const animations = element.getAnimations?.() ?? [];
+                Promise.allSettled(animations.map(animation => animation.finished)).then(() => this.checkMarkDone(element));
+            }, { injector: this.injector });
+        }
     }
     loadingStateChange(state) {
         if (state === this.state) {
@@ -526,6 +550,13 @@ class ClrLoadingButton {
         }
         this.clrLoadingChange.emit(state);
     }
+    /** Goes back to the default state, unless the check mark is gone: the success state is over already. */
+    checkMarkDone(checkMark) {
+        if (checkMark === this.checkMarkElement && this.state === ClrLoadingState.SUCCESS) {
+            this.loadingStateChange(ClrLoadingState.DEFAULT);
+            this.cdr.markForCheck();
+        }
+    }
     setExplicitButtonWidth() {
         if (this.el.nativeElement && this.el.nativeElement.getBoundingClientRect) {
             const boundingClientRect = this.el.nativeElement.getBoundingClientRect();
@@ -534,74 +565,49 @@ class ClrLoadingButton {
         }
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrLoadingButton, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrLoadingButton, isStandalone: false, selector: "button[clrLoading]", inputs: { disabled: "disabled" }, outputs: { clrLoadingChange: "clrLoadingChange" }, host: { properties: { "attr.disabled": "disabled? '' : null" } }, providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }], ngImport: i0, template: `
-    <span @parent>
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrLoadingButton, isStandalone: false, selector: "button[clrLoading]", inputs: { disabled: "disabled" }, outputs: { clrLoadingChange: "clrLoadingChange" }, host: { properties: { "attr.disabled": "disabled? '' : null" } }, providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }], viewQueries: [{ propertyName: "checkMark", first: true, predicate: ["checkMark"], descendants: true }], ngImport: i0, template: `
+    <span>
       @switch (state) {
         @case (buttonState.LOADING) {
-          <span @spinner class="spinner spinner-inline"></span>
+          <span [animate.enter]="enterClass" [animate.leave]="leaveClass" class="spinner spinner-inline"></span>
         }
         @case (buttonState.SUCCESS) {
           <span
-            @validated
-            (@validated.done)="this.loadingStateChange(this.buttonState.DEFAULT)"
+            #checkMark
+            [animate.leave]="leaveClass"
+            [class]="checkMarkClass"
             class="spinner spinner-inline spinner-check"
           ></span>
         }
         @case (buttonState.DEFAULT) {
-          <span @defaultButton class="clr-loading-btn-content">
+          <span [animate.enter]="enterClass" class="clr-loading-btn-content">
             <ng-content></ng-content>
           </span>
         }
       }
     </span>
-  `, isInline: true, animations: [
-            trigger('parent', [
-                // Skip :enter animation on first render.
-                // The button text/content should only be faded when transitioning to or from a non-default state.
-                transition(':enter', []),
-            ]),
-            trigger('defaultButton', [
-                transition(':enter', [style({ opacity: 0 }), animate('200ms 100ms ease-in', style({ opacity: 1 }))]),
-                // TODO: see if we can get leave animation to work before spinner's enter animation
-                transition(':leave', [style({ opacity: 0 })]),
-            ]),
-            trigger('spinner', [
-                transition(':enter', [style({ opacity: 0 }), animate('200ms 100ms ease-in', style({ opacity: 1 }))]),
-                transition(':leave', [style({ opacity: 1 }), animate('100ms ease-out', style({ opacity: 0 }))]),
-            ]),
-            trigger('validated', [
-                transition(':enter', [
-                    animate('600ms', keyframes([
-                        style({ transform: 'scale(0,0)', offset: 0 }),
-                        style({ opacity: 1, offset: 0.2 }),
-                        style({ transform: 'scale(1.2,1.2)', offset: 0.4 }),
-                        style({ transform: 'scale(.9,.9)', offset: 0.6 }),
-                        style({ transform: 'scale(1,1)', offset: 1 }),
-                    ])),
-                ]),
-                transition(':leave', [style({ opacity: 1 }), animate('100ms ease-out', style({ opacity: 0 }))]),
-            ]),
-        ] }); }
+  `, isInline: true }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrLoadingButton, decorators: [{
             type: Component,
             args: [{
                     selector: 'button[clrLoading]',
                     template: `
-    <span @parent>
+    <span>
       @switch (state) {
         @case (buttonState.LOADING) {
-          <span @spinner class="spinner spinner-inline"></span>
+          <span [animate.enter]="enterClass" [animate.leave]="leaveClass" class="spinner spinner-inline"></span>
         }
         @case (buttonState.SUCCESS) {
           <span
-            @validated
-            (@validated.done)="this.loadingStateChange(this.buttonState.DEFAULT)"
+            #checkMark
+            [animate.leave]="leaveClass"
+            [class]="checkMarkClass"
             class="spinner spinner-inline spinner-check"
           ></span>
         }
         @case (buttonState.DEFAULT) {
-          <span @defaultButton class="clr-loading-btn-content">
+          <span [animate.enter]="enterClass" class="clr-loading-btn-content">
             <ng-content></ng-content>
           </span>
         }
@@ -609,34 +615,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
     </span>
   `,
                     providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }],
-                    animations: [
-                        trigger('parent', [
-                            // Skip :enter animation on first render.
-                            // The button text/content should only be faded when transitioning to or from a non-default state.
-                            transition(':enter', []),
-                        ]),
-                        trigger('defaultButton', [
-                            transition(':enter', [style({ opacity: 0 }), animate('200ms 100ms ease-in', style({ opacity: 1 }))]),
-                            // TODO: see if we can get leave animation to work before spinner's enter animation
-                            transition(':leave', [style({ opacity: 0 })]),
-                        ]),
-                        trigger('spinner', [
-                            transition(':enter', [style({ opacity: 0 }), animate('200ms 100ms ease-in', style({ opacity: 1 }))]),
-                            transition(':leave', [style({ opacity: 1 }), animate('100ms ease-out', style({ opacity: 0 }))]),
-                        ]),
-                        trigger('validated', [
-                            transition(':enter', [
-                                animate('600ms', keyframes([
-                                    style({ transform: 'scale(0,0)', offset: 0 }),
-                                    style({ opacity: 1, offset: 0.2 }),
-                                    style({ transform: 'scale(1.2,1.2)', offset: 0.4 }),
-                                    style({ transform: 'scale(.9,.9)', offset: 0.6 }),
-                                    style({ transform: 'scale(1,1)', offset: 1 }),
-                                ])),
-                            ]),
-                            transition(':leave', [style({ opacity: 1 }), animate('100ms ease-out', style({ opacity: 0 }))]),
-                        ]),
-                    ],
                     host: { '[attr.disabled]': "disabled? '' : null" },
                     standalone: false,
                 }]
@@ -646,6 +624,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
             }], clrLoadingChange: [{
                 type: Output,
                 args: ['clrLoadingChange']
+            }], checkMark: [{
+                type: ViewChild,
+                args: ['checkMark']
             }] } });
 
 /*

@@ -1,6 +1,5 @@
 import * as i0 from '@angular/core';
 import { AfterContentInit, OnDestroy, EventEmitter, ElementRef, ChangeDetectorRef, Type } from '@angular/core';
-import { AnimationEvent } from '@angular/animations';
 import * as i8 from '@clr/angular/utils';
 import { ClrCommonStringsService, IfExpandService } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
@@ -50,9 +49,18 @@ declare class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     private _navService;
     commonStrings: ClrCommonStringsService;
     expandedChange: EventEmitter<boolean>;
+    /**
+     * Set when Angular adds the children container (see the template), once the group is rendered. Not with the noop
+     * animations, nor when animations are disabled with `ANIMATIONS_DISABLED`: Angular then calls no `animate.enter` handler.
+     */
+    protected animatesChildren: boolean;
+    protected readonly noopAnimations: boolean;
     private wasExpanded;
     private _subscriptions;
     private _expandAnimationState;
+    private readonly injector;
+    private readonly cdr;
+    private children;
     constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
     get expanded(): boolean;
     set expanded(value: boolean);
@@ -63,8 +71,14 @@ declare class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     ngOnDestroy(): void;
     expandGroup(): void;
     collapseGroup(): void;
-    expandAnimationDone($event: AnimationEvent): void;
+    /** @deprecated No longer called: the group closes once its children are collapsed. To be removed in a future major version. */
+    expandAnimationDone(_$event: {
+        toState: string;
+    }): void;
     toggleExpand(): void;
+    /** Animates the children from their current height to the one they have once the group is expanded. */
+    private animateChildrenExpand;
+    private closeGroup;
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrVerticalNavGroup, never>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrVerticalNavGroup, "clr-vertical-nav-group", never, { "userExpandedInput": { "alias": "clrVerticalNavGroupExpanded"; "required": false; }; }, { "expandedChange": "clrVerticalNavGroupExpandedChange"; }, never, ["[clrVerticalNavLink]", "[clrVerticalNavIcon]", "*", "[clrIfExpanded], clr-vertical-nav-group-children"], false, never>;
 }

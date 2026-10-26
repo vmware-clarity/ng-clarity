@@ -1,8 +1,7 @@
-import { trigger, transition, style, animate } from '@angular/animations';
 import * as i0 from '@angular/core';
-import { PLATFORM_ID, Inject, Injectable, EventEmitter, ViewChild, ContentChild, Input, Output, HostBinding, Component, Directive, NgModule, HostListener } from '@angular/core';
+import { PLATFORM_ID, Inject, Injectable, EventEmitter, inject, Injector, afterNextRender, ViewChild, ContentChild, Input, Output, HostBinding, Component, Directive, NgModule, HostListener } from '@angular/core';
 import * as i1 from '@clr/angular/utils';
-import { Keys, uniqueIdFactory, ScrollingService, CdkTrapFocusModule } from '@clr/angular/utils';
+import { Keys, uniqueIdFactory, noopAnimations, ScrollingService, CdkTrapFocusModule } from '@clr/angular/utils';
 import * as i4 from '@angular/common';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i5 from '@clr/angular/icon';
@@ -81,6 +80,12 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** Enter animation of the dialog for each supported `fadeMove` value. */
+const FADE_MOVE_ENTER_CLASSES = {
+    fadeDown: 'clr-fade-slide-down-enter',
+    fadeLeft: 'clr-fade-slide-left-enter',
+    fadeUp: 'clr-fade-slide-up-enter',
+};
 class ClrModal {
     constructor(_scrollingService, commonStrings, modalStackService, configuration) {
         this._scrollingService = _scrollingService;
@@ -99,6 +104,11 @@ class ClrModal {
         this.altClose = new EventEmitter(false);
         // presently this is only used by inline wizards
         this.bypassScrollService = false;
+        this.injector = inject(Injector);
+        this.noopAnimations = noopAnimations();
+        this.destroyed = false;
+        /** Set when the modal closes, until it opens again: identifies the closing to notify. */
+        this.closeRequest = null;
     }
     get fadeMove() {
         return this.skipAnimation ? '' : this.configuration.fadeMove;
@@ -109,26 +119,45 @@ class ClrModal {
     get backdrop() {
         return this.configuration.backdrop;
     }
-    // Detect when _open is set to true and set no-scrolling to true
+    /** Class animating the dialog in, meant for its `animate.enter` binding. Empty when animations are skipped or off. */
+    get dialogEnterClass() {
+        return this.noopAnimations ? '' : (FADE_MOVE_ENTER_CLASSES[this.fadeMove] ?? '');
+    }
+    /** Class animating the backdrop in, meant for its `animate.enter` binding. Empty when animations are off. */
+    get backdropEnterClass() {
+        return this.noopAnimations ? '' : 'clr-fade-enter';
+    }
+    // Track the opening and closing driven by the clrModalOpen input: page scrolling, the modal stack and the
+    // clrModalOpenChange(false) notification (emitted on an input-driven close too, as before).
     ngOnChanges(changes) {
-        if (!this.bypassScrollService && changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
+        if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
             if (changes._open.currentValue) {
-                this._scrollingService.stopScrolling();
-                this.modalStackService.trackModalOpen(this);
+                this.closeRequest = null;
+                if (!this.bypassScrollService) {
+                    this._scrollingService.stopScrolling();
+                    this.modalStackService.trackModalOpen(this);
+                }
             }
             else {
-                this._scrollingService.resumeScrolling();
+                this.notifyClosing();
+                if (!this.bypassScrollService) {
+                    this._scrollingService.resumeScrolling();
+                }
             }
         }
     }
     ngOnDestroy() {
+        this.destroyed = true;
         this._scrollingService.resumeScrolling();
+        // A modal destroyed while open must not keep handling the Escape key.
+        this.modalStackService.trackModalClose(this);
     }
     open() {
         if (this._open) {
             return;
         }
         this._open = true;
+        this.closeRequest = null;
         this._openChanged.emit(true);
         this.modalStackService.trackModalOpen(this);
     }
@@ -147,59 +176,38 @@ class ClrModal {
             return;
         }
         this._open = false;
+        this.notifyClosing();
     }
-    fadeDone(e) {
-        if (e.toState === 'void') {
-            // TODO: Investigate if we can decouple from animation events
-            this._openChanged.emit(false);
-            this.modalStackService.trackModalClose(this);
-        }
+    /** @deprecated No longer called: `clrModalOpenChange` is emitted when the modal closes. To be removed in a future major version. */
+    fadeDone(_e) {
+        // Nothing to do.
     }
     scrollTop() {
         this.bodyElementRef.nativeElement.scrollTo(0, 0);
     }
+    /**
+     * Emits `clrModalOpenChange(false)` after the closing render, once the dialog is removed and the focus trap has given
+     * the focus back, so that a handler can move the focus elsewhere.
+     * Once per closing, and not when the modal was not rendered, opens again in between, or is destroyed.
+     */
+    notifyClosing() {
+        if (this.closeRequest || !this.dialogElementRef) {
+            return;
+        }
+        const closeRequest = (this.closeRequest = {});
+        afterNextRender(() => {
+            if (closeRequest === this.closeRequest && !this.destroyed) {
+                this._openChanged.emit(false);
+                this.modalStackService.trackModalClose(this);
+            }
+        }, { injector: this.injector });
+    }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrModal, deps: [{ token: i1.ScrollingService }, { token: i1.ClrCommonStringsService }, { token: ModalStackService }, { token: ClrModalConfigurationService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrModal, isStandalone: false, selector: "clr-modal", inputs: { _open: ["clrModalOpen", "_open"], closable: ["clrModalClosable", "closable"], closeButtonAriaLabel: ["clrModalCloseButtonAriaLabel", "closeButtonAriaLabel"], size: ["clrModalSize", "size"], staticBackdrop: ["clrModalStaticBackdrop", "staticBackdrop"], skipAnimation: ["clrModalSkipAnimation", "skipAnimation"], stopClose: ["clrModalPreventClose", "stopClose"], labelledBy: ["clrModalLabelledById", "labelledBy"], bypassScrollService: ["clrModalOverrideScrollService", "bypassScrollService"] }, outputs: { _openChanged: "clrModalOpenChange", altClose: "clrModalAlternateClose" }, host: { properties: { "class.open": "this._open" } }, queries: [{ propertyName: "modalContentTemplate", first: true, predicate: ["clrInternalModalContentTemplate"], descendants: true }], viewQueries: [{ propertyName: "title", first: true, predicate: ["title"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }], usesOnChanges: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@if (_open) {\n<div class=\"modal\" [class.modal-full-screen]=\"size == 'full-screen'\">\n  <!--fixme: revisit when ngClass works with exit animation-->\n  <div\n    cdkTrapFocus\n    [cdkTrapFocusAutoCapture]=\"true\"\n    [@fadeMove]=\"fadeMove\"\n    (@fadeMove.done)=\"fadeDone($event)\"\n    class=\"modal-dialog\"\n    [class.modal-sm]=\"size == 'sm'\"\n    [class.modal-lg]=\"size == 'lg'\"\n    [class.modal-xl]=\"size == 'xl'\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-hidden]=\"!_open\"\n    [attr.aria-labelledby]=\"labelledBy || modalId\"\n  >\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->\n    @if (!modalContentTemplate) {\n    <div class=\"modal-content-wrapper\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header--accessible\">\n          <ng-content select=\".leading-button\"></ng-content>\n          <div class=\"modal-title-wrapper\" #title [id]=\"modalId\" cdkFocusInitial tabindex=\"-1\">\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          @if (closable) {\n          <button\n            type=\"button\"\n            [attr.aria-label]=\"closeButtonAriaLabel || commonStrings.keys.close\"\n            class=\"close\"\n            (click)=\"close()\"\n          >\n            <cds-icon shape=\"window-close\"></cds-icon>\n          </button>\n          }\n        </div>\n        <div #body class=\"modal-body-wrapper\">\n          <ng-content select=\".modal-body\"></ng-content>\n        </div>\n        <ng-content select=\".modal-footer\"></ng-content>\n      </div>\n    </div>\n    } @else {\n    <ng-template [ngTemplateOutlet]=\"modalContentTemplate\"></ng-template>\n    }\n  </div>\n  <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n  @if (backdrop) {\n  <div\n    [@fade]\n    class=\"modal-backdrop\"\n    [class.static]=\"staticBackdrop\"\n    aria-hidden=\"true\"\n    (click)=\"backdropClick()\"\n  ></div>\n  }\n</div>\n}\n", styles: [":host{display:none}:host.open{display:inline}\n"], dependencies: [{ kind: "directive", type: i4.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }], viewProviders: [ScrollingService], animations: [
-            trigger('fadeMove', [
-                transition('* => fadeDown', [
-                    style({ opacity: 0, transform: 'translate(0, -25%)' }),
-                    animate('0.2s ease-in-out'),
-                ]),
-                transition('fadeDown => *', [
-                    animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, -25%)' })),
-                ]),
-                transition('* => fadeLeft', [style({ opacity: 0, transform: 'translate(25%, 0)' }), animate('0.2s ease-in-out')]),
-                transition('fadeLeft => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(25%, 0)' }))]),
-                transition('* => fadeUp', [style({ opacity: 0, transform: 'translate(0, 50%)' }), animate('0.2s ease-in-out')]),
-                transition('fadeUp => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, 50%)' }))]),
-            ]),
-            trigger('fade', [
-                transition('void => *', [style({ opacity: 0 }), animate('0.2s ease-in-out', style({ opacity: 0.85 }))]),
-                transition('* => void', [animate('0.2s ease-in-out', style({ opacity: 0 }))]),
-            ]),
-        ] }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrModal, isStandalone: false, selector: "clr-modal", inputs: { _open: ["clrModalOpen", "_open"], closable: ["clrModalClosable", "closable"], closeButtonAriaLabel: ["clrModalCloseButtonAriaLabel", "closeButtonAriaLabel"], size: ["clrModalSize", "size"], staticBackdrop: ["clrModalStaticBackdrop", "staticBackdrop"], skipAnimation: ["clrModalSkipAnimation", "skipAnimation"], stopClose: ["clrModalPreventClose", "stopClose"], labelledBy: ["clrModalLabelledById", "labelledBy"], bypassScrollService: ["clrModalOverrideScrollService", "bypassScrollService"] }, outputs: { _openChanged: "clrModalOpenChange", altClose: "clrModalAlternateClose" }, host: { properties: { "class.open": "this._open" } }, queries: [{ propertyName: "modalContentTemplate", first: true, predicate: ["clrInternalModalContentTemplate"], descendants: true }], viewQueries: [{ propertyName: "title", first: true, predicate: ["title"], descendants: true }, { propertyName: "bodyElementRef", first: true, predicate: ["body"], descendants: true }, { propertyName: "dialogElementRef", first: true, predicate: ["dialog"], descendants: true }], usesOnChanges: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@if (_open) {\n<div class=\"modal\" [class.modal-full-screen]=\"size == 'full-screen'\">\n  <div\n    #dialog\n    cdkTrapFocus\n    [cdkTrapFocusAutoCapture]=\"true\"\n    [animate.enter]=\"dialogEnterClass\"\n    class=\"modal-dialog\"\n    [class.modal-sm]=\"size == 'sm'\"\n    [class.modal-lg]=\"size == 'lg'\"\n    [class.modal-xl]=\"size == 'xl'\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-hidden]=\"!_open\"\n    [attr.aria-labelledby]=\"labelledBy || modalId\"\n  >\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->\n    @if (!modalContentTemplate) {\n    <div class=\"modal-content-wrapper\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header--accessible\">\n          <ng-content select=\".leading-button\"></ng-content>\n          <div class=\"modal-title-wrapper\" #title [id]=\"modalId\" cdkFocusInitial tabindex=\"-1\">\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          @if (closable) {\n          <button\n            type=\"button\"\n            [attr.aria-label]=\"closeButtonAriaLabel || commonStrings.keys.close\"\n            class=\"close\"\n            (click)=\"close()\"\n          >\n            <cds-icon shape=\"window-close\"></cds-icon>\n          </button>\n          }\n        </div>\n        <div #body class=\"modal-body-wrapper\">\n          <ng-content select=\".modal-body\"></ng-content>\n        </div>\n        <ng-content select=\".modal-footer\"></ng-content>\n      </div>\n    </div>\n    } @else {\n    <ng-template [ngTemplateOutlet]=\"modalContentTemplate\"></ng-template>\n    }\n  </div>\n  <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n  @if (backdrop) {\n  <div\n    [animate.enter]=\"backdropEnterClass\"\n    class=\"modal-backdrop\"\n    [class.static]=\"staticBackdrop\"\n    aria-hidden=\"true\"\n    (click)=\"backdropClick()\"\n  ></div>\n  }\n</div>\n}\n", styles: [":host{display:none}:host.open{display:inline}\n"], dependencies: [{ kind: "directive", type: i4.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "directive", type: i1.CdkTrapFocusModule_CdkTrapFocus, selector: "[cdkTrapFocus]" }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }], viewProviders: [ScrollingService] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrModal, decorators: [{
             type: Component,
-            args: [{ selector: 'clr-modal', viewProviders: [ScrollingService], animations: [
-                        trigger('fadeMove', [
-                            transition('* => fadeDown', [
-                                style({ opacity: 0, transform: 'translate(0, -25%)' }),
-                                animate('0.2s ease-in-out'),
-                            ]),
-                            transition('fadeDown => *', [
-                                animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, -25%)' })),
-                            ]),
-                            transition('* => fadeLeft', [style({ opacity: 0, transform: 'translate(25%, 0)' }), animate('0.2s ease-in-out')]),
-                            transition('fadeLeft => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(25%, 0)' }))]),
-                            transition('* => fadeUp', [style({ opacity: 0, transform: 'translate(0, 50%)' }), animate('0.2s ease-in-out')]),
-                            transition('fadeUp => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, 50%)' }))]),
-                        ]),
-                        trigger('fade', [
-                            transition('void => *', [style({ opacity: 0 }), animate('0.2s ease-in-out', style({ opacity: 0.85 }))]),
-                            transition('* => void', [animate('0.2s ease-in-out', style({ opacity: 0 }))]),
-                        ]),
-                    ], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@if (_open) {\n<div class=\"modal\" [class.modal-full-screen]=\"size == 'full-screen'\">\n  <!--fixme: revisit when ngClass works with exit animation-->\n  <div\n    cdkTrapFocus\n    [cdkTrapFocusAutoCapture]=\"true\"\n    [@fadeMove]=\"fadeMove\"\n    (@fadeMove.done)=\"fadeDone($event)\"\n    class=\"modal-dialog\"\n    [class.modal-sm]=\"size == 'sm'\"\n    [class.modal-lg]=\"size == 'lg'\"\n    [class.modal-xl]=\"size == 'xl'\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-hidden]=\"!_open\"\n    [attr.aria-labelledby]=\"labelledBy || modalId\"\n  >\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->\n    @if (!modalContentTemplate) {\n    <div class=\"modal-content-wrapper\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header--accessible\">\n          <ng-content select=\".leading-button\"></ng-content>\n          <div class=\"modal-title-wrapper\" #title [id]=\"modalId\" cdkFocusInitial tabindex=\"-1\">\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          @if (closable) {\n          <button\n            type=\"button\"\n            [attr.aria-label]=\"closeButtonAriaLabel || commonStrings.keys.close\"\n            class=\"close\"\n            (click)=\"close()\"\n          >\n            <cds-icon shape=\"window-close\"></cds-icon>\n          </button>\n          }\n        </div>\n        <div #body class=\"modal-body-wrapper\">\n          <ng-content select=\".modal-body\"></ng-content>\n        </div>\n        <ng-content select=\".modal-footer\"></ng-content>\n      </div>\n    </div>\n    } @else {\n    <ng-template [ngTemplateOutlet]=\"modalContentTemplate\"></ng-template>\n    }\n  </div>\n  <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n  @if (backdrop) {\n  <div\n    [@fade]\n    class=\"modal-backdrop\"\n    [class.static]=\"staticBackdrop\"\n    aria-hidden=\"true\"\n    (click)=\"backdropClick()\"\n  ></div>\n  }\n</div>\n}\n", styles: [":host{display:none}:host.open{display:inline}\n"] }]
+            args: [{ selector: 'clr-modal', viewProviders: [ScrollingService], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n\n@if (_open) {\n<div class=\"modal\" [class.modal-full-screen]=\"size == 'full-screen'\">\n  <div\n    #dialog\n    cdkTrapFocus\n    [cdkTrapFocusAutoCapture]=\"true\"\n    [animate.enter]=\"dialogEnterClass\"\n    class=\"modal-dialog\"\n    [class.modal-sm]=\"size == 'sm'\"\n    [class.modal-lg]=\"size == 'lg'\"\n    [class.modal-xl]=\"size == 'xl'\"\n    role=\"dialog\"\n    aria-modal=\"true\"\n    [attr.aria-hidden]=\"!_open\"\n    [attr.aria-labelledby]=\"labelledBy || modalId\"\n  >\n    <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentStart}}</div>\n    <!-- This wizard is tightly coupled to the modal styles, so changes here could require changes in the wizard. -->\n    @if (!modalContentTemplate) {\n    <div class=\"modal-content-wrapper\">\n      <div class=\"modal-content\">\n        <div class=\"modal-header--accessible\">\n          <ng-content select=\".leading-button\"></ng-content>\n          <div class=\"modal-title-wrapper\" #title [id]=\"modalId\" cdkFocusInitial tabindex=\"-1\">\n            <ng-content select=\".modal-title\"></ng-content>\n          </div>\n          @if (closable) {\n          <button\n            type=\"button\"\n            [attr.aria-label]=\"closeButtonAriaLabel || commonStrings.keys.close\"\n            class=\"close\"\n            (click)=\"close()\"\n          >\n            <cds-icon shape=\"window-close\"></cds-icon>\n          </button>\n          }\n        </div>\n        <div #body class=\"modal-body-wrapper\">\n          <ng-content select=\".modal-body\"></ng-content>\n        </div>\n        <ng-content select=\".modal-footer\"></ng-content>\n      </div>\n    </div>\n    } @else {\n    <ng-template [ngTemplateOutlet]=\"modalContentTemplate\"></ng-template>\n    }\n  </div>\n  <div class=\"clr-sr-only\">{{commonStrings.keys.modalContentEnd}}</div>\n  @if (backdrop) {\n  <div\n    [animate.enter]=\"backdropEnterClass\"\n    class=\"modal-backdrop\"\n    [class.static]=\"staticBackdrop\"\n    aria-hidden=\"true\"\n    (click)=\"backdropClick()\"\n  ></div>\n  }\n</div>\n}\n", styles: [":host{display:none}:host.open{display:inline}\n"] }]
         }], ctorParameters: () => [{ type: i1.ScrollingService }, { type: i1.ClrCommonStringsService }, { type: ModalStackService }, { type: ClrModalConfigurationService }], propDecorators: { title: [{
                 type: ViewChild,
                 args: ['title']
@@ -245,6 +253,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
             }], bodyElementRef: [{
                 type: ViewChild,
                 args: ['body']
+            }], dialogElementRef: [{
+                type: ViewChild,
+                args: ['dialog']
             }] } });
 
 /*
