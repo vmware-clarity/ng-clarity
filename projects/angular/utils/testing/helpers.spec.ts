@@ -216,6 +216,31 @@ export function delay(ms = 0): Promise<void> {
 }
 
 /**
+ * Turns the CSS animations and transitions back on (`test.ts` turns them off for all the specs). Returns the function
+ * turning them off again; call it in an `afterEach`.
+ */
+export function enableCssAnimations(): () => void {
+  const noAnimationsStyle = document.getElementById('clr-test-no-animations') as HTMLStyleElement | null;
+  if (noAnimationsStyle) {
+    noAnimationsStyle.disabled = true;
+  }
+  return () => {
+    if (noAnimationsStyle) {
+      noAnimationsStyle.disabled = false;
+    }
+  };
+}
+
+/** Finishes the running animations (CSS or Web Animations) of the element and of its descendants. */
+export function finishAnimations(element: Element) {
+  element.getAnimations({ subtree: true }).forEach(animation => {
+    if (animation.effect?.getComputedTiming().iterations !== Infinity) {
+      animation.finish();
+    }
+  });
+}
+
+/**
  * Helper for testing requestAnimationFrame code. FakeAssync internally mocks requestAnimationFrame as setTimeout(16).
  * That's why we need to test it with tick(16). 16 is not a truly magic number, it's the approximated single frame time
  * of a 60 FPS refresh rate.

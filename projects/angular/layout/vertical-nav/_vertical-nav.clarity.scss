@@ -101,8 +101,17 @@ $width-transition: width tokens.$cds-global-animation-duration-quick tokens.$cds
       }
     }
 
+    // Children that are not removed when the group closes are hidden. The height animates between both states (see
+    // `ClrVerticalNavGroup`).
     .nav-group-children {
       overflow-y: hidden;
+      height: 0;
+      visibility: hidden;
+
+      &.is-expanded {
+        height: auto;
+        visibility: visible;
+      }
     }
 
     .nav-trigger,

@@ -4,11 +4,7 @@
 
 ```ts
 
-<<<<<<< HEAD
-import * as _angular_animations from '@angular/animations';
-=======
 import { AnimationCallbackEvent } from '@angular/core';
->>>>>>> 321cf102d (feat: drop the @angular/animations dependency (#2788))
 import { BehaviorSubject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { EventEmitter } from '@angular/core';
@@ -21,12 +17,15 @@ import { Subject } from 'rxjs';
 // @public (undocumented)
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    protected animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
+    protected contentCollapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
+    protected expandContent(event: AnimationCallbackEvent): void;
     // (undocumented)
     abstract getContentId(id: string): string;
     // (undocumented)
