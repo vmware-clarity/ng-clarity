@@ -212,7 +212,10 @@ describe('ClrContextEngineService, view metadata', () => {
 
       await TestBed.inject(Router).navigateByUrl('/hosts/7');
 
-      expect((await engine.getSnapshotAsync(quiet)).viewId).toBe('host-detail');
+      expect(engine.getSnapshot(quiet).metadataState).toBe('loading');
+      const loaded = await engine.getSnapshotAsync(quiet);
+      expect(loaded.viewId).toBe('host-detail');
+      expect(loaded.metadataState).toBeUndefined();
     });
   });
 });

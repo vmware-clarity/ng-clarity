@@ -195,8 +195,8 @@ export class ClrContextEngineService implements OnDestroy {
     const config = this.viewConfig(route);
     const provided = attempt(() => jsonSafe(this.application?.metadata?.(), REGION_DEPTH), undefined);
     const fromPage = this.pageMetadata(options);
-    const metadata = { ...recordOrEmpty(config?.metadata), ...recordOrEmpty(provided), ...fromPage.metadata };
-    const viewId = [fromPage.metadata['viewId'], this.providedViewId(), route?.data?.['viewId'], config?.viewId].find(
+    const metadata = { ...recordOrEmpty(config?.metadata), ...recordOrEmpty(provided), ...fromPage };
+    const viewId = [fromPage['viewId'], this.providedViewId(), route?.data?.['viewId'], config?.viewId].find(
       id => typeof id === 'string' && id
     );
     if (viewId) {
@@ -205,8 +205,9 @@ export class ClrContextEngineService implements OnDestroy {
     if (Object.keys(metadata).length) {
       snapshot.metadata = metadata;
     }
-    if (fromPage.pending || fromPage.failed) {
-      snapshot.metadataState = fromPage.failed || settled ? 'unavailable' : 'loading';
+    const loads = this.metadataUrls(options).map(url => this.metadataLoader.read(url));
+    if (loads.includes(undefined) || loads.includes(null)) {
+      snapshot.metadataState = settled || loads.includes(null) ? 'unavailable' : 'loading';
     }
     const enabled =
       typeof config?.enabled === 'boolean'
@@ -223,21 +224,14 @@ export class ClrContextEngineService implements OnDestroy {
   }
 
   /** Metadata from `data-ai-metadata` and `data-ai-metadata-url` on the view's roots and their ancestors, inner winning. */
-  private pageMetadata(options: Required<ClrContextSnapshotOptions>): {
-    metadata: Record<string, unknown>;
-    pending: boolean;
-    failed: boolean;
-  } {
-    const result = { metadata: {} as Record<string, unknown>, pending: false, failed: false };
+  private pageMetadata(options: Required<ClrContextSnapshotOptions>): Record<string, unknown> {
+    const metadata: Record<string, unknown> = {};
     for (const host of this.metadataHosts(options)) {
       const url = host.getAttribute(CLR_AI_METADATA_URL_ATTRIBUTE);
-      const loaded = url ? this.metadataLoader.read(url) : null;
-      result.pending ||= loaded === undefined;
-      result.failed ||= !!url && loaded === null;
       const inline = parseJsonObject(host.getAttribute(CLR_AI_METADATA_ATTRIBUTE), CLR_AI_METADATA_ATTRIBUTE);
-      Object.assign(result.metadata, loaded, inline);
+      Object.assign(metadata, url ? this.metadataLoader.read(url) : null, inline);
     }
-    return result;
+    return metadata;
   }
 
   private metadataHosts(options: Required<ClrContextSnapshotOptions>): Element[] {
@@ -248,7 +242,7 @@ export class ClrContextEngineService implements OnDestroy {
     return viewMetadataHosts(roots.filter(Boolean));
   }
 
-  /** The URLs a snapshot's view description may wait on. */
+  /** The configuration and metadata URLs the view's description depends on. */
   private metadataUrls(options: Required<ClrContextSnapshotOptions>): string[] {
     const urls = this.metadataHosts(options)
       .map(host => host.getAttribute(CLR_AI_METADATA_URL_ATTRIBUTE))
