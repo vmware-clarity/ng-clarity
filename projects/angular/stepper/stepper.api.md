@@ -8,6 +8,7 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
 import * as _angular_forms from '@angular/forms';
+import { AnimationCallbackEvent } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
@@ -117,6 +118,8 @@ export class ClrStepperModule {
 export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // Warning: (ae-forgotten-export) The symbol "IfExpandService" needs to be exported by the entry point clr-angular-stepper.d.ts
     constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    // (undocumented)
+    protected animatesCollapse: boolean;
     // Warning: (ae-forgotten-export) The symbol "ClrCommonStringsService" needs to be exported by the entry point clr-angular-stepper.d.ts
     //
     // (undocumented)

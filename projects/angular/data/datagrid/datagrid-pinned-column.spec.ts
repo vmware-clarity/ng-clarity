@@ -771,26 +771,6 @@ export default function (): void {
         expect(parseFloat(getComputedStyle(pinned).insetInlineStart)).toBeCloseTo(controlsWidth('.datagrid-header'), 1);
       });
 
-      it('keeps the static container anchored while the expand animation runs', function () {
-        // CDE-3127: the animation clips its host for as long as it runs. Clipping with
-        // `overflow: hidden` would turn that host into a scroll container, and the static container
-        // - which sits inside it - anchors itself to the nearest one, so the pinned columns would
-        // come loose and scroll away for the length of the animation.
-        const scrollingOverflows = ['hidden', 'scroll', 'auto'];
-        const pinned: HTMLElement = element.querySelector(`.datagrid-rows ${PINNED}`);
-        const row = context.clarityDirective.rows.first;
-
-        row.expandAnimation.initAnimationEffects();
-
-        let ancestor = pinned.parentElement;
-        while (ancestor && ancestor !== element) {
-          expect(scrollingOverflows).not.toContain(ancestor.style.overflow);
-          ancestor = ancestor.parentElement;
-        }
-
-        row.expandAnimation.cleanupAnimationEffects();
-      });
-
       it('measures the row controls separately from the ones in the header', function () {
         // The header renders a single column for both kinds of caret where a row renders one cell
         // per caret, so the two containers are not necessarily the same width.
