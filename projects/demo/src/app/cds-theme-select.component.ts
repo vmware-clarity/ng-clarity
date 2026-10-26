@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { Params, Router } from '@angular/router';
 
 export const cdsThemeAttribute = 'cds-theme';
@@ -34,6 +34,7 @@ export const clrDensityAttribute = 'clr-density';
       </select>
     </clr-select-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CdsThemeSelectComponent implements OnInit, OnDestroy {

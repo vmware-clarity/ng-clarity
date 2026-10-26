@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import {
   ClarityIcons,
   cloudIcon,
@@ -102,6 +102,7 @@ const HTML_EXAMPLE = `
   selector: 'clr-layout-all-demo',
   templateUrl: './layout-all.html',
   styleUrl: './layout.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrAlertModule, ClrVerticalNavModule, StackblitzExampleComponent],
 })
 export class LayoutAllDemo {

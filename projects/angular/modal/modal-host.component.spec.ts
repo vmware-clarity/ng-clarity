@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrModalHostComponent } from './modal-host.component';
@@ -34,6 +34,7 @@ describe('ModalHost for SidePanel', () => {
 
 @Component({
   template: '<div clrModalHost #testElement></div>',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

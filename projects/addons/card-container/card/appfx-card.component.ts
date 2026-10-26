@@ -8,6 +8,7 @@
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import {
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -59,6 +60,7 @@ import { LayoutService } from '../services/layout.service';
       useValue: translations,
     },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppfxCardComponent implements OnInit, AfterViewInit, OnDestroy {
   /**

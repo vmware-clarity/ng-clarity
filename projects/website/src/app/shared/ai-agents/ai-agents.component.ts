@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAccordionModule } from '@clr/angular';
 
 import AI_AGENTS from '../../../compiled-content/ai-agents.json';
@@ -30,6 +30,7 @@ import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
     </clr-accordion>
   `,
   imports: [ClrAccordionModule, SafeHtmlPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AiAgentsComponent {
   readonly AI_AGENTS = AI_AGENTS;

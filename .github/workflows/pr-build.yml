@@ -12,12 +12,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        angular: ['Angular v21', 'Angular v22']
-        # The primary leg uses the Angular version the repository is developed with; it runs lint, the public API check
-        # and uploads the artifacts.
-        include:
-          - angular: 'Angular v21'
-            primary: true
+        # next requires Angular 22 only. main keeps its Angular 21 build and Angular 22 consumer checks.
+        # The primary leg runs lint, the public API check and artifact uploads.
+        include: >-
+          ${{ fromJSON(github.base_ref == 'next'
+          && '[{"angular":"Angular v22","primary":true}]'
+          || '[{"angular":"Angular v21","primary":true},{"angular":"Angular v22","primary":false}]') }}
     permissions:
       contents: read
     env:
@@ -33,22 +33,25 @@ jobs:
       - name: Install Dependencies
         run: npm ci --ignore-scripts
       # The libraries are always built with the Angular version the repository is developed with, as they are published.
-      - name: Build Clarity Library (Angular v21)
+      - name: Build Clarity Library (${{ github.base_ref == 'next' && 'Angular v22' || 'Angular v21' }})
         run: |
           npm run _build:angular
           npm run _build:addons
           npm run _build:ui
-      # The demo and website then build against the built libraries in dist/, like applications using the published
-      # packages. Storybook and the unit tests keep using the library sources, see scripts/use-dist-paths.js.
-      - name: Prepare Consuming Infrastructure for Angular v22
-        if: ${{ !matrix.primary }}
-        run: |
-          npx ng update @angular/core@22 @angular/cli@22 @angular/cdk@22 --allow-dirty --force
-          npm install --save-dev @angular-builders/custom-esbuild@22 --ignore-scripts --force
-          node ./scripts/use-dist-paths.js
       - name: Lint
         if: ${{ matrix.primary }}
         run: npm run lint
+      # The demo and website then build against the built libraries in dist/, like applications using the published
+      # packages. Storybook and the unit tests keep using the library sources, see scripts/use-dist-paths.js.
+      - name: Prepare Consuming Infrastructure for Angular v22
+        if: ${{ github.base_ref != 'next' && !matrix.primary }}
+        run: |
+          npx ng update @angular/core@22 @angular/cli@22 @angular/cdk@22 --allow-dirty --force
+          npm install --save-dev @angular-builders/custom-esbuild@22 --ignore-scripts --force
+      - name: Use Published Library Paths (Angular v22)
+        if: ${{ github.base_ref == 'next' || !matrix.primary }}
+        run: |
+          node ./scripts/use-dist-paths.js
       # Storybook empties dist/docs before building, so it has to run before the demo (dist/docs/demo).
       - name: Build Consuming Applications
         run: |

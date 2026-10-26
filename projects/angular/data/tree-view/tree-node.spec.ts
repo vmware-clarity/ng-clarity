@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, PLATFORM_ID, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
@@ -29,6 +29,7 @@ import { ClrTreeViewModule } from './tree-view.module';
       }
     </clr-tree-node>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -51,6 +52,7 @@ class TestComponent {
     </clr-tree-node>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class NestedTestComponent {
   @ViewChild('node') tree: ClrTreeNode<void>;
@@ -70,6 +72,7 @@ interface LazyNode {
     </clr-tree>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class LazyRecursiveTestComponent {
   @ViewChild(ClrTreeNode) node: ClrTreeNode<LazyNode>;
@@ -84,6 +87,7 @@ class LazyRecursiveTestComponent {
       <a href="href" class="clr-treenode-link" [class.active]="active">Hello world</a>
     </clr-tree-node>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class LinkTestComponent {

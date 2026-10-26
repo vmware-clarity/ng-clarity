@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClrIcon, ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 import { BUTTON_STYLES, BUTTON_TYPES, getButtonClass } from '@storybook-helpers/button-class.helper';
 import { createArray } from '@storybook-helpers/common';
@@ -163,6 +163,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
       }
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ButtonStorybookComponent extends RenderComponentStorybook {
   BUTTON_STYLES = BUTTON_STYLES;

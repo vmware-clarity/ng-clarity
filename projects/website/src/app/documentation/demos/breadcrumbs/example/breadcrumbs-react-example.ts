@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-breadcrumb-react-example',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<h2>React</h2>
     <p>
       React is an open-source JavaScript library used for building user interfaces for web and mobile applications.

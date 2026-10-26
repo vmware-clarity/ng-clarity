@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Injectable, Provider, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injectable, Provider, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -27,6 +27,7 @@ import { ClrStepperModule } from './stepper.module';
       <clr-stepper-panel formGroupName="groupName">test step</clr-stepper-panel>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveFormsTestComponent {
@@ -40,6 +41,7 @@ class ReactiveFormsTestComponent {
       <clr-stepper-panel ngModelGroup="groupName">test step</clr-stepper-panel>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateFormsTestComponent {
@@ -56,6 +58,7 @@ class TemplateFormsTestComponent {
     </form>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class ExpandableContentTestComponent {
   form = new FormGroup({ groupName: new FormGroup({}) });
@@ -75,6 +78,7 @@ class ExpandableContentTestComponent {
     </form>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class StepperTestComponent {
   form = new FormGroup({ first: new FormGroup({}), second: new FormGroup({}) });

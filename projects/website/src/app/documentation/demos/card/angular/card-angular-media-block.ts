@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrCardModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -34,6 +34,7 @@ const HTML_EXAMPLE = `
   styleUrl: '../card.demo.scss',
   templateUrl: './card-angular-media-block.html',
   imports: [ClrCardModule, StackblitzExampleComponent],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CardAngularMediaBlockDemo {
   htmlExample = HTML_EXAMPLE;

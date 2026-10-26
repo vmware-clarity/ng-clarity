@@ -7,7 +7,7 @@
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
@@ -83,6 +83,7 @@ describe('DatagridContentNoWrapDirective', () => {
 @Component({
   selector: 'appfx-datagrid-host-component',
   imports: [AppfxDatagridModule, DragDropModule, FormsModule, OverlayModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<appfx-datagrid></appfx-datagrid>`,
 })
 class DatagridHostComponent {

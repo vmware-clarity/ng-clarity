@@ -17,6 +17,7 @@ const configs = {
 };
 
 const rules = {
+  'explicit-change-detection': require('./explicit-change-detection'),
   'no-parameter-property-this-in-constructor': noParameterPropertyThisInConstructorRule,
   'html-license-header': htmlLicenseHeaderRule,
 };
