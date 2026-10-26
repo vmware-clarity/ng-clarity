@@ -2,8 +2,6 @@ import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, AnimationCallbackEvent, AfterViewInit, QueryList, FactoryProvider, AfterViewChecked, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
 import * as i2 from '@angular/common';
-import * as _angular_animations from '@angular/animations';
-import { AnimationMetadata } from '@angular/animations';
 export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';
 import { CdkTrapFocus } from '@angular/cdk/a11y';
@@ -114,10 +112,87 @@ declare function assertNever(value: never): void;
 
 declare function isBooleanAttributeSet(value: string | boolean): boolean;
 
-declare const defaultAnimationTiming = "0.2s ease-in-out";
-declare const defaultExpandAnimation: _angular_animations.AnimationReferenceMetadata;
+/**
+ * Structural equivalents of the animation metadata produced by the `@angular/animations` package
+ * (`style()`, `animate()`, `transition()`, ...).
+ *
+ * Clarity itself does not depend on `@angular/animations` anymore. The deprecated
+ * animation helpers below keep producing the objects Angular's animation engine understands, so that applications
+ * which still use the package can keep passing them to their own `trigger()` definitions.
+ *
+ * The numeric `type` codes match Angular's `AnimationMetadataType` enum.
+ *
+ * @deprecated Use CSS animations, for example the `clr-fade-*` and `clr-slide-*` classes, or `animateHeight()` instead.
+ */
+type ClrAnimationStyles = '*' | {
+    [key: string]: string | number;
+} | Array<{
+    [key: string]: string | number;
+} | '*'>;
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationOptions {
+    delay?: number | string;
+    params?: {
+        [name: string]: any;
+    };
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationStyleMetadata {
+    type: 6;
+    styles: ClrAnimationStyles;
+    offset: number | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationAnimateMetadata {
+    type: 4;
+    timings: string | number;
+    styles: ClrAnimationStyleMetadata | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationStateMetadata {
+    type: 0;
+    name: string;
+    styles: ClrAnimationStyleMetadata;
+    options?: {
+        params: {
+            [name: string]: any;
+        };
+    };
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationTransitionMetadata {
+    type: 1;
+    expr: string;
+    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
+    options: ClrAnimationOptions | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationReferenceMetadata {
+    type: 8;
+    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
+    options: ClrAnimationOptions | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+interface ClrAnimationTriggerMetadata {
+    type: 7;
+    name: string;
+    definitions: ClrAnimationMetadata[];
+    options: {
+        params?: {
+            [name: string]: any;
+        };
+    } | null;
+}
+/** @deprecated see {@link ClrAnimationStyles} */
+type ClrAnimationMetadata = ClrAnimationStyleMetadata | ClrAnimationAnimateMetadata | ClrAnimationStateMetadata | ClrAnimationTransitionMetadata | ClrAnimationReferenceMetadata | ClrAnimationTriggerMetadata;
 
-declare function collapse(): AnimationMetadata[];
+/** @deprecated Clarity no longer uses Angular animations; use the `--cds-global-animation-*` tokens instead. */
+declare const defaultAnimationTiming = "0.2s ease-in-out";
+/** @deprecated Clarity no longer uses Angular animations; see `ClrExpandableAnimation` and `clrExpandableAnimation`. */
+declare const defaultExpandAnimation: ClrAnimationReferenceMetadata;
+
+/** @deprecated Clarity no longer uses Angular animations; use `animateHeight()` instead. */
+declare function collapse(): ClrAnimationMetadata[];
 
 declare class BaseExpandableAnimation {
     protected element: ElementRef<HTMLElement>;
@@ -192,9 +267,11 @@ declare class ClrExpandableAnimationModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrExpandableAnimationModule>;
 }
 
-declare function fade(opacity?: number): AnimationMetadata[];
+/** @deprecated Clarity no longer uses Angular animations; use the `clr-fade-enter` and `clr-fade-leave` classes instead. */
+declare function fade(opacity?: number): ClrAnimationMetadata[];
 
-declare function fadeSlide(direction: string): AnimationMetadata[];
+/** @deprecated Clarity no longer uses Angular animations; use the `clr-fade-slide-<direction>-enter` / `-leave` classes instead. */
+declare function fadeSlide(direction: string): ClrAnimationMetadata[];
 
 /** `animate.enter` handler expanding the added element from 0 to its natural height. */
 declare function expandHeight({ target }: AnimationCallbackEvent): void;
@@ -227,7 +304,8 @@ declare function measureHeight(element: HTMLElement): number;
  */
 declare function noopAnimations(): boolean;
 
-declare function slide(direction: string): AnimationMetadata[];
+/** @deprecated Clarity no longer uses Angular animations; use the `clr-slide-<direction>-enter` / `-leave` classes instead. */
+declare function slide(direction: string): ClrAnimationMetadata[];
 
 interface ClrCommonStrings {
     /**
@@ -1010,4 +1088,4 @@ declare abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
 }
 
 export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, animateHeight, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, expandHeight, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, measureHeight, noopAnimations, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
-export type { ClrCommonStrings, HeadingLevel, ThemeType };
+export type { ClrAnimationAnimateMetadata, ClrAnimationMetadata, ClrAnimationOptions, ClrAnimationReferenceMetadata, ClrAnimationStateMetadata, ClrAnimationStyleMetadata, ClrAnimationStyles, ClrAnimationTransitionMetadata, ClrAnimationTriggerMetadata, ClrCommonStrings, HeadingLevel, ThemeType };

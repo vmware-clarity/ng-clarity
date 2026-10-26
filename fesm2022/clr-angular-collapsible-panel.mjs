@@ -4,7 +4,6 @@ import * as i2 from '@clr/angular/utils';
 import { uniqueIdFactory, noopAnimations, expandHeight, animateHeight, measureHeight, defaultAnimationTiming } from '@clr/angular/utils';
 import { map, filter, tap } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
-import { trigger, transition, style, animate } from '@angular/animations';
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -233,19 +232,51 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const skipInitialRenderTrigger = trigger('skipInitialRender', [transition(':enter', [])]);
-const panelExpandTransition = transition('void => *', [
-    style({ display: 'block', height: 0 }),
-    animate(defaultAnimationTiming, style({ height: '*' })),
-]);
-const panelCollapseTransition = transition('* => void', [
-    style({ display: 'block' }),
-    animate(defaultAnimationTiming, style({ height: 0, display: 'none' })),
-]);
-const collapsiblePanelExpandAnimation = [skipInitialRenderTrigger, trigger('toggle', [panelExpandTransition])];
+// The objects below are the ones `trigger()`, `transition()`, `style()` and `animate()` of `@angular/animations`
+// return (see `ClrAnimationStyles`), written out so that Clarity does not need that package.
+/**
+ * @deprecated Clarity panels no longer use Angular animations: bind `expandContent` of `CollapsiblePanel` to the
+ * `animate.enter` of the panel content instead.
+ */
+const skipInitialRenderTrigger = {
+    type: 7,
+    name: 'skipInitialRender',
+    definitions: [{ type: 1, expr: ':enter', animation: [], options: null }],
+    options: {},
+};
+/** @deprecated see {@link skipInitialRenderTrigger} */
+const panelExpandTransition = {
+    type: 1,
+    expr: 'void => *',
+    animation: [
+        { type: 6, styles: { display: 'block', height: 0 }, offset: null },
+        { type: 4, timings: defaultAnimationTiming, styles: { type: 6, styles: { height: '*' }, offset: null } },
+    ],
+    options: null,
+};
+/** @deprecated see {@link skipInitialRenderTrigger} */
+const panelCollapseTransition = {
+    type: 1,
+    expr: '* => void',
+    animation: [
+        { type: 6, styles: { display: 'block' }, offset: null },
+        {
+            type: 4,
+            timings: defaultAnimationTiming,
+            styles: { type: 6, styles: { height: 0, display: 'none' }, offset: null },
+        },
+    ],
+    options: null,
+};
+/** @deprecated see {@link skipInitialRenderTrigger} */
+const collapsiblePanelExpandAnimation = [
+    skipInitialRenderTrigger,
+    { type: 7, name: 'toggle', definitions: [panelExpandTransition], options: {} },
+];
+/** @deprecated see {@link skipInitialRenderTrigger} */
 const collapsiblePanelAnimation = [
     skipInitialRenderTrigger,
-    trigger('toggle', [panelExpandTransition, panelCollapseTransition]),
+    { type: 7, name: 'toggle', definitions: [panelExpandTransition, panelCollapseTransition], options: {} },
 ];
 
 /*

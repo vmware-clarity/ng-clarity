@@ -1,8 +1,7 @@
 import * as i0 from '@angular/core';
 import { OnInit, ChangeDetectorRef, EventEmitter, AnimationCallbackEvent, SimpleChanges } from '@angular/core';
-import { IfExpandService } from '@clr/angular/utils';
+import { IfExpandService, ClrAnimationTriggerMetadata, ClrAnimationTransitionMetadata } from '@clr/angular/utils';
 import { BehaviorSubject, Observable } from 'rxjs';
-import * as _angular_animations from '@angular/animations';
 
 declare class CollapsiblePanelModel {
     id: string;
@@ -87,10 +86,18 @@ declare abstract class CollapsiblePanel implements OnInit {
     static ɵdir: i0.ɵɵDirectiveDeclaration<CollapsiblePanel, never, never, {}, {}, never, never, true, never>;
 }
 
-declare const skipInitialRenderTrigger: _angular_animations.AnimationTriggerMetadata;
-declare const panelExpandTransition: _angular_animations.AnimationTransitionMetadata;
-declare const panelCollapseTransition: _angular_animations.AnimationTransitionMetadata;
-declare const collapsiblePanelExpandAnimation: _angular_animations.AnimationTriggerMetadata[];
-declare const collapsiblePanelAnimation: _angular_animations.AnimationTriggerMetadata[];
+/**
+ * @deprecated Clarity panels no longer use Angular animations: bind `expandContent` of `CollapsiblePanel` to the
+ * `animate.enter` of the panel content instead.
+ */
+declare const skipInitialRenderTrigger: ClrAnimationTriggerMetadata;
+/** @deprecated see {@link skipInitialRenderTrigger} */
+declare const panelExpandTransition: ClrAnimationTransitionMetadata;
+/** @deprecated see {@link skipInitialRenderTrigger} */
+declare const panelCollapseTransition: ClrAnimationTransitionMetadata;
+/** @deprecated see {@link skipInitialRenderTrigger} */
+declare const collapsiblePanelExpandAnimation: ClrAnimationTriggerMetadata[];
+/** @deprecated see {@link skipInitialRenderTrigger} */
+declare const collapsiblePanelAnimation: ClrAnimationTriggerMetadata[];
 
 export { CollapsiblePanel, CollapsiblePanelGroupModel, CollapsiblePanelModel, CollapsiblePanelService, collapsiblePanelAnimation, collapsiblePanelExpandAnimation, panelCollapseTransition, panelExpandTransition, skipInitialRenderTrigger };
