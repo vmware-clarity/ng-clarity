@@ -12,9 +12,8 @@ This app uses Clarity for UI. Follow these rules whenever you add or change Clar
 - Import what `@clr/angular` exports. Most components ship in NgModules: import the module, not the
   component class (`imports: [ClrDatagridModule]`). These are standalone and imported directly:
   `ClrIcon`, `ClrBadge`, `ClrLabel`, `ClrIfExpanded`, `ClrIfActive`, `ClrIfOpen`.
-- Provide animations: `provideAnimationsAsync()` from `@angular/platform-browser/animations/async`
-  in `app.config.ts` (or `BrowserAnimationsModule`). Required while Clarity uses `@angular/animations`
-  (datagrid, modal, tree view, loading buttons, and more); without it components throw at runtime.
+- No animations provider is needed: Clarity animates with CSS and the Web Animations API, not
+  `@angular/animations`. `provideNoopAnimations()` turns Clarity's animations off.
 - App components may be standalone, OnPush, and use Signals. Clarity bindings stay as template
   inputs and outputs (`[clrDgLoading]`, `(clrDgRefresh)`), not signal inputs.
 - Icons: `<clr-icon shape="...">`; register the shapes you use. Icon-only buttons need `aria-label`.
