@@ -329,5 +329,57 @@ export default function (): void {
         expect(selectionService.selectionModel.containsItem(options[0])).toBeTrue();
       });
     });
+
+    describe('OnPush host', () => {
+      @Component({
+        changeDetection: ChangeDetectionStrategy.OnPush,
+        template: `
+          <clr-combobox [(ngModel)]="selection">
+            <clr-options>
+              <clr-option [clrValue]="1">1</clr-option>
+              <clr-option [clrValue]="2">2</clr-option>
+              <clr-option [clrValue]="3">3</clr-option>
+            </clr-options>
+          </clr-combobox>
+        `,
+        standalone: false,
+      })
+      class OnPushTestComponent {
+        selection: number;
+      }
+
+      it('moves the keyboard focus between options', async () => {
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [ClrComboboxModule, ClrIcon, FormsModule, ClrPopoverContent],
+          declarations: [OnPushTestComponent],
+          providers: [
+            OptionSelectionService,
+            IF_ACTIVE_ID_PROVIDER,
+            FOCUS_SERVICE_PROVIDER,
+            COMBOBOX_FOCUS_HANDLER_PROVIDER,
+          ],
+        });
+        const onPushFixture = TestBed.createComponent(OnPushTestComponent);
+        const comboboxDE = onPushFixture.debugElement.query(By.directive(ClrCombobox));
+        comboboxDE.injector.get(ClrPopoverService).open = true;
+        onPushFixture.detectChanges();
+        await delay();
+        onPushFixture.detectChanges();
+
+        const input: HTMLInputElement = comboboxDE.nativeElement.querySelector('input');
+        const focusedOptionId = () => document.querySelector('.clr-combobox-option.clr-focus')?.id;
+        const initiallyFocused = focusedOptionId();
+
+        // The focus handler listens with renderer.listen, so the keydown itself does not mark any view dirty.
+        input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+        onPushFixture.detectChanges();
+
+        const focused = focusedOptionId();
+        expect(focused).toBeTruthy();
+        expect(focused).not.toBe(initiallyFocused);
+        expect(input.getAttribute('aria-activedescendant')).toBe(focused);
+      });
+    });
   });
 }

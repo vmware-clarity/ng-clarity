@@ -13,6 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         # next requires Angular 22 only. main keeps its Angular 21 build and Angular 22 consumer checks.
+        # TODO(CDE-3265): derive the matrix from the installed @angular/core major instead of the base branch.
         # The primary leg runs lint, the public API check and artifact uploads.
         include: >-
           ${{ fromJSON(github.base_ref == 'next'

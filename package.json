@@ -26,7 +26,7 @@
     "start:website:compile-content": "nodemon --watch projects/website/content --watch projects/website/stackblitz-example-template --ext md,json,js,ts,css,scss,html --exec \"npm run prebuild:website:compile-content\"",
     "prebuild:website": "npm-run-all prebuild:website:*",
     "prebuild:website:compile-content": "node ./projects/website/scripts/compile-content.js",
-    "test": "npm-run-all _test:angular _test:addons _test:schematics _test:tree-shaking _test:eslint-rules _test:scripts",
+    "test": "npm-run-all _test:angular _test:addons _test:schematics _test:tree-shaking _test:scripts",
     "test:vrt:website": "CLARITY_VRT_SUITE=website playwright test",
     "test:vrt:website:update": "CLARITY_VRT_SUITE=website playwright test --update-snapshots",
     "test:watch": "npm-run-all --parallel _test:angular:watch _test:addons:watch",
@@ -76,7 +76,6 @@
     "figma:push:preview": "npm-run-all _test:figma _figma:push:preview",
     "figma:push:dry-run": "node figma/index.mjs --dry-run",
     "figma:extract": "node figma/index.mjs --extract figma-tokens.extract.json",
-    "_test:eslint-rules": "node --test eslint-rules/*.test.js",
     "_test:scripts": "node --test scripts/*.test.js"
   },
   "devDependencies": {

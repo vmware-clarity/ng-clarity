@@ -393,6 +393,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
             formatError(error).data.message || this.workflowStrings.defaultWizardSubmitError,
           ];
         }
+        this.cdr.markForCheck();
       },
       complete: () => {
         this.loading = false;
@@ -400,6 +401,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
         this.onFinish.emit();
         this.wizard.forceFinish();
         this.closeWizard(Reason.finish);
+        this.cdr.markForCheck();
       },
     });
   }
@@ -414,12 +416,14 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
             formatError(error).data.message || this.workflowStrings.defaultWizardSubmitError,
           ];
         }
+        this.cdr.markForCheck();
       },
       complete: () => {
         this.loading = false;
         this.closeHandlerValidationState.errors = [];
         this.wizard.close();
         this.closeWizard(Reason.cancel);
+        this.cdr.markForCheck();
       },
     });
   }

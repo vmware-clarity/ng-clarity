@@ -125,9 +125,9 @@ export class ClientSideDatagridDemoComponent {
   }
 
   refresh(): void {
-    this.options.loading = true;
+    this.options = { ...this.options, loading: true };
     setTimeout(() => {
-      this.options.loading = false;
+      this.options = { ...this.options, loading: false };
       this.filteredVms = [...this.inventory.allItems];
 
       this.changeDetectorRef.markForCheck();

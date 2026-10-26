@@ -21,7 +21,7 @@ root to select that version.
 Clarity v19 requires Angular 22. Angular 21 applications must upgrade Angular before installing Clarity v19.
 Angular framework and CDK peer dependencies are bounded to `^22.0.0`.
 
-`@clr/angular` declares its Angular animations, CDK, common, core, forms, platform-browser and router peers,
+`@clr/angular` declares its Angular CDK, common, core, forms, platform-browser and router peers,
 along with RxJS `^7.8.0`.
 
 `@clr/ui`, `@clr/angular` and `@clr/addons` are released together with the same version number. Published releases
@@ -37,7 +37,7 @@ dependencies of `@clr/addons`, so install them only if your application uses the
 
 ## CDK constructor changes
 
-Clarity v19 uses CDK 22 constructor signatures. The exported `CdkDragModule_CdkDrag`,
+Clarity v19 uses CDK 22 constructor signatures. Since v18.4.0, the exported `CdkDragModule_CdkDrag`,
 `CdkTrapFocusModule_CdkTrapFocus` and `ClrStandaloneCdkTrapFocus` wrappers have zero-argument constructors.
 Their CDK base classes resolve dependencies through Angular injection. If you subclass these wrappers,
 call `super()` without arguments and let Angular create the directive. Tests should create directives

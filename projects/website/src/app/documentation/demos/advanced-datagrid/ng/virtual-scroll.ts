@@ -87,7 +87,7 @@ export class VirtualScrollGridDemoComponent {
   }
 
   protected onRefreshGridData(state: ClrDatagridStateInterface): void {
-    this.options.loading = true;
+    this.options = { ...this.options, loading: true };
     this.cdr.detectChanges();
     const pageSize = state.page?.size || 20;
     const currentPage = state.page?.current || 1;
@@ -101,7 +101,7 @@ export class VirtualScrollGridDemoComponent {
           skip: currentPage * pageSize,
           data: this.vmItems,
         };
-        this.options.loading = false;
+        this.options = { ...this.options, loading: false };
 
         this.cdr.markForCheck();
       });
@@ -121,7 +121,7 @@ export class VirtualScrollGridDemoComponent {
           data: this.vmItems,
         };
         console.log(result);
-        this.options.loading = false;
+        this.options = { ...this.options, loading: false };
 
         this.cdr.markForCheck();
       });
@@ -159,7 +159,7 @@ export class VirtualScrollGridDemoComponent {
   }
 
   protected refresh(): void {
-    this.options.loading = true;
+    this.options = { ...this.options, loading: true };
     setTimeout(() => {
       this.vmItems = [...this.vmItems];
       this.dataRange = {
@@ -167,7 +167,7 @@ export class VirtualScrollGridDemoComponent {
         skip: this.dataRange.skip,
         data: this.vmItems,
       };
-      this.options.loading = false;
+      this.options = { ...this.options, loading: false };
 
       this.cdr.markForCheck();
     }, this.inventory.latency);

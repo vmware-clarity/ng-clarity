@@ -91,10 +91,8 @@ const LIBRARIES = [
  */
 function getDistPathMappings() {
   return LIBRARIES.reduce((paths, lib) => {
-    const typesDir = `./${path.relative(CWD, lib.typesDir).split(path.sep).join('/')}`;
-    const distDir = `./${path.relative(CWD, lib.distDir).split(path.sep).join('/')}`;
-    paths[lib.pkgName] = [typesDir, distDir];
-    paths[`${lib.pkgName}/*`] = [`${typesDir}/*`, `${distDir}/*`];
+    paths[lib.pkgName] = [lib.typesDir, lib.distDir];
+    paths[`${lib.pkgName}/*`] = [`${lib.typesDir}/*`, `${lib.distDir}/*`];
     return paths;
   }, {});
 }

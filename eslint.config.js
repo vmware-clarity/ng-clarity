@@ -30,6 +30,13 @@ const ngClarityRules = require('eslint-plugin-ng-clarity-eslint-rules');
 // Local member ordering config (kept as-is)
 const memberOrderingConfig = require('./.eslintrc-member-ordering');
 
+// Every @Component declares changeDetection (Angular 22 defaults to OnPush).
+const EXPLICIT_CHANGE_DETECTION = {
+  selector:
+    "Decorator > CallExpression:matches([callee.name='Component'], [callee.property.name='Component']):not(:has(Property:matches([key.name='changeDetection'], [key.value='changeDetection'])))",
+  message: 'Declare changeDetection explicitly in @Component.',
+};
+
 // The story-file rules of eslint-plugin-storybook's flat/recommended config, at their recommended
 // severities.
 const storybookRecommendedStoryRules = Object.fromEntries(
@@ -165,6 +172,21 @@ module.exports = [
     },
   },
 
+  // Angular 22 makes OnPush the default, so every component declares its strategy explicitly. The Storybook block below
+  // repeats the selector because the last matching block replaces the no-restricted-syntax options.
+  {
+    files: [
+      'projects/angular/**/*.ts',
+      'projects/addons/**/*.ts',
+      'projects/demo/**/*.ts',
+      'projects/website/**/*.ts',
+      '.storybook/**/*.ts',
+    ],
+    rules: {
+      'no-restricted-syntax': ['error', EXPLICIT_CHANGE_DETECTION],
+    },
+  },
+
   // Storybook story files (see docs/CONTRIBUTING_STORYBOOK.md for the canonical story shape).
   // These are errors: every story file conforms, and the point is to keep it that way.
   {
@@ -204,6 +226,7 @@ module.exports = [
       // `// eslint-disable-next-line no-restricted-syntax -- <reason>` comment on the line above.
       'no-restricted-syntax': [
         'error',
+        EXPLICIT_CHANGE_DETECTION,
         {
           selector: 'ExportNamedDeclaration > VariableDeclaration > VariableDeclarator:not([id.typeAnnotation])',
           message: 'Annotate story exports with the file-local `Story` type, e.g. `export const Default: Story = {};`.',
@@ -262,17 +285,6 @@ module.exports = [
       'license-header/header': 'off',
       'ng-clarity-eslint-rules/html-license-header': ['error', './.license-header.html'],
     },
-  },
-
-  {
-    files: [
-      'projects/angular/**/*.ts',
-      'projects/addons/**/*.ts',
-      'projects/demo/**/*.ts',
-      'projects/website/**/*.ts',
-      '.storybook/**/*.ts',
-    ],
-    rules: { 'ng-clarity-eslint-rules/explicit-change-detection': 'error' },
   },
 
   globalIgnores([

@@ -83,7 +83,7 @@ export class ServerDrivenGridDemoComponent {
 
   protected onRefreshGridData(state: ClrDatagridStateInterface): void {
     console.log('#refreshGridData emitted:', state);
-    this.options.loading = true;
+    this.options = { ...this.options, loading: true };
     this.cdr.detectChanges();
     const pageSize = state.page?.size || 20;
     const currentPage = state.page?.current || 1;
@@ -94,7 +94,7 @@ export class ServerDrivenGridDemoComponent {
       .subscribe((result: FetchResult) => {
         console.log('result', result);
         this.vmItems = result.vms;
-        this.options.loading = false;
+        this.options = { ...this.options, loading: false };
 
         this.cdr.markForCheck();
       });
@@ -127,9 +127,9 @@ export class ServerDrivenGridDemoComponent {
   }
 
   protected refresh(): void {
-    this.options.loading = true;
+    this.options = { ...this.options, loading: true };
     setTimeout(() => {
-      this.options.loading = false;
+      this.options = { ...this.options, loading: false };
       this.vmItems = [...this.vmItems];
 
       this.cdr.markForCheck();
