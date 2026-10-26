@@ -849,6 +849,59 @@ describe('ClrContextEngineService, identifying the application and view', () => 
   });
 });
 
+describe('ClrContextEngineService, reading only enabled views', () => {
+  let metadata: Record<string, unknown> | null;
+  let engine: ClrContextEngineService;
+  let registry: ClrContextRegistryService;
+
+  beforeEach(() => {
+    metadata = null;
+    TestBed.configureTestingModule({
+      providers: [
+        provideClrContextApplication({
+          id: 'inventory',
+          viewId: () => 'host-list',
+          metadata: () => metadata,
+          views: 'enabled',
+        }),
+      ],
+    });
+    engine = TestBed.inject(ClrContextEngineService);
+    registry = TestBed.inject(ClrContextRegistryService);
+  });
+
+  it('reports a view without metadata as not enabled, with nothing about the page', async () => {
+    const provider = jasmine.createSpy('getClrContext').and.returnValue({ type: 'region', label: 'Hosts' });
+    registry.register({ getClrContext: provider });
+
+    for (const snapshot of [engine.getSnapshot(), await engine.getSnapshotAsync()]) {
+      expect(snapshot).toEqual({
+        schemaVersion: '1',
+        application: { id: 'inventory' },
+        viewId: 'host-list',
+        enabled: false,
+        title: '',
+        regions: [],
+        components: [],
+        collectedAt: jasmine.any(String),
+      });
+    }
+    expect(provider).not.toHaveBeenCalled();
+  });
+
+  it('reads a view once it has metadata', () => {
+    metadata = { purpose: 'Lists hosts' };
+    registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts' }) });
+
+    const snapshot = engine.getSnapshot();
+
+    expect(snapshot.enabled).toBeUndefined();
+    expect(snapshot.metadata).toEqual({ purpose: 'Lists hosts' });
+    expect(snapshot.title).toBe(document.title);
+    expect(snapshot.regions).toEqual([{ type: 'region', label: 'Hosts' }]);
+  });
+});
+
 describe('ClrContextEngineService, asynchronous providers', () => {
   let engine: ClrContextEngineService;
   let registry: ClrContextRegistryService;
