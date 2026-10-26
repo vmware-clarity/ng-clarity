@@ -8,7 +8,11 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
+<<<<<<< HEAD
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+=======
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+>>>>>>> 321cf102d (feat: drop the @angular/animations dependency (#2788))
 import { delay } from '@clr/angular/testing';
 
 import { ClrExpandableAnimationDirective } from './expandable-animation.directive';
@@ -65,7 +69,7 @@ describe('Expandable animation directive', () => {
 function expandableAnimationSpec(testComponent, component) {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrExpandableAnimationModule, NoopAnimationsModule],
+      imports: [ClrExpandableAnimationModule],
       declarations: [testComponent],
       providers: [DomAdapter],
     });

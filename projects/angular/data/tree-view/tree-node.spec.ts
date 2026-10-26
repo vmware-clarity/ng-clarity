@@ -6,8 +6,13 @@
  */
 
 import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
+<<<<<<< HEAD
 import { fakeAsync, flushMicrotasks } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+=======
+import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+>>>>>>> 321cf102d (feat: drop the @angular/animations dependency (#2788))
 import { ClrIcon } from '@clr/angular/icon';
 import { expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, IfExpandService, Keys } from '@clr/angular/utils';
@@ -66,7 +71,7 @@ export default function (): void {
 
     describe('Providers', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -218,7 +223,7 @@ export default function (): void {
 
     describe('Template API', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -250,7 +255,7 @@ export default function (): void {
 
     describe('View', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -366,7 +371,7 @@ export default function (): void {
 
     describe('A11y and Focus Management', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -621,7 +626,7 @@ export default function (): void {
       type Context = TestContext<ClrTreeNode<void>, LinkTestComponent>;
 
       spec(ClrTreeNode, LinkTestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 

@@ -9,7 +9,11 @@ import { Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
+<<<<<<< HEAD
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+=======
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
+>>>>>>> 321cf102d (feat: drop the @angular/animations dependency (#2788))
 import { CollapsiblePanelModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
 import { HeadingLevel, IfExpandService } from '@clr/angular/utils';
 
@@ -92,7 +96,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         providers: [CollapsiblePanelService, IfExpandService],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(ClrAccordionPanel);
@@ -133,7 +137,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent, TestNoBindingComponent],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(TestComponent);
@@ -211,7 +215,7 @@ describe('ClrAccordionPanel', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TestComponent, TestNoBindingComponent, TestNestedAccordionComponent],
-        imports: [ClrAccordionModule, ReactiveFormsModule, NoopAnimationsModule],
+        imports: [ClrAccordionModule, ReactiveFormsModule],
       });
 
       fixture = TestBed.createComponent(TestComponent);
