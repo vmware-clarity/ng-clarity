@@ -124,7 +124,10 @@ const DIRECTIVE_EXAMPLE = `
 `;
 
 const ATTRIBUTES_EXAMPLE = `
-<section data-clr-context="Firewall rules for the selected cluster" data-clr-context-state='{"cluster": "east"}'>
+<section
+  data-clr-context="Firewall rules for the selected cluster"
+  data-clr-context-state='{"cluster": "east"}'
+>
   ...
 </section>
 `;
@@ -140,14 +143,23 @@ const VIEW_METADATA_EXAMPLE = `
 `;
 
 const VIEW_CONFIG_EXAMPLE = `
-// Read only the views that have metadata, and describe views without editing them.
-provideClrContextApplication({ id: 'inventory', version: '2.4.0', views: 'enabled' }),
-provideClrContextConfig('/assets/ai-config.json'),
+bootstrapApplication(AppComponent, {
+  providers: [
+    // Read only the views that have metadata, and describe views without editing them.
+    provideClrContextApplication({ id: 'inventory', version: '2.4.0', views: 'enabled' }),
+    provideClrContextConfig('/assets/ai-config.json'),
+  ],
+});
+`;
 
-// ai-config.json: the first view whose route pattern and selector match applies.
+const AI_CONFIG_EXAMPLE = `
 {
   "views": [
-    { "route": "hosts/:id", "viewId": "host-detail", "metadata": { "purpose": "One host and its VMs" } },
+    {
+      "route": "hosts/:id",
+      "viewId": "host-detail",
+      "metadata": { "purpose": "One host and its VMs" }
+    },
     { "selector": "app-billing", "enabled": false }
   ]
 }
@@ -305,6 +317,7 @@ export class ContextualEngineDemo extends ClarityDocComponent {
   attributesExample = ATTRIBUTES_EXAMPLE;
   viewMetadataExample = VIEW_METADATA_EXAMPLE;
   viewConfigExample = VIEW_CONFIG_EXAMPLE;
+  aiConfigExample = AI_CONFIG_EXAMPLE;
   directiveStandaloneExample = DIRECTIVE_STANDALONE_EXAMPLE;
   directiveModuleExample = DIRECTIVE_MODULE_EXAMPLE;
   elementContextExample = ELEMENT_CONTEXT_EXAMPLE;

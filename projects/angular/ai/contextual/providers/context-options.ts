@@ -79,6 +79,7 @@ export interface ClrContextViewConfig {
 
 /** Views described from outside the application, matched in order; the first match applies. */
 export interface ClrContextConfig {
+  /** The views, most specific first. */
   views: ClrContextViewConfig[];
 }
 
