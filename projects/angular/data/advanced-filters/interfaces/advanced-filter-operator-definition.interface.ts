@@ -19,4 +19,8 @@ export interface AdvancedFilterOperatorDefinition {
    * On date.
    */
   readonly labelKey: keyof ClrCommonStrings;
+  /**
+   * Key of the filter's text in `ClrCommonStrings`, for example '{FIELD} is greater than {VALUE}'.
+   */
+  readonly textKey: keyof ClrCommonStrings;
 }

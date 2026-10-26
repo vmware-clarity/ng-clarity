@@ -1,0 +1,34 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<h2>Advanced filters</h2>
+
+<div class="clr-example">
+  <clr-advanced-filters
+    id="demo-filters"
+    [clrFields]="fields"
+    [(clrFilter)]="filter"
+    [clrMaxDepth]="maxDepth"
+    (clrFilterChange)="changes = changes + 1"
+  ></clr-advanced-filters>
+</div>
+
+<clr-number-input-container>
+  <label for="max-depth">Max depth</label>
+  <input clrNumberInput id="max-depth" name="maxDepth" type="number" min="1" max="6" [(ngModel)]="maxDepth" />
+</clr-number-input-container>
+
+<p>
+  <button type="button" class="btn btn-sm btn-outline" (click)="showFields = !showFields">
+    {{ showFields ? 'Remove the Budget field' : 'Restore the Budget field' }}
+  </button>
+  <button type="button" class="btn btn-sm btn-outline" (click)="reset()">Reset the filter</button>
+  <span id="change-count">Changes emitted: {{ changes }}</span>
+</p>
+
+<h4>The structure (toJSON)</h4>
+<pre id="demo-json">{{ json }}</pre>

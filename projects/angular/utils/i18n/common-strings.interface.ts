@@ -417,4 +417,67 @@ export interface ClrCommonStrings {
   advancedFilterAfterOrEqual: string;
   advancedFilterBetweenDates: string;
   advancedFilterInSet: string;
+
+  // Advanced filters: the text of a filter in the tree. Tokens: {FIELD}, {VALUE}, {FROM}, {TO}.
+  advancedFilterTextContains: string;
+  advancedFilterTextNotContains: string;
+  advancedFilterTextEquals: string;
+  advancedFilterTextNotEquals: string;
+  advancedFilterTextStartsWith: string;
+  advancedFilterTextEndsWith: string;
+  advancedFilterTextIsEmpty: string;
+  advancedFilterTextEqualTo: string;
+  advancedFilterTextNotEqualTo: string;
+  advancedFilterTextLessThan: string;
+  advancedFilterTextLessThanOrEqual: string;
+  advancedFilterTextGreaterThan: string;
+  advancedFilterTextGreaterThanOrEqual: string;
+  advancedFilterTextBetween: string;
+  advancedFilterTextBoolean: string;
+  advancedFilterTextOnDate: string;
+  advancedFilterTextNotOnDate: string;
+  advancedFilterTextBefore: string;
+  advancedFilterTextBeforeOrEqual: string;
+  advancedFilterTextAfter: string;
+  advancedFilterTextAfterOrEqual: string;
+  advancedFilterTextIn: string;
+  advancedFilterRangeValue: string;
+  advancedFilterValueSeparator: string;
+  advancedFilterMissingValue: string;
+
+  // Advanced filters: the tree, its buttons, the filter popover, validation messages and announcements.
+  advancedFiltersAriaLabel: string;
+  advancedFilterAnd: string;
+  advancedFilterOr: string;
+  advancedFilterLogicAriaLabel: string;
+  advancedFilterGroupAllAriaLabel: string;
+  advancedFilterGroupAnyAriaLabel: string;
+  advancedFilterAddFilter: string;
+  advancedFilterAddGroup: string;
+  advancedFilterRemoveGroup: string;
+  advancedFilterRemoveFilter: string;
+  advancedFilterEditFilter: string;
+  advancedFilterEditDialog: string;
+  advancedFilterClearAll: string;
+  advancedFilterApply: string;
+  advancedFilterCancel: string;
+  advancedFilterField: string;
+  advancedFilterFieldPlaceholder: string;
+  advancedFilterOperator: string;
+  advancedFilterValue: string;
+  advancedFilterFrom: string;
+  advancedFilterTo: string;
+  advancedFilterMaxDepth: string;
+  advancedFilterIncomplete: string;
+  advancedFilterErrorRequired: string;
+  advancedFilterErrorUnsupportedOperator: string;
+  advancedFilterErrorInvalidNumber: string;
+  advancedFilterErrorInvalidDate: string;
+  advancedFilterErrorInvalidRange: string;
+  advancedFilterErrorDuplicateValue: string;
+  advancedFilterAnnounceApplied: string;
+  advancedFilterAnnounceRemoved: string;
+  advancedFilterAnnounceGroupAdded: string;
+  advancedFilterAnnounceGroupRemoved: string;
+  advancedFilterAnnounceCleared: string;
 }

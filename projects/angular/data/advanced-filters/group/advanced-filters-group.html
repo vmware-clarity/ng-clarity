@@ -1,0 +1,102 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<clr-tree-node [clrExpanded]="true">
+  <!-- The controls keep their own keys: the tree would otherwise take Space, Enter and the arrows. -->
+  <div
+    class="clr-advanced-filters-group-header"
+    role="group"
+    [attr.aria-label]="ariaLabel"
+    (keydown)="$event.stopPropagation()"
+  >
+    <div
+      class="btn-group btn-sm clr-advanced-filters-logic"
+      role="radiogroup"
+      [attr.aria-label]="commonStrings.keys.advancedFilterLogicAriaLabel"
+    >
+      <div class="radio btn">
+        <input
+          type="radio"
+          [id]="id + '-and'"
+          [name]="id + '-logic'"
+          [checked]="group.logic === logic.AND"
+          (change)="setLogic(logic.AND)"
+        />
+        <label [for]="id + '-and'">{{ commonStrings.keys.advancedFilterAnd }}</label>
+      </div>
+      <div class="radio btn">
+        <input
+          type="radio"
+          [id]="id + '-or'"
+          [name]="id + '-logic'"
+          [checked]="group.logic === logic.OR"
+          (change)="setLogic(logic.OR)"
+        />
+        <label [for]="id + '-or'">{{ commonStrings.keys.advancedFilterOr }}</label>
+      </div>
+    </div>
+
+    <clr-advanced-filters-add-filter [fields]="fields" (add)="addFilter($event)"></clr-advanced-filters-add-filter>
+
+    <button
+      type="button"
+      class="btn btn-sm btn-outline clr-advanced-filters-add-group"
+      [disabled]="!canAddGroup"
+      [attr.aria-describedby]="canAddGroup ? null : id + '-max-depth'"
+      (click)="addGroup()"
+    >
+      <cds-icon shape="tree-view"></cds-icon>
+      {{ commonStrings.keys.advancedFilterAddGroup }}
+    </button>
+    @if (!canAddGroup) {
+    <span class="clr-sr-only" [id]="id + '-max-depth'">{{ commonStrings.keys.advancedFilterMaxDepth }}</span>
+    } @if (isRoot) {
+    <button
+      type="button"
+      class="btn btn-sm btn-danger btn-icon clr-advanced-filters-clear-all"
+      [attr.aria-label]="commonStrings.keys.advancedFilterClearAll"
+      [attr.title]="commonStrings.keys.advancedFilterClearAll"
+      (click)="clearAll()"
+    >
+      <cds-icon shape="trash"></cds-icon>
+    </button>
+    } @else {
+    <button
+      type="button"
+      class="btn btn-sm btn-danger btn-icon clr-advanced-filters-remove"
+      [attr.aria-label]="commonStrings.keys.advancedFilterRemoveGroup"
+      [attr.title]="commonStrings.keys.advancedFilterRemoveGroup"
+      (click)="remove()"
+    >
+      <cds-icon shape="times"></cds-icon>
+    </button>
+    }
+  </div>
+
+  <ng-container ngProjectAs="clr-tree-node">
+    @for (child of visibleChildren; track child.id; let index = $index) { @if (asGroup(child); as childGroup) {
+    <clr-advanced-filters-group
+      #child
+      [group]="childGroup"
+      [fields]="fields"
+      [level]="level + 1"
+      [maxDepth]="maxDepth"
+      (edit)="edit.emit()"
+      (removed)="onChildRemoved(index)"
+    ></clr-advanced-filters-group>
+    } @else if (asFilter(child); as childFilter) {
+    <clr-advanced-filters-filter
+      #child
+      [filter]="childFilter"
+      [fields]="fields"
+      (edit)="edit.emit()"
+      (removed)="onChildRemoved(index)"
+      (replaced)="onChildReplaced($event)"
+    ></clr-advanced-filters-filter>
+    } }
+  </ng-container>
+</clr-tree-node>

@@ -23,7 +23,7 @@ export enum ClrAdvancedFilterValidationError {
    */
   INVALID_NUMBER = 'invalidNumber',
   /**
-   * Not a timestamp that a `Date` can represent, for a date field.
+   * Not an ISO date of a day that exists ("2026-10-20"), for a date field.
    */
   INVALID_DATE = 'invalidDate',
   /**

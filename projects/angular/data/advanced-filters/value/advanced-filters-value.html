@@ -1,0 +1,156 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+@switch (editor) { @case (editors.TEXT) {
+<clr-input-container>
+  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <input
+    clrInput
+    class="clr-col-12"
+    type="text"
+    name="value"
+    autocomplete="off"
+    [ngModel]="value"
+    (ngModelChange)="change($event)"
+    [clrAdvancedFiltersError]="error"
+  />
+  <clr-control-error>{{ errorMessage }}</clr-control-error>
+</clr-input-container>
+} @case (editors.NUMBER) {
+<clr-number-input-container>
+  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <input
+    clrNumberInput
+    class="clr-col-12"
+    type="number"
+    name="value"
+    [ngModel]="value"
+    (ngModelChange)="change($event)"
+    [clrAdvancedFiltersError]="error"
+  />
+  <clr-control-error>{{ errorMessage }}</clr-control-error>
+</clr-number-input-container>
+} @case (editors.NUMBER_RANGE) {
+<clr-number-input-container>
+  <label>{{ commonStrings.keys.advancedFilterFrom }}</label>
+  <input
+    clrNumberInput
+    class="clr-col-12"
+    type="number"
+    name="from"
+    [ngModel]="bound(0)"
+    (ngModelChange)="changeBound(0, $event)"
+    [clrAdvancedFiltersError]="error"
+  />
+  <clr-control-error>{{ errorMessage }}</clr-control-error>
+</clr-number-input-container>
+<clr-number-input-container>
+  <label>{{ commonStrings.keys.advancedFilterTo }}</label>
+  <input
+    clrNumberInput
+    class="clr-col-12"
+    type="number"
+    name="to"
+    [ngModel]="bound(1)"
+    (ngModelChange)="changeBound(1, $event)"
+    [clrAdvancedFiltersError]="error"
+  />
+  <clr-control-error>{{ errorMessage }}</clr-control-error>
+</clr-number-input-container>
+} @case (editors.BOOLEAN) {
+<clr-radio-container clrInline>
+  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <clr-radio-wrapper>
+    <input
+      type="radio"
+      clrRadio
+      class="clr-col-12"
+      [name]="id + '-boolean'"
+      [value]="true"
+      [ngModel]="value"
+      (ngModelChange)="change($event)"
+      [clrAdvancedFiltersError]="error"
+    />
+    <label>{{ commonStrings.keys.advancedFilterTrue }}</label>
+  </clr-radio-wrapper>
+  <clr-radio-wrapper>
+    <input
+      type="radio"
+      clrRadio
+      class="clr-col-12"
+      [name]="id + '-boolean'"
+      [value]="false"
+      [ngModel]="value"
+      (ngModelChange)="change($event)"
+      [clrAdvancedFiltersError]="error"
+    />
+    <label>{{ commonStrings.keys.advancedFilterFalse }}</label>
+  </clr-radio-wrapper>
+  <clr-control-error>{{ errorMessage }}</clr-control-error>
+</clr-radio-container>
+} @case (editors.DATE) {
+<clr-date-container>
+  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <input
+    type="date"
+    clrDate
+    class="clr-col-12"
+    autocomplete="off"
+    name="date"
+    [ngModel]="dateText"
+    (ngModelChange)="changeDateText($event)"
+    [clrAdvancedFiltersError]="error"
+  />
+  <clr-control-error>{{ errorMessage }}</clr-control-error>
+</clr-date-container>
+} @case (editors.DATE_RANGE) {
+<clr-date-range-container [rangeOptions]="field.rangeOptions ?? []">
+  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <input
+    type="date"
+    clrStartDate
+    class="clr-col-12"
+    autocomplete="off"
+    name="from"
+    [attr.aria-label]="commonStrings.keys.advancedFilterFrom"
+    [ngModel]="rangeText[0]"
+    (ngModelChange)="changeRangeText(0, $event)"
+    [clrAdvancedFiltersError]="error"
+  />
+  <input
+    type="date"
+    clrEndDate
+    class="clr-col-12"
+    autocomplete="off"
+    name="to"
+    [attr.aria-label]="commonStrings.keys.advancedFilterTo"
+    [ngModel]="rangeText[1]"
+    (ngModelChange)="changeRangeText(1, $event)"
+    [clrAdvancedFiltersError]="error"
+  />
+  <clr-control-error>{{ errorMessage }}</clr-control-error>
+</clr-date-range-container>
+} @case (editors.SET) {
+<clr-checkbox-container>
+  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  @for (option of field.options ?? []; track option.value; let index = $index) {
+  <clr-checkbox-wrapper>
+    <input
+      type="checkbox"
+      clrCheckbox
+      class="clr-col-12"
+      [name]="id + '-option-' + index"
+      [ngModel]="isSelected(option)"
+      (ngModelChange)="toggle(option, $event)"
+      [clrAdvancedFiltersError]="error"
+    />
+    <label>{{ option.label }}</label>
+  </clr-checkbox-wrapper>
+  }
+  <clr-control-error>{{ errorMessage }}</clr-control-error>
+</clr-checkbox-container>
+} }

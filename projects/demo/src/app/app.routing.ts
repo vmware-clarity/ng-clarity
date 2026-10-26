@@ -16,6 +16,11 @@ export const APP_ROUTES: Routes = [
     path: 'accordion',
     loadChildren: () => import('./accordion/accordion.demo.module').then(m => m.AccordionDemoModule),
   },
+  {
+    path: 'advanced-filters',
+    loadChildren: () =>
+      import('./advanced-filters/advanced-filters.demo.module').then(m => m.AdvancedFiltersDemoModule),
+  },
   { path: 'alert', loadChildren: () => import('./alert/alert.demo.module').then(m => m.AlertDemoModule) },
   { path: 'badges', loadChildren: () => import('./badges/badges.demo.module').then(m => m.BadgesDemoModule) },
   {

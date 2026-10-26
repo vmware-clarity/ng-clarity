@@ -45,6 +45,24 @@ function createTree() {
 }
 
 describe('ClrAdvancedFilterNode', () => {
+  describe('detachChild()', () => {
+    it('does nothing on a node without children', () => {
+      class Leaf extends ClrAdvancedFilterNode {
+        toJSON(): object {
+          return {};
+        }
+
+        detach(child: ClrAdvancedFilterNode): void {
+          this.detachChild(child);
+        }
+      }
+      const leaf = new Leaf();
+      const child = filter();
+      expect(() => leaf.detach(child)).not.toThrow();
+      expect(child.parent).toBeNull();
+    });
+  });
+
   describe('remove()', () => {
     it('detaches the node with its subtree', () => {
       const { root, middle, deepest, leaf } = createTree();

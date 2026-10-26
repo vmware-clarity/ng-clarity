@@ -24,3 +24,13 @@ export * from './validators/boolean-filter-validator';
 export * from './validators/date-filter-validator';
 export * from './validators/enum-filter-validator';
 export * from './advanced-filters.module';
+export * from './advanced-filters';
+// Internal parts of the component, not meant for consumers. The components and the directive are exported because the
+// module declares them, and `AdvancedFilterText` because `ClrAdvancedFilters` provides it.
+export * from './group/advanced-filters-group';
+export * from './group/advanced-filters-add-filter';
+export * from './filter/advanced-filters-filter';
+export * from './filter/advanced-filter-text';
+export * from './editor/advanced-filters-editor';
+export * from './editor/advanced-filters-error.directive';
+export * from './value/advanced-filters-value';

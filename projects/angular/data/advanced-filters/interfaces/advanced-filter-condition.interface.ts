@@ -16,8 +16,8 @@ import { ClrAdvancedFilterOperator } from '../enums/advanced-filter-operator.enu
  *
  * Per field type:
  * - number: finite numbers.
- * - date: epoch millisecond timestamps. A picked day is its local midnight; the `to` of a range is the end of the last
- *   picked day (23:59:59.999 local time).
+ * - date: ISO dates without a time of day, such as "2026-10-20". A date names a day, the same in every time zone; a
+ *   range includes both of its days.
  * - string: the text entered.
  * - boolean: `true` or `false`, with EQUALS.
  * - enum: the `value` of options.

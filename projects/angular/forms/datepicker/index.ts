@@ -21,5 +21,7 @@ export * from './datepicker-action-buttons';
 export * from './interfaces/day-of-week.interface';
 export { DateRangeOption } from './interfaces/date-range.interface';
 export * from './enums/weekday.enum';
+export { DateIOService } from './providers/date-io.service';
+export { LocaleHelperService } from './providers/locale-helper.service';
 
 export * from './datepicker.module';

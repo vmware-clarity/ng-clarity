@@ -12,9 +12,10 @@ import { ClrAdvancedFilterFieldType } from '../enums/advanced-filter-field-type.
 import type { ClrAdvancedFilterValidator } from '../validators/advanced-filter-validator';
 
 /**
- * A field that can be filtered on. Consumer configuration, given to `clr-advanced-filters` and never stored in the
- * tree: a filter refers to its field by `key` only. Definitions can change at any time, and a filter whose key matches
- * no definition is kept.
+ * A field that can be filtered on. Consumer configuration, given to `clr-advanced-filters`. A `ClrAdvancedFilter`
+ * keeps a reference to the definition it was built with, and its validator; its `toJSON()` writes only the `key`.
+ * When the definitions given to the component change, it removes the filters whose key no definition has any more;
+ * another object with the same key keeps them.
  */
 export interface ClrAdvancedFilterField {
   /**
@@ -28,7 +29,7 @@ export interface ClrAdvancedFilterField {
    */
   options?: ClrAdvancedFilterOption[];
   /**
-   * Presets of the date range picker, for DATE fields. A picked preset is stored as fixed timestamps.
+   * Presets of the date range picker, for DATE fields. A picked preset is stored as its fixed days.
    */
   rangeOptions?: DateRangeOption[];
   /**

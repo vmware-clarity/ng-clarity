@@ -20,39 +20,133 @@ import { AdvancedFilterOperatorDefinition } from '../interfaces/advanced-filter-
  */
 const OPERATORS_BY_TYPE: Readonly<Record<ClrAdvancedFilterFieldType, readonly AdvancedFilterOperatorDefinition[]>> = {
   [ClrAdvancedFilterFieldType.STRING]: [
-    { operator: ClrAdvancedFilterOperator.CONTAINS, labelKey: 'advancedFilterContains' },
-    { operator: ClrAdvancedFilterOperator.NOT_CONTAINS, labelKey: 'advancedFilterNotContains' },
-    { operator: ClrAdvancedFilterOperator.EQUALS, labelKey: 'advancedFilterEquals' },
-    { operator: ClrAdvancedFilterOperator.NOT_EQUALS, labelKey: 'advancedFilterNotEquals' },
-    { operator: ClrAdvancedFilterOperator.STARTS_WITH, labelKey: 'advancedFilterStartsWith' },
-    { operator: ClrAdvancedFilterOperator.ENDS_WITH, labelKey: 'advancedFilterEndsWith' },
-    { operator: ClrAdvancedFilterOperator.IS_EMPTY, labelKey: 'advancedFilterIsEmpty' },
+    {
+      operator: ClrAdvancedFilterOperator.CONTAINS,
+      labelKey: 'advancedFilterContains',
+      textKey: 'advancedFilterTextContains',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.NOT_CONTAINS,
+      labelKey: 'advancedFilterNotContains',
+      textKey: 'advancedFilterTextNotContains',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.EQUALS,
+      labelKey: 'advancedFilterEquals',
+      textKey: 'advancedFilterTextEquals',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.NOT_EQUALS,
+      labelKey: 'advancedFilterNotEquals',
+      textKey: 'advancedFilterTextNotEquals',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.STARTS_WITH,
+      labelKey: 'advancedFilterStartsWith',
+      textKey: 'advancedFilterTextStartsWith',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.ENDS_WITH,
+      labelKey: 'advancedFilterEndsWith',
+      textKey: 'advancedFilterTextEndsWith',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.IS_EMPTY,
+      labelKey: 'advancedFilterIsEmpty',
+      textKey: 'advancedFilterTextIsEmpty',
+    },
   ],
   [ClrAdvancedFilterFieldType.NUMBER]: [
-    { operator: ClrAdvancedFilterOperator.EQUALS, labelKey: 'advancedFilterEqualTo' },
-    { operator: ClrAdvancedFilterOperator.NOT_EQUALS, labelKey: 'advancedFilterNotEqualTo' },
-    { operator: ClrAdvancedFilterOperator.LESS_THAN, labelKey: 'advancedFilterLessThan' },
-    { operator: ClrAdvancedFilterOperator.LESS_THAN_OR_EQUAL, labelKey: 'advancedFilterLessThanOrEqual' },
-    { operator: ClrAdvancedFilterOperator.GREATER_THAN, labelKey: 'advancedFilterGreaterThan' },
-    { operator: ClrAdvancedFilterOperator.GREATER_THAN_OR_EQUAL, labelKey: 'advancedFilterGreaterThanOrEqual' },
-    { operator: ClrAdvancedFilterOperator.BETWEEN, labelKey: 'advancedFilterBetween' },
-    { operator: ClrAdvancedFilterOperator.IS_EMPTY, labelKey: 'advancedFilterIsEmpty' },
+    {
+      operator: ClrAdvancedFilterOperator.EQUALS,
+      labelKey: 'advancedFilterEqualTo',
+      textKey: 'advancedFilterTextEqualTo',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.NOT_EQUALS,
+      labelKey: 'advancedFilterNotEqualTo',
+      textKey: 'advancedFilterTextNotEqualTo',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.LESS_THAN,
+      labelKey: 'advancedFilterLessThan',
+      textKey: 'advancedFilterTextLessThan',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.LESS_THAN_OR_EQUAL,
+      labelKey: 'advancedFilterLessThanOrEqual',
+      textKey: 'advancedFilterTextLessThanOrEqual',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.GREATER_THAN,
+      labelKey: 'advancedFilterGreaterThan',
+      textKey: 'advancedFilterTextGreaterThan',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.GREATER_THAN_OR_EQUAL,
+      labelKey: 'advancedFilterGreaterThanOrEqual',
+      textKey: 'advancedFilterTextGreaterThanOrEqual',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.BETWEEN,
+      labelKey: 'advancedFilterBetween',
+      textKey: 'advancedFilterTextBetween',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.IS_EMPTY,
+      labelKey: 'advancedFilterIsEmpty',
+      textKey: 'advancedFilterTextIsEmpty',
+    },
   ],
   [ClrAdvancedFilterFieldType.BOOLEAN]: [
     // The value is true or false; the UI labels the values with advancedFilterTrue and advancedFilterFalse.
-    { operator: ClrAdvancedFilterOperator.EQUALS, labelKey: 'advancedFilterEquals' },
+    {
+      operator: ClrAdvancedFilterOperator.EQUALS,
+      labelKey: 'advancedFilterEquals',
+      textKey: 'advancedFilterTextBoolean',
+    },
   ],
   [ClrAdvancedFilterFieldType.DATE]: [
-    { operator: ClrAdvancedFilterOperator.EQUALS, labelKey: 'advancedFilterOnDate' },
-    { operator: ClrAdvancedFilterOperator.NOT_EQUALS, labelKey: 'advancedFilterNotEquals' },
-    { operator: ClrAdvancedFilterOperator.BEFORE, labelKey: 'advancedFilterBefore' },
-    { operator: ClrAdvancedFilterOperator.BEFORE_OR_EQUAL, labelKey: 'advancedFilterBeforeOrEqual' },
-    { operator: ClrAdvancedFilterOperator.AFTER, labelKey: 'advancedFilterAfter' },
-    { operator: ClrAdvancedFilterOperator.AFTER_OR_EQUAL, labelKey: 'advancedFilterAfterOrEqual' },
-    { operator: ClrAdvancedFilterOperator.BETWEEN, labelKey: 'advancedFilterBetweenDates' },
-    { operator: ClrAdvancedFilterOperator.IS_EMPTY, labelKey: 'advancedFilterIsEmpty' },
+    {
+      operator: ClrAdvancedFilterOperator.EQUALS,
+      labelKey: 'advancedFilterOnDate',
+      textKey: 'advancedFilterTextOnDate',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.NOT_EQUALS,
+      labelKey: 'advancedFilterNotEquals',
+      textKey: 'advancedFilterTextNotOnDate',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.BEFORE,
+      labelKey: 'advancedFilterBefore',
+      textKey: 'advancedFilterTextBefore',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.BEFORE_OR_EQUAL,
+      labelKey: 'advancedFilterBeforeOrEqual',
+      textKey: 'advancedFilterTextBeforeOrEqual',
+    },
+    { operator: ClrAdvancedFilterOperator.AFTER, labelKey: 'advancedFilterAfter', textKey: 'advancedFilterTextAfter' },
+    {
+      operator: ClrAdvancedFilterOperator.AFTER_OR_EQUAL,
+      labelKey: 'advancedFilterAfterOrEqual',
+      textKey: 'advancedFilterTextAfterOrEqual',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.BETWEEN,
+      labelKey: 'advancedFilterBetweenDates',
+      textKey: 'advancedFilterTextBetween',
+    },
+    {
+      operator: ClrAdvancedFilterOperator.IS_EMPTY,
+      labelKey: 'advancedFilterIsEmpty',
+      textKey: 'advancedFilterTextIsEmpty',
+    },
   ],
-  [ClrAdvancedFilterFieldType.ENUM]: [{ operator: ClrAdvancedFilterOperator.IN, labelKey: 'advancedFilterInSet' }],
+  [ClrAdvancedFilterFieldType.ENUM]: [
+    { operator: ClrAdvancedFilterOperator.IN, labelKey: 'advancedFilterInSet', textKey: 'advancedFilterTextIn' },
+  ],
 };
 
 const OPERATOR_ARITY: Readonly<Record<ClrAdvancedFilterOperator, AdvancedFilterOperatorArity>> = {
@@ -74,11 +168,6 @@ const OPERATOR_ARITY: Readonly<Record<ClrAdvancedFilterOperator, AdvancedFilterO
   [ClrAdvancedFilterOperator.AFTER_OR_EQUAL]: AdvancedFilterOperatorArity.SINGLE,
   [ClrAdvancedFilterOperator.IN]: AdvancedFilterOperatorArity.SET,
 };
-
-/**
- * Largest distance from the epoch, in milliseconds, that a `Date` can represent.
- */
-const MAX_TIMESTAMP = 8.64e15;
 
 /**
  * Checks that a condition is complete and well-formed. It never decides what a condition means.
@@ -114,6 +203,14 @@ export class ClrAdvancedFilterValidator {
    */
   getOperatorLabelKey(operator: ClrAdvancedFilterOperator): keyof ClrCommonStrings | undefined {
     return this.findDefinition(operator)?.labelKey;
+  }
+
+  /**
+   * Key of the filter's text in `ClrCommonStrings`, with the tokens {FIELD} and {VALUE}, for example
+   * '{FIELD} is greater than {VALUE}'. `undefined` without `fieldType`, or when the type does not offer the operator.
+   */
+  getOperatorTextKey(operator: ClrAdvancedFilterOperator): keyof ClrCommonStrings | undefined {
+    return this.findDefinition(operator)?.textKey;
   }
 
   /**
@@ -204,13 +301,6 @@ export class ClrAdvancedFilterValidator {
 
   protected isFiniteNumber(value: unknown): value is number {
     return typeof value === 'number' && Number.isFinite(value);
-  }
-
-  /**
-   * An epoch millisecond timestamp that a `Date` can represent.
-   */
-  protected isTimestamp(value: unknown): value is number {
-    return this.isFiniteNumber(value) && Math.abs(value) <= MAX_TIMESTAMP;
   }
 
   /**
