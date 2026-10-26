@@ -7,12 +7,11 @@
 
 @if (_open) {
 <div class="modal" [class.modal-full-screen]="size == 'full-screen'">
-  <!--fixme: revisit when ngClass works with exit animation-->
   <div
+    #dialog
     cdkTrapFocus
     [cdkTrapFocusAutoCapture]="true"
-    [@fadeMove]="fadeMove"
-    (@fadeMove.done)="fadeDone($event)"
+    [animate.enter]="dialogEnterClass"
     class="modal-dialog"
     [class.modal-sm]="size == 'sm'"
     [class.modal-lg]="size == 'lg'"
@@ -56,7 +55,7 @@
   <div class="clr-sr-only">{{commonStrings.keys.modalContentEnd}}</div>
   @if (backdrop) {
   <div
-    [@fade]
+    [animate.enter]="backdropEnterClass"
     class="modal-backdrop"
     [class.static]="staticBackdrop"
     aria-hidden="true"
