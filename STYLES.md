@@ -181,6 +181,30 @@
 | alerts-pager-text    | Page identifier in pager                                                   |
 | alerts-spinner       | Using spinner instead of an icon                                           |
 
+# Animations
+
+## CSS Custom Properties
+
+| CSS Custom Property | Description                                                                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| --clr-slide-offset  | Distance covered by the `clr-slide-*` and `clr-fade-slide-*` animations (defaults to `25%`). Not inherited: set it on the animated element |
+
+## CSS Classes
+
+The enter / leave classes are meant for Angular's `animate.enter` and `animate.leave` bindings, but they are plain CSS animations and can be applied by any other means. Slides are skipped when the user prefers reduced motion; the fade-slides then only fade.
+
+| Class name                         | Description                                                                        |
+| ---------------------------------- | ---------------------------------------------------------------------------------- |
+| clr-fade-enter                     | Fades an element in                                                                |
+| clr-fade-leave                     | Fades an element out                                                               |
+| clr-slide-`<direction>`-enter      | Slides an element in towards `up`, `down`, `left` or `right`                       |
+| clr-slide-`<direction>`-leave      | Slides an element out, the reverse of `clr-slide-<direction>-enter`                |
+| clr-fade-slide-`<direction>`-enter | Fades and slides an element in towards `up`, `down`, `left` or `right`             |
+| clr-fade-slide-`<direction>`-leave | Fades and slides an element out, the reverse of `clr-fade-slide-<direction>-enter` |
+| fade                               | Hidden element fading in when the `in` class is added                              |
+| fadeDown                           | Hidden element fading and sliding down in when the `in` class is added             |
+| skeleton-loading                   | Animated skeleton placeholder of content being loaded                              |
+
 # Badge
 
 ## CSS Custom Properties
@@ -654,21 +678,21 @@
 
 ## CSS Classes
 
-| Class Name                      | Description                                            |
-| ------------------------------- | ------------------------------------------------------ |
-| {prefix}-panel                  | Panel container element.                               |
-| {prefix}-header                 | Header section of a panel.                             |
-| {prefix}-header-button          | Clickable button within the panel header.              |
-| {prefix}-status                 | Status indicator within the panel header.              |
-| {prefix}-title                  | Title text within the panel header.                    |
-| {prefix}-header-has-description | Panel header that includes a description.              |
-| {prefix}-description            | Description text within the panel header.              |
-| {prefix}-content                | Content section of a panel.                            |
-| {prefix}-content-region         | Wrapper region for the panel content (animation host). |
-| {prefix}-inner-content          | Inner content section within the panel content.        |
-| {prefix}-angle                  | Chevron/angle indicator within the panel header.       |
-| {prefix}-panel-open             | State class for an open/expanded panel.                |
-| {prefix}-panel-disabled         | State class for a disabled panel.                      |
+| Class Name                      | Description                                      |
+| ------------------------------- | ------------------------------------------------ |
+| {prefix}-panel                  | Panel container element.                         |
+| {prefix}-header                 | Header section of a panel.                       |
+| {prefix}-header-button          | Clickable button within the panel header.        |
+| {prefix}-status                 | Status indicator within the panel header.        |
+| {prefix}-title                  | Title text within the panel header.              |
+| {prefix}-header-has-description | Panel header that includes a description.        |
+| {prefix}-description            | Description text within the panel header.        |
+| {prefix}-content                | Content section of a panel.                      |
+| {prefix}-content-region         | Wrapper region for the panel content.            |
+| {prefix}-inner-content          | Inner content section within the panel content.  |
+| {prefix}-angle                  | Chevron/angle indicator within the panel header. |
+| {prefix}-panel-open             | State class for an open/expanded panel.          |
+| {prefix}-panel-disabled         | State class for a disabled panel.                |
 
 # Combobox
 
@@ -1736,17 +1760,18 @@ All other table classes like `table, thead, tbody, th, td` are not specific to C
 
 ## CSS Classes
 
-| Class name                      | Description                                 |
-| ------------------------------- | ------------------------------------------- |
-| clr-tree-node                   | Main tree node element                      |
-| clr-tree-node-content-container | Wrapper for tree content and caret elements |
-| clr-treenode-content            | Content wrapper for tree node               |
-| clr-treenode-caret              | Tree node caret button                      |
-| clr-tree-node-caret-icon        | Tree node caret icon                        |
-| clr-treenode-spinner-container  | Wrapper for tree node spinner               |
-| clr-treenode-spinner            | Tree node spinner                           |
-| clr-treenode-children           | Wrapper for nested child tree nodes         |
-| clr-treenode-link               | Tree node link                              |
+| Class name                      | Description                                                                |
+| ------------------------------- | -------------------------------------------------------------------------- |
+| clr-tree-node                   | Main tree node element                                                     |
+| clr-tree-node-content-container | Wrapper for tree content and caret elements                                |
+| clr-treenode-content            | Content wrapper for tree node                                              |
+| clr-treenode-caret              | Tree node caret button                                                     |
+| clr-tree-node-caret-icon        | Tree node caret icon                                                       |
+| clr-treenode-spinner-container  | Wrapper for tree node spinner                                              |
+| clr-treenode-spinner            | Tree node spinner                                                          |
+| clr-treenode-children           | Wrapper for nested child tree nodes, collapsed unless `is-expanded` is set |
+| is-expanded                     | Set on `clr-treenode-children` while the node is expanded                  |
+| clr-treenode-link               | Tree node link                                                             |
 
 # Vertical Nav
 
@@ -1789,6 +1814,7 @@ All other table classes like `table, thead, tbody, th, td` are not specific to C
 | nav-group-content      | Wrapper for navigation group content                            |
 | nav-group-text         | Navigation group content wrapper text                           |
 | nav-group-children     | Wrapper for navigation group children elements                  |
+| is-expanded            | Set on `nav-group` and `nav-group-children` while expanded      |
 | nav-group-trigger      | Navigation group trigger button for open/close group            |
 | nav-group-trigger-icon | Navigation group trigger button icon                            |
 | nav-btn                | Button to expand vertical nav when collapsed                    |
