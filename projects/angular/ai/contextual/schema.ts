@@ -65,6 +65,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
       additionalProperties: false,
       properties: {
         type: { type: 'string' },
+        ref: { type: 'string' },
         element: { type: 'string' },
         label: { type: 'string' },
         state: { type: 'object' },
