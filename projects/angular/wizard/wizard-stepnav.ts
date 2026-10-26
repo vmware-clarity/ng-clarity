@@ -8,8 +8,10 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
+  ChangeDetectorRef,
   Component,
   ElementRef,
+  inject,
   Input,
   OnDestroy,
   QueryList,
@@ -81,6 +83,8 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   private firstItemVisible = true;
   private lastItemVisible = true;
 
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   constructor(
     public pageService: PageCollectionService,
     private navService: WizardNavigationService,
@@ -135,6 +139,8 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
 
         this.showScrollLeftButton = !this.firstItemVisible;
         this.showScrollRightButton = !this.lastItemVisible;
+        // IntersectionObserver callbacks are not template events, so they do not schedule change detection.
+        this.changeDetectorRef.markForCheck();
       },
       { root: scrollContainer, threshold: 0.99 }
     );
