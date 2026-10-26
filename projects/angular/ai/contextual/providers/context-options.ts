@@ -38,6 +38,11 @@ export interface ClrContextApplicationOptions extends ClrApplicationContext {
   viewId?: () => string | null | undefined;
   /** Metadata about the current view, as a small serializable object. */
   metadata?: () => Record<string, unknown> | null | undefined;
+  /**
+   * Which views are read: `'all'` (the default) reads every view; `'enabled'` reads only views
+   * with metadata and reports the others as `enabled: false`, with nothing about the page.
+   */
+  views?: 'all' | 'enabled';
 }
 
 /** The application every snapshot describes. */
