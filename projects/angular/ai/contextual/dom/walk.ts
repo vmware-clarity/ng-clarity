@@ -17,6 +17,7 @@ import {
 } from '@clr/angular/utils';
 
 import { accessibleName } from './accessible-name';
+import { annotationContext, hasAnnotation } from './annotations';
 import { ariaEnumValue, ariaState, isContentEditable, isRedacted, redactNode } from './aria-state';
 import { mergeElementContext, publishedNode, readClrElementContext } from './element-context';
 import { withinReadScope } from './read-scope';
@@ -28,8 +29,9 @@ import {
   resolveRole,
   roleCandidateSelector,
 } from './roles';
-import { closestAcrossShadow, idScope, IdScope, renderedChildNodes } from './shadow';
+import { closestAcrossShadow, containsAcrossShadow, idScope, IdScope, renderedChildNodes } from './shadow';
 import { summarizeRole } from './summarizers';
+import { attempt } from '../attempt';
 import { WRITABLE_ROLES } from './tables/roles';
 import {
   CELL_SELECTOR,
@@ -42,7 +44,6 @@ import {
 import { NAMING_TAGS, PHRASING_TAGS, SKIPPED_TAGS } from './tables/tags';
 import { accessibleText, isVisuallyHidden, MAX_NESTING_DEPTH, truncate } from './text';
 import { hidesFromContext, isHiddenFromContext, isVisible } from './visibility';
-import { attempt } from '../attempt';
 import { stripQueryAndFragment } from '../url';
 
 /**
@@ -80,6 +81,8 @@ interface Walk {
   elementDepth: number;
   /** Shared across the whole walk, probes included. */
   visited: { count: number };
+  /** Where the view starts; `data-ai-metadata` on these and their ancestors describes the view, not a node. */
+  viewRoots: Element[];
 }
 
 /** The result of a walk, and whether it ran out of budget before it ran out of page. */
@@ -114,11 +117,13 @@ export function collectContextTreeWithin(
     depth: 0,
     elementDepth: 0,
     visited: { count: 0 },
+    viewRoots: [],
   };
   return withinReadScope(() => {
     const rootScope = root.nodeType === Node.ELEMENT_NODE ? idScope(root as Element) : (root as IdScope);
     walk.referencedIds.set(rootScope, collectReferencedIds(root, walk));
     const scope = engineScope(root, walk.options);
+    walk.viewRoots = scope.roots ?? topOf(root);
     const components = describeScope(root, scope.roots, walk);
     const result: ClrContextTreeResult = { components, truncated: walk.truncated };
     if (scope.focus) {
@@ -221,6 +226,7 @@ function rendersOnly(parent: Element, part: Element, excludeSelector: string): b
     }
     if (
       CLR_ELEMENT_CONTEXT_PROPERTY in element ||
+      hasAnnotation(element) ||
       element.matches(DESCRIBABLE_SELECTOR) ||
       element.querySelector(DESCRIBABLE_SELECTOR)
     ) {
@@ -406,6 +412,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     role === 'listitem' &&
     walk.summarizedListDepth > 0 &&
     !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !hasAnnotation(element) &&
     !Array.from(element.attributes).some(attribute => attribute.name.startsWith('aria-')) &&
     !element.querySelector(CONTROL_SELECTOR)
   ) {
@@ -417,7 +424,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   const redacted = walk.redactedDepth > 0;
   const label = nameSafely(element, redacted ? null : role, walk);
 
-  if (!role && !label) {
+  if (!role && !label && !annotationOf(element, walk)) {
     if (!isCustomElement) {
       return isTextBlock(element, walk)
         ? describeTextBlock(element, walk, owner)
@@ -516,6 +523,7 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
   }
   if (
     !readClrElementContext(element, walk.options) &&
+    !annotationOf(element, walk) &&
     !accessibleText(element, undefined, walk.excludeSelector).trim()
   ) {
     return [];
@@ -756,6 +764,7 @@ function isPhrasing(element: Element, walk: Walk): boolean {
     !element.hasAttribute('aria-live') &&
     !element.hasAttribute(CLR_CONTEXT_REDACT_ATTRIBUTE) &&
     !(CLR_ELEMENT_CONTEXT_PROPERTY in element) &&
+    !hasAnnotation(element) &&
     !isLabel(element, walk) &&
     !element.matches(DESCRIBABLE_SELECTOR) &&
     !element.querySelector(DESCRIBABLE_SELECTOR) &&
@@ -804,7 +813,8 @@ function finish(
 ): ClrComponentContext | null {
   const redacted = isRedacted(element, walk.redactedDepth > 0);
   // Published context is not merged inside a redacted region: it would carry the component's state straight out.
-  let described = redacted || !published ? node : mergeElementContext(node, element, walk.options);
+  let described =
+    redacted || !published ? node : mergeElementContext(node, element, walk.options, annotationOf(element, walk));
   if (walk.excludeRoles.has(described.type)) {
     walk.remaining++;
     return null;
@@ -816,6 +826,24 @@ function finish(
   }
 
   return pruneEmpty(described, { foreign: unpruned });
+}
+
+/** The context annotation attributes give the element; view metadata is not the element's own. */
+function annotationOf(element: Element, walk: Walk): Partial<ClrComponentContext> | null {
+  if (!hasAnnotation(element)) {
+    return null;
+  }
+  const isViewLevel = walk.viewRoots.some(root => containsAcrossShadow(element, root));
+  return annotationContext(element, !isViewLevel);
+}
+
+/** The element a snapshot of the whole of `root` starts from. */
+function topOf(root: ParentNode): Element[] {
+  const top =
+    root.nodeType === Node.DOCUMENT_NODE
+      ? ((root as Document).body ?? (root as Document).documentElement)
+      : (root as Element);
+  return top ? [top] : [];
 }
 
 function listOf(node: ClrComponentContext | null): ClrComponentContext[] {

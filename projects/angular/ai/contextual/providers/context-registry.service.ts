@@ -8,7 +8,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
-import { attempt } from '../attempt';
+import { attempt, TIMED_OUT, withTimeout } from '../attempt';
 import { ClrComponentContext, ClrContextProvider } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH } from '../json-safe';
 
@@ -101,14 +101,6 @@ export class ClrContextRegistryService {
 interface PolledProvider {
   result: ReturnType<ClrContextProvider['getClrContext']>;
   verdict: 'keep' | 'redact';
-}
-
-const TIMED_OUT = Symbol('timed out');
-
-function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<T | typeof TIMED_OUT> {
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  const timeout = new Promise<typeof TIMED_OUT>(resolve => (timer = setTimeout(() => resolve(TIMED_OUT), timeoutMs)));
-  return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
 
 function isPromise<T>(value: T | Promise<T>): value is Promise<T> {

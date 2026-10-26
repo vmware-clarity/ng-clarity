@@ -163,11 +163,11 @@ export class ClrContextTrackerService implements OnDestroy {
     this.clearTimers();
   }
 
-  /** Takes a new snapshot now instead of waiting for a change; asynchronous providers follow when they answer. */
+  /** Takes a new snapshot now instead of waiting for a change; asynchronous sources follow when they answer. */
   refresh(): void {
     const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
     this.emit(snapshot);
-    if (snapshot.regions.some(region => region.state?.['loading'] === true)) {
+    if (snapshot.metadataState === 'loading' || snapshot.regions.some(region => region.state?.['loading'] === true)) {
       this.zone.runOutsideAngular(() => this.scrape());
     }
   }

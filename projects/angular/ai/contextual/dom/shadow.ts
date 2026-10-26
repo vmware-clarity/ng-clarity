@@ -40,6 +40,11 @@ export function containsAcrossShadow(ancestor: Element, node: Element): boolean 
   return false;
 }
 
+/** The parent element, or the host for an element at the top of a shadow root. */
+export function parentAcrossShadow(element: Element): Element | null {
+  return element.parentElement ?? shadowRootOf(element)?.host ?? null;
+}
+
 export function idScope(element: Element): IdScope {
   return shadowRootOf(element) ?? element.ownerDocument;
 }

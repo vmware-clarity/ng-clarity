@@ -234,6 +234,39 @@
     <div class="clr-mt-16px">
       <app-code-snippet [code]="directiveModuleExample" language="typescript"></app-code-snippet>
     </div>
+    <p class="clr-mt-16px" cds-text="body">
+      Pages without Angular, such as a same-origin iframe built with another framework, annotate with attributes
+      instead: <code cds-text="code">data-clr-context</code> for the label,
+      <code cds-text="code">data-clr-context-type</code> for the kind of UI and
+      <code cds-text="code">data-clr-context-state</code> for the state as a JSON object. The annotation is reported on
+      the element's node in <code cds-text="code">components</code>.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="attributesExample" language="html"></app-code-snippet>
+    </div>
+
+    <h3 id="view-metadata" class="clr-mt-32px" cds-text="section">Describing views</h3>
+    <p class="clr-mt-16px" cds-text="body">
+      <code cds-text="code">data-ai-metadata</code> holds a small JSON object about the view when it sits on the view's
+      root or an ancestor of it, and is reported as the snapshot's <code cds-text="code">metadata</code>; a
+      <code cds-text="code">viewId</code> in it names the view. Anywhere else it describes the element it sits on and is
+      reported as that node's <code cds-text="code">state.metadata</code>.
+      <code cds-text="code">data-ai-metadata-url</code> loads the same object from the page's origin, or from origins
+      listed in <code cds-text="code">metadataOrigins</code>; until it loads, or when it cannot be loaded, the
+      snapshot's <code cds-text="code">metadataState</code> says so.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="viewMetadataExample" language="html"></app-code-snippet>
+    </div>
+    <p class="clr-mt-16px" cds-text="body">
+      With <code cds-text="code">views: 'enabled'</code>, only views with metadata are read; any other view is reported
+      as <code cds-text="code">enabled: false</code> with nothing about the page. A views configuration describes views
+      by route pattern or selector without editing them, and can enable or disable a view in either mode. Metadata on
+      the page wins over the application provider, which wins over the configuration.
+    </p>
+    <div class="clr-mt-16px">
+      <app-code-snippet [code]="viewConfigExample" language="typescript"></app-code-snippet>
+    </div>
 
     <h3 id="form-context" class="clr-mt-32px" cds-text="section">Reading form context</h3>
     <p class="clr-mt-16px" cds-text="body">

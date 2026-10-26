@@ -27,6 +27,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
     },
     viewId: { type: 'string' },
     metadata: { type: 'object' },
+    metadataState: { enum: ['loading', 'unavailable'] },
     enabled: { const: false },
     title: { type: 'string' },
     url: { type: 'string' },

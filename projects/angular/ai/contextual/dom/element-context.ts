@@ -38,19 +38,27 @@ function warnLeftOut(element: Element, error: unknown): void {
   }
 }
 
-/** Merges an element's published context over the DOM-extracted one; published values win. */
+/**
+ * Merges the context from an element's annotation attributes, then its published context, over the
+ * DOM-extracted one; published values win.
+ */
 export function mergeElementContext(
   base: ClrComponentContext,
   element: Element,
-  options: Required<ClrContextSnapshotOptions>
+  options: Required<ClrContextSnapshotOptions>,
+  annotation: Partial<ClrComponentContext> | null = null
 ): ClrComponentContext {
   const published = readClrElementContext(element, options);
-  if (!published) {
+  const source =
+    annotation && published
+      ? { ...annotation, ...published, state: { ...annotation.state, ...published.state } }
+      : (published ?? annotation);
+  if (!source) {
     return base;
   }
   let own: Partial<ClrComponentContext>;
   try {
-    own = publishedParts(published, options, PUBLISHED_DEPTH);
+    own = publishedParts(source, options, PUBLISHED_DEPTH);
   } catch (error) {
     warnLeftOut(element, error);
     return base;

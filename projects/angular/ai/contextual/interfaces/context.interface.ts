@@ -48,11 +48,22 @@ export interface ClrPageContext {
   schemaVersion: string;
   /** The application, from `provideClrContextApplication`; the page's host name when none is provided. */
   application: ClrApplicationContext;
-  /** The view the user is on, from the application provider or the route's `data.viewId`. */
+  /**
+   * The view the user is on: `viewId` in the page's `data-ai-metadata`, then the application provider,
+   * the route's `data.viewId` and the views configuration.
+   */
   viewId?: string;
-  /** Application metadata about the current view, from the application provider. */
+  /**
+   * Metadata about the current view, merged from the views configuration, the application provider,
+   * `data-ai-metadata-url` and `data-ai-metadata`, later ones winning.
+   */
   metadata?: Record<string, unknown>;
-  /** `false` when the application reads only enabled views and this one has no metadata; nothing else is read. */
+  /** Set while a metadata URL is loading, or when one could not be loaded. */
+  metadataState?: 'loading' | 'unavailable';
+  /**
+   * `false` when the views configuration disables this view, or the application reads only enabled
+   * views and this one has no metadata; nothing else is read.
+   */
   enabled?: false;
   /** The document title; empty for an untrusted caller unless it shares the full URL. */
   title: string;
