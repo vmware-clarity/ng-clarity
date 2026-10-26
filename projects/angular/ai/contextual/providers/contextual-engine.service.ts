@@ -88,10 +88,14 @@ export class ClrContextEngineService implements OnDestroy {
     options?: ClrContextSnapshotOptions,
     timeoutMs = DEFAULT_SOURCE_TIMEOUT_MS
   ): Promise<ClrPageContext> {
+    const snapshot = this.viewSnapshot();
+    if (snapshot.enabled === false) {
+      return snapshot;
+    }
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
     // Started first, so providers work while the page is walked.
     const regions = this.contextRegistry.collectAsync(this.regionFilter(resolved), timeoutMs);
-    const snapshot = this.snapshot(resolved, [], !!this.mutationPolicy);
+    this.describePage(snapshot, resolved, [], !!this.mutationPolicy);
     snapshot.regions = await regions;
     return snapshot;
   }
@@ -158,28 +162,28 @@ export class ClrContextEngineService implements OnDestroy {
   }
 
   private syncSnapshot(options: ClrContextSnapshotOptions | undefined, withRefs: boolean): ClrPageContext {
+    const snapshot = this.viewSnapshot();
+    if (snapshot.enabled === false) {
+      return snapshot;
+    }
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
-    return this.snapshot(resolved, this.contextRegistry.collect(this.regionFilter(resolved)), withRefs);
+    return this.describePage(snapshot, resolved, this.contextRegistry.collect(this.regionFilter(resolved)), withRefs);
   }
 
-  private snapshot(
-    resolved: Required<ClrContextSnapshotOptions>,
-    regions: ClrComponentContext[],
-    withRefs: boolean
-  ): ClrPageContext {
+  /**
+   * The application and view, with nothing about the page yet; with `views: 'enabled'`, a view
+   * without metadata is reported as not enabled and nothing else is read.
+   */
+  private viewSnapshot(): ClrPageContext {
+    const route = this.routeContext();
     const snapshot: ClrPageContext = {
       schemaVersion: SCHEMA_VERSION,
       application: this.applicationContext(),
-      title: this.document.title,
-      url: this.currentUrl(),
-      regions,
+      title: '',
+      regions: [],
       components: [],
       collectedAt: new Date().toISOString(),
     };
-    const route = this.routeContext();
-    if (route) {
-      snapshot.route = route;
-    }
     const viewId = this.viewId(route);
     if (viewId) {
       snapshot.viewId = viewId;
@@ -187,7 +191,25 @@ export class ClrContextEngineService implements OnDestroy {
     const metadata = attempt(() => jsonSafe(this.application?.metadata?.(), REGION_DEPTH), undefined);
     if (metadata && typeof metadata === 'object' && !Array.isArray(metadata)) {
       snapshot.metadata = metadata as Record<string, unknown>;
+    } else if (this.application?.views === 'enabled') {
+      snapshot.enabled = false;
+      return snapshot;
     }
+    if (route) {
+      snapshot.route = route;
+    }
+    return snapshot;
+  }
+
+  private describePage(
+    snapshot: ClrPageContext,
+    resolved: Required<ClrContextSnapshotOptions>,
+    regions: ClrComponentContext[],
+    withRefs: boolean
+  ): ClrPageContext {
+    snapshot.title = this.document.title;
+    snapshot.url = this.currentUrl();
+    snapshot.regions = regions;
     if (resolved.includeRoutes && this.router?.config.length) {
       const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);

@@ -12,6 +12,7 @@ export * from './providers/context-tracker.service';
 export * from './providers/contextual-engine.service';
 export * from './dom/dom-context-collector';
 export * from './diff';
+export * from './schema';
 export {
   CLR_CONTEXT_CATEGORIES,
   CLR_CONTEXT_PRESETS,
