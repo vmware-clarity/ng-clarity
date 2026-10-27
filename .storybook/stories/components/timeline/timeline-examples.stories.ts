@@ -29,4 +29,8 @@ type Story = StoryObj<ExampleArgs>;
 
 export const StaticHorizontal: Story = { parameters: { example: TIMELINE_EXAMPLES.staticHorizontal } };
 
+export const StaticVertical: Story = { parameters: { example: TIMELINE_EXAMPLES.staticVertical } };
+
 export const Horizontal: Story = { parameters: { example: TIMELINE_EXAMPLES.horizontal } };
+
+export const Vertical: Story = { parameters: { example: TIMELINE_EXAMPLES.vertical } };

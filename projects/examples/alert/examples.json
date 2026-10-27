@@ -49,7 +49,7 @@
     {
       "id": "static-cards",
       "title": "Alerts in cards",
-      "targets": ["website", "demo"]
+      "targets": ["website", "demo", "storybook"]
     },
     {
       "id": "static-modals",

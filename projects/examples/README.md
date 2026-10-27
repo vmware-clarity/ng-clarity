@@ -18,6 +18,8 @@ The apps import them from `@clr/examples/<component>`, compiled from source like
      from this repository.
    - Other files it needs, such as mock data, sit in the component's folder and are imported with a relative path
      (`./inventory/inventory`). The generator finds them through the imports and StackBlitz gets them at the same paths.
+   - Images go in `projects/examples/assets`. All three apps serve that folder at `assets/examples/`, so reference them
+     with that relative path, such as `src="assets/examples/placeholder_350x150.png"`.
 2. Add an entry to the folder's `examples.json` with its `id`, `title` and `targets` (`website`, `demo`, `storybook`).
    When any example targets Storybook, set the file's `storybook` key to the component's story directory, such as
    `components/button` (see `docs/CONTRIBUTING_STORYBOOK.md`).

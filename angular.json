@@ -30,7 +30,15 @@
             "index": "projects/demo/src/index.html",
             "polyfills": ["projects/demo/src/polyfills.ts"],
             "tsConfig": "projects/demo/tsconfig.app.json",
-            "assets": ["projects/demo/src/favicon.ico", "projects/demo/src/assets"],
+            "assets": [
+              "projects/demo/src/favicon.ico",
+              "projects/demo/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/examples/assets",
+                "output": "assets/examples"
+              }
+            ],
             "styles": ["projects/angular/main.scss", "projects/demo/src/styles.scss"],
             "scripts": [],
             "baseHref": "/demo/",
@@ -185,7 +193,12 @@
                 "input": "projects/website/src/compiled-ai/",
                 "output": "/"
               },
-              "projects/website/src/assets"
+              "projects/website/src/assets",
+              {
+                "glob": "**/*",
+                "input": "projects/examples/assets",
+                "output": "assets/examples"
+              }
             ],
             "styles": ["projects/angular/main.scss", "projects/website/src/styles/main.scss"],
             "stylePreprocessorOptions": {

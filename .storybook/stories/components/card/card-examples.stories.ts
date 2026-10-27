@@ -33,16 +33,32 @@ export const AngularCollapsible: Story = { parameters: { example: CARD_EXAMPLES.
 
 export const AngularFixedFooter: Story = { parameters: { example: CARD_EXAMPLES.angularFixedFooter } };
 
+export const AngularImage: Story = { parameters: { example: CARD_EXAMPLES.angularImage } };
+
 export const AngularDivider: Story = { parameters: { example: CARD_EXAMPLES.angularDivider } };
+
+export const AngularMediaBlock: Story = { parameters: { example: CARD_EXAMPLES.angularMediaBlock } };
 
 export const Basic: Story = { parameters: { example: CARD_EXAMPLES.basic } };
 
+export const Clickable: Story = { parameters: { example: CARD_EXAMPLES.clickable } };
+
+export const Images: Story = { parameters: { example: CARD_EXAMPLES.images } };
+
 export const Dropdown: Story = { parameters: { example: CARD_EXAMPLES.dropdown } };
 
+export const MediaBlock: Story = { parameters: { example: CARD_EXAMPLES.mediaBlock } };
+
+export const Alert: Story = { parameters: { example: CARD_EXAMPLES.alert } };
+
 export const Lists: Story = { parameters: { example: CARD_EXAMPLES.lists } };
+
+export const ListGroup: Story = { parameters: { example: CARD_EXAMPLES.listGroup } };
 
 export const ProgressBars: Story = { parameters: { example: CARD_EXAMPLES.progressBars } };
 
 export const ProgressBarsInline: Story = { parameters: { example: CARD_EXAMPLES.progressBarsInline } };
 
 export const Grid: Story = { parameters: { example: CARD_EXAMPLES.grid } };
+
+export const Columns: Story = { parameters: { example: CARD_EXAMPLES.columns } };

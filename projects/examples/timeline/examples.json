@@ -9,7 +9,7 @@
     {
       "id": "static-vertical",
       "title": "Vertical timeline with CSS classes",
-      "targets": ["website", "demo"]
+      "targets": ["website", "demo", "storybook"]
     },
     {
       "id": "horizontal",
@@ -19,7 +19,7 @@
     {
       "id": "vertical",
       "title": "Vertical timeline",
-      "targets": ["website", "demo"]
+      "targets": ["website", "demo", "storybook"]
     }
   ]
 }

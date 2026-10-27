@@ -22,7 +22,7 @@
     {
       "id": "angular-image",
       "title": "Angular card with an image",
-      "targets": ["website", "demo"],
+      "targets": ["website", "demo", "storybook"],
       "showStyles": false
     },
     {
@@ -34,7 +34,7 @@
     {
       "id": "angular-media-block",
       "title": "Angular card with a media block",
-      "targets": ["website", "demo"],
+      "targets": ["website", "demo", "storybook"],
       "showStyles": false
     },
     {
@@ -45,12 +45,12 @@
     {
       "id": "clickable",
       "title": "Clickable card",
-      "targets": ["website", "demo"]
+      "targets": ["website", "demo", "storybook"]
     },
     {
       "id": "images",
       "title": "Images in cards",
-      "targets": ["website", "demo"]
+      "targets": ["website", "demo", "storybook"]
     },
     {
       "id": "dropdown",
@@ -60,12 +60,12 @@
     {
       "id": "media-block",
       "title": "Card media block",
-      "targets": ["website", "demo"]
+      "targets": ["website", "demo", "storybook"]
     },
     {
       "id": "alert",
       "title": "Alert in a card",
-      "targets": ["website", "demo"],
+      "targets": ["website", "demo", "storybook"],
       "showStyles": false
     },
     {
@@ -76,7 +76,7 @@
     {
       "id": "list-group",
       "title": "List group in a card",
-      "targets": ["website", "demo"],
+      "targets": ["website", "demo", "storybook"],
       "showStyles": false
     },
     {
@@ -97,7 +97,7 @@
     {
       "id": "columns",
       "title": "Cards in CSS columns",
-      "targets": ["website", "demo"]
+      "targets": ["website", "demo", "storybook"]
     }
   ]
 }

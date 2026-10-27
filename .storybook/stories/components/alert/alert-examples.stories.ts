@@ -45,6 +45,8 @@ export const StaticTypes: Story = { parameters: { example: ALERT_EXAMPLES.static
 
 export const StaticContentArea: Story = { parameters: { example: ALERT_EXAMPLES.staticContentArea } };
 
+export const StaticCards: Story = { parameters: { example: ALERT_EXAMPLES.staticCards } };
+
 export const StaticModals: Story = { parameters: { example: ALERT_EXAMPLES.staticModals } };
 
 export const StaticSizes: Story = { parameters: { example: ALERT_EXAMPLES.staticSizes } };
