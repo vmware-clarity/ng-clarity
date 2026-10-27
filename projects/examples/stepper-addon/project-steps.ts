@@ -5,11 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppfxStepperModule } from '@clr/addons/stepper';
-import { Out, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
+import { Out, StepModel, StepModelHolder, Var } from '@clr/addons/var';
 
 /* ---- Step 1 model ---- */
 export class ProjectNameModel implements StepModel {
@@ -19,7 +17,6 @@ export class ProjectNameModel implements StepModel {
 
 @Component({
   selector: 'clr-demo-stepper-step1',
-  standalone: true,
   imports: [FormsModule],
   template: `
     <div class="clr-form-group">
@@ -42,7 +39,6 @@ export class TeamModel implements StepModel {
 
 @Component({
   selector: 'clr-demo-stepper-step2',
-  standalone: true,
   imports: [FormsModule],
   template: `
     <div class="clr-form-group">
@@ -67,52 +63,4 @@ export class StepperStep2Component implements StepModelHolder {
 export class ProjectWorkflowModel {
   @Out() name: Var<string> = Var.of();
   @Out() team: Var<string> = Var.of();
-}
-
-@Component({
-  selector: 'clr-basic-stepper-demo',
-  standalone: true,
-  imports: [CommonModule, AppfxStepperModule, StepperStep1Component, StepperStep2Component],
-  template: `
-    <appfx-stepper [steps]="steps" [wizardModel]="model" (onFinish)="onFinish()"></appfx-stepper>
-
-    <div class="clr-mt-24px alert alert-success" *ngIf="submitted">
-      <div class="alert-items">
-        <div class="alert-item static">
-          <span class="alert-text">
-            Created project <strong>{{ result?.name }}</strong> for team <strong>{{ result?.team }}</strong
-            >.
-          </span>
-        </div>
-      </div>
-    </div>
-  `,
-})
-export class BasicStepperDemoComponent implements OnInit {
-  model = new ProjectWorkflowModel();
-  steps: Step[];
-  submitted = false;
-  result: { name: string; team: string } | null = null;
-
-  ngOnInit() {
-    this.steps = [
-      {
-        title: 'Project Name',
-        description: 'Enter a unique name for your project',
-        componentClass: StepperStep1Component,
-        model: new ProjectNameModel(),
-      },
-      {
-        title: 'Assign Team',
-        description: 'Select which team owns this project',
-        componentClass: StepperStep2Component,
-        model: new TeamModel(),
-      },
-    ];
-  }
-
-  onFinish() {
-    this.result = { name: this.model.name.value, team: this.model.team.value };
-    this.submitted = true;
-  }
 }

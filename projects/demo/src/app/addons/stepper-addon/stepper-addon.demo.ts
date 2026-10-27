@@ -8,6 +8,7 @@
 import { CommonModule, JsonPipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AppfxStepperModule } from '@clr/addons/stepper';
 import { Out, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
 
@@ -62,7 +63,7 @@ class ProjectModel {
 @Component({
   selector: 'clr-stepper-addon-demo',
   standalone: true,
-  imports: [CommonModule, AppfxStepperModule],
+  imports: [CommonModule, RouterLink, AppfxStepperModule],
   templateUrl: './stepper-addon.demo.html',
 })
 export class StepperAddonDemo implements OnInit {

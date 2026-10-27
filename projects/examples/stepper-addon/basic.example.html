@@ -4,4 +4,20 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
+
 <appfx-stepper [steps]="steps" [wizardModel]="model" (onFinish)="onFinish()"></appfx-stepper>
+
+@if (submitted) {
+<div class="clr-mt-24px alert alert-success">
+  <div class="alert-items">
+    <div class="alert-item static">
+      <span class="alert-text">
+        Created project
+        <strong>{{ result?.name }}</strong>
+        for team
+        <strong>{{ result?.team }}</strong>
+      </span>
+    </div>
+  </div>
+</div>
+}
