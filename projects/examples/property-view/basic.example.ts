@@ -6,16 +6,19 @@
  */
 
 import { Component, OnInit } from '@angular/core';
-import { AppfxPropertyViewModule, PropertyViewBuilder, PropertyViewModel } from '@clr/addons/property-view';
+import {
+  AppfxPropertyViewModule,
+  PropertyViewBuilder,
+  PropertyViewModel,
+} from '@clr/addons/property-view';
 
 @Component({
-  selector: 'clr-basic-property-view-demo',
-  standalone: true,
+  selector: 'clr-property-view-basic-example',
   imports: [AppfxPropertyViewModule],
-  templateUrl: 'basic-property-view.html',
+  templateUrl: './basic.example.html',
 })
-export class BasicPropertyViewDemoComponent implements OnInit {
-  data: PropertyViewModel;
+export class PropertyViewBasicExample implements OnInit {
+  data: PropertyViewModel | undefined;
 
   ngOnInit(): void {
     const builder = new PropertyViewBuilder();
@@ -33,7 +36,9 @@ export class BasicPropertyViewDemoComponent implements OnInit {
       .exit()
       .valueBuilder()
       .text('Lion')
-      .link({ clickHandler: () => window.open('https://en.wikipedia.org/wiki/Lion', '_blank', 'noopener') })
+      .link({
+        clickHandler: () => window.open('https://en.wikipedia.org/wiki/Lion', '_blank', 'noopener'),
+      })
       .exit()
       .exit();
 

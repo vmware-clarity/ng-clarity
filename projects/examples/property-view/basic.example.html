@@ -4,4 +4,7 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<appfx-property-view [data]="data" *ngIf="data"></appfx-property-view>
+
+@if (data) {
+<appfx-property-view [data]="data"></appfx-property-view>
+}

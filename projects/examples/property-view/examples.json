@@ -1,0 +1,4 @@
+{
+  "storybook": "addons/property-view",
+  "examples": [{ "id": "basic", "title": "Basic property view", "targets": ["website", "demo", "storybook"] }]
+}
