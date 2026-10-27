@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ICON_EXAMPLES } from '@clr/examples/icon';
 
 import { IconColorsDemo } from './icon-colors';
 import { IconInverseColorDemo } from './icon-inverse-color';
@@ -17,13 +18,15 @@ import { IconSizeDemo } from './icon-size';
 import { IconVariantsDemo } from './icon-variants';
 import { IconsDemo } from './iconography.demo';
 import { IconsViewBoxTestDemo } from './icons-view-box-test.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: IconsDemo,
     children: [
-      { path: '', redirectTo: 'selection', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: ICON_EXAMPLES } },
       { path: 'selection', component: IconSelectionDemo },
       { path: 'color-options', component: IconColorsDemo },
       { path: 'inverse-color', component: IconInverseColorDemo },
