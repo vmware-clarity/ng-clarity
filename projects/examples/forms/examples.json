@@ -1,0 +1,20 @@
+{
+  "storybook": "components/forms/form",
+  "examples": [
+    { "id": "structure", "title": "Basic form structure", "targets": ["website", "demo", "storybook"] },
+    { "id": "helpers", "title": "Helper and validation messages", "targets": ["website", "demo", "storybook"] },
+    { "id": "multiple-errors", "title": "Multiple error messages", "targets": ["demo"] },
+    { "id": "reset", "title": "Reset validation", "targets": ["website", "demo", "storybook"] },
+    { "id": "validate", "title": "Force validation", "targets": ["website", "demo", "storybook"] },
+    { "id": "required-mark", "title": "Required fields", "targets": ["website", "demo", "storybook"] },
+    { "id": "label-size", "title": "Label size", "targets": ["website", "demo", "storybook"] },
+    { "id": "override", "title": "Overriding column widths", "targets": ["website", "demo", "storybook"] },
+    { "id": "reactive", "title": "Reactive forms", "targets": ["website", "demo", "storybook"] },
+    { "id": "generic", "title": "Custom and non-Clarity controls", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-structure", "title": "CSS form structure", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-grid", "title": "CSS form layout with grid", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-error", "title": "CSS form error state", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-success", "title": "CSS form success state", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-required-mark", "title": "CSS required fields", "targets": ["website", "demo", "storybook"] }
+  ]
+}

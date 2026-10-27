@@ -4,6 +4,7 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
+
 <form clrForm>
   <clr-control-container>
     <input clrControl placeholder="Basic text" name="basic" [(ngModel)]="model.container" />
@@ -32,7 +33,7 @@
 
   <clr-select-container>
     <label>Clr Select 1</label>
-    <select multiple clrSelect formControlName="cars">
+    <select multiple clrSelect name="cars" [(ngModel)]="model.cars">
       @for (car of cars; track car.id) {
       <option [value]="car.id" [disabled]="car.disabled">{{ car.name }}</option>
       }

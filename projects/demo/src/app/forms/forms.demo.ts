@@ -20,6 +20,7 @@ import { Component } from '@angular/core';
   template: `
     <h2>Forms</h2>
     <ul class="list-nav">
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./layout-vertical']">Layout Vertical</a></li>
       <li><a [routerLink]="['./layout-horizontal']">Layout Horizontal</a></li>
       <li><a [routerLink]="['./layout-compact']">Layout Compact</a></li>

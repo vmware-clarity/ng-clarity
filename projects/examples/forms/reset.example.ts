@@ -5,19 +5,30 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ClrFormsModule } from '@clr/angular';
+import { ClrAlertModule, ClrInputModule } from '@clr/angular';
 
 @Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-  imports: [CommonModule, ReactiveFormsModule, ClrFormsModule],
+  selector: 'clr-forms-reset-example',
+  templateUrl: './reset.example.html',
+  imports: [ReactiveFormsModule, ClrInputModule, ClrAlertModule],
 })
-export class ExampleComponent {
+export class FormsResetExample {
+  submitted = false;
   exampleForm = new FormGroup({
     sample: new FormControl('', Validators.required),
   });
+
+  resetForm() {
+    this.exampleForm.reset();
+  }
+
+  submit() {
+    this.submitted = true;
+
+    setTimeout(() => {
+      this.submitted = false;
+    }, 1000);
+  }
 }

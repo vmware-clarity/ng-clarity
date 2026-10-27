@@ -6,15 +6,11 @@
  */
 
 import { Component } from '@angular/core';
-import { FormControl, FormsModule } from '@angular/forms';
-import { ClrFormsModule } from '@clr/angular';
+import { ClrIcon } from '@clr/angular';
 
 @Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-  imports: [FormsModule, ClrFormsModule],
+  selector: 'clr-forms-css-error-example',
+  templateUrl: './css-error.example.html',
+  imports: [ClrIcon],
 })
-export class ExampleComponent {
-  model: FormControl | undefined;
-}
+export class FormsCssErrorExample {}

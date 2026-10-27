@@ -5,18 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
 import { Component, viewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ClrAlertModule, ClrForm, ClrFormsModule } from '@clr/angular';
+import { ClrAlertModule, ClrForm, ClrInputModule } from '@clr/angular';
 
 @Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-  imports: [CommonModule, ReactiveFormsModule, ClrFormsModule, ClrAlertModule],
+  selector: 'clr-forms-validate-example',
+  templateUrl: './validate.example.html',
+  imports: [ReactiveFormsModule, ClrInputModule, ClrAlertModule],
 })
-export class ExampleComponent {
+export class FormsValidateExample {
   submitted = false;
   error = false;
   readonly clrForm = viewChild(ClrForm);
