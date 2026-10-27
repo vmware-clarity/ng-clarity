@@ -8,7 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BrowserModule } from '@angular/platform-browser';
 import { ClarityModule } from '@clr/angular';
 import { provideClrMutationPolicy } from '@clr/angular/ai';
 
@@ -28,7 +28,7 @@ import { LandingComponent } from './landing.component';
     CdsThemeSelectComponent,
     ContextInspectorComponent,
   ],
-  imports: [BrowserAnimationsModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
+  imports: [BrowserModule, CommonModule, FormsModule, ReactiveFormsModule, ClarityModule, ROUTING],
   providers: [
     cdsThemePathLocationStrategyProvider,
     // Demo mutation policy: fields inside `data-agent-fill` are reversible, leaving the page without

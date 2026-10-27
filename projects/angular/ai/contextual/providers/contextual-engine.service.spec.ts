@@ -10,7 +10,12 @@ import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
 
-import { CLR_CONTEXT_OPTIONS, provideClrContextApplication, provideClrContextOptions } from './context-options';
+import {
+  CLR_CONTEXT_OPTIONS,
+  ClrContextApplicationOptions,
+  provideClrContextApplication,
+  provideClrContextOptions,
+} from './context-options';
 import { ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
@@ -817,6 +822,25 @@ describe('ClrContextEngineService, identifying the application and view', () => 
     expect(engine.getSnapshot(quiet).viewId).toBe('host-detail');
   });
 
+  it('does not give a child route the view id of its parent route', async () => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideClrContextApplication({ id: 'inventory' }),
+        provideRouter([
+          {
+            path: 'hosts',
+            data: { viewId: 'hosts' },
+            children: [{ path: ':id', component: RoutedComponent }],
+          },
+        ]),
+      ],
+    });
+    const engine = TestBed.inject(ClrContextEngineService);
+    await TestBed.inject(Router).navigateByUrl('/hosts/7');
+
+    expect(engine.getSnapshot(quiet).viewId).toBeUndefined();
+  });
+
   it('survives a provider that throws', () => {
     TestBed.configureTestingModule({
       providers: [
@@ -900,6 +924,50 @@ describe('ClrContextEngineService, reading only enabled views', () => {
     expect(snapshot.title).toBe(document.title);
     expect(snapshot.regions).toEqual([{ type: 'region', label: 'Hosts' }]);
   });
+
+  it('reads a view whose metadata is an empty object', () => {
+    metadata = {};
+
+    expect(engine.getSnapshot().enabled).toBeUndefined();
+  });
+});
+
+describe('ClrContextEngineService, a view that changes while providers answer', () => {
+  it('describes the new view instead of mixing answers from the old one into it', async () => {
+    let view = 'hosts';
+    TestBed.configureTestingModule({
+      providers: [provideClrContextApplication({ id: 'inventory', viewId: () => view })],
+    });
+    const engine = TestBed.inject(ClrContextEngineService);
+    let answer: (context: ClrComponentContext) => void = () => undefined;
+    TestBed.inject(ClrContextRegistryService).register({
+      getClrContext: () =>
+        view === 'hosts' ? new Promise(resolve => (answer = resolve)) : { type: 'region', label: 'VMs' },
+    });
+
+    const snapshot = engine.getSnapshotAsync({ includeDomComponents: false });
+    view = 'vms';
+    answer({ type: 'region', label: 'Hosts' });
+
+    expect((await snapshot).viewId).toBe('vms');
+  });
+});
+
+describe('ClrContextEngineService, an unrecognised views setting', () => {
+  it('reads only enabled views, with a dev-mode warning', () => {
+    spyOn(console, 'warn');
+    TestBed.configureTestingModule({
+      providers: [
+        provideClrContextApplication({
+          id: 'inventory',
+          views: 'enable' as unknown as ClrContextApplicationOptions['views'],
+        }),
+      ],
+    });
+
+    expect(TestBed.inject(ClrContextEngineService).getSnapshot().enabled).toBeFalse();
+    expect(console.warn).toHaveBeenCalled();
+  });
 });
 
 describe('ClrContextEngineService, asynchronous providers', () => {
@@ -916,7 +984,7 @@ describe('ClrContextEngineService, asynchronous providers', () => {
   it('reports a pending provider as loading in a synchronous snapshot', () => {
     registry.register({ getClrContext: () => new Promise<null>(() => undefined) });
 
-    expect(engine.getSnapshot(quiet).regions).toEqual([{ type: 'region', state: { loading: true } }]);
+    expect(engine.getSnapshot(quiet).regions).toEqual([{ type: 'clr-loading' }]);
   });
 
   it('merges what an asynchronous provider resolves to', async () => {
@@ -936,12 +1004,106 @@ describe('ClrContextEngineService, asynchronous providers', () => {
 
     const snapshot = await engine.getSnapshotAsync(quiet, 10);
 
-    expect(snapshot.regions).toEqual([{ type: 'region', state: { unavailable: true } }]);
+    expect(snapshot.regions).toEqual([{ type: 'clr-unavailable' }]);
   });
 
-  it('leaves out a provider that rejects', async () => {
+  it('reports a provider that rejects as unavailable, like one that does not answer in time', async () => {
     registry.register({ getClrContext: () => Promise.reject(new Error('offline')) });
 
-    expect((await engine.getSnapshotAsync(quiet)).regions).toEqual([]);
+    expect((await engine.getSnapshotAsync(quiet)).regions).toEqual([{ type: 'clr-unavailable' }]);
+  });
+
+  it('accepts thenables without catch, and ignores a provider whose then throws', async () => {
+    const thenable = { then: (resolve: (value: unknown) => void) => resolve({ type: 'region', label: 'thenable' }) };
+    const broken = Object.defineProperty({}, 'then', {
+      get: () => {
+        throw new Error('broken');
+      },
+    });
+    registry.register({ getClrContext: () => thenable as unknown as Promise<ClrComponentContext> });
+    registry.register({ getClrContext: () => broken as Promise<ClrComponentContext> });
+
+    expect(() => engine.getSnapshot(quiet)).not.toThrow();
+    expect((await engine.getSnapshotAsync(quiet)).regions).toContain({ type: 'region', label: 'thenable' });
+  });
+
+  it('asks a pending provider once, however many snapshots wait for it', async () => {
+    const getClrContext = jasmine
+      .createSpy('getClrContext')
+      .and.callFake(() => new Promise(resolve => setTimeout(() => resolve({ type: 'region', label: 'late' }), 10)));
+    registry.register({ getClrContext });
+
+    engine.getSnapshot(quiet);
+    const [first, second] = await Promise.all([engine.getSnapshotAsync(quiet), engine.getSnapshotAsync(quiet)]);
+
+    expect(getClrContext).toHaveBeenCalledTimes(1);
+    expect(first.regions).toEqual([{ type: 'region', label: 'late' }]);
+    expect(second.regions).toEqual(first.regions);
+  });
+
+  it('withholds the state of an answer whose element is in a redacted region by the time it arrives', async () => {
+    const section = document.createElement('section');
+    document.body.appendChild(section);
+    let answer: (context: ClrComponentContext) => void = () => undefined;
+    registry.register({ getClrContext: () => new Promise(resolve => (answer = resolve)) }, section);
+    try {
+      const snapshot = engine.getSnapshotAsync(quiet);
+      section.setAttribute('data-clr-context-redact', '');
+      answer({ type: 'region', label: 'Payment', state: { card: '4111111111111111' } });
+
+      expect((await snapshot).regions).toEqual([{ type: 'region', label: 'Payment', state: { redacted: true } }]);
+    } finally {
+      section.remove();
+    }
+  });
+
+  it('keeps only the fields a component context has', () => {
+    registry.register({
+      getClrContext: () =>
+        ({
+          type: 'region',
+          label: 'Hosts',
+          extra: true,
+          children: [{ type: 'button', label: 'Add', onClick: 'x' }],
+        }) as unknown as ClrComponentContext,
+    });
+
+    expect(engine.getSnapshot(quiet).regions).toEqual([
+      { type: 'region', label: 'Hosts', children: [{ type: 'button', label: 'Add' }] },
+    ]);
+  });
+
+  it('treats a timeout that is not a usable delay as the longest one or the default', async () => {
+    registry.register({
+      getClrContext: () => new Promise(resolve => setTimeout(() => resolve({ type: 'region', label: 'late' }), 20)),
+    });
+
+    for (const timeoutMs of [Infinity, NaN, 2 ** 40]) {
+      expect((await engine.getSnapshotAsync(quiet, timeoutMs)).regions)
+        .withContext(String(timeoutMs))
+        .toEqual([{ type: 'region', label: 'late' }]);
+    }
+  });
+});
+
+describe('ClrContextEngineService, slotted content', () => {
+  let page: HTMLElement;
+
+  beforeEach(() => {
+    page = document.createElement('main');
+    page.innerHTML = '<card-host><input aria-label="Card number" value="4111111111111111" /></card-host>';
+    document.body.appendChild(page);
+    const root = (page.querySelector('card-host') as HTMLElement).attachShadow({ mode: 'open' });
+    root.innerHTML = '<div data-clr-context-redact><slot></slot></div><button>Pay</button>';
+  });
+
+  afterEach(() => page.remove());
+
+  it('withholds what a redacted wrapper in a shadow root shows', () => {
+    const snapshot = TestBed.inject(ClrContextEngineService).getSnapshot();
+    const text = JSON.stringify(snapshot.components);
+
+    expect(text).toContain('Pay');
+    expect(text).not.toContain('4111111111111111');
   });
 });

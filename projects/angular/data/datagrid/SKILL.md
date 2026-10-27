@@ -31,8 +31,6 @@ import { ClrDatagridModule, ClrDatagridStateInterface } from '@clr/angular';
 
 The datagrid components are NgModule-declared (not standalone) — always import `ClrDatagridModule` (or `ClarityModule`), never the individual component classes.
 
-The app must provide animations: `provideAnimationsAsync()` (from `@angular/platform-browser/animations/async`) in `app.config.ts` (or `BrowserAnimationsModule`). Rows use `@angular/animations`; without the provider the build passes but the grid throws at runtime.
-
 ## Pick the data mode first
 
 | Mode           | When                                  | Rows                           | Who sorts/filters/pages       |

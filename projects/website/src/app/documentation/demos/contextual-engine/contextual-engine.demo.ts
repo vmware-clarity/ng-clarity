@@ -63,6 +63,9 @@ export class AssistantPanelComponent {
 
 const SNAPSHOT_SHAPE_EXAMPLE = `
 {
+  "schemaVersion": "1",
+  "application": { "id": "inventory", "version": "2.4.0" },
+  "viewId": "cluster-overview",
   "title": "Cluster overview",
   "url": "https://app.example/clusters/42",
   "route": { "url": "/clusters/42", "path": "clusters/:id", "params": { "id": "42" } },
@@ -232,6 +235,7 @@ this.contextTracker.changes$.subscribe(change => {
   // change.added   — nodes that were not there before, with their subtrees
   // change.removed — nodes that are gone
   // change.changed — nodes whose own state differs: { before, after }
+  // change.viewChanged — application, view id, enabled or metadata
   // change.routeChanged / titleChanged / regionsChanged
   if (!clrIsEmptyContextChange(change)) {
     assistant.send({ pageChanged: change });

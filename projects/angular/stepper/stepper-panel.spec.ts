@@ -9,7 +9,7 @@ import { Component, Injectable, Provider, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule, provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
 import { ClrConditionalModule, IfExpandService } from '@clr/angular/utils';
 import { BehaviorSubject, Subject } from 'rxjs';
@@ -98,7 +98,7 @@ describe('ClrStep Reactive Forms', () => {
       TestBed.configureTestingModule({
         declarations: [ReactiveFormsTestComponent],
         providers: [{ provide: StepperService, useClass: MockStepperService }],
-        imports: [ReactiveFormsModule, NoopAnimationsModule, ClrStepperModule],
+        imports: [ReactiveFormsModule, ClrStepperModule],
       });
 
       TestBed.overrideComponent(ClrStepper, {
@@ -172,7 +172,7 @@ describe('ClrStep Template Forms', () => {
     beforeEach(() => {
       TestBed.configureTestingModule({
         declarations: [TemplateFormsTestComponent],
-        imports: [FormsModule, NoopAnimationsModule, ClrStepperModule],
+        imports: [FormsModule, ClrStepperModule],
       });
 
       fixture = TestBed.createComponent(TemplateFormsTestComponent);

@@ -8,7 +8,7 @@
 import { Component, DebugElement, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule, provideNoopAnimations } from '@angular/platform-browser/animations';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { delay } from '@clr/angular/testing';
 
 import { BaseExpandableAnimation } from './base-expandable-animation';
@@ -159,7 +159,7 @@ function heightAnimationSpec(testComponent, component) {
 function expandableAnimationSpec(testComponent, component) {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrExpandableAnimationModule, NoopAnimationsModule],
+      imports: [ClrExpandableAnimationModule],
       declarations: [testComponent],
       providers: [DomAdapter],
     });

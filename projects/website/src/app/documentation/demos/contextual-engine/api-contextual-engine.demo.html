@@ -28,6 +28,16 @@
       </td>
     </tr>
     <tr>
+      <td class="left"><b cds-text="medium">getSnapshotAsync(options?, timeoutMs?)</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext&gt;</code></td>
+      <td class="left">
+        Like <code cds-text="code">getSnapshot</code>, but waits for providers that answer with a promise, for up to
+        <code cds-text="code">timeoutMs</code> (2 seconds by default). A provider that rejects or does not answer in
+        time is reported as a region of type <code cds-text="code">'clr-unavailable'</code>. When the view changes while
+        providers answer, the new view is described instead.
+      </td>
+    </tr>
+    <tr>
       <td class="left"><b cds-text="medium">registerDomExtractor(extractor)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; void</code></td>
       <td class="left">
@@ -361,8 +371,15 @@
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextRegistryService</code></h3>
 <p class="clr-mt-16px" cds-text="body">
-  Root-provided. Holds whatever can contribute application knowledge to a snapshot. Providers are polled at snapshot
-  time and nothing is stored, so an annotation cannot go stale.
+  Root-provided. Holds whatever can contribute application knowledge to a snapshot. Providers are asked at snapshot time
+  and nothing is stored, so an annotation cannot go stale. A provider may answer with a promise:
+  <code cds-text="code">getSnapshotAsync</code> and the tracker wait for it, while
+  <code cds-text="code">getSnapshot</code> reports it as a region of type
+  <code cds-text="code">'clr-loading'</code> (<code cds-text="code">CLR_CONTEXT_LOADING_TYPE</code>). A pending promise
+  is not asked for again; a rejected or late one is reported as a region of type
+  <code cds-text="code">'clr-unavailable'</code> (<code cds-text="code">CLR_CONTEXT_UNAVAILABLE_TYPE</code>). Only
+  <code cds-text="code">type</code>, <code cds-text="code">element</code>, <code cds-text="code">label</code>,
+  <code cds-text="code">state</code> and <code cds-text="code">children</code> are kept from an answer.
 </p>
 <table class="table">
   <thead>
@@ -638,7 +655,64 @@
   that is not a preset.
 </p>
 
+<h3 cds-text="section" class="clr-mt-32px">Application and view</h3>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">provideClrContextApplication(application)</code> names the application every snapshot describes,
+  through the <code cds-text="code">CLR_CONTEXT_APPLICATION</code> token. Without it, the application is identified by
+  the page's host name.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Option</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">id</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">A stable id for the application, such as <code cds-text="code">'inventory'</code>.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">version</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The application's version, when it reports one.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">viewId</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; string | null | undefined</code></td>
+      <td class="left">
+        The current view's id. Without one, the deepest active route's own
+        <code cds-text="code">data.viewId</code> is used; a child route does not inherit its parent's.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">metadata</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">() =&gt; object | null | undefined</code></td>
+      <td class="left">Metadata about the current view, as a small JSON-serializable object.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">views</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">'all' | 'enabled'</code></td>
+      <td class="left">
+        <code cds-text="code">'all'</code> (the default) reads every view. <code cds-text="code">'enabled'</code> reads
+        only views with metadata, an empty object included, and reports the others as
+        <code cds-text="code">enabled: false</code> with nothing about the page. Any other value reads only enabled
+        views.
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 <h2 id="context-shape" cds-text="title" class="clr-mt-48px">Context shape</h2>
+<p class="clr-mt-16px" cds-text="body">
+  <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA</code> is the JSON Schema (draft-07) of
+  <code cds-text="code">ClrPageContext</code>, for consumers that validate snapshots outside TypeScript; it compiles
+  with a default Ajv. <code cds-text="code">CLR_PAGE_CONTEXT_SCHEMA_VERSION</code> is the
+  <code cds-text="code">schemaVersion</code> it describes.
+</p>
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPageContext</code></h3>
 <table class="table">
@@ -650,6 +724,37 @@
     </tr>
   </thead>
   <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">schemaVersion</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">Version of the snapshot format; it changes when a field changes meaning.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">application</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrApplicationContext</code></td>
+      <td class="left">
+        The <code cds-text="code">id</code> and <code cds-text="code">version</code> from
+        <code cds-text="code">provideClrContextApplication</code>, or the page's host name as the id.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">viewId</b></td>
+      <td class="left clr-hidden-xs-down">String</td>
+      <td class="left">The view the user is on, when the application or the route names it.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">metadata</b></td>
+      <td class="left clr-hidden-xs-down">Object</td>
+      <td class="left">What the application says about the current view.</td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">enabled</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">false</code></td>
+      <td class="left">
+        Present when the application reads only enabled views and this one is not; the snapshot then describes nothing
+        on the page.
+      </td>
+    </tr>
     <tr>
       <td class="left"><b cds-text="medium">title</b></td>
       <td class="left clr-hidden-xs-down">String</td>
@@ -679,8 +784,8 @@
       <td class="left"><b cds-text="medium">route</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">ClrRouteContext</code></td>
       <td class="left">
-        Present when the application uses the router: the path pattern, route and query parameters, and the
-        JSON-serializable part of the route data.
+        Present when the application uses the router: the path pattern, route and query parameters (a repeated query
+        parameter as an array), and the JSON-serializable part of the route data.
       </td>
     </tr>
     <tr>

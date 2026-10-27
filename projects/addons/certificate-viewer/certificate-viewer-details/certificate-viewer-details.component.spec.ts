@@ -7,7 +7,6 @@
 
 import { SimpleChange } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { AppfxTranslateModule } from '@clr/addons/translate';
 import { ClrTreeViewModule } from '@clr/angular';
 
@@ -28,7 +27,7 @@ describe('CertificateViewerDetailsComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [AppfxTranslateModule, ClrTreeViewModule, NoopAnimationsModule],
+      imports: [AppfxTranslateModule, ClrTreeViewModule],
       declarations: [CertificateViewerDetailsComponent, CertificateViewerTranslateFieldPipeMock],
     }).compileComponents();
 
