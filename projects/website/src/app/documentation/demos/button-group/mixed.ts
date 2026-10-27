@@ -6,22 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { BUTTON_GROUP_EXAMPLES } from '@clr/examples/button-group';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `
-<div class="btn-group btn-primary">
-  <button class="btn">Favorite</button>
-  <button class="btn btn-success">Add</button>
-  <button class="btn btn-danger">Delete</button>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-button-group-mixed-demo',
   templateUrl: './mixed.html',
-  imports: [StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class MixedButtonGroupDemo {
-  htmlExample = HTML_EXAMPLE;
+  readonly examples = BUTTON_GROUP_EXAMPLES;
 }

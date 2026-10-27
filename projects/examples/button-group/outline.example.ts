@@ -8,9 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-button-group-icons-text-demo',
-  templateUrl: './button-group-icons-text.html',
-  styleUrls: ['../../button-group.demo.scss'],
-  standalone: false,
+  selector: 'clr-button-group-outline-example',
+  templateUrl: './outline.example.html',
 })
-export class ButtonGroupIconsTextDemo {}
+export class ButtonGroupOutlineExample {}

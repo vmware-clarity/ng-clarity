@@ -6,85 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import {
-  ClarityIcons,
-  cloudIcon,
-  ClrIcon,
-  ClrIconModule,
-  cogIcon,
-  ellipsisHorizontalIcon,
-  homeIcon,
-  userIcon,
-} from '@clr/angular';
+import { BUTTON_GROUP_EXAMPLES } from '@clr/examples/button-group';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `
-<div class="btn-group btn-primary btn-icon">
-  <button class="btn">
-    <clr-icon shape="home"></clr-icon>
-    <span class="clr-icon-title">Home</span>
-  </button>
-  <button class="btn">
-    <clr-icon shape="cog"></clr-icon>
-    <span class="clr-icon-title">Settings</span>
-  </button>
-  <div class="btn-group-overflow open">
-    <button class="btn dropdown-toggle">
-      <clr-icon shape="ellipsis-horizontal"></clr-icon>
-    </button>
-    <div class="dropdown-menu" role="menu">
-      <button class="btn" role="menuitem">
-        <clr-icon shape="user"></clr-icon>
-        <span class="clr-icon-title">User</span>
-      </button>
-      <button class="btn" role="menuitem">
-        <clr-icon shape="cloud"></clr-icon>
-        <span class="clr-icon-title">Cloud</span>
-      </button>
-    </div>
-  </div>
-</div>
-`;
-
-const HTML_EXAMPLE_2 = `
-<div class="btn-group btn-primary">
-  <button class="btn">
-    <clr-icon shape="home"></clr-icon>
-    Home
-  </button>
-  <button class="btn">
-    <clr-icon shape="cog"></clr-icon>
-    Settings
-  </button>
-  <div class="btn-group-overflow open">
-    <button class="btn dropdown-toggle">
-      <clr-icon shape="ellipsis-horizontal"></clr-icon>
-    </button>
-    <div class="dropdown-menu" role="menu">
-      <button class="btn" role="menuitem">
-        <clr-icon shape="user"></clr-icon>
-        User
-      </button>
-      <button class="btn" role="menuitem">
-        <clr-icon shape="cloud"></clr-icon>
-        Cloud
-      </button>
-    </div>
-  </div>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-button-group-icons-demo',
   templateUrl: './icons.html',
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class ButtonGroupIconsDemo {
-  htmlExample = HTML_EXAMPLE;
-  htmlExample2 = HTML_EXAMPLE_2;
-
-  constructor() {
-    ClarityIcons.addIcons(homeIcon, cogIcon, ellipsisHorizontalIcon, userIcon, cloudIcon);
-  }
+  readonly examples = BUTTON_GROUP_EXAMPLES;
 }

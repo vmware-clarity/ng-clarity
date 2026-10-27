@@ -1,0 +1,36 @@
+{
+  "storybook": "components/button-group",
+  "examples": [
+    { "id": "angular-basic", "title": "Button group component", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "angular-menu-position",
+      "title": "Button group component menu position",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "primary", "title": "Primary button group", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "overflow",
+      "title": "Button group overflow",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    { "id": "outline", "title": "Outline button group", "targets": ["website", "demo", "storybook"] },
+    { "id": "flat", "title": "Flat button group", "targets": ["website", "demo", "storybook"] },
+    { "id": "small", "title": "Small button group", "targets": ["website", "demo", "storybook"] },
+    { "id": "mixed", "title": "Mixed button group", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "icons",
+      "title": "Icon button group",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "icons-text",
+      "title": "Icon with text button group",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    { "id": "checkbox", "title": "Checkbox button group", "targets": ["website", "demo", "storybook"] },
+    { "id": "radio", "title": "Radio button group", "targets": ["website", "demo", "storybook"] }
+  ]
+}

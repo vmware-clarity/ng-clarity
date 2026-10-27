@@ -6,53 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { BUTTON_GROUP_EXAMPLES } from '@clr/examples/button-group';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE_1 = `
-<div class="btn-group btn-primary">
-  <button class="btn">Add</button>
-  <button class="btn">Edit</button>
-  <button class="btn">Download</button>
-  <button class="btn">Delete</button>
-</div>
-`;
-
-const HTML_EXAMPLE_2 = `
-<div class="btn-group">
-  <button class="btn">Add</button>
-  <button class="btn">Edit</button>
-  <button class="btn">Download</button>
-  <button class="btn">Delete</button>
-</div>
-`;
-
-const HTML_EXAMPLE_3 = `
-<div class="btn-group btn-link">
-  <button class="btn">Add</button>
-  <button class="btn">Edit</button>
-  <button class="btn">Download</button>
-  <button class="btn">Delete</button>
-</div>
-`;
-
-const HTML_EXAMPLE_4 = `
-<div class="btn-group btn-outline-primary btn-sm">
-  <button class="btn">Add</button>
-  <button class="btn">Edit</button>
-  <button class="btn">Download</button>
-  <button class="btn">Delete</button>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-button-group-types-demo',
   templateUrl: './types.html',
-  imports: [StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class ButtonGroupTypes {
-  htmlExample1 = HTML_EXAMPLE_1;
-  htmlExample2 = HTML_EXAMPLE_2;
-  htmlExample3 = HTML_EXAMPLE_3;
-  htmlExample4 = HTML_EXAMPLE_4;
+  readonly examples = BUTTON_GROUP_EXAMPLES;
 }

@@ -22,7 +22,6 @@ import { ButtonGroupTypes } from './types';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 
 @NgModule({
@@ -34,7 +33,6 @@ import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.compon
     DoDontComponent,
     NestingTableComponent,
     StyleDocsComponent,
-    StackblitzExampleComponent,
     ButtonGroupBasicStructureDemo,
     ButtonGroupTypes,
     MixedButtonGroupDemo,
