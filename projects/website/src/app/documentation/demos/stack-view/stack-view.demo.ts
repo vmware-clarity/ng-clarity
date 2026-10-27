@@ -20,6 +20,7 @@ import { StackViewAngularBasicDemo } from './stack-view-angular-basic';
 import { StackViewAngularLazyloadDemo } from './stack-view-angular-lazyload';
 import { StackViewAngularModalEditDemo } from './stack-view-angular-modal-edit';
 import { StackViewStaticDemo } from './stack-view-static';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
@@ -45,6 +46,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     ClrStackViewModule,
     RemoveStackViewHeadingsDirective,
     StyleDocsComponent,
+    AiSkillComponent,
   ],
 })
 export class StackViewDemo extends ClarityDocComponent {

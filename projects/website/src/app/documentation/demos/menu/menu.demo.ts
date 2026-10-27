@@ -11,6 +11,7 @@ import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
 import { ClarityModule } from '@clr/angular';
 import { buildingIcon, ClarityIcons, clusterIcon, hostIcon, vmIcon } from '@clr/angular/icon';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -56,6 +57,7 @@ interface Vm {
     DocTabComponent,
     DocTabsComponent,
     StackblitzExampleComponent,
+    AiSkillComponent,
   ],
   encapsulation: ViewEncapsulation.None,
 })
