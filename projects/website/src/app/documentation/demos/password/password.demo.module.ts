@@ -15,7 +15,6 @@ import { PasswordDemo } from './password.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { LinkCardsComponent } from '../../../shared/link-cards/link-cards.component';
 import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
 @NgModule({
@@ -26,7 +25,6 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     RouterModule.forChild([{ path: '', component: PasswordDemo }]),
     DocTabsModule,
     ThemedImageComponent,
-    StackblitzExampleComponent,
     NestingTableComponent,
     LinkCardsComponent,
     PasswordDemo,

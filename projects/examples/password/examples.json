@@ -1,0 +1,14 @@
+{
+  "storybook": "components/forms/password",
+  "examples": [
+    { "id": "basic", "title": "Basic password", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "helpers",
+      "title": "Password with helper and error messages",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "css-basic", "title": "CSS basic password", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-helper", "title": "CSS password with a helper message", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-error", "title": "CSS password with an error message", "targets": ["website", "demo", "storybook"] }
+  ]
+}
