@@ -12,7 +12,6 @@ import { ClarityModule } from '@clr/angular';
 
 import { ListsDemo } from './lists.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 
 @NgModule({
@@ -22,7 +21,6 @@ import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.compon
     DocTabsModule,
     RouterModule.forChild([{ path: '', component: ListsDemo }]),
     StyleDocsComponent,
-    StackblitzExampleComponent,
     ListsDemo,
   ],
   exports: [ListsDemo],

@@ -150,89 +150,25 @@
 
     <h3 data-toc-item id="angular-basic" cds-text="section" cds-layout="m-t:lg">Basic Textarea</h3>
 
-    <form clrForm>
-      <clr-textarea-container>
-        <label>Description</label>
-        <textarea clrTextarea name="description" required></textarea>
-      </clr-textarea-container>
-    </form>
-
-    <app-stackblitz-example
-      name="textarea ng basic"
-      [componentTemplate]="ngBasic.default"
-      [componentClass]="ngBasicCode"
-      [showComponentClass]="false"
-    ></app-stackblitz-example>
+    <app-doc-example [example]="examples.basic"></app-doc-example>
 
     <h3 data-toc-item id="helper-and-error" cds-text="section" cds-layout="m-t:lg">Helper and Error Messages</h3>
 
-    <form clrForm>
-      <clr-textarea-container>
-        <label>Label</label>
-        <textarea clrTextarea [(ngModel)]="description" name="description" required></textarea>
-        <clr-control-helper>Please provide a description.</clr-control-helper>
-        <clr-control-error *clrIfError="'required'">You must provide a description!</clr-control-error>
-      </clr-textarea-container>
-    </form>
-
-    <app-stackblitz-example
-      name="textarea ng helpers"
-      [componentTemplate]="ngHelpers.default"
-      [componentClass]="ngHelperCode"
-      [showComponentClass]="false"
-    ></app-stackblitz-example>
+    <app-doc-example [example]="examples.helpers"></app-doc-example>
 
     <h2 id="css-component" cds-text="title" cds-layout="m-t:xl">CSS Textarea Component</h2>
 
     <h3 data-toc-item id="css-basic" cds-text="section" cds-layout="m-t:lg">Basic Textarea</h3>
 
-    <form class="clr-form clr-form-horizontal">
-      <div class="clr-form-control">
-        <label for="textarea-basic" class="clr-control-label">Description</label>
-        <div class="clr-control-container">
-          <div class="clr-textarea-wrapper">
-            <textarea id="textarea-basic" class="clr-textarea"></textarea>
-          </div>
-        </div>
-      </div>
-    </form>
-
-    <app-stackblitz-example name="textarea ui basic" [componentTemplate]="uiBasic.default"></app-stackblitz-example>
+    <app-doc-example [example]="examples.cssBasic"></app-doc-example>
 
     <h3 data-toc-item id="helper" cds-text="section" cds-layout="m-t:lg">Helper Message</h3>
 
-    <form class="clr-form clr-form-horizontal">
-      <div class="clr-form-control">
-        <label for="textarea-helper" class="clr-control-label">Description</label>
-        <div class="clr-control-container">
-          <div class="clr-textarea-wrapper">
-            <textarea id="textarea-helper" class="clr-textarea"></textarea>
-          </div>
-          <span class="clr-subtext">Please provide a description.</span>
-        </div>
-      </div>
-    </form>
-
-    <app-stackblitz-example name="textarea ui helper" [componentTemplate]="uiHelper.default"></app-stackblitz-example>
+    <app-doc-example [example]="examples.cssHelper"></app-doc-example>
 
     <h3 data-toc-item id="error-message" cds-text="section" cds-layout="m-t:lg">Error Message</h3>
 
-    <form class="clr-form clr-form-horizontal">
-      <div class="clr-form-control">
-        <label for="textarea-error" class="clr-control-label">Description</label>
-        <div class="clr-control-container clr-error">
-          <div class="clr-textarea-wrapper">
-            <textarea id="textarea-error" class="clr-textarea"></textarea>
-          </div>
-          <div class="clr-subtext-wrapper error">
-            <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
-            <span class="clr-subtext">You must provide a description!</span>
-          </div>
-        </div>
-      </div>
-    </form>
-
-    <app-stackblitz-example name="textarea ui error" [componentTemplate]="uiError.default"></app-stackblitz-example>
+    <app-doc-example [example]="examples.cssError"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="api">

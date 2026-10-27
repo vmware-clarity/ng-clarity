@@ -1,0 +1,26 @@
+{
+  "storybook": "components/navigation/header",
+  "examples": [
+    {
+      "id": "basic",
+      "title": "Basic header",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "links",
+      "title": "Header with links",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "types",
+      "title": "Header types",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "subnav",
+      "title": "Header with subnav",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}

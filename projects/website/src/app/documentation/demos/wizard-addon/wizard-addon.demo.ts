@@ -13,20 +13,18 @@ import { ZoomLevelService } from '@clr/addons/a11y';
 import { WorkflowConfigurationService } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
 import { ClarityModule } from '@clr/angular';
+import { WIZARD_ADDON_EXAMPLES } from '@clr/examples/wizard-addon';
 
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 import { ClarityDocComponent } from '../clarity-doc';
 import { SampleStepperComponent } from './sample/sample-stepper.component';
 import { SampleWizardComponent } from './sample/sample-wizard.component';
-
-const BasicWizardHtml = require('!raw-loader!./ng/basic-wizard.html').default;
-const BasicWizardTs = require('!raw-loader!./ng/basic-wizard.ts').default;
 
 const ModuleImportTs = `
 import { AppfxWizardModule } from '@clr/addons/wizard';
@@ -56,7 +54,7 @@ export class MyModule {}
     CodeSnippetComponent,
     DocTabComponent,
     DocTabsComponent,
-    StackblitzExampleComponent,
+    DocExampleComponent,
     ThemedImageComponent,
     SampleWizardComponent,
     SampleStepperComponent,
@@ -66,8 +64,7 @@ export class MyModule {}
 })
 export class WizardAddonDemoComponent extends ClarityDocComponent {
   readonly moduleImportTs = ModuleImportTs;
-  readonly basicWizardHtml = BasicWizardHtml;
-  readonly basicWizardTs = BasicWizardTs;
+  readonly examples = WIZARD_ADDON_EXAMPLES;
 
   readonly vcMoRef = 'demo-datacenter-ref';
   readonly supportedWizardSizes = ['md', 'lg', 'xl', 'full-screen'];

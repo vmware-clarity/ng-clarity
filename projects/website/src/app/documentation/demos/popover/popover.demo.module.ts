@@ -17,7 +17,6 @@ import { PopoverPositionsDemo } from './popover-positions';
 import { PopoverScrollToCloseDemo } from './popover-scroll-to-close';
 import { PopoverDemo } from './popover.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 @NgModule({
   imports: [
@@ -25,7 +24,6 @@ import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/s
     ClarityModule,
     RouterModule.forChild([{ path: '', component: PopoverDemo }]),
     DocTabsModule,
-    StackblitzExampleComponent,
     PopoverBasicDemo,
     PopoverPositionsDemo,
     PopoverFallbackPositionsDemo,

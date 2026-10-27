@@ -14,33 +14,25 @@
   <h3 data-toc-item id="examples-demo" class="clr-mt-32px" cds-text="section">Examples</h3>
 
   <div class="clr-mt-32px">
-    <clr-progress-bar id="example" clrValue="40" clrMax="50"></clr-progress-bar>
-    <app-stackblitz-example name="progress bar medium" [componentTemplate]="example"></app-stackblitz-example>
+    <app-doc-example [example]="examples.component"></app-doc-example>
 
     <br />
 
     <app-animated-example [label]="'looping progress bar'" [fullWidthContent]="true">
-      <clr-progress-bar id="example3" clrValue="75" clrLoop></clr-progress-bar>
+      <ng-container *ngComponentOutlet="examples.componentLoop.component"></ng-container>
     </app-animated-example>
-    <app-stackblitz-example name="progress bar medium loop" [componentTemplate]="example3"></app-stackblitz-example>
+    <app-doc-example [example]="examples.componentLoop" [showPreview]="false"></app-doc-example>
 
     <br />
 
-    <clr-progress-bar id="example1" clrValue="65" clrColor="success" clrLabeled></clr-progress-bar>
-    <app-stackblitz-example name="progress bar medium success" [componentTemplate]="example1"></app-stackblitz-example>
+    <app-doc-example [example]="examples.componentSuccess"></app-doc-example>
 
     <br />
 
-    <clr-progress-bar id="example4" clrValue="65" clrLabeled clrDisplayval="65$"></clr-progress-bar>
-    <app-stackblitz-example name="progress bar medium labeled" [componentTemplate]="example4"></app-stackblitz-example>
+    <app-doc-example [example]="examples.componentDisplayValue"></app-doc-example>
 
     <br />
 
-    <div class="progress-block">
-      <label for="demoProgressBar">Text on the left</label>
-      <clr-progress-bar id="demoProgressBar" clrValue="85"></clr-progress-bar>
-      <span>Text on the right</span>
-    </div>
-    <app-stackblitz-example name="progress bar block" [componentTemplate]="example2"></app-stackblitz-example>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.componentBlock"></app-doc-example>
   </div>
 </div>

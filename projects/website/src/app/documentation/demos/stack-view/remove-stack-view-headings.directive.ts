@@ -11,7 +11,7 @@ import { Directive, ElementRef, OnDestroy, OnInit } from '@angular/core';
  * This is a temporary fix to remove forced headings from the page.
  * @todo Remove after CDE-952 is resolved.
  */
-@Directive({ selector: 'clr-stack-view[appRemoveStackViewHeadings]' })
+@Directive({ selector: '[appRemoveStackViewHeadings]' })
 export class RemoveStackViewHeadingsDirective implements OnInit, OnDestroy {
   private readonly mutationObserver: MutationObserver;
 

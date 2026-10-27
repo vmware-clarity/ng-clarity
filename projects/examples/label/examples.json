@@ -1,0 +1,50 @@
+{
+  "storybook": "components/label",
+  "examples": [
+    {
+      "id": "colors",
+      "title": "Label colors",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "clickable",
+      "title": "Clickable labels",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "status",
+      "title": "Status labels",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "badges",
+      "title": "Labels with badges",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "css-default",
+      "title": "CSS labels",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "css-colors",
+      "title": "CSS label colors",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "css-clickable",
+      "title": "Clickable CSS labels",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "css-status",
+      "title": "CSS status labels",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "css-badges",
+      "title": "CSS labels with badges",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}

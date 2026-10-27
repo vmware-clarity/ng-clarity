@@ -6,28 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrBadge } from '@clr/angular';
+import { BADGE_EXAMPLES } from '@clr/examples/badge';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `
-<h6>Solid</h6>
-<clr-badge clrColor="info">15</clr-badge>
-<clr-badge clrColor="success">2</clr-badge>
-<clr-badge clrColor="warning">3</clr-badge>
-<clr-badge clrColor="danger">12</clr-badge>
-<h6>Outlined</h6>
-<clr-badge clrType="outlined" clrColor="info">15</clr-badge>
-<clr-badge clrType="outlined" clrColor="success">2</clr-badge>
-<clr-badge clrType="outlined" clrColor="warning">3</clr-badge>
-<clr-badge clrType="outlined" clrColor="danger">12</clr-badge>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-badge-angular-status-demo',
   templateUrl: './badge-angular-status.demo.html',
-  imports: [ClrBadge, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class BadgeAngularStatusDemo {
-  htmlExample = HTML_EXAMPLE;
+  readonly examples = BADGE_EXAMPLES;
 }

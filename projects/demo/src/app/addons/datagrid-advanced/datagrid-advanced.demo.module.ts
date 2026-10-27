@@ -7,15 +7,18 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ADVANCED_DATAGRID_EXAMPLES } from '@clr/examples/advanced-datagrid';
 
 import { DatagridAdvancedDemo } from './datagrid-advanced.demo';
+import { ExampleListComponent } from '../../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: DatagridAdvancedDemo,
     children: [
-      { path: '', redirectTo: 'client-side', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: ADVANCED_DATAGRID_EXAMPLES } },
       {
         path: 'client-side',
         loadComponent: () =>

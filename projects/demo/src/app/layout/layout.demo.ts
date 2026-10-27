@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   template: `
     <h2>Layout</h2>
     <ul>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./layout-all']">Layout - All</a></li>
       <li><a [routerLink]="['./layout-no-subnav']">Layout - No Subnav</a></li>
       <li><a [routerLink]="['./layout-no-vertical-nav']">Layout - No Vertical Nav</a></li>

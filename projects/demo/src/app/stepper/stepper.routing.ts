@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { STEPPER_EXAMPLES } from '@clr/examples/stepper';
 
 import { StepperDemo } from './stepper.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: StepperDemo }];
+const ROUTES: Routes = [
+  { path: '', component: StepperDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: STEPPER_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);

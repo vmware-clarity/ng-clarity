@@ -1,0 +1,95 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<clr-datagrid [clrDgSelectionType]="'multi'" [(clrDgSelected)]="selected">
+  <clr-dg-action-bar>
+    <div class="btn-group">
+      <button type="button" class="btn btn-sm btn-secondary" (click)="onAdd()">Add to group</button>
+      <button type="button" class="btn btn-sm btn-secondary" (click)="onDelete()">Delete</button>
+      @if (selected.length === 1) {
+      <button type="button" class="btn btn-sm btn-secondary" (click)="onEdit()">Edit</button>
+      }
+    </div>
+    <div class="btn-group">
+      <clr-dropdown>
+        <button type="button" class="btn btn-sm btn-secondary" clrDropdownTrigger>
+          Export
+          <clr-icon shape="angle" direction="down"></clr-icon>
+        </button>
+        <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
+          <button type="button" (click)="onExportAll()" clrDropdownItem>Export All</button>
+          <button
+            type="button"
+            (click)="onExportSelected()"
+            [disabled]="selected.length === 0"
+            clrDropdownItem
+          >
+            Export Selected Items
+          </button>
+        </clr-dropdown-menu>
+      </clr-dropdown>
+    </div>
+  </clr-dg-action-bar>
+
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card card-block">
+  <p class="card-text">
+    Selected users: @if (selected.length === 0) {
+    <em>No user selected.</em>
+    } @for (user of selected; track user.id; let isLast = $last) {
+    <span>{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    }
+  </p>
+
+  <p class="card-text">
+    Users to be added to group: @if (toAdd.length === 0) {
+    <em>No user selected.</em>
+    } @for (user of toAdd; track user.id; let isLast = $last) {
+    <span>{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    }
+  </p>
+
+  <p class="card-text">
+    User to be edited: @if (!toEdit) {
+    <em>No user selected.</em>
+    } @else {
+    <span class="username">{{ toEdit.name }}</span>
+    }
+  </p>
+
+  <p class="card-text">
+    Users to be deleted: @if (toDelete.length === 0) {
+    <em>No user selected.</em>
+    } @for (user of toDelete; track user.id; let isLast = $last) {
+    <span class="username">{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    }
+  </p>
+
+  <p class="card-text">
+    Users to be exported: @if (toExport.length === 0) {
+    <em>No user selected.</em>
+    } @for (user of toExport; track user.id; let isLast = $last) {
+    <span class="username">{{ user.name }}{{ isLast ? '.' : ', ' }}</span>
+    }
+  </p>
+</div>

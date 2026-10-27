@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AppfxTabsModule } from '@clr/addons/tabs';
 import { Step, TabLayout } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
@@ -20,7 +21,7 @@ import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow
   templateUrl: './tabs-addon.demo.html',
   styleUrls: ['./tabs-addon.demo.scss'],
   standalone: true,
-  imports: [CommonModule, ClarityModule, FormsModule, AppfxTabsModule],
+  imports: [CommonModule, ClarityModule, FormsModule, AppfxTabsModule, RouterLink],
   providers: [SampleWorkflowService],
 })
 export class TabsAddonDemoComponent implements OnInit {

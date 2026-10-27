@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TREE_VIEW_EXAMPLES } from '@clr/examples/tree-view';
 
 import { EagerDeclarativeTreeDemo } from './eager-declarative-tree/eager-declarative-tree';
 import { EagerRecursiveTreeDemo } from './eager-recursive-tree/eager-recursive-tree';
@@ -20,13 +21,15 @@ import { TreeNodeRoutingAbbeyRoadDemo } from './tree-node-routing/tree-node-rout
 import { TreeNodeRoutingRevolverDemo } from './tree-node-routing/tree-node-routing-revolver';
 import { TreeNodeRoutingRubberSoulDemo } from './tree-node-routing/tree-node-routing-rubber-soul';
 import { TreeViewDemo } from './tree-view.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: TreeViewDemo,
     children: [
-      { path: '', redirectTo: 'eager-declarative', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: TREE_VIEW_EXAMPLES } },
       { path: 'eager-declarative', component: EagerDeclarativeTreeDemo },
       { path: 'eager-recursive', component: EagerRecursiveTreeDemo },
       { path: 'lazy-declarative', component: LazyDeclarativeTreeDemo },

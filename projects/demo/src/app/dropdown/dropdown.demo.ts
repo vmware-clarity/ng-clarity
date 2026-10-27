@@ -11,6 +11,7 @@ import { Component } from '@angular/core';
   template: `
     <h2>Dropdowns</h2>
     <ul>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./default']">Default Styles (Static)</a></li>
       <li><a [routerLink]="['./positioning']">Positioning with CSS Classnames (Static)</a></li>
       <li><a [routerLink]="['./icon-toggle']">Clarity Icon Toggle (Static)</a></li>

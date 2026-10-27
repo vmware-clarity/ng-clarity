@@ -125,7 +125,23 @@
       <code cds-text="code">clrRangeHasProgress</code> input.
     </p>
 
-    <clr-range-basic-demo *appIfTabActive></clr-range-basic-demo>
+    <ng-container *appIfTabActive>
+      <h3 data-toc-item id="basic" class="clr-mt-32px" cds-text="section">Basic</h3>
+      <app-doc-example [example]="examples.basic"></app-doc-example>
+
+      <h3 data-toc-item id="full-example" class="clr-mt-32px" cds-text="section">Full Example</h3>
+      <app-doc-example [example]="examples.full"></app-doc-example>
+
+      <h3 data-toc-item id="disabled" class="clr-mt-32px" cds-text="section">Disabled</h3>
+      <app-doc-example [example]="examples.disabled"></app-doc-example>
+
+      <h3 data-toc-item id="value-changes" class="clr-mt-32px" cds-text="section">Value Changes</h3>
+      <p class="clr-mt-16px" cds-text="body">
+        Applications may need to be aware of the current slider value. They can use the standard Angular
+        <code cds-text="code">(change)</code> output to handle changes to the slider value.
+      </p>
+      <app-doc-example [example]="examples.valueChange"></app-doc-example>
+    </ng-container>
   </app-doc-tab>
 
   <app-doc-tab tab="api">

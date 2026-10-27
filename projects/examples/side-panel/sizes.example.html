@@ -1,0 +1,23 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<p>
+  <button class="btn btn-primary" (click)="size = 'sm'; opened = true">Small side panel</button>
+  <button class="btn btn-primary" (click)="size = 'lg'; opened = true">Large side panel</button>
+  <button class="btn btn-primary" (click)="size = 'xl'; opened = true">Extra large side panel</button>
+  <button class="btn btn-primary" (click)="size = 'full-screen'; opened = true">
+    Full-Screen side panel
+  </button>
+</p>
+
+<clr-side-panel [(clrSidePanelOpen)]="opened" [clrSidePanelSize]="size">
+  <div class="side-panel-title">{{ sizeText }} panel</div>
+  <div class="side-panel-body">I am a {{ sizeText | lowercase }} side panel.</div>
+  <div class="side-panel-footer">
+    <button type="button" class="btn btn-primary" (click)="opened = false">Ok</button>
+  </div>
+</clr-side-panel>

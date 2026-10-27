@@ -35,7 +35,6 @@ import { ButtonGroupCardsDemo } from './static/cards/button-group-cards';
 import { ButtonGroupCheckboxesDemo } from './static/checkbox/button-group-checkboxes';
 import { StaticIconButtonGroupDemo } from './static/icon-buttons/icon-button-group';
 import { ButtonGroupIconsDemo } from './static/icons/button-group-icons';
-import { ButtonGroupIconsTextDemo } from './static/icons-with-text/button-group-icon-text';
 import { StaticMenuDirectionsDemo } from './static/menu-directions/menu-directions';
 import { ButtonGroupRadiosDemo } from './static/radio/button-group-radios';
 import { ButtonGroupTypes } from './static/types/button-group-types';
@@ -65,7 +64,6 @@ import { ButtonGroupTypes } from './static/types/button-group-types';
     ButtonGroupCheckboxesDemo,
     ButtonGroupRadiosDemo,
     ButtonGroupIconsDemo,
-    ButtonGroupIconsTextDemo,
     ButtonGroupTypes,
     StaticMenuDirectionsDemo,
     ButtonGroupCardsDemo,
@@ -97,7 +95,6 @@ import { ButtonGroupTypes } from './static/types/button-group-types';
     ButtonGroupCheckboxesDemo,
     ButtonGroupRadiosDemo,
     ButtonGroupIconsDemo,
-    ButtonGroupIconsTextDemo,
     ButtonGroupTypes,
     StaticMenuDirectionsDemo,
     ButtonGroupCardsDemo,

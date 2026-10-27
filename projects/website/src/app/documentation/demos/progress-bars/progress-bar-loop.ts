@@ -5,19 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { NgComponentOutlet } from '@angular/common';
 import { Component } from '@angular/core';
+import { PROGRESS_BAR_EXAMPLES } from '@clr/examples/progress-bar';
 
 import { AnimatedExampleComponent } from '../../../shared/animated-example/animated-example.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `<div class="progress loop"><progress></progress></div>`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-progress-bar-loop-demo',
   styleUrl: 'progress-bars.demo.scss',
   templateUrl: './progress-bar-loop.html',
-  imports: [AnimatedExampleComponent, StackblitzExampleComponent],
+  imports: [AnimatedExampleComponent, DocExampleComponent, NgComponentOutlet],
 })
 export class ProgressBarLoopDemo {
-  example = EXAMPLE;
+  readonly examples = PROGRESS_BAR_EXAMPLES;
 }

@@ -6,29 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrAlertModule } from '@clr/angular';
+import { ALERT_EXAMPLES } from '@clr/examples/alert';
 
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `
-<clr-alert [clrAlertType]="'success'">
-  <clr-alert-item>
-    <span class="alert-text">This alert indicates success.</span>
-  </clr-alert-item>
-</clr-alert>
-<clr-alert>
-  <clr-alert-item>
-    <span class="alert-text">This is a default info alert.</span>
-  </clr-alert-item>
-</clr-alert>
-`;
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-alert-success-demo-angular',
-  styleUrl: '../alerts.demo.scss',
   templateUrl: './alert-angular-success.demo.html',
-  imports: [ClrAlertModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class AlertAngularSuccessDemo {
-  htmlExample = HTML_EXAMPLE;
+  readonly examples = ALERT_EXAMPLES;
 }

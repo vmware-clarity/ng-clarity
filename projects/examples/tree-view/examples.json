@@ -1,0 +1,41 @@
+{
+  "storybook": "components/data/tree",
+  "examples": [
+    { "id": "basic", "title": "Basic tree", "targets": ["website", "demo", "storybook"] },
+    { "id": "disabled-nodes", "title": "Disabled nodes", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "expanded-label",
+      "title": "Keeping track of expanded nodes",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "expand-all", "title": "Expanding or collapsing all nodes", "targets": ["website", "demo", "storybook"] },
+    { "id": "dynamic", "title": "Dynamic tree", "targets": ["website", "demo"] },
+    {
+      "id": "selection",
+      "title": "Checkbox tree",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "disabled-selection",
+      "title": "Checkbox tree with disabled nodes",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "boolean-selection",
+      "title": "Binding selection to a boolean",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "recursive",
+      "title": "Recursive tree",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    { "id": "lazy", "title": "Lazy-loading children", "targets": ["website", "demo"] },
+    { "id": "lazy-selection", "title": "Lazy-loading and selection", "targets": ["website", "demo"] },
+    { "id": "lazy-recursive", "title": "Lazy-loading recursive tree", "targets": ["website", "demo"] }
+  ]
+}

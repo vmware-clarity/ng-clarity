@@ -1,0 +1,27 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="clr-row">
+  <div class="clr-col-12 clr-col-md-4">
+    <clr-tree>
+      <clr-tree-node [clrExpanded]="true">
+        Permissions @for (permission of permissions; track permission.type) {
+        <clr-tree-node [clrExpanded]="true">
+          {{ permission.type }} @for (right of permission.rights; track right.name) {
+          <clr-tree-node [clrSelected]="right.enable" (clrSelectedChange)="right.enable = !!$event">
+            {{ right.name }}
+          </clr-tree-node>
+          }
+        </clr-tree-node>
+        }
+      </clr-tree-node>
+    </clr-tree>
+  </div>
+  <div class="clr-col-12 clr-col-md-8">
+    <pre class="selection-state">{{ permissions | json }}</pre>
+  </div>
+</div>

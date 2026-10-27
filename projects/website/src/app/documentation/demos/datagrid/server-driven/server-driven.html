@@ -18,7 +18,7 @@
   single global output <code cds-text="code">(clrDgRefresh)</code> that emits the current "state" of the datagrid
   whenever it changes due to a user action or an external one. This state has the following format:
 </p>
-<app-code-snippet [code]="examples.stateInterface" language="typescript"></app-code-snippet>
+<app-code-snippet [code]="snippets.stateInterface" language="typescript"></app-code-snippet>
 <p class="clr-mt-16px" cds-text="body">
   It contains all the information you need to send to the server in order to get the slice of data currently displayed.
   It even contains redundant information (
@@ -50,38 +50,4 @@
   array to a map.
 </p>
 
-<clr-datagrid (clrDgRefresh)="refresh($event)" [clrDgLoading]="loading">
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
-  <clr-dg-column [clrDgField]="'creation'">Creation date</clr-dg-column>
-  <clr-dg-column [clrDgField]="'pokemon'">Pokemon</clr-dg-column>
-  <clr-dg-column [clrDgField]="'color'">Favorite color</clr-dg-column>
-
-  @for (user of users; track user) {
-  <clr-dg-row>
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-  </clr-dg-row>
-  }
-
-  <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgPageSize]="10" [clrDgTotalItems]="totalUserCount">
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Users per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} users
-    </clr-dg-pagination>
-  </clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Server Driven"
-  [componentTemplate]="examples.serverDrivenHTML"
-  [componentClass]="examples.serverDrivenTS"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.serverDriven"></app-doc-example>

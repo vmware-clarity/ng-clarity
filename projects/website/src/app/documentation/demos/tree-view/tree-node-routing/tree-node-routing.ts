@@ -55,7 +55,6 @@ const additionalFiles = {
 
 @Component({
   selector: 'clr-tree-node-routing-demo',
-  styleUrl: '../tree-view.demo.scss',
   templateUrl: 'tree-node-routing.html',
   imports: [ClrTreeViewModule, StackblitzExampleComponent],
 })

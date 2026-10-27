@@ -9,10 +9,9 @@ import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCommonFormsModule, ClrDatalistModule, ClrIcon, ClrIconModule, ClrSelectModule } from '@clr/angular';
+import { DATALIST_EXAMPLES } from '@clr/examples/datalist';
 
-import { DatalistBasicDemo } from './datalist-basic.demo';
-import { DatalistReactiveValidationDemo } from './datalist-reactive-validation.demo';
-import { DatalistTemplateValidationDemo } from './datalist-template-validation.demo';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -40,9 +39,7 @@ import { formsPatternLink } from '../pattern-links';
     ClrIconModule,
     LinkCardsComponent,
     RouterLink,
-    DatalistBasicDemo,
-    DatalistTemplateValidationDemo,
-    DatalistReactiveValidationDemo,
+    DocExampleComponent,
     NestingTableComponent,
     ClrSelectModule,
   ],
@@ -56,6 +53,7 @@ export class DatalistDemo extends ClarityDocComponent {
     { component: 'Badge', description: 'Maybe, check your design team for assistance' },
   ];
   readonly patternLinks: LinkCardsLink[] = [formsPatternLink];
+  readonly examples = DATALIST_EXAMPLES;
 
   items: string[] = ['Cherry', 'Mango', 'Rose'];
   item = '';

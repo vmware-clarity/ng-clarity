@@ -1,0 +1,4 @@
+{
+  "storybook": "components/flows/login",
+  "examples": [{ "id": "basic", "title": "Login page", "targets": ["website", "demo", "storybook"] }]
+}

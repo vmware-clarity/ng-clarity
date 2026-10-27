@@ -7,7 +7,6 @@
 
 @use 'variables.tokens' as tokens;
 @use 'mixins';
-@use 'progress-bars/variables.progress-bars' as progress-bars-variables;
 
 .progress-bars-demo {
   .nav-item {
@@ -16,21 +15,6 @@
 
   .progbar-examples {
     margin-bottom: #{tokens.$cds-global-space-11};
-  }
-}
-
-.progbar-examples {
-  .progress-block {
-    margin-top: tokens.$cds-global-space-9;
-  }
-}
-
-.danger-text {
-  color: progress-bars-variables.$clr-progress-danger-color;
-  font-weight: 500;
-
-  a {
-    color: progress-bars-variables.$clr-progress-danger-color !important;
   }
 }
 

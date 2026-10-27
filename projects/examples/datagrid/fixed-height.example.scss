@@ -1,0 +1,19 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.limit-height clr-datagrid {
+  height: 15rem;
+}
+
+.color-square {
+  display: inline-block;
+  vertical-align: text-bottom;
+  height: var(--cds-global-space-7);
+  width: var(--cds-global-space-7);
+  border: var(--cds-alias-object-border-width-100) solid var(--cds-global-color-construction-1000);
+  border-radius: var(--cds-global-space-3);
+}

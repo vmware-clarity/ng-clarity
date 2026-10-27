@@ -71,7 +71,7 @@ export class StackblitzExampleComponent {
     // add the example component template
     files[exampleComponentTemplateFilePath] = `${this.componentTemplate.trim()}\n`
       // make image paths absolute
-      .replace(/src="\/assets\//g, 'crossorigin="annoymous" src="https://clarity.design/assets/');
+      .replace(/src="\/?assets\//g, 'crossorigin="annoymous" src="https://clarity.design/assets/');
 
     // add the example component styles
     if (this.componentStyles) {

@@ -1,0 +1,25 @@
+{
+  "storybook": "components/data/stack-view",
+  "examples": [
+    {
+      "id": "basic",
+      "title": "Stack view",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "modal-edit",
+      "title": "Stack view with editing in a modal",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "lazyload",
+      "title": "Stack view with lazily loaded children",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "static",
+      "title": "Stack view with CSS classes",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}

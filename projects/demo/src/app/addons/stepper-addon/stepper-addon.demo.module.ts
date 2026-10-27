@@ -7,10 +7,18 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { STEPPER_ADDON_EXAMPLES } from '@clr/examples/stepper-addon';
 
 import { StepperAddonDemo } from './stepper-addon.demo';
+import { ExampleListComponent } from '../../_utils/example-list.component';
 
 @NgModule({
-  imports: [RouterModule.forChild([{ path: '', component: StepperAddonDemo }]), StepperAddonDemo],
+  imports: [
+    RouterModule.forChild([
+      { path: '', component: StepperAddonDemo },
+      { path: 'examples', component: ExampleListComponent, data: { examples: STEPPER_ADDON_EXAMPLES } },
+    ]),
+    StepperAddonDemo,
+  ],
 })
 export class StepperAddonDemoModule {}

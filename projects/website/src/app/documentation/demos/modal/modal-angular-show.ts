@@ -6,51 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrModalModule } from '@clr/angular';
+import { MODAL_EXAMPLES } from '@clr/examples/modal';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<button type="button" class="btn btn-primary" (click)="modalOpen = true">SHow Modal</button>
-
-<clr-modal [(clrModalOpen)]="modalOpen">
-  <h3 class="modal-title">I have a nice title</h3>
-  <div class="modal-body">
-    <p>But not much to say...</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="modalOpen = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="modalOpen = false">Ok</button>
-  </div>
-</clr-modal>
-`;
-
-const EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ClrModalModule } from '@clr/angular';
-
-@Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-
-  imports: [CommonModule, ClrModalModule],
-})
-export class ExampleComponent {
-  modalOpen = false;
-}
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-modal-angular-show-demo',
   templateUrl: './modal-angular-show.demo.html',
-  imports: [ClrModalModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class ModalAngularShowDemo {
-  // Booleans to open each example modal
-  basic = false;
-
-  example = EXAMPLE;
-  exampleTs = EXAMPLE_TS;
+  readonly examples = MODAL_EXAMPLES;
 }

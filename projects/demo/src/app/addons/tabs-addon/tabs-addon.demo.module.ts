@@ -7,10 +7,18 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { TABS_ADDON_EXAMPLES } from '@clr/examples/tabs-addon';
 
 import { TabsAddonDemoComponent } from './tabs-addon.demo';
+import { ExampleListComponent } from '../../_utils/example-list.component';
 
 @NgModule({
-  imports: [RouterModule.forChild([{ path: '', component: TabsAddonDemoComponent }]), TabsAddonDemoComponent],
+  imports: [
+    RouterModule.forChild([
+      { path: '', component: TabsAddonDemoComponent },
+      { path: 'examples', component: ExampleListComponent, data: { examples: TABS_ADDON_EXAMPLES } },
+    ]),
+    TabsAddonDemoComponent,
+  ],
 })
 export class TabsAddonDemoModule {}

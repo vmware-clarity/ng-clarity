@@ -1,0 +1,24 @@
+{
+  "examples": [
+    { "id": "basic", "title": "Wizard sizes", "targets": ["website", "demo"] },
+    { "id": "horizontal", "title": "Horizontal wizard", "targets": ["website", "demo"] },
+    { "id": "nested-wizard", "title": "Wizard with a nested wizard", "targets": ["website", "demo"] },
+    { "id": "nested-stepper", "title": "Wizard with a nested stepper", "targets": ["website", "demo"] },
+    { "id": "skip-page", "title": "Skipping a page in the wizard", "targets": ["website", "demo"] },
+    { "id": "nested-directives", "title": "Skipping pages with @for", "targets": ["website", "demo"] },
+    { "id": "jump-to", "title": "Jumping to a page", "targets": ["website", "demo"] },
+    { "id": "titles", "title": "Wizard page titles", "targets": ["website", "demo"] },
+    { "id": "buttons", "title": "Wizard buttons", "targets": ["website", "demo"] },
+    { "id": "custom-buttons", "title": "Custom wizard buttons", "targets": ["website", "demo"] },
+    { "id": "form-validation", "title": "Wizard with form validation", "targets": ["website", "demo"] },
+    { "id": "async-validation", "title": "Wizard with asynchronous validation", "targets": ["website", "demo"] },
+    { "id": "async-completion", "title": "Wizard with asynchronous completion", "targets": ["website", "demo"] },
+    { "id": "stop-navigation", "title": "Wizard that stops navigation", "targets": ["website", "demo"] },
+    { "id": "reset", "title": "Resetting the wizard", "targets": ["website", "demo"] },
+    { "id": "force-forward", "title": "Making users go back through skipped pages", "targets": ["website", "demo"] },
+    { "id": "alt-cancel", "title": "Wizard with an alternative cancel", "targets": ["website", "demo"] },
+    { "id": "no-cancel", "title": "Wizard without cancel buttons", "targets": ["website", "demo"] },
+    { "id": "alt-next", "title": "Wizard with an alternative next", "targets": ["website", "demo"] },
+    { "id": "not-closable", "title": "Wizard that is not closable", "targets": ["website", "demo"] }
+  ]
+}

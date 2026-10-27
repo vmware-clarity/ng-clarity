@@ -6,36 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrCommonFormsModule } from '@clr/angular';
+import { BUTTON_GROUP_EXAMPLES } from '@clr/examples/button-group';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE_1 = `
-<div class="btn-group">
-  <div class="checkbox btn">
-    <input type="checkbox" id="btn-demo-check-1" />
-    <label for="btn-demo-check-1">Apples</label>
-  </div>
-  <div class="checkbox btn">
-    <input type="checkbox" id="btn-demo-check-2" checked />
-    <label for="btn-demo-check-2">Oranges</label>
-  </div>
-  <div class="checkbox btn">
-    <input type="checkbox" id="btn-demo-check-3" />
-    <label for="btn-demo-check-3">Kiwis</label>
-  </div>
-  <div class="checkbox btn">
-    <input type="checkbox" id="btn-demo-check-4" checked />
-    <label for="btn-demo-check-4">Pears</label>
-  </div>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-button-group-checkbox-demo',
   templateUrl: './checkbox.html',
-  imports: [ClrCommonFormsModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class ButtonGroupCheckboxDemo {
-  htmlExample1 = HTML_EXAMPLE_1;
+  readonly examples = BUTTON_GROUP_EXAMPLES;
 }

@@ -8,6 +8,7 @@
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+import { ExampleListComponent } from './_utils/example-list.component';
 import { LandingComponent } from './landing.component';
 
 export const APP_ROUTES: Routes = [
@@ -98,6 +99,13 @@ export const APP_ROUTES: Routes = [
   { path: 'radios', loadChildren: () => import('./radios/radios.demo.module').then(m => m.RadiosDemoModule) },
   { path: 'ranges', loadChildren: () => import('./range/range.demo.module').then(m => m.RangeDemoModule) },
   { path: 'selects', loadChildren: () => import('./selects/selects.demo.module').then(m => m.SelectsDemoModule) },
+  {
+    path: 'side-panel',
+    loadChildren: () =>
+      import('@clr/examples/side-panel').then(m => [
+        { path: '', component: ExampleListComponent, data: { examples: m.SIDE_PANEL_EXAMPLES } },
+      ]),
+  },
   {
     path: 'signposts',
     loadChildren: () => import('./signpost/signpost.demo.module').then(m => m.SignpostDemoModule),

@@ -7,6 +7,10 @@
 
 <h2>Combobox <button class="btn btn-sm btn-primary" (click)="disabled = !disabled">Toggle Disabled</button></h2>
 
+<ul>
+  <li><a [routerLink]="['./examples']">Examples</a></li>
+</ul>
+
 <h4>Vertical</h4>
 <form clrForm clrLayout="vertical">
   <clr-combobox [(ngModel)]="vertical.one" name="one" required [disabled]="disabled" aria-label="one" class="foo">

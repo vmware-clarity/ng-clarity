@@ -41,18 +41,7 @@
       Three cards in a dashboard. Use the buttons below to add or remove cards dynamically.
     </p>
 
-    <div class="clr-mb-16px clr-mt-24px">
-      <button class="btn btn-outline" (click)="addCard()">Add Card</button>
-      <button class="btn btn-outline" (click)="removeCard()" [disabled]="cards.length <= 1">Remove Last</button>
-    </div>
-
-    <appfx-card-container [cards]="cards" [containerId]="'doc-card-container'"></appfx-card-container>
-
-    <app-stackblitz-example
-      name="basic-card-container"
-      [componentTemplate]="basicCardContainerHtml"
-      [componentClass]="basicCardContainerTs"
-    ></app-stackblitz-example>
+    <app-doc-example [example]="examples.basic" previewClass="clr-mt-24px"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="api">

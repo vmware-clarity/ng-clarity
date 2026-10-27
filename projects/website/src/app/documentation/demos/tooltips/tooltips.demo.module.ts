@@ -14,7 +14,6 @@ import { TooltipsDirectionsDemo } from './tooltips-directions';
 import { TooltipsSizesDemo } from './tooltips-sizes';
 import { TooltipsDemo } from './tooltips.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 
 @NgModule({
@@ -24,7 +23,6 @@ import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.compon
     RouterModule.forChild([{ path: '', component: TooltipsDemo }]),
     DocTabsModule,
     StyleDocsComponent,
-    StackblitzExampleComponent,
     TooltipsSizesDemo,
     TooltipsDirectionsDemo,
     TooltipsDemo,

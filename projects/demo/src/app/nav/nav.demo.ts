@@ -13,9 +13,9 @@ import { Component } from '@angular/core';
   template: `
     <h2>Navigation</h2>
     <ul>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./headers']">Headers</a></li>
       <li><a [routerLink]="['./nav-tabs']">Navs/Nav Tabs</a></li>
-      <li><a [routerLink]="['./subnav']">SubNav</a></li>
     </ul>
     <router-outlet></router-outlet>
   `,

@@ -6,59 +6,16 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrStackViewModule } from '@clr/angular';
+import { STACK_VIEW_EXAMPLES } from '@clr/examples/stack-view';
 
 import { RemoveStackViewHeadingsDirective } from './remove-stack-view-headings.directive';
-import { StackViewNgDemo } from './stack-view-ng-demo';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<clr-stack-view>
-  <clr-stack-header>Angular stack view</clr-stack-header>
-
-  <clr-stack-block [clrStackViewLevel]="1">
-    <clr-stack-label>Label 1</clr-stack-label>
-    <clr-stack-content>Content 1</clr-stack-content>
-  </clr-stack-block>
-
-  <clr-stack-block [clrStackViewLevel]="1">
-    <clr-stack-label>Label 2</clr-stack-label>
-    <clr-stack-content>Content 2</clr-stack-content>
-    <clr-stack-block [clrStackViewLevel]="2">
-      <clr-stack-label>Sub-label 1</clr-stack-label>
-      <clr-stack-content>Sub-content 1</clr-stack-content>
-    </clr-stack-block>
-    <clr-stack-block [clrStackViewLevel]="2">
-      <clr-stack-label>Sub-label 2</clr-stack-label>
-      <clr-stack-content>Sub-content 2</clr-stack-content>
-    </clr-stack-block>
-    <clr-stack-block [clrStackViewLevel]="2">
-      <clr-stack-label>Sub-label 3</clr-stack-label>
-      <clr-stack-content>Sub-content 3</clr-stack-content>
-    </clr-stack-block>
-  </clr-stack-block>
-
-  <clr-stack-block [clrStackViewLevel]="1">
-    <clr-stack-label>Label 3</clr-stack-label>
-    <clr-stack-content>Content 3</clr-stack-content>
-    <clr-stack-block>
-      <clr-stack-label>Sub-label 4</clr-stack-label>
-      <clr-stack-content>Sub-content 4</clr-stack-content>
-    </clr-stack-block>
-    <clr-stack-block>
-      <clr-stack-label>Sub-label 5</clr-stack-label>
-      <clr-stack-content>Sub-content 5</clr-stack-content>
-    </clr-stack-block>
-  </clr-stack-block>
-</clr-stack-view>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-stack-view-angular-basic-demo',
   templateUrl: './stack-view-angular-basic.html',
-  styleUrl: './stack-view.demo.scss',
-  imports: [ClrStackViewModule, RemoveStackViewHeadingsDirective, StackblitzExampleComponent],
+  imports: [DocExampleComponent, RemoveStackViewHeadingsDirective],
 })
-export class StackViewAngularBasicDemo extends StackViewNgDemo {
-  example = EXAMPLE;
+export class StackViewAngularBasicDemo {
+  readonly examples = STACK_VIEW_EXAMPLES;
 }

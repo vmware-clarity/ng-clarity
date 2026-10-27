@@ -1,0 +1,8 @@
+{
+  "examples": [
+    { "id": "paragraph", "title": "Inline signpost", "targets": ["website", "demo"] },
+    { "id": "positions", "title": "Signpost positions", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "triggers", "title": "Signpost triggers", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "open-at-point", "title": "Signpost opened at a point", "targets": ["website", "demo"] }
+  ]
+}

@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ACCORDION_EXAMPLES } from '@clr/examples/accordion';
 
 import { AccordionDemo } from './accordion.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: AccordionDemo }];
+const ROUTES: Routes = [
+  { path: '', component: AccordionDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: ACCORDION_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);

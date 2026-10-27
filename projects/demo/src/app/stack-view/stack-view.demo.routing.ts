@@ -7,23 +7,20 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { STACK_VIEW_EXAMPLES } from '@clr/examples/stack-view';
 
 import { StackViewAngularBasicDemo } from './stack-view-angular-basic';
-import { StackViewAngularLazyloadDemo } from './stack-view-angular-lazyload';
-import { StackViewAngularModalEditDemo } from './stack-view-angular-modal-edit';
-import { StackViewStaticDemo } from './stack-view-static';
 import { StackViewDemo } from './stack-view.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const routes: Routes = [
   {
     path: '',
     component: StackViewDemo,
     children: [
-      { path: '', redirectTo: 'static', pathMatch: 'full' },
-      { path: 'static', component: StackViewStaticDemo },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: STACK_VIEW_EXAMPLES } },
       { path: 'angular-basic', component: StackViewAngularBasicDemo },
-      { path: 'angular-modal-edit', component: StackViewAngularModalEditDemo },
-      { path: 'angular-lazyload', component: StackViewAngularLazyloadDemo },
     ],
   },
 ];

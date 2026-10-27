@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TEXTAREA_EXAMPLES } from '@clr/examples/textarea';
 
 import { TextareaDemo } from './textarea.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: TextareaDemo }];
+const ROUTES: Routes = [
+  { path: '', component: TextareaDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: TEXTAREA_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);

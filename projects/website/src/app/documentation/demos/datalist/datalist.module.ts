@@ -11,14 +11,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
-import { DatalistBasicDemo } from './datalist-basic.demo';
-import { DatalistReactiveValidationDemo } from './datalist-reactive-validation.demo';
-import { DatalistTemplateValidationDemo } from './datalist-template-validation.demo';
 import { DatalistDemo } from './datalist.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { LinkCardsComponent } from '../../../shared/link-cards/link-cards.component';
 import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
 @NgModule({
@@ -30,13 +26,9 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     RouterModule.forChild([{ path: '', component: DatalistDemo }]),
     DocTabsModule,
     ThemedImageComponent,
-    StackblitzExampleComponent,
     NestingTableComponent,
     LinkCardsComponent,
     DatalistDemo,
-    DatalistBasicDemo,
-    DatalistTemplateValidationDemo,
-    DatalistReactiveValidationDemo,
   ],
   exports: [DatalistDemo],
 })

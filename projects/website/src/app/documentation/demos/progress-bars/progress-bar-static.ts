@@ -6,55 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { PROGRESS_BAR_EXAMPLES } from '@clr/examples/progress-bar';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<h4>Static Progress Bar</h4>
-<div class="progress-static">
-  <div class="progress-meter" data-value="16"></div>
-</div>
-
-<h4>Labeled, Static Progress Bar</h4>
-<div class="progress-static labeled">
-  <div class="progress-meter" data-value="87" data-displayval="87%"></div>
-  <span>87%</span>
-</div>
-
-<h4>Red Static Progress Bar</h4>
-<div class="progress-static danger">
-  <div class="progress-meter" data-value="8"></div>
-</div>
-
-<h4>Green Static Progress Bar</h4>
-<div class="progress-static success">
-  <div class="progress-meter" data-value="80"></div>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-progress-bar-static-demo',
-  styleUrl: 'progress-bars.demo.scss',
   templateUrl: './progress-bar-static.html',
-  imports: [StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class ProgressBarStaticDemo {
-  staticProgbarValue = 16;
-  staticDangerValue = 8;
-  staticSuccessValue = 80;
-  staticLabeledProgbarValue = 87;
-
-  example = EXAMPLE;
-
-  getNewValue(): number {
-    const random: number = Math.floor(Math.random() * 98) + 1;
-    return parseInt(random + '', 10);
-  }
-
-  setNewValues(): void {
-    this.staticProgbarValue = this.getNewValue();
-    this.staticLabeledProgbarValue = this.getNewValue();
-    this.staticDangerValue = this.getNewValue();
-    this.staticSuccessValue = this.getNewValue();
-  }
+  readonly examples = PROGRESS_BAR_EXAMPLES;
 }

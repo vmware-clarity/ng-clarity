@@ -7,10 +7,16 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { CARD_CONTAINER_EXAMPLES } from '@clr/examples/card-container';
 
-import { CardContainerDemo } from './card-container.demo';
+import { ExampleListComponent } from '../../_utils/example-list.component';
 
 @NgModule({
-  imports: [RouterModule.forChild([{ path: '', component: CardContainerDemo }]), CardContainerDemo],
+  imports: [
+    RouterModule.forChild([
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: CARD_CONTAINER_EXAMPLES } },
+    ]),
+  ],
 })
 export class CardContainerDemoModule {}

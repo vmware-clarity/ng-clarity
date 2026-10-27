@@ -16,16 +16,14 @@ import {
   PropertyViewSectionBuilder,
 } from '@clr/addons/property-view';
 import { ClarityModule } from '@clr/angular';
+import { PROPERTY_VIEW_EXAMPLES } from '@clr/examples/property-view';
 
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ClarityDocComponent } from '../clarity-doc';
-
-const BasicPropertyViewHtml = require('!raw-loader!./ng/basic-property-view.html').default;
-const BasicPropertyViewTs = require('!raw-loader!./ng/basic-property-view.ts').default;
 
 const ModuleImportTs = `
 import { AppfxPropertyViewModule } from '@clr/addons/property-view';
@@ -53,16 +51,14 @@ export class MyModule {}
     CodeSnippetComponent,
     DocTabComponent,
     DocTabsComponent,
-    StackblitzExampleComponent,
+    DocExampleComponent,
     AiSkillComponent,
   ],
 })
 export class PropertyViewAddonDemoComponent extends ClarityDocComponent implements OnInit {
   readonly moduleImportTs = ModuleImportTs;
-  readonly basicPropertyViewHtml = BasicPropertyViewHtml;
-  readonly basicPropertyViewTs = BasicPropertyViewTs;
+  readonly examples = PROPERTY_VIEW_EXAMPLES;
 
-  demoData: PropertyViewModel;
   interactiveData: PropertyViewModel;
   collapsedSection = false;
   renderTitleAsHtml = false;
@@ -189,8 +185,6 @@ export class PropertyViewAddonDemoComponent extends ClarityDocComponent implemen
       .property('Type', 'Predator')
       .property('Color', 'Grey')
       .property('Characteristics', ['Ferocious', 'Strong']);
-
-    this.demoData = this.propertyViewBuilder.build();
 
     this.lionSection = animalsCategoryBuilder.section('lion');
     this.lionSection.title('<span>Lion</span>');

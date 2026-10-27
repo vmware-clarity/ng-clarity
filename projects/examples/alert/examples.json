@@ -1,0 +1,81 @@
+{
+  "storybook": "components/alert",
+  "examples": [
+    {
+      "id": "not-closable",
+      "title": "Alert that cannot be closed",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "type",
+      "title": "Alert types",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "small",
+      "title": "Small alerts",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "lightweight",
+      "title": "Lightweight alerts",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "close-event",
+      "title": "Alert close event",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "app-level",
+      "title": "App-level alert",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "app-level-pager",
+      "title": "App-level alerts with a pager",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static-types",
+      "title": "Alert type classes",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static-content-area",
+      "title": "Alerts in the content area",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static-cards",
+      "title": "Alerts in cards",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static-modals",
+      "title": "Alerts in modals",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "static-sizes",
+      "title": "Alert sizes",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static-app-level",
+      "title": "App-level alert classes",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static-app-level-main-container",
+      "title": "App-level alert in the main container",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static-app-level-custom-icon",
+      "title": "App-level alert with a custom icon",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}

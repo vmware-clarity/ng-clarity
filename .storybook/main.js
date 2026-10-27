@@ -10,6 +10,8 @@ import TsconfigPathsPlugin from 'tsconfig-paths-webpack-plugin';
 export default {
   stories: ['./**/*.mdx', './**/*.stories.ts'],
   addons: ['@storybook/addon-a11y', '@storybook/addon-docs', 'storybook-addon-pseudo-states'],
+  // Images that the shared examples in projects/examples use, served where the website and the demo app serve them.
+  staticDirs: [{ from: '../projects/examples/assets', to: '/assets/examples' }],
 
   framework: {
     name: '@storybook/angular',

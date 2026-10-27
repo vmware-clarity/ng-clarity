@@ -90,52 +90,7 @@
       Toggle the locale and format options below to see how the service handles translations and date formatting.
     </p>
 
-    <div class="demo-section">
-      <clr-select-container>
-        <label>Locale</label>
-        <select clrSelect name="locales" [(ngModel)]="translateService.locale">
-          @for (locale of locales; track locale) {
-          <option [value]="locale[1]">{{ locale[0] }}</option>
-          }
-        </select>
-      </clr-select-container>
-
-      <section class="clr-mt-24px">
-        <p><strong cds-text="medium">Translated Text:</strong> {{ 'hello-world' | translate }}</p>
-      </section>
-
-      <section class="clr-mt-24px">
-        <clr-select-container>
-          <label>DateTimeKind</label>
-          <select clrSelect name="dateTimeKind" [(ngModel)]="dateTimeFormat.dateTimeKind">
-            @for (dateTimeKind of dateTimeKinds; track dateTimeKind) {
-            <option [value]="dateTimeKind[1]">{{ dateTimeKind[0] }}</option>
-            }
-          </select>
-        </clr-select-container>
-
-        <clr-select-container>
-          <label>HourFormat</label>
-          <select clrSelect name="hourFormat" [(ngModel)]="dateTimeFormat.hourFormat">
-            @for (hourFormat of hourFormats; track hourFormat) {
-            <option [value]="hourFormat[1]">{{ hourFormat[0] }}</option>
-            }
-          </select>
-        </clr-select-container>
-
-        <p class="clr-mt-16px">
-          <strong cds-text="medium">Formatted Date:</strong> {{ getNow() | dateTime: dateTimeFormat }}
-        </p>
-      </section>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="translate-demo"
-        [componentTemplate]="defaultHtml"
-        [componentClass]="defaultTs"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example [example]="examples.default"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="ai">

@@ -9,8 +9,9 @@ import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCommonFormsModule, ClrRangeModule } from '@clr/angular';
+import { RANGE_EXAMPLES } from '@clr/examples/range';
 
-import { RangeBasicDemo } from './range-basic.demo';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabActiveDirective } from '../../../shared/doc-tabs/doc-tab-active.directive';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -38,7 +39,7 @@ import { formsPatternLink } from '../pattern-links';
     ThemedImageComponent,
     RouterLink,
     DocTabActiveDirective,
-    RangeBasicDemo,
+    DocExampleComponent,
     StyleDocsComponent,
     NestingTableComponent,
   ],
@@ -52,6 +53,7 @@ export class RangeDemo extends ClarityDocComponent {
     { component: 'Badge', description: 'Maybe, check your design team for assistance' },
   ];
   readonly patternLinks: LinkCardsLink[] = [formsPatternLink];
+  readonly examples = RANGE_EXAMPLES;
 
   value = 92;
   exampleValue1 = 50;

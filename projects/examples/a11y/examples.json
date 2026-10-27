@@ -1,0 +1,8 @@
+{
+  "storybook": "addons/a11y",
+  "examples": [
+    { "id": "tabs-overflow", "title": "Tabs overflow", "targets": ["website", "demo", "storybook"] },
+    { "id": "required-fields", "title": "Required field legend", "targets": ["website", "demo", "storybook"] },
+    { "id": "zoom-level", "title": "Zoom level indicator", "targets": ["website", "demo", "storybook"] }
+  ]
+}

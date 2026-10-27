@@ -1,0 +1,18 @@
+{
+  "storybook": "components/spinner",
+  "examples": [
+    { "id": "page", "title": "Page spinner", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-inline", "title": "Inline spinner with CSS", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "inverse",
+      "title": "Spinner on a dark background",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    { "id": "size-small", "title": "Small spinner", "targets": ["website", "demo", "storybook"] },
+    { "id": "size-medium", "title": "Medium spinner", "targets": ["website", "demo", "storybook"] },
+    { "id": "size-large", "title": "Large spinner", "targets": ["website", "demo", "storybook"] },
+    { "id": "fetch", "title": "Spinner while loading data", "targets": ["website", "demo"] },
+    { "id": "inline", "title": "Inline spinner", "targets": ["website", "demo"] }
+  ]
+}

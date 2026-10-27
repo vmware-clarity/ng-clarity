@@ -1,0 +1,13 @@
+{
+  "storybook": "components/navigation/tabs",
+  "examples": [
+    { "id": "simple", "title": "Simple tabs", "targets": ["website", "demo", "storybook"] },
+    { "id": "dynamic-selection", "title": "Tabs with dynamic selection", "targets": ["website", "demo", "storybook"] },
+    { "id": "two-way-binding", "title": "Tabs with two-way binding", "targets": ["website", "demo", "storybook"] },
+    { "id": "overflow", "title": "Tab overflow", "targets": ["website", "demo", "storybook"] },
+    { "id": "vertical", "title": "Vertical tabs", "targets": ["website", "demo", "storybook"] },
+    { "id": "actions", "title": "Tabs action buttons", "targets": ["website", "demo", "storybook"] },
+    { "id": "static", "title": "Static tabs", "targets": ["website", "demo", "storybook"] },
+    { "id": "static-vertical", "title": "Static vertical tabs", "targets": ["website", "demo", "storybook"] }
+  ]
+}

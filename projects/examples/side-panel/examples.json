@@ -1,0 +1,12 @@
+{
+  "examples": [
+    { "id": "basic", "title": "Side panel", "targets": ["website", "demo"] },
+    { "id": "bottom", "title": "Bottom side panel", "targets": ["website", "demo"] },
+    { "id": "inline", "title": "Inline side panel", "targets": ["website", "demo"] },
+    { "id": "pinnable", "title": "Pinnable side panel", "targets": ["website", "demo"] },
+    { "id": "pinned", "title": "Pinned side panel", "targets": ["website", "demo"] },
+    { "id": "sizes", "title": "Side panel sizes", "targets": ["website", "demo"] },
+    { "id": "static-backdrop", "title": "Side panel with a static backdrop", "targets": ["website", "demo"] },
+    { "id": "alternate-close", "title": "Side panel with an alternate close", "targets": ["website", "demo"] }
+  ]
+}

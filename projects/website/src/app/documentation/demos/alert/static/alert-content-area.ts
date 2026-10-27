@@ -6,43 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrAlertModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import { ALERT_EXAMPLES } from '@clr/examples/alert';
 
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `
-<div class="content-area">
-  <div class="alert alert-danger" role="alert">
-    <div class="alert-items">
-      <div class="alert-item static">
-        <div class="alert-icon-wrapper">
-          <clr-icon class="alert-icon" shape="error-standard"></clr-icon>
-        </div>
-        <span class="alert-text">This alert is at the top of the page.</span>
-      </div>
-    </div>
-  </div>
-  <p>...</p>
-  <div class="alert alert-success" role="alert">
-    <div class="alert-items">
-      <div class="alert-item static">
-        <div class="alert-icon-wrapper">
-          <clr-icon class="alert-icon" shape="success-standard"></clr-icon>
-        </div>
-        <span class="alert-text">This alert is in the middle of the page.</span>
-      </div>
-    </div>
-  </div>
-  <p>...</p>
-</div>
-`;
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-alert-demo-content-area',
-  styleUrl: '../alerts.demo.scss',
   templateUrl: './alert-content-area.demo.html',
-  imports: [ClrIcon, ClrIconModule, ClrAlertModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class AlertContentAreaDemo {
-  htmlExample = HTML_EXAMPLE;
+  readonly examples = ALERT_EXAMPLES;
 }

@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { AppfxMultiPageDialogModule } from '@clr/addons/dialog';
 import { Step, TabLayout } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
@@ -20,7 +21,7 @@ import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow
   templateUrl: './dialog.demo.html',
   styleUrls: ['./dialog.demo.scss'],
   standalone: true,
-  imports: [CommonModule, ClarityModule, FormsModule, AppfxMultiPageDialogModule],
+  imports: [CommonModule, ClarityModule, FormsModule, RouterLink, AppfxMultiPageDialogModule],
   providers: [SampleWorkflowService],
 })
 export class DialogDemoComponent implements OnInit {

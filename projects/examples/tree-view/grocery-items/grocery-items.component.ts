@@ -1,0 +1,40 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { AsyncPipe } from '@angular/common';
+import { Component, input, OnInit } from '@angular/core';
+import { ClrLoadingModule, ClrTreeViewModule } from '@clr/angular';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
+
+import { Group, Item, ITEMS_SERVICE } from './grocery-models';
+
+@Component({
+  selector: 'clr-grocery-items',
+  imports: [AsyncPipe, ClrLoadingModule, ClrTreeViewModule],
+  template: `
+    <ng-container [clrLoading]="loading">
+      @for (item of items$ | async; track item.name) {
+        <clr-tree-node [(clrSelected)]="item.selected">
+          {{ item.name }}
+        </clr-tree-node>
+      }
+    </ng-container>
+  `,
+})
+export class GroceryItemsComponent implements OnInit {
+  readonly group = input<Group | undefined>(undefined);
+  items$: Observable<Item[]> | undefined;
+  loading = false;
+
+  itemsService = ITEMS_SERVICE;
+
+  ngOnInit() {
+    this.loading = true;
+    this.items$ = this.itemsService.getItems(this.group()).pipe(tap(() => (this.loading = false)));
+  }
+}

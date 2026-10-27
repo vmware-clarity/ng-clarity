@@ -12,6 +12,7 @@ import { Component } from '@angular/core';
   template: `
     <h2>Lists</h2>
     <ul>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./lists-ul']">Lists</a></li>
       <li><a [routerLink]="['./lists-unstyled']">Unstyled Lists</a></li>
       <li><a [routerLink]="['./lists-ol']">Ordered Lists</a></li>

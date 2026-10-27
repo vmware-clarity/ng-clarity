@@ -56,28 +56,7 @@
     <h2 id="basic-stepper" class="clr-mt-48px" cds-text="title">Basic Stepper</h2>
     <p cds-text="body" class="clr-mt-16px">A two-step inline stepper with a shared workflow model.</p>
 
-    <div *ngIf="!submitted" class="clr-mt-24px">
-      <appfx-stepper [steps]="steps" [wizardModel]="model" (onFinish)="onFinish()"></appfx-stepper>
-    </div>
-
-    <div *ngIf="submitted" class="clr-mt-24px">
-      <div class="alert alert-success">
-        <div class="alert-items">
-          <div class="alert-item static">
-            <span class="alert-text">
-              Project <strong>{{ result?.name }}</strong> assigned to team <strong>{{ result?.team }}</strong>.
-            </span>
-          </div>
-        </div>
-      </div>
-      <button class="btn clr-mt-16px" (click)="reset()">Reset</button>
-    </div>
-
-    <app-stackblitz-example
-      name="basic-stepper"
-      [componentTemplate]="basicStepperHtml"
-      [componentClass]="basicStepperTs"
-    ></app-stackblitz-example>
+    <app-doc-example [example]="examples.basic" previewClass="clr-mt-24px"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="api">

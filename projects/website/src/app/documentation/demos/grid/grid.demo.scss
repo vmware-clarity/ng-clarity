@@ -17,20 +17,4 @@
     background: tokens.$cds-alias-object-container-background-shade;
     margin: #{tokens.$cds-global-space-4} 0;
   }
-
-  .clr-example-row,
-  .clr-example-nesting-row {
-    background: tokens.$cds-alias-object-container-background-inverse-tint;
-    margin: #{tokens.$cds-global-space-4} 0;
-  }
-
-  .clr-example-row {
-    height: #{tokens.$cds-global-space-15};
-  }
-
-  .clr-example-nesting-row {
-    .clr-example-nesting-row {
-      background: tokens.$cds-alias-utility-gray;
-    }
-  }
 }

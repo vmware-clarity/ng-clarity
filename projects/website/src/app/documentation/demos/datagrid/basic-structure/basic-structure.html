@@ -15,28 +15,4 @@
   iterate over your data.
 </p>
 
-<clr-datagrid>
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-column>Favorite color</clr-dg-column>
-
-  @for (user of users; track user) {
-  <clr-dg-row>
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.color }}</clr-dg-cell>
-  </clr-dg-row>
-  }
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Basic Structure"
-  [componentTemplate]="exampleHtml"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.basicStructure"></app-doc-example>

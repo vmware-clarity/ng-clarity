@@ -11,16 +11,10 @@ import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import { CdkTrapFocusModule } from '@clr/angular/utils';
 
-import { ModalAngularNotClosableDemo } from './modal-angular-not-closable';
 import { ModalAngularShowDemo } from './modal-angular-show';
 import { ModalAngularSizeDemo } from './modal-angular-size';
-import { ModalAngularStaticBackdropDemo } from './modal-angular-static-backdrop';
-import { ModalAnimationDemo } from './modal-animation';
-import { ModalBackdropDemo } from './modal-backdrop';
 import { ModalFormDemo } from './modal-form.demo';
 import { ModalMaxHeightDemo } from './modal-max-height';
-import { ModalSizesDemo } from './modal-sizes';
-import { ModalStaticDemo } from './modal-static';
 import { ModalStaticOldDemo } from './modal-static-old';
 import { ModalTrapDemo } from './modal-trap';
 import { ModalDemo } from './modal.demo';
@@ -30,30 +24,18 @@ import { ROUTING } from './modal.demo.routing';
   imports: [CommonModule, CdkTrapFocusModule, ClarityModule, ROUTING, FormsModule],
   declarations: [
     ModalDemo,
-    ModalStaticDemo,
     ModalStaticOldDemo,
-    ModalAngularNotClosableDemo,
     ModalAngularShowDemo,
     ModalAngularSizeDemo,
-    ModalAngularStaticBackdropDemo,
-    ModalAnimationDemo,
-    ModalBackdropDemo,
-    ModalSizesDemo,
     ModalMaxHeightDemo,
     ModalTrapDemo,
     ModalFormDemo,
   ],
   exports: [
     ModalDemo,
-    ModalStaticDemo,
     ModalStaticOldDemo,
-    ModalAngularNotClosableDemo,
     ModalAngularShowDemo,
     ModalAngularSizeDemo,
-    ModalAngularStaticBackdropDemo,
-    ModalAnimationDemo,
-    ModalBackdropDemo,
-    ModalSizesDemo,
     ModalMaxHeightDemo,
     ModalTrapDemo,
     ModalFormDemo,

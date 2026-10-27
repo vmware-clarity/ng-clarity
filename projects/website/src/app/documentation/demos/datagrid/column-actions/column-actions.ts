@@ -5,43 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { ClarityIcons, ClrDatagridModule, ClrIcon, pencilIcon, trashIcon } from '@clr/angular';
+import { DATAGRID_EXAMPLES } from '@clr/examples/datagrid';
 
-import { EXAMPLES } from './examples';
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-import { Inventory } from '../inventory/inventory';
-import { User } from '../inventory/user';
-import { CommonFiles } from '../utils/stackblitz-common-data';
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-datagrid-column-actions-demo',
-  providers: [Inventory],
   templateUrl: './column-actions.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [ClrIcon, ClrDatagridModule, StackblitzExampleComponent, RouterLink, DatePipe],
+  imports: [DocExampleComponent, RouterLink],
 })
 export class DatagridColumnActionsDemo {
-  examples = EXAMPLES;
-  commonFiles = CommonFiles;
-
-  users: User[];
-
-  idPinned = false;
-  lastAction = '';
-
-  constructor(inventory: Inventory) {
-    // A projected action renders its own cds-icon, so the shape has to be registered.
-    ClarityIcons.addIcons(pencilIcon, trashIcon);
-
-    inventory.size = 10;
-    inventory.reset();
-    this.users = inventory.all;
-  }
-
-  renameColumn(): void {
-    this.lastAction = 'Rename column';
-  }
+  readonly examples = DATAGRID_EXAMPLES;
 }

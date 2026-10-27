@@ -1,0 +1,29 @@
+{
+  "storybook": "addons/tabs",
+  "examples": [
+    {
+      "id": "horizontal",
+      "title": "Horizontal tabs",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "vertical",
+      "title": "Vertical tabs",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "secondary",
+      "title": "Secondary tabs",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "disabled",
+      "title": "Disabled tab content",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    }
+  ]
+}

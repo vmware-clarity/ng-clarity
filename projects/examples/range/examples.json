@@ -1,0 +1,9 @@
+{
+  "storybook": "components/forms/range",
+  "examples": [
+    { "id": "basic", "title": "Basic range", "targets": ["website", "demo", "storybook"] },
+    { "id": "full", "title": "Range with a label and helper text", "targets": ["website", "demo", "storybook"] },
+    { "id": "disabled", "title": "Disabled range", "targets": ["website", "demo", "storybook"] },
+    { "id": "value-change", "title": "Range value changes", "targets": ["website", "demo"] }
+  ]
+}

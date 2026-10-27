@@ -27,16 +27,7 @@
       necessary to add <code cds-text="code">type="radio"</code>.
     </p>
 
-    <div class="clr-mt-24px">
-      <input type="radio" aria-label="basic" clrRadio />
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ng basic"
-        [componentTemplate]="ngBasic.default"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.basic"></app-doc-example>
 
     <h3 data-toc-item id="labels" class="clr-mt-32px" cds-text="section">Labels</h3>
 
@@ -46,23 +37,7 @@
       component when you include a label. This manages the label and display of the radio button for you.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-radio-wrapper>
-        <input type="radio" clrRadio name="test2" value="option1" />
-        <label>Option 1</label>
-      </clr-radio-wrapper>
-      <clr-radio-wrapper>
-        <input type="radio" clrRadio name="test2" value="option2" />
-        <label>Option 2</label>
-      </clr-radio-wrapper>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ng label"
-        [componentTemplate]="ngLabel.default"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.label"></app-doc-example>
 
     <h3 data-toc-item id="helper-and-error" class="clr-mt-32px" cds-text="section">Helper and error messages</h3>
 
@@ -80,30 +55,7 @@
       the focus.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-radio-container>
-        <label>Full radio example</label>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="test3" required value="option1" [(ngModel)]="exampleOne" />
-          <label>Option 1</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="test3" required value="option2" [(ngModel)]="exampleOne" />
-          <label>Option 2</label>
-        </clr-radio-wrapper>
-        <clr-control-helper>Helper text</clr-control-helper>
-        <clr-control-error>This field is required!</clr-control-error>
-      </clr-radio-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ng helpers"
-        [componentTemplate]="ngHelpers.default"
-        [componentClass]="angularTs"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.helpers"></app-doc-example>
 
     <h3 data-toc-item id="inline-radios" class="clr-mt-32px" cds-text="section">Inline radio</h3>
 
@@ -112,30 +64,7 @@
       container elements. The radio buttons will wrap if there is not enough space.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-radio-container clrInline>
-        <label>Inline radio example</label>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="test4" required value="option1" [(ngModel)]="exampleTwo" />
-          <label>Option 1</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="test4" required value="option2" [(ngModel)]="exampleTwo" />
-          <label>Option 2</label>
-        </clr-radio-wrapper>
-        <clr-control-helper>Helper text</clr-control-helper>
-        <clr-control-error>This field is required!</clr-control-error>
-      </clr-radio-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ng inline"
-        [componentTemplate]="ngInline.default"
-        [componentClass]="angularTs"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.inline"></app-doc-example>
 
     <h3 data-toc-item id="disabled-radios" class="clr-mt-32px" cds-text="section">Disabled radio</h3>
 
@@ -146,29 +75,7 @@
       disable individual radios in a group.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-radio-container>
-        <label>Disabled radio example</label>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="test5" value="option1" [(ngModel)]="exampleThree" disabled />
-          <label>Option 1</label>
-        </clr-radio-wrapper>
-        <clr-radio-wrapper>
-          <input type="radio" clrRadio name="test5" value="option2" [(ngModel)]="exampleThree" disabled />
-          <label>Option 2</label>
-        </clr-radio-wrapper>
-        <clr-control-helper>Helper text</clr-control-helper>
-      </clr-radio-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ng disabled"
-        [componentTemplate]="ngDisabled.default"
-        [componentClass]="angularTs"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.disabled"></app-doc-example>
 
     <h2 class="clr-mt-48px" cds-text="title" id="css-component">CSS Radio Component</h2>
 
@@ -187,17 +94,7 @@
       radio button as well.
     </p>
 
-    <div class="clr-radio-wrapper clr-mt-24px">
-      <input type="radio" id="radio0" name="radio-basic" value="option1" class="clr-radio" />
-      <label for="radio0" class="clr-control-label">My choice</label>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ui basic"
-        [componentTemplate]="uiBasic.default"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssBasic"></app-doc-example>
 
     <h3 data-toc-item id="full-display" class="clr-mt-32px" cds-text="section">Full input display</h3>
 
@@ -207,31 +104,7 @@
       needing to change the DOM structure in any way.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Full radio example</label>
-      <div class="clr-control-container">
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio1" name="radio-full" value="option1" class="clr-radio" />
-          <label for="radio1" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio2" name="radio-full" value="option2" class="clr-radio" />
-          <label for="radio2" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio3" name="radio-full" value="option3" class="clr-radio" />
-          <label for="radio3" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper error">
-          <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
-          <span class="clr-subtext">Error message</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="radio button ui full" [componentTemplate]="uiFull.default"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssFull"></app-doc-example>
 
     <h3 data-toc-item id="error-state" class="clr-mt-32px" cds-text="section">Error state</h3>
 
@@ -247,35 +120,7 @@
       <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Error radio</label>
-      <div class="clr-control-container clr-error">
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio4" name="radio-error" value="option1" class="clr-radio" />
-          <label for="radio4" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio5" name="radio-error" value="option2" class="clr-radio" />
-          <label for="radio5" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio6" name="radio-error" value="option3" class="clr-radio" />
-          <label for="radio6" class="clr-control-label">option 3</label>
-        </div>
-        <span class="clr-subtext">Helper Text</span>
-        <div class="clr-subtext-wrapper error">
-          <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
-          <span class="clr-subtext">Error message</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ui error"
-        [componentTemplate]="uiError.default"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssError"></app-doc-example>
 
     <h3 data-toc-item id="success-state" class="clr-mt-32px" cds-text="section">Success state</h3>
 
@@ -291,37 +136,7 @@
       <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Success radio</label>
-      <div class="clr-control-container clr-success">
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio-success1" name="radio-success" value="option1" class="clr-radio" />
-          <label for="radio-success1" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio-success2" name="radio-success" value="option2" class="clr-radio" />
-          <label for="radio-success2" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio-success3" name="radio-success" value="option3" class="clr-radio" />
-          <label for="radio-success3" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper">
-          <span class="clr-subtext">Helper Text</span>
-        </div>
-        <div class="clr-subtext-wrapper success">
-          <cds-icon class="clr-validate-icon" shape="success-standard" status="success"></cds-icon>
-          <span class="clr-subtext">Success message</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ui success"
-        [componentTemplate]="uiSuccess.default"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssSuccess"></app-doc-example>
 
     <h3 data-toc-item id="css-inline-radios" class="clr-mt-32px" cds-text="section">Inline radio</h3>
 
@@ -337,34 +152,7 @@
       you omit this, the validation icon and text may appear in the wrong place.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Inline radio example</label>
-      <div class="clr-control-container clr-control-inline">
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio7" name="radio-error-inline" value="option1" class="clr-radio" />
-          <label for="radio7" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio8" name="radio-error-inline" value="option2" class="clr-radio" />
-          <label for="radio8" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio9" name="radio-error-inline" value="option3" class="clr-radio" />
-          <label for="radio9" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper error">
-          <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
-          <span class="clr-subtext">Error message</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ui inline"
-        [componentTemplate]="uiInline.default"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssInline"></app-doc-example>
 
     <h3 data-toc-item id="css-disabled-radios" class="clr-mt-32px" cds-text="section">Disabled radios</h3>
 
@@ -374,33 +162,7 @@
       setup the correct styling for the labels and other aspects of the form control when it is disabled.
     </p>
 
-    <div class="clr-form-control clr-form-control-disabled clr-mt-24px">
-      <label class="clr-control-label">Disabled radio example</label>
-      <div class="clr-control-container">
-        <div class="radio">
-          <input type="radio" id="radio10" name="radio-error" value="option1" class="clr-radio" disabled />
-          <label for="radio10" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio11" name="radio-error" value="option2" class="clr-radio" disabled />
-          <label for="radio11" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-radio-wrapper">
-          <input type="radio" id="radio12" name="radio-error" value="option3" class="clr-radio" disabled />
-          <label for="radio12" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper">
-          <span class="clr-subtext">Helper text</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="radio button ui disabled"
-        [componentTemplate]="uiDisabled.default"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssDisabled"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="overview">

@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { COMBOBOX_EXAMPLES } from '@clr/examples/combobox';
 
 import { ComboboxDemo } from './combobox.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: ComboboxDemo }];
+const ROUTES: Routes = [
+  { path: '', component: ComboboxDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: COMBOBOX_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);

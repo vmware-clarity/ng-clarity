@@ -7,18 +7,21 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TABS_EXAMPLES } from '@clr/examples/tabs';
 
 import { TabsActionsAngularDemo } from './tabs-actions-angular';
 import { TabsAngularDemo } from './tabs-angular';
 import { TabsStaticDemo } from './tabs-static';
 import { TabsDemo } from './tabs.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: TabsDemo,
     children: [
-      { path: '', redirectTo: 'static', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: TABS_EXAMPLES } },
       { path: 'static', component: TabsStaticDemo },
       { path: 'angular', component: TabsAngularDemo },
       { path: 'actions-angular', component: TabsActionsAngularDemo },

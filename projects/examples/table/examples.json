@@ -1,0 +1,22 @@
+{
+  "storybook": "components/data/table",
+  "examples": [
+    { "id": "basic", "title": "Basic tables", "targets": ["website", "demo", "storybook"] },
+    { "id": "left-cell", "title": "Left-aligned table cells", "targets": ["website", "demo", "storybook"] },
+    { "id": "multiline", "title": "Multiline table cells", "targets": ["website", "demo", "storybook"] },
+    { "id": "no-border", "title": "Non-bordered tables", "targets": ["website", "demo", "storybook"] },
+    { "id": "compact", "title": "Compact tables", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "compact-no-border",
+      "title": "Compact, non-bordered tables",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "vertical", "title": "Vertical tables", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "vertical-compact-no-border",
+      "title": "Vertical, compact, non-bordered tables",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "width", "title": "Table container widths", "targets": ["website", "demo", "storybook"] }
+  ]
+}

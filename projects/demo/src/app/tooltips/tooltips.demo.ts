@@ -14,6 +14,7 @@ import { Component } from '@angular/core';
     <h2>Tooltips</h2>
 
     <ul>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./sizes']">Sizes</a></li>
       <li><a [routerLink]="['./directions']">Directions</a></li>
       <li><a [routerLink]="['./angular']">Angular component</a></li>

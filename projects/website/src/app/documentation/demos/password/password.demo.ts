@@ -8,39 +8,17 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormsModule, NgModel } from '@angular/forms';
 import { RouterLink } from '@angular/router';
-import { ClrCommonFormsModule, ClrIcon, ClrIconModule, ClrPasswordModule } from '@clr/angular';
+import { ClrCommonFormsModule, ClrPasswordModule } from '@clr/angular';
+import { PASSWORD_EXAMPLES } from '@clr/examples/password';
 
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
 import { ComponentList, NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 import { ClarityDocComponent } from '../clarity-doc';
 import { formsPatternLink } from '../pattern-links';
-
-const NgBasic = require('raw-loader!./ng/basic.html');
-const NgHelpers = require('raw-loader!./ng/helpers.html');
-const UiBasic = require('raw-loader!./ui/basic.html');
-const UiError = require('raw-loader!./ui/error.html');
-const UiHelper = require('raw-loader!./ui/helper.html');
-
-const code = `
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ClrPasswordModule } from '@clr/angular';
-
-@Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-
-  imports: [FormsModule, ClrPasswordModule],
-})
-export class ExampleComponent {
-  password = '';
-}
-`;
 
 @Component({
   templateUrl: './password.demo.html',
@@ -57,9 +35,7 @@ export class ExampleComponent {
     ThemedImageComponent,
     RouterLink,
     FormsModule,
-    StackblitzExampleComponent,
-    ClrIcon,
-    ClrIconModule,
+    DocExampleComponent,
     NestingTableComponent,
   ],
 })
@@ -72,21 +48,9 @@ export class PasswordDemo extends ClarityDocComponent {
     { component: 'Badge', description: 'Maybe, check your design team for assistance' },
   ];
   readonly patternLinks: LinkCardsLink[] = [formsPatternLink];
-
-  uiBasic: any = UiBasic;
-  uiHelper: any = UiHelper;
-  uiError: any = UiError;
-
-  ngBasic: any = NgBasic;
-  ngBasicCode = code;
-
-  ngHelpers: any = NgHelpers;
-  ngHelpersCode = code;
+  readonly examples = PASSWORD_EXAMPLES;
 
   disabled = true;
-
-  exampleOne = '';
-  exampleTwo = '';
 
   @ViewChild('successPassword') successPassword: NgModel;
   successPasswordModel = '*********';

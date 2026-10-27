@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { WorkflowConfigurationService } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
 import { ClarityModule } from '@clr/angular';
@@ -19,7 +20,15 @@ import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow
 @Component({
   selector: 'clr-wizard-addon-demo',
   standalone: true,
-  imports: [CommonModule, ClarityModule, FormsModule, AppfxWizardModule, SampleWizardComponent, SampleStepperComponent],
+  imports: [
+    CommonModule,
+    ClarityModule,
+    FormsModule,
+    RouterLink,
+    AppfxWizardModule,
+    SampleWizardComponent,
+    SampleStepperComponent,
+  ],
   providers: [SampleWorkflowService],
   templateUrl: './wizard-addon.demo.html',
 })

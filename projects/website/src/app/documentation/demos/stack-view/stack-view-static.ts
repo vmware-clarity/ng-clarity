@@ -6,59 +6,16 @@
  */
 
 import { Component } from '@angular/core';
+import { STACK_VIEW_EXAMPLES } from '@clr/examples/stack-view';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<div class="stack-view">
-  <div class="stack-block">
-    <div class="stack-block-label">
-      <div class="stack-view-key" aria-level="1" aria-posinset="1" aria-setsize="3">Label 1</div>
-      <div class="stack-block-content">Content 1</div>
-    </div>
-  </div>
-  <div class="stack-block stack-block-expandable stack-block-expanded">
-    <div class="stack-block-label">
-      <div class="stack-view-key" aria-level="1" aria-posinset="2" aria-setsize="3">Label 2</div>
-      <div class="stack-block-content">Content 2</div>
-    </div>
-    <div class="stack-children">
-      <div class="stack-block">
-        <div class="stack-block-label">
-          <div class="stack-view-key">Sub-label 1</div>
-          <div class="stack-block-content">Sub-content 1</div>
-        </div>
-      </div>
-      <div class="stack-block">
-        <div class="stack-block-label">
-          <div class="stack-view-key">Sub-label 2</div>
-          <div class="stack-block-content">Sub-content 2</div>
-        </div>
-      </div>
-      <div class="stack-block">
-        <div class="stack-block-label">
-          <div class="stack-view-key">Sub-label 3</div>
-          <div class="stack-block-content">Sub-content 3</div>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="stack-block stack-block-expandable">
-    <div class="stack-block-label">
-      <div class="stack-view-key" aria-level="1" aria-posinset="3" aria-setsize="3">Label 3</div>
-      <div class="stack-block-content">Content 3</div>
-    </div>
-    <div class="stack-children"></div>
-  </div>
-</div>
-`;
+import { RemoveStackViewHeadingsDirective } from './remove-stack-view-headings.directive';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-stack-view-static-demo',
   templateUrl: './stack-view-static.html',
-  styleUrl: './stack-view.demo.scss',
-  imports: [StackblitzExampleComponent],
+  imports: [DocExampleComponent, RemoveStackViewHeadingsDirective],
 })
 export class StackViewStaticDemo {
-  example = EXAMPLE;
+  readonly examples = STACK_VIEW_EXAMPLES;
 }

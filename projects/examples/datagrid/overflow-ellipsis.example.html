@@ -1,0 +1,30 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<clr-datagrid class="datagrid-overflow-ellipsis">
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column [style.width.px]="300">Long Text Static Width 300px</clr-dg-column>
+  <clr-dg-column>Pokemon</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  @for (user of users; track user.id) {
+  <clr-dg-row>
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>
+      <clr-icon shape="user"></clr-icon>
+      {{ user.name }}
+    </clr-dg-cell>
+    <clr-dg-cell>
+      Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin in neque ins id sed quam.
+    </clr-dg-cell>
+    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+  </clr-dg-row>
+  }
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>

@@ -10,7 +10,6 @@ import { ClrIcon, ClrIconModule, ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'app-highlighting-nodes-tree-demo',
-  styleUrl: '../tree-view.demo.scss',
   templateUrl: './highlighting-nodes-tree.html',
   imports: [ClrTreeViewModule, ClrIcon, ClrIconModule],
 })

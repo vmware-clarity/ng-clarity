@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { POPOVER_EXAMPLES } from '@clr/examples/popover';
 
 import { PopoversDemo } from './popovers.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: PopoversDemo }];
+const ROUTES: Routes = [
+  { path: '', component: PopoversDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: POPOVER_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);

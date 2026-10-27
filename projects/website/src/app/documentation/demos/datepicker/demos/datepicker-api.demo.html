@@ -11,18 +11,7 @@
   <code cds-text="code">input</code> field. Then, place the input inside the
   <code cds-text="code">clr-date-container</code> container element.
 </p>
-<form clrForm clrLayout="vertical">
-  <clr-date-container>
-    <label>Basic Demo</label>
-    <input type="date" autocomplete="off" clrDate name="demo" [(ngModel)]="demo" />
-  </clr-date-container>
-</form>
-<app-stackblitz-example
-  name="datepicker"
-  [componentTemplate]="basicExample"
-  [componentClass]="basicExampleTs"
-  [showComponentClass]="false"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.basic"></app-doc-example>
 
 <clr-alert [clrAlertClosable]="false">
   <div class="alert-item">
@@ -48,72 +37,16 @@
 </p>
 
 <h5 cds-text="subsection" class="clr-mt-24px">Only Min</h5>
-<form clrForm clrLayout="vertical">
-  <clr-date-container>
-    <label>Min date: 2019-11-17</label>
-    <input type="date" autocomplete="off" clrDate name="minDemo" [(ngModel)]="minDemo" min="2019-11-17" />
-    <clr-control-error *clrIfError="'min'">Error message about min date</clr-control-error>
-  </clr-date-container>
-</form>
-<app-stackblitz-example
-  name="datepicker with min"
-  [componentTemplate]="minExample"
-  [componentClass]="minExampleTs"
-  [showComponentClass]="false"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.min"></app-doc-example>
 
 <h5 cds-text="subsection" class="clr-mt-24px">Only Max</h5>
-<form clrForm clrLayout="vertical">
-  <clr-date-container>
-    <label>Max date: 2019-11-19</label>
-    <input type="date" autocomplete="off" clrDate name="maxDemo" [(ngModel)]="maxDemo" max="2019-11-19" />
-    <clr-control-error *clrIfError="'max'">Error message about max date</clr-control-error>
-  </clr-date-container>
-</form>
-<app-stackblitz-example
-  name="datepicker with max"
-  [componentTemplate]="maxExample"
-  [componentClass]="maxExampleTs"
-  [showComponentClass]="false"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.max"></app-doc-example>
 
 <h5 cds-text="subsection" class="clr-mt-24px">Min and Max</h5>
-<form clrForm clrLayout="vertical">
-  <clr-date-container>
-    <label>Min date: 2019-11-17 AND Max date: 2019-11-19</label>
-    <input
-      type="date"
-      autocomplete="off"
-      clrDate
-      name="minMaxDemo"
-      [(ngModel)]="minMaxDemo"
-      min="2019-11-17"
-      max="2019-11-19"
-    />
-    <clr-control-error *clrIfError="'min'">Error message about min date</clr-control-error>
-    <clr-control-error *clrIfError="'max'">Error message about max date</clr-control-error>
-  </clr-date-container>
-</form>
-<app-stackblitz-example
-  name="datepicker with min/max"
-  [componentTemplate]="minMaxExample"
-  [componentClass]="minMaxExampleTs"
-  [showComponentClass]="false"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.minMax"></app-doc-example>
 
 <h5 cds-text="subsection" class="clr-mt-24px">Confirmation Action Buttons</h5>
-<form clrForm clrLayout="vertical">
-  <clr-date-container [showActionButtons]="true">
-    <label>Date</label>
-    <input type="date" autocomplete="off" clrDate name="actionButtonsDemo" [(ngModel)]="actionButtonsDemo" />
-  </clr-date-container>
-</form>
-<app-stackblitz-example
-  name="datepicker with min/max"
-  [componentTemplate]="withActionButtonsExample"
-  [componentClass]="withActionButtonsExampleTs"
-  [showComponentClass]="false"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.actionButtons"></app-doc-example>
 
 <h4 cds-text="subsection" class="clr-mt-32px">First Day of Week</h4>
 <p cds-text="body" class="clr-mt-16px">
@@ -128,25 +61,4 @@
   This is useful when an application exposes a "First day of the week" admin setting that needs to be honored regardless
   of the user's locale.
 </p>
-<form clrForm clrLayout="vertical">
-  <clr-select-container>
-    <label>First day of week</label>
-    <select clrSelect name="firstDayOfWeek" [(ngModel)]="firstDayOfWeek">
-      @for (option of weekdayOptions; track option.value) {
-      <option [ngValue]="option.value">{{ option.label }}</option>
-      }
-    </select>
-    <clr-control-helper
-      >Select &quot;Locale default&quot; to revert to the value derived from the Angular locale.</clr-control-helper
-    >
-  </clr-select-container>
-  <clr-date-container [clrFirstDayOfWeek]="firstDayOfWeek">
-    <label>Pick a date</label>
-    <input type="date" autocomplete="off" clrDate name="firstDayDemo" [(ngModel)]="firstDayDemo" />
-  </clr-date-container>
-</form>
-<app-stackblitz-example
-  name="datepicker with configurable first day of week"
-  [componentTemplate]="firstDayOfWeekExample"
-  [componentClass]="firstDayOfWeekExampleTs"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.firstDayOfWeek"></app-doc-example>

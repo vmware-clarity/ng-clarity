@@ -13,13 +13,11 @@ import { Component } from '@angular/core';
   template: `
     <h2>Progress Bars</h2>
     <ul>
-      <li><a [routerLink]="['./progress-bar-examples']">Progress Bar Examples</a></li>
-      <li><a [routerLink]="['./progress-bar-colors']">Progress Bar Colors</a></li>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./progress-bar-animations']">Progress Bar Animations</a></li>
       <li><a [routerLink]="['./progress-bar-cards']">Progress Bars in Cards</a></li>
       <li><a [routerLink]="['./progress-bar-loop']">Indeterminate Progress Bar</a></li>
       <li><a [routerLink]="['./progress-bar-static']">Static Progress Bar</a></li>
-      <li><a [routerLink]="['./progress-bar-static-cards']">Static Progress Bar in Cards</a></li>
       <li><a [routerLink]="['./progress-bar-inline']">Inline Progress Bar</a></li>
       <li><a [routerLink]="['./progress-bar-inline-cards']">Inline Progress Bar in Cards</a></li>
       <li><a [routerLink]="['./progress-bar-component']">Progress Bar Component</a></li>

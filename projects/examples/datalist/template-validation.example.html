@@ -1,0 +1,29 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button class="btn btn-sm btn-primary" (click)="disabled = !disabled">Toggle Disabled</button>
+
+<form clrForm>
+  <clr-datalist-container>
+    <label>Template Datalist</label>
+    <input
+      minlength="4"
+      name="Option"
+      required
+      clrDatalistInput
+      [disabled]="disabled"
+      [(ngModel)]="value"
+    />
+    <datalist>
+      @for (item of items; track item) {
+      <option [value]="item"></option>
+      }
+    </datalist>
+    <clr-control-helper>Helper text</clr-control-helper>
+    <clr-control-error>There was an error</clr-control-error>
+  </clr-datalist-container>
+</form>

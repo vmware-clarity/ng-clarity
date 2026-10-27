@@ -1,0 +1,14 @@
+{
+  "storybook": "components/navigation",
+  "examples": [
+    { "id": "header-subnav", "title": "Header and subnav", "targets": ["website", "demo", "storybook"] },
+    { "id": "header-vertical-nav", "title": "Header and vertical nav", "targets": ["website", "demo", "storybook"] },
+    { "id": "header", "title": "Header", "targets": ["website", "demo", "storybook"] },
+    { "id": "vertical-nav", "title": "Vertical nav", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "subnav-vertical-nav",
+      "title": "Subnav and vertical nav",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}

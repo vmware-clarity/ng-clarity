@@ -1,0 +1,11 @@
+{
+  "storybook": "components/forms/select",
+  "examples": [
+    { "id": "basic", "title": "Basic select", "targets": ["website", "demo", "storybook"] },
+    { "id": "label", "title": "Select with a label", "targets": ["website", "demo", "storybook"] },
+    { "id": "helpers", "title": "Select with helper and error messages", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-basic", "title": "CSS basic select", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-full", "title": "CSS full select display", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-error", "title": "CSS select error state", "targets": ["website", "demo", "storybook"] }
+  ]
+}

@@ -1,0 +1,106 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { CDK_DROP_LIST, CdkDragDrop, CdkDropList, DragDropModule } from '@angular/cdk/drag-drop';
+import { Component, QueryList, ViewChildren } from '@angular/core';
+import { AppfxDatagridModule, ColumnDefinition, DatagridDragConfig } from '@clr/addons/datagrid';
+import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
+import { SelectionType } from '@clr/angular';
+
+import { Inventory, VmItem } from './inventory/inventory';
+
+@Component({
+  selector: 'clr-advanced-datagrid-drag-drop-example',
+  imports: [AppfxDatagridModule, DragDropModule],
+  templateUrl: './drag-drop.example.html',
+  styleUrl: './drag-drop.example.scss',
+  providers: [Inventory],
+})
+export class AdvancedDatagridDragDropExample {
+  protected readonly columns: ColumnDefinition<VmItem>[] = [
+    {
+      displayName: 'VM Name',
+      field: 'name',
+    },
+    {
+      displayName: 'State',
+      field: 'state',
+    },
+    {
+      displayName: 'Status',
+      field: 'status',
+    },
+  ];
+
+  protected allItems: VmItem[];
+  protected selectionType: SelectionType = SelectionType.Multi;
+
+  protected receivedItems: string[] = [];
+
+  protected dragConfig: DatagridDragConfig = {
+    fieldName: 'name',
+    dragGroup: 'vm-group',
+  };
+
+  #droppables!: QueryList<CdkDropList>;
+
+  constructor(
+    private groupService: DragAndDropGroupService,
+    private inventory: Inventory
+  ) {
+    inventory.reset();
+    this.allItems = inventory.allItems;
+  }
+
+  @ViewChildren(CDK_DROP_LIST)
+  set droppables(dropLists: QueryList<CdkDropList>) {
+    this.#droppables?.forEach(droppable => {
+      if (!this.dragConfig.dragGroup) {
+        return;
+      }
+      this.groupService.removeGroupItem(this.dragConfig.dragGroup, droppable);
+    });
+    dropLists.forEach(droppable => {
+      if (!this.dragConfig.dragGroup) {
+        return;
+      }
+      this.groupService.addGroupItem(this.dragConfig.dragGroup, droppable);
+    });
+    this.#droppables = dropLists;
+  }
+
+  protected dropGroup(group: string | undefined): CdkDropList[] {
+    if (!group) {
+      return [];
+    }
+    return this.groupService?.getGroupItems(group) ?? [];
+  }
+
+  protected drop(event: CdkDragDrop<any[]>) {
+    document.body.classList.remove('drag-valid-target');
+    event.item.data?.forEach((item: VmItem) => {
+      if (this.receivedItems.includes(item.name)) {
+        return;
+      }
+      this.receivedItems.push(item.name);
+    });
+  }
+
+  protected dropListEnter() {
+    document.body.classList.remove('drag-invalid-target');
+    document.body.classList.add('drag-valid-target');
+  }
+
+  protected dropEnterInInvalidList() {
+    document.body.classList.remove('drag-valid-target');
+    document.body.classList.add('drag-invalid-target');
+  }
+
+  protected dropInInvalidList() {
+    document.body.classList.remove('drag-invalid-target');
+  }
+}

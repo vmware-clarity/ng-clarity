@@ -6,67 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrModalModule } from '@clr/angular';
+import { MODAL_EXAMPLES } from '@clr/examples/modal';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE_HTML = `
-<button class="btn btn-primary" (click)="opened = true">Show modal</button>
-<clr-modal
-  [(clrModalOpen)]="opened"
-  [clrModalPreventClose]="true"
-  (clrModalAlternateClose)="showConfirm = true"
-  #modal
->
-  <div class="modal-title">Confirm on close</div>
-  <div class="modal-body">
-    <p>The modal will require confirmation on close.</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="modal.close()">Close</button>
-  </div>
-</clr-modal>
-
-<clr-modal [(clrModalOpen)]="showConfirm">
-  <h3 class="modal-title">Are you sure?</h3>
-  <div class="modal-body">
-    <p>You may lose data if you close now...</p>
-  </div>
-  <div class="modal-footer">
-    <button type="button" class="btn btn-outline" (click)="showConfirm = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="showConfirm = false; opened = false">
-      Yes
-    </button>
-  </div>
-</clr-modal>
-`;
-
-const EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ClrModalModule } from '@clr/angular';
-
-@Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-
-  imports: [CommonModule, ClrModalModule],
-})
-export class ExampleComponent {
-  opened = false;
-  showConfirm = false;
-}
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-modal-angular-alt-close-demo',
   templateUrl: './modal-angular-alt-close-demo.html',
-  imports: [ClrModalModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class ModalAngularAlternateCloseDemo {
-  showModal = false;
-  showConfirm = false;
-  exampleHtml = EXAMPLE_HTML;
-  exampleTs = EXAMPLE_TS;
+  readonly examples = MODAL_EXAMPLES;
 }

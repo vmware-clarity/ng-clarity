@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BREADCRUMBS_EXAMPLES } from '@clr/examples/breadcrumbs';
 
 import { BreadcrumbsHrefDemo } from './breadcrumbs-href.demo';
 import { BreadcrumbsRoutingDemo } from './breadcrumbs-routing.demo';
@@ -21,12 +22,14 @@ import { ToolsDemo } from './pages/tools';
 import { WatercolorDemo } from './pages/watercolor';
 import { WatercolorListDemo } from './pages/watercolorList';
 import { WinsorNewtonDemo } from './pages/winsor-newton';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: BreadcrumbsDemo,
     children: [
+      { path: 'examples', component: ExampleListComponent, data: { examples: BREADCRUMBS_EXAMPLES } },
       {
         path: 'routing',
         component: BreadcrumbsRoutingDemo,

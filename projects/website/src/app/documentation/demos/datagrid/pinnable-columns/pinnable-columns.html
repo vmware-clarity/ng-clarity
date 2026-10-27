@@ -13,35 +13,7 @@
   column that identifies a row in view while the user reads the columns further to the right.
 </p>
 
-<clr-datagrid>
-  <clr-dg-column clrDgPinned [style.width.px]="140">User ID</clr-dg-column>
-  <clr-dg-column clrDgPinned [style.width.px]="240">Name</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Pinnable Columns"
-  [componentTemplate]="examples.basicExample"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.pinnedColumns"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Pinning More Than One Column</h3>
 
@@ -80,25 +52,7 @@
   three are shrunk to fit the cap. Scroll it sideways to see that the scrollable columns are still reachable.
 </p>
 
-<clr-datagrid>
-  <clr-dg-column clrDgPinned [style.width.px]="400">User ID</clr-dg-column>
-  <clr-dg-column clrDgPinned [style.width.px]="400">Name</clr-dg-column>
-  <clr-dg-column clrDgPinned [style.width.px]="400">Creation date</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
+<app-doc-example [example]="examples.pinnedColumnsMaxWidth"></app-doc-example>
 
 <p class="clr-mt-16px" cds-text="body">
   The share is the <code cds-text="code">--clr-datagrid-pinned-columns-max-width</code> CSS custom property and defaults
@@ -114,46 +68,7 @@
   the datagrid is on screen. Scroll the datagrid below sideways and then change the checkboxes.
 </p>
 
-<clr-checkbox-container clrInline>
-  <label>Pinned columns</label>
-  <clr-checkbox-wrapper>
-    <input type="checkbox" clrCheckbox name="pin-id" [(ngModel)]="pinId" />
-    <label>User ID</label>
-  </clr-checkbox-wrapper>
-  <clr-checkbox-wrapper>
-    <input type="checkbox" clrCheckbox name="pin-name" [(ngModel)]="pinName" />
-    <label>Name</label>
-  </clr-checkbox-wrapper>
-</clr-checkbox-container>
-
-<clr-datagrid>
-  <clr-dg-column [clrDgPinned]="pinId" [style.width.px]="140">User ID</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
-  <clr-dg-column [clrDgPinned]="pinName" [style.width.px]="240">Name</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Pinnable Columns at Runtime"
-  [componentTemplate]="examples.runtimeExample"
-  [componentClass]="examples.runtimeComponentTS"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.pinnedColumnsRuntime"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Pinned Columns in Expandable Rows</h3>
 
@@ -174,28 +89,7 @@
 
 <p class="clr-mt-16px" cds-text="body">Scroll the datagrid below sideways with a row expanded.</p>
 
-<clr-datagrid>
-  <clr-dg-column clrDgPinned [style.width.px]="240">User ID</clr-dg-column>
-  <clr-dg-column [style.width.px]="240">Name</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-
-    <clr-dg-row-detail *clrIfExpanded>
-      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.creation | date : 'long' }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.pokemon.name }} ({{ user.pokemon.number }})</clr-dg-cell>
-    </clr-dg-row-detail>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
+<app-doc-example [example]="examples.pinnedColumnsExpandableRows"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Letting the User Pin Columns</h3>
 
@@ -226,39 +120,4 @@
   into the pinned region rather than being left behind.
 </p>
 
-<p class="clr-mt-16px" cds-text="body">Pinned from the menu: <b cds-text="medium">{{ pinnedColumns || 'none' }}</b></p>
-
-<clr-datagrid>
-  <clr-dg-column clrDgPinnable [(clrDgPinned)]="idPinned" [style.width.px]="140">
-    User ID
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column clrDgPinnable [(clrDgPinned)]="namePinned" [style.width.px]="240">
-    Name
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Creation date</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Favorite color</clr-dg-column>
-  <clr-dg-column [style.width.px]="280">Pokemon</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid User Pinnable Columns"
-  [componentTemplate]="examples.pinnableExample"
-  [componentClass]="examples.pinnableComponentTS"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.pinnableColumns"></app-doc-example>

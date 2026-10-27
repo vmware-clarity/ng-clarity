@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LIST_EXAMPLES } from '@clr/examples/list';
 
 import { ListsCompactDemo } from './lists-compact';
 import { ListsInCardsDemo } from './lists-in-cards';
@@ -15,13 +16,15 @@ import { ListsOlDemo } from './lists-ol';
 import { ListsUlDemo } from './lists-ul';
 import { ListsUnstyledDemo } from './lists-unstyled';
 import { ListsDemo } from './lists.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: ListsDemo,
     children: [
-      { path: '', redirectTo: 'lists-ul', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: LIST_EXAMPLES } },
       { path: 'lists-ul', component: ListsUlDemo },
       { path: 'lists-ol', component: ListsOlDemo },
       { path: 'lists-in-cards', component: ListsInCardsDemo },

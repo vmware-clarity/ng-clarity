@@ -5,25 +5,19 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { NgComponentOutlet } from '@angular/common';
 import { Component } from '@angular/core';
+import { SPINNER_EXAMPLES } from '@clr/examples/spinner';
 
 import { AnimatedExampleComponent } from '../../../shared/animated-example/animated-example.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `<span class="spinner spinner-sm">Loading...</span>`;
-
-const EXAMPLE1 = `<span class="spinner spinner-md">Loading...</span>`;
-
-const EXAMPLE2 = `<span class="spinner spinner-lg">Loading...</span>`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-spinner-sizes',
   templateUrl: './spinner-sizes.html',
   styleUrl: './spinner.demo.scss',
-  imports: [AnimatedExampleComponent, StackblitzExampleComponent],
+  imports: [AnimatedExampleComponent, DocExampleComponent, NgComponentOutlet],
 })
 export class SpinnerSizesDemo {
-  example = EXAMPLE;
-  example1 = EXAMPLE1;
-  example2 = EXAMPLE2;
+  readonly examples = SPINNER_EXAMPLES;
 }

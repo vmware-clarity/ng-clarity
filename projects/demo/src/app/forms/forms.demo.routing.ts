@@ -7,6 +7,8 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FILE_PICKER_EXAMPLES } from '@clr/examples/file-picker';
+import { FORMS_EXAMPLES } from '@clr/examples/forms';
 
 import { FormsA11yDemo } from './a11y/a11y';
 import { FormsCheckboxDemo } from './controls/checkbox';
@@ -36,13 +38,15 @@ import { RegressionTestingDemo } from './regression-testing/regression-testing.d
 import { FormsResetDemo } from './reset/reset';
 import { FormsTemplateDrivenDemo, FormsTemplateDrivenOnPushDemo } from './template-driven/template-driven';
 import { FormsValidationDemo } from './validation/validation';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: FormsDemo,
     children: [
-      { path: '', redirectTo: 'layout-vertical', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: FORMS_EXAMPLES } },
       { path: 'layout-compact', component: FormsLayoutCompactDemo },
       { path: 'layout-compact-grid', component: FormsLayoutCompactGridDemo },
       { path: 'layout-horizontal', component: FormsLayoutHorizontalDemo },
@@ -58,6 +62,7 @@ const ROUTES: Routes = [
       { path: 'layout-modal', component: FormsLayoutModalDemo },
       { path: 'checkbox', component: FormsCheckboxDemo },
       { path: 'file', component: FormsFileDemo },
+      { path: 'file-examples', component: ExampleListComponent, data: { examples: FILE_PICKER_EXAMPLES } },
       { path: 'radio', component: FormsRadioDemo },
       { path: 'select', component: FormsSelectDemo },
       { path: 'text', component: FormsTextDemo },

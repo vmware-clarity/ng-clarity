@@ -6,45 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClarityIcons, ClrIcon, ClrIconModule, ellipsisHorizontalIcon } from '@clr/angular';
+import { BUTTON_GROUP_EXAMPLES } from '@clr/examples/button-group';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE_1 = `
-<div class="btn-group btn-primary">
-  <button class="btn">Add</button>
-  <button class="btn">Edit</button>
-  <button class="btn">Download</button>
-  <button class="btn">Delete</button>
-</div>
-`;
-
-const HTML_EXAMPLE_2 = `
-<div class="btn-group btn-primary">
-  <button class="btn">Add</button>
-  <button class="btn">Edit</button>
-  <div class="btn-group-overflow open">
-    <button class="btn dropdown-toggle">
-      <clr-icon shape="ellipsis-horizontal"></clr-icon>
-    </button>
-    <div class="dropdown-menu" role="menu">
-      <button class="btn" role="menuitem">Download</button>
-      <button class="btn" role="menuitem">Delete</button>
-    </div>
-  </div>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-button-group-basic-structure-demo',
   templateUrl: './basic-structure.html',
-  imports: [StackblitzExampleComponent, ClrIcon, ClrIconModule],
+  imports: [DocExampleComponent],
 })
 export class ButtonGroupBasicStructureDemo {
-  htmlExample1 = HTML_EXAMPLE_1;
-  htmlExample2 = HTML_EXAMPLE_2;
-
-  constructor() {
-    ClarityIcons.addIcons(ellipsisHorizontalIcon);
-  }
+  readonly examples = BUTTON_GROUP_EXAMPLES;
 }

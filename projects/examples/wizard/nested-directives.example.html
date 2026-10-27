@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button class="btn btn-primary" (click)="open()">Open the Wizard</button>
+
+<clr-wizard #wizard [(clrWizardOpen)]="_open">
+  <clr-wizard-title>Wizard Title</clr-wizard-title>
+
+  <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
+  <clr-wizard-button type="previous">Back</clr-wizard-button>
+  <clr-wizard-button type="next">Next</clr-wizard-button>
+  <clr-wizard-button type="finish">Finish</clr-wizard-button>
+
+  @for (page of pages; track $index; let i = $index) { @if (!page.skipped) {
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page {{ i + 1 }}</ng-template>
+    Content for page {{ i + 1 }}
+  </clr-wizard-page>
+  } }
+</clr-wizard>

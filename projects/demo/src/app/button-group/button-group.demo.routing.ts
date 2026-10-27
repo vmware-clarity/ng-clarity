@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BUTTON_GROUP_EXAMPLES } from '@clr/examples/button-group';
 
 import { BasicButtonGroupDemo } from './angular/basic-structure/basic-button-group';
 import { ButtonGroupAngularDemo } from './angular/button-group-angular';
@@ -31,13 +32,13 @@ import {
   RouterLinkButtonGroupDemoRouteTwoComponent,
 } from './angular/router-link/router-link-button-group';
 import { ButtonGroupDemo } from './button-group.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 import { StaticButtonGroupBasicStructureDemo } from './static/basic-structure/basic-structure';
 import { ButtonGroupStaticDemo } from './static/button-group-static';
 import { ButtonGroupCardsDemo } from './static/cards/button-group-cards';
 import { ButtonGroupCheckboxesDemo } from './static/checkbox/button-group-checkboxes';
 import { StaticIconButtonGroupDemo } from './static/icon-buttons/icon-button-group';
 import { ButtonGroupIconsDemo } from './static/icons/button-group-icons';
-import { ButtonGroupIconsTextDemo } from './static/icons-with-text/button-group-icon-text';
 import { StaticMenuDirectionsDemo } from './static/menu-directions/menu-directions';
 import { ButtonGroupRadiosDemo } from './static/radio/button-group-radios';
 import { ButtonGroupTypes } from './static/types/button-group-types';
@@ -47,7 +48,8 @@ const ROUTES: Routes = [
     path: '',
     component: ButtonGroupDemo,
     children: [
-      { path: '', redirectTo: 'static', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: BUTTON_GROUP_EXAMPLES } },
       {
         path: 'static',
         component: ButtonGroupStaticDemo,
@@ -58,7 +60,6 @@ const ROUTES: Routes = [
           { path: 'types', component: ButtonGroupTypes },
           { path: 'icons', component: ButtonGroupIconsDemo },
           { path: 'icon-button-group', component: StaticIconButtonGroupDemo },
-          { path: 'icons-with-text', component: ButtonGroupIconsTextDemo },
           { path: 'checkboxes', component: ButtonGroupCheckboxesDemo },
           { path: 'radios', component: ButtonGroupRadiosDemo },
           { path: 'cards', component: ButtonGroupCardsDemo },

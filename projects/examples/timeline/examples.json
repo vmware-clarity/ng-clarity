@@ -1,0 +1,25 @@
+{
+  "storybook": "components/timeline",
+  "examples": [
+    {
+      "id": "static-horizontal",
+      "title": "Horizontal timeline with CSS classes",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static-vertical",
+      "title": "Vertical timeline with CSS classes",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "horizontal",
+      "title": "Horizontal timeline",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "vertical",
+      "title": "Vertical timeline",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}

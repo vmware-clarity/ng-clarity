@@ -10,7 +10,6 @@ import { ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'clr-tree-basic-demo',
-  styleUrl: '../tree-view.demo.scss',
   templateUrl: './tree-basic.html',
   imports: [ClrTreeViewModule],
 })

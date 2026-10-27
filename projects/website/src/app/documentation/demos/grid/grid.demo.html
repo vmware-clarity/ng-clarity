@@ -165,7 +165,63 @@
       and 12.
     </p>
 
-    <clr-grid-demo-columns></clr-grid-demo-columns>
+    <app-doc-example [example]="examples.columns" previewClass="clr-example"></app-doc-example>
+
+    <div class="clr-example clr-example-column">
+      <div class="clr-row">
+        <div class="clr-col-1">
+          <span class="clr-example-col-value">1</span>
+        </div>
+        <div class="clr-col-11">
+          <span class="clr-example-col-value">11</span>
+        </div>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-2">
+          <span class="clr-example-col-value">2</span>
+        </div>
+        <div class="clr-col-10">
+          <span class="clr-example-col-value">10</span>
+        </div>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-3">
+          <span class="clr-example-col-value">3</span>
+        </div>
+        <div class="clr-col-9">
+          <span class="clr-example-col-value">9</span>
+        </div>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-4">
+          <span class="clr-example-col-value">4</span>
+        </div>
+        <div class="clr-col-8">
+          <span class="clr-example-col-value">8</span>
+        </div>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-5">
+          <span class="clr-example-col-value">5</span>
+        </div>
+        <div class="clr-col-7">
+          <span class="clr-example-col-value">7</span>
+        </div>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-6">
+          <span class="clr-example-col-value">6</span>
+        </div>
+        <div class="clr-col-6">
+          <span class="clr-example-col-value">6</span>
+        </div>
+      </div>
+      <div class="clr-row">
+        <div class="clr-col-12">
+          <span class="clr-example-col-value">12</span>
+        </div>
+      </div>
+    </div>
 
     <h4 cds-text="subsection" class="clr-mt-32px" id="column-stacking">Column Stacking</h4>
 
@@ -177,7 +233,7 @@
       entire width of the row and the columns are stacked. Resize your browser to see how this works.
     </p>
 
-    <clr-grid-demo-column-stacking></clr-grid-demo-column-stacking>
+    <app-doc-example [example]="examples.columnStacking" previewClass="clr-example"></app-doc-example>
 
     <h4 cds-text="subsection" class="clr-mt-32px" id="column-wrapping">Column Wrapping</h4>
 
@@ -186,7 +242,7 @@
       line.
     </p>
 
-    <clr-grid-demo-column-wrapping></clr-grid-demo-column-wrapping>
+    <app-doc-example [example]="examples.columnWrapping" previewClass="clr-example"></app-doc-example>
 
     <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="flexbox-grid-auto-layout">Flexbox Grid Auto Layout</h3>
 
@@ -196,7 +252,7 @@
       Using the <code cds-text="code">.clr-col-*</code> class divides the row into equal width columns.
     </p>
 
-    <clr-grid-demo-auto-layout-1></clr-grid-demo-auto-layout-1>
+    <app-doc-example [example]="examples.equalWidth" previewClass="clr-example"></app-doc-example>
 
     <h4 cds-text="subsection" class="clr-mt-32px">Setting One Column Width</h4>
 
@@ -204,7 +260,9 @@
       A specific width can be assigned to a column. All the siblings of that column will automatically resize around it.
     </p>
 
-    <clr-grid-demo-auto-layout-2></clr-grid-demo-auto-layout-2>
+    <app-doc-example [example]="examples.oneColumnWidth" previewClass="clr-example"></app-doc-example>
+
+    <app-doc-example [example]="examples.oneColumnWidthMiddle" previewClass="clr-example"></app-doc-example>
 
     <h4 cds-text="subsection" class="clr-mt-32px">Variable Width Content</h4>
 
@@ -213,7 +271,7 @@
       content.
     </p>
 
-    <clr-grid-demo-auto-layout-3></clr-grid-demo-auto-layout-3>
+    <app-doc-example [example]="examples.variableWidth" previewClass="clr-example"></app-doc-example>
 
     <h4 cds-text="subsection" class="clr-mt-32px">Multi Row</h4>
 
@@ -222,7 +280,7 @@
       line.
     </p>
 
-    <clr-grid-demo-auto-layout-4></clr-grid-demo-auto-layout-4>
+    <app-doc-example [example]="examples.multiRow" previewClass="clr-example"></app-doc-example>
 
     <h4 cds-text="subsection" class="clr-mt-32px" id="column-offsets">Column Offsets</h4>
 
@@ -230,7 +288,7 @@
       The responsive <code cds-text="code">clr-offset-*</code> classes increase a column’s left margin by
       <code cds-text="code">*</code> number of columns.
     </p>
-    <clr-grid-demo-column-offsetting></clr-grid-demo-column-offsetting>
+    <app-doc-example [example]="examples.columnOffsets" previewClass="clr-example"></app-doc-example>
 
     <h4 cds-layout="m-b:sm" cds-text="subsection" class="clr-mt-32px" id="column-ordering">Column Ordering</h4>
 
@@ -255,7 +313,7 @@
       <code cds-text="code">*</code> represents the order.
     </p>
 
-    <clr-grid-demo-column-ordering></clr-grid-demo-column-ordering>
+    <app-doc-example [example]="examples.columnOrdering" previewClass="clr-example"></app-doc-example>
 
     <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="vertical-alignment-in-rows">
       Vertical Alignment in Rows
@@ -271,7 +329,14 @@
       <li><code cds-text="code">clr-align-items-*-end</code></li>
     </ul>
 
-    <clr-grid-demo-vertical-alignment></clr-grid-demo-vertical-alignment>
+    <h4 cds-layout="m-b:sm" cds-text="subsection" class="clr-mt-32px">Start</h4>
+    <app-doc-example [example]="examples.alignItemsStart" previewClass="clr-example"></app-doc-example>
+
+    <h4 cds-layout="m-b:sm" cds-text="subsection" class="clr-mt-32px">Center</h4>
+    <app-doc-example [example]="examples.alignItemsCenter" previewClass="clr-example"></app-doc-example>
+
+    <h4 cds-layout="m-b:sm" cds-text="subsection" class="clr-mt-32px">End</h4>
+    <app-doc-example [example]="examples.alignItemsEnd" previewClass="clr-example"></app-doc-example>
 
     <p cds-text="body" class="clr-mt-16px">
       A column can individually be vertically aligned in a row using the following responsive classes:
@@ -283,7 +348,7 @@
       <li><code cds-text="code">clr-align-self-*-end</code></li>
     </ul>
 
-    <clr-grid-demo-individual-vertical-alignment></clr-grid-demo-individual-vertical-alignment>
+    <app-doc-example [example]="examples.alignSelf" previewClass="clr-example"></app-doc-example>
 
     <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="horizontal-alignment-in-rows">
       Horizontal Alignment in Rows
@@ -301,11 +366,24 @@
       <li><code cds-text="code">clr-justify-content-*-between</code></li>
     </ul>
 
-    <clr-grid-demo-horizontal-alignment></clr-grid-demo-horizontal-alignment>
+    <h4 cds-layout="m-b:sm" cds-text="subsection" class="clr-mt-32px">Start</h4>
+    <app-doc-example [example]="examples.justifyContentStart" previewClass="clr-example"></app-doc-example>
+
+    <h4 cds-layout="m-b:sm" cds-text="subsection" class="clr-mt-32px">Center</h4>
+    <app-doc-example [example]="examples.justifyContentCenter" previewClass="clr-example"></app-doc-example>
+
+    <h4 cds-layout="m-b:sm" cds-text="subsection" class="clr-mt-32px">End</h4>
+    <app-doc-example [example]="examples.justifyContentEnd" previewClass="clr-example"></app-doc-example>
+
+    <h4 cds-layout="m-b:sm" cds-text="subsection" class="clr-mt-32px">Space Around</h4>
+    <app-doc-example [example]="examples.justifyContentAround" previewClass="clr-example"></app-doc-example>
+
+    <h4 cds-layout="m-b:sm" cds-text="subsection" class="clr-mt-32px">Space Between</h4>
+    <app-doc-example [example]="examples.justifyContentBetween" previewClass="clr-example"></app-doc-example>
 
     <h3 data-toc-item cds-text="section" class="clr-mt-32px" id="grid-nesting">Grid Nesting</h3>
 
-    <clr-grid-demo-nesting></clr-grid-demo-nesting>
+    <app-doc-example [example]="examples.nesting" previewClass="clr-example"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="overview">

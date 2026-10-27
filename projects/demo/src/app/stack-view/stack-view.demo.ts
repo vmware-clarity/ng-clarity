@@ -13,10 +13,8 @@ import { Component } from '@angular/core';
     <h2>Stack View</h2>
 
     <ul>
-      <li><a [routerLink]="['./static']">Static styles</a></li>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./angular-basic']">Basic Stack View component</a></li>
-      <li><a [routerLink]="['./angular-modal-edit']">Stack View With Editing in a Modal</a></li>
-      <li><a [routerLink]="['./angular-lazyload']">Stack View With Children Loaded On Demand</a></li>
     </ul>
 
     <router-outlet></router-outlet>

@@ -6,22 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { LABEL_EXAMPLES } from '@clr/examples/label';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<span class="label">Austin</span>
-<span class="label">New York</span>
-<span class="label">Palo Alto</span>
-<span class="label">San Francisco</span>
-<span class="label">Seattle</span>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-labels-default-demo',
   templateUrl: './labels-default.demo.html',
-  imports: [StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class LabelsDefaultDemo {
-  example = EXAMPLE;
+  readonly examples = LABEL_EXAMPLES;
 }

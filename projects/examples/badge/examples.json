@@ -1,0 +1,25 @@
+{
+  "storybook": "components/badge",
+  "examples": [
+    {
+      "id": "colors",
+      "title": "Badge colors",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "status",
+      "title": "Status badges",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "css-colors",
+      "title": "CSS badge colors",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "css-status",
+      "title": "CSS status badges",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}

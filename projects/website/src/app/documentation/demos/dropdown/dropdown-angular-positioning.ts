@@ -6,65 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import {
-  ClrCommonFormsModule,
-  ClrDropdownModule,
-  ClrIcon,
-  ClrIconModule,
-  ClrIfOpen,
-  ClrPopoverContent,
-  ClrPopoverHostDirective,
-  ClrStopEscapePropagationDirective,
-} from '@clr/angular';
+import { DROPDOWN_EXAMPLES } from '@clr/examples/dropdown';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<clr-dropdown>
-  <button class="btn btn-outline-primary" clrDropdownTrigger>
-    Dropdown
-    <clr-icon shape="angle" direction="down"></clr-icon>
-  </button>
-  <clr-dropdown-menu clrPosition="bottom-left" *clrIfOpen>
-    <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
-    <div aria-label="Dropdown header Action 1" clrDropdownItem>Action 1</div>
-    <div aria-label="Dropdown header Disabled Action" [clrDisabled]="true" clrDropdownItem>
-      Disabled Action
-    </div>
-    <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
-    <clr-dropdown>
-      <button clrDropdownTrigger>Link 1</button>
-      <clr-dropdown-menu>
-        <button clrDropdownItem>Foo</button>
-        <clr-dropdown>
-          <button clrDropdownTrigger>Bar</button>
-          <clr-dropdown-menu clrPosition="left-top">
-            <button clrDropdownItem>Baz</button>
-          </clr-dropdown-menu>
-        </clr-dropdown>
-      </clr-dropdown-menu>
-    </clr-dropdown>
-    <div clrDropdownItem>Link 2</div>
-  </clr-dropdown-menu>
-</clr-dropdown>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-dropdown-angular-positioning-demo',
   templateUrl: './dropdown-angular-positioning.demo.html',
-  styleUrl: './dropdown.demo.scss',
-  imports: [
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
-    ClrDropdownModule,
-    ClrIcon,
-    ClrIconModule,
-    ClrIfOpen,
-    ClrPopoverContent,
-    ClrCommonFormsModule,
-    StackblitzExampleComponent,
-  ],
+  imports: [DocExampleComponent],
 })
 export class DropdownAngularPositioningDemo {
-  example = EXAMPLE;
+  readonly examples = DROPDOWN_EXAMPLES;
 }

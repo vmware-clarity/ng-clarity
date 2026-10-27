@@ -13,6 +13,9 @@
  * Only the application tsconfigs are changed. The unit tests and storybook keep resolving the library sources through
  * the root tsconfig: they import library internals by relative path, and mixing those with `dist/` would load two
  * copies of the same classes.
+ *
+ * The shared examples (`@clr/examples`) are not a package. They stay on their sources and, through these paths,
+ * import `@clr/angular` and `@clr/addons` from `dist/` like the rest of the application.
  */
 
 const fs = require('fs');
@@ -32,6 +35,8 @@ for (const [tsconfigPath, rootPath] of Object.entries(applicationTsconfigs)) {
       '@clr/angular/*': [`${rootPath}/dist/clr-angular/*`],
       '@clr/addons': [`${rootPath}/dist/clr-addons`],
       '@clr/addons/*': [`${rootPath}/dist/clr-addons/*`],
+      '@clr/examples': [`${rootPath}/projects/examples/index.ts`],
+      '@clr/examples/*': [`${rootPath}/projects/examples/*`],
     },
   };
 

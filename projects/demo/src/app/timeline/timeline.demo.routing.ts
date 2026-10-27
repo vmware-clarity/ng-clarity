@@ -7,17 +7,20 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TIMELINE_EXAMPLES } from '@clr/examples/timeline';
 
 import { TimelineAngularDemo } from './angular/timeline-angular';
 import { TimelineStaticDemo } from './static/timeline-static';
 import { TimelineDemo } from './timeline.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: TimelineDemo,
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'static' },
+      { path: '', pathMatch: 'full', redirectTo: 'examples' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: TIMELINE_EXAMPLES } },
       { path: 'static', component: TimelineStaticDemo },
       { path: 'angular', component: TimelineAngularDemo },
     ],

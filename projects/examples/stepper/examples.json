@@ -1,0 +1,7 @@
+{
+  "storybook": "components/flows/stepper",
+  "examples": [
+    { "id": "reactive", "title": "Stepper with a reactive form", "targets": ["website", "demo", "storybook"] },
+    { "id": "template", "title": "Stepper with a template form", "targets": ["website", "demo", "storybook"] }
+  ]
+}

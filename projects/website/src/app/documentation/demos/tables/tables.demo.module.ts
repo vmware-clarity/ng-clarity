@@ -10,18 +10,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
-import { TablesBasicDemo } from './tables-basic';
-import { TablesCompactDemo } from './tables-compact';
-import { TablesCompactNoborderDemo } from './tables-compact-noborder';
-import { TablesLeftcellDemo } from './tables-leftcell';
-import { TablesMultilineDemo } from './tables-multiline';
-import { TablesNoborderDemo } from './tables-noborder';
-import { TablesVerticalDemo } from './tables-vertical';
-import { TablesVerticalNoborderCompactDemo } from './tables-vertical-noborder-compact';
-import { TablesWidthDemo } from './tables-width';
 import { TablesDemo } from './tables.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 
 @NgModule({
@@ -31,16 +21,6 @@ import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.compon
     DocTabsModule,
     RouterModule.forChild([{ path: '', component: TablesDemo }]),
     StyleDocsComponent,
-    StackblitzExampleComponent,
-    TablesBasicDemo,
-    TablesLeftcellDemo,
-    TablesMultilineDemo,
-    TablesNoborderDemo,
-    TablesCompactDemo,
-    TablesCompactNoborderDemo,
-    TablesVerticalDemo,
-    TablesVerticalNoborderCompactDemo,
-    TablesWidthDemo,
     TablesDemo,
   ],
   exports: [TablesDemo],

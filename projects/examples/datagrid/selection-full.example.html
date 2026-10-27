@@ -1,0 +1,52 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<button class="btn btn-primary" (click)="lockRows()">Lock Rows</button>
+<button class="btn btn-primary" (click)="unlockRows()">Unlock Rows</button>
+
+<clr-datagrid
+  [(clrDgSelected)]="selected"
+  [clrDgSelectionType]="'multi'"
+  [clrDgItemsIdentityFn]="trackUserItemById"
+  (clrDgSelectedChange)="selectionChanged($event)"
+>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+  <clr-dg-column>Creation date</clr-dg-column>
+  <clr-dg-column>Favorite color</clr-dg-column>
+
+  <clr-dg-row *clrDgItems="let user of lockedUsers" [clrDgSelectable]="!user.locked" [clrDgItem]="user">
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
+    <clr-dg-cell>
+      <span class="color-square" [style.backgroundColor]="user.color"></span>
+    </clr-dg-cell>
+  </clr-dg-row>
+
+  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
+</clr-datagrid>
+
+<div class="card card-block">
+  <p class="card-text">
+    Selected users: @if (selected.length === 0) {
+    <em>No user selected.</em>
+    } @for (user of selected; track user.id; let isLast = $last) {
+    <span class="username">{{ user.name }}{{ isLast ? '.' : ',' }}</span>
+    }
+  </p>
+</div>
+
+<div class="card card-block">
+  <p class="card-text">
+    Locked users: @if (findLocked.length === 0) {
+    <em>No user locked.</em>
+    } @for (user of findLocked; track user.id; let isLast = $last) {
+    <span class="username">{{ user.name }}{{ isLast ? '.' : ',' }}</span>
+    }
+  </p>
+</div>

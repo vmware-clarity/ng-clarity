@@ -1,0 +1,9 @@
+{
+  "examples": [
+    { "id": "basic", "title": "Basic popover", "targets": ["website", "demo"] },
+    { "id": "positions", "title": "Popover positions", "targets": ["website", "demo"] },
+    { "id": "fallback-positions", "title": "Popover fallback positions", "targets": ["website", "demo"] },
+    { "id": "scroll-to-close", "title": "Popover that closes on scroll", "targets": ["website", "demo"] },
+    { "id": "context-menu", "title": "Popover opened at a point", "targets": ["website", "demo"] }
+  ]
+}

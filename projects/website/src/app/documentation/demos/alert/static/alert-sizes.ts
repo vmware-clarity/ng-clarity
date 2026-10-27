@@ -6,71 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrAlertModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import { ALERT_EXAMPLES } from '@clr/examples/alert';
 
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `
-<div class="alert alert-danger">
-  <div class="alert-items">
-    <div class="alert-item static" role="alert">
-      <div class="alert-icon-wrapper">
-        <clr-icon class="alert-icon" shape="error-standard"></clr-icon>
-      </div>
-      <span class="alert-text">This is an alert with 36px height.</span>
-    </div>
-  </div>
-  <button type="button" class="close" aria-label="Close">
-    <clr-icon aria-hidden="true" shape="times"></clr-icon>
-  </button>
-</div>
-<div class="alert alert-success alert-sm" role="alert">
-  <div class="alert-items">
-    <div class="alert-item static">
-      <div class="alert-icon-wrapper">
-        <clr-icon class="alert-icon" shape="success-standard"></clr-icon>
-      </div>
-      <span class="alert-text">This is an alert with 24px height.</span>
-    </div>
-  </div>
-  <button type="button" class="close" aria-label="Close">
-    <clr-icon aria-hidden="true" shape="times"></clr-icon>
-  </button>
-</div>
-<div class="alert alert-success alert-lightweight" role="alert">
-  <div class="alert-items">
-    <div class="alert-item static">
-      <div class="alert-icon-wrapper">
-        <clr-icon class="alert-icon" shape="success-standard"></clr-icon>
-      </div>
-      <span class="alert-text">This is a lightweight alert.</span>
-    </div>
-  </div>
-  <button type="button" class="close" aria-label="Close">
-    <clr-icon aria-hidden="true" shape="times"></clr-icon>
-  </button>
-</div>
-<div class="alert alert-success alert-lightweight alert-sm" role="alert">
-  <div class="alert-items">
-    <div class="alert-item static">
-      <div class="alert-icon-wrapper">
-        <clr-icon class="alert-icon" shape="success-standard"></clr-icon>
-      </div>
-      <span class="alert-text">This is a compact lightweight alert.</span>
-    </div>
-  </div>
-  <button type="button" class="close" aria-label="Close">
-    <clr-icon aria-hidden="true" shape="times"></clr-icon>
-  </button>
-</div>
-`;
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-alert-demo-sizes',
-  styleUrl: '../alerts.demo.scss',
   templateUrl: './alert-sizes.demo.html',
-  imports: [ClrIcon, ClrIconModule, ClrAlertModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class AlertSizesDemo {
-  htmlExample = HTML_EXAMPLE;
+  readonly examples = ALERT_EXAMPLES;
 }

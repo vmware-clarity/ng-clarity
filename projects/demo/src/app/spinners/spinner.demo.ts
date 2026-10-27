@@ -13,6 +13,7 @@ import { Component } from '@angular/core';
   template: `
     <h2>Spinners</h2>
     <ul>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./spinner-types']">Types of spinners</a></li>
       <li><a [routerLink]="['./spinner-sizes']">Spinner sizes</a></li>
       <li><a [routerLink]="['./spinner-component']">Spinner component</a></li>

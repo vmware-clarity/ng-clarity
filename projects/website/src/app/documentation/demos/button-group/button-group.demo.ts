@@ -10,13 +10,16 @@ import { RouterLink } from '@angular/router';
 import {
   checkIcon,
   ClarityIcons,
+  cloudIcon,
   ClrButtonGroupModule,
   ClrCommonFormsModule,
   ClrIcon,
   ClrIconModule,
   ClrPopoverHostDirective,
   ClrStopEscapePropagationDirective,
+  cogIcon,
   downloadIcon,
+  ellipsisHorizontalIcon,
   folderIcon,
   homeIcon,
   refreshIcon,
@@ -93,6 +96,16 @@ export class ButtonGroupDemo extends ClarityDocComponent {
   constructor() {
     super('button-group');
 
-    ClarityIcons.addIcons(checkIcon, homeIcon, userIcon, refreshIcon, downloadIcon, folderIcon);
+    ClarityIcons.addIcons(
+      checkIcon,
+      homeIcon,
+      userIcon,
+      refreshIcon,
+      downloadIcon,
+      folderIcon,
+      cogIcon,
+      ellipsisHorizontalIcon,
+      cloudIcon
+    );
   }
 }

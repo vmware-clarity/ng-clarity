@@ -1,0 +1,55 @@
+{
+  "storybook": "addons/datagrid",
+  "examples": [
+    {
+      "id": "client-side",
+      "title": "Client side",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "server-driven",
+      "title": "Server driven",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "virtual-scroll",
+      "title": "Virtual scroll",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "custom-column-definitions",
+      "title": "Column definitions",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "detail-pane",
+      "title": "Detail pane",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "drag-drop",
+      "title": "Row drag and drop",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "filters",
+      "title": "Filters",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "persistence",
+      "title": "Persistence",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "pinnable-columns",
+      "title": "Pinnable columns",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "column-actions",
+      "title": "Column actions",
+      "targets": ["website", "demo"]
+    }
+  ]
+}

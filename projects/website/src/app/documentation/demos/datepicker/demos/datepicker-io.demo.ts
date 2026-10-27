@@ -7,14 +7,15 @@
 
 import { Component } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
+import { DATEPICKER_EXAMPLES } from '@clr/examples/datepicker';
 
-import { DatepickerDateIODemo } from './datepicker-date-io.demo';
-import { DatepickerReactiveFormsDemo } from './datepicker-reactive-forms';
-import { DatepickerTemplateDrivenFormsDemo } from './datepicker-template-driven-forms';
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-datepicker-io-demo',
   templateUrl: './datepicker-io.demo.html',
-  imports: [DatepickerDateIODemo, DatepickerTemplateDrivenFormsDemo, DatepickerReactiveFormsDemo, ClrAlertModule],
+  imports: [ClrAlertModule, DocExampleComponent],
 })
-export class DatepickerIODemo {}
+export class DatepickerIODemo {
+  readonly examples = DATEPICKER_EXAMPLES;
+}

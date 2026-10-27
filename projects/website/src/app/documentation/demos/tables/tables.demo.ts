@@ -7,16 +7,9 @@
 
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { TABLE_EXAMPLES } from '@clr/examples/table';
 
-import { TablesBasicDemo } from './tables-basic';
-import { TablesCompactDemo } from './tables-compact';
-import { TablesCompactNoborderDemo } from './tables-compact-noborder';
-import { TablesLeftcellDemo } from './tables-leftcell';
-import { TablesMultilineDemo } from './tables-multiline';
-import { TablesNoborderDemo } from './tables-noborder';
-import { TablesVerticalDemo } from './tables-vertical';
-import { TablesVerticalNoborderCompactDemo } from './tables-vertical-noborder-compact';
-import { TablesWidthDemo } from './tables-width';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
@@ -29,23 +22,11 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  imports: [
-    DocTabsComponent,
-    DocTabComponent,
-    RouterLink,
-    TablesBasicDemo,
-    TablesLeftcellDemo,
-    TablesMultilineDemo,
-    TablesNoborderDemo,
-    TablesCompactDemo,
-    TablesCompactNoborderDemo,
-    TablesVerticalDemo,
-    TablesVerticalNoborderCompactDemo,
-    TablesWidthDemo,
-    StyleDocsComponent,
-  ],
+  imports: [DocTabsComponent, DocTabComponent, RouterLink, DocExampleComponent, StyleDocsComponent],
 })
 export class TablesDemo extends ClarityDocComponent {
+  readonly examples = TABLE_EXAMPLES;
+
   constructor() {
     super('table');
   }

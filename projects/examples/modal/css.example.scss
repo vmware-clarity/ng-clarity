@@ -1,0 +1,29 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+.backdrop-example-container {
+  position: relative;
+  padding: var(--cds-global-space-9);
+}
+
+.backdrop-example-container.full-screen {
+  padding: 0;
+  height: 400px;
+}
+
+.modal.static {
+  position: relative;
+}
+
+.modal:not(.modal-full-screen).static {
+  padding: var(--cds-global-space-14);
+}
+
+.modal-backdrop.static {
+  position: absolute;
+  inset: 0;
+}

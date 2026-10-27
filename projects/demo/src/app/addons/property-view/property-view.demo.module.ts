@@ -7,10 +7,18 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { PROPERTY_VIEW_EXAMPLES } from '@clr/examples/property-view';
 
 import { PropertyViewDemo } from './property-view.demo';
+import { ExampleListComponent } from '../../_utils/example-list.component';
 
 @NgModule({
-  imports: [RouterModule.forChild([{ path: '', component: PropertyViewDemo }]), PropertyViewDemo],
+  imports: [
+    RouterModule.forChild([
+      { path: '', component: PropertyViewDemo },
+      { path: 'examples', component: ExampleListComponent, data: { examples: PROPERTY_VIEW_EXAMPLES } },
+    ]),
+    PropertyViewDemo,
+  ],
 })
 export class PropertyViewDemoModule {}

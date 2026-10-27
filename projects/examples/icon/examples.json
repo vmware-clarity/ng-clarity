@@ -1,0 +1,7 @@
+{
+  "storybook": "foundations/icons",
+  "examples": [
+    { "id": "basic", "title": "Basic icon usage", "targets": ["website", "demo", "storybook"] },
+    { "id": "builtin-aliases", "title": "Built-in icon aliases", "targets": ["website", "demo", "storybook"] }
+  ]
+}

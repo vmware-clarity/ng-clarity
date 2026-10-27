@@ -6,34 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrAccordionModule, ClrDatagridModule, ClrIfExpanded } from '@clr/angular';
+import { ACCORDION_EXAMPLES } from '@clr/examples/accordion';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const example = `
-<clr-accordion>
-  <clr-accordion-panel>
-    <clr-accordion-title>Item 1</clr-accordion-title>
-    <clr-accordion-content *clrIfExpanded>Content 1</clr-accordion-content>
-  </clr-accordion-panel>
-
-  <clr-accordion-panel>
-    <clr-accordion-title>Item 2</clr-accordion-title>
-    <clr-accordion-content *clrIfExpanded>Content 2</clr-accordion-content>
-  </clr-accordion-panel>
-
-  <clr-accordion-panel>
-    <clr-accordion-title>Item 3</clr-accordion-title>
-    <clr-accordion-content *clrIfExpanded>Content 3</clr-accordion-content>
-  </clr-accordion-panel>
-</clr-accordion>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-angular-accordion-demo',
   templateUrl: './angular-accordion.demo.html',
-  imports: [ClrAccordionModule, ClrDatagridModule, ClrIfExpanded, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class AngularAccordionDemo {
-  example = example;
+  readonly examples = ACCORDION_EXAMPLES;
 }

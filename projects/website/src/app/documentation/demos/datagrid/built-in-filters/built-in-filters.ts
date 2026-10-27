@@ -5,51 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import {
-  ClrAlertModule,
-  ClrDatagridModule,
-  ClrPopoverHostDirective,
-  ClrStopEscapePropagationDirective,
-} from '@clr/angular';
+import { ClrAlertModule } from '@clr/angular';
+import { DATAGRID_EXAMPLES } from '@clr/examples/datagrid';
 
-import { EXAMPLES } from './examples';
+import { SNIPPETS } from './snippets';
 import { CodeSnippetComponent } from '../../../../shared/code-snippet/code-snippet.component';
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-import { Inventory } from '../inventory/inventory';
-import { User } from '../inventory/user';
-import { PokemonFilter } from '../utils/pokemon-filter';
-import { CommonFiles } from '../utils/stackblitz-common-data';
-import { WinsFilter } from '../utils/wins-filter';
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-datagrid-built-in-filters-demo',
-  providers: [Inventory],
   templateUrl: 'built-in-filters.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [
-    CodeSnippetComponent,
-    ClrDatagridModule,
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
-    StackblitzExampleComponent,
-    ClrAlertModule,
-    DatePipe,
-  ],
+  imports: [DocExampleComponent, CodeSnippetComponent, ClrAlertModule],
 })
 export class DatagridBuiltInFiltersDemo {
-  examples = EXAMPLES;
-  users: User[];
-
-  pokemonFilter = new PokemonFilter();
-  winsFilter = new WinsFilter();
-  myFilterValue = 'A';
-  commonFiles = CommonFiles;
-
-  constructor(inventory: Inventory) {
-    inventory.size = 10;
-    inventory.reset();
-    this.users = inventory.all;
-  }
+  readonly examples = DATAGRID_EXAMPLES;
+  readonly snippets = SNIPPETS;
 }

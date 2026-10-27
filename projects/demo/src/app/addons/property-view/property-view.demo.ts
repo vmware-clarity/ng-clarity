@@ -8,6 +8,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import {
   AppfxPropertyViewModule,
   PropertyViewBuilder,
@@ -20,7 +21,7 @@ import { ClarityModule } from '@clr/angular';
 @Component({
   selector: 'clr-property-view-demo',
   standalone: true,
-  imports: [CommonModule, AppfxPropertyViewModule, ClarityModule, FormsModule],
+  imports: [CommonModule, AppfxPropertyViewModule, ClarityModule, FormsModule, RouterLink],
   templateUrl: './property-view.demo.html',
 })
 export class PropertyViewDemo implements OnInit {

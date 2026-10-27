@@ -48,7 +48,7 @@
   <code cds-text="code">false</code> when it is being unchecked (deselect all).
 </p>
 
-<app-code-snippet [code]="examples.basicUsage" language="html"></app-code-snippet>
+<app-code-snippet [code]="snippets.basicUsage" language="html"></app-code-snippet>
 
 <p class="clr-mt-16px clr-mb-16px" cds-text="body">
   In your component, handle the event to apply your own selection logic:
@@ -73,48 +73,7 @@
   selected user names are displayed above the datagrid.
 </p>
 
-<div class="card card-block">
-  <p class="card-text username-list">
-    Selected users: @if (selected.length == 0) {
-    <em>No user selected.</em>
-    } @for (user of selected; track user) {
-    <span class="username">{{ user.name }}</span>
-    }
-  </p>
-</div>
-
-<clr-datagrid
-  [(clrDgSelected)]="selected"
-  [clrDgSelectionType]="'multi'"
-  [clrDgItemsIdentityFn]="trackUserItemById"
-  [clrDgCustomSelectAllEnabled]="true"
-  (clrDgCustomSelectAll)="onCustomSelectAll($event)"
->
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-column>Favorite color</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Custom Select All"
-  [componentTemplate]="examples.main"
-  [componentClass]="examples.componentTS"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.customSelectAll"></app-doc-example>
 
 <h3 class="clr-mt-32px" cds-text="section">Usage with virtual scroll</h3>
 
@@ -128,7 +87,7 @@
   By enabling custom select all, you can ensure that clicking "select all" selects every item in the full dataset:
 </p>
 
-<app-code-snippet [code]="examples.virtualScrollExample" language="html"></app-code-snippet>
+<app-code-snippet [code]="snippets.virtualScrollExample" language="html"></app-code-snippet>
 
 <p class="clr-mt-16px clr-mb-16px" cds-text="body">
   The handler for virtual scroll should account for items that may already be selected:

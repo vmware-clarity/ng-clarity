@@ -1,0 +1,4 @@
+{
+  "storybook": "components/navigation/breadcrumbs",
+  "examples": [{ "id": "href", "title": "Breadcrumbs with href", "targets": ["website", "demo", "storybook"] }]
+}

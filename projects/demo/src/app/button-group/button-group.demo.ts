@@ -13,6 +13,7 @@ import { Component } from '@angular/core';
   template: `
     <h2>Button Group</h2>
     <ul>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./static']">Static styles</a></li>
       <li><a [routerLink]="['./angular']">Angular component</a></li>
     </ul>

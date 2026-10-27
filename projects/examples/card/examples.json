@@ -1,0 +1,103 @@
+{
+  "storybook": "components/card",
+  "examples": [
+    {
+      "id": "angular-basic",
+      "title": "Angular card",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "angular-collapsible",
+      "title": "Collapsible Angular card",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "angular-fixed-footer",
+      "title": "Angular card with a fixed footer",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "angular-image",
+      "title": "Angular card with an image",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "angular-divider",
+      "title": "Angular card with a divider",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "angular-media-block",
+      "title": "Angular card with a media block",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "basic",
+      "title": "Basic card",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "clickable",
+      "title": "Clickable card",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "images",
+      "title": "Images in cards",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "dropdown",
+      "title": "Dropdown in a card",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "media-block",
+      "title": "Card media block",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "alert",
+      "title": "Alert in a card",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "lists",
+      "title": "Lists in cards",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "list-group",
+      "title": "List group in a card",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "progress-bars",
+      "title": "Progress bars in cards",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "progress-bars-inline",
+      "title": "Inline progress bars in a card",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "grid",
+      "title": "Cards in a grid",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "columns",
+      "title": "Cards in CSS columns",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}

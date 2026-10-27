@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TOOLTIP_EXAMPLES } from '@clr/examples/tooltip';
 
 import { TooltipsAngularDemo } from './tooltips-angular';
 import { TooltipsAngularOnPushDemo } from './tooltips-angular-on-push';
@@ -16,13 +17,15 @@ import { TooltipsIconDemo } from './tooltips-icons';
 import { TooltipsSizesDemo } from './tooltips-sizes';
 import { TooltipsTextDemo } from './tooltips-text';
 import { TooltipsDemo } from './tooltips.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: TooltipsDemo,
     children: [
-      { path: '', redirectTo: 'sizes', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: TOOLTIP_EXAMPLES } },
       { path: 'sizes', component: TooltipsSizesDemo },
       { path: 'directions', component: TooltipsDirectionsDemo },
       { path: 'angular', component: TooltipsAngularDemo },

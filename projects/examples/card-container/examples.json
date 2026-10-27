@@ -1,0 +1,4 @@
+{
+  "storybook": "addons/card-container",
+  "examples": [{ "id": "basic", "title": "Card container", "targets": ["website", "demo", "storybook"] }]
+}

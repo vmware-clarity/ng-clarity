@@ -5,53 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, input } from '@angular/core';
-import { ClrSidePanelModule } from '@clr/angular';
-
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<button class="btn btn-primary" (click)="opened = true">Show bottom side panel</button>
-<clr-side-panel
-  [(clrSidePanelOpen)]="opened"
-  [clrSidePanelStaticBackdrop]="true"
-  [clrSidePanelPosition]="'bottom'"
->
-  <div class="side-panel-title">Bottom Side Panel</div>
-  <div class="side-panel-body">
-    <p>This side panel slides up from the bottom.</p>
-  </div>
-  <div class="side-panel-footer">
-    <button type="button" class="btn btn-outline" (click)="opened = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="opened = false">Ok</button>
-  </div>
-</clr-side-panel>
-`;
-
-const EXAMPLE_TS = `
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ClrSidePanelModule } from '@clr/angular';
+import { SIDE_PANEL_EXAMPLES } from '@clr/examples/side-panel';
 
-@Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  imports: [ClrSidePanelModule, CommonModule],
-})
-export class ExampleComponent {
-  opened = false;
-}
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-side-panel-angular-bottom-demo',
   templateUrl: './side-panel-angular-bottom-demo.html',
-  imports: [ClrSidePanelModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class SidePanelAngularBottomDemo {
-  readonly showCode = input(true);
-  opened = false;
-
-  example = EXAMPLE;
-  exampleTs = EXAMPLE_TS;
+  readonly examples = SIDE_PANEL_EXAMPLES;
 }

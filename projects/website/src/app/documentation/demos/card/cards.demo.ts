@@ -7,27 +7,11 @@
 
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { CARD_EXAMPLES } from '@clr/examples/card';
 
-import { CardAngularBasicDemo } from './angular/card-angular-basic';
-import { CardAngularCollapsibleDemo } from './angular/card-angular-collapsible';
-import { CardAngularDividerDemo } from './angular/card-angular-divider';
-import { CardAngularFooterDemo } from './angular/card-angular-footer';
-import { CardAngularImageDemo } from './angular/card-angular-image';
-import { CardAngularMediaBlockDemo } from './angular/card-angular-media-block';
-import { CardAlertDemo } from './card-alert';
-import { CardClickableDemo } from './card-clickable';
-import { CardDropdownDemo } from './card-dropdown';
-import { CardGridDemo } from './card-grid';
-import { CardImagesDemo } from './card-images';
-import { CardLayoutDemo } from './card-layout';
-import { CardListGroupDemo } from './card-list-group';
-import { CardMasonryDemo } from './card-masonry';
-import { CardMediaBlockDemo } from './card-media-block';
-import { ListsInCardsDemo } from './lists-in-cards';
-import { ProgressBarCardsDemo } from './progress-bar-cards';
-import { ProgressBarInlineCardsDemo } from './progress-bar-inline-cards';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
@@ -45,31 +29,15 @@ import { ClarityDocComponent } from '../clarity-doc';
     DocTabsComponent,
     DocTabComponent,
     DoDontComponent,
-    CardAngularBasicDemo,
-    CardAngularCollapsibleDemo,
-    CardAngularFooterDemo,
-    CardAngularImageDemo,
-    CardAngularDividerDemo,
-    CardAngularMediaBlockDemo,
-    CardLayoutDemo,
-    CardClickableDemo,
-    CardImagesDemo,
+    DocExampleComponent,
     RouterLink,
-    CardDropdownDemo,
-    CardMediaBlockDemo,
-    CardAlertDemo,
-    ListsInCardsDemo,
-    CardListGroupDemo,
-    ProgressBarCardsDemo,
-    ProgressBarInlineCardsDemo,
-    CardGridDemo,
-    CardMasonryDemo,
     StyleDocsComponent,
     NestingTableComponent,
     AiSkillComponent,
   ],
 })
 export class CardsDemo extends ClarityDocComponent {
+  readonly examples = CARD_EXAMPLES;
   readonly canNestComponents =
     'Accordion, Alert, Badge, Button, Button Group, Checkbox, Combobox, Datalist, Date Picker, Dropdown, File Picker, Icon Button, Input, Label, List, Password, Radio, Range Input, Progress Bar, Select, Signpost, Spinner, Table, Textarea, Timeline, Toggle Switch, Tooltip';
   readonly cannotNestComponents =

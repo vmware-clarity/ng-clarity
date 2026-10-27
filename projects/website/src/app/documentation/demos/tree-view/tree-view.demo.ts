@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { NgComponentOutlet } from '@angular/common';
 import { Component } from '@angular/core';
 import {
   barChartIcon,
@@ -25,28 +26,18 @@ import {
   mapIcon,
   tasksIcon,
 } from '@clr/angular';
+import { TREE_VIEW_EXAMPLES } from '@clr/examples/tree-view';
 
 import { ClarityDocComponent } from '../clarity-doc';
 import { TreeBasicDemo } from './basic-tree/tree-basic';
-import { TreeBasicDMDemo } from './basic-tree-DM/tree-basic-DM';
-import { BooleanSelectionTreeDemo } from './boolean-selection-tree/boolean-selection-tree';
-import { DisabledNodesDemo } from './disabled-nodes/disabled-nodes';
 import { DisabledNodesOverviewDemo } from './disabled-nodes-overview/disabled-nodes-overview';
-import { DisabledNodesSelectionDemo } from './disabled-nodes-selection/disabled-nodes-selection';
-import { ExpandAllTreeDemo } from './expand-all-tree/expand-all-tree';
 import { HighlightNodesTreeDemo } from './highlighting-nodes-tree/highlighting-nodes-tree';
 import { InteractionCheckboxTreeDemo } from './interaction-checkbox-tree/interaction-checkbox-tree';
-import { TreeNodeLabelChangeOnExpandDemo } from './label-change-on-expand/label-change-on-expand';
-import { LazyLoadingRecursiveTreeDemo } from './lazy-loading-recursive-tree/lazy-loading-recursive-tree';
-import { LazyLoadingSelectionTreeDemo } from './lazy-loading-selection-tree/lazy-loading-selection-tree';
-import { LazyLoadingTreeDemo } from './lazy-loading-tree/lazy-loading-tree';
-import { RecursiveTreeDemo } from './recursive-tree/recursive-tree';
-import { SelectionTreeDemo } from './selection-tree/selection-tree';
 import { SmallSelectionTreeDemo } from './small-selection-tree/small-selection-tree';
 import { TreeDataLoadingDemo } from './tree-data-loading/tree-data-loading';
 import { TreeNodeRoutingDemo } from './tree-node-routing/tree-node-routing';
-import { TreeViewDynamicDemo } from './tree-view-dynamic/tree-view-dynamic';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
@@ -71,7 +62,6 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     DocTabsComponent,
     DocTabComponent,
     TreeBasicDemo,
-    TreeViewDynamicDemo,
     SmallSelectionTreeDemo,
     ThemedImageComponent,
     ClrIcon,
@@ -81,23 +71,16 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     InteractionCheckboxTreeDemo,
     DisabledNodesOverviewDemo,
     TreeDataLoadingDemo,
-    TreeBasicDMDemo,
-    DisabledNodesDemo,
-    TreeNodeLabelChangeOnExpandDemo,
-    ExpandAllTreeDemo,
     TreeNodeRoutingDemo,
-    SelectionTreeDemo,
-    DisabledNodesSelectionDemo,
-    BooleanSelectionTreeDemo,
-    RecursiveTreeDemo,
-    LazyLoadingTreeDemo,
-    LazyLoadingSelectionTreeDemo,
-    LazyLoadingRecursiveTreeDemo,
     StyleDocsComponent,
     AiSkillComponent,
+    DocExampleComponent,
+    NgComponentOutlet,
   ],
 })
 export class TreeViewDemo extends ClarityDocComponent {
+  readonly examples = TREE_VIEW_EXAMPLES;
+
   constructor() {
     super('tree-view');
     ClarityIcons.addIcons(

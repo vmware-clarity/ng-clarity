@@ -1,0 +1,16 @@
+{
+  "storybook": "components/forms/datalist",
+  "examples": [
+    { "id": "basic", "title": "Basic datalist", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "template-validation",
+      "title": "Datalist with template validation",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "reactive-validation",
+      "title": "Datalist with reactive validation",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}

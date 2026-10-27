@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CHECKBOX_EXAMPLES } from '@clr/examples/checkbox';
 
 import { CheckboxesDemo } from './checkboxes.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: CheckboxesDemo }];
+const ROUTES: Routes = [
+  { path: '', component: CheckboxesDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: CHECKBOX_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);

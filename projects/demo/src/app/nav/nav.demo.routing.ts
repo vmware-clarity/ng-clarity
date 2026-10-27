@@ -7,20 +7,22 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { HEADER_EXAMPLES } from '@clr/examples/header';
 
 import { HeaderColorsDemo } from './header-colors';
 import { HeaderTypesDemo } from './header-types';
 import { HeadersDemo } from './headers';
 import { NavDemo } from './nav.demo';
 import { NavsDemo } from './navs';
-import { SubNavDemo } from './sub-nav';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: NavDemo,
     children: [
-      { path: '', redirectTo: 'headers', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: HEADER_EXAMPLES } },
       {
         path: 'headers',
         component: HeadersDemo,
@@ -31,7 +33,6 @@ const ROUTES: Routes = [
         ],
       },
       { path: 'nav-tabs', component: NavsDemo },
-      { path: 'subnav', component: SubNavDemo },
     ],
   },
 ];

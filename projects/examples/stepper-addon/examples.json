@@ -1,0 +1,4 @@
+{
+  "storybook": "addons/stepper",
+  "examples": [{ "id": "basic", "title": "Basic stepper", "targets": ["website", "demo", "storybook"] }]
+}

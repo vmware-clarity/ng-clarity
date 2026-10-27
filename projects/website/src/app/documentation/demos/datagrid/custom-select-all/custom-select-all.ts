@@ -5,27 +5,23 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { ClrAlertModule, ClrDatagridModule } from '@clr/angular';
+import { ClrAlertModule } from '@clr/angular';
+import { DATAGRID_EXAMPLES } from '@clr/examples/datagrid';
 
-import { EXAMPLES } from './examples';
+import { SNIPPETS } from './snippets';
 import { CodeSnippetComponent } from '../../../../shared/code-snippet/code-snippet.component';
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-import { Inventory } from '../inventory/inventory';
-import { User } from '../inventory/user';
-import { CommonFiles } from '../utils/stackblitz-common-data';
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-datagrid-custom-select-all-demo',
-  providers: [Inventory],
   templateUrl: 'custom-select-all.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [ClrDatagridModule, StackblitzExampleComponent, ClrAlertModule, CodeSnippetComponent, DatePipe],
+  imports: [DocExampleComponent, ClrAlertModule, CodeSnippetComponent],
 })
 export class DatagridCustomSelectAllDemo {
-  commonFiles = CommonFiles;
-  examples = EXAMPLES;
+  readonly examples = DATAGRID_EXAMPLES;
+  readonly snippets = SNIPPETS;
 
   handlerExample = `
   onCustomSelectAll(selectAll: boolean) {
@@ -55,26 +51,4 @@ export class DatagridCustomSelectAllDemo {
       }
     }
     `;
-
-  users: User[];
-  selected: User[] = [];
-
-  constructor(inventory: Inventory) {
-    inventory.size = 10;
-    inventory.reset();
-    this.users = inventory.all;
-  }
-
-  trackUserItemById(user: User) {
-    return user.id;
-  }
-
-  onCustomSelectAll(selectAll: boolean) {
-    console.log('onCustomSelectAll');
-    if (selectAll) {
-      this.selected = [...this.users];
-    } else {
-      this.selected = [];
-    }
-  }
 }

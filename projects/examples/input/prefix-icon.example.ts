@@ -1,0 +1,16 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+import { Component } from '@angular/core';
+import { ClrIcon, ClrInputModule } from '@clr/angular';
+
+@Component({
+  selector: 'clr-input-prefix-icon-example',
+  templateUrl: './prefix-icon.example.html',
+  imports: [ClrIcon, ClrInputModule],
+})
+export class InputPrefixIconExample {}

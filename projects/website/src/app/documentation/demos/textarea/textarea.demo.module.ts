@@ -15,7 +15,6 @@ import { TextareaDemo } from './textarea.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { LinkCardsComponent } from '../../../shared/link-cards/link-cards.component';
 import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
@@ -28,7 +27,6 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     DocTabsModule,
     StyleDocsComponent,
     ThemedImageComponent,
-    StackblitzExampleComponent,
     LinkCardsComponent,
     NestingTableComponent,
     TextareaDemo,

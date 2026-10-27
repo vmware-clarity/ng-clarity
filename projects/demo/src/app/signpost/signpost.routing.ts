@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SIGNPOST_EXAMPLES } from '@clr/examples/signpost';
 
 import { SignpostDemo } from './signpost.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: SignpostDemo }];
+const ROUTES: Routes = [
+  { path: '', component: SignpostDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: SIGNPOST_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);

@@ -6,41 +6,16 @@
  */
 
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import {
-  AppfxLocale,
-  appfxMissingTranslationToken,
-  AppfxTranslateModule,
-  AppfxTranslateService,
-  AppfxTranslations,
-  appfxTranslationsToken,
-  DateTimeFormatOptions,
-  DateTimeKind,
-  HourFormat,
-} from '@clr/addons/translate';
-import {
-  circleIcon,
-  ClarityIcons,
-  ClrAlertModule,
-  ClrCommonFormsModule,
-  ClrIcon,
-  ClrIconModule,
-  ClrSelectModule,
-  dotCircleIcon,
-  errorStandardIcon,
-  successStandardIcon,
-} from '@clr/angular';
+import { circleIcon, ClarityIcons, ClrIcon, dotCircleIcon, errorStandardIcon, successStandardIcon } from '@clr/angular';
+import { TRANSLATE_EXAMPLES } from '@clr/examples/translate';
 
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ClarityDocComponent } from '../clarity-doc';
 import { multiStepPatternLink } from '../pattern-links';
-
-const DefaultHtml = require('!raw-loader!./ng/default.html').default;
-const DefaultTs = require('!raw-loader!./ng/default.ts').default;
 
 @Component({
   selector: 'clr-translate-addon-demo',
@@ -50,62 +25,15 @@ const DefaultTs = require('!raw-loader!./ng/default.ts').default;
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
-  providers: [
-    AppfxTranslateService,
-    {
-      provide: appfxMissingTranslationToken,
-      useValue: (translations: AppfxTranslations, locale: AppfxLocale, key: string) => {
-        return `<Missing translation for locale "${locale}" with key "${key}">`;
-      },
-    },
-    {
-      provide: appfxTranslationsToken,
-      useValue: {
-        [AppfxLocale.En]: {
-          'hello-world': 'Hello World!',
-        },
-        [AppfxLocale.Es]: {
-          'hello-world': 'Hola Mundo!',
-        },
-      },
-    },
-  ],
-  imports: [
-    DocTabsComponent,
-    DocTabComponent,
-    ClrIcon,
-    ClrIconModule,
-    ClrAlertModule,
-    ClrSelectModule,
-    ClrCommonFormsModule,
-    FormsModule,
-    StackblitzExampleComponent,
-    AppfxTranslateModule,
-    AiSkillComponent,
-  ],
+  imports: [DocTabsComponent, DocTabComponent, ClrIcon, DocExampleComponent, AiSkillComponent],
 })
 export class TranslateAddonDemo extends ClarityDocComponent {
-  defaultHtml = DefaultHtml;
-  defaultTs = DefaultTs;
+  readonly examples = TRANSLATE_EXAMPLES;
 
   readonly patternLinks: LinkCardsLink[] = [multiStepPatternLink];
 
-  readonly locales = Object.entries(AppfxLocale);
-
-  readonly dateTimeKinds = Object.entries(DateTimeKind).filter(([key]) => Number.isNaN(Number(key)));
-  readonly hourFormats = Object.entries(HourFormat);
-
-  readonly dateTimeFormat: DateTimeFormatOptions = {
-    dateTimeKind: DateTimeKind.DateTime,
-    hourFormat: HourFormat.Hour24,
-  };
-
-  constructor(readonly translateService: AppfxTranslateService) {
+  constructor() {
     super('translate');
     ClarityIcons.addIcons(circleIcon, dotCircleIcon, successStandardIcon, errorStandardIcon);
-  }
-
-  getNow(): Date {
-    return new Date();
   }
 }

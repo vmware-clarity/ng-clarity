@@ -29,18 +29,7 @@
       will only work if you have the control wired up with either a template driven form or reactive form.
     </p>
 
-    <div class="clr-mt-24px">
-      <input clrInput placeholder="My input" name="input" [(ngModel)]="exampleOne" />
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="input ng basic"
-        [componentTemplate]="ngBasic.default"
-        [componentClass]="ngBasicCode"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.basic"></app-doc-example>
 
     <p class="clr-mt-24px" cds-text="body">
       <clr-alert clrAlertType="info" [clrAlertClosable]="false">
@@ -63,21 +52,7 @@
       the form.
     </p>
 
-    <div class="clr-mt-24px">
-      <form clrForm>
-        <clr-input-container>
-          <label>My name</label>
-          <input clrInput placeholder="Fill me in, scotty!" name="name" [(ngModel)]="exampleTwo" />
-        </clr-input-container>
-      </form>
-    </div>
-
-    <app-stackblitz-example
-      name="input ng label"
-      [componentTemplate]="ngLabel.default"
-      [componentClass]="ngLabelCode"
-      [showComponentClass]="false"
-    ></app-stackblitz-example>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.label"></app-doc-example>
 
     <h3 data-toc-item id="numbers-input" cds-text="section" class="clr-mt-32px">Numerical Input</h3>
 
@@ -87,21 +62,7 @@
       <code cds-text="code">ClrNumberInput</code> instead of <code cds-text="code">ClrInput</code>.
     </p>
 
-    <div class="clr-mt-24px">
-      <form clrForm>
-        <clr-number-input-container>
-          <label>Number Input</label>
-          <input clrNumberInput type="number" />
-        </clr-number-input-container>
-      </form>
-    </div>
-
-    <app-stackblitz-example
-      name="input ng number"
-      [componentTemplate]="ngNumbers.default"
-      [componentClass]="ngNumbersCode"
-      [showComponentClass]="false"
-    ></app-stackblitz-example>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.number"></app-doc-example>
 
     <h3 data-toc-item id="prefix-and-suffix" cds-text="section" class="clr-mt-32px">Prefix and Suffix</h3>
 
@@ -113,58 +74,13 @@
     <h3 cds-text="section" cds-layout="m-t:lg">Examples</h3>
 
     <h5 cds-text="subsection" class="clr-mt-24px">1. With text on both sides</h5>
-    <form clrForm>
-      <clr-input-container>
-        <label>Purchase Cost </label>
-        <input clrInput placeholder="Cost" name="name" [(ngModel)]="exampleThree" />
-        <div clrInputPrefix>$</div>
-        <div clrInputSuffix>.00</div>
-      </clr-input-container>
-    </form>
-
-    <app-stackblitz-example
-      name="input ng label"
-      [componentTemplate]="ngPrefixSuffix.default"
-      [componentClass]="ngPrefixSuffixCode"
-      [showComponentClass]="false"
-    ></app-stackblitz-example>
+    <app-doc-example [example]="examples.prefixSuffix"></app-doc-example>
 
     <h5 cds-text="subsection" class="clr-mt-24px">2. With icon on the left side</h5>
-    <form clrForm>
-      <clr-input-container>
-        <label>Date</label>
-        <input type="text" clrInput name="text" />
-        <clr-icon shape="calendar" clrInputPrefix></clr-icon>
-      </clr-input-container>
-    </form>
-
-    <app-stackblitz-example
-      name="input ng label"
-      [componentTemplate]="ngPrefixIcon.default"
-      [componentClass]="ngPrefixSuffixCode"
-      [showComponentClass]="false"
-    ></app-stackblitz-example>
+    <app-doc-example [example]="examples.prefixIcon"></app-doc-example>
 
     <h5 cds-text="subsection" class="clr-mt-24px">3. Basic input with a select</h5>
-    <form clrForm>
-      <clr-input-container>
-        <label>URL</label>
-        <input type="text" clrInput name="text" />
-        <div clrInputPrefix>
-          <select>
-            <option>http://</option>
-            <option>https://</option>
-          </select>
-        </div>
-      </clr-input-container>
-    </form>
-
-    <app-stackblitz-example
-      name="input ng label"
-      [componentTemplate]="ngPrefixSelect.default"
-      [componentClass]="ngPrefixSuffixCode"
-      [showComponentClass]="false"
-    ></app-stackblitz-example>
+    <app-doc-example [example]="examples.prefixSelect"></app-doc-example>
 
     <h3 data-toc-item id="helper-and-error" cds-text="section" class="clr-mt-32px">Helper and error messages</h3>
 
@@ -180,23 +96,7 @@
       the user doesn't see an error while they are still typing.
     </p>
 
-    <div class="clr-mt-24px">
-      <form clrForm>
-        <clr-input-container>
-          <label>Full name</label>
-          <input placeholder="Full name" clrInput [(ngModel)]="exampleFour" name="name" required />
-          <clr-control-helper>Helper text</clr-control-helper>
-          <clr-control-error>This field is required!</clr-control-error>
-        </clr-input-container>
-      </form>
-    </div>
-
-    <app-stackblitz-example
-      name="input ng helpers"
-      [componentTemplate]="ngHelpers.default"
-      [componentClass]="ngHelpersCode"
-      [showComponentClass]="false"
-    ></app-stackblitz-example>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.helpers"></app-doc-example>
 
     <h2 id="css-component" cds-text="title" class="clr-mt-48px">CSS Input Component</h2>
 
@@ -212,11 +112,7 @@
       may be useful in simple cases where you don't need a full form and just an inline input.
     </p>
 
-    <div class="clr-mt-24px">
-      <input type="text" placeholder="Enter value here" class="clr-input" />
-    </div>
-
-    <app-stackblitz-example name="input ui basic" [componentTemplate]="uiBasic.default"></app-stackblitz-example>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssBasic"></app-doc-example>
 
     <h3 data-toc-item id="full-display" cds-text="section" class="clr-mt-32px">Full input display</h3>
 
@@ -226,23 +122,7 @@
       needing to change the DOM structure in any way.
     </p>
 
-    <div class="clr-mt-24px">
-      <form class="clr-form">
-        <div class="clr-form-control">
-          <label for="basic" class="clr-control-label">Basic input</label>
-          <div class="clr-control-container">
-            <div class="clr-input-wrapper">
-              <input type="text" id="basic" placeholder="Enter value here" class="clr-input" />
-            </div>
-            <span class="clr-subtext">Helper Text</span>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="input ui full" [componentTemplate]="uiFull.default"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssFull"></app-doc-example>
 
     <h3 data-toc-item id="error-state" cds-text="section" class="clr-mt-32px">Error state</h3>
 
@@ -258,27 +138,7 @@
       <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
-    <div class="clr-mt-24px">
-      <form class="clr-form">
-        <div class="clr-form-control clr-row">
-          <label for="example" class="clr-control-label clr-col-12 clr-col-md-2">Label</label>
-          <div class="clr-control-container clr-error clr-col-12 clr-col-md-10">
-            <div class="clr-input-wrapper">
-              <input type="text" id="example" placeholder="Example Input" class="clr-input" />
-            </div>
-            <span class="clr-subtext">Helper Text</span>
-            <div class="clr-subtext-wrapper error">
-              <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
-              <span class="clr-subtext">Error message</span>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="input " [componentTemplate]="uiError"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssError"></app-doc-example>
 
     <h3 data-toc-item id="success-state" cds-text="section" class="clr-mt-32px">Success state</h3>
 
@@ -294,27 +154,7 @@
       <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
-    <div class="clr-mt-24px">
-      <form class="clr-form">
-        <div class="clr-form-control clr-row">
-          <label for="success-example" class="clr-control-label clr-col-12 clr-col-md-2">Label</label>
-          <div class="clr-control-container clr-success clr-col-12 clr-col-md-10">
-            <div class="clr-input-wrapper">
-              <input type="text" id="success-example" placeholder="Example Input" class="clr-input" />
-            </div>
-            <span class="clr-subtext">Helper Text</span>
-            <div class="clr-subtext-wrapper success">
-              <cds-icon class="clr-validate-icon" shape="success-standard" status="success"></cds-icon>
-              <span class="clr-subtext">Success message</span>
-            </div>
-          </div>
-        </div>
-      </form>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="input success" [componentTemplate]="uiSuccess"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssSuccess"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="overview">

@@ -1,0 +1,292 @@
+{
+  "storybook": "components/data/datagrid",
+  "examples": [
+    {
+      "id": "basic-structure",
+      "title": "Basic structure",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "custom-rendering",
+      "title": "Custom cell rendering",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "smart-iterator",
+      "title": "Smart iterator",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "binding-properties",
+      "title": "Binding model properties to columns",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "custom-sort",
+      "title": "Custom sort",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "pre-sorted",
+      "title": "Pre-sorted columns",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "inline-filter",
+      "title": "Inline custom filter",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "custom-filter-component",
+      "title": "Custom filter component",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "reusable-filter",
+      "title": "Reusable custom filter",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "preset-filter",
+      "title": "Preset column filter",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "built-in-filters",
+      "title": "Built-in filters",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "built-in-filters-preset",
+      "title": "Built-in filters with preset values",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "pagination",
+      "title": "Pagination",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "selection",
+      "title": "Selection",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "row-selection",
+      "title": "Row selection",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "selection-full",
+      "title": "Selection with locked rows",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "single-selection",
+      "title": "Single selection",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "single-row-selection",
+      "title": "Single row selection",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "single-selection-full",
+      "title": "Single selection with locked rows",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "custom-select-all",
+      "title": "Custom select all",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "select-all-disabled",
+      "title": "Disabled select all",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "batch-action",
+      "title": "Batch action",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "single-action",
+      "title": "Single action",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "server-driven",
+      "title": "Server-driven datagrid",
+      "targets": ["website", "demo"],
+      "showStyles": false
+    },
+    {
+      "id": "placeholder",
+      "title": "Placeholder",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "detail-pane",
+      "title": "Detail pane with selection",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "detail-pane-change-event",
+      "title": "Detail pane change event",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "detail-pane-two-way",
+      "title": "Detail pane two-way binding",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "detail-pane-width",
+      "title": "Detail pane width",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "expandable-rows",
+      "title": "Expandable rows",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "expandable-rows-lazy",
+      "title": "Lazy-loaded expandable rows",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "expandable-rows-conditional",
+      "title": "Conditional expandable rows",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "compact",
+      "title": "Compact datagrid",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "overflow-ellipsis",
+      "title": "Overflow ellipsis",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "compact-full",
+      "title": "Compact datagrid with overflow ellipsis",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "hide-show-columns",
+      "title": "Hide and show columns",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "pinned-columns",
+      "title": "Pinned columns",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "pinned-columns-max-width",
+      "title": "Maximum width of pinned columns",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "pinned-columns-runtime",
+      "title": "Pinned columns at runtime",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "pinned-columns-expandable-rows",
+      "title": "Pinned columns in expandable rows",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "pinnable-columns",
+      "title": "User pinnable columns",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "column-actions",
+      "title": "Column actions",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "column-actions-keep-filter",
+      "title": "Column actions keeping the filter in the header",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "column-actions-custom",
+      "title": "Column actions with application actions",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "fixed-height",
+      "title": "Fixed height",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "fixed-height-few-rows",
+      "title": "Fixed height with few rows",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "virtual-scroll-static",
+      "title": "Virtual scroll",
+      "targets": ["website", "demo"],
+      "showStyles": false
+    },
+    {
+      "id": "virtual-scroll-async",
+      "title": "Virtual scroll with an observable",
+      "targets": ["website", "demo"],
+      "showStyles": false
+    },
+    {
+      "id": "virtual-scroll-data-driven",
+      "title": "Data-driven virtual scroll",
+      "targets": ["website", "demo"],
+      "showStyles": false
+    },
+    {
+      "id": "full",
+      "title": "Full datagrid",
+      "targets": ["website", "demo"]
+    }
+  ]
+}

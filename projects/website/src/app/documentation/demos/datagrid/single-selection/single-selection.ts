@@ -5,68 +5,21 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import {
-  ClrAlertModule,
-  ClrDatagridModule,
-  ClrPopoverHostDirective,
-  ClrStopEscapePropagationDirective,
-} from '@clr/angular';
+import { ClrAlertModule } from '@clr/angular';
+import { DATAGRID_EXAMPLES } from '@clr/examples/datagrid';
 
-import { EXAMPLES } from './examples';
+import { SNIPPETS } from './snippets';
 import { CodeSnippetComponent } from '../../../../shared/code-snippet/code-snippet.component';
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-import { Inventory } from '../inventory/inventory';
-import { User } from '../inventory/user';
-import { CommonFiles } from '../utils/stackblitz-common-data';
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-datagrid-selection-single-demo',
-  providers: [Inventory],
   templateUrl: 'single-selection.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [
-    ClrDatagridModule,
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
-    StackblitzExampleComponent,
-    ClrAlertModule,
-    CodeSnippetComponent,
-    DatePipe,
-  ],
+  imports: [DocExampleComponent, CodeSnippetComponent, ClrAlertModule],
 })
 export class DatagridSelectionSingleDemo {
-  commonFiles = CommonFiles;
-  examples = EXAMPLES;
-
-  users: User[];
-  singleSelected: User[] = [];
-  rowSelected: User[] = [];
-  lockedUsers: User[] = [];
-
-  constructor(inventory: Inventory) {
-    inventory.size = 10;
-    inventory.reset();
-    this.users = inventory.all;
-
-    this.lockedUsers = [...inventory.all];
-  }
-
-  unlockRows() {
-    this.lockedUsers = this.lockedUsers.map(row => {
-      delete row.locked;
-      return row;
-    });
-  }
-
-  lockRows() {
-    this.lockedUsers = this.lockedUsers.map((user, index) => {
-      // lock few rows
-      if ([2, 3, 5, 9].includes(index)) {
-        user.locked = true;
-      }
-      return user;
-    });
-  }
+  readonly examples = DATAGRID_EXAMPLES;
+  readonly snippets = SNIPPETS;
 }

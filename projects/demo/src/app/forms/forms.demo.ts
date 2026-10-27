@@ -20,6 +20,7 @@ import { Component } from '@angular/core';
   template: `
     <h2>Forms</h2>
     <ul class="list-nav">
+      <li><a [routerLink]="['./examples']">Examples</a></li>
       <li><a [routerLink]="['./layout-vertical']">Layout Vertical</a></li>
       <li><a [routerLink]="['./layout-horizontal']">Layout Horizontal</a></li>
       <li><a [routerLink]="['./layout-compact']">Layout Compact</a></li>
@@ -37,6 +38,7 @@ import { Component } from '@angular/core';
       <li><a [routerLink]="['./checkbox']">Checkbox</a></li>
       <li><a [routerLink]="['./radio']">Radio</a></li>
       <li><a [routerLink]="['./file']">File</a></li>
+      <li><a [routerLink]="['./file-examples']">File Picker Examples</a></li>
       <li><a [routerLink]="['./textarea']">Textarea</a></li>
       <li><a [routerLink]="['./select']">Select</a></li>
       <li><a [routerLink]="['./template-driven']">Template Driven</a></li>

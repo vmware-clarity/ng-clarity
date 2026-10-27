@@ -7,6 +7,8 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DATE_RANGE_PICKER_EXAMPLES } from '@clr/examples/date-range-picker';
+import { DATEPICKER_EXAMPLES } from '@clr/examples/datepicker';
 
 import { DatepickerCSSRegressionDemo } from './css-regression';
 import { DatepickerAKDemo } from './datepicker-AK';
@@ -29,6 +31,7 @@ import { DisabledDemo } from './disabled';
 import { DatepickerLayoutDemo } from './layout';
 import { NgModelAutoWrappedDatepickerDemo } from './ngmodel-auto-wrapped';
 import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
@@ -36,6 +39,7 @@ const ROUTES: Routes = [
     component: DatepickerDemo,
     children: [
       { path: '', redirectTo: 'ng-model-auto-wrapped', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: DATEPICKER_EXAMPLES } },
       { path: 'ng-model-auto-wrapped', component: NgModelAutoWrappedDatepickerDemo },
       { path: 'ng-model-wrapper-present', component: NgModelExplicitWrapperDemo },
       { path: 'datepicker-date-input', component: DatepickerDateInputDemo },
@@ -47,6 +51,11 @@ const ROUTES: Routes = [
       { path: 'layout', component: DatepickerLayoutDemo },
       { path: 'datepicker-min-max', component: DatepickerMinMaxDemo },
       { path: 'date-range-picker', component: DateRangePickerDemo },
+      {
+        path: 'date-range-picker-examples',
+        component: ExampleListComponent,
+        data: { examples: DATE_RANGE_PICKER_EXAMPLES },
+      },
       { path: 'with-action-buttons', component: DatePickerWithActionButtonsDemo },
       { path: 'first-day-of-week', component: DatepickerFirstDayOfWeekDemo },
       {

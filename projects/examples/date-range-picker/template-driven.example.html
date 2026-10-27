@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<form clrForm clrLayout="vertical" #simpleForm="ngForm">
+  <clr-date-range-container>
+    <label>Enter Date</label>
+    <input type="date" autocomplete="off" name="startDate" [(ngModel)]="startDate" clrStartDate />
+    <input type="date" autocomplete="off" name="endDate" [(ngModel)]="endDate" clrEndDate />
+  </clr-date-range-container>
+</form>
+<pre>{{ simpleForm.value | json }}</pre>
