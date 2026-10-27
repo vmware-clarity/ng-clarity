@@ -27,22 +27,7 @@
       need to add <code cds-text="code">clrSelect</code> to your select to wire up the directive.
     </p>
 
-    <div class="clr-mt-24px">
-      <select clrSelect name="exampleOne" [(ngModel)]="exampleOne">
-        <option value="one">One</option>
-        <option value="two">Two</option>
-        <option value="three">Three</option>
-      </select>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="select ng basic"
-        [componentTemplate]="ngBasic.default"
-        [componentClass]="ngBasicCode"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.basic"></app-doc-example>
 
     <h3 id="labels" data-toc-item cds-text="section" class="clr-mt-32px">Labels</h3>
 
@@ -57,25 +42,7 @@
       the form.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-select-container>
-        <label>I've got some options</label>
-        <select clrSelect name="exampleTwo" [(ngModel)]="exampleTwo">
-          <option value="one">One</option>
-          <option value="two">Two</option>
-          <option value="three">Three</option>
-        </select>
-      </clr-select-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="select ng label"
-        [componentTemplate]="ngLabel.default"
-        [componentClass]="ngLabelCode"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.label"></app-doc-example>
 
     <h3 id="helper-and-error" data-toc-item cds-text="section" class="clr-mt-32px">Helper and error messages</h3>
 
@@ -92,27 +59,7 @@
       the focus.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-select-container>
-        <label>I've got some options</label>
-        <select clrSelect name="options" [(ngModel)]="exampleThree" required>
-          <option value="one">One</option>
-          <option value="two">Two</option>
-          <option value="three">Three</option>
-        </select>
-        <clr-control-helper>You have these choices</clr-control-helper>
-        <clr-control-error>You must select something!</clr-control-error>
-      </clr-select-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="select ng helpers"
-        [componentTemplate]="ngHelpers.default"
-        [componentClass]="ngHelpersCode"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.helpers"></app-doc-example>
 
     <h2 id="css-component" cds-text="title" class="clr-mt-48px">CSS Select Component</h2>
 
@@ -140,17 +87,7 @@
       <code cds-text="code">clr-select</code> class to the select as well.
     </p>
 
-    <div class="clr-select-wrapper clr-mt-24px">
-      <select id="select-basic" class="clr-select">
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="select ui basic" [componentTemplate]="uiBasic.default"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssBasic"></app-doc-example>
 
     <h3 id="full-display" data-toc-item cds-text="section" class="clr-mt-32px">Full select display</h3>
 
@@ -160,23 +97,7 @@
       needing to change the DOM structure in any way.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label for="select-full" class="clr-control-label">Basic select</label>
-      <div class="clr-control-container">
-        <div class="clr-select-wrapper">
-          <select id="select-full" class="clr-select">
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
-        <span class="clr-subtext">Helper Text</span>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="select ui full" [componentTemplate]="uiFull.default"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssFull"></app-doc-example>
 
     <h3 id="error-state" data-toc-item cds-text="section" class="clr-mt-32px">Error state</h3>
 
@@ -192,26 +113,7 @@
       <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label for="select-error" class="clr-control-label">Basic select</label>
-      <div class="clr-control-container clr-error">
-        <div class="clr-select-wrapper">
-          <select id="select-error" class="clr-select">
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
-        <div class="clr-subtext-wrapper error">
-          <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
-          <span class="clr-subtext">Error message</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="select ui error" [componentTemplate]="uiError.default"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssError"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="overview">
