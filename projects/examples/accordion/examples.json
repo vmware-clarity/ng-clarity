@@ -1,0 +1,4 @@
+{
+  "storybook": "components/accordion",
+  "examples": [{ "id": "basic", "title": "Accordion", "targets": ["website", "demo", "storybook"] }]
+}
