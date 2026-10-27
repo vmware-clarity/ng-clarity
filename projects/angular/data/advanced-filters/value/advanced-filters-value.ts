@@ -47,6 +47,10 @@ export class ClrAdvancedFiltersValue implements OnChanges {
    * The code the field's validator returned for the whole condition, shown on the controls once touched.
    */
   @Input() error: ClrAdvancedFilterValidationError | null = null;
+  /**
+   * In a row of the pill popover: the labels are only read by screen readers.
+   */
+  @Input() inline = false;
 
   @Output() valueChange = new EventEmitter<ClrAdvancedFilterValue | undefined>();
 

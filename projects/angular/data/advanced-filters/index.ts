@@ -9,6 +9,7 @@ export * from './enums/advanced-filter-logic.enum';
 export * from './enums/advanced-filter-operator.enum';
 export * from './enums/advanced-filter-field-type.enum';
 export * from './enums/advanced-filter-validation-error.enum';
+export * from './enums/advanced-filter-layout.enum';
 export * from './interfaces/advanced-filter-option.interface';
 export * from './interfaces/advanced-filter-field.interface';
 export * from './interfaces/advanced-filter-condition.interface';
@@ -26,7 +27,7 @@ export * from './validators/enum-filter-validator';
 export * from './advanced-filters.module';
 export * from './advanced-filters';
 // Internal parts of the component, not meant for consumers. The components and the directive are exported because the
-// module declares them, and `AdvancedFilterText` because `ClrAdvancedFilters` provides it.
+// module declares them, and `AdvancedFilterText` and `AdvancedFilterPills` because `ClrAdvancedFilters` provides them.
 export * from './group/advanced-filters-group';
 export * from './group/advanced-filters-add-filter';
 export * from './filter/advanced-filters-filter';
@@ -34,3 +35,8 @@ export * from './filter/advanced-filter-text';
 export * from './editor/advanced-filters-editor';
 export * from './editor/advanced-filters-error.directive';
 export * from './value/advanced-filters-value';
+export * from './pills/advanced-filters-pills';
+export * from './pills/advanced-filters-pill';
+export * from './pills/advanced-filters-pill-add';
+export * from './pills/advanced-filters-pill-editor';
+export * from './pills/advanced-filter-pills';

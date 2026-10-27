@@ -7,10 +7,9 @@
 
 @switch (editor) { @case (editors.TEXT) {
 <clr-input-container>
-  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <label [class.clr-sr-only]="inline">{{ commonStrings.keys.advancedFilterValue }}</label>
   <input
     clrInput
-    class="clr-col-12"
     type="text"
     name="value"
     autocomplete="off"
@@ -22,10 +21,9 @@
 </clr-input-container>
 } @case (editors.NUMBER) {
 <clr-number-input-container>
-  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <label [class.clr-sr-only]="inline">{{ commonStrings.keys.advancedFilterValue }}</label>
   <input
     clrNumberInput
-    class="clr-col-12"
     type="number"
     name="value"
     [ngModel]="value"
@@ -36,10 +34,9 @@
 </clr-number-input-container>
 } @case (editors.NUMBER_RANGE) {
 <clr-number-input-container>
-  <label>{{ commonStrings.keys.advancedFilterFrom }}</label>
+  <label [class.clr-sr-only]="inline">{{ commonStrings.keys.advancedFilterFrom }}</label>
   <input
     clrNumberInput
-    class="clr-col-12"
     type="number"
     name="from"
     [ngModel]="bound(0)"
@@ -49,10 +46,9 @@
   <clr-control-error>{{ errorMessage }}</clr-control-error>
 </clr-number-input-container>
 <clr-number-input-container>
-  <label>{{ commonStrings.keys.advancedFilterTo }}</label>
+  <label [class.clr-sr-only]="inline">{{ commonStrings.keys.advancedFilterTo }}</label>
   <input
     clrNumberInput
-    class="clr-col-12"
     type="number"
     name="to"
     [ngModel]="bound(1)"
@@ -63,12 +59,11 @@
 </clr-number-input-container>
 } @case (editors.BOOLEAN) {
 <clr-radio-container clrInline>
-  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <label [class.clr-sr-only]="inline">{{ commonStrings.keys.advancedFilterValue }}</label>
   <clr-radio-wrapper>
     <input
       type="radio"
       clrRadio
-      class="clr-col-12"
       [name]="id + '-boolean'"
       [value]="true"
       [ngModel]="value"
@@ -81,7 +76,6 @@
     <input
       type="radio"
       clrRadio
-      class="clr-col-12"
       [name]="id + '-boolean'"
       [value]="false"
       [ngModel]="value"
@@ -94,11 +88,10 @@
 </clr-radio-container>
 } @case (editors.DATE) {
 <clr-date-container>
-  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <label [class.clr-sr-only]="inline">{{ commonStrings.keys.advancedFilterValue }}</label>
   <input
     type="date"
     clrDate
-    class="clr-col-12"
     autocomplete="off"
     name="date"
     [ngModel]="dateText"
@@ -109,11 +102,10 @@
 </clr-date-container>
 } @case (editors.DATE_RANGE) {
 <clr-date-range-container [rangeOptions]="field.rangeOptions ?? []">
-  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <label [class.clr-sr-only]="inline">{{ commonStrings.keys.advancedFilterValue }}</label>
   <input
     type="date"
     clrStartDate
-    class="clr-col-12"
     autocomplete="off"
     name="from"
     [attr.aria-label]="commonStrings.keys.advancedFilterFrom"
@@ -124,7 +116,6 @@
   <input
     type="date"
     clrEndDate
-    class="clr-col-12"
     autocomplete="off"
     name="to"
     [attr.aria-label]="commonStrings.keys.advancedFilterTo"
@@ -136,13 +127,12 @@
 </clr-date-range-container>
 } @case (editors.SET) {
 <clr-checkbox-container>
-  <label>{{ commonStrings.keys.advancedFilterValue }}</label>
+  <label [class.clr-sr-only]="inline">{{ commonStrings.keys.advancedFilterValue }}</label>
   @for (option of field.options ?? []; track option.value; let index = $index) {
   <clr-checkbox-wrapper>
     <input
       type="checkbox"
       clrCheckbox
-      class="clr-col-12"
       [name]="id + '-option-' + index"
       [ngModel]="isSelected(option)"
       (ngModelChange)="toggle(option, $event)"

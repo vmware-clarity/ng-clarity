@@ -55,25 +55,35 @@
     @if (!canAddGroup) {
     <span class="clr-sr-only" [id]="id + '-max-depth'">{{ commonStrings.keys.advancedFilterMaxDepth }}</span>
     } @if (isRoot) {
-    <button
-      type="button"
-      class="btn btn-sm btn-danger btn-icon clr-advanced-filters-clear-all"
-      [attr.aria-label]="commonStrings.keys.advancedFilterClearAll"
-      [attr.title]="commonStrings.keys.advancedFilterClearAll"
-      (click)="clearAll()"
-    >
-      <cds-icon shape="trash"></cds-icon>
-    </button>
+    <clr-tooltip>
+      <button
+        type="button"
+        class="btn btn-sm btn-danger btn-icon clr-advanced-filters-clear-all"
+        clrTooltipTrigger
+        [attr.aria-label]="commonStrings.keys.advancedFilterClearAll"
+        (click)="clearAll()"
+      >
+        <cds-icon shape="trash"></cds-icon>
+      </button>
+      <clr-tooltip-content clrPosition="top-right" clrSize="sm">
+        {{ commonStrings.keys.advancedFilterClearAll }}
+      </clr-tooltip-content>
+    </clr-tooltip>
     } @else {
-    <button
-      type="button"
-      class="btn btn-sm btn-danger btn-icon clr-advanced-filters-remove"
-      [attr.aria-label]="commonStrings.keys.advancedFilterRemoveGroup"
-      [attr.title]="commonStrings.keys.advancedFilterRemoveGroup"
-      (click)="remove()"
-    >
-      <cds-icon shape="times"></cds-icon>
-    </button>
+    <clr-tooltip>
+      <button
+        type="button"
+        class="btn btn-sm btn-danger btn-icon clr-advanced-filters-remove"
+        clrTooltipTrigger
+        [attr.aria-label]="commonStrings.keys.advancedFilterRemoveGroup"
+        (click)="remove()"
+      >
+        <cds-icon shape="times"></cds-icon>
+      </button>
+      <clr-tooltip-content clrPosition="top-right" clrSize="sm">
+        {{ commonStrings.keys.advancedFilterRemoveGroup }}
+      </clr-tooltip-content>
+    </clr-tooltip>
     }
   </div>
 

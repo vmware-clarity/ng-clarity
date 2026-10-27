@@ -9,6 +9,8 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrTreeViewModule } from '@clr/angular/data/tree-view';
+import { ClrBadge } from '@clr/angular/emphasis/badge';
+import { ClrLabel } from '@clr/angular/emphasis/label';
 import { ClrCheckboxModule } from '@clr/angular/forms/checkbox';
 import { ClrComboboxModule } from '@clr/angular/forms/combobox';
 import { ClrCommonFormsModule } from '@clr/angular/forms/common';
@@ -22,11 +24,13 @@ import {
   ClrIcon,
   exclamationCircleIcon,
   filterIcon,
+  plusIcon,
   timesIcon,
   trashIcon,
   treeViewIcon,
 } from '@clr/angular/icon';
 import { ClrPopoverModuleNext } from '@clr/angular/popover/common';
+import { ClrTooltipModule } from '@clr/angular/popover/tooltip';
 import { CdkTrapFocusModule } from '@clr/angular/utils';
 
 import { ClrAdvancedFilters } from './advanced-filters';
@@ -35,6 +39,10 @@ import { ClrAdvancedFiltersError } from './editor/advanced-filters-error.directi
 import { ClrAdvancedFiltersFilter } from './filter/advanced-filters-filter';
 import { ClrAdvancedFiltersAddFilter } from './group/advanced-filters-add-filter';
 import { ClrAdvancedFiltersGroup } from './group/advanced-filters-group';
+import { ClrAdvancedFiltersPill } from './pills/advanced-filters-pill';
+import { ClrAdvancedFiltersPillAdd } from './pills/advanced-filters-pill-add';
+import { ClrAdvancedFiltersPillEditor } from './pills/advanced-filters-pill-editor';
+import { ClrAdvancedFiltersPills } from './pills/advanced-filters-pills';
 import { ClrAdvancedFiltersValue } from './value/advanced-filters-value';
 
 @NgModule({
@@ -43,6 +51,7 @@ import { ClrAdvancedFiltersValue } from './value/advanced-filters-value';
     FormsModule,
     ClrTreeViewModule,
     ClrPopoverModuleNext,
+    ClrTooltipModule,
     CdkTrapFocusModule,
     ClrCommonFormsModule,
     ClrComboboxModule,
@@ -53,6 +62,8 @@ import { ClrAdvancedFiltersValue } from './value/advanced-filters-value';
     ClrCheckboxModule,
     ClrDatepickerModule,
     ClrIcon,
+    ClrLabel,
+    ClrBadge,
   ],
   declarations: [
     ClrAdvancedFilters,
@@ -62,11 +73,15 @@ import { ClrAdvancedFiltersValue } from './value/advanced-filters-value';
     ClrAdvancedFiltersEditor,
     ClrAdvancedFiltersValue,
     ClrAdvancedFiltersError,
+    ClrAdvancedFiltersPills,
+    ClrAdvancedFiltersPill,
+    ClrAdvancedFiltersPillAdd,
+    ClrAdvancedFiltersPillEditor,
   ],
   exports: [ClrAdvancedFilters],
 })
 export class ClrAdvancedFiltersModule {
   constructor() {
-    ClarityIcons.addIcons(filterIcon, treeViewIcon, trashIcon, timesIcon, exclamationCircleIcon);
+    ClarityIcons.addIcons(filterIcon, treeViewIcon, trashIcon, timesIcon, exclamationCircleIcon, plusIcon);
   }
 }

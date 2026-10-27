@@ -13,9 +13,18 @@
     [clrFields]="fields"
     [(clrFilter)]="filter"
     [clrMaxDepth]="maxDepth"
+    [clrLayout]="layout"
     (clrFilterChange)="changes = changes + 1"
   ></clr-advanced-filters>
 </div>
+
+<clr-select-container>
+  <label for="layout">Layout</label>
+  <select clrSelect id="layout" name="layout" [(ngModel)]="layout">
+    <option [ngValue]="layouts.TREE">Tree</option>
+    <option [ngValue]="layouts.PILLS">Pills</option>
+  </select>
+</clr-select-container>
 
 <clr-number-input-container>
   <label for="max-depth">Max depth</label>

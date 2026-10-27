@@ -480,4 +480,18 @@ export interface ClrCommonStrings {
   advancedFilterAnnounceGroupAdded: string;
   advancedFilterAnnounceGroupRemoved: string;
   advancedFilterAnnounceCleared: string;
+  // Advanced filters: the pills layout and its popover. Tokens: {OPERATOR}, {VALUE}, {COUNT}, {LEFT}, {RIGHT}, {INDEX}.
+  advancedFilterPillCondition: string;
+  advancedFilterPillMore: string;
+  advancedFilterPillSummary: string;
+  advancedFilterPillSummaryOne: string;
+  advancedFilterPillDuplicate: string;
+  advancedFilterPillReadOnly: string;
+  advancedFilterExpressionAnd: string;
+  advancedFilterExpressionOr: string;
+  advancedFilterCondition: string;
+  advancedFilterAdd: string;
+  advancedFilterAddCondition: string;
+  advancedFilterRemoveCondition: string;
+  advancedFilterClearCondition: string;
 }

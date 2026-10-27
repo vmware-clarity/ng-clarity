@@ -39,6 +39,21 @@ import { ClrAdvancedFilter } from '../models/advanced-filter.model';
   selector: 'clr-advanced-filters-filter',
   template: `
     <clr-tree-node>
+      @if (filter.error) {
+        <!-- Outside the link: the tooltip brings its own popover, and the link already opens the edit popover. -->
+        <clr-tooltip class="clr-advanced-filters-incomplete-icon">
+          <cds-icon
+            clrTooltipTrigger
+            shape="exclamation-circle"
+            status="danger"
+            [attr.aria-label]="commonStrings.keys.advancedFilterIncomplete"
+            (keydown)="$event.stopPropagation()"
+          ></cds-icon>
+          <clr-tooltip-content clrPosition="top-right" clrSize="sm">
+            {{ commonStrings.keys.advancedFilterIncomplete }}
+          </clr-tooltip-content>
+        </clr-tooltip>
+      }
       <button
         type="button"
         class="clr-treenode-link clr-advanced-filters-filter-text"
@@ -49,25 +64,21 @@ import { ClrAdvancedFilter } from '../models/advanced-filter.model';
         [attr.aria-expanded]="open"
         [attr.aria-controls]="popoverId"
       >
-        @if (filter.error) {
-          <cds-icon
-            shape="exclamation-circle"
-            status="danger"
-            [attr.title]="commonStrings.keys.advancedFilterIncomplete"
-          ></cds-icon>
-        }
         {{ text }}
       </button>
-      <button
-        type="button"
-        class="btn btn-sm btn-danger btn-icon clr-advanced-filters-remove"
-        [attr.aria-label]="removeAriaLabel"
-        [attr.title]="removeAriaLabel"
-        (keydown)="$event.stopPropagation()"
-        (click)="remove()"
-      >
-        <cds-icon shape="times"></cds-icon>
-      </button>
+      <clr-tooltip>
+        <button
+          type="button"
+          class="btn btn-sm btn-danger btn-icon clr-advanced-filters-remove"
+          clrTooltipTrigger
+          [attr.aria-label]="removeAriaLabel"
+          (keydown)="$event.stopPropagation()"
+          (click)="remove()"
+        >
+          <cds-icon shape="times"></cds-icon>
+        </button>
+        <clr-tooltip-content clrPosition="top-right" clrSize="md">{{ removeAriaLabel }}</clr-tooltip-content>
+      </clr-tooltip>
       <div
         class="clr-advanced-filters-popover"
         role="dialog"

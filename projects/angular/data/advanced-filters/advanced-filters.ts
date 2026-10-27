@@ -8,37 +8,46 @@
 import { Component, EventEmitter, Input, numberAttribute, OnChanges, Output, SimpleChanges } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
+import { ClrAdvancedFilterLayout } from './enums/advanced-filter-layout.enum';
 import { AdvancedFilterText } from './filter/advanced-filter-text';
 import { ClrAdvancedFilterField } from './interfaces/advanced-filter-field.interface';
 import { ClrAdvancedFilterGroup } from './models/advanced-filter-group.model';
 import { ClrAdvancedFilterNode } from './models/advanced-filter-node.model';
 import { ClrAdvancedFilter } from './models/advanced-filter.model';
+import { AdvancedFilterPills } from './pills/advanced-filter-pills';
 import { AdvancedFilterValidatorBuilder } from './validators/advanced-filter-validator-builder';
 
 /**
- * Builds a nested filter structure, shown as a tree: groups combined by AND or OR, and filters. Filters are added and
- * edited in a popover; nothing is edited inline. The component never interprets the structure.
+ * Builds a nested filter structure: groups combined by AND or OR, and filters. Filters are added and edited in a
+ * popover; nothing is edited inline. The component never interprets the structure.
+ *
+ * Two layouts show the structure (`clrLayout`): a tree, the default, and pills, one per field.
  *
  * ```html
  * <clr-advanced-filters [clrFields]="fields" [(clrFilter)]="filter" [clrMaxDepth]="3"></clr-advanced-filters>
+ * <clr-advanced-filters [clrFields]="fields" [(clrFilter)]="filter" [clrLayout]="'pills'"></clr-advanced-filters>
  * ```
  */
 @Component({
   selector: 'clr-advanced-filters',
   template: `
-    <clr-tree [attr.aria-label]="commonStrings.keys.advancedFiltersAriaLabel">
-      <clr-advanced-filters-group
-        ngProjectAs="clr-tree-node"
-        [group]="root"
-        [fields]="fields"
-        [level]="1"
-        [maxDepth]="maxDepth"
-        (edit)="onEdit()"
-      ></clr-advanced-filters-group>
-    </clr-tree>
+    @if (layout === layouts.PILLS) {
+      <clr-advanced-filters-pills [root]="root" [fields]="fields" (edit)="onEdit()"></clr-advanced-filters-pills>
+    } @else {
+      <clr-tree [attr.aria-label]="commonStrings.keys.advancedFiltersAriaLabel">
+        <clr-advanced-filters-group
+          ngProjectAs="clr-tree-node"
+          [group]="root"
+          [fields]="fields"
+          [level]="1"
+          [maxDepth]="maxDepth"
+          (edit)="onEdit()"
+        ></clr-advanced-filters-group>
+      </clr-tree>
+    }
   `,
   host: { '[class.clr-advanced-filters]': 'true' },
-  providers: [AdvancedFilterText],
+  providers: [AdvancedFilterText, AdvancedFilterPills],
   standalone: false,
 })
 export class ClrAdvancedFilters implements OnChanges {
@@ -55,7 +64,13 @@ export class ClrAdvancedFilters implements OnChanges {
   @Input('clrFilter') filter: ClrAdvancedFilterGroup | null = null;
 
   /**
-   * The deepest level of groups the user can create, the root included.
+   * How the structure is shown: a tree (the default), or pills. Pills have two levels and a root that is always AND;
+   * they show a structure built otherwise as well as they can. Any other value shows the tree.
+   */
+  @Input('clrLayout') layout: ClrAdvancedFilterLayout | `${ClrAdvancedFilterLayout}` = ClrAdvancedFilterLayout.TREE;
+
+  /**
+   * The deepest level of groups the user can create in the tree, the root included. Pills always have two levels.
    */
   @Input({ alias: 'clrMaxDepth', transform: numberAttribute }) maxDepth = 3;
 
@@ -64,6 +79,7 @@ export class ClrAdvancedFilters implements OnChanges {
    */
   @Output('clrFilterChange') filterChange = new EventEmitter<ClrAdvancedFilterGroup>(false);
 
+  readonly layouts = ClrAdvancedFilterLayout;
   root = new ClrAdvancedFilterGroup();
   fields: ClrAdvancedFilterField[] = [];
 

@@ -13,6 +13,7 @@ import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrAdvancedFilters } from './advanced-filters';
 import { ClrAdvancedFiltersModule } from './advanced-filters.module';
 import { ClrAdvancedFilterFieldType as FieldType } from './enums/advanced-filter-field-type.enum';
+import { ClrAdvancedFilterLayout } from './enums/advanced-filter-layout.enum';
 import { ClrAdvancedFilterLogic as Logic } from './enums/advanced-filter-logic.enum';
 import { ClrAdvancedFilterOperator as Operator } from './enums/advanced-filter-operator.enum';
 import { ClrAdvancedFilterValidationError as Code } from './enums/advanced-filter-validation-error.enum';
@@ -21,6 +22,7 @@ import { ClrAdvancedFiltersGroup } from './group/advanced-filters-group';
 import { ClrAdvancedFilterField } from './interfaces/advanced-filter-field.interface';
 import { ClrAdvancedFilterGroup } from './models/advanced-filter-group.model';
 import { ClrAdvancedFilter } from './models/advanced-filter.model';
+import { ClrAdvancedFiltersPills } from './pills/advanced-filters-pills';
 import { ClrStringFilterValidator } from './validators/string-filter-validator';
 
 const BUDGET: ClrAdvancedFilterField = { key: 'budget', label: 'Budget', type: FieldType.NUMBER };
@@ -45,6 +47,7 @@ const FIELDS = [BUDGET, COUNTRY, ORDERED, ACTIVE, REGION];
       [clrFields]="fields"
       [(clrFilter)]="filter"
       [clrMaxDepth]="maxDepth"
+      [clrLayout]="layout"
       (clrFilterChange)="changes = changes + 1"
     ></clr-advanced-filters>
   `,
@@ -54,6 +57,7 @@ class TestHost {
   fields: ClrAdvancedFilterField[] | undefined = FIELDS;
   filter: ClrAdvancedFilterGroup | null = null;
   maxDepth = 3;
+  layout: ClrAdvancedFilterLayout | `${ClrAdvancedFilterLayout}` = ClrAdvancedFilterLayout.TREE;
   changes = 0;
 }
 
@@ -150,7 +154,7 @@ describe('ClrAdvancedFilters', () => {
 
       expect(texts()).toEqual(['Budget: between (missing value)']);
       expect(
-        fixture.debugElement.query(By.css('.clr-advanced-filters-filter-text cds-icon[status="danger"]'))
+        fixture.debugElement.query(By.css('.clr-advanced-filters-incomplete-icon cds-icon[status="danger"]'))
       ).not.toBeNull();
     });
   });
@@ -251,6 +255,49 @@ describe('ClrAdvancedFilters', () => {
       host.filter = tree([new ClrAdvancedFilter(BUDGET, Operator.GREATER_THAN, 60)]);
       fixture.detectChanges();
       expect(host.filter.children.length).toBe(1);
+    });
+  });
+
+  describe('layout', () => {
+    function pills(): ClrAdvancedFiltersPills | undefined {
+      return fixture.debugElement.query(By.directive(ClrAdvancedFiltersPills))?.componentInstance;
+    }
+
+    it('shows the tree by default', () => {
+      fixture.detectChanges();
+      expect(component().layout).toBe(ClrAdvancedFilterLayout.TREE);
+      expect(groups().length).toBe(1);
+      expect(pills()).toBeUndefined();
+    });
+
+    it('shows pills for the same root and fields, and switches back to the tree', () => {
+      host.filter = tree([new ClrAdvancedFilter(BUDGET, Operator.GREATER_THAN, 60)]);
+      host.layout = 'pills';
+      fixture.detectChanges();
+      expect(groups().length).toBe(0);
+      expect(pills().root).toBe(host.filter);
+      expect(pills().fields).toBe(component().fields);
+
+      host.layout = ClrAdvancedFilterLayout.TREE;
+      fixture.detectChanges();
+      expect(pills()).toBeUndefined();
+      expect(texts()).toEqual(['Budget: greater than 60']);
+    });
+
+    it('shows the tree for any other value', () => {
+      host.layout = 'chips' as ClrAdvancedFilterLayout;
+      fixture.detectChanges();
+      expect(groups().length).toBe(1);
+      expect(pills()).toBeUndefined();
+    });
+
+    it('emits the root after a change the user makes in the pills', () => {
+      host.filter = tree([new ClrAdvancedFilter(BUDGET, Operator.GREATER_THAN, 60)]);
+      host.layout = ClrAdvancedFilterLayout.PILLS;
+      fixture.detectChanges();
+      pills().clearAll();
+      expect(host.changes).toBe(1);
+      expect(host.filter.children.length).toBe(0);
     });
   });
 });

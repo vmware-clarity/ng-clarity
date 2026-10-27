@@ -6,10 +6,9 @@
   -->
 
 <form clrForm clrLayout="vertical" class="clr-advanced-filters-editor" novalidate (ngSubmit)="submit()">
-  <clr-combobox-container class="clr-advanced-filters-field">
-    <label>{{ commonStrings.keys.advancedFilterField }}</label>
+  <clr-combobox-container class="clr-advanced-filters-field" [class.clr-advanced-filters-field-section]="!!field">
+    <label class="clr-sr-only">{{ commonStrings.keys.advancedFilterField }}</label>
     <clr-combobox
-      class="clr-col-12"
       name="field"
       required
       [placeholder]="commonStrings.keys.advancedFilterFieldPlaceholder"
@@ -29,7 +28,6 @@
     <label [for]="id + '-operator'">{{ commonStrings.keys.advancedFilterOperator }}</label>
     <select
       clrSelect
-      class="clr-col-12"
       name="operator"
       [id]="id + '-operator'"
       [ngModel]="operator"

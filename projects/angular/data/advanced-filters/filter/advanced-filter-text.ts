@@ -10,6 +10,7 @@ import { Inject, Injectable, LOCALE_ID } from '@angular/core';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
 import { ClrAdvancedFilterFieldType } from '../enums/advanced-filter-field-type.enum';
+import { ClrAdvancedFilterLogic } from '../enums/advanced-filter-logic.enum';
 import { ClrAdvancedFilterOperator } from '../enums/advanced-filter-operator.enum';
 import { ClrAdvancedFilterValue } from '../interfaces/advanced-filter-condition.interface';
 import { ClrAdvancedFilterField } from '../interfaces/advanced-filter-field.interface';
@@ -44,6 +45,39 @@ export class AdvancedFilterText {
       return `${field.label}: ${operator} ${formattedValue}`;
     }
     return this.commonStrings.parse(keys[textKey], { FIELD: field.label, VALUE: formattedValue });
+  }
+
+  /**
+   * The operator and the value without the field, as a pill shows them: "Contains Alice". IS_EMPTY shows only the
+   * operator, and a type with a single operator (enum, boolean) only the value, as its popover hides the operator.
+   */
+  formatCondition(
+    field: ClrAdvancedFilterField,
+    operator: ClrAdvancedFilterOperator,
+    value: ClrAdvancedFilterValue | undefined
+  ): string {
+    const keys = this.commonStrings.keys;
+    const labelKey = field.validator?.getOperatorLabelKey(operator);
+    const label = labelKey ? keys[labelKey] : operator;
+    if (operator === ClrAdvancedFilterOperator.IS_EMPTY) {
+      return label;
+    }
+    const formattedValue =
+      value === undefined ? keys.advancedFilterMissingValue : this.formatValue(field, operator, value);
+    if (field.validator?.getOperators().length === 1) {
+      return formattedValue;
+    }
+    return this.commonStrings.parse(keys.advancedFilterPillCondition, { OPERATOR: label, VALUE: formattedValue });
+  }
+
+  /**
+   * Texts joined by a group's logic, for example "Name: contains Alice or Name: contains Peter".
+   */
+  join(texts: readonly string[], logic: ClrAdvancedFilterLogic): string {
+    const keys = this.commonStrings.keys;
+    const template =
+      logic === ClrAdvancedFilterLogic.OR ? keys.advancedFilterExpressionOr : keys.advancedFilterExpressionAnd;
+    return texts.reduce((left, right) => this.commonStrings.parse(template, { LEFT: left, RIGHT: right }));
   }
 
   private formatValue(

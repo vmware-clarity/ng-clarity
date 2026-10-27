@@ -63,6 +63,21 @@ describe('ClrAdvancedFiltersValue', () => {
     expect(value.errorMessage).toBe('The start must not be after the end');
   });
 
+  it('shows its labels, or keeps them for screen readers only when inline', () => {
+    const fixture = TestBed.createComponent(ClrAdvancedFiltersValue);
+    fixture.componentInstance.field = COUNTRY;
+    fixture.componentInstance.operator = Operator.CONTAINS;
+    fixture.detectChanges();
+    const label = () => (fixture.nativeElement as HTMLElement).querySelector('label');
+    expect(label().classList).not.toContain('clr-sr-only');
+
+    fixture.componentInstance.inline = true;
+    fixture.detectChanges();
+    expect(label().classList).toContain('clr-sr-only');
+    expect(label().textContent.trim()).toBe('Value');
+    fixture.destroy();
+  });
+
   it('emits no value for an empty input', () => {
     value.change('');
     value.change(null);

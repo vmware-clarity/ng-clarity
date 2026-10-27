@@ -9,6 +9,7 @@ import { TestBed } from '@angular/core/testing';
 
 import { AdvancedFilterText } from './advanced-filter-text';
 import { ClrAdvancedFilterFieldType as FieldType } from '../enums/advanced-filter-field-type.enum';
+import { ClrAdvancedFilterLogic as Logic } from '../enums/advanced-filter-logic.enum';
 import { ClrAdvancedFilterOperator as Operator } from '../enums/advanced-filter-operator.enum';
 import { ClrAdvancedFilterField } from '../interfaces/advanced-filter-field.interface';
 import { ClrBooleanFilterValidator } from '../validators/boolean-filter-validator';
@@ -91,5 +92,43 @@ describe('AdvancedFilterText', () => {
     expect(text.format(BUDGET, Operator.EQUALS, 'abc')).toBe('Budget: equal to abc');
     expect(text.format(ORDERED, Operator.AFTER, 'soon')).toBe('Ordered on: after soon');
     expect(text.format(ORDERED, Operator.AFTER, 1760918400000)).toBe('Ordered on: after 1760918400000');
+  });
+
+  describe('the condition of a pill', () => {
+    it('writes the operator and the value, without the field', () => {
+      expect(text.formatCondition(COUNTRY, Operator.CONTAINS, 'Alice')).toBe('Contains Alice');
+      expect(text.formatCondition(BUDGET, Operator.BETWEEN, [10, 60])).toBe('Between 10 and 60');
+      expect(text.formatCondition(ORDERED, Operator.AFTER, '2026-10-20')).toBe('After Oct 20, 2026');
+    });
+
+    it('writes only the operator for IS_EMPTY', () => {
+      expect(text.formatCondition(COUNTRY, Operator.IS_EMPTY, undefined)).toBe('Is empty');
+    });
+
+    it('writes only the value for a type with a single operator', () => {
+      expect(text.formatCondition(REGION, Operator.IN, ['us-west', 'eu'])).toBe('US West, EU Central');
+      expect(text.formatCondition(ACTIVE, Operator.EQUALS, true)).toBe('True');
+    });
+
+    it('writes a missing value as a placeholder', () => {
+      expect(text.formatCondition(BUDGET, Operator.BETWEEN, undefined)).toBe('Between (missing value)');
+    });
+
+    it('falls back to the raw operator for a field without a validator', () => {
+      expect(
+        text.formatCondition({ key: 'ip', label: 'IP', type: 'ip' as FieldType }, Operator.EQUALS, '10.0.0.1')
+      ).toBe('equals 10.0.0.1');
+    });
+  });
+
+  describe('joining texts', () => {
+    it("joins them with the group's logic", () => {
+      expect(text.join(['A', 'B', 'C'], Logic.AND)).toBe('A and B and C');
+      expect(text.join(['A', 'B'], Logic.OR)).toBe('A or B');
+    });
+
+    it('keeps a single text as it is', () => {
+      expect(text.join(['A'], Logic.OR)).toBe('A');
+    });
   });
 });

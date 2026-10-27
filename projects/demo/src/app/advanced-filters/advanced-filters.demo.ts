@@ -11,6 +11,7 @@ import {
   ClrAdvancedFilterField,
   ClrAdvancedFilterFieldType,
   ClrAdvancedFilterGroup,
+  ClrAdvancedFilterLayout,
   ClrAdvancedFilterLogic,
   ClrAdvancedFilterOperator,
 } from '@clr/angular/data/advanced-filters';
@@ -23,6 +24,8 @@ const DAY = 24 * 60 * 60 * 1000;
   standalone: false,
 })
 export class AdvancedFiltersDemoComponent {
+  readonly layouts = ClrAdvancedFilterLayout;
+  layout = ClrAdvancedFilterLayout.TREE;
   maxDepth = 3;
   showFields = true;
   changes = 0;

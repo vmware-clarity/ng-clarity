@@ -162,6 +162,21 @@ describe('ClrAdvancedFiltersGroup', () => {
       ).toBe(1);
     });
 
+    it('explains Clear all and remove in tooltips', async () => {
+      host.group.addChild(new ClrAdvancedFilterGroup());
+      fixture.detectChanges();
+      const tooltipOf = async (selector: string) => {
+        const button: HTMLElement = fixture.debugElement.query(By.css(selector)).nativeElement;
+        expect(button.hasAttribute('title')).toBeFalse();
+        button.focus();
+        fixture.detectChanges();
+        await fixture.whenStable();
+        return document.getElementById(button.getAttribute('aria-describedby')).textContent.trim();
+      };
+      expect(await tooltipOf('.clr-advanced-filters-clear-all')).toBe('Clear all');
+      expect(await tooltipOf('.clr-advanced-filters-group-header .clr-advanced-filters-remove')).toBe('Remove group');
+    });
+
     it('clears all and emits', () => {
       click('.clr-advanced-filters-clear-all');
       expect(host.group.children).toEqual([]);

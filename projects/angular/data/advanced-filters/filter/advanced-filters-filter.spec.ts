@@ -127,8 +127,35 @@ describe('ClrAdvancedFiltersFilter', () => {
       expect(textButton().textContent.trim()).toBe('Budget: between (missing value)');
       expect(textButton().classList).toContain('clr-advanced-filters-incomplete');
       expect(
-        fixture.debugElement.query(By.css('.clr-advanced-filters-filter-text cds-icon[status="danger"]'))
+        fixture.debugElement.query(By.css('.clr-advanced-filters-incomplete-icon cds-icon[status="danger"]'))
       ).not.toBeNull();
+    });
+
+    it('explains the error icon in a tooltip, outside the link that opens the popover', async () => {
+      host.filter.operator = Operator.BETWEEN;
+      fixture.detectChanges();
+      const icon: HTMLElement = fixture.debugElement.query(
+        By.css('.clr-advanced-filters-incomplete-icon cds-icon')
+      ).nativeElement;
+      expect(textButton().contains(icon)).toBeFalse();
+      expect(icon.getAttribute('aria-label')).toBe('Incomplete filter');
+      icon.focus();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(document.getElementById(icon.getAttribute('aria-describedby')).textContent.trim()).toBe(
+        'Incomplete filter'
+      );
+    });
+
+    it('explains the remove button in a tooltip with the filter text', async () => {
+      const remove: HTMLElement = fixture.debugElement.query(By.css('.clr-advanced-filters-remove')).nativeElement;
+      expect(remove.hasAttribute('title')).toBeFalse();
+      remove.focus();
+      fixture.detectChanges();
+      await fixture.whenStable();
+      expect(document.getElementById(remove.getAttribute('aria-describedby')).textContent.trim()).toBe(
+        'Remove filter Budget: greater than 60'
+      );
     });
   });
 

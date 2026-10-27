@@ -53,6 +53,28 @@ describe('ClrAdvancedFiltersEditor', () => {
 
   afterEach(() => fixture.destroy());
 
+  it('separates the field from the rest of the popover once a field is picked', () => {
+    fixture.detectChanges();
+    const element = fixture.nativeElement as HTMLElement;
+    expect(element.querySelector('.clr-advanced-filters-field-section')).toBeNull();
+
+    editor.selectField(BUDGET);
+    fixture.detectChanges();
+    const section = element.querySelector('.clr-advanced-filters-field-section');
+    expect(section.tagName).toBe('CLR-COMBOBOX-CONTAINER');
+    expect(section.querySelector('clr-combobox')).not.toBeNull();
+
+    editor.selectField(null);
+    fixture.detectChanges();
+    expect(element.querySelector('.clr-advanced-filters-field-section')).toBeNull();
+  });
+
+  it('labels the field for screen readers only', () => {
+    fixture.detectChanges();
+    const label = (fixture.nativeElement as HTMLElement).querySelector('.clr-advanced-filters-field label');
+    expect([label.textContent.trim(), label.classList.contains('clr-sr-only')]).toEqual(['Field', true]);
+  });
+
   describe('a new condition', () => {
     it('cannot be applied before a field is picked', () => {
       fixture.detectChanges();
