@@ -25,6 +25,15 @@
     </div>
   </div>
 
+  <!-- ── Preset actions  ── -->
+  <div class="tb-preset-actions" cds-layout="m-t:lg">
+    <button class="btn btn-sm btn-outline" (click)="openImportModal()">Import CSS</button>
+    <button class="btn btn-sm btn-outline" (click)="openSaveModal()">Save current theme as preset</button>
+    <button class="btn btn-sm btn-outline" [disabled]="!savedPresets.length" (click)="openClearPresetsModal()">
+      Clear custom presets
+    </button>
+  </div>
+
   <clr-theme-builder [presets]="presets" (generatedCSS)="writeGeneratedCss($event)" />
 
   <!-- ── Generated CSS card (full width below grid) ── -->
@@ -41,3 +50,122 @@
 
   <app-site-footer></app-site-footer>
 </main>
+
+<clr-modal [(clrModalOpen)]="saveModalOpen">
+  <div class="modal-title">Save current theme configuration as preset</div>
+  <div class="modal-body">
+    @if (saveStorageFailed) {
+      <clr-alert clrAlertType="danger" [clrAlertClosable]="false" cds-layout="m-b:md">
+        <clr-alert-item>
+          <span class="alert-text">Saving presets isn't possible in this browser. Its storage is full or blocked.</span>
+        </clr-alert-item>
+      </clr-alert>
+    }
+    @if (presetNameReserved) {
+      <clr-alert clrAlertType="danger" [clrAlertClosable]="false" cds-layout="m-b:md">
+        <clr-alert-item>
+          <span class="alert-text">"{{ presetName.trim() }}" is reserved. Please choose another name.</span>
+        </clr-alert-item>
+      </clr-alert>
+    } @else if (presetNameTaken) {
+      <clr-alert clrAlertType="warning" [clrAlertClosable]="false" cds-layout="m-b:md">
+        <clr-alert-item>
+          <span class="alert-text">
+            A preset named "{{ presetName.trim() }}" already exists. Saving updates it with the current colors.
+          </span>
+        </clr-alert-item>
+      </clr-alert>
+    }
+    <clr-input-container cds-layout="m-t:none">
+      <label>Preset name</label>
+      <input clrInput [(ngModel)]="presetName" />
+    </clr-input-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="saveModalOpen = false">Cancel</button>
+    <button
+      type="button"
+      class="btn btn-primary"
+      [disabled]="!presetName.trim() || presetNameReserved"
+      (click)="confirmSavePreset()"
+    >
+      Save
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="importModalOpen" [clrModalSize]="'xl'">
+  <div class="modal-title">Import generated CSS</div>
+  <div class="modal-body">
+    @if (importValidation && !importValidation.valid) {
+      <clr-alert clrAlertType="danger" [clrAlertClosable]="false" cds-layout="m-b:md">
+        @if (
+          importValidation.malformedDeclarations.length ||
+          importValidation.duplicateThemeBlocks.length ||
+          importValidation.duplicateTokens.length
+        ) {
+          <clr-alert-item>
+            <span class="alert-text">Malformed CSS detected.</span>
+          </clr-alert-item>
+          @for (declaration of importValidation.malformedDeclarations; track $index) {
+            <clr-alert-item>
+              <span class="alert-text">
+                <code>{{ declaration }}</code>
+              </span>
+            </clr-alert-item>
+          }
+          @for (theme of importValidation.duplicateThemeBlocks; track theme) {
+            <clr-alert-item>
+              <span class="alert-text">
+                Duplicate theme block: <code>[cds-theme~='{{ theme }}']</code>
+              </span>
+            </clr-alert-item>
+          }
+          @for (duplicate of importValidation.duplicateTokens; track $index) {
+            <clr-alert-item>
+              <span class="alert-text">
+                Duplicate token in {{ duplicate.theme }} theme: <code>{{ duplicate.tokenName }}</code>
+              </span>
+            </clr-alert-item>
+          }
+        } @else {
+          <clr-alert-item>
+            <span class="alert-text">No Clarity theme colors found.</span>
+          </clr-alert-item>
+        }
+      </clr-alert>
+    }
+    <clr-textarea-container cds-layout="m-t:none">
+      <label>Paste generated CSS</label>
+      <textarea
+        clrTextarea
+        [(ngModel)]="cssToImport"
+        (ngModelChange)="scheduleCssToImportValidation($event)"
+        rows="12"
+        cols="120"
+        name="cssToImportInput"
+      ></textarea>
+    </clr-textarea-container>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="importModalOpen = false">Cancel</button>
+    <button type="button" class="btn btn-primary" [disabled]="importDisabled" (click)="confirmImportCss()">
+      Import
+    </button>
+  </div>
+</clr-modal>
+
+<clr-modal [(clrModalOpen)]="clearPresetsModalOpen">
+  <div class="modal-title">Clear custom presets</div>
+  <div class="modal-body">
+    This will permanently delete all your saved custom presets from this browser. Built-in Clarity presets aren't
+    affected. This can't be undone.
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline" (click)="clearPresetsModalOpen = false">Cancel</button>
+    <button type="button" class="btn btn-danger" (click)="clearCustomPresets()">
+      <cds-icon shape="trash" solid />
+      Confirm
+    </button>
+  </div>
+</clr-modal>

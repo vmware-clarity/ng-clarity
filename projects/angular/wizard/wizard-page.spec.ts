@@ -8,7 +8,6 @@
 import { Component, DebugElement, QueryList, ViewChild, ViewChildren } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrAlert, ClrAlertModule } from '@clr/angular/emphasis/alert';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
@@ -263,7 +262,7 @@ export default function (): void {
 
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrWizardModule, ClrAlertModule, NoopAnimationsModule],
+          imports: [ClrWizardModule, ClrAlertModule],
           declarations: [IdTestComponent],
           providers: [
             WizardNavigationService,
@@ -370,7 +369,7 @@ export default function (): void {
     describe('Typescript API', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrWizardModule, NoopAnimationsModule],
+          imports: [ClrWizardModule],
           declarations: [TypescriptTestComponent],
           providers: [
             WizardNavigationService,
@@ -658,7 +657,7 @@ export default function (): void {
     describe('Template API', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrWizardModule, NoopAnimationsModule],
+          imports: [ClrWizardModule],
           declarations: [TemplateTestComponent],
           providers: [
             WizardNavigationService,
@@ -924,7 +923,7 @@ export default function (): void {
     describe('View and Behavior', () => {
       beforeEach(() => {
         TestBed.configureTestingModule({
-          imports: [ClrWizardModule, ClrIcon, ClrAlertModule, NoopAnimationsModule],
+          imports: [ClrWizardModule, ClrIcon, ClrAlertModule],
           declarations: [ViewTestComponent],
           providers: [WizardNavigationService, PageCollectionService, ButtonHubService],
         });

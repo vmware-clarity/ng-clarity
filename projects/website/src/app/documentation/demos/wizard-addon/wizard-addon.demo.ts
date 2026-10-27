@@ -14,6 +14,7 @@ import { WorkflowConfigurationService } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
 import { ClarityModule } from '@clr/angular';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -60,6 +61,7 @@ export class MyModule {}
     SampleWizardComponent,
     SampleStepperComponent,
     RouterModule,
+    AiSkillComponent,
   ],
 })
 export class WizardAddonDemoComponent extends ClarityDocComponent {
@@ -80,7 +82,7 @@ export class WizardAddonDemoComponent extends ClarityDocComponent {
   #inlineMode = false;
 
   constructor(readonly configurationService: WorkflowConfigurationService) {
-    super('wizard-addon');
+    super('advanced-wizard');
   }
 
   get inlineMode(): boolean {

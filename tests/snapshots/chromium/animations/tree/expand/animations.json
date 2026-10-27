@@ -9,18 +9,20 @@
     "iterations": 1,
     "keyframes": [
       {
-        "offset": 0,
+        "offset": null,
         "easing": "linear",
         "composite": "auto",
-        "height": "224px",
-        "overflowY": "visible"
+        "contentVisibility": "visible",
+        "overflow": "clip",
+        "height": "224px"
       },
       {
-        "offset": 1,
+        "offset": null,
         "easing": "linear",
         "composite": "auto",
-        "height": "0px",
-        "overflowY": "visible"
+        "contentVisibility": "visible",
+        "overflow": "clip",
+        "height": "0px"
       }
     ]
   }

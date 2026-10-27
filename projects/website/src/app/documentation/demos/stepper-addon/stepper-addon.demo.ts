@@ -20,6 +20,7 @@ import {
   StepperStep2Component,
   TeamModel,
 } from './ng/basic-stepper';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -59,6 +60,7 @@ export class MyModule {}
     StepperStep1Component,
     StepperStep2Component,
     RouterModule,
+    AiSkillComponent,
   ],
 })
 export class StepperAddonDemoComponent extends ClarityDocComponent implements OnInit {
@@ -72,7 +74,7 @@ export class StepperAddonDemoComponent extends ClarityDocComponent implements On
   readonly basicStepperTs = BasicStepperTs;
 
   constructor() {
-    super('stepper-addon');
+    super('advanced-stepper');
   }
 
   ngOnInit() {

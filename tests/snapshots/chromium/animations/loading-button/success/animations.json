@@ -1,7 +1,7 @@
 [
   {
-    "target": "span.spinner.spinner-inline",
-    "name": "",
+    "target": "span.spinner.spinner-inline.clr-loading-btn-leave",
+    "name": "clr-fade-out",
     "startedAt": 0,
     "duration": 100,
     "delay": 0,
@@ -11,20 +11,19 @@
       {
         "offset": 0,
         "easing": "ease-out",
-        "composite": "auto",
-        "opacity": "1"
+        "composite": "replace"
       },
       {
         "offset": 1,
-        "easing": "linear",
+        "easing": "ease-out",
         "composite": "auto",
         "opacity": "0"
       }
     ]
   },
   {
-    "target": "span.spinner.spinner-inline.spinner-check",
-    "name": "",
+    "target": "span.spinner.spinner-inline.spinner-check.clr-loading-btn-check",
+    "name": "clr-loading-btn-check",
     "startedAt": 0,
     "duration": 600,
     "delay": 0,
@@ -35,42 +34,37 @@
         "offset": 0,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(0, 0)"
+        "transform": "scale(0)"
       },
       {
         "offset": 0.2,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(0, 0)"
+        "transform": "scale(0)"
       },
       {
         "offset": 0.4,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(1.2, 1.2)"
+        "transform": "scale(1.2)"
       },
       {
         "offset": 0.6,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(0.9, 0.9)"
+        "transform": "scale(0.9)"
       },
       {
         "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(1, 1)"
+        "transform": "scale(1)"
       }
     ]
   },
   {
-    "target": "span.spinner.spinner-inline",
-    "name": "",
+    "target": "span.spinner.spinner-inline.clr-loading-btn-leave",
+    "name": "clr-fade-out",
     "startedAt": 0,
     "duration": 100,
     "delay": 0,
@@ -80,20 +74,19 @@
       {
         "offset": 0,
         "easing": "ease-out",
-        "composite": "auto",
-        "opacity": "1"
+        "composite": "replace"
       },
       {
         "offset": 1,
-        "easing": "linear",
+        "easing": "ease-out",
         "composite": "auto",
         "opacity": "0"
       }
     ]
   },
   {
-    "target": "span.spinner.spinner-inline.spinner-check",
-    "name": "",
+    "target": "span.spinner.spinner-inline.spinner-check.clr-loading-btn-check",
+    "name": "clr-loading-btn-check",
     "startedAt": 0,
     "duration": 600,
     "delay": 0,
@@ -104,36 +97,31 @@
         "offset": 0,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(0, 0)"
+        "transform": "scale(0)"
       },
       {
         "offset": 0.2,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(0, 0)"
+        "transform": "scale(0)"
       },
       {
         "offset": 0.4,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(1.2, 1.2)"
+        "transform": "scale(1.2)"
       },
       {
         "offset": 0.6,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(0.9, 0.9)"
+        "transform": "scale(0.9)"
       },
       {
         "offset": 1,
         "easing": "linear",
         "composite": "auto",
-        "opacity": "1",
-        "transform": "scale(1, 1)"
+        "transform": "scale(1)"
       }
     ]
   }

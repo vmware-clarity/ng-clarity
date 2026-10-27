@@ -11,6 +11,8 @@ groups:
         url: /pages/developing
       - label: Support Policies
         url: /pages/support-policies
+      - label: AI Agents
+        url: /pages/ai
   - label: Foundation
     links:
       - label: Accessibility
@@ -53,6 +55,9 @@ groups:
         url: /documentation/onboarding
   - label: Components
   - label: Addons
+    links:
+      - label: Overview
+        url: /pages/addons
   - label: Updating
     links:
       - label: Update v17 to v18
