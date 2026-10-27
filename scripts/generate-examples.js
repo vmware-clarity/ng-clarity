@@ -103,7 +103,8 @@ function readExample(name, { id, title, targets, showStyles = true }) {
     throw new Error(`${name}/${id}: expected ${id}.example.ts and ${id}.example.html next to examples.json.`);
   }
 
-  const className = ts.match(/export class (\w+)/)?.[1];
+  // The example's component, which can follow other classes in the file, such as a service that it provides.
+  const className = ts.match(/@Component\(\{[\s\S]*?\}\)\s*export class (\w+)/)?.[1];
   if (!className) {
     throw new Error(`${name}/${id}: ${id}.example.ts does not export a component class.`);
   }

@@ -27,8 +27,6 @@ export default meta;
 
 type Story = StoryObj<ExampleArgs>;
 
-export const Basic: Story = { parameters: { example: HEADER_EXAMPLES.basic } };
-
 export const Links: Story = { parameters: { example: HEADER_EXAMPLES.links } };
 
 export const Types: Story = { parameters: { example: HEADER_EXAMPLES.types } };

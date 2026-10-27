@@ -17,7 +17,7 @@ export const HEADER_EXAMPLES = {
   basic: {
     id: 'header/basic',
     title: 'Basic header',
-    targets: ['website', 'demo', 'storybook'],
+    targets: ['website', 'demo'],
     component: HeaderBasicExample,
     showStyles: true,
     source: {

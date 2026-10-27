@@ -102,14 +102,14 @@ export class CustomUserService extends DatagridFiltersUserService {
     ]),
   };
 
-  getDomains(): Observable<string[]> {
+  override getDomains(): Observable<string[]> {
     if (this.errorRetrievingDomains) {
       return timer(1000).pipe(switchMap(() => throwError(() => this.error)));
     }
     return timer(1000).pipe(map(() => Object.keys(this.domainUsers)));
   }
 
-  searchUsers(searchTerm: string, domain: string): Observable<string[]> {
+  override searchUsers(searchTerm: string, domain: string): Observable<string[]> {
     if (this.errorRetrievingUsers) {
       return timer(1000).pipe(switchMap(() => throwError(() => this.error)));
     }
