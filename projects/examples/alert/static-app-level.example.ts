@@ -6,11 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrAlertModule, ClrIcon } from '@clr/angular';
 
 @Component({
-  selector: 'clr-alert-success-demo-angular',
-  styleUrls: ['../alert.demo.scss'],
-  templateUrl: './alert-angular-success.demo.html',
-  standalone: false,
+  selector: 'clr-alert-static-app-level-example',
+  templateUrl: './static-app-level.example.html',
+  imports: [ClrAlertModule, ClrIcon],
 })
-export class AlertAngularSuccessDemo {}
+export class AlertStaticAppLevelExample {}

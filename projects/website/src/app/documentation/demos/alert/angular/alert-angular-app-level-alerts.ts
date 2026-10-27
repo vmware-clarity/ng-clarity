@@ -6,49 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrAlertModule } from '@clr/angular';
+import { ALERT_EXAMPLES } from '@clr/examples/alert';
 
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<div class="main-container">
-  <clr-alerts>
-    <clr-alert [clrAlertType]="'info'" [clrAlertAppLevel]="true">
-      <clr-alert-item>
-        <span class="alert-text">This is the first app level alert.</span>
-        <div class="alert-actions">
-          <button class="btn alert-action">Fix</button>
-        </div>
-      </clr-alert-item>
-    </clr-alert>
-    <clr-alert [clrAlertType]="'danger'" [clrAlertAppLevel]="true">
-      <clr-alert-item>
-        <span class="alert-text">This is a second app level alert.</span>
-        <div class="alert-actions">
-          <button class="btn alert-action">Fix</button>
-        </div>
-      </clr-alert-item>
-    </clr-alert>
-  </clr-alerts>
-  <header class="header header-1">
-    <div class="branding">
-      <span class="nav-link"><span class="title">Header</span></span>
-    </div>
-  </header>
-  <div class="content-container">
-    <div class="content-area">
-      <p>...</p>
-    </div>
-  </div>
-</div>
-`;
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-alert-app-level-alerts-demo-angular',
-  styleUrl: '../alerts.demo.scss',
   templateUrl: './alert-angular-app-level-alerts.demo.html',
-  imports: [ClrAlertModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class AlertAngularAppLevelAlertsDemo {
-  example = EXAMPLE;
+  readonly examples = ALERT_EXAMPLES;
 }

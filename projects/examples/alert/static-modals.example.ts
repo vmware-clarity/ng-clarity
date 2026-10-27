@@ -6,11 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrAlertModule, ClrIcon } from '@clr/angular';
 
 @Component({
-  selector: 'clr-alert-demo-content-area',
-  styleUrls: ['../alert.demo.scss'],
-  templateUrl: './alert-content-area.demo.html',
-  standalone: false,
+  selector: 'clr-alert-static-modals-example',
+  templateUrl: './static-modals.example.html',
+  styleUrl: './static-modals.example.scss',
+  imports: [ClrAlertModule, ClrIcon],
 })
-export class AlertContentAreaDemo {}
+export class AlertStaticModalsExample {}

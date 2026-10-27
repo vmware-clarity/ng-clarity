@@ -6,11 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrAlertModule, ClrDropdownModule, ClrIcon } from '@clr/angular';
 
 @Component({
-  selector: 'clr-alert-demo-modals',
-  styleUrls: ['../alert.demo.scss'],
-  templateUrl: './alert-modals.demo.html',
-  standalone: false,
+  selector: 'clr-alert-not-closable-example',
+  templateUrl: './not-closable.example.html',
+  imports: [ClrAlertModule, ClrDropdownModule, ClrIcon],
 })
-export class AlertModalsDemo {}
+export class AlertNotClosableExample {}

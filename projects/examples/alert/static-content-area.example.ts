@@ -6,17 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrAlertModule, ClrIcon } from '@clr/angular';
 
 @Component({
-  selector: 'clr-alert-close-event-demo-angular',
-  styleUrls: ['../alert.demo.scss'],
-  templateUrl: './alert-angular-close-event.demo.html',
-  standalone: false,
+  selector: 'clr-alert-static-content-area-example',
+  templateUrl: './static-content-area.example.html',
+  imports: [ClrAlertModule, ClrIcon],
 })
-export class AlertAngularCloseEventDemo {
-  closeMessage = '';
-
-  onClose(): void {
-    this.closeMessage = 'The alert has been closed';
-  }
-}
+export class AlertStaticContentAreaExample {}
