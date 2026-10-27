@@ -10,7 +10,6 @@ import { ClrSelectedState, ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'app-interaction-checkbox-tree-demo',
-  styleUrl: '../tree-view.demo.scss',
   templateUrl: './interaction-checkbox-tree.html',
   imports: [ClrTreeViewModule],
 })

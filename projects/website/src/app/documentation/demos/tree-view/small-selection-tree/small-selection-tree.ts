@@ -8,11 +8,10 @@
 import { Component } from '@angular/core';
 import { ClrTreeViewModule } from '@clr/angular';
 
-import { permissions } from '../boolean-selection-tree/permissions';
+import { permissions } from './permissions';
 
 @Component({
   selector: 'clr-small-selection-tree-demo',
-  styleUrl: '../tree-view.demo.scss',
   templateUrl: 'small-selection-tree.html',
   imports: [ClrTreeViewModule],
 })

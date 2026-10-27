@@ -10,7 +10,6 @@ import { ClrIcon, ClrIconModule, ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'app-disabled-nodes-overview-demo',
-  styleUrl: '../tree-view.demo.scss',
   templateUrl: 'disabled-nodes-overview.html',
   imports: [ClrTreeViewModule, ClrIcon, ClrIconModule],
 })

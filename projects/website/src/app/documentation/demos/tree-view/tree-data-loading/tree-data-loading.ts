@@ -19,7 +19,6 @@ import { map, Observable, tap, timer } from 'rxjs';
 
 @Component({
   selector: 'app-tree-data-loading-demo',
-  styleUrl: '../tree-view.demo.scss',
   templateUrl: 'tree-data-loading.html',
   imports: [ClrTreeViewModule, ClrIcon, ClrIconModule, ClrLoadingModule, ClrDatagridModule, ClrIfExpanded, AsyncPipe],
 })

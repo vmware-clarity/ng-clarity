@@ -53,7 +53,7 @@
         <div class="clrweb-DoxMedia clr-mt-16px">
           <div class="clrweb-DoxMedia-block">
             <div class="clrweb-DoxMedia-img is-left-aligned">
-              <clr-tree-view-dynamic-demo></clr-tree-view-dynamic-demo>
+              <ng-container *ngComponentOutlet="examples.dynamic.component"></ng-container>
             </div>
           </div>
         </div>
@@ -288,7 +288,7 @@
     </div>
 
     <section class="clr-demo">
-      <clr-tree-basic-dm-demo></clr-tree-basic-dm-demo>
+      <app-doc-example [example]="examples.basic"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="disabled-nodes-code" cds-text="section" class="clr-mt-32px">Disabled Nodes</h3>
@@ -299,7 +299,7 @@
     <p cds-text="body" class="clr-mt-16px">Disabled nodes are immutable.</p>
 
     <section class="clr-demo">
-      <app-disabled-nodes-demo></app-disabled-nodes-demo>
+      <app-doc-example [example]="examples.disabledNodes"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="expanded-nodes" cds-text="section" class="clr-mt-32px">Keeping track of expanded nodes</h3>
@@ -310,7 +310,7 @@
     </p>
 
     <section class="clr-demo">
-      <clr-tree-node-label-change-expand-demo></clr-tree-node-label-change-expand-demo>
+      <app-doc-example [example]="examples.expandedLabel"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="expand-all" cds-text="section" class="clr-mt-32px">Expanding or collapsing all nodes</h3>
@@ -342,7 +342,7 @@
     </p>
 
     <section class="clr-demo">
-      <clr-tree-expand-all-demo></clr-tree-expand-all-demo>
+      <app-doc-example [example]="examples.expandAll"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="routing-tree" cds-text="section" class="clr-mt-32px">Routing using a Tree</h3>
@@ -362,7 +362,7 @@
     </h3>
 
     <section class="clr-demo">
-      <clr-tree-view-dynamic-demo [clrDemoShowCode]="true" [clrDemoShowHalf]="true"></clr-tree-view-dynamic-demo>
+      <app-doc-example [example]="examples.dynamic"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="checkbox-tree" cds-text="section" class="clr-mt-32px">Checkbox Tree</h3>
@@ -381,7 +381,7 @@
     </p>
 
     <section class="clr-demo">
-      <clr-selection-tree-demo></clr-selection-tree-demo>
+      <app-doc-example [example]="examples.selection"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="checkbox-tree-disabled-nodes" cds-text="section" class="clr-mt-32px">
@@ -395,7 +395,7 @@
     <p cds-text="body" class="clr-mt-16px">Disabled nodes are immutable.</p>
 
     <section class="clr-demo">
-      <app-disabled-nodes-selection-demo></app-disabled-nodes-selection-demo>
+      <app-doc-example [example]="examples.disabledSelection"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="boolean-selection" cds-text="section" class="clr-mt-32px">Binding selection to a boolean</h3>
@@ -412,7 +412,7 @@
     </p>
 
     <section class="clr-demo">
-      <clr-boolean-selection-tree-demo></clr-boolean-selection-tree-demo>
+      <app-doc-example [example]="examples.booleanSelection"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="recursive-tree" cds-text="section" class="clr-mt-32px">Recursive tree</h3>
@@ -426,7 +426,7 @@
     </p>
 
     <section class="clr-demo">
-      <clr-recursive-tree-demo></clr-recursive-tree-demo>
+      <app-doc-example [example]="examples.recursive"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="lazy-loading" cds-text="section" class="clr-mt-32px">Lazy-loading children</h3>
@@ -453,7 +453,7 @@
     </ul>
 
     <section class="clr-demo">
-      <clr-lazy-loading-tree-demo></clr-lazy-loading-tree-demo>
+      <app-doc-example [example]="examples.lazy"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="lazy-loading-selection" cds-text="section" class="clr-mt-32px">Lazy-loading and selection</h3>
@@ -468,7 +468,7 @@
     </p>
 
     <section class="clr-demo">
-      <clr-lazy-loading-selection-tree-demo></clr-lazy-loading-selection-tree-demo>
+      <app-doc-example [example]="examples.lazySelection"></app-doc-example>
     </section>
 
     <h3 data-toc-item id="lazy-loading-recursive" cds-text="section" class="clr-mt-32px">
@@ -490,7 +490,7 @@
     </p>
 
     <section class="clr-demo">
-      <clr-lazy-loading-recursive-tree-demo></clr-lazy-loading-recursive-tree-demo>
+      <app-doc-example [example]="examples.lazyRecursive"></app-doc-example>
     </section>
   </app-doc-tab>
 
