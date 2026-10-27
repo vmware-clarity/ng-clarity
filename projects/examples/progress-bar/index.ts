@@ -23,6 +23,11 @@ import { ProgressBarSimulatedExample } from './simulated.example';
 import { ProgressBarStaticCardsExample } from './static-cards.example';
 import { ProgressBarStaticExample } from './static.example';
 
+const FILES: Record<string, string> = {
+  'progress-simulation/progress-simulation.ts':
+    "/**\n * Simulates a task that reports its progress in random steps, so that the examples can show how a progress bar\n * fills up. Use the real progress of your task instead.\n */\nexport class ProgressSimulation {\n  value = 0;\n\n  private intervalId: ReturnType<typeof setInterval> | undefined;\n\n  constructor(\n    readonly title: string,\n    readonly classNames = '',\n    readonly isLabeled = false\n  ) {}\n\n  get cssClassnames(): string {\n    return ['progress', this.classNames].join(' ').trim();\n  }\n\n  start(): void {\n    this.stop();\n    this.value = 0;\n    this.intervalId = setInterval(() => this.run(), 450);\n  }\n\n  stop(): void {\n    clearInterval(this.intervalId);\n    this.intervalId = undefined;\n  }\n\n  private run(): void {\n    const minIncrement = 4;\n    const maxIncrement = 15;\n    const progress = this.value + Math.random() * (maxIncrement - minIncrement) + minIncrement;\n\n    if (progress > 99) {\n      this.value = 100;\n      this.stop();\n    } else {\n      this.value = Math.floor(progress);\n    }\n  }\n}\n",
+};
+
 export const PROGRESS_BAR_EXAMPLES = {
   component: {
     id: 'progress-bar/component',
@@ -96,7 +101,7 @@ export const PROGRESS_BAR_EXAMPLES = {
       hasLogic: true,
       files: {
         'progress-simulation/progress-simulation.ts':
-          "/**\n * Simulates a task that reports its progress in random steps, so that the examples can show how a progress bar\n * fills up. Use the real progress of your task instead.\n */\nexport class ProgressSimulation {\n  value = 0;\n\n  private intervalId: ReturnType<typeof setInterval> | undefined;\n\n  constructor(\n    readonly title: string,\n    readonly classNames = '',\n    readonly isLabeled = false\n  ) {}\n\n  get cssClassnames(): string {\n    return ['progress', this.classNames].join(' ').trim();\n  }\n\n  start(): void {\n    this.stop();\n    this.value = 0;\n    this.intervalId = setInterval(() => this.run(), 450);\n  }\n\n  stop(): void {\n    clearInterval(this.intervalId);\n    this.intervalId = undefined;\n  }\n\n  private run(): void {\n    const minIncrement = 4;\n    const maxIncrement = 15;\n    const progress = this.value + Math.random() * (maxIncrement - minIncrement) + minIncrement;\n\n    if (progress > 99) {\n      this.value = 100;\n      this.stop();\n    } else {\n      this.value = Math.floor(progress);\n    }\n  }\n}\n",
+          FILES['progress-simulation/progress-simulation.ts'],
       },
     },
   },
@@ -112,7 +117,7 @@ export const PROGRESS_BAR_EXAMPLES = {
       hasLogic: true,
       files: {
         'progress-simulation/progress-simulation.ts':
-          "/**\n * Simulates a task that reports its progress in random steps, so that the examples can show how a progress bar\n * fills up. Use the real progress of your task instead.\n */\nexport class ProgressSimulation {\n  value = 0;\n\n  private intervalId: ReturnType<typeof setInterval> | undefined;\n\n  constructor(\n    readonly title: string,\n    readonly classNames = '',\n    readonly isLabeled = false\n  ) {}\n\n  get cssClassnames(): string {\n    return ['progress', this.classNames].join(' ').trim();\n  }\n\n  start(): void {\n    this.stop();\n    this.value = 0;\n    this.intervalId = setInterval(() => this.run(), 450);\n  }\n\n  stop(): void {\n    clearInterval(this.intervalId);\n    this.intervalId = undefined;\n  }\n\n  private run(): void {\n    const minIncrement = 4;\n    const maxIncrement = 15;\n    const progress = this.value + Math.random() * (maxIncrement - minIncrement) + minIncrement;\n\n    if (progress > 99) {\n      this.value = 100;\n      this.stop();\n    } else {\n      this.value = Math.floor(progress);\n    }\n  }\n}\n",
+          FILES['progress-simulation/progress-simulation.ts'],
       },
     },
   },
@@ -128,7 +133,7 @@ export const PROGRESS_BAR_EXAMPLES = {
       hasLogic: true,
       files: {
         'progress-simulation/progress-simulation.ts':
-          "/**\n * Simulates a task that reports its progress in random steps, so that the examples can show how a progress bar\n * fills up. Use the real progress of your task instead.\n */\nexport class ProgressSimulation {\n  value = 0;\n\n  private intervalId: ReturnType<typeof setInterval> | undefined;\n\n  constructor(\n    readonly title: string,\n    readonly classNames = '',\n    readonly isLabeled = false\n  ) {}\n\n  get cssClassnames(): string {\n    return ['progress', this.classNames].join(' ').trim();\n  }\n\n  start(): void {\n    this.stop();\n    this.value = 0;\n    this.intervalId = setInterval(() => this.run(), 450);\n  }\n\n  stop(): void {\n    clearInterval(this.intervalId);\n    this.intervalId = undefined;\n  }\n\n  private run(): void {\n    const minIncrement = 4;\n    const maxIncrement = 15;\n    const progress = this.value + Math.random() * (maxIncrement - minIncrement) + minIncrement;\n\n    if (progress > 99) {\n      this.value = 100;\n      this.stop();\n    } else {\n      this.value = Math.floor(progress);\n    }\n  }\n}\n",
+          FILES['progress-simulation/progress-simulation.ts'],
       },
     },
   },

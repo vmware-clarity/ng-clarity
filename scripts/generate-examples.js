@@ -136,7 +136,14 @@ function readSupportFiles(name, id, ts) {
 
   while (pending.length) {
     const { code, directory } = pending.pop();
-    for (const [, specifier] of code.matchAll(/from '(\.{1,2}\/[^']+)'/g)) {
+    const specifiers = [...code.matchAll(/from '(\.{1,2}\/[^']+)'/g)].map(match => match[1]);
+    if (code !== ts) {
+      // The templates and styles of components in support files, such as a form that an example embeds.
+      specifiers.push(
+        ...[...code.matchAll(/(?:templateUrl|styleUrls?): \[?'(\.{1,2}\/[^']+)'/g)].map(match => match[1])
+      );
+    }
+    for (const specifier of specifiers) {
       const filePath = [specifier, `${specifier}.ts`]
         .map(candidate => path.join(directory, candidate))
         .find(candidate => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
@@ -147,7 +154,7 @@ function readSupportFiles(name, id, ts) {
       }
       if (!(relativePath in files)) {
         const contents = readFile(filePath);
-        files[relativePath] = filePath.endsWith('.ts') ? stripLicenseHeader(contents) : contents;
+        files[relativePath] = filePath.endsWith('.json') ? contents : stripLicenseHeader(contents);
         pending.push({ code: contents, directory: path.dirname(filePath) });
       }
     }
@@ -169,6 +176,21 @@ function toStackBlitzComponent(ts, id, className) {
 }
 
 function buildIndex(name, examples) {
+  // Several examples often import the same files, such as the datagrid inventory, so each file is written once.
+  const supportFiles = Object.assign({}, ...examples.map(example => example.source.files));
+  const sourceOf = ({ files, ...source }) => {
+    const entries = Object.entries(source)
+      .filter(([, value]) => value !== undefined)
+      .map(([key, value]) => `${key}: ${JSON.stringify(value)}`);
+    if (files) {
+      const references = Object.keys(files).map(
+        filePath => `${JSON.stringify(filePath)}: FILES[${JSON.stringify(filePath)}]`
+      );
+      entries.push(`files: { ${references.join(', ')} }`);
+    }
+    return `{ ${entries.join(', ')} }`;
+  };
+
   const imports = examples
     .map(example => `import { ${example.className} } from './${example.id}.example';`)
     .sort((a, b) => a.split("'")[1].localeCompare(b.split("'")[1]));
@@ -180,7 +202,7 @@ function buildIndex(name, examples) {
       targets: ${JSON.stringify(example.targets)},
       component: ${example.className},
       showStyles: ${example.showStyles},
-      source: ${JSON.stringify(example.source)},
+      source: ${sourceOf(example.source)},
     },`
   );
 
@@ -190,7 +212,7 @@ ${GENERATED_NOTICE}
 
 import { Example } from '../example';
 ${imports.join('\n')}
-
+${Object.keys(supportFiles).length ? `\nconst FILES: Record<string, string> = ${JSON.stringify(supportFiles)};\n` : ''}
 export const ${constantName(name)} = {
   ${entries.join('\n')}
 } satisfies Record<string, Example>;

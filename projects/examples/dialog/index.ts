@@ -10,6 +10,11 @@
 import { Example } from '../example';
 import { DialogBasicExample } from './basic.example';
 
+const FILES: Record<string, string> = {
+  'dialog-steps.ts':
+    "import { Component } from '@angular/core';\nimport { FormsModule } from '@angular/forms';\n\nexport class NameModel {\n  name = '';\n}\n\nexport class ReviewModel {}\n\n@Component({\n  selector: 'clr-basic-dialog-name-step',\n  imports: [FormsModule],\n  template: `\n    @if (model) {\n      <div>\n        <label>Name</label>\n        <input class=\"clr-input\" type=\"text\" [(ngModel)]=\"model.name\" />\n      </div>\n    }\n  `,\n})\nexport class BasicDialogNameStepComponent {\n  model: NameModel;\n}\n\n@Component({\n  selector: 'clr-basic-dialog-review-step',\n  template: `\n    <p>Ready to submit.</p>\n  `,\n})\nexport class BasicDialogReviewStepComponent {}\n",
+};
+
 export const DIALOG_EXAMPLES = {
   basic: {
     id: 'dialog/basic',
@@ -21,10 +26,7 @@ export const DIALOG_EXAMPLES = {
       html: '<button class="btn btn-primary" (click)="dialogOpened = true">Open Dialog</button>\n\n<appfx-dialog\n  [(opened)]="dialogOpened"\n  [steps]="steps"\n  [model]="dialogModel"\n  title="VM Provisioning"\n  [tabLayout]="TabLayout.horizontal"\n></appfx-dialog>\n',
       ts: "import { Component } from '@angular/core';\nimport { AppfxMultiPageDialogModule } from '@clr/addons/dialog';\nimport { Step, TabLayout } from '@clr/addons/var';\n\nimport {\n  BasicDialogNameStepComponent,\n  BasicDialogReviewStepComponent,\n  NameModel,\n  ReviewModel,\n} from './dialog-steps';\n\n@Component({\n  selector: 'app-example',\n  templateUrl: './example.component.html',\n  imports: [AppfxMultiPageDialogModule],\n})\nexport class ExampleComponent {\n  TabLayout = TabLayout;\n  dialogOpened = false;\n  dialogModel = {};\n  steps: Step[] = [\n    {\n      title: 'Name',\n      navTitle: 'Name',\n      componentClass: BasicDialogNameStepComponent,\n      model: new NameModel(),\n    } as Step,\n    {\n      title: 'Ready to Complete',\n      navTitle: 'Review',\n      componentClass: BasicDialogReviewStepComponent,\n      model: new ReviewModel(),\n    } as Step,\n  ];\n}\n",
       hasLogic: true,
-      files: {
-        'dialog-steps.ts':
-          "import { Component } from '@angular/core';\nimport { FormsModule } from '@angular/forms';\n\nexport class NameModel {\n  name = '';\n}\n\nexport class ReviewModel {}\n\n@Component({\n  selector: 'clr-basic-dialog-name-step',\n  imports: [FormsModule],\n  template: `\n    @if (model) {\n      <div>\n        <label>Name</label>\n        <input class=\"clr-input\" type=\"text\" [(ngModel)]=\"model.name\" />\n      </div>\n    }\n  `,\n})\nexport class BasicDialogNameStepComponent {\n  model: NameModel;\n}\n\n@Component({\n  selector: 'clr-basic-dialog-review-step',\n  template: `\n    <p>Ready to submit.</p>\n  `,\n})\nexport class BasicDialogReviewStepComponent {}\n",
-      },
+      files: { 'dialog-steps.ts': FILES['dialog-steps.ts'] },
     },
   },
 } satisfies Record<string, Example>;
