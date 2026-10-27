@@ -1,0 +1,32 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="popover-scroll-container">
+  <p cds-text="body">Scroll down inside this container while the popover is open.</p>
+  <div class="popover-scroll-trigger">
+    <button class="btn btn-outline" clrPopoverOpenCloseButton clrPopoverOrigin>
+      <clr-icon shape="home"></clr-icon>
+      Open Popover
+    </button>
+    <div
+      class="popover-panel"
+      role="dialog"
+      cdkTrapFocus
+      *clrPopoverContent="open; at: 'bottom-left'; outsideClickToClose: true; scrollToClose: true"
+    >
+      <h4 cds-text="section" style="margin-top: 0">Scroll to Close</h4>
+      <p cds-text="body" class="clr-mt-8px">
+        This popover will close when you scroll. Try scrolling the container below.
+      </p>
+      <button class="btn btn-sm btn-outline clr-mt-8px" clrPopoverCloseButton>
+        Close
+        <clr-icon shape="times"></clr-icon>
+      </button>
+    </div>
+  </div>
+  <div class="popover-scroll-spacer"></div>
+</div>
