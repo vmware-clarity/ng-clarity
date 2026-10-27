@@ -6,53 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { HEADER_EXAMPLES } from '@clr/examples/header';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<div class="main-container">
-  <header class="header-1">
-    <div class="branding">
-      <a href="javascript://">
-        <clr-icon shape="vm-bug"></clr-icon>
-        <span class="title">Clarity Design</span>
-      </a>
-    </div>
-    <div class="settings">
-      <a href="javascript://" class="nav-link nav-icon" aria-label="settings">
-        <clr-icon shape="cog"></clr-icon>
-      </a>
-    </div>
-  </header>
-  <nav class="subnav">
-    <ul class="nav">
-      <li class="nav-item">
-        <a class="nav-link active" href="javascript://" aria-current="page">Dashboard</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="javascript://">Management</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="javascript://">Cloud</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="javascript://">Tenants</a>
-      </li>
-    </ul>
-  </nav>
-  <div class="content-container">
-    <div class="content-area"></div>
-  </div>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-nav-demo-subnav',
-  styleUrl: './sub-nav.demo.scss',
   templateUrl: './sub-nav.demo.html',
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class SubNavDemo {
-  example = EXAMPLE;
+  readonly examples = HEADER_EXAMPLES;
 }

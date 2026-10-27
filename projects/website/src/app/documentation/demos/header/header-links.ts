@@ -6,41 +6,16 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { HEADER_EXAMPLES } from '@clr/examples/header';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<div class="main-container">
-  <header class="header-1">
-    <div class="branding">
-      <a href="javascript://" class="nav-link">
-        <clr-icon shape="vm-bug"></clr-icon>
-        <span class="title">Clarity Design</span>
-      </a>
-    </div>
-    <div class="header-nav">
-      <a href="javascript://" class="active nav-link nav-text">Dashboard</a>
-      <a href="javascript://" class="nav-link nav-text">Interactive Analytics</a>
-    </div>
-    <div class="header-actions">
-      <a href="javascript://" class="nav-link nav-icon" aria-label="settings">
-        <clr-icon shape="cog"></clr-icon>
-      </a>
-    </div>
-  </header>
-  <div class="content-container">
-    <div class="content-area"></div>
-  </div>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-header-demo-links',
   templateUrl: './header-links.demo.html',
   styleUrl: './headers.demo.scss',
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class HeaderLinksDemo {
-  example = EXAMPLE;
+  readonly examples = HEADER_EXAMPLES;
 }

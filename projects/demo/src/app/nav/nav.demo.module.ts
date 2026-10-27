@@ -15,11 +15,10 @@ import { HeadersDemo } from './headers';
 import { NavDemo } from './nav.demo';
 import { ROUTING } from './nav.demo.routing';
 import { NavsDemo } from './navs';
-import { SubNavDemo } from './sub-nav';
 
 @NgModule({
   imports: [CommonModule, ClarityModule, ROUTING],
-  declarations: [NavDemo, HeadersDemo, NavsDemo, HeaderColorsDemo, HeaderTypesDemo, SubNavDemo],
-  exports: [NavDemo, HeadersDemo, NavsDemo, HeaderColorsDemo, HeaderTypesDemo, SubNavDemo],
+  declarations: [NavDemo, HeadersDemo, NavsDemo, HeaderColorsDemo, HeaderTypesDemo],
+  exports: [NavDemo, HeadersDemo, NavsDemo, HeaderColorsDemo, HeaderTypesDemo],
 })
 export class NavDemoModule {}

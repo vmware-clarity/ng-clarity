@@ -6,11 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { ClarityIcons, ClrIcon, cogIcon, vmBugIcon } from '@clr/angular';
 
 @Component({
-  selector: 'clr-nav-demo-subnav',
-  styleUrls: ['./sub-nav.demo.scss'],
-  templateUrl: './sub-nav.demo.html',
-  standalone: false,
+  selector: 'clr-header-links-example',
+  templateUrl: './links.example.html',
+  imports: [ClrIcon],
 })
-export class SubNavDemo {}
+export class HeaderLinksExample {
+  constructor() {
+    ClarityIcons.addIcons(vmBugIcon, cogIcon);
+  }
+}
