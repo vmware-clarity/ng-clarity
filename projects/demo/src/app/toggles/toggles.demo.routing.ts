@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TOGGLE_EXAMPLES } from '@clr/examples/toggle';
 
 import { TogglesDemo } from './toggles.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: TogglesDemo }];
+const ROUTES: Routes = [
+  { path: '', component: TogglesDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: TOGGLE_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);

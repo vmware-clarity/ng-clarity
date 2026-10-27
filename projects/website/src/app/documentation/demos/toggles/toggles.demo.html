@@ -27,13 +27,7 @@
       necessary to add <code cds-text="code">type="checkbox"</code>.
     </p>
 
-    <div class="clr-mt-24px">
-      <input type="checkbox" aria-label="basic" clrToggle />
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="Toggle Angular Basic" [componentTemplate]="ngBasic"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.basic"></app-doc-example>
 
     <h3 data-toc-item id="labels" cds-text="subsection" class="clr-mt-32px">Labels</h3>
 
@@ -43,22 +37,7 @@
       component when you include a label. This manages the label and display of the toggle switch for you.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-toggle-container>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="test2" value="option1" />
-          <label>Option 1</label>
-        </clr-toggle-wrapper>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="test2" value="option2" />
-          <label>Option 2</label>
-        </clr-toggle-wrapper>
-      </clr-toggle-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="Toggle Angular Label" [componentTemplate]="ngLabel"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.label"></app-doc-example>
 
     <h3 data-toc-item id="helper" cds-text="subsection" class="clr-mt-32px">Helper and error messages</h3>
 
@@ -76,30 +55,7 @@
       the focus.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-toggle-container>
-        <label>Full toggle switch example</label>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="test3" required value="option1" [(ngModel)]="exampleOne.one" />
-          <label>Option 1</label>
-        </clr-toggle-wrapper>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="test3" required value="option2" [(ngModel)]="exampleOne.two" />
-          <label>Option 2</label>
-        </clr-toggle-wrapper>
-        <clr-control-helper>Helper text</clr-control-helper>
-        <clr-control-error>This field is required!</clr-control-error>
-      </clr-toggle-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="Toggle Angular Helpers"
-        [componentTemplate]="ngHelpers"
-        [componentClass]="exampleTs"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.helpers"></app-doc-example>
 
     <h3 data-toc-item id="inline-toggle-sw" cds-text="subsection" class="clr-mt-32px">Inline toggle switches</h3>
 
@@ -108,30 +64,7 @@
       switch container elements. The toggle switches will wrap if there is not enough space.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-toggle-container clrInline>
-        <label>Inline toggle switch example</label>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="test4" required value="option1" [(ngModel)]="exampleTwo.one" />
-          <label>Option 1</label>
-        </clr-toggle-wrapper>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="test4" required value="option2" [(ngModel)]="exampleTwo.two" />
-          <label>Option 2</label>
-        </clr-toggle-wrapper>
-        <clr-control-helper>Helper text</clr-control-helper>
-        <clr-control-error>This field is required!</clr-control-error>
-      </clr-toggle-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="Toggle Angular Inline"
-        [componentTemplate]="ngInline"
-        [componentClass]="exampleTs"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.inline"></app-doc-example>
 
     <h3 data-toc-item id="right-toggle" cds-text="subsection" class="clr-mt-32px">Right aligned toggle switches</h3>
 
@@ -140,29 +73,7 @@
       <code cds-text="code">clr-toggle-right</code> class to your toggle switch container elements.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-toggle-container class="clr-toggle-right">
-        <label>Right toggle switch</label>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="options" value="option1" [(ngModel)]="exampleFour.one" />
-          <label>Option 1</label>
-        </clr-toggle-wrapper>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="options" value="option2" [(ngModel)]="exampleFour.two" />
-          <label>Option 2</label>
-        </clr-toggle-wrapper>
-        <clr-control-helper>Helper text</clr-control-helper>
-      </clr-toggle-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="Toggle Angular Right Aligned"
-        [componentTemplate]="ngRight"
-        [componentClass]="exampleTs"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.right"></app-doc-example>
 
     <h3 data-toc-item id="disable-toggle" cds-text="subsection" class="clr-mt-32px">Disabled toggle switches</h3>
 
@@ -173,29 +84,7 @@
       ones, as Angular doesn't have support to disable individual checkboxes in a group.
     </p>
 
-    <div class="clr-mt-24px">
-      <clr-toggle-container>
-        <label>Disabled toggle switch example</label>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="test5" value="option1" [(ngModel)]="exampleThree.one" disabled />
-          <label>Option 1</label>
-        </clr-toggle-wrapper>
-        <clr-toggle-wrapper>
-          <input type="checkbox" clrToggle name="test5" value="option2" [(ngModel)]="exampleThree.two" disabled />
-          <label>Option 2</label>
-        </clr-toggle-wrapper>
-        <clr-control-helper>Helper text</clr-control-helper>
-      </clr-toggle-container>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example
-        name="Toggle Angular Disablec"
-        [componentTemplate]="ngDisabled"
-        [componentClass]="exampleTs"
-        [showComponentClass]="false"
-      ></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.disabled"></app-doc-example>
 
     <h2 data-toc-item id="css-component" cds-text="section" class="clr-mt-32px">CSS Toggle Switch Component</h2>
 
@@ -214,18 +103,7 @@
       checkbox input as well.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <div class="clr-control-container">
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="toggle1" name="toggle-basic" value="option1" class="clr-toggle" />
-          <label for="toggle1">My choice</label>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="Toggle CSS Basic" [componentTemplate]="uiBasic"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssBasic"></app-doc-example>
 
     <h3 data-toc-item id="full-input-display" cds-text="subsection" class="clr-mt-32px">Full input display</h3>
 
@@ -235,30 +113,7 @@
       needing to change the DOM structure in any way.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Full toggle switch example</label>
-      <div class="clr-control-container">
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox1" name="checkbox-full" value="option1" class="clr-toggle" />
-          <label for="checkbox1" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox2" name="checkbox-full" value="option2" class="clr-toggle" />
-          <label for="checkbox2" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox3" name="checkbox-full" value="option3" class="clr-toggle" />
-          <label for="checkbox3" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper">
-          <span class="clr-subtext">Helper Text</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="Toggle CSS Full" [componentTemplate]="uiFull"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssFull"></app-doc-example>
 
     <h3 data-toc-item id="error-state" cds-text="subsection" class="clr-mt-32px">Error state</h3>
 
@@ -274,34 +129,7 @@
       <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Error toggle</label>
-      <div class="clr-control-container clr-error">
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox4" name="checkbox-error" value="option1" class="clr-toggle" />
-          <label for="checkbox4" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox5" name="checkbox-error" value="option2" class="clr-toggle" />
-          <label for="checkbox5" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox6" name="checkbox-error" value="option3" class="clr-toggle" />
-          <label for="checkbox6" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper">
-          <span class="clr-subtext">Helper Text</span>
-        </div>
-        <div class="clr-subtext-wrapper error">
-          <cds-icon class="clr-validate-icon" shape="error-standard" status="danger"></cds-icon>
-          <span class="clr-subtext">Error message</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="Toggle CSS Error" [componentTemplate]="uiError"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssError"></app-doc-example>
 
     <h3 data-toc-item id="success-state" cds-text="subsection" class="clr-mt-32px">Success state</h3>
 
@@ -317,34 +145,7 @@
       <code cds-text="code">.success</code> class) remains visible regardless of the validation state.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Success toggle</label>
-      <div class="clr-control-container clr-success">
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox13" name="checkbox-success" value="option1" class="clr-toggle" />
-          <label for="checkbox13" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox14" name="checkbox-success" value="option2" class="clr-toggle" />
-          <label for="checkbox14" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox15" name="checkbox-success" value="option3" class="clr-toggle" />
-          <label for="checkbox15" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper">
-          <span class="clr-subtext">Helper Text</span>
-        </div>
-        <div class="clr-subtext-wrapper success">
-          <cds-icon class="clr-validate-icon" shape="success-standard" status="success"></cds-icon>
-          <span class="clr-subtext">Success message</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="Toggle CSS Success" [componentTemplate]="uiSuccess"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssSuccess"></app-doc-example>
 
     <h3 data-toc-item id="inline-toggle" cds-text="subsection" class="clr-mt-32px">Inline toggle switches</h3>
 
@@ -360,30 +161,7 @@
       you omit this, the validation icon and text may appear in the wrong place.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Inline toggle switches example</label>
-      <div class="clr-control-container clr-control-inline">
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox7" name="checkbox-error" value="option1" class="clr-toggle" />
-          <label for="checkbox7" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox8" name="checkbox-error" value="option2" class="clr-toggle" />
-          <label for="checkbox8" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox9" name="checkbox-error" value="option3" class="clr-toggle" />
-          <label for="checkbox9" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper">
-          <span class="clr-subtext">Helper Text</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="Toggle CSS Inline" [componentTemplate]="uiInline"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssInline"></app-doc-example>
 
     <h3 data-toc-item id="right-toggle-switch" cds-text="subsection" class="clr-mt-32px">
       Right aligned toggle switches
@@ -394,30 +172,7 @@
       <code cds-text="code">clr-toggle-right</code> class to your toggle switch container elements.
     </p>
 
-    <div class="clr-form-control clr-mt-24px">
-      <label class="clr-control-label">Full toggle switch</label>
-      <div class="clr-control-container clr-toggle-right">
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="toggle15" name="toggle-full" value="option1" class="clr-toggle" />
-          <label for="toggle15" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="toggle25" name="toggle-full" value="option2" class="clr-toggle" />
-          <label for="toggle25" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="toggle35" name="toggle-full" value="option3" class="clr-toggle" />
-          <label for="toggle35" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper">
-          <span class="clr-subtext">Helper Text</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="Toggle UI Right Aligned" [componentTemplate]="uiRight"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssRight"></app-doc-example>
 
     <h3 data-toc-item id="disabled-toggle-s" cds-text="subsection" class="clr-mt-32px">Disabled toggle switches</h3>
 
@@ -428,30 +183,7 @@
       disabled.
     </p>
 
-    <div class="clr-form-control clr-form-control-disabled clr-mt-24px">
-      <label class="clr-control-label">Disabled toggle switches example</label>
-      <div class="clr-control-container">
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox10" name="checkbox-disabled" value="option1" class="clr-toggle" disabled />
-          <label for="checkbox10" class="clr-control-label">option 1</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox11" name="checkbox-disabled" value="option2" class="clr-toggle" disabled />
-          <label for="checkbox11" class="clr-control-label">option 2</label>
-        </div>
-        <div class="clr-toggle-wrapper">
-          <input type="checkbox" id="checkbox12" name="checkbox-disabled" value="option3" class="clr-toggle" disabled />
-          <label for="checkbox12" class="clr-control-label">option 3</label>
-        </div>
-        <div class="clr-subtext-wrapper">
-          <span class="clr-subtext">Helper Text</span>
-        </div>
-      </div>
-    </div>
-
-    <div class="clr-mt-24px">
-      <app-stackblitz-example name="Toggle UI Disabled" [componentTemplate]="uiDisabled"></app-stackblitz-example>
-    </div>
+    <app-doc-example previewClass="clr-mt-24px" [example]="examples.cssDisabled"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="overview">

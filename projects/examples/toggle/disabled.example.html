@@ -4,14 +4,29 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<clr-toggle-container class="clr-toggle-right">
-  <label>Full toggle switch</label>
+
+<clr-toggle-container>
+  <label>Disabled toggle switch example</label>
   <clr-toggle-wrapper>
-    <input type="checkbox" clrToggle name="options" value="option1" [(ngModel)]="options.one" />
+    <input
+      type="checkbox"
+      clrToggle
+      name="options"
+      value="option1"
+      [(ngModel)]="options.one"
+      disabled
+    />
     <label>Option 1</label>
   </clr-toggle-wrapper>
   <clr-toggle-wrapper>
-    <input type="checkbox" clrToggle name="options" value="option2" [(ngModel)]="options.two" />
+    <input
+      type="checkbox"
+      clrToggle
+      name="options"
+      value="option2"
+      [(ngModel)]="options.two"
+      disabled
+    />
     <label>Option 2</label>
   </clr-toggle-wrapper>
   <clr-control-helper>Helper text</clr-control-helper>
