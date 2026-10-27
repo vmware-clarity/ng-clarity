@@ -6,11 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrStackViewModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-stack-view-static-demo',
-  templateUrl: './stack-view-static.html',
-  styleUrls: ['./stack-view.demo.scss'],
-  standalone: false,
+  selector: 'clr-stack-view-basic-example',
+  templateUrl: './basic.example.html',
+  imports: [ClrStackViewModule],
 })
-export class StackViewStaticDemo {}
+export class StackViewBasicExample {}

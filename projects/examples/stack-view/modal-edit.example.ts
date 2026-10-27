@@ -5,11 +5,25 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-export class StackViewNgDemo {
-  /*
-   * Modal edit demo
-   */
-  blocks: any[] = [
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { ClrModalModule, ClrStackViewModule } from '@clr/angular';
+
+interface StackViewItem {
+  title: string;
+  content: string;
+  children?: StackViewItem[];
+}
+
+@Component({
+  selector: 'clr-stack-view-modal-edit-example',
+  templateUrl: './modal-edit.example.html',
+  imports: [FormsModule, ClrModalModule, ClrStackViewModule],
+})
+export class StackViewModalEditExample {
+  editModal = false;
+
+  readonly blocks: StackViewItem[] = [
     { title: 'Label 1', content: 'Content 1' },
     {
       title: 'Label 2',
@@ -22,24 +36,4 @@ export class StackViewNgDemo {
     },
     { title: 'Label 3', content: 'Content 3' },
   ];
-
-  editModal = false;
-
-  /*
-   * Lazy loading demo
-   */
-  children: any[] = [];
-
-  fetchChildren(): void {
-    if (this.children.length > 0) {
-      return;
-    }
-    setTimeout(() => {
-      this.children = [
-        { title: 'Sub-label 1', content: 'Sub-content 1' },
-        { title: 'Sub-label 2', content: 'Sub-content 2' },
-        { title: 'Sub-label 3', content: 'Sub-content 3' },
-      ];
-    }, 2000);
-  }
 }
