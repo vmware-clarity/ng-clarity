@@ -1549,5 +1549,128 @@ describe('collectContextTree, open shadow roots', () => {
     const nodes = all(collectContextTreeWithin(container, budgets()).components);
 
     expect(JSON.stringify(nodes)).not.toContain('hunter2');
+    expect(nodes.find(node => node.label === 'Secret')).toEqual(jasmine.objectContaining({ type: 'textbox' }));
+  });
+
+  describe('markers on slots and around them', () => {
+    const card = '<input aria-label="Card number" value="4111111111111111" />';
+
+    for (const [what, shadow] of [
+      ['a redacted slot', '<slot data-clr-context-redact></slot>'],
+      ['a redacted wrapper around the slot', '<div data-clr-context-redact><slot></slot></div>'],
+    ]) {
+      it(`withholds slotted values under ${what}`, () => {
+        const nodes = all(host(shadow, card));
+
+        expect(JSON.stringify(nodes)).not.toContain('4111');
+        expect(nodes.find(node => node.label === 'Card number')).toBeDefined();
+      });
+    }
+
+    for (const [what, shadow] of [
+      ['an ignored slot', '<slot data-clr-context-ignore></slot>'],
+      ['an aria-hidden slot', '<slot aria-hidden="true"></slot>'],
+      ['an ignored wrapper around the slot', '<div data-clr-context-ignore><slot></slot></div>'],
+    ]) {
+      it(`leaves out what ${what} shows`, () => {
+        const nodes = all(host(shadow, card));
+
+        expect(JSON.stringify(nodes)).not.toContain('Card number');
+      });
+    }
+
+    it('describes the fallback content of a slot nothing is assigned to', () => {
+      const nodes = all(host('<slot><button>Fallback</button></slot>'));
+
+      expect(nodes.find(node => node.label === 'Fallback')).toBeDefined();
+    });
+
+    it('keeps the children of a slot that is not in a shadow root', () => {
+      container.innerHTML = '<slot><button>Plain</button></slot>';
+
+      expect(all(collectContextTreeWithin(container, budgets()).components).map(node => node.label)).toContain('Plain');
+    });
+  });
+
+  describe('exclusions', () => {
+    /** Renders `<tag>` inside `wrapper` markup, with `shadow` in its open shadow root. */
+    function inShadowOf(tag: string, shadow: string, wrapper = '%'): void {
+      container.innerHTML = wrapper.replace('%', `<${tag}></${tag}>`);
+      (container.querySelector(tag) as HTMLElement).attachShadow({ mode: 'open' }).innerHTML = shadow;
+    }
+
+    it('keeps an excluded role inside a shadow root out of the host, its label included', () => {
+      inShadowOf('user-table', '<table><tr><th>Email</th></tr><tr><td>alice@corp</td></tr></table>');
+
+      const nodes = collectContextTreeWithin(container, budgets({ excludeRoles: ['table'] })).components;
+
+      expect(JSON.stringify(nodes)).not.toContain('alice@corp');
+    });
+
+    it('hides the shadow content of an excluded host', () => {
+      inShadowOf(
+        'my-card',
+        '<input aria-label="Card number" value="4111111111111111" />',
+        '<div class="billing">%</div>'
+      );
+
+      const nodes = collectContextTreeWithin(container, budgets({ excludeSelectors: ['.billing my-card'] })).components;
+
+      expect(JSON.stringify(nodes)).not.toContain('4111');
+    });
+  });
+
+  it('counts the rows a grid slots in', () => {
+    const nodes = all(
+      host(
+        '<div role="grid" aria-label="Hosts"><slot></slot></div>',
+        '<div role="row"><span role="gridcell">a</span></div><div role="row"><span role="gridcell">b</span></div>'
+      )
+    );
+
+    expect(nodes.find(node => node.type === 'grid')?.state?.['rowCount']).toBe(2);
+  });
+
+  it('focuses on a modal dialog inside a shadow root', () => {
+    container.innerHTML = '<button>Behind</button><modal-host></modal-host>';
+    const root = (container.querySelector('modal-host') as HTMLElement).attachShadow({ mode: 'open' });
+    root.innerHTML = '<div role="dialog" aria-modal="true" aria-label="Confirm"><button>OK</button></div>';
+
+    const result = collectContextTreeWithin(container, budgets({ focus: 'modal' }));
+
+    expect(result.focus).toBe('modal');
+    expect(JSON.stringify(result.components)).not.toContain('Behind');
+  });
+
+  it('does not make a component header inside a section a banner', () => {
+    const nodes = all(host('<header><button>Menu</button></header>'));
+    container.innerHTML = '<section aria-label="Panel"><shadow-host></shadow-host></section>';
+    const root = (container.querySelector('shadow-host') as HTMLElement).attachShadow({ mode: 'open' });
+    root.innerHTML = '<header><button>Menu</button></header>';
+
+    const inSection = all(collectContextTreeWithin(container, budgets()).components);
+
+    expect(nodes.some(node => node.type === 'banner')).toBeTrue();
+    expect(inSection.some(node => node.type === 'banner')).toBeFalse();
+  });
+
+  it('describes icons by their host and never reads the styles in their shadow roots', () => {
+    container.innerHTML =
+      '<button><cds-icon shape="user"></cds-icon>Profile</button><cds-icon role="img" aria-label="Warning"></cds-icon>';
+    for (const icon of Array.from(container.querySelectorAll('cds-icon'))) {
+      icon.attachShadow({ mode: 'open' }).innerHTML = '<style>:host { color: red; }</style><svg></svg>';
+    }
+
+    const nodes = all(collectContextTreeWithin(container, budgets()).components);
+
+    expect(JSON.stringify(nodes)).not.toContain('color');
+    expect(nodes.find(node => node.type === 'button')?.label).toBe('Profile');
+    expect(nodes.find(node => node.type === 'img')?.label).toBe('Warning');
+  });
+
+  it('never reads a style element in a shadow root as text', () => {
+    const nodes = all(host('<style>.x { color: red; }</style><p>Visible</p>'));
+
+    expect(JSON.stringify(nodes)).not.toContain('color');
   });
 });

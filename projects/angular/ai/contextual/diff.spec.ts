@@ -87,5 +87,21 @@ describe('clrDiffContext', () => {
     expect(change.routeChanged).toBe(true);
     expect(change.titleChanged).toBe(true);
     expect(change.regionsChanged).toBe(true);
+    expect(change.viewChanged).toBe(false);
+  });
+
+  it('notices the view changing apart from the route and the annotations', () => {
+    const before = page([], { viewId: 'hosts', metadata: { purpose: 'Hosts' } });
+    for (const after of [
+      page([], { viewId: 'host-detail', metadata: { purpose: 'Hosts' } }),
+      page([], { viewId: 'hosts', metadata: { purpose: 'One host' } }),
+      page([], { viewId: 'hosts', metadata: { purpose: 'Hosts' }, enabled: false }),
+      page([], { viewId: 'hosts', metadata: { purpose: 'Hosts' }, application: { id: 'billing' } }),
+    ]) {
+      const change = clrDiffContext(before, after);
+      expect(change.viewChanged).toBe(true);
+      expect(change.routeChanged).toBe(false);
+      expect(change.regionsChanged).toBe(false);
+    }
   });
 });

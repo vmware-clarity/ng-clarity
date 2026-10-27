@@ -6,6 +6,7 @@
  */
 
 import { isContentEditable } from './aria-state';
+import { closestAcrossShadow, parentAcrossShadow } from './shadow';
 import { ownEntry } from '../lookup';
 import {
   CONTENT_LEAF_ROLES,
@@ -127,9 +128,9 @@ function implicitRole(element: Element): string | null {
       return ROW_HEADER_SCOPES.includes(scope) ? 'rowheader' : 'columnheader';
     }
     case 'header':
-      return element.parentElement?.closest(SECTIONING_SELECTOR) ? null : 'banner';
+      return closestAncestor(element, SECTIONING_SELECTOR) ? null : 'banner';
     case 'footer':
-      return element.parentElement?.closest(SECTIONING_SELECTOR) ? null : 'contentinfo';
+      return closestAncestor(element, SECTIONING_SELECTOR) ? null : 'contentinfo';
     default:
       return ownEntry(IMPLICIT_ROLES_BY_TAG, tagName) ?? null;
   }
@@ -154,4 +155,10 @@ function hasNameAttribute(element: Element): boolean {
     !!element.getAttribute('aria-labelledby')?.trim() ||
     !!element.getAttribute('title')?.trim()
   );
+}
+
+/** The nearest ancestor in the rendered tree matching `selector`, so a component's own markup sits in its page. */
+function closestAncestor(element: Element, selector: string): Element | null {
+  const parent = parentAcrossShadow(element);
+  return parent ? closestAcrossShadow(parent, selector) : null;
 }

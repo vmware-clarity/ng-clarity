@@ -31,6 +31,9 @@ export const CLR_CONTEXT_DIRECTIVES: Type<any>[];
 export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
 
 // @public
+export const CLR_CONTEXT_LOADING_TYPE = "clr-loading";
+
+// @public
 export const CLR_CONTEXT_OPTIONS: InjectionToken<ClrContextSnapshotOptions>;
 
 // @public
@@ -38,6 +41,9 @@ export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<Clr
 
 // @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_UNAVAILABLE_TYPE = "clr-unavailable";
 
 // @public
 export const CLR_CONTEXT_UNTRUSTED_OPTION_KEYS: readonly (keyof ClrContextSnapshotOptions)[];
@@ -100,7 +106,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
                     readonly $ref: "#/definitions/strings";
                 };
                 readonly queryParams: {
-                    readonly $ref: "#/definitions/strings";
+                    readonly $ref: "#/definitions/queryParams";
                 };
                 readonly data: {
                     readonly type: "object";
@@ -146,7 +152,6 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
         };
         readonly collectedAt: {
             readonly type: "string";
-            readonly format: "date-time";
         };
     };
     readonly definitions: {
@@ -154,6 +159,19 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
             readonly type: "object";
             readonly additionalProperties: {
                 readonly type: "string";
+            };
+        };
+        readonly queryParams: {
+            readonly type: "object";
+            readonly additionalProperties: {
+                readonly anyOf: readonly [{
+                    readonly type: "string";
+                }, {
+                    readonly type: "array";
+                    readonly items: {
+                        readonly type: "string";
+                    };
+                }];
             };
         };
         readonly component: {
@@ -183,6 +201,9 @@ export const CLR_PAGE_CONTEXT_SCHEMA: {
         };
     };
 };
+
+// @public
+export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = "1";
 
 // @public
 export interface ClrApplicationContext {
@@ -242,6 +263,12 @@ export interface ClrContextApplicationOptions extends ClrApplicationContext {
 }
 
 // @public
+export interface ClrContextAsyncCollectOptions {
+    filter?: ClrContextRegionFilter;
+    timeoutMs?: number;
+}
+
+// @public
 export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
 
 // @public
@@ -257,6 +284,7 @@ export interface ClrContextChange {
     removed: ClrComponentContext[];
     routeChanged: boolean;
     titleChanged: boolean;
+    viewChanged: boolean;
 }
 
 // @public
@@ -316,7 +344,7 @@ export class ClrContextRegistryService {
     constructor();
     readonly changes$: Observable<void>;
     collect(filter?: ClrContextRegionFilter): ClrComponentContext[];
-    collectAsync(filter: ClrContextRegionFilter | undefined, timeoutMs: number): Promise<ClrComponentContext[]>;
+    collectAsync(options?: ClrContextAsyncCollectOptions): Promise<ClrComponentContext[]>;
     notifyChanged(): void;
     register(provider: ClrContextProvider, element?: Element): () => void;
     unregister(provider: ClrContextProvider): void;
@@ -409,7 +437,7 @@ export interface ClrRouteContext {
     data?: Record<string, unknown>;
     params?: Record<string, string>;
     path?: string;
-    queryParams?: Record<string, string>;
+    queryParams?: Record<string, string | string[]>;
     url: string;
 }
 
