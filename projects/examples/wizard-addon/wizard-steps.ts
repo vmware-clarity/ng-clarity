@@ -5,13 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { CloseHandler, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
-import { AppfxWizardModule } from '@clr/addons/wizard';
-import { Observable, of } from 'rxjs';
-import { delay } from 'rxjs/operators';
+import { StepModel, StepModelHolder, Var } from '@clr/addons/var';
 
 /* ---- Step 1 model ---- */
 export class NameModel implements StepModel {
@@ -22,7 +18,6 @@ export class NameModel implements StepModel {
 /* ---- Step 1 component ---- */
 @Component({
   selector: 'clr-demo-wizard-step1',
-  standalone: true,
   imports: [FormsModule],
   template: `
     <div class="clr-form-group">
@@ -46,7 +41,6 @@ export class StorageModel implements StepModel {
 /* ---- Step 2 component ---- */
 @Component({
   selector: 'clr-demo-wizard-step2',
-  standalone: true,
   imports: [FormsModule],
   template: `
     <div class="clr-form-group">
@@ -70,58 +64,4 @@ export class WizardStep2Component implements StepModelHolder {
 export class DemoWorkflowModel {
   name = Var.of<string>('');
   datastore = Var.of<string>('datastore-1');
-}
-
-/* ---- Wrapper demo component ---- */
-@Component({
-  selector: 'clr-basic-wizard-demo',
-  standalone: true,
-  imports: [CommonModule, AppfxWizardModule, WizardStep1Component, WizardStep2Component],
-  template: `
-    <button class="btn btn-primary" (click)="open()">Open Wizard</button>
-
-    <appfx-wizard
-      title="Create Virtual Machine"
-      [pages]="steps"
-      [wizardModel]="model"
-      [opened]="isOpen"
-      (openedChange)="isOpen = $event"
-      [closeHandler]="closeHandler"
-    ></appfx-wizard>
-  `,
-})
-export class BasicWizardDemoComponent implements OnInit {
-  isOpen = false;
-  model = new DemoWorkflowModel();
-  steps: Step[];
-
-  closeHandler: CloseHandler = {
-    onSubmit: (): Observable<void> => of(undefined).pipe(delay(500)),
-  };
-
-  ngOnInit() {
-    this.steps = [
-      {
-        title: 'Virtual Machine Name',
-        description: 'Specify a unique name for your virtual machine',
-        componentClass: WizardStep1Component,
-        model: new NameModel(),
-        summary: (builder, m: NameModel) => {
-          builder.property('VM Name', m.name.value);
-          return builder.build();
-        },
-      },
-      {
-        title: 'Select Storage',
-        description: 'Choose where to store the virtual machine files',
-        componentClass: WizardStep2Component,
-        model: new StorageModel(),
-      },
-    ];
-  }
-
-  open() {
-    this.model = new DemoWorkflowModel();
-    this.isOpen = true;
-  }
 }

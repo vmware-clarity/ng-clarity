@@ -1,0 +1,3 @@
+{
+  "examples": [{ "id": "basic", "title": "Basic wizard", "targets": ["website", "demo"] }]
+}
