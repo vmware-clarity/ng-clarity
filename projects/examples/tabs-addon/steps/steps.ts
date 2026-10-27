@@ -5,11 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { AppfxTabsModule } from '@clr/addons/tabs';
-import { Step, StepModel, StepModelHolder, TabLayout, Var } from '@clr/addons/var';
+import { Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
 
 // ─── Step 1 model ─────────────────────────────────────────────────────────────
 export class NameModel implements StepModel {
@@ -19,19 +17,24 @@ export class NameModel implements StepModel {
 
 // ─── Step 1 component ─────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-vertical-tabs-name-step',
-  standalone: true,
+  selector: 'clr-tabs-addon-name-step',
   imports: [FormsModule],
   template: `
     <div style="padding: 1rem">
       <div class="clr-form-group">
         <label class="clr-control-label" for="res-name">Resource name</label>
-        <input id="res-name" type="text" class="clr-input" [(ngModel)]="model.name.value" placeholder="my-resource" />
+        <input
+          id="res-name"
+          type="text"
+          class="clr-input"
+          [(ngModel)]="model.name.value"
+          placeholder="my-resource"
+        />
       </div>
     </div>
   `,
 })
-export class VerticalTabsNameStepComponent implements StepModelHolder {
+export class NameStepComponent implements StepModelHolder {
   model: NameModel;
 }
 
@@ -43,8 +46,7 @@ export class RegionModel implements StepModel {
 
 // ─── Step 2 component ─────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-vertical-tabs-region-step',
-  standalone: true,
+  selector: 'clr-tabs-addon-region-step',
   imports: [FormsModule],
   template: `
     <div style="padding: 1rem">
@@ -58,7 +60,7 @@ export class RegionModel implements StepModel {
     </div>
   `,
 })
-export class VerticalTabsRegionStepComponent implements StepModelHolder {
+export class RegionStepComponent implements StepModelHolder {
   model: RegionModel;
 }
 
@@ -69,8 +71,7 @@ export class ReviewModel implements StepModel {
 
 // ─── Step 3 component ─────────────────────────────────────────────────────────
 @Component({
-  selector: 'clr-vertical-tabs-review-step',
-  standalone: true,
+  selector: 'clr-tabs-addon-review-step',
   template: `
     <div style="padding: 1rem">
       <h4>Review</h4>
@@ -78,7 +79,7 @@ export class ReviewModel implements StepModel {
     </div>
   `,
 })
-export class VerticalTabsReviewStepComponent implements StepModelHolder {
+export class ReviewStepComponent implements StepModelHolder {
   model: ReviewModel;
 }
 
@@ -88,29 +89,10 @@ export class TabsWorkflowModel {
   region = Var.of<string>('us-east-1');
 }
 
-// ─── Root component ───────────────────────────────────────────────────────────
-@Component({
-  selector: 'clr-vertical-tabs-demo',
-  standalone: true,
-  imports: [
-    CommonModule,
-    AppfxTabsModule,
-    VerticalTabsNameStepComponent,
-    VerticalTabsRegionStepComponent,
-    VerticalTabsReviewStepComponent,
-  ],
-  template: `<appfx-tabs [tabs]="steps" [model]="workflowModel" [tabLayout]="TabLayout.vertical"></appfx-tabs>`,
-})
-export class VerticalTabsDemoComponent implements OnInit {
-  TabLayout = TabLayout;
-  workflowModel = new TabsWorkflowModel();
-  steps: Step[] = [];
-
-  ngOnInit() {
-    this.steps = [
-      { title: 'Name', componentClass: VerticalTabsNameStepComponent, model: new NameModel() } as Step,
-      { title: 'Region', componentClass: VerticalTabsRegionStepComponent, model: new RegionModel() } as Step,
-      { title: 'Review', componentClass: VerticalTabsReviewStepComponent, model: new ReviewModel() } as Step,
-    ];
-  }
+export function createSteps(): Step[] {
+  return [
+    { title: 'Name', componentClass: NameStepComponent, model: new NameModel() } as Step,
+    { title: 'Region', componentClass: RegionStepComponent, model: new RegionModel() } as Step,
+    { title: 'Review', componentClass: ReviewStepComponent, model: new ReviewModel() } as Step,
+  ];
 }
