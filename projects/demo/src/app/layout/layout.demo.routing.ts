@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { NAVIGATION_EXAMPLES } from '@clr/examples/navigation';
 
 import { LayoutAdditionalSectionsDemo } from './layout-additional-sections';
 import { LayoutAllDemo } from './layout-all';
@@ -17,13 +18,15 @@ import { LayoutSizeDemo } from './layout-size';
 import { LayoutSubnavPrimaryDemo } from './layout-subnav-primary';
 import { LayoutVerticalNavPrimaryDemo } from './layout-vertical-nav-primary';
 import { LayoutDemo } from './layout.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: LayoutDemo,
     children: [
-      { path: '', redirectTo: 'layout-all', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: NAVIGATION_EXAMPLES } },
       { path: 'layout-all', component: LayoutAllDemo },
       { path: 'layout-no-subnav', component: LayoutNoSubnavDemo },
       { path: 'layout-no-vertical-nav', component: LayoutNoVerticalNavDemo },
