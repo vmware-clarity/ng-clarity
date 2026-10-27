@@ -6,23 +6,12 @@
  */
 
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { AppfxA11yModule } from '@clr/addons/a11y';
-import {
-  circleIcon,
-  ClarityIcons,
-  ClrCommonFormsModule,
-  ClrInputModule,
-  ClrPopoverHostDirective,
-  ClrStopEscapePropagationDirective,
-  ClrTabsModule,
-  dotCircleIcon,
-  errorStandardIcon,
-  successStandardIcon,
-} from '@clr/angular';
+import { circleIcon, ClarityIcons, dotCircleIcon, errorStandardIcon, successStandardIcon } from '@clr/angular';
+import { A11Y_EXAMPLES } from '@clr/examples/a11y';
 
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -31,14 +20,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
 import { ClarityDocComponent } from '../clarity-doc';
 import { multiStepPatternLink } from '../pattern-links';
 
-const RequiredFieldsHtml = require('!raw-loader!./ng/required-fields.html').default;
-const RequiredFieldsTs = require('!raw-loader!./ng/required-fields.ts').default;
-const TabsOverflowHtml = require('!raw-loader!./ng/tabs-overflow.html').default;
-const TabsOverflowTs = require('!raw-loader!./ng/tabs-overflow.ts').default;
 const ZoomLevelServiceTs = require('!raw-loader!./ng/zoom-level-service.ts').default;
-const ZoomLevelHtml = require('!raw-loader!./ng/zoom-level.html').default;
-const ZoomLevelScss = require('!raw-loader!./ng/zoom-level.scss').default;
-const ZoomLevelTs = require('!raw-loader!./ng/zoom-level.ts').default;
 
 const ModuleImportExample = `
 import { NgModule } from '@angular/core';
@@ -63,14 +45,8 @@ export class MyModule {}
     DocTabComponent,
     ThemedImageComponent,
     CodeSnippetComponent,
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
-    ClrTabsModule,
-    AppfxA11yModule,
     StackblitzExampleComponent,
-    FormsModule,
-    ClrCommonFormsModule,
-    ClrInputModule,
+    DocExampleComponent,
     AiSkillComponent,
   ],
 })
@@ -78,15 +54,7 @@ export class AcessibilityAddonDemo extends ClarityDocComponent {
   moduleImportExample = ModuleImportExample;
   zoomLevelServiceTs = ZoomLevelServiceTs;
 
-  tabsOverflowHtml = TabsOverflowHtml;
-  tabsOverflowTs = TabsOverflowTs;
-
-  requiredFieldsHtml = RequiredFieldsHtml;
-  requiredFieldsTs = RequiredFieldsTs;
-
-  zoomLevelHtml = ZoomLevelHtml;
-  zoomLevelStyles = ZoomLevelScss;
-  zoomLevelTs = ZoomLevelTs;
+  readonly examples = A11Y_EXAMPLES;
 
   readonly patternLinks: LinkCardsLink[] = [multiStepPatternLink];
 

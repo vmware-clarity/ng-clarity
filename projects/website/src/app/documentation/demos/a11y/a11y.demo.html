@@ -86,25 +86,7 @@
       component to activate automatic overflow detection.
     </p>
 
-    <div class="demo-section">
-      <h4 cds-text="subsection" class="clr-mt-32px">Demo</h4>
-      <div class="clr-mt-16px">
-        <clr-tabs appfxOverflowTabs>
-          @for (tab of [].constructor(10); track tab; let i = $index) {
-          <clr-tab>
-            <button clrTabLink>Clarity Tab {{ i + 1 }}</button>
-            <clr-tab-content>Tab {{ i + 1 }} content</clr-tab-content>
-          </clr-tab>
-          }
-        </clr-tabs>
-      </div>
-    </div>
-
-    <app-stackblitz-example
-      name="tabs-overflow-demo"
-      [componentTemplate]="tabsOverflowHtml"
-      [componentClass]="tabsOverflowTs"
-    ></app-stackblitz-example>
+    <app-doc-example previewClass="clr-mt-16px" [example]="examples.tabsOverflow"></app-doc-example>
 
     <h3 data-toc-item id="required-field-legend-code" cds-text="section" class="clr-mt-32px">Required Field Legend</h3>
     <p cds-text="body" class="clr-mt-16px">
@@ -112,35 +94,7 @@
       form.
     </p>
 
-    <div class="demo-section">
-      <h4 cds-text="subsection" class="clr-mt-32px">Demo</h4>
-      <div class="clr-mt-16px">
-        <form clrForm clrLayout="horizontal">
-          <appfx-required-field-legend></appfx-required-field-legend>
-
-          <clr-input-container>
-            <label class="clr-required-mark" for="control1">Input 1</label>
-            <input clrInput type="text" id="control1" name="control1" />
-          </clr-input-container>
-
-          <clr-input-container>
-            <label class="clr-required-mark" for="control2">Input 2</label>
-            <input clrInput type="text" id="control2" name="control2" />
-          </clr-input-container>
-
-          <clr-input-container>
-            <label for="control3">Input 3</label>
-            <input clrInput type="text" id="control3" name="control3" />
-          </clr-input-container>
-        </form>
-      </div>
-    </div>
-
-    <app-stackblitz-example
-      name="required-fields-demo"
-      [componentTemplate]="requiredFieldsHtml"
-      [componentClass]="requiredFieldsTs"
-    ></app-stackblitz-example>
+    <app-doc-example previewClass="clr-mt-16px" [example]="examples.requiredFields"></app-doc-example>
 
     <h3 data-toc-item id="zoom-indicator-directive" cds-text="section" class="clr-mt-32px">
       Zoom Level Indicator Directive
@@ -148,20 +102,6 @@
     <p cds-text="body" class="clr-mt-16px">
       Supported zoom levels are 200% and 400% with breakpoints based on Bootstrap responsive breakpoints.
     </p>
-
-    <div class="demo-section">
-      <h4 cds-text="subsection" class="clr-mt-32px">Demo</h4>
-      <div class="clr-mt-16px">
-        <span>Background changes according to zoom level</span>
-        <ul class="colors-legend">
-          <li class="my-component no-zoom">No zoom</li>
-          <li class="my-component zoom2x">Zoom2x</li>
-          <li class="my-component zoom4x">Zoom4x</li>
-        </ul>
-
-        <div class="my-component" zoomLevelIndicator>Testing component</div>
-      </div>
-    </div>
 
     <h4 cds-text="subsection" class="clr-mt-32px">Zoom Mappings</h4>
     <table class="table">
@@ -192,12 +132,7 @@
       CSS.
     </p>
 
-    <app-stackblitz-example
-      name="zoom-level-demo"
-      [componentTemplate]="zoomLevelHtml"
-      [componentStyles]="zoomLevelStyles"
-      [componentClass]="zoomLevelTs"
-    ></app-stackblitz-example>
+    <app-doc-example previewClass="clr-mt-16px" [example]="examples.zoomLevel"></app-doc-example>
 
     <h3 data-toc-item id="zoom-indicator-service" cds-text="section" class="clr-mt-32px">Zoom Indicator Service</h3>
     <p cds-text="body" class="clr-mt-16px">A service for detecting zoom level changes programmatically.</p>

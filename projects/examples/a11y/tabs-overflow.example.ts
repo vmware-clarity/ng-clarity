@@ -5,16 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { A11yModule } from '@angular/cdk/a11y';
-import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { AppfxA11yModule } from '@clr/addons/a11y';
 import { ClrTabsModule } from '@clr/angular';
 
 @Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-  standalone: true,
-  imports: [A11yModule, ClrTabsModule, CommonModule],
+  selector: 'clr-a11y-tabs-overflow-example',
+  templateUrl: './tabs-overflow.example.html',
+  imports: [AppfxA11yModule, ClrTabsModule],
 })
-export class ExampleComponent {}
+export class A11yTabsOverflowExample {}
