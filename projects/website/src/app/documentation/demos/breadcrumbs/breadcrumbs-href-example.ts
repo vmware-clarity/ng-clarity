@@ -6,42 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrBreadcrumbsModule } from '@clr/angular';
+import { BREADCRUMBS_EXAMPLES } from '@clr/examples/breadcrumbs';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `<clr-breadcrumbs [items]="breadcrumbs"></clr-breadcrumbs>`;
-
-const TS_EXAMPLE = `
-import { Component } from '@angular/core';
-import { ClrBreadcrumbsModule } from '@clr/angular';
-
-@Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-
-  imports: [ClrBreadcrumbsModule],
-})
-export class ExampleComponent {
-  breadcrumbs = [
-    { label: 'Framework', href: '/framework' },
-    { label: 'Angular', href: '/framework/angular' },
-    { label: 'Clarity', href: '/framework/angular/clarity' },
-  ];
-}
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-breadcrumb-href-example-demo',
   templateUrl: './breadcrumbs-href-example.html',
-  imports: [ClrBreadcrumbsModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class BreadcrumbHrefDemo {
-  htmlExample = HTML_EXAMPLE;
-  tsExample = TS_EXAMPLE;
-  breadcrumbs = [
-    { label: 'Framework', href: 'javascript://;' },
-    { label: 'Angular', href: 'javascript://;' },
-    { label: 'Clarity', href: 'javascript://;' },
-  ];
+  readonly examples = BREADCRUMBS_EXAMPLES;
 }
