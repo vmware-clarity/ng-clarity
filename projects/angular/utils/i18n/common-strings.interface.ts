@@ -392,4 +392,106 @@ export interface ClrCommonStrings {
    * Aria label of a collapsible card's toggle button while the card is expanded
    */
   collapseCardAriaLabel: string;
+
+  // Advanced filters: operator labels. The same operator can have a different label per field type.
+  advancedFilterContains: string;
+  advancedFilterNotContains: string;
+  advancedFilterEquals: string;
+  advancedFilterNotEquals: string;
+  advancedFilterStartsWith: string;
+  advancedFilterEndsWith: string;
+  advancedFilterIsEmpty: string;
+  advancedFilterEqualTo: string;
+  advancedFilterNotEqualTo: string;
+  advancedFilterLessThan: string;
+  advancedFilterLessThanOrEqual: string;
+  advancedFilterGreaterThan: string;
+  advancedFilterGreaterThanOrEqual: string;
+  advancedFilterBetween: string;
+  advancedFilterTrue: string;
+  advancedFilterFalse: string;
+  advancedFilterOnDate: string;
+  advancedFilterBefore: string;
+  advancedFilterBeforeOrEqual: string;
+  advancedFilterAfter: string;
+  advancedFilterAfterOrEqual: string;
+  advancedFilterBetweenDates: string;
+  advancedFilterInSet: string;
+
+  // Advanced filters: the text of a filter in the tree. Tokens: {FIELD}, {VALUE}, {FROM}, {TO}.
+  advancedFilterTextContains: string;
+  advancedFilterTextNotContains: string;
+  advancedFilterTextEquals: string;
+  advancedFilterTextNotEquals: string;
+  advancedFilterTextStartsWith: string;
+  advancedFilterTextEndsWith: string;
+  advancedFilterTextIsEmpty: string;
+  advancedFilterTextEqualTo: string;
+  advancedFilterTextNotEqualTo: string;
+  advancedFilterTextLessThan: string;
+  advancedFilterTextLessThanOrEqual: string;
+  advancedFilterTextGreaterThan: string;
+  advancedFilterTextGreaterThanOrEqual: string;
+  advancedFilterTextBetween: string;
+  advancedFilterTextBoolean: string;
+  advancedFilterTextOnDate: string;
+  advancedFilterTextNotOnDate: string;
+  advancedFilterTextBefore: string;
+  advancedFilterTextBeforeOrEqual: string;
+  advancedFilterTextAfter: string;
+  advancedFilterTextAfterOrEqual: string;
+  advancedFilterTextIn: string;
+  advancedFilterRangeValue: string;
+  advancedFilterValueSeparator: string;
+  advancedFilterMissingValue: string;
+
+  // Advanced filters: the tree, its buttons, the filter popover, validation messages and announcements.
+  advancedFiltersAriaLabel: string;
+  advancedFilterAnd: string;
+  advancedFilterOr: string;
+  advancedFilterLogicAriaLabel: string;
+  advancedFilterGroupAllAriaLabel: string;
+  advancedFilterGroupAnyAriaLabel: string;
+  advancedFilterAddFilter: string;
+  advancedFilterAddGroup: string;
+  advancedFilterRemoveGroup: string;
+  advancedFilterRemoveFilter: string;
+  advancedFilterEditFilter: string;
+  advancedFilterEditDialog: string;
+  advancedFilterClearAll: string;
+  advancedFilterApply: string;
+  advancedFilterCancel: string;
+  advancedFilterField: string;
+  advancedFilterFieldPlaceholder: string;
+  advancedFilterOperator: string;
+  advancedFilterValue: string;
+  advancedFilterFrom: string;
+  advancedFilterTo: string;
+  advancedFilterMaxDepth: string;
+  advancedFilterIncomplete: string;
+  advancedFilterErrorRequired: string;
+  advancedFilterErrorUnsupportedOperator: string;
+  advancedFilterErrorInvalidNumber: string;
+  advancedFilterErrorInvalidDate: string;
+  advancedFilterErrorInvalidRange: string;
+  advancedFilterErrorDuplicateValue: string;
+  advancedFilterAnnounceApplied: string;
+  advancedFilterAnnounceRemoved: string;
+  advancedFilterAnnounceGroupAdded: string;
+  advancedFilterAnnounceGroupRemoved: string;
+  advancedFilterAnnounceCleared: string;
+  // Advanced filters: the pills layout and its popover. Tokens: {OPERATOR}, {VALUE}, {COUNT}, {LEFT}, {RIGHT}, {INDEX}.
+  advancedFilterPillCondition: string;
+  advancedFilterPillMore: string;
+  advancedFilterPillSummary: string;
+  advancedFilterPillSummaryOne: string;
+  advancedFilterPillDuplicate: string;
+  advancedFilterPillReadOnly: string;
+  advancedFilterExpressionAnd: string;
+  advancedFilterExpressionOr: string;
+  advancedFilterCondition: string;
+  advancedFilterAdd: string;
+  advancedFilterAddCondition: string;
+  advancedFilterRemoveCondition: string;
+  advancedFilterClearCondition: string;
 }

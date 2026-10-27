@@ -1,0 +1,119 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<form clrForm clrLayout="vertical" class="clr-advanced-filters-pill-editor" novalidate (ngSubmit)="submit()">
+  <div class="clr-advanced-filters-pill-field-row" [class.clr-advanced-filters-field-section]="!!field">
+    <clr-combobox-container class="clr-advanced-filters-field">
+      <label class="clr-sr-only">{{ commonStrings.keys.advancedFilterField }}</label>
+      <clr-combobox
+        name="field"
+        required
+        [disabled]="locked"
+        [placeholder]="commonStrings.keys.advancedFilterFieldPlaceholder"
+        [ngModel]="field"
+        (ngModelChange)="selectField($event)"
+      >
+        <clr-options>
+          <clr-option *clrOptionItems="let option of options; field: 'label'" [clrValue]="option">
+            {{ option.label }}
+          </clr-option>
+        </clr-options>
+      </clr-combobox>
+    </clr-combobox-container>
+    @if (supportsLogic) {
+    <div
+      class="btn-group btn-sm clr-advanced-filters-logic"
+      role="radiogroup"
+      [attr.aria-label]="commonStrings.keys.advancedFilterLogicAriaLabel"
+    >
+      <div class="radio btn">
+        <input
+          type="radio"
+          [id]="id + '-and'"
+          [name]="id + '-logic'"
+          [checked]="logic === logics.AND"
+          (change)="setLogic(logics.AND)"
+        />
+        <label [for]="id + '-and'">{{ commonStrings.keys.advancedFilterAnd }}</label>
+      </div>
+      <div class="radio btn">
+        <input
+          type="radio"
+          [id]="id + '-or'"
+          [name]="id + '-logic'"
+          [checked]="logic === logics.OR"
+          (change)="setLogic(logics.OR)"
+        />
+        <label [for]="id + '-or'">{{ commonStrings.keys.advancedFilterOr }}</label>
+      </div>
+    </div>
+    }
+  </div>
+
+  @if (field) { @for (row of rows; track row.id; let index = $index; let last = $last) {
+  <div class="clr-advanced-filters-pill-row" role="group" [attr.aria-label]="conditionLabel(index)">
+    @if (operators.length > 1) {
+    <clr-select-container class="clr-advanced-filters-pill-operator">
+      <label class="clr-sr-only" [for]="row.id + '-operator'">{{ commonStrings.keys.advancedFilterOperator }}</label>
+      <select
+        clrSelect
+        [id]="row.id + '-operator'"
+        [name]="row.id + '-operator'"
+        [ngModel]="row.operator"
+        (ngModelChange)="selectOperator(row, $event)"
+      >
+        @for (option of operators; track option) {
+        <option [ngValue]="option">{{ operatorLabel(option) }}</option>
+        }
+      </select>
+    </clr-select-container>
+    }
+    <clr-advanced-filters-value
+      class="clr-advanced-filters-pill-value-editor"
+      [field]="field"
+      [operator]="row.operator"
+      [value]="row.value"
+      [error]="error(row)"
+      [inline]="true"
+      (valueChange)="row.value = $event"
+    ></clr-advanced-filters-value>
+    <clr-tooltip class="clr-advanced-filters-pill-row-remove-tooltip">
+      <button
+        type="button"
+        class="btn btn-sm btn-link btn-icon clr-advanced-filters-pill-row-remove"
+        clrTooltipTrigger
+        [disabled]="!canRemove(row)"
+        [attr.aria-label]="removeLabel()"
+        (click)="removeRow(row)"
+      >
+        <cds-icon shape="times"></cds-icon>
+      </button>
+      <clr-tooltip-content clrPosition="top-left" clrSize="sm">{{ removeLabel() }}</clr-tooltip-content>
+    </clr-tooltip>
+  </div>
+  @if (supportsLogic) { @if (last) {
+  <button
+    type="button"
+    class="btn btn-sm btn-outline clr-advanced-filters-add-condition"
+    [attr.aria-label]="commonStrings.keys.advancedFilterAddCondition"
+    (click)="addRow()"
+  >
+    {{ commonStrings.keys.advancedFilterAdd }}
+  </button>
+  } @else {
+  <!-- The logic between two rows; it is changed with the switch next to the field. -->
+  <button type="button" class="btn btn-sm btn-outline clr-advanced-filters-logic-label" disabled>
+    {{ logicLabel }}
+  </button>
+  } } } }
+
+  <div class="clr-advanced-filters-editor-actions">
+    <button type="submit" class="btn btn-sm btn-primary" [disabled]="!complete">
+      {{ commonStrings.keys.advancedFilterApply }}
+    </button>
+  </div>
+</form>

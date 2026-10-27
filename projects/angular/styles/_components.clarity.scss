@@ -148,6 +148,11 @@
 
 @forward '../data/datagrid/datagrid.clarity';
 
+//Advanced filters
+//depends on variables.clarity, mixins.clarity, tree-view.clarity, forms.clarity
+
+@forward '../data/advanced-filters/advanced-filters.clarity';
+
 //Animations
 // no dependencies on other clarity scss
 

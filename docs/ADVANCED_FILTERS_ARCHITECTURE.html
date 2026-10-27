@@ -1,0 +1,2416 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>clr-advanced-filters: architecture</title>
+    <style>
+      :root {
+        --public: #0072a3;
+        --public-bg: #e1f1f6;
+        --internal: #6b6b6b;
+        --internal-bg: #f2f2f2;
+        --iface: #6c4ea3;
+        --iface-bg: #efeaf7;
+        --enum: #2e7d32;
+        --enum-bg: #e8f3e8;
+        --ui: #a35200;
+        --ui-bg: #fdf1e4;
+        --note-bg: #fffbe6;
+        --ink: #1b1b1b;
+        --muted: #565656;
+        --line: #9a9a9a;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font:
+          14px/1.5 'Segoe UI',
+          system-ui,
+          sans-serif;
+        color: var(--ink);
+        background: #fafafa;
+      }
+      header {
+        padding: 28px 40px 18px;
+        background: #fff;
+        border-bottom: 1px solid #ddd;
+      }
+      header h1 {
+        margin: 0 0 6px;
+        font-size: 24px;
+      }
+      header p {
+        margin: 0;
+        color: var(--muted);
+        max-width: 1100px;
+      }
+      nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 14px;
+        margin-top: 14px;
+      }
+      nav a {
+        color: var(--public);
+        text-decoration: none;
+        font-size: 13px;
+      }
+      nav a:hover {
+        text-decoration: underline;
+      }
+      main {
+        padding: 10px 40px 60px;
+        max-width: 1320px;
+      }
+      section {
+        margin-top: 34px;
+      }
+      h2 {
+        font-size: 19px;
+        margin: 0 0 4px;
+      }
+      h2 .num {
+        color: var(--muted);
+        font-weight: 400;
+        margin-right: 6px;
+      }
+      h3.sub {
+        font-size: 15px;
+        margin: 18px 0 6px;
+      }
+      .lead {
+        margin: 0 0 14px;
+        color: var(--muted);
+        max-width: 1100px;
+      }
+      .card {
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 6px;
+        padding: 16px;
+        overflow-x: auto;
+      }
+      .card svg {
+        width: 100%;
+        height: auto;
+        display: block;
+      }
+      svg text {
+        font-family: 'Segoe UI', system-ui, sans-serif;
+      }
+      svg text.mono,
+      svg .mono text {
+        font-family: Consolas, 'Cascadia Mono', monospace;
+        font-size: 12.5px;
+      }
+      svg .title {
+        font-weight: 600;
+        font-size: 14px;
+      }
+      svg .stereo {
+        font-size: 11.5px;
+        fill: var(--muted);
+        font-style: italic;
+      }
+      svg .label {
+        font-size: 12px;
+        fill: #333;
+      }
+      svg .small {
+        font-size: 11.5px;
+        fill: var(--muted);
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px 22px;
+        margin-top: 14px;
+        font-size: 13px;
+      }
+      .legend span {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+      }
+      .swatch {
+        width: 18px;
+        height: 12px;
+        border: 2px solid;
+        border-radius: 2px;
+        display: inline-block;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 13px;
+        background: #fff;
+      }
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 6px 9px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: #f4f6f8;
+        font-weight: 600;
+      }
+      td code,
+      li code,
+      p code,
+      th code {
+        font-family: Consolas, 'Cascadia Mono', monospace;
+        font-size: 12.5px;
+        background: #f2f4f6;
+        padding: 0 3px;
+        border-radius: 3px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+        gap: 14px;
+      }
+      .enum {
+        border: 2px solid var(--enum);
+        background: var(--enum-bg);
+        border-radius: 6px;
+        padding: 10px 12px;
+      }
+      .enum.internal {
+        border-color: var(--internal);
+        background: var(--internal-bg);
+      }
+      .enum h3 {
+        margin: 0 0 6px;
+        font-size: 14px;
+      }
+      .enum .tag {
+        font-size: 11px;
+        color: var(--muted);
+        font-weight: 400;
+        margin-left: 6px;
+      }
+      .enum ul {
+        margin: 0;
+        padding-left: 0;
+        list-style: none;
+        font-family: Consolas, monospace;
+        font-size: 12.5px;
+      }
+      .enum li {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 0 10px;
+        border-top: 1px dashed #c9d9c9;
+        padding: 2px 0;
+      }
+      .enum li span:last-child {
+        margin-left: auto;
+      }
+      .enum.internal li {
+        border-top-color: #d6d6d6;
+      }
+      .enum li span:last-child {
+        color: var(--muted);
+      }
+      .mx td.on {
+        background: #eaf6ea;
+      }
+      .mx td.off {
+        color: #bbb;
+        text-align: center;
+      }
+      .mx td.parked {
+        background: #f4f4f4;
+      }
+      .mx .tx {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+      }
+      .checks li {
+        margin: 4px 0;
+      }
+      .two {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+      @media (max-width: 1000px) {
+        .two {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>clr-advanced-filters: architecture</h1>
+      <p>
+        The model and validators (phase 1a), the tree UI (phase 1b) and the pills layout (phase 1c). Entry point
+        <code>@clr/angular/data/advanced-filters</code>, folder <code>projects/angular/data/advanced-filters/</code>.
+        Everything on this page is taken from the code in the worktree.
+      </p>
+      <div class="legend">
+        <span
+          ><i class="swatch" style="border-color: var(--public); background: var(--public-bg)"></i>public class</span
+        >
+        <span
+          ><i class="swatch" style="border-color: var(--iface); background: var(--iface-bg)"></i>public interface /
+          type</span
+        >
+        <span><i class="swatch" style="border-color: var(--enum); background: var(--enum-bg)"></i>public enum</span>
+        <span
+          ><i class="swatch" style="border-color: var(--ui); background: var(--ui-bg)"></i>UI part: exported, but
+          internal</span
+        >
+        <span
+          ><i class="swatch" style="border-color: var(--internal); background: var(--internal-bg)"></i>internal (not
+          exported)</span
+        >
+      </div>
+      <nav>
+        <a href="#files">1 · Files</a><a href="#classes">2 · Class diagram</a
+        ><a href="#components">3 · Component tree</a> <a href="#flow">4 · A change, step by step</a
+        ><a href="#ops">5 · Every mutating call</a> <a href="#reentrancy">6 · Changes made by subscribers</a
+        ><a href="#popover">7 · Add and edit</a> <a href="#validation">8 · Validation</a
+        ><a href="#values">9 · Values per field type</a> <a href="#operators">10 · Operators per type</a
+        ><a href="#enums">11 · Enums</a><a href="#invariants">12 · Invariants</a><a href="#pills">13 · Pills</a>
+      </nav>
+    </header>
+
+    <main>
+      <!-- ============================================================ 1 FILES -->
+      <section id="files">
+        <h2><span class="num">1</span>Files</h2>
+        <p class="lead">
+          One symbol per file. Specs sit next to the files they test. The UI parts are exported from
+          <code>index.ts</code> only because the module declares them; the code calls them internal.
+          <code>ip-address/</code> and <code>date-time/</code> are parked: not exported, not used yet. The files added
+          by phase 1c are listed below the diagram.
+        </p>
+        <div class="card">
+          <svg width="1240" height="690" viewBox="0 0 1240 690" role="img" aria-label="Folder and file layout">
+            <defs>
+              <style>
+                .f {
+                  font-family: Consolas, monospace;
+                  font-size: 12.5px;
+                }
+              </style>
+            </defs>
+            <!-- col 1: root -->
+            <rect x="10" y="10" width="400" height="166" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="24" y="34" class="title">(folder root)</text>
+            <rect x="24" y="46" width="372" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="34" y="62" class="f">index.ts · ng-package.json</text>
+            <rect x="24" y="76" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="34" y="92" class="f">advanced-filters.module.ts</text>
+            <rect x="24" y="106" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="34" y="122" class="f">advanced-filters.ts</text>
+            <rect x="24" y="136" width="372" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="34" y="152" class="f">_advanced-filters.clarity.scss</text>
+
+            <!-- col 1: enums -->
+            <rect x="10" y="186" width="400" height="226" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="24" y="210" class="title">enums/</text>
+            <rect x="24" y="222" width="372" height="24" rx="4" fill="var(--enum-bg)" stroke="var(--enum)" />
+            <text x="34" y="238" class="f">advanced-filter-logic.enum.ts</text>
+            <rect x="24" y="252" width="372" height="24" rx="4" fill="var(--enum-bg)" stroke="var(--enum)" />
+            <text x="34" y="268" class="f">advanced-filter-operator.enum.ts</text>
+            <rect x="24" y="282" width="372" height="24" rx="4" fill="var(--enum-bg)" stroke="var(--enum)" />
+            <text x="34" y="298" class="f">advanced-filter-field-type.enum.ts</text>
+            <rect x="24" y="312" width="372" height="24" rx="4" fill="var(--enum-bg)" stroke="var(--enum)" />
+            <text x="34" y="328" class="f">advanced-filter-validation-error.enum.ts</text>
+            <rect x="24" y="342" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="34" y="358" class="f">advanced-filter-operator-arity.enum.ts</text>
+            <rect x="24" y="372" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="34" y="388" class="f">advanced-filter-value-editor.enum.ts</text>
+
+            <!-- col 1: interfaces -->
+            <rect x="10" y="422" width="400" height="256" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="24" y="446" class="title">interfaces/</text>
+            <rect x="24" y="458" width="372" height="24" rx="4" fill="var(--iface-bg)" stroke="var(--iface)" />
+            <text x="34" y="474" class="f">advanced-filter-field.interface.ts</text>
+            <rect x="24" y="488" width="372" height="24" rx="4" fill="var(--iface-bg)" stroke="var(--iface)" />
+            <text x="34" y="504" class="f">advanced-filter-option.interface.ts</text>
+            <rect x="24" y="518" width="372" height="24" rx="4" fill="var(--iface-bg)" stroke="var(--iface)" />
+            <text x="34" y="534" class="f">advanced-filter-condition.interface.ts</text>
+            <rect x="24" y="548" width="372" height="24" rx="4" fill="var(--iface-bg)" stroke="var(--iface)" />
+            <text x="34" y="564" class="f">advanced-filter-change.interface.ts</text>
+            <rect x="24" y="578" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="34" y="594" class="f">advanced-filter-operator-definition.interface.ts</text>
+            <rect x="24" y="608" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="34" y="624" class="f">advanced-filter-edit.interface.ts</text>
+            <rect x="24" y="638" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="34" y="654" class="f">advanced-filters-tree-item.interface.ts</text>
+
+            <!-- col 2: models -->
+            <rect x="420" y="10" width="400" height="166" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="434" y="34" class="title">models/</text>
+            <rect x="434" y="46" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="62" class="f">advanced-filter-node.model.ts</text>
+            <rect x="434" y="76" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="92" class="f">advanced-filter-group.model.ts</text>
+            <rect x="434" y="106" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="122" class="f">advanced-filter.model.ts</text>
+            <rect x="434" y="136" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="444" y="152" class="f">change-queue.ts</text>
+
+            <!-- col 2: validators -->
+            <rect x="420" y="186" width="400" height="316" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="434" y="210" class="title">validators/</text>
+            <rect x="434" y="222" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="238" class="f">advanced-filter-validator.ts</text>
+            <rect x="434" y="252" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="268" class="f">advanced-filter-validation-exception.ts</text>
+            <rect x="434" y="282" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="298" class="f">string-filter-validator.ts</text>
+            <rect x="434" y="312" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="328" class="f">number-filter-validator.ts</text>
+            <rect x="434" y="342" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="358" class="f">boolean-filter-validator.ts</text>
+            <rect x="434" y="372" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="388" class="f">date-filter-validator.ts</text>
+            <rect x="434" y="402" width="372" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="418" class="f">enum-filter-validator.ts</text>
+            <rect x="434" y="432" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="444" y="448" class="f">advanced-filter-validator-builder.ts</text>
+            <rect x="434" y="462" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="444" y="478" class="f">advanced-filter-iso-date.ts</text>
+
+            <!-- col 2: ip-address (parked) -->
+            <rect x="420" y="512" width="400" height="166" rx="6" fill="#fff" stroke="#bbb" stroke-dasharray="5 4" />
+            <text x="434" y="536" class="title">ip-address/</text>
+            <text x="530" y="536" class="small">parked · not exported</text>
+            <rect x="434" y="548" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="444" y="564" class="f">ip-address-filter-validator.ts</text>
+            <rect x="434" y="578" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="444" y="594" class="f">ip-address-operators.ts</text>
+            <rect x="434" y="608" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="444" y="624" class="f">ip-address-validation-error.enum.ts</text>
+            <rect x="434" y="638" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="444" y="654" class="f">parsed-ip-address.interface.ts</text>
+
+            <!-- col 3: group -->
+            <rect x="830" y="10" width="400" height="106" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="844" y="34" class="title">group/</text>
+            <rect x="844" y="46" width="372" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="62" class="f">advanced-filters-group.ts · .html</text>
+            <rect x="844" y="76" width="372" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="92" class="f">advanced-filters-add-filter.ts</text>
+
+            <!-- col 3: filter -->
+            <rect x="830" y="126" width="400" height="106" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="844" y="150" class="title">filter/</text>
+            <rect x="844" y="162" width="372" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="178" class="f">advanced-filters-filter.ts</text>
+            <rect x="844" y="192" width="372" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="208" class="f">advanced-filter-text.ts</text>
+
+            <!-- col 3: editor -->
+            <rect x="830" y="242" width="400" height="106" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="844" y="266" class="title">editor/</text>
+            <rect x="844" y="278" width="372" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="294" class="f">advanced-filters-editor.ts · .html</text>
+            <rect x="844" y="308" width="372" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="324" class="f">advanced-filters-error.directive.ts</text>
+
+            <!-- col 3: value -->
+            <rect x="830" y="358" width="400" height="76" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="844" y="382" class="title">value/</text>
+            <rect x="844" y="394" width="372" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="410" class="f">advanced-filters-value.ts · .html</text>
+
+            <!-- col 3: date-time (parked) -->
+            <rect x="830" y="444" width="400" height="106" rx="6" fill="#fff" stroke="#bbb" stroke-dasharray="5 4" />
+            <text x="844" y="468" class="title">date-time/</text>
+            <text x="934" y="468" class="small">parked · not exported</text>
+            <rect x="844" y="480" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="854" y="496" class="f">date-time-filter-validator.ts</text>
+            <rect x="844" y="510" width="372" height="24" rx="4" fill="var(--internal-bg)" stroke="var(--internal)" />
+            <text x="854" y="526" class="f">date-time-operators.ts</text>
+
+            <!-- col 3: outside -->
+            <rect x="830" y="560" width="400" height="118" rx="6" fill="var(--note-bg)" stroke="#d9c58a" />
+            <text x="844" y="584" class="title">Outside the folder</text>
+            <text x="844" y="604" class="small">data/index.ts, data/data.module.ts: export and wiring</text>
+            <text x="844" y="620" class="small">utils/i18n: the advancedFilter… strings</text>
+            <text x="844" y="636" class="small">forms/datepicker/index.ts: exports DateIOService and</text>
+            <text x="844" y="652" class="small">LocaleHelperService</text>
+            <text x="844" y="668" class="small">styles/_components.clarity.scss: forwards the styles</text>
+          </svg>
+        </div>
+        <h3 class="sub">Added in phase 1c (pills)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Folder</th>
+              <th>Files</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>enums/</code></td>
+              <td>
+                <code>advanced-filter-layout.enum.ts</code> (public),
+                <code>advanced-filter-pill-kind.enum.ts</code> (internal)
+              </td>
+            </tr>
+            <tr>
+              <td><code>interfaces/</code></td>
+              <td>
+                <code>advanced-filter-pill.interface.ts</code>, <code>advanced-filter-pill-row.interface.ts</code>,
+                <code>advanced-filter-pill-edit.interface.ts</code> (internal)
+              </td>
+            </tr>
+            <tr>
+              <td><code>pills/</code></td>
+              <td>
+                <code>advanced-filter-pills.ts</code> (the rules), <code>advanced-filters-pills.ts</code> (the row),
+                <code>advanced-filters-pill.ts</code>, <code>advanced-filters-pill-add.ts</code>,
+                <code>advanced-filters-pill-editor.ts · .html</code>: UI parts, exported but internal
+              </td>
+            </tr>
+            <tr>
+              <td>changed</td>
+              <td>
+                <code>advanced-filters.ts</code> (<code>clrLayout</code>), <code>advanced-filters.module.ts</code>,
+                <code>index.ts</code>, <code>filter/advanced-filter-text.ts</code> (<code>formatCondition()</code>,
+                <code>join()</code>), <code>value/advanced-filters-value.*</code> (<code>inline</code>), the styles, 13
+                strings in <code>utils/i18n</code>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ============================================================ 2 CLASSES -->
+      <section id="classes">
+        <h2><span class="num">2</span>Class diagram: model and validators</h2>
+        <p class="lead">
+          <code>+</code> public, <code>#</code> protected, <code>−</code> private. Groups only accept the two node
+          classes. A filter keeps its field definition by reference and reads its validator once, in the constructor.
+        </p>
+        <div class="card">
+          <svg width="1240" height="1350" viewBox="0 0 1240 1350" role="img" aria-label="Class diagram">
+            <defs>
+              <marker
+                id="tri"
+                viewBox="0 0 12 12"
+                refX="11"
+                refY="6"
+                markerWidth="14"
+                markerHeight="14"
+                orient="auto-start-reverse"
+              >
+                <path d="M1,1 L11,6 L1,11 Z" fill="#fff" stroke="#444" stroke-width="1.2" />
+              </marker>
+              <marker
+                id="arr"
+                viewBox="0 0 10 10"
+                refX="9"
+                refY="5"
+                markerWidth="9"
+                markerHeight="9"
+                orient="auto-start-reverse"
+              >
+                <path d="M0,0 L10,5 L0,10 Z" fill="#444" />
+              </marker>
+              <marker
+                id="dia"
+                viewBox="0 0 16 10"
+                refX="1"
+                refY="5"
+                markerWidth="16"
+                markerHeight="10"
+                orient="auto-start-reverse"
+              >
+                <path d="M1,5 L8,1 L15,5 L8,9 Z" fill="#444" />
+              </marker>
+            </defs>
+
+            <!-- ClrAdvancedFilterNode -->
+            <rect
+              x="380"
+              y="20"
+              width="460"
+              height="250"
+              rx="6"
+              fill="var(--public-bg)"
+              stroke="var(--public)"
+              stroke-width="2"
+            />
+            <text x="610" y="42" text-anchor="middle" class="stereo">«abstract»</text>
+            <text x="610" y="62" text-anchor="middle" class="title">ClrAdvancedFilterNode</text>
+            <line x1="380" y1="72" x2="840" y2="72" stroke="var(--public)" />
+            <g class="mono">
+              <text x="392" y="92">+ readonly id: string</text>
+              <text x="392" y="111">+ get parent(): ClrAdvancedFilterGroup | null</text>
+              <text x="392" y="130">+ get changes(): Observable&lt;ClrAdvancedFilterChange&gt;</text>
+              <text x="392" y="149">+ remove(): void</text>
+              <text x="392" y="168">+ abstract toJSON(): object</text>
+            </g>
+            <line x1="380" y1="178" x2="840" y2="178" stroke="var(--public)" stroke-dasharray="3 3" />
+            <g class="mono" fill="#444">
+              <text x="392" y="197"># linkChild(child) # unlinkChild(child)</text>
+              <text x="392" y="216"># detachChild(child) # emitChange(...changed)</text>
+              <text x="392" y="235">− _parent − _changes (Subject, created lazily)</text>
+            </g>
+            <text x="392" y="258" class="small">id = uniqueIdFactory(), set once at construction</text>
+
+            <!-- ClrAdvancedFilterChange -->
+            <rect
+              x="900"
+              y="20"
+              width="320"
+              height="96"
+              rx="6"
+              fill="var(--iface-bg)"
+              stroke="var(--iface)"
+              stroke-width="2"
+            />
+            <text x="1060" y="42" text-anchor="middle" class="stereo">«interface»</text>
+            <text x="1060" y="62" text-anchor="middle" class="title">ClrAdvancedFilterChange</text>
+            <line x1="900" y1="72" x2="1220" y2="72" stroke="var(--iface)" />
+            <text x="912" y="94" class="mono">+ readonly node: ClrAdvancedFilterNode</text>
+            <text x="912" y="110" class="small">the node whose own state changed</text>
+            <path d="M840,60 L900,60" stroke="#444" stroke-dasharray="6 4" fill="none" marker-end="url(#arr)" />
+            <text x="848" y="52" class="label">emits</text>
+
+            <!-- AdvancedFilterChangeQueue -->
+            <rect
+              x="900"
+              y="150"
+              width="320"
+              height="120"
+              rx="6"
+              fill="var(--internal-bg)"
+              stroke="var(--internal)"
+              stroke-width="2"
+            />
+            <text x="1060" y="172" text-anchor="middle" class="stereo">«internal» singleton</text>
+            <text x="1060" y="192" text-anchor="middle" class="title">AdvancedFilterChangeQueue</text>
+            <line x1="900" y1="202" x2="1220" y2="202" stroke="var(--internal)" />
+            <g class="mono">
+              <text x="912" y="222">+ static readonly instance</text>
+              <text x="912" y="240">− private constructor()</text>
+              <text x="912" y="258">+ deliver(deliveries): void</text>
+            </g>
+            <path d="M840,232 L900,232" stroke="#444" stroke-dasharray="6 4" fill="none" marker-end="url(#arr)" />
+            <text x="852" y="224" class="label">uses</text>
+
+            <!-- ClrAdvancedFilterGroup -->
+            <rect
+              x="20"
+              y="330"
+              width="440"
+              height="230"
+              rx="6"
+              fill="var(--public-bg)"
+              stroke="var(--public)"
+              stroke-width="2"
+            />
+            <text x="240" y="354" text-anchor="middle" class="title">ClrAdvancedFilterGroup</text>
+            <line x1="20" y1="364" x2="460" y2="364" stroke="var(--public)" />
+            <g class="mono">
+              <text x="32" y="384">+ get logic / set logic: ClrAdvancedFilterLogic</text>
+              <text x="32" y="403">+ get children(): readonly Node[] frozen</text>
+              <text x="32" y="422">+ addChild&lt;T&gt;(node: T, index?: number): T</text>
+              <text x="32" y="441">+ clear(): void no children, AND, same id</text>
+              <text x="32" y="460">+ toJSON(): { id, logic, children }</text>
+            </g>
+            <line x1="20" y1="470" x2="460" y2="470" stroke="var(--public)" stroke-dasharray="3 3" />
+            <g class="mono" fill="#444">
+              <text x="32" y="489"># override detachChild(child)</text>
+              <text x="32" y="508">− _logic = AND − _children (copy-on-write)</text>
+            </g>
+            <text x="32" y="530" class="small">No constructor arguments: a new group is an empty AND group.</text>
+            <text x="32" y="548" class="small">The logic setter throws for a value outside the enum.</text>
+
+            <!-- ClrAdvancedFilter -->
+            <rect
+              x="760"
+              y="330"
+              width="460"
+              height="230"
+              rx="6"
+              fill="var(--public-bg)"
+              stroke="var(--public)"
+              stroke-width="2"
+            />
+            <text x="990" y="354" text-anchor="middle" class="title">ClrAdvancedFilter</text>
+            <line x1="760" y1="364" x2="1220" y2="364" stroke="var(--public)" />
+            <g class="mono">
+              <text x="772" y="384">+ constructor(field, operator, value?)</text>
+              <text x="772" y="403">+ get field(): ClrAdvancedFilterField</text>
+              <text x="772" y="422">+ get / set operator: ClrAdvancedFilterOperator</text>
+              <text x="772" y="441">+ get / set value: ClrAdvancedFilterValue | undefined</text>
+              <text x="772" y="460">+ get error(): ClrAdvancedFilterValidationError | null</text>
+              <text x="772" y="479">+ set(operator, value?): void</text>
+              <text x="772" y="498">+ toJSON(): { id, field: key, operator, value }</text>
+            </g>
+            <line x1="760" y1="508" x2="1220" y2="508" stroke="var(--public)" stroke-dasharray="3 3" />
+            <g class="mono" fill="#444">
+              <text x="772" y="527">− _field − _validator − _operator − _value</text>
+            </g>
+            <text x="772" y="548" class="small">_validator: field.validator, or the base validator</text>
+
+            <!-- inheritance -->
+            <path d="M240,330 L240,305 L520,305 L520,270" stroke="#444" fill="none" marker-end="url(#tri)" />
+            <path d="M990,330 L990,305 L700,305 L700,270" stroke="#444" fill="none" marker-end="url(#tri)" />
+            <text x="530" y="298" class="small">extends</text>
+            <text x="640" y="298" class="small">extends</text>
+
+            <!-- children composition -->
+            <path
+              d="M60,330 L60,150 L380,150"
+              stroke="#444"
+              fill="none"
+              marker-start="url(#dia)"
+              marker-end="url(#arr)"
+            />
+            <text x="70" y="142" class="label">children 0..* (ordered)</text>
+            <!-- parent link -->
+            <path
+              d="M380,228 L160,228 L160,330"
+              stroke="#444"
+              stroke-dasharray="6 4"
+              fill="none"
+              marker-end="url(#arr)"
+            />
+            <text x="170" y="220" class="label">parent 0..1</text>
+
+            <!-- ClrAdvancedFilterField -->
+            <rect
+              x="760"
+              y="600"
+              width="460"
+              height="180"
+              rx="6"
+              fill="var(--iface-bg)"
+              stroke="var(--iface)"
+              stroke-width="2"
+            />
+            <text x="990" y="622" text-anchor="middle" class="stereo">«interface» consumer configuration</text>
+            <text x="990" y="642" text-anchor="middle" class="title">ClrAdvancedFilterField</text>
+            <line x1="760" y1="652" x2="1220" y2="652" stroke="var(--iface)" />
+            <g class="mono">
+              <text x="772" y="672">+ key: string</text>
+              <text x="772" y="690">+ label: string</text>
+              <text x="772" y="708">+ type: ClrAdvancedFilterFieldType</text>
+              <text x="772" y="726">+ options?: ClrAdvancedFilterOption[]</text>
+              <text x="772" y="744">+ rangeOptions?: DateRangeOption[]</text>
+              <text x="772" y="762">+ validator?: ClrAdvancedFilterValidator</text>
+            </g>
+            <path d="M990,560 L990,600" stroke="#444" fill="none" marker-end="url(#arr)" />
+            <text x="998" y="586" class="label">field 1 (by reference)</text>
+
+            <!-- ClrAdvancedFilterOption -->
+            <rect
+              x="920"
+              y="810"
+              width="300"
+              height="80"
+              rx="6"
+              fill="var(--iface-bg)"
+              stroke="var(--iface)"
+              stroke-width="2"
+            />
+            <text x="1070" y="832" text-anchor="middle" class="title">ClrAdvancedFilterOption</text>
+            <line x1="920" y1="842" x2="1220" y2="842" stroke="var(--iface)" />
+            <text x="932" y="862" class="mono">+ value: string | number</text>
+            <text x="932" y="880" class="mono">+ label: string</text>
+            <path d="M1070,780 L1070,810" stroke="#444" fill="none" marker-end="url(#arr)" />
+            <text x="1078" y="800" class="small">options 0..*</text>
+
+            <!-- ClrAdvancedFilterCondition -->
+            <rect
+              x="20"
+              y="600"
+              width="440"
+              height="114"
+              rx="6"
+              fill="var(--iface-bg)"
+              stroke="var(--iface)"
+              stroke-width="2"
+            />
+            <text x="240" y="622" text-anchor="middle" class="stereo">«interface» what validate() checks</text>
+            <text x="240" y="642" text-anchor="middle" class="title">ClrAdvancedFilterCondition</text>
+            <line x1="20" y1="652" x2="460" y2="652" stroke="var(--iface)" />
+            <g class="mono">
+              <text x="32" y="672">+ readonly field: string (the key)</text>
+              <text x="32" y="690">+ readonly operator: ClrAdvancedFilterOperator</text>
+              <text x="32" y="708">+ readonly value?: ClrAdvancedFilterValue</text>
+            </g>
+
+            <!-- ClrAdvancedFilterValue -->
+            <rect
+              x="20"
+              y="740"
+              width="400"
+              height="84"
+              rx="6"
+              fill="var(--iface-bg)"
+              stroke="var(--iface)"
+              stroke-width="2"
+            />
+            <text x="220" y="760" text-anchor="middle" class="stereo">«type»</text>
+            <text x="220" y="780" text-anchor="middle" class="title">ClrAdvancedFilterValue</text>
+            <line x1="20" y1="790" x2="420" y2="790" stroke="var(--iface)" />
+            <text x="30" y="810" class="mono">string | number | boolean | readonly (string | number)[]</text>
+            <path d="M220,714 L220,740" stroke="#444" fill="none" marker-end="url(#arr)" />
+            <text x="228" y="732" class="small">value</text>
+
+            <!-- ClrAdvancedFilterValidator -->
+            <rect
+              x="380"
+              y="900"
+              width="460"
+              height="210"
+              rx="6"
+              fill="var(--public-bg)"
+              stroke="var(--public)"
+              stroke-width="2"
+            />
+            <text x="610" y="924" text-anchor="middle" class="title">ClrAdvancedFilterValidator</text>
+            <line x1="380" y1="934" x2="840" y2="934" stroke="var(--public)" />
+            <g class="mono">
+              <text x="392" y="954">+ getOperators(): ClrAdvancedFilterOperator[]</text>
+              <text x="392" y="973">+ getOperatorLabelKey(operator): keyof ClrCommonStrings</text>
+              <text x="392" y="992">+ getOperatorTextKey(operator): keyof ClrCommonStrings</text>
+              <text x="392" y="1011">+ validate(condition): ValidationError | null</text>
+            </g>
+            <line x1="380" y1="1021" x2="840" y2="1021" stroke="var(--public)" stroke-dasharray="3 3" />
+            <g class="mono" fill="#444">
+              <text x="392" y="1040"># readonly fieldType: ClrAdvancedFilterFieldType | undefined</text>
+              <text x="392" y="1059"># supportsOperator(op) # getOperatorArity(op)</text>
+              <text x="392" y="1078"># validateSingle(op, v) # validateRange(v) # validateSet(v)</text>
+              <text x="392" y="1097"># isMissing # isFiniteNumber # isSingleValue # isRange</text>
+            </g>
+            <path d="M440,900 L440,714" stroke="#444" stroke-dasharray="6 4" fill="none" marker-end="url(#arr)" />
+            <text x="448" y="862" class="label">validate(condition)</text>
+            <path d="M800,780 L800,900" stroke="#444" fill="none" marker-end="url(#arr)" />
+            <text x="808" y="850" class="label">validator 0..1</text>
+
+            <!-- ClrAdvancedFilterValidationException -->
+            <rect
+              x="20"
+              y="870"
+              width="340"
+              height="100"
+              rx="6"
+              fill="var(--public-bg)"
+              stroke="var(--public)"
+              stroke-width="2"
+            />
+            <text x="190" y="890" text-anchor="middle" class="stereo">extends Error · thrown by ClrAdvancedFilter</text>
+            <text x="190" y="910" text-anchor="middle" class="title">ClrAdvancedFilterValidationException</text>
+            <line x1="20" y1="920" x2="360" y2="920" stroke="var(--public)" />
+            <text x="32" y="940" class="mono">+ readonly code</text>
+            <text x="32" y="958" class="small">the validator's ClrAdvancedFilterValidationError</text>
+
+            <!-- AdvancedFilterValidatorBuilder -->
+            <rect
+              x="20"
+              y="990"
+              width="340"
+              height="100"
+              rx="6"
+              fill="var(--internal-bg)"
+              stroke="var(--internal)"
+              stroke-width="2"
+            />
+            <text x="190" y="1010" text-anchor="middle" class="stereo">«internal» used by ClrAdvancedFilters</text>
+            <text x="190" y="1030" text-anchor="middle" class="title">AdvancedFilterValidatorBuilder</text>
+            <line x1="20" y1="1040" x2="360" y2="1040" stroke="var(--internal)" />
+            <text x="32" y="1060" class="mono">+ build(type): Validator | undefined</text>
+            <text x="32" y="1080" class="small">a new built-in validator on every call</text>
+            <path d="M360,1066 L380,1066" stroke="#444" stroke-dasharray="4 3" fill="none" marker-end="url(#arr)" />
+
+            <!-- AdvancedFilterIsoDate -->
+            <rect
+              x="880"
+              y="920"
+              width="340"
+              height="100"
+              rx="6"
+              fill="var(--internal-bg)"
+              stroke="var(--internal)"
+              stroke-width="2"
+            />
+            <text x="1050" y="940" text-anchor="middle" class="stereo">«internal»</text>
+            <text x="1050" y="960" text-anchor="middle" class="title">AdvancedFilterIsoDate</text>
+            <line x1="880" y1="970" x2="1220" y2="970" stroke="var(--internal)" />
+            <text x="892" y="990" class="mono">+ isIsoDate · toDate · fromDate</text>
+            <text x="892" y="1010" class="small">used by ClrDateFilterValidator and the UI</text>
+
+            <!-- subclasses -->
+            <g>
+              <rect
+                x="20"
+                y="1170"
+                width="228"
+                height="60"
+                rx="6"
+                fill="var(--public-bg)"
+                stroke="var(--public)"
+                stroke-width="2"
+              />
+              <text x="134" y="1194" text-anchor="middle" class="title">ClrStringFilterValidator</text>
+              <text x="134" y="1214" text-anchor="middle" class="small">STRING · non-blank text</text>
+              <rect
+                x="263"
+                y="1170"
+                width="228"
+                height="60"
+                rx="6"
+                fill="var(--public-bg)"
+                stroke="var(--public)"
+                stroke-width="2"
+              />
+              <text x="377" y="1194" text-anchor="middle" class="title">ClrNumberFilterValidator</text>
+              <text x="377" y="1214" text-anchor="middle" class="small">NUMBER · finite, from ≤ to</text>
+              <rect
+                x="506"
+                y="1170"
+                width="228"
+                height="60"
+                rx="6"
+                fill="var(--public-bg)"
+                stroke="var(--public)"
+                stroke-width="2"
+              />
+              <text x="620" y="1194" text-anchor="middle" class="title">ClrBooleanFilterValidator</text>
+              <text x="620" y="1214" text-anchor="middle" class="small">BOOLEAN · true or false</text>
+              <rect
+                x="749"
+                y="1170"
+                width="228"
+                height="60"
+                rx="6"
+                fill="var(--public-bg)"
+                stroke="var(--public)"
+                stroke-width="2"
+              />
+              <text x="863" y="1194" text-anchor="middle" class="title">ClrDateFilterValidator</text>
+              <text x="863" y="1214" text-anchor="middle" class="small">DATE · ISO dates, from ≤ to</text>
+              <rect
+                x="992"
+                y="1170"
+                width="228"
+                height="60"
+                rx="6"
+                fill="var(--public-bg)"
+                stroke="var(--public)"
+                stroke-width="2"
+              />
+              <text x="1106" y="1194" text-anchor="middle" class="title">ClrEnumFilterValidator</text>
+              <text x="1106" y="1214" text-anchor="middle" class="small">ENUM · no rules of its own</text>
+            </g>
+            <g stroke="#444" fill="none">
+              <path d="M134,1170 L134,1145 L1106,1145 L1106,1170" />
+              <path d="M377,1170 L377,1145" />
+              <path d="M863,1170 L863,1145" />
+              <path d="M620,1170 L620,1145" />
+              <path d="M620,1145 L620,1110" marker-end="url(#tri)" />
+            </g>
+            <text x="628" y="1134" class="small">extends · each sets fieldType</text>
+
+            <!-- parked -->
+            <rect
+              x="20"
+              y="1260"
+              width="380"
+              height="76"
+              rx="6"
+              fill="var(--internal-bg)"
+              stroke="var(--internal)"
+              stroke-width="2"
+              stroke-dasharray="5 4"
+            />
+            <text x="210" y="1280" text-anchor="middle" class="stereo">«internal» parked</text>
+            <text x="210" y="1300" text-anchor="middle" class="title">ClrIpAddressFilterValidator</text>
+            <text x="210" y="1320" text-anchor="middle" class="small">
+              own validateIpAddress(); isIpAddress, isCidr
+            </text>
+            <rect
+              x="420"
+              y="1260"
+              width="380"
+              height="76"
+              rx="6"
+              fill="var(--internal-bg)"
+              stroke="var(--internal)"
+              stroke-width="2"
+              stroke-dasharray="5 4"
+            />
+            <text x="610" y="1280" text-anchor="middle" class="stereo">«internal» parked</text>
+            <text x="610" y="1300" text-anchor="middle" class="title">ClrDateTimeFilterValidator</text>
+            <text x="610" y="1320" text-anchor="middle" class="small">own operator table; epoch ms timestamps</text>
+            <rect x="820" y="1260" width="400" height="76" rx="6" fill="var(--note-bg)" stroke="#d9c58a" />
+            <text x="834" y="1282" class="label" font-weight="600">Both extend ClrAdvancedFilterValidator</text>
+            <text x="834" y="1302" class="small">Not exported, and not in ClrAdvancedFilterFieldType:</text>
+            <text x="834" y="1318" class="small">IP and DATE_TIME are not field types yet.</text>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ============================================================ 3 COMPONENTS -->
+      <section id="components">
+        <h2><span class="num">3</span>Component tree</h2>
+        <p class="lead">
+          What <code>&lt;clr-advanced-filters&gt;</code> renders. <code>ClrAdvancedFilters</code> is the only public
+          component. Groups render themselves recursively. Filters are shown as text; adding and editing happen in a
+          popover. The module exports only <code>ClrAdvancedFilters</code>.
+        </p>
+        <div class="card">
+          <svg width="1240" height="720" viewBox="0 0 1240 720" role="img" aria-label="Component tree">
+            <defs>
+              <style>
+                .f {
+                  font-family: Consolas, monospace;
+                  font-size: 12.5px;
+                }
+              </style>
+            </defs>
+            <!-- connectors -->
+            <g stroke="#999" fill="none">
+              <path d="M34,44 V66 H48" />
+              <path d="M62,78 V100 H76" />
+              <path d="M90,112 V134 H104" />
+              <path d="M118,146 V168 H132" />
+              <path d="M118,146 V440 H132" />
+              <path d="M146,180 V202 H160" />
+              <path d="M146,180 V236 H160" />
+              <path d="M146,180 V372 H160" />
+              <path d="M146,180 V406 H160" />
+              <path d="M174,248 V270 H188" />
+              <path d="M174,248 V304 H188" />
+              <path d="M202,316 V338 H216" />
+              <path d="M146,452 V474 H160" />
+              <path d="M146,452 V678 H160" />
+              <path d="M174,486 V508 H188" />
+              <path d="M202,520 V542 H216" />
+              <path d="M202,520 V576 H216" />
+              <path d="M202,520 V610 H216" />
+              <path d="M230,622 V644 H244" />
+            </g>
+            <!-- r0 -->
+            <rect x="20" y="20" width="158" height="24" rx="4" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="30" y="36" class="f">clr-advanced-filters</text>
+            <text x="190" y="36" class="small">
+              ClrAdvancedFilters · provides AdvancedFilterText, AdvancedFilterPills · the tree layout
+            </text>
+            <!-- r1 -->
+            <rect x="48" y="54" width="75" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="58" y="70" class="f">clr-tree</text>
+            <text x="135" y="70" class="small">Clarity tree view</text>
+            <!-- r2 -->
+            <rect x="76" y="88" width="400" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="86" y="104" class="f">clr-advanced-filters-group ngProjectAs="clr-tree-node"</text>
+            <text x="488" y="104" class="small">the root, level 1</text>
+            <!-- r3 -->
+            <rect x="104" y="122" width="262" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="114" y="138" class="f">clr-tree-node [clrExpanded]="true"</text>
+            <text x="378" y="138" class="small">in the group's template</text>
+            <!-- r4 -->
+            <rect x="132" y="156" width="275" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="142" y="172" class="f">div.clr-advanced-filters-group-header</text>
+            <text x="419" y="172" class="small">role=group; stops keydown, so the tree keeps its keys</text>
+            <!-- r5 -->
+            <rect x="160" y="190" width="124" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="170" y="206" class="f">And / Or radios</text>
+            <text x="296" y="206" class="small">setLogic() → group.logic</text>
+            <!-- r6 -->
+            <rect x="160" y="224" width="234" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="170" y="240" class="f">clr-advanced-filters-add-filter</text>
+            <text x="406" y="240" class="small">hostDirectives: ClrPopoverHostDirective</text>
+            <!-- r7 -->
+            <rect x="188" y="258" width="372" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="198" y="274" class="f">button clrPopoverOrigin clrPopoverOpenCloseButton</text>
+            <text x="572" y="274" class="small">Add filter</text>
+            <!-- r8 -->
+            <rect x="188" y="292" width="372" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="198" y="308" class="f">div role="dialog" cdkTrapFocus *clrPopoverContent</text>
+            <text x="572" y="308" class="small">DROPDOWN at BOTTOM_LEFT</text>
+            <!-- r9 -->
+            <rect x="216" y="326" width="206" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="226" y="342" class="f">clr-advanced-filters-editor</text>
+            <text x="434" y="342" class="small">no [filter]: creates a filter</text>
+            <!-- r10 -->
+            <rect x="160" y="360" width="137" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="170" y="376" class="f">button Add group</text>
+            <text x="309" y="376" class="small">disabled when level ≥ clrMaxDepth</text>
+            <!-- r11 -->
+            <rect x="160" y="394" width="268" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="170" y="410" class="f">button Clear all | × Remove group</text>
+            <text x="440" y="410" class="small">in clr-tooltips · trash on the root, × on nested groups</text>
+            <!-- r12 -->
+            <rect x="132" y="428" width="296" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="142" y="444" class="f">ng-container ngProjectAs="clr-tree-node"</text>
+            <text x="440" y="444" class="small">@for visibleChildren: filters first, then groups</text>
+            <!-- r13 -->
+            <rect x="160" y="462" width="206" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="170" y="478" class="f">clr-advanced-filters-filter</text>
+            <text x="378" y="478" class="small">one per filter · host ClrPopoverHostDirective</text>
+            <!-- r14 -->
+            <rect x="188" y="496" width="110" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="198" y="512" class="f">clr-tree-node</text>
+            <text x="310" y="512" class="small">when incomplete, first: clr-tooltip › error icon, before the link</text>
+            <!-- r15 -->
+            <rect x="216" y="530" width="310" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="226" y="546" class="f">button.clr-treenode-link clrPopoverOrigin</text>
+            <text x="538" y="546" class="small">the filter text only</text>
+            <!-- r16 -->
+            <rect x="216" y="564" width="214" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="226" y="580" class="f">clr-tooltip › button ×</text>
+            <text x="442" y="580" class="small">tooltip: Remove filter …</text>
+            <!-- r17 -->
+            <rect x="216" y="598" width="372" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="226" y="614" class="f">div role="dialog" cdkTrapFocus *clrPopoverContent</text>
+            <!-- r18 -->
+            <rect x="244" y="632" width="275" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="254" y="648" class="f">clr-advanced-filters-editor [filter]</text>
+            <text x="531" y="648" class="small">edits this filter</text>
+            <!-- r19 -->
+            <rect x="160" y="666" width="199" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="170" y="682" class="f">clr-advanced-filters-group</text>
+            <text x="371" y="682" class="small">one per nested group: same template, level + 1</text>
+
+            <!-- panel: editor -->
+            <rect x="850" y="20" width="370" height="280" rx="6" fill="#fff" stroke="#bbb" />
+            <text x="864" y="44" class="title">Inside clr-advanced-filters-editor</text>
+            <rect x="864" y="58" width="342" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="874" y="74" class="f">form clrForm (ngSubmit)="submit()"</text>
+            <rect x="884" y="94" width="322" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="894" y="110" class="f">clr-combobox name="field"</text>
+            <text x="884" y="134" class="small">sr-only label; a line below once a field is picked</text>
+            <rect x="884" y="146" width="322" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="894" y="162" class="f">select clrSelect name="operator"</text>
+            <text x="884" y="186" class="small">only when the field offers more than one operator</text>
+            <rect x="884" y="198" width="322" height="24" rx="4" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="894" y="214" class="f">clr-advanced-filters-value</text>
+            <text x="884" y="238" class="small">[field] [operator] [value] [error] (valueChange)</text>
+            <rect x="884" y="250" width="322" height="24" rx="4" fill="#fff" stroke="#999" />
+            <text x="894" y="266" class="f">Cancel Apply (type="submit")</text>
+            <text x="884" y="290" class="small">Apply disabled while error is not null</text>
+
+            <!-- panel: services -->
+            <rect x="850" y="320" width="370" height="150" rx="6" fill="var(--note-bg)" stroke="#d9c58a" />
+            <text x="864" y="344" class="title">Services</text>
+            <text x="864" y="366" class="small">AdvancedFilterText, AdvancedFilterPills: provided by</text>
+            <text x="864" y="382" class="small">ClrAdvancedFilters; used by the tree and pill parts</text>
+            <text x="864" y="402" class="small">ClrPopoverService: one per ClrPopoverHostDirective,</text>
+            <text x="864" y="418" class="small">so each Add filter and each filter has its own</text>
+            <text x="864" y="438" class="small">LocaleHelperService, DateIOService: own instances</text>
+            <text x="864" y="454" class="small">in every clr-advanced-filters-value</text>
+
+            <!-- panel: change detection -->
+            <rect x="850" y="490" width="370" height="110" rx="6" fill="var(--note-bg)" stroke="#d9c58a" />
+            <text x="864" y="514" class="title">Change detection</text>
+            <text x="864" y="536" class="small">No component uses OnPush.</text>
+            <text x="864" y="552" class="small">Each group and filter component subscribes to its</text>
+            <text x="864" y="568" class="small">node's changes and calls markForCheck(). It</text>
+            <text x="864" y="584" class="small">subscribes again when its node input changes.</text>
+
+            <!-- panel: ngProjectAs -->
+            <rect x="850" y="620" width="370" height="90" rx="6" fill="var(--note-bg)" stroke="#d9c58a" />
+            <text x="864" y="644" class="title">Why ngProjectAs</text>
+            <text x="864" y="664" class="small">clr-tree-node puts content that matches clr-tree-node</text>
+            <text x="864" y="680" class="small">in its children area, and the rest in its own row.</text>
+            <text x="864" y="696" class="small">The marker sends the children list to that area.</text>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ============================================================ 4 FLOW -->
+      <section id="flow">
+        <h2><span class="num">4</span>A change, step by step</h2>
+        <p class="lead">
+          The user edits a filter of a nested group and clicks Apply, keeping the same field. Everything is synchronous:
+          every subscriber has the change before <code>set()</code> returns, and <code>clrFilterChange</code> comes
+          last.
+        </p>
+        <div class="card">
+          <svg width="1240" height="640" viewBox="0 0 1240 640" role="img" aria-label="Sequence diagram of an edit">
+            <defs>
+              <marker id="sa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#333" />
+              </marker>
+            </defs>
+            <g>
+              <rect x="11" y="14" width="128" height="44" rx="5" fill="var(--ui-bg)" stroke="var(--ui)" />
+              <text x="75" y="34" text-anchor="middle" class="title">editor</text>
+              <text x="75" y="50" text-anchor="middle" class="small">popover body</text>
+              <rect x="146" y="14" width="128" height="44" rx="5" fill="var(--ui-bg)" stroke="var(--ui)" />
+              <text x="210" y="34" text-anchor="middle" class="title">filter row</text>
+              <text x="210" y="50" text-anchor="middle" class="small">tree node</text>
+              <rect x="281" y="14" width="128" height="44" rx="5" fill="var(--public-bg)" stroke="var(--public)" />
+              <text x="345" y="34" text-anchor="middle" class="title">filter</text>
+              <text x="345" y="50" text-anchor="middle" class="small">ClrAdvancedFilter</text>
+              <rect x="416" y="14" width="128" height="44" rx="5" fill="var(--public-bg)" stroke="var(--public)" />
+              <text x="480" y="34" text-anchor="middle" class="title">validator</text>
+              <text x="480" y="50" text-anchor="middle" class="small">the filter's</text>
+              <rect x="551" y="14" width="128" height="44" rx="5" fill="var(--internal-bg)" stroke="var(--internal)" />
+              <text x="615" y="34" text-anchor="middle" class="title">change queue</text>
+              <text x="615" y="50" text-anchor="middle" class="small">singleton</text>
+              <rect x="686" y="14" width="128" height="44" rx="5" fill="var(--public-bg)" stroke="var(--public)" />
+              <text x="750" y="34" text-anchor="middle" class="title">filter.changes</text>
+              <text x="750" y="50" text-anchor="middle" class="small">filter row listens</text>
+              <rect x="821" y="14" width="128" height="44" rx="5" fill="var(--public-bg)" stroke="var(--public)" />
+              <text x="885" y="34" text-anchor="middle" class="title">group.changes</text>
+              <text x="885" y="50" text-anchor="middle" class="small">nested group</text>
+              <rect x="956" y="14" width="128" height="44" rx="5" fill="var(--public-bg)" stroke="var(--public)" />
+              <text x="1020" y="34" text-anchor="middle" class="title">root.changes</text>
+              <text x="1020" y="50" text-anchor="middle" class="small">root, consumers</text>
+              <rect x="1091" y="14" width="128" height="44" rx="5" fill="var(--public-bg)" stroke="var(--public)" />
+              <text x="1155" y="34" text-anchor="middle" class="title">component</text>
+              <text x="1155" y="50" text-anchor="middle" class="small">ClrAdvancedFilters</text>
+            </g>
+            <g stroke="#bbb" stroke-dasharray="4 4">
+              <line x1="75" y1="58" x2="75" y2="625" />
+              <line x1="210" y1="58" x2="210" y2="625" />
+              <line x1="345" y1="58" x2="345" y2="625" />
+              <line x1="480" y1="58" x2="480" y2="625" />
+              <line x1="615" y1="58" x2="615" y2="625" />
+              <line x1="750" y1="58" x2="750" y2="625" />
+              <line x1="885" y1="58" x2="885" y2="625" />
+              <line x1="1020" y1="58" x2="1020" y2="625" />
+              <line x1="1155" y1="58" x2="1155" y2="625" />
+            </g>
+            <g stroke="#333" fill="none" marker-end="url(#sa)">
+              <path d="M75,92 L206,92" />
+              <path d="M210,112 C255,112 255,134 214,134" />
+              <path d="M210,170 L341,170" />
+              <path d="M345,210 L476,210" />
+              <path d="M480,248 L349,248" stroke-dasharray="5 4" />
+              <path d="M345,280 C390,280 390,302 349,302" />
+              <path d="M345,338 L611,338" />
+              <path d="M615,374 L746,374" />
+              <path d="M615,408 L881,408" />
+              <path d="M615,442 L1016,442" />
+              <path d="M345,480 L214,480" stroke-dasharray="5 4" />
+              <path d="M210,506 C255,506 255,528 214,528" />
+              <path d="M210,562 L1151,562" />
+              <path d="M1155,590 C1200,590 1200,612 1159,612" />
+            </g>
+            <g class="label">
+              <text x="84" y="84">1 apply(edit)</text>
+              <text x="262" y="128">2 close(): the popover closes</text>
+              <text x="220" y="162">3 set(operator, value): same key</text>
+              <text x="355" y="202">4 validate(condition)</text>
+              <text x="355" y="240">5 null, else throw</text>
+              <text x="398" y="296">6 store; emitChange(this)</text>
+              <text x="355" y="330">7 deliver([filter, group, root])</text>
+              <text x="625" y="366">8 next({ node: filter }): markForCheck()</text>
+              <text x="625" y="400">9 same change: markForCheck()</text>
+              <text x="625" y="434">10 same change: markForCheck(), consumers</text>
+              <text x="220" y="472">11 set() returns: all delivered</text>
+              <text x="262" y="522">12 announce 'Filter applied: …'</text>
+              <text x="220" y="554">13 edit.emit() → each group's (edit) → onEdit()</text>
+              <text x="1145" y="606" text-anchor="end">14 clrFilterChange.emit(root)</text>
+            </g>
+          </svg>
+        </div>
+        <p class="lead" style="margin-top: 10px">
+          Step 5: if the validator returns a code, <code>set()</code> throws a
+          <code>ClrAdvancedFilterValidationException</code> and nothing changes. The editor only applies conditions the
+          validator accepted (section 8). Step 6: if the operator and the value are the same as before,
+          <code>set()</code> returns without emitting.
+        </p>
+      </section>
+
+      <!-- ============================================================ 5 OPS -->
+      <section id="ops">
+        <h2><span class="num">5</span>Every mutating call</h2>
+        <p class="lead">
+          Each call checks first and throws having changed nothing, or changes the tree and then emits. A change is
+          <code>{ node }</code>: the node whose own state changed. It is emitted on that node and on each of its
+          ancestors, the root last. The ancestors are the ones the node had when the call was made.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Call</th>
+              <th>Checks first (throws, nothing changed)</th>
+              <th>Changes</th>
+              <th>Emits <code>node</code></th>
+              <th>Emits nothing when</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>new ClrAdvancedFilter(field, operator, value?)</code></td>
+              <td>
+                a field definition is given (<code>Error</code>); the field's validator, or the base one, accepts
+                operator and value (<code>ClrAdvancedFilterValidationException</code>). A value for IS_EMPTY throws.
+              </td>
+              <td>a new node, its own root; validator read once; an array value is copied and frozen</td>
+              <td>—</td>
+              <td>always</td>
+            </tr>
+            <tr>
+              <td><code>new ClrAdvancedFilterGroup()</code></td>
+              <td>—</td>
+              <td>a new empty AND group, its own root</td>
+              <td>—</td>
+              <td>always</td>
+            </tr>
+            <tr>
+              <td><code>group.addChild(node, index?)</code></td>
+              <td>node is a group or a filter; not this group or one of its ancestors</td>
+              <td>
+                inserted at <code>index</code> (its position after the call; a missing, non-integer or out-of-range
+                index means at the end); moved if it had a parent; keeps id and subtree
+              </td>
+              <td>
+                added or reordered: <code>group</code>. Moved out of another group: two changes, the old parent first,
+                then <code>group</code>, each up to its own root
+              </td>
+              <td>the node already is at that position</td>
+            </tr>
+            <tr>
+              <td><code>node.remove()</code></td>
+              <td>—</td>
+              <td>detached with its subtree; stays usable and can be added again</td>
+              <td>the former parent</td>
+              <td>the node has no parent (a root)</td>
+            </tr>
+            <tr>
+              <td><code>group.clear()</code></td>
+              <td>—</td>
+              <td>all children detached; logic back to AND; same id ("Clear all")</td>
+              <td><code>group</code></td>
+              <td>already an empty AND group</td>
+            </tr>
+            <tr>
+              <td><code>group.logic = value</code></td>
+              <td>value is a <code>ClrAdvancedFilterLogic</code> member (<code>Error</code>)</td>
+              <td>the logic</td>
+              <td><code>group</code></td>
+              <td>same logic</td>
+            </tr>
+            <tr>
+              <td><code>filter.operator = op</code></td>
+              <td>the field allows <code>op</code> (exception with UNSUPPORTED_OPERATOR)</td>
+              <td>
+                the operator; the value is cleared when it does not suit the new operator, so the filter can become
+                incomplete
+              </td>
+              <td><code>filter</code></td>
+              <td>same operator</td>
+            </tr>
+            <tr>
+              <td><code>filter.value = v</code></td>
+              <td>the validator accepts the current operator with <code>v</code> (exception with the code)</td>
+              <td>the value; arrays are copied and frozen</td>
+              <td><code>filter</code></td>
+              <td>same value (arrays compared item by item, with <code>Object.is</code>)</td>
+            </tr>
+            <tr>
+              <td><code>filter.set(op, v?)</code></td>
+              <td>the validator accepts <code>op</code> with <code>v</code> (exception with the code)</td>
+              <td>operator and value at once, for example GREATER_THAN to BETWEEN</td>
+              <td><code>filter</code>, once</td>
+              <td>same operator and same value</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="lead" style="margin-top: 10px">
+          A node without a parent is the root of its own tree: a new node, a removed one, or the root of a filter. A
+          removed or cleared subtree keeps working: its changes reach its own root. Subjects are created on the first
+          read of <code>changes</code> and never complete.
+        </p>
+      </section>
+
+      <!-- ============================================================ 6 REENTRANCY -->
+      <section id="reentrancy">
+        <h2><span class="num">6</span>Changes made by subscribers</h2>
+        <p class="lead">
+          Listener A of the root reacts to change #1 by switching the root's logic (change #2). The queue makes sure
+          listener B still gets #1 before #2. Without it, B would see #2 first.
+          <code>AdvancedFilterChangeQueue</code> is a singleton (<code>static readonly instance</code>, private
+          constructor): one queue for every node of every tree, so a change of one tree made while another tree's change
+          is being delivered waits too. It is empty again before the outermost mutating call returns.
+        </p>
+        <div class="card">
+          <svg width="1240" height="480" viewBox="0 0 1240 480" role="img" aria-label="Re-entrant change sequence">
+            <defs>
+              <marker id="sb" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#333" />
+              </marker>
+            </defs>
+            <g>
+              <rect x="40" y="14" width="150" height="40" rx="5" fill="var(--public-bg)" stroke="var(--public)" />
+              <text x="115" y="39" text-anchor="middle" class="title">a filter</text>
+              <rect x="260" y="14" width="160" height="40" rx="5" fill="var(--internal-bg)" stroke="var(--internal)" />
+              <text x="340" y="39" text-anchor="middle" class="title">change queue</text>
+              <rect x="490" y="14" width="160" height="40" rx="5" fill="var(--public-bg)" stroke="var(--public)" />
+              <text x="570" y="39" text-anchor="middle" class="title">root.changes</text>
+              <rect x="720" y="14" width="140" height="40" rx="5" fill="#fff" stroke="#999" />
+              <text x="790" y="39" text-anchor="middle" class="title">listener A</text>
+              <rect x="930" y="14" width="140" height="40" rx="5" fill="#fff" stroke="#999" />
+              <text x="1000" y="39" text-anchor="middle" class="title">listener B</text>
+              <rect x="1110" y="14" width="110" height="40" rx="5" fill="var(--public-bg)" stroke="var(--public)" />
+              <text x="1165" y="39" text-anchor="middle" class="title">root</text>
+            </g>
+            <g stroke="#bbb" stroke-dasharray="4 4">
+              <line x1="115" y1="54" x2="115" y2="420" />
+              <line x1="340" y1="54" x2="340" y2="420" />
+              <line x1="570" y1="54" x2="570" y2="420" />
+              <line x1="790" y1="54" x2="790" y2="420" />
+              <line x1="1000" y1="54" x2="1000" y2="420" />
+              <line x1="1165" y1="54" x2="1165" y2="420" />
+            </g>
+            <g stroke="#333" fill="none" marker-end="url(#sb)">
+              <path d="M115,90 L336,90" />
+              <path d="M340,128 L566,128" />
+              <path d="M570,164 L786,164" />
+              <path d="M790,200 L1161,200" />
+              <path d="M1165,238 L344,238" />
+              <path d="M570,280 L996,280" />
+              <path d="M340,326 L566,326" />
+              <path d="M570,362 L786,362" />
+              <path d="M570,400 L996,400" />
+            </g>
+            <g class="label">
+              <text x="126" y="82">deliver(#1) delivering = true</text>
+              <text x="352" y="120">next(#1)</text>
+              <text x="582" y="156">#1</text>
+              <text x="802" y="192">reacts: root.logic = OR</text>
+              <text x="560" y="230">emitChange → deliver(#2): only queued, returns at once</text>
+              <text x="760" y="272">#1 (B still gets #1 first)</text>
+              <text x="352" y="318">queue continues: next(#2)</text>
+              <text x="582" y="354">#2</text>
+              <text x="760" y="392">#2</text>
+            </g>
+            <text x="40" y="446" class="small">
+              Both changes reach every listener, in order, before the outer call returns.
+            </text>
+            <text x="40" y="464" class="small">
+              If a delivery throws, the remaining deliveries still run, and the first error is thrown once the queue is
+              empty. The tree has changed by then.
+            </text>
+          </svg>
+        </div>
+      </section>
+
+      <!-- ============================================================ 7 POPOVER -->
+      <section id="popover">
+        <h2><span class="num">7</span>Add and edit, through the popover</h2>
+        <p class="lead">
+          The condition lives in the editor until Apply. The tree changes only on Apply. A filter's field never changes,
+          so picking another field for an existing filter replaces it with a new filter at the same position.
+        </p>
+        <div class="card">
+          <svg width="1240" height="830" viewBox="0 0 1240 830" role="img" aria-label="Add and edit flow">
+            <defs>
+              <marker id="fa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#444" />
+              </marker>
+            </defs>
+            <!-- column headers via first boxes -->
+            <rect x="20" y="20" width="380" height="50" rx="6" fill="#fff" stroke="#999" />
+            <text x="34" y="42" class="label" font-weight="600">Add filter button, in the group header</text>
+            <text x="34" y="60" class="small">clrPopoverOrigin · clrPopoverOpenCloseButton</text>
+            <rect x="840" y="20" width="380" height="50" rx="6" fill="#fff" stroke="#999" />
+            <text x="854" y="42" class="label" font-weight="600">Filter text: button.clr-treenode-link</text>
+            <text x="854" y="60" class="small">click, or Enter or Space on its tree node</text>
+
+            <rect x="20" y="100" width="380" height="50" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="34" y="122" class="label">Popover opens: editor without [filter]</text>
+            <text x="34" y="140" class="small">no field, no operator, no value</text>
+            <rect x="840" y="100" width="380" height="50" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="122" class="label">Popover opens: editor with [filter]</text>
+            <text x="854" y="140" class="small">ngOnInit: field by key from fields, operator, value</text>
+
+            <!-- shared editor steps -->
+            <rect x="430" y="180" width="380" height="50" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="444" y="202" class="label">Pick a field: selectField()</text>
+            <text x="444" y="220" class="small">the field's first operator, no value</text>
+            <rect x="430" y="250" width="380" height="66" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="444" y="272" class="label">Pick an operator: selectOperator()</text>
+            <text x="444" y="290" class="small">the select shows only when there is more than one</text>
+            <text x="444" y="306" class="small">keeps the value only when it still fits</text>
+            <rect x="430" y="336" width="380" height="50" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="444" y="358" class="label">Enter a value: clr-advanced-filters-value</text>
+            <text x="444" y="376" class="small">valueChange → editor.value</text>
+            <rect x="430" y="406" width="380" height="66" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="444" y="428" class="label">error: the field validator's validate()</text>
+            <text x="444" y="446" class="small">REQUIRED while no field or operator is picked</text>
+            <text x="444" y="462" class="small">shown on the controls by [clrAdvancedFiltersError]</text>
+            <rect x="430" y="492" width="380" height="50" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="444" y="514" class="label">Apply (type=submit), disabled while error</text>
+            <text x="444" y="532" class="small">submit() → apply.emit({ field, operator, value })</text>
+
+            <!-- notes -->
+            <rect x="20" y="200" width="380" height="90" rx="6" fill="var(--note-bg)" stroke="#d9c58a" />
+            <text x="34" y="222" class="label" font-weight="600">Cancel, Escape, or a click outside</text>
+            <text x="34" y="240" class="small">The popover closes; the tree does not change.</text>
+            <text x="34" y="256" class="small">Cancel and Escape put the focus back on</text>
+            <text x="34" y="272" class="small">the button or the filter text.</text>
+            <rect x="840" y="200" width="380" height="90" rx="6" fill="var(--note-bg)" stroke="#d9c58a" />
+            <text x="854" y="222" class="label" font-weight="600">Focus after a change</text>
+            <text x="854" y="240" class="small">removed: the next shown sibling, else the</text>
+            <text x="854" y="256" class="small">previous one, else the group</text>
+            <text x="854" y="272" class="small">replaced: the new filter (after the next render)</text>
+
+            <!-- add result -->
+            <rect x="20" y="570" width="380" height="82" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="34" y="592" class="label">ClrAdvancedFiltersAddFilter.apply()</text>
+            <text x="34" y="610" class="small">new ClrAdvancedFilter(field, operator, value)</text>
+            <text x="34" y="626" class="small">close() · add.emit(filter)</text>
+            <text x="34" y="642" class="small">announce 'Filter applied: …'</text>
+            <rect x="20" y="680" width="380" height="50" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="34" y="702" class="label">ClrAdvancedFiltersGroup.addFilter()</text>
+            <text x="34" y="720" class="small">group.addChild(filter) · edit.emit()</text>
+
+            <!-- edit result -->
+            <rect x="840" y="570" width="380" height="86" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="592" class="label">ClrAdvancedFiltersFilter.apply()</text>
+            <text x="854" y="610" class="small">close(); same field key: filter.set(operator, value)</text>
+            <text x="854" y="626" class="small">other key: replaced by a new filter at the same index</text>
+            <text x="854" y="642" class="small">replaced.emit → the group focuses the new filter</text>
+            <rect x="840" y="680" width="380" height="50" rx="6" fill="var(--ui-bg)" stroke="var(--ui)" />
+            <text x="854" y="702" class="label">announce 'Filter applied: …' · edit.emit()</text>
+            <text x="854" y="720" class="small">the model has changed and notified by now</text>
+
+            <!-- bottom -->
+            <rect x="430" y="760" width="380" height="50" rx="6" fill="var(--public-bg)" stroke="var(--public)" />
+            <text x="444" y="782" class="label">Each group re-emits (edit) up to the root</text>
+            <text x="444" y="800" class="small">onEdit() → clrFilterChange.emit(root)</text>
+
+            <!-- arrows -->
+            <g stroke="#444" fill="none" marker-end="url(#fa)">
+              <path d="M210,70 L210,100" />
+              <path d="M1030,70 L1030,100" />
+              <path d="M210,150 L210,165 L520,165 L520,180" />
+              <path d="M1030,150 L1030,165 L720,165 L720,180" />
+              <path d="M620,230 L620,250" />
+              <path d="M620,316 L620,336" />
+              <path d="M620,386 L620,406" />
+              <path d="M620,472 L620,492" />
+              <path d="M430,517 L210,517 L210,570" />
+              <path d="M810,517 L1030,517 L1030,570" />
+              <path d="M210,652 L210,680" />
+              <path d="M1030,656 L1030,680" />
+              <path d="M400,705 L520,705 L520,760" />
+              <path d="M840,705 L720,705 L720,760" />
+            </g>
+            <text x="330" y="509" class="small">add</text>
+            <text x="880" y="509" class="small">edit</text>
+          </svg>
+        </div>
+        <p class="lead" style="margin-top: 10px">
+          The editor gets its field from the component's <code>fields</code>, which carry the built-in validators. For
+          an existing filter it looks the field up by key and falls back to the filter's own definition. The filter row
+          writes its text with <code>AdvancedFilterText</code>, for example "Budget: greater than 60".
+        </p>
+      </section>
+
+      <!-- ============================================================ 8 VALIDATION -->
+      <section id="validation">
+        <h2><span class="num">8</span>Validation</h2>
+        <p class="lead">
+          <code>ClrAdvancedFilterValidator.validate(condition)</code> checks the field key, then the operator, then the
+          value, and returns the first problem or <code>null</code>. The base class checks the shape only. Each subclass
+          sets <code>fieldType</code> and adds the rules of its type. A condition that is valid for a type is also valid
+          for the base class.
+        </p>
+        <div class="card">
+          <svg width="1240" height="770" viewBox="0 0 1240 770" role="img" aria-label="Validation decision flow">
+            <defs>
+              <marker id="va" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="9" markerHeight="9" orient="auto">
+                <path d="M0,0 L10,5 L0,10 Z" fill="#333" />
+              </marker>
+            </defs>
+            <rect x="20" y="30" width="220" height="60" rx="30" fill="#fff" stroke="#999" />
+            <text x="130" y="56" text-anchor="middle" class="title">condition</text>
+            <text x="130" y="76" text-anchor="middle" class="small">{ field: key, operator, value }</text>
+            <path d="M240,60 L300,60" stroke="#333" marker-end="url(#va)" />
+            <polygon points="430,20 560,60 430,100 300,60" fill="#fff" stroke="#333" />
+            <text x="430" y="56" text-anchor="middle" class="label">field key is a</text>
+            <text x="430" y="72" text-anchor="middle" class="label">non-empty string?</text>
+            <path d="M560,60 L620,60" stroke="#333" marker-end="url(#va)" />
+            <text x="572" y="52" class="small">yes</text>
+            <path d="M430,100 L430,140" stroke="#333" marker-end="url(#va)" />
+            <text x="438" y="124" class="small">no</text>
+            <rect x="350" y="140" width="160" height="34" rx="5" fill="#fdecea" stroke="#c62828" />
+            <text x="430" y="162" text-anchor="middle" class="mono">REQUIRED</text>
+            <polygon points="790,10 960,60 790,110 620,60" fill="#fff" stroke="#333" />
+            <text x="790" y="48" text-anchor="middle" class="label">known operator, and</text>
+            <text x="790" y="64" text-anchor="middle" class="label">supportsOperator()?</text>
+            <text x="790" y="82" text-anchor="middle" class="small">(own keys of the tables)</text>
+            <path d="M790,110 L790,140" stroke="#333" marker-end="url(#va)" />
+            <text x="798" y="128" class="small">no</text>
+            <rect x="680" y="140" width="220" height="34" rx="5" fill="#fdecea" stroke="#c62828" />
+            <text x="790" y="162" text-anchor="middle" class="mono">UNSUPPORTED_OPERATOR</text>
+            <path d="M960,60 L1040,60 L1040,210" stroke="#333" fill="none" marker-end="url(#va)" />
+            <text x="972" y="52" class="small">yes</text>
+            <rect x="940" y="210" width="200" height="40" rx="5" fill="#fff" stroke="#333" />
+            <text x="1040" y="235" text-anchor="middle" class="title">arity of the operator</text>
+            <path d="M1040,250 L1040,270 L140,270 L140,300" stroke="#333" fill="none" marker-end="url(#va)" />
+            <path d="M440,270 L440,300" stroke="#333" fill="none" marker-end="url(#va)" />
+            <path d="M765,270 L765,300" stroke="#333" fill="none" marker-end="url(#va)" />
+            <path d="M1080,270 L1080,300" stroke="#333" fill="none" marker-end="url(#va)" />
+
+            <!-- NONE -->
+            <rect x="20" y="300" width="240" height="240" rx="6" fill="#fff" stroke="#999" />
+            <text x="140" y="324" text-anchor="middle" class="title">NONE</text>
+            <text x="140" y="342" text-anchor="middle" class="small">IS_EMPTY</text>
+            <text x="34" y="370" class="label">value must be undefined</text>
+            <text x="34" y="390" class="small">anything else, null and '' too</text>
+            <text x="34" y="406" class="small">→ REQUIRED</text>
+
+            <!-- SINGLE -->
+            <rect x="290" y="300" width="300" height="240" rx="6" fill="#fff" stroke="#999" />
+            <text x="440" y="324" text-anchor="middle" class="title">SINGLE</text>
+            <text x="440" y="342" text-anchor="middle" class="small">validateSingle(operator, value)</text>
+            <text x="304" y="368" class="label">base (no fieldType):</text>
+            <text x="304" y="386" class="small">non-blank text, finite number or boolean</text>
+            <text x="304" y="402" class="small">→ else REQUIRED</text>
+            <text x="304" y="424" class="label">per type:</text>
+            <text x="304" y="442" class="small">string: non-blank text → REQUIRED</text>
+            <text x="304" y="458" class="small">number: finite → INVALID_NUMBER</text>
+            <text x="304" y="474" class="small">boolean: true or false → REQUIRED</text>
+            <text x="304" y="490" class="small">date: ISO date of a real day</text>
+            <text x="304" y="506" class="small">→ INVALID_DATE</text>
+            <text x="304" y="522" class="small">missing → REQUIRED first (number, date)</text>
+
+            <!-- RANGE -->
+            <rect x="620" y="300" width="290" height="240" rx="6" fill="#fff" stroke="#999" />
+            <text x="765" y="324" text-anchor="middle" class="title">RANGE</text>
+            <text x="765" y="342" text-anchor="middle" class="small">BETWEEN · validateRange(value)</text>
+            <text x="634" y="368" class="label">all: two present items</text>
+            <text x="634" y="386" class="small">→ else REQUIRED</text>
+            <text x="634" y="408" class="label">base:</text>
+            <text x="634" y="426" class="small">non-blank text or finite numbers,</text>
+            <text x="634" y="442" class="small">in any order</text>
+            <text x="634" y="464" class="label">number, date:</text>
+            <text x="634" y="482" class="small">number: finite → INVALID_NUMBER</text>
+            <text x="634" y="498" class="small">date: ISO dates → INVALID_DATE</text>
+            <text x="634" y="514" class="small">then from ≤ to → INVALID_RANGE</text>
+            <text x="634" y="530" class="small">(inclusive: from = to is valid)</text>
+
+            <!-- SET -->
+            <rect x="940" y="300" width="280" height="240" rx="6" fill="#fff" stroke="#999" />
+            <text x="1080" y="324" text-anchor="middle" class="title">SET</text>
+            <text x="1080" y="342" text-anchor="middle" class="small">IN · validateSet(value)</text>
+            <text x="954" y="368" class="label">every type:</text>
+            <text x="954" y="386" class="small">non-empty array of strings or</text>
+            <text x="954" y="402" class="small">finite numbers, no holes</text>
+            <text x="954" y="418" class="small">→ else REQUIRED</text>
+            <text x="954" y="440" class="small">a value listed twice</text>
+            <text x="954" y="456" class="small">→ DUPLICATE_VALUE</text>
+            <text x="954" y="478" class="small">1 and '1' differ; not checked</text>
+            <text x="954" y="494" class="small">against the field's options</text>
+
+            <!-- consumers of the result -->
+            <text x="20" y="576" class="title">What uses the result</text>
+            <rect
+              x="20"
+              y="590"
+              width="290"
+              height="164"
+              rx="6"
+              fill="var(--public-bg)"
+              stroke="var(--public)"
+              stroke-width="2"
+            />
+            <text x="165" y="614" text-anchor="middle" class="title">ClrAdvancedFilter</text>
+            <text x="34" y="636" class="small">constructor, value setter, set():</text>
+            <text x="34" y="652" class="small">any code → throw</text>
+            <text x="34" y="668" class="small">ClrAdvancedFilterValidationException</text>
+            <text x="34" y="684" class="small">with .code; nothing changed</text>
+            <text x="34" y="704" class="small">operator setter: only</text>
+            <text x="34" y="720" class="small">UNSUPPORTED_OPERATOR throws;</text>
+            <text x="34" y="736" class="small">another code clears the value</text>
+
+            <rect
+              x="330"
+              y="590"
+              width="280"
+              height="164"
+              rx="6"
+              fill="var(--public-bg)"
+              stroke="var(--public)"
+              stroke-width="2"
+            />
+            <text x="470" y="614" text-anchor="middle" class="title">filter.error</text>
+            <text x="344" y="636" class="small">validate(operator, value) on each read</text>
+            <text x="344" y="652" class="small">null when the filter is complete</text>
+            <text x="344" y="672" class="small">the filter row then shows the</text>
+            <text x="344" y="688" class="small">exclamation-circle icon, and the</text>
+            <text x="344" y="704" class="small">text '(missing value)' when value</text>
+            <text x="344" y="720" class="small">is undefined</text>
+
+            <rect
+              x="630"
+              y="590"
+              width="290"
+              height="164"
+              rx="6"
+              fill="var(--ui-bg)"
+              stroke="var(--ui)"
+              stroke-width="2"
+            />
+            <text x="775" y="614" text-anchor="middle" class="title">ClrAdvancedFiltersEditor</text>
+            <text x="644" y="636" class="small">error: REQUIRED until a field and</text>
+            <text x="644" y="652" class="small">an operator are picked, then the</text>
+            <text x="644" y="668" class="small">field validator's validate()</text>
+            <text x="644" y="688" class="small">Apply is disabled while error is set</text>
+            <text x="644" y="704" class="small">submit() checks again; it emits a</text>
+            <text x="644" y="720" class="small">condition the validator accepted</text>
+
+            <rect
+              x="940"
+              y="590"
+              width="280"
+              height="164"
+              rx="6"
+              fill="var(--ui-bg)"
+              stroke="var(--ui)"
+              stroke-width="2"
+            />
+            <text x="1080" y="614" text-anchor="middle" class="title">ClrAdvancedFiltersError</text>
+            <text x="954" y="636" class="small">[clrAdvancedFiltersError]="error"</text>
+            <text x="954" y="652" class="small">on every value control</text>
+            <text x="954" y="668" class="small">NG_VALIDATORS: { [code]: true }</text>
+            <text x="954" y="688" class="small">Clarity shows the error state once</text>
+            <text x="954" y="704" class="small">the control is touched; the message</text>
+            <text x="954" y="720" class="small">comes from the advancedFilterError…</text>
+            <text x="954" y="736" class="small">string of the code</text>
+          </svg>
+        </div>
+
+        <h3 class="sub">Which validator checks what</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Where</th>
+              <th>Validator</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ClrAdvancedFilters</code>, for each entry of <code>clrFields</code></td>
+              <td>
+                A field with its own <code>validator</code> is kept as it is. A field of a built-in type without one
+                gets a copy with <code>AdvancedFilterValidatorBuilder.build(type)</code>: a new instance per field, so
+                no two fields share one. The consumer's object is not changed. A type without a built-in validator is
+                kept as it is.
+              </td>
+            </tr>
+            <tr>
+              <td><code>ClrAdvancedFilter</code></td>
+              <td>
+                <code>field.validator</code>, read once in the constructor; without one, a new base
+                <code>ClrAdvancedFilterValidator</code> (shape only). Replacing <code>field.validator</code> later does
+                not affect the filter.
+              </td>
+            </tr>
+            <tr>
+              <td><code>ClrAdvancedFiltersEditor</code></td>
+              <td>
+                The picked field's <code>validator</code>, else a base validator. The same validator gives the operator
+                list and the operator labels.
+              </td>
+            </tr>
+            <tr>
+              <td><code>ClrAdvancedFiltersPillEditor</code></td>
+              <td>
+                The same as <code>ClrAdvancedFiltersEditor</code>, for every row: the field's <code>validator</code>,
+                else a base validator. Apply works only when it accepts every row.
+              </td>
+            </tr>
+            <tr>
+              <td><code>AdvancedFilterText</code></td>
+              <td>
+                The field's <code>validator.getOperatorTextKey()</code>. Without a key it writes
+                <code>label: operator value</code>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <!-- ============================================================ 9 VALUES -->
+      <section id="values">
+        <h2><span class="num">9</span>Values per field type</h2>
+        <p class="lead">
+          The shape of the value depends on the operator: none for IS_EMPTY (<code>undefined</code>),
+          <code>[from, to]</code> for BETWEEN (both inclusive), a non-empty array for IN, one value otherwise. The
+          editor (<code>AdvancedFilterValueEditor</code>) is chosen by the field type and the operator.
+        </p>
+        <table>
+          <thead>
+            <tr>
+              <th>Field type</th>
+              <th>Value</th>
+              <th>Value editor</th>
+              <th>Written in the filter text as</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>STRING</code></td>
+              <td>the text entered, not blank</td>
+              <td>TEXT: <code>clrInput</code></td>
+              <td>the text</td>
+            </tr>
+            <tr>
+              <td><code>NUMBER</code></td>
+              <td>a finite number; BETWEEN: <code>[from, to]</code> with <code>from ≤ to</code></td>
+              <td>NUMBER: <code>clrNumberInput</code>; NUMBER_RANGE: two <code>clrNumberInput</code> (From, To)</td>
+              <td><code>formatNumber()</code> with <code>LOCALE_ID</code></td>
+            </tr>
+            <tr>
+              <td><code>BOOLEAN</code></td>
+              <td><code>true</code> or <code>false</code>, with EQUALS</td>
+              <td>BOOLEAN: two <code>clrRadio</code> (True, False)</td>
+              <td>"True" / "False" (<code>advancedFilterTrue</code>, <code>advancedFilterFalse</code>)</td>
+            </tr>
+            <tr>
+              <td><code>DATE</code></td>
+              <td>
+                an ISO date without a time of day, of a day that exists: <code>"2026-10-20"</code>. It names a day, the
+                same in every time zone. BETWEEN: <code>["2026-10-01", "2026-10-31"]</code>, <code>from ≤ to</code>,
+                both days included
+              </td>
+              <td>
+                DATE: <code>clrDate</code>; DATE_RANGE: <code>clr-date-range-container</code> with
+                <code>clrStartDate</code>, <code>clrEndDate</code> and the field's <code>rangeOptions</code>
+              </td>
+              <td><code>formatDate(…, 'mediumDate')</code> of the day at local midnight</td>
+            </tr>
+            <tr>
+              <td><code>ENUM</code></td>
+              <td>
+                IN: the <code>value</code> of the picked options, each once; the editor keeps the order of the options
+              </td>
+              <td>SET: one <code>clrCheckbox</code> per option</td>
+              <td>the option labels, joined by ", "</td>
+            </tr>
+            <tr>
+              <td>any, with IS_EMPTY</td>
+              <td><code>undefined</code></td>
+              <td>NONE: no editor</td>
+              <td>"Field: is empty"</td>
+            </tr>
+            <tr>
+              <td>DATE_TIME (parked, <code>ClrDateTimeFilterValidator</code>)</td>
+              <td>
+                an epoch millisecond timestamp that a <code>Date</code> can represent (<code>|t| ≤ 8.64e15</code>);
+                BETWEEN: <code>[from, to]</code>, <code>from ≤ to</code>
+              </td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+            <tr>
+              <td>IP (parked, <code>ClrIpAddressFilterValidator</code>)</td>
+              <td>
+                the text as typed. equals, between: IPv4 or IPv6 (a range in one family, compared as bigint); inSubnet:
+                CIDR; startsWith, contains: any non-blank text
+              </td>
+              <td>—</td>
+              <td>—</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="lead" style="margin-top: 10px">
+          A range is written with <code>"{FROM} and {TO}"</code>. A missing value, as the operator setter can leave, is
+          written as "(missing value)".
+        </p>
+        <h3 class="sub">Date inputs</h3>
+        <ul class="checks">
+          <li>
+            The date inputs' <code>ngModel</code> is text in the locale's display format.
+            <code>ClrAdvancedFiltersValue</code> provides its own <code>LocaleHelperService</code> and
+            <code>DateIOService</code>, which the datepicker entry point now exports.
+          </li>
+          <li>
+            ISO date to text: <code>AdvancedFilterIsoDate.toDate()</code> (local midnight), then
+            <code>dateIO.toLocaleDisplayFormatString()</code>.
+          </li>
+          <li>
+            Text to ISO date, for typing and calendar picks alike: <code>dateIO.getDateValueFromDateString()</code>,
+            then <code>AdvancedFilterIsoDate.fromDate()</code>. Text that is not a date yet gives no value.
+          </li>
+          <li>When the emitted value comes back through <code>[value]</code>, the text stays as typed.</li>
+          <li>
+            A range editor keeps both bounds and emits <code>[from, to]</code> on every change. A missing bound is
+            <code>undefined</code>, so the value is REQUIRED until both are set. An empty input (<code>null</code> or
+            <code>''</code>) gives <code>undefined</code>.
+          </li>
+        </ul>
+      </section>
+
+      <!-- ============================================================ 10 OPERATORS -->
+      <section id="operators">
+        <h2><span class="num">10</span>Operators per type</h2>
+        <p class="lead">
+          The table <code>OPERATORS_BY_TYPE</code> in <code>validators/advanced-filter-validator.ts</code>: which
+          operators each field type offers, in display order, with the label from <code>ClrCommonStrings</code> and,
+          below it, the filter text after <code>"{FIELD}: "</code>. Read through <code>getOperators()</code>,
+          <code>getOperatorLabelKey()</code> and <code>getOperatorTextKey()</code>. The parked date-time column is
+          <code>DATE_TIME_OPERATORS</code>.
+        </p>
+        <table class="mx">
+          <thead>
+            <tr>
+              <th>Operator (value)</th>
+              <th>Arity</th>
+              <th>string</th>
+              <th>number</th>
+              <th>boolean</th>
+              <th>date</th>
+              <th>enum</th>
+              <th>date-time (parked)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>CONTAINS</code> 'contains'</td>
+              <td>single</td>
+              <td class="on">1 Contains<span class="tx">contains {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>NOT_CONTAINS</code> 'notContains'</td>
+              <td>single</td>
+              <td class="on">2 Does not contain<span class="tx">does not contain {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>EQUALS</code> 'equals'</td>
+              <td>single</td>
+              <td class="on">3 Equals<span class="tx">equals {VALUE}</span></td>
+              <td class="on">1 Equal to<span class="tx">equal to {VALUE}</span></td>
+              <td class="on">1 Equals<span class="tx">{VALUE}</span></td>
+              <td class="on">1 On date<span class="tx">on {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>NOT_EQUALS</code> 'notEquals'</td>
+              <td>single</td>
+              <td class="on">4 Does not equal<span class="tx">does not equal {VALUE}</span></td>
+              <td class="on">2 Does not equal to<span class="tx">not equal to {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="on">2 Does not equal<span class="tx">not on {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>STARTS_WITH</code> 'startsWith'</td>
+              <td>single</td>
+              <td class="on">5 Starts with<span class="tx">starts with {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>ENDS_WITH</code> 'endsWith'</td>
+              <td>single</td>
+              <td class="on">6 Ends with<span class="tx">ends with {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>LESS_THAN</code> 'lessThan'</td>
+              <td>single</td>
+              <td class="off">—</td>
+              <td class="on">3 Less than<span class="tx">less than {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>LESS_THAN_OR_EQUAL</code> 'lessThanOrEqual'</td>
+              <td>single</td>
+              <td class="off">—</td>
+              <td class="on">4 Less than or equal to<span class="tx">less than or equal to {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>GREATER_THAN</code> 'greaterThan'</td>
+              <td>single</td>
+              <td class="off">—</td>
+              <td class="on">5 Greater than<span class="tx">greater than {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>GREATER_THAN_OR_EQUAL</code> 'greaterThanOrEqual'</td>
+              <td>single</td>
+              <td class="off">—</td>
+              <td class="on">6 Greater than or equal to<span class="tx">greater than or equal to {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>BEFORE</code> 'before'</td>
+              <td>single</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="on">3 Before<span class="tx">before {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="parked">1 Before<span class="tx">before {VALUE}</span></td>
+            </tr>
+            <tr>
+              <td><code>BEFORE_OR_EQUAL</code> 'beforeOrEqual'</td>
+              <td>single</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="on">4 Before or equal to<span class="tx">on or before {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="parked">2 Before or equal to<span class="tx">on or before {VALUE}</span></td>
+            </tr>
+            <tr>
+              <td><code>AFTER</code> 'after'</td>
+              <td>single</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="on">5 After<span class="tx">after {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="parked">3 After<span class="tx">after {VALUE}</span></td>
+            </tr>
+            <tr>
+              <td><code>AFTER_OR_EQUAL</code> 'afterOrEqual'</td>
+              <td>single</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="on">6 After or equal to<span class="tx">on or after {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="parked">4 After or equal to<span class="tx">on or after {VALUE}</span></td>
+            </tr>
+            <tr>
+              <td><code>BETWEEN</code> 'between'</td>
+              <td>range</td>
+              <td class="off">—</td>
+              <td class="on">7 Between<span class="tx">between {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="on">7 Between dates<span class="tx">between {VALUE}</span></td>
+              <td class="off">—</td>
+              <td class="parked">5 Between<span class="tx">between {VALUE}</span></td>
+            </tr>
+            <tr>
+              <td><code>IN</code> 'in'</td>
+              <td>set</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="off">—</td>
+              <td class="on">1 Is in set<span class="tx">in {VALUE}</span></td>
+              <td class="off">—</td>
+            </tr>
+            <tr>
+              <td><code>IS_EMPTY</code> 'isEmpty'</td>
+              <td>none</td>
+              <td class="on">7 Is empty<span class="tx">is empty</span></td>
+              <td class="on">8 Is empty<span class="tx">is empty</span></td>
+              <td class="off">—</td>
+              <td class="on">8 Is empty<span class="tx">is empty</span></td>
+              <td class="off">—</td>
+              <td class="parked">6 Is empty<span class="tx">is empty</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <ul class="checks" style="margin-top: 10px">
+          <li>BOOLEAN and ENUM offer one operator each, so the editor hides the operator select for them.</li>
+          <li>
+            The base validator, without a <code>fieldType</code>, accepts every operator and has no label or text keys.
+          </li>
+          <li>
+            Parked IP operators (<code>ip-address/ip-address-operators.ts</code>, English labels): equals "Equal to",
+            between "Range", inSubnet "All in a subnet", startsWith "Starts with", contains "Contains", isEmpty "Is
+            empty". <code>'inSubnet'</code> is not a <code>ClrAdvancedFilterOperator</code>.
+          </li>
+          <li>
+            Relative dates are not operators: DATE fields carry presets (<code>rangeOptions</code>) for the date range
+            picker. A picked preset is stored as its fixed days.
+          </li>
+        </ul>
+      </section>
+
+      <!-- ============================================================ 11 ENUMS -->
+      <section id="enums">
+        <h2><span class="num">11</span>Enums</h2>
+        <p class="lead">String values with UPPER_CASE keys.</p>
+        <div class="grid">
+          <div class="enum">
+            <h3>ClrAdvancedFilterLogic<span class="tag">public</span></h3>
+            <ul>
+              <li><span>AND</span><span>'and'</span></li>
+              <li><span>OR</span><span>'or'</span></li>
+            </ul>
+          </div>
+          <div class="enum">
+            <h3>ClrAdvancedFilterFieldType<span class="tag">public</span></h3>
+            <ul>
+              <li><span>STRING</span><span>'string'</span></li>
+              <li><span>NUMBER</span><span>'number'</span></li>
+              <li><span>BOOLEAN</span><span>'boolean'</span></li>
+              <li><span>DATE</span><span>'date'</span></li>
+              <li><span>ENUM</span><span>'enum'</span></li>
+            </ul>
+          </div>
+          <div class="enum">
+            <h3>ClrAdvancedFilterValidationError<span class="tag">public</span></h3>
+            <ul>
+              <li><span>UNSUPPORTED_OPERATOR</span><span>'unsupportedOperator'</span></li>
+              <li><span>REQUIRED</span><span>'required'</span></li>
+              <li><span>INVALID_NUMBER</span><span>'invalidNumber'</span></li>
+              <li><span>INVALID_DATE</span><span>'invalidDate'</span></li>
+              <li><span>INVALID_RANGE</span><span>'invalidRange'</span></li>
+              <li><span>DUPLICATE_VALUE</span><span>'duplicateValue'</span></li>
+            </ul>
+          </div>
+          <div class="enum">
+            <h3>ClrAdvancedFilterLayout<span class="tag">public · 1c</span></h3>
+            <ul>
+              <li><span>TREE</span><span>'tree'</span></li>
+              <li><span>PILLS</span><span>'pills'</span></li>
+            </ul>
+          </div>
+          <div class="enum internal">
+            <h3>AdvancedFilterPillKind<span class="tag">internal · 1c</span></h3>
+            <ul>
+              <li><span>FIELD</span><span>'field'</span></li>
+              <li><span>SUMMARY</span><span>'summary'</span></li>
+            </ul>
+          </div>
+          <div class="enum internal">
+            <h3>AdvancedFilterOperatorArity<span class="tag">internal</span></h3>
+            <ul>
+              <li><span>NONE</span><span>'none'</span></li>
+              <li><span>SINGLE</span><span>'single'</span></li>
+              <li><span>RANGE</span><span>'range'</span></li>
+              <li><span>SET</span><span>'set'</span></li>
+            </ul>
+          </div>
+          <div class="enum internal">
+            <h3>AdvancedFilterValueEditor<span class="tag">internal</span></h3>
+            <ul>
+              <li><span>NONE</span><span>'none'</span></li>
+              <li><span>TEXT</span><span>'text'</span></li>
+              <li><span>NUMBER</span><span>'number'</span></li>
+              <li><span>NUMBER_RANGE</span><span>'numberRange'</span></li>
+              <li><span>BOOLEAN</span><span>'boolean'</span></li>
+              <li><span>DATE</span><span>'date'</span></li>
+              <li><span>DATE_RANGE</span><span>'dateRange'</span></li>
+              <li><span>SET</span><span>'set'</span></li>
+            </ul>
+          </div>
+          <div class="enum internal">
+            <h3>IpAddressFilterValidationError<span class="tag">internal · parked</span></h3>
+            <ul>
+              <li><span>INVALID_IP</span><span>'invalidIp'</span></li>
+              <li><span>INVALID_CIDR</span><span>'invalidCidr'</span></li>
+            </ul>
+          </div>
+          <div class="enum" style="grid-column: 1 / -1">
+            <h3>ClrAdvancedFilterOperator<span class="tag">public · 17 members, see section 10</span></h3>
+            <ul style="columns: 4; column-gap: 24px">
+              <li><span>CONTAINS</span><span>'contains'</span></li>
+              <li><span>NOT_CONTAINS</span><span>'notContains'</span></li>
+              <li><span>EQUALS</span><span>'equals'</span></li>
+              <li><span>NOT_EQUALS</span><span>'notEquals'</span></li>
+              <li><span>STARTS_WITH</span><span>'startsWith'</span></li>
+              <li><span>ENDS_WITH</span><span>'endsWith'</span></li>
+              <li><span>IS_EMPTY</span><span>'isEmpty'</span></li>
+              <li><span>LESS_THAN</span><span>'lessThan'</span></li>
+              <li><span>LESS_THAN_OR_EQUAL</span><span>'lessThanOrEqual'</span></li>
+              <li><span>GREATER_THAN</span><span>'greaterThan'</span></li>
+              <li><span>GREATER_THAN_OR_EQUAL</span><span>'greaterThanOrEqual'</span></li>
+              <li><span>BETWEEN</span><span>'between'</span></li>
+              <li><span>BEFORE</span><span>'before'</span></li>
+              <li><span>BEFORE_OR_EQUAL</span><span>'beforeOrEqual'</span></li>
+              <li><span>AFTER</span><span>'after'</span></li>
+              <li><span>AFTER_OR_EQUAL</span><span>'afterOrEqual'</span></li>
+              <li><span>IN</span><span>'in'</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ 12 INVARIANTS -->
+      <section id="invariants">
+        <h2><span class="num">12</span>Invariants</h2>
+        <p class="lead">What the code guarantees at all times.</p>
+        <div class="two">
+          <div class="card">
+            <h3 class="sub" style="margin-top: 0">Model</h3>
+            <ul class="checks">
+              <li>A node has at most one parent, and is listed exactly once in that parent's <code>children</code>.</li>
+              <li>
+                <code>parent</code> and <code>children</code> always agree: only the group writes parent links, while it
+                changes its own list.
+              </li>
+              <li>No cycles: a group can't be added to itself or to one of its descendants.</li>
+              <li>Groups only hold <code>ClrAdvancedFilterGroup</code> and <code>ClrAdvancedFilter</code> nodes.</li>
+              <li>One logic per group: AND and OR never mix on one level.</li>
+              <li>
+                A new filter is complete. The value setter and <code>set()</code> keep it complete. Only the operator
+                setter can make it incomplete; <code>error</code> then says why.
+              </li>
+              <li>A filter's field never changes, and its validator is read once.</li>
+              <li>
+                <code>children</code> and array values are frozen; <code>children</code> is replaced exactly when the
+                list changes.
+              </li>
+              <li>Ids are generated once and never change.</li>
+              <li>
+                A failing call throws before anything changed, and emits nothing. A call that changes nothing emits
+                nothing.
+              </li>
+              <li>
+                A change is emitted on the changed node, then on each ancestor, the root last; the same frozen object
+                each time.
+              </li>
+              <li>
+                Changes are delivered in the order they were made, through one queue for the page, before the outermost
+                call returns.
+              </li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3 class="sub" style="margin-top: 0">Component</h3>
+            <ul class="checks">
+              <li>
+                The UI never adds an incomplete filter: Apply works only when the field's validator returns
+                <code>null</code>.
+              </li>
+              <li>
+                The component changes the given root instance. Anything that is not a
+                <code>ClrAdvancedFilterGroup</code> starts a new empty AND root.
+              </li>
+              <li>
+                <code>clrFilterChange</code> emits the root after each change the user makes, never for changes made in
+                code.
+              </li>
+              <li>The consumer's field definitions are never changed: built-in validators go on copies.</li>
+              <li>
+                Filters whose field key is no longer in <code>clrFields</code> are removed, once
+                <code>clrFields</code> was given.
+              </li>
+              <li>The view shows filters before groups; the model keeps its own order.</li>
+              <li>
+                Users can't add groups beyond <code>clrMaxDepth</code> (default 3, the root included). Deeper trees
+                built in code are shown as they are.
+              </li>
+              <li>
+                A filter keeps its field definition by reference, but <code>toJSON()</code> writes only the field key.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ============================================================ 13 PILLS -->
+      <section id="pills">
+        <h2><span class="num">13</span>The pills layout</h2>
+        <p class="lead">
+          <code>[clrLayout]="'pills'"</code> shows the same root and fields as pills; the tree stays the default. The
+          root is always AND and is not shown. Every child of the root is one pill.
+        </p>
+
+        <h3 class="sub">Component tree</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Part</th>
+              <th>What it does</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>clr-advanced-filters</code></td>
+              <td>
+                Renders <code>clr-advanced-filters-pills</code> instead of <code>clr-tree</code>, and provides
+                <code>AdvancedFilterPills</code> next to <code>AdvancedFilterText</code>.
+              </td>
+            </tr>
+            <tr>
+              <td><code>clr-advanced-filters-pills</code></td>
+              <td>
+                Subscribes to <code>root.changes</code> and rebuilds its pills with
+                <code>AdvancedFilterPills.build()</code>. Then one <code>clr-advanced-filters-pill</code> per pill,
+                <code>clr-advanced-filters-pill-add</code> with the fields that have no FIELD pill yet, and × for Clear
+                all (<code>root.clear()</code>). After a removal, focus moves to the next pill, else the previous one,
+                else Add filter.
+              </td>
+            </tr>
+            <tr>
+              <td><code>clr-advanced-filters-pill</code></td>
+              <td>
+                Host <code>ClrPopoverHostDirective</code>. A <code>clr-label</code> with an edit button
+                (<code>clrPopoverOrigin</code>) and ×. The edit button shows the field, the first condition
+                (<code>formatCondition()</code>) and a <code>clr-badge</code> with <code>+N</code>. A pill that can only
+                be removed has a focusable <code>span</code> instead, whose <code>clr-tooltip</code> gives the reason,
+                and no popover. × has a <code>clr-tooltip</code> with the whole pill.
+              </td>
+            </tr>
+            <tr>
+              <td><code>clr-advanced-filters-pill-add</code></td>
+              <td>
+                Host <code>ClrPopoverHostDirective</code>. <code>+ ADD FILTER</code>, disabled when no field is free,
+                and its popover.
+              </td>
+            </tr>
+            <tr>
+              <td><code>clr-advanced-filters-pill-editor</code></td>
+              <td>
+                The popover body: the field combobox (locked for an edited pill, with a label for screen readers only)
+                with the AND / OR switch of the pill next to it, and a line below them once a field is picked. Then one
+                row per condition (operator select, <code>clr-advanced-filters-value</code> with
+                <code>[inline]="true"</code>, × in a <code>clr-tooltip</code>), ADD after the last row and a disabled
+                <code>And</code> / <code>Or</code> button after every other row, Apply. Emits an
+                <code>AdvancedFilterPillEdit</code>.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 class="sub">Which pill a child of the root gives (<code>AdvancedFilterPills.build()</code>)</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Child of the root</th>
+              <th>Pill</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A filter</td>
+              <td>FIELD, with that filter</td>
+            </tr>
+            <tr>
+              <td>A non-empty group of filters on one field, without nested groups</td>
+              <td>FIELD, with its filters in order: <code>Name | Contains Alice +2</code></td>
+            </tr>
+            <tr>
+              <td>Anything else: several fields, nested groups, an empty group</td>
+              <td>SUMMARY, with every filter below it: <code>3 filters</code>. It can only be removed.</td>
+            </tr>
+            <tr>
+              <td>A FIELD pill whose field already has a pill before it</td>
+              <td><code>duplicate</code>: shown as invalid (danger, view only). It can only be removed.</td>
+            </tr>
+          </tbody>
+        </table>
+        <p>
+          A FIELD pill shows the definition with its field's key among the component's fields, else its first filter's
+          own.
+        </p>
+
+        <h3 class="sub">How Apply writes the edit</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Popover</th>
+              <th>Field type</th>
+              <th>Write</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Add filter</td>
+              <td>DATE, NUMBER, STRING</td>
+              <td>
+                A new group with the logic and one filter per row, added as the root's last child. Always a group, even
+                with one row.
+              </td>
+            </tr>
+            <tr>
+              <td>Add filter</td>
+              <td>ENUM, BOOLEAN</td>
+              <td>One filter (one row), added as the root's last child.</td>
+            </tr>
+            <tr>
+              <td>Edit, group pill</td>
+              <td>any</td>
+              <td>
+                In place: the logic is set, the rows' filters are edited with <code>set()</code>, filters without a row
+                are removed, new rows are added, and the children follow the rows' order. Ids are kept.
+              </td>
+            </tr>
+            <tr>
+              <td>Edit, filter pill, one row</td>
+              <td>any</td>
+              <td><code>filter.set()</code>.</td>
+            </tr>
+            <tr>
+              <td>Edit, filter pill, more rows</td>
+              <td>DATE, NUMBER, STRING</td>
+              <td>
+                A new group takes the filter's place. The filter moves into it and keeps its id, or is removed when its
+                row was removed. Then the group is written as above.
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <h3 class="sub">Rows</h3>
+        <ul class="checks">
+          <li>
+            A popover always has at least one row. A new field starts with one row: the field's first operator, no
+            value.
+          </li>
+          <li>
+            One logic per pill, set with the switch next to the field. Between two rows, a disabled button shows it. A
+            line separates the field and its switch from the rows, once a field is picked.
+          </li>
+          <li>
+            ADD, after the last row, adds a row. The switch and ADD are offered for DATE, NUMBER and STRING only. The
+            operator select is hidden for single-operator types.
+          </li>
+          <li>
+            × removes a row. On the last row it clears the operator and the value, and is disabled while they are
+            cleared.
+          </li>
+          <li>
+            Apply is enabled only when the field's validator accepts every row. Escape and clicking outside discard the
+            edit.
+          </li>
+        </ul>
+      </section>
+    </main>
+  </body>
+</html>

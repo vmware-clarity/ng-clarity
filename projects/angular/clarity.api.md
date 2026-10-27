@@ -832,7 +832,7 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i1" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i2_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_2" needs to be exported by the entry point clr-angular.d.ts
-    // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i7" needs to be exported by the entry point clr-angular.d.ts
@@ -848,7 +848,7 @@ export class ClarityModule {
     // Warning: (ae-forgotten-export) The symbol "i17" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i1.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i1.ClrIcon, typeof i1.ClrIconModule, typeof i4.ClrModalModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4.ClrSidePanelModule, typeof i11_2.ClrAccordionModule, typeof i12_2.ClrCardModule, typeof i13_2.ClrStepperModule, typeof i14.ClrSpinnerModule, typeof i15.ClrProgressBarModule, typeof i16.ClrPopoverModuleNext, typeof i17.ClrTimelineModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClarityModule, never, [typeof i1.ClrIcon], [typeof i2_2.ClrEmphasisModule, typeof i3_2.ClrDataModule, typeof i1.ClrIcon, typeof i1.ClrIconModule, typeof i4_2.ClrModalModule, typeof i5.ClrLoadingModule, typeof i5.ClrConditionalModule, typeof i5.ClrFocusOnViewInitModule, typeof i6_2.ClrButtonModule, typeof i7.ClrFormsModule, typeof i8_3.ClrLayoutModule, typeof i9.ClrPopoverModule, typeof i10.ClrWizardModule, typeof i4_2.ClrSidePanelModule, typeof i11_2.ClrAccordionModule, typeof i12_2.ClrCardModule, typeof i13_2.ClrStepperModule, typeof i14.ClrSpinnerModule, typeof i15.ClrProgressBarModule, typeof i16.ClrPopoverModuleNext, typeof i17.ClrTimelineModule]>;
 }
 
 // @public (undocumented)
@@ -1106,6 +1106,66 @@ export class ClrAccordionTitle {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrAccordionTitle, "clr-accordion-title", never, {}, {}, never, ["*"], false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAccordionTitle, never>;
+}
+
+// @public
+export interface ClrAdvancedFilterCondition<V = unknown> {
+    field: string;
+    id?: string;
+    // (undocumented)
+    operator: ClrAdvancedFilterOperator;
+    // (undocumented)
+    value?: V;
+}
+
+// @public
+export interface ClrAdvancedFilterField {
+    key: string;
+    // (undocumented)
+    label: string;
+    options?: ClrAdvancedFilterOption[];
+    rangeOptions?: DateRangeOption[];
+    // (undocumented)
+    type: ClrAdvancedFilterFieldType;
+}
+
+// @public (undocumented)
+export type ClrAdvancedFilterFieldType = 'string' | 'number' | 'boolean' | 'date' | 'ip' | 'enum';
+
+// @public
+export interface ClrAdvancedFilterGroup {
+    // (undocumented)
+    children: ClrAdvancedFilterNode[];
+    id?: string;
+    // (undocumented)
+    logic: ClrAdvancedFilterLogic;
+}
+
+// @public
+export type ClrAdvancedFilterLogic = 'and' | 'or';
+
+// @public (undocumented)
+export type ClrAdvancedFilterNode = ClrAdvancedFilterGroup | ClrAdvancedFilterCondition;
+
+// @public (undocumented)
+export type ClrAdvancedFilterOperator = 'contains' | 'notContains' | 'equals' | 'notEquals' | 'startsWith' | 'endsWith' | 'isEmpty' | 'lessThan' | 'lessThanOrEqual' | 'greaterThan' | 'greaterThanOrEqual' | 'between' | 'inSubnet' | 'isTrue' | 'isFalse' | 'before' | 'beforeOrEqual' | 'after' | 'afterOrEqual' | 'in';
+
+// @public (undocumented)
+export interface ClrAdvancedFilterOption {
+    // (undocumented)
+    label: string;
+    // (undocumented)
+    value: string | number;
+}
+
+// @public (undocumented)
+export class ClrAdvancedFiltersModule {
+    // (undocumented)
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrAdvancedFiltersModule, never>;
+    // (undocumented)
+    static ɵinj: i0.ɵɵInjectorDeclaration<ClrAdvancedFiltersModule>;
+    // (undocumented)
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrAdvancedFiltersModule, never, [typeof i2.CommonModule], never>;
 }
 
 // @public (undocumented)
@@ -2008,6 +2068,56 @@ export class ClrCommonFormsModule {
 
 // @public (undocumented)
 export interface ClrCommonStrings {
+    // (undocumented)
+    advancedFilterAfter: string;
+    // (undocumented)
+    advancedFilterAfterOrEqual: string;
+    // (undocumented)
+    advancedFilterBefore: string;
+    // (undocumented)
+    advancedFilterBeforeOrEqual: string;
+    // (undocumented)
+    advancedFilterBetween: string;
+    // (undocumented)
+    advancedFilterBetweenDates: string;
+    // (undocumented)
+    advancedFilterContains: string;
+    // (undocumented)
+    advancedFilterEndsWith: string;
+    // (undocumented)
+    advancedFilterEquals: string;
+    // (undocumented)
+    advancedFilterEqualTo: string;
+    // (undocumented)
+    advancedFilterFalse: string;
+    // (undocumented)
+    advancedFilterGreaterThan: string;
+    // (undocumented)
+    advancedFilterGreaterThanOrEqual: string;
+    // (undocumented)
+    advancedFilterInSet: string;
+    // (undocumented)
+    advancedFilterInSubnet: string;
+    // (undocumented)
+    advancedFilterIsEmpty: string;
+    // (undocumented)
+    advancedFilterLessThan: string;
+    // (undocumented)
+    advancedFilterLessThanOrEqual: string;
+    // (undocumented)
+    advancedFilterNotContains: string;
+    // (undocumented)
+    advancedFilterNotEquals: string;
+    // (undocumented)
+    advancedFilterNotEqualTo: string;
+    // (undocumented)
+    advancedFilterOnDate: string;
+    // (undocumented)
+    advancedFilterRange: string;
+    // (undocumented)
+    advancedFilterStartsWith: string;
+    // (undocumented)
+    advancedFilterTrue: string;
     alertCloseButtonAriaLabel: string;
     alertNextAlertAriaLabel: string;
     alertPreviousAlertAriaLabel: string;
@@ -3029,10 +3139,10 @@ export class ClrDatagridRow<T = any> implements AfterContentInit, AfterViewInit 
     globalExpandable: ExpandableRowsCount;
     // (undocumented)
     id: string;
-    // Warning: (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i2_4" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    get identifyBy(): i1_3.ClrDatagridItemsIdentityFunction<any>;
+    get identifyBy(): i2_4.ClrDatagridItemsIdentityFunction<any>;
     get item(): T;
     set item(item: T);
     // @internal (undocumented)
@@ -3325,11 +3435,12 @@ export class ClrDataModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDataModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrDataModule>;
-    // Warning: (ae-forgotten-export) The symbol "i2_4" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i1_3" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i3_3" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDataModule, never, never, [typeof i1_3.ClrDatagridModule, typeof i2_4.ClrStackViewModule, typeof i3_3.ClrTreeViewModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrDataModule, never, never, [typeof i1_3.ClrAdvancedFiltersModule, typeof i2_4.ClrDatagridModule, typeof i3_3.ClrStackViewModule, typeof i4.ClrTreeViewModule]>;
 }
 
 // @public (undocumented)
@@ -4031,7 +4142,7 @@ export class ClrFormsModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrFormsModule, never>;
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrFormsModule>;
-    // Warning: (ae-forgotten-export) The symbol "i4_2" needs to be exported by the entry point clr-angular.d.ts
+    // Warning: (ae-forgotten-export) The symbol "i4_3" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i5_2" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i6_3" needs to be exported by the entry point clr-angular.d.ts
     // Warning: (ae-forgotten-export) The symbol "i8_2" needs to be exported by the entry point clr-angular.d.ts
@@ -4040,7 +4151,7 @@ export class ClrFormsModule {
     // Warning: (ae-forgotten-export) The symbol "i13" needs to be exported by the entry point clr-angular.d.ts
     //
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i2.CommonModule], [typeof i6.ClrCommonFormsModule, typeof i45.ClrCheckboxModule, typeof i4_2.ClrComboboxModule, typeof i5_2.ClrDatepickerModule, typeof i6_3.ClrFileInputModule, typeof i43.ClrInputModule, typeof i8_2.ClrPasswordModule, typeof i44.ClrRadioModule, typeof i47.ClrSelectModule, typeof i11.ClrTextareaModule, typeof i12.ClrRangeModule, typeof i13.ClrDatalistModule, typeof i46.ClrNumberInputModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrFormsModule, never, [typeof i2.CommonModule], [typeof i6.ClrCommonFormsModule, typeof i45.ClrCheckboxModule, typeof i4_3.ClrComboboxModule, typeof i5_2.ClrDatepickerModule, typeof i6_3.ClrFileInputModule, typeof i43.ClrInputModule, typeof i8_2.ClrPasswordModule, typeof i44.ClrRadioModule, typeof i47.ClrSelectModule, typeof i11.ClrTextareaModule, typeof i12.ClrRangeModule, typeof i13.ClrDatalistModule, typeof i46.ClrNumberInputModule]>;
 }
 
 // @public (undocumented)
@@ -6811,7 +6922,7 @@ export class ClrWizardModule {
     // (undocumented)
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrWizardModule>;
     // (undocumented)
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i4.ClrModalModule, typeof i3.ClrAlertModule], [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrWizardModule, [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions], [typeof i2.CommonModule, typeof i1.ClrIcon, typeof i4_2.ClrModalModule, typeof i3.ClrAlertModule], [typeof ClrWizard, typeof ClrWizardPage, typeof ClrWizardStepnav, typeof ClrWizardStepnavItem, typeof ClrWizardButton, typeof ClrWizardHeaderAction, typeof ClrWizardTitle, typeof ClrWizardPageTitle, typeof ClrWizardPageNavTitle, typeof ClrWizardPageButtons, typeof ClrWizardPageHeaderActions]>;
 }
 
 // @public
@@ -8609,6 +8720,9 @@ export const IS_TOGGLE_PROVIDER: {
 
 // @public (undocumented)
 export function isBooleanAttributeSet(value: string | boolean): boolean;
+
+// @public
+export function isClrAdvancedFilterGroup(node: ClrAdvancedFilterNode | null | undefined): node is ClrAdvancedFilterGroup;
 
 // @public (undocumented)
 export function isKeyEitherLetterOrNumber(event: KeyboardEvent): boolean;

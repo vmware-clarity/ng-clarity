@@ -1,0 +1,195 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../styles/mixins';
+@use '../../styles/core/tokens/variables.tokens' as tokens;
+@use '../../styles/variables/variables.density' as density;
+
+@include mixins.exports('advanced-filters.clarity') {
+  .clr-advanced-filters {
+    display: block;
+
+    .clr-advanced-filters-group-header {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: density.$clr-base-gap-s;
+
+      .btn,
+      .btn-group {
+        margin: 0;
+      }
+    }
+
+    .clr-advanced-filters-filter-text {
+      display: inline-flex;
+      align-items: center;
+      gap: density.$clr-base-gap-xs;
+      width: auto;
+    }
+
+    .clr-advanced-filters-remove {
+      margin: 0;
+    }
+
+    .clr-advanced-filters-pills {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: density.$clr-base-gap-s;
+
+      .btn {
+        margin: 0;
+      }
+    }
+
+    .clr-advanced-filters-pill {
+      margin: 0;
+
+      // The label is the frame; its two buttons only carry the text and the icon.
+      .clr-advanced-filters-pill-edit,
+      .clr-advanced-filters-pill-remove {
+        display: inline-flex;
+        align-items: center;
+        gap: density.$clr-base-gap-xs;
+        padding: 0;
+        border: 0;
+        background: none;
+        color: inherit;
+        font: inherit;
+        cursor: pointer;
+      }
+
+      span.clr-advanced-filters-pill-edit {
+        cursor: default;
+      }
+
+      .clr-advanced-filters-pill-condition {
+        padding-left: density.$clr-base-gap-xs;
+        border-left: tokens.$cds-alias-object-border-width-100 solid currentColor;
+      }
+
+      .clr-advanced-filters-pill-remove {
+        margin-left: density.$clr-base-gap-xs;
+      }
+    }
+  }
+
+  .clr-advanced-filters-popover {
+    min-width: 330px;
+    padding: density.$clr-base-vertical-offset-l density.$clr-base-horizontal-offset-l;
+    background: tokens.$cds-alias-object-container-background;
+    border: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-border-color;
+    border-radius: density.$clr-base-border-radius-s;
+    box-shadow: tokens.$cds-alias-object-shadow-200;
+
+    // Every control fills the popover. Clarity's `.clr-form-control` lines its children up at the start, so the
+    // container needs a width. Not `clr-col-12`: Clarity moves it to the container, where it adds the grid's
+    // column padding on both sides and shifts the controls away from the labels and buttons.
+    .clr-control-container {
+      width: 100%;
+
+      clr-combobox {
+        display: block;
+        width: 100%;
+      }
+
+      .clr-combobox-wrapper,
+      .clr-select-wrapper,
+      .clr-input-wrapper,
+      .clr-number-input-wrapper,
+      .clr-input-group {
+        display: flex;
+        width: 100%;
+      }
+
+      select,
+      input.clr-input {
+        flex: 1 1 auto;
+        width: 100%;
+      }
+    }
+
+    // The tree popover: the same space between its controls as between the rows of the pill popover.
+    .clr-advanced-filters-editor .clr-form-control {
+      margin-top: density.$clr-base-vertical-offset-l;
+    }
+
+    // After the rule above, so the field keeps no top margin in both popovers.
+    .clr-advanced-filters-field,
+    .clr-advanced-filters-editor .clr-advanced-filters-field {
+      margin-top: 0;
+    }
+
+    // A line between the field and the rest of the popover, in both popovers, once a field is picked.
+    .clr-advanced-filters-field-section {
+      padding-bottom: density.$clr-base-vertical-offset-l;
+      border-bottom: tokens.$cds-alias-object-border-width-100 solid tokens.$cds-alias-object-border-color;
+    }
+
+    // The pill popover: the field with the AND / OR switch, one row per condition, ADD or the logic after each row.
+    .clr-advanced-filters-pill-field-row {
+      display: flex;
+      align-items: center;
+      gap: density.$clr-base-gap-s;
+
+      .clr-advanced-filters-field {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .clr-advanced-filters-logic {
+        flex: 0 0 auto;
+        margin: 0;
+      }
+    }
+
+    .clr-advanced-filters-pill-row {
+      display: flex;
+      align-items: flex-start;
+      gap: density.$clr-base-gap-s;
+      margin-top: density.$clr-base-vertical-offset-l;
+
+      .clr-form-control {
+        margin-top: 0;
+      }
+
+      .clr-advanced-filters-pill-operator {
+        flex: 0 0 40%;
+      }
+
+      .clr-advanced-filters-pill-value-editor {
+        flex: 1 1 auto;
+        min-width: 0;
+      }
+
+      .clr-advanced-filters-pill-row-remove-tooltip {
+        flex: 0 0 auto;
+      }
+
+      .clr-advanced-filters-pill-row-remove {
+        margin: 0;
+      }
+    }
+
+    .clr-advanced-filters-add-condition,
+    .clr-advanced-filters-logic-label {
+      margin: density.$clr-base-vertical-offset-l 0 0;
+    }
+
+    .clr-advanced-filters-editor-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: density.$clr-base-gap-s;
+      margin-top: density.$clr-base-vertical-offset-xl;
+
+      .btn {
+        margin: 0;
+      }
+    }
+  }
+}

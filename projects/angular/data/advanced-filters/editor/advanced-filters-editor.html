@@ -1,0 +1,59 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<form clrForm clrLayout="vertical" class="clr-advanced-filters-editor" novalidate (ngSubmit)="submit()">
+  <clr-combobox-container class="clr-advanced-filters-field" [class.clr-advanced-filters-field-section]="!!field">
+    <label class="clr-sr-only">{{ commonStrings.keys.advancedFilterField }}</label>
+    <clr-combobox
+      name="field"
+      required
+      [placeholder]="commonStrings.keys.advancedFilterFieldPlaceholder"
+      [ngModel]="field"
+      (ngModelChange)="selectField($event)"
+    >
+      <clr-options>
+        <clr-option *clrOptionItems="let option of fields; field: 'label'" [clrValue]="option">
+          {{ option.label }}
+        </clr-option>
+      </clr-options>
+    </clr-combobox>
+  </clr-combobox-container>
+
+  @if (field && operators.length > 1) {
+  <clr-select-container>
+    <label [for]="id + '-operator'">{{ commonStrings.keys.advancedFilterOperator }}</label>
+    <select
+      clrSelect
+      name="operator"
+      [id]="id + '-operator'"
+      [ngModel]="operator"
+      (ngModelChange)="selectOperator($event)"
+    >
+      @for (option of operators; track option) {
+      <option [ngValue]="option">{{ operatorLabel(option) }}</option>
+      }
+    </select>
+  </clr-select-container>
+  } @if (field && operator) {
+  <clr-advanced-filters-value
+    [field]="field"
+    [operator]="operator"
+    [value]="value"
+    [error]="error"
+    (valueChange)="value = $event"
+  ></clr-advanced-filters-value>
+  }
+
+  <div class="clr-advanced-filters-editor-actions">
+    <button type="button" class="btn btn-sm btn-outline" (click)="cancel.emit()">
+      {{ commonStrings.keys.advancedFilterCancel }}
+    </button>
+    <button type="submit" class="btn btn-sm btn-primary" [disabled]="!!error">
+      {{ commonStrings.keys.advancedFilterApply }}
+    </button>
+  </div>
+</form>

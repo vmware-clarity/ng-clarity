@@ -244,6 +244,56 @@ export interface ClrAnimationTriggerMetadata {
 
 // @public (undocumented)
 export interface ClrCommonStrings {
+    // (undocumented)
+    advancedFilterAfter: string;
+    // (undocumented)
+    advancedFilterAfterOrEqual: string;
+    // (undocumented)
+    advancedFilterBefore: string;
+    // (undocumented)
+    advancedFilterBeforeOrEqual: string;
+    // (undocumented)
+    advancedFilterBetween: string;
+    // (undocumented)
+    advancedFilterBetweenDates: string;
+    // (undocumented)
+    advancedFilterContains: string;
+    // (undocumented)
+    advancedFilterEndsWith: string;
+    // (undocumented)
+    advancedFilterEquals: string;
+    // (undocumented)
+    advancedFilterEqualTo: string;
+    // (undocumented)
+    advancedFilterFalse: string;
+    // (undocumented)
+    advancedFilterGreaterThan: string;
+    // (undocumented)
+    advancedFilterGreaterThanOrEqual: string;
+    // (undocumented)
+    advancedFilterInSet: string;
+    // (undocumented)
+    advancedFilterInSubnet: string;
+    // (undocumented)
+    advancedFilterIsEmpty: string;
+    // (undocumented)
+    advancedFilterLessThan: string;
+    // (undocumented)
+    advancedFilterLessThanOrEqual: string;
+    // (undocumented)
+    advancedFilterNotContains: string;
+    // (undocumented)
+    advancedFilterNotEquals: string;
+    // (undocumented)
+    advancedFilterNotEqualTo: string;
+    // (undocumented)
+    advancedFilterOnDate: string;
+    // (undocumented)
+    advancedFilterRange: string;
+    // (undocumented)
+    advancedFilterStartsWith: string;
+    // (undocumented)
+    advancedFilterTrue: string;
     alertCloseButtonAriaLabel: string;
     alertNextAlertAriaLabel: string;
     alertPreviousAlertAriaLabel: string;
