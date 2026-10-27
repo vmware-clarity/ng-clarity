@@ -5,10 +5,19 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<form clrForm clrLayout="value" [formGroup]="model">
+<button class="btn btn-sm btn-primary" (click)="disabled = !disabled">Toggle Disabled</button>
+
+<form clrForm>
   <clr-datalist-container>
-    <label>Datalist - Reactive Form</label>
-    <input clrDatalistInput autocomplete="off" formControlName="item" />
+    <label>Template Datalist</label>
+    <input
+      minlength="4"
+      name="Option"
+      required
+      clrDatalistInput
+      [disabled]="disabled"
+      [(ngModel)]="value"
+    />
     <datalist>
       @for (item of items; track item) {
       <option [value]="item"></option>
@@ -17,11 +26,4 @@
     <clr-control-helper>Helper text</clr-control-helper>
     <clr-control-error>There was an error</clr-control-error>
   </clr-datalist-container>
-  <button class="btn btn-primary" type="submit" [disabled]="model.invalid" (click)="submit()">Submit</button>
 </form>
-
-<app-stackblitz-example
-  name="datalist with reactive validation"
-  [componentTemplate]="reactiveHTML"
-  [componentClass]="reactiveTS"
-></app-stackblitz-example>

@@ -5,19 +5,17 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<form clrForm>
+<form clrForm [formGroup]="form">
   <clr-datalist-container>
-    <input clrDatalistInput [(ngModel)]="value" placeholder="No label" name="Option" />
+    <label>Reactive Datalist</label>
+    <input clrDatalistInput placeholder="Option" name="Option" formControlName="item" />
     <datalist>
       @for (item of items; track item) {
       <option [value]="item"></option>
       }
     </datalist>
   </clr-datalist-container>
+  <button class="btn btn-primary" type="submit" [disabled]="form.invalid" (click)="submit()">
+    Submit
+  </button>
 </form>
-
-<app-stackblitz-example
-  name="datalist"
-  [componentTemplate]="basicHTML"
-  [componentClass]="basicTS"
-></app-stackblitz-example>
