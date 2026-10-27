@@ -5,7 +5,7 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<button class="btn btn-primary" (click)="wizard.open()">Skip Page Wizard</button>
+<button class="btn btn-primary" (click)="open()">Skipping a Page in the Wizard</button>
 
 <clr-wizard #wizard [(clrWizardOpen)]="_open">
   <clr-wizard-title>Skipping Page Two</clr-wizard-title>
@@ -17,15 +17,13 @@
 
   <clr-wizard-page>
     <ng-template clrPageTitle>Title for page 1</ng-template>
-    <!-- mandatory -->
     <ng-template clrPageNavTitle>Step 1</ng-template>
-    <!-- optional -->
     <p>Content for step 1</p>
     <p>
       <button class="btn btn-secondary" (click)="toggleStepTwo()">
         @if (skipStepTwo) {
         <span>Show Page 2</span>
-        } @if (!skipStepTwo) {
+        } @else {
         <span>Hide Page 2</span>
         }
       </button>
@@ -35,21 +33,17 @@
   @if (!skipStepTwo) {
   <clr-wizard-page>
     <ng-template clrPageTitle>Title for page 2</ng-template>
-    <!-- mandatory -->
     <ng-template clrPageNavTitle>Step 2</ng-template>
-    <!-- optional -->
     <p>Content for step 2</p>
   </clr-wizard-page>
   }
 
   <clr-wizard-page>
     <ng-template clrPageTitle>Title for page 3</ng-template>
-    <!-- mandatory -->
     <ng-template clrPageNavTitle>Step 3</ng-template>
-    <!-- optional -->
     @if (skipStepTwo) {
     <p>Page 3 is the last page because we skipped page 2.</p>
-    } @if (!skipStepTwo) {
+    } @else {
     <p>Now our wizard has three pages/steps.</p>
     }
   </clr-wizard-page>

@@ -6,65 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { WIZARD_EXAMPLES } from '@clr/examples/wizard';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const code = `
-import { Component, ViewChild } from '@angular/core';
-import { ClrWizard, ClrWizardModule } from '@clr/angular';
-
-@Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-
-  imports: [ClrWizardModule],
-})
-export class ExampleComponent {
-  @ViewChild('wizard') wizard: ClrWizard | undefined;
-  _open = false;
-
-  pages = [{ skipped: false }, { skipped: true }, { skipped: false }];
-
-  open() {
-    this._open = true;
-  }
-}
-`;
-
-const html = `
-<button class="btn btn-primary" (click)="open()">Open the Wizard</button>
-
-<clr-wizard #wizard [(clrWizardOpen)]="_open">
-  <clr-wizard-title>Wizard Title</clr-wizard-title>
-
-  <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
-  <clr-wizard-button type="previous">Back</clr-wizard-button>
-  <clr-wizard-button type="next">Next</clr-wizard-button>
-  <clr-wizard-button type="finish">Finish</clr-wizard-button>
-
-  @for (page of pages; track $index; let i = $index) {
-    @if (!page.skipped) {
-      <clr-wizard-page>
-        <ng-template clrPageTitle>Page {{ i + 1 }}</ng-template>
-        Content for page {{ i + 1 }}
-      </clr-wizard-page>
-    }
-  }
-</clr-wizard>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-wizard-nested-directives',
-  template: ` <app-stackblitz-example
-    name="Wizard Nested Directives"
-    [componentTemplate]="html"
-    [componentClass]="code"
-    [showComponentClass]="false"
-  ></app-stackblitz-example>`,
-  imports: [StackblitzExampleComponent],
+  template: `<app-doc-example [example]="examples.nestedDirectives"></app-doc-example>`,
+  imports: [DocExampleComponent],
 })
 export class WizardNestedDirectiveDemo {
-  html = html;
-  code = code;
+  readonly examples = WIZARD_EXAMPLES;
 }

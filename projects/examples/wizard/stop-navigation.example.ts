@@ -6,43 +6,47 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ClrWizard } from '@clr/angular';
+import { FormsModule } from '@angular/forms';
+import { ClrFormsModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-wizard-stop-navigation',
-  templateUrl: './wizard-stop-navigation.demo.html',
-  standalone: false,
+  selector: 'clr-wizard-stop-navigation-example',
+  templateUrl: './stop-navigation.example.html',
+  imports: [ClrWizardModule, ClrFormsModule, FormsModule],
 })
-export class WizardStopNavigation {
-  @ViewChild('wizard') wizard: ClrWizard;
+export class WizardStopNavigationExample {
+  @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
 
-  open = false;
   untouched = true;
   loading = false;
+  errorFlag = false;
   progress = 0;
-  model = { won: '', too: '', tree: '' };
+  open = false;
 
-  get readyToFinish() {
+  model = {
+    won: '',
+    too: '',
+    tree: '',
+  };
+
+  get readyToFinish(): boolean {
     return !this.untouched && !this.loading;
   }
 
-  // have to define doCancel because page will prevent doCancel from working
-  // if the page had a previous button, you would need to call
-  // this.wizard.previous() manually as well...
-  doCancel() {
-    this.wizard.close();
+  doCancel(): void {
+    this.wizard?.close();
     this.resetWizard();
   }
 
-  resetWizard() {
-    this.wizard.reset();
+  resetWizard(): void {
+    this.wizard?.reset();
     this.model.won = '';
     this.model.too = '';
     this.model.tree = '';
     this.progress = 0;
   }
 
-  onCommit() {
+  onCommit(): void {
     if (this.untouched) {
       this.untouched = false;
       this.loading = true;
@@ -56,7 +60,7 @@ export class WizardStopNavigation {
         }
       }, 1000);
     } else {
-      this.wizard.forceFinish();
+      this.wizard?.forceFinish();
       this.resetWizard();
     }
   }

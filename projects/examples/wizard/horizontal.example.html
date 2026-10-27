@@ -5,10 +5,10 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<button class="btn btn-primary" (click)="wizard.open()">Open Wizard</button>
+<button class="btn btn-primary" (click)="open()">Horizontal Wizard</button>
 
-<clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardClosable]="false" [clrWizardSize]="'md'">
-  <clr-wizard-title>Wizard, not closable</clr-wizard-title>
+<clr-wizard #wizard [(clrWizardOpen)]="_open" clrWizardStepnavLayout="horizontal">
+  <clr-wizard-title>Horizontal Wizard</clr-wizard-title>
 
   <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
   <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
@@ -17,13 +17,21 @@
 
   <clr-wizard-page>
     <ng-template clrPageTitle>Page 1</ng-template>
-    <!-- mandatory -->
-    <p>Notice there's no close "X" in the top right</p>
+    <p>Content for step 1</p>
   </clr-wizard-page>
 
   <clr-wizard-page>
     <ng-template clrPageTitle>Page 2</ng-template>
-    <!-- mandatory -->
-    <p>Notice there's no close "X" in the top right</p>
+    <p>Content for step 2</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page 3</ng-template>
+    <p>Content for step 3</p>
+  </clr-wizard-page>
+
+  <clr-wizard-page>
+    <ng-template clrPageTitle>Page 4</ng-template>
+    <p>Content for step 4</p>
   </clr-wizard-page>
 </clr-wizard>

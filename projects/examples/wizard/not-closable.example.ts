@@ -6,14 +6,14 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ClrWizard } from '@clr/angular';
+import { ClrWizard, ClrWizardModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-wizard-basic',
-  templateUrl: './wizard-not-closable.demo.html',
-  standalone: false,
+  selector: 'clr-wizard-not-closable-example',
+  templateUrl: './not-closable.example.html',
+  imports: [ClrWizardModule],
 })
-export class WizardNotClosableDemo {
-  @ViewChild('wizard') wizard: ClrWizard;
+export class WizardNotClosableExample {
+  @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
   open = false;
 }

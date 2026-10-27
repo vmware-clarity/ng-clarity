@@ -5,9 +5,9 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<button class="btn btn-primary" (click)="wizard.open()">Jump-To Wizard</button>
-<button class="btn btn-outline" (click)="jumpToThree()">Open at Step 3 or Step 1</button>
-<button class="btn btn-outline" (click)="jumpToFive()">Open at Step 5 or Step 1</button>
+<button class="btn btn-primary" (click)="wizard.open()">Open Wizard</button>
+<button class="btn btn-outline" (click)="jumpToThree()">Try to Open at Step 3</button>
+<button class="btn btn-outline" (click)="jumpToFive()">Try to Open at Step 5</button>
 
 <clr-wizard #wizard [(clrWizardOpen)]="open" [clrWizardSize]="'md'">
   <clr-wizard-title>Jump-To Wizard</clr-wizard-title>
@@ -20,16 +20,17 @@
   <clr-wizard-page>
     <ng-template clrPageTitle>Page 1</ng-template>
     <p>
-      If the wizard can navigate to the pages, you can click on the buttons above to have it open up at step three or
-      step five. Try clicking through all the pages, closing the wizard, and clicking on the buttons.
+      If the wizard can navigate to a page, you can click on the buttons above to have it open up at
+      step three or step five. Try clicking through all the pages, closing the wizard, and clicking on
+      the buttons.
     </p>
     <p>
-      Enabling a page for navigation entails setting the pages before it as both ready to complete and completed. This
-      can be done programmatically as well.
+      Enabling a page for navigation entails setting the pages before it as both ready to complete and
+      completed. This can be done programmatically as well.
     </p>
     <p>
-      If a page cannot be navigated to, you can either programmatically set the wizard to open on the first page or tell
-      it to open on the last navigable page in the workflow.
+      If a page cannot be navigated to, you can either programmatically set the wizard to open on the
+      first page or tell it to open on the last navigable page in the workflow.
     </p>
   </clr-wizard-page>
 

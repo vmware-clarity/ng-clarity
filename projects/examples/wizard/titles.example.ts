@@ -6,18 +6,15 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ClrWizard } from '@clr/angular';
+import { ClrWizard, ClrWizardModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-wizard-force-forward',
-  templateUrl: './wizard-force-forward.demo.html',
-  standalone: false,
+  selector: 'clr-wizard-titles-example',
+  templateUrl: './titles.example.html',
+  imports: [ClrWizardModule],
 })
-export class WizardForceForwardDemo {
-  @ViewChild('wizard') wizard: ClrWizard;
-  _open = false;
-
-  open() {
-    this._open = !this.open;
-  }
+export class WizardTitlesExample {
+  @ViewChild('wizard') wizard: ClrWizard | undefined;
+  projectedTitle = 'My Projected Title';
+  open = false;
 }

@@ -6,22 +6,27 @@
  */
 
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { ClrWizard } from '@clr/angular';
+import { FormsModule } from '@angular/forms';
+import { ClrFormsModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-wizard-reset',
-  templateUrl: './wizard-reset.demo.html',
-  standalone: false,
+  selector: 'clr-wizard-reset-example',
+  templateUrl: './reset.example.html',
+  imports: [ClrWizardModule, ClrFormsModule, FormsModule],
 })
-export class WizardResetDemo implements OnInit {
-  @ViewChild('wizard') wizard: ClrWizard;
+export class WizardResetExample implements OnInit {
+  @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
 
   open = false;
-
   model: any;
 
   ngOnInit() {
-    this.model = { forceReset: false, favoriteColor: '', luckyNumber: '', flavorOfIceCream: '' };
+    this.model = {
+      forceReset: false,
+      favoriteColor: '',
+      luckyNumber: '',
+      flavorOfIceCream: '',
+    };
   }
 
   doFinish(): void {
@@ -30,11 +35,11 @@ export class WizardResetDemo implements OnInit {
 
   doReset(): void {
     if (this.model.forceReset) {
+      this.wizard?.reset();
       this.model.forceReset = false;
       this.model.favoriteColor = '';
       this.model.luckyNumber = '';
       this.model.flavorOfIceCream = '';
-      this.wizard.reset();
     }
   }
 }

@@ -6,23 +6,19 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ClrWizard } from '@clr/angular';
+import { ClrWizard, ClrWizardModule } from '@clr/angular/wizard';
 
 @Component({
-  selector: 'clr-wizard-skip-page',
-  templateUrl: './wizard-skip-page.demo.html',
-  standalone: false,
+  selector: 'clr-wizard-horizontal-example',
+  templateUrl: './horizontal.example.html',
+  imports: [ClrWizardModule],
 })
-export class WizardSkipPageDemo {
-  @ViewChild('wizard') wizard: ClrWizard;
-  skipStepTwo = true;
+export class WizardHorizontalExample {
+  @ViewChild('wizard') wizard: ClrWizard | undefined;
   _open = false;
 
-  toggleStepTwo() {
-    this.skipStepTwo = !this.skipStepTwo;
-  }
-
   open() {
-    this._open = !this.open;
+    this._open = true;
+    this.wizard?.open();
   }
 }

@@ -14,7 +14,7 @@
   (clrWizardOnFinish)="doFinish()"
   (clrWizardOnCancel)="doFinish()"
 >
-  <clr-wizard-title>{{ model.forceReset ? "Wizard resets" : "Wizard doesn't reset" }}</clr-wizard-title>
+  <clr-wizard-title>{{ model.forceReset ? 'Wizard resets' : "Wizard doesn't reset" }}</clr-wizard-title>
 
   <clr-wizard-button [type]="'cancel'">Cancel</clr-wizard-button>
   <clr-wizard-button [type]="'previous'">Back</clr-wizard-button>
@@ -56,7 +56,13 @@
     <!-- mandatory -->
     <clr-number-input-container>
       <label>What is your lucky number?</label>
-      <input clrNumberInput placeholder="Lucky number?" #stepFourInput type="number" [(ngModel)]="model.luckyNumber" />
+      <input
+        clrNumberInput
+        placeholder="Lucky number?"
+        #stepFourInput
+        type="number"
+        [(ngModel)]="model.luckyNumber"
+      />
     </clr-number-input-container>
   </clr-wizard-page>
 </clr-wizard>

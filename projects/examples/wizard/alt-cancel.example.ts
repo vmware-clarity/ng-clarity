@@ -6,32 +6,30 @@
  */
 
 import { Component, ViewChild } from '@angular/core';
-import { ClrWizard } from '@clr/angular';
+import { ClrModalModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-wizard-alt-cancel',
-  templateUrl: './wizard-alt-cancel.demo.html',
-  standalone: false,
+  selector: 'clr-wizard-alt-cancel-example',
+  templateUrl: './alt-cancel.example.html',
+  imports: [ClrWizardModule, ClrModalModule],
 })
-export class WizardAltCancelDemo {
-  @ViewChild('wizard') wizard: ClrWizard;
+export class WizardAltCancelExample {
+  @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
 
   open = false;
+  showConfirm = false;
   showCancelConfirm = false;
 
-  pageCustomCancel() {
+  pageCustomCancel(): void {
     this.showCancelConfirm = true;
   }
 
   doPageCancel() {
     this.showCancelConfirm = false;
-    this.wizard.close();
+    this.wizard?.close();
   }
 
   doCancel() {
-    if (confirm('Do you really, really want to close the wizard?')) {
-      this.showCancelConfirm = false;
-      this.wizard.close();
-    }
+    this.showConfirm = true;
   }
 }

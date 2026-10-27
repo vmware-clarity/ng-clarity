@@ -36,7 +36,9 @@
   </clr-wizard-button>
 
   <clr-wizard-page
-    [clrWizardPageNextDisabled]="(name.pristine && quest.pristine && velocity.pristine) || !formPage.valid"
+    [clrWizardPageNextDisabled]="
+      (name.pristine && quest.pristine && velocity.pristine) || !formPage.valid
+    "
   >
     <ng-template clrPageTitle>Form to submit</ng-template>
     <!-- mandatory -->
@@ -74,9 +76,9 @@
 
     @if (untouched && !loading) {
     <p>
-      Click the Validate button to kick off a timed routine. While the validation is running, try clicking buttons and
-      stepnav items. Note that they don't do anything while the validation is running. The validation is just an
-      exercise. It will not fail.
+      Click the Validate button to kick off a timed routine. While the validation is running, try
+      clicking buttons and stepnav items. Note that they don't do anything while the validation is
+      running. The validation is just an exercise. It will not fail.
     </p>
     } @if (loading) {
     <p>Loading...</p>
