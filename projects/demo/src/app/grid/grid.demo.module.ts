@@ -9,20 +9,12 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
-import { GridHorizontalAlignmentDemo } from './alignment/horizontal/horizontal-alignment';
-import { GridVerticalAlignmentDemo } from './alignment/vertical/vertical-alignment';
-import { GridAutoLayoutEqualWidthDemo } from './auto-layout/equal-width/equal-width';
-import { GridAutoLayoutEqualWidthMultiRowDemo } from './auto-layout/equal-width-multi-row/equal-width-multi-row';
-import { GridOneColWidthDemo } from './auto-layout/one-col-width/one-col-width';
-import { GridVariableWidthContentDemo } from './auto-layout/variable-width-content/variable-width-content';
 import { GridColumnWrappingDemo } from './column-wrapping/column-wrapping';
 import { GridColumnsDemo } from './columns/grid-columns';
 import { GridDemo } from './grid.demo';
 import { ROUTING } from './grid.demo.routing';
 import { GridNestingDemo } from './nesting/nesting';
 import { GridNoGuttersDemo } from './no-gutters/no-gutters';
-import { GridColumnOffsettingDemo } from './offsets/grid-column-offsetting';
-import { GridOrderingDemo } from './ordering/ordering';
 import { GridContainerDemo } from './overflow/grid-container';
 import { GridColumnStackingDemo } from './stacking/grid-column-stacking';
 
@@ -32,16 +24,8 @@ import { GridColumnStackingDemo } from './stacking/grid-column-stacking';
     GridDemo,
     GridColumnsDemo,
     GridColumnStackingDemo,
-    GridColumnOffsettingDemo,
-    GridAutoLayoutEqualWidthDemo,
-    GridOneColWidthDemo,
-    GridVariableWidthContentDemo,
-    GridAutoLayoutEqualWidthMultiRowDemo,
     GridNoGuttersDemo,
-    GridHorizontalAlignmentDemo,
-    GridVerticalAlignmentDemo,
     GridColumnWrappingDemo,
-    GridOrderingDemo,
     GridNestingDemo,
     GridContainerDemo,
   ],
@@ -49,16 +33,8 @@ import { GridColumnStackingDemo } from './stacking/grid-column-stacking';
     GridDemo,
     GridColumnsDemo,
     GridColumnStackingDemo,
-    GridColumnOffsettingDemo,
-    GridAutoLayoutEqualWidthDemo,
-    GridOneColWidthDemo,
-    GridVariableWidthContentDemo,
-    GridAutoLayoutEqualWidthMultiRowDemo,
     GridNoGuttersDemo,
-    GridHorizontalAlignmentDemo,
-    GridVerticalAlignmentDemo,
     GridColumnWrappingDemo,
-    GridOrderingDemo,
     GridNestingDemo,
   ],
 })

@@ -24,12 +24,6 @@
     }
   }
 
-  .clr-example-row {
-    background: #{$border-color};
-    height: var(--clr-base-row-height-l);
-    margin: var(--clr-base-vertical-offset-m) 0;
-  }
-
   &.container-example {
     [class^='clr-col'] {
       border: 2px solid #{$border-color};
