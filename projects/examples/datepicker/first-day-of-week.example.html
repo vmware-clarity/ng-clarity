@@ -1,0 +1,24 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<form clrForm clrLayout="vertical">
+  <clr-select-container>
+    <label>First day of week</label>
+    <select clrSelect name="firstDayOfWeek" [(ngModel)]="firstDayOfWeek">
+      @for (option of weekdayOptions; track option.value) {
+      <option [ngValue]="option.value">{{ option.label }}</option>
+      }
+    </select>
+    <clr-control-helper>
+      Select "Locale Default" to revert to the value derived from the Angular locale.
+    </clr-control-helper>
+  </clr-select-container>
+  <clr-date-container [clrFirstDayOfWeek]="firstDayOfWeek">
+    <label>Pick a date</label>
+    <input type="date" autocomplete="off" clrDate name="firstDayDemo" [(ngModel)]="value" />
+  </clr-date-container>
+</form>

@@ -1,0 +1,23 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<form clrForm clrLayout="vertical">
+  <clr-date-container>
+    <label>Min date: 2019-11-17 AND Max date: 2019-11-19</label>
+    <input
+      type="date"
+      autocomplete="off"
+      clrDate
+      name="minMaxDemo"
+      [(ngModel)]="value"
+      min="2019-11-17"
+      max="2019-11-19"
+    />
+    <clr-control-error *clrIfError="'min'">Error message about min date</clr-control-error>
+    <clr-control-error *clrIfError="'max'">Error message about max date</clr-control-error>
+  </clr-date-container>
+</form>

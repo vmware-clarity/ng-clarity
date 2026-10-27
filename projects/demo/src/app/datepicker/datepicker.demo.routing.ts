@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DATEPICKER_EXAMPLES } from '@clr/examples/datepicker';
 
 import { DatepickerCSSRegressionDemo } from './css-regression';
 import { DatepickerAKDemo } from './datepicker-AK';
@@ -29,6 +30,7 @@ import { DisabledDemo } from './disabled';
 import { DatepickerLayoutDemo } from './layout';
 import { NgModelAutoWrappedDatepickerDemo } from './ngmodel-auto-wrapped';
 import { NgModelExplicitWrapperDemo } from './ngmodel-wrapper-explicit-wrapper';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
@@ -36,6 +38,7 @@ const ROUTES: Routes = [
     component: DatepickerDemo,
     children: [
       { path: '', redirectTo: 'ng-model-auto-wrapped', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: DATEPICKER_EXAMPLES } },
       { path: 'ng-model-auto-wrapped', component: NgModelAutoWrappedDatepickerDemo },
       { path: 'ng-model-wrapper-present', component: NgModelExplicitWrapperDemo },
       { path: 'datepicker-date-input', component: DatepickerDateInputDemo },

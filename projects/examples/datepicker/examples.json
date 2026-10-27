@@ -1,0 +1,26 @@
+{
+  "storybook": "components/forms/datepicker",
+  "examples": [
+    { "id": "basic", "title": "Basic date picker", "targets": ["website", "demo", "storybook"] },
+    { "id": "min", "title": "Date picker with a min date", "targets": ["website", "demo", "storybook"] },
+    { "id": "max", "title": "Date picker with a max date", "targets": ["website", "demo", "storybook"] },
+    { "id": "min-max", "title": "Date picker with min and max dates", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "action-buttons",
+      "title": "Date picker with confirmation action buttons",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "first-day-of-week",
+      "title": "Date picker with a first day of the week",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "date-object", "title": "Date picker with a Date object", "targets": ["website", "demo"] },
+    {
+      "id": "template-driven",
+      "title": "Date picker in a template driven form",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "reactive", "title": "Date picker in a reactive form", "targets": ["website", "demo", "storybook"] }
+  ]
+}

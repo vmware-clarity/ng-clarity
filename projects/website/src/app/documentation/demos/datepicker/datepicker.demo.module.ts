@@ -13,18 +13,14 @@ import { ClarityModule } from '@clr/angular';
 
 import { DatepickerDemo } from './datepicker.demo';
 import { DatepickerAPIDemo } from './demos/datepicker-api.demo';
-import { DatepickerDateIODemo } from './demos/datepicker-date-io.demo';
 import { DatepickerENUSDemo } from './demos/datepicker-enUS.demo';
 import { DatepickerFRDemo } from './demos/datepicker-fr.demo';
 import { DatepickerInternationalizationDemo } from './demos/datepicker-internationalization.demo';
 import { DatepickerIODemo } from './demos/datepicker-io.demo';
-import { DatepickerReactiveFormsDemo } from './demos/datepicker-reactive-forms';
-import { DatepickerTemplateDrivenFormsDemo } from './demos/datepicker-template-driven-forms';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { LinkCardsComponent } from '../../../shared/link-cards/link-cards.component';
 import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
@@ -39,7 +35,6 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     StyleDocsComponent,
     CodeSnippetComponent,
     ThemedImageComponent,
-    StackblitzExampleComponent,
     RouterModule.forChild([{ path: '', component: DatepickerDemo }]),
     NestingTableComponent,
     LinkCardsComponent,
@@ -49,9 +44,6 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     DatepickerENUSDemo,
     DatepickerInternationalizationDemo,
     DatepickerIODemo,
-    DatepickerDateIODemo,
-    DatepickerTemplateDrivenFormsDemo,
-    DatepickerReactiveFormsDemo,
   ],
   exports: [DatepickerDemo],
 })
