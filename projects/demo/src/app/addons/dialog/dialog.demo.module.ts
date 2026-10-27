@@ -7,11 +7,19 @@
 
 import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
+import { DIALOG_EXAMPLES } from '@clr/examples/dialog';
 
 import { DialogDemoComponent } from './dialog.demo';
+import { ExampleListComponent } from '../../_utils/example-list.component';
 
 @NgModule({
-  imports: [RouterModule.forChild([{ path: '', component: DialogDemoComponent }]), DialogDemoComponent],
+  imports: [
+    RouterModule.forChild([
+      { path: '', component: DialogDemoComponent },
+      { path: 'examples', component: ExampleListComponent, data: { examples: DIALOG_EXAMPLES } },
+    ]),
+    DialogDemoComponent,
+  ],
   exports: [DialogDemoComponent],
 })
 export class DialogDemoModule {}

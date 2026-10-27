@@ -12,17 +12,15 @@ import { RouterModule } from '@angular/router';
 import { AppfxMultiPageDialogModule } from '@clr/addons/dialog';
 import { Step, TabLayout } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
+import { DIALOG_EXAMPLES } from '@clr/examples/dialog';
 
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow.service';
 import { ClarityDocComponent } from '../clarity-doc';
-
-const BasicDialogHtml = require('!raw-loader!./ng/basic-dialog.html').default;
-const BasicDialogTs = require('!raw-loader!./ng/basic-dialog.ts').default;
 
 @Component({
   selector: 'app-dialog-demo',
@@ -38,15 +36,14 @@ const BasicDialogTs = require('!raw-loader!./ng/basic-dialog.ts').default;
     CodeSnippetComponent,
     DocTabComponent,
     DocTabsComponent,
-    StackblitzExampleComponent,
+    DocExampleComponent,
     AiSkillComponent,
   ],
   providers: [SampleWorkflowService],
 })
 export class DialogDemoComponent extends ClarityDocComponent implements OnInit {
   TabLayout = TabLayout;
-  readonly basicDialogHtml = BasicDialogHtml;
-  readonly basicDialogTs = BasicDialogTs;
+  readonly examples = DIALOG_EXAMPLES;
 
   dialogOpened = false;
   steps: Step[] = [];
