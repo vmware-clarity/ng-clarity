@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RANGE_EXAMPLES } from '@clr/examples/range';
 
 import { RangeDemo } from './range.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: RangeDemo }];
+const ROUTES: Routes = [
+  { path: '', component: RangeDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: RANGE_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);
