@@ -1,0 +1,66 @@
+{
+  "storybook": "components/progress-bar",
+  "examples": [
+    {
+      "id": "component",
+      "title": "Progress bar component",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "component-success",
+      "title": "Labeled success progress bar",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "component-display-value",
+      "title": "Progress bar with a custom label",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "component-block",
+      "title": "Progress bar component in a block",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "simulated",
+      "title": "Progress bars",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "colors",
+      "title": "Progress bar colors",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "animations",
+      "title": "Progress bar animations",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "cards",
+      "title": "Progress bars in cards",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static-cards",
+      "title": "Static progress bars in cards",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "static",
+      "title": "Static progress bars",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "blocks-and-groups",
+      "title": "Progress bar blocks and groups",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "blocks-in-cards",
+      "title": "Progress bar blocks in cards",
+      "targets": ["website", "demo", "storybook"]
+    }
+  ]
+}
