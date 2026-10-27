@@ -1,0 +1,4 @@
+{
+  "storybook": "addons/theme-builder",
+  "examples": [{ "id": "default", "title": "Theme builder", "targets": ["website", "demo", "storybook"] }]
+}
