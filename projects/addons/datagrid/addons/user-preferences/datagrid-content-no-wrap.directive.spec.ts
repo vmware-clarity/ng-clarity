@@ -10,7 +10,6 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
 import { of } from 'rxjs';
 
@@ -34,7 +33,7 @@ describe('DatagridContentNoWrapDirective', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      imports: [ClrDatagridModule, FormsModule, NoopAnimationsModule, DragDropModule, OverlayModule],
+      imports: [ClrDatagridModule, FormsModule, DragDropModule, OverlayModule],
       declarations: [DatagridContentNoWrapDirective, MockDatagridColumnToggleComponent],
       providers: [
         {

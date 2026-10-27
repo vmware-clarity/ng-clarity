@@ -8,6 +8,7 @@
 import { Directive, DoCheck, ElementRef, inject, Input, OnDestroy, OnInit } from '@angular/core';
 import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
 
+import { closestAcrossShadow } from './dom/shadow';
 import { ClrComponentContext, ClrContextProvider } from './interfaces/context.interface';
 import { ClrContextRegistryService } from './providers/context-registry.service';
 
@@ -40,7 +41,8 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 
   ngDoCheck(): void {
     // An annotation inside an ignored region never reaches a snapshot, so its changes don't count.
-    if (this.anchor()?.closest(CLR_CONTEXT_IGNORE_SELECTOR)) {
+    const anchor = this.anchor();
+    if (anchor && closestAcrossShadow(anchor, CLR_CONTEXT_IGNORE_SELECTOR)) {
       return;
     }
     // Serialised on every check to catch a state object edited in place; keep the state small.
@@ -84,9 +86,12 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
     }
   }
 
-  /** On an `<ng-container>`, the element it sits in. */
+  /** On an `<ng-container>`, the element it sits in, or the host of the shadow root it sits at the top of. */
   private anchor(): Element | null {
     const node: Node | undefined = this.host?.nativeElement;
-    return node?.nodeType === Node.ELEMENT_NODE ? (node as Element) : (node?.parentElement ?? null);
+    if (node?.nodeType === Node.ELEMENT_NODE) {
+      return node as Element;
+    }
+    return node?.parentElement ?? (node?.parentNode as ShadowRoot | null)?.host ?? null;
   }
 }

@@ -28,9 +28,11 @@ export interface ClrContextChange {
   removed: ClrComponentContext[];
   /** Nodes present in both whose own state differs. Their children are compared separately. */
   changed: ClrComponentContextChange[];
-  /** Whether the route, URL or view id differs. */
+  /** Whether the route or URL differs. */
   routeChanged: boolean;
-  /** Whether the application's annotations or metadata differ. */
+  /** Whether the application, view id, view metadata or whether the view is enabled differs. */
+  viewChanged: boolean;
+  /** Whether the application's annotations differ. */
   regionsChanged: boolean;
   /** Whether the document title differs. */
   titleChanged: boolean;
@@ -44,15 +46,14 @@ export function clrDiffContext(previous: ClrPageContext | null, current: ClrPage
     added: [],
     removed: [],
     changed: [],
-    routeChanged:
+    routeChanged: !previous || serialize(previous.route) !== serialize(current.route) || previous.url !== current.url,
+    viewChanged:
       !previous ||
-      serialize(previous.route) !== serialize(current.route) ||
-      previous.url !== current.url ||
-      previous.viewId !== current.viewId,
-    regionsChanged:
-      !previous ||
-      serialize(previous.regions) !== serialize(current.regions) ||
+      serialize(previous.application) !== serialize(current.application) ||
+      previous.viewId !== current.viewId ||
+      previous.enabled !== current.enabled ||
       serialize(previous.metadata) !== serialize(current.metadata),
+    regionsChanged: !previous || serialize(previous.regions) !== serialize(current.regions),
     titleChanged: !previous || previous.title !== current.title,
   };
   diffLevel(previous?.components ?? [], current.components, change);
@@ -66,6 +67,7 @@ export function clrIsEmptyContextChange(change: ClrContextChange): boolean {
     !change.removed.length &&
     !change.changed.length &&
     !change.routeChanged &&
+    !change.viewChanged &&
     !change.regionsChanged &&
     !change.titleChanged
   );

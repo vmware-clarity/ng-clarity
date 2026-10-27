@@ -9,10 +9,8 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_animations from '@angular/animations';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
 import { AnimationCallbackEvent } from '@angular/core';
-import { AnimationMetadata } from '@angular/animations';
 import { ApplicationRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -1278,6 +1276,100 @@ export class ClrAlertText {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAlertText, ".alert-text", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertText, never>;
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationAnimateMetadata {
+    // (undocumented)
+    styles: ClrAnimationStyleMetadata | null;
+    // (undocumented)
+    timings: string | number;
+    // (undocumented)
+    type: 4;
+}
+
+// @public @deprecated (undocumented)
+export type ClrAnimationMetadata = ClrAnimationStyleMetadata | ClrAnimationAnimateMetadata | ClrAnimationStateMetadata | ClrAnimationTransitionMetadata | ClrAnimationReferenceMetadata | ClrAnimationTriggerMetadata;
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationOptions {
+    // (undocumented)
+    delay?: number | string;
+    // (undocumented)
+    params?: {
+        [name: string]: any;
+    };
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationReferenceMetadata {
+    // (undocumented)
+    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
+    // (undocumented)
+    options: ClrAnimationOptions | null;
+    // (undocumented)
+    type: 8;
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationStateMetadata {
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    options?: {
+        params: {
+            [name: string]: any;
+        };
+    };
+    // (undocumented)
+    styles: ClrAnimationStyleMetadata;
+    // (undocumented)
+    type: 0;
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationStyleMetadata {
+    // (undocumented)
+    offset: number | null;
+    // (undocumented)
+    styles: ClrAnimationStyles;
+    // (undocumented)
+    type: 6;
+}
+
+// @public @deprecated
+export type ClrAnimationStyles = '*' | {
+    [key: string]: string | number;
+} | Array<{
+    [key: string]: string | number;
+} | '*'>;
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationTransitionMetadata {
+    // (undocumented)
+    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
+    // (undocumented)
+    expr: string;
+    // (undocumented)
+    options: ClrAnimationOptions | null;
+    // (undocumented)
+    type: 1;
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationTriggerMetadata {
+    // (undocumented)
+    definitions: ClrAnimationMetadata[];
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    options: {
+        params?: {
+            [name: string]: any;
+        };
+    } | null;
+    // (undocumented)
+    type: 7;
 }
 
 // @public (undocumented)
@@ -7054,8 +7146,8 @@ export const coinBagIcon: IconShapeTuple;
 // @public (undocumented)
 export const coinBagIconName = "coin-bag";
 
-// @public (undocumented)
-export function collapse(): AnimationMetadata[];
+// @public @deprecated (undocumented)
+export function collapse(): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const collapseCardIcon: IconShapeTuple;
@@ -7108,11 +7200,11 @@ export abstract class CollapsiblePanel implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanel, never>;
 }
 
-// @public (undocumented)
-export const collapsiblePanelAnimation: _angular_animations.AnimationTriggerMetadata[];
+// @public @deprecated (undocumented)
+export const collapsiblePanelAnimation: ClrAnimationTriggerMetadata[];
 
-// @public (undocumented)
-export const collapsiblePanelExpandAnimation: _angular_animations.AnimationTriggerMetadata[];
+// @public @deprecated (undocumented)
+export const collapsiblePanelExpandAnimation: ClrAnimationTriggerMetadata[];
 
 // @public (undocumented)
 export class CollapsiblePanelGroupModel {
@@ -7662,11 +7754,11 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
 // @public (undocumented)
 export const DEFAULT_BUTTON_TYPES: any;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const defaultAnimationTiming = "0.2s ease-in-out";
 
-// @public (undocumented)
-export const defaultExpandAnimation: _angular_animations.AnimationReferenceMetadata;
+// @public @deprecated (undocumented)
+export const defaultExpandAnimation: ClrAnimationReferenceMetadata;
 
 // @public (undocumented)
 export const deployIcon: IconShapeTuple;
@@ -7983,11 +8075,11 @@ export const factoryIcon: IconShapeTuple;
 // @public (undocumented)
 export const factoryIconName = "factory";
 
-// @public (undocumented)
-export function fade(opacity?: number): AnimationMetadata[];
+// @public @deprecated (undocumented)
+export function fade(opacity?: number): ClrAnimationMetadata[];
 
-// @public (undocumented)
-export function fadeSlide(direction: string): AnimationMetadata[];
+// @public @deprecated (undocumented)
+export function fadeSlide(direction: string): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const fastForwardIcon: IconShapeTuple;
@@ -9161,11 +9253,11 @@ export const paintRollerIcon: IconShapeTuple;
 // @public (undocumented)
 export const paintRollerIconName = "paint-roller";
 
-// @public (undocumented)
-export const panelCollapseTransition: _angular_animations.AnimationTransitionMetadata;
+// @public @deprecated (undocumented)
+export const panelCollapseTransition: ClrAnimationTransitionMetadata;
 
-// @public (undocumented)
-export const panelExpandTransition: _angular_animations.AnimationTransitionMetadata;
+// @public @deprecated (undocumented)
+export const panelExpandTransition: ClrAnimationTransitionMetadata;
 
 // @public (undocumented)
 export const paperclipIcon: IconShapeTuple;
@@ -9683,11 +9775,11 @@ export const shuffleIconName = "shuffle";
 // @public (undocumented)
 export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
 
-// @public (undocumented)
-export const skipInitialRenderTrigger: _angular_animations.AnimationTriggerMetadata;
+// @public @deprecated (undocumented)
+export const skipInitialRenderTrigger: ClrAnimationTriggerMetadata;
 
-// @public (undocumented)
-export function slide(direction: string): AnimationMetadata[];
+// @public @deprecated (undocumented)
+export function slide(direction: string): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const sliderIcon: IconShapeTuple;

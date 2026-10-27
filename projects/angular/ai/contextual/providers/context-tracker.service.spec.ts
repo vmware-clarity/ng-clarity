@@ -711,7 +711,7 @@ describe('ClrContextTrackerService, asynchronous providers and shadow roots', ()
     });
     try {
       tracker.start();
-      expect(emitted[0].regions).toEqual([{ type: 'region', state: { loading: true } }]);
+      expect(emitted[0].regions).toEqual([{ type: 'clr-loading' }]);
 
       answer({ type: 'region', label: 'Answered' });
       await flushMutations();
@@ -739,5 +739,117 @@ describe('ClrContextTrackerService, asynchronous providers and shadow roots', ()
     } finally {
       host.remove();
     }
+  });
+
+  it('watches a shadow root that arrives after tracking starts', async () => {
+    tracker.start({ debounceMs: 10 });
+    const host = document.createElement('late-shadow-host');
+    const root = host.attachShadow({ mode: 'open' });
+    root.innerHTML = '<button>Before</button>';
+    document.body.appendChild(host);
+    try {
+      await elapse(10);
+      const countAfterInsert = emitted.length;
+
+      (root.querySelector('button') as HTMLButtonElement).textContent = 'After';
+      await elapse(10);
+
+      expect(emitted.length).toBe(countAfterInsert + 1);
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+    } finally {
+      host.remove();
+    }
+  });
+
+  describe('with a slow provider', () => {
+    let answers: ((context: ClrComponentContext) => void)[];
+    let page: HTMLElement;
+    let unregister: () => void;
+
+    beforeEach(() => {
+      answers = [];
+      unregister = TestBed.inject(ClrContextRegistryService).register({
+        getClrContext: () => new Promise<ClrComponentContext>(resolve => answers.push(resolve)),
+      });
+      page = document.createElement('main');
+      page.innerHTML = '<button>Before</button>';
+      document.body.appendChild(page);
+    });
+
+    afterEach(() => {
+      unregister();
+      page.remove();
+    });
+
+    function answerAll(label: string): void {
+      answers.forEach(answer => answer({ type: 'region', label }));
+    }
+
+    it('still emits when the page keeps changing while the provider answers', async () => {
+      tracker.start({ debounceMs: 10, maxWaitMs: 20 });
+      for (let tick = 0; tick < 5; tick++) {
+        page.setAttribute('data-tick', String(tick));
+        await elapse(10);
+      }
+
+      expect(answers.length).toBe(1);
+
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
+
+    it('drops a scrape that started before refresh, then follows up', async () => {
+      tracker.start({ debounceMs: 10 });
+      (page.querySelector('button') as HTMLButtonElement).textContent = 'After';
+      tracker.refresh();
+
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+
+      await elapse(10);
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
+
+    it('asks the provider once for the snapshot and the answer that follows it', async () => {
+      tracker.start({ debounceMs: 10 });
+
+      expect(answers.length).toBe(1);
+
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(answers.length).toBe(1);
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
+
+    it('settles a refresh taken before tracking starts', async () => {
+      tracker.refresh();
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
+
+    it('settles a second refresh taken before tracking starts while the first waits', async () => {
+      tracker.refresh();
+      (page.querySelector('button') as HTMLButtonElement).textContent = 'After';
+      tracker.refresh();
+
+      answerAll('Answered');
+      await flushMutations();
+      answerAll('Answered');
+      await flushMutations();
+
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+      expect(tracker.currentContext?.regions).toEqual([{ type: 'region', label: 'Answered' }]);
+    });
   });
 });
