@@ -1,0 +1,17 @@
+{
+  "storybook": "components/forms/checkbox-toggle",
+  "examples": [
+    { "id": "basic", "title": "Basic checkbox", "targets": ["website", "demo", "storybook"] },
+    { "id": "label", "title": "Checkbox labels", "targets": ["website", "demo", "storybook"] },
+    { "id": "helpers", "title": "Checkbox helper and error messages", "targets": ["website", "demo", "storybook"] },
+    { "id": "inline", "title": "Inline checkboxes", "targets": ["website", "demo", "storybook"] },
+    { "id": "disabled", "title": "Disabled checkboxes", "targets": ["website", "demo", "storybook"] },
+    { "id": "indeterminate", "title": "Indeterminate checkbox", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-basic", "title": "Basic CSS checkbox", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-full", "title": "Full CSS checkbox", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-error", "title": "CSS checkbox error state", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-success", "title": "CSS checkbox success state", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-inline", "title": "Inline CSS checkboxes", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-disabled", "title": "Disabled CSS checkboxes", "targets": ["website", "demo", "storybook"] }
+  ]
+}
