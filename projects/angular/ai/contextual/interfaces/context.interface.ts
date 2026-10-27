@@ -19,7 +19,7 @@ export interface ClrRouteContext {
   /** Route parameters of the active route chain. */
   params?: Record<string, string>;
   /** Query parameters of the current URL. */
-  queryParams?: Record<string, string>;
+  queryParams?: Record<string, string | string[]>;
   /** JSON-serializable subset of the route `data` of the active route chain. */
   data?: Record<string, unknown>;
 }
@@ -75,8 +75,10 @@ export interface ClrPageContext {
 }
 
 /**
- * Contributes context to snapshots. Polled at snapshot time; return `null` when there is nothing to report.
- * A promise is awaited by `getSnapshotAsync` and reported as loading by `getSnapshot`.
+ * Contributes context to snapshots. Asked once per snapshot; return `null` when there is nothing to report.
+ * A promise is awaited by `getSnapshotAsync` and reported as `{ type: 'clr-loading' }` by `getSnapshot`;
+ * while it is pending, later snapshots wait for it instead of asking again. A promise that rejects or
+ * outlasts the timeout is reported as `{ type: 'clr-unavailable' }`.
  */
 export interface ClrContextProvider {
   /** The provider's context as it is now, or `null` when it has nothing to report. */

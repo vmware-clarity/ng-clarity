@@ -44,7 +44,10 @@ export interface ClrContextSnapshotOptions {
   excludeCategories?: ClrContextCategory[];
   /** Roles whose subtree is left out, e.g. `['navigation', 'banner']`. Default none. */
   excludeRoles?: string[];
-  /** CSS selectors for elements to leave out with their subtree. Default none. */
+  /**
+   * CSS selectors for elements to leave out with their subtree, shadow content included. A selector matches
+   * within one tree, so `main .secret` does not reach into a shadow root; select the host instead. Default none.
+   */
   excludeSelectors?: string[];
   /** CSS selector for the element(s) to describe instead of the whole document. Default: the document. */
   rootSelector?: string;

@@ -8,7 +8,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 import { commonStringsDefault } from '@clr/angular/utils';
@@ -24,7 +23,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrVerticalNavModule, ClrIcon, NoopAnimationsModule],
+        imports: [ClrVerticalNavModule, ClrIcon],
         declarations: [
           NoIconsNoNavGroupTestComponent,
           IconsButNoNavGroupTestComponent,

@@ -10,7 +10,7 @@ import { DOCUMENT, ErrorHandler, inject, Inject, Injectable, NgZone, OnDestroy, 
 import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
 import { defer, EMPTY, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
-import { ClrContextRegistryService } from './context-registry.service';
+import { CLR_CONTEXT_LOADING_TYPE, ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
 import { attempt } from '../attempt';
 import { ClrContextChange, clrDiffContext } from '../diff';
@@ -31,7 +31,12 @@ export interface ClrContextTrackingOptions {
 const DEFAULT_DEBOUNCE_MS = 300;
 const DEFAULT_MAX_WAIT_MS = 2000;
 
-/** Streams the page context, re-scraping after DOM, value and annotation changes. */
+/**
+ * Streams the page context, re-scraping after DOM, value and annotation changes. Each scrape waits for
+ * asynchronous providers, as `getSnapshotAsync` does; one runs at a time, and changes made meanwhile
+ * lead to one more. A provider whose answer changes the page, such as a loading bar, is asked again
+ * after the next quiet period, so it is never asked more often than `debounceMs` allows.
+ */
 @Injectable({ providedIn: 'root' })
 export class ClrContextTrackerService implements OnDestroy {
   /** Emits the latest page context, replaying the most recent one to new subscribers. */
@@ -54,8 +59,11 @@ export class ClrContextTrackerService implements OnDestroy {
   private registrySubscription: Subscription | null = null;
   private latest: ClrPageContext | null = null;
   private latestSerialized: string | null = null;
-  /** Bumped by each scrape and by `stop`, so a slower earlier scrape never overwrites a newer one. */
+  /** Bumped by each scrape, `refresh` and `stop`, so a slower earlier scrape never overwrites a newer snapshot. */
   private scrapeRun = 0;
+  /** One scrape at a time: a change during one marks the page dirty, and one more scrape follows. */
+  private scrapeInFlight = false;
+  private scrapeDirty = false;
   private destroyed = false;
   private sharedUsers = 0;
   private sharedStarted = false;
@@ -105,8 +113,8 @@ export class ClrContextTrackerService implements OnDestroy {
     // Outside the zone: zone.js patches MutationObserver and would run change detection on every batch.
     this.zone.runOutsideAngular(() => {
       this.observer = this.observeDocument(this.document);
+      this.observeShadowRootsIn(this.document);
       this.observeFrames();
-      this.observeShadowRoots();
 
       this.stopListeningForValues = listenForValues(this.document.body, event => this.onValueChange(event));
 
@@ -146,6 +154,7 @@ export class ClrContextTrackerService implements OnDestroy {
   stop(): void {
     this.tracking = false;
     this.scrapeRun++;
+    this.scrapeDirty = false;
     this.observer?.disconnect();
     this.observer = null;
     this.stopListeningForValues?.();
@@ -163,12 +172,22 @@ export class ClrContextTrackerService implements OnDestroy {
     this.clearTimers();
   }
 
-  /** Takes a new snapshot now instead of waiting for a change; asynchronous providers follow when they answer. */
+  /**
+   * Takes a new snapshot now instead of waiting for a change; asynchronous providers follow when they
+   * answer, even when the tracker is not started.
+   */
   refresh(): void {
+    // A scrape already under way describes the page as it was; its result is dropped.
+    this.scrapeRun++;
     const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
     this.emit(snapshot);
-    if (snapshot.regions.some(region => region.state?.['loading'] === true)) {
-      this.zone.runOutsideAngular(() => this.scrape());
+    if (!snapshot.regions.some(region => region.type === CLR_CONTEXT_LOADING_TYPE)) {
+      return;
+    }
+    if (this.scrapeInFlight) {
+      this.scrapeDirty = true;
+    } else {
+      this.zone.runOutsideAngular(() => this.scrape(true));
     }
   }
 
@@ -183,6 +202,14 @@ export class ClrContextTrackerService implements OnDestroy {
   }
 
   private onMutations(records: MutationRecord[]): void {
+    // Shadow roots arrive with their hosts; observers do not cross into them.
+    for (const record of records) {
+      for (const node of Array.from(record.addedNodes)) {
+        if (node.nodeType === Node.ELEMENT_NODE) {
+          this.observeShadowRootsIn(node as Element);
+        }
+      }
+    }
     if (records.every(record => isInsideIgnoredRegion(record.target) || isPlacementOnly(record))) {
       return;
     }
@@ -213,11 +240,17 @@ export class ClrContextTrackerService implements OnDestroy {
     });
   }
 
-  private async scrape(): Promise<void> {
+  /** Scrapes once at a time; `pending` also runs it untracked, to settle a `refresh`. */
+  private async scrape(pending = false): Promise<void> {
     this.clearTimers();
-    if (!this.tracking) {
+    if (!this.tracking && !pending) {
       return;
     }
+    if (this.scrapeInFlight) {
+      this.scrapeDirty = true;
+      return;
+    }
+    this.scrapeInFlight = true;
     const run = ++this.scrapeRun;
     try {
       const snapshot = await this.contextEngine.getSnapshotAsync(this.trackingOptions.snapshot);
@@ -231,11 +264,18 @@ export class ClrContextTrackerService implements OnDestroy {
     } catch (error) {
       this.errorHandler.handleError(error);
     } finally {
+      this.scrapeInFlight = false;
       this.zone.runOutsideAngular(() => {
         this.observeFrames();
-        // A shadow root found only now may have rendered since the scrape.
-        if (this.observeShadowRoots()) {
-          this.scheduleScrape();
+        this.forgetDetachedShadowRoots();
+        if (this.scrapeDirty) {
+          this.scrapeDirty = false;
+          // Untracked, only a `refresh` marks the page dirty, and it is still owed its answer.
+          if (this.tracking) {
+            this.scheduleScrape();
+          } else {
+            this.scrape(true);
+          }
         }
       });
     }
@@ -264,7 +304,7 @@ export class ClrContextTrackerService implements OnDestroy {
       return;
     }
     const present = new Set<HTMLIFrameElement>();
-    for (const frame of allFrames(this.document)) {
+    for (const frame of allFrames([this.document, ...this.shadowObservers.keys()])) {
       present.add(frame);
       const contents = readableDocument(frame);
       const tracked = this.frames.get(frame);
@@ -283,6 +323,7 @@ export class ClrContextTrackerService implements OnDestroy {
         this.frames.set(frame, { document: null, observer: null, stopListeningForValues: null, loadListener: onLoad });
         continue;
       }
+      this.observeShadowRootsIn(contents);
       this.frames.set(frame, {
         document: contents,
         observer: this.observeDocument(contents),
@@ -298,27 +339,25 @@ export class ClrContextTrackerService implements OnDestroy {
     }
   }
 
-  /** Observes open shadow roots in the page and its readable frames; returns whether any are new. */
-  private observeShadowRoots(): boolean {
+  /** Observes the open shadow roots in `root`, its own included, that are not observed yet. */
+  private observeShadowRootsIn(root: ParentNode): void {
     if (!this.tracking) {
-      return false;
+      return;
     }
-    const documents = [this.document, ...Array.from(this.frames.values(), tracked => tracked.document)];
-    const present = new Set(documents.flatMap(contents => (contents ? openShadowRoots(contents) : [])));
-    let added = false;
-    for (const root of present) {
-      if (!this.shadowObservers.has(root)) {
-        this.shadowObservers.set(root, this.observeTree(root));
-        added = true;
+    for (const shadowRoot of openShadowRoots(root)) {
+      if (!this.shadowObservers.has(shadowRoot)) {
+        this.shadowObservers.set(shadowRoot, this.observeTree(shadowRoot));
       }
     }
-    for (const [root, observer] of this.shadowObservers) {
-      if (!present.has(root)) {
+  }
+
+  private forgetDetachedShadowRoots(): void {
+    for (const [shadowRoot, observer] of this.shadowObservers) {
+      if (!shadowRoot.host.isConnected) {
         observer.disconnect();
-        this.shadowObservers.delete(root);
+        this.shadowObservers.delete(shadowRoot);
       }
     }
-    return added;
   }
 
   private detachFrame(frame: HTMLIFrameElement, tracked: TrackedFrame): void {
@@ -356,16 +395,19 @@ function listenForValues(body: HTMLElement, listener: (event: Event) => void): (
   };
 }
 
-function allFrames(root: Document): HTMLIFrameElement[] {
-  const frames: HTMLIFrameElement[] = [];
-  for (const frame of Array.from(root.querySelectorAll('iframe'))) {
-    if (frame.closest(CLR_CONTEXT_IGNORE_SELECTOR)) {
-      continue;
-    }
-    frames.push(frame);
-    const contents = readableDocument(frame);
-    if (contents) {
-      frames.push(...allFrames(contents));
+/** The frames in `roots`, which include the observed shadow roots, and in their readable documents. */
+function allFrames(roots: ParentNode[]): Set<HTMLIFrameElement> {
+  const frames = new Set<HTMLIFrameElement>();
+  for (const root of roots) {
+    for (const frame of Array.from(root.querySelectorAll('iframe'))) {
+      if (frames.has(frame) || closestAcrossShadow(frame, CLR_CONTEXT_IGNORE_SELECTOR)) {
+        continue;
+      }
+      frames.add(frame);
+      const contents = readableDocument(frame);
+      if (contents) {
+        allFrames([contents]).forEach(nested => frames.add(nested));
+      }
     }
   }
   return frames;

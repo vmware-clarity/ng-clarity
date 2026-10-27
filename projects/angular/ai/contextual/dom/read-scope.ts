@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { IdScope } from './shadow';
+import type { IdScope } from './shadow';
 
 /** Per-walk cache of styles and labels; nothing outlives the walk, as jsdom styles go stale. */
 interface ReadScope {
   styles: WeakMap<Element, CSSStyleDeclaration>;
   labels: WeakMap<IdScope, Map<Element, HTMLLabelElement>>;
+  shadowRoots: WeakMap<ParentNode, ShadowRoot[]>;
 }
 
 let current: ReadScope | null = null;
@@ -19,7 +20,7 @@ export function withinReadScope<T>(read: () => T): T {
   if (current) {
     return read();
   }
-  current = { styles: new WeakMap(), labels: new WeakMap() };
+  current = { styles: new WeakMap(), labels: new WeakMap(), shadowRoots: new WeakMap() };
   try {
     return read();
   } finally {

@@ -8,7 +8,6 @@
 import { CommonModule } from '@angular/common';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrCheckboxModule, ClrInputModule, ClrRadioModule, ClrSelectModule } from '@clr/angular/forms';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrSpinnerModule } from '@clr/angular/progress/spinner';
@@ -81,7 +80,6 @@ describe('EnumFilterComponent', () => {
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        NoopAnimationsModule,
       ],
       declarations: [EnumFilterComponent, FilterFormComponent],
       providers: [DatagridFiltersStrings],

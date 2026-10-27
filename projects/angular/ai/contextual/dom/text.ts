@@ -11,6 +11,7 @@ import { CLR_CONTEXT_HIDDEN_SELECTOR } from '@clr/angular/utils';
 import { readScope } from './read-scope';
 import { closestAcrossShadow, idScope, IdScope, renderedChildNodes } from './shadow';
 import { ACTION_SELECTOR, UNREADABLE_SELECTOR } from './tables/selectors';
+import { SKIPPED_TAGS } from './tables/tags';
 import { isHiddenFromContext, isVisible } from './visibility';
 
 /** Normalizes whitespace and truncates to `maxLength`, ending shortened text with an ellipsis. */
@@ -105,7 +106,12 @@ function textFor(
       continue;
     }
     const child = node as Element;
-    if (child.matches(UNREADABLE_SELECTOR) || (withheld && child.matches(withheld))) {
+    // A shadow root's `<style>` is text in the DOM, never on screen.
+    if (
+      SKIPPED_TAGS.has(child.tagName.toLowerCase()) ||
+      child.matches(UNREADABLE_SELECTOR) ||
+      (withheld && child.matches(withheld))
+    ) {
       continue;
     }
     const embeds = embedding && !child.matches(ACTION_SELECTOR);
@@ -188,5 +194,5 @@ function textOfReferences(scope: IdScope, ids: string[], withheld: string, skip:
 }
 
 export function isUnrendered(element: Element): boolean {
-  return !!element.closest('[hidden]') || !isVisible(element);
+  return !!closestAcrossShadow(element, '[hidden]') || !isVisible(element);
 }
