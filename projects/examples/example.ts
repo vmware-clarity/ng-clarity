@@ -22,6 +22,8 @@ export interface ExampleSource {
   scss?: string;
   /** Whether the component class has members, so that its source is worth showing next to the template. */
   hasLogic: boolean;
+  /** Files next to the example that it imports, such as mock data, by their path relative to the example. */
+  files?: Record<string, string>;
 }
 
 export interface Example {

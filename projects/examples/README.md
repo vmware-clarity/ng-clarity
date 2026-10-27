@@ -12,9 +12,12 @@ The apps import them from `@clr/examples/<component>`, compiled from source like
 
 1. Add `<id>.example.ts` and `<id>.example.html` (and optionally `<id>.example.scss`) to the component's folder.
    The website opens these three files in StackBlitz as they are, so the example must be self-contained:
-   - The component is standalone and imports only from `@angular/*`, `@clr/angular` and `@clr/addons`.
+   - The component is standalone and imports only from `@angular/*`, `@clr/angular`, `@clr/addons`, `rxjs` and
+     files next to it.
    - Styles use CSS custom properties such as `var(--cds-global-space-9)`, not `@use` or `@import` of Sass files
      from this repository.
+   - Other files it needs, such as mock data, sit in the component's folder and are imported with a relative path
+     (`./inventory/inventory`). The generator finds them through the imports and StackBlitz gets them at the same paths.
 2. Add an entry to the folder's `examples.json` with its `id`, `title` and `targets` (`website`, `demo`, `storybook`).
    When any example targets Storybook, set the file's `storybook` key to the component's story directory, such as
    `components/button` (see `docs/CONTRIBUTING_STORYBOOK.md`).

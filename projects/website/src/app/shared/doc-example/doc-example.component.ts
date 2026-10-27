@@ -32,6 +32,7 @@ import { StackblitzExampleComponent } from '../stackblitz-example/stackblitz-exa
       [componentClass]="example().source.hasLogic ? example().source.ts : undefined"
       [showComponentClass]="example().source.hasLogic"
       [componentStyles]="example().source.scss"
+      [additionalFiles]="example().source.files"
       [showComponentStyles]="example().showStyles"
     ></app-stackblitz-example>
   `,

@@ -120,8 +120,40 @@ function readExample(name, { id, title, targets, showStyles = true }) {
       ts: toStackBlitzComponent(stripLicenseHeader(ts), id, className),
       scss: scss === undefined ? undefined : stripLicenseHeader(scss),
       hasLogic: !new RegExp(`export class ${className} \\{\\}`).test(ts),
+      files: readSupportFiles(name, id, ts),
     },
   };
+}
+
+/**
+ * The files next to the example that it imports, directly or through each other, such as mock data. StackBlitz gets
+ * them at the same paths relative to the example, so imports must stay inside the component folder.
+ */
+function readSupportFiles(name, id, ts) {
+  const folder = path.join(EXAMPLES_ROOT, name);
+  const files = {};
+  const pending = [{ code: ts, directory: folder }];
+
+  while (pending.length) {
+    const { code, directory } = pending.pop();
+    for (const [, specifier] of code.matchAll(/from '(\.{1,2}\/[^']+)'/g)) {
+      const filePath = [specifier, `${specifier}.ts`]
+        .map(candidate => path.join(directory, candidate))
+        .find(candidate => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
+      const relativePath = filePath && path.relative(folder, filePath).split(path.sep).join('/');
+
+      if (!relativePath || relativePath.startsWith('../')) {
+        throw new Error(`${name}/${id}: cannot share '${specifier}'. Import only files inside ${name}/.`);
+      }
+      if (!(relativePath in files)) {
+        const contents = readFile(filePath);
+        files[relativePath] = filePath.endsWith('.ts') ? stripLicenseHeader(contents) : contents;
+        pending.push({ code: contents, directory: path.dirname(filePath) });
+      }
+    }
+  }
+
+  return Object.keys(files).length ? files : undefined;
 }
 
 /**
