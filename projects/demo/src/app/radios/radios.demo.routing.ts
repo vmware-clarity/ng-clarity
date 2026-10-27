@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { RADIO_EXAMPLES } from '@clr/examples/radio';
 
 import { RadiosDemo } from './radios.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: RadiosDemo }];
+const ROUTES: Routes = [
+  { path: '', component: RadiosDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: RADIO_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);
