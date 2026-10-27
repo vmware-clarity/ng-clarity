@@ -7,17 +7,20 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { BADGE_EXAMPLES } from '@clr/examples/badge';
 
 import { BadgeColorsDemo } from './badge-colors';
 import { BadgeStatusesDemo } from './badge-statuses';
 import { BadgesDemo } from './badges.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: BadgesDemo,
     children: [
-      { path: '', redirectTo: 'color-options', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: BADGE_EXAMPLES } },
       { path: 'color-options', component: BadgeColorsDemo },
       { path: 'status', component: BadgeStatusesDemo },
     ],

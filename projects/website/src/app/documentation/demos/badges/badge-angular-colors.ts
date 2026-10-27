@@ -6,32 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrBadge } from '@clr/angular';
+import { BADGE_EXAMPLES } from '@clr/examples/badge';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `
-<h6>Solid</h6>
-<clr-badge>1</clr-badge>
-<clr-badge clrColor="purple">15</clr-badge>
-<clr-badge clrColor="blue">2</clr-badge>
-<clr-badge clrColor="orange">3</clr-badge>
-<clr-badge clrColor="light-blue">12</clr-badge>
-<clr-badge clrColor="gray">8</clr-badge>
-<h6>Outlined</h6>
-<clr-badge clrType="outlined">1</clr-badge>
-<clr-badge clrType="outlined" clrColor="purple">15</clr-badge>
-<clr-badge clrType="outlined" clrColor="blue">2</clr-badge>
-<clr-badge clrType="outlined" clrColor="orange">3</clr-badge>
-<clr-badge clrType="outlined" clrColor="light-blue">12</clr-badge>
-<clr-badge clrType="outlined" clrColor="gray">8</clr-badge>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-badge-angular-colors-demo',
   templateUrl: './badge-angular-colors.demo.html',
-  imports: [ClrBadge, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class BadgeAngularColorsDemo {
-  htmlExample = HTML_EXAMPLE;
+  readonly examples = BADGE_EXAMPLES;
 }
