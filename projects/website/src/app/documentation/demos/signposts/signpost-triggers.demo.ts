@@ -6,80 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import {
-  ClrIcon,
-  ClrIconModule,
-  ClrIfOpen,
-  ClrPopoverContent,
-  ClrPopoverHostDirective,
-  ClrSignpostModule,
-  ClrStopEscapePropagationDirective,
-} from '@clr/angular';
+import { SIGNPOST_EXAMPLES } from '@clr/examples/signpost';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const html = `
-<div class="signpost-triggers-wrapper">
-  <div class="signpost-trigger-demo">
-    <div class="signpost-item">
-      <h6>Clarity Icon</h6>
-      <clr-signpost>
-        <button class="btn btn-link btn-icon" aria-label="Icon Button Trigger" clrSignpostTrigger>
-          <clr-icon shape="user" class="is-solid has-badge-info"></clr-icon>
-        </button>
-        <clr-signpost-content [clrPosition]="'bottom-middle'" *clrIfOpen>
-          Lorem ipsum...
-        </clr-signpost-content>
-      </clr-signpost>
-    </div>
-    <div class="signpost-item">
-      <h6>Button Link</h6>
-      <div class="trigger-item">
-        <clr-signpost>
-          <button class="btn btn-link" clrSignpostTrigger>Button Link Trigger</button>
-          <clr-signpost-content [clrPosition]="'top-middle'" *clrIfOpen>
-            Lorem ipsum...
-          </clr-signpost-content>
-        </clr-signpost>
-      </div>
-    </div>
-    <div class="signpost-item">
-      <h6>Button Link w/ Clarity Icon</h6>
-      <div class="trigger-item">
-        <clr-signpost>
-          <button class="btn btn-link" clrSignpostTrigger>
-            Button Link
-            <clr-icon shape="help-info"></clr-icon>
-          </button>
-          <clr-signpost-content [clrPosition]="'bottom-middle'" *clrIfOpen>
-            Lorem ipsum...
-          </clr-signpost-content>
-        </clr-signpost>
-      </div>
-    </div>
-  </div>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-signpost-triggers-demo',
   templateUrl: './signpost-triggers.demo.html',
-  styleUrl: './signpost.demo.scss',
-  host: {
-    '[class.content-area]': 'true',
-    '[class.dox-content-panel]': 'true',
-  },
-  imports: [
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
-    ClrSignpostModule,
-    ClrIcon,
-    ClrIconModule,
-    ClrIfOpen,
-    ClrPopoverContent,
-    StackblitzExampleComponent,
-  ],
+  imports: [DocExampleComponent],
 })
 export class SignpostTriggersDemo {
-  html = html;
+  readonly examples = SIGNPOST_EXAMPLES;
 }

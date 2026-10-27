@@ -19,7 +19,6 @@ import { SignpostDemo } from './signpost.demo';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { LinkCardsComponent } from '../../../shared/link-cards/link-cards.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
@@ -33,7 +32,6 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     StyleDocsComponent,
     CodeSnippetComponent,
     ThemedImageComponent,
-    StackblitzExampleComponent,
     LinkCardsComponent,
     SignpostDemo,
     SignpostOpenAtPointDemo,
