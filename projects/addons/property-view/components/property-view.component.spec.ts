@@ -8,7 +8,6 @@
 import { Component, Input } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
 import { PropertyViewConfigProvider } from '../property-view-config-provider';
 import { PropertyViewSectionsExpandedStateManager } from '../property-view-sections-expanded-state.manager';
@@ -104,7 +103,6 @@ describe('PropertyViewComponent', function () {
     };
 
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule],
       declarations: [PropertyViewComponent, PropertyViewCategoryMockComponent],
     });
 

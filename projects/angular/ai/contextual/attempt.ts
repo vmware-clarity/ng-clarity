@@ -22,3 +22,14 @@ export function withTimeout<T>(promise: Promise<T>, timeoutMs: number): Promise<
   const timeout = new Promise<typeof TIMED_OUT>(resolve => (timer = setTimeout(() => resolve(TIMED_OUT), timeoutMs)));
   return Promise.race([promise, timeout]).finally(() => clearTimeout(timer));
 }
+
+/** The longest delay `setTimeout` honours; longer ones, `Infinity` included, fire at once. */
+const MAX_TIMEOUT_MS = 2 ** 31 - 1;
+
+/** `timeoutMs` as a delay `setTimeout` honours: `fallback` when it is not a number, capped otherwise. */
+export function usableTimeout(timeoutMs: number | undefined, fallback: number): number {
+  if (typeof timeoutMs !== 'number' || Number.isNaN(timeoutMs)) {
+    return fallback;
+  }
+  return Math.min(Math.max(timeoutMs, 0), MAX_TIMEOUT_MS);
+}

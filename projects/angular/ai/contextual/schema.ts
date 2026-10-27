@@ -5,6 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+/** Version of the {@link ClrPageContext} format; it changes only when a field changes meaning. */
+export const CLR_PAGE_CONTEXT_SCHEMA_VERSION = '1';
+
 /**
  * JSON Schema (draft-07) of {@link ClrPageContext} at `schemaVersion` `'1'`, for consumers that validate
  * snapshots outside TypeScript. Component `state` and the view's `metadata` are application-specific and
@@ -18,7 +21,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
   required: ['schemaVersion', 'application', 'title', 'regions', 'components', 'collectedAt'],
   additionalProperties: false,
   properties: {
-    schemaVersion: { const: '1' },
+    schemaVersion: { const: CLR_PAGE_CONTEXT_SCHEMA_VERSION },
     application: {
       type: 'object',
       required: ['id'],
@@ -39,7 +42,7 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
         url: { type: 'string' },
         path: { type: 'string' },
         params: { $ref: '#/definitions/strings' },
-        queryParams: { $ref: '#/definitions/strings' },
+        queryParams: { $ref: '#/definitions/queryParams' },
         data: { type: 'object' },
       },
     },
@@ -56,10 +59,15 @@ export const CLR_PAGE_CONTEXT_SCHEMA = {
     components: { type: 'array', items: { $ref: '#/definitions/component' } },
     truncated: { type: 'boolean' },
     focus: { const: 'modal' },
-    collectedAt: { type: 'string', format: 'date-time' },
+    collectedAt: { type: 'string' },
   },
   definitions: {
     strings: { type: 'object', additionalProperties: { type: 'string' } },
+    // A repeated query key is reported as a list.
+    queryParams: {
+      type: 'object',
+      additionalProperties: { anyOf: [{ type: 'string' }, { type: 'array', items: { type: 'string' } }] },
+    },
     component: {
       type: 'object',
       required: ['type'],

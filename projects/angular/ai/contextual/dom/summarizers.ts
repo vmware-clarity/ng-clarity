@@ -11,7 +11,7 @@ import { ClrContextSnapshotOptions } from '@clr/angular/utils';
 import { accessibleName } from './accessible-name';
 import { ariaEnumValue } from './aria-state';
 import { resolveRole } from './roles';
-import { idScope } from './shadow';
+import { closestAcrossShadow, idScope, parentAcrossShadow, queryRendered } from './shadow';
 import { CELL_SELECTOR, ITEM_CONTAINER_SELECTORS, ITEM_SELECTORS } from './tables/selectors';
 import { isHiddenFromContext, isRedactedWithin, isVisible } from './visibility';
 import { ownEntry } from '../lookup';
@@ -239,10 +239,10 @@ function dataRows(rows: Element[]): Element[] {
 function queryRole(element: Element, role: string, scope: SummaryScope): Element[] {
   const container = ITEM_CONTAINER_SELECTORS[role];
   const judgesStyle = STYLE_JUDGED_ROLES.has(role);
-  return Array.from(element.querySelectorAll(ITEM_SELECTORS[role])).filter(
+  return queryRendered(element, ITEM_SELECTORS[role]).filter(
     item =>
       !isHiddenFromContext(item, scope.withheld) &&
-      (!container || item.parentElement?.closest(container) === element) &&
+      (!container || closestContainer(item, container) === element) &&
       (!judgesStyle || isVisible(item))
   );
 }
@@ -263,4 +263,9 @@ function namesOf(items: Element[], collection: Element, scope: SummaryScope): st
     .slice(0, scope.options.maxItemsPerCollection)
     .map(item => nameOf(item, collection, scope))
     .filter((name): name is string => name !== null);
+}
+
+function closestContainer(item: Element, container: string): Element | null {
+  const parent = parentAcrossShadow(item);
+  return parent ? closestAcrossShadow(parent, container) : null;
 }

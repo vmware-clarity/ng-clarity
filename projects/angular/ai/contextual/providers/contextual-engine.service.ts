@@ -18,7 +18,7 @@ import {
   ClrContextViewConfig,
 } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
-import { attempt } from '../attempt';
+import { attempt, usableTimeout } from '../attempt';
 import {
   CLR_AI_METADATA_ATTRIBUTE,
   CLR_AI_METADATA_URL_ATTRIBUTE,
@@ -27,7 +27,7 @@ import {
   viewMetadataHosts,
 } from '../dom/annotations';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
-import { closestAcrossShadow } from '../dom/shadow';
+import { closestAcrossShadow, containsAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
 import {
   ClrApplicationContext,
@@ -38,13 +38,11 @@ import {
 } from '../interfaces/context.interface';
 import { jsonSafe, REGION_DEPTH, ROUTE_DATA_DEPTH } from '../json-safe';
 import { availableRoutes, routePatternFor } from '../routes';
+import { CLR_PAGE_CONTEXT_SCHEMA_VERSION } from '../schema';
 import { capSnapshotOptions, resolveSnapshotOptions, withCallOptions } from '../snapshot-options';
 import { sanitizeUntrustedSnapshotOptions, withoutFormValues, withoutUrlDetails } from '../untrusted-options';
 
 const DEFAULT_GLOBAL_PROPERTY = 'clrContext';
-
-/** Version of the {@link ClrPageContext} format. */
-const SCHEMA_VERSION = '1';
 
 /** How long `getSnapshotAsync` waits for each asynchronous provider by default. */
 const DEFAULT_SOURCE_TIMEOUT_MS = 2000;
@@ -95,25 +93,33 @@ export class ClrContextEngineService implements OnDestroy {
     return this.describePage(snapshot, resolved, this.contextRegistry.collect(this.regionFilter(resolved)));
   }
 
-  /** Like {@link getSnapshot}, awaiting asynchronous providers and metadata URLs for up to `timeoutMs` each. */
+  /**
+   * Like {@link getSnapshot}, awaiting asynchronous providers and metadata URLs for up to `timeoutMs` each
+   * (2 seconds by default). When the view changes while they answer, the new view is snapshotted instead.
+   */
   async getSnapshotAsync(
     options?: ClrContextSnapshotOptions,
     timeoutMs = DEFAULT_SOURCE_TIMEOUT_MS
   ): Promise<ClrPageContext> {
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
     const urls = this.metadataUrls(resolved);
+    const waitMs = usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS);
     if (urls.length) {
-      await this.metadataLoader.settle(urls, timeoutMs);
+      await this.metadataLoader.settle(urls, waitMs);
     }
     const snapshot = this.viewSnapshot(resolved, true);
     if (snapshot.enabled === false) {
       return snapshot;
     }
     // Started first, so providers work while the page is walked.
-    const regions = this.contextRegistry.collectAsync(this.regionFilter(resolved), timeoutMs);
+    const regions = this.contextRegistry.collectAsync({
+      filter: this.regionFilter(resolved),
+      timeoutMs: waitMs,
+    });
     this.describePage(snapshot, resolved, []);
     snapshot.regions = await regions;
-    return snapshot;
+    const now = this.viewSnapshot(resolved, true);
+    return now.viewId === snapshot.viewId && now.enabled === snapshot.enabled ? snapshot : this.getSnapshot(options);
   }
 
   /** Registers a DOM extractor for other libraries' components. Returns a function that removes it. */
@@ -185,7 +191,7 @@ export class ClrContextEngineService implements OnDestroy {
   private viewSnapshot(options: Required<ClrContextSnapshotOptions>, settled: boolean): ClrPageContext {
     const route = this.routeContext();
     const snapshot: ClrPageContext = {
-      schemaVersion: SCHEMA_VERSION,
+      schemaVersion: CLR_PAGE_CONTEXT_SCHEMA_VERSION,
       application: this.applicationContext(),
       title: '',
       regions: [],
@@ -193,16 +199,18 @@ export class ClrContextEngineService implements OnDestroy {
       collectedAt: new Date().toISOString(),
     };
     const config = this.viewConfig(route);
-    const provided = attempt(() => jsonSafe(this.application?.metadata?.(), REGION_DEPTH), undefined);
+    const provided = attempt(() => this.application?.metadata?.(), undefined);
     const fromPage = this.pageMetadata(options);
-    const metadata = { ...recordOrEmpty(config?.metadata), ...recordOrEmpty(provided), ...fromPage };
-    const viewId = [fromPage['viewId'], this.providedViewId(), route?.data?.['viewId'], config?.viewId].find(
+    const fromApplication = isRecord(provided) ? jsonSafe(provided, REGION_DEPTH, true) : undefined;
+    const metadata = { ...recordOrEmpty(config?.metadata), ...recordOrEmpty(fromApplication), ...fromPage };
+    const viewId = [fromPage['viewId'], this.providedViewId(), this.routedViewId(), config?.viewId].find(
       id => typeof id === 'string' && id
     );
     if (viewId) {
       snapshot.viewId = viewId as string;
     }
-    if (Object.keys(metadata).length) {
+    // An empty object from the application still enables the view.
+    if (Object.keys(metadata).length || isRecord(fromApplication)) {
       snapshot.metadata = metadata;
     }
     const loads = this.metadataUrls(options).map(url => this.metadataLoader.read(url));
@@ -212,7 +220,7 @@ export class ClrContextEngineService implements OnDestroy {
     const enabled =
       typeof config?.enabled === 'boolean'
         ? config.enabled
-        : this.application?.views !== 'enabled' || snapshot.metadata !== undefined;
+        : !readsEnabledViewsOnly(this.application?.views) || snapshot.metadata !== undefined;
     if (!enabled) {
       snapshot.enabled = false;
       return snapshot;
@@ -304,6 +312,15 @@ export class ClrContextEngineService implements OnDestroy {
     return attempt(() => this.application?.viewId?.(), undefined);
   }
 
+  /** The deepest route's own `data.viewId`: a child route does not inherit its parent's view. */
+  private routedViewId(): unknown {
+    let route = this.router?.config.length ? this.router.routerState.snapshot.root : null;
+    while (route?.firstChild) {
+      route = route.firstChild;
+    }
+    return route?.routeConfig?.data?.['viewId'];
+  }
+
   /** Annotations follow their element: left out where it would be, stateless inside a redacted region. */
   private regionFilter(options: Required<ClrContextSnapshotOptions>): ClrContextRegionFilter {
     if (!isPlatformBrowser(this.platformId)) {
@@ -318,7 +335,10 @@ export class ClrContextEngineService implements OnDestroy {
       if (isHiddenFromEngine(element, excludeSelector)) {
         return 'drop';
       }
-      if (scope.roots && !scope.roots.some(root => root.contains(element) || element.contains(root))) {
+      if (
+        scope.roots &&
+        !scope.roots.some(root => containsAcrossShadow(root, element) || containsAcrossShadow(element, root))
+      ) {
         return 'drop';
       }
       return closestAcrossShadow(element, CLR_CONTEXT_REDACT_SELECTOR) ? 'redact' : 'keep';
@@ -411,4 +431,9 @@ export class ClrContextEngineService implements OnDestroy {
 
 function recordOrEmpty(value: unknown): Record<string, unknown> {
   return isRecord(value) ? value : {};
+}
+
+/** Whether only enabled views are read; an unrecognised `views` value reads only those, failing closed. */
+function readsEnabledViewsOnly(views: string | undefined): boolean {
+  return views !== undefined && views !== 'all';
 }

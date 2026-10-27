@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { EnvironmentProviders, InjectionToken, makeEnvironmentProviders } from '@angular/core';
+import { EnvironmentProviders, InjectionToken, isDevMode, makeEnvironmentProviders } from '@angular/core';
 
 import { ClrApplicationContext, ClrContextSnapshotOptions } from '../interfaces/context.interface';
 import { clrContextPreset, ClrContextPreset, warnIfExclusionsAreNotLists, withCallOptions } from '../snapshot-options';
@@ -60,6 +60,16 @@ export const CLR_CONTEXT_APPLICATION = new InjectionToken<ClrContextApplicationO
  * ```
  */
 export function provideClrContextApplication(application: ClrContextApplicationOptions): EnvironmentProviders {
+  if (
+    application.views !== undefined &&
+    application.views !== 'all' &&
+    application.views !== 'enabled' &&
+    isDevMode()
+  ) {
+    console.warn(
+      `provideClrContextApplication: views "${application.views}" is neither 'all' nor 'enabled'; only enabled views are read.`
+    );
+  }
   return makeEnvironmentProviders([{ provide: CLR_CONTEXT_APPLICATION, useValue: application }]);
 }
 

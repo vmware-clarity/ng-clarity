@@ -5,6 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+export type {
+  ClrAnimationAnimateMetadata,
+  ClrAnimationMetadata,
+  ClrAnimationOptions,
+  ClrAnimationReferenceMetadata,
+  ClrAnimationStateMetadata,
+  ClrAnimationStyleMetadata,
+  ClrAnimationStyles,
+  ClrAnimationTransitionMetadata,
+  ClrAnimationTriggerMetadata,
+} from './animation-metadata';
 export * from './constants';
 export * from './collapse/index';
 export * from './expandable-animation/index';
