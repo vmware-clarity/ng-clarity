@@ -8,6 +8,7 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ClarityDocComponent } from '../clarity-doc';
@@ -41,6 +42,7 @@ import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.compon
     TabsStaticVerticalDemo,
     StyleDocsComponent,
     RouterLink,
+    AiSkillComponent,
   ],
 })
 export class TabsDemo extends ClarityDocComponent {

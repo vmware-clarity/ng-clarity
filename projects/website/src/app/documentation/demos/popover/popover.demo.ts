@@ -13,6 +13,7 @@ import { PopoverContextMenuDemo } from './popover-context-menu';
 import { PopoverFallbackPositionsDemo } from './popover-fallback-positions';
 import { PopoverPositionsDemo } from './popover-positions';
 import { PopoverScrollToCloseDemo } from './popover-scroll-to-close';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ClarityDocComponent } from '../clarity-doc';
@@ -32,6 +33,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     PopoverFallbackPositionsDemo,
     PopoverScrollToCloseDemo,
     PopoverContextMenuDemo,
+    AiSkillComponent,
   ],
 })
 export class PopoverDemo extends ClarityDocComponent {

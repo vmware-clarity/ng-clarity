@@ -22,6 +22,7 @@ import { SignpostOpenAtPointDemo } from './signpost-open-at-point.demo';
 import { SignpostParagraphDemo } from './signpost-paragraph.demo';
 import { SignpostPositionsDemo } from './signpost-positions.demo';
 import { SignpostTriggersDemo } from './signpost-triggers.demo';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -67,6 +68,7 @@ const html = `
     SignpostPositionsDemo,
     SignpostTriggersDemo,
     StyleDocsComponent,
+    AiSkillComponent,
   ],
 })
 export class SignpostDemo extends ClarityDocComponent {

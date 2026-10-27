@@ -14,6 +14,7 @@ import { map, Observable, Subscription } from 'rxjs';
 
 import RAW_PAGES from '../../compiled-content/pages.json';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+import { AiAgentsComponent } from '../shared/ai-agents/ai-agents.component';
 import { HashListenerDirective } from '../shared/hash-listener/hash-listener.directive';
 import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
 import { SiteFooterComponent } from '../shared/site-footer/site-footer.component';
@@ -103,6 +104,7 @@ export class ContentPageComponent implements OnInit, OnDestroy {
 function registerCustomElements(injector: Injector) {
   const customElementsMap: Record<string, Type<any>> = {
     'app-themed-image': ThemedImageComponent,
+    'app-ai-agents': AiAgentsComponent,
   };
 
   for (const [tagName, component] of Object.entries(customElementsMap)) {
