@@ -15,8 +15,10 @@ import { ProgressBarCardsExample } from './cards.example';
 import { ProgressBarColorsExample } from './colors.example';
 import { ProgressBarComponentBlockExample } from './component-block.example';
 import { ProgressBarComponentDisplayValueExample } from './component-display-value.example';
+import { ProgressBarComponentLoopExample } from './component-loop.example';
 import { ProgressBarComponentSuccessExample } from './component-success.example';
 import { ProgressBarComponentExample } from './component.example';
+import { ProgressBarLoopExample } from './loop.example';
 import { ProgressBarSimulatedExample } from './simulated.example';
 import { ProgressBarStaticCardsExample } from './static-cards.example';
 import { ProgressBarStaticExample } from './static.example';
@@ -30,6 +32,18 @@ export const PROGRESS_BAR_EXAMPLES = {
     showStyles: true,
     source: {
       html: '<clr-progress-bar clrValue="40" clrMax="100"></clr-progress-bar>\n',
+      ts: "import { Component } from '@angular/core';\nimport { ClrProgressBarModule } from '@clr/angular';\n\n@Component({\n  selector: 'app-example',\n  templateUrl: './example.component.html',\n  imports: [ClrProgressBarModule],\n})\nexport class ExampleComponent {}\n",
+      hasLogic: false,
+    },
+  },
+  componentLoop: {
+    id: 'progress-bar/component-loop',
+    title: 'Looping progress bar component',
+    targets: ['website', 'demo', 'storybook'],
+    component: ProgressBarComponentLoopExample,
+    showStyles: true,
+    source: {
+      html: '<clr-progress-bar clrValue="75" clrLoop></clr-progress-bar>\n',
       ts: "import { Component } from '@angular/core';\nimport { ClrProgressBarModule } from '@clr/angular';\n\n@Component({\n  selector: 'app-example',\n  templateUrl: './example.component.html',\n  imports: [ClrProgressBarModule],\n})\nexport class ExampleComponent {}\n",
       hasLogic: false,
     },
@@ -175,6 +189,18 @@ export const PROGRESS_BAR_EXAMPLES = {
     showStyles: true,
     source: {
       html: '<div class="clr-row">\n  <div class="clr-col-12 clr-col-sm-6">\n    <div class="card">\n      <div class="card-block">\n        <h4 class="card-title">Card title</h4>\n        <p class="card-text">Here is a progress bar at the very top of a card.</p>\n        <div class="progress-block">\n          <label>Label</label>\n          <div class="progress-static">\n            <div class="progress-meter" data-value="15"></div>\n          </div>\n        </div>\n        <div class="progress-block">\n          <label>Longer Label</label>\n          <div class="progress-static">\n            <div class="progress-meter" data-value="75"></div>\n          </div>\n        </div>\n        <div class="progress-block">\n          <label>Really, Really, Really Long Label</label>\n          <div class="progress success">\n            <progress value="25" max="100" data-displayval="25%"></progress>\n          </div>\n        </div>\n      </div>\n      <div class="card-footer">\n        <div class="progress-static top">\n          <div class="progress-meter" data-value="33"></div>\n        </div>\n        <a href="javascript://" class="card-link">Click</a>\n      </div>\n    </div>\n  </div>\n</div>\n',
+      ts: "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-example',\n  templateUrl: './example.component.html',\n})\nexport class ExampleComponent {}\n",
+      hasLogic: false,
+    },
+  },
+  loop: {
+    id: 'progress-bar/loop',
+    title: 'Indeterminate progress bar',
+    targets: ['website', 'demo', 'storybook'],
+    component: ProgressBarLoopExample,
+    showStyles: true,
+    source: {
+      html: '<div class="progress loop"><progress></progress></div>\n',
       ts: "import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-example',\n  templateUrl: './example.component.html',\n})\nexport class ExampleComponent {}\n",
       hasLogic: false,
     },

@@ -29,6 +29,8 @@ type Story = StoryObj<ExampleArgs>;
 
 export const Component: Story = { parameters: { example: PROGRESS_BAR_EXAMPLES.component } };
 
+export const ComponentLoop: Story = { parameters: { example: PROGRESS_BAR_EXAMPLES.componentLoop } };
+
 export const ComponentSuccess: Story = { parameters: { example: PROGRESS_BAR_EXAMPLES.componentSuccess } };
 
 export const ComponentDisplayValue: Story = { parameters: { example: PROGRESS_BAR_EXAMPLES.componentDisplayValue } };
@@ -44,3 +46,5 @@ export const Static: Story = { parameters: { example: PROGRESS_BAR_EXAMPLES.stat
 export const BlocksAndGroups: Story = { parameters: { example: PROGRESS_BAR_EXAMPLES.blocksAndGroups } };
 
 export const BlocksInCards: Story = { parameters: { example: PROGRESS_BAR_EXAMPLES.blocksInCards } };
+
+export const Loop: Story = { parameters: { example: PROGRESS_BAR_EXAMPLES.loop } };

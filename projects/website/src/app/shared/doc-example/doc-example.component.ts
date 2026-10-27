@@ -19,12 +19,14 @@ import { StackblitzExampleComponent } from '../stackblitz-example/stackblitz-exa
 @Component({
   selector: 'app-doc-example',
   template: `
-    @if (previewClass()) {
-      <div [class]="previewClass()">
+    @if (showPreview()) {
+      @if (previewClass()) {
+        <div [class]="previewClass()">
+          <ng-container *ngComponentOutlet="example().component"></ng-container>
+        </div>
+      } @else {
         <ng-container *ngComponentOutlet="example().component"></ng-container>
-      </div>
-    } @else {
-      <ng-container *ngComponentOutlet="example().component"></ng-container>
+      }
     }
     <app-stackblitz-example
       [name]="example().title"
@@ -42,4 +44,9 @@ export class DocExampleComponent {
   readonly example = input.required<Example>();
   /** Classes for a block that wraps the rendered example, such as spacing. Without them, the example renders inline. */
   readonly previewClass = input<string>();
+  /**
+   * Whether to render the example above its code. Pages that frame the example themselves, such as in an
+   * `<app-animated-example>`, render `example.component` there and show only the code here.
+   */
+  readonly showPreview = input(true);
 }

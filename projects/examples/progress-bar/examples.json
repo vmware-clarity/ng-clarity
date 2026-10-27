@@ -7,6 +7,11 @@
       "targets": ["website", "demo", "storybook"]
     },
     {
+      "id": "component-loop",
+      "title": "Looping progress bar component",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
       "id": "component-success",
       "title": "Labeled success progress bar",
       "targets": ["website", "demo", "storybook"]
@@ -60,6 +65,11 @@
     {
       "id": "blocks-in-cards",
       "title": "Progress bar blocks in cards",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "loop",
+      "title": "Indeterminate progress bar",
       "targets": ["website", "demo", "storybook"]
     }
   ]

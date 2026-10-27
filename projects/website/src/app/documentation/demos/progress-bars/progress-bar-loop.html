@@ -6,7 +6,7 @@
   -->
 
 <app-animated-example [label]="'indeterminate progress bar'" [fullWidthContent]="true">
-  <div class="progress loop"><progress></progress></div>
+  <ng-container *ngComponentOutlet="examples.loop.component"></ng-container>
 </app-animated-example>
 
-<app-stackblitz-example name="progress bar loop" [componentTemplate]="example"></app-stackblitz-example>
+<app-doc-example [example]="examples.loop" [showPreview]="false"></app-doc-example>

@@ -19,9 +19,9 @@
     <br />
 
     <app-animated-example [label]="'looping progress bar'" [fullWidthContent]="true">
-      <clr-progress-bar id="example3" clrValue="75" clrLoop></clr-progress-bar>
+      <ng-container *ngComponentOutlet="examples.componentLoop.component"></ng-container>
     </app-animated-example>
-    <app-stackblitz-example name="progress bar medium loop" [componentTemplate]="loopExample"></app-stackblitz-example>
+    <app-doc-example [example]="examples.componentLoop" [showPreview]="false"></app-doc-example>
 
     <br />
 

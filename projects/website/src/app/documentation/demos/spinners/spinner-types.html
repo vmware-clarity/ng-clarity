@@ -10,9 +10,9 @@
 </p>
 <div class="clr-mt-24px">
   <app-animated-example [label]="'Page Spinner'">
-    <div class="spinner">Loading...</div>
+    <ng-container *ngComponentOutlet="examples.page.component"></ng-container>
   </app-animated-example>
-  <app-stackblitz-example name="page spinner" [componentTemplate]="example"></app-stackblitz-example>
+  <app-doc-example [example]="examples.page" [showPreview]="false"></app-doc-example>
 </div>
 
 <h4 cds-layout="m-b:md" cds-text="subsection" class="clr-mt-32px">Inline Spinners</h4>
@@ -23,10 +23,9 @@
 </p>
 <div class="clr-mt-24px">
   <app-animated-example [label]="'Inline Spinner'">
-    <span class="spinner spinner-inline"> Loading... </span>
-    <span> Loading... </span>
+    <ng-container *ngComponentOutlet="examples.cssInline.component"></ng-container>
   </app-animated-example>
-  <app-stackblitz-example name="inline spinner" [componentTemplate]="example1"></app-stackblitz-example>
+  <app-doc-example [example]="examples.cssInline" [showPreview]="false"></app-doc-example>
 </div>
 
 <h4 cds-layout="m-b:md" cds-text="subsection" class="clr-mt-32px">Spinners on a dark background</h4>
@@ -37,7 +36,7 @@
 </p>
 <div class="clr-mt-24px">
   <app-animated-example class="dark" [label]="'Dark Spinner'">
-    <span class="spinner spinner-inverse"> Loading... </span>
+    <ng-container *ngComponentOutlet="examples.inverse.component"></ng-container>
   </app-animated-example>
-  <app-stackblitz-example name="spinner large" [componentTemplate]="example2"></app-stackblitz-example>
+  <app-doc-example [example]="examples.inverse" [showPreview]="false"></app-doc-example>
 </div>
