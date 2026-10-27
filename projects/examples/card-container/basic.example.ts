@@ -8,29 +8,36 @@
 import { Component } from '@angular/core';
 import { AppfxCard, AppfxCardContainerModule } from '@clr/addons/card-container';
 
-import { DynamicCardComponent } from './cards/dynamic/dynamic.component';
-import { NotesCardComponent } from './cards/notes/notes.component';
-import { SummaryCardComponent } from './cards/summary/summary.component';
-import { TagsCardComponent } from './cards/tags/tags.component';
+import {
+  DynamicCardComponent,
+  NotesCardComponent,
+  SummaryCardComponent,
+  TagsCardComponent,
+} from './cards';
 
 @Component({
-  selector: 'clr-card-container-demo',
-  standalone: true,
-  imports: [
-    AppfxCardContainerModule,
-    SummaryCardComponent,
-    NotesCardComponent,
-    TagsCardComponent,
-    DynamicCardComponent,
-  ],
-  templateUrl: './card-container.demo.html',
+  selector: 'clr-card-container-basic-example',
+  templateUrl: './basic.example.html',
+  imports: [AppfxCardContainerModule],
 })
-export class CardContainerDemo {
+export class CardContainerBasicExample {
   cards: AppfxCard[] = [
-    { id: 'summary', title: 'Summary', unitWidth: 2, unitHeight: 4, componentClass: SummaryCardComponent },
+    {
+      id: 'summary',
+      title: 'Summary',
+      unitWidth: 2,
+      unitHeight: 4,
+      componentClass: SummaryCardComponent,
+    },
     { id: 'notes', title: 'Notes', unitWidth: 1, unitHeight: 4, componentClass: NotesCardComponent },
     { id: 'tags', title: 'Tags', unitWidth: 1, unitHeight: 4, componentClass: TagsCardComponent },
-    { id: 'dynamic', title: 'Dynamic', unitWidth: 1, unitHeight: 4, componentClass: DynamicCardComponent },
+    {
+      id: 'dynamic',
+      title: 'Dynamic',
+      unitWidth: 1,
+      unitHeight: 4,
+      componentClass: DynamicCardComponent,
+    },
   ];
 
   addCard() {

@@ -6,11 +6,9 @@
  */
 
 import { Component } from '@angular/core';
-import { AppfxCardContainerModule } from '@clr/addons/card-container';
 
 @Component({
   selector: 'appfx-demo-summary-card',
-  standalone: true,
   template: `
     <div class="card">
       <div class="card-header">Summary</div>
@@ -25,7 +23,6 @@ export class SummaryCardComponent {}
 
 @Component({
   selector: 'appfx-demo-note-card',
-  standalone: true,
   template: `
     <div class="card">
       <div class="card-header">Notes</div>
@@ -40,7 +37,6 @@ export class NotesCardComponent {}
 
 @Component({
   selector: 'appfx-demo-tags-card',
-  standalone: true,
   template: `
     <div class="card">
       <div class="card-header">Tags</div>
@@ -55,7 +51,6 @@ export class TagsCardComponent {}
 
 @Component({
   selector: 'appfx-demo-dynamic-card',
-  standalone: true,
   template: `
     <div class="card">
       <div class="card-header">Dynamic</div>
@@ -64,43 +59,3 @@ export class TagsCardComponent {}
   `,
 })
 export class DynamicCardComponent {}
-
-@Component({
-  selector: 'clr-basic-card-container-demo',
-  standalone: true,
-  imports: [
-    AppfxCardContainerModule,
-    SummaryCardComponent,
-    NotesCardComponent,
-    TagsCardComponent,
-    DynamicCardComponent,
-  ],
-  templateUrl: './basic-card-container.html',
-})
-export class BasicCardContainerDemoComponent {
-  cards: any[] = [
-    { id: 'summary', title: 'Summary', unitWidth: 2, unitHeight: 4, componentClass: SummaryCardComponent },
-    { id: 'notes', title: 'Notes', unitWidth: 1, unitHeight: 4, componentClass: NotesCardComponent },
-    { id: 'tags', title: 'Tags', unitWidth: 1, unitHeight: 4, componentClass: TagsCardComponent },
-    { id: 'dynamic', title: 'Dynamic', unitWidth: 1, unitHeight: 4, componentClass: DynamicCardComponent },
-  ];
-
-  addCard() {
-    this.cards = [
-      ...this.cards,
-      {
-        id: `card-${this.cards.length}`,
-        title: 'Summary',
-        unitWidth: 1,
-        unitHeight: 4,
-        componentClass: SummaryCardComponent,
-      },
-    ];
-  }
-
-  removeCard() {
-    if (this.cards.length > 1) {
-      this.cards = this.cards.slice(0, -1);
-    }
-  }
-}
