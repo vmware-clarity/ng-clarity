@@ -70,70 +70,18 @@
 
     <p>Use the class <code cds-text="code">.list</code> in all types of list elements.</p>
     <h3 data-toc-item id="unordered-list" cds-text="subsection" class="clr-mt-32px">Unordered List</h3>
-    <div cds-text="body" class="clr-mt-24px">
-      <ul class="list">
-        @for (item of listItems; track item; let i = $index) {
-        <li>{{ item }}</li>
-        }
-      </ul>
-    </div>
-    <app-stackblitz-example name="list unordered" [componentTemplate]="example2"></app-stackblitz-example>
+    <app-doc-example [example]="examples.unordered" previewClass="clr-mt-24px"></app-doc-example>
 
     <h3 data-toc-item id="ordered-list" cds-text="subsection" class="clr-mt-32px">Ordered List</h3>
-    <div cds-text="body" class="clr-mt-24px">
-      <ol class="list">
-        @for (item of listItemsOrdered; track item; let i = $index) {
-        <li>{{ item }}</li>
-        }
-      </ol>
-    </div>
-    <app-stackblitz-example name="list ordered" [componentTemplate]="example1"></app-stackblitz-example>
+    <app-doc-example [example]="examples.ordered" previewClass="clr-mt-24px"></app-doc-example>
 
     <h3 data-toc-item id="unstyled-list" cds-text="subsection" class="clr-mt-32px">Unstyled List</h3>
     <p>Use the class <code cds-text="code">.list-unstyled</code> to remove styling.</p>
 
-    <div cds-text="body" class="clr-mt-24px">
-      <ul class="list list-unstyled">
-        <li>Calories: 323 cal</li>
-        <li>Carbohydrates: 23g</li>
-        <li>Protein: 28g</li>
-        <li>Fat: 13g</li>
-      </ul>
-    </div>
-    <app-stackblitz-example name="list unstyled" [componentTemplate]="example3"></app-stackblitz-example>
+    <app-doc-example [example]="examples.unstyled" previewClass="clr-mt-24px"></app-doc-example>
 
     <h3 data-toc-item id="nested-list" cds-text="subsection" class="clr-mt-32px">Nested List</h3>
-    <div cds-text="body" class="clr-mt-24px">
-      <ul class="list">
-        <li>Calories</li>
-        <li>Fat</li>
-        <li>Protein</li>
-        <li>
-          Diet type
-          <ul class="list list-unordered">
-            <li>Vegan</li>
-            <li>Gluten Free</li>
-            <li>Vegetarian</li>
-          </ul>
-        </li>
-        <li>
-          Allergens
-          <ul class="list">
-            <li>Peanut</li>
-            <li>Shellfish</li>
-            <li>Soy</li>
-          </ul>
-        </li>
-        <li>Other Allergens</li>
-      </ul>
-      <ul class="list list-spacer">
-        <li>Fish</li>
-        <li>Groundnut or tree nuts</li>
-        <li>Eggs</li>
-        <li>Dairy</li>
-      </ul>
-    </div>
-    <app-stackblitz-example name="list nested" [componentTemplate]="example4"></app-stackblitz-example>
+    <app-doc-example [example]="examples.nested" previewClass="clr-mt-24px"></app-doc-example>
   </app-doc-tab>
   <app-doc-tab tab="api">
     <app-style-docs styleDocsKey="Lists"></app-style-docs>

@@ -1,0 +1,9 @@
+{
+  "storybook": "components/list",
+  "examples": [
+    { "id": "unordered", "title": "Unordered list", "targets": ["website", "demo", "storybook"] },
+    { "id": "ordered", "title": "Ordered list", "targets": ["website", "demo", "storybook"] },
+    { "id": "unstyled", "title": "Unstyled list", "targets": ["website", "demo", "storybook"] },
+    { "id": "nested", "title": "Nested list", "targets": ["website", "demo", "storybook"] }
+  ]
+}
