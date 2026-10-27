@@ -1,0 +1,16 @@
+{
+  "examples": [
+    { "id": "angular-basic", "title": "Tooltip component", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "css-basic", "title": "CSS tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "size-xs", "title": "Extra small tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "size-sm", "title": "Small tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "size-md", "title": "Medium tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "size-lg", "title": "Large tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "top-right", "title": "Top-right tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "top-left", "title": "Top-left tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "bottom-right", "title": "Bottom-right tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "bottom-left", "title": "Bottom-left tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "right", "title": "Right tooltip", "targets": ["website", "demo"], "showStyles": false },
+    { "id": "left", "title": "Left tooltip", "targets": ["website", "demo"], "showStyles": false }
+  ]
+}

@@ -13,18 +13,7 @@
     <h2 id="angular-demo" cds-text="title" cds-layout="m-t:xl">Angular Tooltip Component</h2>
 
     <h3 data-toc-item id="angular-basic" cds-text="section" cds-layout="m-t:lg">Basic Tooltip</h3>
-    <div class="clr-example squeeze example-center">
-      <clr-tooltip>
-        <clr-icon clrTooltipTrigger shape="info-circle" size="24"></clr-icon>
-        <clr-tooltip-content [clrPosition]="'top-right'" [clrSize]="'sm'">
-          This is a basic tooltip
-        </clr-tooltip-content>
-      </clr-tooltip>
-    </div>
-
-    <p cds-text="body">
-      <app-stackblitz-example name="tooltip angular component" [componentTemplate]="example"></app-stackblitz-example>
-    </p>
+    <app-doc-example [example]="examples.angularBasic"></app-doc-example>
 
     <h3 data-toc-item id="tooltip-positions" cds-text="section" class="clr-mt-32px">Tooltip Positions</h3>
     <p cds-text="body" class="clr-mt-16px">
@@ -61,18 +50,7 @@
       The content appears when the user hovers over the icon.
     </p>
 
-    <div class="clr-example squeeze example-center">
-      <div class="clr-example squeeze example-center">
-        <a href="javascript://" role="tooltip" aria-haspopup="true" class="tooltip tooltip-xs" aria-label="extra small">
-          <clr-icon shape="info-circle" size="24"></clr-icon>
-          <span class="tooltip-content">Lorem</span>
-        </a>
-      </div>
-    </div>
-
-    <p cds-text="body">
-      <app-stackblitz-example name="tooltip basic css" [componentTemplate]="example2"></app-stackblitz-example>
-    </p>
+    <app-doc-example [example]="examples.cssBasic"></app-doc-example>
 
     <h3 data-toc-item id="sizes" cds-text="section" class="clr-mt-32px">Sizes</h3>
 

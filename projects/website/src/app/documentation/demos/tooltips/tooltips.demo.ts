@@ -6,46 +6,21 @@
  */
 
 import { Component } from '@angular/core';
-import {
-  ClarityIcons,
-  ClrIcon,
-  ClrIconModule,
-  ClrPopoverContent,
-  ClrPopoverHostDirective,
-  ClrStopEscapePropagationDirective,
-  ClrTooltipModule,
-  infoCircleIcon,
-} from '@clr/angular';
+import { ClarityIcons, infoCircleIcon } from '@clr/angular';
+import { TOOLTIP_EXAMPLES } from '@clr/examples/tooltip';
 
 import { TooltipsDirectionsDemo } from './tooltips-directions';
 import { TooltipsSizesDemo } from './tooltips-sizes';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ClarityDocComponent } from '../clarity-doc';
-
-const EXAMPLE = `
-<clr-tooltip>
-  <clr-icon clrTooltipTrigger shape="info-circle" size="24"></clr-icon>
-  <clr-tooltip-content [clrPosition]="'top-right'" [clrSize]="'sm'">
-    This is a basic tooltip
-  </clr-tooltip-content>
-</clr-tooltip>
-`;
-
-const EXAMPLE2 = `
-<a href="..." role="tooltip" aria-haspopup="true" class="tooltip">
-  <clr-icon shape="info-circle" size="24"></clr-icon>
-  <span class="tooltip-content">Lorem</span>
-</a>
-`;
 
 @Component({
   selector: 'clr-tooltips-demo',
   templateUrl: './tooltips.demo.html',
-  styleUrl: './tooltips.demo.scss',
   host: {
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
@@ -53,13 +28,7 @@ const EXAMPLE2 = `
   imports: [
     DocTabsComponent,
     DocTabComponent,
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
-    ClrTooltipModule,
-    ClrIcon,
-    ClrIconModule,
-    ClrPopoverContent,
-    StackblitzExampleComponent,
+    DocExampleComponent,
     TooltipsSizesDemo,
     TooltipsDirectionsDemo,
     StyleDocsComponent,
@@ -67,8 +36,8 @@ const EXAMPLE2 = `
   ],
 })
 export class TooltipsDemo extends ClarityDocComponent {
-  example = EXAMPLE;
-  example2 = EXAMPLE2;
+  readonly examples = TOOLTIP_EXAMPLES;
+
   constructor() {
     super('tooltip');
     ClarityIcons.addIcons(infoCircleIcon);

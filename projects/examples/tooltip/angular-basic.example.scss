@@ -5,22 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-@use 'variables.tokens' as tokens;
-
-.clr-example {
+// Centers the trigger and leaves room for the tooltip around it.
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   position: relative;
-
-  &.squeeze {
-    padding: tokens.$cds-global-space-9;
-  }
-
-  &.example-center {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    &.example-column {
-      flex-direction: column;
-    }
-  }
+  padding: var(--cds-global-space-9);
 }

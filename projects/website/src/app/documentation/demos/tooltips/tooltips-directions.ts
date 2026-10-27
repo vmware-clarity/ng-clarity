@@ -6,62 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrIcon, ClrIconModule } from '@clr/angular';
+import { TOOLTIP_EXAMPLES } from '@clr/examples/tooltip';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE1 = `
-<a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-right">
-  <clr-icon shape="info-circle" size="24"></clr-icon>
-  <span class="tooltip-content">Lorem ipsum sit</span>
-</a>
-`;
-const EXAMPLE2 = `
-<a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-top-left">
-  <clr-icon shape="info-circle" size="24"></clr-icon>
-  <span class="tooltip-content">Lorem ipsum sit</span>
-</a>
-`;
-
-const EXAMPLE3 = `
-<a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-md tooltip-bottom-right">
-  <clr-icon shape="info-circle" size="24"></clr-icon>
-  <span class="tooltip-content">Lorem ipsum dolor sit amet, ipsum</span>
-</a>
-`;
-
-const EXAMPLE4 = `
-<a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-lg tooltip-bottom-left">
-  <clr-icon shape="info-circle" size="24"></clr-icon>
-  <span class="tooltip-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit</span>
-</a>
-`;
-
-const EXAMPLE5 = `
-<a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-right">
-  <clr-icon shape="info-circle" size="24"></clr-icon>
-  <span class="tooltip-content">Lorem ipsum dolor sit amet, ipsum</span>
-</a>
-`;
-
-const EXAMPLE6 = `
-<a href="..." role="tooltip" aria-haspopup="true" class="tooltip tooltip-sm tooltip-left">
-  <clr-icon shape="info-circle" size="24"></clr-icon>
-  <span class="tooltip-content">Lorem ipsum sit</span>
-</a>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-tooltips-directions-demo',
-  styleUrl: './tooltips.demo.scss',
   templateUrl: './tooltips-directions.html',
-  imports: [ClrIcon, ClrIconModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class TooltipsDirectionsDemo {
-  example1 = EXAMPLE1;
-  example2 = EXAMPLE2;
-  example3 = EXAMPLE3;
-  example4 = EXAMPLE4;
-  example5 = EXAMPLE5;
-  example6 = EXAMPLE6;
+  readonly examples = TOOLTIP_EXAMPLES;
 }
