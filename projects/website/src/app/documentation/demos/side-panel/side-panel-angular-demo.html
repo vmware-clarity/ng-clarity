@@ -5,25 +5,4 @@
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
 
-<p>
-  <button class="btn btn-primary" (click)="opened = true">Show side panel</button>
-</p>
-<clr-side-panel [(clrSidePanelOpen)]="opened" [clrSidePanelStaticBackdrop]="true">
-  <div class="side-panel-title">I have a nice title</div>
-  <div class="side-panel-body">
-    <p>But not much to say...</p>
-  </div>
-  <div class="side-panel-footer">
-    <button type="button" class="btn btn-outline" (click)="opened = false">Cancel</button>
-    <button type="button" class="btn btn-primary" (click)="opened = false">Ok</button>
-  </div>
-</clr-side-panel>
-
-@if (showCode()) {
-<app-stackblitz-example
-  name="Side panel Angular"
-  [componentTemplate]="example"
-  [componentClass]="exampleTs"
-  [showComponentClass]="false"
-></app-stackblitz-example>
-}
+<app-doc-example [example]="examples.basic"></app-doc-example>

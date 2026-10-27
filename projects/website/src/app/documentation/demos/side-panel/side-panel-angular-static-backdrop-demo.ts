@@ -6,49 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrSidePanelModule } from '@clr/angular';
+import { SIDE_PANEL_EXAMPLES } from '@clr/examples/side-panel';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<button class="btn btn-primary" (click)="opened = true">Show side panel</button>
-
-<clr-side-panel [(clrSidePanelOpen)]="opened" [clrSidePanelStaticBackdrop]="true">
-  <div class="side-panel-title">Static backdrop</div>
-  <div class="side-panel-body">
-    <p>Clicking on the backdrop does not close the side panel.</p>
-  </div>
-  <div class="side-panel-footer">
-    <button type="button" class="btn btn-primary" (click)="opened = false">Ok</button>
-  </div>
-</clr-side-panel>
-`;
-
-const EXAMPLE_TS = `
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ClrSidePanelModule } from '@clr/angular';
-
-@Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-
-  imports: [ClrSidePanelModule, CommonModule],
-})
-export class ExampleComponent {
-  opened = false;
-}
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-side-panel-angular-static-backdrop-demo',
   templateUrl: './side-panel-angular-static-backdrop-demo.html',
-  imports: [ClrSidePanelModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class SidePanelAngularStaticBackdropDemo {
-  // Booleans to open each example side panel
-  static = false;
-
-  example = EXAMPLE;
-  exampleTs = EXAMPLE_TS;
+  readonly examples = SIDE_PANEL_EXAMPLES;
 }
