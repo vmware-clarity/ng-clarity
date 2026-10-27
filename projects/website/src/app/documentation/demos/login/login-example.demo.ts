@@ -5,45 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { NgComponentOutlet } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import {
-  ClrCheckboxModule,
-  ClrCommonFormsModule,
-  ClrDropdownModule,
-  ClrIcon,
-  ClrIconModule,
-  ClrInputModule,
-  ClrPasswordModule,
-  ClrPopoverContent,
-  ClrPopoverHostDirective,
-  ClrSelectModule,
-  ClrStopEscapePropagationDirective,
-} from '@clr/angular';
+import { LOGIN_EXAMPLES } from '@clr/examples/login';
 
+/** Renders the login example without its code, for the overview tab. */
 @Component({
   selector: 'clr-login-example-demo',
   templateUrl: './login-example.demo.html',
-  imports: [
-    FormsModule,
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
-    ClrDropdownModule,
-    ClrIcon,
-    ClrIconModule,
-    ClrPopoverContent,
-    ClrSelectModule,
-    ClrCommonFormsModule,
-    ClrInputModule,
-    ClrPasswordModule,
-    ClrCheckboxModule,
-  ],
+  imports: [NgComponentOutlet],
 })
 export class LoginExampleDemo {
-  form = {
-    type: 'local',
-    username: '',
-    password: '',
-    rememberMe: false,
-  };
+  readonly examples = LOGIN_EXAMPLES;
 }

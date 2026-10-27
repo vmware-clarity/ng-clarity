@@ -7,9 +7,14 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LOGIN_EXAMPLES } from '@clr/examples/login';
 
 import { LoginDemo } from './login.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
-const ROUTES: Routes = [{ path: '', component: LoginDemo }];
+const ROUTES: Routes = [
+  { path: '', component: LoginDemo },
+  { path: 'examples', component: ExampleListComponent, data: { examples: LOGIN_EXAMPLES } },
+];
 
 export const ROUTING: ModuleWithProviders<RouterModule> = RouterModule.forChild(ROUTES);
