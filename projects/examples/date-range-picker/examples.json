@@ -1,0 +1,25 @@
+{
+  "storybook": "components/forms/date-range-picker",
+  "examples": [
+    { "id": "basic", "title": "Basic date range picker", "targets": ["website", "demo", "storybook"] },
+    { "id": "min", "title": "Date range picker with a min date", "targets": ["website", "demo", "storybook"] },
+    { "id": "max", "title": "Date range picker with a max date", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "min-max",
+      "title": "Date range picker with min and max dates",
+      "targets": ["website", "demo", "storybook"]
+    },
+    {
+      "id": "range-options",
+      "title": "Date range picker with predefined range options",
+      "targets": ["website", "demo"]
+    },
+    { "id": "date-object", "title": "Date range picker with Date objects", "targets": ["website", "demo"] },
+    {
+      "id": "template-driven",
+      "title": "Date range picker in a template driven form",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "reactive", "title": "Date range picker in a reactive form", "targets": ["website", "demo", "storybook"] }
+  ]
+}

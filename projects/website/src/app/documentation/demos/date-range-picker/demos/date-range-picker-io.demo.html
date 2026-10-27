@@ -16,7 +16,15 @@
       approach is that you can interact with the Date picker directly using Javascript Date objects which would avoid
       converting values from string to date and vice versa on the application side.
     </p>
-    <clr-date-range-picker-date-io-demo></clr-date-range-picker-date-io-demo>
+    <clr-alert [clrAlertClosable]="false">
+      <div class="alert-item">
+        <span class="alert-text">
+          Date picker emits <code cds-text="code">null</code> when an invalid date is entered after a valid date was
+          set.
+        </span>
+      </div>
+    </clr-alert>
+    <app-doc-example [example]="examples.dateObject"></app-doc-example>
   </div>
   <div>
     <h4 cds-text="subsection" class="clr-mt-32px">2. As a date string (in current locale format)</h4>
@@ -29,7 +37,8 @@
         Template Driven Forms use the <code cds-text="code">ngModel</code> directive to create a binding between the
         model and the input field.
       </p>
-      <clr-date-range-picker-template-driven-forms-demo></clr-date-range-picker-template-driven-forms-demo>
+      <h3 data-toc-item id="template-driven-demo" cds-text="section" class="clr-mt-32px">Template Driven Form Demo</h3>
+      <app-doc-example [example]="examples.templateDriven"></app-doc-example>
     </div>
     <div class="clr-mt-24px">
       <p cds-text="body">
@@ -40,7 +49,8 @@
         Reactive Forms use <code cds-text="code">FormControl</code>s to create the binding between the model and the
         input field.
       </p>
-      <clr-date-range-picker-reactive-forms-demo></clr-date-range-picker-reactive-forms-demo>
+      <h3 data-toc-item id="reactive-demo" cds-text="section" class="clr-mt-32px">Reactive Form Demo</h3>
+      <app-doc-example [example]="examples.reactive"></app-doc-example>
     </div>
   </div>
   <div class="clr-mt-24px">

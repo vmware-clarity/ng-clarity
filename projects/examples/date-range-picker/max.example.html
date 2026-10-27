@@ -1,0 +1,15 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<form clrForm clrLayout="vertical">
+  <clr-date-range-container max="2025-12-31">
+    <label>Max date: 2025-12-31</label>
+    <input type="date" autocomplete="off" clrStartDate name="startDate" [(ngModel)]="startDate" />
+    <input type="date" autocomplete="off" clrEndDate name="endDate" [(ngModel)]="endDate" />
+    <clr-control-error *clrIfError="'max'">Error message about max date</clr-control-error>
+  </clr-date-range-container>
+</form>

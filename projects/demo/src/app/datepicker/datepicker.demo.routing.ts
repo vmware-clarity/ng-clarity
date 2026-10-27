@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DATE_RANGE_PICKER_EXAMPLES } from '@clr/examples/date-range-picker';
 import { DATEPICKER_EXAMPLES } from '@clr/examples/datepicker';
 
 import { DatepickerCSSRegressionDemo } from './css-regression';
@@ -50,6 +51,11 @@ const ROUTES: Routes = [
       { path: 'layout', component: DatepickerLayoutDemo },
       { path: 'datepicker-min-max', component: DatepickerMinMaxDemo },
       { path: 'date-range-picker', component: DateRangePickerDemo },
+      {
+        path: 'date-range-picker-examples',
+        component: ExampleListComponent,
+        data: { examples: DATE_RANGE_PICKER_EXAMPLES },
+      },
       { path: 'with-action-buttons', component: DatePickerWithActionButtonsDemo },
       { path: 'first-day-of-week', component: DatepickerFirstDayOfWeekDemo },
       {

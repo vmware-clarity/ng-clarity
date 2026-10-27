@@ -7,19 +7,15 @@
 
 import { Component } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
+import { DATE_RANGE_PICKER_EXAMPLES } from '@clr/examples/date-range-picker';
 
-import { DateRangePickerDateIODemo } from './date-range-picker-date-io.demo';
-import { DateRangePickerReactiveFormsDemo } from './date-range-picker-reactive-forms';
-import { DateRangePickerTemplateDrivenFormsDemo } from './date-range-picker-template-driven-forms';
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-date-range-picker-io-demo',
   templateUrl: './date-range-picker-io.demo.html',
-  imports: [
-    DateRangePickerDateIODemo,
-    DateRangePickerTemplateDrivenFormsDemo,
-    DateRangePickerReactiveFormsDemo,
-    ClrAlertModule,
-  ],
+  imports: [ClrAlertModule, DocExampleComponent],
 })
-export class DateRangePickerIODemo {}
+export class DateRangePickerIODemo {
+  readonly examples = DATE_RANGE_PICKER_EXAMPLES;
+}
