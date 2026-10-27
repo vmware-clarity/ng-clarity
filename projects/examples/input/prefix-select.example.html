@@ -4,10 +4,16 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
+
 <form clrForm>
   <clr-input-container>
-    <label>Date</label>
+    <label>URL</label>
     <input type="text" clrInput name="text" />
-    <clr-icon shape="calendar" clrInputPrefix></clr-icon>
+    <div clrInputPrefix>
+      <select>
+        <option>http://</option>
+        <option>https://</option>
+      </select>
+    </div>
   </clr-input-container>
 </form>

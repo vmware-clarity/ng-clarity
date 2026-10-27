@@ -4,4 +4,12 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<p>StackBlitz example placeholder</p>
+
+<form clrForm>
+  <clr-input-container>
+    <label>Purchase Cost (rounded)</label>
+    <input clrInput placeholder="Cost" name="name" [(ngModel)]="input" />
+    <div clrInputPrefix>$</div>
+    <div clrInputSuffix>.00</div>
+  </clr-input-container>
+</form>

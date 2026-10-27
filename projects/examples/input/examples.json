@@ -1,0 +1,20 @@
+{
+  "storybook": "components/forms/input",
+  "examples": [
+    { "id": "basic", "title": "Basic input", "targets": ["website", "demo", "storybook"] },
+    { "id": "label", "title": "Input label", "targets": ["website", "demo", "storybook"] },
+    { "id": "number", "title": "Numerical input", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "prefix-suffix",
+      "title": "Input with prefix and suffix text",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "prefix-icon", "title": "Input with a prefix icon", "targets": ["website", "demo", "storybook"] },
+    { "id": "prefix-select", "title": "Input with a prefix select", "targets": ["website", "demo", "storybook"] },
+    { "id": "helpers", "title": "Input helper and error messages", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-basic", "title": "Basic CSS input", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-full", "title": "Full CSS input", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-error", "title": "CSS input error state", "targets": ["website", "demo", "storybook"] },
+    { "id": "css-success", "title": "CSS input success state", "targets": ["website", "demo", "storybook"] }
+  ]
+}

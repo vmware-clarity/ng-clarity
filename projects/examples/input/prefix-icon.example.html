@@ -4,11 +4,11 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
+
 <form clrForm>
   <clr-input-container>
-    <label>Purchase Cost (rounded)</label>
-    <input clrInput placeholder="Cost" name="name" [(ngModel)]="input" />
-    <div clrInputPrefix>$</div>
-    <div clrInputSuffix>.00</div>
+    <label>Date</label>
+    <input type="text" clrInput name="text" />
+    <clr-icon shape="calendar" clrInputPrefix></clr-icon>
   </clr-input-container>
 </form>

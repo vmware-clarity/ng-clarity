@@ -4,6 +4,10 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
+
 <form clrForm>
-  <input clrInput placeholder="My input" name="input" [(ngModel)]="input" />
+  <clr-input-container>
+    <label>My name</label>
+    <input clrInput placeholder="Fill me in, scotty!" name="name" [(ngModel)]="input" />
+  </clr-input-container>
 </form>
