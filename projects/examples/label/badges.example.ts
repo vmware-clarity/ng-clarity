@@ -6,10 +6,11 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrLabel } from '@clr/angular';
 
 @Component({
-  selector: 'clr-labels-default-demo',
-  templateUrl: './labels-default.demo.html',
-  standalone: false,
+  selector: 'clr-label-badges-example',
+  templateUrl: './badges.example.html',
+  imports: [ClrLabel],
 })
-export class LabelsDefaultDemo {}
+export class LabelBadgesExample {}

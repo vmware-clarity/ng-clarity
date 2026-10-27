@@ -6,67 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrLabel } from '@clr/angular';
+import { LABEL_EXAMPLES } from '@clr/examples/label';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const HTML_EXAMPLE = `
-<h6>Outlined</h6>
-<clr-label clrText="Austin" clrColor="purple" clrBadgeText="1" [clrClickable]="true"></clr-label>
-<clr-label clrText="New York" clrColor="blue" clrBadgeText="2" [clrClickable]="true"></clr-label>
-<clr-label clrText="Palo Alto" clrColor="orange" clrBadgeText="3" [clrClickable]="true"></clr-label>
-<clr-label
-  clrText="San Francisco"
-  clrColor="light-blue"
-  clrBadgeText="12"
-  [clrClickable]="true"
-></clr-label>
-<clr-label clrText="Seattle" clrBadgeText="15" [clrClickable]="true"></clr-label>
-<clr-label clrText="Disabled" clrBadgeText="15" [clrClickable]="true" [clrDisabled]="true"></clr-label>
-<h6>Solid</h6>
-<clr-label
-  clrText="Austin"
-  clrColor="purple"
-  clrBadgeText="1"
-  [clrType]="'solid'"
-  [clrClickable]="true"
-></clr-label>
-<clr-label
-  clrText="New York"
-  clrColor="blue"
-  clrBadgeText="2"
-  [clrType]="'solid'"
-  [clrClickable]="true"
-></clr-label>
-<clr-label
-  clrText="Palo Alto"
-  clrColor="orange"
-  clrBadgeText="3"
-  [clrType]="'solid'"
-  [clrClickable]="true"
-></clr-label>
-<clr-label
-  clrText="San Francisco"
-  clrColor="light-blue"
-  clrBadgeText="12"
-  [clrType]="'solid'"
-  [clrClickable]="true"
-></clr-label>
-<clr-label clrText="Seattle" clrBadgeText="15" [clrType]="'solid'" [clrClickable]="true"></clr-label>
-<clr-label
-  clrText="Disabled"
-  clrBadgeText="15"
-  [clrType]="'solid'"
-  [clrClickable]="true"
-  [clrDisabled]="true"
-></clr-label>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-label-angular-with-badges-demo',
   templateUrl: './label-angular-with-badges.demo.html',
-  imports: [ClrLabel, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class LabelAngularWithBadgesDemo {
-  htmlExample = HTML_EXAMPLE;
+  readonly examples = LABEL_EXAMPLES;
 }

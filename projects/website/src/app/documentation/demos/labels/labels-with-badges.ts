@@ -6,100 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { LABEL_EXAMPLES } from '@clr/examples/label';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<h6>Outlined</h6>
-<a href="javascript://" class="label label-purple clickable">
-  <span class="text">Austin</span>
-  <span class="badge">1</span>
-</a>
-<a href="javascript://" class="label label-blue clickable">
-  <span class="text">New York</span>
-  <span class="badge">2</span>
-</a>
-<a href="javascript://" class="label label-orange clickable">
-  <span class="text">Palo Alto</span>
-  <span class="badge">3</span>
-</a>
-<a href="javascript://" class="label label-light-blue clickable">
-  <span class="text">San Francisco</span>
-  <span class="badge">12</span>
-</a>
-<a href="javascript://" class="label clickable">
-  <span class="text">Seattle</span>
-  <span class="badge">15</span>
-</a>
-<a href="javascript://" class="label label-purple clickable">
-  <span class="text">Chicago</span>
-  <span class="badge">55</span>
-</a>
-<a href="javascript://" class="label label-blue clickable">
-  <span class="text">San Jose</span>
-  <span class="badge">66</span>
-</a>
-<a href="javascript://" class="label label-orange clickable">
-  <span class="text">Charlotte</span>
-  <span class="badge">88</span>
-</a>
-<a href="javascript://" class="label label-light-blue clickable">
-  <span class="text">Atlanta</span>
-  <span class="badge">99+</span>
-</a>
-<a href="javascript://" class="label clickable">
-  <span class="text">Philadelphia</span>
-  <span class="badge">0</span>
-</a>
-
-<h6>Solid</h6>
-<a href="javascript://" class="label solid label-purple clickable">
-  <span class="text">Austin</span>
-  <span class="badge">1</span>
-</a>
-<a href="javascript://" class="label solid label-blue clickable">
-  <span class="text">New York</span>
-  <span class="badge">2</span>
-</a>
-<a href="javascript://" class="label solid label-orange clickable">
-  <span class="text">Palo Alto</span>
-  <span class="badge">3</span>
-</a>
-<a href="javascript://" class="label solid label-light-blue clickable">
-  <span class="text">San Francisco</span>
-  <span class="badge">12</span>
-</a>
-<a href="javascript://" class="label solid clickable">
-  <span class="text">Seattle</span>
-  <span class="badge">15</span>
-</a>
-<a href="javascript://" class="label solid label-purple clickable">
-  <span class="text">Chicago</span>
-  <span class="badge">55</span>
-</a>
-<a href="javascript://" class="label solid label-blue clickable">
-  <span class="text">San Jose</span>
-  <span class="badge">66</span>
-</a>
-<a href="javascript://" class="label solid label-orange clickable">
-  <span class="text">Charlotte</span>
-  <span class="badge">88</span>
-</a>
-<a href="javascript://" class="label solid label-light-blue clickable">
-  <span class="text">Atlanta</span>
-  <span class="badge">99+</span>
-</a>
-<a href="javascript://" class="label solid clickable">
-  <span class="text">Philadelphia</span>
-  <span class="badge">0</span>
-</a>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-labels-with-badges-demo',
   templateUrl: './labels-with-badges.demo.html',
-  imports: [StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class LabelsWithBadgesDemo {
-  example = EXAMPLE;
+  readonly examples = LABEL_EXAMPLES;
 }
