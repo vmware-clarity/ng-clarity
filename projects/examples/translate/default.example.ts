@@ -21,10 +21,8 @@ import {
 import { ClrSelectModule } from '@clr/angular';
 
 @Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-  standalone: true,
+  selector: 'clr-translate-default-example',
+  templateUrl: './default.example.html',
   imports: [AppfxTranslateModule, ClrSelectModule, FormsModule],
   providers: [
     AppfxTranslateService,
@@ -47,7 +45,7 @@ import { ClrSelectModule } from '@clr/angular';
     },
   ],
 })
-export class ExampleComponent {
+export class TranslateDefaultExample {
   readonly locales = Object.entries(AppfxLocale);
 
   readonly dateTimeKinds = Object.entries(DateTimeKind).filter(([key]) => Number.isNaN(Number(key)));
