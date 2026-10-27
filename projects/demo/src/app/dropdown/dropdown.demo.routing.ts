@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DROPDOWN_EXAMPLES } from '@clr/examples/dropdown';
 
 import { DropdownAngularCloseItemFalseDemo } from './dropdown-angular-close-item-false';
 import { DropdownAngularContextMenuDemo } from './dropdown-angular-context-menu';
@@ -20,13 +21,15 @@ import { DropdownStaticDefaultDemo } from './dropdown-static-default';
 import { DropdownStaticIconToggleDemo } from './dropdown-static-icon-toggle';
 import { DropdownStaticPositioningDemo } from './dropdown-static-positioning';
 import { DropdownDemo } from './dropdown.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: DropdownDemo,
     children: [
-      { path: '', redirectTo: 'default', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: DROPDOWN_EXAMPLES } },
       { path: 'default', component: DropdownStaticDefaultDemo },
       { path: 'positioning', component: DropdownStaticPositioningDemo },
       { path: 'icon-toggle', component: DropdownStaticIconToggleDemo },

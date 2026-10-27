@@ -1,0 +1,37 @@
+{
+  "storybook": "components/overlays/dropdown",
+  "examples": [
+    { "id": "positioning", "title": "Dropdown", "targets": ["website", "demo"], "showStyles": false },
+    {
+      "id": "no-close-on-click",
+      "title": "Dropdown that stays open on item click",
+      "targets": ["website", "demo"],
+      "showStyles": false
+    },
+    { "id": "context-menu", "title": "Dropdown context menu", "targets": ["website", "demo"] },
+    {
+      "id": "static-default",
+      "title": "Static dropdown",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "static-positioning",
+      "title": "Static dropdown position",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "static-icon-toggle",
+      "title": "Static dropdown with an icon toggle",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "static-link-toggle",
+      "title": "Static dropdown with a link button toggle",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    }
+  ]
+}

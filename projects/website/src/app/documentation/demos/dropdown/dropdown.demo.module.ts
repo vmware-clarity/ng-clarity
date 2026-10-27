@@ -20,7 +20,6 @@ import { DropdownStaticPositioningDemo } from './dropdown-static-positioning';
 import { DropdownsDemo } from './dropdown.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
@@ -33,7 +32,6 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     StyleDocsComponent,
     NestingTableComponent,
     ThemedImageComponent,
-    StackblitzExampleComponent,
     DropdownStaticDefaultDemo,
     DropdownStaticPositioningDemo,
     DropdownStaticIconToggleDemo,

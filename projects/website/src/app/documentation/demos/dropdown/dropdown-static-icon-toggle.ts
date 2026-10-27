@@ -6,33 +6,15 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrCommonFormsModule, ClrIcon, ClrIconModule } from '@clr/angular';
+import { DROPDOWN_EXAMPLES } from '@clr/examples/dropdown';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<div class="dropdown bottom-left open">
-  <button class="dropdown-toggle">
-    <clr-icon shape="exclamation-circle" class="is-error" size="24"></clr-icon>
-    <clr-icon shape="angle" direction="down"></clr-icon>
-  </button>
-  <div class="dropdown-menu" role="menu">
-    <label class="dropdown-header" aria-hidden="true">Dropdown header</label>
-    <div class="dropdown-item" role="menuitem">Lorem.</div>
-    <div class="dropdown-item" role="menuitem">Lorem ipsum.</div>
-    <div class="dropdown-item" role="menuitem">Lorem ipsum dolor.</div>
-    <div class="dropdown-divider" role="separator" aria-hidden="true"></div>
-    <div class="dropdown-item" role="menuitem">Action 1</div>
-  </div>
-</div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-dropdown-static-icon-toggle-demo',
-  styleUrl: './dropdown.demo.scss',
   templateUrl: './dropdown-static-icon-toggle.demo.html',
-  imports: [ClrIcon, ClrIconModule, ClrCommonFormsModule, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class DropdownStaticIconToggleDemo {
-  example = EXAMPLE;
+  readonly examples = DROPDOWN_EXAMPLES;
 }
