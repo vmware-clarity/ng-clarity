@@ -1593,9 +1593,9 @@ describe('collectContextTree, open shadow roots', () => {
   });
 
   describe('exclusions', () => {
-    /** Renders `<tag>` inside `wrapper` markup, with `shadow` in its open shadow root. */
-    function inShadowOf(tag: string, shadow: string, wrapper = '%'): void {
-      container.innerHTML = wrapper.replace('%', `<${tag}></${tag}>`);
+    /** Renders `<tag>` inside a div with `parentClass`, with `shadow` in its open shadow root. */
+    function inShadowOf(tag: string, shadow: string, parentClass = ''): void {
+      container.innerHTML = `<div class="${parentClass}"><${tag}></${tag}></div>`;
       (container.querySelector(tag) as HTMLElement).attachShadow({ mode: 'open' }).innerHTML = shadow;
     }
 
@@ -1608,11 +1608,7 @@ describe('collectContextTree, open shadow roots', () => {
     });
 
     it('hides the shadow content of an excluded host', () => {
-      inShadowOf(
-        'my-card',
-        '<input aria-label="Card number" value="4111111111111111" />',
-        '<div class="billing">%</div>'
-      );
+      inShadowOf('my-card', '<input aria-label="Card number" value="4111111111111111" />', 'billing');
 
       const nodes = collectContextTreeWithin(container, budgets({ excludeSelectors: ['.billing my-card'] })).components;
 
