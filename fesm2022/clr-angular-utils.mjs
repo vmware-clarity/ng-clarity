@@ -2,7 +2,6 @@ import { FormControl, FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
 import { Injectable, EventEmitter, Output, Input, Directive, NgModule, TemplateRef, ViewChild, Component, ElementRef, inject, ANIMATION_MODULE_TYPE, InjectionToken, Optional, Inject, PLATFORM_ID, DOCUMENT, HostListener, ContentChildren, SkipSelf, Renderer2 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { animation, style, animate, state, transition } from '@angular/animations';
 export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';
 import { Subject, fromEvent, Observable, isObservable, of } from 'rxjs';
@@ -404,8 +403,44 @@ function isBooleanAttributeSet(value) {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** Equivalent of `style()` from `@angular/animations`. @deprecated see {@link ClrAnimationStyles} */
+function animationStyle(styles) {
+    return { type: 6, styles, offset: null };
+}
+/** Equivalent of `animate()` from `@angular/animations`. @deprecated see {@link ClrAnimationStyles} */
+function animationAnimate(timings, styles = null) {
+    return { type: 4, styles, timings };
+}
+/** Equivalent of `state()` from `@angular/animations`. @deprecated see {@link ClrAnimationStyles} */
+function animationState(name, styles, options) {
+    return { type: 0, name, styles, options };
+}
+/** Equivalent of `transition()` from `@angular/animations`. @deprecated see {@link ClrAnimationStyles} */
+function animationTransition(expr, steps, options = null) {
+    return { type: 1, expr, animation: steps, options };
+}
+/** Equivalent of `animation()` from `@angular/animations`. @deprecated see {@link ClrAnimationStyles} */
+function animationReference(steps, options = null) {
+    return { type: 8, animation: steps, options };
+}
+/** Equivalent of `trigger()` from `@angular/animations`. @deprecated see {@link ClrAnimationStyles} */
+function animationTrigger(name, definitions) {
+    return { type: 7, name, definitions, options: {} };
+}
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+/** @deprecated Clarity no longer uses Angular animations; use the `--cds-global-animation-*` tokens instead. */
 const defaultAnimationTiming = '0.2s ease-in-out';
-const defaultExpandAnimation = animation([style({ height: '{{ startHeight }}px' }), animate(defaultAnimationTiming, style({ height: '*' }))], {
+/** @deprecated Clarity no longer uses Angular animations; see `ClrExpandableAnimation` and `clrExpandableAnimation`. */
+const defaultExpandAnimation = animationReference([
+    animationStyle({ height: '{{ startHeight }}px' }),
+    animationAnimate(defaultAnimationTiming, animationStyle({ height: '*' })),
+], {
     params: {
         startHeight: 0, // default
     },
@@ -417,12 +452,18 @@ const defaultExpandAnimation = animation([style({ height: '{{ startHeight }}px' 
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @deprecated Clarity no longer uses Angular animations; use `animateHeight()` instead. */
 function collapse() {
     'use strict';
     return [
-        state('true', style({ height: 0, 'overflow-y': 'hidden' })),
-        transition('true => false', [animate(defaultAnimationTiming, style({ height: '*', 'overflow-y': 'hidden' }))]),
-        transition('false => true', [style({ height: '*', 'overflow-y': 'hidden' }), animate(defaultAnimationTiming)]),
+        animationState('true', animationStyle({ height: 0, 'overflow-y': 'hidden' })),
+        animationTransition('true => false', [
+            animationAnimate(defaultAnimationTiming, animationStyle({ height: '*', 'overflow-y': 'hidden' })),
+        ]),
+        animationTransition('false => true', [
+            animationStyle({ height: '*', 'overflow-y': 'hidden' }),
+            animationAnimate(defaultAnimationTiming),
+        ]),
     ];
 }
 
@@ -721,10 +762,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @deprecated Clarity no longer uses Angular animations; use the `clr-fade-enter` and `clr-fade-leave` classes instead. */
 function fade(opacity = 1) {
     return [
-        transition('void => *', [style({ opacity: 0 }), animate(defaultAnimationTiming, style({ opacity: opacity }))]),
-        transition('* => void', [animate(defaultAnimationTiming, style({ opacity: 0 }))]),
+        animationTransition('void => *', [
+            animationStyle({ opacity: 0 }),
+            animationAnimate(defaultAnimationTiming, animationStyle({ opacity: opacity })),
+        ]),
+        animationTransition('* => void', [animationAnimate(defaultAnimationTiming, animationStyle({ opacity: 0 }))]),
     ];
 }
 
@@ -741,6 +786,7 @@ function fade(opacity = 1) {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @deprecated Clarity no longer uses Angular animations; use the `clr-fade-slide-<direction>-enter` / `-leave` classes instead. */
 function fadeSlide(direction) {
     let transform = null;
     if (direction === 'up') {
@@ -759,8 +805,13 @@ function fadeSlide(direction) {
         throw new Error('Unknown direction ' + direction + ' for slide animation.');
     }
     return [
-        transition('void => *', [style({ opacity: 0, transform: transform }), animate(defaultAnimationTiming)]),
-        transition('* => void', [animate(defaultAnimationTiming, style({ opacity: 0, transform: transform }))]),
+        animationTransition('void => *', [
+            animationStyle({ opacity: 0, transform: transform }),
+            animationAnimate(defaultAnimationTiming),
+        ]),
+        animationTransition('* => void', [
+            animationAnimate(defaultAnimationTiming, animationStyle({ opacity: 0, transform: transform })),
+        ]),
     ];
 }
 
@@ -777,6 +828,7 @@ function fadeSlide(direction) {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/** @deprecated Clarity no longer uses Angular animations; use the `clr-slide-<direction>-enter` / `-leave` classes instead. */
 function slide(direction) {
     let transform = null;
     if (direction === 'up') {
@@ -795,8 +847,13 @@ function slide(direction) {
         throw new Error('Unknown direction ' + direction + ' for slide animation.');
     }
     return [
-        transition('void => *', [style({ transform: transform }), animate(defaultAnimationTiming)]),
-        transition('* => void', [animate(defaultAnimationTiming, style({ transform: transform }))]),
+        animationTransition('void => *', [
+            animationStyle({ transform: transform }),
+            animationAnimate(defaultAnimationTiming),
+        ]),
+        animationTransition('* => void', [
+            animationAnimate(defaultAnimationTiming, animationStyle({ transform: transform })),
+        ]),
     ];
 }
 
