@@ -5,44 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { ClrCheckboxModule, ClrDatagridModule } from '@clr/angular';
+import { DATAGRID_EXAMPLES } from '@clr/examples/datagrid';
 
-import { EXAMPLES } from './examples';
+import { SNIPPETS } from './snippets';
 import { CodeSnippetComponent } from '../../../../shared/code-snippet/code-snippet.component';
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-import { Inventory } from '../inventory/inventory';
-import { User } from '../inventory/user';
-import { CommonFiles } from '../utils/stackblitz-common-data';
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-datagrid-select-all-disabled-demo',
-  providers: [Inventory],
   templateUrl: 'select-all-disabled.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [
-    ClrDatagridModule,
-    FormsModule,
-    StackblitzExampleComponent,
-    CodeSnippetComponent,
-    DatePipe,
-    ClrCheckboxModule,
-    ClrCheckboxModule,
-  ],
+  imports: [DocExampleComponent, CodeSnippetComponent],
 })
 export class DatagridSelectAllDisabledDemo {
-  commonFiles = CommonFiles;
-  examples = EXAMPLES;
-
-  users: User[];
-  selected: User[] = [];
-  selectAllDisabled = false;
-
-  constructor(inventory: Inventory) {
-    inventory.size = 10;
-    inventory.reset();
-    this.users = inventory.all;
-  }
+  readonly examples = DATAGRID_EXAMPLES;
+  readonly snippets = SNIPPETS;
 }

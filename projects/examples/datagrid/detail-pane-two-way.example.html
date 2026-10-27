@@ -1,0 +1,75 @@
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
+
+<div class="card card-block">
+  <p class="card-text">
+    Opened Pane: @if (!state) {
+    <em>No user selected.</em>
+    } @if (state) {
+    <span>{{ state.id }}</span>
+    }
+  </p>
+</div>
+
+<button class="btn btn-primary" (click)="state = users[4]">Open Row 5 Pane</button>
+
+<clr-datagrid>
+  <clr-dg-column>User ID</clr-dg-column>
+  <clr-dg-column>Name</clr-dg-column>
+
+  <clr-dg-row
+    *clrDgItems="let user of users"
+    [clrDgItem]="user"
+    [clrDgDetailOpenLabel]="'Open details for user ' + user.id"
+    [clrDgDetailCloseLabel]="'Close details for user' + user.id"
+  >
+    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
+    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
+  </clr-dg-row>
+
+  <ng-template [(clrIfDetail)]="state" let-detail>
+    <clr-dg-detail>
+      <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
+      <clr-dg-detail-body>
+        <b cds-text="medium">Additional Details</b>
+        <table class="table">
+          <tr>
+            <th>Property</th>
+            <th>Value</th>
+          </tr>
+          <tr>
+            <td>ID</td>
+            <td>{{ detail.id }}</td>
+          </tr>
+          <tr>
+            <td>Wins</td>
+            <td>{{ detail.wins }}</td>
+          </tr>
+          <tr>
+            <td>Favorite Color</td>
+            <td>
+              {{ detail.color }}
+              <span class="color-square" [style.backgroundColor]="detail.color"></span>
+            </td>
+          </tr>
+          <tr>
+            <td>Creation</td>
+            <td>{{ detail.creation | date }}</td>
+          </tr>
+        </table>
+      </clr-dg-detail-body>
+    </clr-dg-detail>
+  </ng-template>
+
+  <clr-dg-footer>
+    <clr-dg-pagination #pagination [clrDgPageSize]="10">
+      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Users per page</clr-dg-page-size>
+      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }}
+      users
+    </clr-dg-pagination>
+  </clr-dg-footer>
+</clr-datagrid>

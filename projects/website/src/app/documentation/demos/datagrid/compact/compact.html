@@ -13,33 +13,7 @@
   the default Datagrid style.
 </p>
 
-<clr-datagrid class="datagrid-compact">
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Pokemon</clr-dg-column>
-  @for (user of users; track user; let i = $index) {
-  <clr-dg-row>
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>
-      <clr-icon shape="user"></clr-icon>
-      {{ user.name }}
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-  </clr-dg-row>
-  }
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Compact"
-  [componentTemplate]="compactExample"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.compact"></app-doc-example>
 
 <h2 class="clr-mt-48px" cds-text="subtitle">Overflow ellipsis</h2>
 
@@ -49,37 +23,7 @@
   default Datagrid style so that you can display more rows in the fixed height.
 </p>
 
-<clr-datagrid class="datagrid-overflow-ellipsis">
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column [style.width.px]="300">Long Text Static Width 300px</clr-dg-column>
-  <clr-dg-column>Pokemon</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  @for (user of users; track user; let i = $index) {
-  <clr-dg-row>
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>
-      <clr-icon shape="user"></clr-icon>
-      {{ user.name }}
-    </clr-dg-cell>
-    <clr-dg-cell>{{ longString }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-  </clr-dg-row>
-  }
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Overflow Ellipsis"
-  [componentTemplate]="ellipsisExample"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.overflowEllipsis"></app-doc-example>
 
 <h2 class="clr-mt-48px" cds-text="subtitle">Full example</h2>
 <ul cds-text="body" cds-layout="m-t:md m-l:xs">
@@ -100,80 +44,4 @@
   </ol>
 </ul>
 
-<form clrForm>
-  <clr-radio-container>
-    <label>Overflow examples</label>
-    <clr-radio-wrapper>
-      <input type="radio" clrRadio name="detail" value="tooltip" [(ngModel)]="detail" />
-      <label>Tooltip</label>
-    </clr-radio-wrapper>
-    <clr-radio-wrapper>
-      <input type="radio" clrRadio name="detail" value="rowDetails" [(ngModel)]="detail" />
-      <label>Row details</label>
-    </clr-radio-wrapper>
-    <clr-radio-wrapper>
-      <input type="radio" clrRadio name="detail" value="title" [(ngModel)]="detail" />
-      <label>Title (is A11Y contrast limited)</label>
-    </clr-radio-wrapper>
-  </clr-radio-container>
-  <clr-toggle-container>
-    <label>Compact</label>
-    <clr-toggle-wrapper>
-      <input type="checkbox" clrToggle name="compact" [(ngModel)]="compact" />
-      <label>{{ compact ? 'ON' : 'OFF' }}</label>
-    </clr-toggle-wrapper>
-  </clr-toggle-container>
-</form>
-
-<clr-datagrid [class.datagrid-compact]="compact" class="datagrid-overflow-ellipsis">
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column [style.width.px]="300">Long Text Static Width 300px</clr-dg-column>
-  <clr-dg-column>Pokemon</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  @for (user of users; track user; let i = $index) {
-  <clr-dg-row>
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>
-      <clr-icon shape="user"></clr-icon>
-      {{ user.name }}
-    </clr-dg-cell>
-    <clr-dg-cell [attr.title]="detail === 'title' ? longString : null">
-      @if (detail === 'tooltip') {
-      <clr-tooltip>
-        <clr-icon clrTooltipTrigger shape="info-circle" solid></clr-icon>
-        <clr-tooltip-content clrPosition="bottom-right" clrSize="lg"> {{ longString }} </clr-tooltip-content>
-      </clr-tooltip>
-      } {{ longString }}
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    @if (detail === 'rowDetails') {
-    <ng-container ngProjectAs="clr-dg-row-detail">
-      <clr-dg-row-detail *clrIfExpanded [clrDgReplace]="true">
-        <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-        <clr-dg-cell>
-          <clr-icon shape="user"></clr-icon>
-          {{ user.name }}
-        </clr-dg-cell>
-        <clr-dg-cell>{{ longString }}</clr-dg-cell>
-        <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-        <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-      </clr-dg-row-detail>
-    </ng-container>
-    }
-  </clr-dg-row>
-  }
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Compact with Overflow Ellipsis"
-  [componentTemplate]="fullExampleHtml"
-  [componentClass]="fullExampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.compactFull"></app-doc-example>

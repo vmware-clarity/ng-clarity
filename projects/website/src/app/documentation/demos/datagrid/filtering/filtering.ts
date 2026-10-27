@@ -5,58 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { ClrDatagridModule, ClrPopoverHostDirective, ClrStopEscapePropagationDirective } from '@clr/angular';
+import { DATAGRID_EXAMPLES } from '@clr/examples/datagrid';
 
-import { EXAMPLES } from './examples';
+import { SNIPPETS } from './snippets';
 import { CodeSnippetComponent } from '../../../../shared/code-snippet/code-snippet.component';
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-import { Inventory } from '../inventory/inventory';
-import { User } from '../inventory/user';
-import { ColorFilter } from '../utils/color-filter';
-import { PokemonFilter } from '../utils/pokemon-filter';
-import { CommonFiles } from '../utils/stackblitz-common-data';
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-datagrid-filtering-demo',
-  providers: [Inventory],
   templateUrl: './filtering.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [
-    CodeSnippetComponent,
-    StackblitzExampleComponent,
-    ClrDatagridModule,
-    ClrStopEscapePropagationDirective,
-    ClrPopoverHostDirective,
-    ColorFilter,
-    DatePipe,
-  ],
+  imports: [DocExampleComponent, CodeSnippetComponent],
 })
 export class DatagridFilteringDemo {
-  examples = EXAMPLES;
-  users: User[];
-  myFilterValue = 'A';
-  pokemonFilter = new PokemonFilter();
-  commonFiles = CommonFiles;
-
-  colorFilters = {
-    ...this.commonFiles.additionalFiles,
-    'utils/color-filter.ts': require('!raw-loader!../utils/color-filter-default.ts').default,
-  };
-
-  colorFiltersTemplateVariable = {
-    ...this.commonFiles.additionalFiles,
-    'utils/color-filter.ts': require('!raw-loader!../utils/color-filter.ts').default,
-  };
-  pokemonFilters = {
-    ...this.commonFiles.additionalFiles,
-    'utils/pokemon-filter.ts': require('!raw-loader!../utils/pokemon-filter.ts').default,
-  };
-
-  constructor(inventory: Inventory) {
-    inventory.size = 10;
-    inventory.reset();
-    this.users = inventory.all;
-  }
+  readonly examples = DATAGRID_EXAMPLES;
+  readonly snippets = SNIPPETS;
 }

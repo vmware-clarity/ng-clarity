@@ -40,7 +40,7 @@
   <code cds-text="code">false</code>.
 </p>
 
-<app-code-snippet [code]="examples.basicUsage" language="html"></app-code-snippet>
+<app-code-snippet [code]="snippets.basicUsage" language="html"></app-code-snippet>
 
 <h3 class="clr-mt-32px" cds-text="section">Example</h3>
 
@@ -49,48 +49,4 @@
   checkboxes are not affected.
 </p>
 
-<div class="card">
-  <p class="card-block" cds-layout="m-t:none">
-    <clr-checkbox-container cds-layout="m-t:none">
-      <label>Select all</label>
-      <clr-checkbox-wrapper>
-        <input clrToggle type="checkbox" [(ngModel)]="selectAllDisabled" />
-        <label>{{ selectAllDisabled ? 'Disabled' : 'Active' }}</label>
-      </clr-checkbox-wrapper>
-    </clr-checkbox-container>
-  </p>
-  <p class="card-block username-list" cds-layout="m-t:none">
-    Selected users: @if (selected.length == 0) {
-    <em>No user selected.</em>
-    } @for (user of selected; track user) {
-    <span class="username">{{ user.name }}</span>
-    }
-  </p>
-</div>
-
-<clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" [clrDgSelectAllDisabled]="selectAllDisabled">
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-column>Favorite color</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Disable Select All"
-  [componentTemplate]="examples.main"
-  [componentClass]="examples.componentTS"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.selectAllDisabled"></app-doc-example>

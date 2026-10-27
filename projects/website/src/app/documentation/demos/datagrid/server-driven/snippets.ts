@@ -1,0 +1,26 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+const stateInterface = `
+interface ClrDatagridStateInterface<T = any> {
+  page?: {
+    from?: number;
+    to?: number;
+    size?: number;
+    current?: number;
+  };
+  sort?: {
+    by: string | ClrDatagridComparatorInterface<T>;
+    reverse: boolean;
+  };
+  filters?: any[];
+}
+`;
+
+export const SNIPPETS = {
+  stateInterface,
+};

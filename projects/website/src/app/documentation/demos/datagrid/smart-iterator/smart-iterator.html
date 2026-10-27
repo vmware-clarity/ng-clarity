@@ -15,30 +15,4 @@
   like sorting, filtering, pagination, ...
 </p>
 
-<clr-datagrid>
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-column>Favorite color</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Smart Iterator"
-  [componentTemplate]="exampleHtml"
-  [componentClass]="exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.smartIterator"></app-doc-example>

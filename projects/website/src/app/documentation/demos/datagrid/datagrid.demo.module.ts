@@ -38,11 +38,9 @@ import { DatagridSelectionSingleDemo } from './single-selection/single-selection
 import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
 import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridUsageDemo } from './usage/usage';
-import { ColorFilter } from './utils/color-filter';
 import { DatagridVirtualScrollDemo } from './virtual-scroll/virtual-scroll';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 
 const routes: Routes = [
@@ -245,8 +243,6 @@ const routes: Routes = [
     RouterModule.forChild(routes),
     StyleDocsComponent,
     CodeSnippetComponent,
-    ColorFilter,
-    StackblitzExampleComponent,
     DatagridBasicStructureDemo,
     DatagridUsageDemo,
     DatagridBatchActionDemo,

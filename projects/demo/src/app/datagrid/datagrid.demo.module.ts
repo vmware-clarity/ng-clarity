@@ -12,7 +12,6 @@ import { AppfxDatagridModule } from '@clr/addons/datagrid';
 import { ClarityModule } from '@clr/angular';
 
 import { UtilsDemoModule } from '../_utils/utils.module';
-import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
 import { DatagridBasicOnPushDemo } from './basic-with-on-push/basic-on-push';
 import { DatagridBasicOnPushWrapperDemo } from './basic-with-on-push/basic-on-push-wrapper';
 import { DatagridBindingPropertiesDemo } from './binding-properties/binding-properties';
@@ -21,7 +20,6 @@ import { DatagridColumnActionsDemo } from './column-actions/column-actions';
 import { DatagridColumnSizingDemo } from './column-sizing/column-sizing';
 import { DatagridCompactDemo } from './compact/compact';
 import { DatagridConditionalSelectionsDemo } from './conditional-selection/conditional-selection';
-import { DatagridCustomRenderingDemo } from './custom-rendering/custom-rendering';
 import { DatagridDemo } from './datagrid.demo';
 import { ROUTING } from './datagrid.demo.routing';
 import { DatagridDensityDemo } from './density/density';
@@ -37,7 +35,6 @@ import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagi
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
 import { DatagridPerformanceDemo } from './performance/performance';
 import { DatagridPinnableColumnsDemo } from './pinnable-columns/pinnable-columns';
-import { DatagridPlaceholderDemo } from './placeholder/placeholder';
 import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-selection';
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
 import { DatagridScrollingDemo } from './scrolling/scrolling';
@@ -46,7 +43,6 @@ import { DatagridSelectionRowModeDemo } from './selection-row-mode/selection-row
 import { DatagridSelectionSandboxDemo } from './selection-sandbox/selection-sandbox';
 import { DatagridSelectionSingleDemo } from './selection-single/selection-single';
 import { DatagridServerDrivenDemo } from './server-driven/server-driven';
-import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
 import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
@@ -67,13 +63,11 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
   ],
   declarations: [
     DatagridDemo,
-    DatagridBasicStructureDemo,
     DatagridBasicOnPushDemo,
     DatagridBasicOnPushWrapperDemo,
     DatagridBindingPropertiesDemo,
     DatagridCompactDemo,
     DatagridDensityDemo,
-    DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
     DatagridHideShowDemo,
@@ -86,11 +80,9 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridSelectionRowModeDemo,
     DatagridPreserveSelectionDemo,
     DatagridServerDrivenDemo,
-    DatagridSmartIteratorDemo,
     DatagridSortingDemo,
     DatagridBuiltInFiltersDemo,
     DatagridResponsiveFooterDemo,
-    DatagridPlaceholderDemo,
     DatagridScrollingDemo,
     DatagridColumnSizingDemo,
     DatagridColumnActionsDemo,
@@ -110,13 +102,11 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
   ],
   exports: [
     DatagridDemo,
-    DatagridBasicStructureDemo,
     DatagridBasicOnPushDemo,
     DatagridBasicOnPushWrapperDemo,
     DatagridBindingPropertiesDemo,
     DatagridCompactDemo,
     DatagridDensityDemo,
-    DatagridCustomRenderingDemo,
     DatagridFilteringDemo,
     DatagridFullDemo,
     DatagridPaginationDemo,
@@ -131,10 +121,8 @@ import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-sid
     DatagridVirtualScrollEmptyRowsDemo,
     DatagridVirtualScrollServerSideDemo,
     DatagridServerDrivenDemo,
-    DatagridSmartIteratorDemo,
     DatagridSortingDemo,
     DatagridBuiltInFiltersDemo,
-    DatagridPlaceholderDemo,
     DatagridPerformanceDemo,
     DatagridScrollingDemo,
     DatagridColumnSizingDemo,

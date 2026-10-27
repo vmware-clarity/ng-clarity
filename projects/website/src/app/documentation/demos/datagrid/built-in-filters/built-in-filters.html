@@ -23,12 +23,12 @@
   be filtered based on a string-matching function you provide. You should now be familiar with our use of interfaces for
   this, so here is the interface your string matcher should implement:
 </p>
-<app-code-snippet [code]="examples.stringFilterInterface" language="typescript"></app-code-snippet>
+<app-code-snippet [code]="snippets.stringFilterInterface" language="typescript"></app-code-snippet>
 <p class="clr-mt-16px" cds-text="body">
   Once you have it, you simply need to pass it to a
   <code cds-text="code">&lt;clr-dg-string-filter&gt;</code> component:
 </p>
-<app-code-snippet [code]="examples.stringFilterInput" language="html"></app-code-snippet>
+<app-code-snippet [code]="snippets.stringFilterInput" language="html"></app-code-snippet>
 
 <p class="clr-mt-16px" cds-text="body">
   In our example, we can allow the user to filter not only by pokemon name, but also by entering the exact number of the
@@ -44,45 +44,10 @@
   <code cds-text="code">&lt;clr-dg-numeric-filter&gt;</code> component and pass the filter to the
   <code cds-text="code">[clrDgNumericFilter]</code> property.
 </p>
-<app-code-snippet [code]="examples.numericFilterInterface" language="typescript"></app-code-snippet>
-<app-code-snippet [code]="examples.numericFilterInput" language="html"></app-code-snippet>
+<app-code-snippet [code]="snippets.numericFilterInterface" language="typescript"></app-code-snippet>
+<app-code-snippet [code]="snippets.numericFilterInput" language="html"></app-code-snippet>
 
-<clr-datagrid>
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-column>
-    Pokemon
-    <clr-dg-string-filter [clrDgStringFilter]="pokemonFilter"></clr-dg-string-filter>
-  </clr-dg-column>
-  <clr-dg-column>Favorite color</clr-dg-column>
-  <clr-dg-column>
-    Wins
-    <clr-dg-numeric-filter [clrDgNumericFilter]="winsFilter"></clr-dg-numeric-filter>
-  </clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell> {{ user.pokemon.name }} <span class="badge badge-5">#{{ user.pokemon.number }}</span> </clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.wins }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Built-in Filters "
-  [componentTemplate]="examples.stringFilterHTML"
-  [componentClass]="examples.filterTS"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.builtInFilters"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Filters with preset values</h3>
 
@@ -93,33 +58,7 @@
   not set it. The example below sets a lower limit of 10 and no upper limit.
 </p>
 
-<clr-datagrid>
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-column>
-    Pokemon
-    <clr-dg-string-filter [clrDgStringFilter]="pokemonFilter" [(clrFilterValue)]="myFilterValue"></clr-dg-string-filter>
-  </clr-dg-column>
-  <clr-dg-column>Favorite color</clr-dg-column>
-  <clr-dg-column>
-    Wins
-    <clr-dg-numeric-filter [clrDgNumericFilter]="winsFilter" [clrFilterValue]="[10, 100]"></clr-dg-numeric-filter>
-  </clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-    <clr-dg-cell> {{ user.pokemon.name }} <span class="badge badge-5">#{{ user.pokemon.number }}</span> </clr-dg-cell>
-    <clr-dg-cell>
-      <span class="color-square" [style.backgroundColor]="user.color"></span>
-    </clr-dg-cell>
-    <clr-dg-cell>{{ user.wins }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
+<app-doc-example [example]="examples.builtInFiltersPreset"></app-doc-example>
 
 <clr-alert clrAlertType="info" [clrAlertClosable]="false">
   <clr-alert-item>
@@ -132,12 +71,3 @@
     </div>
   </clr-alert-item>
 </clr-alert>
-
-<app-stackblitz-example
-  name="Datagrid Built-in Filters with preset values"
-  [componentTemplate]="examples.filterPresetHTML"
-  [componentClass]="examples.filterTS"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>

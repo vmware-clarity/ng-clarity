@@ -26,35 +26,7 @@
   replacement.
 </p>
 
-<clr-datagrid>
-  <clr-dg-column [clrDgField]="'id'">
-    User ID
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column [clrDgField]="'name'">
-    Name
-    <clr-dg-column-actions></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Column Actions"
-  [componentTemplate]="examples.basicExample"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.columnActions"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">The Filter Moves Into the Menu</h3>
 
@@ -75,30 +47,7 @@
   icon in the header or the action in the menu.
 </p>
 
-<clr-datagrid>
-  <clr-dg-column [clrDgField]="'name'">
-    Name
-    <clr-dg-column-actions [clrDgKeepFilterInHeader]="true"></clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Column Actions Keeping the Filter in the Header"
-  [componentTemplate]="examples.keepFilterInHeaderExample"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.columnActionsKeepFilter"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Adding Your Own Actions</h3>
 
@@ -132,40 +81,7 @@
   A projected action renders its own <code cds-text="code">cds-icon</code>, so register whatever shape it names.
 </p>
 
-<p class="clr-mt-16px" cds-text="body">Last action: <b cds-text="medium">{{ lastAction || 'none yet' }}</b></p>
-
-<clr-datagrid>
-  <clr-dg-column [clrDgField]="'name'">
-    Name
-    <clr-dg-column-actions>
-      <button type="button" clrDgColumnAction (click)="renameColumn()">
-        <cds-icon shape="pencil" aria-hidden="true"></cds-icon>
-        Rename column
-      </button>
-      <button type="button" clrDgColumnAction [clrDisabled]="true">
-        <cds-icon shape="trash" aria-hidden="true"></cds-icon>
-        Clear column
-      </button>
-    </clr-dg-column-actions>
-  </clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Column Actions With Application Actions"
-  [componentTemplate]="examples.customActionsExample"
-  [componentClass]="examples.customActionsComponentTS"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.columnActionsCustom"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Accessibility</h3>
 

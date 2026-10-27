@@ -6,54 +6,16 @@
  */
 
 import { Component } from '@angular/core';
-import { ClrDatagridModule, ClrPopoverHostDirective, ClrStopEscapePropagationDirective } from '@clr/angular';
+import { DATAGRID_EXAMPLES } from '@clr/examples/datagrid';
 
-import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
-import { Inventory } from '../inventory/inventory';
-import { User } from '../inventory/user';
-
-const EXAMPLE = `
-<clr-datagrid>
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-  <clr-dg-column>Creation date</clr-dg-column>
-  <clr-dg-column>Favorite color</clr-dg-column>
-
-  <clr-dg-placeholder>We couldn't find any users!</clr-dg-placeholder>
-  @for (user of users; track user.id) {
-    <clr-dg-row></clr-dg-row>
-  }
-
-  <clr-dg-footer>{{ users.length }} users</clr-dg-footer>
-</clr-datagrid>
-`;
-
-const EXAMPLE_TS = `
-import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { ClrDatagridModule } from '@clr/angular';
-
-@Component({
-  selector: 'app-example',
-  templateUrl: './example.component.html',
-  styleUrl: './example.component.scss',
-
-  imports: [CommonModule, ClrDatagridModule],
-})
-export class ExampleComponent {
-  users = [];
-}
-`;
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-datagrid-placeholder-demo',
-  providers: [Inventory],
   templateUrl: 'placeholder.html',
   styleUrl: '../datagrid.demo.scss',
-  imports: [ClrDatagridModule, ClrStopEscapePropagationDirective, ClrPopoverHostDirective, StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class DatagridPlaceholderDemo {
-  example = EXAMPLE;
-  exampleTs = EXAMPLE_TS;
-  users: User[] = [];
+  readonly examples = DATAGRID_EXAMPLES;
 }

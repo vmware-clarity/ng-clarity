@@ -37,68 +37,7 @@
   This is a full example with Selection and the Detail Pane both working together.
 </p>
 
-<clr-datagrid [clrDgSelectionType]="'multi'" [(clrDgSelected)]="selected">
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-
-  <clr-dg-row
-    *clrDgItems="let user of users; let i = index"
-    [clrDgItem]="user"
-    [clrDgDetailOpenLabel]="'Open details for user ' + user.id"
-    [clrDgDetailCloseLabel]="'Close details for user' + user.id"
-    [clrDgDetailDisabled]="i === 1"
-    [clrDgDetailHidden]="i === 2"
-  >
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-detail *clrIfDetail="let detail">
-    <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
-    <clr-dg-detail-body>
-      <b cds-text="medium">Additional Details</b>
-      <table class="table">
-        <tr>
-          <th>Property</th>
-          <th>Value</th>
-        </tr>
-        <tr>
-          <td>ID</td>
-          <td>{{ detail.id }}</td>
-        </tr>
-        <tr>
-          <td>Wins</td>
-          <td>{{ detail.wins }}</td>
-        </tr>
-        <tr>
-          <td>Favorite Color</td>
-          <td>{{ detail.color }} <span class="color-square" [style.backgroundColor]="detail.color"></span></td>
-        </tr>
-        <tr>
-          <td>Creation</td>
-          <td>{{ detail.creation | date }}</td>
-        </tr>
-      </table>
-    </clr-dg-detail-body>
-  </clr-dg-detail>
-
-  <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgPageSize]="10">
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Users per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} users
-    </clr-dg-pagination>
-  </clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Details and Selection"
-  [componentTemplate]="mainExample"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.detailPane"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Reacting to changes in Detail Pane state</h3>
 
@@ -109,15 +48,7 @@
   <code cds-text="code">let-detail</code> to reference the row object.
 </p>
 
-<app-stackblitz-example
-  name="Datagrid Change Event"
-  [componentTemplate]="changeEventExample"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.detailPaneChangeEvent"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Controlling the Detail Pane programatically</h3>
 
@@ -127,80 +58,7 @@
   include the local template variable like <code cds-text="code">let-detail</code> to get access to the row object.
 </p>
 
-<div class="card card-block">
-  <p class="card-text username-list">
-    Opened Pane: @if (!state) {
-    <em>No user selected.</em>
-    } @if (state) {
-    <span class="username">{{ state.id }}</span>
-    }
-  </p>
-</div>
-
-<button class="btn btn-primary" (click)="state = users[4]">Open Row 5 Pane</button>
-
-<clr-datagrid>
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-
-  <clr-dg-row
-    *clrDgItems="let user of users"
-    [clrDgItem]="user"
-    [clrDgDetailOpenLabel]="'Open details for user ' + user.id"
-    [clrDgDetailCloseLabel]="'Close details for user' + user.id"
-  >
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <ng-template [(clrIfDetail)]="state" let-detail>
-    <clr-dg-detail>
-      <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
-      <clr-dg-detail-body>
-        <b cds-text="medium">Additional Details</b>
-        <table class="table">
-          <tr>
-            <th>Property</th>
-            <th>Value</th>
-          </tr>
-          <tr>
-            <td>ID</td>
-            <td>{{ detail.id }}</td>
-          </tr>
-          <tr>
-            <td>Wins</td>
-            <td>{{ detail.wins }}</td>
-          </tr>
-          <tr>
-            <td>Favorite Color</td>
-            <td>{{ detail.color }} <span class="color-square" [style.backgroundColor]="detail.color"></span></td>
-          </tr>
-          <tr>
-            <td>Creation</td>
-            <td>{{ detail.creation | date }}</td>
-          </tr>
-        </table>
-      </clr-dg-detail-body>
-    </clr-dg-detail>
-  </ng-template>
-
-  <clr-dg-footer>
-    <clr-dg-pagination #pagination [clrDgPageSize]="10">
-      <clr-dg-page-size [clrPageSizeOptions]="[10, 20, 50, 100]">Users per page</clr-dg-page-size>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} users
-    </clr-dg-pagination>
-  </clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Two-Way Binding"
-  [componentTemplate]="twoWayBindingExample"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.detailPaneTwoWay"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Configuring the Detail Pane Width</h3>
 
@@ -229,57 +87,7 @@
   Use the slider below to change the Detail Pane width and see the effect live.
 </p>
 
-<div class="card">
-  <p class="card-block" cds-layout="m-t:none">
-    <clr-range-container cds-layout="m-t:none" [clrRangeHasProgress]="true">
-      <label>Detail Pane Width: <strong>{{ detailWidth }}%</strong></label>
-      <input type="range" clrRange id="widthSlider" min="0" max="100" step="5" [(ngModel)]="detailWidth" />
-    </clr-range-container>
-  </p>
-</div>
-
-<clr-datagrid>
-  <clr-dg-column>User ID</clr-dg-column>
-  <clr-dg-column>Name</clr-dg-column>
-
-  <clr-dg-row *clrDgItems="let user of widthDemoUsers" [clrDgItem]="user">
-    <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-    <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-  </clr-dg-row>
-
-  <clr-dg-detail *clrIfDetail="let detail" [clrDetailWidth]="detailWidth">
-    <clr-dg-detail-header>{{ detail.name }}</clr-dg-detail-header>
-    <clr-dg-detail-body>
-      <b cds-text="medium">Additional Details</b>
-      <table class="table">
-        <tr>
-          <th>Property</th>
-          <th>Value</th>
-        </tr>
-        <tr>
-          <td>ID</td>
-          <td>{{ detail.id }}</td>
-        </tr>
-        <tr>
-          <td>Wins</td>
-          <td>{{ detail.wins }}</td>
-        </tr>
-      </table>
-    </clr-dg-detail-body>
-  </clr-dg-detail>
-
-  <clr-dg-footer>{{ widthDemoUsers.length }} users</clr-dg-footer>
-</clr-datagrid>
-
-<app-stackblitz-example
-  name="Datagrid Detail Pane Width"
-  [componentTemplate]="detailWidthExampleHtml"
-  [componentClass]="detailWidthExampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [showComponentStyles]="false"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.detailPaneWidth"></app-doc-example>
 
 <h3 cds-text="section" class="clr-mt-32px">Accessibility Guidance</h3>
 

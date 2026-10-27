@@ -7,8 +7,8 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { DATAGRID_EXAMPLES } from '@clr/examples/datagrid';
 
-import { DatagridBasicStructureDemo } from './basic-structure/basic-structure';
 import { DatagridBasicOnPushDemo } from './basic-with-on-push/basic-on-push';
 import { DatagridBindingPropertiesDemo } from './binding-properties/binding-properties';
 import { DatagridBuiltInFiltersDemo } from './built-in-filters/built-in-filters';
@@ -16,7 +16,6 @@ import { DatagridColumnActionsDemo } from './column-actions/column-actions';
 import { DatagridColumnSizingDemo } from './column-sizing/column-sizing';
 import { DatagridCompactDemo } from './compact/compact';
 import { DatagridConditionalSelectionsDemo } from './conditional-selection/conditional-selection';
-import { DatagridCustomRenderingDemo } from './custom-rendering/custom-rendering';
 import { DatagridDemo } from './datagrid.demo';
 import { DatagridDensityDemo } from './density/density';
 import { DatagridDetailDemo } from './detail/detail';
@@ -30,7 +29,6 @@ import { DatagridConditionalPaginationDemo } from './pagination-conditional/pagi
 import { DatagridPaginationScrollingDemo } from './pagination-scrolling/pagination-scrolling';
 import { DatagridPerformanceDemo } from './performance/performance';
 import { DatagridPinnableColumnsDemo } from './pinnable-columns/pinnable-columns';
-import { DatagridPlaceholderDemo } from './placeholder/placeholder';
 import { DatagridPreserveSelectionDemo } from './preserve-selection/preserve-selection';
 import { DatagridResponsiveFooterDemo } from './responsive-footer/responsive-footer';
 import { DatagridScrollingDemo } from './scrolling/scrolling';
@@ -39,25 +37,23 @@ import { DatagridSelectionRowModeDemo } from './selection-row-mode/selection-row
 import { DatagridSelectionSandboxDemo } from './selection-sandbox/selection-sandbox';
 import { DatagridSelectionSingleDemo } from './selection-single/selection-single';
 import { DatagridServerDrivenDemo } from './server-driven/server-driven';
-import { DatagridSmartIteratorDemo } from './smart-iterator/smart-iterator';
 import { DatagridSortingDemo } from './sorting/sorting';
 import { DatagridTestCasesDemo } from './test-cases/test-cases';
 import { DatagridTestCasesAsyncDemo } from './test-cases-async/test-cases-async';
 import { DatagridVirtualScrollClientSideDemo } from './virtual-scroll-client-side/virtual-scroll-client-side';
 import { DatagridVirtualScrollEmptyRowsDemo } from './virtual-scroll-empty-rows/virtual-scroll-empty-rows';
 import { DatagridVirtualScrollServerSideDemo } from './virtual-scroll-server-side/virtual-scroll-server-side';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: DatagridDemo,
     children: [
-      { path: '', redirectTo: 'structure', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: DATAGRID_EXAMPLES } },
       { path: 'kitchen-sink', component: DatagridKitchenSinkDemo },
-      { path: 'structure', component: DatagridBasicStructureDemo },
       { path: 'on-push', component: DatagridBasicOnPushDemo },
-      { path: 'custom-rendering', component: DatagridCustomRenderingDemo },
-      { path: 'smart-iterator', component: DatagridSmartIteratorDemo },
       { path: 'binding-properties', component: DatagridBindingPropertiesDemo },
       { path: 'sorting', component: DatagridSortingDemo },
       { path: 'filtering', component: DatagridFilteringDemo },
@@ -72,7 +68,6 @@ const ROUTES: Routes = [
       { path: 'selection-row-mode', component: DatagridSelectionRowModeDemo },
       { path: 'preserve-selection', component: DatagridPreserveSelectionDemo },
       { path: 'server-driven', component: DatagridServerDrivenDemo },
-      { path: 'placeholder', component: DatagridPlaceholderDemo },
       { path: 'virtual-scroll-empty-rows', component: DatagridVirtualScrollEmptyRowsDemo },
       { path: 'virtual-scroll-client-side', component: DatagridVirtualScrollClientSideDemo },
       { path: 'virtual-scroll-server-side', component: DatagridVirtualScrollServerSideDemo },

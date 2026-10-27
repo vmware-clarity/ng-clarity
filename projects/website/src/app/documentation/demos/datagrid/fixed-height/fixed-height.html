@@ -13,49 +13,7 @@
   <code cds-text="code">clr-datagrid</code> element to a specific value, or making it 100% to fill its container:
 </p>
 
-<div class="limit-height">
-  <clr-datagrid>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: false }"> User ID </ng-container>
-    </clr-dg-column>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: false }"> Name </ng-container>
-    </clr-dg-column>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: false }"> Creation date </ng-container>
-    </clr-dg-column>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: true }"> Pokemon </ng-container>
-    </clr-dg-column>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn> Favorite color </ng-container>
-    </clr-dg-column>
-
-    <clr-dg-row *clrDgItems="let user of users" [clrDgItem]="user">
-      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-      <clr-dg-cell>
-        <span class="color-square" [style.backgroundColor]="user.color"></span>
-      </clr-dg-cell>
-    </clr-dg-row>
-
-    <clr-dg-footer>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} users
-      <clr-dg-pagination #pagination [clrDgPageSize]="currentPageSize"></clr-dg-pagination>
-    </clr-dg-footer>
-  </clr-datagrid>
-</div>
-
-<app-stackblitz-example
-  name="Datagrid Fixed Height"
-  [componentTemplate]="example"
-  [componentClass]="commonFiles.exampleTs"
-  [showComponentClass]="false"
-  [componentStyles]="commonFiles.exampleCss"
-  [additionalFiles]="commonFiles.additionalFiles"
-></app-stackblitz-example>
+<app-doc-example [example]="examples.fixedHeight"></app-doc-example>
 
 <p class="clr-mt-16px" cds-text="body">
   Specifying a header's width in any way, including through CSS with a simple class, locks the corresponding column size
@@ -67,37 +25,4 @@
   height
 </p>
 
-<div class="limit-height">
-  <clr-datagrid>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: false }"> User ID </ng-container>
-    </clr-dg-column>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: false }"> Name </ng-container>
-    </clr-dg-column>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: false }"> Creation date </ng-container>
-    </clr-dg-column>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn="{ hidden: true }"> Pokemon </ng-container>
-    </clr-dg-column>
-    <clr-dg-column>
-      <ng-container *clrDgHideableColumn> Favorite color </ng-container>
-    </clr-dg-column>
-
-    <clr-dg-row *clrDgItems="let user of usersLimited" [clrDgItem]="user">
-      <clr-dg-cell>{{ user.id }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.name }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.creation | date }}</clr-dg-cell>
-      <clr-dg-cell>{{ user.pokemon.name }}</clr-dg-cell>
-      <clr-dg-cell>
-        <span class="color-square" [style.backgroundColor]="user.color"></span>
-      </clr-dg-cell>
-    </clr-dg-row>
-
-    <clr-dg-footer>
-      {{ pagination.firstItem + 1 }} - {{ pagination.lastItem + 1 }} of {{ pagination.totalItems }} users
-      <clr-dg-pagination #pagination [clrDgPageSize]="currentPageSize"></clr-dg-pagination>
-    </clr-dg-footer>
-  </clr-datagrid>
-</div>
+<app-doc-example [example]="examples.fixedHeightFewRows"></app-doc-example>
