@@ -6,10 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrIcon, ClrModalModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-modal-backdrop-demo',
-  templateUrl: './modal-backdrop.demo.html',
-  standalone: false,
+  selector: 'clr-modal-css-full-screen-example',
+  templateUrl: './css-full-screen.example.html',
+  styleUrl: './css-full-screen.example.scss',
+  imports: [ClrIcon, ClrModalModule],
 })
-export class ModalBackdropDemo {}
+export class ModalCssFullScreenExample {}

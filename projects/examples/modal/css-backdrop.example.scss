@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+.backdrop-example-container {
+  position: relative;
+  padding: var(--cds-global-space-9);
+}
 
-@Component({
-  selector: 'clr-modal-static-demo',
-  templateUrl: './modal-static.demo.html',
-  standalone: false,
-})
-export class ModalStaticDemo {}
+.modal-backdrop.static {
+  position: absolute;
+  inset: 0;
+}

@@ -6,13 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrIcon, ClrModalModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-modal-angular-static-backdrop-demo',
-  templateUrl: './modal-angular-static-backdrop.demo.html',
-  standalone: false,
+  selector: 'clr-modal-css-extra-large-example',
+  templateUrl: './css-extra-large.example.html',
+  styleUrl: './css-extra-large.example.scss',
+  imports: [ClrIcon, ClrModalModule],
 })
-export class ModalAngularStaticBackdropDemo {
-  // Booleans to open each example modal
-  static = false;
-}
+export class ModalCssExtraLargeExample {}

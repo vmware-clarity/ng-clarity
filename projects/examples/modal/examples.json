@@ -1,0 +1,52 @@
+{
+  "storybook": "components/overlays/modal",
+  "examples": [
+    { "id": "basic", "title": "Basic modal", "targets": ["website", "demo"] },
+    { "id": "sizes", "title": "Modal sizes", "targets": ["website", "demo"] },
+    { "id": "not-closable", "title": "Modal that is not closable", "targets": ["website", "demo"] },
+    { "id": "alternate-close", "title": "Modal with an alternate close", "targets": ["website", "demo"] },
+    { "id": "static-backdrop", "title": "Modal that closes on a backdrop click", "targets": ["website", "demo"] },
+    {
+      "id": "css",
+      "title": "Static CSS modal",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "css-small",
+      "title": "Static CSS small modal",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "css-large",
+      "title": "Static CSS large modal",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "css-extra-large",
+      "title": "Static CSS extra large modal",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "css-full-screen",
+      "title": "Static CSS full-screen modal",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "css-backdrop",
+      "title": "Static CSS modal backdrop",
+      "targets": ["website", "demo", "storybook"],
+      "showStyles": false
+    },
+    {
+      "id": "css-animation",
+      "title": "Static CSS modal animation",
+      "targets": ["website", "demo"],
+      "showStyles": false
+    }
+  ]
+}

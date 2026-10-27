@@ -6,32 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { MODAL_EXAMPLES } from '@clr/examples/modal';
 
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
-<div>
-  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse ullamcorper nec ex in volutpat.
-  Maecenas consectetur, dui quis accumsan pellentesque, dui sem ultricies nulla, sed auctor magna diam
-  vel neque. Nullam id est vel purus volutpat accumsan non quis enim. Curabitur non turpis eu nunc
-  faucibus venenatis quis ut neque. Integer in mattis tortor, eu sollicitudin sapien. Vestibulum
-  convallis et quam vitae auctor. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur
-  ridiculus mus. Nam sagittis facilisis sapien, a malesuada purus. Donec vel dui sit amet orci semper
-  accumsan sit amet non enim. Nulla sit amet commodo justo, ut pellentesque mauris. Pellentesque
-  sollicitudin vestibulum ante eleifend pharetra. Nullam dignissim risus eget feugiat scelerisque.
-  Nullam vehicula porta ex ac hendrerit. Phasellus laoreet felis et lacinia tincidunt. Nullam mattis sit
-  amet est a maximus.
-  <br />
-  <button class="btn btn-primary">Ut dolor ipsum</button>
-</div>
-<div class="modal-backdrop" aria-hidden="true"></div>
-`;
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'clr-modal-backdrop-demo',
   templateUrl: './modal-backdrop.demo.html',
-  imports: [StackblitzExampleComponent],
+  imports: [DocExampleComponent],
 })
 export class ModalBackdropDemo {
-  example = EXAMPLE;
+  readonly examples = MODAL_EXAMPLES;
 }

@@ -6,13 +6,12 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrIcon, ClrModalModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-modal-angular-not-closable-demo',
-  templateUrl: './modal-angular-not-closable.demo.html',
-  standalone: false,
+  selector: 'clr-modal-css-example',
+  templateUrl: './css.example.html',
+  styleUrl: './css.example.scss',
+  imports: [ClrIcon, ClrModalModule],
 })
-export class ModalAngularNotClosableDemo {
-  // Booleans to open each example modal
-  closable = false;
-}
+export class ModalCssExample {}

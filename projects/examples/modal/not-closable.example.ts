@@ -6,10 +6,13 @@
  */
 
 import { Component } from '@angular/core';
+import { ClrModalModule } from '@clr/angular';
 
 @Component({
-  selector: 'clr-modal-sizes-demo',
-  templateUrl: './modal-sizes.demo.html',
-  standalone: false,
+  selector: 'clr-modal-not-closable-example',
+  templateUrl: './not-closable.example.html',
+  imports: [ClrModalModule],
 })
-export class ModalSizesDemo {}
+export class ModalNotClosableExample {
+  opened = false;
+}
