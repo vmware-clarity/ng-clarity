@@ -1,0 +1,4 @@
+{
+  "storybook": "patterns/application-layout",
+  "examples": [{ "id": "all", "title": "Application layout", "targets": ["website", "demo", "storybook"] }]
+}
