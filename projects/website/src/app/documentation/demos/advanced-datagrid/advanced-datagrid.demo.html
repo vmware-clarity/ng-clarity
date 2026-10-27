@@ -220,15 +220,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-client-side-advanced-grid-demo></app-client-side-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="client-side-demo"
-              [componentTemplate]="clientSideHtml"
-              [componentClass]="clientSideTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.clientSide" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>
@@ -275,15 +267,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-server-driven-advanced-grid-demo></app-server-driven-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="server-driven-demo"
-              [componentTemplate]="serverDrivenHtml"
-              [componentClass]="serverDrivenTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.serverDriven" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>
@@ -327,15 +311,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-virtual-scroll-advanced-grid-demo></app-virtual-scroll-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="virtual-scroll-demo"
-              [componentTemplate]="virtualScrollHtml"
-              [componentClass]="virtualScrollTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.virtualScroll" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>
@@ -378,15 +354,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-custom-column-advanced-grid-demo></app-custom-column-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="custom-column-definitions-demo"
-              [componentTemplate]="customColumnDefinitionsHtml"
-              [componentClass]="customColumnDefinitionsTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.customColumnDefinitions" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>
@@ -422,15 +390,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-detail-pane-advanced-grid-demo></app-detail-pane-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="detail-pane-demo"
-              [componentTemplate]="detailPaneHtml"
-              [componentClass]="detailPaneTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.detailPane" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>
@@ -466,15 +426,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-drag-drop-advanced-grid-demo></app-drag-drop-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="drag-drop-demo"
-              [componentTemplate]="dragDropHtml"
-              [componentClass]="dragDropTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.dragDrop" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>
@@ -524,15 +476,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-filters-advanced-grid-demo></app-filters-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="filters-demo"
-              [componentTemplate]="filtersHtml"
-              [componentClass]="filtersTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.filters" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>
@@ -579,15 +523,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-persistance-advanced-grid-demo></app-persistance-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="persistance-demo"
-              [componentTemplate]="persistanceHtml"
-              [componentClass]="persistanceTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.persistence" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>
@@ -637,15 +573,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-pinnable-columns-advanced-grid-demo></app-pinnable-columns-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="pinnable-columns-demo"
-              [componentTemplate]="pinnableColumnsHtml"
-              [componentClass]="pinnableColumnsTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.pinnableColumns" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>
@@ -713,15 +641,7 @@
         <clr-accordion-panel>
           <clr-accordion-title>Example</clr-accordion-title>
           <clr-accordion-content *clrIfExpanded>
-            <div class="clr-mt-16px">
-              <app-column-actions-advanced-grid-demo></app-column-actions-advanced-grid-demo>
-            </div>
-            <app-stackblitz-example
-              name="column-actions-demo"
-              [componentTemplate]="columnActionsHtml"
-              [componentClass]="columnActionsTs"
-              [additionalFiles]="additionalFiles"
-            ></app-stackblitz-example>
+            <app-doc-example [example]="examples.columnActions" previewClass="clr-mt-16px"></app-doc-example>
           </clr-accordion-content>
         </clr-accordion-panel>
       </clr-accordion>

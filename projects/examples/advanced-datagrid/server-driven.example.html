@@ -4,7 +4,7 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<grid-confirm-form [(options)]="options"> </grid-confirm-form>
+<grid-confirm-form [(options)]="options"></grid-confirm-form>
 
 <button class="btn btn-primary" (click)="reset()">Render</button>
 <button class="btn btn-primary" (click)="refresh()">Refresh data</button>
@@ -26,28 +26,30 @@
 @if (!resetting) {
 <appfx-datagrid
   appfxPreserveSelection
-  trackByGridItemProperty="id"
-  [virtualScrolling]="true"
-  [serverDrivenDatagrid]="true"
-  [dataRange]="dataRange"
+  [trackByGridItemProperty]="'id'"
+  [gridItems]="vmItems"
   [selectedItems]="selectedVms"
-  [totalItems]="dataRange.total"
-  [loading]="options.loading"
   [columns]="columns"
   [layoutModel]="{
     disabled: options.disabled,
     compact: options.compactDatagrid,
-    stretchToParentHeight: true
+    stretchToParentHeight: false
   }"
   [footerModel]="{
-    enableCustomExport: options.enableExport,
-    hideColumnToggle: !options.showColumnToggle
-  }"
+                    showFooter: options.showFooter,
+                    enableCustomExport: options.enableExport,
+                    hideColumnToggle: !options.showColumnToggle,
+                }"
+  [serverDrivenDatagrid]="true"
+  [totalItems]="options.totalItems"
+  [loading]="options.loading"
+  [listItemsCount]="options.totalItems"
   [selectionType]="options.selectionType"
+  [pageSize]="options.pageSize!"
+  [pageSizeOptions]="options.pageSizeOptions!"
+  [rowSelectionMode]="options.enableRowSelection"
   (refreshGridData)="onRefreshGridData($event)"
   (exportDataEvent)="onExportDataEvent($event)"
   (selectedItemsChange)="onSelectedItemsChange($event)"
-  (refreshVirtualGridData)="refreshVirtualGridData($event)"
->
-</appfx-datagrid>
+></appfx-datagrid>
 }

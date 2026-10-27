@@ -7,7 +7,12 @@
 <form clrForm>
   <clr-select-container cds-layout="m-t:xs">
     <label>Filter mode</label>
-    <select clrSelect name="filter-mode" [ngModel]="selectedFilterMode" (ngModelChange)="onFilterModeChange($event)">
+    <select
+      clrSelect
+      name="filter-mode"
+      [ngModel]="selectedFilterMode"
+      (ngModelChange)="onFilterModeChange($event)"
+    >
       <option [value]="FilterMode.AdvancedOnly" selected>Advanced Only Filter</option>
       <option [value]="FilterMode.Advanced">Advanced Filter</option>
       <option [value]="FilterMode.Quick">Quick Filter</option>
@@ -30,8 +35,7 @@
   [rowSelectionMode]="false"
   (searchTermChange)="onSearchTermChange($event)"
   (advancedFilterChange)="onAdvancedFilterChange($event)"
->
-</appfx-datagrid>
+></appfx-datagrid>
 
 <clr-toggle-container cds-layout="m-l:xxs m-t:md">
   <label>User Filter Error Simulation</label>

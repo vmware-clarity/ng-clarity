@@ -14,19 +14,17 @@ import {
   ColumnOrderChanged,
   ColumnPinnedState,
 } from '@clr/addons/datagrid';
-import { SelectionType } from '@clr/angular/data/datagrid';
-import { ClarityIcons, clockIcon, copyIcon, infoStandardIcon } from '@clr/angular/icon';
+import { ClarityIcons, clockIcon, copyIcon, infoStandardIcon, SelectionType } from '@clr/angular';
 
 import { Inventory, VmItem } from './inventory/inventory';
 
 @Component({
-  selector: 'app-column-actions-advanced-grid-demo',
+  selector: 'clr-advanced-datagrid-column-actions-example',
   imports: [AppfxDatagridModule],
-  standalone: true,
-  templateUrl: './column-actions.html',
+  templateUrl: './column-actions.example.html',
   providers: [Inventory],
 })
-export class ColumnActionsGridDemoComponent {
+export class AdvancedDatagridColumnActionsExample {
   vms: VmItem[] = [];
   selectedVms: VmItem[] = [];
   lastPinnedChange = '';

@@ -12,20 +12,9 @@ import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
 import { AdvancedDatagridDemo } from './advanced-datagrid.demo';
-import { ClientSideDatagridDemoComponent } from './ng/client-side';
-import { ColumnActionsGridDemoComponent } from './ng/column-actions';
-import { CustomColumnDefinitionsDemoComponent } from './ng/custom-column-definitions';
-import { DetailPaneGridDemoComponent } from './ng/detail-pane';
-import { DragDropGridDemoComponent } from './ng/drag-drop';
-import { FiltersGridComponent } from './ng/filters';
-import { PersistenceGridDemoComponent } from './ng/persistance';
-import { PinnableColumnsGridDemoComponent } from './ng/pinnable-columns';
-import { ServerDrivenGridDemoComponent } from './ng/server-driven';
-import { VirtualScrollGridDemoComponent } from './ng/virtual-scroll';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { LinkCardsComponent } from '../../../shared/link-cards/link-cards.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
@@ -39,18 +28,7 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     StyleDocsComponent,
     CodeSnippetComponent,
     ThemedImageComponent,
-    StackblitzExampleComponent,
     LinkCardsComponent,
-    ClientSideDatagridDemoComponent,
-    ColumnActionsGridDemoComponent,
-    CustomColumnDefinitionsDemoComponent,
-    DetailPaneGridDemoComponent,
-    DragDropGridDemoComponent,
-    FiltersGridComponent,
-    PersistenceGridDemoComponent,
-    PinnableColumnsGridDemoComponent,
-    ServerDrivenGridDemoComponent,
-    VirtualScrollGridDemoComponent,
     AdvancedDatagridDemo,
   ],
   exports: [AdvancedDatagridDemo],

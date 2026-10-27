@@ -4,7 +4,7 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<grid-confirm-form [(options)]="options"> </grid-confirm-form>
+<grid-confirm-form [(options)]="options"></grid-confirm-form>
 
 <button class="btn btn-primary" (click)="reset()">Render</button>
 <button class="btn btn-primary" (click)="refresh()">Refresh data</button>
@@ -45,6 +45,5 @@
   [rowSelectionMode]="options.enableRowSelection"
   (selectedItemsChange)="onSelectedItemsChange($event)"
   (searchTermChange)="onSearchTermChange($event)"
->
-</appfx-datagrid>
+></appfx-datagrid>
 }

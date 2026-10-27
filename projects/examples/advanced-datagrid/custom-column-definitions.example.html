@@ -17,7 +17,13 @@
 
   <clr-input-container cds-layout="m-t:xs">
     <label>Width of column</label>
-    <input clrInput type="text" name="width" placeholder="e.g. 100px or 20rem" [(ngModel)]="columnConfig.width" />
+    <input
+      clrInput
+      type="text"
+      name="width"
+      placeholder="e.g. 100px or 20rem"
+      [(ngModel)]="columnConfig.width"
+    />
   </clr-input-container>
 
   <clr-toggle-container clrInline cds-layout="m-t:xs">
@@ -69,5 +75,4 @@
   [pageSize]="10"
   [columns]="columns"
   [gridItems]="allItems"
->
-</appfx-datagrid>
+></appfx-datagrid>

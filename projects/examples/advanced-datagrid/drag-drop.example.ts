@@ -9,36 +9,18 @@ import { CDK_DROP_LIST, CdkDragDrop, CdkDropList, DragDropModule } from '@angula
 import { Component, QueryList, ViewChildren } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, DatagridDragConfig } from '@clr/addons/datagrid';
 import { DragAndDropGroupService } from '@clr/addons/drag-and-drop';
-import { SelectionType } from '@clr/angular/data/datagrid';
+import { SelectionType } from '@clr/angular';
 
 import { Inventory, VmItem } from './inventory/inventory';
 
 @Component({
-  selector: 'app-drag-drop-advanced-grid-demo',
+  selector: 'clr-advanced-datagrid-drag-drop-example',
   imports: [AppfxDatagridModule, DragDropModule],
-  standalone: true,
-  templateUrl: './drag-drop.html',
-  styles: [
-    `
-      .dropzone {
-        width: 50%;
-        min-height: 120px;
-        border: 2px dashed;
-        margin: 10px;
-        text-align: center;
-      }
-
-      .draggable-item {
-        padding: 10px;
-        margin: 10px;
-        border: 1px solid;
-        cursor: grab;
-      }
-    `,
-  ],
+  templateUrl: './drag-drop.example.html',
+  styleUrl: './drag-drop.example.scss',
   providers: [Inventory],
 })
-export class DragDropGridDemoComponent {
+export class AdvancedDatagridDragDropExample {
   protected readonly columns: ColumnDefinition<VmItem>[] = [
     {
       displayName: 'VM Name',

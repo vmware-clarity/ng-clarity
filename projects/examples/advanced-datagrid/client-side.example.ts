@@ -12,19 +12,21 @@ import {
   ColumnDefinition,
   ExportProviderService,
 } from '@clr/addons/datagrid';
-import { SelectionType } from '@clr/angular/data/datagrid';
+import { SelectionType } from '@clr/angular';
 
-import { GridConfigDemoOptions, GridConfigFormComponent } from './grid-config/grid-config-form.component';
+import {
+  GridConfigDemoOptions,
+  GridConfigFormComponent,
+} from './grid-config/grid-config-form.component';
 import { Inventory, VmItem } from './inventory/inventory';
 
 @Component({
-  selector: 'app-client-side-advanced-grid-demo',
+  selector: 'clr-advanced-datagrid-client-side-example',
   imports: [AppfxDatagridModule, GridConfigFormComponent],
-  standalone: true,
-  templateUrl: './client-side.html',
+  templateUrl: './client-side.example.html',
   providers: [ExportProviderService, Inventory],
 })
-export class ClientSideDatagridDemoComponent {
+export class AdvancedDatagridClientSideExample {
   resetting = false;
   allVms: VmItem[] = [];
   selectedVms: VmItem[] = [];

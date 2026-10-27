@@ -19,7 +19,7 @@ import {
   StringPropertyDefinition,
   UserPropertyDefinition,
 } from '@clr/addons/datagrid-filters';
-import { ClarityModule, SelectionType } from '@clr/angular';
+import { ClrCheckboxModule, ClrCommonFormsModule, ClrSelectModule, SelectionType } from '@clr/angular';
 import { Observable, throwError, timer } from 'rxjs';
 import { map, switchMap } from 'rxjs/operators';
 
@@ -124,13 +124,12 @@ export class CustomUserService extends DatagridFiltersUserService {
 }
 
 @Component({
-  selector: 'app-filters-advanced-grid-demo',
-  imports: [AppfxDatagridModule, ClarityModule, FormsModule],
-  standalone: true,
-  templateUrl: './filters.html',
+  selector: 'clr-advanced-datagrid-filters-example',
+  imports: [FormsModule, AppfxDatagridModule, ClrCheckboxModule, ClrCommonFormsModule, ClrSelectModule],
+  templateUrl: './filters.example.html',
   providers: [Inventory, { provide: DatagridFiltersUserService, useClass: CustomUserService }],
 })
-export class FiltersGridComponent {
+export class AdvancedDatagridFiltersExample {
   protected readonly selectionType = SelectionType.None;
   protected readonly columns: ColumnDefinition<VmItem>[] = [
     {
@@ -243,7 +242,9 @@ export class FiltersGridComponent {
 
     const lowerCaseSearch = searchTerm.toLowerCase();
     this.filteredItems = this.allItems.filter((item: VmItem) =>
-      [item.name, item.state, item.status, item.usedSpace].some(field => field.toLowerCase().includes(lowerCaseSearch))
+      [item.name, item.state, item.status, item.usedSpace].some(field =>
+        field.toLowerCase().includes(lowerCaseSearch)
+      )
     );
   }
 
@@ -282,7 +283,11 @@ export class FiltersGridComponent {
     );
   }
 
-  private applyOperatorFilter(item: string, predicateValue: string, operator: ComparisonOperator): boolean {
+  private applyOperatorFilter(
+    item: string,
+    predicateValue: string,
+    operator: ComparisonOperator
+  ): boolean {
     if (operator === ComparisonOperator.Equals) {
       return item === predicateValue;
     } else if (operator === ComparisonOperator.DoesNotEqual) {

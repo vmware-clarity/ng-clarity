@@ -11,60 +11,22 @@ import {
   ClarityIcons,
   ClrAccordionModule,
   ClrAlertModule,
-  ClrDatagridModule,
   ClrIfExpanded,
   dotCircleIcon,
   errorStandardIcon,
   successStandardIcon,
 } from '@clr/angular';
+import { ADVANCED_DATAGRID_EXAMPLES } from '@clr/examples/advanced-datagrid';
 
-import { ClientSideDatagridDemoComponent } from './ng/client-side';
-import { ColumnActionsGridDemoComponent } from './ng/column-actions';
-import { CustomColumnDefinitionsDemoComponent } from './ng/custom-column-definitions';
-import { DetailPaneGridDemoComponent } from './ng/detail-pane';
-import { DragDropGridDemoComponent } from './ng/drag-drop';
-import { FiltersGridComponent } from './ng/filters';
-import { PersistenceGridDemoComponent } from './ng/persistance';
-import { PinnableColumnsGridDemoComponent } from './ng/pinnable-columns';
-import { ServerDrivenGridDemoComponent } from './ng/server-driven';
-import { VirtualScrollGridDemoComponent } from './ng/virtual-scroll';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 import { ClarityDocComponent } from '../clarity-doc';
 import { multiStepPatternLink } from '../pattern-links';
-
-const replaceComponentName = (file: string) => {
-  file = file.replace(/(export class )\w+(\s*\{)/, '$1ExampleComponent$2');
-  return file;
-};
-
-const ClientSideHtml = require('!raw-loader!./ng/client-side.html').default;
-const ClientSideTs = replaceComponentName(require('!raw-loader!./ng/client-side.ts').default);
-const ColumnActionsHtml = require('!raw-loader!./ng/column-actions.html').default;
-const ColumnActionsTs = replaceComponentName(require('!raw-loader!./ng/column-actions.ts').default);
-const CustomColumnDefinitionsHtml = require('!raw-loader!./ng/custom-column-definitions.html').default;
-const CustomColumnDefinitionsTs = replaceComponentName(
-  require('!raw-loader!./ng/custom-column-definitions.ts').default
-);
-const DetailPaneHtml = require('!raw-loader!./ng/detail-pane.html').default;
-const DetailPaneTs = replaceComponentName(require('!raw-loader!./ng/detail-pane.ts').default);
-const DragDropHtml = require('!raw-loader!./ng/drag-drop.html').default;
-const DragDropTs = replaceComponentName(require('!raw-loader!./ng/drag-drop.ts').default);
-const FiltersHtml = require('!raw-loader!./ng/filters.html').default;
-const FiltersTs = replaceComponentName(require('!raw-loader!./ng/filters.ts').default);
-const PersistanceHtml = require('!raw-loader!./ng/persistance.html').default;
-const PersistanceTs = replaceComponentName(require('!raw-loader!./ng/persistance.ts').default);
-const PinnableColumnsHtml = require('!raw-loader!./ng/pinnable-columns.html').default;
-const PinnableColumnsTs = replaceComponentName(require('!raw-loader!./ng/pinnable-columns.ts').default);
-const ServerDrivenHtml = require('!raw-loader!./ng/server-driven.html').default;
-const ServerDrivenTs = replaceComponentName(require('!raw-loader!./ng/server-driven.ts').default);
-const VirtualScrollHtml = require('!raw-loader!./ng/virtual-scroll.html').default;
-const VirtualScrollTs = replaceComponentName(require('!raw-loader!./ng/virtual-scroll.ts').default);
 
 const BASIC_DATAGRID_EXAMPLE = `
 <appfx-datagrid [columns]="columns" [gridItems]="gridItems"></appfx-datagrid>
@@ -221,17 +183,6 @@ export class DatagridFiltersDemoComponent implements OnInit {
 }
 `;
 
-const additionalFiles = {
-  'inventory/inventory.ts': require('!raw-loader!./ng/inventory/inventory.ts').default,
-  'inventory/values.ts': require('!raw-loader!./ng/inventory/values.ts').default,
-  'grid-config/grid-config-form.component.html': require('!raw-loader!./ng/grid-config/grid-config-form.component.html')
-    .default,
-  'grid-config/grid-config-form.component.ts': require('!raw-loader!./ng/grid-config/grid-config-form.component.ts')
-    .default,
-  'persistance-datagrid-local-storage.service.ts':
-    require('!raw-loader!./ng/persistance-datagrid-local-storage.service.ts').default,
-};
-
 @Component({
   selector: 'clr-advanced-datagrid-demo',
   templateUrl: './advanced-datagrid.demo.html',
@@ -245,56 +196,15 @@ const additionalFiles = {
     DocTabComponent,
     ThemedImageComponent,
     CodeSnippetComponent,
+    DocExampleComponent,
     AiSkillComponent,
     ClrAccordionModule,
-    ClrDatagridModule,
     ClrIfExpanded,
-    ClientSideDatagridDemoComponent,
-    StackblitzExampleComponent,
-    ServerDrivenGridDemoComponent,
-    VirtualScrollGridDemoComponent,
-    CustomColumnDefinitionsDemoComponent,
-    DetailPaneGridDemoComponent,
-    DragDropGridDemoComponent,
-    FiltersGridComponent,
     ClrAlertModule,
-    PersistenceGridDemoComponent,
-    PinnableColumnsGridDemoComponent,
-    ColumnActionsGridDemoComponent,
   ],
 })
 export class AdvancedDatagridDemo extends ClarityDocComponent {
-  additionalFiles = additionalFiles;
-
-  clientSideHtml = ClientSideHtml;
-  clientSideTs = ClientSideTs;
-
-  columnActionsHtml = ColumnActionsHtml;
-  columnActionsTs = ColumnActionsTs;
-
-  customColumnDefinitionsHtml = CustomColumnDefinitionsHtml;
-  customColumnDefinitionsTs = CustomColumnDefinitionsTs;
-
-  detailPaneHtml = DetailPaneHtml;
-  detailPaneTs = DetailPaneTs;
-
-  dragDropHtml = DragDropHtml;
-  dragDropTs = DragDropTs;
-
-  filtersHtml = FiltersHtml;
-  filtersTs = FiltersTs;
-
-  persistanceHtml = PersistanceHtml;
-  persistanceTs = PersistanceTs;
-
-  pinnableColumnsHtml = PinnableColumnsHtml;
-  pinnableColumnsTs = PinnableColumnsTs;
-
-  serverDrivenHtml = ServerDrivenHtml;
-  serverDrivenTs = ServerDrivenTs;
-
-  virtualScrollHtml = VirtualScrollHtml;
-  virtualScrollTs = VirtualScrollTs;
+  readonly examples = ADVANCED_DATAGRID_EXAMPLES;
 
   basicDatagridExample = BASIC_DATAGRID_EXAMPLE;
   datagridFiltersExample = DATAGRID_FILTERS_EXAMPLE;

@@ -13,13 +13,12 @@ import { ClrCheckboxModule, ClrInputModule, DatagridPropertyStringFilter } from 
 import { Inventory, VmItem } from './inventory/inventory';
 
 @Component({
-  selector: 'app-custom-column-advanced-grid-demo',
+  selector: 'clr-advanced-datagrid-custom-column-definitions-example',
   imports: [AppfxDatagridModule, ClrCheckboxModule, ClrInputModule, FormsModule, ReactiveFormsModule],
-  standalone: true,
-  templateUrl: './custom-column-definitions.html',
+  templateUrl: './custom-column-definitions.example.html',
   providers: [Inventory],
 })
-export class CustomColumnDefinitionsDemoComponent {
+export class AdvancedDatagridCustomColumnDefinitionsExample {
   allItems: VmItem[];
 
   protected contentText = 'New column text';

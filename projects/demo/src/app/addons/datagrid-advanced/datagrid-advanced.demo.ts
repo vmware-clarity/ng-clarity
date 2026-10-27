@@ -14,6 +14,7 @@ import { RouterModule } from '@angular/router';
     <h1>Datagrid Advanced</h1>
 
     <ul class="datagrid-nav">
+      <li><a [routerLink]="['./examples']" routerLinkActive="active">Examples</a></li>
       <li><a [routerLink]="['./client-side']" routerLinkActive="active">Client-Side</a></li>
       <li><a [routerLink]="['./server-driven']" routerLinkActive="active">Server-Driven</a></li>
       <li><a [routerLink]="['./virtual-scroll']" routerLinkActive="active">Virtual Scroll</a></li>

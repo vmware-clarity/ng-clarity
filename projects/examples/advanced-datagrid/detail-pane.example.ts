@@ -7,18 +7,17 @@
 
 import { Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition } from '@clr/addons/datagrid';
-import { SelectionType } from '@clr/angular/data/datagrid';
+import { SelectionType } from '@clr/angular';
 
 import { Inventory, VmItem } from './inventory/inventory';
 
 @Component({
-  selector: 'app-detail-pane-advanced-grid-demo',
+  selector: 'clr-advanced-datagrid-detail-pane-example',
   imports: [AppfxDatagridModule],
-  standalone: true,
-  templateUrl: './detail-pane.html',
+  templateUrl: './detail-pane.example.html',
   providers: [Inventory],
 })
-export class DetailPaneGridDemoComponent {
+export class AdvancedDatagridDetailPaneExample {
   protected readonly selectionType = SelectionType.None;
   protected readonly columns: ColumnDefinition<VmItem>[] = [
     {

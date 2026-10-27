@@ -7,18 +7,17 @@
 
 import { Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, ColumnPinnedState } from '@clr/addons/datagrid';
-import { SelectionType } from '@clr/angular/data/datagrid';
+import { SelectionType } from '@clr/angular';
 
 import { Inventory, VmItem } from './inventory/inventory';
 
 @Component({
-  selector: 'app-pinnable-columns-advanced-grid-demo',
+  selector: 'clr-advanced-datagrid-pinnable-columns-example',
   imports: [AppfxDatagridModule],
-  standalone: true,
-  templateUrl: './pinnable-columns.html',
+  templateUrl: './pinnable-columns.example.html',
   providers: [Inventory],
 })
-export class PinnableColumnsGridDemoComponent {
+export class AdvancedDatagridPinnableColumnsExample {
   vms: VmItem[] = [];
   selectedVms: VmItem[] = [];
   lastPinnedChange = '';

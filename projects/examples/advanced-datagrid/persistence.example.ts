@@ -6,17 +6,20 @@
  */
 
 import { Component } from '@angular/core';
-import { AppfxDatagridModule, appfxDatagridPersistSettingsToken, ColumnDefinition } from '@clr/addons/datagrid';
+import {
+  AppfxDatagridModule,
+  appfxDatagridPersistSettingsToken,
+  ColumnDefinition,
+} from '@clr/addons/datagrid';
 import { ClrAlertModule } from '@clr/angular';
 
 import { Inventory, VmItem } from './inventory/inventory';
-import { DatagridLocalStorageService } from './persistance-datagrid-local-storage.service';
+import { DatagridLocalStorageService } from './persistence-datagrid-local-storage.service';
 
 @Component({
-  selector: 'app-persistance-advanced-grid-demo',
+  selector: 'clr-advanced-datagrid-persistence-example',
   imports: [AppfxDatagridModule, ClrAlertModule],
-  standalone: true,
-  templateUrl: './persistance.html',
+  templateUrl: './persistence.example.html',
   providers: [
     Inventory,
     {
@@ -26,7 +29,7 @@ import { DatagridLocalStorageService } from './persistance-datagrid-local-storag
     },
   ],
 })
-export class PersistenceGridDemoComponent {
+export class AdvancedDatagridPersistenceExample {
   protected readonly allItems: VmItem[];
   protected readonly columns: ColumnDefinition<VmItem>[] = [
     {

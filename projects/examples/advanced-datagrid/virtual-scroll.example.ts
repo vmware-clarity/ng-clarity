@@ -7,20 +7,22 @@
 
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, ExportProviderService } from '@clr/addons/datagrid';
-import { ClrDatagridStateInterface } from '@clr/angular';
-import { SelectionType } from '@clr/angular/data/datagrid';
+import { ClrDatagridStateInterface, SelectionType } from '@clr/angular';
 
-import { GridConfigDemoOptions, GridConfigFormComponent } from './grid-config/grid-config-form.component';
+import {
+  GridConfigDemoOptions,
+  GridConfigFormComponent,
+} from './grid-config/grid-config-form.component';
 import { FetchResult, Inventory, VmItem } from './inventory/inventory';
 
 @Component({
-  selector: 'app-virtual-scroll-advanced-grid-demo',
+  selector: 'clr-advanced-datagrid-virtual-scroll-example',
   imports: [AppfxDatagridModule, GridConfigFormComponent],
-  standalone: true,
-  templateUrl: './virtual-scroll.html',
+  templateUrl: './virtual-scroll.example.html',
+  styleUrl: './virtual-scroll.example.scss',
   providers: [ExportProviderService, Inventory],
 })
-export class VirtualScrollGridDemoComponent {
+export class AdvancedDatagridVirtualScrollExample {
   protected options: GridConfigDemoOptions = {
     totalItems: 10000,
     selectionType: SelectionType.Multi,

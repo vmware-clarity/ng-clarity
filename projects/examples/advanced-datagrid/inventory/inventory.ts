@@ -101,7 +101,10 @@ export class Inventory {
     return array[num % array.length];
   }
 
-  private getRandomDate(startDate = new Date('January 1, 2000'), endDate = new Date('September 18, 2024')): string {
+  private getRandomDate(
+    startDate = new Date('January 1, 2000'),
+    endDate = new Date('September 18, 2024')
+  ): string {
     const startMillis = startDate.getTime();
     const endMillis = endDate.getTime();
     const randomMillis = startMillis + Math.random() * (endMillis - startMillis);

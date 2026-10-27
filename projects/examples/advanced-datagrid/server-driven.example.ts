@@ -7,20 +7,21 @@
 
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, ExportProviderService } from '@clr/addons/datagrid';
-import { ClrDatagridStateInterface } from '@clr/angular';
-import { SelectionType } from '@clr/angular/data/datagrid';
+import { ClrDatagridStateInterface, SelectionType } from '@clr/angular';
 
-import { GridConfigDemoOptions, GridConfigFormComponent } from './grid-config/grid-config-form.component';
+import {
+  GridConfigDemoOptions,
+  GridConfigFormComponent,
+} from './grid-config/grid-config-form.component';
 import { FetchResult, Inventory, VmItem } from './inventory/inventory';
 
 @Component({
-  selector: 'app-server-driven-advanced-grid-demo',
+  selector: 'clr-advanced-datagrid-server-driven-example',
   imports: [AppfxDatagridModule, GridConfigFormComponent],
-  standalone: true,
-  templateUrl: './server-driven.html',
+  templateUrl: './server-driven.example.html',
   providers: [ExportProviderService, Inventory],
 })
-export class ServerDrivenGridDemoComponent {
+export class AdvancedDatagridServerDrivenExample {
   protected options: GridConfigDemoOptions = {
     totalItems: 50,
     selectionType: SelectionType.Multi,
