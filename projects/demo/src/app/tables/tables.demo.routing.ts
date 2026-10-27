@@ -7,33 +7,18 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { TABLE_EXAMPLES } from '@clr/examples/table';
 
-import { TablesBasicDemo } from './tables-basic';
-import { TablesCompactDemo } from './tables-compact';
-import { TablesCompactNoborderDemo } from './tables-compact-noborder';
-import { TablesLeftcellDemo } from './tables-leftcell';
-import { TablesMultilineDemo } from './tables-multiline';
-import { TablesNoborderDemo } from './tables-noborder';
-import { TablesVerticalDemo } from './tables-vertical';
-import { TablesVerticalNoborderCompactDemo } from './tables-vertical-noborder-compact';
-import { TablesWidthDemo } from './tables-width';
 import { TablesDemo } from './tables.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: TablesDemo,
     children: [
-      { path: '', redirectTo: 'tables-basic', pathMatch: 'full' },
-      { path: 'tables-basic', component: TablesBasicDemo },
-      { path: 'tables-leftcell', component: TablesLeftcellDemo },
-      { path: 'tables-multiline', component: TablesMultilineDemo },
-      { path: 'tables-noborder', component: TablesNoborderDemo },
-      { path: 'tables-compact', component: TablesCompactDemo },
-      { path: 'tables-compact-noborder', component: TablesCompactNoborderDemo },
-      { path: 'tables-vertical', component: TablesVerticalDemo },
-      { path: 'tables-vertical-noborder-compact', component: TablesVerticalNoborderCompactDemo },
-      { path: 'tables-width', component: TablesWidthDemo },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: TABLE_EXAMPLES } },
     ],
   },
 ];

@@ -8,8 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-tables-multiline-demo',
-  templateUrl: './tables-multiline.html',
-  standalone: false,
+  selector: 'clr-table-no-border-example',
+  templateUrl: './no-border.example.html',
 })
-export class TablesMultilineDemo {}
+export class TableNoBorderExample {}

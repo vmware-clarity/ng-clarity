@@ -8,8 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-tables-compact-noborder-demo',
-  templateUrl: './tables-compact-noborder.html',
-  standalone: false,
+  selector: 'clr-table-basic-example',
+  templateUrl: './basic.example.html',
 })
-export class TablesCompactNoborderDemo {}
+export class TableBasicExample {}

@@ -1,15 +1,10 @@
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
+<!--
+  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+  ~ The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+  ~ This software is released under MIT license.
+  ~ The full license information can be found in LICENSE in the root directory of this project.
+  -->
 
-import { Component } from '@angular/core';
-
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
-
-const EXAMPLE = `
 <table class="table">
   <thead>
     <tr>
@@ -46,13 +41,3 @@ const EXAMPLE = `
     </tr>
   </tbody>
 </table>
-`;
-
-@Component({
-  selector: 'clr-tables-multiline-demo',
-  templateUrl: './tables-multiline.html',
-  imports: [StackblitzExampleComponent],
-})
-export class TablesMultilineDemo {
-  example = EXAMPLE;
-}

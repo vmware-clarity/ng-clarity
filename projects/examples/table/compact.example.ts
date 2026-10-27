@@ -8,8 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-tables-leftcell-demo',
-  templateUrl: './tables-leftcell.html',
-  standalone: false,
+  selector: 'clr-table-compact-example',
+  templateUrl: './compact.example.html',
 })
-export class TablesLeftcellDemo {}
+export class TableCompactExample {}

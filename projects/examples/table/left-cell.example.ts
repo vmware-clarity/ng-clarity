@@ -8,8 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-tables-vertical-noborder-compact-demo',
-  templateUrl: './tables-vertical-noborder-compact.html',
-  standalone: false,
+  selector: 'clr-table-left-cell-example',
+  templateUrl: './left-cell.example.html',
 })
-export class TablesVerticalNoborderCompactDemo {}
+export class TableLeftCellExample {}

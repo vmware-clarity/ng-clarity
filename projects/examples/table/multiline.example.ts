@@ -8,8 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-tables-vertical-demo',
-  templateUrl: './tables-vertical.html',
-  standalone: false,
+  selector: 'clr-table-multiline-example',
+  templateUrl: './multiline.example.html',
 })
-export class TablesVerticalDemo {}
+export class TableMultilineExample {}

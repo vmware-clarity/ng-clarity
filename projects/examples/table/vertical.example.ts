@@ -8,8 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-tables-compact-demo',
-  templateUrl: './tables-compact.html',
-  standalone: false,
+  selector: 'clr-table-vertical-example',
+  templateUrl: './vertical.example.html',
 })
-export class TablesCompactDemo {}
+export class TableVerticalExample {}

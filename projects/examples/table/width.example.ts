@@ -8,8 +8,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'clr-tables-basic-demo',
-  templateUrl: './tables-basic.html',
-  standalone: false,
+  selector: 'clr-table-width-example',
+  templateUrl: './width.example.html',
 })
-export class TablesBasicDemo {}
+export class TableWidthExample {}

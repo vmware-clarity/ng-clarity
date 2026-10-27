@@ -12,15 +12,7 @@ import { Component } from '@angular/core';
   template: `
     <h2>Tables</h2>
     <ul>
-      <li><a [routerLink]="['./tables-basic']">Basic Tables</a></li>
-      <li><a [routerLink]="['./tables-leftcell']">Left-Aligned Table Cells</a></li>
-      <li><a [routerLink]="['./tables-multiline']">Multiline Table Cells</a></li>
-      <li><a [routerLink]="['./tables-noborder']">Non-Bordered Tables</a></li>
-      <li><a [routerLink]="['./tables-compact']">Compact Tables</a></li>
-      <li><a [routerLink]="['./tables-compact-noborder']">Compact, Non-Bordered Tables</a></li>
-      <li><a [routerLink]="['./tables-vertical']">Vertical Tables</a></li>
-      <li><a [routerLink]="['./tables-vertical-noborder-compact']">Vertical, Compact, Non-bordered Tables</a></li>
-      <li><a [routerLink]="['./tables-width']">Table Container Widths</a></li>
+      <li><a [routerLink]="['./examples']">Examples</a></li>
     </ul>
     <router-outlet></router-outlet>
   `,
