@@ -6,7 +6,6 @@
  */
 
 import { bootstrapApplication } from '@angular/platform-browser';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import {
   loadChartIconSet,
@@ -38,5 +37,5 @@ loadTextEditIconSet();
 loadTravelIconSet();
 
 bootstrapApplication(AppComponent, {
-  providers: [provideAnimations(), provideRouter(appRoutes)],
+  providers: [provideRouter(appRoutes)],
 });
