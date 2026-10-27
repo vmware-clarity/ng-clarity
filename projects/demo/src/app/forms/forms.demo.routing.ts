@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { FILE_PICKER_EXAMPLES } from '@clr/examples/file-picker';
 import { FORMS_EXAMPLES } from '@clr/examples/forms';
 
 import { FormsA11yDemo } from './a11y/a11y';
@@ -61,6 +62,7 @@ const ROUTES: Routes = [
       { path: 'layout-modal', component: FormsLayoutModalDemo },
       { path: 'checkbox', component: FormsCheckboxDemo },
       { path: 'file', component: FormsFileDemo },
+      { path: 'file-examples', component: ExampleListComponent, data: { examples: FILE_PICKER_EXAMPLES } },
       { path: 'radio', component: FormsRadioDemo },
       { path: 'select', component: FormsSelectDemo },
       { path: 'text', component: FormsTextDemo },

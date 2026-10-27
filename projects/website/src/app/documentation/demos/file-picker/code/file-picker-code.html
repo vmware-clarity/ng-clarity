@@ -4,14 +4,74 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<app-file-picker-code-basic-example></app-file-picker-code-basic-example>
+<h2 id="basic-example" cds-text="title" cds-layout="m-t:xxl">Basic Example</h2>
 
-<app-file-picker-code-disabled-example></app-file-picker-code-disabled-example>
+<p cds-text="body" cds-layout="m-t:md">
+  This example allows multiple files to be selected. You can remove the <code cds-text="code">multiple</code> attribute
+  to allow only a single file to be selected.
+</p>
 
-<app-file-picker-code-validation-example></app-file-picker-code-validation-example>
+<app-doc-example [example]="examples.basic"></app-doc-example>
 
-<app-file-picker-code-value-accessor-example></app-file-picker-code-value-accessor-example>
+<h2 id="disabled-example" cds-text="title" cds-layout="m-t:xxl">Disabled Example</h2>
 
-<app-file-picker-code-custom-button-label-example></app-file-picker-code-custom-button-label-example>
+<p cds-text="body" cds-layout="m-t:md">
+  The native <code cds-text="code">disabled</code> attribute can be applied to the file input element.
+</p>
 
-<app-file-picker-code-advanced-example></app-file-picker-code-advanced-example>
+<app-doc-example [example]="examples.disabled"></app-doc-example>
+
+<h2 id="validation-example" cds-text="title" cds-layout="m-t:xxl">Validation Example</h2>
+
+<p cds-text="body" cds-layout="m-t:md">Several validations are supported out of the box:</p>
+
+<ul class="list" cds-text="body" cds-layout="m-t:md m-l:lg">
+  <li>
+    Required: Use the native <code cds-text="code">required</code> attribute on the file input element. The validation
+    will pass if at least one file is selected.
+  </li>
+  <li>
+    File type: Use the native <code cds-text="code">accept</code> attribute on the file input element. It is recommended
+    to include both file extensions and MIME types for the best browser and OS support. The validation will pass if all
+    selected files match an accepted file extension or MIME type.
+  </li>
+  <li>
+    File size: Use the <code cds-text="code">[clrMinFileSize]</code> and
+    <code cds-text="code">[clrMaxFileSize]</code> inputs on the file input element. The validation will pass if all
+    selected files are within the given range (measured in bytes). If only the min or the max file size is specified,
+    the allowed file size range will be open ended.
+  </li>
+</ul>
+
+<app-doc-example [example]="examples.validation"></app-doc-example>
+
+<h2 id="value-accessor-example" cds-text="title" cds-layout="m-t:xxl">Value Accessor Example</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  Since the file picker uses the native file input element, you can use native browser behaviors and API to read and
+  upload the selected files. To assist you, the file picker provides a custom value accessor to set the Angular form
+  control value to the selected <code cds-text="code">FileList</code>
+</p>
+
+<app-doc-example [example]="examples.valueAccessor"></app-doc-example>
+
+<h2 id="custom-button-label-example" cds-text="title" cds-layout="m-t:xxl">Custom Button Label Example</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  The file picker button text can be customized using the
+  <code cds-text="code">clr-file-input-container</code> component's <code cds-text="code">[clrButtonLabel]</code> input.
+</p>
+
+<app-doc-example [example]="examples.customButtonLabel"></app-doc-example>
+
+<h2 id="advanced-file-picker-example" cds-text="title" cds-layout="m-t:xxl">Advanced File Picker Example</h2>
+
+<p cds-text="body" cds-layout="m-t:md">
+  This example shows the advanced file picker. This mode will show each selected file via the
+  <code cds-text="code">clr-file-list</code>
+  component. Each file can have its own message text. Disabling the file picker and validation works the same as the
+  examples above. Setting a custom browse button label is also possible as shown above, but the button text won't change
+  based on the selected files.
+</p>
+
+<app-doc-example [example]="examples.advanced"></app-doc-example>

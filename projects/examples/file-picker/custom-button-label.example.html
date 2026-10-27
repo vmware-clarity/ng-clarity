@@ -4,12 +4,6 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<h2 id="custom-button-label-example" cds-text="title" cds-layout="m-t:xxl">Custom Button Label Example</h2>
-
-<p cds-text="body" cds-layout="m-t:md">
-  The file picker button text can be customized using the
-  <code cds-text="code">clr-file-input-container</code> component's <code cds-text="code">[clrButtonLabel]</code> input.
-</p>
 
 <form clrForm clrLayout="vertical" [formGroup]="form">
   <clr-file-input-container clrButtonLabel="Select File">
@@ -20,10 +14,3 @@
     <clr-control-error>Error message</clr-control-error>
   </clr-file-input-container>
 </form>
-
-<app-stackblitz-example
-  name="file picker with custom button label"
-  [componentTemplate]="componentTemplate"
-  [componentClass]="componentClass"
->
-</app-stackblitz-example>

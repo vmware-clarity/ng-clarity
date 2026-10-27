@@ -6,24 +6,15 @@
  */
 
 import { Component } from '@angular/core';
+import { FILE_PICKER_EXAMPLES } from '@clr/examples/file-picker';
 
-import { FilePickerCodeAdvancedExample } from './advanced-example/file-picker-code-advanced-example';
-import { FilePickerCodeBasicExample } from './basic-example/file-picker-code-basic-example';
-import { FilePickerCodeCustomButtonLabelExample } from './custom-button-label-example/file-picker-code-custom-button-label-example';
-import { FilePickerCodeDisabledExample } from './disabled-example/file-picker-code-disabled-example';
-import { FilePickerCodeValidationExample } from './validation-example/file-picker-code-validation-example';
-import { FilePickerCodeValueAccessorExample } from './value-accessor-example/file-picker-code-value-accessor-example';
+import { DocExampleComponent } from '../../../../shared/doc-example/doc-example.component';
 
 @Component({
   selector: 'app-file-picker-code',
   templateUrl: './file-picker-code.html',
-  imports: [
-    FilePickerCodeBasicExample,
-    FilePickerCodeDisabledExample,
-    FilePickerCodeValidationExample,
-    FilePickerCodeValueAccessorExample,
-    FilePickerCodeCustomButtonLabelExample,
-    FilePickerCodeAdvancedExample,
-  ],
+  imports: [DocExampleComponent],
 })
-export class FilePickerCode {}
+export class FilePickerCode {
+  readonly examples = FILE_PICKER_EXAMPLES;
+}

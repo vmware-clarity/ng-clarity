@@ -1,0 +1,15 @@
+{
+  "storybook": "components/forms/file-input",
+  "examples": [
+    { "id": "basic", "title": "Basic file picker", "targets": ["website", "demo", "storybook"] },
+    { "id": "disabled", "title": "Disabled file picker", "targets": ["website", "demo", "storybook"] },
+    { "id": "validation", "title": "File picker validation", "targets": ["website", "demo", "storybook"] },
+    { "id": "value-accessor", "title": "File picker value accessor", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "custom-button-label",
+      "title": "File picker with a custom button label",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "advanced", "title": "Advanced file picker", "targets": ["website", "demo", "storybook"] }
+  ]
+}
