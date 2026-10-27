@@ -7,6 +7,7 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { CARD_EXAMPLES } from '@clr/examples/card';
 
 import { CardAngularDemo } from './angular/card-angular';
 import { CardClickableDemo } from './card-clickable';
@@ -19,13 +20,15 @@ import { CardMasonryDemo } from './card-masonry';
 import { CardMediaBlockDemo } from './card-media-block';
 import { CardOldDemo } from './card-old';
 import { CardDemo } from './card.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: CardDemo,
     children: [
-      { path: '', redirectTo: 'grid', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: CARD_EXAMPLES } },
       { path: 'grid', component: CardGridDemo },
       { path: 'clickable', component: CardClickableDemo },
       { path: 'dropdown', component: CardDropdownDemo },
