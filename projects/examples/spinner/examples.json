@@ -1,0 +1,14 @@
+{
+  "examples": [
+    {
+      "id": "fetch",
+      "title": "Spinner while loading data",
+      "targets": ["website", "demo"]
+    },
+    {
+      "id": "inline",
+      "title": "Inline spinner",
+      "targets": ["website", "demo"]
+    }
+  ]
+}

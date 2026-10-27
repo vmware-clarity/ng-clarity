@@ -7,18 +7,21 @@
 
 import { ModuleWithProviders } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { SPINNER_EXAMPLES } from '@clr/examples/spinner';
 
 import { SpinnerComponentDemo } from './spinner-component';
 import { SpinnerSizesDemo } from './spinner-sizes';
 import { SpinnerTypesDemo } from './spinner-types';
 import { SpinnerDemo } from './spinner.demo';
+import { ExampleListComponent } from '../_utils/example-list.component';
 
 const ROUTES: Routes = [
   {
     path: '',
     component: SpinnerDemo,
     children: [
-      { path: '', redirectTo: 'spinner-types', pathMatch: 'full' },
+      { path: '', redirectTo: 'examples', pathMatch: 'full' },
+      { path: 'examples', component: ExampleListComponent, data: { examples: SPINNER_EXAMPLES } },
       { path: 'spinner-types', component: SpinnerTypesDemo },
       { path: 'spinner-sizes', component: SpinnerSizesDemo },
       { path: 'spinner-component', component: SpinnerComponentDemo },
