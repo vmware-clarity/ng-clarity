@@ -9,7 +9,7 @@
   <label>My State</label>
   <clr-combobox [(ngModel)]="selection" name="myState">
     <clr-options>
-      @for (group of groupedStates; track group) {
+      @for (group of groupedStates; track group.name) {
       <clr-option-group [clrOptionGroupLabel]="group.name">
         <clr-option *clrOptionItems="let state of group.states; field: 'name'" [clrValue]="state">
           {{ state.name }}
@@ -21,10 +21,3 @@
   <clr-control-helper>Which state do you live in?</clr-control-helper>
   <clr-control-error>There was an error</clr-control-error>
 </clr-combobox-container>
-
-<app-stackblitz-example
-  name="option grouping combobox"
-  [componentTemplate]="basicHTML"
-  [componentClass]="basicComponent"
-  [additionalFiles]="additionalFiles"
-></app-stackblitz-example>

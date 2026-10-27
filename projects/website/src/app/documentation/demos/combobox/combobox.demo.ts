@@ -8,17 +8,10 @@
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClarityIcons, homeIcon, sunIcon, worldIcon } from '@clr/angular';
+import { COMBOBOX_EXAMPLES } from '@clr/examples/combobox';
 
-import { ComboboxAsyncDemo } from './combobox-async.demo';
-import { ComboboxEditableMultiDemo } from './combobox-editable-multi.demo';
-import { ComboboxEditableDemo } from './combobox-editable.demo';
-import { ComboboxGroupingDemo } from './combobox-grouping.demo';
-import { ComboboxIdentityFnDemo } from './combobox-identity-fn.demo';
-import { ComboboxMultiIdentityFnDemo } from './combobox-multi-identity-fn.demo';
-import { ComboboxMultiDemo } from './combobox-multi.demo';
-import { ComboboxSelectAllDemo } from './combobox-select-all.demo';
-import { ComboboxSingleDemo } from './combobox-single.demo';
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
+import { DocExampleComponent } from '../../../shared/doc-example/doc-example.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { LinkCardsComponent, LinkCardsLink } from '../../../shared/link-cards/link-cards.component';
@@ -41,15 +34,7 @@ import { formsPatternLink } from '../pattern-links';
     RouterLink,
     LinkCardsComponent,
     ThemedImageComponent,
-    ComboboxSingleDemo,
-    ComboboxMultiDemo,
-    ComboboxAsyncDemo,
-    ComboboxGroupingDemo,
-    ComboboxIdentityFnDemo,
-    ComboboxMultiIdentityFnDemo,
-    ComboboxSelectAllDemo,
-    ComboboxEditableDemo,
-    ComboboxEditableMultiDemo,
+    DocExampleComponent,
     StyleDocsComponent,
     NestingTableComponent,
     AiSkillComponent,
@@ -65,6 +50,7 @@ export class ComboboxDemo extends ClarityDocComponent {
     { component: 'List, Table', description: 'Maybe, check your design team for assistance' },
   ];
   readonly patternLinks: LinkCardsLink[] = [formsPatternLink];
+  readonly examples = COMBOBOX_EXAMPLES;
 
   constructor() {
     super('combobox');

@@ -164,7 +164,7 @@
       the option design. It can include images, text, html code.
     </p>
 
-    <clr-combobox-single-demo></clr-combobox-single-demo>
+    <app-doc-example [example]="examples.single"></app-doc-example>
 
     <h3 data-toc-item id="miltiple-selection" cds-text="section" class="clr-mt-32px">Multi Selection</h3>
 
@@ -176,7 +176,7 @@
       <code cds-text="code">*clrOptionSelected</code> structural directive, as seen in the example.
     </p>
 
-    <clr-combobox-multi-demo></clr-combobox-multi-demo>
+    <app-doc-example [example]="examples.multi"></app-doc-example>
 
     <h3 data-toc-item id="async-combobox" cds-text="section" class="clr-mt-32px">Asynchronous Selection</h3>
 
@@ -189,7 +189,7 @@
       be bound to a property that is active while your data fetching called is in progress.
     </p>
 
-    <clr-combobox-async-demo></clr-combobox-async-demo>
+    <app-doc-example [example]="examples.async"></app-doc-example>
 
     <h3 data-toc-item id="grouped-combobox" cds-text="section" class="clr-mt-32px">Grouping options</h3>
 
@@ -199,7 +199,7 @@
       label trough <code cds-text="code">[clrOptionGroupLabel]="name"</code> input.
     </p>
 
-    <clr-combobox-grouping-demo></clr-combobox-grouping-demo>
+    <app-doc-example [example]="examples.grouping"></app-doc-example>
 
     <h3 data-toc-item id="select-all-combobox" cds-text="section" class="clr-mt-32px">Select All</h3>
 
@@ -211,7 +211,7 @@
       keyboard by focusing the button with arrow keys and pressing Enter.
     </p>
 
-    <clr-combobox-select-all-demo></clr-combobox-select-all-demo>
+    <app-doc-example [example]="examples.selectAll"></app-doc-example>
 
     <h3 data-toc-item id="identity-fn-combobox" cds-text="section" class="clr-mt-32px">Identity Function</h3>
 
@@ -222,9 +222,9 @@
       unique IDs but may be different instances.
     </p>
 
-    <clr-combobox-identity-fn-demo></clr-combobox-identity-fn-demo>
+    <app-doc-example [example]="examples.identityFn"></app-doc-example>
 
-    <clr-combobox-multi-identity-fn-demo class="clr-mt-lg"></clr-combobox-multi-identity-fn-demo>
+    <app-doc-example previewClass="clr-mt-lg" [example]="examples.multiIdentityFn"></app-doc-example>
 
     <h3 data-toc-item id="editable-combobox" cds-text="section" class="clr-mt-32px">Editable Combobox</h3>
 
@@ -235,7 +235,7 @@
       <strong>Enter</strong> to add the typed text as a new value when no matching options are found.
     </p>
 
-    <clr-combobox-editable-demo></clr-combobox-editable-demo>
+    <app-doc-example [example]="examples.editable"></app-doc-example>
 
     <h3 data-toc-item id="editable-combobox-resolver" cds-text="section" class="clr-mt-32px">
       Editable Combobox with Resolver
@@ -249,7 +249,7 @@
       the resolver ensures that duplicate detection and selection comparison work correctly for user-entered values.
     </p>
 
-    <clr-combobox-editable-multi-demo></clr-combobox-editable-multi-demo>
+    <app-doc-example [example]="examples.editableMulti"></app-doc-example>
   </app-doc-tab>
 
   <app-doc-tab tab="api">

@@ -1,0 +1,22 @@
+{
+  "storybook": "components/forms/combobox",
+  "examples": [
+    { "id": "single", "title": "Single selection combobox", "targets": ["website", "demo", "storybook"] },
+    { "id": "multi", "title": "Multi selection combobox", "targets": ["website", "demo"] },
+    { "id": "async", "title": "Asynchronous combobox", "targets": ["website", "demo"] },
+    { "id": "grouping", "title": "Combobox with grouped options", "targets": ["website", "demo"] },
+    { "id": "select-all", "title": "Combobox with Select All", "targets": ["website", "demo"] },
+    { "id": "identity-fn", "title": "Combobox with an identity function", "targets": ["website", "demo", "storybook"] },
+    {
+      "id": "multi-identity-fn",
+      "title": "Multi selection combobox with an identity function",
+      "targets": ["website", "demo", "storybook"]
+    },
+    { "id": "editable", "title": "Editable combobox", "targets": ["website", "demo"] },
+    {
+      "id": "editable-multi",
+      "title": "Editable multi selection combobox with a resolver",
+      "targets": ["website", "demo"]
+    }
+  ]
+}

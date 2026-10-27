@@ -15,7 +15,7 @@
     [clrEditableResolverFn]="stateResolver"
     [clrComboboxIdentityFn]="identityFn"
   >
-    <ng-container *clrOptionSelected="let selected"> {{ selected?.name }} </ng-container>
+    <ng-container *clrOptionSelected="let selected">{{ selected?.name }}</ng-container>
     <clr-options>
       <clr-option *clrOptionItems="let state of states; field: 'name'" [clrValue]="state">
         {{ state.name }}
@@ -25,10 +25,3 @@
   </clr-combobox>
   <clr-control-helper>Pick from the list or type a custom state and press Enter</clr-control-helper>
 </clr-combobox-container>
-
-<app-stackblitz-example
-  name="editable multi-select combobox with resolver"
-  [componentTemplate]="basicHTML"
-  [componentClass]="basicComponent"
-  [additionalFiles]="additionalFiles"
-></app-stackblitz-example>

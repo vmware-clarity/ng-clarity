@@ -11,20 +11,10 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ClarityModule } from '@clr/angular';
 
-import { ComboboxAsyncDemo } from './combobox-async.demo';
-import { ComboboxEditableMultiDemo } from './combobox-editable-multi.demo';
-import { ComboboxEditableDemo } from './combobox-editable.demo';
-import { ComboboxGroupingDemo } from './combobox-grouping.demo';
-import { ComboboxIdentityFnDemo } from './combobox-identity-fn.demo';
-import { ComboboxMultiIdentityFnDemo } from './combobox-multi-identity-fn.demo';
-import { ComboboxMultiDemo } from './combobox-multi.demo';
-import { ComboboxSelectAllDemo } from './combobox-select-all.demo';
-import { ComboboxSingleDemo } from './combobox-single.demo';
 import { ComboboxDemo } from './combobox.demo';
 import { DocTabsModule } from '../../../shared/doc-tabs/doc-tabs.module';
 import { LinkCardsComponent } from '../../../shared/link-cards/link-cards.component';
 import { NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
-import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 import { StyleDocsComponent } from '../../../shared/style-docs/style-docs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
 
@@ -39,18 +29,8 @@ import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.
     NestingTableComponent,
     StyleDocsComponent,
     ThemedImageComponent,
-    StackblitzExampleComponent,
     LinkCardsComponent,
     ComboboxDemo,
-    ComboboxSingleDemo,
-    ComboboxMultiDemo,
-    ComboboxAsyncDemo,
-    ComboboxGroupingDemo,
-    ComboboxIdentityFnDemo,
-    ComboboxMultiIdentityFnDemo,
-    ComboboxSelectAllDemo,
-    ComboboxEditableDemo,
-    ComboboxEditableMultiDemo,
   ],
   exports: [ComboboxDemo],
 })
