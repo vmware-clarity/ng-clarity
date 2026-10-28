@@ -6,13 +6,13 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { DOCUMENT, ErrorHandler, inject, Inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, ErrorHandler, inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
 import { defer, EMPTY, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
 import { CLR_CONTEXT_LOADING_TYPE, ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
-import { attempt } from '../attempt';
+import { attempt, usableTimeout } from '../attempt';
 import { ClrContextChange, clrDiffContext } from '../diff';
 import { closestAcrossShadow, openShadowRoots } from '../dom/shadow';
 import { ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
@@ -22,14 +22,16 @@ import { serialize } from '../json-safe';
 export interface ClrContextTrackingOptions {
   /** Budgets applied to every snapshot the tracker takes. */
   snapshot?: ClrContextSnapshotOptions;
-  /** Milliseconds of quiet after the last DOM change before the page is scraped. Default `300`. */
+  /** Milliseconds of quiet after the last DOM change before the page is scraped. Default `300`, at least `10`. */
   debounceMs?: number;
-  /** Maximum delay between the first unprocessed change and the scrape. Default `2000`. */
+  /** Maximum delay between the first unprocessed change and the scrape. Default `2000`, at least `debounceMs`. */
   maxWaitMs?: number;
 }
 
 const DEFAULT_DEBOUNCE_MS = 300;
 const DEFAULT_MAX_WAIT_MS = 2000;
+/** A shorter quiet period, `0` or `NaN` included, would scrape on every mutation. */
+const MIN_DEBOUNCE_MS = 10;
 
 /**
  * Streams the page context, re-scraping after DOM, value and annotation changes. Each scrape waits for
@@ -68,13 +70,13 @@ export class ClrContextTrackerService implements OnDestroy {
   private sharedUsers = 0;
   private sharedStarted = false;
 
-  constructor(
-    @Inject(PLATFORM_ID) private readonly platformId: unknown,
-    @Inject(DOCUMENT) private readonly document: Document,
-    private readonly contextEngine: ClrContextEngineService,
-    private readonly contextRegistry: ClrContextRegistryService,
-    private readonly zone: NgZone
-  ) {
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly document = inject(DOCUMENT);
+  private readonly contextEngine = inject(ClrContextEngineService);
+  private readonly contextRegistry = inject(ClrContextRegistryService);
+  private readonly zone = inject(NgZone);
+
+  constructor() {
     // A completed ReplaySubject still replays: once destroyed, a new subscriber gets nothing.
     this.context$ = defer(() => (this.destroyed ? EMPTY : this.contextSubject.asObservable()));
     this.changes$ = this.changesSubject.asObservable();
@@ -232,10 +234,12 @@ export class ClrContextTrackerService implements OnDestroy {
       clearTimeout(this.quietTimer);
     }
     // An annotation change arrives inside the zone; scraping there would rerun change detection app-wide.
+    const debounceMs = Math.max(usableTimeout(this.trackingOptions.debounceMs, DEFAULT_DEBOUNCE_MS), MIN_DEBOUNCE_MS);
+    const maxWaitMs = Math.max(usableTimeout(this.trackingOptions.maxWaitMs, DEFAULT_MAX_WAIT_MS), debounceMs);
     this.zone.runOutsideAngular(() => {
-      this.quietTimer = setTimeout(() => this.scrape(), this.trackingOptions.debounceMs ?? DEFAULT_DEBOUNCE_MS);
+      this.quietTimer = setTimeout(() => this.scrape(), debounceMs);
       if (this.maxWaitTimer === null) {
-        this.maxWaitTimer = setTimeout(() => this.scrape(), this.trackingOptions.maxWaitMs ?? DEFAULT_MAX_WAIT_MS);
+        this.maxWaitTimer = setTimeout(() => this.scrape(), maxWaitMs);
       }
     });
   }

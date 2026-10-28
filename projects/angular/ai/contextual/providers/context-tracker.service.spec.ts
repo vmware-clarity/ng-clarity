@@ -161,6 +161,18 @@ describe('ClrContextTrackerService', () => {
     expect(widgetLabels(tracker.currentContext)).toContain('Chat widget');
   });
 
+  it('waits at least 10 ms, whatever pacing it is given', async () => {
+    tracker.start({ debounceMs: 0, maxWaitMs: NaN });
+    const countAfterStart = emitted.length;
+
+    addWidget('Chat widget');
+    await elapse(9);
+    expect(emitted.length).toBe(countAfterStart);
+
+    await elapse(1);
+    expect(emitted.length).toBe(countAfterStart + 1);
+  });
+
   it('coalesces a burst of changes into a single emission', async () => {
     tracker.start({ debounceMs: 150 });
     const countAfterStart = emitted.length;

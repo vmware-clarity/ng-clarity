@@ -86,6 +86,9 @@ export function accessibleText(
   return visible.trim() ? visible : textFor(element, exclude, true, withheld, withholds);
 }
 
+/** Embedded choice lists name by their chosen value, which is user input, so they add nothing to a name. */
+const CHOICE_LIST_SELECTOR = 'select, [role="listbox" i]';
+
 /** Script can nest deeper than the parser's 512; deeper content is dropped rather than overflow the stack. */
 export const MAX_NESTING_DEPTH = 512;
 
@@ -116,6 +119,7 @@ function textFor(
     if (
       SKIPPED_TAGS.has(child.tagName.toLowerCase()) ||
       child.matches(UNREADABLE_SELECTOR) ||
+      child.matches(CHOICE_LIST_SELECTOR) ||
       (withheld && child.matches(withheld)) ||
       withholds?.(child)
     ) {

@@ -36,6 +36,19 @@ export function accessibleName(element: Element, role: string | null, maxTextLen
     return truncate(native, maxTextLength);
   }
 
+  // Content names before `title`, as in HTML-AAM; the walk then reports a differing title as a description.
+  if (role && isNameFromContents(role)) {
+    const unread = MESSAGE_ROLES.has(role)
+      ? withheld
+        ? `${withheld}, ${ACTION_SELECTOR}`
+        : ACTION_SELECTOR
+      : withheld;
+    const text = truncate(accessibleText(element, undefined, unread), maxTextLength);
+    if (text) {
+      return text;
+    }
+  }
+
   const title = element.getAttribute('title');
   if (title?.trim()) {
     return truncate(title, maxTextLength);
@@ -48,15 +61,6 @@ export function accessibleName(element: Element, role: string | null, maxTextLen
   const placeholder = element.getAttribute('aria-placeholder') || element.getAttribute('placeholder');
   if (placeholder?.trim()) {
     return truncate(placeholder, maxTextLength);
-  }
-
-  if (role && isNameFromContents(role)) {
-    const unread = MESSAGE_ROLES.has(role)
-      ? withheld
-        ? `${withheld}, ${ACTION_SELECTOR}`
-        : ACTION_SELECTOR
-      : withheld;
-    return truncate(accessibleText(element, undefined, unread), maxTextLength);
   }
 
   return '';

@@ -49,4 +49,12 @@ describe('accessibleText', () => {
 
     expect(accessibleText(container, undefined, '', child => child.classList.contains('secret'))).toBe('3  up');
   });
+
+  it('reads no option of an embedded choice list', () => {
+    container.innerHTML =
+      'Flash the screen <select><option>1</option><option>3</option></select>' +
+      '<div role="listbox"><div role="option">5</div></div> times';
+
+    expect(accessibleText(container).replace(/\s+/g, ' ')).toBe('Flash the screen times');
+  });
 });

@@ -1002,7 +1002,7 @@ describe('ClrContextEngineService, asynchronous providers', () => {
   it('reports a provider that does not answer in time as unavailable', async () => {
     registry.register({ getClrContext: () => new Promise<null>(() => undefined) });
 
-    const snapshot = await engine.getSnapshotAsync(quiet, 10);
+    const snapshot = await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
 
     expect(snapshot.regions).toEqual([{ type: 'clr-unavailable' }]);
   });
@@ -1034,8 +1034,8 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     const getClrContext = jasmine.createSpy('getClrContext').and.returnValue(new Promise<null>(() => undefined));
     registry.register({ getClrContext });
 
-    await engine.getSnapshotAsync(quiet, 10);
-    await engine.getSnapshotAsync(quiet, 10);
+    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
 
     expect(getClrContext).toHaveBeenCalledTimes(2);
   });
@@ -1135,7 +1135,7 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     });
 
     for (const timeoutMs of [Infinity, NaN, 2 ** 40]) {
-      expect((await engine.getSnapshotAsync(quiet, timeoutMs)).regions)
+      expect((await engine.getSnapshotAsync({ ...quiet, timeoutMs })).regions)
         .withContext(String(timeoutMs))
         .toEqual([{ type: 'region', label: 'late' }]);
     }

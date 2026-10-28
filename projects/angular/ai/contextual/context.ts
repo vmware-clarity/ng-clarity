@@ -31,8 +31,7 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
 
   private lastReported = '';
   private readonly host: ElementRef<Element> | null = inject(ElementRef, { optional: true });
-
-  constructor(private readonly contextRegistry: ClrContextRegistryService) {}
+  private readonly contextRegistry = inject(ClrContextRegistryService);
 
   ngOnInit(): void {
     this.lastReported = this.serialized();

@@ -5,10 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ClrComponentContext } from '@clr/angular/utils';
+import { ClrComponentContext, ClrContextSnapshotOptions } from '@clr/angular/utils';
 
 /** Re-exported from `@clr/angular/utils`, so components can publish without depending on this entry point. */
 export type { ClrComponentContext, ClrContextCategory, ClrContextSnapshotOptions } from '@clr/angular/utils';
+
+/** Options for `getSnapshotAsync`: the snapshot's, and how long to wait for each asynchronous provider. */
+export interface ClrContextAsyncSnapshotOptions extends ClrContextSnapshotOptions {
+  /** Milliseconds to wait for each asynchronous provider. Default `2000`. */
+  timeoutMs?: number;
+}
 
 /** The active route, when the application uses the Angular router. */
 export interface ClrRouteContext {

@@ -6,7 +6,7 @@
  */
 
 import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
-import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
 
@@ -20,6 +20,7 @@ import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../do
 import {
   ClrApplicationContext,
   ClrComponentContext,
+  ClrContextAsyncSnapshotOptions,
   ClrContextSnapshotOptions,
   ClrPageContext,
   ClrRouteContext,
@@ -56,14 +57,11 @@ export class ClrContextEngineService implements OnDestroy {
   private readonly applicationOptions = inject(CLR_CONTEXT_OPTIONS, { optional: true });
   private readonly application = inject(CLR_CONTEXT_APPLICATION, { optional: true });
   private readonly locationStrategy = inject(LocationStrategy, { optional: true });
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly document = inject(DOCUMENT);
+  private readonly contextRegistry = inject(ClrContextRegistryService);
+  private readonly router = inject(Router, { optional: true });
   private globalProperty: string | null = null;
-
-  constructor(
-    @Inject(PLATFORM_ID) private readonly platformId: unknown,
-    @Inject(DOCUMENT) private readonly document: Document,
-    private readonly contextRegistry: ClrContextRegistryService,
-    @Optional() private readonly router: Router | null
-  ) {}
 
   ngOnDestroy(): void {
     this.disableGlobalAccess();
@@ -83,10 +81,8 @@ export class ClrContextEngineService implements OnDestroy {
    * Like {@link getSnapshot}, awaiting asynchronous providers for up to `timeoutMs` each (2 seconds by
    * default). When the view changes while they answer, the new view is snapshotted instead.
    */
-  async getSnapshotAsync(
-    options?: ClrContextSnapshotOptions,
-    timeoutMs = DEFAULT_SOURCE_TIMEOUT_MS
-  ): Promise<ClrPageContext> {
+  async getSnapshotAsync(asyncOptions?: ClrContextAsyncSnapshotOptions): Promise<ClrPageContext> {
+    const { timeoutMs, ...options } = asyncOptions ?? {};
     const snapshot = this.viewSnapshot();
     if (snapshot.enabled === false) {
       return snapshot;

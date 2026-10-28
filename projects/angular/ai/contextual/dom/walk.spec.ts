@@ -44,6 +44,13 @@ function types(nodes: ClrComponentContext[] | undefined): string[] {
 describe('collectContextTree', () => {
   useContainer();
 
+  it('reports a title that differs from the name as a description', () => {
+    expect(collect('<button title="Close dialog">Cancel</button>')).toEqual([
+      { type: 'button', label: 'Cancel', state: { description: 'Close dialog' } },
+    ]);
+    expect(collect('<button title="Close dialog"></button>')).toEqual([{ type: 'button', label: 'Close dialog' }]);
+  });
+
   it('describes an element by its ARIA role', () => {
     const [node] = collect('<div role="dialog" aria-label="Add rule"></div>');
     expect(node.type).toBe('dialog');
@@ -988,6 +995,12 @@ describe('collectContextTree, choosing what to collect', () => {
     const two = collectTree(PAGE, { maxDepth: 2 }).components;
     expect(types(two[1].children)).toEqual(['heading', 'text', 'form']);
     expect(two[1].children?.[2].children).toBeUndefined();
+  });
+
+  it('marks a snapshot cut at the depth limit as truncated', () => {
+    expect(collectTree(PAGE, { maxDepth: 2 }).truncated).toBe(true);
+    expect(collectTree(PAGE, { maxDepth: 20 }).truncated).toBe(false);
+    expect(collectTree('<main><div><div></div></div></main>', { maxDepth: 1 }).truncated).toBe(false);
   });
 
   it('describes only the open modal dialog under modal focus', () => {

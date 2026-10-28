@@ -275,11 +275,12 @@ function describeScope(root: ParentNode, roots: Element[] | null, walk: Walk): C
 }
 
 /** Probes the leftovers with a budget of one: the snapshot is only truncated if they would produce a node. */
-function noteUndescribed(element: Element, walk: Walk, owner: Element | null): void {
+function noteUndescribed(element: Element, walk: Walk, owner: Element | null, pastDepth = false): void {
   if (walk.probing || walk.truncated) {
     return;
   }
-  const probe: Walk = { ...walk, remaining: 1, truncated: false, probing: true };
+  const options = pastDepth ? { ...walk.options, maxDepth: 0 } : walk.options;
+  const probe: Walk = { ...walk, options, remaining: 1, truncated: false, probing: true };
   if (describeElement(element, probe, owner).length) {
     walk.truncated = true;
   }
@@ -470,6 +471,10 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   // Summarising collections keeps a ten-thousand-row grid from producing ten thousand nodes.
   const summary = attempt(() => summarizeRole(element, role, walk.options, walk.excludeSelector), null);
   const state = { ...ariaState(element, walk.options, redacted, walk.excludeSelector), ...summary };
+  const title = element.getAttribute('title')?.trim();
+  if (title && !redacted && !state['description'] && title !== label) {
+    state['description'] = truncate(title, walk.options.maxTextLength);
+  }
   if (Object.keys(state).length) {
     node.state = state;
   }
@@ -717,6 +722,11 @@ function describeNested(
 ): ClrComponentContext[] {
   const { maxDepth } = walk.options;
   if (maxDepth > 0 && walk.depth + 1 >= maxDepth) {
+    for (const child of renderedChildNodes(parent)) {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        noteUndescribed(child as Element, walk, owner, true);
+      }
+    }
     return [];
   }
   return within(walk, ['depth'], () => describeChildren(parent, walk, owner, looseText));
