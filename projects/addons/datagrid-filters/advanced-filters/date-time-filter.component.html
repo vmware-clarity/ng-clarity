@@ -25,13 +25,11 @@
   @if (!noDateTimeInputNeeded()) {
     <div class="flex-container">
       <clr-input-container>
-        <ng-container ngProjectAs="label">
-          @if (isCustomRangePredicate) {
-            <label class="clr-control-label">
-              {{ filterStrings.fromLabel }}
-            </label>
-          }
-        </ng-container>
+        @if (isCustomRangePredicate) {
+          <label class="clr-control-label">
+            {{ filterStrings.fromLabel }}
+          </label>
+        }
         <input
           type="date"
           pattern="^[0-9]{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$"

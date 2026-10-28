@@ -95,104 +95,102 @@
         ></appfx-dg-filter-container>
       </clr-dg-filter>
       {{ column.displayName }}
-      <ng-container ngProjectAs="clr-dg-column-actions">
-        @if (enableColumnActions) {
-          <!--
+      @if (enableColumnActions) {
+        <!--
           clrDgKeepFilterInHeader keeps the existing filter toggle in the header rather than moving
           it into this menu - appfx-datagrid already shipped that toggle, and existing consumers and
           tests expect it to stay there. The menu gives up its own filter action in exchange, so a
           column offers one way to reach its filter rather than two.
         -->
-          <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
-            @if (column.sortComparator || column.sortAndFilterByField || column.pinnable) {
-              <div class="dropdown-divider" role="separator"></div>
-            }
-            <button
-              type="button"
-              clrDgColumnAction
-              [clrCanClosePopover]="false"
-              [appfxColumnMoveAction]="ColumnMoveDirection.Left"
-              #moveLeft="appfxColumnMoveAction"
-              [columnIndex]="index"
-              [clrDisabled]="moveLeft.disabled"
-            >
-              <cds-icon shape="angle" direction="left" aria-hidden="true"></cds-icon>
-              {{ dgStrings.moveColumnLeft }}
-            </button>
-            <button
-              type="button"
-              clrDgColumnAction
-              [clrCanClosePopover]="false"
-              [appfxColumnMoveAction]="ColumnMoveDirection.Right"
-              #moveRight="appfxColumnMoveAction"
-              [columnIndex]="index"
-              [clrDisabled]="moveRight.disabled"
-            >
-              <cds-icon shape="angle" direction="right" aria-hidden="true"></cds-icon>
-              {{ dgStrings.moveColumnRight }}
-            </button>
-            @let customColumnActions = getColumnActions(column);
-            @if (customColumnActions.length) {
-              <div class="dropdown-divider" role="separator"></div>
-              <!--
+        <clr-dg-column-actions [clrDgKeepFilterInHeader]="true">
+          @if (column.sortComparator || column.sortAndFilterByField || column.pinnable) {
+            <div class="dropdown-divider" role="separator"></div>
+          }
+          <button
+            type="button"
+            clrDgColumnAction
+            [clrCanClosePopover]="false"
+            [appfxColumnMoveAction]="ColumnMoveDirection.Left"
+            #moveLeft="appfxColumnMoveAction"
+            [columnIndex]="index"
+            [clrDisabled]="moveLeft.disabled"
+          >
+            <cds-icon shape="angle" direction="left" aria-hidden="true"></cds-icon>
+            {{ dgStrings.moveColumnLeft }}
+          </button>
+          <button
+            type="button"
+            clrDgColumnAction
+            [clrCanClosePopover]="false"
+            [appfxColumnMoveAction]="ColumnMoveDirection.Right"
+            #moveRight="appfxColumnMoveAction"
+            [columnIndex]="index"
+            [clrDisabled]="moveRight.disabled"
+          >
+            <cds-icon shape="angle" direction="right" aria-hidden="true"></cds-icon>
+            {{ dgStrings.moveColumnRight }}
+          </button>
+          @let customColumnActions = getColumnActions(column);
+          @if (customColumnActions.length) {
+            <div class="dropdown-divider" role="separator"></div>
+            <!--
               Application actions come last, so the built-in ones keep the same place in every menu
               whatever a column adds. clrCanClosePopover is left at its default, so these close the
               menu on click - unlike the move actions, they are not expected to be repeated.
             -->
-              @for (action of customColumnActions; track action) {
-                <!-- An action with children opens them as a nested menu, the same as in the action bar. -->
-                @if (action.children) {
-                  <clr-dropdown>
-                    <button
-                      type="button"
-                      clrDropdownTrigger
-                      [disabled]="!action.enabled"
-                      [attr.aria-label]="action.ariaLabel"
-                      [attr.title]="action.tooltip"
-                    >
-                      @if (action.icon) {
-                        <cds-icon [shape]="action.icon" aria-hidden="true"></cds-icon>
-                      }
-                      {{ action.label }}
-                    </button>
-                    <clr-dropdown-menu *clrIfOpen>
-                      @for (childAction of action.children; track childAction) {
-                        <button
-                          type="button"
-                          clrDropdownItem
-                          [clrDisabled]="!childAction.enabled"
-                          [attr.aria-label]="childAction.ariaLabel"
-                          [attr.title]="childAction.tooltip"
-                          (click)="onColumnActionClick(childAction, column)"
-                        >
-                          @if (childAction.icon) {
-                            <cds-icon [shape]="childAction.icon" aria-hidden="true"></cds-icon>
-                          }
-                          {{ childAction.label }}
-                        </button>
-                      }
-                    </clr-dropdown-menu>
-                  </clr-dropdown>
-                } @else {
+            @for (action of customColumnActions; track action) {
+              <!-- An action with children opens them as a nested menu, the same as in the action bar. -->
+              @if (action.children) {
+                <clr-dropdown>
                   <button
                     type="button"
-                    clrDgColumnAction
-                    [clrDisabled]="!action.enabled"
+                    clrDropdownTrigger
+                    [disabled]="!action.enabled"
                     [attr.aria-label]="action.ariaLabel"
                     [attr.title]="action.tooltip"
-                    (click)="onColumnActionClick(action, column)"
                   >
                     @if (action.icon) {
                       <cds-icon [shape]="action.icon" aria-hidden="true"></cds-icon>
                     }
                     {{ action.label }}
                   </button>
-                }
+                  <clr-dropdown-menu *clrIfOpen>
+                    @for (childAction of action.children; track childAction) {
+                      <button
+                        type="button"
+                        clrDropdownItem
+                        [clrDisabled]="!childAction.enabled"
+                        [attr.aria-label]="childAction.ariaLabel"
+                        [attr.title]="childAction.tooltip"
+                        (click)="onColumnActionClick(childAction, column)"
+                      >
+                        @if (childAction.icon) {
+                          <cds-icon [shape]="childAction.icon" aria-hidden="true"></cds-icon>
+                        }
+                        {{ childAction.label }}
+                      </button>
+                    }
+                  </clr-dropdown-menu>
+                </clr-dropdown>
+              } @else {
+                <button
+                  type="button"
+                  clrDgColumnAction
+                  [clrDisabled]="!action.enabled"
+                  [attr.aria-label]="action.ariaLabel"
+                  [attr.title]="action.tooltip"
+                  (click)="onColumnActionClick(action, column)"
+                >
+                  @if (action.icon) {
+                    <cds-icon [shape]="action.icon" aria-hidden="true"></cds-icon>
+                  }
+                  {{ action.label }}
+                </button>
               }
             }
-          </clr-dg-column-actions>
-        }
-      </ng-container>
+          }
+        </clr-dg-column-actions>
+      }
     </clr-dg-column>
   }
   <clr-dg-placeholder>
@@ -224,20 +222,16 @@
         (contextmenu)="onContextMenu($event, item)"
         [clrDgSkeletonLoading]="!item"
       >
-        <ng-container ngProjectAs="clr-dg-cell">
-          @if (dragConfig) {
-            <clr-dg-cell class="draggableCell" style="width: 20px">
-              <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
-            </clr-dg-cell>
-          }
-        </ng-container>
-        <ng-container ngProjectAs="clr-dg-cell">
-          @for (column of visibleColumns; track column) {
-            <clr-dg-cell class="fixed-cell-height">
-              <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
-            </clr-dg-cell>
-          }
-        </ng-container>
+        @if (dragConfig) {
+          <clr-dg-cell class="draggableCell" style="width: 20px">
+            <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+          </clr-dg-cell>
+        }
+        @for (column of visibleColumns; track column) {
+          <clr-dg-cell class="fixed-cell-height">
+            <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+          </clr-dg-cell>
+        }
       </clr-dg-row>
     </ng-template>
   }
@@ -271,20 +265,16 @@
           }
         </clr-dg-action-overflow>
 
-        <ng-container ngProjectAs="clr-dg-cell">
-          @if (dragConfig) {
-            <clr-dg-cell class="draggableCell" style="width: 20px">
-              <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
-            </clr-dg-cell>
-          }
-        </ng-container>
-        <ng-container ngProjectAs="clr-dg-cell">
-          @for (column of visibleColumns; track column) {
-            <clr-dg-cell>
-              <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
-            </clr-dg-cell>
-          }
-        </ng-container>
+        @if (dragConfig) {
+          <clr-dg-cell class="draggableCell" style="width: 20px">
+            <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+          </clr-dg-cell>
+        }
+        @for (column of visibleColumns; track column) {
+          <clr-dg-cell>
+            <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+          </clr-dg-cell>
+        }
 
         <ng-container *ngIf="rowDetailContent" ngProjectAs="clr-dg-row-detail">
           @if ({ id: buildRowDetailContentId(i) }; as detailData) {
@@ -332,20 +322,16 @@
         }
       </clr-dg-action-overflow>
 
-      <ng-container ngProjectAs="clr-dg-cell">
-        @if (dragConfig) {
-          <clr-dg-cell class="draggableCell">
-            <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
-          </clr-dg-cell>
-        }
-      </ng-container>
-      <ng-container ngProjectAs="clr-dg-cell">
-        @for (column of visibleColumns; track column) {
-          <clr-dg-cell>
-            <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
-          </clr-dg-cell>
-        }
-      </ng-container>
+      @if (dragConfig) {
+        <clr-dg-cell class="draggableCell">
+          <ng-container *ngTemplateOutlet="draggableCell; context: { $implicit: item }"> </ng-container>
+        </clr-dg-cell>
+      }
+      @for (column of visibleColumns; track column) {
+        <clr-dg-cell>
+          <appfx-dg-cell-container [column]="column" [item]="item"></appfx-dg-cell-container>
+        </clr-dg-cell>
+      }
 
       <ng-container *ngIf="$any(item).rowDetailRenderer" ngProjectAs="clr-dg-row-detail">
         @if ({ id: buildRowDetailContentId(i) }; as detailData) {
@@ -467,13 +453,11 @@
 
     <ng-container *ngIf="pageSize > 0; else missingPageConfig" ngProjectAs="clr-dg-pagination">
       <clr-dg-pagination #pagination [clrDgPageSize]="pageSize" [clrDgTotalItems]="totalItems">
-        <ng-container ngProjectAs="clr-dg-page-size">
-          @if (pageSizeOptions?.length) {
-            <clr-dg-page-size #clrDgPageSize [clrPageSizeOptions]="pageSizeOptions">
-              <label [for]="clrDgPageSize.pageSizeOptionsId"> {{ dgStrings.itemsPerPage }} </label>
-            </clr-dg-page-size>
-          }
-        </ng-container>
+        @if (pageSizeOptions?.length) {
+          <clr-dg-page-size #clrDgPageSize [clrPageSizeOptions]="pageSizeOptions">
+            <label [for]="clrDgPageSize.pageSizeOptionsId"> {{ dgStrings.itemsPerPage }} </label>
+          </clr-dg-page-size>
+        }
         {{
           getFooterMessage(
             pagination.totalItems,
