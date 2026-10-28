@@ -74,11 +74,16 @@ function isClipped(element: Element, style: CSSStyleDeclaration): boolean {
 
 /**
  * An element's text as read for a name, without hidden content; sr-only text counts only when it is all there is.
- * `withheld` selects descendants whose text is never read.
+ * `withheld` selects descendants whose text is never read, and `withholds` picks more of them.
  */
-export function accessibleText(element: Element, exclude?: Element, withheld = ''): string {
-  const visible = textFor(element, exclude, false, withheld);
-  return visible.trim() ? visible : textFor(element, exclude, true, withheld);
+export function accessibleText(
+  element: Element,
+  exclude?: Element,
+  withheld = '',
+  withholds?: (child: Element) => boolean
+): string {
+  const visible = textFor(element, exclude, false, withheld, withholds);
+  return visible.trim() ? visible : textFor(element, exclude, true, withheld, withholds);
 }
 
 /** Script can nest deeper than the parser's 512; deeper content is dropped rather than overflow the stack. */
@@ -89,6 +94,7 @@ function textFor(
   exclude: Element | undefined,
   includeClipped: boolean,
   withheld: string,
+  withholds: ((child: Element) => boolean) | undefined,
   depth = 0,
   embedding = true
 ): string {
@@ -110,19 +116,21 @@ function textFor(
     if (
       SKIPPED_TAGS.has(child.tagName.toLowerCase()) ||
       child.matches(UNREADABLE_SELECTOR) ||
-      (withheld && child.matches(withheld))
+      (withheld && child.matches(withheld)) ||
+      withholds?.(child)
     ) {
+      continue;
+    }
+    // Judged before reading, so a hidden subtree is never walked.
+    const style = computedStyle(child);
+    if (isExcludedFromName(child, style, includeClipped)) {
       continue;
     }
     const embeds = embedding && !child.matches(ACTION_SELECTOR);
     const inner =
       (embeds ? embeddedName(child, withheld) : null) ??
-      textFor(child, exclude, includeClipped, withheld, depth + 1, embeds);
+      textFor(child, exclude, includeClipped, withheld, withholds, depth + 1, embeds);
     if (!inner.trim()) {
-      continue;
-    }
-    const style = computedStyle(child);
-    if (isExcludedFromName(child, style, includeClipped)) {
       continue;
     }
     // Block-level content reads as separate words.
@@ -193,6 +201,6 @@ function textOfReferences(scope: IdScope, ids: string[], withheld: string, skip:
   );
 }
 
-export function isUnrendered(element: Element): boolean {
-  return !!closestAcrossShadow(element, '[hidden]') || !isVisible(element);
+export function isUnrendered(element: Element, judgeOpacity = true): boolean {
+  return !!closestAcrossShadow(element, '[hidden]') || !isVisible(element, judgeOpacity);
 }

@@ -52,6 +52,7 @@ import { NAMING_TAGS, PHRASING_TAGS, SKIPPED_TAGS } from './tables/tags';
 import { accessibleText, isVisuallyHidden, MAX_NESTING_DEPTH, truncate } from './text';
 import { hidesFromContext, isHiddenFromContext, isVisible } from './visibility';
 import { attempt } from '../attempt';
+import { charged } from '../budget';
 import { stripQueryAndFragment } from '../url';
 
 /**
@@ -452,7 +453,10 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
 
   const fallbackLabel =
     !role && !label && isCustomElement && !redacted
-      ? truncate(accessibleText(element, undefined, withheldText(walk)), walk.options.maxTextLength)
+      ? truncate(
+          accessibleText(element, undefined, walk.excludeSelector, child => isExcludedRole(child, walk)),
+          walk.options.maxTextLength
+        )
       : label;
 
   const node: ClrComponentContext = { type: role ?? 'group' };
@@ -825,6 +829,10 @@ function finish(
     walk.remaining++;
     return null;
   }
+  // Published children are not walked, so they are charged to the budget here.
+  if (described.children && (foreign || described.children !== node.children)) {
+    described = { ...described, children: charged(described.children, walk, walk.excludeRoles) };
+  }
   const unpruned = foreign || described !== node;
 
   if (redacted || described.state?.['redacted'] === true) {
@@ -834,9 +842,10 @@ function finish(
   return pruneEmpty(described, { foreign: unpruned });
 }
 
-/** What a label read from content must leave out: excluded selectors and excluded roles. */
-function withheldText(walk: Walk): string {
-  return [walk.excludeSelector, walk.excludeRoleCandidates].filter(Boolean).join(', ');
+/** Whether a label read from content leaves the element out: only its resolved role counts, not any `role`. */
+function isExcludedRole(element: Element, walk: Walk): boolean {
+  const role = walk.excludeRoles.size ? resolveRole(element) : null;
+  return !!role && walk.excludeRoles.has(role);
 }
 
 function listOf(node: ClrComponentContext | null): ClrComponentContext[] {

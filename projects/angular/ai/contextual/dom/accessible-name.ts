@@ -115,7 +115,8 @@ function readableNameSource(source: Element, named: Element, withheld: string): 
   return (
     !isHiddenFromContext(source, withheld) &&
     !source.closest(CLR_CONTEXT_EDITING_HOST_SELECTOR) &&
-    !isUnrendered(source) &&
+    // Like the control it names, a transparent label is still read by assistive technology.
+    !isUnrendered(source, false) &&
     !source.matches(CLR_CONTEXT_REDACT_SELECTOR) &&
     !isRedactedWithin(source, named)
   );

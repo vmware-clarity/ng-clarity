@@ -529,6 +529,25 @@ describe('collectContextTree, what a summary must not hide', () => {
     expect(widget.children?.[1].state).toBeUndefined();
   });
 
+  it('charges published children to the component budget, leaving out excluded types', () => {
+    const tree = (depth: number): ClrComponentContext[] =>
+      Array.from({ length: 25 }, (_, index) => ({
+        type: index === 0 ? 'table' : 'row',
+        label: `Row ${index}`,
+        children: depth > 1 ? tree(depth - 1) : undefined,
+      }));
+    container.innerHTML = '<my-tree aria-label="Tree"></my-tree>';
+    publishElementContext(container.querySelector('my-tree') as Element, () => ({ type: 'tree', children: tree(3) }));
+
+    const result = collectContextTreeWithin(container, budgets({ maxComponents: 5, excludeRoles: ['table'] }));
+    const count = (nodes: ClrComponentContext[] = []): number =>
+      nodes.reduce((total, node) => total + 1 + count(node.children), 0);
+
+    expect(result.truncated).toBeTrue();
+    expect(count(result.components)).toBe(5);
+    expect(JSON.stringify(result.components)).not.toContain('"table"');
+  });
+
   it('leaves out what a component fails to publish, and says so on the console in development', () => {
     const warn = spyOn(console, 'warn');
     container.innerHTML = '<my-widget aria-label="Widget"><button>Go</button></my-widget>';
@@ -571,6 +590,23 @@ describe('collectContextTree, what a summary must not hide', () => {
   it('skips content hidden with visibility rather than display', () => {
     expect(collect('<div role="tooltip" style="visibility: hidden">hint</div>')).toEqual([]);
     expect(collect('<div role="tooltip" style="opacity: 0">hint</div>')).toEqual([]);
+  });
+
+  it('reports transparent controls, which assistive technology still reaches', () => {
+    const nodes = collect(
+      `<div class="btn-group" role="group" aria-label="View">
+         <input type="radio" id="grid" name="view" checked style="opacity: 0" /><label for="grid">Grid</label>
+         <input type="checkbox" id="wrap" style="opacity: 0" /><label for="wrap">Wrap</label>
+       </div>
+       <div class="actions" style="opacity: 0"><button>Edit row</button></div>`
+    );
+    const group = nodes.find(node => node.type === 'group');
+
+    expect(group?.children?.map(node => [node.type, node.label, node.state?.['checked']])).toEqual([
+      ['radio', 'Grid', true],
+      ['checkbox', 'Wrap', false],
+    ]);
+    expect(nodes.find(node => node.label === 'Edit row')?.type).toBe('button');
   });
 
   it('skips an inert subtree, which a user cannot reach', () => {
@@ -1605,6 +1641,25 @@ describe('collectContextTree, open shadow roots', () => {
       const nodes = collectContextTreeWithin(container, budgets({ excludeRoles: ['table'] })).components;
 
       expect(JSON.stringify(nodes)).not.toContain('alice@corp');
+    });
+
+    it('keeps role-bearing text in a fallback label when only other roles are excluded', () => {
+      container.innerHTML = '<my-badge>3 <span role="presentation">hosts</span> up</my-badge>';
+
+      for (const excludeRoles of [['button'], ['link']]) {
+        const nodes = all(collectContextTreeWithin(container, budgets({ excludeRoles })).components);
+
+        expect(nodes.map(node => node.label)).toContain('3 hosts up');
+      }
+    });
+
+    it('leaves only the excluded role out of a fallback label', () => {
+      inShadowOf('host-summary', '<table><tr><td>alice@corp</td></tr></table><span role="note">3 hosts up</span>');
+
+      const nodes = collectContextTreeWithin(container, budgets({ excludeRoles: ['table'] })).components;
+
+      expect(JSON.stringify(nodes)).not.toContain('alice@corp');
+      expect(all(nodes).map(node => node.label)).toContain('3 hosts up');
     });
 
     it('hides the shadow content of an excluded host', () => {

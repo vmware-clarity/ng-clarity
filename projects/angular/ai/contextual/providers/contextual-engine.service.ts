@@ -13,6 +13,7 @@ import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils
 import { CLR_CONTEXT_APPLICATION, CLR_CONTEXT_OPTIONS } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
 import { attempt, usableTimeout } from '../attempt';
+import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { closestAcrossShadow, containsAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
@@ -75,7 +76,7 @@ export class ClrContextEngineService implements OnDestroy {
       return snapshot;
     }
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
-    return this.describePage(snapshot, resolved, this.contextRegistry.collect(this.regionFilter(resolved)));
+    return this.describePage(snapshot, resolved, this.contextRegistry.collect(this.regionFilter(resolved), resolved));
   }
 
   /**
@@ -95,9 +96,10 @@ export class ClrContextEngineService implements OnDestroy {
     const regions = this.contextRegistry.collectAsync({
       filter: this.regionFilter(resolved),
       timeoutMs: usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
+      limits: resolved,
     });
     this.describePage(snapshot, resolved, []);
-    snapshot.regions = await regions;
+    setRegions(snapshot, await regions, resolved);
     const now = this.viewSnapshot();
     return now.viewId === snapshot.viewId && now.enabled === snapshot.enabled ? snapshot : this.getSnapshot(options);
   }
@@ -203,7 +205,7 @@ export class ClrContextEngineService implements OnDestroy {
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
-    snapshot.regions = regions;
+    setRegions(snapshot, regions, resolved);
     if (resolved.includeRoutes && this.router?.config.length) {
       const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
@@ -355,4 +357,17 @@ export class ClrContextEngineService implements OnDestroy {
 /** Whether only enabled views are read; an unrecognised `views` value reads only those, failing closed. */
 function readsEnabledViewsOnly(views: string | undefined): boolean {
   return views !== undefined && views !== 'all';
+}
+
+/** Regions are not walked, so they get a component budget of their own. */
+function setRegions(
+  snapshot: ClrPageContext,
+  regions: ClrComponentContext[],
+  options: Required<ClrContextSnapshotOptions>
+): void {
+  const budget = { remaining: options.maxComponents, truncated: false };
+  snapshot.regions = charged(regions, budget);
+  if (budget.truncated) {
+    snapshot.truncated = true;
+  }
 }

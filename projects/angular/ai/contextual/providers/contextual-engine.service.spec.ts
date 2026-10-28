@@ -1007,6 +1007,62 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     expect(snapshot.regions).toEqual([{ type: 'clr-unavailable' }]);
   });
 
+  it('holds what providers report to the snapshot budgets', () => {
+    const rows = Array.from({ length: 5000 }, (_, index) => ({ type: 'row', label: `${index} ${'x'.repeat(2000)}` }));
+    registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts', children: rows }) });
+
+    const snapshot = engine.getSnapshot({ ...quiet, maxComponents: 20, maxItemsPerCollection: 100, maxTextLength: 50 });
+
+    expect(snapshot.truncated).toBeTrue();
+    expect(snapshot.regions[0].children?.length).toBe(19);
+    expect(snapshot.regions[0].children?.[0].label?.length).toBeLessThanOrEqual(50);
+    expect(JSON.stringify(snapshot).length).toBeLessThan(5000);
+  });
+
+  it('stops at a cycle in what a provider reports', () => {
+    const region: Record<string, unknown> = { type: 'region', label: 'Hosts', state: { count: 1 } };
+    (region['state'] as Record<string, unknown>)['parent'] = region;
+    region['children'] = [{ type: 'row', label: 'esx-01', state: { owner: region } }];
+    registry.register({ getClrContext: () => region as unknown as ClrComponentContext });
+
+    expect(engine.getSnapshot(quiet).regions).toEqual([
+      { type: 'region', label: 'Hosts', state: { count: 1 }, children: [{ type: 'row', label: 'esx-01' }] },
+    ]);
+  });
+
+  it('asks again a provider whose answer did not arrive in time', async () => {
+    const getClrContext = jasmine.createSpy('getClrContext').and.returnValue(new Promise<null>(() => undefined));
+    registry.register({ getClrContext });
+
+    await engine.getSnapshotAsync(quiet, 10);
+    await engine.getSnapshotAsync(quiet, 10);
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
+  });
+
+  it('asks again a provider that rejected', async () => {
+    const getClrContext = jasmine.createSpy('getClrContext').and.callFake(() => Promise.reject(new Error('down')));
+    registry.register({ getClrContext });
+
+    await engine.getSnapshotAsync(quiet);
+    await engine.getSnapshotAsync(quiet);
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
+  });
+
+  it('forgets a pending answer when its provider is unregistered', () => {
+    const getClrContext = jasmine.createSpy('getClrContext').and.returnValue(new Promise<null>(() => undefined));
+    const provider = { getClrContext };
+    registry.register(provider);
+    engine.getSnapshot(quiet);
+
+    registry.unregister(provider);
+    registry.register(provider);
+    engine.getSnapshot(quiet);
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
+  });
+
   it('reports a provider that rejects as unavailable, like one that does not answer in time', async () => {
     registry.register({ getClrContext: () => Promise.reject(new Error('offline')) });
 
