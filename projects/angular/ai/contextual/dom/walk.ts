@@ -13,6 +13,7 @@ import {
   CLR_ELEMENT_CONTEXT_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
+  ClrPublishedContext,
   usableSelectors,
 } from '@clr/angular/utils';
 
@@ -57,13 +58,13 @@ import { stripQueryAndFragment } from '../url';
 
 /**
  * Describes markup that has neither a role nor an accessible name, such as a bare `<div class="card">`.
- * State under the keys listed on `ClrElementContextCallback` is withheld from untrusted consumers.
+ * Untrusted consumers see only the state keys it lists in `publicKeys`.
  */
 export interface ClrContextDomExtractor {
   /** CSS selector matching the elements this extractor understands. */
   selector: string;
   /** Describes the element's current state, or returns `null` when there is nothing to report. */
-  extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
+  extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrPublishedContext | null;
 }
 
 /** Caps the elements one walk reads, so a page of empty wrappers is not read end to end. */
@@ -71,6 +72,8 @@ const MAX_ELEMENTS_VISITED = 25_000;
 
 interface Walk {
   readonly options: Required<ClrContextSnapshotOptions>;
+  /** For a caller the application does not control: published state is cut to the keys marked public. */
+  readonly untrusted: boolean;
   readonly extractors: ClrContextDomExtractor[];
   readonly excludeRoles: ReadonlySet<string>;
   readonly excludeRoleCandidates: string;
@@ -105,11 +108,13 @@ export interface ClrContextTreeResult {
 export function collectContextTreeWithin(
   root: ParentNode,
   options: Required<ClrContextSnapshotOptions>,
-  extractors: ClrContextDomExtractor[] = []
+  extractors: ClrContextDomExtractor[] = [],
+  untrusted = false
 ): ClrContextTreeResult {
   const excludeRoles = new Set(options.excludeRoles);
   const walk: Walk = {
     options,
+    untrusted,
     extractors: extractors.filter(extractor => usableSelectors(root, [extractor.selector])),
     excludeRoles,
     excludeRoleCandidates: roleCandidateSelector(excludeRoles),
@@ -396,7 +401,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   const extractor = walk.extractors.find(candidate => element.matches(candidate.selector));
   if (extractor) {
     const extracted = attempt(() => extractor.extract(element as HTMLElement, walk.options), null);
-    const described = extracted ? publishedNode(extracted, walk.options) : null;
+    const described = extracted ? publishedNode(extracted, walk.options, walk.untrusted) : null;
     if (!described) {
       return describeChildren(element, walk, owner);
     }
@@ -834,7 +839,7 @@ function finish(
 ): ClrComponentContext | null {
   const redacted = isRedacted(element, walk.redactedDepth > 0);
   // Published context is not merged inside a redacted region: it would carry the component's state straight out.
-  let described = redacted || !published ? node : mergeElementContext(node, element, walk.options);
+  let described = redacted || !published ? node : mergeElementContext(node, element, walk.options, walk.untrusted);
   if (walk.excludeRoles.has(described.type)) {
     walk.remaining++;
     return null;

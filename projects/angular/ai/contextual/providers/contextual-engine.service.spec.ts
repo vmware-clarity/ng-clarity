@@ -9,6 +9,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
+import { publishElementContext } from '@clr/angular/utils';
 
 import {
   CLR_CONTEXT_OPTIONS,
@@ -714,13 +715,73 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
   it('withholds a selection as much as a typed value', () => {
     const unregister = engine.registerDomExtractor({
       selector: 'a',
-      extract: () => ({ type: 'grid', label: 'Users', state: { selection: ['Ada'], rowCount: 3 } }),
+      extract: () => ({
+        type: 'grid',
+        label: 'Users',
+        state: { selection: ['Ada'], rowCount: 3 },
+        publicKeys: ['rowCount', 'selection'],
+      }),
     });
     engine.enableGlobalAccess('testClrContext');
 
     try {
       const grid = find(accessor()().components, node => node.type === 'grid')[0];
       expect(grid.state).toEqual({ rowCount: 3, withheld: true });
+    } finally {
+      unregister();
+    }
+  });
+
+  it('withholds published state its publisher did not mark public', () => {
+    page.innerHTML = '<div class="search">Find hosts</div>';
+    const search = page.querySelector('.search') as HTMLElement;
+    const unpublish = publishElementContext(search, () => ({
+      type: 'search',
+      state: { query: '4111 1111', resultCount: 2 },
+      publicKeys: ['resultCount'],
+      children: [{ type: 'group', label: 'Filter', state: { filter: 's3cr3t' } }],
+    }));
+    const registry = TestBed.inject(ClrContextRegistryService);
+    const annotation = {
+      getClrContext: () => ({ type: 'region', label: 'Cart', state: { coupon: 's3cr3t', items: 2 } }),
+    };
+    const unregister = registry.register(annotation);
+    engine.enableGlobalAccess('testClrContext');
+
+    try {
+      const shared = accessor()();
+      expect(find(shared.components, node => node.type === 'search')[0].state).toEqual({
+        resultCount: 2,
+        withheld: true,
+      });
+      expect(find(shared.components, node => node.label === 'Filter')[0].state).toEqual({ withheld: true });
+      expect(shared.regions).toEqual([{ type: 'region', label: 'Cart', state: { withheld: true } }]);
+      expect(JSON.stringify(shared)).not.toContain('s3cr3t');
+      expect(JSON.stringify(shared)).not.toContain('4111');
+
+      const trusted = engine.getSnapshot();
+      expect(find(trusted.components, node => node.type === 'search')[0].state?.['query']).toBe('4111 1111');
+      expect(trusted.regions[0].state).toEqual({ coupon: 's3cr3t', items: 2 });
+    } finally {
+      unpublish();
+      unregister();
+    }
+  });
+
+  it('shares the state keys an annotation marks public', () => {
+    const registry = TestBed.inject(ClrContextRegistryService);
+    const unregister = registry.register({
+      getClrContext: () => ({
+        type: 'region',
+        label: 'Cart',
+        state: { coupon: 's3cr3t', items: 2 },
+        publicKeys: ['items'],
+      }),
+    });
+    engine.enableGlobalAccess('testClrContext');
+
+    try {
+      expect(accessor()().regions).toEqual([{ type: 'region', label: 'Cart', state: { items: 2, withheld: true } }]);
     } finally {
       unregister();
     }

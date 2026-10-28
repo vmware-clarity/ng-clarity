@@ -69,12 +69,7 @@ export class ClrContextEngineService implements OnDestroy {
 
   /** Takes a fresh snapshot, applying `options` over the application-wide ones; pending providers are reported as loading. */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
-    const snapshot = this.viewSnapshot();
-    if (snapshot.enabled === false) {
-      return snapshot;
-    }
-    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
-    return this.describePage(snapshot, resolved, this.contextRegistry.collect(this.regionFilter(resolved), resolved));
+    return this.snapshot(options, false);
   }
 
   /**
@@ -94,7 +89,7 @@ export class ClrContextEngineService implements OnDestroy {
       timeoutMs: usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
       limits: resolved,
     });
-    this.describePage(snapshot, resolved, []);
+    this.describePage(snapshot, resolved, [], false);
     setRegions(snapshot, await regions, resolved);
     const now = this.viewSnapshot();
     return now.viewId === snapshot.viewId && now.enabled === snapshot.enabled ? snapshot : this.getSnapshot(options);
@@ -139,7 +134,7 @@ export class ClrContextEngineService implements OnDestroy {
     const ceiling = this.untrustedCeiling(budgets);
     const accessor = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
-      const snapshot = this.getSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
+      const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), true);
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
       return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
     };
@@ -194,10 +189,22 @@ export class ClrContextEngineService implements OnDestroy {
     return snapshot;
   }
 
+  /** With `untrusted`, what application code published is cut to the state keys it marks public. */
+  private snapshot(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
+    const snapshot = this.viewSnapshot();
+    if (snapshot.enabled === false) {
+      return snapshot;
+    }
+    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
+    const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
+    return this.describePage(snapshot, resolved, regions, untrusted);
+  }
+
   private describePage(
     snapshot: ClrPageContext,
     resolved: Required<ClrContextSnapshotOptions>,
-    regions: ClrComponentContext[]
+    regions: ClrComponentContext[],
+    untrusted: boolean
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
@@ -207,7 +214,7 @@ export class ClrContextEngineService implements OnDestroy {
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId) && resolved.includeDomComponents) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors);
+      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors, untrusted);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;
