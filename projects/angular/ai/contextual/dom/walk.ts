@@ -14,6 +14,7 @@ import {
   CLR_ELEMENT_MUTATOR_PROPERTY,
   ClrComponentContext,
   ClrContextSnapshotOptions,
+  ClrPublishedContext,
   usableSelectors,
 } from '@clr/angular/utils';
 
@@ -54,17 +55,18 @@ import { NAMING_TAGS, PHRASING_TAGS, SKIPPED_TAGS } from './tables/tags';
 import { accessibleText, isVisuallyHidden, MAX_NESTING_DEPTH, truncate } from './text';
 import { hidesFromContext, isHiddenFromContext, isVisible } from './visibility';
 import { attempt } from '../attempt';
+import { charged } from '../budget';
 import { stripQueryAndFragment } from '../url';
 
 /**
  * Describes markup that has neither a role nor an accessible name, such as a bare `<div class="card">`.
- * State under the keys listed on `ClrElementContextCallback` is withheld from untrusted consumers.
+ * Untrusted consumers see only the state keys it lists in `publicKeys`.
  */
 export interface ClrContextDomExtractor {
   /** CSS selector matching the elements this extractor understands. */
   selector: string;
   /** Describes the element's current state, or returns `null` when there is nothing to report. */
-  extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrComponentContext | null;
+  extract(element: HTMLElement, options: Required<ClrContextSnapshotOptions>): ClrPublishedContext | null;
 }
 
 /**
@@ -80,6 +82,8 @@ const MAX_ELEMENTS_VISITED = 25_000;
 
 interface Walk {
   readonly options: Required<ClrContextSnapshotOptions>;
+  /** For a caller the application does not control: published state is cut to the keys marked public. */
+  readonly untrusted: boolean;
   readonly extractors: ClrContextDomExtractor[];
   readonly excludeRoles: ReadonlySet<string>;
   readonly excludeRoleCandidates: string;
@@ -119,11 +123,13 @@ export function collectContextTreeWithin(
   root: ParentNode,
   options: Required<ClrContextSnapshotOptions>,
   extractors: ClrContextDomExtractor[] = [],
-  refs: ClrContextRefSink | null = null
+  refs: ClrContextRefSink | null = null,
+  untrusted = false
 ): ClrContextTreeResult {
   const excludeRoles = new Set(options.excludeRoles);
   const walk: Walk = {
     options,
+    untrusted,
     extractors: extractors.filter(extractor => usableSelectors(root, [extractor.selector])),
     excludeRoles,
     excludeRoleCandidates: roleCandidateSelector(excludeRoles),
@@ -317,11 +323,12 @@ function describeScope(root: ParentNode, roots: Element[] | null, walk: Walk): C
 }
 
 /** Probes the leftovers with a budget of one: the snapshot is only truncated if they would produce a node. */
-function noteUndescribed(element: Element, walk: Walk, owner: Element | null): void {
+function noteUndescribed(element: Element, walk: Walk, owner: Element | null, pastDepth = false): void {
   if (walk.probing || walk.truncated) {
     return;
   }
-  const probe: Walk = { ...walk, remaining: 1, truncated: false, probing: true };
+  const options = pastDepth ? { ...walk.options, maxDepth: 0 } : walk.options;
+  const probe: Walk = { ...walk, options, remaining: 1, truncated: false, probing: true };
   if (describeElement(element, probe, owner).length) {
     walk.truncated = true;
   }
@@ -444,7 +451,7 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   if (extractor) {
     const extracted = attempt(() => extractor.extract(element as HTMLElement, walk.options), null);
     // Only the walk hands out refs: an extractor's node cannot claim another node's.
-    const described = extracted ? publishedNode(extracted, walk.options) : null;
+    const described = extracted ? publishedNode(extracted, walk.options, walk.untrusted) : null;
     if (!described) {
       return describeChildren(element, walk, owner);
     }
@@ -502,7 +509,10 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
 
   const fallbackLabel =
     !role && !label && isCustomElement && !redacted
-      ? truncate(accessibleText(element, undefined, withheldText(walk)), walk.options.maxTextLength)
+      ? truncate(
+          accessibleText(element, undefined, walk.excludeSelector, child => isExcludedRole(child, walk)),
+          walk.options.maxTextLength
+        )
       : label;
 
   const node: ClrComponentContext = { type: role ?? 'group' };
@@ -516,6 +526,10 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
   // Summarising collections keeps a ten-thousand-row grid from producing ten thousand nodes.
   const summary = attempt(() => summarizeRole(element, role, walk.options, walk.excludeSelector), null);
   const state = { ...ariaState(element, walk.options, redacted, walk.excludeSelector), ...summary };
+  const title = element.getAttribute('title')?.trim();
+  if (title && !redacted && !state['description'] && title !== label) {
+    state['description'] = truncate(title, walk.options.maxTextLength);
+  }
   if (Object.keys(state).length) {
     node.state = state;
   }
@@ -775,6 +789,11 @@ function describeNested(
 ): ClrComponentContext[] {
   const { maxDepth } = walk.options;
   if (maxDepth > 0 && walk.depth + 1 >= maxDepth) {
+    for (const child of renderedChildNodes(parent)) {
+      if (child.nodeType === Node.ELEMENT_NODE) {
+        noteUndescribed(child as Element, walk, owner, true);
+      }
+    }
     return [];
   }
   return within(walk, ['depth'], () => describeChildren(parent, walk, owner, looseText));
@@ -886,11 +905,15 @@ function finish(
   if (published) {
     described = redacted
       ? withoutOverriddenLabel(node, element, walk)
-      : mergeElementContext(node, element, walk.options);
+      : mergeElementContext(node, element, walk.options, walk.untrusted);
   }
   if (walk.excludeRoles.has(described.type)) {
     walk.remaining++;
     return null;
+  }
+  // Published children are not walked, so they are charged to the budget here.
+  if (described.children && (foreign || described.children !== node.children)) {
+    described = { ...described, children: charged(described.children, walk, walk.excludeRoles) };
   }
   const unpruned = foreign || described !== node;
 
@@ -916,9 +939,10 @@ function withoutOverriddenLabel(node: ClrComponentContext, element: Element, wal
   return unnamed;
 }
 
-/** What a label read from content must leave out: excluded selectors and excluded roles. */
-function withheldText(walk: Walk): string {
-  return [walk.excludeSelector, walk.excludeRoleCandidates].filter(Boolean).join(', ');
+/** Whether a label read from content leaves the element out: only its resolved role counts, not any `role`. */
+function isExcludedRole(element: Element, walk: Walk): boolean {
+  const role = walk.excludeRoles.size ? resolveRole(element) : null;
+  return !!role && walk.excludeRoles.has(role);
 }
 
 function listOf(node: ClrComponentContext | null): ClrComponentContext[] {

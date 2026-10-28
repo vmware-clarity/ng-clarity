@@ -509,7 +509,7 @@ export class ClrDestroyService extends Subject<void> implements OnDestroy {
 }
 
 // @public
-export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrPublishedContext> | null | undefined;
 
 // @public
 export type ClrElementMutation = {
@@ -805,6 +805,12 @@ export enum ClrPosition {
     TOP_LEFT = 0,
     // (undocumented)
     TOP_RIGHT = 2
+}
+
+// @public
+export interface ClrPublishedContext extends ClrComponentContext {
+    children?: ClrPublishedContext[];
+    publicKeys?: readonly string[];
 }
 
 // @public (undocumented)

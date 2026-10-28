@@ -22,36 +22,60 @@ export interface JsonSafeLimits {
 
 /**
  * Reduces a value to its JSON-serializable subset, at most `depth` levels deep, with strings and arrays
- * cut to `limits` when given. Empty arrays and objects are dropped unless `keepEmpty` is set.
+ * cut to `limits` when given. Empty arrays and objects are dropped unless `keepEmpty` is set, and so is
+ * a reference back to a value being reduced, so a `parent` pointer cannot copy the tree it points into.
  */
 export function jsonSafe(value: unknown, depth: number, keepEmpty = false, limits?: JsonSafeLimits): unknown {
+  return reduced(value, depth, keepEmpty, limits, new Set());
+}
+
+function reduced(
+  value: unknown,
+  depth: number,
+  keepEmpty: boolean,
+  limits: JsonSafeLimits | undefined,
+  ancestors: Set<object>
+): unknown {
   if (typeof value === 'string') {
     return limits ? truncate(value, limits.maxTextLength) : value;
   }
   if (value === null || typeof value === 'number' || typeof value === 'boolean') {
     return value;
   }
-  if (depth <= 0) {
+  if (depth <= 0 || typeof value !== 'object' || ancestors.has(value)) {
     return undefined;
   }
-  if (Array.isArray(value)) {
-    const items = value
-      .map(item => jsonSafe(item, depth - 1, keepEmpty, limits))
-      .filter(item => item !== undefined)
-      .slice(0, limits?.maxItemsPerCollection);
-    return items.length || keepEmpty ? items : undefined;
-  }
-  if (typeof value === 'object' && Object.getPrototypeOf(value) === Object.prototype) {
+  ancestors.add(value);
+  try {
+    if (Array.isArray(value)) {
+      const items = value
+        .slice(0, limits?.maxItemsPerCollection)
+        .map(item => reduced(item, depth - 1, keepEmpty, limits, ancestors))
+        .filter(item => item !== undefined);
+      return items.length || keepEmpty ? items : undefined;
+    }
+    if (!isPlainObject(value)) {
+      return undefined;
+    }
     const result: Record<string, unknown> = {};
-    for (const [key, entry] of Object.entries(value)) {
-      const serializable = jsonSafe(entry, depth - 1, keepEmpty, limits);
+    for (const key of Object.keys(value)) {
+      // A throwing getter costs its own key, not the whole value.
+      const entry = attempt(() => (value as Record<string, unknown>)[key], undefined);
+      const serializable = reduced(entry, depth - 1, keepEmpty, limits, ancestors);
       if (serializable !== undefined) {
         defineOwn(result, key, serializable);
       }
     }
     return Object.keys(result).length || keepEmpty ? result : undefined;
+  } finally {
+    ancestors.delete(value);
   }
-  return undefined;
+}
+
+/** An object literal, `Object.create(null)` or one from another window (a frame); not a class instance. */
+function isPlainObject(value: object): boolean {
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === null || Object.getPrototypeOf(prototype) === null;
 }
 
 /** `JSON.stringify(value)` for comparing snapshots, or `null` when the value cannot be serialised. */

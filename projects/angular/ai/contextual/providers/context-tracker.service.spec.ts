@@ -161,6 +161,18 @@ describe('ClrContextTrackerService', () => {
     expect(widgetLabels(tracker.currentContext)).toContain('Chat widget');
   });
 
+  it('waits at least 10 ms, whatever pacing it is given', async () => {
+    tracker.start({ debounceMs: 0, maxWaitMs: NaN });
+    const countAfterStart = emitted.length;
+
+    addWidget('Chat widget');
+    await elapse(9);
+    expect(emitted.length).toBe(countAfterStart);
+
+    await elapse(1);
+    expect(emitted.length).toBe(countAfterStart + 1);
+  });
+
   it('coalesces a burst of changes into a single emission', async () => {
     tracker.start({ debounceMs: 150 });
     const countAfterStart = emitted.length;
@@ -297,6 +309,15 @@ describe('ClrContextTrackerService', () => {
       expect(tracker.isTracking).toBeTrue();
       second.unsubscribe();
       expect(tracker.isTracking).toBeFalse();
+    });
+
+    it('keeps tracking that was started by hand after a subscriber leaves', () => {
+      const subscription = tracker.track().subscribe();
+      tracker.start();
+
+      subscription.unsubscribe();
+
+      expect(tracker.isTracking).toBeTrue();
     });
 
     it('stops when the last subscriber leaves, even when the first snapshot failed', () => {

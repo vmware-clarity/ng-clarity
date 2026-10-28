@@ -286,7 +286,8 @@ export function withoutStateKeys(
   return result;
 }
 
-function isEmptyValue(value: unknown): boolean {
+/** Whether a value says nothing: missing, empty text or an empty list. */
+export function isEmptyValue(value: unknown): boolean {
   return value === undefined || value === null || value === '' || (Array.isArray(value) && !value.length);
 }
 

@@ -66,7 +66,7 @@ export default function (): void {
       const host = compiled.querySelector('clr-alert') as Element & {
         clrElementContext?: () => unknown;
       };
-      expect(host.clrElementContext?.()).toEqual({ state: { severity: 'info' } });
+      expect(host.clrElementContext?.()).toEqual({ state: { severity: 'info' }, publicKeys: ['severity'] });
 
       fixture.componentInstance.isClosable = true;
       fixture.componentInstance.closed = true;

@@ -7,7 +7,8 @@
 
 import { CLR_CONTEXT_HIDDEN_SELECTOR, CLR_CONTEXT_REDACT_SELECTOR } from '@clr/angular/utils';
 
-import { closestAcrossShadow, containsAcrossShadow } from './shadow';
+import { closestAcrossShadow, containsAcrossShadow, hasRendered } from './shadow';
+import { CONTROL_SELECTOR } from './tables/selectors';
 
 /** Whether the element is in hidden, inert or ignored markup, or in a region `withheld` selects. */
 export function isHiddenFromContext(element: Element, withheld = ''): boolean {
@@ -31,12 +32,21 @@ export function isRedactedWithin(item: Element, container: Element): boolean {
 /**
  * Whether the element can be seen, as assistive technology judges it. Geometry is not judged:
  * custom checkboxes draw over a visually hidden native input that is still in the accessibility tree.
+ * Transparency hides prose and tooltips, but not controls: the native inputs of a button group and the
+ * row actions a hover reveals are `opacity: 0` and still reachable. `judgeOpacity: false` ignores it.
  */
-export function isVisible(element: Element): boolean {
+export function isVisible(element: Element, judgeOpacity = true): boolean {
+  if (!judgeOpacity) {
+    return isShown(element, false);
+  }
+  return isShown(element, true) || (isShown(element, false) && reachesControl(element));
+}
+
+function isShown(element: Element, judgeOpacity: boolean): boolean {
   // `display: contents` has no box but hides nothing; it shows exactly when its parent does.
   for (let current: Element | null = element; current; current = current.parentElement) {
     // Not `contentVisibilityAuto`: what `content-visibility: auto` skips is off screen, not absent.
-    if (checkVisibility(current, true)) {
+    if (checkVisibility(current, true, judgeOpacity)) {
       return true;
     }
     if (current.ownerDocument.defaultView?.getComputedStyle(current).display !== 'contents') {
@@ -46,12 +56,16 @@ export function isVisible(element: Element): boolean {
   return true;
 }
 
+function reachesControl(element: Element): boolean {
+  return element.matches(CONTROL_SELECTOR) || hasRendered(element, CONTROL_SELECTOR);
+}
+
 /** `Element.checkVisibility`, falling back to computed style where it is missing (jsdom, older browsers). */
-export function checkVisibility(element: Element, judgeVisibility: boolean): boolean {
+export function checkVisibility(element: Element, judgeVisibility: boolean, judgeOpacity = judgeVisibility): boolean {
   const native = (element as HTMLElement).checkVisibility;
   if (typeof native === 'function') {
     return judgeVisibility
-      ? native.call(element, { visibilityProperty: true, opacityProperty: true })
+      ? native.call(element, { visibilityProperty: true, opacityProperty: judgeOpacity })
       : native.call(element);
   }
   const view = element.ownerDocument.defaultView;
@@ -64,7 +78,7 @@ export function checkVisibility(element: Element, judgeVisibility: boolean): boo
   }
   for (let current: Element | null = element; current; current = current.parentElement) {
     const style = current === element ? own : view.getComputedStyle(current);
-    if (style.display === 'none' || (judgeVisibility && style.opacity === '0')) {
+    if (style.display === 'none' || (judgeOpacity && style.opacity === '0')) {
       return false;
     }
   }

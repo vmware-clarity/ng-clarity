@@ -9,6 +9,7 @@ import { APP_BASE_HREF } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
+import { publishElementContext } from '@clr/angular/utils';
 
 import {
   CLR_CONTEXT_OPTIONS,
@@ -714,13 +715,89 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
   it('withholds a selection as much as a typed value', () => {
     const unregister = engine.registerDomExtractor({
       selector: 'a',
-      extract: () => ({ type: 'grid', label: 'Users', state: { selection: ['Ada'], rowCount: 3 } }),
+      extract: () => ({
+        type: 'grid',
+        label: 'Users',
+        state: { selection: ['Ada'], rowCount: 3 },
+        publicKeys: ['rowCount', 'selection'],
+      }),
     });
     engine.enableGlobalAccess('testClrContext');
 
     try {
       const grid = find(accessor()().components, node => node.type === 'grid')[0];
       expect(grid.state).toEqual({ rowCount: 3, withheld: true });
+    } finally {
+      unregister();
+    }
+  });
+
+  it('withholds published state its publisher did not mark public', () => {
+    page.innerHTML = '<div class="search">Find hosts</div>';
+    const search = page.querySelector('.search') as HTMLElement;
+    const unpublish = publishElementContext(search, () => ({
+      type: 'search',
+      state: { query: '4111 1111', resultCount: 2 },
+      publicKeys: ['resultCount'],
+      children: [{ type: 'group', label: 'Filter', state: { filter: 's3cr3t' } }],
+    }));
+    const registry = TestBed.inject(ClrContextRegistryService);
+    const annotation = {
+      getClrContext: () => ({ type: 'region', label: 'Cart', state: { coupon: 's3cr3t', items: 2 } }),
+    };
+    const unregister = registry.register(annotation);
+    engine.enableGlobalAccess('testClrContext');
+
+    try {
+      const shared = accessor()();
+      expect(find(shared.components, node => node.type === 'search')[0].state).toEqual({
+        resultCount: 2,
+        withheld: true,
+      });
+      expect(find(shared.components, node => node.label === 'Filter')[0].state).toEqual({ withheld: true });
+      expect(shared.regions).toEqual([{ type: 'region', label: 'Cart', state: { withheld: true } }]);
+      expect(JSON.stringify(shared)).not.toContain('s3cr3t');
+      expect(JSON.stringify(shared)).not.toContain('4111');
+
+      const trusted = engine.getSnapshot();
+      expect(find(trusted.components, node => node.type === 'search')[0].state?.['query']).toBe('4111 1111');
+      expect(trusted.regions[0].state).toEqual({ coupon: 's3cr3t', items: 2 });
+    } finally {
+      unpublish();
+      unregister();
+    }
+  });
+
+  it('redacts a node its publisher marks redacted, without listing the key', () => {
+    page.innerHTML = '<div class="card"><label>Card <input value="4111" /></label></div>';
+    const unpublish = publishElementContext(page.querySelector('.card') as HTMLElement, () => ({
+      type: 'group',
+      label: 'Card 4111',
+      state: { redacted: true },
+    }));
+    engine.enableGlobalAccess('testClrContext');
+
+    try {
+      expect(JSON.stringify(accessor()().components)).not.toContain('4111');
+    } finally {
+      unpublish();
+    }
+  });
+
+  it('shares the state keys an annotation marks public', () => {
+    const registry = TestBed.inject(ClrContextRegistryService);
+    const unregister = registry.register({
+      getClrContext: () => ({
+        type: 'region',
+        label: 'Cart',
+        state: { coupon: 's3cr3t', items: 2 },
+        publicKeys: ['items'],
+      }),
+    });
+    engine.enableGlobalAccess('testClrContext');
+
+    try {
+      expect(accessor()().regions).toEqual([{ type: 'region', label: 'Cart', state: { items: 2, withheld: true } }]);
     } finally {
       unregister();
     }
@@ -1002,9 +1079,65 @@ describe('ClrContextEngineService, asynchronous providers', () => {
   it('reports a provider that does not answer in time as unavailable', async () => {
     registry.register({ getClrContext: () => new Promise<null>(() => undefined) });
 
-    const snapshot = await engine.getSnapshotAsync(quiet, 10);
+    const snapshot = await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
 
     expect(snapshot.regions).toEqual([{ type: 'clr-unavailable' }]);
+  });
+
+  it('holds what providers report to the snapshot budgets', () => {
+    const rows = Array.from({ length: 5000 }, (_, index) => ({ type: 'row', label: `${index} ${'x'.repeat(2000)}` }));
+    registry.register({ getClrContext: () => ({ type: 'region', label: 'Hosts', children: rows }) });
+
+    const snapshot = engine.getSnapshot({ ...quiet, maxComponents: 20, maxItemsPerCollection: 100, maxTextLength: 50 });
+
+    expect(snapshot.truncated).toBeTrue();
+    expect(snapshot.regions[0].children?.length).toBe(19);
+    expect(snapshot.regions[0].children?.[0].label?.length).toBeLessThanOrEqual(50);
+    expect(JSON.stringify(snapshot).length).toBeLessThan(5000);
+  });
+
+  it('stops at a cycle in what a provider reports', () => {
+    const region: Record<string, unknown> = { type: 'region', label: 'Hosts', state: { count: 1 } };
+    (region['state'] as Record<string, unknown>)['parent'] = region;
+    region['children'] = [{ type: 'row', label: 'esx-01', state: { owner: region } }];
+    registry.register({ getClrContext: () => region as unknown as ClrComponentContext });
+
+    expect(engine.getSnapshot(quiet).regions).toEqual([
+      { type: 'region', label: 'Hosts', state: { count: 1 }, children: [{ type: 'row', label: 'esx-01' }] },
+    ]);
+  });
+
+  it('asks again a provider whose answer did not arrive in time', async () => {
+    const getClrContext = jasmine.createSpy('getClrContext').and.returnValue(new Promise<null>(() => undefined));
+    registry.register({ getClrContext });
+
+    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
+  });
+
+  it('asks again a provider that rejected', async () => {
+    const getClrContext = jasmine.createSpy('getClrContext').and.callFake(() => Promise.reject(new Error('down')));
+    registry.register({ getClrContext });
+
+    await engine.getSnapshotAsync(quiet);
+    await engine.getSnapshotAsync(quiet);
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
+  });
+
+  it('forgets a pending answer when its provider is unregistered', () => {
+    const getClrContext = jasmine.createSpy('getClrContext').and.returnValue(new Promise<null>(() => undefined));
+    const provider = { getClrContext };
+    registry.register(provider);
+    engine.getSnapshot(quiet);
+
+    registry.unregister(provider);
+    registry.register(provider);
+    engine.getSnapshot(quiet);
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
   });
 
   it('reports a provider that rejects as unavailable, like one that does not answer in time', async () => {
@@ -1079,7 +1212,7 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     });
 
     for (const timeoutMs of [Infinity, NaN, 2 ** 40]) {
-      expect((await engine.getSnapshotAsync(quiet, timeoutMs)).regions)
+      expect((await engine.getSnapshotAsync({ ...quiet, timeoutMs })).regions)
         .withContext(String(timeoutMs))
         .toEqual([{ type: 'region', label: 'late' }]);
     }

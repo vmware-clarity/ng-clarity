@@ -10,7 +10,8 @@ export * from './providers/context-options';
 export * from './providers/context-registry.service';
 export * from './providers/context-tracker.service';
 export * from './providers/contextual-engine.service';
-export * from './dom/dom-context-collector';
+export { CLR_CONTEXT_DEFAULT_OPTIONS } from './dom/dom-context-collector';
+export type { ClrContextDomExtractor } from './dom/dom-context-collector';
 export * from './diff';
 export * from './schema';
 export {

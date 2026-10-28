@@ -3730,7 +3730,7 @@ export class ClrDropdownTrigger {
 }
 
 // @public
-export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrComponentContext> | null | undefined;
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrPublishedContext> | null | undefined;
 
 // @public
 export type ClrElementMutation = {
@@ -5382,6 +5382,12 @@ export class ClrProgressBarModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrProgressBarModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof ClrProgressBar], [typeof i2.CommonModule], [typeof ClrProgressBar]>;
+}
+
+// @public
+export interface ClrPublishedContext extends ClrComponentContext {
+    children?: ClrPublishedContext[];
+    publicKeys?: readonly string[];
 }
 
 // @public (undocumented)

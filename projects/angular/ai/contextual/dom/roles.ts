@@ -9,6 +9,7 @@ import { isContentEditable } from './aria-state';
 import { closestAcrossShadow, parentAcrossShadow } from './shadow';
 import { ownEntry } from '../lookup';
 import {
+  ARIA_ROLES,
   CONTENT_LEAF_ROLES,
   IMPLICIT_ROLES_BY_TAG,
   INPUT_ROLES_BY_TYPE,
@@ -22,20 +23,20 @@ import {
 } from './tables/roles';
 import { SECTIONING_SELECTOR } from './tables/selectors';
 
-const MAX_ROLE_LENGTH = 32;
-
-/** The element's explicit or implicit ARIA role, or `null`. Only the first token of `role` counts, as for AT. */
+/**
+ * The element's explicit or implicit ARIA role, or `null`. As for AT, the first recognised token of `role` counts,
+ * in any case; markup with none falls back to the implicit role, so it cannot invent types.
+ */
 export function resolveRole(element: Element): string | null {
-  // A token longer than any ARIA role falls back to the implicit role, so markup cannot inflate a snapshot.
-  const explicit = element.getAttribute('role')?.trim().split(/\s+/)[0];
-  if (
-    explicit &&
-    explicit.length <= MAX_ROLE_LENGTH &&
-    (TEXT_ENTRY_ROLES.has(explicit) || !isContentEditable(element))
-  ) {
+  const explicit = element.getAttribute('role')?.toLowerCase().split(/\s+/).find(isAriaRole);
+  if (explicit && (TEXT_ENTRY_ROLES.has(explicit) || !isContentEditable(element))) {
     return explicit;
   }
   return implicitRole(element);
+}
+
+function isAriaRole(token: string): boolean {
+  return ARIA_ROLES.has(token) || /^(doc|graphics)-[a-z]{1,24}$/.test(token);
 }
 
 export function isLeafRole(role: string): boolean {
