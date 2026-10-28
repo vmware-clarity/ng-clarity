@@ -66,6 +66,13 @@ describe('ClrContext directive', () => {
     expect(registry.collect()[0].state).toEqual({ cluster: 'alpha', query: 's3cr3t' });
   });
 
+  it('marks state withheld only when a private value had something in it', () => {
+    fixture.componentInstance.state = { cluster: 'alpha', query: '', picks: [] };
+    fixture.componentInstance.publicKeys = ['cluster'];
+    fixture.detectChanges();
+    expect(registry.collect({ untrusted: true })[0].state).toEqual({ cluster: 'alpha' });
+  });
+
   it('reads its inputs at snapshot time', () => {
     fixture.componentInstance.state = { cluster: 'omega' };
     fixture.detectChanges();
