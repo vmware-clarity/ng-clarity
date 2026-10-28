@@ -19,7 +19,8 @@ export function publicState(
   state: Record<string, unknown>
 ): Record<string, unknown> {
   const listed = published['publicKeys'];
-  const keys = new Set(Array.isArray(listed) ? listed.slice(0, MAX_PUBLIC_KEYS) : []);
+  // `redacted` only ever hides more, so it is honoured whether or not it is listed.
+  const keys = new Set(['redacted', ...(Array.isArray(listed) ? listed.slice(0, MAX_PUBLIC_KEYS) : [])]);
   const shared: Record<string, unknown> = {};
   for (const [key, value] of Object.entries(state)) {
     if (keys.has(key)) {

@@ -768,6 +768,22 @@ describe('ClrContextEngineService, what the global accessor keeps back', () => {
     }
   });
 
+  it('redacts a node its publisher marks redacted, without listing the key', () => {
+    page.innerHTML = '<div class="card"><label>Card <input value="4111" /></label></div>';
+    const unpublish = publishElementContext(page.querySelector('.card') as HTMLElement, () => ({
+      type: 'group',
+      label: 'Card 4111',
+      state: { redacted: true },
+    }));
+    engine.enableGlobalAccess('testClrContext');
+
+    try {
+      expect(JSON.stringify(accessor()().components)).not.toContain('4111');
+    } finally {
+      unpublish();
+    }
+  });
+
   it('shares the state keys an annotation marks public', () => {
     const registry = TestBed.inject(ClrContextRegistryService);
     const unregister = registry.register({
