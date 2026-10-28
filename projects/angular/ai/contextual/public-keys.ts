@@ -5,6 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { isEmptyValue } from './dom/aria-state';
 import { defineOwn } from './json-safe';
 
 /** Most state keys one publisher can mark public. */
@@ -12,7 +13,8 @@ const MAX_PUBLIC_KEYS = 64;
 
 /**
  * Picks the state an untrusted caller may see from what application code published: only the keys its
- * `publicKeys` lists, so a key nobody marked stays private. Anything left out marks the state `withheld`.
+ * `publicKeys` lists, so a key nobody marked stays private. A non-empty value left out marks the state `withheld`;
+ * an empty one leaves no marker, as for form values.
  */
 export function publicState(
   published: Record<string, unknown>,
@@ -25,7 +27,7 @@ export function publicState(
   for (const [key, value] of Object.entries(state)) {
     if (keys.has(key)) {
       defineOwn(shared, key, value);
-    } else {
+    } else if (!isEmptyValue(value)) {
       shared['withheld'] = true;
     }
   }
