@@ -914,6 +914,27 @@ export const CLR_ALERT_DIRECTIVES: Type<any>[];
 // @public (undocumented)
 export const CLR_BUTTON_GROUP_DIRECTIVES: Type<any>[];
 
+// @public
+export const CLR_CONTEXT_DEFAULT_MAX_ITEMS = 25;
+
+// @public
+export const CLR_CONTEXT_EDITING_HOST_SELECTOR = "[contenteditable]:not([contenteditable=\"false\" i])";
+
+// @public
+export const CLR_CONTEXT_HIDDEN_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_IGNORE_ATTRIBUTE = "data-clr-context-ignore";
+
+// @public
+export const CLR_CONTEXT_IGNORE_SELECTOR = "[data-clr-context-ignore]";
+
+// @public
+export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
+
+// @public
+export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
+
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 
@@ -922,6 +943,9 @@ export const CLR_DATEPICKER_DIRECTIVES: Type<any>[];
 
 // @public (undocumented)
 export const CLR_DROPDOWN_DIRECTIVES: Type<any>[];
+
+// @public
+export const CLR_ELEMENT_CONTEXT_PROPERTY = "clrElementContext";
 
 // @public (undocumented)
 export const CLR_FILE_MESSAGES_TEMPLATE_CONTEXT: InjectionToken<ClrFileMessagesTemplateContext>;
@@ -2191,6 +2215,15 @@ export class ClrCommonStringsService {
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrCommonStringsService>;
 }
 
+// @public
+export interface ClrComponentContext {
+    children?: ClrComponentContext[];
+    element?: string;
+    label?: string;
+    state?: Record<string, unknown>;
+    type: string;
+}
+
 // @public (undocumented)
 export class ClrConditionalModule {
     // (undocumented)
@@ -2199,6 +2232,27 @@ export class ClrConditionalModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrConditionalModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrConditionalModule, never, [typeof i2.CommonModule, typeof ClrIfActive, typeof ClrIfExpanded], [typeof ClrIfActive, typeof ClrIfExpanded]>;
+}
+
+// @public
+export type ClrContextCategory = 'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';
+
+// @public
+export interface ClrContextSnapshotOptions {
+    collectionItems?: 'all' | 'summary';
+    excludeCategories?: ClrContextCategory[];
+    excludeRoles?: string[];
+    excludeSelectors?: string[];
+    focus?: 'page' | 'modal';
+    includeDomComponents?: boolean;
+    includeFrames?: boolean;
+    includeRoutes?: boolean;
+    includeText?: boolean;
+    maxComponents?: number;
+    maxDepth?: number;
+    maxItemsPerCollection?: number;
+    maxTextLength?: number;
+    rootSelector?: string;
 }
 
 // @public (undocumented)
@@ -3663,6 +3717,9 @@ export class ClrDropdownTrigger {
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrDropdownTrigger, never>;
 }
+
+// @public
+export type ClrElementContextCallback = (options?: Required<ClrContextSnapshotOptions>) => Partial<ClrPublishedContext> | null | undefined;
 
 // @public (undocumented)
 export class ClrEmphasisModule {
@@ -5293,6 +5350,12 @@ export class ClrProgressBarModule {
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrProgressBarModule>;
     // (undocumented)
     static ɵmod: i0.ɵɵNgModuleDeclaration<ClrProgressBarModule, [typeof ClrProgressBar], [typeof i2.CommonModule], [typeof ClrProgressBar]>;
+}
+
+// @public
+export interface ClrPublishedContext extends ClrComponentContext {
+    children?: ClrPublishedContext[];
+    publicKeys?: readonly string[];
 }
 
 // @public (undocumented)
@@ -9331,6 +9394,9 @@ export const processOnVmIcon: IconShapeTuple;
 // @public (undocumented)
 export const processOnVmIconName = "process-on-vm";
 
+// @public
+export function publishElementContext(host: Element, callback: ClrElementContextCallback): () => void;
+
 // @public (undocumented)
 export const qrCodeIcon: IconShapeTuple;
 
@@ -10243,6 +10309,9 @@ export const uploadIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const uploadIconName = "upload";
+
+// @public
+export function usableSelectors(root: ParentNode, selectors: readonly string[]): string;
 
 // @public (undocumented)
 export const usbIcon: IconShapeTuple;
