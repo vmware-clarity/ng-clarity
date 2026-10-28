@@ -45,7 +45,7 @@ function all(nodes: ClrComponentContext[] | undefined): ClrComponentContext[] {
   return (nodes ?? []).flatMap(node => [node, ...all(node.children)]);
 }
 
-describe('collectContextTree', () => {
+describe('collectContextTreeWithin', () => {
   useContainer();
 
   it('reports a title that differs from the name as a description', () => {
@@ -445,7 +445,7 @@ describe('collectContextTree', () => {
   });
 });
 
-describe('collectContextTree, what a summary must not hide', () => {
+describe('collectContextTreeWithin, what a summary must not hide', () => {
   useContainer();
 
   it('reports the commands a menu offers', () => {
@@ -625,7 +625,7 @@ describe('collectContextTree, what a summary must not hide', () => {
   });
 });
 
-describe('collectContextTree, text and frames', () => {
+describe('collectContextTreeWithin, text and frames', () => {
   useContainer();
 
   function frameWith(
@@ -847,7 +847,7 @@ describe('collectContextTree, text and frames', () => {
   });
 });
 
-describe('collectContextTreeWithin', () => {
+describe('collectContextTreeWithin, its result', () => {
   useContainer();
 
   it('says when the budget ran out before the page did', () => {
@@ -876,7 +876,7 @@ describe('collectContextTreeWithin', () => {
   });
 });
 
-describe('collectContextTree, choosing what to collect', () => {
+describe('collectContextTreeWithin, choosing what to collect', () => {
   useContainer();
 
   const PAGE = `
@@ -1098,7 +1098,7 @@ describe('collectContextTree, choosing what to collect', () => {
   });
 });
 
-describe('collectContextTree, leaving out whole kinds of content', () => {
+describe('collectContextTreeWithin, leaving out whole kinds of content', () => {
   useContainer();
 
   function collectTypes(html: string, options: ClrContextSnapshotOptions): string[] {
@@ -1134,7 +1134,7 @@ describe('collectContextTree, leaving out whole kinds of content', () => {
   });
 });
 
-describe('collectContextTree, markup it did not expect', () => {
+describe('collectContextTreeWithin, markup it did not expect', () => {
   useContainer();
 
   it('describes an element whose role or type names something every object has', () => {
@@ -1373,7 +1373,7 @@ describe('collectContextTree, markup it did not expect', () => {
   });
 });
 
-describe('collectContextTree, names, text and state an agent would otherwise miss', () => {
+describe('collectContextTreeWithin, names, text and state an agent would otherwise miss', () => {
   useContainer();
 
   it('names an icon-only button or an image link by the name its icon or image gives itself', () => {
@@ -1548,7 +1548,7 @@ describe('collectContextTree, names, text and state an agent would otherwise mis
   });
 });
 
-describe('collectContextTree, open shadow roots', () => {
+describe('collectContextTreeWithin, open shadow roots', () => {
   useContainer();
 
   /** Renders `light` into a host whose open shadow root holds `shadow`. */
@@ -1679,8 +1679,10 @@ describe('collectContextTree, open shadow roots', () => {
       inShadowOf('my-card', '<input aria-label="Card number" value="4111111111111111" />', 'billing');
 
       const nodes = collectContextTreeWithin(container, budgets({ excludeSelectors: ['.billing my-card'] })).components;
+      const kept = collectContextTreeWithin(container, budgets({ excludeSelectors: ['.other my-card'] })).components;
 
-      expect(JSON.stringify(nodes)).not.toContain('4111');
+      expect(JSON.stringify(nodes)).not.toContain('Card number');
+      expect(JSON.stringify(kept)).toContain('Card number');
     });
   });
 
@@ -1722,12 +1724,16 @@ describe('collectContextTree, open shadow roots', () => {
     container.innerHTML =
       '<button><cds-icon shape="user"></cds-icon>Profile</button><cds-icon role="img" aria-label="Warning"></cds-icon>';
     for (const icon of Array.from(container.querySelectorAll('cds-icon'))) {
-      icon.attachShadow({ mode: 'open' }).innerHTML = '<style>:host { color: red; }</style><svg></svg>';
+      icon.attachShadow({ mode: 'open' }).innerHTML =
+        '<style>:host { color: red; }</style><svg></svg><span>Icon internals</span><button>Inner</button>';
     }
 
     const nodes = all(collectContextTreeWithin(container, budgets()).components);
 
+    // Read as a leaf: neither the shadow root's text nor its controls show up.
     expect(JSON.stringify(nodes)).not.toContain('color');
+    expect(JSON.stringify(nodes)).not.toContain('Icon internals');
+    expect(nodes.some(node => node.label === 'Inner')).toBeFalse();
     expect(nodes.find(node => node.type === 'button')?.label).toBe('Profile');
     expect(nodes.find(node => node.type === 'img')?.label).toBe('Warning');
   });
@@ -1736,5 +1742,6 @@ describe('collectContextTree, open shadow roots', () => {
     const nodes = all(host('<style>.x { color: red; }</style><p>Visible</p>'));
 
     expect(JSON.stringify(nodes)).not.toContain('color');
+    expect(JSON.stringify(nodes)).toContain('Visible');
   });
 });

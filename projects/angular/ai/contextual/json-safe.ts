@@ -54,11 +54,13 @@ function reduced(
         .filter(item => item !== undefined);
       return items.length || keepEmpty ? items : undefined;
     }
-    if (Object.getPrototypeOf(value) !== Object.prototype) {
+    if (!isPlainObject(value)) {
       return undefined;
     }
     const result: Record<string, unknown> = {};
-    for (const [key, entry] of Object.entries(value)) {
+    for (const key of Object.keys(value)) {
+      // A throwing getter costs its own key, not the whole value.
+      const entry = attempt(() => (value as Record<string, unknown>)[key], undefined);
       const serializable = reduced(entry, depth - 1, keepEmpty, limits, ancestors);
       if (serializable !== undefined) {
         defineOwn(result, key, serializable);
@@ -68,6 +70,12 @@ function reduced(
   } finally {
     ancestors.delete(value);
   }
+}
+
+/** An object literal, `Object.create(null)` or one from another window (a frame); not a class instance. */
+function isPlainObject(value: object): boolean {
+  const prototype = Object.getPrototypeOf(value);
+  return prototype === null || Object.getPrototypeOf(prototype) === null;
 }
 
 /** `JSON.stringify(value)` for comparing snapshots, or `null` when the value cannot be serialised. */
