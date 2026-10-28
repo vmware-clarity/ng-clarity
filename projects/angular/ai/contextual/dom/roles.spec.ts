@@ -31,6 +31,17 @@ describe('resolveRole', () => {
     expect(roleOf(`<nav role="${'x'.repeat(5000)}"></nav>`)).toBe('navigation');
   });
 
+  it('takes the first recognised role token, in any case', () => {
+    expect(roleOf('<div role="Button"></div>')).toBe('button');
+    expect(roleOf('<div role="fancy-widget switch checkbox"></div>')).toBe('switch');
+    expect(roleOf('<div role="doc-endnotes"></div>')).toBe('doc-endnotes');
+  });
+
+  it('falls back to the implicit role when no role token is recognised', () => {
+    expect(roleOf('<nav role="fancy-widget"></nav>')).toBe('navigation');
+    expect(roleOf('<div role="fancy-widget"></div>')).toBeNull();
+  });
+
   it('prefers an explicit role over the implicit one', () => {
     expect(roleOf('<table role="presentation"></table>')).toBe('presentation');
   });

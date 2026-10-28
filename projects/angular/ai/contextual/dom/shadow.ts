@@ -54,11 +54,20 @@ export function containsAcrossShadow(ancestor: Element, node: Element): boolean 
 
 /** Whether `root.querySelector(selector)` would find something, looking inside open shadow roots and slots too. */
 export function hasRendered(root: ParentNode, selector: string): boolean {
-  return !!root.querySelector(selector) || queryRendered(root, selector).length > 0;
+  return !!root.querySelector(selector) || (!rendersLightDomOnly(root) && queryRendered(root, selector).length > 0);
+}
+
+/** No open shadow root below `root` and no slot in it that projects, so plain queries see all it renders. */
+function rendersLightDomOnly(root: ParentNode): boolean {
+  const inShadowTree = root.nodeType === Node.ELEMENT_NODE ? !!shadowRootOf(root as Element) : 'host' in root;
+  return !inShadowTree && !openShadowRoots(root).length;
 }
 
 /** `root.querySelectorAll(selector)`, also inside the open shadow roots under `root` and what their slots show. */
 export function queryRendered(root: ParentNode, selector: string): Element[] {
+  if (rendersLightDomOnly(root)) {
+    return Array.from(root.querySelectorAll(selector));
+  }
   const found = new Set<Element>();
   for (const scope of [root, ...openShadowRoots(root)]) {
     scope.querySelectorAll(selector).forEach(element => found.add(element));
@@ -84,6 +93,17 @@ export function openShadowRoots(root: ParentNode): ShadowRoot[] {
   const cached = cache?.get(root);
   if (cached) {
     return cached;
+  }
+  // The nearest scanned ancestor tells when there is nothing below it, which spares a scan per level.
+  for (let ancestor = root.parentNode; cache && ancestor; ancestor = ancestor.parentNode) {
+    const scanned = cache.get(ancestor);
+    if (scanned?.length === 0) {
+      cache.set(root, scanned);
+      return scanned;
+    }
+    if (scanned) {
+      break;
+    }
   }
   const own = root.nodeType === Node.ELEMENT_NODE ? walkedShadowRoot(root as Element) : null;
   const roots: ShadowRoot[] = own ? [own, ...openShadowRoots(own)] : [];

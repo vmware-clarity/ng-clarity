@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { truncate } from './text';
+import { accessibleText, truncate } from './text';
 
 describe('truncate', () => {
   it('collapses runs of whitespace into single spaces', () => {
@@ -22,5 +22,39 @@ describe('truncate', () => {
 
   it('never exceeds the budget it was given', () => {
     expect(truncate('abcdefghij', 5).length).toBe(5);
+  });
+});
+
+describe('accessibleText', () => {
+  let container: HTMLElement;
+
+  beforeEach(() => {
+    container = document.createElement('div');
+    document.body.appendChild(container);
+  });
+
+  afterEach(() => container.remove());
+
+  it('does not read inside a hidden subtree', () => {
+    container.innerHTML = '<span>Shown</span><div style="display: none"><span>a</span><span>b</span></div>';
+    const hiddenSpans = Array.from(container.querySelectorAll(':scope > div span'));
+    const getComputedStyle = spyOn(window, 'getComputedStyle').and.callThrough();
+
+    expect(accessibleText(container).trim()).toBe('Shown');
+    expect(getComputedStyle.calls.allArgs().some(([element]) => hiddenSpans.includes(element))).toBeFalse();
+  });
+
+  it('leaves out what `withholds` picks', () => {
+    container.innerHTML = '3 <span class="secret">hosts</span> up';
+
+    expect(accessibleText(container, undefined, '', child => child.classList.contains('secret'))).toBe('3  up');
+  });
+
+  it('reads no option of an embedded choice list', () => {
+    container.innerHTML =
+      'Flash the screen <select><option>1</option><option>3</option></select>' +
+      '<div role="listbox"><div role="option">5</div></div> times';
+
+    expect(accessibleText(container).replace(/\s+/g, ' ')).toBe('Flash the screen times');
   });
 });
