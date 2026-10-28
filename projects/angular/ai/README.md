@@ -12,33 +12,10 @@ surfaces are planned under the same entry point.
 
 ## Quickstart
 
-```ts
-import { Component, DestroyRef, inject } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { ClrContextEngineService, ClrContextTrackerService } from '@clr/angular/ai';
-
-@Component({
-  selector: 'app-assistant',
-  template: '...',
-})
-export class AssistantComponent {
-  private readonly engine = inject(ClrContextEngineService);
-  private readonly tracker = inject(ClrContextTrackerService);
-
-  constructor() {
-    // The current page, kept up to date: emits whenever what is on screen changes.
-    this.tracker
-      .track()
-      .pipe(takeUntilDestroyed(inject(DestroyRef)))
-      .subscribe(context => console.log(context.components));
-  }
-
-  ask(question: string) {
-    // Or one snapshot, taken now. Send it to your model as data, delimited from your prompt.
-    return { question, page: this.engine.getSnapshot() };
-  }
-}
-```
+Inject `ClrContextEngineService` for a snapshot of the page now, or `ClrContextTrackerService` for the
+current page as it changes. The "Contextual Engine" guide on the Clarity website
+(`/documentation/contextual-engine`) has a complete example and a privacy checklist to read before a
+snapshot goes to a model.
 
 ### Annotating the application
 
@@ -73,7 +50,9 @@ component that publishes context does not depend on this entry point.
 Through custom extractors it also reaches other UI libraries. Callers the application does not
 control, such as the optional `window.clrContext()` accessor, are held to the application's budgets
 and the defaults, and see neither what the user entered nor the page's full address (only its route
-pattern) unless the application shares them.
+pattern) unless the application shares them. Of the state that application code publishes, they see
+only the keys the publisher lists in `publicKeys` (`[clrContextPublicKeys]` on the directive). Any
+other key is withheld, so a key nobody listed stays private.
 
 A snapshot carries the page's text as shown, including what users wrote, so it is data for a
 model, never instructions: delimit it in prompts.

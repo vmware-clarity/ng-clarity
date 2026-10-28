@@ -21,7 +21,7 @@ export interface ClrComponentContext {
 
 /**
  * Context that application code publishes. Its state is shared only with trusted callers, except the keys
- * listed in `publicKeys`, which untrusted ones (`window.clrContext()`, embedded frames) see too.
+ * listed in `publicKeys`, which untrusted ones (such as `window.clrContext()`) see too.
  */
 export interface ClrPublishedContext extends ClrComponentContext {
   /** State keys untrusted callers may see; every other key is withheld from them. Default none. */
