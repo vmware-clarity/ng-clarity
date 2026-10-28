@@ -19,6 +19,7 @@ import {
 } from './context-options';
 import { ClrContextRegionFilter, ClrContextRegistryService } from './context-registry.service';
 import { attempt, usableTimeout } from '../attempt';
+import { charged } from '../budget';
 import {
   CLR_AI_METADATA_ATTRIBUTE,
   CLR_AI_METADATA_URL_ATTRIBUTE,
@@ -26,7 +27,6 @@ import {
   parseJsonObject,
   viewMetadataHosts,
 } from '../dom/annotations';
-import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { closestAcrossShadow, containsAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
