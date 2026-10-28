@@ -41,6 +41,10 @@ function types(nodes: ClrComponentContext[] | undefined): string[] {
   return (nodes ?? []).map(node => node.type);
 }
 
+function all(nodes: ClrComponentContext[] | undefined): ClrComponentContext[] {
+  return (nodes ?? []).flatMap(node => [node, ...all(node.children)]);
+}
+
 describe('collectContextTree', () => {
   useContainer();
 
@@ -1553,10 +1557,6 @@ describe('collectContextTree, open shadow roots', () => {
     const root = (container.querySelector('shadow-host') as HTMLElement).attachShadow({ mode: 'open' });
     root.innerHTML = shadow;
     return collectContextTreeWithin(container, budgets()).components;
-  }
-
-  function all(nodes: ClrComponentContext[] | undefined): ClrComponentContext[] {
-    return (nodes ?? []).flatMap(node => [node, ...all(node.children)]);
   }
 
   it('describes the controls of a form inside the shadow root', () => {
