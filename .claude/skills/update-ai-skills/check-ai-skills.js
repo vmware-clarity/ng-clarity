@@ -242,8 +242,11 @@ function extractApiNames(markdown) {
     .join('\n');
   // Package file paths (`@clr/angular/types/clr-angular-modal.d.ts`) name files, not APIs.
   const code = [...usable.matchAll(/```[\s\S]*?```|`(?!@clr\/)[^`\n]+`/g)].map(m => m[0]).join('\n');
+  // `data-clr-*` attributes are checked whole, as the reports spell them.
   const names =
-    code.match(/\b(?:Clr|Appfx|clr|appfx)[A-Z][A-Za-z0-9]*\b|\b(?:clr|appfx)-[a-z0-9]+(?:-[a-z0-9]+)*\b/g) || [];
+    code.match(
+      /\b(?:Clr|Appfx|clr|appfx)[A-Z][A-Za-z0-9]*\b|\b(?:data-)?(?<!-)(?:clr|appfx)-[a-z0-9]+(?:-[a-z0-9]+)*\b/g
+    ) || [];
   return [...new Set(names)].sort();
 }
 
