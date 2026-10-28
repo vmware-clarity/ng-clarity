@@ -118,9 +118,11 @@ const IGNORE_EXAMPLE = `
 `;
 
 const DIRECTIVE_EXAMPLE = `
+<!-- Your own code sees all of the state. window.clrContext() sees only ruleCount. -->
 <section
   clrContext="Firewall rules for the selected cluster"
-  [clrContextState]="{ cluster: clusterName }"
+  [clrContextState]="{ cluster: clusterName, ruleCount: rules.length }"
+  [clrContextPublicKeys]="['ruleCount']"
 >
   ...
 </section>
@@ -197,6 +199,9 @@ this.teardown = publishElementContext(hostElement, () => ({
     options: this.choices.map(choice => choice.label),
     value: this.selection,
   },
+  // Callers the application does not control see only these keys.
+  // The value is withheld from them in any case, unless the application shares form values.
+  publicKeys: ['options'],
 }));
 
 // ...and on destroy:
@@ -206,7 +211,11 @@ this.teardown?.();
 const EXTRACTOR_EXAMPLE = `
 const unregister = this.contextEngine.registerDomExtractor({
   selector: 'chat-message-list',
-  extract: element => ({ type: 'chat-log', state: { messages: element.children.length } }),
+  extract: element => ({
+    type: 'chat-log',
+    state: { messages: element.children.length },
+    publicKeys: ['messages'], // shared with window.clrContext() too
+  }),
 });
 `;
 
@@ -241,6 +250,7 @@ const GLOBAL_ACCESS_EXAMPLE = `
 this.contextEngine.enableGlobalAccess();
 // Browser-driving agents can now call window.clrContext() for a fresh snapshot.
 // Values the user typed are withheld, because any script on the page can call it.
+// Published state reaches it only under the keys its publisher lists in publicKeys.
 
 // Share them deliberately, if that is what you mean:
 this.contextEngine.enableGlobalAccess('clrContext', { shareFormValues: true });

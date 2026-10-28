@@ -6,7 +6,7 @@
  */
 
 import { HashLocationStrategy, isPlatformBrowser, LocationStrategy } from '@angular/common';
-import { DOCUMENT, inject, Inject, Injectable, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
+import { DOCUMENT, inject, Injectable, OnDestroy, PLATFORM_ID } from '@angular/core';
 import { ActivatedRouteSnapshot, Router } from '@angular/router';
 import { CLR_CONTEXT_REDACT_SELECTOR, usableSelectors } from '@clr/angular/utils';
 
@@ -26,12 +26,14 @@ import {
   parseJsonObject,
   viewMetadataHosts,
 } from '../dom/annotations';
+import { charged } from '../budget';
 import { ClrContextDomExtractor } from '../dom/dom-context-collector';
 import { closestAcrossShadow, containsAcrossShadow } from '../dom/shadow';
 import { collectContextTreeWithin, engineScope, isHiddenFromEngine } from '../dom/walk';
 import {
   ClrApplicationContext,
   ClrComponentContext,
+  ClrContextAsyncSnapshotOptions,
   ClrContextSnapshotOptions,
   ClrPageContext,
   ClrRouteContext,
@@ -70,14 +72,11 @@ export class ClrContextEngineService implements OnDestroy {
   private readonly config = inject(CLR_CONTEXT_CONFIG, { optional: true });
   private readonly metadataLoader = inject(ClrContextMetadataLoader);
   private readonly locationStrategy = inject(LocationStrategy, { optional: true });
+  private readonly platformId = inject(PLATFORM_ID);
+  private readonly document = inject(DOCUMENT);
+  private readonly contextRegistry = inject(ClrContextRegistryService);
+  private readonly router = inject(Router, { optional: true });
   private globalProperty: string | null = null;
-
-  constructor(
-    @Inject(PLATFORM_ID) private readonly platformId: unknown,
-    @Inject(DOCUMENT) private readonly document: Document,
-    private readonly contextRegistry: ClrContextRegistryService,
-    @Optional() private readonly router: Router | null
-  ) {}
 
   ngOnDestroy(): void {
     this.disableGlobalAccess();
@@ -85,41 +84,15 @@ export class ClrContextEngineService implements OnDestroy {
 
   /** Takes a fresh snapshot, applying `options` over the application-wide ones; pending sources are reported as loading. */
   getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext {
-    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
-    const snapshot = this.viewSnapshot(resolved, false);
-    if (snapshot.enabled === false) {
-      return snapshot;
-    }
-    return this.describePage(snapshot, resolved, this.contextRegistry.collect(this.regionFilter(resolved)));
+    return this.snapshot(options, false);
   }
 
   /**
    * Like {@link getSnapshot}, awaiting asynchronous providers and metadata URLs for up to `timeoutMs` each
    * (2 seconds by default). When the view changes while they answer, the new view is snapshotted instead.
    */
-  async getSnapshotAsync(
-    options?: ClrContextSnapshotOptions,
-    timeoutMs = DEFAULT_SOURCE_TIMEOUT_MS
-  ): Promise<ClrPageContext> {
-    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
-    const urls = this.metadataUrls(resolved);
-    const waitMs = usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS);
-    if (urls.length) {
-      await this.metadataLoader.settle(urls, waitMs);
-    }
-    const snapshot = this.viewSnapshot(resolved, true);
-    if (snapshot.enabled === false) {
-      return snapshot;
-    }
-    // Started first, so providers work while the page is walked.
-    const regions = this.contextRegistry.collectAsync({
-      filter: this.regionFilter(resolved),
-      timeoutMs: waitMs,
-    });
-    this.describePage(snapshot, resolved, []);
-    snapshot.regions = await regions;
-    const now = this.viewSnapshot(resolved, true);
-    return now.viewId === snapshot.viewId && now.enabled === snapshot.enabled ? snapshot : this.getSnapshot(options);
+  getSnapshotAsync(asyncOptions?: ClrContextAsyncSnapshotOptions): Promise<ClrPageContext> {
+    return this.snapshotAsync(asyncOptions, false);
   }
 
   /** Registers a DOM extractor for other libraries' components. Returns a function that removes it. */
@@ -161,7 +134,7 @@ export class ClrContextEngineService implements OnDestroy {
     const ceiling = this.untrustedCeiling(budgets);
     const accessor = (options?: unknown) => {
       // The caller may ask for less than the application allows, never for more.
-      const snapshot = this.getSnapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling));
+      const snapshot = this.snapshot(capSnapshotOptions(sanitizeUntrustedSnapshotOptions(options), ceiling), true);
       const shared = shareFormValues ? snapshot : withoutFormValues(snapshot);
       return shareFullUrl ? shared : withoutUrlDetails(shared, url => this.routePattern(url), this.document.baseURI);
     };
@@ -275,20 +248,62 @@ export class ClrContextEngineService implements OnDestroy {
     });
   }
 
+  /** With `untrusted`, what application code published is cut to the state keys it marks public. */
+  private snapshot(options: ClrContextSnapshotOptions | undefined, untrusted: boolean): ClrPageContext {
+    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
+    const snapshot = this.viewSnapshot(resolved, false);
+    if (snapshot.enabled === false) {
+      return snapshot;
+    }
+    const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
+    return this.describePage(snapshot, resolved, regions, untrusted);
+  }
+
+  private async snapshotAsync(
+    asyncOptions: ClrContextAsyncSnapshotOptions | undefined,
+    untrusted: boolean
+  ): Promise<ClrPageContext> {
+    const { timeoutMs, ...options } = asyncOptions ?? {};
+    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
+    const urls = this.metadataUrls(resolved);
+    const waitMs = usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS);
+    if (urls.length) {
+      await this.metadataLoader.settle(urls, waitMs);
+    }
+    const snapshot = this.viewSnapshot(resolved, true);
+    if (snapshot.enabled === false) {
+      return snapshot;
+    }
+    // Started first, so providers work while the page is walked.
+    const regions = this.contextRegistry.collectAsync({
+      filter: this.regionFilter(resolved),
+      timeoutMs: waitMs,
+      limits: resolved,
+      untrusted,
+    });
+    this.describePage(snapshot, resolved, [], untrusted);
+    setRegions(snapshot, await regions, resolved);
+    const now = this.viewSnapshot(resolved, true);
+    return now.viewId === snapshot.viewId && now.enabled === snapshot.enabled
+      ? snapshot
+      : this.snapshot(options, untrusted);
+  }
+
   private describePage(
     snapshot: ClrPageContext,
     resolved: Required<ClrContextSnapshotOptions>,
-    regions: ClrComponentContext[]
+    regions: ClrComponentContext[],
+    untrusted: boolean
   ): ClrPageContext {
     snapshot.title = this.document.title;
     snapshot.url = this.currentUrl();
-    snapshot.regions = regions;
+    setRegions(snapshot, regions, resolved);
     if (resolved.includeRoutes && this.router?.config.length) {
       const limit = Math.max(resolved.maxItemsPerCollection, MIN_ROUTE_LIMIT);
       snapshot.availableRoutes = availableRoutes(this.router.config, limit);
     }
     if (isPlatformBrowser(this.platformId) && resolved.includeDomComponents) {
-      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors);
+      const tree = collectContextTreeWithin(this.document, resolved, this.customExtractors, untrusted);
       snapshot.components = tree.components;
       if (tree.truncated) {
         snapshot.truncated = true;
@@ -436,4 +451,17 @@ function recordOrEmpty(value: unknown): Record<string, unknown> {
 /** Whether only enabled views are read; an unrecognised `views` value reads only those, failing closed. */
 function readsEnabledViewsOnly(views: string | undefined): boolean {
   return views !== undefined && views !== 'all';
+}
+
+/** Regions are not walked, so they get a component budget of their own. */
+function setRegions(
+  snapshot: ClrPageContext,
+  regions: ClrComponentContext[],
+  options: Required<ClrContextSnapshotOptions>
+): void {
+  const budget = { remaining: options.maxComponents, truncated: false };
+  snapshot.regions = charged(regions, budget);
+  if (budget.truncated) {
+    snapshot.truncated = true;
+  }
 }

@@ -14,7 +14,8 @@ export { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 export type { ClrContextDomExtractor, ClrContextTreeResult } from './walk';
 
 /**
- * Describes everything rendered under `root` as a tree, and whether the budget ran out.
+ * Describes everything rendered under `root` as a tree, and whether the budget ran out. Internal: it skips the
+ * application's options, the enabled-views gate and registered extractors, so apps go through the engine.
  * `customExtractors` describe markup with neither a role nor an accessible name.
  */
 export function clrCollectDomContextTree(

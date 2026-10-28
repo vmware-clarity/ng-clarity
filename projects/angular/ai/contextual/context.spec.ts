@@ -16,7 +16,12 @@ import { ClrContextEngineService } from './providers/contextual-engine.service';
 @Component({
   template: `
     @if (show) {
-      <section clrContext="User management" clrContextType="section" [clrContextState]="state"></section>
+      <section
+        clrContext="User management"
+        clrContextType="section"
+        [clrContextState]="state"
+        [clrContextPublicKeys]="publicKeys"
+      ></section>
     }
     <div [clrContext]="emptyLabel"></div>
   `,
@@ -25,6 +30,7 @@ import { ClrContextEngineService } from './providers/contextual-engine.service';
 class TestComponent {
   show = true;
   state: Record<string, unknown> | null = { cluster: 'alpha' };
+  publicKeys: string[] | null = null;
   emptyLabel = '';
 }
 
@@ -47,6 +53,17 @@ describe('ClrContext directive', () => {
     const contexts = registry.collect();
 
     expect(contexts).toEqual([{ type: 'section', label: 'User management', state: { cluster: 'alpha' } }]);
+  });
+
+  it('shares with untrusted callers only the state keys it marks public', () => {
+    fixture.componentInstance.state = { cluster: 'alpha', query: 's3cr3t' };
+    fixture.detectChanges();
+    expect(registry.collect({ untrusted: true })[0].state).toEqual({ withheld: true });
+
+    fixture.componentInstance.publicKeys = ['cluster'];
+    fixture.detectChanges();
+    expect(registry.collect({ untrusted: true })[0].state).toEqual({ cluster: 'alpha', withheld: true });
+    expect(registry.collect()[0].state).toEqual({ cluster: 'alpha', query: 's3cr3t' });
   });
 
   it('reads its inputs at snapshot time', () => {

@@ -126,7 +126,7 @@ describe('ClrContextEngineService, view metadata', () => {
       spyOn(window, 'fetch').and.returnValue(new Promise<Response>(() => undefined));
       const engine = engineWith();
 
-      const snapshot = await engine.getSnapshotAsync({ ...quiet, rootSelector: '.test-page' }, 10);
+      const snapshot = await engine.getSnapshotAsync({ ...quiet, rootSelector: '.test-page', timeoutMs: 10 });
 
       expect(snapshot.metadataState).toBe('unavailable');
     });

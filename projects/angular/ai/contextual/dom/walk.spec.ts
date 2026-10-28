@@ -41,8 +41,19 @@ function types(nodes: ClrComponentContext[] | undefined): string[] {
   return (nodes ?? []).map(node => node.type);
 }
 
-describe('collectContextTree', () => {
+function all(nodes: ClrComponentContext[] | undefined): ClrComponentContext[] {
+  return (nodes ?? []).flatMap(node => [node, ...all(node.children)]);
+}
+
+describe('collectContextTreeWithin', () => {
   useContainer();
+
+  it('reports a title that differs from the name as a description', () => {
+    expect(collect('<button title="Close dialog">Cancel</button>')).toEqual([
+      { type: 'button', label: 'Cancel', state: { description: 'Close dialog' } },
+    ]);
+    expect(collect('<button title="Close dialog"></button>')).toEqual([{ type: 'button', label: 'Close dialog' }]);
+  });
 
   it('describes an element by its ARIA role', () => {
     const [node] = collect('<div role="dialog" aria-label="Add rule"></div>');
@@ -434,7 +445,7 @@ describe('collectContextTree', () => {
   });
 });
 
-describe('collectContextTree, what a summary must not hide', () => {
+describe('collectContextTreeWithin, what a summary must not hide', () => {
   useContainer();
 
   it('reports the commands a menu offers', () => {
@@ -529,6 +540,25 @@ describe('collectContextTree, what a summary must not hide', () => {
     expect(widget.children?.[1].state).toBeUndefined();
   });
 
+  it('charges published children to the component budget, leaving out excluded types', () => {
+    const tree = (depth: number): ClrComponentContext[] =>
+      Array.from({ length: 25 }, (_, index) => ({
+        type: index === 0 ? 'table' : 'row',
+        label: `Row ${index}`,
+        children: depth > 1 ? tree(depth - 1) : undefined,
+      }));
+    container.innerHTML = '<my-tree aria-label="Tree"></my-tree>';
+    publishElementContext(container.querySelector('my-tree') as Element, () => ({ type: 'tree', children: tree(3) }));
+
+    const result = collectContextTreeWithin(container, budgets({ maxComponents: 5, excludeRoles: ['table'] }));
+    const count = (nodes: ClrComponentContext[] = []): number =>
+      nodes.reduce((total, node) => total + 1 + count(node.children), 0);
+
+    expect(result.truncated).toBeTrue();
+    expect(count(result.components)).toBe(5);
+    expect(JSON.stringify(result.components)).not.toContain('"table"');
+  });
+
   it('leaves out what a component fails to publish, and says so on the console in development', () => {
     const warn = spyOn(console, 'warn');
     container.innerHTML = '<my-widget aria-label="Widget"><button>Go</button></my-widget>';
@@ -573,12 +603,29 @@ describe('collectContextTree, what a summary must not hide', () => {
     expect(collect('<div role="tooltip" style="opacity: 0">hint</div>')).toEqual([]);
   });
 
+  it('reports transparent controls, which assistive technology still reaches', () => {
+    const nodes = collect(
+      `<div class="btn-group" role="group" aria-label="View">
+         <input type="radio" id="grid" name="view" checked style="opacity: 0" /><label for="grid">Grid</label>
+         <input type="checkbox" id="wrap" style="opacity: 0" /><label for="wrap">Wrap</label>
+       </div>
+       <div class="actions" style="opacity: 0"><button>Edit row</button></div>`
+    );
+    const group = nodes.find(node => node.type === 'group');
+
+    expect(group?.children?.map(node => [node.type, node.label, node.state?.['checked']])).toEqual([
+      ['radio', 'Grid', true],
+      ['checkbox', 'Wrap', false],
+    ]);
+    expect(nodes.find(node => node.label === 'Edit row')?.type).toBe('button');
+  });
+
   it('skips an inert subtree, which a user cannot reach', () => {
     expect(collect('<div inert><button>Behind the modal</button></div>')).toEqual([]);
   });
 });
 
-describe('collectContextTree, text and frames', () => {
+describe('collectContextTreeWithin, text and frames', () => {
   useContainer();
 
   function frameWith(
@@ -800,7 +847,7 @@ describe('collectContextTree, text and frames', () => {
   });
 });
 
-describe('collectContextTreeWithin', () => {
+describe('collectContextTreeWithin, its result', () => {
   useContainer();
 
   it('says when the budget ran out before the page did', () => {
@@ -829,7 +876,7 @@ describe('collectContextTreeWithin', () => {
   });
 });
 
-describe('collectContextTree, choosing what to collect', () => {
+describe('collectContextTreeWithin, choosing what to collect', () => {
   useContainer();
 
   const PAGE = `
@@ -954,6 +1001,12 @@ describe('collectContextTree, choosing what to collect', () => {
     expect(two[1].children?.[2].children).toBeUndefined();
   });
 
+  it('marks a snapshot cut at the depth limit as truncated', () => {
+    expect(collectTree(PAGE, { maxDepth: 2 }).truncated).toBe(true);
+    expect(collectTree(PAGE, { maxDepth: 20 }).truncated).toBe(false);
+    expect(collectTree('<main><div><div></div></div></main>', { maxDepth: 1 }).truncated).toBe(false);
+  });
+
   it('describes only the open modal dialog under modal focus', () => {
     const result = collectTree(
       `${PAGE}<div role="dialog" aria-modal="true" aria-label="Add host"><input aria-label="Name" /><button>Add</button></div>`,
@@ -1045,7 +1098,7 @@ describe('collectContextTree, choosing what to collect', () => {
   });
 });
 
-describe('collectContextTree, leaving out whole kinds of content', () => {
+describe('collectContextTreeWithin, leaving out whole kinds of content', () => {
   useContainer();
 
   function collectTypes(html: string, options: ClrContextSnapshotOptions): string[] {
@@ -1081,7 +1134,7 @@ describe('collectContextTree, leaving out whole kinds of content', () => {
   });
 });
 
-describe('collectContextTree, markup it did not expect', () => {
+describe('collectContextTreeWithin, markup it did not expect', () => {
   useContainer();
 
   it('describes an element whose role or type names something every object has', () => {
@@ -1320,7 +1373,7 @@ describe('collectContextTree, markup it did not expect', () => {
   });
 });
 
-describe('collectContextTree, names, text and state an agent would otherwise miss', () => {
+describe('collectContextTreeWithin, names, text and state an agent would otherwise miss', () => {
   useContainer();
 
   it('names an icon-only button or an image link by the name its icon or image gives itself', () => {
@@ -1495,7 +1548,7 @@ describe('collectContextTree, names, text and state an agent would otherwise mis
   });
 });
 
-describe('collectContextTree, open shadow roots', () => {
+describe('collectContextTreeWithin, open shadow roots', () => {
   useContainer();
 
   /** Renders `light` into a host whose open shadow root holds `shadow`. */
@@ -1504,10 +1557,6 @@ describe('collectContextTree, open shadow roots', () => {
     const root = (container.querySelector('shadow-host') as HTMLElement).attachShadow({ mode: 'open' });
     root.innerHTML = shadow;
     return collectContextTreeWithin(container, budgets()).components;
-  }
-
-  function all(nodes: ClrComponentContext[] | undefined): ClrComponentContext[] {
-    return (nodes ?? []).flatMap(node => [node, ...all(node.children)]);
   }
 
   it('describes the controls of a form inside the shadow root', () => {
@@ -1607,12 +1656,33 @@ describe('collectContextTree, open shadow roots', () => {
       expect(JSON.stringify(nodes)).not.toContain('alice@corp');
     });
 
+    it('keeps role-bearing text in a fallback label when only other roles are excluded', () => {
+      container.innerHTML = '<my-badge>3 <span role="presentation">hosts</span> up</my-badge>';
+
+      for (const excludeRoles of [['button'], ['link']]) {
+        const nodes = all(collectContextTreeWithin(container, budgets({ excludeRoles })).components);
+
+        expect(nodes.map(node => node.label)).toContain('3 hosts up');
+      }
+    });
+
+    it('leaves only the excluded role out of a fallback label', () => {
+      inShadowOf('host-summary', '<table><tr><td>alice@corp</td></tr></table><span role="note">3 hosts up</span>');
+
+      const nodes = collectContextTreeWithin(container, budgets({ excludeRoles: ['table'] })).components;
+
+      expect(JSON.stringify(nodes)).not.toContain('alice@corp');
+      expect(all(nodes).map(node => node.label)).toContain('3 hosts up');
+    });
+
     it('hides the shadow content of an excluded host', () => {
       inShadowOf('my-card', '<input aria-label="Card number" value="4111111111111111" />', 'billing');
 
       const nodes = collectContextTreeWithin(container, budgets({ excludeSelectors: ['.billing my-card'] })).components;
+      const kept = collectContextTreeWithin(container, budgets({ excludeSelectors: ['.other my-card'] })).components;
 
-      expect(JSON.stringify(nodes)).not.toContain('4111');
+      expect(JSON.stringify(nodes)).not.toContain('Card number');
+      expect(JSON.stringify(kept)).toContain('Card number');
     });
   });
 
@@ -1654,12 +1724,16 @@ describe('collectContextTree, open shadow roots', () => {
     container.innerHTML =
       '<button><cds-icon shape="user"></cds-icon>Profile</button><cds-icon role="img" aria-label="Warning"></cds-icon>';
     for (const icon of Array.from(container.querySelectorAll('cds-icon'))) {
-      icon.attachShadow({ mode: 'open' }).innerHTML = '<style>:host { color: red; }</style><svg></svg>';
+      icon.attachShadow({ mode: 'open' }).innerHTML =
+        '<style>:host { color: red; }</style><svg></svg><span>Icon internals</span><button>Inner</button>';
     }
 
     const nodes = all(collectContextTreeWithin(container, budgets()).components);
 
+    // Read as a leaf: neither the shadow root's text nor its controls show up.
     expect(JSON.stringify(nodes)).not.toContain('color');
+    expect(JSON.stringify(nodes)).not.toContain('Icon internals');
+    expect(nodes.some(node => node.label === 'Inner')).toBeFalse();
     expect(nodes.find(node => node.type === 'button')?.label).toBe('Profile');
     expect(nodes.find(node => node.type === 'img')?.label).toBe('Warning');
   });
@@ -1668,6 +1742,7 @@ describe('collectContextTree, open shadow roots', () => {
     const nodes = all(host('<style>.x { color: red; }</style><p>Visible</p>'));
 
     expect(JSON.stringify(nodes)).not.toContain('color');
+    expect(JSON.stringify(nodes)).toContain('Visible');
   });
 });
 

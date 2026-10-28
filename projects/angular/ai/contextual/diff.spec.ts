@@ -79,6 +79,37 @@ describe('clrDiffContext', () => {
     expect(change.changed[0].before.state).toEqual({ disabled: true });
   });
 
+  it('reports an inserted sibling as one addition, without shifting the others', () => {
+    const before = page([
+      { type: 'button', label: 'Edit' },
+      { type: 'button', label: 'Delete', state: { disabled: true } },
+    ]);
+    const after = page([
+      { type: 'button', label: 'Copy' },
+      { type: 'button', label: 'Edit' },
+      { type: 'button', label: 'Delete', state: { disabled: true } },
+    ]);
+
+    const change = clrDiffContext(before, after);
+
+    expect(change.added.map(node => node.label)).toEqual(['Copy']);
+    expect(change.changed).toEqual([]);
+    expect(change.removed).toEqual([]);
+  });
+
+  it('pairs look-alikes by order, so one inserted in front reads as the last one added', () => {
+    const before = page([{ type: 'button', label: 'Delete', state: { disabled: true } }]);
+    const after = page([
+      { type: 'button', label: 'Delete' },
+      { type: 'button', label: 'Delete', state: { disabled: true } },
+    ]);
+
+    const change = clrDiffContext(before, after);
+
+    expect(change.added.map(node => node.state)).toEqual([{ disabled: true }]);
+    expect(change.changed.map(entry => entry.before.state)).toEqual([{ disabled: true }]);
+  });
+
   it('notices the route, title and annotations moving', () => {
     const change = clrDiffContext(
       page([], { url: '/hosts', title: 'Hosts', regions: [{ type: 'region', label: 'A' }] }),

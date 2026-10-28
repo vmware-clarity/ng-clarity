@@ -14,12 +14,34 @@
 
     <h2 id="quickstart" class="clr-mt-48px" cds-text="title">Quickstart</h2>
     <p class="clr-mt-16px" cds-text="body">
-      Inject the engine for a snapshot of the page now, or the tracker for the current page as it changes. There is
-      nothing to configure first.
+      Inject the engine for a snapshot of the page now, or the tracker for the current page as it changes.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="quickstartExample" language="typescript"></app-code-snippet>
     </div>
+    <p class="clr-mt-16px" cds-text="body">
+      It works without configuration, but check privacy before a snapshot leaves the page:
+    </p>
+    <ul class="list clr-mt-16px" cds-text="body">
+      <li>
+        Your application's own code gets the whole rendered page by default. That includes its text and the values in
+        its fields.
+      </li>
+      <li>
+        Before anything goes to a model, mark what must never reach it with
+        <code cds-text="code">data-clr-context-redact</code>. The element is still described, but its value and text are
+        not. Mark what the model has no need to see with <code cds-text="code">data-clr-context-ignore</code>. It is
+        left out of the snapshot entirely.
+      </li>
+      <li>
+        Once you enable <code cds-text="code">window.clrContext()</code>, any script on the page can read it, not only
+        the agent you meant it for.
+      </li>
+      <li>
+        A snapshot may contain personal data, such as names and addresses shown on the page. Handle it as you handle the
+        page's data.
+      </li>
+    </ul>
 
     <h2 id="how-it-works" class="clr-mt-48px" cds-text="title">How it describes the page</h2>
     <p class="clr-mt-16px" cds-text="body">
@@ -36,7 +58,9 @@
       <code cds-text="code">clr-side-panel</code> and a <code cds-text="code">clr-modal</code> remain distinguishable
       while both being dialogs. A component with no role of its own is a <code cds-text="code">group</code>, with its
       tag in <code cds-text="code">element</code>: <code cds-text="code">type</code> is always a role, or
-      <code cds-text="code">text</code> for prose and <code cds-text="code">frame</code> for an embedded frame.
+      <code cds-text="code">text</code> for prose and <code cds-text="code">frame</code> for an embedded frame. A
+      <code cds-text="code">role</code> attribute is read as assistive technology reads it. Its tokens match in any
+      case, and the first token that is a real ARIA role counts.
     </p>
     <p class="clr-mt-16px" cds-text="body">
       A <code cds-text="code">label</code> is the accessible name. Where an element is named by what it contains, a
@@ -49,6 +73,16 @@
       the element has, as for an icon button labelled by one.
     </p>
     <p class="clr-mt-16px" cds-text="body">
+      A button or a link takes its name from what it contains before its <code cds-text="code">title</code>. When the
+      title says something else, it is reported as the node's <code cds-text="code">state.description</code>.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      A hidden element that <code cds-text="code">aria-labelledby</code> or
+      <code cds-text="code">aria-describedby</code> points at is not read. This is deliberate. ARIA would read it, but
+      hidden text is a way to put instructions in front of a model that no user can see. Text hidden only from sight,
+      such as a <code cds-text="code">clr-sr-only</code> span, is still read.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
       A component adds only what a role cannot express — state that lives in the component instance rather than in the
       DOM, published through <code cds-text="code">publishElementContext</code>.
     </p>
@@ -58,6 +92,28 @@
       own shadow root. A marker on a slot or on an element around it applies to what the slot shows. Closed shadow roots
       cannot be read, and icons are described by their own role and name, not their internals.
     </p>
+
+    <h2 id="cost-and-limits" class="clr-mt-48px" cds-text="title">Cost and limits</h2>
+    <p class="clr-mt-16px" cds-text="body">
+      A snapshot walks the live DOM, so its cost grows with the page. Know what it cannot see:
+    </p>
+    <ul class="list clr-mt-16px" cds-text="body">
+      <li>
+        One walk reads at most 25,000 elements. A page with more is cut there, and the snapshot carries
+        <code cds-text="code">truncated: true</code>. Narrow a large page with
+        <code cds-text="code">rootSelector</code> or a smaller preset.
+      </li>
+      <li>
+        Only what is rendered can be read. Rows a virtual scroller has not rendered are invisible, and so is anything
+        drawn on a <code cds-text="code">canvas</code>, such as most charts. Publish what matters through
+        <code cds-text="code">publishElementContext</code> or an annotation.
+      </li>
+      <li>Closed shadow roots cannot be read. Open shadow roots are read.</li>
+      <li>
+        Cross-origin frames are opaque. The engine reports the frame with <code cds-text="code">crossOrigin: true</code>
+        in its state, but not what it shows. Same-origin frames are read.
+      </li>
+    </ul>
 
     <h2 id="principles" class="clr-mt-48px" cds-text="title">What it guarantees</h2>
     <p class="clr-mt-16px" cds-text="body">
@@ -96,9 +152,10 @@
       <code cds-text="code">data-clr-context-redact</code>. Every other field is reported by value to the application's
       own code, so mark what an agent should not see before a snapshot goes to a model. The browser-agent accessor is
       not given what the user entered — typed values, chosen options, ticked boxes, selected rows — unless the
-      application deliberately shares it; the application's annotations and the page's text, helper and validation text
-      included, are still shared. <code cds-text="code">withheld: true</code> marks a field whose value was withheld; an
-      empty field carries no marker, so an agent can still tell which fields are filled.
+      application deliberately shares it. The page's text is still shared, helper and validation text included. State
+      the application publishes reaches the accessor only under the keys it marks public.
+      <code cds-text="code">withheld: true</code> marks a field whose value was withheld; an empty field carries no
+      marker, so an agent can still tell which fields are filled.
     </p>
 
     <h2 id="who-it-is-for" class="clr-mt-48px" cds-text="title">Who consumes it</h2>
@@ -134,19 +191,14 @@
           </td>
           <td class="left">Route pattern and origin, empty title, unless <code cds-text="code">shareFullUrl</code></td>
         </tr>
-        <tr>
-          <td class="left">
-            Any other untrusted consumer the application serves context to, such as an embedded frame
-          </td>
-          <td class="left">Held to the same limits as the global accessor</td>
-          <td class="left">Withheld, as for the global accessor</td>
-          <td class="left">Reduced, as for the global accessor</td>
-        </tr>
       </tbody>
     </table>
     <p class="clr-mt-16px" cds-text="body">
-      Every consumer gets the page's text, its helper and error text, and the application's own
-      <code cds-text="code">clrContext</code> annotations. What is marked
+      Every consumer gets the page's text, its helper and error text, and the labels of the application's own
+      <code cds-text="code">clrContext</code> annotations. State that application code publishes is different. The
+      global accessor sees only the state keys the publisher lists in <code cds-text="code">publicKeys</code>. Every
+      other key is withheld, and the state is marked <code cds-text="code">withheld: true</code>. A key nobody listed
+      stays private, so forgetting to list one hides it rather than leaking it. What is marked
       <code cds-text="code">data-clr-context-redact</code> or
       <code cds-text="code">data-clr-context-ignore</code> reaches none of them.
     </p>
@@ -191,7 +243,9 @@
       rather than an attribute and is invisible to an observer. Both feed one quiet window of
       <code cds-text="code">debounceMs</code> (default 300), bounded by <code cds-text="code">maxWaitMs</code> (default
       2000), so a burst of activity results in a single scrape and an emission happens only when the context actually
-      changed.
+      changed. <code cds-text="code">debounceMs</code> is at least 10, so <code cds-text="code">0</code> becomes 10 and
+      a value that is not a number falls back to the default. <code cds-text="code">maxWaitMs</code> is never shorter
+      than <code cds-text="code">debounceMs</code>.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="trackerExample" language="typescript"></app-code-snippet>
@@ -222,6 +276,16 @@
     <div class="clr-mt-16px">
       <app-code-snippet [code]="directiveExample" language="html"></app-code-snippet>
     </div>
+    <p class="clr-mt-16px" cds-text="body">
+      Callers the application does not control, such as <code cds-text="code">window.clrContext()</code>, see the
+      annotation's label but only the state keys listed in <code cds-text="code">[clrContextPublicKeys]</code>. Any
+      other key is withheld, and the state is marked <code cds-text="code">withheld: true</code>. Without the input,
+      they see none of the state. The application's own code always sees all of it.
+    </p>
+    <p class="clr-mt-16px" cds-text="body">
+      The directive serialises its state on every change detection, to notice an object that was changed in place. Keep
+      the state small, and treat it as immutable: pass a new object when something changes.
+    </p>
     <p class="clr-mt-16px" cds-text="body">
       The directive is standalone, so a standalone component imports <code cds-text="code">ClrContext</code> directly:
     </p>
@@ -276,6 +340,58 @@
       <app-code-snippet [code]="aiConfigExample" language="json"></app-code-snippet>
     </div>
 
+    <h4 id="contributing" class="clr-mt-24px" cds-text="subsection">Choosing how to contribute context</h4>
+    <p class="clr-mt-16px" cds-text="body">
+      There are four ways to add to what the engine reads. All four follow the same
+      <code cds-text="code">publicKeys</code>
+      rule for callers the application does not control.
+    </p>
+    <table class="table">
+      <thead>
+        <tr>
+          <th class="left">Way</th>
+          <th class="left">Use it when</th>
+          <th class="left">Reported as</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="left">The <code cds-text="code">clrContext</code> directive</td>
+          <td class="left">
+            A template knows what a section is for, or holds a little state about it. This is the usual choice.
+          </td>
+          <td class="left">A region, with <code cds-text="code">[clrContextPublicKeys]</code></td>
+        </tr>
+        <tr>
+          <td class="left">
+            A <code cds-text="code">ClrContextProvider</code> registered with
+            <code cds-text="code">ClrContextRegistryService</code>
+          </td>
+          <td class="left">
+            The knowledge lives in a service rather than a template, or has to be fetched. A provider may answer with a
+            promise.
+          </td>
+          <td class="left">A region, with <code cds-text="code">publicKeys</code></td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">publishElementContext</code></td>
+          <td class="left">
+            A component holds state its markup cannot show. It needs only
+            <code cds-text="code">&#64;clr/angular/utils</code>, so a component library can publish without depending on
+            the engine.
+          </td>
+          <td class="left">Merged into its host element's node, with <code cds-text="code">publicKeys</code></td>
+        </tr>
+        <tr>
+          <td class="left"><code cds-text="code">registerDomExtractor</code></td>
+          <td class="left">
+            Markup you do not own carries no role or name, and you cannot change it to publish anything.
+          </td>
+          <td class="left">Replaces the matched element's node, with <code cds-text="code">publicKeys</code></td>
+        </tr>
+      </tbody>
+    </table>
+
     <h3 id="form-context" class="clr-mt-32px" cds-text="section">Reading form context</h3>
     <p class="clr-mt-16px" cds-text="body">
       A field is described by what it is, what it permits and what it currently holds: its label and type, the
@@ -300,14 +416,27 @@
 
     <h3 id="element-context" class="clr-mt-32px" cds-text="section">State the DOM cannot show</h3>
     <p class="clr-mt-16px" cds-text="body">
-      Some state lives only inside component instances — a combobox's options render in a popover, yet the component
-      always knows them. Any component can publish that truth with
-      <code cds-text="code">publishElementContext</code> from <code cds-text="code">&#64;clr/angular/utils</code>. The
-      collector calls it while scraping and merges the result over what the DOM showed.
+      Some state lives only inside component instances, where the DOM does not show it. Any component can publish that
+      truth with <code cds-text="code">publishElementContext</code> from
+      <code cds-text="code">&#64;clr/angular/utils</code>. The collector calls it while scraping and merges the result
+      over what the DOM showed.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="elementContextExample" language="typescript"></app-code-snippet>
     </div>
+    <p class="clr-mt-16px" cds-text="body">
+      What a component publishes is a <code cds-text="code">ClrPublishedContext</code>: a
+      <code cds-text="code">ClrComponentContext</code> with an optional <code cds-text="code">publicKeys</code> list.
+      The application's own code sees all of the state. Callers it does not control, such as
+      <code cds-text="code">window.clrContext()</code>, see only the state keys listed in
+      <code cds-text="code">publicKeys</code>. Any other key is withheld, and the state is marked
+      <code cds-text="code">withheld: true</code>. This fails closed: a key you forget to list is hidden, not shared.
+      Values the engine derives itself, such as what the user typed or selected, stay withheld from those callers unless
+      the application sets <code cds-text="code">shareFormValues</code>. On a page element, that includes the keys the
+      engine uses for them, such as <code cds-text="code">value</code> and <code cds-text="code">selected</code>, even
+      when you list them. The same rule applies to what a <code cds-text="code">ClrContextProvider</code> returns and to
+      what an extractor returns.
+    </p>
 
     <h3 id="other-ui-libraries" class="clr-mt-32px" cds-text="section">Markup that carries no semantics</h3>
     <p class="clr-mt-16px" cds-text="body">
@@ -336,6 +465,11 @@
       <code cds-text="code">window</code>, so a script cannot replace it by assigning to it;
       <code cds-text="code">disableGlobalAccess()</code> removes it.
     </p>
+    <p class="clr-mt-16px" cds-text="body">
+      The property stays configurable so that it can be removed. That also means another script on the page can redefine
+      it. An agent cannot trust what <code cds-text="code">window.clrContext()</code> returns from inside the page if
+      other scripts there may have replaced it.
+    </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="globalAccessExample" language="typescript"></app-code-snippet>
     </div>
@@ -345,7 +479,8 @@
       Everything in a snapshot is bounded, and every budget can be tuned per call. Note that
       <code cds-text="code">maxComponents</code> stops the walk when it is reached, so a low value drops whatever comes
       last in the document rather than sampling evenly — and the snapshot then carries
-      <code cds-text="code">truncated: true</code>.
+      <code cds-text="code">truncated: true</code>. A snapshot cut at <code cds-text="code">maxDepth</code> carries it
+      too.
     </p>
     <div class="clr-mt-16px">
       <app-code-snippet [code]="budgetsExample" language="typescript"></app-code-snippet>
@@ -423,13 +558,6 @@
         Mark regions of user-written content <code cds-text="code">data-clr-context-ignore</code> when the model has no
         need to read them, and <code cds-text="code">data-clr-context-redact</code> when their values must not leave the
         page.
-      </li>
-      <li>
-        A combobox of your own whose popover lists only the options matching what the user typed tells every consumer
-        what was typed through those options. Mark the popover <code cds-text="code">data-clr-context-ignore</code> and
-        publish the options through <code cds-text="code">publishElementContext</code> as
-        <code cds-text="code">matchingOptions</code> (or <code cds-text="code">matchingOptionCount</code>), which the
-        engine withholds from consumers you do not control; a key of your own is shared with them.
       </li>
     </ul>
   </app-doc-tab>
