@@ -38,6 +38,9 @@ export const CLR_CONTEXT_OPTIONS: InjectionToken<ClrContextSnapshotOptions>;
 export const CLR_CONTEXT_PRESETS: Readonly<Record<ClrContextPreset, Readonly<ClrContextSnapshotOptions>>>;
 
 // @public
+export const CLR_CONTEXT_PROTOCOL = "ui-context/v1";
+
+// @public
 export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 
 // @public
@@ -301,17 +304,54 @@ export interface ClrContextDomExtractor {
 
 // @public
 export class ClrContextEngineService implements OnDestroy {
+    disableFrameBridge(): void;
     disableGlobalAccess(): void;
+    enableFrameBridge(options?: ClrContextFrameHostOptions): void;
     enableGlobalAccess(propertyName?: string, hostOptions?: ClrContextGlobalAccessOptions): void;
     getSnapshot(options?: ClrContextSnapshotOptions): ClrPageContext;
     getSnapshotAsync(asyncOptions?: ClrContextAsyncSnapshotOptions): Promise<ClrPageContext>;
     // (undocumented)
     ngOnDestroy(): void;
     registerDomExtractor(extractor: ClrContextDomExtractor): () => void;
+    requestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrContextEngineService, never>;
     // (undocumented)
     static ɵprov: i0.ɵɵInjectableDeclaration<ClrContextEngineService>;
+}
+
+// @public
+export interface ClrContextFrameHostOptions {
+    allowAnyOrigin?: boolean;
+    allowedOrigins?: string[];
+    minRequestIntervalMs?: number;
+    shareFormValues?: boolean;
+    shareFullUrl?: boolean;
+    snapshot?: ClrContextSnapshotOptions;
+}
+
+// @public
+export interface ClrContextFrameRequest {
+    kind: 'context-request';
+    options?: ClrContextSnapshotOptions;
+    protocol: typeof CLR_CONTEXT_PROTOCOL;
+    requestId: string;
+}
+
+// @public
+export interface ClrContextFrameRequestOptions {
+    hostOrigin?: string;
+    options?: ClrContextSnapshotOptions;
+    targetWindow?: Window;
+    timeoutMs?: number;
+}
+
+// @public
+export interface ClrContextFrameResponse {
+    context: ClrPageContext;
+    kind: 'context-response';
+    protocol: typeof CLR_CONTEXT_PROTOCOL;
+    requestId: string;
 }
 
 // @public
@@ -438,6 +478,9 @@ export interface ClrPublishedContext extends ClrComponentContext {
     children?: ClrPublishedContext[];
     publicKeys?: readonly string[];
 }
+
+// @public
+export function clrRequestHostContext(options?: ClrContextFrameRequestOptions): Promise<ClrPageContext | null>;
 
 // @public
 export interface ClrRouteContext {
