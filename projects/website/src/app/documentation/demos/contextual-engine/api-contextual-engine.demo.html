@@ -4,7 +4,7 @@
   ~ This software is released under MIT license.
   ~ The full license information can be found in LICENSE in the root directory of this project.
   -->
-<h2 id="summary-of-options" cds-text="title" class="clr-mt-24px">Services</h2>
+<h2 id="services" cds-text="title" class="clr-mt-24px">Services</h2>
 
 <h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrContextEngineService</code></h3>
 <p class="clr-mt-16px" cds-text="body">
@@ -28,13 +28,17 @@
       </td>
     </tr>
     <tr>
-      <td class="left"><b cds-text="medium">getSnapshotAsync(options?, timeoutMs?)</b></td>
+      <td class="left"><b cds-text="medium">getSnapshotAsync(options?)</b></td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">Promise&lt;ClrPageContext&gt;</code></td>
       <td class="left">
         Like <code cds-text="code">getSnapshot</code>, but waits for providers that answer with a promise, for up to
-        <code cds-text="code">timeoutMs</code> (2 seconds by default). A provider that rejects or does not answer in
-        time is reported as a region of type <code cds-text="code">'clr-unavailable'</code>. When the view changes while
-        providers answer, the new view is described instead.
+        <code cds-text="code">timeoutMs</code> (2 seconds by default). <code cds-text="code">options</code> is a
+        <code cds-text="code">ClrContextAsyncSnapshotOptions</code>: the snapshot options plus
+        <code cds-text="code">timeoutMs</code>, as in
+        <code cds-text="code">getSnapshotAsync(&#123; maxComponents: 50, timeoutMs: 500 &#125;)</code>. A provider that
+        rejects or does not answer in time is reported as a region of type
+        <code cds-text="code">'clr-unavailable'</code>. When the view changes while providers answer, the new view is
+        described instead.
       </td>
     </tr>
     <tr>
@@ -44,7 +48,9 @@
         Teaches the collector about markup that carries neither an ARIA role nor an accessible name. Returns a function
         that removes it again. The extractor's node stands for the whole element: nothing inside it is walked, so only
         the <code cds-text="code">children</code> it returns are reported, and the node has no
-        <code cds-text="code">element</code> unless it sets one.
+        <code cds-text="code">element</code> unless it sets one. It returns a
+        <code cds-text="code">ClrPublishedContext</code>, so callers the application does not control see only the state
+        keys it lists in <code cds-text="code">publicKeys</code>.
       </td>
     </tr>
     <tr>
@@ -94,11 +100,15 @@
         links to the application to the pattern they match, links elsewhere and frames to their origin,
         <code cds-text="code">mailto:</code> links to their scheme — and the document title withheld — the page's, and a
         frame's <code cds-text="code">state.title</code> — unless <code cds-text="code">shareFullUrl</code> is set. The
-        application's own <code cds-text="code">clrContext</code> annotations are shared as they are. Descriptions —
-        helper and validation text — are still shared: keep what they say free of the value, or mark the field
-        <code cds-text="code">data-clr-context-redact</code>. The accessor is a read-only property of
-        <code cds-text="code">window</code>: assigning to it does not replace it. It stays configurable so that
-        <code cds-text="code">disableGlobalAccess()</code> can remove it.
+        labels of the application's own <code cds-text="code">clrContext</code> annotations are shared. State that
+        application code publishes is shared only under the keys its publisher lists in
+        <code cds-text="code">publicKeys</code>; any other key is withheld and the state marked
+        <code cds-text="code">withheld: true</code>. Descriptions — helper and validation text — are still shared: keep
+        what they say free of the value, or mark the field <code cds-text="code">data-clr-context-redact</code>. The
+        accessor is a read-only property of <code cds-text="code">window</code>: assigning to it does not replace it. It
+        stays configurable so that <code cds-text="code">disableGlobalAccess()</code> can remove it. Another script can
+        therefore redefine it, so an agent cannot trust it from inside the page if other scripts there may have replaced
+        it.
       </td>
     </tr>
     <tr>
@@ -161,7 +171,10 @@
         <code cds-text="code">change</code> for typing. Calling it again restarts with the new options. Each snapshot
         walks the page, taken once the page has been quiet for <code cds-text="code">debounceMs</code> and at most every
         <code cds-text="code">maxWaitMs</code> while it keeps changing; on a large page, narrow it with
-        <code cds-text="code">rootSelector</code> or a smaller preset.
+        <code cds-text="code">rootSelector</code> or a smaller preset. <code cds-text="code">debounceMs</code> (default
+        300) is at least 10: <code cds-text="code">0</code> becomes 10 and a value that is not a number falls back to
+        the default. <code cds-text="code">maxWaitMs</code> (default 2000) is never shorter than
+        <code cds-text="code">debounceMs</code>.
       </td>
     </tr>
     <tr>
@@ -197,7 +210,9 @@
   is not asked for again; a rejected or late one is reported as a region of type
   <code cds-text="code">'clr-unavailable'</code> (<code cds-text="code">CLR_CONTEXT_UNAVAILABLE_TYPE</code>). Only
   <code cds-text="code">type</code>, <code cds-text="code">element</code>, <code cds-text="code">label</code>,
-  <code cds-text="code">state</code> and <code cds-text="code">children</code> are kept from an answer.
+  <code cds-text="code">state</code> and <code cds-text="code">children</code> are kept from an answer. A provider
+  answers with a <code cds-text="code">ClrPublishedContext</code>: callers the application does not control see only the
+  state keys it lists in <code cds-text="code">publicKeys</code>.
 </p>
 <table class="table">
   <thead>
@@ -262,7 +277,18 @@
       <td class="left clr-hidden-xs-down">Object</td>
       <td class="left clr-hidden-xs-down"><code cds-text="code">null</code></td>
       <td class="left">
-        Application state worth knowing, read at snapshot time rather than stored, so it is never out of date.
+        Application state worth knowing, read at snapshot time rather than stored, so it is never out of date. It is
+        serialised on every change detection: keep it small and treat it as immutable.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">[clrContextPublicKeys]</b></td>
+      <td class="left clr-hidden-xs-down">String[]</td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">null</code></td>
+      <td class="left">
+        The state keys callers the application does not control, such as
+        <code cds-text="code">window.clrContext()</code>, may see. Every other key is withheld from them, and the state
+        is marked <code cds-text="code">withheld: true</code>. Without it they see none of the state.
       </td>
     </tr>
   </tbody>
@@ -429,7 +455,10 @@
     <tr>
       <td class="left"><b cds-text="medium">maxDepth</b></td>
       <td class="left clr-hidden-xs-down">0 (unlimited)</td>
-      <td class="left">Deepest nesting of described nodes, counted from the top.</td>
+      <td class="left">
+        Deepest nesting of described nodes, counted from the top. A snapshot cut here carries
+        <code cds-text="code">truncated: true</code>.
+      </td>
     </tr>
     <tr>
       <td class="left"><b cds-text="medium">focus</b></td>
@@ -618,9 +647,9 @@
       <td class="left clr-hidden-xs-down">Boolean</td>
       <td class="left">
         Present and <code cds-text="code">true</code> when something was left out for size: the
-        <code cds-text="code">maxComponents</code> budget ran out, a grid holds controls in more cells than
-        <code cds-text="code">maxItemsPerCollection</code> lists, or the page nests deeper than 512 elements or holds
-        more than 25,000 for one walk to read.
+        <code cds-text="code">maxComponents</code> budget ran out, <code cds-text="code">maxDepth</code> cut nodes, a
+        grid holds controls in more cells than <code cds-text="code">maxItemsPerCollection</code> lists, or the page
+        nests deeper than 512 elements or holds more than 25,000 for one walk to read.
       </td>
     </tr>
     <tr>
@@ -686,7 +715,9 @@
         <code cds-text="code">live</code>, <code cds-text="code">roleDescription</code>,
         <code cds-text="code">redacted</code> where a value is never reported, and
         <code cds-text="code">withheld</code> on a field whose value a consumer the application does not control was not
-        given (an empty field carries no marker).
+        given (an empty field carries no marker), or on published state with keys that were not marked public. A
+        <code cds-text="code">title</code> that differs from the name is reported as
+        <code cds-text="code">description</code>.
       </td>
     </tr>
     <tr>
@@ -721,7 +752,8 @@
       <td class="left">
         Publishes a callback on the host element, returning the teardown to run on destroy. The teardown removes only
         the callback it published, so republishing is safe. What a component publishes wins over what the markup showed
-        — except a value the engine withheld as sensitive, which is removed again.
+        — except a value the engine withheld as sensitive, which is removed again. The callback returns a
+        <code cds-text="code">ClrPublishedContext</code>.
       </td>
     </tr>
     <tr>
@@ -754,20 +786,52 @@
   </tbody>
 </table>
 
+<h3 cds-text="section" class="clr-mt-32px"><code cds-text="code">ClrPublishedContext</code></h3>
+<p class="clr-mt-16px" cds-text="body">
+  What application code publishes: a <code cds-text="code">ClrComponentContext</code> plus one field. It is exported
+  from <code cds-text="code">&#64;clr/angular/utils</code> and re-exported from
+  <code cds-text="code">&#64;clr/angular/ai</code>. <code cds-text="code">publishElementContext</code> callbacks,
+  <code cds-text="code">registerDomExtractor</code> extractors and
+  <code cds-text="code">ClrContextProvider.getClrContext()</code> all return it.
+</p>
+<table class="table">
+  <thead>
+    <tr>
+      <th class="left">Property</th>
+      <th class="left clr-hidden-xs-down">Type</th>
+      <th class="left">Description</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td class="left"><b cds-text="medium">publicKeys</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">readonly string[]</code></td>
+      <td class="left">
+        The state keys callers the application does not control may see. Default none. Every other key is withheld from
+        them, and the state is marked <code cds-text="code">withheld: true</code>.
+      </td>
+    </tr>
+    <tr>
+      <td class="left"><b cds-text="medium">children</b></td>
+      <td class="left clr-hidden-xs-down"><code cds-text="code">ClrPublishedContext[]</code></td>
+      <td class="left">Each child lists its own <code cds-text="code">publicKeys</code>.</td>
+    </tr>
+  </tbody>
+</table>
+
 <h2 id="published-state" cds-text="title" class="clr-mt-48px">Published values</h2>
 <p class="clr-mt-16px" cds-text="body">
-  Keys a publisher reports as values — <code cds-text="code">value</code>, <code cds-text="code">selection</code>,
-  <code cds-text="code">rows</code>, <code cds-text="code">filteredColumns</code>,
-  <code cds-text="code">hiddenColumns</code>, <code cds-text="code">fileCount</code>,
-  <code cds-text="code">matchingOptions</code>, <code cds-text="code">redactedMatchingOptions</code>,
-  <code cds-text="code">matchingOptionsPending</code> and <code cds-text="code">matchingOptionCount</code> — are
-  withheld from embedded frames and the global accessor unless the application shares form values, and so is the state
-  any node reads from the accessibility tree to say what the user chose: <code cds-text="code">selected</code>,
-  <code cds-text="code">checked</code>, <code cds-text="code">pressed</code> and
-  <code cds-text="code">selectedRows</code>. <code cds-text="code">withheld: true</code> marks a field whose value was
+  The application's own code sees every state key that is published. Callers it does not control, such as embedded
+  frames and the global accessor, see only the keys the publisher lists in <code cds-text="code">publicKeys</code>. This
+  fails closed: a key nobody listed stays private. Values the engine derives to say what the user entered or chose stay
+  withheld from those callers as well, unless the application shares form values. These are
+  <code cds-text="code">value</code>, <code cds-text="code">selected</code>, <code cds-text="code">checked</code>,
+  <code cds-text="code">pressed</code>, <code cds-text="code">selection</code> and
+  <code cds-text="code">selectedRows</code> on any node, and <code cds-text="code">rows</code>,
+  <code cds-text="code">filteredColumns</code>, <code cds-text="code">hiddenColumns</code> and
+  <code cds-text="code">fileCount</code>. <code cds-text="code">withheld: true</code> marks a field whose value was
   withheld; an empty field (an empty string, <code cds-text="code">null</code>, an empty list) carries no marker. A
-  choice such as an unticked box, or a count of zero, is a value and is marked. A key of a publisher's own is shared as
-  it is.
+  choice such as an unticked box, or a count of zero, is a value and is marked.
 </p>
 
 <h2 id="lower-level" cds-text="title" class="clr-mt-48px">Lower-level helpers</h2>
@@ -779,23 +843,6 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td class="left">
-        <b cds-text="medium">clrCollectDomContextTree(root, options?, extractors?)</b>
-      </td>
-      <td class="left">
-        The walk the engine runs, over any part of a page: the tree, with whether a budget ran out. For tests and
-        tooling that describe markup outside an application.
-      </td>
-    </tr>
-    <tr>
-      <td class="left"><b cds-text="medium">ClrContextTreeResult</b></td>
-      <td class="left">
-        What <code cds-text="code">clrCollectDomContextTree</code> returns: the <code cds-text="code">components</code>,
-        whether a budget ran out (<code cds-text="code">truncated</code>), and <code cds-text="code">focus</code> when
-        the walk was narrowed to the open modal.
-      </td>
-    </tr>
     <tr>
       <td class="left"><b cds-text="medium">clrRequestHostContext(options?)</b></td>
       <td class="left">
@@ -809,8 +856,9 @@
     <tr>
       <td class="left"><b cds-text="medium">ClrContextRegionFilter</b></td>
       <td class="left">
-        The filter <code cds-text="code">ClrContextRegistryService.collect(filter?)</code> takes: for the element a
-        region is anchored to (or <code cds-text="code">null</code>), whether to <code cds-text="code">keep</code> it,
+        The <code cds-text="code">filter</code>
+        <code cds-text="code">ClrContextRegistryService.collect(options?)</code> takes: for the element a region is
+        anchored to (or <code cds-text="code">null</code>), whether to <code cds-text="code">keep</code> it,
         <code cds-text="code">drop</code> it or <code cds-text="code">redact</code> its state.
       </td>
     </tr>

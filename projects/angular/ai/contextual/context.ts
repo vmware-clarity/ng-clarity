@@ -9,7 +9,7 @@ import { Directive, DoCheck, ElementRef, inject, Input, OnDestroy, OnInit } from
 import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
 
 import { closestAcrossShadow } from './dom/shadow';
-import { ClrComponentContext, ClrContextProvider } from './interfaces/context.interface';
+import { ClrContextProvider, ClrPublishedContext } from './interfaces/context.interface';
 import { ClrContextRegistryService } from './providers/context-registry.service';
 
 /**
@@ -28,11 +28,12 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
   @Input('clrContextType') type = 'region';
   /** Current application state an agent should know about, as a small serializable object. */
   @Input('clrContextState') state: Record<string, unknown> | null = null;
+  /** State keys untrusted callers (`window.clrContext()`, frames) may see; every other key is withheld. */
+  @Input('clrContextPublicKeys') publicKeys: readonly string[] | null = null;
 
   private lastReported = '';
   private readonly host: ElementRef<Element> | null = inject(ElementRef, { optional: true });
-
-  constructor(private readonly contextRegistry: ClrContextRegistryService) {}
+  private readonly contextRegistry = inject(ClrContextRegistryService);
 
   ngOnInit(): void {
     this.lastReported = this.serialized();
@@ -58,21 +59,24 @@ export class ClrContext implements OnInit, DoCheck, OnDestroy, ClrContextProvide
   }
 
   /** The context this element publishes, or `null` when it is ignored. */
-  getClrContext(): ClrComponentContext | null {
+  getClrContext(): ClrPublishedContext | null {
     const serialized = this.serialized();
     return serialized ? JSON.parse(serialized) : null;
   }
 
-  private annotation(): ClrComponentContext | null {
+  private annotation(): ClrPublishedContext | null {
     if (!this.label && !this.state) {
       return null;
     }
-    const context: ClrComponentContext = { type: this.type };
+    const context: ClrPublishedContext = { type: this.type };
     if (this.label) {
       context.label = this.label;
     }
     if (this.state && Object.keys(this.state).length) {
       context.state = this.state;
+    }
+    if (this.publicKeys?.length) {
+      context.publicKeys = this.publicKeys;
     }
     return context;
   }

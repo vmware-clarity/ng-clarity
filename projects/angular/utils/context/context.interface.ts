@@ -19,6 +19,17 @@ export interface ClrComponentContext {
   children?: ClrComponentContext[];
 }
 
+/**
+ * Context that application code publishes. Its state is shared only with trusted callers, except the keys
+ * listed in `publicKeys`, which untrusted ones (`window.clrContext()`, embedded frames) see too.
+ */
+export interface ClrPublishedContext extends ClrComponentContext {
+  /** State keys untrusted callers may see; every other key is withheld from them. Default none. */
+  publicKeys?: readonly string[];
+  /** Nested contexts, each listing its own public keys. */
+  children?: ClrPublishedContext[];
+}
+
 /** Kinds of content a snapshot can leave out wholesale; each expands to the ARIA roles it covers. */
 export type ClrContextCategory =
   'layout' | 'actions' | 'forms' | 'headings' | 'collections' | 'dialogs' | 'status' | 'images' | 'text' | 'frames';

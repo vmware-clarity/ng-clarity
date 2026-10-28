@@ -35,6 +35,12 @@ describe('accessibleName', () => {
     expect(nameOf('<button><span aria-hidden="true" aria-label="Hidden"></span>Go</button>', 'button')).toBe('Go');
   });
 
+  it('names from contents before `title`, and from `title` only when the contents say nothing', () => {
+    expect(nameOf('<button title="Close dialog">Cancel</button>', 'button')).toBe('Cancel');
+    expect(nameOf('<a href="/docs" title="Opens docs">Docs</a>', 'a')).toBe('Docs');
+    expect(nameOf('<button title="Close dialog"></button>', 'button')).toBe('Close dialog');
+  });
+
   it('does not follow two elements that name each other round and round', () => {
     expect(
       nameOf(

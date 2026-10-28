@@ -27,6 +27,9 @@ describe('visibility', () => {
     ['inside display: none', '<div style="display: none"><span id="target">x</span></div>', false],
     ['visibility: hidden', '<span id="target" style="visibility: hidden">x</span>', false],
     ['inside a transparent ancestor', '<div style="opacity: 0"><span id="target">x</span></div>', false],
+    ['a transparent control', '<input id="target" type="radio" style="opacity: 0" />', true],
+    ['a control inside a transparent ancestor', '<div style="opacity: 0"><button id="target">x</button></div>', true],
+    ['a transparent ancestor of a control', '<div id="target" style="opacity: 0"><button>x</button></div>', true],
     ['a display: contents wrapper', '<div id="target" style="display: contents"><span>x</span></div>', true],
     [
       'a display: contents wrapper inside display: none',

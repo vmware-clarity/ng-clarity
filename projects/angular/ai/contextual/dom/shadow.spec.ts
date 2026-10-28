@@ -5,9 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
+import { withinReadScope } from './read-scope';
 import {
   closestAcrossShadow,
   containsAcrossShadow,
+  hasRendered,
   idScope,
   openShadowRoots,
   parentAcrossShadow,
@@ -118,5 +120,27 @@ describe('shadow DOM helpers', () => {
 
     expect(queryRendered(root.querySelector('.list') as Element, 'b').length).toBe(2);
     expect(queryRendered(container, 'b').length).toBe(2);
+  });
+
+  it('answers for light DOM with one plain query', () => {
+    container.innerHTML = '<div><slot></slot><i></i></div>';
+    const queries = spyOn(Element.prototype, 'querySelectorAll').and.callThrough();
+
+    expect(hasRendered(container, 'b')).toBeFalse();
+    expect(queryRendered(container, 'i').length).toBe(1);
+    expect(queries.calls.allArgs().map(([selector]) => selector)).not.toContain('slot');
+  });
+
+  it('does not scan below an element whose scanned ancestor has no shadow root', () => {
+    container.innerHTML = '<div><div><div><b></b></div></div></div>';
+    const deepest = container.querySelector('b') as Element;
+
+    withinReadScope(() => {
+      expect(openShadowRoots(container)).toEqual([]);
+      const scans = spyOn(Element.prototype, 'querySelectorAll').and.callThrough();
+
+      expect(openShadowRoots(deepest)).toEqual([]);
+      expect(scans).not.toHaveBeenCalled();
+    });
   });
 });
