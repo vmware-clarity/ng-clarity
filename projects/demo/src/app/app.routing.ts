@@ -37,6 +37,10 @@ export const APP_ROUTES: Routes = [
     loadChildren: () => import('./combobox/combobox.demo.module').then(m => m.ComboboxDemoModule),
   },
   {
+    path: 'contextual',
+    loadChildren: () => import('./contextual/contextual.demo.module').then(m => m.ContextualDemoModule),
+  },
+  {
     path: 'custom-props',
     loadChildren: () => import('./custom-props/custom-props.demo.module').then(m => m.CustomPropsDemoModule),
   },
