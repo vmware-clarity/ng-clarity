@@ -47,6 +47,7 @@ import {
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
   ClrLoadingState,
+  ClrPublishedContext,
   contextText,
   FOCUS_SERVICE_PROVIDER,
   IF_ACTIVE_ID_PROVIDER,
@@ -601,10 +602,7 @@ export class ClrCombobox<T>
   }
 
   /** What the combobox publishes beyond its ARIA: the selection and, while there are options, the option list. */
-  private describeForContext(snapshotOptions?: ClrContextSnapshotOptions): {
-    type: string;
-    state: Record<string, unknown>;
-  } {
+  private describeForContext(snapshotOptions?: ClrContextSnapshotOptions): ClrPublishedContext {
     const maxItems = snapshotOptions?.maxItemsPerCollection ?? CLR_CONTEXT_DEFAULT_MAX_ITEMS;
     const excluded = this.excludedBy(snapshotOptions);
     const state: Record<string, unknown> = { multiSelect: this.multiSelect };
@@ -639,7 +637,16 @@ export class ClrCombobox<T>
       }
     }
     state.value = this.selectedLabels(excluded);
-    return { type: 'combobox', state };
+    // Not the matching options or the value: they say what the user typed or chose.
+    const publicKeys = [
+      'multiSelect',
+      'options',
+      'redactedOptions',
+      'optionCount',
+      'optionsAvailable',
+      'optionsPending',
+    ];
+    return { type: 'combobox', state, publicKeys };
   }
 
   /**

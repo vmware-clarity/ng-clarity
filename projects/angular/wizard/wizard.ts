@@ -350,6 +350,7 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
             navigable: page.enabled,
           })),
         },
+        publicKeys: ['stepCount', 'currentStepIndex', 'steps'],
       };
     });
 

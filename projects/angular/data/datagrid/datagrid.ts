@@ -37,6 +37,7 @@ import {
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
   ClrContextSnapshotOptions,
+  ClrPublishedContext,
   contextText,
   publishElementContext,
   uniqueIdFactory,
@@ -685,7 +686,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
   }
 
   /** What the grid publishes beyond its ARIA: the total, the rows and selection, filters and hidden columns. */
-  private describeForContext(snapshotOptions?: ClrContextSnapshotOptions): { state: Record<string, unknown> } | null {
+  private describeForContext(snapshotOptions?: ClrContextSnapshotOptions): Partial<ClrPublishedContext> | null {
     const state: Record<string, unknown> = {};
     const excluded = this.excludedBy(snapshotOptions);
 
@@ -741,7 +742,8 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
       state.hiddenColumns = hidden;
     }
 
-    return Object.keys(state).length ? { state } : null;
+    // Rows, selection and filters say what the user chose, so callers the app does not control see none of them.
+    return Object.keys(state).length ? { state, publicKeys: ['totalRows', 'selectionMode'] } : null;
   }
 
   /** Not named when kept out or when its header text is withheld: the field would name what is withheld. */

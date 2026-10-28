@@ -107,6 +107,7 @@ export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     // has not emitted yet between init and first render.
     this.teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => ({
       state: { status: this.currentStatus() },
+      publicKeys: ['status'],
     }));
     this.panel = this.panel.pipe(tap(panel => this.triggerAllFormControlValidationIfError(panel)));
     this.stepperService.disablePanel(this.id, true);
