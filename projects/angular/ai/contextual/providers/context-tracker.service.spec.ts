@@ -311,6 +311,15 @@ describe('ClrContextTrackerService', () => {
       expect(tracker.isTracking).toBeFalse();
     });
 
+    it('keeps tracking that was started by hand after a subscriber leaves', () => {
+      const subscription = tracker.track().subscribe();
+      tracker.start();
+
+      subscription.unsubscribe();
+
+      expect(tracker.isTracking).toBeTrue();
+    });
+
     it('stops when the last subscriber leaves, even when the first snapshot failed', () => {
       const handleError = spyOn(TestBed.inject(ErrorHandler), 'handleError');
       const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshot').and.throwError('boom');

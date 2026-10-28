@@ -102,27 +102,13 @@ export class ClrContextTrackerService implements OnDestroy {
     this.changesSubject.complete();
   }
 
-  /** Starts tracking with an immediate snapshot. Calling it again restarts with the new options. */
+  /**
+   * Starts tracking with an immediate snapshot. Calling it again restarts with the new options. Tracking
+   * started here runs until `stop`, even after the last `track()` subscriber leaves.
+   */
   start(options: ClrContextTrackingOptions = {}): void {
-    if (!isPlatformBrowser(this.platformId)) {
-      return;
-    }
-    this.stop();
-    this.tracking = true;
-    this.trackingOptions = options;
-    this.latest = null;
-    this.latestSerialized = null;
-    // Outside the zone: zone.js patches MutationObserver and would run change detection on every batch.
-    this.zone.runOutsideAngular(() => {
-      this.observer = this.observeDocument(this.document);
-      this.observeShadowRootsIn(this.document);
-      this.observeFrames();
-
-      this.stopListeningForValues = listenForValues(this.document.body, event => this.onValueChange(event));
-
-      this.registrySubscription = this.contextRegistry.changes$.subscribe(() => this.scheduleScrape());
-    });
-    this.refresh();
+    this.sharedStarted = false;
+    this.begin(options);
   }
 
   /**
@@ -136,7 +122,7 @@ export class ClrContextTrackerService implements OnDestroy {
       }
       if (options || !this.tracking) {
         try {
-          this.start(options);
+          this.begin(options);
         } catch (error) {
           this.errorHandler.handleError(error);
         }
@@ -191,6 +177,28 @@ export class ClrContextTrackerService implements OnDestroy {
     } else {
       this.zone.runOutsideAngular(() => this.scrape(true));
     }
+  }
+
+  private begin(options: ClrContextTrackingOptions = {}): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    this.stop();
+    this.tracking = true;
+    this.trackingOptions = options;
+    this.latest = null;
+    this.latestSerialized = null;
+    // Outside the zone: zone.js patches MutationObserver and would run change detection on every batch.
+    this.zone.runOutsideAngular(() => {
+      this.observer = this.observeDocument(this.document);
+      this.observeShadowRootsIn(this.document);
+      this.observeFrames();
+
+      this.stopListeningForValues = listenForValues(this.document.body, event => this.onValueChange(event));
+
+      this.registrySubscription = this.contextRegistry.changes$.subscribe(() => this.scheduleScrape());
+    });
+    this.refresh();
   }
 
   private emit(snapshot: ClrPageContext, serialized: string | null = serializeSnapshot(snapshot)): void {
