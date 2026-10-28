@@ -76,23 +76,8 @@ export class ClrContextEngineService implements OnDestroy {
    * Like {@link getSnapshot}, awaiting asynchronous providers for up to `timeoutMs` each (2 seconds by
    * default). When the view changes while they answer, the new view is snapshotted instead.
    */
-  async getSnapshotAsync(asyncOptions?: ClrContextAsyncSnapshotOptions): Promise<ClrPageContext> {
-    const { timeoutMs, ...options } = asyncOptions ?? {};
-    const snapshot = this.viewSnapshot();
-    if (snapshot.enabled === false) {
-      return snapshot;
-    }
-    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
-    // Started first, so providers work while the page is walked.
-    const regions = this.contextRegistry.collectAsync({
-      filter: this.regionFilter(resolved),
-      timeoutMs: usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
-      limits: resolved,
-    });
-    this.describePage(snapshot, resolved, [], false);
-    setRegions(snapshot, await regions, resolved);
-    const now = this.viewSnapshot();
-    return now.viewId === snapshot.viewId && now.enabled === snapshot.enabled ? snapshot : this.getSnapshot(options);
+  getSnapshotAsync(asyncOptions?: ClrContextAsyncSnapshotOptions): Promise<ClrPageContext> {
+    return this.snapshotAsync(asyncOptions, false);
   }
 
   /** Registers a DOM extractor for other libraries' components. Returns a function that removes it. */
@@ -198,6 +183,31 @@ export class ClrContextEngineService implements OnDestroy {
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
     const regions = this.contextRegistry.collect({ filter: this.regionFilter(resolved), limits: resolved, untrusted });
     return this.describePage(snapshot, resolved, regions, untrusted);
+  }
+
+  private async snapshotAsync(
+    asyncOptions: ClrContextAsyncSnapshotOptions | undefined,
+    untrusted: boolean
+  ): Promise<ClrPageContext> {
+    const { timeoutMs, ...options } = asyncOptions ?? {};
+    const snapshot = this.viewSnapshot();
+    if (snapshot.enabled === false) {
+      return snapshot;
+    }
+    const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
+    // Started first, so providers work while the page is walked.
+    const regions = this.contextRegistry.collectAsync({
+      filter: this.regionFilter(resolved),
+      timeoutMs: usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
+      limits: resolved,
+      untrusted,
+    });
+    this.describePage(snapshot, resolved, [], untrusted);
+    setRegions(snapshot, await regions, resolved);
+    const now = this.viewSnapshot();
+    return now.viewId === snapshot.viewId && now.enabled === snapshot.enabled
+      ? snapshot
+      : this.snapshot(options, untrusted);
   }
 
   private describePage(

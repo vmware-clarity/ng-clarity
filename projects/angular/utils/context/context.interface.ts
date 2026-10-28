@@ -26,6 +26,7 @@ export interface ClrComponentContext {
 export interface ClrPublishedContext extends ClrComponentContext {
   /** State keys untrusted callers may see; every other key is withheld from them. Default none. */
   publicKeys?: readonly string[];
+  /** Nested contexts, each listing its own public keys. */
   children?: ClrPublishedContext[];
 }
 
