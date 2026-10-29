@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { BreadcrumbItem } from '@clr/angular';
 import { Observable } from 'rxjs';
@@ -14,6 +14,7 @@ import { filter, map, startWith } from 'rxjs/operators';
 @Component({
   selector: 'clr-breadcrumbs-routing-demo',
   templateUrl: './breadcrumbs-routing.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class BreadcrumbsRoutingDemo {

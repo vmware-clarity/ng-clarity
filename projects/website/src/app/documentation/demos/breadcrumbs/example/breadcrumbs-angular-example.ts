@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
@@ -19,6 +19,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
       <li><a [routerLink]="['./clarity']">Clarity</a></li>
     </ul>
     <router-outlet></router-outlet>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, RouterOutlet],
 })
 export class BreadcrumbAngularExample {}

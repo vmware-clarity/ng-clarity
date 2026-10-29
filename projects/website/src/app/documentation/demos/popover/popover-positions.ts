@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrCommonFormsModule,
@@ -53,6 +53,7 @@ export class PopoverPositionsComponent {
   styleUrl: './popover.demo.scss',
   encapsulation: ViewEncapsulation.None,
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrPopoverContent,
     ClrIcon,

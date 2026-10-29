@@ -7,6 +7,7 @@
 
 import {
   afterNextRender,
+  ChangeDetectionStrategy,
   Component,
   ContentChild,
   ElementRef,
@@ -49,6 +50,7 @@ const FADE_MOVE_ENTER_CLASSES: Record<string, string> = {
     `,
   ],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { VerticalNavCases } from '../vertical-nav-cases';
 
@@ -13,6 +13,7 @@ import { VerticalNavCases } from '../vertical-nav-cases';
   selector: 'clr-vertical-nav-direct-icon-demo',
   templateUrl: './vertical-nav-icon.demo.html',
   styleUrls: ['../vertical-nav.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class VerticalNavDirectIconDemo {

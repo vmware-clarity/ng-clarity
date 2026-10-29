@@ -8,6 +8,7 @@
 import {
   AfterContentInit,
   afterNextRender,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -42,6 +43,7 @@ const COLLAPSED_STATE = 'collapsed';
   providers: [IfExpandService, VerticalNavGroupService],
   host: { class: 'nav-group' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   @Output('clrVerticalNavGroupExpandedChange') expandedChange = new EventEmitter<boolean>(true);

@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { barsIcon, ClarityIcons, ClrCommonFormsModule, ClrIcon, ClrIconModule } from '@clr/angular';
 
 @Component({
   selector: 'clr-layout-small-screen-nav',
   templateUrl: './small-screen-nav.html',
   styleUrl: './layout.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrCommonFormsModule],
 })
 export class SmallScreenNavDemo {

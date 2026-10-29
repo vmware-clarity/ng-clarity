@@ -23,7 +23,7 @@ interface ClrDatagridStateInterface<T = any> {
 
 const serverDrivenTS = `
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { ClrDatagridModule, ClrDatagridStateInterface } from '@clr/angular';
 import { FetchResult, Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
@@ -37,6 +37,8 @@ import { User } from './inventory/user';
   imports: [CommonModule, ClrDatagridModule],
 })
 export class ExampleComponent {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   users: User[] | undefined;
   loading = true;
   totalUserCount = 103;
@@ -67,6 +69,8 @@ export class ExampleComponent {
       .then((result: FetchResult) => {
         this.users = result.users;
         this.loading = false;
+
+        this.changeDetectorRef.markForCheck();
       });
   }
 }

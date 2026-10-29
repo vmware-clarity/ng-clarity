@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrIcon } from '@clr/angular/icon';
 
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
@@ -115,6 +115,7 @@ const COMBINED_EXAMPLE = `
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [DocTabsComponent, DocTabComponent, CodeSnippetComponent, ClrIcon],
 })
 export class LayoutUtilitiesDemo extends ClarityDocComponent {

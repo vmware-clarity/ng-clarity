@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrPopoverOrigin } from './popover-origin';
@@ -15,6 +15,7 @@ import { ClrPopoverService } from './providers/popover.service';
   selector: 'test-host',
   template: '<button #testOrigin clrPopoverOrigin>Smart Origin</button>',
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestHost {

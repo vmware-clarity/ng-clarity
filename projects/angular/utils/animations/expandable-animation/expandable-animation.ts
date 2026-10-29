@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 import { BaseExpandableAnimation } from './base-expandable-animation';
 import { DomAdapter } from '../../dom-adapter/dom-adapter';
@@ -23,6 +23,7 @@ import { DomAdapter } from '../../dom-adapter/dom-adapter';
   providers: [DomAdapter],
   host: { '(animate.enter)': 'animates = !noopAnimations' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
   /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */

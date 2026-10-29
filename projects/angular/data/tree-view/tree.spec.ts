@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { delay, spec, TestContext } from '@clr/angular/testing';
@@ -26,6 +26,7 @@ import { ClrTreeViewModule } from './tree-view.module';
       }
     </clr-tree>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -52,6 +53,7 @@ class TestComponent {
       </clr-tree-node>
     </clr-tree>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TreeTypeAhead {}
@@ -92,6 +94,7 @@ class TreeTypeAhead {}
       </clr-tree>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExpandAllTestComponent {
@@ -130,6 +133,7 @@ interface LazyNode {
       </clr-tree-node>
     </clr-tree>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class LazyExpandAllTestComponent {

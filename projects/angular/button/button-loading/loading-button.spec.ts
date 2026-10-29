@@ -338,6 +338,7 @@ describe('Loading Buttons with Noop animations', () => {
 
 @Component({
   template: `<button [(clrLoading)]="buttonState" id="testBtn" [disabled]="disabled">{{ buttonContent }}</button>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestLoadingButtonComponent {
@@ -351,6 +352,7 @@ class TestLoadingButtonComponent {
 @Component({
   template: `<button clrLoading>Test</button>`,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class ListenerTestLoadingButtonComponent {
   @ViewChild(ClrLoadingButton) loadingButtonInstance: ClrLoadingButton;

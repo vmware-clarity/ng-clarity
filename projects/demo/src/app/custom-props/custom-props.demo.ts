@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 const themes = {
   default: {
@@ -85,6 +85,7 @@ function getNewTheme(oldTheme: string): string {
 @Component({
   templateUrl: 'custom-props.demo.html',
   styleUrls: ['./custom-props.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class CustomPropsDemo {

@@ -9,6 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   booleanAttribute,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -75,6 +76,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     '[class.clr-combobox-disabled]': 'control?.disabled',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCombobox<T>
   extends WrappedFormControl<ClrComboboxContainer>
@@ -511,6 +513,8 @@ export class ClrCombobox<T>
   }
 
   private initializeSubscriptions(): void {
+    this.subscriptions.push(this.focusHandler.pseudoFocus.focusChanged.subscribe(() => this.cdr.markForCheck()));
+
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
