@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { FilePickerApiAngular } from './angular/file-picker-api-angular';
 import { StyleDocsComponent } from '../../../../shared/style-docs/style-docs.component';
@@ -13,6 +13,7 @@ import { StyleDocsComponent } from '../../../../shared/style-docs/style-docs.com
 @Component({
   selector: 'app-file-picker-api',
   templateUrl: './file-picker-api.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FilePickerApiAngular, StyleDocsComponent],
 })
 export class FilePickerApi {}

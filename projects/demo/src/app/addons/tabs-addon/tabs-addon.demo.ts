@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxTabsModule } from '@clr/addons/tabs';
 import { Step, TabLayout } from '@clr/addons/var';
@@ -22,6 +22,7 @@ import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow
   standalone: true,
   imports: [CommonModule, ClarityModule, FormsModule, AppfxTabsModule],
   providers: [SampleWorkflowService],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TabsAddonDemoComponent implements OnInit {
   TabLayout = TabLayout;

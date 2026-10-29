@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { OnStepValidate, StepModelHolder } from '@clr/addons/var';
 import { buildingIcon, ClarityIcons, ClarityModule, clusterIcon, hostIcon } from '@clr/angular';
 import { map, Observable, of } from 'rxjs';
@@ -17,6 +17,7 @@ import { SelectHostModel } from './select-host.model';
   standalone: true,
   imports: [ClarityModule],
   templateUrl: 'select-host.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SelectHostComponent implements StepModelHolder, OnStepValidate {
   model: SelectHostModel;

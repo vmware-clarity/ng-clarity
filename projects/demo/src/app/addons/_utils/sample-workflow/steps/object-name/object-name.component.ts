@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { OnStepActivate, OnStepValidate, StepModelHolder } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
@@ -18,6 +18,7 @@ import { ObjectNameModel } from './object-name.model';
   standalone: true,
   imports: [ClarityModule, FormsModule],
   templateUrl: 'object-name.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ObjectNameComponent implements StepModelHolder, OnStepActivate, OnStepValidate {
   model: ObjectNameModel;

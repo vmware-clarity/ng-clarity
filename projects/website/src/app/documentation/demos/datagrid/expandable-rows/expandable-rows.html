@@ -110,13 +110,12 @@
 
 <p class="clr-mt-16px" cds-text="body">
   You might need to make a server call to get the details for a row before you can display them. This is a very common
-  lazy loading pattern. In this case, you need to add a
-  <code cds-text="code">[clrLoading]</code> directive receiving a boolean <em>anywhere in the row</em>. Yes, it can be
-  absolutely anywhere, as long as it's in or on the row itself. The easiest way to make the server call lazily is simply
-  to create a component that will make the call on initialization (typically in the
-  <code cds-text="code">ngOnInit()</code> method), and to use that component inside the
-  <code cds-text="code">*clrIfExpanded</code> structural directive. Here is an example of what this solution typically
-  looks like.
+  lazy loading pattern. The easiest way to make the server call lazily is simply to create a component that will make
+  the call on initialization (typically in the <code cds-text="code">ngOnInit()</code> method), and to use that
+  component inside the <code cds-text="code">*clrIfExpanded</code> structural directive. Keep the loading state in a
+  signal and show a <code cds-text="code">&lt;clr-spinner&gt;</code> until the details arrive. Updating the signal
+  refreshes the view, so this also works with <code cds-text="code">OnPush</code> change detection and in zoneless
+  applications. Here is an example of what this solution typically looks like.
 </p>
 
 <div class="alert alert-info">

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -51,6 +51,7 @@ const EXAMPLE = `
 @Component({
   selector: 'clr-tables-noborder-demo',
   templateUrl: './tables-noborder.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [StackblitzExampleComponent],
 })
 export class TablesNoborderDemo {

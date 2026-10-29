@@ -25,7 +25,10 @@ projects
 
 ## Build Process
 
-The build scripts in this repository have been designed to work with Node.js v16 or later.
+The build scripts require Node.js 24.15.0 or later in the 24.x release line, or Node.js 26.0.0 or later,
+and npm 11.0.0 or later. The `.nvmrc` file pins the Node.js version used by CI.
+
+If you use nvm, run `nvm install` and `nvm use` from the repository root before installing dependencies.
 
 The build process consists of the following five stages. Each stage can be ran individually or all stages could be executed by running `npm run build:ci`. This is useful when submitting pull requests, because `npm run build:ci` is essentially the same command the CI system will run.
 

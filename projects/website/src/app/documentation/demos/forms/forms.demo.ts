@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlertModule, ClrIcon, ClrIconModule } from '@clr/angular';
 
 import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
@@ -52,6 +52,7 @@ const NgValidateTs = require('!raw-loader!./ng/validate.ts').default;
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,

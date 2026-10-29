@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, ElementRef, Inject, OnDestroy, Optional } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  Inject,
+  OnDestroy,
+  Optional,
+} from '@angular/core';
 import { fromEvent, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 
@@ -23,6 +31,7 @@ import { VerticalNavGroupService } from './providers/vertical-nav-group.service'
     class: 'nav-link',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrVerticalNavLink implements OnDestroy {
   private destroy$ = new Subject<void>();

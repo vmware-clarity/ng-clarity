@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, ColumnPinnedState } from '@clr/addons/datagrid';
 import { SelectionType } from '@clr/angular/data/datagrid';
 
@@ -17,6 +17,7 @@ import { Inventory, VmItem } from './inventory/inventory';
   standalone: true,
   templateUrl: './pinnable-columns.html',
   providers: [Inventory],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PinnableColumnsGridDemoComponent {
   vms: VmItem[] = [];

@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { ClrContextEngineService } from '@clr/angular/ai';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-contextual-demo',
   styleUrls: ['./contextual.demo.scss'],
   templateUrl: './contextual.demo.html',

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Subject } from 'rxjs';
 import { finalize, takeUntil } from 'rxjs/operators';
@@ -19,6 +19,7 @@ export default function (): void {
       const finalizeSpy = jasmine.createSpy();
 
       @Component({
+        changeDetection: ChangeDetectionStrategy.Eager,
         template: '',
         providers: [ClrDestroyService],
         standalone: false,

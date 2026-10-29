@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -25,6 +25,7 @@ import { ClrCardModule } from './card.module';
       </clr-card-body>
     </clr-card>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -40,6 +41,7 @@ class TestComponent {
       <clr-card-body>Body</clr-card-body>
     </clr-card>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestNoBindingComponent {
@@ -53,6 +55,7 @@ class TestNoBindingComponent {
       <clr-card-body>Body</clr-card-body>
     </clr-card>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestBareAttributeComponent {}
@@ -67,6 +70,7 @@ class TestBareAttributeComponent {}
       <clr-card-footer>Footer text</clr-card-footer>
     </clr-card>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestCollapsibleComponent {
@@ -83,6 +87,7 @@ class TestCollapsibleComponent {
       </clr-card-body>
     </clr-card>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestInitiallyCollapsedComponent {}
@@ -98,6 +103,7 @@ class TestInitiallyCollapsedComponent {}
       <clr-card-body>Second body</clr-card-body>
     </clr-card>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestTwoCardsComponent {}

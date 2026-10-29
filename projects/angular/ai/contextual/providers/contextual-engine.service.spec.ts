@@ -6,7 +6,7 @@
  */
 
 import { APP_BASE_HREF } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
 import { publishElementContext } from '@clr/angular/utils';
@@ -17,7 +17,7 @@ import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 
-@Component({ template: '' })
+@Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
 
 type Accessor = (options?: unknown) => ClrPageContext;
@@ -980,6 +980,64 @@ describe('ClrContextEngineService, asynchronous providers', () => {
     } finally {
       section.remove();
     }
+  });
+
+  it('withholds an answer whose element is redacted while another provider is still pending', async () => {
+    const section = document.createElement('section');
+    document.body.appendChild(section);
+    let answerSlow: (context: ClrComponentContext) => void = () => undefined;
+    registry.register(
+      { getClrContext: async () => ({ type: 'region', label: 'Payment', state: { card: '4111' } }) },
+      section
+    );
+    registry.register({ getClrContext: () => new Promise(resolve => (answerSlow = resolve)) });
+    try {
+      const snapshot = engine.getSnapshotAsync(quiet);
+      await new Promise(resolve => setTimeout(resolve));
+      section.setAttribute('data-clr-context-redact', '');
+      answerSlow({ type: 'region', label: 'Hosts' });
+
+      expect(JSON.stringify((await snapshot).regions)).not.toContain('4111');
+    } finally {
+      section.remove();
+    }
+  });
+
+  it('reads the page once providers have answered, so a region redacted meanwhile is withheld', async () => {
+    const page = document.createElement('section');
+    page.innerHTML = '<label>Card <input value="4111" /></label>';
+    document.body.appendChild(page);
+    let answer: (context: ClrComponentContext | null) => void = () => undefined;
+    registry.register({ getClrContext: () => new Promise(resolve => (answer = resolve)) });
+    try {
+      const snapshot = engine.getSnapshotAsync({ timeoutMs: 1000 });
+      page.setAttribute('data-clr-context-redact', '');
+      answer(null);
+
+      expect(JSON.stringify((await snapshot).components)).not.toContain('4111');
+    } finally {
+      page.remove();
+    }
+  });
+
+  it('does not let a late answer forget a newer one that is still pending', async () => {
+    let resolveFirst: (context: ClrComponentContext | null) => void = () => undefined;
+    const getClrContext = jasmine
+      .createSpy('getClrContext')
+      .and.returnValues(
+        new Promise(resolve => (resolveFirst = resolve)),
+        new Promise<null>(() => undefined),
+        new Promise<null>(() => undefined)
+      );
+    registry.register({ getClrContext });
+
+    await engine.getSnapshotAsync({ ...quiet, timeoutMs: 10 });
+    engine.getSnapshot(quiet);
+    resolveFirst(null);
+    await new Promise(resolve => setTimeout(resolve));
+    engine.getSnapshot(quiet);
+
+    expect(getClrContext).toHaveBeenCalledTimes(2);
   });
 
   it('keeps only the fields a component context has', () => {

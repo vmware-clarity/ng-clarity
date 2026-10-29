@@ -6,7 +6,7 @@
  */
 
 import { JsonPipe } from '@angular/common';
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ClrIcon, ClrIconModule, ClrTreeViewModule } from '@clr/angular';
 
 import { organization } from './organization';
@@ -78,6 +78,7 @@ const additionalFiles = {
   selector: 'clr-tree-view-dynamic-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: './tree-view-dynamic.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule, ClrIcon, ClrIconModule, StackblitzExampleComponent, JsonPipe],
 })
 export class TreeViewDynamicDemo {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { expectActiveElementToBe, TestContext } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
 
@@ -47,6 +47,7 @@ import { Selection } from '../providers/selection';
       }
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {

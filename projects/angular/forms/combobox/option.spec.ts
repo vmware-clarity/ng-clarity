@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, ViewChild } from '@angular/core';
 import { ClrPopoverService, POPOVER_HOST_ORIGIN } from '@clr/angular/popover/common';
 import { TestContext } from '@clr/angular/testing';
 
@@ -24,6 +24,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     ComboboxFocusHandler,
     OptionSelectionService,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
