@@ -175,7 +175,7 @@ declare class WizardComponent implements OnInit, OnDestroy, AfterViewInit, After
 /**
  * Reason for Wizard close.
  */
-declare const enum Reason {
+declare enum Reason {
     /**
      * Wizard closed by clicking finish button.
      */

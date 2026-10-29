@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Component, Input, ViewContainerRef, ViewChild, ElementRef, EventEmitter, Output, Directive, Pipe, Injectable, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, ViewContainerRef, ViewChild, ElementRef, EventEmitter, Output, Directive, Pipe, Injectable, NgModule } from '@angular/core';
 import { ReplaySubject, of } from 'rxjs';
 import { By } from '@angular/platform-browser';
 import { ClrDatagrid } from '@clr/angular/data/datagrid';
@@ -17,26 +17,28 @@ import { tap } from 'rxjs/operators';
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class MockRequiredFieldLegendComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockRequiredFieldLegendComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockRequiredFieldLegendComponent, isStandalone: false, selector: "appfx-required-field-legend", ngImport: i0, template: ``, isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockRequiredFieldLegendComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockRequiredFieldLegendComponent, isStandalone: false, selector: "appfx-required-field-legend", ngImport: i0, template: ``, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockRequiredFieldLegendComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockRequiredFieldLegendComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-required-field-legend',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: ``,
                 }]
         }] });
 class MockRequiredFieldLegendStandaloneComponent extends MockRequiredFieldLegendComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockRequiredFieldLegendStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockRequiredFieldLegendStandaloneComponent, isStandalone: true, selector: "appfx-required-field-legend", usesInheritance: true, ngImport: i0, template: ``, isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockRequiredFieldLegendStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockRequiredFieldLegendStandaloneComponent, isStandalone: true, selector: "appfx-required-field-legend", usesInheritance: true, ngImport: i0, template: ``, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockRequiredFieldLegendStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockRequiredFieldLegendStandaloneComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-required-field-legend',
                     standalone: true,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: ``,
                 }]
         }] });
@@ -73,14 +75,15 @@ class MockAppfxCardContainerComponent {
         this.showCardContainerSettings = true;
         this.dragDropEnabled = true;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxCardContainerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxCardContainerComponent, isStandalone: false, selector: "appfx-card-container", inputs: { containerId: "containerId", cards: "cards", persistenceStore: "persistenceStore", showCardContainerSettings: "showCardContainerSettings", dragDropEnabled: "dragDropEnabled" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxCardContainerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxCardContainerComponent, isStandalone: false, selector: "appfx-card-container", inputs: { containerId: "containerId", cards: "cards", persistenceStore: "persistenceStore", showCardContainerSettings: "showCardContainerSettings", dragDropEnabled: "dragDropEnabled" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxCardContainerComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxCardContainerComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-card-container',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '',
                 }]
         }], propDecorators: { containerId: [{
@@ -95,14 +98,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                 type: Input
             }] } });
 class MockAppfxCardContainerStandaloneComponent extends MockAppfxCardContainerComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxCardContainerStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxCardContainerStandaloneComponent, isStandalone: true, selector: "appfx-card-container", usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxCardContainerStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxCardContainerStandaloneComponent, isStandalone: true, selector: "appfx-card-container", usesInheritance: true, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxCardContainerStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxCardContainerStandaloneComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-card-container',
                     standalone: true,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '',
                 }]
         }] });
@@ -146,16 +150,16 @@ class MockRenderer2 {
 }
 // Mock Card Container for ViewContainerRef
 class MockCardContainerComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockCardContainerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockCardContainerComponent, isStandalone: false, selector: "ng-component", viewQueries: [{ propertyName: "cardContainer", first: true, predicate: ["cardContainer"], descendants: true, read: ViewContainerRef, static: true }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockCardContainerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockCardContainerComponent, isStandalone: false, selector: "ng-component", viewQueries: [{ propertyName: "cardContainer", first: true, predicate: ["cardContainer"], descendants: true, read: ViewContainerRef, static: true }], ngImport: i0, template: `
     <div class="scrollable">
       <div>
         <ng-template #cardContainer></ng-template>
       </div>
     </div>
-  `, isInline: true, styles: [".scrollable{overflow:auto;position:absolute;inset:0;max-height:20px}\n"], preserveWhitespaces: true }); }
+  `, isInline: true, styles: [".scrollable{overflow:auto;position:absolute;inset:0;max-height:20px}\n"], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockCardContainerComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockCardContainerComponent, decorators: [{
             type: Component,
             args: [{ standalone: false, template: `
     <div class="scrollable">
@@ -163,7 +167,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
         <ng-template #cardContainer></ng-template>
       </div>
     </div>
-  `, styles: [".scrollable{overflow:auto;position:absolute;inset:0;max-height:20px}\n"] }]
+  `, changeDetection: ChangeDetectionStrategy.Eager, styles: [".scrollable{overflow:auto;position:absolute;inset:0;max-height:20px}\n"] }]
         }], propDecorators: { cardContainer: [{
                 type: ViewChild,
                 args: ['cardContainer', { read: ViewContainerRef, static: true }]
@@ -173,8 +177,8 @@ class SampleCardComponent {
     constructor(el) {
         this.eleRef = el;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SampleCardComponent, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: SampleCardComponent, isStandalone: false, selector: "ng-component", ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SampleCardComponent, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: SampleCardComponent, isStandalone: false, selector: "ng-component", ngImport: i0, template: `
     <div class="card">
       <div class="card-header">
         <div class="card-title">Sample Card</div>
@@ -182,12 +186,13 @@ class SampleCardComponent {
       <div class="card-block"></div>
       <div class="card-footer"></div>
     </div>
-  `, isInline: true, preserveWhitespaces: true }); }
+  `, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SampleCardComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SampleCardComponent, decorators: [{
             type: Component,
             args: [{
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: `
     <div class="card">
       <div class="card-header">
@@ -204,20 +209,21 @@ class SampleCardWithoutFooterComponent {
     constructor(el) {
         this.eleRef = el;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SampleCardWithoutFooterComponent, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: SampleCardWithoutFooterComponent, isStandalone: false, selector: "ng-component", ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SampleCardWithoutFooterComponent, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: SampleCardWithoutFooterComponent, isStandalone: false, selector: "ng-component", ngImport: i0, template: `
     <div class="card">
       <div class="card-header">
         <div class="card-title">Sample Card</div>
       </div>
       <div class="card-block"></div>
     </div>
-  `, isInline: true, preserveWhitespaces: true }); }
+  `, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SampleCardWithoutFooterComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SampleCardWithoutFooterComponent, decorators: [{
             type: Component,
             args: [{
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: `
     <div class="card">
       <div class="card-header">
@@ -233,20 +239,21 @@ class SampleCardWithoutHeaderComponent {
     constructor(el) {
         this.eleRef = el;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SampleCardWithoutHeaderComponent, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: SampleCardWithoutHeaderComponent, isStandalone: false, selector: "ng-component", ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SampleCardWithoutHeaderComponent, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: SampleCardWithoutHeaderComponent, isStandalone: false, selector: "ng-component", ngImport: i0, template: `
     <div class="card">
       <div class="card-block">
         <div class="card-title">Sample Card</div>
       </div>
       <div class="card-footer"></div>
     </div>
-  `, isInline: true, preserveWhitespaces: true }); }
+  `, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SampleCardWithoutHeaderComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SampleCardWithoutHeaderComponent, decorators: [{
             type: Component,
             args: [{
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: `
     <div class="card">
       <div class="card-block">
@@ -356,14 +363,15 @@ class MockAppfxDatagridComponent {
         this.detailStateChange = new EventEmitter(true);
     }
     onModelChange() { }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDatagridComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxDatagridComponent, isStandalone: false, selector: "appfx-datagrid", inputs: { gridItems: "gridItems", columns: "columns", layoutModel: "layoutModel", footerModel: "footerModel", pageSize: "pageSize", pageSizeOptions: "pageSizeOptions", totalItems: "totalItems", selectionType: "selectionType", selectedItems: "selectedItems", datagridLabels: "datagridLabels", preSelectFirstItem: "preSelectFirstItem", rowSelectionMode: "rowSelectionMode", actionBarActions: "actionBarActions", showFooter: "showFooter", singleRowActions: "singleRowActions", noItemsFoundPlaceholder: "noItemsFoundPlaceholder", loading: "loading", serverDrivenDatagrid: "serverDrivenDatagrid", filterMode: "filterMode", listItemsCount: "listItemsCount", trackByGridItemProperty: "trackByGridItemProperty", isRowLocked: "isRowLocked", detailHeader: "detailHeader", detailBody: "detailBody", rowDetailContent: "rowDetailContent", rowsExpandedByDefault: "rowsExpandedByDefault", vscPersistDatagridSettings: "vscPersistDatagridSettings", detailState: "detailState", trackByFunction: "trackByFunction", virtualScrolling: "virtualScrolling", dataRange: "dataRange" }, outputs: { selectedItemsChange: "selectedItemsChange", gridItemsChange: "gridItemsChange", selectionChange: "selectionChange", searchTermChange: "searchTermChange", refreshGridData: "refreshGridData", refreshVirtualGridData: "refreshVirtualGridData", actionClick: "actionClick", rowActionMenuOpenChange: "rowActionMenuOpenChange", exportDataEvent: "exportDataEvent", detailStateChange: "detailStateChange" }, ngImport: i0, template: ``, isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDatagridComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxDatagridComponent, isStandalone: false, selector: "appfx-datagrid", inputs: { gridItems: "gridItems", columns: "columns", layoutModel: "layoutModel", footerModel: "footerModel", pageSize: "pageSize", pageSizeOptions: "pageSizeOptions", totalItems: "totalItems", selectionType: "selectionType", selectedItems: "selectedItems", datagridLabels: "datagridLabels", preSelectFirstItem: "preSelectFirstItem", rowSelectionMode: "rowSelectionMode", actionBarActions: "actionBarActions", showFooter: "showFooter", singleRowActions: "singleRowActions", noItemsFoundPlaceholder: "noItemsFoundPlaceholder", loading: "loading", serverDrivenDatagrid: "serverDrivenDatagrid", filterMode: "filterMode", listItemsCount: "listItemsCount", trackByGridItemProperty: "trackByGridItemProperty", isRowLocked: "isRowLocked", detailHeader: "detailHeader", detailBody: "detailBody", rowDetailContent: "rowDetailContent", rowsExpandedByDefault: "rowsExpandedByDefault", vscPersistDatagridSettings: "vscPersistDatagridSettings", detailState: "detailState", trackByFunction: "trackByFunction", virtualScrolling: "virtualScrolling", dataRange: "dataRange" }, outputs: { selectedItemsChange: "selectedItemsChange", gridItemsChange: "gridItemsChange", selectionChange: "selectionChange", searchTermChange: "searchTermChange", refreshGridData: "refreshGridData", refreshVirtualGridData: "refreshVirtualGridData", actionClick: "actionClick", rowActionMenuOpenChange: "rowActionMenuOpenChange", exportDataEvent: "exportDataEvent", detailStateChange: "detailStateChange" }, ngImport: i0, template: ``, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDatagridComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDatagridComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-datagrid',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: ``,
                 }]
         }], propDecorators: { gridItems: [{
@@ -450,14 +458,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                 type: Output
             }] } });
 class MockStandaloneDatagridComponent extends MockAppfxDatagridComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockStandaloneDatagridComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockStandaloneDatagridComponent, isStandalone: true, selector: "appfx-datagrid", usesInheritance: true, ngImport: i0, template: ``, isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockStandaloneDatagridComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockStandaloneDatagridComponent, isStandalone: true, selector: "appfx-datagrid", usesInheritance: true, ngImport: i0, template: ``, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockStandaloneDatagridComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockStandaloneDatagridComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-datagrid',
                     standalone: true,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: ``,
                 }]
         }] });
@@ -475,8 +484,8 @@ class MockDatagridActionBarComponent {
     onActionClick(action) {
         this.invokeAction.emit(action);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridActionBarComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: MockDatagridActionBarComponent, isStandalone: false, selector: "appfx-datagrid-action-bar", inputs: { actions: "actions" }, outputs: { invokeAction: "invokeAction" }, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridActionBarComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: MockDatagridActionBarComponent, isStandalone: false, selector: "appfx-datagrid-action-bar", inputs: { actions: "actions" }, outputs: { invokeAction: "invokeAction" }, ngImport: i0, template: `
     @for (action of actions; track action) {
       <button
         (click)="onActionClick(action)"
@@ -487,13 +496,14 @@ class MockDatagridActionBarComponent {
         {{ action.label }}
       </button>
     }
-  `, isInline: true, preserveWhitespaces: true }); }
+  `, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridActionBarComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridActionBarComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-datagrid-action-bar',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: `
     @for (action of actions; track action) {
       <button
@@ -531,19 +541,20 @@ class MockDatagridCellContainerComponent {
             this.instance.column = this.column;
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridCellContainerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: MockDatagridCellContainerComponent, isStandalone: false, selector: "appfx-dg-cell-container", inputs: { column: "column", item: "item" }, viewQueries: [{ propertyName: "container", first: true, predicate: ["cellContainer"], descendants: true, read: ViewContainerRef, static: true }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridCellContainerComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: MockDatagridCellContainerComponent, isStandalone: false, selector: "appfx-dg-cell-container", inputs: { column: "column", item: "item" }, viewQueries: [{ propertyName: "container", first: true, predicate: ["cellContainer"], descendants: true, read: ViewContainerRef, static: true }], ngImport: i0, template: `
     @if (!column.columnRenderer) {
       {{ item?.[column.field] }}
     }
     <ng-template #cellContainer></ng-template>
-  `, isInline: true, preserveWhitespaces: true }); }
+  `, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridCellContainerComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridCellContainerComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-dg-cell-container',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: `
     @if (!column.columnRenderer) {
       {{ item?.[column.field] }}
@@ -569,14 +580,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
 class MockDatagridColumnToggleComponent {
     showColumn() { }
     hideColumn() { }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridColumnToggleComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockDatagridColumnToggleComponent, isStandalone: false, selector: "appfx-dg-column-toggle", inputs: { columns: "columns" }, ngImport: i0, template: ``, isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridColumnToggleComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockDatagridColumnToggleComponent, isStandalone: false, selector: "appfx-dg-column-toggle", inputs: { columns: "columns" }, ngImport: i0, template: ``, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridColumnToggleComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridColumnToggleComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-dg-column-toggle',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: ``,
                 }]
         }], propDecorators: { columns: [{
@@ -590,10 +602,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class MockDatagridPersistSettingsDirective {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridPersistSettingsDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: MockDatagridPersistSettingsDirective, isStandalone: false, selector: "appfx-datagrid[appfxPersistDatagridSettings]", inputs: { appfxPersistDatagridSettings: "appfxPersistDatagridSettings", persistPageSize: "persistPageSize", persistSortOrder: "persistSortOrder" }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridPersistSettingsDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: MockDatagridPersistSettingsDirective, isStandalone: false, selector: "appfx-datagrid[appfxPersistDatagridSettings]", inputs: { appfxPersistDatagridSettings: "appfxPersistDatagridSettings", persistPageSize: "persistPageSize", persistSortOrder: "persistSortOrder" }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridPersistSettingsDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridPersistSettingsDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: 'appfx-datagrid[appfxPersistDatagridSettings]',
@@ -614,10 +626,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class MockDatagridPreserveSelectionDirective {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridPreserveSelectionDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: MockDatagridPreserveSelectionDirective, isStandalone: false, selector: "[appfxPreserveSelection]", inputs: { preserveExistingSelection: "preserveExistingSelection" }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridPreserveSelectionDirective, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: MockDatagridPreserveSelectionDirective, isStandalone: false, selector: "[appfxPreserveSelection]", inputs: { preserveExistingSelection: "preserveExistingSelection" }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridPreserveSelectionDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridPreserveSelectionDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[appfxPreserveSelection]',
@@ -1201,10 +1213,10 @@ class MockIsRowSelectablePipe {
     transform(rowItem, isLocked, disabled) {
         return !isLocked?.(rowItem) || !!disabled;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockIsRowSelectablePipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe }); }
-    static { this.ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: MockIsRowSelectablePipe, isStandalone: false, name: "isRowSelectable" }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockIsRowSelectablePipe, deps: [], target: i0.ɵɵFactoryTarget.Pipe }); }
+    static { this.ɵpipe = i0.ɵɵngDeclarePipe({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: MockIsRowSelectablePipe, isStandalone: false, name: "isRowSelectable" }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockIsRowSelectablePipe, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockIsRowSelectablePipe, decorators: [{
             type: Pipe,
             args: [{ name: 'isRowSelectable', standalone: false }]
         }] });
@@ -1228,14 +1240,15 @@ class MockDatagridFiltersComponent {
         this.searchTermChange = new EventEmitter();
         this.propertyFiltersChange = new EventEmitter();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridFiltersComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockDatagridFiltersComponent, isStandalone: false, selector: "appfx-datagrid-filters", inputs: { filterMode: "filterMode", filterableProperties: "filterableProperties" }, outputs: { searchTermChange: "searchTermChange", propertyFiltersChange: "propertyFiltersChange" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridFiltersComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockDatagridFiltersComponent, isStandalone: false, selector: "appfx-datagrid-filters", inputs: { filterMode: "filterMode", filterableProperties: "filterableProperties" }, outputs: { searchTermChange: "searchTermChange", propertyFiltersChange: "propertyFiltersChange" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridFiltersComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridFiltersComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-datagrid-filters',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '',
                 }]
         }], propDecorators: { filterMode: [{
@@ -1248,14 +1261,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                 type: Output
             }] } });
 class MockDatagridFiltersStandaloneComponent extends MockDatagridFiltersComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridFiltersStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockDatagridFiltersStandaloneComponent, isStandalone: true, selector: "appfx-datagrid-filters", usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridFiltersStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockDatagridFiltersStandaloneComponent, isStandalone: true, selector: "appfx-datagrid-filters", usesInheritance: true, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDatagridFiltersStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDatagridFiltersStandaloneComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-datagrid-filters',
                     standalone: true,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '',
                 }]
         }] });
@@ -1279,12 +1293,13 @@ class MockAppfxDialogComponent {
         this.onClose = new EventEmitter();
         this.openedChange = new EventEmitter();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDialogComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxDialogComponent, isStandalone: false, selector: "appfx-dialog", inputs: { title: "title", subTitle: "subTitle", size: "size", height: "height", defaultButton: "defaultButton", cancelButtonLabel: "cancelButtonLabel", okButtonLabel: "okButtonLabel", tabLayout: "tabLayout", disableTabsContent: "disableTabsContent", loading: "loading", steps: "steps", model: "model", closeHandler: "closeHandler", showTabLinks: "showTabLinks", opened: "opened" }, outputs: { onModelChange: "onModelChange", onClose: "onClose", openedChange: "openedChange" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDialogComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxDialogComponent, isStandalone: false, selector: "appfx-dialog", inputs: { title: "title", subTitle: "subTitle", size: "size", height: "height", defaultButton: "defaultButton", cancelButtonLabel: "cancelButtonLabel", okButtonLabel: "okButtonLabel", tabLayout: "tabLayout", disableTabsContent: "disableTabsContent", loading: "loading", steps: "steps", model: "model", closeHandler: "closeHandler", showTabLinks: "showTabLinks", opened: "opened" }, outputs: { onModelChange: "onModelChange", onClose: "onClose", openedChange: "openedChange" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDialogComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDialogComponent, decorators: [{
             type: Component,
             args: [{
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     selector: 'appfx-dialog',
                     standalone: false,
                     template: '',
@@ -1327,12 +1342,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                 type: Output
             }] } });
 class MockAppfxDialogStandaloneComponent extends MockAppfxDialogComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDialogStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxDialogStandaloneComponent, isStandalone: true, selector: "appfx-dialog", usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDialogStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxDialogStandaloneComponent, isStandalone: true, selector: "appfx-dialog", usesInheritance: true, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDialogStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDialogStandaloneComponent, decorators: [{
             type: Component,
             args: [{
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     selector: 'appfx-dialog',
                     standalone: true,
                     template: '',
@@ -1346,24 +1362,26 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class MockAppfxDialogHeaderComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDialogHeaderComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxDialogHeaderComponent, isStandalone: false, selector: "appfx-dialog-header", ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDialogHeaderComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxDialogHeaderComponent, isStandalone: false, selector: "appfx-dialog-header", ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDialogHeaderComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDialogHeaderComponent, decorators: [{
             type: Component,
             args: [{
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     selector: 'appfx-dialog-header',
                     standalone: false,
                     template: `<ng-content></ng-content>`,
                 }]
         }] });
 class MockAppfxDialogHeaderStandaloneComponent extends MockAppfxDialogHeaderComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDialogHeaderStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxDialogHeaderStandaloneComponent, isStandalone: true, selector: "appfx-dialog-header", usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDialogHeaderStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxDialogHeaderStandaloneComponent, isStandalone: true, selector: "appfx-dialog-header", usesInheritance: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxDialogHeaderStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxDialogHeaderStandaloneComponent, decorators: [{
             type: Component,
             args: [{
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     selector: 'appfx-dialog-header',
                     standalone: true,
                     template: `<ng-content></ng-content>`,
@@ -1388,14 +1406,15 @@ class MockAppfxMenuActionComponent {
         this.enabled = true;
         this.handle = new EventEmitter(true);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxMenuActionComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxMenuActionComponent, isStandalone: false, selector: "appfx-menu-action", inputs: { actionId: "actionId", iconClass: "iconClass", text: "text", shortcut: "shortcut", enabled: "enabled" }, outputs: { handle: "handle" }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxMenuActionComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxMenuActionComponent, isStandalone: false, selector: "appfx-menu-action", inputs: { actionId: "actionId", iconClass: "iconClass", text: "text", shortcut: "shortcut", enabled: "enabled" }, outputs: { handle: "handle" }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxMenuActionComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxMenuActionComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-menu-action',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '<ng-content></ng-content>',
                 }]
         }], propDecorators: { actionId: [{
@@ -1412,14 +1431,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                 type: Output
             }] } });
 class MockAppfxMenuActionStandaloneComponent extends MockAppfxMenuActionComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxMenuActionStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxMenuActionStandaloneComponent, isStandalone: true, selector: "appfx-menu-action", usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxMenuActionStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxMenuActionStandaloneComponent, isStandalone: true, selector: "appfx-menu-action", usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxMenuActionStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxMenuActionStandaloneComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-menu-action',
                     standalone: true,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '<ng-content></ng-content>',
                 }]
         }] });
@@ -1435,14 +1455,15 @@ class MockAppfxMenuComponent {
         this.opened = new EventEmitter();
         this.closed = new EventEmitter();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxMenuComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxMenuComponent, isStandalone: false, selector: "appfx-menu", inputs: { text: "text" }, outputs: { opened: "opened", closed: "closed" }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxMenuComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxMenuComponent, isStandalone: false, selector: "appfx-menu", inputs: { text: "text" }, outputs: { opened: "opened", closed: "closed" }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxMenuComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxMenuComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-menu',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '<ng-content></ng-content>',
                 }]
         }], propDecorators: { text: [{
@@ -1453,14 +1474,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                 type: Output
             }] } });
 class MockAppfxMenuStandaloneComponent extends MockAppfxMenuComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxMenuStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxMenuStandaloneComponent, isStandalone: true, selector: "appfx-menu", usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxMenuStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxMenuStandaloneComponent, isStandalone: true, selector: "appfx-menu", usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxMenuStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxMenuStandaloneComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-menu',
                     standalone: true,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '<ng-content></ng-content>',
                 }]
         }] });
@@ -1479,14 +1501,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class MockPropertyViewComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockPropertyViewComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockPropertyViewComponent, isStandalone: false, selector: "appfx-property-view", inputs: { data: "data", config: "config" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockPropertyViewComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockPropertyViewComponent, isStandalone: false, selector: "appfx-property-view", inputs: { data: "data", config: "config" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockPropertyViewComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockPropertyViewComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-property-view',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '',
                 }]
         }], propDecorators: { data: [{
@@ -1495,14 +1518,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                 type: Input
             }] } });
 class MockPropertyViewStandaloneComponent extends MockPropertyViewComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockPropertyViewStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockPropertyViewStandaloneComponent, isStandalone: true, selector: "appfx-property-view", usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockPropertyViewStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockPropertyViewStandaloneComponent, isStandalone: true, selector: "appfx-property-view", usesInheritance: true, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockPropertyViewStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockPropertyViewStandaloneComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-property-view',
                     standalone: true,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '',
                 }]
         }] });
@@ -1524,10 +1548,10 @@ class MockPropertyViewStrings extends PropertyViewStrings {
         this.categoryListItemsAreaLabel = '{0} items grouped in {1} sections.';
         this.categoryListItemAreaLabel = '{0} items grouped in 1 section.';
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockPropertyViewStrings, deps: null, target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockPropertyViewStrings }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockPropertyViewStrings, deps: null, target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockPropertyViewStrings }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockPropertyViewStrings, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockPropertyViewStrings, decorators: [{
             type: Injectable
         }] });
 
@@ -1568,14 +1592,15 @@ class MockStepperComponent {
         this.onModelChange = new EventEmitter();
         this.onFinish = new EventEmitter();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockStepperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockStepperComponent, isStandalone: false, selector: "appfx-stepper", inputs: { steps: "steps", wizardModel: "wizardModel", loading: "loading" }, outputs: { onModelChange: "onModelChange", onFinish: "onFinish" }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockStepperComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockStepperComponent, isStandalone: false, selector: "appfx-stepper", inputs: { steps: "steps", wizardModel: "wizardModel", loading: "loading" }, outputs: { onModelChange: "onModelChange", onFinish: "onFinish" }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockStepperComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockStepperComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-stepper',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '<ng-content></ng-content>',
                 }]
         }], propDecorators: { steps: [{
@@ -1590,14 +1615,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                 type: Output
             }] } });
 class MockStepperStandaloneComponent extends MockStepperComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockStepperStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockStepperStandaloneComponent, isStandalone: true, selector: "appfx-stepper", usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockStepperStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockStepperStandaloneComponent, isStandalone: true, selector: "appfx-stepper", usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockStepperStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockStepperStandaloneComponent, decorators: [{
             type: Component,
             args: [{
                     selector: 'appfx-stepper',
                     standalone: true,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     template: '<ng-content></ng-content>',
                 }]
         }] });
@@ -1721,12 +1747,13 @@ class MockStepComponent {
             this.model.isValidated = true;
         }));
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockStepComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockStepComponent, isStandalone: false, selector: "appfx-mock-page-page", ngImport: i0, template: '<div>{{ model.mockPropertyValue }}</div>', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockStepComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockStepComponent, isStandalone: false, selector: "appfx-mock-page-page", ngImport: i0, template: '<div>{{ model.mockPropertyValue }}</div>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockStepComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockStepComponent, decorators: [{
             type: Component,
             args: [{
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     selector: 'appfx-mock-page-page',
                     standalone: false,
                     template: '<div>{{ model.mockPropertyValue }}</div>',
@@ -1738,12 +1765,13 @@ class InvalidMockComponent extends MockStepComponent {
             this.model.isValidated = true;
         }));
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: InvalidMockComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: InvalidMockComponent, isStandalone: false, selector: "appfx-invalid-mock-page-page", usesInheritance: true, ngImport: i0, template: '<div></div>', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: InvalidMockComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: InvalidMockComponent, isStandalone: false, selector: "appfx-invalid-mock-page-page", usesInheritance: true, ngImport: i0, template: '<div></div>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: InvalidMockComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: InvalidMockComponent, decorators: [{
             type: Component,
             args: [{
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     selector: 'appfx-invalid-mock-page-page',
                     standalone: false,
                     template: '<div></div>',
@@ -1770,11 +1798,11 @@ class MockWorkflowConfigurationService {
     }
 }
 class MockWorkflowTestModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockWorkflowTestModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: MockWorkflowTestModule, declarations: [InvalidMockComponent, MockStepComponent], imports: [NoopAnimationsModule] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockWorkflowTestModule, imports: [NoopAnimationsModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockWorkflowTestModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: MockWorkflowTestModule, declarations: [InvalidMockComponent, MockStepComponent], imports: [NoopAnimationsModule] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockWorkflowTestModule, imports: [NoopAnimationsModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockWorkflowTestModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockWorkflowTestModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [NoopAnimationsModule],
@@ -1802,12 +1830,13 @@ class MockAppfxWizardComponent {
         this.onFinish = new EventEmitter();
         this.onClose = new EventEmitter();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxWizardComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockAppfxWizardComponent, isStandalone: false, selector: "appfx-wizard", inputs: { title: "title", pages: "pages", wizardModel: "wizardModel", loading: "loading", size: "size", opened: "opened" }, outputs: { openedChange: "openedChange", onModelChange: "onModelChange", onFinish: "onFinish", onClose: "onClose" }, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxWizardComponent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockAppfxWizardComponent, isStandalone: false, selector: "appfx-wizard", inputs: { title: "title", pages: "pages", wizardModel: "wizardModel", loading: "loading", size: "size", opened: "opened" }, outputs: { openedChange: "openedChange", onModelChange: "onModelChange", onFinish: "onFinish", onClose: "onClose" }, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockAppfxWizardComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockAppfxWizardComponent, decorators: [{
             type: Component,
             args: [{
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     selector: 'appfx-wizard',
                     standalone: false,
                     template: '',
@@ -1834,12 +1863,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                 type: Output
             }] } });
 class MockWizardStandaloneComponent extends MockAppfxWizardComponent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockWizardStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: MockWizardStandaloneComponent, isStandalone: true, selector: "appfx-wizard", usesInheritance: true, ngImport: i0, template: '', isInline: true, preserveWhitespaces: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockWizardStandaloneComponent, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: MockWizardStandaloneComponent, isStandalone: true, selector: "appfx-wizard", usesInheritance: true, ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockWizardStandaloneComponent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockWizardStandaloneComponent, decorators: [{
             type: Component,
             args: [{
+                    changeDetection: ChangeDetectionStrategy.Eager,
                     selector: 'appfx-wizard',
                     standalone: true,
                     template: '',
@@ -1997,6 +2027,7 @@ class WizardHelper {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
+/// <reference types="jasmine" />
 
 /**
  * Generated bundle index. Do not edit.
