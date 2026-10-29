@@ -1,11 +1,11 @@
 import * as i0 from '@angular/core';
-import { OnDestroy, ElementRef, ViewContainerRef, AfterContentInit, QueryList, ChangeDetectorRef, Type } from '@angular/core';
+import { OnDestroy, ElementRef, ViewContainerRef, AfterContentInit, QueryList, Type } from '@angular/core';
 import * as i1 from '@clr/angular/popover/common';
 import { ClrPopoverService } from '@clr/angular/popover/common';
-import * as i11 from '@clr/angular/utils';
-import { IfActiveService, TemplateRefContainer, ClrCommonStringsService, ClrKeyFocus, WillyWonka, OompaLoompa } from '@clr/angular/utils';
-import * as i10 from '@angular/common';
-import * as i12 from '@clr/angular/icon';
+import * as i9 from '@clr/angular/utils';
+import { IfActiveService, TemplateRefContainer, ClrCommonStringsService, ClrKeyFocus } from '@clr/angular/utils';
+import * as i8 from '@angular/common';
+import * as i10 from '@clr/angular/icon';
 
 declare enum TabsLayout {
     HORIZONTAL = "horizontal",
@@ -23,7 +23,7 @@ declare class ClrTabContent implements OnDestroy {
     get ariaLabelledBy(): string;
     private set templateRef(value);
     ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabContent, [{ optional: true; }, { optional: true; }, { optional: true; }]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTabContent, "clr-tab-content", never, { "tabContentId": { "alias": "id"; "required": false; }; }, {}, never, ["*"], false, never>;
 }
 
@@ -44,7 +44,7 @@ declare class ClrTabLink {
     get active(): boolean;
     get tabindex(): 0 | -1;
     activate(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabLink, [{ optional: true; }, { optional: true; }, null, null, { optional: true; }, { optional: true; }]>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabLink, "[clrTabLink]", never, { "tabLinkId": { "alias": "id"; "required": false; }; "inOverflow": { "alias": "clrTabLinkInOverflow"; "required": false; }; }, {}, never, never, false, never>;
 }
 
@@ -132,27 +132,13 @@ declare class ClrTabAction {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrTabAction, "[clrTabAction]", never, {}, {}, never, never, false, never>;
 }
 
-declare class TabsWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<TabsWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<TabsWillyWonka, "clr-tabs", never, {}, {}, never, never, false, never>;
-}
-
-declare class ActiveOompaLoompa extends OompaLoompa {
-    private ifActive;
-    private id;
-    constructor(cdr: ChangeDetectorRef, willyWonka: TabsWillyWonka, id: number, ifActive: IfActiveService);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ActiveOompaLoompa, [null, { optional: true; }, null, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<ActiveOompaLoompa, "[clrTabLink], clr-tab-content", never, {}, {}, never, never, false, never>;
-}
-
 declare const CLR_TABS_DIRECTIVES: Type<any>[];
 declare class ClrTabsModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrTabsModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa], [typeof i10.CommonModule, typeof i11.ClrConditionalModule, typeof i12.ClrIcon, typeof i11.ClrTemplateRefModule, typeof i11.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof TabsWillyWonka, typeof ActiveOompaLoompa, typeof i11.ClrConditionalModule]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrTabsModule, [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions], [typeof i8.CommonModule, typeof i9.ClrConditionalModule, typeof i10.ClrIcon, typeof i9.ClrTemplateRefModule, typeof i9.ClrKeyFocusModule], [typeof ClrTabContent, typeof ClrTab, typeof ClrTabs, typeof ClrTabOverflowContent, typeof ClrTabLink, typeof ClrTabAction, typeof ClrTabsActions, typeof i9.ClrConditionalModule]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrTabsModule>;
 }
 
-export { ActiveOompaLoompa, CLR_TABS_DIRECTIVES, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule, TabsWillyWonka };
+export { CLR_TABS_DIRECTIVES, ClrTab, ClrTabAction, ClrTabContent, ClrTabLink, ClrTabOverflowContent, ClrTabs, ClrTabsActions, ClrTabsModule };
 export type { ClrTabsActionsPosition };

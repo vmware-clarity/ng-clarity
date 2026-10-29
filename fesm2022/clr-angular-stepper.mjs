@@ -1,10 +1,10 @@
 import * as i4 from '@angular/common';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import * as i0 from '@angular/core';
-import { ChangeDetectionStrategy, Component, Injectable, PLATFORM_ID, HostBinding, ContentChildren, ViewChild, Inject, Optional, Input, Directive, HostListener, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injectable, PLATFORM_ID, HostBinding, ContentChildren, ViewChild, Inject, Optional, Input, HostListener, Directive, NgModule } from '@angular/core';
 import { CollapsiblePanelModel, CollapsiblePanelGroupModel, CollapsiblePanelService, CollapsiblePanel } from '@clr/angular/collapsible-panel';
 import * as i1 from '@clr/angular/utils';
-import { triggerAllFormControlValidation, IfExpandService, WillyWonka, OompaLoompa } from '@clr/angular/utils';
+import { triggerAllFormControlValidation, IfExpandService } from '@clr/angular/utils';
 import { map, distinctUntilChanged, tap, startWith, pairwise, filter } from 'rxjs/operators';
 import * as i2 from '@angular/forms';
 import { Subject, Observable } from 'rxjs';
@@ -279,6 +279,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  */
 class ClrStepperPanel extends CollapsiblePanel {
     constructor(platformId, commonStrings, formGroupName, ngModelGroup, stepperService, ifExpandService, cdr) {
+        if (!stepperService) {
+            throw new Error('clr-stepper-panel should only be used inside of clrStepper');
+        }
         super(stepperService, ifExpandService, cdr);
         this.platformId = platformId;
         this.commonStrings = commonStrings;
@@ -363,7 +366,7 @@ class ClrStepperPanel extends CollapsiblePanel {
             triggerAllFormControlValidation(this.formGroup);
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStepperPanel, deps: [{ token: PLATFORM_ID }, { token: i1.ClrCommonStringsService }, { token: i2.FormGroupName, optional: true }, { token: i2.NgModelGroup, optional: true }, { token: StepperService }, { token: i1.IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStepperPanel, deps: [{ token: PLATFORM_ID }, { token: i1.ClrCommonStringsService }, { token: i2.FormGroupName, optional: true }, { token: i2.NgModelGroup, optional: true }, { token: StepperService, optional: true }, { token: i1.IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
     static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrStepperPanel, isStandalone: false, selector: "clr-stepper-panel", host: { properties: { "class.clr-stepper-panel": "true", "class.clr-stepper-panel-disabled": "this.disabled" } }, providers: [IfExpandService], queries: [{ propertyName: "stepDescription", predicate: ClrStepDescription }], viewQueries: [{ propertyName: "headerButton", first: true, predicate: ["headerButton"], descendants: true }], usesInheritance: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div class=\"clr-stepper-header\">\n    <button\n      type=\"button\"\n      class=\"clr-stepper-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [attr.aria-disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"getContentId(panel.templateId)\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-stepper-header-has-description]=\"(stepDescription.changes | async)?.length || stepDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-step-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-stepper-angle clr-step-angle\"></cds-icon>\n        <span class=\"clr-step-status-icon\">\n          @if (getPanelStatus(panel) === PanelStatus.Error) {\n          <cds-icon status=\"danger\" shape=\"error-standard\" class=\"clr-step-error-icon\"></cds-icon>\n          } @if (getPanelStatus(panel) === PanelStatus.Complete) {\n          <cds-icon status=\"success\" shape=\"success-standard\" class=\"clr-step-complete-icon\"></cds-icon>\n          }\n        </span>\n      </span>\n      <span class=\"clr-step-title-wrapper\">\n        <span class=\"clr-step-number\">{{panelNumber}}.</span>\n        <ng-content select=\"clr-step-title\"></ng-content>\n      </span>\n      <ng-content select=\"clr-step-description\"></ng-content>\n    </button>\n    <div class=\"clr-sr-only\" role=\"status\">\n      @if (getPanelStatus(panel) === PanelStatus.Error) { {{ stepErrorText(panelNumber)}} } @if (getPanelStatus(panel)\n      === PanelStatus.Complete) { {{ stepCompleteText(panelNumber)}} }\n    </div>\n  </div>\n  <div\n    role=\"region\"\n    class=\"clr-stepper-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open || contentCollapsing) {\n    <!-- The content of a closed panel is hidden by its styles, so it is shown while it collapses. -->\n    <div\n      class=\"clr-stepper-content\"\n      [style.display]=\"contentCollapsing ? 'block' : null\"\n      [attr.inert]=\"contentCollapsing ? '' : null\"\n      (animate.enter)=\"expandContent($event)\"\n    >\n      <div class=\"clr-stepper-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n", dependencies: [{ kind: "directive", type: i4.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "pipe", type: i4.AsyncPipe, name: "async" }], changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStepperPanel, decorators: [{
@@ -376,7 +379,9 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
                     type: Optional
                 }] }, { type: i2.NgModelGroup, decorators: [{
                     type: Optional
-                }] }, { type: StepperService }, { type: i1.IfExpandService }, { type: i0.ChangeDetectorRef }], propDecorators: { headerButton: [{
+                }] }, { type: StepperService, decorators: [{
+                    type: Optional
+                }] }, { type: i1.IfExpandService }, { type: i0.ChangeDetectorRef }], propDecorators: { headerButton: [{
                 type: ViewChild,
                 args: ['headerButton']
             }], stepDescription: [{
@@ -491,54 +496,6 @@ function fromControlReset(control) {
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class StepperWillyWonka extends WillyWonka {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: StepperWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: StepperWillyWonka, isStandalone: false, selector: "form[clrStepper]", usesInheritance: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: StepperWillyWonka, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: 'form[clrStepper]',
-                    standalone: false,
-                }]
-        }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class StepperOompaLoompa extends OompaLoompa {
-    constructor(cdr, willyWonka, ifExpandService) {
-        if (!willyWonka) {
-            throw new Error('clr-stepper-panel should only be used inside of clrStepper');
-        }
-        super(cdr, willyWonka);
-        this.expand = ifExpandService;
-    }
-    get flavor() {
-        return this.expand.expanded;
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: StepperOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: StepperWillyWonka, optional: true }, { token: i1.IfExpandService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: StepperOompaLoompa, isStandalone: false, selector: "clr-stepper-panel, [clrStepButton]", usesInheritance: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: StepperOompaLoompa, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: 'clr-stepper-panel, [clrStepButton]',
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: StepperWillyWonka, decorators: [{
-                    type: Optional
-                }] }, { type: i1.IfExpandService }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 var ClrStepButtonType;
 (function (ClrStepButtonType) {
     ClrStepButtonType["Next"] = "next";
@@ -552,6 +509,9 @@ class ClrStepButton {
         this.type = ClrStepButtonType.Next;
         this.submitButton = false;
         this.previousButton = false;
+        if (!clrStep || !stepperService) {
+            throw new Error('clrStepButton should only be used inside of clr-stepper-panel within clrStepper');
+        }
     }
     ngOnInit() {
         this.submitButton = this.type === ClrStepButtonType.Submit;
@@ -564,7 +524,7 @@ class ClrStepButton {
         }
         this.stepperService.navigateToNextPanel(this.clrStep.id, this.clrStep.formGroup.valid);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStepButton, deps: [{ token: ClrStepperPanel }, { token: StepperService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStepButton, deps: [{ token: ClrStepperPanel, optional: true }, { token: StepperService, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
     static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrStepButton, isStandalone: false, selector: "[clrStepButton]", inputs: { type: ["clrStepButton", "type"] }, host: { listeners: { "click": "navigateToNextPanel()" }, properties: { "class.clr-step-button": "true", "class.btn": "true", "type": "'button'", "class.btn-success": "this.submitButton", "class.btn-link": "this.previousButton" } }, ngImport: i0 }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStepButton, decorators: [{
@@ -578,7 +538,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
                     },
                     standalone: false,
                 }]
-        }], ctorParameters: () => [{ type: ClrStepperPanel }, { type: StepperService }], propDecorators: { type: [{
+        }], ctorParameters: () => [{ type: ClrStepperPanel, decorators: [{
+                    type: Optional
+                }] }, { type: StepperService, decorators: [{
+                    type: Optional
+                }] }], propDecorators: { type: [{
                 type: Input,
                 args: ['clrStepButton']
             }], submitButton: [{
@@ -639,36 +603,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const declarations = [
-    ClrStepper,
-    ClrStepButton,
-    ClrStepTitle,
-    ClrStepDescription,
-    ClrStepContent,
-    ClrStepperPanel,
-    StepperOompaLoompa,
-    StepperWillyWonka,
-];
+const declarations = [ClrStepper, ClrStepButton, ClrStepTitle, ClrStepDescription, ClrStepContent, ClrStepperPanel];
 class ClrStepperModule {
     constructor() {
         ClarityIcons.addIcons(angleIcon, successStandardIcon, errorStandardIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStepperModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrStepperModule, declarations: [ClrStepper,
-            ClrStepButton,
-            ClrStepTitle,
-            ClrStepDescription,
-            ClrStepContent,
-            ClrStepperPanel,
-            StepperOompaLoompa,
-            StepperWillyWonka], imports: [CommonModule, ClrIcon], exports: [ClrStepper,
-            ClrStepButton,
-            ClrStepTitle,
-            ClrStepDescription,
-            ClrStepContent,
-            ClrStepperPanel,
-            StepperOompaLoompa,
-            StepperWillyWonka, ClrIcon] }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrStepperModule, declarations: [ClrStepper, ClrStepButton, ClrStepTitle, ClrStepDescription, ClrStepContent, ClrStepperPanel], imports: [CommonModule, ClrIcon], exports: [ClrStepper, ClrStepButton, ClrStepTitle, ClrStepDescription, ClrStepContent, ClrStepperPanel, ClrIcon] }); }
     static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStepperModule, imports: [CommonModule, ClrIcon] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStepperModule, decorators: [{
@@ -691,5 +632,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperOompaLoompa, StepperPanelModel, StepperPanelStatus, StepperService, StepperWillyWonka };
+export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperPanelModel, StepperPanelStatus, StepperService };
 //# sourceMappingURL=clr-angular-stepper.mjs.map

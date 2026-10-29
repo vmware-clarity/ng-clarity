@@ -1132,7 +1132,8 @@ class ClrWizardButton {
         const disabled = true;
         const nav = this.navService;
         const page = this.navService.currentPage;
-        // Ensure we don't change the response until buttons are ready to avoid chocolate
+        // Ensure we don't change the response until buttons are ready to avoid
+        // ExpressionChangedAfterItHasBeenChecked errors
         if (!this.buttonService.buttonsReady) {
             return !disabled;
         }
@@ -1160,7 +1161,8 @@ class ClrWizardButton {
         // dealing with negatives here. cognitively easier to think of it like this...
         const hidden = true;
         const nav = this.navService;
-        // Ensure we don't change the response until buttons are ready to avoid chocolate
+        // Ensure we don't change the response until buttons are ready to avoid
+        // ExpressionChangedAfterItHasBeenChecked errors
         if (!this.buttonService.buttonsReady) {
             return !hidden;
         }
@@ -2737,7 +2739,8 @@ class ClrWizard {
         if (!this.currentPage) {
             this.navService.setFirstPageCurrent();
         }
-        // Only render buttons when wizard is opened, to avoid chocolate errors
+        // Only render buttons when wizard is opened, to avoid
+        // ExpressionChangedAfterItHasBeenChecked errors
         this.buttonService.buttonsReady = true;
         this._openChanged.emit(true);
     }

@@ -24,9 +24,10 @@ declare class IfActiveService {
      * @property _current
      *
      * @description
-     * A property holding the current value for current/closed state of an IfActive structural directive.
+     * A signal holding the current value for current/closed state of an IfActive structural directive.
+     * Views reading `current` are refreshed by Angular whenever it changes.
      */
-    private _current;
+    private readonly _current;
     /*********
      *
      * @description
@@ -84,16 +85,31 @@ declare class ClrIfActive implements OnDestroy {
 }
 
 declare class IfExpandService implements LoadingListener {
-    expandable: number;
-    hasExpandTemplate: boolean;
-    protected _loading: boolean;
-    protected _expanded: boolean;
     protected _expandChange: Subject<boolean>;
+    private readonly _expandableSignal;
+    private readonly _hasExpandTemplateSignal;
+    private readonly _loadingSignal;
+    private readonly _expandedSignal;
+    get expandable(): number;
+    set expandable(value: number);
+    get hasExpandTemplate(): boolean;
+    set hasExpandTemplate(value: boolean);
     get loading(): boolean;
     set loading(value: boolean);
     get expanded(): boolean;
     set expanded(value: boolean);
     get expandChange(): Observable<boolean>;
+    /**
+     * Raw loading state, kept as a protected accessor for subclasses. Backed by a signal.
+     */
+    protected get _loading(): boolean;
+    protected set _loading(value: boolean);
+    /**
+     * Raw expanded state, kept as a protected accessor for subclasses (e.g. `DatagridIfExpandService`).
+     * Backed by a signal.
+     */
+    protected get _expanded(): boolean;
+    protected set _expanded(value: boolean);
     toggle(): void;
     loadingStateChange(state: ClrLoadingState): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<IfExpandService, never>;

@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { InjectionToken, Injectable, EventEmitter, Input, Output, Inject, Directive, Optional, NgModule } from '@angular/core';
+import { InjectionToken, signal, Injectable, EventEmitter, Input, Output, Inject, Directive, Optional, NgModule } from '@angular/core';
 import { Subject } from 'rxjs';
 import { ClrLoadingState } from '@clr/angular/utils/loading';
 import { CommonModule } from '@angular/common';
@@ -39,6 +39,15 @@ class IfActiveService {
          *
          */
         this._currentChange = new Subject();
+        /*********
+         * @property _current
+         *
+         * @description
+         * A signal holding the current value for current/closed state of an IfActive structural directive.
+         * Views reading `current` are refreshed by Angular whenever it changes.
+         */
+        this._current = signal(undefined, /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "_current" }] : /* istanbul ignore next */ []));
     }
     /*********
      *
@@ -57,11 +66,11 @@ class IfActiveService {
      *
      */
     get current() {
-        return this._current;
+        return this._current();
     }
     set current(value) {
-        if (this._current !== value) {
-            this._current = value;
+        if (this._current() !== value) {
+            this._current.set(value);
             this._currentChange.next(value);
         }
     }
@@ -174,11 +183,29 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  */
 class IfExpandService {
     constructor() {
-        this.expandable = 0;
-        this.hasExpandTemplate = false;
-        this._loading = false;
-        this._expanded = false;
         this._expandChange = new Subject();
+        // State is held in signals so that any view reading it through the getters below is refreshed by Angular
+        // when it changes, including when it changes after that view was checked (no manual change detection needed).
+        this._expandableSignal = signal(0, /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "_expandableSignal" }] : /* istanbul ignore next */ []));
+        this._hasExpandTemplateSignal = signal(false, /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "_hasExpandTemplateSignal" }] : /* istanbul ignore next */ []));
+        this._loadingSignal = signal(false, /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "_loadingSignal" }] : /* istanbul ignore next */ []));
+        this._expandedSignal = signal(false, /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "_expandedSignal" }] : /* istanbul ignore next */ []));
+    }
+    get expandable() {
+        return this._expandableSignal();
+    }
+    set expandable(value) {
+        this._expandableSignal.set(value);
+    }
+    get hasExpandTemplate() {
+        return this._hasExpandTemplateSignal();
+    }
+    set hasExpandTemplate(value) {
+        this._hasExpandTemplateSignal.set(value);
     }
     get loading() {
         return this._loading;
@@ -201,6 +228,25 @@ class IfExpandService {
     }
     get expandChange() {
         return this._expandChange.asObservable();
+    }
+    /**
+     * Raw loading state, kept as a protected accessor for subclasses. Backed by a signal.
+     */
+    get _loading() {
+        return this._loadingSignal();
+    }
+    set _loading(value) {
+        this._loadingSignal.set(value);
+    }
+    /**
+     * Raw expanded state, kept as a protected accessor for subclasses (e.g. `DatagridIfExpandService`).
+     * Backed by a signal.
+     */
+    get _expanded() {
+        return this._expandedSignal();
+    }
+    set _expanded(value) {
+        this._expandedSignal.set(value);
     }
     toggle() {
         this.expanded = !this._expanded;

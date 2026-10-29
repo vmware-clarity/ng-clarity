@@ -1,31 +1,13 @@
 import * as i0 from '@angular/core';
-import { Directive, Injectable, Optional, Input, HostBinding, ChangeDetectionStrategy, Component, DOCUMENT, createComponent, PLATFORM_ID, HostListener, Inject, NgModule } from '@angular/core';
-import * as i1 from '@clr/angular/utils';
-import { WillyWonka, OompaLoompa, commonStringsDefault, LARGE_BREAKPOINT, ClrStandaloneCdkTrapFocus } from '@clr/angular/utils';
-import { ReplaySubject, Subject } from 'rxjs';
+import { signal, Injectable, linkedSignal, Input, HostBinding, ChangeDetectionStrategy, Component, DOCUMENT, createComponent, PLATFORM_ID, HostListener, Inject, Directive, NgModule } from '@angular/core';
 import { filter } from 'rxjs/operators';
+import { ReplaySubject, Subject } from 'rxjs';
+import * as i1 from '@clr/angular/utils';
+import { commonStringsDefault, LARGE_BREAKPOINT, ClrStandaloneCdkTrapFocus } from '@clr/angular/utils';
 import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ClarityIcons, timesIcon, ClrIcon } from '@clr/angular/icon';
 import * as i1$1 from '@angular/router';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class MainContainerWillyWonka extends WillyWonka {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MainContainerWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: MainContainerWillyWonka, isStandalone: false, selector: "clr-main-container", usesInheritance: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MainContainerWillyWonka, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: 'clr-main-container',
-                    standalone: false,
-                }]
-        }] });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -75,10 +57,19 @@ class ResponsiveNavControlMessage {
  */
 class ResponsiveNavigationService {
     constructor() {
-        this.responsiveNavList = [];
+        // The list is mutated in place (its reference is what `registeredNavs` emits), so the signal is configured to
+        // notify on every write rather than on reference change. Views reading `responsiveNavList` are refreshed
+        // whenever a nav level is registered or unregistered.
+        this._responsiveNavList = signal([], { ...(ngDevMode ? { debugName: "_responsiveNavList" } : /* istanbul ignore next */ {}), equal: () => false });
         this.registerNavSubject = new ReplaySubject();
         this.controlNavSubject = new Subject();
         this.closeAllNavs(); // We start with all navs closed
+    }
+    get responsiveNavList() {
+        return this._responsiveNavList();
+    }
+    set responsiveNavList(value) {
+        this._responsiveNavList.set(value);
     }
     get registeredNavs() {
         return this.registerNavSubject.asObservable();
@@ -90,8 +81,13 @@ class ResponsiveNavigationService {
         if (!navLevel || this.isNavRegistered(navLevel)) {
             return;
         }
-        this.responsiveNavList.push(navLevel);
-        this.registerNavSubject.next(this.responsiveNavList);
+        const navList = this.responsiveNavList;
+        navList.push(navLevel);
+        if (navList.length > 2) {
+            console.error('More than 2 Nav Levels detected.');
+        }
+        this._responsiveNavList.set(navList);
+        this.registerNavSubject.next(navList);
     }
     isNavRegistered(navLevel) {
         if (this.responsiveNavList.indexOf(navLevel) > -1) {
@@ -103,8 +99,10 @@ class ResponsiveNavigationService {
     unregisterNav(navLevel) {
         const index = this.responsiveNavList.indexOf(navLevel);
         if (index > -1) {
-            this.responsiveNavList.splice(index, 1);
-            this.registerNavSubject.next(this.responsiveNavList);
+            const navList = this.responsiveNavList;
+            navList.splice(index, 1);
+            this._responsiveNavList.set(navList);
+            this.registerNavSubject.next(navList);
         }
     }
     sendControlMessage(controlCode, navLevel) {
@@ -129,64 +127,35 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class NavDetectionOompaLoompa extends OompaLoompa {
-    constructor(cdr, willyWonka, responsiveNavService) {
-        if (!willyWonka) {
-            throw new Error('clr-header should only be used inside of a clr-main-container');
-        }
-        super(cdr, willyWonka);
-        this.responsiveNavService = responsiveNavService;
-    }
-    // NavDetectionOompaLoompa is the addition of the nav levels
-    // Since we support 2 levels, the possibilities are 0, 1 or 3 (1 + 2)
-    get flavor() {
-        return this.responsiveNavService.responsiveNavList.reduce((sum, navLevel) => sum + navLevel, 0);
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: NavDetectionOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: MainContainerWillyWonka, optional: true }, { token: ResponsiveNavigationService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: NavDetectionOompaLoompa, isStandalone: false, selector: "clr-header", usesInheritance: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: NavDetectionOompaLoompa, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: 'clr-header',
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: MainContainerWillyWonka, decorators: [{
-                    type: Optional
-                }] }, { type: ResponsiveNavigationService }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 class ClrHeader {
     constructor(responsiveNavService, commonStrings) {
         this.responsiveNavService = responsiveNavService;
         this.commonStrings = commonStrings;
         this.role = 'banner';
-        this.isNavLevel1OnPage = false;
-        this.isNavLevel2OnPage = false;
         this.openNavLevel = null;
         this.responsiveNavCodes = ResponsiveNavCodes;
-        this._subscription = responsiveNavService.registeredNavs.subscribe({
-            next: (navLevelList) => {
-                this.initializeNavTriggers(navLevelList);
-            },
-        });
-        this._subscription.add(responsiveNavService.navControl
+        // Derived from the signal-backed nav level list of ResponsiveNavigationService, so the triggers are updated whenever
+        // a clr-nav-level is registered or unregistered, including after the header was checked. It stays writable to keep
+        // the public setters, resetNavTriggers() and initializeNavTriggers() working.
+        this.navTriggers = linkedSignal(() => getNavTriggers(this.responsiveNavService.responsiveNavList), /* @ts-ignore */
+        ...(ngDevMode ? [{ debugName: "navTriggers" }] : /* istanbul ignore next */ []));
+        this._subscription = responsiveNavService.navControl
             .pipe(filter(({ controlCode }) => controlCode === ResponsiveNavCodes.NAV_CLOSE || controlCode === ResponsiveNavCodes.NAV_CLOSE_ALL))
             .subscribe(() => {
             this.openNavLevel = null;
-        }));
+        });
+    }
+    get isNavLevel1OnPage() {
+        return this.navTriggers().level1;
+    }
+    set isNavLevel1OnPage(value) {
+        this.navTriggers.update(triggers => ({ ...triggers, level1: value }));
+    }
+    get isNavLevel2OnPage() {
+        return this.navTriggers().level2;
+    }
+    set isNavLevel2OnPage(value) {
+        this.navTriggers.update(triggers => ({ ...triggers, level2: value }));
     }
     get responsiveNavCommonString() {
         const myCommonStrings = this.commonStrings.keys;
@@ -208,24 +177,14 @@ class ClrHeader {
     }
     // reset triggers. handles cases when an application has different nav levels on different pages.
     resetNavTriggers() {
-        this.isNavLevel1OnPage = false;
-        this.isNavLevel2OnPage = false;
+        this.navTriggers.set({ level1: false, level2: false });
     }
     // decides which triggers to show on the header
     initializeNavTriggers(navList) {
-        this.resetNavTriggers();
         if (navList.length > 2) {
             console.error('More than 2 Nav Levels detected.');
-            return;
         }
-        navList.forEach(navLevel => {
-            if (navLevel === ResponsiveNavCodes.NAV_LEVEL_1) {
-                this.isNavLevel1OnPage = true;
-            }
-            else if (navLevel === ResponsiveNavCodes.NAV_LEVEL_2) {
-                this.isNavLevel2OnPage = true;
-            }
-        });
+        this.navTriggers.set(getNavTriggers(navList));
     }
     // closes the nav that is open
     closeOpenNav() {
@@ -314,6 +273,15 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
                 type: HostBinding,
                 args: ['attr.role']
             }] } });
+function getNavTriggers(navList) {
+    if (navList.length > 2) {
+        return { level1: false, level2: false };
+    }
+    return {
+        level1: navList.includes(ResponsiveNavCodes.NAV_LEVEL_1),
+        level2: navList.includes(ResponsiveNavCodes.NAV_LEVEL_2),
+    };
+}
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -539,24 +507,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-const CLR_NAVIGATION_DIRECTIVES = [
-    ClrHeader,
-    ClrNavLevel,
-    ClrAriaCurrentLink,
-    NavDetectionOompaLoompa,
-    MainContainerWillyWonka,
-];
+const CLR_NAVIGATION_DIRECTIVES = [ClrHeader, ClrNavLevel, ClrAriaCurrentLink];
 class ClrNavigationModule {
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNavigationModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrNavigationModule, declarations: [ClrHeader,
-            ClrNavLevel,
-            ClrAriaCurrentLink,
-            NavDetectionOompaLoompa,
-            MainContainerWillyWonka], imports: [CommonModule, ClrIcon, ClrDropdownModule], exports: [ClrHeader,
-            ClrNavLevel,
-            ClrAriaCurrentLink,
-            NavDetectionOompaLoompa,
-            MainContainerWillyWonka] }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrNavigationModule, declarations: [ClrHeader, ClrNavLevel, ClrAriaCurrentLink], imports: [CommonModule, ClrIcon, ClrDropdownModule], exports: [ClrHeader, ClrNavLevel, ClrAriaCurrentLink] }); }
     static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNavigationModule, imports: [CommonModule, ClrIcon, ClrDropdownModule] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNavigationModule, decorators: [{
@@ -579,5 +533,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { CLR_NAVIGATION_DIRECTIVES, ClrAriaCurrentLink, ClrHeader, ClrNavLevel, ClrNavigationModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ResponsiveNavCodes, ResponsiveNavControlMessage, ResponsiveNavigationService };
+export { CLR_NAVIGATION_DIRECTIVES, ClrAriaCurrentLink, ClrHeader, ClrNavLevel, ClrNavigationModule, ResponsiveNavCodes, ResponsiveNavControlMessage, ResponsiveNavigationService };
 //# sourceMappingURL=clr-angular-layout-nav.mjs.map

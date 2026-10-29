@@ -1,6 +1,6 @@
 import { FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, AnimationCallbackEvent, AfterViewInit, QueryList, FactoryProvider, AfterViewChecked, AfterContentChecked, ChangeDetectorRef } from '@angular/core';
+import { OnDestroy, EventEmitter, ElementRef, Renderer2, NgZone, Type, TemplateRef, Injector, ViewContainerRef, InjectionToken, OnChanges, SimpleChanges, AnimationCallbackEvent, AfterViewInit, QueryList, FactoryProvider } from '@angular/core';
 import * as i2 from '@angular/common';
 export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';
@@ -1067,25 +1067,5 @@ declare enum ClrPosition {
     LEFT_TOP = 11
 }
 
-declare class WillyWonka implements AfterViewChecked {
-    disableChocolateCheck: boolean;
-    private _chocolate;
-    get chocolate(): Observable<void>;
-    ngAfterViewChecked(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<WillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<WillyWonka, never, never, {}, {}, never, never, true, never>;
-}
-
-declare abstract class OompaLoompa implements AfterContentChecked, OnDestroy {
-    private latestFlavor;
-    private subscription;
-    protected constructor(cdr: ChangeDetectorRef, willyWonka: WillyWonka);
-    abstract get flavor(): any;
-    ngAfterContentChecked(): void;
-    ngOnDestroy(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<OompaLoompa, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<OompaLoompa, never, never, {}, {}, never, never, true, never>;
-}
-
-export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, animateHeight, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, expandHeight, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, measureHeight, noopAnimations, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
+export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, animateHeight, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, expandHeight, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, measureHeight, noopAnimations, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
 export type { ClrAnimationAnimateMetadata, ClrAnimationMetadata, ClrAnimationOptions, ClrAnimationReferenceMetadata, ClrAnimationStateMetadata, ClrAnimationStyleMetadata, ClrAnimationStyles, ClrAnimationTransitionMetadata, ClrAnimationTriggerMetadata, ClrCommonStrings, HeadingLevel, ThemeType };

@@ -3,10 +3,10 @@ import { FormGroupName, NgModelGroup, FormGroupDirective, NgForm } from '@angula
 import * as i0 from '@angular/core';
 import { OnInit, ElementRef, QueryList, ChangeDetectorRef, OnChanges, AfterViewInit, OnDestroy, SimpleChanges } from '@angular/core';
 import { CollapsiblePanelModel, CollapsiblePanelGroupModel, CollapsiblePanelService, CollapsiblePanel } from '@clr/angular/collapsible-panel';
-import { ClrCommonStringsService, IfExpandService, WillyWonka, OompaLoompa } from '@clr/angular/utils';
+import { ClrCommonStringsService, IfExpandService } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
-import * as i9 from '@angular/common';
-import * as i10 from '@clr/angular/icon';
+import * as i7 from '@angular/common';
+import * as i8 from '@clr/angular/icon';
 
 declare enum StepperPanelStatus {
     Inactive = "inactive",
@@ -104,7 +104,7 @@ declare class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     protected stepErrorText(panelNumber: number): string;
     private listenToFocusChanges;
     private triggerAllFormControlValidationIfError;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, null, null, null]>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperPanel, [null, null, { optional: true; }, { optional: true; }, { optional: true; }, null, null]>;
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepperPanel, "clr-stepper-panel", never, {}, {}, ["stepDescription"], ["clr-step-title", "clr-step-description", "*"], false, never>;
 }
 
@@ -143,7 +143,7 @@ declare class ClrStepButton implements OnInit {
     constructor(clrStep: ClrStepperPanel, stepperService: StepperService);
     ngOnInit(): void;
     navigateToNextPanel(): void;
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepButton, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepButton, [{ optional: true; }, { optional: true; }]>;
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrStepButton, "[clrStepButton]", never, { "type": { "alias": "clrStepButton"; "required": false; }; }, {}, never, never, false, never>;
 }
 
@@ -157,24 +157,11 @@ declare class ClrStepContent {
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrStepContent, "clr-step-content", never, {}, {}, never, ["*"], false, never>;
 }
 
-declare class StepperWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<StepperWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<StepperWillyWonka, "form[clrStepper]", never, {}, {}, never, never, false, never>;
-}
-
-declare class StepperOompaLoompa extends OompaLoompa {
-    private expand;
-    constructor(cdr: ChangeDetectorRef, willyWonka: StepperWillyWonka, ifExpandService: IfExpandService);
-    get flavor(): boolean;
-    static ɵfac: i0.ɵɵFactoryDeclaration<StepperOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<StepperOompaLoompa, "clr-stepper-panel, [clrStepButton]", never, {}, {}, never, never, false, never>;
-}
-
 declare class ClrStepperModule {
     constructor();
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrStepperModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka], [typeof i9.CommonModule, typeof i10.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof StepperOompaLoompa, typeof StepperWillyWonka, typeof i10.ClrIcon]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrStepperModule, [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel], [typeof i7.CommonModule, typeof i8.ClrIcon], [typeof ClrStepper, typeof ClrStepButton, typeof ClrStepTitle, typeof ClrStepDescription, typeof ClrStepContent, typeof ClrStepperPanel, typeof i8.ClrIcon]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrStepperModule>;
 }
 
-export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperOompaLoompa, StepperPanelModel, StepperPanelStatus, StepperService, StepperWillyWonka };
+export { ClrStepButton, ClrStepButtonType, ClrStepContent, ClrStepDescription, ClrStepTitle, ClrStepper, ClrStepperModule, ClrStepperPanel, StepperPanelModel, StepperPanelStatus, StepperService };

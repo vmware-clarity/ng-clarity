@@ -1,17 +1,12 @@
-import * as i1 from '@clr/angular/utils';
-import { WillyWonka, OompaLoompa, ClrCommonStringsService, ClrStandaloneCdkTrapFocus } from '@clr/angular/utils';
 import * as i0 from '@angular/core';
-import { ChangeDetectorRef, OnDestroy, OnInit, ElementRef, Renderer2, Injector, EnvironmentInjector, ApplicationRef, Type } from '@angular/core';
+import { OnDestroy, OnInit, ElementRef, Renderer2, Injector, EnvironmentInjector, ApplicationRef, Type } from '@angular/core';
+import * as i1 from '@clr/angular/utils';
+import { ClrCommonStringsService, ClrStandaloneCdkTrapFocus } from '@clr/angular/utils';
 import { Observable } from 'rxjs';
 import { RouterLinkActive } from '@angular/router';
-import * as i6 from '@angular/common';
-import * as i7 from '@clr/angular/icon';
-import * as i8 from '@clr/angular/popover/dropdown';
-
-declare class MainContainerWillyWonka extends WillyWonka {
-    static ɵfac: i0.ɵɵFactoryDeclaration<MainContainerWillyWonka, never>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<MainContainerWillyWonka, "clr-main-container", never, {}, {}, never, never, false, never>;
-}
+import * as i4 from '@angular/common';
+import * as i5 from '@clr/angular/icon';
+import * as i6 from '@clr/angular/popover/dropdown';
 
 declare class ResponsiveNavControlMessage {
     private _controlCode;
@@ -22,10 +17,12 @@ declare class ResponsiveNavControlMessage {
 }
 
 declare class ResponsiveNavigationService {
-    responsiveNavList: number[];
+    private readonly _responsiveNavList;
     private registerNavSubject;
     private controlNavSubject;
     constructor();
+    get responsiveNavList(): number[];
+    set responsiveNavList(value: number[]);
     get registeredNavs(): Observable<number[]>;
     get navControl(): Observable<ResponsiveNavControlMessage>;
     registerNav(navLevel: number): void;
@@ -35,14 +32,6 @@ declare class ResponsiveNavigationService {
     closeAllNavs(): void;
     static ɵfac: i0.ɵɵFactoryDeclaration<ResponsiveNavigationService, never>;
     static ɵprov: i0.ɵɵInjectableDeclaration<ResponsiveNavigationService>;
-}
-
-declare class NavDetectionOompaLoompa extends OompaLoompa {
-    private responsiveNavService;
-    constructor(cdr: ChangeDetectorRef, willyWonka: MainContainerWillyWonka, responsiveNavService: ResponsiveNavigationService);
-    get flavor(): number;
-    static ɵfac: i0.ɵɵFactoryDeclaration<NavDetectionOompaLoompa, [null, { optional: true; }, null]>;
-    static ɵdir: i0.ɵɵDirectiveDeclaration<NavDetectionOompaLoompa, "clr-header", never, {}, {}, never, never, false, never>;
 }
 
 declare class ResponsiveNavCodes {
@@ -64,12 +53,15 @@ declare class ClrHeader implements OnDestroy {
     private responsiveNavService;
     commonStrings: ClrCommonStringsService;
     role: string;
-    isNavLevel1OnPage: boolean;
-    isNavLevel2OnPage: boolean;
     openNavLevel: number;
     responsiveNavCodes: typeof ResponsiveNavCodes;
     private _subscription;
+    private readonly navTriggers;
     constructor(responsiveNavService: ResponsiveNavigationService, commonStrings: ClrCommonStringsService);
+    get isNavLevel1OnPage(): boolean;
+    set isNavLevel1OnPage(value: boolean);
+    get isNavLevel2OnPage(): boolean;
+    set isNavLevel2OnPage(value: boolean);
     get responsiveNavCommonString(): string;
     get responsiveOverflowCommonString(): string;
     resetNavTriggers(): void;
@@ -135,8 +127,8 @@ declare class ClrAriaCurrentLink implements OnInit, OnDestroy {
 declare const CLR_NAVIGATION_DIRECTIVES: Type<any>[];
 declare class ClrNavigationModule {
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrNavigationModule, never>;
-    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka], [typeof i6.CommonModule, typeof i7.ClrIcon, typeof i8.ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink, typeof NavDetectionOompaLoompa, typeof MainContainerWillyWonka]>;
+    static ɵmod: i0.ɵɵNgModuleDeclaration<ClrNavigationModule, [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink], [typeof i4.CommonModule, typeof i5.ClrIcon, typeof i6.ClrDropdownModule], [typeof ClrHeader, typeof ClrNavLevel, typeof ClrAriaCurrentLink]>;
     static ɵinj: i0.ɵɵInjectorDeclaration<ClrNavigationModule>;
 }
 
-export { CLR_NAVIGATION_DIRECTIVES, ClrAriaCurrentLink, ClrHeader, ClrNavLevel, ClrNavigationModule, MainContainerWillyWonka, NavDetectionOompaLoompa, ResponsiveNavCodes, ResponsiveNavControlMessage, ResponsiveNavigationService };
+export { CLR_NAVIGATION_DIRECTIVES, ClrAriaCurrentLink, ClrHeader, ClrNavLevel, ClrNavigationModule, ResponsiveNavCodes, ResponsiveNavControlMessage, ResponsiveNavigationService };

@@ -2187,74 +2187,10 @@ var ClrPosition;
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-/*
- * After a conversation with the Angular core team, it turns out we don't have much of a choice for our
- * declarative API, we need to fight against change detection and its one-way flow. This is
- * currently the least dirty solution to do what we want.
- *
- * Do not modify or even use this class unless you know exactly what you're doing.
- * It has the potential to trigger change detection loops or kill app performances.
- */
-class WillyWonka {
-    constructor() {
-        this.disableChocolateCheck = false;
-        this._chocolate = new Subject();
-    }
-    get chocolate() {
-        return this._chocolate.asObservable();
-    }
-    ngAfterViewChecked() {
-        if (!this.disableChocolateCheck) {
-            this._chocolate.next();
-        }
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: WillyWonka, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: WillyWonka, isStandalone: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: WillyWonka, decorators: [{
-            type: Directive
-        }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class OompaLoompa {
-    // FIXME: Request Injector once we move to Angular 4.2+, it'll allow easier refactors
-    constructor(cdr, willyWonka) {
-        this.subscription = willyWonka.chocolate.subscribe(() => {
-            if (this.latestFlavor !== this.flavor) {
-                willyWonka.disableChocolateCheck = true;
-                cdr.detectChanges();
-                willyWonka.disableChocolateCheck = false;
-            }
-        });
-    }
-    ngAfterContentChecked() {
-        this.latestFlavor = this.flavor;
-    }
-    ngOnDestroy() {
-        this.subscription.unsubscribe();
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: OompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: WillyWonka }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: OompaLoompa, isStandalone: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: OompaLoompa, decorators: [{
-            type: Directive
-        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: WillyWonka }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
 
 /**
  * Generated bundle index. Do not edit.
  */
 
-export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OompaLoompa, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, WillyWonka, animateHeight, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, expandHeight, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, measureHeight, noopAnimations, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
+export { ArrowKeyDirection, BASIC_FOCUSABLE_ITEM_PROVIDER, BaseExpandableAnimation, BasicFocusableItem, CdkDragModule, CdkDragModule_CdkDrag, CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus, ClrCommonStringsService, ClrDestroyService, ClrExpandableAnimation, ClrExpandableAnimationDirective, ClrExpandableAnimationModule, ClrFocusOnViewInit, ClrFocusOnViewInitModule, ClrHostWrappingModule, ClrKeyFocus, ClrKeyFocusItem, ClrKeyFocusModule, ClrOutsideClickModule, ClrPosition, ClrRovingTabindex, ClrStandaloneCdkTrapFocus, ClrTemplateRefModule, DATEPICKER_ENABLE_BREAKPOINT, DomAdapter, EXPANDABLE_ANIMATION_DIRECTIVES, EXTRA_LARGE_BREAKPOINT, EmptyAnchor, FOCUS_ON_VIEW_INIT, FOCUS_ON_VIEW_INIT_DIRECTIVES, FOCUS_SERVICE_PROVIDER, FocusService, FocusableItem, HostWrapper, Keys, LARGE_BREAKPOINT, Linkers, MEDIUM_BREAKPOINT, MOCK_DOM_ADAPTER_PROVIDER, MockDomAdapter, MockFocusableItem, OUSTIDE_CLICK_DIRECTIVES, OutsideClick, SMALL_BREAKPOINT, ScrollingService, TemplateRefContainer, animateHeight, assertNever, clrFocusServiceFactory, collapse, commonStringsDefault, customFocusableItemProvider, defaultAnimationTiming, defaultExpandAnimation, expandHeight, fade, fadeSlide, isBooleanAttributeSet, isKeyEitherLetterOrNumber, measureHeight, noopAnimations, preventArrowKeyScroll, slide, triggerAllFormControlValidation, uniqueIdFactory, wrapObservable };
 //# sourceMappingURL=clr-angular-utils.mjs.map

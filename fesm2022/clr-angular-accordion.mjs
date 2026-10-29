@@ -1,12 +1,13 @@
 import * as i0 from '@angular/core';
-import { ChangeDetectionStrategy, Component, EventEmitter, ContentChildren, Input, Output, HostBinding, Injectable, Directive, Optional, NgModule } from '@angular/core';
-import { CollapsiblePanel, CollapsiblePanelGroupModel, CollapsiblePanelService } from '@clr/angular/collapsible-panel';
+import { ChangeDetectionStrategy, Component, Injectable, EventEmitter, ContentChildren, Input, Output, HostBinding, Optional, Inject, NgModule } from '@angular/core';
+import * as i4 from '@clr/angular/collapsible-panel';
+import { CollapsiblePanelGroupModel, CollapsiblePanelService, CollapsiblePanel } from '@clr/angular/collapsible-panel';
 import { startWith } from 'rxjs/operators';
-import * as i2$1 from '@clr/angular/utils';
-import { IfExpandService, WillyWonka, OompaLoompa } from '@clr/angular/utils';
-import * as i1 from '@angular/common';
+import * as i1 from '@clr/angular/utils';
+import { IfExpandService } from '@clr/angular/utils';
+import * as i2 from '@angular/common';
 import { CommonModule } from '@angular/common';
-import * as i2 from '@clr/angular/icon';
+import * as i3 from '@clr/angular/icon';
 import { ClarityIcons, angleIcon, ClrIcon } from '@clr/angular/icon';
 
 /*
@@ -29,57 +30,6 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
                     standalone: false,
                 }]
         }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class ClrAccordionPanel extends CollapsiblePanel {
-    constructor() {
-        super(...arguments);
-        this.disabled = false;
-        this.panelOpen = false;
-        this.panelOpenChange = new EventEmitter();
-    }
-    ngOnChanges(changes) {
-        this.handlePanelInputChanges(changes);
-    }
-    getPanelStateClasses(panel) {
-        return panel.open ? 'clr-accordion-panel-open' : 'clr-accordion-panel-closed';
-    }
-    getContentId(id) {
-        return `clr-accordion-content-${id}`;
-    }
-    getHeaderId(id) {
-        return `clr-accordion-header-${id}`;
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrAccordionPanel, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrAccordionPanel, isStandalone: false, selector: "clr-accordion-panel", inputs: { disabled: ["clrAccordionPanelDisabled", "disabled"], panelOpen: ["clrAccordionPanelOpen", "panelOpen"], explicitHeadingLevel: ["clrAccordionPanelHeadingLevel", "explicitHeadingLevel"] }, outputs: { panelOpenChange: "clrAccordionPanelOpenChange" }, host: { properties: { "class.clr-accordion-panel": "true", "class.clr-accordion-panel-disabled": "this.disabled" } }, providers: [IfExpandService], queries: [{ propertyName: "accordionDescription", predicate: ClrAccordionDescription }], usesInheritance: true, usesOnChanges: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div\n    class=\"clr-accordion-header\"\n    [attr.role]=\"explicitHeadingLevel ? 'heading' : null\"\n    [attr.aria-level]=\"explicitHeadingLevel ? explicitHeadingLevel : null\"\n  >\n    <button\n      type=\"button\"\n      class=\"clr-accordion-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"!panel.disabled && panel.open ? getContentId(panel.templateId) : null\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-accordion-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle\"></cds-icon>\n      </span>\n      <ng-content select=\"clr-accordion-title\"></ng-content>\n      <ng-content select=\"clr-accordion-description\"></ng-content>\n    </button>\n  </div>\n  <div\n    role=\"region\"\n    class=\"clr-accordion-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div class=\"clr-accordion-content\" (animate.enter)=\"expandContent($event)\">\n      <div class=\"clr-accordion-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n", dependencies: [{ kind: "directive", type: i1.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i2.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "pipe", type: i1.AsyncPipe, name: "async" }], changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrAccordionPanel, decorators: [{
-            type: Component,
-            args: [{ selector: 'clr-accordion-panel', host: { '[class.clr-accordion-panel]': 'true' }, changeDetection: ChangeDetectionStrategy.OnPush, providers: [IfExpandService], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div\n    class=\"clr-accordion-header\"\n    [attr.role]=\"explicitHeadingLevel ? 'heading' : null\"\n    [attr.aria-level]=\"explicitHeadingLevel ? explicitHeadingLevel : null\"\n  >\n    <button\n      type=\"button\"\n      class=\"clr-accordion-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"!panel.disabled && panel.open ? getContentId(panel.templateId) : null\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-accordion-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle\"></cds-icon>\n      </span>\n      <ng-content select=\"clr-accordion-title\"></ng-content>\n      <ng-content select=\"clr-accordion-description\"></ng-content>\n    </button>\n  </div>\n  <div\n    role=\"region\"\n    class=\"clr-accordion-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div class=\"clr-accordion-content\" (animate.enter)=\"expandContent($event)\">\n      <div class=\"clr-accordion-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n" }]
-        }], propDecorators: { disabled: [{
-                type: Input,
-                args: ['clrAccordionPanelDisabled']
-            }, {
-                type: HostBinding,
-                args: ['class.clr-accordion-panel-disabled']
-            }], panelOpen: [{
-                type: Input,
-                args: ['clrAccordionPanelOpen']
-            }], panelOpenChange: [{
-                type: Output,
-                args: ['clrAccordionPanelOpenChange']
-            }], explicitHeadingLevel: [{
-                type: Input,
-                args: ['clrAccordionPanelHeadingLevel']
-            }], accordionDescription: [{
-                type: ContentChildren,
-                args: [ClrAccordionDescription]
-            }] } });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -148,6 +98,65 @@ class AccordionService extends CollapsiblePanelService {
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: AccordionService, decorators: [{
             type: Injectable
         }] });
+
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+class ClrAccordionPanel extends CollapsiblePanel {
+    constructor(panelService, ifExpandService, cdr) {
+        if (!panelService) {
+            throw new Error('clr-accordion-panel should only be used inside of clr-accordion');
+        }
+        super(panelService, ifExpandService, cdr);
+        this.disabled = false;
+        this.panelOpen = false;
+        this.panelOpenChange = new EventEmitter();
+    }
+    ngOnChanges(changes) {
+        this.handlePanelInputChanges(changes);
+    }
+    getPanelStateClasses(panel) {
+        return panel.open ? 'clr-accordion-panel-open' : 'clr-accordion-panel-closed';
+    }
+    getContentId(id) {
+        return `clr-accordion-content-${id}`;
+    }
+    getHeaderId(id) {
+        return `clr-accordion-header-${id}`;
+    }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrAccordionPanel, deps: [{ token: AccordionService, optional: true }, { token: i1.IfExpandService }, { token: i0.ChangeDetectorRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrAccordionPanel, isStandalone: false, selector: "clr-accordion-panel", inputs: { disabled: ["clrAccordionPanelDisabled", "disabled"], panelOpen: ["clrAccordionPanelOpen", "panelOpen"], explicitHeadingLevel: ["clrAccordionPanelHeadingLevel", "explicitHeadingLevel"] }, outputs: { panelOpenChange: "clrAccordionPanelOpenChange" }, host: { properties: { "class.clr-accordion-panel": "true", "class.clr-accordion-panel-disabled": "this.disabled" } }, providers: [IfExpandService], queries: [{ propertyName: "accordionDescription", predicate: ClrAccordionDescription }], usesInheritance: true, usesOnChanges: true, ngImport: i0, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div\n    class=\"clr-accordion-header\"\n    [attr.role]=\"explicitHeadingLevel ? 'heading' : null\"\n    [attr.aria-level]=\"explicitHeadingLevel ? explicitHeadingLevel : null\"\n  >\n    <button\n      type=\"button\"\n      class=\"clr-accordion-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"!panel.disabled && panel.open ? getContentId(panel.templateId) : null\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-accordion-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle\"></cds-icon>\n      </span>\n      <ng-content select=\"clr-accordion-title\"></ng-content>\n      <ng-content select=\"clr-accordion-description\"></ng-content>\n    </button>\n  </div>\n  <div\n    role=\"region\"\n    class=\"clr-accordion-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div class=\"clr-accordion-content\" (animate.enter)=\"expandContent($event)\">\n      <div class=\"clr-accordion-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n", dependencies: [{ kind: "directive", type: i2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "pipe", type: i2.AsyncPipe, name: "async" }], changeDetection: i0.ChangeDetectionStrategy.OnPush }); }
+}
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrAccordionPanel, decorators: [{
+            type: Component,
+            args: [{ selector: 'clr-accordion-panel', host: { '[class.clr-accordion-panel]': 'true' }, changeDetection: ChangeDetectionStrategy.OnPush, providers: [IfExpandService], standalone: false, template: "<!--\n  ~ Copyright (c) 2016-2026 Broadcom. All Rights Reserved.\n  ~ The term \"Broadcom\" refers to Broadcom Inc. and/or its subsidiaries.\n  ~ This software is released under MIT license.\n  ~ The full license information can be found in LICENSE in the root directory of this project.\n  -->\n@if (panel | async; as panel) {\n<div [ngClass]=\"getPanelStateClasses(panel)\">\n  <div\n    class=\"clr-accordion-header\"\n    [attr.role]=\"explicitHeadingLevel ? 'heading' : null\"\n    [attr.aria-level]=\"explicitHeadingLevel ? explicitHeadingLevel : null\"\n  >\n    <button\n      type=\"button\"\n      class=\"clr-accordion-header-button\"\n      (click)=\"togglePanel()\"\n      [id]=\"getHeaderId(panel.templateId)\"\n      [disabled]=\"panel.disabled\"\n      [attr.aria-controls]=\"!panel.disabled && panel.open ? getContentId(panel.templateId) : null\"\n      [attr.aria-expanded]=\"panel.open\"\n      [class.clr-accordion-header-has-description]=\"(accordionDescription.changes | async)?.length || accordionDescription.length\"\n      #headerButton\n    >\n      <span class=\"clr-accordion-status\">\n        <cds-icon shape=\"angle\" direction=\"right\" class=\"clr-accordion-angle\"></cds-icon>\n      </span>\n      <ng-content select=\"clr-accordion-title\"></ng-content>\n      <ng-content select=\"clr-accordion-description\"></ng-content>\n    </button>\n  </div>\n  <div\n    role=\"region\"\n    class=\"clr-accordion-content-region\"\n    [id]=\"getContentId(panel.templateId)\"\n    [attr.aria-hidden]=\"!panel.open\"\n    [attr.aria-labelledby]=\"getHeaderId(panel.templateId)\"\n  >\n    @if (panel.open) {\n    <div class=\"clr-accordion-content\" (animate.enter)=\"expandContent($event)\">\n      <div class=\"clr-accordion-inner-content\">\n        <ng-content></ng-content>\n      </div>\n    </div>\n    }\n  </div>\n</div>\n}\n" }]
+        }], ctorParameters: () => [{ type: i4.CollapsiblePanelService, decorators: [{
+                    type: Optional
+                }, {
+                    type: Inject,
+                    args: [AccordionService]
+                }] }, { type: i1.IfExpandService }, { type: i0.ChangeDetectorRef }], propDecorators: { disabled: [{
+                type: Input,
+                args: ['clrAccordionPanelDisabled']
+            }, {
+                type: HostBinding,
+                args: ['class.clr-accordion-panel-disabled']
+            }], panelOpen: [{
+                type: Input,
+                args: ['clrAccordionPanelOpen']
+            }], panelOpenChange: [{
+                type: Output,
+                args: ['clrAccordionPanelOpenChange']
+            }], explicitHeadingLevel: [{
+                type: Input,
+                args: ['clrAccordionPanelHeadingLevel']
+            }], accordionDescription: [{
+                type: ContentChildren,
+                args: [ClrAccordionDescription]
+            }] } });
 
 /*
  * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
@@ -254,81 +263,13 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  * This software is released under MIT license.
  * The full license information can be found in LICENSE in the root directory of this project.
  */
-class AccordionWillyWonka extends WillyWonka {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: AccordionWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: AccordionWillyWonka, isStandalone: false, selector: "clr-accordion", usesInheritance: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: AccordionWillyWonka, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: 'clr-accordion',
-                    standalone: false,
-                }]
-        }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-class AccordionOompaLoompa extends OompaLoompa {
-    constructor(cdr, willyWonka, ifExpandService) {
-        if (!willyWonka) {
-            throw new Error('clr-accordion-panel should only be used inside of clr-accordion');
-        }
-        super(cdr, willyWonka);
-        this.expand = ifExpandService;
-    }
-    get flavor() {
-        return this.expand.expanded;
-    }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: AccordionOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: AccordionWillyWonka, optional: true }, { token: i2$1.IfExpandService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: AccordionOompaLoompa, isStandalone: false, selector: "clr-accordion-panel", usesInheritance: true, ngImport: i0 }); }
-}
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: AccordionOompaLoompa, decorators: [{
-            type: Directive,
-            args: [{
-                    selector: 'clr-accordion-panel',
-                    standalone: false,
-                }]
-        }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: AccordionWillyWonka, decorators: [{
-                    type: Optional
-                }] }, { type: i2$1.IfExpandService }] });
-
-/*
- * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
- * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
- * This software is released under MIT license.
- * The full license information can be found in LICENSE in the root directory of this project.
- */
-const declarations = [
-    ClrAccordion,
-    ClrAccordionPanel,
-    ClrAccordionTitle,
-    ClrAccordionDescription,
-    ClrAccordionContent,
-    AccordionOompaLoompa,
-    AccordionWillyWonka,
-];
+const declarations = [ClrAccordion, ClrAccordionPanel, ClrAccordionTitle, ClrAccordionDescription, ClrAccordionContent];
 class ClrAccordionModule {
     constructor() {
         ClarityIcons.addIcons(angleIcon);
     }
     static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrAccordionModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrAccordionModule, declarations: [ClrAccordion,
-            ClrAccordionPanel,
-            ClrAccordionTitle,
-            ClrAccordionDescription,
-            ClrAccordionContent,
-            AccordionOompaLoompa,
-            AccordionWillyWonka], imports: [CommonModule, ClrIcon], exports: [ClrAccordion,
-            ClrAccordionPanel,
-            ClrAccordionTitle,
-            ClrAccordionDescription,
-            ClrAccordionContent,
-            AccordionOompaLoompa,
-            AccordionWillyWonka] }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrAccordionModule, declarations: [ClrAccordion, ClrAccordionPanel, ClrAccordionTitle, ClrAccordionDescription, ClrAccordionContent], imports: [CommonModule, ClrIcon], exports: [ClrAccordion, ClrAccordionPanel, ClrAccordionTitle, ClrAccordionDescription, ClrAccordionContent] }); }
     static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrAccordionModule, imports: [CommonModule, ClrIcon] }); }
 }
 i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrAccordionModule, decorators: [{
@@ -351,5 +292,5 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImpor
  * Generated bundle index. Do not edit.
  */
 
-export { AccordionModel, AccordionOompaLoompa, AccordionService, AccordionStrategy, AccordionWillyWonka, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle };
+export { AccordionModel, AccordionService, AccordionStrategy, ClrAccordion, ClrAccordionContent, ClrAccordionDescription, ClrAccordionModule, ClrAccordionPanel, ClrAccordionTitle };
 //# sourceMappingURL=clr-angular-accordion.mjs.map
