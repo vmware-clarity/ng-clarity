@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAccordionModule, ClrDatagridModule, ClrIfExpanded } from '@clr/angular';
 
 import { AngularAccordionDemo } from './angular-accordion.demo';
 import { ApiAccordionDemo } from './api-accordion.demo';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ComponentList, NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
@@ -25,6 +26,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -36,6 +38,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     ApiAccordionDemo,
     StyleDocsComponent,
     NestingTableComponent,
+    AiSkillComponent,
   ],
 })
 export class AccordionDemo extends ClarityDocComponent {

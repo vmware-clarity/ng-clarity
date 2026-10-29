@@ -6,6 +6,7 @@
  */
 
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -31,6 +32,7 @@ const LIVE_REGION_SELECTOR = '[aria-live]:not([aria-live="off"]), [role="alert"]
   providers: [AlertIconAndTypesService],
   templateUrl: './alert.html',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrAlert implements OnInit, OnChanges, OnDestroy {
   @Input('clrAlertSizeSmall') isSmall = false;

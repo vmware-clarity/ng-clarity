@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ClrIcon, ClrMainContainerModule, ClrNavigationModule } from '@clr/angular';
 
 @Component({
@@ -51,6 +51,7 @@ import { ClrIcon, ClrMainContainerModule, ClrNavigationModule } from '@clr/angul
       </nav>
     </clr-main-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class HeaderStorybookComponent {
   /** ARIA role for the header element (e.g. 'banner'). */

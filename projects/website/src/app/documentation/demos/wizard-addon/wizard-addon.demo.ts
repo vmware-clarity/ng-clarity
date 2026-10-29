@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ZoomLevelService } from '@clr/addons/a11y';
@@ -14,6 +14,7 @@ import { WorkflowConfigurationService } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
 import { ClarityModule } from '@clr/angular';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -60,7 +61,9 @@ export class MyModule {}
     SampleWizardComponent,
     SampleStepperComponent,
     RouterModule,
+    AiSkillComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardAddonDemoComponent extends ClarityDocComponent {
   readonly moduleImportTs = ModuleImportTs;

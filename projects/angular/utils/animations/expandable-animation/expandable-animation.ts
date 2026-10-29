@@ -5,12 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AnimationEvent, transition, trigger, useAnimation } from '@angular/animations';
-import { Component, HostBinding, HostListener, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
-import { DomAdapter } from '../../dom-adapter/dom-adapter';
-import { defaultExpandAnimation } from '../constants';
 import { BaseExpandableAnimation } from './base-expandable-animation';
+import { DomAdapter } from '../../dom-adapter/dom-adapter';
 
 @Component({
   selector: 'clr-expandable-animation',
@@ -22,28 +20,34 @@ import { BaseExpandableAnimation } from './base-expandable-animation';
       }
     `,
   ],
-  animations: [trigger('expandAnimation', [transition('true <=> false', [useAnimation(defaultExpandAnimation)])])],
   providers: [DomAdapter],
+  host: { '(animate.enter)': 'animates = !noopAnimations' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
-export class ClrExpandableAnimation extends BaseExpandableAnimation {
+export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
+  /** Animates the height of the element, from `startHeight` to its new height, each time it changes. */
   @Input() clrExpandTrigger = false;
 
-  @HostBinding('@expandAnimation')
+  /** @deprecated No longer used: the height animates without Angular animations. To be removed in a future major version. */
   get expandAnimation() {
     return { value: this.clrExpandTrigger, params: { startHeight: this.startHeight } };
   }
 
-  @HostListener('@expandAnimation.start', ['$event'])
-  animationStart(event: AnimationEvent) {
-    if (event.fromState !== 'void') {
-      this.initAnimationEffects();
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['clrExpandTrigger'] && !changes['clrExpandTrigger'].firstChange) {
+      // Once the change is rendered.
+      Promise.resolve().then(() => this.animateFromStartHeight());
     }
   }
-  @HostListener('@expandAnimation.done', ['$event'])
-  animationDone(event: AnimationEvent) {
-    if (event.fromState !== 'void') {
-      this.cleanupAnimationEffects();
-    }
+
+  /** @deprecated No longer called. To be removed in a future major version. */
+  animationStart(_event: { fromState: string }) {
+    // Nothing to do.
+  }
+
+  /** @deprecated No longer called. To be removed in a future major version. */
+  animationDone(_event: { fromState: string }) {
+    // Nothing to do.
   }
 }

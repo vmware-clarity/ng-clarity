@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Injectable, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injectable, Input } from '@angular/core';
 import {
   AppfxDatagridFiltersModule,
   ComparisonOperator,
@@ -154,6 +154,7 @@ export const presetFilters: PropertyFilter[] = [
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridFiltersStoryWrapperComponent {
   @Input() filterMode: FilterMode = FilterMode.Advanced;

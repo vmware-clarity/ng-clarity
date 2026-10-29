@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule, ClrInputModule, ClrPasswordModule, ClrStepperModule } from '@clr/angular';
 
 import { AngularStepperApiDemo } from './angular-stepper-api.demo';
 import { AngularStepperReactiveDemo } from './angular-stepper-reactive.demo';
 import { AngularStepperTemplateDemo } from './angular-stepper-template.demo';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabActiveDirective } from '../../../shared/doc-tabs/doc-tab-active.directive';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -28,6 +29,7 @@ import { multiStepPatternLink } from '../pattern-links';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -43,6 +45,7 @@ import { multiStepPatternLink } from '../pattern-links';
     AngularStepperReactiveDemo,
     AngularStepperTemplateDemo,
     AngularStepperApiDemo,
+    AiSkillComponent,
   ],
 })
 export class StepperDemo extends ClarityDocComponent {

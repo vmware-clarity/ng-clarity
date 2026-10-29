@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
 import { CardAngularBasicDemo } from './angular/card-angular-basic';
@@ -26,6 +26,7 @@ import { CardMediaBlockDemo } from './card-media-block';
 import { ListsInCardsDemo } from './lists-in-cards';
 import { ProgressBarCardsDemo } from './progress-bar-cards';
 import { ProgressBarInlineCardsDemo } from './progress-bar-inline-cards';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -40,6 +41,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -65,6 +67,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     CardMasonryDemo,
     StyleDocsComponent,
     NestingTableComponent,
+    AiSkillComponent,
   ],
 })
 export class CardsDemo extends ClarityDocComponent {

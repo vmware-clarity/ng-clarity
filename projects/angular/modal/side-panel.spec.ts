@@ -5,12 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClarityIcons, pinIcon, unpinIcon } from '@clr/angular/icon';
-import { delay, expectActiveElementToBe } from '@clr/angular/testing';
+import { delay, enableCssAnimations, expectActiveElementToBe } from '@clr/angular/testing';
 import { CdkTrapFocusModule, CdkTrapFocusModule_CdkTrapFocus } from '@clr/angular/utils';
 
 import { ClrSidePanel } from './side-panel';
@@ -33,6 +32,7 @@ import { ClrSidePanelModule } from './side-panel.module';
       </div>
     </clr-side-panel>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -56,10 +56,25 @@ class TestComponent {
       </div>
     </clr-side-panel>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestDefaultsComponent {
   opened = true;
+}
+
+@Component({
+  template: `
+    <clr-side-panel [(clrSidePanelOpen)]="opened" [clrSidePanelPosition]="position">
+      <div class="side-panel-body">Body</div>
+    </clr-side-panel>
+  `,
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
+})
+class PositionTestComponent {
+  opened = false;
+  position = 'right';
 }
 
 describe('Side Panel', () => {
@@ -69,7 +84,7 @@ describe('Side Panel', () => {
 
   beforeEach(async () => {
     TestBed.configureTestingModule({
-      imports: [CdkTrapFocusModule, ClrSidePanelModule, NoopAnimationsModule],
+      imports: [CdkTrapFocusModule, ClrSidePanelModule],
       declarations: [TestComponent, TestDefaultsComponent],
     });
 
@@ -152,11 +167,6 @@ describe('Side Panel', () => {
     expect(fixture.componentInstance.opened).toBe(true);
     sidePanel.close();
     fixture.detectChanges();
-
-    // We make sure to wait for the animation to be over before emitting the output
-
-    // todo: uncomment this after animation bug is fixed https://github.com/angular/angular/issues/15798
-    // expect(fixture.componentInstance.opened).toBe(true);
     await delay();
     expect(fixture.componentInstance.opened).toBe(false);
   });
@@ -284,5 +294,43 @@ describe('Side Panel', () => {
     new ClrSidePanelModule();
 
     expect(ClarityIcons.addIcons).toHaveBeenCalledWith(pinIcon, unpinIcon);
+  });
+});
+
+describe('Side Panel with animations', () => {
+  let fixture: ComponentFixture<PositionTestComponent>;
+  let restoreAnimations: () => void;
+
+  beforeEach(() => {
+    restoreAnimations = enableCssAnimations();
+    TestBed.configureTestingModule({
+      imports: [CdkTrapFocusModule, ClrSidePanelModule],
+      declarations: [PositionTestComponent],
+      animationsEnabled: true,
+    });
+    fixture = TestBed.createComponent(PositionTestComponent);
+  });
+
+  afterEach(() => {
+    fixture.destroy();
+    restoreAnimations();
+  });
+
+  async function openAt(position: string) {
+    fixture.componentInstance.position = position;
+    fixture.detectChanges();
+    fixture.componentInstance.opened = true;
+    fixture.detectChanges();
+    await delay();
+  }
+
+  it('slides in from the right', async () => {
+    await openAt('right');
+    expect(fixture.nativeElement.querySelector('.modal-dialog').classList).toContain('clr-fade-slide-left-enter');
+  });
+
+  it('slides in from the bottom', async () => {
+    await openAt('bottom');
+    expect(fixture.nativeElement.querySelector('.modal-dialog').classList).toContain('clr-fade-slide-up-enter');
   });
 });

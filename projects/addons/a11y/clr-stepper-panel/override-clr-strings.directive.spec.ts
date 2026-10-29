@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, QueryList, ViewChildren } from '@angular/core';
+import { ChangeDetectionStrategy, Component, QueryList, ViewChildren } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrStepperModule, ClrStepperPanel } from '@clr/angular/stepper';
 import { ClrCommonStrings, ClrCommonStringsService } from '@clr/angular/utils';
 
@@ -27,6 +26,7 @@ const dangerText = 'Error in step {STEP}';
       </clr-stepper-panel>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 export class TestClrStepperComponent {
@@ -55,7 +55,7 @@ interface ThisTest {
 
 function createThisTest(): ThisTest {
   TestBed.configureTestingModule({
-    imports: [FormsModule, ReactiveFormsModule, AppfxA11yModule, NoopAnimationsModule, TestClrStepperComponent],
+    imports: [FormsModule, ReactiveFormsModule, AppfxA11yModule, TestClrStepperComponent],
   });
 
   const fixture = TestBed.createComponent(TestClrStepperComponent);

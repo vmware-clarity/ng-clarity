@@ -6,7 +6,7 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ClrAlertModule, ClrDropdownModule, ClrIcon } from '@clr/angular';
 import { createArray } from '@storybook-helpers/common';
 import { RenderComponentStorybook } from '@storybook-helpers/render-component';
@@ -85,6 +85,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
   `,
   standalone: true,
   imports: [ClrAlertModule, ClrIcon, NgTemplateOutlet, ClrDropdownModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppLevelAlertStorybookComponent extends RenderComponentStorybook {
   // Story inputs matching the original story args

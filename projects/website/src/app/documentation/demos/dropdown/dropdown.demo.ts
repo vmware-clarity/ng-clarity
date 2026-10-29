@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClarityIcons,
   ClrAlertModule,
@@ -25,6 +25,7 @@ import { DropdownStaticButtonLinkToggleDemo } from './dropdown-static-buttonlink
 import { DropdownStaticDefaultDemo } from './dropdown-static-default';
 import { DropdownStaticIconToggleDemo } from './dropdown-static-icon-toggle';
 import { DropdownStaticPositioningDemo } from './dropdown-static-positioning';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ComponentList, NestingTableComponent } from '../../../shared/nesting-table/nesting-table.component';
@@ -39,6 +40,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -58,6 +60,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     StyleDocsComponent,
     ClrAlertModule,
     NestingTableComponent,
+    AiSkillComponent,
   ],
 })
 export class DropdownsDemo extends ClarityDocComponent {

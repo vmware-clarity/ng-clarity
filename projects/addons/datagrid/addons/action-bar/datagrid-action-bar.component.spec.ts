@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, EventEmitter, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, EventEmitter, HostBinding } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivatedRoute } from '@angular/router';
 import { ElementResizeService } from '@clr/addons/a11y';
 import { ClrIcon } from '@clr/angular/icon';
@@ -39,6 +38,7 @@ const last = (array: any[]) => array[array.length - 1];
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: true,
 })
 class TestContainerComponent {
@@ -79,7 +79,7 @@ interface ThisTest {
 describe('DatagridActionBarComponent', function () {
   beforeEach(function () {
     TestBed.configureTestingModule({
-      imports: [NoopAnimationsModule, ClrIcon, ClrTooltipModule, ClrDropdownModule, TestContainerComponent],
+      imports: [ClrIcon, ClrTooltipModule, ClrDropdownModule, TestContainerComponent],
       providers: [
         {
           provide: ElementResizeService,

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
 
 import { ModalAngularAlternateCloseDemo } from './modal-angular-alt-close-demo';
@@ -18,6 +18,7 @@ import { ModalBackdropDemo } from './modal-backdrop';
 import { ModalSizeDesignDemo } from './modal-size-design';
 import { ModalSizesDemo } from './modal-sizes';
 import { ModalStaticDemo } from './modal-static';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -34,6 +35,7 @@ import { notificationsPatternLink, onboardingPatternLink } from '../pattern-link
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -52,6 +54,7 @@ import { notificationsPatternLink, onboardingPatternLink } from '../pattern-link
     ModalBackdropDemo,
     ModalAnimationDemo,
     StyleDocsComponent,
+    AiSkillComponent,
   ],
 })
 export class ModalDemo extends ClarityDocComponent {

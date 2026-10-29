@@ -5,11 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { ClrPopoverContent, ClrPopoverService } from '@clr/angular/popover/common';
 import { delay } from '@clr/angular/testing';
@@ -40,6 +39,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
       </clr-options>
     </clr-combobox>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -68,7 +68,7 @@ export default function (): void {
 
     beforeEach(function () {
       TestBed.configureTestingModule({
-        imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule, ClrPopoverContent],
+        imports: [ClrComboboxModule, ClrIcon, FormsModule, ClrPopoverContent],
         declarations: [TestComponent],
         providers: [
           OptionSelectionService,
@@ -284,6 +284,7 @@ export default function (): void {
       const identityFn = (item: Item) => item.id;
 
       @Component({
+        changeDetection: ChangeDetectionStrategy.Eager,
         template: `
           <clr-combobox [(ngModel)]="selection" [clrComboboxIdentityFn]="identityFn">
             <clr-options>
@@ -304,7 +305,7 @@ export default function (): void {
       it('pre-selection works when writeValue has same identity as option (different ref)', async () => {
         TestBed.resetTestingModule();
         TestBed.configureTestingModule({
-          imports: [ClrComboboxModule, ClrIcon, FormsModule, NoopAnimationsModule, ClrPopoverContent],
+          imports: [ClrComboboxModule, ClrIcon, FormsModule, ClrPopoverContent],
           declarations: [IdentityTestComponent],
           providers: [
             OptionSelectionService,
@@ -326,6 +327,58 @@ export default function (): void {
 
         // Option with value options[0] should be considered selected (same identity)
         expect(selectionService.selectionModel.containsItem(options[0])).toBeTrue();
+      });
+    });
+
+    describe('OnPush host', () => {
+      @Component({
+        changeDetection: ChangeDetectionStrategy.OnPush,
+        template: `
+          <clr-combobox [(ngModel)]="selection">
+            <clr-options>
+              <clr-option [clrValue]="1">1</clr-option>
+              <clr-option [clrValue]="2">2</clr-option>
+              <clr-option [clrValue]="3">3</clr-option>
+            </clr-options>
+          </clr-combobox>
+        `,
+        standalone: false,
+      })
+      class OnPushTestComponent {
+        selection: number;
+      }
+
+      it('moves the keyboard focus between options', async () => {
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [ClrComboboxModule, ClrIcon, FormsModule, ClrPopoverContent],
+          declarations: [OnPushTestComponent],
+          providers: [
+            OptionSelectionService,
+            IF_ACTIVE_ID_PROVIDER,
+            FOCUS_SERVICE_PROVIDER,
+            COMBOBOX_FOCUS_HANDLER_PROVIDER,
+          ],
+        });
+        const onPushFixture = TestBed.createComponent(OnPushTestComponent);
+        const comboboxDE = onPushFixture.debugElement.query(By.directive(ClrCombobox));
+        comboboxDE.injector.get(ClrPopoverService).open = true;
+        onPushFixture.detectChanges();
+        await delay();
+        onPushFixture.detectChanges();
+
+        const input: HTMLInputElement = comboboxDE.nativeElement.querySelector('input');
+        const focusedOptionId = () => document.querySelector('.clr-combobox-option.clr-focus')?.id;
+        const initiallyFocused = focusedOptionId();
+
+        // The focus handler listens with renderer.listen, so the keydown itself does not mark any view dirty.
+        input.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+        onPushFixture.detectChanges();
+
+        const focused = focusedOptionId();
+        expect(focused).toBeTruthy();
+        expect(focused).not.toBe(initiallyFocused);
+        expect(input.getAttribute('aria-activedescendant')).toBe(focused);
       });
     });
   });

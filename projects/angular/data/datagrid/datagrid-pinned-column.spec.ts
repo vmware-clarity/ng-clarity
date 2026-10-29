@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive, Input, OnInit, TemplateRef, ViewContainerRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  Directive,
+  Input,
+  OnInit,
+  TemplateRef,
+  ViewContainerRef,
+} from '@angular/core';
 import { delay, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, ClrLoading, ClrLoadingState } from '@clr/angular/utils';
 
@@ -92,6 +100,7 @@ function columnBoxes(root: HTMLElement, ...titles: string[]) {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnableTest {
   items = [1, 2, 3];
@@ -115,6 +124,7 @@ class PinnableTest {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnableWithDetailTest {
   items = [1, 2, 3];
@@ -140,6 +150,7 @@ class PinnableWithDetailTest {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnedNotFirstWithDetailTest {
   items = [1, 2, 3];
@@ -163,6 +174,7 @@ class PinnedNotFirstWithDetailTest {
       </clr-dg-row>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class PinToggleTest {
@@ -187,6 +199,7 @@ class PinToggleTest {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class ReorderableColumnsTest {
   items = [1, 2, 3];
@@ -213,6 +226,7 @@ class ReorderableColumnsTest {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnedWidthCapTest {
   items = [1, 2, 3];
@@ -238,6 +252,7 @@ class PinnedWidthCapTest {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnedWidthCapVirtualScrollTest {
   items = [1, 2, 3, 4, 5];
@@ -257,6 +272,7 @@ class PinnedWidthCapVirtualScrollTest {
     </clr-datagrid>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class PinnedWithRowControlsTest {
   items = [1, 2, 3];
@@ -287,6 +303,7 @@ class PinnedWithRowControlsTest {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class RowDetailTest {
   items = [1];
@@ -349,6 +366,7 @@ class TestFakeLoader implements OnInit {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class LoadingRowDetailTest {
   items = [1];
@@ -378,6 +396,7 @@ class LoadingRowDetailTest {
     </div>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 class LoadingCellsRowDetailTest {
   items = [1];
@@ -769,26 +788,6 @@ export default function (): void {
         expect(controlsWidth('.datagrid-header')).toBeGreaterThan(0);
         expect(getComputedStyle(pinned).position).toBe('sticky');
         expect(parseFloat(getComputedStyle(pinned).insetInlineStart)).toBeCloseTo(controlsWidth('.datagrid-header'), 1);
-      });
-
-      it('keeps the static container anchored while the expand animation runs', function () {
-        // CDE-3127: the animation clips its host for as long as it runs. Clipping with
-        // `overflow: hidden` would turn that host into a scroll container, and the static container
-        // - which sits inside it - anchors itself to the nearest one, so the pinned columns would
-        // come loose and scroll away for the length of the animation.
-        const scrollingOverflows = ['hidden', 'scroll', 'auto'];
-        const pinned: HTMLElement = element.querySelector(`.datagrid-rows ${PINNED}`);
-        const row = context.clarityDirective.rows.first;
-
-        row.expandAnimation.initAnimationEffects();
-
-        let ancestor = pinned.parentElement;
-        while (ancestor && ancestor !== element) {
-          expect(scrollingOverflows).not.toContain(ancestor.style.overflow);
-          ancestor = ancestor.parentElement;
-        }
-
-        row.expandAnimation.cleanupAnimationEffects();
       });
 
       it('measures the row controls separately from the ones in the header', function () {

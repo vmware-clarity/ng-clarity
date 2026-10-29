@@ -5,9 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlertModule, ClrIcon, ClrIconModule } from '@clr/angular';
 
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -51,6 +52,7 @@ const NgValidateTs = require('!raw-loader!./ng/validate.ts').default;
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -61,6 +63,7 @@ const NgValidateTs = require('!raw-loader!./ng/validate.ts').default;
     ClrIcon,
     ClrIconModule,
     StyleDocsComponent,
+    AiSkillComponent,
   ],
 })
 export class FormsDemo extends ClarityDocComponent {

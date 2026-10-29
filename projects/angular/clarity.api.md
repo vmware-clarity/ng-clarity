@@ -9,11 +9,8 @@ import { AfterContentChecked } from '@angular/core';
 import { AfterContentInit } from '@angular/core';
 import { AfterViewChecked } from '@angular/core';
 import { AfterViewInit } from '@angular/core';
-import * as _angular_animations from '@angular/animations';
 import * as _angular_cdk_overlay from '@angular/cdk/overlay';
-import { AnimationBuilder } from '@angular/animations';
-import { AnimationEvent as AnimationEvent_2 } from '@angular/animations';
-import { AnimationMetadata } from '@angular/animations';
+import { AnimationCallbackEvent } from '@angular/core';
 import { ApplicationRef } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { CdkDrag } from '@angular/cdk/drag-drop';
@@ -273,6 +270,13 @@ export const angleIcon: IconShapeTuple;
 // @public (undocumented)
 export const angleIconName = "angle";
 
+// @public
+export function animateHeight(element: HTMLElement, input: {
+    from: number;
+    to?: number;
+    easing?: string;
+}): Animation | null;
+
 // @public (undocumented)
 export const animationIcon: IconShapeTuple;
 
@@ -399,6 +403,8 @@ export const barsIconName = "bars";
 // @public (undocumented)
 export class BaseExpandableAnimation {
     constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2);
+    protected animateFromStartHeight(): void;
+    protected animates: boolean;
     // (undocumented)
     cleanupAnimationEffects(cancelAnimations?: boolean): void;
     // (undocumented)
@@ -407,6 +413,7 @@ export class BaseExpandableAnimation {
     protected element: ElementRef<HTMLElement>;
     // (undocumented)
     initAnimationEffects(): void;
+    protected readonly noopAnimations: boolean;
     // (undocumented)
     protected renderer: Renderer2;
     // (undocumented)
@@ -1250,6 +1257,100 @@ export class ClrAlertText {
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrAlertText, ".alert-text", never, {}, {}, never, never, false, never>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrAlertText, never>;
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationAnimateMetadata {
+    // (undocumented)
+    styles: ClrAnimationStyleMetadata | null;
+    // (undocumented)
+    timings: string | number;
+    // (undocumented)
+    type: 4;
+}
+
+// @public @deprecated (undocumented)
+export type ClrAnimationMetadata = ClrAnimationStyleMetadata | ClrAnimationAnimateMetadata | ClrAnimationStateMetadata | ClrAnimationTransitionMetadata | ClrAnimationReferenceMetadata | ClrAnimationTriggerMetadata;
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationOptions {
+    // (undocumented)
+    delay?: number | string;
+    // (undocumented)
+    params?: {
+        [name: string]: any;
+    };
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationReferenceMetadata {
+    // (undocumented)
+    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
+    // (undocumented)
+    options: ClrAnimationOptions | null;
+    // (undocumented)
+    type: 8;
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationStateMetadata {
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    options?: {
+        params: {
+            [name: string]: any;
+        };
+    };
+    // (undocumented)
+    styles: ClrAnimationStyleMetadata;
+    // (undocumented)
+    type: 0;
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationStyleMetadata {
+    // (undocumented)
+    offset: number | null;
+    // (undocumented)
+    styles: ClrAnimationStyles;
+    // (undocumented)
+    type: 6;
+}
+
+// @public @deprecated
+export type ClrAnimationStyles = '*' | {
+    [key: string]: string | number;
+} | Array<{
+    [key: string]: string | number;
+} | '*'>;
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationTransitionMetadata {
+    // (undocumented)
+    animation: ClrAnimationMetadata | ClrAnimationMetadata[];
+    // (undocumented)
+    expr: string;
+    // (undocumented)
+    options: ClrAnimationOptions | null;
+    // (undocumented)
+    type: 1;
+}
+
+// @public @deprecated (undocumented)
+export interface ClrAnimationTriggerMetadata {
+    // (undocumented)
+    definitions: ClrAnimationMetadata[];
+    // (undocumented)
+    name: string;
+    // (undocumented)
+    options: {
+        params?: {
+            [name: string]: any;
+        };
+    } | null;
+    // (undocumented)
+    type: 7;
 }
 
 // @public (undocumented)
@@ -2305,7 +2406,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     selectAllDisabled: boolean;
     // (undocumented)
     selectAllId: string;
-    set selected(value: T[]);
+    set selected(value: T[] | undefined);
     // (undocumented)
     selectedChanged: EventEmitter<T[]>;
     // (undocumented)
@@ -3624,20 +3725,25 @@ export class ClrEndDateInputValidator implements Validator {
 }
 
 // @public (undocumented)
-export class ClrExpandableAnimation extends BaseExpandableAnimation {
-    // (undocumented)
-    animationDone(event: AnimationEvent_2): void;
-    // (undocumented)
-    animationStart(event: AnimationEvent_2): void;
-    // (undocumented)
+export class ClrExpandableAnimation extends BaseExpandableAnimation implements OnChanges {
+    // @deprecated (undocumented)
+    animationDone(_event: {
+        fromState: string;
+    }): void;
+    // @deprecated (undocumented)
+    animationStart(_event: {
+        fromState: string;
+    }): void;
     clrExpandTrigger: boolean;
-    // (undocumented)
+    // @deprecated (undocumented)
     get expandAnimation(): {
         value: boolean;
         params: {
             startHeight: number;
         };
     };
+    // (undocumented)
+    ngOnChanges(changes: SimpleChanges): void;
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrExpandableAnimation, "clr-expandable-animation", never, { "clrExpandTrigger": { "alias": "clrExpandTrigger"; "required": false; }; }, {}, never, ["*"], false, never>;
     // (undocumented)
@@ -3646,19 +3752,18 @@ export class ClrExpandableAnimation extends BaseExpandableAnimation {
 
 // @public (undocumented)
 export class ClrExpandableAnimationDirective extends BaseExpandableAnimation implements OnChanges, OnDestroy {
-    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, builder: AnimationBuilder);
-    // (undocumented)
+    constructor(element: ElementRef<HTMLElement>, domAdapter: DomAdapter, renderer: Renderer2, _builder?: unknown);
     expanded: boolean;
     // (undocumented)
     ngOnChanges(changes: SimpleChanges): void;
-    // (undocumented)
+    // @deprecated (undocumented)
     ngOnDestroy(): void;
     // (undocumented)
     playAnimation(): void;
     // (undocumented)
     static ɵdir: i0.ɵɵDirectiveDeclaration<ClrExpandableAnimationDirective, "[clrExpandableAnimation]", never, { "expanded": { "alias": "clrExpandableAnimation"; "required": false; }; }, {}, never, never, false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrExpandableAnimationDirective, [null, null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -4391,11 +4496,16 @@ export class ClrLoadingButton implements LoadingListener {
     // (undocumented)
     buttonState: typeof ClrLoadingState;
     // (undocumented)
+    protected readonly checkMarkClass: string;
+    // (undocumented)
     clrLoadingChange: EventEmitter<ClrLoadingState>;
     // (undocumented)
     disabled: boolean;
     // (undocumented)
     el: ElementRef<HTMLButtonElement>;
+    protected enterClass: string;
+    // (undocumented)
+    protected readonly leaveClass: string;
     // (undocumented)
     loadingStateChange(state: ClrLoadingState): void;
     // (undocumented)
@@ -4475,6 +4585,7 @@ export class ClrModal implements OnChanges, OnDestroy {
     get backdrop(): boolean;
     // (undocumented)
     backdropClick(): void;
+    protected get backdropEnterClass(): string;
     // (undocumented)
     bypassScrollService: boolean;
     // (undocumented)
@@ -4485,8 +4596,11 @@ export class ClrModal implements OnChanges, OnDestroy {
     closeButtonAriaLabel: string;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // (undocumented)
-    fadeDone(e: AnimationEvent_2): void;
+    protected get dialogEnterClass(): string;
+    // @deprecated (undocumented)
+    fadeDone(_e: {
+        toState: string;
+    }): void;
     // (undocumented)
     get fadeMove(): string;
     set fadeMove(move: string);
@@ -5845,6 +5959,8 @@ export class ClrStepperModule {
 export class ClrStepperPanel extends CollapsiblePanel implements OnInit {
     constructor(platformId: any, commonStrings: ClrCommonStringsService, formGroupName: FormGroupName, ngModelGroup: NgModelGroup, stepperService: StepperService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
     // (undocumented)
+    protected animatesCollapse: boolean;
+    // (undocumented)
     commonStrings: ClrCommonStringsService;
     // (undocumented)
     disabled: boolean;
@@ -6306,11 +6422,12 @@ export class ClrTree<T> implements AfterContentInit, OnDestroy {
 // @public (undocumented)
 export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, OnDestroy {
     constructor(platformId: any, parent: ClrTreeNode<T>, featuresService: TreeFeaturesService<T>, expandService: IfExpandService, commonStrings: ClrCommonStringsService, focusManager: TreeFocusManagerService<T>, elementRef: ElementRef<HTMLElement>, injector: Injector);
+    protected animatesChildren: boolean;
     // (undocumented)
     get ariaSelected(): boolean;
     // (undocumented)
     broadcastFocusOnContainer(): void;
-    // (undocumented)
+    // @deprecated (undocumented)
     get childrenAnimationState(): string;
     // (undocumented)
     set clrForTypeAhead(value: string);
@@ -6354,6 +6471,8 @@ export class ClrTreeNode<T> implements OnInit, AfterContentInit, AfterViewInit, 
     ngOnInit(): void;
     // (undocumented)
     nodeId: string;
+    // (undocumented)
+    protected readonly noopAnimations: boolean;
     // (undocumented)
     onKeyDown(event: KeyboardEvent): void;
     // (undocumented)
@@ -6444,12 +6563,15 @@ export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "VerticalNavGroupService" needs to be exported by the entry point clr-angular.d.ts
     constructor(_itemExpand: IfExpandService, _navGroupRegistrationService: VerticalNavGroupRegistrationService, navGroupService: VerticalNavGroupService, _navService: VerticalNavService, commonStrings: ClrCommonStringsService);
+    protected animatesChildren: boolean;
     // (undocumented)
     collapseGroup(): void;
     // (undocumented)
     commonStrings: ClrCommonStringsService;
-    // (undocumented)
-    expandAnimationDone($event: AnimationEvent_2): void;
+    // @deprecated (undocumented)
+    expandAnimationDone(_$event: {
+        toState: string;
+    }): void;
     // (undocumented)
     get expandAnimationState(): string;
     set expandAnimationState(value: string);
@@ -6464,6 +6586,8 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     ngAfterContentInit(): void;
     // (undocumented)
     ngOnDestroy(): void;
+    // (undocumented)
+    protected readonly noopAnimations: boolean;
     // (undocumented)
     toggleExpand(): void;
     // (undocumented)
@@ -6991,8 +7115,8 @@ export const coinBagIcon: IconShapeTuple;
 // @public (undocumented)
 export const coinBagIconName = "coin-bag";
 
-// @public (undocumented)
-export function collapse(): AnimationMetadata[];
+// @public @deprecated (undocumented)
+export function collapse(): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const collapseCardIcon: IconShapeTuple;
@@ -7003,12 +7127,15 @@ export const collapseCardIconName = "collapse-card";
 // @public (undocumented)
 export abstract class CollapsiblePanel implements OnInit {
     constructor(panelService: CollapsiblePanelService, ifExpandService: IfExpandService, cdr: ChangeDetectorRef);
+    protected animatesCollapse: boolean;
     // (undocumented)
     protected cdr: ChangeDetectorRef;
     // (undocumented)
     collapsePanelOnAnimationDone(panel: CollapsiblePanelModel): void;
+    protected contentCollapsing: boolean;
     // (undocumented)
     abstract get disabled(): boolean;
+    protected expandContent(event: AnimationCallbackEvent): void;
     // (undocumented)
     abstract getContentId(id: string): string;
     // (undocumented)
@@ -7042,11 +7169,11 @@ export abstract class CollapsiblePanel implements OnInit {
     static ɵfac: i0.ɵɵFactoryDeclaration<CollapsiblePanel, never>;
 }
 
-// @public (undocumented)
-export const collapsiblePanelAnimation: _angular_animations.AnimationTriggerMetadata[];
+// @public @deprecated (undocumented)
+export const collapsiblePanelAnimation: ClrAnimationTriggerMetadata[];
 
-// @public (undocumented)
-export const collapsiblePanelExpandAnimation: _angular_animations.AnimationTriggerMetadata[];
+// @public @deprecated (undocumented)
+export const collapsiblePanelExpandAnimation: ClrAnimationTriggerMetadata[];
 
 // @public (undocumented)
 export class CollapsiblePanelGroupModel {
@@ -7593,11 +7720,11 @@ export class DeclarativeTreeNodeModel<T> extends TreeNodeModel<T> {
 // @public (undocumented)
 export const DEFAULT_BUTTON_TYPES: any;
 
-// @public (undocumented)
+// @public @deprecated (undocumented)
 export const defaultAnimationTiming = "0.2s ease-in-out";
 
-// @public (undocumented)
-export const defaultExpandAnimation: _angular_animations.AnimationReferenceMetadata;
+// @public @deprecated (undocumented)
+export const defaultExpandAnimation: ClrAnimationReferenceMetadata;
 
 // @public (undocumented)
 export const deployIcon: IconShapeTuple;
@@ -7884,6 +8011,9 @@ export const expandCardIcon: IconShapeTuple;
 // @public (undocumented)
 export const expandCardIconName = "expand-card";
 
+// @public
+export function expandHeight(input: AnimationCallbackEvent): void;
+
 // @public (undocumented)
 export const exportIcon: IconShapeTuple;
 
@@ -7911,11 +8041,11 @@ export const factoryIcon: IconShapeTuple;
 // @public (undocumented)
 export const factoryIconName = "factory";
 
-// @public (undocumented)
-export function fade(opacity?: number): AnimationMetadata[];
+// @public @deprecated (undocumented)
+export function fade(opacity?: number): ClrAnimationMetadata[];
 
-// @public (undocumented)
-export function fadeSlide(direction: string): AnimationMetadata[];
+// @public @deprecated (undocumented)
+export function fadeSlide(direction: string): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const fastForwardIcon: IconShapeTuple;
@@ -8758,6 +8888,9 @@ export class MarkControlService {
     static ɵprov: i0.ɵɵInjectableDeclaration<MarkControlService>;
 }
 
+// @public
+export function measureHeight(element: HTMLElement): number;
+
 // @public (undocumented)
 export const mediaChangerIcon: IconShapeTuple;
 
@@ -8990,6 +9123,9 @@ export const nodesIcon: IconShapeTuple;
 // @public (undocumented)
 export const nodesIconName = "nodes";
 
+// @public
+export function noopAnimations(): boolean;
+
 // @public (undocumented)
 export const noteIcon: IconShapeTuple;
 
@@ -9080,11 +9216,11 @@ export const paintRollerIcon: IconShapeTuple;
 // @public (undocumented)
 export const paintRollerIconName = "paint-roller";
 
-// @public (undocumented)
-export const panelCollapseTransition: _angular_animations.AnimationTransitionMetadata;
+// @public @deprecated (undocumented)
+export const panelCollapseTransition: ClrAnimationTransitionMetadata;
 
-// @public (undocumented)
-export const panelExpandTransition: _angular_animations.AnimationTransitionMetadata;
+// @public @deprecated (undocumented)
+export const panelExpandTransition: ClrAnimationTransitionMetadata;
 
 // @public (undocumented)
 export const paperclipIcon: IconShapeTuple;
@@ -9599,11 +9735,11 @@ export const shuffleIconName = "shuffle";
 // @public (undocumented)
 export const SIGNPOST_POSITIONS: ClrPopoverPosition[];
 
-// @public (undocumented)
-export const skipInitialRenderTrigger: _angular_animations.AnimationTriggerMetadata;
+// @public @deprecated (undocumented)
+export const skipInitialRenderTrigger: ClrAnimationTriggerMetadata;
 
-// @public (undocumented)
-export function slide(direction: string): AnimationMetadata[];
+// @public @deprecated (undocumented)
+export function slide(direction: string): ClrAnimationMetadata[];
 
 // @public (undocumented)
 export const sliderIcon: IconShapeTuple;
@@ -9895,6 +10031,9 @@ export const textIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const textIconName = "text";
+
+// @public (undocumented)
+export type ThemeType = 'light' | 'dark';
 
 // @public (undocumented)
 export const thermometerIcon: IconShapeTuple;

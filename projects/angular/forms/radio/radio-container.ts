@@ -7,6 +7,7 @@
 
 import {
   AfterContentInit,
+  ChangeDetectionStrategy,
   Component,
   ContentChildren,
   ElementRef,
@@ -60,6 +61,7 @@ import { ClrRadio } from './radio';
   },
   providers: [NgControlService, ControlClassService, ContainerIdService],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrRadioContainer extends ClrAbstractContainer implements AfterContentInit {
   role: string;

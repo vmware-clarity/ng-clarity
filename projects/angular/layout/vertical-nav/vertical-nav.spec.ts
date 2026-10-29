@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
 import { delay } from '@clr/angular/testing';
 import { commonStringsDefault } from '@clr/angular/utils';
@@ -24,7 +23,7 @@ export default function (): void {
 
     beforeEach(() => {
       TestBed.configureTestingModule({
-        imports: [ClrVerticalNavModule, ClrIcon, NoopAnimationsModule],
+        imports: [ClrVerticalNavModule, ClrIcon],
         declarations: [
           NoIconsNoNavGroupTestComponent,
           IconsButNoNavGroupTestComponent,
@@ -606,6 +605,7 @@ export default function (): void {
       </clr-vertical-nav>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoIconsNoNavGroupTestComponent {
@@ -621,6 +621,7 @@ class NoIconsNoNavGroupTestComponent {
       </a>
     </clr-vertical-nav>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IconsButNoNavGroupTestComponent {}
@@ -635,6 +636,7 @@ class IconsButNoNavGroupTestComponent {}
       </clr-vertical-nav>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class OnlyNavGroupTestComponent {}
@@ -649,6 +651,7 @@ class OnlyNavGroupTestComponent {}
       </clr-vertical-nav-group>
     </clr-vertical-nav>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IconsAndNavGroupTestComponent {}
@@ -671,6 +674,7 @@ class IconsAndNavGroupTestComponent {}
       }
     </clr-vertical-nav>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ViewBasicsTestComponent {
@@ -690,6 +694,7 @@ class ViewBasicsTestComponent {
       (clrVerticalNavCollapsedChange)="updateCollapsed($event)"
     ></clr-vertical-nav>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class APITestComponent {
@@ -716,6 +721,7 @@ class APITestComponent {
       </clr-vertical-nav>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ResponsiveVerticalNavTestComponent {

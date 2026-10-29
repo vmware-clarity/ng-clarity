@@ -5,11 +5,10 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, DebugElement, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, NgModule } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed } from '@angular/core/testing';
 import { FormsModule, ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { OverrideClrStringsDirective } from '@clr/addons/a11y';
 import {
   CancelableStepValidation,
@@ -64,6 +63,7 @@ class MockStep1Model implements StepModel {
 @Component({
   selector: 'mock-step-1-component',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<div>Step 1 Content</div>`,
 })
 class MockStep1Component implements StepModelHolder, OnStepActivate, OnStepValidate {
@@ -93,6 +93,7 @@ class MockStep2Model {
 @Component({
   selector: 'mock-step-2-component',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<div>Step 2 Content</div>`,
 })
 class MockStep2Component implements StepModelHolder, OnStepActivate, OnStepValidate {
@@ -119,6 +120,7 @@ class MockStep3Model {
 @Component({
   selector: 'mock-step-3-component',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<div>Step 3 Content</div>`,
 })
 class MockStep3Component implements StepModelHolder, OnStepActivate, OnStepValidate {
@@ -146,6 +148,7 @@ class MockStep4Model implements StepModel {
 @Component({
   selector: 'mock-step-4-component',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<div>Step 4 Content</div>`,
 })
 class MockStep4Component implements StepModelHolder {
@@ -199,14 +202,7 @@ describe('Stepper', () => {
 
   beforeEach(function (this: ThisTest) {
     TestBed.configureTestingModule({
-      imports: [
-        ClrSpinnerModule,
-        ClrStepperModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NoopAnimationsModule,
-        AppfxStepperTestModule,
-      ],
+      imports: [ClrSpinnerModule, ClrStepperModule, FormsModule, ReactiveFormsModule, AppfxStepperTestModule],
       declarations: [
         StepperComponent,
         StepContainer,

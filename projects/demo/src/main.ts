@@ -6,8 +6,7 @@
  */
 
 import { ApplicationRef, enableProdMode, provideZoneChangeDetection } from '@angular/core';
-import { enableDebugTools } from '@angular/platform-browser';
-import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
+import { enableDebugTools, platformBrowser } from '@angular/platform-browser';
 
 import { AppModule } from './app/app.module';
 import { environment } from './environments/environment';
@@ -16,7 +15,7 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic()
+platformBrowser()
   .bootstrapModule(AppModule, { applicationProviders: [provideZoneChangeDetection()] })
   .then(moduleRef =>
     // allows to run `ng.profiler.timeChangeDetection();`

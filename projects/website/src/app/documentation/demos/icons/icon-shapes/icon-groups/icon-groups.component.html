@@ -19,8 +19,8 @@
             size="md"
             status="neutral"
             [shape]="icon.name"
-            [solid]="formOptions()?.solid"
-            [badge]="formOptions()?.badge | appIconBadge: icon"
+            [solid]="formOptions()?.solid ?? null"
+            [badge]="formOptions()?.badge ?? null | appIconBadge: icon"
           ></clr-icon>
           <div class="icon-section__text" cds-text="body">{{ icon.name }}</div>
         </button>

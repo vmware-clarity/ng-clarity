@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { StepModelHolder } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
@@ -17,6 +17,7 @@ import { CreationType, CreationTypeModel } from './creation-type.model';
   standalone: true,
   imports: [ClarityModule, FormsModule],
   templateUrl: 'creation-type.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CreationTypeComponent implements StepModelHolder {
   readonly CreationType = CreationType;

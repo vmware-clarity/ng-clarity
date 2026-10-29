@@ -7,5 +7,6 @@
 
 export { ThemeBuilderComponent } from './theme-builder.component';
 export { Color } from './utils/color';
+export { ThemeCssValidation, validateGeneratedCSS } from './utils/css-parser';
 export { PRESETS } from './utils/presets';
 export { ThemeColor, ThemeColors, ThemePreset } from './utils/types';

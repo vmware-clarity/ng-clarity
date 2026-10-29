@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter } from '@angular/core';
 import { ClrDatagridFilterInterface } from '@clr/angular';
 
 import { User } from '../inventory/user';
@@ -24,6 +24,7 @@ import { COLORS } from '../inventory/values';
     }
   `,
   styleUrls: ['../datagrid.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ColorFilter implements ClrDatagridFilterInterface<User> {

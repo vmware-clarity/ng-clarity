@@ -7,6 +7,7 @@
 
 import {
   AfterViewChecked,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -38,6 +39,7 @@ const LANDMARK_SELECTOR = 'nav, [role="navigation"]';
     '[class.has-icons]': 'hasIcons',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrVerticalNav implements OnInit, AfterViewChecked, OnDestroy {
   @Input('clrVerticalNavToggleLabel') toggleLabel: string;

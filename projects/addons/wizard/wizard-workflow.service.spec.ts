@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Step } from '@clr/addons/var';
 
 import { WorkflowService } from './wizard-workflow.service';
@@ -13,6 +13,7 @@ import { WorkflowService } from './wizard-workflow.service';
 class MockWorkflowService extends WorkflowService {}
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   template: ``,
 })

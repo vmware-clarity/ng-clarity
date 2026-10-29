@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
@@ -22,6 +22,7 @@ import { SignpostOpenAtPointDemo } from './signpost-open-at-point.demo';
 import { SignpostParagraphDemo } from './signpost-paragraph.demo';
 import { SignpostPositionsDemo } from './signpost-positions.demo';
 import { SignpostTriggersDemo } from './signpost-triggers.demo';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -50,6 +51,7 @@ const html = `
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -67,6 +69,7 @@ const html = `
     SignpostPositionsDemo,
     SignpostTriggersDemo,
     StyleDocsComponent,
+    AiSkillComponent,
   ],
 })
 export class SignpostDemo extends ClarityDocComponent {

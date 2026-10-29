@@ -5,9 +5,29 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, AnimationEvent, state, style, transition, trigger } from '@angular/animations';
-import { AfterContentInit, Component, EventEmitter, HostBinding, Input, OnDestroy, Output } from '@angular/core';
-import { ClrCommonStringsService, IfExpandService } from '@clr/angular/utils';
+import {
+  AfterContentInit,
+  afterNextRender,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  HostBinding,
+  inject,
+  Injector,
+  Input,
+  OnDestroy,
+  Output,
+  ViewChild,
+} from '@angular/core';
+import {
+  animateHeight,
+  ClrCommonStringsService,
+  IfExpandService,
+  measureHeight,
+  noopAnimations,
+} from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 
 import { VerticalNavGroupRegistrationService } from './providers/vertical-nav-group-registration.service';
@@ -21,22 +41,27 @@ const COLLAPSED_STATE = 'collapsed';
   selector: 'clr-vertical-nav-group',
   templateUrl: './vertical-nav-group.html',
   providers: [IfExpandService, VerticalNavGroupService],
-  animations: [
-    trigger('clrExpand', [
-      state(EXPANDED_STATE, style({ height: '*' })),
-      state(COLLAPSED_STATE, style({ height: 0, visibility: 'hidden' })),
-      transition(`${EXPANDED_STATE} <=> ${COLLAPSED_STATE}`, animate('0.2s ease-in-out')),
-    ]),
-  ],
   host: { class: 'nav-group' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   @Output('clrVerticalNavGroupExpandedChange') expandedChange = new EventEmitter<boolean>(true);
 
+  /**
+   * Set when Angular adds the children container (see the template), once the group is rendered. Not with the noop
+   * animations, nor when animations are disabled with `ANIMATIONS_DISABLED`: Angular then calls no `animate.enter` handler.
+   */
+  protected animatesChildren = false;
+  protected readonly noopAnimations = noopAnimations();
+
   private wasExpanded = false;
   private _subscriptions: Subscription[] = [];
   private _expandAnimationState: string = COLLAPSED_STATE;
+  private readonly injector = inject(Injector);
+  private readonly cdr = inject(ChangeDetectorRef);
+
+  @ViewChild('children', { static: true }) private children: ElementRef<HTMLElement>;
 
   constructor(
     private _itemExpand: IfExpandService,
@@ -59,6 +84,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
           if (_navService.collapsed) {
             _navService.collapsed = false;
           }
+          this.animateChildrenExpand();
           this.expandAnimationState = EXPANDED_STATE;
         } else if (!value && this.expandAnimationState === EXPANDED_STATE) {
           this.expandAnimationState = COLLAPSED_STATE;
@@ -72,7 +98,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
       _navService.animateOnCollapsed.subscribe((goingToCollapse: boolean) => {
         if (goingToCollapse && this.expanded) {
           this.wasExpanded = true;
-          this.expandAnimationState = COLLAPSED_STATE;
+          this.collapseGroup();
         } else if (!goingToCollapse && this.wasExpanded) {
           this.expandGroup();
           this.wasExpanded = false;
@@ -104,7 +130,8 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   @Input('clrVerticalNavGroupExpanded')
   set userExpandedInput(value: boolean | string) {
     value = !!value;
-    if (this.expanded !== value) {
+    // Compared with the requested state: `expanded` stays true while the children collapse.
+    if ((this.expandAnimationState === EXPANDED_STATE) !== value) {
       // We have to call toggleExpand because some cases require animations to occur first
       // Directly setting the Expand service value skips the animation and can result in
       // nodes in the DOM but the nav group still being collapsed
@@ -126,7 +153,7 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
     // the expanded property is switched back to collapsed state.
     if (this._navService.collapsed && this.expanded) {
       this.wasExpanded = true;
-      this.expandAnimationState = COLLAPSED_STATE;
+      this.collapseGroup();
     }
   }
 
@@ -136,26 +163,40 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
   }
 
   expandGroup(): void {
+    // Setting `expanded` animates the children through the expandChange subscription, except when it stays true
+    // while the children collapse.
+    if (this.expanded) {
+      this.animateChildrenExpand();
+    }
     this.expanded = true;
-    // Expanded animation occurs after Expand.expand is set to true
     this.expandAnimationState = EXPANDED_STATE;
   }
 
   collapseGroup(): void {
-    // If a Vertical Nav Group toggle button is clicked while the Vertical Nav is in Collapsed state,
-    // the Vertical Nav should be expanded first.
     this.expandAnimationState = COLLAPSED_STATE;
-  }
-
-  // closes a group after the collapse animation
-  expandAnimationDone($event: AnimationEvent) {
-    if ($event.toState === COLLAPSED_STATE) {
-      this.expanded = false;
+    // The group closes, removing its children, once they are collapsed.
+    const children = this.children.nativeElement;
+    const animation = this.animatesChildren ? animateHeight(children, { from: measureHeight(children), to: 0 }) : null;
+    if (animation) {
+      animation.finished.then(
+        () => this.closeGroup(),
+        () => {
+          // Expanded again while collapsing.
+        }
+      );
+    } else {
+      this.closeGroup();
     }
   }
 
+  /** @deprecated No longer called: the group closes once its children are collapsed. To be removed in a future major version. */
+  expandAnimationDone(_$event: { toState: string }) {
+    // Nothing to do.
+  }
+
   toggleExpand(): void {
-    if (this.expanded) {
+    // Not `expanded`, which stays true while the children collapse: toggling again then expands the group back.
+    if (this.expandAnimationState === EXPANDED_STATE) {
       this.collapseGroup();
     } else {
       // If nav is collasped, first open the nav
@@ -164,6 +205,27 @@ export class ClrVerticalNavGroup implements AfterContentInit, OnDestroy {
       }
       // then expand the nav group
       this.expandGroup();
+    }
+  }
+
+  /** Animates the children from their current height to the one they have once the group is expanded. */
+  private animateChildrenExpand() {
+    if (!this.animatesChildren) {
+      return;
+    }
+    const children = this.children.nativeElement;
+    const from = measureHeight(children);
+    afterNextRender(
+      // Not when collapsed again before the render: the expand would cancel the collapse, leaving the group open.
+      { read: () => this.expandAnimationState === EXPANDED_STATE && animateHeight(children, { from }) },
+      { injector: this.injector }
+    );
+  }
+
+  private closeGroup() {
+    if (this.expandAnimationState === COLLAPSED_STATE) {
+      this.expanded = false;
+      this.cdr.markForCheck();
     }
   }
 }

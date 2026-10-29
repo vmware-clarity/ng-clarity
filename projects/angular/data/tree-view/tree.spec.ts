@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ApplicationRef, Component, DebugElement, ViewChild } from '@angular/core';
+import { ApplicationRef, ChangeDetectionStrategy, Component, DebugElement, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { delay, spec, TestContext } from '@clr/angular/testing';
 
 import { RecursiveChildren } from './recursive-children';
@@ -27,6 +26,7 @@ import { ClrTreeViewModule } from './tree-view.module';
       }
     </clr-tree>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -53,6 +53,7 @@ class TestComponent {
       </clr-tree-node>
     </clr-tree>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TreeTypeAhead {}
@@ -93,6 +94,7 @@ class TreeTypeAhead {}
       </clr-tree>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ExpandAllTestComponent {
@@ -131,6 +133,7 @@ interface LazyNode {
       </clr-tree-node>
     </clr-tree>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class LazyExpandAllTestComponent {
@@ -152,7 +155,7 @@ export default function (): void {
   type Context = TestContext<ClrTree<void>, TestComponent>;
 
   describe('ClrTree Component', function () {
-    spec(ClrTree, TestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, TestComponent, ClrTreeViewModule);
 
     it('declares a TreeFeaturesService provider', function (this: Context) {
       expect(this.getClarityProvider(TreeFeaturesService, null)).not.toBeNull();
@@ -217,7 +220,7 @@ export default function (): void {
     let forTypeAheadDirectiveDEs: DebugElement[];
     let forTypeAheadDirectives: ClrTreeNode<any>[];
 
-    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, TreeTypeAhead, ClrTreeViewModule);
 
     beforeEach(function (this: Context) {
       forTypeAheadDirectiveDEs = this.fixture.debugElement.queryAll(By.directive(ClrTreeNode));
@@ -259,7 +262,7 @@ export default function (): void {
   describe('Expand all in ClrTree Component', function () {
     type ExpandAllContext = TestContext<ClrTree<void>, ExpandAllTestComponent>;
 
-    spec(ClrTree, ExpandAllTestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, ExpandAllTestComponent, ClrTreeViewModule);
 
     function allNodes(context: ExpandAllContext): ClrTreeNode<void>[] {
       return context.fixture.debugElement.queryAll(By.directive(ClrTreeNode)).map(de => de.componentInstance);
@@ -486,7 +489,7 @@ export default function (): void {
   describe('Expand all in a lazy-loaded recursive ClrTree Component', function () {
     type LazyContext = TestContext<ClrTree<LazyNode>, LazyExpandAllTestComponent>;
 
-    spec(ClrTree, LazyExpandAllTestComponent, ClrTreeViewModule, { imports: [NoopAnimationsModule] });
+    spec(ClrTree, LazyExpandAllTestComponent, ClrTreeViewModule);
 
     async function settleLoading(context: LazyContext, rounds = 6) {
       for (let i = 0; i < rounds; i++) {

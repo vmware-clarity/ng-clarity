@@ -1,6 +1,6 @@
 [
   {
-    "target": "div.clr-treenode-children",
+    "target": "div.clr-treenode-children.is-expanded",
     "name": "",
     "startedAt": 0,
     "duration": 200,
@@ -9,17 +9,19 @@
     "iterations": 1,
     "keyframes": [
       {
-        "offset": 0,
+        "offset": null,
         "easing": "linear",
         "composite": "auto",
         "contentVisibility": "visible",
+        "overflow": "clip",
         "height": "0px"
       },
       {
-        "offset": 1,
+        "offset": null,
         "easing": "linear",
         "composite": "auto",
         "contentVisibility": "visible",
+        "overflow": "clip",
         "height": "224px"
       }
     ]

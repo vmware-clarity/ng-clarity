@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Injector, OnDestroy, OnInit, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Injector, OnDestroy, OnInit, Type } from '@angular/core';
 import { createCustomElement } from '@angular/elements';
 import { Title } from '@angular/platform-browser';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,6 +14,7 @@ import { map, Observable, Subscription } from 'rxjs';
 
 import RAW_PAGES from '../../compiled-content/pages.json';
 import { PageNotFoundComponent } from '../page-not-found/page-not-found.component';
+import { AiAgentsComponent } from '../shared/ai-agents/ai-agents.component';
 import { HashListenerDirective } from '../shared/hash-listener/hash-listener.directive';
 import { SafeHtmlPipe } from '../shared/pipes/safe-html.pipe';
 import { SiteFooterComponent } from '../shared/site-footer/site-footer.component';
@@ -29,6 +30,7 @@ const PAGES = RAW_PAGES as Record<string, (typeof RAW_PAGES)[keyof typeof RAW_PA
   host: {
     '[class.content-container]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CommonModule,
     SiteNavComponent,
@@ -103,6 +105,7 @@ export class ContentPageComponent implements OnInit, OnDestroy {
 function registerCustomElements(injector: Injector) {
   const customElementsMap: Record<string, Type<any>> = {
     'app-themed-image': ThemedImageComponent,
+    'app-ai-agents': AiAgentsComponent,
   };
 
   for (const [tagName, component] of Object.entries(customElementsMap)) {

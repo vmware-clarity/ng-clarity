@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import {
   ClarityIcons,
@@ -30,6 +30,7 @@ import { NavigationTypesDemo } from './navigation-types.demo';
 import { ResponsiveNav1Demo } from './responsive-nav1';
 import { ResponsiveNav2Demo } from './responsive-nav2';
 import { SmallScreenNavDemo } from './small-screen-nav';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
 import { ThemedImageComponent } from '../../../shared/themed-image/themed-image.component';
@@ -42,6 +43,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -60,6 +62,7 @@ import { ClarityDocComponent } from '../clarity-doc';
     NavigationTypesDemo,
     LargeScreenNavDemo,
     SmallScreenNavDemo,
+    AiSkillComponent,
   ],
 })
 export class NavigationDemo extends ClarityDocComponent {

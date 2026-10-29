@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, TemplateRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, TemplateRef } from '@angular/core';
 import { DateTimeFormatOptions } from '@clr/addons/translate';
 
 import { KnownOids } from '../certificate.constants';
@@ -29,6 +29,7 @@ import { TopHeadingLevel } from '../models/heading-level.model';
   standalone: false,
   templateUrl: 'certificate-viewer-general.component.html',
   styleUrls: ['certificate-viewer-general.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CertificateViewerGeneralComponent {
   readonly KnownOids = KnownOids;

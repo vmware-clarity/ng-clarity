@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CloseHandler, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
@@ -32,6 +32,7 @@ export class NameModel implements StepModel {
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardStep1Component implements StepModelHolder {
   model: NameModel;
@@ -61,6 +62,7 @@ export class StorageModel implements StepModel {
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardStep2Component implements StepModelHolder {
   model: StorageModel;
@@ -89,6 +91,7 @@ export class DemoWorkflowModel {
       [closeHandler]="closeHandler"
     ></appfx-wizard>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class BasicWizardDemoComponent implements OnInit {
   isOpen = false;

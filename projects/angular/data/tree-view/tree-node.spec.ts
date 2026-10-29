@@ -5,11 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, PLATFORM_ID, ViewChild } from '@angular/core';
-import { fakeAsync, flushMicrotasks } from '@angular/core/testing';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
+import { ChangeDetectionStrategy, Component, PLATFORM_ID, ViewChild } from '@angular/core';
+import { ComponentFixture, fakeAsync, flushMicrotasks, TestBed } from '@angular/core/testing';
+import { provideNoopAnimations } from '@angular/platform-browser/animations';
 import { ClrIcon } from '@clr/angular/icon';
-import { expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
+import { delay, expectActiveElementToBe, spec, TestContext } from '@clr/angular/testing';
 import { ClrCommonStringsService, IfExpandService, Keys } from '@clr/angular/utils';
 
 import { DeclarativeTreeNodeModel } from './models/declarative-tree-node.model';
@@ -29,6 +29,7 @@ import { ClrTreeViewModule } from './tree-view.module';
       }
     </clr-tree-node>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {
@@ -42,10 +43,51 @@ class TestComponent {
 
 @Component({
   template: `
+    <clr-tree-node #node [clrExpanded]="true">
+      Parent
+      <clr-tree-node>
+        Child
+        <clr-tree-node>Grandchild</clr-tree-node>
+      </clr-tree-node>
+    </clr-tree-node>
+  `,
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
+})
+class NestedTestComponent {
+  @ViewChild('node') tree: ClrTreeNode<void>;
+}
+
+interface LazyNode {
+  name: string;
+  children?: LazyNode[];
+}
+
+@Component({
+  template: `
+    <clr-tree [clrLazy]="true">
+      <clr-tree-node *clrRecursiveFor="let node of roots; getChildren: getChildren" [clrExpandable]="!!node.children">
+        {{ node.name }}
+      </clr-tree-node>
+    </clr-tree>
+  `,
+  standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
+})
+class LazyRecursiveTestComponent {
+  @ViewChild(ClrTreeNode) node: ClrTreeNode<LazyNode>;
+
+  roots: LazyNode[] = [{ name: 'A', children: [{ name: 'AA' }] }];
+  getChildren = (node: LazyNode) => node.children;
+}
+
+@Component({
+  template: `
     <clr-tree-node>
       <a href="href" class="clr-treenode-link" [class.active]="active">Hello world</a>
     </clr-tree-node>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class LinkTestComponent {
@@ -66,7 +108,7 @@ export default function (): void {
 
     describe('Providers', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -82,26 +124,29 @@ export default function (): void {
         const stringsService = new ClrCommonStringsService();
         this.focusManagerService = new TreeFocusManagerService<void>();
         const platformID = { provide: PLATFORM_ID, useValue: 'browser' };
-        this.parent = new ClrTreeNode(
-          platformID,
-          undefined,
-          this.featureService,
-          this.expandService,
-          stringsService,
-          this.focusManagerService,
-          { nativeElement: document.createElement('div') },
-          null
-        );
-        this.node = new ClrTreeNode(
-          platformID,
-          this.parent,
-          this.featureService,
-          this.expandService,
-          stringsService,
-          this.focusManagerService,
-          { nativeElement: document.createElement('div') },
-          null
-        );
+        // The node reads the animation module type in a field initializer.
+        TestBed.runInInjectionContext(() => {
+          this.parent = new ClrTreeNode(
+            platformID,
+            undefined,
+            this.featureService,
+            this.expandService,
+            stringsService,
+            this.focusManagerService,
+            { nativeElement: document.createElement('div') },
+            null
+          );
+          this.node = new ClrTreeNode(
+            platformID,
+            this.parent,
+            this.featureService,
+            this.expandService,
+            stringsService,
+            this.focusManagerService,
+            { nativeElement: document.createElement('div') },
+            null
+          );
+        });
       });
 
       it('instantiates a DeclarativeTreeNodeModel', function (this: TsApiContext) {
@@ -218,7 +263,7 @@ export default function (): void {
 
     describe('Template API', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -250,7 +295,7 @@ export default function (): void {
 
     describe('View', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -366,7 +411,7 @@ export default function (): void {
 
     describe('A11y and Focus Management', function () {
       spec(ClrTreeNode, TestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -621,7 +666,7 @@ export default function (): void {
       type Context = TestContext<ClrTreeNode<void>, LinkTestComponent>;
 
       spec(ClrTreeNode, LinkTestComponent, ClrTreeViewModule, {
-        imports: [NoopAnimationsModule, ClrIcon],
+        imports: [ClrIcon],
         providers: [TreeFocusManagerService],
       });
 
@@ -648,6 +693,173 @@ export default function (): void {
       it('removes the tree node link from the native tab sequence to prevent a double-Tab stop', function (this: Context) {
         const link: HTMLElement = this.clarityElement.querySelector('.clr-treenode-link');
         expect(link.getAttribute('tabindex')).toBe('-1');
+      });
+    });
+
+    describe('Animations', function () {
+      let fixture: ComponentFixture<TestComponent>;
+
+      beforeEach(function () {
+        TestBed.configureTestingModule({
+          imports: [ClrTreeViewModule, ClrIcon],
+          declarations: [TestComponent],
+          providers: [TreeFocusManagerService],
+          animationsEnabled: true,
+        });
+        fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
+        return delay();
+      });
+
+      afterEach(function () {
+        fixture.destroy();
+      });
+
+      function children(): HTMLElement {
+        return fixture.nativeElement.querySelector('.clr-treenode-children');
+      }
+
+      function heightKeyframes() {
+        return children()
+          .getAnimations()
+          .flatMap(animation => (animation.effect as KeyframeEffect).getKeyframes().map(keyframe => keyframe.height));
+      }
+
+      async function expand(expanded: boolean) {
+        fixture.componentInstance.expanded = expanded;
+        fixture.detectChanges();
+        await delay();
+      }
+
+      it('expands the children from 0 to their height', async function () {
+        await expand(true);
+
+        const [from, to] = heightKeyframes();
+        expect(from).toBe('0px');
+        expect(parseFloat(to as string)).toBeGreaterThan(0);
+      });
+
+      it('collapses the children to 0, keeping them rendered', async function () {
+        await expand(true);
+        children()
+          .getAnimations()
+          .forEach(animation => animation.finish());
+        await expand(false);
+
+        expect(heightKeyframes()[1]).toBe('0px');
+        expect(getComputedStyle(children()).contentVisibility).toBe('visible');
+
+        children()
+          .getAnimations()
+          .forEach(animation => animation.finish());
+        expect(getComputedStyle(children()).contentVisibility).toBe('hidden');
+      });
+
+      it('does not animate the children when animations are disabled', async function () {
+        fixture.destroy();
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [ClrTreeViewModule, ClrIcon],
+          declarations: [TestComponent],
+          providers: [TreeFocusManagerService],
+        });
+        fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
+        await delay();
+        await expand(true);
+
+        expect(children().getAnimations()).toEqual([]);
+      });
+
+      it('does not animate the children with provideNoopAnimations()', async function () {
+        fixture.destroy();
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [ClrTreeViewModule, ClrIcon],
+          declarations: [TestComponent],
+          providers: [TreeFocusManagerService, provideNoopAnimations()],
+          animationsEnabled: true,
+        });
+        fixture = TestBed.createComponent(TestComponent);
+        fixture.detectChanges();
+        await delay();
+        await expand(true);
+
+        expect(children().getAnimations()).toEqual([]);
+      });
+
+      it('does not animate the collapse of a lazy recursive node, whose children are removed', async function () {
+        fixture.destroy();
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [ClrTreeViewModule, ClrIcon],
+          declarations: [LazyRecursiveTestComponent],
+          providers: [TreeFocusManagerService],
+          animationsEnabled: true,
+        });
+        const lazyFixture = TestBed.createComponent(LazyRecursiveTestComponent);
+        lazyFixture.detectChanges();
+        await delay();
+        const node = lazyFixture.componentInstance.node;
+        const nodeChildren: HTMLElement = lazyFixture.nativeElement.querySelector('.clr-treenode-children');
+
+        node.expanded = true;
+        lazyFixture.detectChanges();
+        await delay();
+        expect(nodeChildren.getAnimations().length).toBe(1);
+        nodeChildren.getAnimations().forEach(animation => animation.finish());
+
+        node.expanded = false;
+        lazyFixture.detectChanges();
+        await delay();
+
+        expect(nodeChildren.getAnimations()).toEqual([]);
+        lazyFixture.destroy();
+      });
+
+      it('does not animate the children when all the descendants are expanded at once', async function () {
+        fixture.componentInstance.tree.expandDescendants();
+        fixture.detectChanges();
+        await delay();
+
+        expect(children().getAnimations()).toEqual([]);
+      });
+
+      it('settles the children at once when all the descendants are collapsed while they animate', async function () {
+        await expand(true);
+        children()
+          .getAnimations()
+          .forEach(animation => animation.pause());
+
+        fixture.componentInstance.tree.collapseDescendants();
+        fixture.detectChanges();
+        await delay();
+
+        expect(children().getAnimations()).toEqual([]);
+      });
+
+      it('does not start the animation of a toggle followed by a bulk change before the next render', async function () {
+        fixture.destroy();
+        TestBed.resetTestingModule();
+        TestBed.configureTestingModule({
+          imports: [ClrTreeViewModule, ClrIcon],
+          declarations: [NestedTestComponent],
+          providers: [TreeFocusManagerService],
+          animationsEnabled: true,
+        });
+        const nestedFixture = TestBed.createComponent(NestedTestComponent);
+        nestedFixture.detectChanges();
+        await delay();
+        const parent = nestedFixture.componentInstance.tree;
+        const parentChildren: HTMLElement = nestedFixture.nativeElement.querySelector('.clr-treenode-children');
+
+        parent.expanded = false;
+        parent.expandDescendants();
+        nestedFixture.detectChanges();
+        await delay();
+
+        expect(parentChildren.getAnimations()).toEqual([]);
+        nestedFixture.destroy();
       });
     });
   });

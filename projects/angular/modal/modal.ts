@@ -5,14 +5,17 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { animate, AnimationEvent, style, transition, trigger } from '@angular/animations';
 import {
+  afterNextRender,
   booleanAttribute,
+  ChangeDetectionStrategy,
   Component,
   ContentChild,
   ElementRef,
   EventEmitter,
   HostBinding,
+  inject,
+  Injector,
   Input,
   OnChanges,
   OnDestroy,
@@ -21,10 +24,17 @@ import {
   TemplateRef,
   ViewChild,
 } from '@angular/core';
-import { ClrCommonStringsService, ScrollingService, uniqueIdFactory } from '@clr/angular/utils';
+import { ClrCommonStringsService, noopAnimations, ScrollingService, uniqueIdFactory } from '@clr/angular/utils';
 
 import { ClrModalConfigurationService } from './modal-configuration.service';
 import { ModalStackService } from './modal-stack.service';
+
+/** Enter animation of the dialog for each supported `fadeMove` value. */
+const FADE_MOVE_ENTER_CLASSES: Record<string, string> = {
+  fadeDown: 'clr-fade-slide-down-enter',
+  fadeLeft: 'clr-fade-slide-left-enter',
+  fadeUp: 'clr-fade-slide-up-enter',
+};
 
 @Component({
   selector: 'clr-modal',
@@ -40,26 +50,8 @@ import { ModalStackService } from './modal-stack.service';
       }
     `,
   ],
-  animations: [
-    trigger('fadeMove', [
-      transition('* => fadeDown', [
-        style({ opacity: 0, transform: 'translate(0, -25%)' }),
-        animate('0.2s ease-in-out'),
-      ]),
-      transition('fadeDown => *', [
-        animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, -25%)' })),
-      ]),
-      transition('* => fadeLeft', [style({ opacity: 0, transform: 'translate(25%, 0)' }), animate('0.2s ease-in-out')]),
-      transition('fadeLeft => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(25%, 0)' }))]),
-      transition('* => fadeUp', [style({ opacity: 0, transform: 'translate(0, 50%)' }), animate('0.2s ease-in-out')]),
-      transition('fadeUp => *', [animate('0.2s ease-in-out', style({ opacity: 0, transform: 'translate(0, 50%)' }))]),
-    ]),
-    trigger('fade', [
-      transition('void => *', [style({ opacity: 0 }), animate('0.2s ease-in-out', style({ opacity: 0.85 }))]),
-      transition('* => void', [animate('0.2s ease-in-out', style({ opacity: 0 }))]),
-    ]),
-  ],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrModal implements OnChanges, OnDestroy {
   modalId = uniqueIdFactory();
@@ -89,6 +81,13 @@ export class ClrModal implements OnChanges, OnDestroy {
   @ContentChild('clrInternalModalContentTemplate') protected readonly modalContentTemplate: TemplateRef<any>;
 
   @ViewChild('body') private readonly bodyElementRef: ElementRef<HTMLElement>;
+  @ViewChild('dialog') private readonly dialogElementRef: ElementRef<HTMLElement>;
+
+  private readonly injector = inject(Injector);
+  private readonly noopAnimations = noopAnimations();
+  private destroyed = false;
+  /** Set when the modal closes, until it opens again: identifies the closing to notify. */
+  private closeRequest: object | null = null;
 
   constructor(
     private _scrollingService: ScrollingService,
@@ -108,20 +107,40 @@ export class ClrModal implements OnChanges, OnDestroy {
     return this.configuration.backdrop;
   }
 
-  // Detect when _open is set to true and set no-scrolling to true
+  /** Class animating the dialog in, meant for its `animate.enter` binding. Empty when animations are skipped or off. */
+  protected get dialogEnterClass(): string {
+    return this.noopAnimations ? '' : (FADE_MOVE_ENTER_CLASSES[this.fadeMove] ?? '');
+  }
+
+  /** Class animating the backdrop in, meant for its `animate.enter` binding. Empty when animations are off. */
+  protected get backdropEnterClass(): string {
+    return this.noopAnimations ? '' : 'clr-fade-enter';
+  }
+
+  // Track the opening and closing driven by the clrModalOpen input: page scrolling, the modal stack and the
+  // clrModalOpenChange(false) notification (emitted on an input-driven close too, as before).
   ngOnChanges(changes: { [propName: string]: SimpleChange }): void {
-    if (!this.bypassScrollService && changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
+    if (changes && Object.prototype.hasOwnProperty.call(changes, '_open')) {
       if (changes._open.currentValue) {
-        this._scrollingService.stopScrolling();
-        this.modalStackService.trackModalOpen(this);
+        this.closeRequest = null;
+        if (!this.bypassScrollService) {
+          this._scrollingService.stopScrolling();
+          this.modalStackService.trackModalOpen(this);
+        }
       } else {
-        this._scrollingService.resumeScrolling();
+        this.notifyClosing();
+        if (!this.bypassScrollService) {
+          this._scrollingService.resumeScrolling();
+        }
       }
     }
   }
 
   ngOnDestroy(): void {
+    this.destroyed = true;
     this._scrollingService.resumeScrolling();
+    // A modal destroyed while open must not keep handling the Escape key.
+    this.modalStackService.trackModalClose(this);
   }
 
   open(): void {
@@ -129,6 +148,7 @@ export class ClrModal implements OnChanges, OnDestroy {
       return;
     }
     this._open = true;
+    this.closeRequest = null;
     this._openChanged.emit(true);
     this.modalStackService.trackModalOpen(this);
   }
@@ -150,17 +170,36 @@ export class ClrModal implements OnChanges, OnDestroy {
       return;
     }
     this._open = false;
+    this.notifyClosing();
   }
 
-  fadeDone(e: AnimationEvent) {
-    if (e.toState === 'void') {
-      // TODO: Investigate if we can decouple from animation events
-      this._openChanged.emit(false);
-      this.modalStackService.trackModalClose(this);
-    }
+  /** @deprecated No longer called: `clrModalOpenChange` is emitted when the modal closes. To be removed in a future major version. */
+  fadeDone(_e: { toState: string }) {
+    // Nothing to do.
   }
 
   scrollTop() {
     this.bodyElementRef.nativeElement.scrollTo(0, 0);
+  }
+
+  /**
+   * Emits `clrModalOpenChange(false)` after the closing render, once the dialog is removed and the focus trap has given
+   * the focus back, so that a handler can move the focus elsewhere.
+   * Once per closing, and not when the modal was not rendered, opens again in between, or is destroyed.
+   */
+  private notifyClosing() {
+    if (this.closeRequest || !this.dialogElementRef) {
+      return;
+    }
+    const closeRequest = (this.closeRequest = {});
+    afterNextRender(
+      () => {
+        if (closeRequest === this.closeRequest && !this.destroyed) {
+          this._openChanged.emit(false);
+          this.modalStackService.trackModalClose(this);
+        }
+      },
+      { injector: this.injector }
+    );
   }
 }

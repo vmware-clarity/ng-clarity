@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Route, Router, RouterLink, RouterOutlet } from '@angular/router';
 import {
   blockIcon,
@@ -32,6 +32,7 @@ import { VerticalNavIconsDemo } from './icons/icons';
 import { JustNavsDemo } from './just-navs/just-navs';
 import { NavGroupsDemo } from './nav-groups/nav-groups';
 import { ProjectPokemonDemo } from './routes/project-pokemon/project-pokemon';
+import { AiSkillComponent } from '../../../shared/ai-skill/ai-skill.component';
 import { DoDontComponent } from '../../../shared/do-dont/do-dont.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
 import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
@@ -49,6 +50,7 @@ type DemoRoute = Route & { data: { demoName: string } };
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,
@@ -67,6 +69,7 @@ type DemoRoute = Route & { data: { demoName: string } };
     ClrIconModule,
     StyleDocsComponent,
     ProjectPokemonDemo,
+    AiSkillComponent,
   ],
 })
 export class VerticalNavDemo extends ClarityDocComponent implements OnInit, OnDestroy {

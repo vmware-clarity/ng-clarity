@@ -5,10 +5,9 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement, Input } from '@angular/core';
 import { ComponentFixture, fakeAsync, flush, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
-import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrDropdownModule } from '@clr/angular/popover/dropdown';
 
 import { MockPropertyViewStrings } from '../../testing';
@@ -24,6 +23,7 @@ import { PropertyViewSectionComponent } from './property-view-section.component'
 @Component({
   selector: '[appfx-property-view-message]',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 class PropertyViewMessageMockComponent {
@@ -33,6 +33,7 @@ class PropertyViewMessageMockComponent {
 @Component({
   selector: '[appfx-property-view-property]',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 class PropertyViewPropertyMockComponent {
@@ -104,7 +105,7 @@ describe('PropertyViewSectionComponent', function () {
     };
 
     TestBed.configureTestingModule({
-      imports: [ClrDropdownModule, NoopAnimationsModule],
+      imports: [ClrDropdownModule],
       declarations: [PropertyViewSectionComponent, PropertyViewMessageMockComponent, PropertyViewPropertyMockComponent],
       providers: [
         {
