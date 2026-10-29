@@ -624,7 +624,7 @@ export class ClrCombobox<T>
       if (snapshotOptions?.collectionItems === 'summary') {
         state[keys.count] = listed.length;
       } else {
-        state[keys.list] = named.slice(0, maxItems).map(entry => this.optionLabel(entry.option));
+        state[keys.list] = named.slice(0, maxItems).map(entry => this.optionLabel(entry.option, excluded));
         if (named.length < listed.length) {
           state[keys.redacted] = listed.length - named.length;
         }
@@ -690,7 +690,7 @@ export class ClrCombobox<T>
     }
     if (
       verdict === 'shown' &&
-      this.optionLabel(option) === '' &&
+      this.optionLabel(option, excluded) === '' &&
       element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)
     ) {
       // Named, it would be listed as `''`: there, but with nothing to tell it apart.
@@ -732,14 +732,20 @@ export class ClrCombobox<T>
         return { value, option, shown: option ? this.optionShown(option, excluded) : 'shown' };
       })
       .filter(entry => entry.shown !== 'excluded')
-      .map(entry => (entry.shown === 'shown' ? this.selectedValueLabel(entry.value, entry.option) : null));
+      .map(entry => (entry.shown === 'shown' ? this.selectedValueLabel(entry.value, entry.option, excluded) : null));
     return this.multiSelect ? names : (names[0] ?? null);
   }
 
-  /** An option's visible label. Not named by its value when its text was withheld: the value may be the secret. */
-  private optionLabel(option: ClrOption<T>): string {
+  /**
+   * An option's visible label, without what the snapshot excludes. Not named by its value when its text was
+   * withheld: the value may be the secret.
+   */
+  private optionLabel(option: ClrOption<T>, excluded: string): string {
     const element: HTMLElement = option.elRef.nativeElement;
-    const text = contextText(element, descendant => descendant.classList.contains('clr-sr-only'));
+    const text = contextText(
+      element,
+      descendant => descendant.classList.contains('clr-sr-only') || (!!excluded && descendant.matches(excluded))
+    );
     if (text || element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)) {
       return text;
     }
@@ -747,9 +753,9 @@ export class ClrCombobox<T>
   }
 
   /** Never the model object itself, which holds fields the user never sees. */
-  private selectedValueLabel(value: T, option: ClrOption<T> | undefined): string | null {
+  private selectedValueLabel(value: T, option: ClrOption<T> | undefined, excluded: string): string | null {
     if (option) {
-      return this.optionLabel(option);
+      return this.optionLabel(option, excluded);
     }
     const shown = this.displayField && value ? (value as Record<string, unknown>)[this.displayField] : value;
     return typeof shown === 'string' || typeof shown === 'number' || typeof shown === 'boolean' ? String(shown) : null;

@@ -24,7 +24,14 @@ import {
   QueryList,
   ViewChild,
 } from '@angular/core';
-import { ClrCommonStringsService, contextText, publishElementContext, uniqueIdFactory } from '@clr/angular/utils';
+import {
+  CLR_CONTEXT_IGNORE_SELECTOR,
+  CLR_CONTEXT_REDACT_SELECTOR,
+  ClrCommonStringsService,
+  contextText,
+  publishElementContext,
+  uniqueIdFactory,
+} from '@clr/angular/utils';
 import { Subscription } from 'rxjs';
 import { filter } from 'rxjs/operators';
 
@@ -615,8 +622,10 @@ export class ClrWizard implements OnDestroy, AfterContentInit, DoCheck {
 
   private stepTitle(page: ClrWizardPage): { title?: string } {
     const id = `${this.pageCollection.getStepItemIdForPage(page)}-step-title`;
-    const element = this.elementRef.nativeElement.querySelector(`#${CSS.escape(id)}`);
-    const title = element ? contextText(element) : '';
+    const element: Element | null = this.elementRef.nativeElement.querySelector(`#${CSS.escape(id)}`);
+    // Titles are published apart from the stepnav, so a stepnav kept from agents keeps them too.
+    const kept = element?.closest(`${CLR_CONTEXT_IGNORE_SELECTOR}, ${CLR_CONTEXT_REDACT_SELECTOR}`);
+    const title = element && !kept ? contextText(element) : '';
     return title ? { title } : {};
   }
 }

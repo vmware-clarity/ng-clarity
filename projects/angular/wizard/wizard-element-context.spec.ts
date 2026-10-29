@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextEngineService } from '@clr/angular/ai';
@@ -15,6 +15,7 @@ import { CLR_ELEMENT_CONTEXT_PROPERTY, ClrComponentContext } from '@clr/angular/
 import { ClrWizardModule } from './wizard.module';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-wizard [(clrWizardOpen)]="open">
       <clr-wizard-title>Provision</clr-wizard-title>
@@ -36,6 +37,7 @@ class TestComponent {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-wizard [clrWizardOpen]="open">
       <clr-wizard-title>Provision</clr-wizard-title>
@@ -89,6 +91,19 @@ describe('ClrWizard element context', () => {
     const steps = publishedState(wizard()).steps as { title: string }[];
 
     expect(steps.map(step => step.title)).toEqual(['Identity', 'Networking', 'Review']);
+  });
+
+  it('publishes no title from a stepnav kept from agents', () => {
+    for (const marker of ['data-clr-context-ignore', 'data-clr-context-redact']) {
+      const stepnav = wizard().querySelector('clr-wizard-stepnav') as HTMLElement;
+      stepnav.setAttribute(marker, '');
+
+      const steps = publishedState(wizard()).steps as Record<string, unknown>[];
+      expect(steps.some(step => 'title' in step))
+        .withContext(marker)
+        .toBe(false);
+      stepnav.removeAttribute(marker);
+    }
   });
 
   it('publishes a step without a title when its stepnav item shows none', () => {
