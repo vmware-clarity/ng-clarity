@@ -628,6 +628,23 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
     expect(getSnapshot).not.toHaveBeenCalled();
   });
 
+  it('stops watching the shadow roots in a frame once the frame is removed', async () => {
+    await loadFrame('<p>Plugin</p>');
+    const host = frameBody().ownerDocument.createElement('shadow-host');
+    const root = host.attachShadow({ mode: 'open' });
+    root.innerHTML = '<button>Before</button>';
+    frameBody().appendChild(host);
+    tracker.start({ debounceMs: 10 });
+
+    frame.remove();
+    await elapse(10);
+    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshotAsync').and.callThrough();
+    (root.querySelector('button') as HTMLButtonElement).textContent = 'After';
+    await elapse(10);
+
+    expect(getSnapshot).not.toHaveBeenCalled();
+  });
+
   it('hands a snapshot that fails to the application’s error handler, and carries on', async () => {
     await loadFrame('<button>Run</button>');
     tracker.start({ debounceMs: 10 });

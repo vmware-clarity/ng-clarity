@@ -129,6 +129,20 @@ describe('shadow DOM helpers', () => {
     expect(queryRendered(root, 'b').map(element => element.className)).toEqual(['assigned']);
   });
 
+  it("returns matches in the order they render, a shadow root's content where its host is", () => {
+    host('<b class="first"></b>');
+    container.insertAdjacentHTML('beforeend', '<b class="second"></b>');
+    const { root } = host('<slot></slot><b class="fourth"></b>', '<b class="third"></b>');
+
+    expect(queryRendered(container, 'b').map(element => element.className)).toEqual([
+      'first',
+      'second',
+      'third',
+      'fourth',
+    ]);
+    expect(queryRendered(root, 'b').map(element => element.className)).toEqual(['third', 'fourth']);
+  });
+
   it('answers for light DOM with one plain query', () => {
     container.innerHTML = '<div><slot></slot><i></i></div>';
     const queries = spyOn(Element.prototype, 'querySelectorAll').and.callThrough();
