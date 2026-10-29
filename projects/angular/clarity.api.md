@@ -2354,7 +2354,7 @@ export class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, On
     selectAllDisabled: boolean;
     // (undocumented)
     selectAllId: string;
-    set selected(value: T[]);
+    set selected(value: T[] | undefined);
     // (undocumented)
     selectedChanged: EventEmitter<T[]>;
     // (undocumented)

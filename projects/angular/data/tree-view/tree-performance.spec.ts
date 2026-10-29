@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { By } from '@angular/platform-browser';
 import { spec, TestContext } from '@clr/angular/testing';
 
@@ -52,6 +52,7 @@ const LOG_TIMINGS = false;
       </clr-tree-node>
     </clr-tree>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class PerformanceTestComponent {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-tools-demo',
@@ -14,6 +14,7 @@ import { Component } from '@angular/core';
       We have a wide selection of fine art materials and supplies. Find supplies for painting, drawing, sketching,
       sculpting and more.
     </p>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ToolsDemo {}

@@ -9,6 +9,7 @@ import type { QueryList } from '@angular/core';
 import {
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -55,6 +56,7 @@ import { SummaryModel } from './summary/summary.model';
  */
 @Component({
   selector: 'appfx-wizard',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   templateUrl: 'wizard.component.html',
   styleUrls: ['wizard.component.scss'],
@@ -391,6 +393,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
             formatError(error).data.message || this.workflowStrings.defaultWizardSubmitError,
           ];
         }
+        this.cdr.markForCheck();
       },
       complete: () => {
         this.loading = false;
@@ -398,6 +401,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
         this.onFinish.emit();
         this.wizard.forceFinish();
         this.closeWizard(Reason.finish);
+        this.cdr.markForCheck();
       },
     });
   }
@@ -412,12 +416,14 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
             formatError(error).data.message || this.workflowStrings.defaultWizardSubmitError,
           ];
         }
+        this.cdr.markForCheck();
       },
       complete: () => {
         this.loading = false;
         this.closeHandlerValidationState.errors = [];
         this.wizard.close();
         this.closeWizard(Reason.cancel);
+        this.cdr.markForCheck();
       },
     });
   }
@@ -603,7 +609,7 @@ export class WizardComponent implements OnInit, OnDestroy, AfterViewInit, AfterC
 /**
  * Reason for Wizard close.
  */
-export const enum Reason {
+export enum Reason {
   /**
    * Wizard closed by clicking finish button.
    */

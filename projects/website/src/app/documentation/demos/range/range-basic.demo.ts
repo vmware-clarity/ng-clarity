@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule, ClrRangeModule } from '@clr/angular';
 
@@ -90,6 +90,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-range-basic-demo',
   templateUrl: './range-basic.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [FormsModule, ClrCommonFormsModule, ClrRangeModule, StackblitzExampleComponent],
 })
 export class RangeBasicDemo {

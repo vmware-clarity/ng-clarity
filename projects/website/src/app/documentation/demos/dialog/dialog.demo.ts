@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { AppfxMultiPageDialogModule } from '@clr/addons/dialog';
@@ -42,6 +42,7 @@ const BasicDialogTs = require('!raw-loader!./ng/basic-dialog.ts').default;
     AiSkillComponent,
   ],
   providers: [SampleWorkflowService],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DialogDemoComponent extends ClarityDocComponent implements OnInit {
   TabLayout = TabLayout;

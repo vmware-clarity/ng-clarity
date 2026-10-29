@@ -6,7 +6,7 @@
  */
 
 import { NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ClrBadge } from '@clr/angular';
 
 @Component({
@@ -25,6 +25,7 @@ import { ClrBadge } from '@clr/angular';
   `,
   standalone: true,
   imports: [NgClass, ClrBadge],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class BadgeStoryBookComponent {
   @Input() context = '42';

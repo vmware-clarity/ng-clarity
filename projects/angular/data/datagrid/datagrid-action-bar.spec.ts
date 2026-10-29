@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridActionBar } from './datagrid-action-bar';
@@ -37,6 +37,7 @@ export default function (): void {
 
 @Component({
   template: `<clr-dg-action-bar>Hello world</clr-dg-action-bar>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {}

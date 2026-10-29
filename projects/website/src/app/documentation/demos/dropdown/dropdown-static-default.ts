@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrCommonFormsModule, ClrIcon, ClrIconModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -58,6 +58,7 @@ const HTML_EXAMPLE = `
   selector: 'clr-dropdown-static-default-demo',
   styleUrl: './dropdown.demo.scss',
   templateUrl: './dropdown-static-default.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrCommonFormsModule, StackblitzExampleComponent],
 })
 export class DropdownStaticDefaultDemo {

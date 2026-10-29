@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ClarityDocComponent } from '../clarity-doc';
 import { ColorInteractionDemo } from './color-interaction/color-interaction.demo';
@@ -25,6 +25,7 @@ import { DocTabsComponent } from '../../../shared/doc-tabs/doc-tabs.component';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,

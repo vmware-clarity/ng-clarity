@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Step, WizardFooter, WorkflowModel } from '@clr/addons/var';
 
 @Component({
@@ -15,6 +15,7 @@ import { Step, WizardFooter, WorkflowModel } from '@clr/addons/var';
   imports: [CommonModule],
   templateUrl: 'custom-footer.component.html',
   styleUrl: 'custom-footer.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CustomFooterComponent implements WizardFooter {
   @Input() currentStep: Step;

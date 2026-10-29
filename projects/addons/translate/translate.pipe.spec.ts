@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
 import { ComponentFixture, inject, TestBed } from '@angular/core/testing';
 
 import { AppfxTranslateModule } from './translate.module';
@@ -34,6 +34,7 @@ const testTranslations2 = {
   selector: 'test-translate-first-component',
   standalone: false,
   template: "{{ 'key' | translate }}",
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [AppfxTranslateService, { provide: appfxTranslationsToken, useValue: testTranslations1 }],
 })
 class Test1Component {}
@@ -42,6 +43,7 @@ class Test1Component {}
   selector: 'test-translate-second-component',
   standalone: false,
   template: "{{ 'key' | translate }}",
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [AppfxTranslateService, { provide: appfxTranslationsToken, useValue: testTranslations2 }],
 })
 class Test2Component {}

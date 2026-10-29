@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrWeekday } from '@clr/angular';
 
 @Component({
   selector: 'clr-datepicker-first-day-of-week-demo',
   templateUrl: './datepicker-first-day-of-week.html',
   styleUrls: ['./datepicker.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatepickerFirstDayOfWeekDemo {

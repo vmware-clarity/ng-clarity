@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ClrInputModule, ClrStepperModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
@@ -109,6 +109,7 @@ const html = `
 @Component({
   selector: 'clr-wizard-nested-stepper',
   templateUrl: './wizard-nested-stepper.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ReactiveFormsModule, ClrWizardModule, ClrStepperModule, ClrInputModule, StackblitzExampleComponent],
 })
 export class WizardNestedStepperDemo {

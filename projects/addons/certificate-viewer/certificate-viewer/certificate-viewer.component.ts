@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { appfxMissingTranslationToken, AppfxTranslateService, appfxTranslationsToken } from '@clr/addons/translate';
 
 import { translations } from '../certificate-viewer.l10n';
@@ -41,6 +41,7 @@ import { TopHeadingLevel } from '../models/heading-level.model';
     { provide: appfxMissingTranslationToken, useValue: missingTranslation },
     { provide: appfxTranslationsToken, useValue: translations },
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CertificateViewerComponent implements OnChanges {
   readonly KnownOids = KnownOids;

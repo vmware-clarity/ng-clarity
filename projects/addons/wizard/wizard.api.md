@@ -67,7 +67,7 @@ export class AppfxWizardModule {
 export const preventDisplayingWizardError: Error;
 
 // @public
-export const enum Reason {
+export enum Reason {
     cancel = "cancel",
     finish = "finish"
 }

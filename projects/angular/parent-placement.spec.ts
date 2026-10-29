@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, inject } from '@angular/core';
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ControlContainer, FormsModule } from '@angular/forms';
 
@@ -14,11 +14,12 @@ import { ClrDatagridModule } from './data/datagrid/datagrid.module';
 import { ClrTabsModule } from './layout/tabs/tabs.module';
 import { ClrStepperModule } from './stepper/stepper.module';
 
-@Component({ template: '', standalone: false })
+@Component({ template: '', standalone: false, changeDetection: ChangeDetectionStrategy.Eager })
 class PlacementHost {}
 
 @Component({
   selector: 'placement-wrapper',
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
   standalone: false,
   viewProviders: [

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, TrackByFunction, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TrackByFunction, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 
@@ -20,6 +20,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     </ul>
   `,
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest {
@@ -35,6 +36,7 @@ class FullTest {
     </ul>
   `,
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TrackByIndexTest {
@@ -50,6 +52,7 @@ class TrackByIndexTest {
     </ul>
   `,
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ObjectDataTest {

@@ -6,7 +6,7 @@
  */
 
 import { NgClass } from '@angular/common';
-import { Component, HostBinding } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostBinding } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
@@ -71,6 +71,7 @@ import { ProgressBarExamplesDemo } from './progress-bar-examples';
       ></progress>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, NgClass, ProgressBarExamplesDemo],
 })
 export class ProgressBarStoryDemo {
