@@ -40,12 +40,16 @@ const EXPLICIT_CHANGE_DETECTION = {
 
 // The library ships no style attributes or <style> elements in its templates and markup strings (icon shapes): a
 // Content-Security-Policy without 'unsafe-inline' blocks them. Style bindings ([style.width.px]) are applied through the
-// CSSOM and are allowed.
+// CSSOM and are allowed; [attr.style], a host style attribute and setAttribute('style', ...) are not.
 const NO_INLINE_STYLES_MESSAGE =
   'Use a class instead of inline styles: a Content-Security-Policy without unsafe-inline blocks them.';
+const INLINE_STYLE_MARKUP = '/\\sstyle=|<style[\\s>]|\\[attr\\.style\\]/i';
 const NO_INLINE_STYLES = [
-  'Literal[value=/\\sstyle=|<style[\\s>]/]',
-  'TemplateElement[value.raw=/\\sstyle=|<style[\\s>]/]',
+  `Literal[value=${INLINE_STYLE_MARKUP}]`,
+  `TemplateElement[value.raw=${INLINE_STYLE_MARKUP}]`,
+  "Property[key.name='host'] > ObjectExpression > Property:matches([key.name=/^style$/i], [key.value=/^style$/i])",
+  "Decorator > CallExpression[callee.name='HostBinding'] > Literal[value=/^attr\\.style$/i]",
+  "CallExpression[callee.property.name='setAttribute'] > Literal[value=/^style$/i]",
 ].map(selector => ({ selector, message: NO_INLINE_STYLES_MESSAGE }));
 
 // The story-file rules of eslint-plugin-storybook's flat/recommended config, at their recommended
@@ -314,6 +318,10 @@ module.exports = [
     rules: {
       '@html-eslint/no-inline-styles': 'error',
       '@html-eslint/no-restricted-tags': ['error', { tagPatterns: ['^style$'], message: NO_INLINE_STYLES_MESSAGE }],
+      '@html-eslint/no-restricted-attrs': [
+        'error',
+        { tagPatterns: ['.*'], attrPatterns: ['^\\[attr\\.style\\]$'], message: NO_INLINE_STYLES_MESSAGE },
+      ],
     },
   },
 
