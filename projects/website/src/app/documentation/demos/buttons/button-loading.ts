@@ -5,13 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrLoadingButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const MAIN_TS_EXAMPLE = `
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { ClrButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular';
 
 @Component({
@@ -22,6 +22,8 @@ import { ClrButtonModule, ClrLoadingModule, ClrLoadingState } from '@clr/angular
   imports: [ClrButtonModule, ClrLoadingModule],
 })
 export class ExampleComponent {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   validateBtnState: ClrLoadingState = ClrLoadingState.DEFAULT;
   submitBtnState: ClrLoadingState = ClrLoadingState.DEFAULT;
 
@@ -31,6 +33,8 @@ export class ExampleComponent {
     // Use actual validation logic in a real application.
     setTimeout(() => {
       this.validateBtnState = ClrLoadingState.SUCCESS;
+
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 
@@ -40,6 +44,8 @@ export class ExampleComponent {
     // Use actual submit logic in a real application.
     setTimeout(() => {
       this.submitBtnState = ClrLoadingState.DEFAULT;
+
+      this.changeDetectorRef.markForCheck();
     }, 1500);
   }
 }
@@ -63,6 +69,7 @@ const MAIN_HTML_EXAMPLE = `
   selector: 'clr-buttons-demo-button-loading',
   templateUrl: './button-loading.html',
   styleUrl: './buttons.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrLoadingButtonModule, ClrLoadingModule, StackblitzExampleComponent],
 })
 export class ButtonLoadingDemo {

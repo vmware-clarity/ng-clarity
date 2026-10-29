@@ -69,30 +69,43 @@ export class ClrContextRegistryService {
 
   /**
    * Like {@link collect}, awaiting each pending provider for up to `timeoutMs` (2 seconds by default).
-   * One that fails or takes longer is reported as unavailable; one that answers is filtered again, as
-   * its element may have moved in the meantime.
+   * One that fails or takes longer is reported as unavailable. The filter is applied again once every
+   * provider has answered, as an element may have moved or been redacted meanwhile.
    */
   async collectAsync(options: ClrContextAsyncCollectOptions = {}): Promise<ClrComponentContext[]> {
     const { filter } = options;
     const timeoutMs = usableTimeout(options.timeoutMs, DEFAULT_TIMEOUT_MS);
-    const settled = await Promise.all(
-      this.poll(filter).map(async ({ provider, result, verdict }) => {
-        if (!isPromise(result)) {
-          return listOf(reported(result, verdict, options));
-        }
-        const answer = await withTimeout(result, timeoutMs).catch((): typeof TIMED_OUT => TIMED_OUT);
-        if (answer === TIMED_OUT) {
-          // Asked again next time: an answer that never settles must not stand for every later one.
-          if (this.pending.get(provider) === result) {
-            this.pending.delete(provider);
-          }
-          return [{ type: CLR_CONTEXT_UNAVAILABLE_TYPE }];
-        }
-        const current = filter ? attempt(() => filter(this.elements.get(provider) ?? null), 'drop') : 'keep';
-        return current === 'drop' ? [] : listOf(reported(answer, current, options));
-      })
+    const polled = this.poll(filter);
+    const answers = await Promise.all(
+      polled.map(({ provider, result }) => (isPromise(result) ? this.settle(provider, result, timeoutMs) : result))
     );
-    return settled.flat();
+    return polled.flatMap(({ provider }, index) => {
+      const verdict = !this.providers.includes(provider)
+        ? 'drop'
+        : filter
+          ? attempt(() => filter(this.elements.get(provider) ?? null), 'drop')
+          : 'keep';
+      const answer = answers[index];
+      if (verdict === 'drop') {
+        return [];
+      }
+      return answer === TIMED_OUT
+        ? [{ type: CLR_CONTEXT_UNAVAILABLE_TYPE }]
+        : listOf(reported(answer, verdict, options));
+    });
+  }
+
+  private async settle(
+    provider: ClrContextProvider,
+    result: Promise<ClrPublishedContext | null>,
+    timeoutMs: number
+  ): Promise<ClrPublishedContext | null | typeof TIMED_OUT> {
+    const answer = await withTimeout(result, timeoutMs).catch((): typeof TIMED_OUT => TIMED_OUT);
+    // Asked again next time: an answer that never settles must not stand for every later one.
+    if (answer === TIMED_OUT && this.pending.get(provider) === result) {
+      this.pending.delete(provider);
+    }
+    return answer;
   }
 
   private poll(filter?: ClrContextRegionFilter): PolledProvider[] {
@@ -121,7 +134,12 @@ export class ClrContextRegistryService {
       return result;
     }
     // `Promise.resolve` adopts any thenable, including one without `catch` or with a throwing `then`.
-    const answer = Promise.resolve(result).finally(() => this.pending.delete(provider));
+    // Only its own entry: once it timed out, a newer answer may be pending in its place.
+    const answer: Promise<ClrPublishedContext | null> = Promise.resolve(result).finally(() => {
+      if (this.pending.get(provider) === answer) {
+        this.pending.delete(provider);
+      }
+    });
     answer.catch(() => undefined);
     this.pending.set(provider, answer);
     return answer;

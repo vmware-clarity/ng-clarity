@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import {
   ClrAlertModule,
@@ -85,6 +85,7 @@ const additionalFiles = {
   selector: 'clr-vertical-nav-lazy-loading-nav-groups-demo',
   templateUrl: './lazy-loading-nav-groups.html',
   styleUrl: '../../vertical-nav.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrIcon,
     ClrIconModule,

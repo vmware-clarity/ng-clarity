@@ -7,7 +7,7 @@
 
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import {
@@ -217,6 +217,7 @@ describe('datagridPage directive', () => {
 @Component({
   selector: 'appfx-datagrid-client-side-host-component',
   imports: [AppfxDatagridModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <appfx-datagrid
       [datagridPage]="currentPageIndex"
@@ -248,6 +249,7 @@ class DatagridForClientSideGridHostComponent {
 @Component({
   selector: 'appfx-datagrid-server-side-host-component',
   imports: [AppfxDatagridModule, DatagridColumnsOrderModule, DragDropModule, FormsModule, OverlayModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <appfx-datagrid
       [datagridPage]="currentPageIndex"

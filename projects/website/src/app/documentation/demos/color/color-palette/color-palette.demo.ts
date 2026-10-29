@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ColorPaletteExampleItem } from './color-palette-example-item/color-palette-example-item';
 
@@ -13,6 +13,7 @@ import { ColorPaletteExampleItem } from './color-palette-example-item/color-pale
   selector: 'clr-color-palette',
   styleUrl: './color-palette.demo.scss',
   templateUrl: './color-palette.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ColorPaletteExampleItem],
 })
 export class ColorPaletteDemo {

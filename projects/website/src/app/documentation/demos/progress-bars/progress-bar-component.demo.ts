@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrCommonFormsModule, ClrProgressBarModule } from '@clr/angular';
 
 import { AnimatedExampleComponent } from '../../../shared/animated-example/animated-example.component';
@@ -27,6 +27,7 @@ const EXAMPLE4 = `<clr-progress-bar clrValue="65" clrLabeled clrDisplayval="65$"
   selector: 'clr-progress-bar-component-demos',
   styleUrl: 'progress-bars.demo.scss',
   templateUrl: './progress-bar-component.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrProgressBarModule, StackblitzExampleComponent, AnimatedExampleComponent, ClrCommonFormsModule],
 })
 export class ProgressBarComponentDemo {

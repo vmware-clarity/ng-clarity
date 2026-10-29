@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, viewChild } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClrAlertModule, ClrForm, ClrFormsModule } from '@clr/angular';
 
@@ -14,6 +14,7 @@ import { ClrAlertModule, ClrForm, ClrFormsModule } from '@clr/angular';
   selector: 'app-example',
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, ReactiveFormsModule, ClrFormsModule, ClrAlertModule],
 })
 export class ExampleComponent {
@@ -25,6 +26,8 @@ export class ExampleComponent {
     sample: new FormControl('', Validators.required),
   });
 
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   submit() {
     if (this.exampleForm.invalid) {
       this.clrForm()?.markAsTouched();
@@ -33,12 +36,16 @@ export class ExampleComponent {
       this.error = true;
       setTimeout(() => {
         this.error = false;
+
+        this.changeDetectorRef.markForCheck();
       }, 1000);
     } else {
       // Do submit logic
       this.submitted = true;
       setTimeout(() => {
         this.submitted = false;
+
+        this.changeDetectorRef.markForCheck();
       }, 1000);
     }
   }

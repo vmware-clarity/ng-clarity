@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component } from '@angular/core';
 import { AppfxDatagridModule, ColumnDefinition, ExportProviderService } from '@clr/addons/datagrid';
 import { ClrDatagridStateInterface } from '@clr/angular';
 import { SelectionType } from '@clr/angular/data/datagrid';
@@ -18,6 +18,7 @@ import { FetchResult, Inventory, VmItem } from './inventory/inventory';
   imports: [AppfxDatagridModule, GridConfigFormComponent],
   standalone: true,
   templateUrl: './virtual-scroll.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   providers: [ExportProviderService, Inventory],
 })
 export class VirtualScrollGridDemoComponent {
@@ -86,7 +87,7 @@ export class VirtualScrollGridDemoComponent {
   }
 
   protected onRefreshGridData(state: ClrDatagridStateInterface): void {
-    this.options.loading = true;
+    this.options = { ...this.options, loading: true };
     this.cdr.detectChanges();
     const pageSize = state.page?.size || 20;
     const currentPage = state.page?.current || 1;
@@ -100,8 +101,9 @@ export class VirtualScrollGridDemoComponent {
           skip: currentPage * pageSize,
           data: this.vmItems,
         };
-        this.cdr.detectChanges();
-        this.options.loading = false;
+        this.options = { ...this.options, loading: false };
+
+        this.cdr.markForCheck();
       });
   }
 
@@ -119,8 +121,9 @@ export class VirtualScrollGridDemoComponent {
           data: this.vmItems,
         };
         console.log(result);
-        this.cdr.detectChanges();
-        this.options.loading = false;
+        this.options = { ...this.options, loading: false };
+
+        this.cdr.markForCheck();
       });
   }
 
@@ -149,13 +152,14 @@ export class VirtualScrollGridDemoComponent {
           skip: 0,
           data: this.vmItems,
         };
-        this.cdr.detectChanges();
         this.resetting = false;
+
+        this.cdr.markForCheck();
       });
   }
 
   protected refresh(): void {
-    this.options.loading = true;
+    this.options = { ...this.options, loading: true };
     setTimeout(() => {
       this.vmItems = [...this.vmItems];
       this.dataRange = {
@@ -163,8 +167,9 @@ export class VirtualScrollGridDemoComponent {
         skip: this.dataRange.skip,
         data: this.vmItems,
       };
-      this.cdr.detectChanges();
-      this.options.loading = false;
+      this.options = { ...this.options, loading: false };
+
+      this.cdr.markForCheck();
     }, this.inventory.latency);
   }
 }

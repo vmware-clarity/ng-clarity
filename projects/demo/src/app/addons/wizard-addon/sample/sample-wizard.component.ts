@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, inject, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { CloseHandler, ModelChange, Step, WizardFooterConfig } from '@clr/addons/var';
 import { AppfxWizardModule, WizardComponent } from '@clr/addons/wizard';
 import { Observable, of, timer } from 'rxjs';
@@ -20,6 +29,7 @@ import { SampleWorkflowService } from '../../_utils/sample-workflow/sample-workf
   standalone: true,
   imports: [AppfxWizardModule],
   templateUrl: 'sample-wizard.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SampleWizardComponent implements OnInit {
   @ViewChild(WizardComponent, { static: true }) wizard: WizardComponent;

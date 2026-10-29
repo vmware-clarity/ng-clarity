@@ -6,6 +6,7 @@
  */
 
 import {
+  ChangeDetectionStrategy,
   Component,
   DoCheck,
   EmbeddedViewRef,
@@ -51,6 +52,7 @@ import { AppfxCardContainerStore } from '../utils/appfx-card-container-store';
   templateUrl: 'appfx-card-container.component.html',
   styleUrls: ['appfx-card-container.component.scss'],
   providers: [A11yService, ContainerService, DragDropService, LayoutService, PersistenceService],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AppfxCardContainerComponent implements OnInit, DoCheck {
   @Input() containerId: string;

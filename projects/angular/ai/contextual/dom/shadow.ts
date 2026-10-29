@@ -70,7 +70,11 @@ export function queryRendered(root: ParentNode, selector: string): Element[] {
   }
   const found = new Set<Element>();
   for (const scope of [root, ...openShadowRoots(root)]) {
-    scope.querySelectorAll(selector).forEach(element => found.add(element));
+    scope.querySelectorAll(selector).forEach(element => {
+      if (!isReplacedFallback(element)) {
+        found.add(element);
+      }
+    });
     for (const slot of Array.from(scope.querySelectorAll('slot')).filter(isShadowSlot)) {
       for (const slotted of slot.assignedElements()) {
         if (slotted.matches(selector)) {
@@ -125,6 +129,16 @@ export function walkedShadowRoot(element: Element): ShadowRoot | null {
 function shadowRootOf(element: Element): ShadowRoot | null {
   const root = element.getRootNode();
   return root.nodeType === Node.DOCUMENT_FRAGMENT_NODE && 'host' in root ? (root as ShadowRoot) : null;
+}
+
+/** Whether the element is a slot's fallback content, which what is assigned to the slot replaces. */
+function isReplacedFallback(element: Element): boolean {
+  for (let parent = element.parentElement; parent; parent = parent.parentElement) {
+    if (isShadowSlot(parent) && parent.assignedNodes().length) {
+      return true;
+    }
+  }
+  return false;
 }
 
 /** A slot that projects light DOM; a `<slot>` outside a shadow root is an ordinary element. */

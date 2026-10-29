@@ -122,6 +122,13 @@ describe('shadow DOM helpers', () => {
     expect(queryRendered(container, 'b').length).toBe(2);
   });
 
+  it('leaves out a slot’s fallback once something is assigned to it', () => {
+    const { root } = host('<slot><b class="fallback"></b></slot>', '<b class="assigned"></b>');
+
+    expect(queryRendered(container, 'b').map(element => element.className)).toEqual(['assigned']);
+    expect(queryRendered(root, 'b').map(element => element.className)).toEqual(['assigned']);
+  });
+
   it('answers for light DOM with one plain query', () => {
     container.innerHTML = '<div><slot></slot><i></i></div>';
     const queries = spyOn(Element.prototype, 'querySelectorAll').and.callThrough();

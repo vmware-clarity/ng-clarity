@@ -190,24 +190,23 @@ export class ClrContextEngineService implements OnDestroy {
     untrusted: boolean
   ): Promise<ClrPageContext> {
     const { timeoutMs, ...options } = asyncOptions ?? {};
-    const snapshot = this.viewSnapshot();
-    if (snapshot.enabled === false) {
-      return snapshot;
+    const view = this.viewSnapshot();
+    if (view.enabled === false) {
+      return view;
     }
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
-    // Started first, so providers work while the page is walked.
-    const regions = this.contextRegistry.collectAsync({
+    const regions = await this.contextRegistry.collectAsync({
       filter: this.regionFilter(resolved),
       timeoutMs: usableTimeout(timeoutMs, DEFAULT_SOURCE_TIMEOUT_MS),
       limits: resolved,
       untrusted,
     });
-    this.describePage(snapshot, resolved, [], untrusted);
-    setRegions(snapshot, await regions, resolved);
-    const now = this.viewSnapshot();
-    return now.viewId === snapshot.viewId && now.enabled === snapshot.enabled
-      ? snapshot
-      : this.snapshot(options, untrusted);
+    const snapshot = this.viewSnapshot();
+    if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled) {
+      return this.snapshot(options, untrusted);
+    }
+    // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
+    return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
   private describePage(
