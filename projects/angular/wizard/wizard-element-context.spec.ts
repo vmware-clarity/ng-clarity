@@ -106,6 +106,14 @@ describe('ClrWizard element context', () => {
     }
   });
 
+  it('leaves excluded text inside a stepnav title out of the step title', () => {
+    const title = wizard().querySelector('[id$="-step-title"]') as HTMLElement;
+    title.insertAdjacentHTML('beforeend', '<span class="secret"> ACC-42</span>');
+
+    const steps = publishedState(wizard(), { excludeSelectors: ['.secret'] }).steps as { title: string }[];
+    expect(steps[0].title).toBe('Identity');
+  });
+
   it('publishes a step without a title when its stepnav item shows none', () => {
     fixture.destroy();
     fixture = TestBed.createComponent(UntitledTestComponent);
