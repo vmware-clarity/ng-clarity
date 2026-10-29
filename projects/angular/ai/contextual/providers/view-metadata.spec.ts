@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EnvironmentProviders, Provider } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EnvironmentProviders, Provider } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
 
@@ -17,7 +17,7 @@ import {
 } from './context-options';
 import { ClrContextEngineService } from './contextual-engine.service';
 
-@Component({ template: '' })
+@Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
 
 const quiet = { includeDomComponents: false };
@@ -86,6 +86,37 @@ describe('ClrContextEngineService, view metadata', () => {
 
       expect(engine.getSnapshot(quiet).metadata).toBeUndefined();
       expect(console.warn).toHaveBeenCalled();
+    });
+
+    it('leaves out metadata in an ignored, redacted or excluded region', () => {
+      page.setAttribute('data-ai-metadata', '{"accountSecret":"s3cr3t"}');
+      const engine = engineWith();
+      for (const marker of ['data-clr-context-ignore', 'data-clr-context-redact']) {
+        document.body.setAttribute(marker, '');
+        try {
+          expect(JSON.stringify(engine.getSnapshot(quiet)))
+            .withContext(marker)
+            .not.toContain('s3cr3t');
+        } finally {
+          document.body.removeAttribute(marker);
+        }
+      }
+      expect(JSON.stringify(engine.getSnapshot({ ...quiet, excludeSelectors: ['.test-page'] }))).not.toContain(
+        's3cr3t'
+      );
+    });
+
+    it('gives each snapshot its own copy of the metadata, so a consumer cannot change the next one', () => {
+      const settings: Record<string, unknown> = { allowed: true };
+      settings['self'] = settings;
+      const engine = engineWith({ metadata: () => ({ settings }) });
+
+      const snapshot = engine.getSnapshot(quiet);
+      (snapshot.metadata?.['settings'] as Record<string, unknown>)['allowed'] = false;
+
+      expect(() => JSON.stringify(snapshot)).not.toThrow();
+      expect(settings['allowed']).toBeTrue();
+      expect((engine.getSnapshot(quiet).metadata?.['settings'] as Record<string, unknown>)['allowed']).toBeTrue();
     });
   });
 
@@ -216,6 +247,30 @@ describe('ClrContextEngineService, view metadata', () => {
       const loaded = await engine.getSnapshotAsync(quiet);
       expect(loaded.viewId).toBe('host-detail');
       expect(loaded.metadataState).toBeUndefined();
+    });
+
+    it('reads no view while its configuration URL loads, or after it failed to load', async () => {
+      page.innerHTML = '<button>Private</button>';
+      respondWith(null);
+      const engine = routedEngine('all', '/assets/ai-config.json');
+
+      const loading = engine.getSnapshot();
+      expect(loading.enabled).toBeFalse();
+      expect(JSON.stringify(loading)).not.toContain('Private');
+
+      const failed = await engine.getSnapshotAsync();
+      expect(failed.enabled).toBeFalse();
+      expect(JSON.stringify(failed)).not.toContain('Private');
+    });
+
+    it('returns no metadata for a disabled view, only which view it is', () => {
+      page.innerHTML = '<div class="wizard"></div>';
+      document.body.setAttribute('data-ai-metadata', '{"viewId":"wizard","secret":"s3cr3t"}');
+      const snapshot = routedEngine('all').getSnapshot(quiet);
+
+      expect(snapshot.enabled).toBeFalse();
+      expect(snapshot.viewId).toBe('wizard');
+      expect(snapshot.metadata).toBeUndefined();
     });
   });
 });
