@@ -98,6 +98,13 @@ type Story = StoryObj<ColumnActionsArgs>;
 
 export const ColumnActions: Story = {};
 
+// The menu of a sortable, pinnable column: the sort items, then the pin item, then the filter item.
+export const ColumnActionsOpened: Story = {
+  play: async ({ canvasElement, userEvent }) => {
+    await userEvent.click(canvasElement.querySelector('.datagrid-column-actions-toggle'));
+  },
+};
+
 // A column that cannot be sorted offers only the actions it can perform, so the menu never shows a
 // dead option.
 export const UnsortableColumn: Story = {
