@@ -43,6 +43,8 @@
   </head>
 
   <body id="body" cds-theme="light">
-    <app-root></app-root>
+    <!-- The nonce Angular adds to the styles and scripts it injects. The visual regression test server
+         (scripts/start-static-server.ts) serves the page with a Content-Security-Policy and replaces it per response. -->
+    <app-root ngCspNonce="CSP_NONCE"></app-root>
   </body>
 </html>
