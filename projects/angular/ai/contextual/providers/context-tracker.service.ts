@@ -380,8 +380,15 @@ export class ClrContextTrackerService implements OnDestroy {
   }
 
   private forgetDetachedShadowRoots(): void {
+    // A removed frame's document lives on with its hosts connected to it, so only tracked documents count.
+    const documents = new Set<Document>([this.document]);
+    for (const tracked of this.frames.values()) {
+      if (tracked.document) {
+        documents.add(tracked.document);
+      }
+    }
     for (const [shadowRoot, observer] of this.shadowObservers) {
-      if (!shadowRoot.host.isConnected) {
+      if (!shadowRoot.host.isConnected || !documents.has(shadowRoot.host.ownerDocument)) {
         observer.disconnect();
         this.shadowObservers.delete(shadowRoot);
       }
@@ -455,7 +462,8 @@ function isInsideIgnoredRegion(node: Node): boolean {
   return !!element && !!closestAcrossShadow(element, CLR_CONTEXT_IGNORE_SELECTOR);
 }
 
-const VISIBILITY_DECLARATIONS = /(?:^|;)\s*(?:display|visibility|opacity|content-visibility)\s*:[^;]*/gi;
+// A custom property can feed any of these, so a change to one counts too.
+const VISIBILITY_DECLARATIONS = /(?:^|;)\s*(?:display|visibility|opacity|content-visibility|--[\w-]+)\s*:[^;]*/gi;
 
 /** Whether a mutation only moved or resized something, e.g. a popover repositioning on scroll. */
 function isPlacementOnly(record: MutationRecord): boolean {

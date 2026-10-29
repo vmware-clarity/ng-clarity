@@ -41,13 +41,7 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
   constructor(private readonly contextTracker: ClrContextTrackerService) {}
 
   ngOnInit(): void {
-    this.trackingSubscription = this.contextTracker.track(this.trackingOptions()).subscribe(snapshot => {
-      this.snapshotCount++;
-      this.snapshotTruncated = snapshot.truncated === true;
-      this.snapshotFocus = snapshot.focus ?? null;
-      this.snapshotBytes = JSON.stringify(snapshot).length;
-      this.snapshotJson = JSON.stringify(snapshot, null, 2);
-    });
+    this.track();
   }
 
   ngOnDestroy(): void {
@@ -56,11 +50,23 @@ export class ContextLivePanelComponent implements OnInit, OnDestroy {
 
   setProfile(profile: ClrContextPreset): void {
     this.profile = profile;
-    this.contextTracker.start(this.trackingOptions());
+    this.track();
   }
 
   refreshNow(): void {
     this.contextTracker.refresh();
+  }
+
+  /** Through `track()`, so tracking stops with the subscription when the panel goes away. */
+  private track(): void {
+    this.trackingSubscription?.unsubscribe();
+    this.trackingSubscription = this.contextTracker.track(this.trackingOptions()).subscribe(snapshot => {
+      this.snapshotCount++;
+      this.snapshotTruncated = snapshot.truncated === true;
+      this.snapshotFocus = snapshot.focus ?? null;
+      this.snapshotBytes = JSON.stringify(snapshot).length;
+      this.snapshotJson = JSON.stringify(snapshot, null, 2);
+    });
   }
 
   private trackingOptions(): ClrContextTrackingOptions {
