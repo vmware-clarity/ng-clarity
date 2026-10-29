@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { spec } from '@clr/angular/testing';
 import { LARGE_BREAKPOINT } from '@clr/angular/utils';
 
@@ -20,6 +20,7 @@ import { ResponsiveNavCodes } from './responsive-nav-codes';
       <a href="javascript:void(0)">Level 1</a>
     </nav>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TestComponent {}

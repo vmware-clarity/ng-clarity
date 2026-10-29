@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { WorkflowConfigurationService } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
@@ -22,6 +22,7 @@ import { SampleWorkflowService } from '../_utils/sample-workflow/sample-workflow
   imports: [CommonModule, ClarityModule, FormsModule, AppfxWizardModule, SampleWizardComponent, SampleStepperComponent],
   providers: [SampleWorkflowService],
   templateUrl: './wizard-addon.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardAddonDemo {
   readonly vcMoRef = 'demo-datacenter-ref';

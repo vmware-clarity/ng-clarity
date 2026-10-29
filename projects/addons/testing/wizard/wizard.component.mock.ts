@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModelChange, Step, WorkflowModel } from '@clr/addons/var';
 import { Reason } from '@clr/addons/wizard';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-wizard',
   standalone: false,
   template: '',
@@ -29,6 +30,7 @@ export class MockAppfxWizardComponent {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-wizard',
   standalone: true,
   template: '',

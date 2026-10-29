@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 /**
  * Note: Why does this component have aria-hidden attribute?
@@ -22,5 +22,6 @@ import { Component } from '@angular/core';
   template: `<ng-content></ng-content>`,
   host: { '[class.clr-timeline-step-title]': 'true', '[attr.aria-hidden]': 'true' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTimelineStepTitle {}

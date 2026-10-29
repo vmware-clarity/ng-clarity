@@ -6,7 +6,7 @@
  */
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, Input, input, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input, viewChild } from '@angular/core';
 import { ClarityIcons, ClrIcon, ClrTabsModule, copyIcon, IconShapeTuple } from '@clr/angular';
 import stackblitz from '@stackblitz/sdk';
 
@@ -23,6 +23,7 @@ const stackblitzIcon: IconShapeTuple = [
   selector: 'app-stackblitz-example',
   templateUrl: './stackblitz-example.component.html',
   styleUrl: './stackblitz-example.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrTabsModule, CodeSnippetComponent, CondenseComponentClassPipe],
 })
 export class StackblitzExampleComponent {

@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, NgModule } from '@angular/core';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { OnStepActivate, OnStepValidate, StepModel, StepValidationState } from '@clr/addons/var';
 import { Observable, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-mock-page-page',
   standalone: false,
   template: '<div>{{ model.mockPropertyValue }}</div>',
@@ -33,6 +34,7 @@ export class MockStepComponent implements OnStepValidate, OnStepActivate {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-invalid-mock-page-page',
   standalone: false,
   template: '<div></div>',

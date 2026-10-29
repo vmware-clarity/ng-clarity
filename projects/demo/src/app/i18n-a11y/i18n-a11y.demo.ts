@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ClrCommonStrings, ClrCommonStringsService, commonStringsDefault } from '@clr/angular';
 
 import { frenchTranslation } from './fr-translation';
@@ -16,6 +16,7 @@ import { USERS } from './users';
   host: {
     lang: 'fr',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class I18nA11yDemo implements OnDestroy {

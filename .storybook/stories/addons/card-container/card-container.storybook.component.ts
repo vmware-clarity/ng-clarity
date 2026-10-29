@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'appfx-demo-summary-card',
@@ -19,6 +19,7 @@ import { Component } from '@angular/core';
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SummaryCardComponent {}
 
@@ -34,6 +35,7 @@ export class SummaryCardComponent {}
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class NotesCardComponent {}
 
@@ -49,6 +51,7 @@ export class NotesCardComponent {}
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class TagsCardComponent {}
 
@@ -61,5 +64,6 @@ export class TagsCardComponent {}
       <div class="card-block">Dynamic</div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DynamicCardComponent {}

@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input } from '@angular/core';
 import { ClrIcon, ClrIconModule, ClrVerticalNavModule } from '@clr/angular';
 
 @Component({
   selector: 'clr-basic-vertical-nav-usage-demo',
   templateUrl: './basic-nav-usage.html',
   styleUrl: '../vertical-nav.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrVerticalNavModule],
 })
 export class BasicNavUsage {

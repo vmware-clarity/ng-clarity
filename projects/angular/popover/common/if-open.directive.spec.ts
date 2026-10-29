@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 
 import { ClrIfOpen } from './if-open.directive';
@@ -107,6 +107,7 @@ export default function (): void {
 
 @Component({
   template: `<ng-template [(clrIfOpen)]="openState">Hello Template!</ng-template>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IfOpenTest {

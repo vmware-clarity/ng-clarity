@@ -7,6 +7,7 @@
 
 import {
   afterNextRender,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   DestroyRef,
@@ -51,6 +52,7 @@ const MIN_BUTTON_WIDTH = 42;
   providers: [{ provide: LoadingListener, useExisting: ClrLoadingButton }],
   host: { '[attr.disabled]': "disabled? '' : null" },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrLoadingButton implements LoadingListener {
   @Input('disabled') disabled: boolean;

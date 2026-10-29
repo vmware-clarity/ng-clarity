@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAccordionModule, ClrDatagridModule, ClrIfExpanded } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -32,6 +32,7 @@ const example = `
 @Component({
   selector: 'clr-angular-accordion-demo',
   templateUrl: './angular-accordion.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrAccordionModule, ClrDatagridModule, ClrIfExpanded, StackblitzExampleComponent],
 })
 export class AngularAccordionDemo {

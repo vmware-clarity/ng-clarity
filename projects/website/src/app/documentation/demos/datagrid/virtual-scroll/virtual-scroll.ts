@@ -7,7 +7,7 @@
 
 import { ListRange } from '@angular/cdk/collections';
 import { AsyncPipe, DatePipe, JsonPipe } from '@angular/common';
-import { ChangeDetectorRef, Component, OnDestroy, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrCommonFormsModule,
@@ -40,6 +40,7 @@ import { CommonFiles } from '../utils/stackblitz-common-data';
   providers: [Inventory],
   templateUrl: './virtual-scroll.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrRadioModule,
     ClrCommonFormsModule,

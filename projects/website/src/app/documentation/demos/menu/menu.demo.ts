@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild, ViewEncapsulation } from '@angular/core';
 import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
 import { ClarityModule } from '@clr/angular';
 import { buildingIcon, ClarityIcons, clusterIcon, hostIcon, vmIcon } from '@clr/angular/icon';
@@ -59,6 +59,7 @@ interface Vm {
     StackblitzExampleComponent,
     AiSkillComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   encapsulation: ViewEncapsulation.None,
 })
 export class MenuDemoComponent extends ClarityDocComponent {

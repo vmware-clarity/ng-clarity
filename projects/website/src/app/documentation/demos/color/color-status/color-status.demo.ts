@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrAlert, ClrAlertModule } from '@clr/angular';
 
 import { COLOR_STATUS } from './color-status';
@@ -14,6 +14,7 @@ import { ColorExampleItemComponent } from '../../../../shared/color-example-item
 @Component({
   selector: 'clr-color-status',
   templateUrl: './color-status.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ColorExampleItemComponent, ClrAlertModule],
 })
 export class ColorStatusDemo {

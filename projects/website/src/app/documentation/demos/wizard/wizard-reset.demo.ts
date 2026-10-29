@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnInit, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClrCheckboxModule,
@@ -131,6 +131,7 @@ const html = `
 @Component({
   selector: 'clr-wizard-reset',
   templateUrl: './wizard-reset.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrWizardModule,
     ClrCheckboxModule,
