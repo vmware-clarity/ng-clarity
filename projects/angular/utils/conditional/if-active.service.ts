@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Injectable, InjectionToken } from '@angular/core';
+import { Injectable, InjectionToken, signal } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
 
 let activeCounter = 0;
@@ -47,9 +47,10 @@ export class IfActiveService {
    * @property _current
    *
    * @description
-   * A property holding the current value for current/closed state of an IfActive structural directive.
+   * A signal holding the current value for current/closed state of an IfActive structural directive.
+   * Views reading `current` are refreshed by Angular whenever it changes.
    */
-  private _current: number;
+  private readonly _current = signal<number | undefined>(undefined);
 
   /*********
    *
@@ -69,11 +70,11 @@ export class IfActiveService {
    *
    */
   get current(): number {
-    return this._current;
+    return this._current();
   }
   set current(value: number) {
-    if (this._current !== value) {
-      this._current = value;
+    if (this._current() !== value) {
+      this._current.set(value);
       this._currentChange.next(value);
     }
   }
