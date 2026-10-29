@@ -518,6 +518,23 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
     }
   });
 
+  it('leaves out an element of an excluded role before an extractor describes it as something else', () => {
+    container.innerHTML = '<nav aria-label="Main"><a href="/hosts">Hosts</a></nav>';
+    const extractor = { selector: 'nav', extract: () => ({ type: 'group', label: 'Navigation menu' }) };
+    const tree = collectContextTreeWithin(container, budgets({ excludeRoles: ['navigation'] }), [extractor]);
+    expect(tree.components).toEqual([]);
+  });
+
+  it('leaves the text of an excluded role out of a paragraph and out of a list summary', () => {
+    const nodes = collect(
+      `<p>Total due <span role="note">internal ref 77</span></p>
+       <ul aria-label="Hosts"><li>alpha</li><li>beta</li></ul>`,
+      { excludeRoles: ['note', 'listitem'] }
+    );
+    expect(JSON.stringify(nodes)).not.toMatch(/internal ref|alpha|beta/);
+    expect(JSON.stringify(nodes)).toContain('Total due');
+  });
+
   it('counts a wrapper node against the budget, so the budget is a real bound', () => {
     const nodes = collect(
       `<my-widget><div role="grid"></div><my-widget-footer>1</my-widget-footer></my-widget>
@@ -1006,6 +1023,30 @@ describe('collectContextTreeWithin, choosing what to collect', () => {
     expect(collectTree(PAGE, { maxDepth: 2 }).truncated).toBe(true);
     expect(collectTree(PAGE, { maxDepth: 20 }).truncated).toBe(false);
     expect(collectTree('<main><div><div></div></div></main>', { maxDepth: 1 }).truncated).toBe(false);
+  });
+
+  it('keeps wrappers and published children within the depth limit', () => {
+    const parts = collectTree('<x-actions><button>A</button><button>B</button></x-actions>', { maxDepth: 1 });
+    expect(parts.components).toEqual([
+      { type: 'button', element: 'x-actions', label: 'A' },
+      { type: 'button', element: 'x-actions', label: 'B' },
+    ]);
+    const [wrapper] = collect('<x-actions><button>A</button><button>B</button></x-actions>', { maxDepth: 2 });
+    expect(wrapper.element).toBe('x-actions');
+    expect(types(wrapper.children)).toEqual(['button', 'button']);
+
+    container.innerHTML = '<section aria-label="Usage"></section>';
+    const teardown = publishElementContext(container.querySelector('section') as HTMLElement, () => ({
+      type: 'group',
+      children: [{ type: 'text', label: 'Inner' }],
+    }));
+    try {
+      const published = collectContextTreeWithin(container, budgets({ maxDepth: 1 }));
+      expect(published.components[0].children).toBeUndefined();
+      expect(published.truncated).toBe(true);
+    } finally {
+      teardown();
+    }
   });
 
   it('describes only the open modal dialog under modal focus', () => {
