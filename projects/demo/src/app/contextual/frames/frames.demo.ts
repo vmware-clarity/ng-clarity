@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { DomSanitizer, SafeHtml, SafeResourceUrl } from '@angular/platform-browser';
 import { ClarityModule } from '@clr/angular';
 import { ClrContext, ClrContextEngineService } from '@clr/angular/ai';
@@ -91,6 +91,7 @@ async function reachable(href: string): Promise<boolean> {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-contextual-frames-demo',
   standalone: true,
   imports: [ClarityModule, ClrContext, ContextLivePanelComponent],
