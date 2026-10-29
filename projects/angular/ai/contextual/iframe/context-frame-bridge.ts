@@ -100,6 +100,7 @@ export class ClrContextFrameHost {
   private readonly lastServedAt = new WeakMap<object, number>();
   private readonly messageListener = this.onMessage.bind(this);
   private intervalStartedAt = Number.NEGATIVE_INFINITY;
+  private serving = false;
   private servedInInterval = 0;
 
   constructor(
@@ -122,10 +123,13 @@ export class ClrContextFrameHost {
   }
 
   start(): void {
+    this.serving = true;
     this.hostWindow.addEventListener('message', this.messageListener);
   }
 
+  /** Stops serving, including answers to requests still waiting for a snapshot. */
   stop(): void {
+    this.serving = false;
     this.hostWindow.removeEventListener('message', this.messageListener);
   }
 
@@ -141,6 +145,9 @@ export class ClrContextFrameHost {
 
     // A failing snapshot or uncloneable response is that request's problem; the host keeps serving.
     const answer = (snapshot: ClrPageContext) => {
+      if (!this.serving) {
+        return;
+      }
       const response: ClrContextFrameResponse = {
         protocol: CLR_CONTEXT_PROTOCOL,
         kind: 'context-response',

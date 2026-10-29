@@ -292,6 +292,18 @@ describe('Context frame bridge', () => {
       expect(frame.postMessage).not.toHaveBeenCalled();
     });
 
+    it('does not answer a request whose snapshot arrives after stop()', async () => {
+      let resolve: (context: ClrPageContext) => void = () => undefined;
+      restartHost({}, () => new Promise<ClrPageContext>(settle => (resolve = settle)));
+      dispatchRequest(frameRequest('request-pending'));
+
+      host.stop();
+      resolve(JSON.parse(JSON.stringify(pageContext)));
+      await Promise.resolve();
+
+      expect(frame.postMessage).not.toHaveBeenCalled();
+    });
+
     it('keeps serving after one request blows up', () => {
       getSnapshot.and.callFake(() => {
         if (getSnapshot.calls.count() === 1) {
