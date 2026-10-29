@@ -12,7 +12,7 @@ import { translations } from './certificate-viewer.l10n';
 /**
  * The algorithm names passed to {@link crypto.subtle.digest} by the certificate viewer.
  */
-export const enum AlgorithmName {
+export enum AlgorithmName {
   sha1 = 'SHA-1',
   sha256 = 'SHA-256',
 }

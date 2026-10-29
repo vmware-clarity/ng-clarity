@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 
 /**
  * A toggle with a label control that can be used in the
@@ -13,6 +13,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
  */
 @Component({
   selector: 'appfx-toggle',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   templateUrl: 'toggle.component.html',
   styleUrls: ['toggle.component.scss'],

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule, ClrInputModule, ClrPasswordModule, ClrStepperModule } from '@clr/angular';
 
@@ -87,6 +87,7 @@ export class ExampleComponent {
 @Component({
   selector: 'clr-angular-stepper-template-demo',
   templateUrl: './angular-stepper-template.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     FormsModule,
     ClrStepperModule,

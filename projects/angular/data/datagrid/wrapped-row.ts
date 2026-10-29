@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, EmbeddedViewRef, OnDestroy, TemplateRef, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  EmbeddedViewRef,
+  OnDestroy,
+  TemplateRef,
+  ViewChild,
+} from '@angular/core';
 
 @Component({
   selector: 'dg-wrapped-row',
@@ -15,6 +23,7 @@ import { AfterViewInit, Component, EmbeddedViewRef, OnDestroy, TemplateRef, View
     </ng-template>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WrappedRow implements AfterViewInit, OnDestroy {
   @ViewChild('rowPortal') templateRef: TemplateRef<void>;

@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import {
   ClarityIcons,
   ClarityModule,
@@ -34,6 +34,7 @@ import { VerticalNavIconService } from '../../../../projects/angular/layout/vert
   standalone: true,
   imports: [CommonModule, ClarityModule, ClrIcon],
   providers: [VerticalNavIconService],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ApplicationLayoutStorybookComponent {
   rootDirectory = organization;

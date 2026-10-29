@@ -5,7 +5,15 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, NgZone, OnDestroy, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  NgZone,
+  OnDestroy,
+  ViewChild,
+} from '@angular/core';
 import { ClarityModule, ClrDropdown, ClrPopoverService } from '@clr/angular';
 import { Subscription } from 'rxjs';
 
@@ -42,6 +50,7 @@ import { Subscription } from 'rxjs';
   standalone: true,
   imports: [ClarityModule],
   styleUrls: ['./popovers.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <h4>Popover trigger inside a cross-realm ShadowRoot</h4>
     <p>

@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClrAlertModule, ClrFormsModule } from '@clr/angular';
 
@@ -14,6 +14,7 @@ import { ClrAlertModule, ClrFormsModule } from '@clr/angular';
   selector: 'app-example',
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
   imports: [CommonModule, ReactiveFormsModule, ClrFormsModule, ClrAlertModule],
 })
 export class ExampleComponent {
@@ -21,6 +22,8 @@ export class ExampleComponent {
   exampleForm = new FormGroup({
     sample: new FormControl('', Validators.required),
   });
+
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   resetForm() {
     this.exampleForm.reset();
@@ -31,6 +34,8 @@ export class ExampleComponent {
 
     setTimeout(() => {
       this.submitted = false;
+
+      this.changeDetectorRef.markForCheck();
     }, 1000);
   }
 }

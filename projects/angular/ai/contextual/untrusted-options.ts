@@ -67,12 +67,9 @@ function acceptedValue(key: OptionKey, value: unknown): unknown {
  * taken, to the keys its publisher marks public.
  */
 export function withoutFormValues(context: ClrPageContext): ClrPageContext {
-  return {
-    ...context,
-    components: context.components.map(node =>
-      withoutStateKeys(withoutValues(node, true), () => UNTRUSTED_WITHHELD_STATE_KEYS, true)
-    ),
-  };
+  const withheld = (node: ClrComponentContext) =>
+    withoutStateKeys(withoutValues(node, true), () => UNTRUSTED_WITHHELD_STATE_KEYS, true);
+  return { ...context, components: context.components.map(withheld), regions: context.regions.map(withheld) };
 }
 
 /**
@@ -97,9 +94,9 @@ export function withoutUrlDetails(
   const origin = originOf(context.url);
   // A base on another origin is not this page's: relative links resolve against the page.
   const resolveAgainst = baseUrl && originOf(baseUrl) === origin ? baseUrl : (context.url ?? null);
-  shared.components = context.components.map(node =>
-    withoutAddressDetails(node, { origin, resolveAgainst, routePattern })
-  );
+  const scope: AddressScope = { origin, resolveAgainst, routePattern };
+  shared.components = context.components.map(node => withoutAddressDetails(node, scope));
+  shared.regions = context.regions.map(node => withoutAddressDetails(node, scope));
   return shared;
 }
 

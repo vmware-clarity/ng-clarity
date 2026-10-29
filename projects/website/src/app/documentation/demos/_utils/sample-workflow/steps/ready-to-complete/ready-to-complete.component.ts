@@ -5,11 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-demo-ready-to-complete',
   standalone: true,
   template: `<div>Review your selections before finishing the wizard.</div>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ReadyToCompleteComponent {}

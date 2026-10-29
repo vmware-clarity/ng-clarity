@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 import { ClrSelect } from './select';
@@ -22,6 +22,7 @@ import { ContainerNoLabelSpec, ReactiveSpec, TemplateDrivenSpec } from '../tests
       <clr-control-helper>Helper text</clr-control-helper>
     </clr-select-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NoLabelTest {}
@@ -39,6 +40,7 @@ class NoLabelTest {}
       <clr-control-success>Valid</clr-control-success>
     </clr-select-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest {
@@ -59,6 +61,7 @@ class TemplateDrivenTest {
       <clr-control-success>Valid</clr-control-success>
     </clr-select-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenMultipleTest {
@@ -81,6 +84,7 @@ class TemplateDrivenMultipleTest {
       </clr-select-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest {
@@ -105,6 +109,7 @@ class ReactiveTest {
       </clr-select-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveMultipleTest {

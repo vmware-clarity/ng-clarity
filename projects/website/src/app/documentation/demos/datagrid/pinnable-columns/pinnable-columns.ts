@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCheckboxModule, ClrDatagridModule } from '@clr/angular';
@@ -23,6 +23,7 @@ import { CommonFiles } from '../utils/stackblitz-common-data';
   templateUrl: './pinnable-columns.html',
   styleUrl: '../datagrid.demo.scss',
   imports: [ClrDatagridModule, ClrCheckboxModule, FormsModule, StackblitzExampleComponent, RouterLink, DatePipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridPinnableColumnsDemo {
   examples = EXAMPLES;

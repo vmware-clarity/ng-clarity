@@ -46,7 +46,7 @@ const lazyLoadingRow = `
 const lazyLoadingTs = `
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { ClrConditionalModule, ClrDatagridModule, ClrLoading } from '@clr/angular';
+import { ClrConditionalModule, ClrDatagridModule } from '@clr/angular';
 import { Inventory } from './inventory/inventory';
 import { User } from './inventory/user';
 import { ExpandableRowComponent } from './expandableRowComponent';
@@ -72,26 +72,28 @@ export class ExampleComponent {
 
 const lazyLoadingDetailComponent = `
 import { JsonPipe } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { ClrLoading } from '@clr/angular';
+import { Component, Input, OnInit, signal } from '@angular/core';
+import { ClrSpinnerModule } from '@clr/angular';
 import { User } from './inventory/user';
 
 @Component({
   selector: 'expandable-row',
-  template: \`<div cds-layout="m:sm" clrLoading>{{user|json}}</div>\`,
-  
-  providers: [ClrLoading],
-  imports: [JsonPipe],
+  template: \`
+    @if (loading()) {
+      <clr-spinner clrInline>Loading user details</clr-spinner>
+    } @else {
+      <div cds-layout="m:sm">{{ user | json }}</div>
+    }
+  \`,
+  imports: [JsonPipe, ClrSpinnerModule],
 })
 export class ExpandableRowComponent implements OnInit {
   @Input() user: User | undefined;
-
-  constructor(private loading: ClrLoading) {}
+  readonly loading = signal(true);
 
   ngOnInit() {
-    this.loading.loadingState = true;
     setTimeout(() => {
-      this.loading.loadingState = false;
+      this.loading.set(false);
     }, 1000);
   }
 }

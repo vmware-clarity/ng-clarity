@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -16,6 +16,7 @@ import { ClrCardMediaTitle } from './card-media-title.directive';
 import { ClrCardModule } from './card.module';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <img clrCardMediaImage src="test.png" alt="" />
     <clr-card-media-description>

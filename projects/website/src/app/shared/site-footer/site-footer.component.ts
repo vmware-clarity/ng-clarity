@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'app-site-footer',
   templateUrl: './site-footer.component.html',
   styleUrl: './site-footer.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [],
 })
 export class SiteFooterComponent {}

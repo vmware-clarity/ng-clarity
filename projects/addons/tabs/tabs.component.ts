@@ -8,6 +8,7 @@
 import {
   AfterContentInit,
   AfterViewInit,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   EventEmitter,
@@ -57,6 +58,7 @@ import { debounceTime, filter, map, shareReplay, switchMap, take, tap } from 'rx
  */
 @Component({
   selector: 'appfx-tabs',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
   templateUrl: 'tabs.component.html',
   styleUrls: ['tabs.component.scss', 'tabs.a11y.scss'],
