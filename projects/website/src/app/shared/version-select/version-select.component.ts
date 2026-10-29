@@ -7,7 +7,7 @@
 
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrDropdownModule, ClrIcon } from '@clr/angular';
 import { Observable } from 'rxjs';
 
@@ -57,6 +57,7 @@ interface Version {
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, ClrDropdownModule, ClrIcon],
 })
 export class VersionSelectComponent {

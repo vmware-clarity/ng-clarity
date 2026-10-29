@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, LOCALE_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, LOCALE_ID } from '@angular/core';
 
 @Component({
   selector: 'clr-datepicker-kkj-demo',
@@ -16,6 +16,7 @@ import { Component, LOCALE_ID } from '@angular/core';
     </div>
   `,
   providers: [{ provide: LOCALE_ID, useValue: 'kkj' }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DatepickerKKJDemo {}

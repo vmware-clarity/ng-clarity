@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AppfxCardContainerModule } from '@clr/addons/card-container';
 import { ClarityModule } from '@clr/angular';
 
@@ -40,6 +40,7 @@ export class MyModule {}
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClarityModule,
     AppfxCardContainerModule,

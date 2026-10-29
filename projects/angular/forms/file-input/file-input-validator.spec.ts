@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule } from '@angular/forms';
 
@@ -42,6 +42,7 @@ interface TestComponent {
       </clr-file-input-container>
     </form>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ReactiveTest implements TestComponent {
@@ -80,6 +81,7 @@ class ReactiveTest implements TestComponent {
       <clr-control-error *clrIfError="'maxFileSize'">File size too large</clr-control-error>
     </clr-file-input-container>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class TemplateDrivenTest implements TestComponent {

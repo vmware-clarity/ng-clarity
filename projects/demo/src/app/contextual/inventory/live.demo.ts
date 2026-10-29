@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ContextInventoryComponent } from '../inventory/inventory.component';
 import { ContextLivePanelComponent } from '../live-panel/live-panel.component';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-contextual-live-demo',
   standalone: true,
   imports: [ContextInventoryComponent, ContextLivePanelComponent],

@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CloseHandler, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
 import { AppfxWizardModule } from '@clr/addons/wizard';
@@ -28,6 +28,7 @@ class Step1Model implements StepModel {
       <input id="name" type="text" class="clr-input" [(ngModel)]="model.name.value" />
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardStoryStep1 implements StepModelHolder {
   model: Step1Model;
@@ -51,6 +52,7 @@ class Step2Model implements StepModel {
       </select>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardStoryStep2 implements StepModelHolder {
   model: Step2Model;
@@ -77,6 +79,7 @@ class DemoModel {
       [closeHandler]="closeHandler"
     ></appfx-wizard>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardStoryWrapperComponent implements OnInit {
   label = 'Open Wizard';

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrModalModule, ClrStackViewModule } from '@clr/angular';
 
@@ -73,7 +73,7 @@ const EXAMPLE = `
 `;
 
 const CODE = `
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrModalModule, ClrStackViewModule } from '@clr/angular';
 
@@ -85,6 +85,8 @@ import { ClrModalModule, ClrStackViewModule } from '@clr/angular';
   imports: [FormsModule, ClrStackViewModule, ClrModalModule],
 })
 export class ExampleComponent {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   editModal = false;
   blocks: any[] = [
     { title: 'Label 1', content: 'Content 1' },
@@ -111,6 +113,8 @@ export class ExampleComponent {
         { title: 'Sub-label 2', content: 'Sub-content 2' },
         { title: 'Sub-label 3', content: 'Sub-content 3' },
       ];
+
+      this.changeDetectorRef.markForCheck();
     }, 2000);
   }
 }
@@ -120,6 +124,7 @@ export class ExampleComponent {
   selector: 'clr-stack-view-angular-modal-edit-demo',
   templateUrl: './stack-view-angular-modal-edit.html',
   styleUrl: './stack-view.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrStackViewModule,
     RemoveStackViewHeadingsDirective,

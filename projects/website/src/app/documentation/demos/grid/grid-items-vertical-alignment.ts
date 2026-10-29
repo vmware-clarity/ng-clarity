@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { CSS_EXAMPLE } from './grid-css-example';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -55,6 +55,7 @@ const CSS_EXAMPLE_2 = `
   selector: 'clr-grid-demo-vertical-alignment',
   templateUrl: './grid-items-vertical-alignment.html',
   styleUrl: './grid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [StackblitzExampleComponent],
 })
 export class GridItemsVerticalAlignmentDemo {

@@ -6,7 +6,17 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Component, ContentChild, ElementRef, Inject, Input, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  ElementRef,
+  Inject,
+  Input,
+  OnDestroy,
+  Optional,
+  PLATFORM_ID,
+} from '@angular/core';
 import { publishElementContext } from '@clr/angular/utils';
 
 import { ClrTimelineStepState } from './enums/timeline-step-state.enum';
@@ -30,6 +40,7 @@ import { ClrTimelineStepTitle } from './timeline-step-title';
   `,
   host: { '[class.clr-timeline-step]': 'true', '[attr.role]': '"listitem"' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTimelineStep implements OnDestroy {
   @Input('clrState') state: ClrTimelineStepState = ClrTimelineStepState.NOT_STARTED;

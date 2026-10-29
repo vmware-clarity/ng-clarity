@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
@@ -18,6 +18,7 @@ import { Subscription } from 'rxjs';
 
 /** The live page snapshot; `data-clr-context-ignore` keeps it out of tracking and the context. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-context-live-panel',
   standalone: true,
   imports: [FormsModule, ClarityModule],

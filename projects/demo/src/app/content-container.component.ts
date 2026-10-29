@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Route } from '@angular/router';
 
 import { APP_ROUTES } from './app.routing';
@@ -46,6 +46,7 @@ import { APP_ROUTES } from './app.routing';
       <router-outlet></router-outlet>
     </main>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class AppContentContainerComponent {

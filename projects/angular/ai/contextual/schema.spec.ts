@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import Ajv from 'ajv';
@@ -15,7 +15,7 @@ import { ClrContextRegistryService } from './providers/context-registry.service'
 import { ClrContextEngineService } from './providers/contextual-engine.service';
 import { CLR_PAGE_CONTEXT_SCHEMA } from './schema';
 
-@Component({ template: '' })
+@Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
 
 /** A page like the demo's: a grid, a form, tabs and a modal, one part inside a shadow root. */

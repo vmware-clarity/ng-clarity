@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { HeadingLevel } from '@clr/angular/utils';
 
 import { ClrStackView } from './stack-view';
@@ -36,6 +36,7 @@ import { ClrStackView } from './stack-view';
     `,
   ],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrStackHeader {
   /**
