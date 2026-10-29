@@ -248,6 +248,18 @@ describe('ClrContextTrackerService', () => {
     expect(widgetLabels(tracker.currentContext)).toEqual([]);
   });
 
+  it('re-scrapes when a custom property that may drive visibility changes', async () => {
+    const widget = addWidget('Panel') as HTMLElement;
+    widget.setAttribute('style', '--panel-display: block; display: var(--panel-display)');
+    tracker.start({ debounceMs: 20 });
+    expect(widgetLabels(tracker.currentContext)).toEqual(['Panel']);
+
+    widget.style.setProperty('--panel-display', 'none');
+    await elapse(20);
+
+    expect(widgetLabels(tracker.currentContext)).toEqual([]);
+  });
+
   it('still scrapes at the max-wait bound when the page never goes quiet', async () => {
     tracker.start({ debounceMs: 200, maxWaitMs: 500 });
     const countAfterStart = emitted.length;
@@ -611,6 +623,23 @@ describe('ClrContextTrackerService, tracking embedded frames', () => {
 
     addFrameButton('Token');
     frameBody().ownerDocument.querySelector('p')?.append(' more');
+    await elapse(10);
+
+    expect(getSnapshot).not.toHaveBeenCalled();
+  });
+
+  it('stops watching the shadow roots in a frame once the frame is removed', async () => {
+    await loadFrame('<p>Plugin</p>');
+    const host = frameBody().ownerDocument.createElement('shadow-host');
+    const root = host.attachShadow({ mode: 'open' });
+    root.innerHTML = '<button>Before</button>';
+    frameBody().appendChild(host);
+    tracker.start({ debounceMs: 10 });
+
+    frame.remove();
+    await elapse(10);
+    const getSnapshot = spyOn(TestBed.inject(ClrContextEngineService), 'getSnapshotAsync').and.callThrough();
+    (root.querySelector('button') as HTMLButtonElement).textContent = 'After';
     await elapse(10);
 
     expect(getSnapshot).not.toHaveBeenCalled();
