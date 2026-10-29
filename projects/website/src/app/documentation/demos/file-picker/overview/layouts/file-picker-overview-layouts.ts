@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrCommonFormsModule, ClrFileInputModule } from '@clr/angular';
@@ -13,6 +13,7 @@ import { ClrCommonFormsModule, ClrFileInputModule } from '@clr/angular';
 @Component({
   selector: 'app-file-picker-overview-layouts',
   templateUrl: './file-picker-overview-layouts.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [RouterLink, FormsModule, ClrCommonFormsModule, ReactiveFormsModule, ClrFileInputModule],
 })
 export class FilePickerOverviewLayouts {

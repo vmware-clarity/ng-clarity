@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
 
 @Component({
@@ -51,6 +51,7 @@ import { AppfxMenuModule, MenuComponent } from '@clr/addons/menu';
 
     <menu-outlet></menu-outlet>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class MenuStoryWrapperComponent {
   @ViewChild('demoMenu') demoMenu: MenuComponent;

@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClarityIcons, ClrIcon, ClrIconModule, ClrModalModule, resizeIcon } from '@clr/angular';
 
 @Component({
   selector: 'clr-modal-size-design-demo',
   templateUrl: './modal-size-design.demo.html',
   styleUrl: './modal-size-design-demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrModalModule],
 })
 export class ModalSizeDesignDemo {

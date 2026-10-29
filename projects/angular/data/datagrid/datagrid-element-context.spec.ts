@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextEngineService } from '@clr/angular/ai';
@@ -25,6 +25,7 @@ interface Node {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid>
       <clr-dg-column [clrDgField]="'name'" [clrFilterValue]="nameFilter">Name</clr-dg-column>
@@ -107,6 +108,7 @@ describe('ClrDatagrid element context', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid>
       <clr-dg-column [clrDgField]="'name'">Name</clr-dg-column>
@@ -136,6 +138,7 @@ describe('ClrDatagrid element context without pagination', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid>
       <clr-dg-column [clrDgField]="'name'" [clrFilterValue]="filter">Name</clr-dg-column>
@@ -206,6 +209,7 @@ const ACCOUNTS: Account[] = [
 ];
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid clrDgSelectionType="multi" [(clrDgSelected)]="selected">
       <clr-dg-column>Name</clr-dg-column>
@@ -226,6 +230,7 @@ class MultiSelectionTestComponent {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid clrDgSelectionType="single" [(clrDgSelected)]="selected">
       <clr-dg-column>Name</clr-dg-column>

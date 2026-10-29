@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, inject, Injector } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ContentChild, inject, Injector } from '@angular/core';
 import { NgControlService } from '@clr/angular/forms/common';
 import { ClrCommonStringsService } from '@clr/angular/utils';
 
@@ -63,6 +63,7 @@ import {
     'data-clr-context-ignore': '',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrFileList {
   @ContentChild(ClrFileMessagesTemplate) protected readonly fileMessagesTemplate: ClrFileMessagesTemplate;

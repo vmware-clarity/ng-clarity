@@ -9,6 +9,7 @@ import { isPlatformBrowser } from '@angular/common';
 import {
   AfterContentInit,
   booleanAttribute,
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ContentChild,
@@ -90,6 +91,7 @@ import { OptionSelectionService } from './providers/option-selection.service';
     '[class.clr-combobox-disabled]': 'control?.disabled',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrCombobox<T>
   extends WrappedFormControl<ClrComboboxContainer>
@@ -536,6 +538,8 @@ export class ClrCombobox<T>
   }
 
   private initializeSubscriptions(): void {
+    this.subscriptions.push(this.focusHandler.pseudoFocus.focusChanged.subscribe(() => this.cdr.markForCheck()));
+
     this.subscriptions.push(
       this.optionSelectionService.selectionChanged.subscribe((newSelection: ComboboxModel<T>) => {
         this.updateInputValue(newSelection);
@@ -626,7 +630,7 @@ export class ClrCombobox<T>
       if (snapshotOptions?.collectionItems === 'summary') {
         state[keys.count] = listed.length;
       } else {
-        state[keys.list] = named.slice(0, maxItems).map(entry => this.optionLabel(entry.option));
+        state[keys.list] = named.slice(0, maxItems).map(entry => this.optionLabel(entry.option, excluded));
         if (named.length < listed.length) {
           state[keys.redacted] = listed.length - named.length;
         }
@@ -711,7 +715,7 @@ export class ClrCombobox<T>
       }
     };
     for (const proposal of proposals) {
-      const matches = this.matchingOptions(items, proposal);
+      const matches = this.matchingOptions(items, proposal, excluded);
       if (matches.length > 1) {
         return {
           refused: `Several options read "${String(proposal)}", and nothing tells which one is meant. Leave this choice to the user.`,
@@ -719,7 +723,7 @@ export class ClrCombobox<T>
       }
       const option = matches[0];
       if (option) {
-        choose(option.value, this.optionLabel(option));
+        choose(option.value, this.optionLabel(option, excluded));
       } else if (this.editable && typeof proposal === 'string' && proposal.trim()) {
         const text = proposal.trim();
         choose(this.optionSelectionService.editableResolver(text), text);
@@ -728,7 +732,7 @@ export class ClrCombobox<T>
       } else {
         const named = items
           .slice(0, CLR_CONTEXT_DEFAULT_MAX_ITEMS)
-          .map(candidate => `"${this.optionLabel(candidate)}"`);
+          .map(candidate => `"${this.optionLabel(candidate, excluded)}"`);
         return { refused: `No such option. The options are: ${named.join(', ')}.` };
       }
     }
@@ -760,7 +764,7 @@ export class ClrCombobox<T>
     }
     if (
       verdict === 'shown' &&
-      this.optionLabel(option) === '' &&
+      this.optionLabel(option, excluded) === '' &&
       element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)
     ) {
       // Named, it would be listed as `''`: there, but with nothing to tell it apart.
@@ -806,16 +810,18 @@ export class ClrCombobox<T>
         return { value, option, shown: option ? this.optionShown(option, excluded) : 'shown' };
       })
       .filter(entry => entry.shown !== 'excluded')
-      .map(entry => (entry.shown === 'shown' ? this.selectedValueLabel(entry.value, entry.option) : null));
+      .map(entry => (entry.shown === 'shown' ? this.selectedValueLabel(entry.value, entry.option, excluded) : null));
     return this.multiSelect ? names : (names[0] ?? null);
   }
 
   /** Two options can read the same; prefer an exact label match, then an exact value match. */
-  private matchingOptions(items: ClrOption<T>[], proposal: unknown): ClrOption<T>[] {
-    let matches = items.filter(candidate => this.optionMatches(candidate, proposal));
+  private matchingOptions(items: ClrOption<T>[], proposal: unknown, excluded: string): ClrOption<T>[] {
+    let matches = items.filter(candidate => this.optionMatches(candidate, proposal, excluded));
     if (matches.length > 1 && typeof proposal === 'string') {
       const wanted = normalizeContextText(proposal);
-      const byLabel = matches.filter(candidate => normalizeContextText(this.optionLabel(candidate)) === wanted);
+      const byLabel = matches.filter(
+        candidate => normalizeContextText(this.optionLabel(candidate, excluded)) === wanted
+      );
       matches = byLabel.length ? byLabel : matches;
       const byValue = matches.filter(
         candidate =>
@@ -827,26 +833,32 @@ export class ClrCombobox<T>
     return matches;
   }
 
-  private optionMatches(option: ClrOption<T>, proposal: unknown): boolean {
+  private optionMatches(option: ClrOption<T>, proposal: unknown, excluded: string): boolean {
     if (typeof proposal !== 'string') {
       return this.sameValue(option.value, proposal);
     }
     const wanted = normalizeContextText(proposal);
-    if (normalizeContextText(this.optionLabel(option)) === wanted) {
+    if (normalizeContextText(this.optionLabel(option, excluded)) === wanted) {
       return true;
     }
     const value = option.value;
     if (typeof value === 'string' || typeof value === 'number') {
       return normalizeContextText(String(value)) === wanted;
     }
-    const display = this.selectedValueLabel(value, this.optionFor(value));
+    const display = this.selectedValueLabel(value, this.optionFor(value), excluded);
     return typeof display === 'string' && normalizeContextText(display) === wanted;
   }
 
-  /** An option's visible label. Not named by its value when its text was withheld: the value may be the secret. */
-  private optionLabel(option: ClrOption<T>): string {
+  /**
+   * An option's visible label, without what the snapshot excludes. Not named by its value when its text was
+   * withheld: the value may be the secret.
+   */
+  private optionLabel(option: ClrOption<T>, excluded: string): string {
     const element: HTMLElement = option.elRef.nativeElement;
-    const text = contextText(element, descendant => descendant.classList.contains('clr-sr-only'));
+    const text = contextText(
+      element,
+      descendant => descendant.classList.contains('clr-sr-only') || (!!excluded && descendant.matches(excluded))
+    );
     if (text || element.querySelector(CLR_CONTEXT_WITHHELD_SELECTOR)) {
       return text;
     }
@@ -854,9 +866,9 @@ export class ClrCombobox<T>
   }
 
   /** Never the model object itself, which holds fields the user never sees. */
-  private selectedValueLabel(value: T, option: ClrOption<T> | undefined): string | null {
+  private selectedValueLabel(value: T, option: ClrOption<T> | undefined, excluded: string): string | null {
     if (option) {
-      return this.optionLabel(option);
+      return this.optionLabel(option, excluded);
     }
     const shown = this.displayField && value ? (value as Record<string, unknown>)[this.displayField] : value;
     return typeof shown === 'string' || typeof shown === 'number' || typeof shown === 'boolean' ? String(shown) : null;

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Directive } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Directive } from '@angular/core';
 import { spec, TestContext } from '@clr/angular/testing';
 
 import { ClrDatagridPagination } from './datagrid-pagination';
@@ -26,6 +26,7 @@ import { Page } from './providers/page';
       </clr-dg-footer>
     </clr-datagrid>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class IntegrationTest {

@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import { ClrIcon, ClrPopoverContent, ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -70,6 +70,7 @@ export class PopoverExampleComponent {
   styleUrl: './popover.demo.scss',
   encapsulation: ViewEncapsulation.None,
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrPopoverContent, ClrIcon, ClrPopoverModuleNext, StackblitzExampleComponent],
 })
 export class PopoverBasicDemo {

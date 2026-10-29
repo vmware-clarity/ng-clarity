@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -37,6 +37,7 @@ function findContext(
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-alert clrAlertType="danger" [clrAlertClosable]="false" [clrAlertAppLevel]="true">
       <clr-alert-item>

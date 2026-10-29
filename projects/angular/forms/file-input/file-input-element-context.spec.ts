@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { ClrContextEngineService } from '@clr/angular/ai';
@@ -15,6 +15,7 @@ import { selectFiles } from './file-input.helpers';
 import { ClrFileInputModule } from './file-input.module';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-file-input-container>
       <label>Statement</label>
@@ -28,6 +29,7 @@ class SingleFileTest {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-file-input-container>
       <label>Attachments</label>
@@ -43,6 +45,7 @@ class FileListTest {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-file-input-container>
       <label>Statement</label>

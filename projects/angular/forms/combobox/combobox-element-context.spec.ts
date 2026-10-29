@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -46,6 +46,7 @@ function published(
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox name="fruit" [(ngModel)]="selection">
       <clr-options>
@@ -130,6 +131,7 @@ describe('ClrCombobox element context', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox name="fruits" [(ngModel)]="selection" clrMulti="true">
       <clr-options>
@@ -195,6 +197,7 @@ describe('ClrCombobox element context, other shapes', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox name="card" [(ngModel)]="selection">
       <clr-options>
@@ -246,6 +249,7 @@ describe('ClrCombobox element context, withheld option text', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox name="plan" [(ngModel)]="selection" clrMulti="true">
       <clr-options>
@@ -294,19 +298,21 @@ describe('ClrCombobox element context, options in a group page-context tooling d
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox name="account" [(ngModel)]="selection" clrMulti="true">
       <clr-options>
         <clr-option clrValue="checking">Checking</clr-option>
         <clr-option clrValue="acct" data-clr-context-redact>Acct 998877</clr-option>
         <clr-option clrValue="trust" class="secret">Hidden trust fund</clr-option>
+        <clr-option clrValue="savings"><span class="secret">ACC-42</span> Savings</clr-option>
       </clr-options>
     </clr-combobox>
   `,
   standalone: false,
 })
 class MarkedOptionTestComponent {
-  selection: string[] = ['acct', 'trust'];
+  selection: string[] = ['acct', 'trust', 'savings'];
 }
 
 describe('ClrCombobox element context, options marked or excluded themselves', () => {
@@ -331,9 +337,9 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
   it('counts a redacted option without naming it, and leaves an excluded one out', () => {
     const context = published(fixture, 'clr-combobox', options);
 
-    expect(context.state['options']).toEqual(['Checking']);
+    expect(context.state['options']).toEqual(['Checking', 'Savings']);
     expect(context.state['redactedOptions']).toBe(1);
-    expect(context.state['value']).toEqual([null]);
+    expect(context.state['value']).toEqual([null, 'Savings']);
     expect(JSON.stringify(context)).not.toContain('998877');
     expect(JSON.stringify(context)).not.toContain('trust fund');
   });
@@ -344,10 +350,15 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
     expect(refused?.refused).toContain('"Checking"');
     expect(refused?.refused).not.toContain('998877');
     expect(refused?.refused).not.toContain('trust fund');
+    expect(refused?.refused).not.toContain('ACC-42');
     expect(mutator?.coerce('Hidden trust fund', options).refused).toBeDefined();
 
     expect(mutator?.coerce('Checking', options).value).toEqual(['acct', 'trust', 'checking']);
     expect(mutator?.coerce(null, options).value).toEqual(['acct', 'trust']);
+  });
+
+  it('leaves excluded text inside an option out of its label and out of the selection', () => {
+    expect(JSON.stringify(published(fixture, 'clr-combobox', options))).not.toContain('ACC-42');
   });
 });
 
@@ -357,6 +368,7 @@ interface Account {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox name="account" [(ngModel)]="selection" [clrComboboxIdentityFn]="byId">
       <ng-container *clrOptionSelected="let selected">{{ selected?.label }}</ng-container>
@@ -424,6 +436,7 @@ describe('ClrCombobox element context, options matched by identity', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox name="person" [(ngModel)]="selection" [clrEditable]="true" [clrLoading]="loading">
       <clr-options>

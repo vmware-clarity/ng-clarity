@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ClrCommonFormsModule,
   ClrDropdownModule,
@@ -146,6 +146,7 @@ header {
   selector: 'clr-header-demo-types',
   templateUrl: './header-types.demo.html',
   styleUrl: './headers.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrIcon,
     ClrIconModule,

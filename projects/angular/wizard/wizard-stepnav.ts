@@ -5,7 +5,18 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, ElementRef, Input, OnDestroy, QueryList, ViewChildren } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  inject,
+  Input,
+  OnDestroy,
+  QueryList,
+  ViewChildren,
+} from '@angular/core';
 import { startWith, Subscription } from 'rxjs';
 
 import { ClrWizardStepnavLayout } from './interfaces/wizard-stepnav-layout';
@@ -57,6 +68,7 @@ import { ClrWizardStepnavItem } from './wizard-stepnav-item';
   `,
   host: { class: 'clr-wizard-stepnav' },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   @Input() label: string;
@@ -70,6 +82,8 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
   private intersectionObserver: IntersectionObserver;
   private firstItemVisible = true;
   private lastItemVisible = true;
+
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
 
   constructor(
     public pageService: PageCollectionService,
@@ -125,6 +139,8 @@ export class ClrWizardStepnav implements AfterViewInit, OnDestroy {
 
         this.showScrollLeftButton = !this.firstItemVisible;
         this.showScrollRightButton = !this.lastItemVisible;
+        // IntersectionObserver callbacks are not template events, so they do not schedule change detection.
+        this.changeDetectorRef.markForCheck();
       },
       { root: scrollContainer, threshold: 0.99 }
     );

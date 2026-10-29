@@ -6,7 +6,7 @@
  */
 
 import { NgTemplateOutlet } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { FilePickerApi } from './api/file-picker-api';
 import { FilePickerCode } from './code/file-picker-code';
@@ -24,6 +24,7 @@ import { FilePickerOverview } from './overview/file-picker-overview';
     '[class.content-area]': 'true',
     '[class.dox-content-panel]': 'true',
   },
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     DocTabsComponent,
     DocTabComponent,

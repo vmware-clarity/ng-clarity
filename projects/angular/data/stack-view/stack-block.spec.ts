@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { delay } from '@clr/angular/testing';
@@ -24,6 +24,7 @@ import Spy = jasmine.Spy;
       <clr-stack-content>Content</clr-stack-content>
     </clr-stack-block>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BasicBlock {
@@ -46,6 +47,7 @@ class BasicBlock {
       </clr-stack-block>
     </clr-stack-block>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class NestedBlocks {
@@ -60,6 +62,7 @@ class NestedBlocks {
       <clr-stack-content>Content</clr-stack-content>
     </clr-stack-block>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DynamicBlock {
@@ -82,6 +85,7 @@ class DynamicBlock {
       </clr-stack-block>
     </clr-stack-block>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class DynamicBlockWithInput {
@@ -115,6 +119,7 @@ class DynamicBlockWithInput {
       </clr-stack-block>
     </clr-stack-block>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class BlocksWithIinteractiveElements {

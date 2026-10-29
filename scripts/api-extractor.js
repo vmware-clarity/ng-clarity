@@ -210,8 +210,7 @@ function writeTempTsConfig(filePath, libConfig, distPaths) {
       {
         extends: fs.existsSync(projectTsConfig) ? projectTsConfig : undefined,
         compilerOptions: {
-          baseUrl: '.',
-          moduleResolution: 'node',
+          moduleResolution: 'bundler',
           preserveSymlinks: true,
           paths: distPaths,
           types: [],

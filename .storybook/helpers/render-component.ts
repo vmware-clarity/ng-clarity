@@ -5,13 +5,22 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { AfterViewInit, Component, Input, Type, ViewChild, ViewContainerRef } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  Input,
+  Type,
+  ViewChild,
+  ViewContainerRef,
+} from '@angular/core';
 export type StorybookRenderComponent = Array<{ type: Type<unknown>; options: any }>;
 
 @Component({
   selector: 'storybook-render-component',
   standalone: true,
   template: `<ng-container #renderContainer></ng-container>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class RenderComponentStorybook implements AfterViewInit {
   @Input() components: Array<{ type: Type<unknown>; options?: any }> = [];

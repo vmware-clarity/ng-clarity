@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ClrContext } from './context';
@@ -14,6 +14,7 @@ import { ClrContextRegistryService } from './providers/context-registry.service'
 import { ClrContextEngineService } from './providers/contextual-engine.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (show) {
       <section
@@ -163,6 +164,7 @@ describe('ClrContext directive, announcing its changes', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div id="main">
       <section clrContext="Visible" [clrContextState]="{ step: 1 }"></section>
@@ -241,6 +243,7 @@ describe('ClrContext directive, following the element it annotates', () => {
 
 // A standalone component imports the directive class itself; no module is involved.
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<section clrContext="Standalone annotation" [clrContextState]="{ step: 2 }"></section>`,
   imports: [ClrContext],
 })

@@ -6,6 +6,7 @@
  */
 
 import {
+  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -59,6 +60,7 @@ const MAX_NODES = 250_000;
   styleUrls: ['../tree-view.demo.scss'],
   templateUrl: './expand-all-performance.html',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ExpandAllPerformanceDemo implements OnInit {
   @ViewChild(ClrTree) tree: ClrTree<PerfNode>;

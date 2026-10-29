@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -19,6 +19,7 @@ import { DayModel } from './model/day.model';
 import { DateNavigationService } from './providers/date-navigation.service';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <form [attr.data-clr-context-redact]="redacted ? '' : null">
       <clr-date-container>

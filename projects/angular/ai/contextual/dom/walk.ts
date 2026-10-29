@@ -447,7 +447,9 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
 }
 
 function describeVisible(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
-  const extractor = walk.extractors.find(candidate => element.matches(candidate.selector));
+  // Like published context, an extractor's state is not read inside a redacted region.
+  const extractor =
+    walk.redactedDepth > 0 ? undefined : walk.extractors.find(candidate => element.matches(candidate.selector));
   if (extractor) {
     const extracted = attempt(() => extractor.extract(element as HTMLElement, walk.options), null);
     // Only the walk hands out refs: an extractor's node cannot claim another node's.

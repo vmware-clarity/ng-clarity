@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { CodeSnippetComponent } from '../../../shared/code-snippet/code-snippet.component';
 import { DocTabComponent } from '../../../shared/doc-tabs/doc-tab.component';
@@ -415,6 +415,7 @@ publishElementMutator(host, {
 `;
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './contextual-engine.demo.html',
   host: {
     '[class.content-area]': 'true',

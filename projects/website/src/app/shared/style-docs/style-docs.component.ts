@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 
 import RAW_STYLE_DOCS from '../../../compiled-content/style-docs.json';
 import { SafeHtmlPipe } from '../pipes/safe-html.pipe';
@@ -22,6 +22,7 @@ const STYLE_DOCS = RAW_STYLE_DOCS as Record<string, (typeof RAW_STYLE_DOCS)[keyo
       </section>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [SafeHtmlPipe],
 })
 export class StyleDocsComponent {

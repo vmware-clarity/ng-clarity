@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 
@@ -14,6 +14,7 @@ import { ClrCardHeader } from './card-header';
 import { ClrCardModule } from './card.module';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-card>
       <clr-card-header>Header text</clr-card-header>
@@ -24,6 +25,7 @@ import { ClrCardModule } from './card.module';
 class TestComponent {}
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-card clrCardCollapsible>
       <clr-card-header>Header text</clr-card-header>
@@ -34,6 +36,7 @@ class TestComponent {}
 class TestCollapsibleComponent {}
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-card clrCardCollapsible>
       <clr-card-header clrHeadingLevel="2">Header text</clr-card-header>
@@ -44,6 +47,7 @@ class TestCollapsibleComponent {}
 class TestHeadingLevelComponent {}
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `<clr-card-header>Standalone header</clr-card-header>`,
   standalone: false,
 })
