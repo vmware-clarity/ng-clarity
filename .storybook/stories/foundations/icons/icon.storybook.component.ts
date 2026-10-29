@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import {
   ClarityIcons,
   ClrIcon,
@@ -73,6 +73,7 @@ const ICON_COLLECTIONS: { name: string; load: () => void }[] = [
       }
     `,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class IconCollectionStorybookComponent implements OnInit {
   @Input() collectionName = 'core';

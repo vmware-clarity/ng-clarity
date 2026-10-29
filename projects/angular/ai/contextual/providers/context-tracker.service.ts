@@ -7,8 +7,9 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, ErrorHandler, inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
-import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
-import { defer, EMPTY, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
+import { defer, EMPTY, filter, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
 import { CLR_CONTEXT_LOADING_TYPE, ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
@@ -55,7 +56,7 @@ export class ClrContextTrackerService implements OnDestroy {
   private maxWaitTimer: ReturnType<typeof setTimeout> | null = null;
   private stopListeningForValues: (() => void) | null = null;
   private readonly frames = new Map<HTMLIFrameElement, TrackedFrame>();
-  private registrySubscription: Subscription | null = null;
+  private subscriptions: Subscription | null = null;
   private latest: ClrPageContext | null = null;
   private latestSerialized: string | null = null;
   /** Bumped by each scrape, `refresh` and `stop`, so a slower earlier scrape never overwrites a newer snapshot. */
@@ -72,6 +73,7 @@ export class ClrContextTrackerService implements OnDestroy {
   private readonly contextEngine = inject(ClrContextEngineService);
   private readonly contextRegistry = inject(ClrContextRegistryService);
   private readonly zone = inject(NgZone);
+  private readonly router = inject(Router, { optional: true });
 
   constructor() {
     // A completed ReplaySubject still replays: once destroyed, a new subscriber gets nothing.
@@ -148,8 +150,8 @@ export class ClrContextTrackerService implements OnDestroy {
       this.detachFrame(frame, tracked);
     }
     this.frames.clear();
-    this.registrySubscription?.unsubscribe();
-    this.registrySubscription = null;
+    this.subscriptions?.unsubscribe();
+    this.subscriptions = null;
     this.clearTimers();
   }
 
@@ -188,7 +190,11 @@ export class ClrContextTrackerService implements OnDestroy {
 
       this.stopListeningForValues = listenForValues(this.document.body, event => this.onValueChange(event));
 
-      this.registrySubscription = this.contextRegistry.changes$.subscribe(() => this.scheduleScrape());
+      this.subscriptions = this.contextRegistry.changes$.subscribe(() => this.scheduleScrape());
+      // A navigation that reuses the component may change nothing in the DOM, only the route.
+      this.subscriptions.add(
+        this.router?.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => this.scheduleScrape())
+      );
     });
     this.refresh();
   }
@@ -204,7 +210,11 @@ export class ClrContextTrackerService implements OnDestroy {
   }
 
   private onMutations(records: MutationRecord[]): void {
-    if (records.every(record => isInsideIgnoredRegion(record.target) || isPlacementOnly(record))) {
+    // Ignoring a region changes what the snapshot holds, though the element is then inside it.
+    const unchanged = (record: MutationRecord) =>
+      (record.attributeName !== CLR_CONTEXT_IGNORE_ATTRIBUTE && isInsideIgnoredRegion(record.target)) ||
+      isPlacementOnly(record);
+    if (records.every(unchanged)) {
       return;
     }
     this.scheduleScrape();

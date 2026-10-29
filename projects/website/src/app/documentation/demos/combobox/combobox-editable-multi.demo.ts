@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrComboboxModule, ClrCommonFormsModule } from '@clr/angular';
 
@@ -71,6 +71,7 @@ const additionalFiles = {
 @Component({
   selector: 'clr-combobox-editable-multi-demo',
   templateUrl: './combobox-editable-multi.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, ClrComboboxModule, ClrCommonFormsModule, FormsModule, StackblitzExampleComponent],
 })
 export class ComboboxEditableMultiDemo {

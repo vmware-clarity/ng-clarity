@@ -42,9 +42,32 @@ describe('withoutUrlDetails', () => {
     expect(JSON.stringify(shared)).not.toContain('ACC-');
     expect(shared.components[0].state).toEqual({ url: 'https://app.example/' });
   });
+
+  it('reduces the addresses in provider regions as well', () => {
+    const shared = withoutUrlDetails({
+      title: '',
+      url: 'https://app.example/',
+      regions: [{ type: 'link', state: { href: 'https://app.example/accounts/ACC-1?token=x' } }],
+      components: [],
+      collectedAt: '',
+    });
+
+    expect(JSON.stringify(shared.regions)).not.toContain('ACC-');
+  });
 });
 
 describe('withoutFormValues', () => {
+  it('withholds what the user entered in provider regions as well', () => {
+    const shared = withoutFormValues({
+      title: '',
+      regions: [{ type: 'region', children: [{ type: 'textbox', label: 'Name', state: { value: 's3cr3t' } }] }],
+      components: [],
+      collectedAt: '',
+    });
+
+    expect(JSON.stringify(shared.regions)).not.toContain('s3cr3t');
+  });
+
   it('says a node lost what it published, rather than leaving it looking empty', () => {
     const shared = withoutFormValues({
       title: '',

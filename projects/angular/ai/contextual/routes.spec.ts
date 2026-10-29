@@ -5,12 +5,12 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { Route, UrlSegment } from '@angular/router';
 
 import { routePatternFor } from './routes';
 
-@Component({ template: '', standalone: true })
+@Component({ template: '', standalone: true, changeDetection: ChangeDetectionStrategy.Eager })
 class Page {}
 
 describe('routePatternFor', () => {

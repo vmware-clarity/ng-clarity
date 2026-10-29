@@ -6,7 +6,7 @@
  */
 
 import { APP_BASE_HREF } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router, withHashLocation } from '@angular/router';
 import { publishElementContext } from '@clr/angular/utils';
@@ -17,7 +17,7 @@ import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrComponentContext, ClrContextSnapshotOptions, ClrPageContext } from '../interfaces/context.interface';
 import { CLR_CONTEXT_DEFAULT_OPTIONS } from '../snapshot-options';
 
-@Component({ template: '' })
+@Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
 
 type Accessor = (options?: unknown) => ClrPageContext;

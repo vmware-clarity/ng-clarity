@@ -6,7 +6,7 @@
  */
 
 import { CommonModule, JsonPipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxStepperModule } from '@clr/addons/stepper';
 import { Out, Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
@@ -20,6 +20,7 @@ class NameModel implements StepModel {
   selector: 'clr-demo-app-stepper-step1',
   standalone: true,
   imports: [FormsModule, JsonPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="clr-form-group">
       <label class="clr-control-label" for="step-name">Project Name</label>
@@ -40,6 +41,7 @@ class TeamModel implements StepModel {
   selector: 'clr-demo-app-stepper-step2',
   standalone: true,
   imports: [FormsModule, JsonPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div class="clr-select-wrapper">
       <select class="clr-select" [(ngModel)]="model.team.value">
@@ -63,6 +65,7 @@ class ProjectModel {
   selector: 'clr-stepper-addon-demo',
   standalone: true,
   imports: [CommonModule, AppfxStepperModule],
+  changeDetection: ChangeDetectionStrategy.Eager,
   templateUrl: './stepper-addon.demo.html',
 })
 export class StepperAddonDemo implements OnInit {
