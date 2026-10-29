@@ -1,0 +1,50 @@
+/*
+ * Copyright (c) 2016-2026 Broadcom. All Rights Reserved.
+ * The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+ * This software is released under MIT license.
+ * The full license information can be found in LICENSE in the root directory of this project.
+ */
+
+@use '../../../../angular/styles/mixins';
+@use '../../../../angular/styles/core/tokens/variables.tokens' as tokens;
+@use '../../../../angular/styles/variables/variables.density' as density;
+@use '../../../../angular/image/icons.clarity';
+@use '../../../../angular/image/mixins.images' as images-mixins;
+
+// Only the disclosure marker is replaced with the Clarity caret icon.
+// Everything else (colors, spacing, borders, typography) is left to the user.
+details > summary {
+  // Removes the native disclosure triangle (Chrome, Firefox, Edge)
+  list-style: none;
+  cursor: pointer;
+
+  // Removes the native disclosure triangle (Safari)
+  &::-webkit-details-marker {
+    display: none;
+  }
+
+  // Clarity caret icon. Used as a mask so it follows the summary text color.
+  &::before {
+    display: inline-block;
+    content: '';
+
+    @include mixins.equilateral(density.$clr-base-icon-size-s);
+    @include images-mixins.icon-background-styles();
+
+    mask: icons.generateCaretIcon() center / contain no-repeat;
+    background-color: currentcolor;
+    transform: rotate(-90deg);
+    transition: transform tokens.$cds-global-animation-duration-quick tokens.$cds-global-animation-easing-in-out;
+    margin-right: density.$clr-base-layout-space-xs;
+  }
+}
+
+details[open] > summary::before {
+  transform: rotate(0deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  details > summary::before {
+    transition: none;
+  }
+}
