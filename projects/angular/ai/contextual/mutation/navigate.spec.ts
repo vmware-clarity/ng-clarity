@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { DefaultUrlSerializer, provideRouter, Router } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
@@ -60,7 +60,7 @@ describe('urlTreeFor', () => {
 });
 
 describe('ClrMutationEngineService navigate', () => {
-  @Component({ template: 'routed', standalone: true })
+  @Component({ template: 'routed', standalone: true, changeDetection: ChangeDetectionStrategy.Eager })
   class Routed {}
 
   let harness: RouterTestingHarness;

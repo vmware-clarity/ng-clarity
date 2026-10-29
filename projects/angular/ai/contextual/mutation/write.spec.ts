@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, forwardRef, inject, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, forwardRef, inject, Input, OnDestroy } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import {
   AbstractControl,
@@ -39,6 +39,7 @@ import { ClrContextEngineService } from '../providers/contextual-engine.service'
 
 /** A third-party toggle: a custom element carrying the binding, rendering a checkbox. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-toggle',
   template: '<input type="checkbox" role="switch" aria-label="Enabled" [checked]="on" (change)="flip($event)" />',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppToggle), multi: true }],
@@ -64,6 +65,7 @@ class AppToggle implements ControlValueAccessor {
 
 /** A custom control whose role says nothing about the value it takes. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-rating',
   template: '<span aria-label="Rating">★★★</span>',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppRating), multi: true }],
@@ -83,6 +85,7 @@ class AppRating implements ControlValueAccessor {
 
 /** A value accessor whose write throws, as a buggy third-party control's might. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-broken',
   template: '<input aria-label="Broken" />',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppBroken), multi: true }],
@@ -119,6 +122,7 @@ abstract class KeptValue<T> implements ControlValueAccessor {
 
 /** A custom slider stating its bounds through ARIA on its own host. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-stars',
   template: '{{ value }}',
   host: {
@@ -135,6 +139,7 @@ class AppStars extends KeptValue<number> {}
 
 /** A custom element carrying the binding, rendering a spinbutton that states its bounds. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-count',
   template:
     '<div role="spinbutton" aria-label="Count" aria-valuemin="0" aria-valuemax="10" [attr.aria-valuenow]="value"></div>',
@@ -145,6 +150,7 @@ class AppCount extends KeptValue<number> {}
 
 /** A third-party autocomplete rendering a text input, whose model is the chosen record. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-owner',
   template: '<input aria-label="Owner" [value]="value?.name ?? \'\'" />',
   providers: [{ provide: NG_VALUE_ACCESSOR, useExisting: forwardRef(() => AppOwner), multi: true }],
@@ -157,6 +163,7 @@ class AppOwner extends KeptValue<{ id: number; name: string }> {}
  * host, as a wizard does.
  */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-rename',
   template: `
     <div role="dialog" aria-modal="true" aria-label="Rename">
@@ -179,6 +186,7 @@ class AppRename implements OnDestroy {
 
 /** A custom radio group, its radios named by their text. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-size',
   template: `
     @for (size of sizes; track size) {
@@ -196,6 +204,7 @@ class AppSize extends KeptValue<unknown> {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <form [formGroup]="form">
       <app-toggle formControlName="enabled"></app-toggle>

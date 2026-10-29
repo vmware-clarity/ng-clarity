@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -40,6 +40,7 @@ function servers(): Server[] {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Name</clr-dg-column>
@@ -58,6 +59,7 @@ class MultiHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'single'">
       <clr-dg-column>Name</clr-dg-column>
@@ -74,6 +76,7 @@ class SingleHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'" [clrDgItemsIdentityFn]="byId">
       <clr-dg-column>Name</clr-dg-column>
@@ -96,6 +99,7 @@ class PagedHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'single'" [clrDgItemsIdentityFn]="byId">
       <clr-dg-column>Name</clr-dg-column>
@@ -116,6 +120,7 @@ class SinglePagedHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-test-toggle-host',
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="mode">
@@ -134,6 +139,7 @@ class ToggleHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Name</clr-dg-column>
@@ -153,6 +159,7 @@ class InputHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div data-clr-context-redact>
       <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
@@ -171,6 +178,7 @@ class RedactedHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Name</clr-dg-column>
@@ -196,6 +204,7 @@ class HiddenColumnHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-test-withheld-row-host',
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
@@ -217,6 +226,7 @@ class WithheldRowHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Account</clr-dg-column>
@@ -238,6 +248,7 @@ class SecretCellHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Account</clr-dg-column>
@@ -261,6 +272,7 @@ class WithheldCellHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">
       <clr-dg-column>Name</clr-dg-column>
@@ -280,6 +292,7 @@ class ExpandedDetailHost {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-test-numbered-host',
   template: `
     <clr-datagrid [(clrDgSelected)]="selected" [clrDgSelectionType]="'multi'">

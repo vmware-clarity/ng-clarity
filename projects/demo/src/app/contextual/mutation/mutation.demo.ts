@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
@@ -27,6 +27,7 @@ interface WritableTarget {
 
 /** Drives the mutation engine against a form the way an agent's client would. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-contextual-mutation-demo',
   standalone: true,
   imports: [FormsModule, ReactiveFormsModule, ClarityModule, ClrContext],
