@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -15,6 +15,7 @@ import { CLR_ELEMENT_CONTEXT_PROPERTY } from '@clr/angular/utils';
 import { ClrStepperModule } from './stepper.module';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <form clrStepper [formGroup]="form">
       <clr-stepper-panel formGroupName="identity">

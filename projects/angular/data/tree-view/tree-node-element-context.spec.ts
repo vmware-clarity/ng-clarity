@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { publishedState } from '@clr/angular/testing';
@@ -15,6 +15,7 @@ import { Observable } from 'rxjs';
 import { ClrTreeViewModule } from './tree-view.module';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-tree>
       <clr-tree-node [clrExpandable]="true">Datacenters</clr-tree-node>
@@ -65,6 +66,7 @@ describe('ClrTreeNode element context', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-tree>
       <clr-tree-node *clrRecursiveFor="let item of roots; getChildren: getChildren" [clrExpanded]="true">
