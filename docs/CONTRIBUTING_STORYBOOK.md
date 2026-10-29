@@ -517,6 +517,24 @@ The flow, end to end:
 entirely. A pull request that hand-touches a PNG will be rejected, and a hand-written baseline is worse than
 no baseline: it asserts that whatever you generated locally, on your fonts and your GPU, is correct.
 
+### The Content-Security-Policy
+
+`scripts/start-static-server.ts` serves every HTML page with a strict Content-Security-Policy and a new nonce
+per response, the setup Angular documents for applications. Scripts and `<style>` elements run only from the
+server or with the nonce, so a Clarity component that injects a style or script the policy does not allow
+shows up as a broken snapshot. `tests/csp.spec.ts` checks that the policy is enforced.
+
+- The Storybook preview provides the nonce to Angular through `CSP_NONCE` (`.storybook/preview.js`), and the
+  website reads it from `ngCspNonce` on `<app-root>` (`projects/website/src/index.html`).
+- The Storybook server also allows `'unsafe-eval'`: the story templates are compiled at runtime by the
+  Angular JIT compiler. The website suite does not allow it.
+- Style attributes are allowed (`style-src-attr 'unsafe-inline'`), because stories and website pages use
+  them. The library must not: ESLint reports style attributes, `[attr.style]` and `<style>` elements under
+  `projects/angular` and `projects/addons`. Use a class, or a style binding such as `[style.width.px]`, which
+  Angular applies through the CSSOM.
+- A test that adds CSS to the page uses `addStyleWithNonce()` from `tests/helpers/vrt.ts`. The policy blocks
+  `page.addStyleTag()`.
+
 ### Reading a snapshot diff on a PR
 
 When the bot comments "This PR introduces visual changes":
