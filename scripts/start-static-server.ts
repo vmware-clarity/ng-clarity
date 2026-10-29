@@ -75,7 +75,13 @@ function sendHtml(html: string, response: express.Response) {
 const app = express();
 
 app.use((request, response, next) => {
-  const html = htmlPages.get(request.path);
+  // request.path is not decoded; express.static decodes it, so an encoded file name would otherwise skip the policy.
+  let html: string | undefined;
+  try {
+    html = htmlPages.get(decodeURIComponent(request.path));
+  } catch {
+    // A malformed path: express.static answers it.
+  }
   if (html === undefined) {
     next();
   } else {
@@ -86,8 +92,12 @@ app.use((request, response, next) => {
 app.use(express.static(rootPath));
 
 if (spaFallback) {
+  const indexHtml = htmlPages.get('/index.html');
+  if (indexHtml === undefined) {
+    throw new Error(`--spa needs an index.html in ${rootPath}`);
+  }
   // Serve index.html for any path the static middleware did not find.
-  app.use((_request, response) => sendHtml(htmlPages.get('/index.html'), response));
+  app.use((_request, response) => sendHtml(indexHtml, response));
 }
 
 app.listen(Number(port));
