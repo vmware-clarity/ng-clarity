@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-tab-overflow-content',
@@ -14,5 +14,6 @@ import { Component } from '@angular/core';
     '[class.dropdown-menu]': 'true',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrTabOverflowContent {}

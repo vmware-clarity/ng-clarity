@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 export class Hero {
   constructor(
@@ -20,6 +20,7 @@ export class Hero {
 @Component({
   selector: 'clr-modal-dynamic-form',
   templateUrl: './modal-form.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ModalFormDemo {

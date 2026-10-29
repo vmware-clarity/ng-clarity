@@ -71,6 +71,7 @@ released.
 
 | Clarity Version | Angular Version | Status             |
 | --------------- | --------------- | ------------------ |
+| v19             | v22             | Actively supported |
 | v18             | v21 - v22\*     | Actively supported |
 | v17             | v15 - v19\*     | Out of support     |
 | v16             | v15 - v17\*     | Out of support     |

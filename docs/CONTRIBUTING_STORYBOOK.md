@@ -10,6 +10,38 @@ Treat a story file as production code, and follow this guide when you write one.
 contribution process — forking, signing, commit messages — is in
 [Contribution process for developers](CONTRIBUTING_DEVELOPMENT.md).
 
+## Angular 22 build configuration
+
+The required `PR Build (Angular v22)` job runs `npm run _build:storybook`, including Compodoc, before
+building the demo and website. Storybook uses library sources through `.storybook/tsconfig.json`.
+Its relative `paths` mappings do not need `baseUrl`; `.storybook/main.js` passes that config to
+`tsconfig-paths-webpack-plugin` so webpack resolves the same aliases.
+
+Both Storybook targets in `angular.json` generate `documentation.json` with Compodoc from the Angular
+library tsconfig. `.storybook/preview.js` filters that metadata before calling `setCompodocJson`.
+The preview imports `zone.js` and supplies `provideZoneChangeDetection` and `provideAnimations` through
+`applicationConfig`: the existing stories need Zone.js change detection and legacy Angular animations.
+Keep those providers while those stories and components depend on them.
+
+### Vite assessment for the Angular 22 upgrade
+
+Retain `@storybook/angular` for this upgrade. The
+[Angular Vite framework](https://storybook.js.org/docs/get-started/frameworks/angular-vite) is in preview
+in Storybook 10.6, with stable status planned for 11. It offers faster builds and HMR, but adopting it
+requires a separate migration of our configuration:
+
+- Replace the webpack path plugin with Vite alias resolution; the Vite framework does not automatically
+  map TypeScript paths.
+- Preserve Zone.js behavior explicitly (`zoneless: false`) and verify the animation providers.
+- Migrate the Compodoc filtering and API tables to source-based documentation extraction. The Vite
+  framework's Compodoc compatibility mode is temporary, with deprecation planned for Storybook 11 and
+  removal in 12.
+
+This is a configuration and documentation assessment, not a Vite build validation. Before switching,
+verify development and production builds, aliases, autodocs, MDX, styles, accessibility/pseudo-state
+addons, and interaction and visual tests. The deprecated Angular webpack tooling remains a development
+dependency until that migration is validated.
+
 ## Where stories live
 
 All stories live under `.storybook/stories/`. `.storybook/main.js` picks up `./**/*.stories.ts` and
@@ -590,7 +622,8 @@ The expectation for anything you add:
 
 ### Prerequisites
 
-This repository requires **Node.js >= 24** and **npm >= 11** (`package.json` `engines`); `.nvmrc` pins Node 24. Use it before installing:
+This repository requires **Node.js ^24.15.0 or >=26.0.0** and **npm >= 11** (`package.json` `engines`);
+`.nvmrc` pins Node 24.15.0. Use it before installing:
 
 ```shell
 nvm use

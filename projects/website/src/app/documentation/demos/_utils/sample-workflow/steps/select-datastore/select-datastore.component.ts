@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ModelChanges, OnStepActivate, OnStepValidate, StepModelHolder } from '@clr/addons/var';
 import { ClarityModule } from '@clr/angular';
 import { delay, Observable, of } from 'rxjs';
@@ -19,6 +19,7 @@ import { DatastoreGridItem, SelectDatastoreModel, StoragePolicy } from './select
   imports: [CommonModule, ClarityModule],
   templateUrl: 'select-datastore.component.html',
   styleUrl: 'select-datastore.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SelectDatastoreComponent implements StepModelHolder, OnStepActivate, OnStepValidate {
   model: SelectDatastoreModel;

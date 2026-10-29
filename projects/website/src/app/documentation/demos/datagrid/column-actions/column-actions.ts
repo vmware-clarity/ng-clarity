@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClarityIcons, ClrDatagridModule, ClrIcon, pencilIcon, trashIcon } from '@clr/angular';
 
@@ -22,6 +22,7 @@ import { CommonFiles } from '../utils/stackblitz-common-data';
   templateUrl: './column-actions.html',
   styleUrl: '../datagrid.demo.scss',
   imports: [ClrIcon, ClrDatagridModule, StackblitzExampleComponent, RouterLink, DatePipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridColumnActionsDemo {
   examples = EXAMPLES;

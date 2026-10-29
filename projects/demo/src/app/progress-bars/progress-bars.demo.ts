@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
   selector: 'clr-progress-bars-demo',
@@ -26,6 +26,7 @@ import { Component } from '@angular/core';
     </ul>
     <router-outlet></router-outlet>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class ProgressBarsDemo {}

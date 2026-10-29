@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
 
 @Component({
@@ -14,6 +14,7 @@ import { ClrPopoverModuleNext, ClrPopoverService } from '@clr/angular';
   imports: [ClrPopoverModuleNext],
   providers: [ClrPopoverService],
   styleUrls: ['./popovers.demo.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <h4>Popover Context Menu (Point-based Positioning)</h4>
     <p>Right-click anywhere in the box below to open a popover at the cursor position.</p>

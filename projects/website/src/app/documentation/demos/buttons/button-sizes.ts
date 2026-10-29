@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
@@ -48,6 +48,7 @@ const HTML_EXAMPLE_5 = `
   selector: 'clr-buttons-demo-button-sizes',
   templateUrl: './button-sizes.html',
   styleUrl: './buttons.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [StackblitzExampleComponent],
 })
 export class ButtonSizesDemo {
