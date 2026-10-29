@@ -459,8 +459,9 @@
         <code cds-text="code">minRequestIntervalMs: 0</code> turns both limits off.
       </li>
       <li>
-        The application's own <code cds-text="code">clrContext</code> annotations are shared as they are, state
-        included: what they say was written for every consumer.
+        The application's own <code cds-text="code">clrContext</code> annotations are shared with their labels, but
+        their state only under the keys listed in <code cds-text="code">[clrContextPublicKeys]</code>, as for any
+        consumer the application does not control.
       </li>
     </ul>
     <div class="clr-mt-16px">
