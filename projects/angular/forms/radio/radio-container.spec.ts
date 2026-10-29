@@ -80,6 +80,7 @@ class AriaLabelledByTest {
 class AriaLabelledByNoRadiosTest {}
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-radio-container>
       <clr-radio-wrapper>

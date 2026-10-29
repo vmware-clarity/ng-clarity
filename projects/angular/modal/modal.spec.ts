@@ -358,6 +358,7 @@ describe('Modal', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-modal [clrModalOpen]="true" clrModalAriaModal="false" [clrModalOverrideScrollService]="true">
       <h4 class="modal-title">Beside the page</h4>

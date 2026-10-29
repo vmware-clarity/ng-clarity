@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -20,6 +20,7 @@ function render<T>(component: Type<T>, imports: unknown[]): ComponentFixture<T> 
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox [formControl]="fruit">
       <clr-options>
@@ -79,6 +80,7 @@ describe('ClrCombobox required state', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox [(ngModel)]="fruit" [required]="mandatory">
       <clr-options>
@@ -127,6 +129,7 @@ describe('ClrCombobox required state, template-driven', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-combobox [(ngModel)]="fruit" name="fruit" required>
       <clr-options>

@@ -88,6 +88,7 @@ class AriaLabelledByTest {
 class AriaLabelledByNoCheckboxesTest {}
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-checkbox-container>
       <clr-checkbox-wrapper>
@@ -103,6 +104,7 @@ class SingleCheckboxNoGroupLabelTest {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-checkbox-container>
       <clr-checkbox-wrapper>

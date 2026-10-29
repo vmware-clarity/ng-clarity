@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, NgModel, ReactiveFormsModule, Validators } from '@angular/forms';
 import { By } from '@angular/platform-browser';
@@ -21,6 +21,7 @@ function render<T>(component: Type<T>, imports: unknown[]): ComponentFixture<T> 
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <form clrForm [formGroup]="form">
       <clr-radio-container>
@@ -46,6 +47,7 @@ class TestComponent {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <form clrForm [formGroup]="form">
       <clr-radio-container aria-required="true" aria-invalid="false">
@@ -76,6 +78,7 @@ class AuthoredComponent {
 // Without an enclosing form each standalone ngModel radio has its own control, and only
 // the last one carries the required validator.
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-radio-container>
       <label>Size</label>
@@ -178,6 +181,7 @@ describe('Radio group of standalone ngModel radios', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <form clrForm [formGroup]="form">
       <clr-radio-container>

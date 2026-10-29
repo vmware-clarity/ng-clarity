@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Type } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -24,6 +24,7 @@ interface Node {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     @if (selectable) {
       <clr-datagrid clrDgSelectionType="multi" [(clrDgSelected)]="selected">
@@ -103,6 +104,7 @@ describe('ClrDatagrid selection, as assistive technology sees it', () => {
 });
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid [(clrDgSelected)]="single" [clrDgSelectionType]="'single'">
       <clr-dg-column>Name</clr-dg-column>

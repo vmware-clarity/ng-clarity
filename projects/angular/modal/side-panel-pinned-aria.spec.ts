@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { CdkTrapFocusModule } from '@clr/angular/utils';
@@ -13,6 +13,7 @@ import { CdkTrapFocusModule } from '@clr/angular/utils';
 import { ClrSidePanelModule } from './side-panel.module';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-side-panel [(clrSidePanelOpen)]="open" [clrSidePanelPinnable]="true">
       <div class="side-panel-title">Details</div>

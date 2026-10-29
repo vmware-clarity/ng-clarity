@@ -49,6 +49,7 @@ class TestComponent {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <div aria-live="polite">
       <clr-alert clrAlertType="info"><div class="alert-item">Saved.</div></clr-alert>
