@@ -64,6 +64,15 @@ describe('clrHasRequiredValidator', () => {
     expect(clrHasRequiredValidator(control)).toBe(false);
   });
 
+  it('recognises required composed with a validator that compares with a sibling field', () => {
+    const matchesPassword = (control: AbstractControl) =>
+      control.value === (control.parent as FormGroup).controls['password'].value ? null : { mismatch: true };
+    const form = new FormGroup({ password: new FormControl(''), confirm: new FormControl('') });
+    // Set once the control has its parent, as the validator assumes one.
+    form.controls.confirm.setValidators(Validators.compose([Validators.required, matchesPassword]));
+    expect(clrHasRequiredValidator(form.controls.confirm)).toBe(true);
+  });
+
   it('watches a control once however often its validity is recomputed', () => {
     const control = new FormControl('', Validators.minLength(3));
     const subscribe = spyOn(control.statusChanges, 'subscribe').and.callThrough();

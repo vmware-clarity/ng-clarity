@@ -46,8 +46,11 @@ export function clrHasRequiredValidator(control: AbstractControl | null | undefi
     remembered.validator = validator;
     remembered.required = false;
     try {
-      // A fresh control per probe: a validator may touch the control it is given.
-      remembered.required = validator(new FormControl<unknown>(null))?.required === true;
+      // A fresh control per probe, as a validator may touch the control it is given. It sees the real
+      // parent, so a validator that compares with a sibling field still runs.
+      const probe = new FormControl<unknown>(null);
+      probe.setParent(control.parent);
+      remembered.required = validator(probe)?.required === true;
     } catch {
       // A validator that assumes a parent or value does not express "required".
     }
