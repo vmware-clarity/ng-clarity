@@ -501,16 +501,21 @@ describe('collectContextTreeWithin, what a summary must not hide', () => {
     expect(JSON.stringify(field)).not.toContain('hunter2');
   });
 
-  it('withholds a value an extractor reports for an element inside a sensitive region', () => {
+  it('does not run an extractor inside a sensitive region, so none of its state gets out', () => {
     container.innerHTML = '<div data-clr-context-redact><my-field data-value="4111 1111"></my-field></div>';
-    const [node] = collectContextTreeWithin(container, budgets(), [
-      {
-        selector: 'my-field',
-        extract: element => ({ type: 'textbox', state: { value: element.getAttribute('data-value') } }),
-      },
-    ]).components;
-    expect(node.state?.redacted).toBe(true);
-    expect('value' in (node.state ?? {})).toBe(false);
+    const extractor = {
+      selector: 'my-field, [data-clr-context-redact]',
+      extract: (element: HTMLElement) => ({
+        type: 'textbox',
+        state: { value: element.getAttribute('data-value'), secret: 's3cr3t' },
+        publicKeys: ['value', 'secret'],
+      }),
+    };
+    for (const untrusted of [false, true]) {
+      const tree = collectContextTreeWithin(container, budgets(), [extractor], untrusted);
+      expect(JSON.stringify(tree)).not.toContain('4111');
+      expect(JSON.stringify(tree)).not.toContain('s3cr3t');
+    }
   });
 
   it('counts a wrapper node against the budget, so the budget is a real bound', () => {
