@@ -398,6 +398,11 @@ function describeElement(element: Element, walk: Walk, owner: Element | null): C
 }
 
 function describeVisible(element: Element, walk: Walk, owner: Element | null): ClrComponentContext[] {
+  // An excluded role is left out before an extractor could describe the element as something else.
+  const role = resolveRole(element);
+  if (role && walk.excludeRoles.has(role)) {
+    return [];
+  }
   // Like published context, an extractor's state is not read inside a redacted region.
   const extractor =
     walk.redactedDepth > 0 ? undefined : walk.extractors.find(candidate => element.matches(candidate.selector));
@@ -419,10 +424,6 @@ function describeVisible(element: Element, walk: Walk, owner: Element | null): C
     return describeFrame(element as HTMLIFrameElement, walk);
   }
 
-  const role = resolveRole(element);
-  if (role && walk.excludeRoles.has(role)) {
-    return [];
-  }
   if (role && isPresentationalRole(role)) {
     return describeChildren(element, walk, owner);
   }
@@ -537,7 +538,9 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
     return listOf(finish(only, element, walk, { published }));
   }
   if (rendered.length > 1) {
-    if (walk.remaining <= 0) {
+    // A wrapper adds a level, so the parts are returned as they are when that level would pass `maxDepth`.
+    const { maxDepth } = walk.options;
+    if (walk.remaining <= 0 || (maxDepth > 0 && walk.depth + 1 + treeDepth(rendered) > maxDepth)) {
       return rendered;
     }
     walk.remaining--;
@@ -553,6 +556,10 @@ function describeAnonymousCustomElement(element: Element, tagName: string, walk:
     return [];
   }
   return null;
+}
+
+function treeDepth(nodes: ClrComponentContext[]): number {
+  return nodes.reduce((deepest, node) => Math.max(deepest, 1 + treeDepth(node.children ?? [])), 0);
 }
 
 /** Application controls in a summarised collection's cells, which the summary does not cover. */
@@ -619,7 +626,10 @@ function describeTextBlock(element: Element, walk: Walk, owner: Element | null):
   if (owner) {
     node.element = owner.tagName.toLowerCase();
   }
-  const label = truncate(accessibleText(element, undefined, walk.excludeSelector), walk.options.maxTextLength);
+  const label = truncate(
+    accessibleText(element, undefined, walk.excludeSelector, child => isExcludedRole(child, walk)),
+    walk.options.maxTextLength
+  );
   if (label) {
     node.label = label;
   }
@@ -804,7 +814,7 @@ function phrasingText(element: Element, walk: Walk): string {
   if (shouldSkipSubtree(element, walk) || isVisuallyHidden(element)) {
     return '';
   }
-  return accessibleText(element, undefined, walk.excludeSelector);
+  return accessibleText(element, undefined, walk.excludeSelector, child => isExcludedRole(child, walk));
 }
 
 const MEANINGFUL_TEXT = /[\p{L}\p{N}]/u;
@@ -853,7 +863,9 @@ function finish(
   }
   // Published children are not walked, so they are charged to the budget here.
   if (described.children && (foreign || described.children !== node.children)) {
-    described = { ...described, children: charged(described.children, walk, walk.excludeRoles) };
+    const { maxDepth } = walk.options;
+    const levels = maxDepth > 0 ? maxDepth - walk.depth - 1 : Infinity;
+    described = { ...described, children: charged(described.children, walk, walk.excludeRoles, levels) };
   }
   const unpruned = foreign || described !== node;
 

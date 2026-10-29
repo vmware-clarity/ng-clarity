@@ -63,7 +63,10 @@ function rendersLightDomOnly(root: ParentNode): boolean {
   return !inShadowTree && !openShadowRoots(root).length;
 }
 
-/** `root.querySelectorAll(selector)`, also inside the open shadow roots under `root` and what their slots show. */
+/**
+ * `root.querySelectorAll(selector)`, also inside the open shadow roots under `root` and what their slots show,
+ * in the order they render.
+ */
 export function queryRendered(root: ParentNode, selector: string): Element[] {
   if (rendersLightDomOnly(root)) {
     return Array.from(root.querySelectorAll(selector));
@@ -84,7 +87,38 @@ export function queryRendered(root: ParentNode, selector: string): Element[] {
       }
     }
   }
-  return Array.from(found);
+  return inRenderedOrder(Array.from(found));
+}
+
+/** Sorts elements as they render: a shadow root's content where its host is, slotted elements where their slot is. */
+function inRenderedOrder(elements: Element[]): Element[] {
+  const paths = new Map(elements.map(element => [element, renderedPath(element)]));
+  return elements.sort((a, b) => compareRendered(paths.get(a) ?? [], paths.get(b) ?? []));
+}
+
+function renderedPath(element: Element): Element[] {
+  const path: Element[] = [];
+  for (let current: Element | null = element; current; current = parentAcrossShadow(current)) {
+    path.unshift(current);
+  }
+  return path;
+}
+
+function compareRendered(a: Element[], b: Element[]): number {
+  let shared = 0;
+  while (shared < a.length && shared < b.length && a[shared] === b[shared]) {
+    shared++;
+  }
+  // An ancestor renders before what it holds.
+  if (shared === a.length || shared === b.length) {
+    return a.length - b.length;
+  }
+  const [first, second] = [a[shared], b[shared]];
+  // Only a host's shadow root content and its unassigned light DOM have the host as their shared parent.
+  if (first.getRootNode() !== second.getRootNode()) {
+    return first.getRootNode() === a[shared - 1]?.shadowRoot ? -1 : 1;
+  }
+  return first.compareDocumentPosition(second) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1;
 }
 
 export function idScope(element: Element): IdScope {
