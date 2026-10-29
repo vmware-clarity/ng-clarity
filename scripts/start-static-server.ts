@@ -47,26 +47,37 @@ function contentSecurityPolicy(nonce: string) {
   ].join('; ');
 }
 
-function sendHtml(filePath: string, response: express.Response) {
+// The HTML pages, read once by URL path ("/iframe.html"; a directory's index.html also as "/demo/").
+const htmlPages = new Map<string, string>();
+for (const file of fs.readdirSync(rootPath, { recursive: true, encoding: 'utf8' })) {
+  if (file.endsWith('.html')) {
+    const urlPath = `/${file.split(path.sep).join('/')}`;
+    const html = fs.readFileSync(path.join(rootPath, file), 'utf8');
+    htmlPages.set(urlPath, html);
+    if (urlPath.endsWith('/index.html')) {
+      htmlPages.set(urlPath.slice(0, -'index.html'.length), html);
+    }
+  }
+}
+
+function sendHtml(html: string, response: express.Response) {
   const nonce = randomBytes(16).toString('base64');
-  const html = fs
-    .readFileSync(filePath, 'utf8')
+  const page = html
     .replaceAll(noncePlaceholder, nonce)
     .replace(/<(script|style)\b(?![^>]*\snonce=)/g, `<$1 nonce="${nonce}"`);
 
   response.setHeader('Content-Security-Policy', contentSecurityPolicy(nonce));
-  response.type('html').send(html);
+  response.type('html').send(page);
 }
 
 const app = express();
 
 app.use((request, response, next) => {
-  const requestPath = decodeURIComponent(request.path);
-  const filePath = path.join(rootPath, requestPath.endsWith('/') ? `${requestPath}index.html` : requestPath);
-  if (filePath.startsWith(rootPath) && filePath.endsWith('.html') && fs.existsSync(filePath)) {
-    sendHtml(filePath, response);
-  } else {
+  const html = htmlPages.get(request.path);
+  if (html === undefined) {
     next();
+  } else {
+    sendHtml(html, response);
   }
 });
 
@@ -74,7 +85,7 @@ app.use(express.static(rootPath));
 
 if (spaFallback) {
   // Serve index.html for any path the static middleware did not find.
-  app.use((_request, response) => sendHtml(path.join(rootPath, 'index.html'), response));
+  app.use((_request, response) => sendHtml(htmlPages.get('/index.html'), response));
 }
 
 app.listen(Number(port));
