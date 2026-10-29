@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { FilterablePropertyDefinition, FilterMode, PropertyFilter } from '@clr/addons/datagrid-filters';
 
 @Component({
   selector: 'appfx-datagrid-filters',
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class MockDatagridFiltersComponent {
@@ -26,6 +27,7 @@ export class MockDatagridFiltersComponent {
 @Component({
   selector: 'appfx-datagrid-filters',
   standalone: true,
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: '',
 })
 export class MockDatagridFiltersStandaloneComponent extends MockDatagridFiltersComponent {}

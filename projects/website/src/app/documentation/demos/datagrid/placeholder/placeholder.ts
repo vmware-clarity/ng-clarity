@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrDatagridModule, ClrPopoverHostDirective, ClrStopEscapePropagationDirective } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../../shared/stackblitz-example/stackblitz-example.component';
@@ -50,6 +50,7 @@ export class ExampleComponent {
   providers: [Inventory],
   templateUrl: 'placeholder.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrDatagridModule, ClrStopEscapePropagationDirective, ClrPopoverHostDirective, StackblitzExampleComponent],
 })
 export class DatagridPlaceholderDemo {

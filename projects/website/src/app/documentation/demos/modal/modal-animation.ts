@@ -6,7 +6,7 @@
  */
 
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
 import { ClrIcon, ClrIconModule, ClrModalModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -35,7 +35,15 @@ const EXAMPLE = `
 
 const EXAMLPE_TS = `
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnDestroy, OnInit, PLATFORM_ID } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnDestroy,
+  OnInit,
+  PLATFORM_ID,
+  ChangeDetectorRef,
+  inject,
+} from '@angular/core';
 import { ClrModalModule } from '@clr/angular';
 
 @Component({
@@ -46,6 +54,8 @@ import { ClrModalModule } from '@clr/angular';
   imports: [CommonModule, ClrModalModule],
 })
 export class ExampleComponent implements OnInit, OnDestroy {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   animatedExampleIn = false;
   private interval: any;
 
@@ -53,7 +63,10 @@ export class ExampleComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     if (isPlatformBrowser(this.platformId)) {
-      this.interval = setInterval(() => (this.animatedExampleIn = !this.animatedExampleIn), 2000);
+      this.interval = setInterval(() => {
+        this.animatedExampleIn = !this.animatedExampleIn;
+        this.changeDetectorRef.markForCheck();
+      }, 2000);
     }
   }
 
@@ -68,6 +81,7 @@ export class ExampleComponent implements OnInit, OnDestroy {
 @Component({
   selector: 'clr-modal-animation-demo',
   templateUrl: './modal-animation.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrIcon, ClrIconModule, ClrModalModule, StackblitzExampleComponent],
 })
 export class ModalAnimationDemo implements OnInit, OnDestroy {

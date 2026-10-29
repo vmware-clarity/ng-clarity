@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ClrAlertModule } from '@clr/angular';
 import { getButtonClass } from '@storybook-helpers/button-class.helper';
 import { createArray } from '@storybook-helpers/common';
@@ -64,6 +64,7 @@ import { createArray } from '@storybook-helpers/common';
       }
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CardStorybookComponent {
   createArray = createArray;

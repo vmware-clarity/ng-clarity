@@ -64,6 +64,8 @@ groups:
         url: /documentation/contextual-engine
   - label: Updating
     links:
+      - label: Update v18 to v19
+        url: /pages/update-to-v19
       - label: Update v17 to v18
         url: /pages/update-to-v18
       - label: Update v16 to v17

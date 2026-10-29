@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxStepperModule } from '@clr/addons/stepper';
 import { Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
@@ -26,6 +26,7 @@ class Step1Model implements StepModel {
       <input id="pname" type="text" class="clr-input" [(ngModel)]="model.projectName.value" />
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StepperStoryStep1 implements StepModelHolder {
   model: Step1Model;
@@ -49,6 +50,7 @@ class Step2Model implements StepModel {
       </select>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StepperStoryStep2 implements StepModelHolder {
   model: Step2Model;
@@ -74,6 +76,7 @@ class ProjectModel {
       <span class="label label-success">Finished!</span>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StepperStoryWrapperComponent implements OnInit {
   usePrimaryNextButton = false;

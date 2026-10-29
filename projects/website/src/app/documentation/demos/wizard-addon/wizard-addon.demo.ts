@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ZoomLevelService } from '@clr/addons/a11y';
@@ -63,6 +63,7 @@ export class MyModule {}
     RouterModule,
     AiSkillComponent,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class WizardAddonDemoComponent extends ClarityDocComponent {
   readonly moduleImportTs = ModuleImportTs;

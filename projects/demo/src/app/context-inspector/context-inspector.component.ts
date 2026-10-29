@@ -5,12 +5,13 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { ClrContextTrackerService, ClrPageContext } from '@clr/angular/ai';
 import { Subscription } from 'rxjs';
 
 /** App-shell panel showing what the context engine sees, on every demo page. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'app-context-inspector',
   templateUrl: './context-inspector.component.html',
   styleUrls: ['./context-inspector.component.scss'],

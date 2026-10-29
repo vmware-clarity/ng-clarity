@@ -6,7 +6,7 @@
  */
 
 import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { ClrDatagridModule, ClrRangeModule } from '@clr/angular';
@@ -303,6 +303,7 @@ export class ExampleComponent {
   providers: [Inventory],
   templateUrl: 'detail.html',
   styleUrl: '../datagrid.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     CodeSnippetComponent,
     ClrDatagridModule,

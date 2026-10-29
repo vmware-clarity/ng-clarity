@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrIcon, ClrIconModule, ClrTreeViewModule } from '@clr/angular';
 
 @Component({
   selector: 'app-disabled-nodes-overview-demo',
   styleUrl: '../tree-view.demo.scss',
   templateUrl: 'disabled-nodes-overview.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrTreeViewModule, ClrIcon, ClrIconModule],
 })
 export class DisabledNodesOverviewDemo {}

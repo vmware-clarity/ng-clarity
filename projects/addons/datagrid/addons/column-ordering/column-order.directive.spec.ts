@@ -7,7 +7,15 @@
 
 import { CdkDrag, DragDropModule } from '@angular/cdk/drag-drop';
 import { CommonModule } from '@angular/common';
-import { Component, ContentChildren, Directive, ElementRef, QueryList, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChildren,
+  Directive,
+  ElementRef,
+  QueryList,
+  ViewChild,
+} from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrDatagridModule } from '@clr/angular/data/datagrid';
@@ -261,6 +269,7 @@ class TestDirective {
 @Component({
   selector: 'clr-datagrid-host-component',
   imports: [ClrDatagridModule, DatagridColumnsOrderModule, DragDropModule, TestDirective],
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <clr-datagrid cdkDropList appfxDgColumnsOrder [dgColumnsOrderColumns]="columns" testDirectives>
       @for (column of columns; track trackByColumnId(index, column); let index = $index) {

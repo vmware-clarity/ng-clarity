@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxMultiPageDialogModule } from '@clr/addons/dialog';
 import { Step, TabLayout } from '@clr/addons/var';
@@ -27,6 +27,7 @@ class ReviewModel {}
       <input class="clr-input" type="text" [(ngModel)]="model.name" />
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasicDialogNameStepComponent {
   model: NameModel;
@@ -37,6 +38,7 @@ export class BasicDialogNameStepComponent {
   standalone: true,
   imports: [CommonModule],
   template: `<p>Ready to submit.</p>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasicDialogReviewStepComponent {}
 
@@ -45,6 +47,7 @@ export class BasicDialogReviewStepComponent {}
   standalone: true,
   imports: [CommonModule, AppfxMultiPageDialogModule, BasicDialogNameStepComponent, BasicDialogReviewStepComponent],
   templateUrl: 'basic-dialog.html',
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class BasicDialogDemoComponent implements OnInit {
   TabLayout = TabLayout;

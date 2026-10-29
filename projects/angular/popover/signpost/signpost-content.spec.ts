@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 // I'm giving up, I'm using the datagrid ones for now.
 import { ClrIcon } from '@clr/angular/icon';
@@ -71,6 +71,7 @@ export default function (): void {
     <clr-signpost-content [clrPosition]="position">Signpost content</clr-signpost-content>
   `,
   providers: [{ provide: POPOVER_HOST_ORIGIN, useExisting: ElementRef }],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {

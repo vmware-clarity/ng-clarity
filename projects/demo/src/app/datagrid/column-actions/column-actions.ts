@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrDatagridFilterInterface, ClrDatagridSortOrder } from '@clr/angular';
 import { Subject } from 'rxjs';
 
@@ -36,6 +36,7 @@ class NameFilter implements ClrDatagridFilterInterface<User> {
   templateUrl: 'column-actions.html',
   styleUrls: ['../datagrid.demo.scss'],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridColumnActionsDemo {
   users: User[];

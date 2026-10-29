@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrBadge } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -30,6 +30,7 @@ const HTML_EXAMPLE = `
 @Component({
   selector: 'clr-badge-angular-colors-demo',
   templateUrl: './badge-angular-colors.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrBadge, StackblitzExampleComponent],
 })
 export class BadgeAngularColorsDemo {
