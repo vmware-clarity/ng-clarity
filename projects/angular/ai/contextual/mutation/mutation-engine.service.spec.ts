@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
@@ -42,6 +42,7 @@ const ITEMS: Item[] = [
 ];
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: `
     <form [formGroup]="form">
       <clr-input-container>
@@ -713,6 +714,21 @@ describe('ClrMutationEngineService', () => {
         confirm.and.callFake(() => {
           label.textContent = 'My name';
           snapshot();
+          return true;
+        });
+
+        const result = await set(ref, 'Name', 'Ada');
+
+        expect(result.refused).toBe('stale');
+        expect(host.form.value.name).toBe('seed');
+      });
+
+      it('refuses as stale a write whose field was renamed while the person was asked, with no new snapshot', async () => {
+        classify.and.returnValue('consequential');
+        const ref = refOf(snapshot(), 'Name');
+        const label = fixture.nativeElement.querySelector('clr-input-container label') as HTMLLabelElement;
+        confirm.and.callFake(() => {
+          label.textContent = 'Account name';
           return true;
         });
 

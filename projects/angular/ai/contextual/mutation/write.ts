@@ -44,6 +44,8 @@ export interface WriteTarget {
   /** The element with the role: what the user sees and what is checked for obstacles. */
   control: Element;
   label: string;
+  /** The label read from the page now; a ref keeps the one its snapshot showed. */
+  shownLabel: string;
   type: string;
   kind: ControlKind;
   ngControl: NgControl | null;
@@ -116,14 +118,15 @@ export function resolveWriteTarget(
   if (obstacle) {
     return { refused: obstacle, detail: OBSTACLE_DETAILS[obstacle] };
   }
-  const label = ref.label ?? labelOf(elements, withheldBy(control, options));
+  const shownLabel = labelOf(elements, withheldBy(control, options));
+  const label = ref.label ?? shownLabel;
   const targetOf = (
     element: Element,
     kind: ControlKind,
     ngControl: NgControl | null,
     mutator: ClrElementMutator | null
   ): TargetResolution => ({
-    target: { element, control, label, type, kind, ngControl, mutator, options, knownModals },
+    target: { element, control, label, shownLabel, type, kind, ngControl, mutator, options, knownModals },
   });
 
   const element = boundElementOf(elements);

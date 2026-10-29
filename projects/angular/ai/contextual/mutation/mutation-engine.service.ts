@@ -416,6 +416,7 @@ function sameOperation(confirmed: Prepared, now: Prepared): boolean {
     confirmed.consequence === now.consequence &&
     confirmed.target.element === now.target.element &&
     confirmed.target.label === now.target.label &&
+    (confirmed.kind !== 'write' || now.kind !== 'write' || confirmed.write.shownLabel === now.write.shownLabel) &&
     confirmed.target.type === now.target.type &&
     confirmed.target.url === now.target.url &&
     JSON.stringify(confirmed.target.value ?? null) === JSON.stringify(now.target.value ?? null) &&
