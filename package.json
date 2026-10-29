@@ -22,9 +22,16 @@
     "migrations": "./schematics/collection.json"
   },
   "peerDependencies": {
-    "@angular/cdk": "^21.1.0 || 22",
-    "@angular/common": "^21.1.0 || 22",
-    "@angular/core": "^21.1.0 || 22"
+    "@angular/cdk": "^22.0.0",
+    "@angular/common": "^22.0.0",
+    "@angular/core": "^22.0.0",
+    "@angular/forms": "^22.0.0",
+    "@angular/platform-browser": "^22.0.0",
+    "@angular/router": "^22.0.0",
+    "rxjs": "^7.8.0"
+  },
+  "dependencies": {
+    "tslib": "^2.8.1"
   },
   "module": "fesm2022/clr-angular.mjs",
   "typings": "types/clr-angular.d.ts",
@@ -231,8 +238,5 @@
   },
   "sideEffects": false,
   "type": "module",
-  "dependencies": {
-    "tslib": "^2.3.0"
-  },
-  "version": "0.0.0-preview.4dfb11b"
+  "version": "0.0.0-preview.6b4c4af"
 }

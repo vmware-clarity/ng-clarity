@@ -1446,6 +1446,7 @@ declare class ClrWizardStepnav implements AfterViewInit, OnDestroy {
     private intersectionObserver;
     private firstItemVisible;
     private lastItemVisible;
+    private readonly changeDetectorRef;
     constructor(pageService: PageCollectionService, navService: WizardNavigationService, elementRef: ElementRef<HTMLElement>);
     protected get stepnavLayout(): ClrWizardStepnavLayout;
     ngAfterViewInit(): void;

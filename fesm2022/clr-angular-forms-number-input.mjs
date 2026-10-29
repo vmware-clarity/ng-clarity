@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { ContentChild, forwardRef, Optional, Component, HostListener, Self, Directive, NgModule } from '@angular/core';
+import { ContentChild, forwardRef, Optional, ChangeDetectionStrategy, Component, HostListener, Self, Directive, NgModule } from '@angular/core';
 import * as i1 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, FormsFocusService, NgControlService, ControlIdService, ControlClassService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i2 from '@angular/common';
@@ -24,8 +24,8 @@ class ClrNumberInputContainer extends ClrAbstractContainer {
     focusOut() {
         this.input.dispatchBlur();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrNumberInputContainer, deps: [{ token: i1.ControlClassService }, { token: i1.LayoutService, optional: true }, { token: i1.NgControlService }, { token: i1.FormsFocusService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrNumberInputContainer, isStandalone: false, selector: "clr-number-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-form-control-readonly": "input?.readonly", "class.clr-row": "addGrid()" } }, providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "input", first: true, predicate: i0.forwardRef(() => ClrNumberInput), descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNumberInputContainer, deps: [{ token: i1.ControlClassService }, { token: i1.LayoutService, optional: true }, { token: i1.NgControlService }, { token: i1.FormsFocusService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrNumberInputContainer, isStandalone: false, selector: "clr-number-input-container", host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-form-control-readonly": "input?.readonly", "class.clr-row": "addGrid()" } }, providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService], queries: [{ propertyName: "input", first: true, predicate: i0.forwardRef(() => ClrNumberInput), descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -39,7 +39,7 @@ class ClrNumberInputContainer extends ClrAbstractContainer {
               type="button"
               class="clr-input-group-icon-action"
               (click)="input.stepDown()"
-              [disabled]="control?.disabled"
+              [disabled]="control?.disabled ?? null"
             >
               <cds-icon shape="minus" size="sm"></cds-icon>
             </button>
@@ -48,7 +48,7 @@ class ClrNumberInputContainer extends ClrAbstractContainer {
               type="button"
               class="clr-input-group-icon-action"
               (click)="input.stepUp()"
-              [disabled]="control?.disabled"
+              [disabled]="control?.disabled ?? null"
             >
               <cds-icon shape="plus" size="sm"></cds-icon>
             </button>
@@ -65,9 +65,9 @@ class ClrNumberInputContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrNumberInputContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNumberInputContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-number-input-container',
@@ -85,7 +85,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
               type="button"
               class="clr-input-group-icon-action"
               (click)="input.stepDown()"
-              [disabled]="control?.disabled"
+              [disabled]="control?.disabled ?? null"
             >
               <cds-icon shape="minus" size="sm"></cds-icon>
             </button>
@@ -94,7 +94,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
               type="button"
               class="clr-input-group-icon-action"
               (click)="input.stepUp()"
-              [disabled]="control?.disabled"
+              [disabled]="control?.disabled ?? null"
             >
               <cds-icon shape="plus" size="sm"></cds-icon>
             </button>
@@ -120,6 +120,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     },
                     providers: [FormsFocusService, NgControlService, ControlIdService, ControlClassService],
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i1.ControlClassService }, { type: i1.LayoutService, decorators: [{
                     type: Optional
@@ -177,10 +178,10 @@ class ClrNumberInput extends WrappedFormControl {
         this.el.nativeElement.dispatchEvent(new Event('change', { bubbles: true, cancelable: true }));
         this.triggerValidation();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrNumberInput, deps: [{ token: i1.FormsFocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i2$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrNumberInput, isStandalone: false, selector: "input[type=\"number\"][clrNumberInput]", host: { listeners: { "focus": "triggerFocus()" }, properties: { "class.clr-input": "true", "class.clr-number-input": "true" } }, usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNumberInput, deps: [{ token: i1.FormsFocusService, optional: true }, { token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i2$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrNumberInput, isStandalone: false, selector: "input[type=\"number\"][clrNumberInput]", host: { listeners: { "focus": "triggerFocus()" }, properties: { "class.clr-input": "true", "class.clr-number-input": "true" } }, usesInheritance: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrNumberInput, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNumberInput, decorators: [{
             type: Directive,
             args: [{
                     selector: 'input[type="number"][clrNumberInput]',
@@ -208,11 +209,11 @@ class ClrNumberInputModule {
     constructor() {
         ClarityIcons.addIcons(successStandardIcon, errorStandardIcon, minusIcon, plusIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrNumberInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrNumberInputModule, declarations: [ClrNumberInput, ClrNumberInputContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrNumberInput, ClrNumberInputContainer] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrNumberInputModule, imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule, ClrCommonFormsModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNumberInputModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrNumberInputModule, declarations: [ClrNumberInput, ClrNumberInputContainer], imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule], exports: [ClrCommonFormsModule, ClrNumberInput, ClrNumberInputContainer] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNumberInputModule, imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule, ClrCommonFormsModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrNumberInputModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrNumberInputModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ClrIcon, ClrCommonFormsModule],

@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Injectable, DOCUMENT, PLATFORM_ID, HostListener, Inject, Directive, ContentChild, Input, Component, ElementRef, HostBinding, ViewChild, Optional, NgModule } from '@angular/core';
+import { Injectable, DOCUMENT, PLATFORM_ID, HostListener, Inject, Directive, ContentChild, Input, ChangeDetectionStrategy, Component, ElementRef, HostBinding, ViewChild, Optional, NgModule } from '@angular/core';
 import * as i4 from '@clr/angular/popover/common';
 import { ClrPopoverHostDirective, ClrPopoverPosition, ClrPopoverType, SIGNPOST_POSITIONS, POPOVER_HOST_ORIGIN, ClrPopoverContent, ClrIfOpen, ClrPopoverModuleNext } from '@clr/angular/popover/common';
 import { Subject } from 'rxjs';
@@ -26,10 +26,10 @@ class SignpostFocusManager {
             this._triggerEl.focus({ preventScroll: true });
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SignpostFocusManager, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SignpostFocusManager }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SignpostFocusManager, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SignpostFocusManager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SignpostFocusManager, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SignpostFocusManager, decorators: [{
             type: Injectable
         }] });
 
@@ -49,10 +49,10 @@ class SignpostIdService {
     setId(id) {
         this._id.next(id);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SignpostIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SignpostIdService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SignpostIdService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SignpostIdService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: SignpostIdService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: SignpostIdService, decorators: [{
             type: Injectable
         }] });
 
@@ -116,10 +116,10 @@ class ClrSignpostTrigger {
             this.signpostFocusManager.focusTrigger();
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostTrigger, deps: [{ token: i4.ClrPopoverService }, { token: i0.ElementRef }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: DOCUMENT }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrSignpostTrigger, isStandalone: false, selector: "[clrSignpostTrigger]", host: { listeners: { "click": "onSignpostTriggerClick($event)" }, properties: { "attr.aria-expanded": "ariaExpanded", "attr.aria-controls": "ariaControl", "class.active": "isOpen" }, classAttribute: "signpost-trigger" }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostTrigger, deps: [{ token: i4.ClrPopoverService }, { token: i0.ElementRef }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: DOCUMENT }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrSignpostTrigger, isStandalone: false, selector: "[clrSignpostTrigger]", host: { listeners: { "click": "onSignpostTriggerClick($event)" }, properties: { "attr.aria-expanded": "ariaExpanded", "attr.aria-controls": "ariaControl", "class.active": "isOpen" }, classAttribute: "signpost-trigger" }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostTrigger, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostTrigger, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrSignpostTrigger]',
@@ -191,8 +191,8 @@ class ClrSignpost {
     openAtPoint(point, targetElement) {
         this.popoverService.openAtPoint(point, targetElement);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpost, deps: [{ token: i1.ClrCommonStringsService }, { token: i4.ClrPopoverService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrSignpost, isStandalone: false, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"], hideTrigger: ["clrSignpostHideTrigger", "hideTrigger"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: i4.ClrPopoverHostDirective }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpost, deps: [{ token: i1.ClrCommonStringsService }, { token: i4.ClrPopoverService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrSignpost, isStandalone: false, selector: "clr-signpost", inputs: { signpostTriggerAriaLabel: ["clrSignpostTriggerAriaLabel", "signpostTriggerAriaLabel"], hideTrigger: ["clrSignpostHideTrigger", "hideTrigger"] }, host: { properties: { "class.signpost": "true" } }, providers: [SignpostFocusManager, SignpostIdService], queries: [{ propertyName: "customTrigger", first: true, predicate: ClrSignpostTrigger, descendants: true }], hostDirectives: [{ directive: i4.ClrPopoverHostDirective }], ngImport: i0, template: `
     @if (showDefaultTrigger) {
       <button
         type="button"
@@ -205,9 +205,9 @@ class ClrSignpost {
     }
 
     <ng-content></ng-content>
-  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "directive", type: ClrSignpostTrigger, selector: "[clrSignpostTrigger]" }] }); }
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "directive", type: ClrSignpostTrigger, selector: "[clrSignpostTrigger]" }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpost, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpost, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-signpost',
@@ -229,6 +229,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     providers: [SignpostFocusManager, SignpostIdService],
                     hostDirectives: [ClrPopoverHostDirective],
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i1.ClrCommonStringsService }, { type: i4.ClrPopoverService }], propDecorators: { signpostTriggerAriaLabel: [{
                 type: Input,
@@ -342,8 +343,8 @@ class ClrSignpostContent {
     getFocusableElements(element) {
         return Array.from(element.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'));
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostContent, deps: [{ token: POPOVER_HOST_ORIGIN, optional: true }, { token: i0.ElementRef }, { token: i1.ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: i4.ClrPopoverService }, { token: i4.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrSignpostContent, isStandalone: false, selector: "clr-signpost-content", inputs: { signpostCloseAriaLabel: ["clrSignpostCloseAriaLabel", "signpostCloseAriaLabel"], position: ["clrPosition", "position"] }, host: { attributes: { "role": "dialog" }, listeners: { "keydown": "onKeyDown($event)" }, properties: { "class.signpost-content": "true", "id": "signpostContentId", "class.is-off-screen": "this.isOffScreen" } }, viewQueries: [{ propertyName: "closeButton", first: true, predicate: ["closeButton"], descendants: true, read: ElementRef }], hostDirectives: [{ directive: i4.ClrPopoverContent }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostContent, deps: [{ token: POPOVER_HOST_ORIGIN, optional: true }, { token: i0.ElementRef }, { token: i1.ClrCommonStringsService }, { token: SignpostIdService }, { token: SignpostFocusManager }, { token: PLATFORM_ID }, { token: DOCUMENT }, { token: i4.ClrPopoverService }, { token: i4.ClrPopoverContent }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrSignpostContent, isStandalone: false, selector: "clr-signpost-content", inputs: { signpostCloseAriaLabel: ["clrSignpostCloseAriaLabel", "signpostCloseAriaLabel"], position: ["clrPosition", "position"] }, host: { attributes: { "role": "dialog" }, listeners: { "keydown": "onKeyDown($event)" }, properties: { "class.signpost-content": "true", "id": "signpostContentId", "class.is-off-screen": "this.isOffScreen" } }, viewQueries: [{ propertyName: "closeButton", first: true, predicate: ["closeButton"], descendants: true, read: ElementRef }], hostDirectives: [{ directive: i4.ClrPopoverContent }], ngImport: i0, template: `
     <div class="signpost-wrap">
       <div class="popover-pointer"></div>
       <div class="signpost-content-header">
@@ -363,9 +364,9 @@ class ClrSignpostContent {
         <ng-content></ng-content>
       </div>
     </div>
-  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "component", type: i3.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostContent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostContent, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-signpost-content',
@@ -397,6 +398,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     },
                     standalone: false,
                     hostDirectives: [ClrPopoverContent],
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i0.ElementRef, decorators: [{
                     type: Optional
@@ -433,16 +435,17 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrSignpostTitle {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostTitle, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrSignpostTitle, isStandalone: false, selector: "clr-signpost-title", host: { properties: { "class.signpost-title": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostTitle, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrSignpostTitle, isStandalone: false, selector: "clr-signpost-title", host: { properties: { "class.signpost-title": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostTitle, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostTitle, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-signpost-title',
                     template: `<ng-content></ng-content>`,
                     host: { '[class.signpost-title]': 'true' },
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }] });
 
@@ -462,17 +465,17 @@ class ClrSignpostModule {
     constructor() {
         ClarityIcons.addIcons(windowCloseIcon, infoCircleIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostModule, declarations: [ClrSignpost,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostModule, declarations: [ClrSignpost,
             ClrSignpostContent,
             ClrSignpostTrigger,
             ClrSignpostTitle], imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, ClrPopoverModuleNext, ClrIfOpen], exports: [ClrSignpost,
             ClrSignpostContent,
             ClrSignpostTrigger,
             ClrSignpostTitle, ClrIfOpen] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostModule, imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, ClrPopoverModuleNext] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostModule, imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, ClrPopoverModuleNext] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrSignpostModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrSignpostModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrIcon, ClrFocusOnViewInitModule, ClrPopoverModuleNext, ClrIfOpen],

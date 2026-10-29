@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Injectable, ViewChild, Input, Inject, Component, InjectionToken, HostListener, HostBinding, Directive, ContentChild, ElementRef, ViewContainerRef, ContentChildren, Optional, NgModule } from '@angular/core';
+import { Injectable, ViewChild, Input, Inject, ChangeDetectionStrategy, Component, InjectionToken, HostListener, HostBinding, Directive, ContentChild, ElementRef, ViewContainerRef, ContentChildren, Optional, NgModule } from '@angular/core';
 import * as i2 from '@clr/angular/popover/common';
 import { ClrPopoverHostDirective } from '@clr/angular/popover/common';
 import * as i1 from '@clr/angular/utils';
@@ -58,10 +58,10 @@ class TabsService {
             this.children.splice(index, 1);
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: TabsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: TabsService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: TabsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: TabsService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: TabsService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: TabsService, decorators: [{
             type: Injectable
         }] });
 
@@ -99,8 +99,8 @@ class ClrTabContent {
             this.tabsService.tabContentViewContainer.remove(index);
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabContent, deps: [{ token: i1.IfActiveService }, { token: IF_ACTIVE_ID }, { token: TabsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrTabContent, isStandalone: false, selector: "clr-tab-content", inputs: { tabContentId: ["id", "tabContentId"] }, viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["tabContentProjectedRef"], descendants: true, static: true }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabContent, deps: [{ token: i1.IfActiveService }, { token: IF_ACTIVE_ID }, { token: TabsService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrTabContent, isStandalone: false, selector: "clr-tab-content", inputs: { tabContentId: ["id", "tabContentId"] }, viewQueries: [{ propertyName: "templateRef", first: true, predicate: ["tabContentProjectedRef"], descendants: true, static: true }], ngImport: i0, template: `
     <ng-template #tabContentProjectedRef>
       <section
         [id]="tabContentId"
@@ -114,9 +114,9 @@ class ClrTabContent {
         <ng-content></ng-content>
       </section>
     </ng-template>
-  `, isInline: true }); }
+  `, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabContent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabContent, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tab-content',
@@ -136,6 +136,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
     </ng-template>
   `,
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i1.IfActiveService }, { type: undefined, decorators: [{
                     type: Inject,
@@ -209,10 +210,10 @@ class ClrTabLink {
     activate() {
         this.ifActiveService.current = this.id;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabLink, deps: [{ token: i1.IfActiveService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: i0.ViewContainerRef }, { token: TabsService }, { token: TABS_ID }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrTabLink, isStandalone: false, selector: "[clrTabLink]", inputs: { tabLinkId: ["id", "tabLinkId"], inOverflow: ["clrTabLinkInOverflow", "inOverflow"] }, host: { attributes: { "role": "tab", "type": "button" }, listeners: { "click": "activate()" }, properties: { "class.btn": "true", "id": "this.tabLinkId", "class.btn-link": "this.addLinkClasses", "class.nav-link": "this.addLinkClasses", "attr.aria-controls": "this.ariaControls", "class.active": "this.active", "attr.aria-selected": "this.active", "attr.tabindex": "this.tabindex" } }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabLink, deps: [{ token: i1.IfActiveService }, { token: IF_ACTIVE_ID }, { token: i0.ElementRef }, { token: i0.ViewContainerRef }, { token: TabsService }, { token: TABS_ID }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrTabLink, isStandalone: false, selector: "[clrTabLink]", inputs: { tabLinkId: ["id", "tabLinkId"], inOverflow: ["clrTabLinkInOverflow", "inOverflow"] }, host: { attributes: { "role": "tab", "type": "button" }, listeners: { "click": "activate()" }, properties: { "class.btn": "true", "id": "this.tabLinkId", "class.btn-link": "this.addLinkClasses", "class.nav-link": "this.addLinkClasses", "attr.aria-controls": "this.ariaControls", "class.active": "this.active", "attr.aria-selected": "this.active", "attr.tabindex": "this.tabindex" } }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabLink, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabLink, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrTabLink]',
@@ -280,16 +281,17 @@ class ClrTab {
     ngOnDestroy() {
         this.tabsService.unregister(this);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTab, deps: [{ token: i1.IfActiveService }, { token: IF_ACTIVE_ID }, { token: TabsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrTab, isStandalone: false, selector: "clr-tab", providers: [IF_ACTIVE_ID_PROVIDER], queries: [{ propertyName: "tabLink", first: true, predicate: ClrTabLink, descendants: true, static: true }, { propertyName: "tabContent", first: true, predicate: ClrTabContent, descendants: true, static: true }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTab, deps: [{ token: i1.IfActiveService }, { token: IF_ACTIVE_ID }, { token: TabsService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrTab, isStandalone: false, selector: "clr-tab", providers: [IF_ACTIVE_ID_PROVIDER], queries: [{ propertyName: "tabLink", first: true, predicate: ClrTabLink, descendants: true, static: true }, { propertyName: "tabContent", first: true, predicate: ClrTabContent, descendants: true, static: true }], ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTab, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTab, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tab',
                     template: `<ng-content></ng-content>`,
                     providers: [IF_ACTIVE_ID_PROVIDER],
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i1.IfActiveService }, { type: undefined, decorators: [{
                     type: Inject,
@@ -309,10 +311,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrTabAction {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabAction, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrTabAction, isStandalone: false, selector: "[clrTabAction]", host: { attributes: { "tabindex": "0" } }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabAction, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrTabAction, isStandalone: false, selector: "[clrTabAction]", host: { attributes: { "tabindex": "0" } }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabAction, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabAction, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrTabAction]',
@@ -330,10 +332,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrTabOverflowContent {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabOverflowContent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrTabOverflowContent, isStandalone: false, selector: "clr-tab-overflow-content", host: { properties: { "class.dropdown-menu": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabOverflowContent, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrTabOverflowContent, isStandalone: false, selector: "clr-tab-overflow-content", host: { properties: { "class.dropdown-menu": "true" } }, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabOverflowContent, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabOverflowContent, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tab-overflow-content',
@@ -342,6 +344,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                         '[class.dropdown-menu]': 'true',
                     },
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }] });
 
@@ -496,8 +499,8 @@ class ClrTabs {
     listedForTabsActionsChanges() {
         return this.tabsActions.changes.subscribe(() => this.setTabLinkElements());
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabs, deps: [{ token: i1.IfActiveService }, { token: i2.ClrPopoverService }, { token: TabsService }, { token: TABS_ID }, { token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrTabs, isStandalone: false, selector: "clr-tabs", inputs: { layout: ["clrLayout", "layout"] }, host: { properties: { "class.tabs-vertical": "this.isVertical" } }, providers: [IfActiveService, TabsService, TABS_ID_PROVIDER], queries: [{ propertyName: "tabsActions", predicate: ClrTabAction, descendants: true, read: ElementRef }, { propertyName: "tabs", predicate: ClrTab }], viewQueries: [{ propertyName: "keyFocus", first: true, predicate: ClrKeyFocus, descendants: true, static: true }, { propertyName: "tabOverflowEl", first: true, predicate: ClrTabOverflowContent, descendants: true, read: ElementRef }, { propertyName: "tabContentViewContainer", first: true, predicate: ["tabContentViewContainer"], descendants: true, read: ViewContainerRef, static: true }], hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabs, deps: [{ token: i1.IfActiveService }, { token: i2.ClrPopoverService }, { token: TabsService }, { token: TABS_ID }, { token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrTabs, isStandalone: false, selector: "clr-tabs", inputs: { layout: ["clrLayout", "layout"] }, host: { properties: { "class.tabs-vertical": "this.isVertical" } }, providers: [IfActiveService, TabsService, TABS_ID_PROVIDER], queries: [{ propertyName: "tabsActions", predicate: ClrTabAction, descendants: true, read: ElementRef }, { propertyName: "tabs", predicate: ClrTab }], viewQueries: [{ propertyName: "keyFocus", first: true, predicate: ClrKeyFocus, descendants: true, static: true }, { propertyName: "tabOverflowEl", first: true, predicate: ClrTabOverflowContent, descendants: true, read: ElementRef }, { propertyName: "tabContentViewContainer", first: true, predicate: ["tabContentViewContainer"], descendants: true, read: ViewContainerRef, static: true }], hostDirectives: [{ directive: i2.ClrPopoverHostDirective }], ngImport: i0, template: `
     <ul
       class="nav"
       role="tablist"
@@ -556,9 +559,9 @@ class ClrTabs {
       <ng-content select="clr-tabs-actions"></ng-content>
     </ul>
     <ng-container #tabContentViewContainer></ng-container>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i4.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "component", type: i1.ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }, { kind: "component", type: ClrTabOverflowContent, selector: "clr-tab-overflow-content" }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i4.NgTemplateOutlet, selector: "[ngTemplateOutlet]", inputs: ["ngTemplateOutletContext", "ngTemplateOutlet", "ngTemplateOutletInjector"] }, { kind: "component", type: i5.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "component", type: i1.ClrKeyFocus, selector: "[clrKeyFocus]", inputs: ["clrDirection", "clrFocusOnLoad", "clrKeyFocus"], outputs: ["clrFocusChange"] }, { kind: "component", type: ClrTabOverflowContent, selector: "clr-tab-overflow-content" }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabs, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabs, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tabs',
@@ -625,6 +628,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     providers: [IfActiveService, TabsService, TABS_ID_PROVIDER],
                     hostDirectives: [ClrPopoverHostDirective],
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i1.IfActiveService }, { type: i2.ClrPopoverService }, { type: TabsService }, { type: undefined, decorators: [{
                     type: Inject,
@@ -662,14 +666,14 @@ class ClrTabsActions {
     constructor() {
         this.position = 'right';
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabsActions, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrTabsActions, isStandalone: false, selector: "clr-tabs-actions", inputs: { position: "position" }, host: { properties: { "class.tabs-actions": "true", "attr.position": "this.position" } }, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabsActions, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrTabsActions, isStandalone: false, selector: "clr-tabs-actions", inputs: { position: "position" }, host: { properties: { "class.tabs-actions": "true", "attr.position": "this.position" } }, ngImport: i0, template: `
     <div class="tabs-actions-wrapper">
       <ng-content></ng-content>
     </div>
-  `, isInline: true }); }
+  `, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabsActions, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabsActions, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-tabs-actions',
@@ -682,6 +686,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                         '[class.tabs-actions]': 'true',
                     },
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], propDecorators: { position: [{
                 type: Input
@@ -697,10 +702,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class TabsWillyWonka extends WillyWonka {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: TabsWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: TabsWillyWonka, isStandalone: false, selector: "clr-tabs", usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: TabsWillyWonka, deps: null, target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: TabsWillyWonka, isStandalone: false, selector: "clr-tabs", usesInheritance: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: TabsWillyWonka, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: TabsWillyWonka, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-tabs',
@@ -726,10 +731,10 @@ class ActiveOompaLoompa extends OompaLoompa {
     get flavor() {
         return this.ifActive.current === this.id;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ActiveOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: TabsWillyWonka, optional: true }, { token: IF_ACTIVE_ID }, { token: i1.IfActiveService }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ActiveOompaLoompa, isStandalone: false, selector: "[clrTabLink], clr-tab-content", usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ActiveOompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: TabsWillyWonka, optional: true }, { token: IF_ACTIVE_ID }, { token: i1.IfActiveService }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ActiveOompaLoompa, isStandalone: false, selector: "[clrTabLink], clr-tab-content", usesInheritance: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ActiveOompaLoompa, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ActiveOompaLoompa, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrTabLink], clr-tab-content',
@@ -763,8 +768,8 @@ class ClrTabsModule {
     constructor() {
         ClarityIcons.addIcons(ellipsisHorizontalIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrTabsModule, declarations: [ClrTabContent,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabsModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrTabsModule, declarations: [ClrTabContent,
             ClrTab,
             ClrTabs,
             ClrTabOverflowContent,
@@ -781,9 +786,9 @@ class ClrTabsModule {
             ClrTabsActions,
             TabsWillyWonka,
             ActiveOompaLoompa, ClrConditionalModule] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabsModule, imports: [CommonModule, ClrConditionalModule, ClrIcon, ClrTemplateRefModule, ClrKeyFocusModule, ClrConditionalModule] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabsModule, imports: [CommonModule, ClrConditionalModule, ClrIcon, ClrTemplateRefModule, ClrKeyFocusModule, ClrConditionalModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTabsModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTabsModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrConditionalModule, ClrIcon, ClrTemplateRefModule, ClrKeyFocusModule],

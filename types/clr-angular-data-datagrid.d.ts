@@ -1163,7 +1163,7 @@ declare class ClrDatagrid<T = any> implements AfterContentInit, AfterViewInit, O
     /**
      * Array of all selected items
      */
-    set selected(value: T[]);
+    set selected(value: T[] | undefined);
     set clrDgPreserveSelection(state: boolean);
     /**
      * @deprecated since 2.0, remove in 3.0

@@ -1,6 +1,6 @@
 import { FormControl, FormGroup } from '@angular/forms';
 import * as i0 from '@angular/core';
-import { Injectable, EventEmitter, Output, Input, Directive, NgModule, TemplateRef, ViewChild, Component, ElementRef, inject, ANIMATION_MODULE_TYPE, InjectionToken, Optional, Inject, PLATFORM_ID, DOCUMENT, HostListener, ContentChildren, SkipSelf, Renderer2 } from '@angular/core';
+import { Injectable, EventEmitter, Output, Input, Directive, NgModule, TemplateRef, ViewChild, ChangeDetectionStrategy, Component, ElementRef, inject, ANIMATION_MODULE_TYPE, InjectionToken, Optional, Inject, PLATFORM_ID, DOCUMENT, HostListener, ContentChildren, SkipSelf, Renderer2 } from '@angular/core';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 export * from '@clr/angular/utils/loading';
 export * from '@clr/angular/utils/conditional';
@@ -82,10 +82,10 @@ class DomAdapter {
     focus(element) {
         element.focus();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: DomAdapter, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: DomAdapter }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: DomAdapter, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: DomAdapter }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: DomAdapter, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: DomAdapter, decorators: [{
             type: Injectable
         }] });
 
@@ -115,10 +115,10 @@ class MockDomAdapter extends DomAdapter {
     computedHeight(_element) {
         return this._computedHeight;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDomAdapter, deps: null, target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDomAdapter }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDomAdapter, deps: null, target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDomAdapter }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: MockDomAdapter, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: MockDomAdapter, decorators: [{
             type: Injectable
         }] });
 const MOCK_DOM_ADAPTER_PROVIDER = {
@@ -157,10 +157,10 @@ class OutsideClick {
     ngOnDestroy() {
         this.documentClickListener();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: OutsideClick, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: OutsideClick, isStandalone: false, selector: "[clrOutsideClick]", inputs: { strict: ["clrStrict", "strict"] }, outputs: { outsideClick: "clrOutsideClick" }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: OutsideClick, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: OutsideClick, isStandalone: false, selector: "[clrOutsideClick]", inputs: { strict: ["clrStrict", "strict"] }, outputs: { outsideClick: "clrOutsideClick" }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: OutsideClick, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: OutsideClick, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrOutsideClick]',
@@ -182,11 +182,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  */
 const OUSTIDE_CLICK_DIRECTIVES = [OutsideClick];
 class ClrOutsideClickModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrOutsideClickModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrOutsideClickModule, declarations: [OutsideClick], imports: [CommonModule], exports: [OutsideClick] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrOutsideClickModule, imports: [CommonModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrOutsideClickModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrOutsideClickModule, declarations: [OutsideClick], imports: [CommonModule], exports: [OutsideClick] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrOutsideClickModule, imports: [CommonModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrOutsideClickModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrOutsideClickModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -209,14 +209,14 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class TemplateRefContainer {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: TemplateRefContainer, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: TemplateRefContainer, isStandalone: false, selector: "ng-component", viewQueries: [{ propertyName: "template", first: true, predicate: TemplateRef, descendants: true }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: TemplateRefContainer, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: TemplateRefContainer, isStandalone: false, selector: "ng-component", viewQueries: [{ propertyName: "template", first: true, predicate: TemplateRef, descendants: true }], ngImport: i0, template: `
     <ng-template>
       <ng-content></ng-content>
     </ng-template>
-  `, isInline: true }); }
+  `, isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: TemplateRefContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: TemplateRefContainer, decorators: [{
             type: Component,
             args: [{
                     template: `
@@ -225,6 +225,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
     </ng-template>
   `,
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], propDecorators: { template: [{
                 type: ViewChild,
@@ -238,11 +239,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrTemplateRefModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTemplateRefModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrTemplateRefModule, declarations: [TemplateRefContainer], imports: [CommonModule], exports: [TemplateRefContainer] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTemplateRefModule, imports: [CommonModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTemplateRefModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrTemplateRefModule, declarations: [TemplateRefContainer], imports: [CommonModule], exports: [TemplateRefContainer] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTemplateRefModule, imports: [CommonModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrTemplateRefModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrTemplateRefModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -289,14 +290,15 @@ const EXTRA_LARGE_BREAKPOINT = 1200;
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class EmptyAnchor {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: EmptyAnchor, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: EmptyAnchor, isStandalone: false, selector: "ng-component", ngImport: i0, template: '', isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: EmptyAnchor, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: EmptyAnchor, isStandalone: false, selector: "ng-component", ngImport: i0, template: '', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: EmptyAnchor, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: EmptyAnchor, decorators: [{
             type: Component,
             args: [{
                     template: '',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }] });
 
@@ -349,11 +351,11 @@ class HostWrapper {
  * Internal module, please do not export!
  */
 class ClrHostWrappingModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrHostWrappingModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrHostWrappingModule, declarations: [EmptyAnchor], exports: [EmptyAnchor] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrHostWrappingModule }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrHostWrappingModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrHostWrappingModule, declarations: [EmptyAnchor], exports: [EmptyAnchor] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrHostWrappingModule }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrHostWrappingModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrHostWrappingModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [EmptyAnchor],
@@ -626,10 +628,10 @@ class BaseExpandableAnimation {
             }
         });
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: BaseExpandableAnimation, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: BaseExpandableAnimation, isStandalone: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: BaseExpandableAnimation, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: BaseExpandableAnimation, isStandalone: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: BaseExpandableAnimation, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: BaseExpandableAnimation, decorators: [{
             type: Directive
         }], ctorParameters: () => [{ type: i0.ElementRef }, { type: DomAdapter }, { type: i0.Renderer2 }] });
 
@@ -663,12 +665,12 @@ class ClrExpandableAnimation extends BaseExpandableAnimation {
     animationDone(_event) {
         // Nothing to do.
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimation, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrExpandableAnimation, isStandalone: false, selector: "clr-expandable-animation", inputs: { clrExpandTrigger: "clrExpandTrigger" }, host: { listeners: { "animate.enter": "animates = !noopAnimations" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, styles: [":host{display:block}\n"] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrExpandableAnimation, deps: null, target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrExpandableAnimation, isStandalone: false, selector: "clr-expandable-animation", inputs: { clrExpandTrigger: "clrExpandTrigger" }, host: { listeners: { "animate.enter": "animates = !noopAnimations" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0, template: `<ng-content></ng-content>`, isInline: true, styles: [":host{display:block}\n"], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimation, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrExpandableAnimation, decorators: [{
             type: Component,
-            args: [{ selector: 'clr-expandable-animation', template: `<ng-content></ng-content>`, providers: [DomAdapter], host: { '(animate.enter)': 'animates = !noopAnimations' }, standalone: false, styles: [":host{display:block}\n"] }]
+            args: [{ selector: 'clr-expandable-animation', template: `<ng-content></ng-content>`, providers: [DomAdapter], host: { '(animate.enter)': 'animates = !noopAnimations' }, standalone: false, changeDetection: ChangeDetectionStrategy.Eager, styles: [":host{display:block}\n"] }]
         }], propDecorators: { clrExpandTrigger: [{
                 type: Input
             }] } });
@@ -704,10 +706,10 @@ class ClrExpandableAnimationDirective extends BaseExpandableAnimation {
     playAnimation() {
         this.animateFromStartHeight();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimationDirective, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }, { token: UNUSED_ANIMATION_BUILDER, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrExpandableAnimationDirective, isStandalone: false, selector: "[clrExpandableAnimation]", inputs: { expanded: ["clrExpandableAnimation", "expanded"] }, host: { listeners: { "animate.enter": "animates = !noopAnimations" }, properties: { "class.clr-expandable-animation": "true" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrExpandableAnimationDirective, deps: [{ token: i0.ElementRef }, { token: DomAdapter }, { token: i0.Renderer2 }, { token: UNUSED_ANIMATION_BUILDER, optional: true }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrExpandableAnimationDirective, isStandalone: false, selector: "[clrExpandableAnimation]", inputs: { expanded: ["clrExpandableAnimation", "expanded"] }, host: { listeners: { "animate.enter": "animates = !noopAnimations" }, properties: { "class.clr-expandable-animation": "true" } }, providers: [DomAdapter], usesInheritance: true, usesOnChanges: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimationDirective, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrExpandableAnimationDirective, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrExpandableAnimation]',
@@ -736,11 +738,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  */
 const EXPANDABLE_ANIMATION_DIRECTIVES = [ClrExpandableAnimation, ClrExpandableAnimationDirective];
 class ClrExpandableAnimationModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimationModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimationModule, declarations: [ClrExpandableAnimation, ClrExpandableAnimationDirective], imports: [CommonModule], exports: [ClrExpandableAnimation, ClrExpandableAnimationDirective] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimationModule, imports: [CommonModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrExpandableAnimationModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrExpandableAnimationModule, declarations: [ClrExpandableAnimation, ClrExpandableAnimationDirective], imports: [CommonModule], exports: [ClrExpandableAnimation, ClrExpandableAnimationDirective] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrExpandableAnimationModule, imports: [CommonModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrExpandableAnimationModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrExpandableAnimationModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -1059,10 +1061,10 @@ class ClrCommonStringsService {
         }
         return output;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCommonStringsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCommonStringsService, providedIn: 'root' }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrCommonStringsService, deps: [], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrCommonStringsService, providedIn: 'root' }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrCommonStringsService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrCommonStringsService, decorators: [{
             type: Injectable,
             args: [{
                     providedIn: 'root',
@@ -1159,10 +1161,10 @@ class ClrFocusOnViewInit {
             }
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrFocusOnViewInit, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }, { token: FOCUS_ON_VIEW_INIT }, { token: DOCUMENT }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrFocusOnViewInit, isStandalone: false, selector: "[clrFocusOnViewInit]", inputs: { isEnabled: ["clrFocusOnViewInit", "isEnabled"] }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrFocusOnViewInit, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }, { token: FOCUS_ON_VIEW_INIT }, { token: DOCUMENT }, { token: i0.Renderer2 }, { token: i0.NgZone }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrFocusOnViewInit, isStandalone: false, selector: "[clrFocusOnViewInit]", inputs: { isEnabled: ["clrFocusOnViewInit", "isEnabled"] }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrFocusOnViewInit, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrFocusOnViewInit, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrFocusOnViewInit]',
@@ -1190,11 +1192,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  */
 const FOCUS_ON_VIEW_INIT_DIRECTIVES = [ClrFocusOnViewInit];
 class ClrFocusOnViewInitModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrFocusOnViewInitModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrFocusOnViewInitModule, declarations: [ClrFocusOnViewInit], imports: [CommonModule], exports: [ClrFocusOnViewInit] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrFocusOnViewInitModule, providers: [FOCUS_ON_VIEW_INIT_PROVIDER], imports: [CommonModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrFocusOnViewInitModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrFocusOnViewInitModule, declarations: [ClrFocusOnViewInit], imports: [CommonModule], exports: [ClrFocusOnViewInit] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrFocusOnViewInitModule, providers: [FOCUS_ON_VIEW_INIT_PROVIDER], imports: [CommonModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrFocusOnViewInitModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrFocusOnViewInitModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -1227,10 +1229,10 @@ class ClrStandaloneCdkTrapFocus extends CdkTrapFocus {
     constructor() {
         super();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStandaloneCdkTrapFocus, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrStandaloneCdkTrapFocus, isStandalone: true, usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStandaloneCdkTrapFocus, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrStandaloneCdkTrapFocus, isStandalone: true, usesInheritance: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStandaloneCdkTrapFocus, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStandaloneCdkTrapFocus, decorators: [{
             type: Directive,
             args: [{
                     standalone: true,
@@ -1276,10 +1278,10 @@ class ClrKeyFocusItem {
             this.elementRef.nativeElement.focus();
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrKeyFocusItem, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrKeyFocusItem, isStandalone: false, selector: "[clrKeyFocusItem]", ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrKeyFocusItem, deps: [{ token: i0.ElementRef }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrKeyFocusItem, isStandalone: false, selector: "[clrKeyFocusItem]", ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrKeyFocusItem, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrKeyFocusItem, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrKeyFocusItem]',
@@ -1494,15 +1496,16 @@ class ClrKeyFocus {
             this.initializeFocus();
         });
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrKeyFocus, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrKeyFocus, isStandalone: false, selector: "[clrKeyFocus]", inputs: { direction: ["clrDirection", "direction"], focusOnLoad: ["clrFocusOnLoad", "focusOnLoad"], focusableItems: ["clrKeyFocus", "focusableItems"] }, outputs: { focusChange: "clrFocusChange" }, host: { listeners: { "keydown": "handleKeyboardEvent($event)", "click": "setClickedItemCurrent($event)" } }, queries: [{ propertyName: "clrKeyFocusItems", predicate: ClrKeyFocusItem, descendants: true }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrKeyFocus, deps: [{ token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrKeyFocus, isStandalone: false, selector: "[clrKeyFocus]", inputs: { direction: ["clrDirection", "direction"], focusOnLoad: ["clrFocusOnLoad", "focusOnLoad"], focusableItems: ["clrKeyFocus", "focusableItems"] }, outputs: { focusChange: "clrFocusChange" }, host: { listeners: { "keydown": "handleKeyboardEvent($event)", "click": "setClickedItemCurrent($event)" } }, queries: [{ propertyName: "clrKeyFocusItems", predicate: ClrKeyFocusItem, descendants: true }], ngImport: i0, template: '<ng-content></ng-content>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrKeyFocus, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrKeyFocus, decorators: [{
             type: Component,
             args: [{
                     selector: '[clrKeyFocus]',
                     template: '<ng-content></ng-content>',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i0.ElementRef }], propDecorators: { direction: [{
                 type: Input,
@@ -1609,15 +1612,16 @@ class ClrRovingTabindex extends ClrKeyFocus {
             this.renderer.setAttribute(item.nativeElement, 'tabindex', value.toString());
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRovingTabindex, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrRovingTabindex, isStandalone: false, selector: "[clrRovingTabindex]", inputs: { rovingIndexItems: ["clrRovingTabindex", "rovingIndexItems"], rovingTabindexDisabled: ["clrRovingTabindexDisabled", "rovingTabindexDisabled"] }, usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRovingTabindex, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrRovingTabindex, isStandalone: false, selector: "[clrRovingTabindex]", inputs: { rovingIndexItems: ["clrRovingTabindex", "rovingIndexItems"], rovingTabindexDisabled: ["clrRovingTabindexDisabled", "rovingTabindexDisabled"] }, usesInheritance: true, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRovingTabindex, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRovingTabindex, decorators: [{
             type: Component,
             args: [{
                     selector: '[clrRovingTabindex]',
                     template: '<ng-content></ng-content>',
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i0.Renderer2 }], propDecorators: { rovingIndexItems: [{
                 type: Input,
@@ -1635,11 +1639,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  */
 const KEY_FOCUS_DIRECTIVES = [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem];
 class ClrKeyFocusModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrKeyFocusModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrKeyFocusModule, declarations: [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem], imports: [CommonModule], exports: [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrKeyFocusModule, imports: [CommonModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrKeyFocusModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrKeyFocusModule, declarations: [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem], imports: [CommonModule], exports: [ClrKeyFocus, ClrRovingTabindex, ClrKeyFocusItem] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrKeyFocusModule, imports: [CommonModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrKeyFocusModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrKeyFocusModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule],
@@ -1731,10 +1735,10 @@ class BasicFocusableItem {
             this.el.nativeElement.click();
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: BasicFocusableItem, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: BasicFocusableItem }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: BasicFocusableItem, deps: [{ token: i0.ElementRef }, { token: i0.Renderer2 }, { token: PLATFORM_ID }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: BasicFocusableItem }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: BasicFocusableItem, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: BasicFocusableItem, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: i0.ElementRef }, { type: i0.Renderer2 }, { type: undefined, decorators: [{
                     type: Inject,
@@ -1909,10 +1913,10 @@ class FocusService {
         unlistenFuncs?.forEach(unlisten => unlisten());
         this._unlistenFuncsMap.delete(el);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: FocusService, deps: [{ token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: FocusService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: FocusService, deps: [{ token: i0.Renderer2 }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: FocusService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: FocusService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: FocusService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: i0.Renderer2 }] });
 function clrFocusServiceFactory(existing, renderer) {
@@ -1942,10 +1946,10 @@ class ScrollingService {
             this._document.body.classList.remove('no-scrolling');
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ScrollingService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ScrollingService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ScrollingService, deps: [{ token: DOCUMENT }], target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ScrollingService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ScrollingService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ScrollingService, decorators: [{
             type: Injectable
         }], ctorParameters: () => [{ type: undefined, decorators: [{
                     type: Inject,
@@ -1971,10 +1975,10 @@ class CdkDragModule_CdkDrag extends CdkDrag {
     constructor() {
         super();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkDragModule_CdkDrag, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: CdkDragModule_CdkDrag, isStandalone: false, selector: "[cdkDrag]", usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkDragModule_CdkDrag, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: CdkDragModule_CdkDrag, isStandalone: false, selector: "[cdkDrag]", usesInheritance: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkDragModule_CdkDrag, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkDragModule_CdkDrag, decorators: [{
             type: Directive,
             args: [{
                     selector: '[cdkDrag]',
@@ -1985,11 +1989,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * This module allows us to avoid importing all of CdkDragDropModule which results in a smaller application bundle.
  */
 class CdkDragModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkDragModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: CdkDragModule, declarations: [CdkDragModule_CdkDrag], exports: [CdkDragModule_CdkDrag] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkDragModule }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkDragModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: CdkDragModule, declarations: [CdkDragModule_CdkDrag], exports: [CdkDragModule_CdkDrag] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkDragModule }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkDragModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkDragModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [CdkDragModule_CdkDrag],
@@ -2016,10 +2020,10 @@ class CdkTrapFocusModule_CdkTrapFocus extends CdkTrapFocus {
     constructor() {
         super();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: CdkTrapFocusModule_CdkTrapFocus, isStandalone: false, selector: "[cdkTrapFocus]", usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: CdkTrapFocusModule_CdkTrapFocus, isStandalone: false, selector: "[cdkTrapFocus]", usesInheritance: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkTrapFocusModule_CdkTrapFocus, decorators: [{
             type: Directive,
             args: [{
                     selector: '[cdkTrapFocus]',
@@ -2030,11 +2034,11 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * This module allows us to avoid importing all of A11yModule which results in a smaller application bundle.
  */
 class CdkTrapFocusModule {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkTrapFocusModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: CdkTrapFocusModule, declarations: [CdkTrapFocusModule_CdkTrapFocus], exports: [CdkTrapFocusModule_CdkTrapFocus] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkTrapFocusModule }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkTrapFocusModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: CdkTrapFocusModule, declarations: [CdkTrapFocusModule_CdkTrapFocus], exports: [CdkTrapFocusModule_CdkTrapFocus] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkTrapFocusModule }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: CdkTrapFocusModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: CdkTrapFocusModule, decorators: [{
             type: NgModule,
             args: [{
                     declarations: [CdkTrapFocusModule_CdkTrapFocus],
@@ -2077,10 +2081,10 @@ class ClrDestroyService extends Subject {
         this.next();
         this.complete();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrDestroyService, deps: null, target: i0.ɵɵFactoryTarget.Injectable }); }
-    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrDestroyService }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrDestroyService, deps: null, target: i0.ɵɵFactoryTarget.Injectable }); }
+    static { this.ɵprov = i0.ɵɵngDeclareInjectable({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrDestroyService }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrDestroyService, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrDestroyService, decorators: [{
             type: Injectable
         }] });
 
@@ -2204,10 +2208,10 @@ class WillyWonka {
             this._chocolate.next();
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: WillyWonka, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: WillyWonka, isStandalone: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: WillyWonka, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: WillyWonka, isStandalone: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: WillyWonka, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: WillyWonka, decorators: [{
             type: Directive
         }] });
 
@@ -2234,10 +2238,10 @@ class OompaLoompa {
     ngOnDestroy() {
         this.subscription.unsubscribe();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: OompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: WillyWonka }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: OompaLoompa, isStandalone: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: OompaLoompa, deps: [{ token: i0.ChangeDetectorRef }, { token: WillyWonka }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: OompaLoompa, isStandalone: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: OompaLoompa, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: OompaLoompa, decorators: [{
             type: Directive
         }], ctorParameters: () => [{ type: i0.ChangeDetectorRef }, { type: WillyWonka }] });
 

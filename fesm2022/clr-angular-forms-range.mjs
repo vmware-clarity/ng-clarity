@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Input, Optional, Component, Self, Directive, NgModule } from '@angular/core';
+import { Input, Optional, ChangeDetectionStrategy, Component, Self, Directive, NgModule } from '@angular/core';
 import * as i1 from '@clr/angular/forms/common';
 import { ClrAbstractContainer, NgControlService, ControlIdService, ControlClassService, WrappedFormControl, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i2 from '@angular/common';
@@ -55,8 +55,8 @@ class ClrRangeContainer extends ClrAbstractContainer {
             return undefined;
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRangeContainer, deps: [{ token: i1.LayoutService, optional: true }, { token: i1.ControlClassService }, { token: i1.NgControlService }, { token: i0.Renderer2 }, { token: i1.ControlIdService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrRangeContainer, isStandalone: false, selector: "clr-range-container", inputs: { hasProgress: ["clrRangeHasProgress", "hasProgress"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRangeContainer, deps: [{ token: i1.LayoutService, optional: true }, { token: i1.ControlClassService }, { token: i1.NgControlService }, { token: i0.Renderer2 }, { token: i1.ControlIdService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrRangeContainer, isStandalone: false, selector: "clr-range-container", inputs: { hasProgress: ["clrRangeHasProgress", "hasProgress"] }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()" } }, providers: [NgControlService, ControlIdService, ControlClassService], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -78,9 +78,9 @@ class ClrRangeContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRangeContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRangeContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-range-container',
@@ -114,6 +114,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     },
                     providers: [NgControlService, ControlIdService, ControlClassService],
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i1.LayoutService, decorators: [{
                     type: Optional
@@ -132,10 +133,10 @@ class ClrRange extends WrappedFormControl {
     constructor(vcr, injector, control, renderer, el) {
         super(vcr, ClrRangeContainer, injector, control, renderer, el);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRange, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrRange, isStandalone: false, selector: "[clrRange]", host: { properties: { "class.clr-range": "true" } }, usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRange, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrRange, isStandalone: false, selector: "[clrRange]", host: { properties: { "class.clr-range": "true" } }, usesInheritance: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRange, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRange, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrRange]',
@@ -158,11 +159,11 @@ class ClrRangeModule {
     constructor() {
         ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRangeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrRangeModule, declarations: [ClrRange, ClrRangeContainer], imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon], exports: [ClrCommonFormsModule, ClrRange, ClrRangeContainer] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRangeModule, imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon, ClrCommonFormsModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRangeModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrRangeModule, declarations: [ClrRange, ClrRangeContainer], imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon], exports: [ClrCommonFormsModule, ClrRange, ClrRangeContainer] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRangeModule, imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon, ClrCommonFormsModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRangeModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRangeModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon],

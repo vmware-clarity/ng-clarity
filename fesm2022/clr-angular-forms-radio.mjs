@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { ContentChild, Component, Self, Optional, Directive, Input, ContentChildren, NgModule } from '@angular/core';
+import { ContentChild, ChangeDetectionStrategy, Component, Self, Optional, Directive, Input, ContentChildren, NgModule } from '@angular/core';
 import * as i1 from '@clr/angular/forms/common';
 import { ClrControlLabel, ControlIdService, WrappedFormControl, ClrAbstractContainer, NgControlService, ControlClassService, ContainerIdService, ClrCommonFormsModule } from '@clr/angular/forms/common';
 import * as i1$1 from '@angular/forms';
@@ -20,16 +20,16 @@ class ClrRadioWrapper {
             this.label.disableGrid();
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRadioWrapper, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrRadioWrapper, isStandalone: false, selector: "clr-radio-wrapper", host: { properties: { "class.clr-radio-wrapper": "true" } }, providers: [ControlIdService], queries: [{ propertyName: "label", first: true, predicate: ClrControlLabel, descendants: true, static: true }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRadioWrapper, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrRadioWrapper, isStandalone: false, selector: "clr-radio-wrapper", host: { properties: { "class.clr-radio-wrapper": "true" } }, providers: [ControlIdService], queries: [{ propertyName: "label", first: true, predicate: ClrControlLabel, descendants: true, static: true }], ngImport: i0, template: `
     <ng-content select="[clrRadio]"></ng-content>
     <ng-content select="label"></ng-content>
     @if (!label) {
       <label></label>
     }
-  `, isInline: true, dependencies: [{ kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRadioWrapper, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRadioWrapper, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-radio-wrapper',
@@ -45,6 +45,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     },
                     providers: [ControlIdService],
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], propDecorators: { label: [{
                 type: ContentChild,
@@ -61,10 +62,10 @@ class ClrRadio extends WrappedFormControl {
     constructor(vcr, injector, control, renderer, el) {
         super(vcr, ClrRadioWrapper, injector, control, renderer, el);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRadio, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrRadio, isStandalone: false, selector: "[clrRadio]", usesInheritance: true, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRadio, deps: [{ token: i0.ViewContainerRef }, { token: i0.Injector }, { token: i1$1.NgControl, optional: true, self: true }, { token: i0.Renderer2 }, { token: i0.ElementRef }], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrRadio, isStandalone: false, selector: "[clrRadio]", usesInheritance: true, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRadio, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRadio, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrRadio]',
@@ -121,8 +122,8 @@ class ClrRadioContainer extends ClrAbstractContainer {
         }
         this.ariaLabelledBy = this.radios?.length && this.label ? this.label.idAttr : null;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRadioContainer, deps: [{ token: i1.LayoutService, optional: true }, { token: i1.ControlClassService }, { token: i1.NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrRadioContainer, isStandalone: false, selector: "clr-radio-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()", "attr.role": "role", "attr.aria-labelledby": "ariaLabelledBy" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "radios", predicate: ClrRadio, descendants: true }], usesInheritance: true, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRadioContainer, deps: [{ token: i1.LayoutService, optional: true }, { token: i1.ControlClassService }, { token: i1.NgControlService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrRadioContainer, isStandalone: false, selector: "clr-radio-container", inputs: { clrInline: "clrInline" }, host: { properties: { "class.clr-form-control": "true", "class.clr-form-control-disabled": "control?.disabled", "class.clr-row": "addGrid()", "attr.role": "role", "attr.aria-labelledby": "ariaLabelledBy" } }, providers: [NgControlService, ControlClassService, ContainerIdService], queries: [{ propertyName: "radios", predicate: ClrRadio, descendants: true }], usesInheritance: true, ngImport: i0, template: `
     <ng-content select="label"></ng-content>
     @if (!label && addGrid()) {
       <label></label>
@@ -141,9 +142,9 @@ class ClrRadioContainer extends ClrAbstractContainer {
         <ng-content select="clr-control-success"></ng-content>
       }
     </div>
-  `, isInline: true, dependencies: [{ kind: "directive", type: i2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }] }); }
+  `, isInline: true, dependencies: [{ kind: "directive", type: i2.NgClass, selector: "[ngClass]", inputs: ["class", "ngClass"] }, { kind: "directive", type: i1.ClrControlLabel, selector: "label", inputs: ["id", "for"] }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRadioContainer, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRadioContainer, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-radio-container',
@@ -176,6 +177,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                     },
                     providers: [NgControlService, ControlClassService, ContainerIdService],
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], ctorParameters: () => [{ type: i1.LayoutService, decorators: [{
                     type: Optional
@@ -196,11 +198,11 @@ class ClrRadioModule {
     constructor() {
         ClarityIcons.addIcons(successStandardIcon, errorStandardIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRadioModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrRadioModule, declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper], imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon], exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRadioModule, imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon, ClrCommonFormsModule] }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRadioModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrRadioModule, declarations: [ClrRadio, ClrRadioContainer, ClrRadioWrapper], imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon], exports: [ClrCommonFormsModule, ClrRadio, ClrRadioContainer, ClrRadioWrapper] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRadioModule, imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon, ClrCommonFormsModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrRadioModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrRadioModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, ClrCommonFormsModule, ClrHostWrappingModule, ClrIcon],

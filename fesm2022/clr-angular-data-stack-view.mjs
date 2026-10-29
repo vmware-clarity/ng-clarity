@@ -1,5 +1,5 @@
 import * as i0 from '@angular/core';
-import { Component, Input, Directive, EventEmitter, HostBinding, ContentChild, Output, SkipSelf, Optional, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, Directive, EventEmitter, HostBinding, ContentChild, Output, SkipSelf, Optional, NgModule } from '@angular/core';
 import * as i1 from '@clr/angular/utils';
 import { uniqueIdFactory, ClrExpandableAnimationModule } from '@clr/angular/utils';
 import * as i2 from '@clr/angular/icon';
@@ -14,18 +14,18 @@ import { FormsModule } from '@angular/forms';
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrStackView {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackView, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrStackView, isStandalone: false, selector: "clr-stack-view", ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackView, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrStackView, isStandalone: false, selector: "clr-stack-view", ngImport: i0, template: `
     <ng-content select="clr-stack-header"></ng-content>
     <div class="stack-view"><ng-content></ng-content></div>
-  `, isInline: true, styles: [":host{display:block}\n"] }); }
+  `, isInline: true, styles: [":host{display:block}\n"], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackView, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackView, decorators: [{
             type: Component,
             args: [{ selector: 'clr-stack-view', template: `
     <ng-content select="clr-stack-header"></ng-content>
     <div class="stack-view"><ng-content></ng-content></div>
-  `, standalone: false, styles: [":host{display:block}\n"] }]
+  `, standalone: false, changeDetection: ChangeDetectionStrategy.Eager, styles: [":host{display:block}\n"] }]
         }] });
 
 /*
@@ -38,8 +38,8 @@ class ClrStackHeader {
     constructor(stackView) {
         this.stackView = stackView;
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackHeader, deps: [{ token: ClrStackView }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrStackHeader, isStandalone: false, selector: "clr-stack-header", inputs: { ariaLevel: ["clrStackHeaderLevel", "ariaLevel"] }, ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackHeader, deps: [{ token: ClrStackView }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrStackHeader, isStandalone: false, selector: "clr-stack-header", inputs: { ariaLevel: ["clrStackHeaderLevel", "ariaLevel"] }, ngImport: i0, template: `
     <div class="stack-header">
       <div
         [attr.role]="ariaLevel ? 'heading' : null"
@@ -53,9 +53,9 @@ class ClrStackHeader {
         <ng-content select=".stack-action"></ng-content>
       </span>
     </div>
-  `, isInline: true, styles: [":host{display:block}\n"] }); }
+  `, isInline: true, styles: [":host{display:block}\n"], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackHeader, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackHeader, decorators: [{
             type: Component,
             args: [{ selector: 'clr-stack-header', template: `
     <div class="stack-header">
@@ -71,7 +71,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
         <ng-content select=".stack-action"></ng-content>
       </span>
     </div>
-  `, standalone: false, styles: [":host{display:block}\n"] }]
+  `, standalone: false, changeDetection: ChangeDetectionStrategy.Eager, styles: [":host{display:block}\n"] }]
         }], ctorParameters: () => [{ type: ClrStackView }], propDecorators: { ariaLevel: [{
                 type: Input,
                 args: ['clrStackHeaderLevel']
@@ -84,10 +84,10 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 class ClrStackViewCustomTags {
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackViewCustomTags, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrStackViewCustomTags, isStandalone: false, selector: "clr-stack-content", ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackViewCustomTags, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrStackViewCustomTags, isStandalone: false, selector: "clr-stack-content", ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackViewCustomTags, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackViewCustomTags, decorators: [{
             type: Directive,
             args: [{
                     selector: 'clr-stack-content',
@@ -116,10 +116,10 @@ class ClrStackViewLabel {
             this._id = this._generatedId + '';
         }
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackViewLabel, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "21.2.25", type: ClrStackViewLabel, isStandalone: false, selector: "clr-stack-label", inputs: { id: "id" }, host: { properties: { "attr.id": "id" } }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackViewLabel, deps: [], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "14.0.0", version: "22.1.2", type: ClrStackViewLabel, isStandalone: false, selector: "clr-stack-label", inputs: { id: "id" }, host: { properties: { "attr.id": "id" } }, ngImport: i0, template: '<ng-content></ng-content>', isInline: true, changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackViewLabel, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackViewLabel, decorators: [{
             type: Component,
             args: [{
                     selector: 'clr-stack-label',
@@ -128,6 +128,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                         '[attr.id]': 'id',
                     },
                     standalone: false,
+                    changeDetection: ChangeDetectionStrategy.Eager,
                 }]
         }], propDecorators: { id: [{
                 type: Input
@@ -223,8 +224,8 @@ class ClrStackBlock {
         }
         event.preventDefault();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackBlock, deps: [{ token: ClrStackBlock, optional: true, skipSelf: true }, { token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
-    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "21.2.25", type: ClrStackBlock, isStandalone: false, selector: "clr-stack-block", inputs: { expanded: ["clrSbExpanded", "expanded"], expandable: ["clrSbExpandable", "expandable"], ariaLevel: ["clrStackViewLevel", "ariaLevel"], setChangedValue: ["clrSbNotifyChange", "setChangedValue"] }, outputs: { expandedChange: "clrSbExpandedChange" }, host: { properties: { "class.stack-block": "true", "attr.role": "ariaLevel ? 'heading' : null", "attr.aria-level": "ariaLevel ? ariaLevel : null", "class.stack-block-expanded": "this.expanded", "class.stack-block-expandable": "this.expandable", "class.stack-block-changed": "this.getChangedValue", "class.on-focus": "this.onStackLabelFocus" } }, queries: [{ propertyName: "stackBlockTitle", first: true, predicate: ClrStackViewLabel, descendants: true }], ngImport: i0, template: `
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackBlock, deps: [{ token: ClrStackBlock, optional: true, skipSelf: true }, { token: i1.ClrCommonStringsService }], target: i0.ɵɵFactoryTarget.Component }); }
+    static { this.ɵcmp = i0.ɵɵngDeclareComponent({ minVersion: "17.0.0", version: "22.1.2", type: ClrStackBlock, isStandalone: false, selector: "clr-stack-block", inputs: { expanded: ["clrSbExpanded", "expanded"], expandable: ["clrSbExpandable", "expandable"], ariaLevel: ["clrStackViewLevel", "ariaLevel"], setChangedValue: ["clrSbNotifyChange", "setChangedValue"] }, outputs: { expandedChange: "clrSbExpandedChange" }, host: { properties: { "class.stack-block": "true", "attr.role": "ariaLevel ? 'heading' : null", "attr.aria-level": "ariaLevel ? ariaLevel : null", "class.stack-block-expanded": "this.expanded", "class.stack-block-expandable": "this.expandable", "class.stack-block-changed": "this.getChangedValue", "class.on-focus": "this.onStackLabelFocus" } }, queries: [{ propertyName: "stackBlockTitle", first: true, predicate: ClrStackViewLabel, descendants: true }], ngImport: i0, template: `
     <!-- The 'preventDefault' for the space keydown event prevents the page
     from scrolling when a stack block is toggled via the space key. -->
     <div
@@ -267,9 +268,9 @@ class ClrStackBlock {
         </div>
       }
     </clr-expandable-animation>
-  `, isInline: true, styles: [":host{display:block}\n"], dependencies: [{ kind: "component", type: i2.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "component", type: i1.ClrExpandableAnimation, selector: "clr-expandable-animation", inputs: ["clrExpandTrigger"] }] }); }
+  `, isInline: true, styles: [":host{display:block}\n"], dependencies: [{ kind: "component", type: i2.ClrIcon, selector: "clr-icon, cds-icon", inputs: ["shape", "size", "direction", "flip", "solid", "status", "inverse", "badge", "innerOffset"] }, { kind: "component", type: i1.ClrExpandableAnimation, selector: "clr-expandable-animation", inputs: ["clrExpandTrigger"] }], changeDetection: i0.ChangeDetectionStrategy.Eager }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackBlock, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackBlock, decorators: [{
             type: Component,
             args: [{ selector: 'clr-stack-block', template: `
     <!-- The 'preventDefault' for the space keydown event prevents the page
@@ -318,7 +319,7 @@ i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImpo
                         '[class.stack-block]': 'true',
                         '[attr.role]': "ariaLevel ? 'heading' : null",
                         '[attr.aria-level]': 'ariaLevel ? ariaLevel : null',
-                    }, standalone: false, styles: [":host{display:block}\n"] }]
+                    }, standalone: false, changeDetection: ChangeDetectionStrategy.Eager, styles: [":host{display:block}\n"] }]
         }], ctorParameters: () => [{ type: ClrStackBlock, decorators: [{
                     type: SkipSelf
                 }, {
@@ -371,10 +372,10 @@ class ClrStackContentInput {
     constructor() {
         this.uniqueId = uniqueIdFactory();
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackContentInput, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
-    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "21.2.25", type: ClrStackContentInput, isStandalone: false, selector: "[clrStackInput]", host: { properties: { "class.clr-input": "true", "attr.aria-labelledby": "uniqueId" } }, ngImport: i0 }); }
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackContentInput, deps: [], target: i0.ɵɵFactoryTarget.Directive }); }
+    static { this.ɵdir = i0.ɵɵngDeclareDirective({ minVersion: "14.0.0", version: "22.1.2", type: ClrStackContentInput, isStandalone: false, selector: "[clrStackInput]", host: { properties: { "class.clr-input": "true", "attr.aria-labelledby": "uniqueId" } }, ngImport: i0 }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackContentInput, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackContentInput, decorators: [{
             type: Directive,
             args: [{
                     selector: '[clrStackInput]',
@@ -404,8 +405,8 @@ class ClrStackViewModule {
     constructor() {
         ClarityIcons.addIcons(angleIcon);
     }
-    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackViewModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
-    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "21.2.25", ngImport: i0, type: ClrStackViewModule, declarations: [ClrStackView,
+    static { this.ɵfac = i0.ɵɵngDeclareFactory({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackViewModule, deps: [], target: i0.ɵɵFactoryTarget.NgModule }); }
+    static { this.ɵmod = i0.ɵɵngDeclareNgModule({ minVersion: "14.0.0", version: "22.1.2", ngImport: i0, type: ClrStackViewModule, declarations: [ClrStackView,
             ClrStackHeader,
             ClrStackBlock,
             ClrStackContentInput,
@@ -416,9 +417,9 @@ class ClrStackViewModule {
             ClrStackContentInput,
             ClrStackViewLabel,
             ClrStackViewCustomTags] }); }
-    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackViewModule, imports: [CommonModule, FormsModule, ClrIcon, ClrExpandableAnimationModule] }); }
+    static { this.ɵinj = i0.ɵɵngDeclareInjector({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackViewModule, imports: [CommonModule, FormsModule, ClrIcon, ClrExpandableAnimationModule] }); }
 }
-i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "21.2.25", ngImport: i0, type: ClrStackViewModule, decorators: [{
+i0.ɵɵngDeclareClassMetadata({ minVersion: "12.0.0", version: "22.1.2", ngImport: i0, type: ClrStackViewModule, decorators: [{
             type: NgModule,
             args: [{
                     imports: [CommonModule, FormsModule, ClrIcon, ClrExpandableAnimationModule],
