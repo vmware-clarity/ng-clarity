@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, Input, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClarityModule } from '@clr/angular';
 import {
@@ -35,6 +35,7 @@ const CATEGORIES: { name: ClrContextCategory; covers: string }[] = [
 
 /** Live playground for the snapshot options; marked `data-clr-context-ignore` so it never describes itself. */
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-context-playground',
   standalone: true,
   imports: [FormsModule, ClarityModule],

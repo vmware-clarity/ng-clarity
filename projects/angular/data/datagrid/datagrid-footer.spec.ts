@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { TestContext } from '@clr/angular/testing';
 import { BehaviorSubject } from 'rxjs';
 
@@ -110,6 +110,7 @@ export default function (): void {
 
 @Component({
   template: `<clr-dg-footer>Hello world</clr-dg-footer>`,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class SimpleTest {}

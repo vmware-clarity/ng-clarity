@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, Output } from '@angular/core';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 
 import { ActivationError } from './interfaces';
@@ -15,6 +15,7 @@ import { ActivationError } from './interfaces';
   standalone: false,
   templateUrl: 'error.component.html',
   styleUrls: ['error.component.scss'],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ErrorComponent {
   @Input() error?: ActivationError;

@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AppfxTabsModule } from '@clr/addons/tabs';
 import { Step, StepModel, StepModelHolder, Var } from '@clr/addons/var';
@@ -30,6 +30,7 @@ export class NameModel implements StepModel {
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HorizontalTabsNameStepComponent implements StepModelHolder {
   model: NameModel;
@@ -57,6 +58,7 @@ export class RegionModel implements StepModel {
       </div>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HorizontalTabsRegionStepComponent implements StepModelHolder {
   model: RegionModel;
@@ -77,6 +79,7 @@ export class ReviewModel implements StepModel {
       <p>Review your configuration before proceeding.</p>
     </div>
   `,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HorizontalTabsReviewStepComponent implements StepModelHolder {
   model: ReviewModel;
@@ -100,6 +103,7 @@ export class TabsWorkflowModel {
     HorizontalTabsReviewStepComponent,
   ],
   template: `<appfx-tabs [tabs]="steps" [model]="workflowModel"></appfx-tabs>`,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HorizontalTabsDemoComponent implements OnInit {
   workflowModel = new TabsWorkflowModel();

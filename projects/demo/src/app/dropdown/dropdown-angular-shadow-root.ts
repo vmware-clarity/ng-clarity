@@ -5,13 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'clr-dropdown-angular-shadow-root-demo',
   templateUrl: './dropdown-angular-shadow-root.demo.html',
   styleUrls: ['./dropdown.demo.scss'],
   encapsulation: ViewEncapsulation.ShadowDom,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class DropdownAngularShadowRootDemo {}

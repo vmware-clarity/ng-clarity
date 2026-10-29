@@ -8,7 +8,7 @@
 import { CdkTrapFocus } from '@angular/cdk/a11y';
 import { ConnectedPosition } from '@angular/cdk/overlay';
 import { JsonPipe } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ClarityModule, ClrPopoverService } from '@clr/angular';
 
 import {
@@ -52,6 +52,7 @@ import {
   providers: [ClrPopoverService],
   standalone: true,
   imports: [ClarityModule, JsonPipe, CdkTrapFocus],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class StorybookPopoverComponent {
   popoverId = 'hello_world';

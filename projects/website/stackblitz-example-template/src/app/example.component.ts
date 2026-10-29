@@ -5,10 +5,11 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClarityModule } from '@clr/angular';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.OnPush,
   selector: 'app-example',
   templateUrl: './example.component.html',
   styleUrl: './example.component.scss',

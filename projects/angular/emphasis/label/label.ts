@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ElementRef, HostListener, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, Input } from '@angular/core';
 import { ClrBadge } from '@clr/angular/emphasis/badge';
 import { Type } from '@clr/angular/emphasis/common';
 
@@ -44,6 +44,7 @@ export enum ClrLabelColors {
     '[class]': 'colorClass',
   },
   imports: [ClrBadge],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrLabel {
   @Input('clrColor') color: ClrLabelColors | string = ClrLabelColors.None;

@@ -5,14 +5,14 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, viewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCommonFormsModule, ClrInputModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
 
 const code = `
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, ChangeDetectorRef, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrFormsModule, ClrWizard, ClrWizardModule } from '@clr/angular';
 
@@ -24,6 +24,8 @@ import { ClrFormsModule, ClrWizard, ClrWizardModule } from '@clr/angular';
   imports: [ClrWizardModule, ClrFormsModule, FormsModule],
 })
 export class ExampleComponent {
+  private readonly changeDetectorRef = inject(ChangeDetectorRef);
+
   @ViewChild('wizard', { static: true }) wizard: ClrWizard | undefined;
 
   untouched = true;
@@ -67,6 +69,8 @@ export class ExampleComponent {
           this.loading = false;
           clearInterval(timer);
         }
+
+        this.changeDetectorRef.markForCheck();
       }, 1000);
     } else {
       this.wizard?.forceFinish();
@@ -93,6 +97,8 @@ const html = `
 
   @if (!readyToFinish) {
     <clr-wizard-button type="cancel">Cancel</clr-wizard-button>
+  }
+  @if (!readyToFinish) {
     <clr-wizard-button type="previous">Back</clr-wizard-button>
   }
   <clr-wizard-button type="next">Next</clr-wizard-button>
@@ -173,6 +179,7 @@ const html = `
 @Component({
   selector: 'clr-wizard-stop-navigation',
   templateUrl: './wizard-stop-navigation.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrWizardModule, FormsModule, ClrCommonFormsModule, ClrInputModule, StackblitzExampleComponent],
 })
 export class WizardStopNavigation {

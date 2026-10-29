@@ -5,11 +5,20 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, EventEmitter, HostBinding, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  HostBinding,
+  Input,
+  Output,
+} from '@angular/core';
 import { ZoomLevel } from '@clr/addons/a11y';
 import { WorkflowStrings } from '@clr/addons/workflow/strings';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-tab-links',
   standalone: false,
   templateUrl: 'tab-links.component.html',

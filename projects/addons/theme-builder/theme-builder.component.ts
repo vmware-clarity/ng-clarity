@@ -6,7 +6,17 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import {
   ClarityIcons,
@@ -36,6 +46,7 @@ import { CdsThemeStructure, ContrastResult, DataRow, HslColor, ThemeColor, Theme
 import { contrastRatio, wcagScore } from './utils/wcag';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'clr-theme-builder',
   templateUrl: './theme-builder.component.html',
   styleUrl: './theme-builder.component.scss',

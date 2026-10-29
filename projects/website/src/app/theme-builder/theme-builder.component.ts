@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, inject, OnDestroy, ViewChild } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import {
@@ -54,6 +54,7 @@ const IMPORT_VALIDATION_DEBOUNCE_MS = 400;
     ClrTextareaModule,
     ClrInputModule,
   ],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ThemeBuilderComponent implements OnDestroy {
   generatedCss = '';

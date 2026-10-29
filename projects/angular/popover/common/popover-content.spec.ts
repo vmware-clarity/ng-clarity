@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, ElementRef, ViewChild } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { TestContext } from '@clr/angular/testing';
 
@@ -26,9 +26,11 @@ import { ClrPopoverPosition } from './utils/popover-positions';
     </div>
   `,
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   template: ``,
   providers: [ClrPopoverService],
   standalone: false,
@@ -52,6 +54,7 @@ class SimpleContent {
     </div>
   `,
   providers: [ClrPopoverService],
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class PointContent {

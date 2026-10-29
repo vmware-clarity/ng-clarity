@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, DebugElement } from '@angular/core';
+import { ChangeDetectionStrategy, Component, DebugElement } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ClrIcon } from '@clr/angular/icon';
@@ -14,6 +14,7 @@ import { ClrTabsModule } from '@clr/angular/layout/tabs';
 import { TabsHelper } from './tabs-helper';
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-mock-tabs',
   imports: [ClrIcon, ClrTabsModule],
   template: `
@@ -45,6 +46,7 @@ import { TabsHelper } from './tabs-helper';
 class TestClarityTabsComponent {}
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'appfx-mock-multiple-tabs',
   imports: [ClrTabsModule],
   template: `

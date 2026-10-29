@@ -7,8 +7,9 @@
 
 import { isPlatformBrowser } from '@angular/common';
 import { DOCUMENT, ErrorHandler, inject, Injectable, NgZone, OnDestroy, PLATFORM_ID } from '@angular/core';
-import { CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
-import { defer, EMPTY, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
+import { NavigationEnd, Router } from '@angular/router';
+import { CLR_CONTEXT_IGNORE_ATTRIBUTE, CLR_CONTEXT_IGNORE_SELECTOR } from '@clr/angular/utils';
+import { defer, EMPTY, filter, Observable, ReplaySubject, Subject, Subscription } from 'rxjs';
 
 import { CLR_CONTEXT_LOADING_TYPE, ClrContextRegistryService } from './context-registry.service';
 import { ClrContextEngineService } from './contextual-engine.service';
@@ -58,7 +59,7 @@ export class ClrContextTrackerService implements OnDestroy {
   private readonly frames = new Map<HTMLIFrameElement, TrackedFrame>();
   /** Observers do not cross shadow boundaries, so each open shadow root gets its own. */
   private readonly shadowObservers = new Map<ShadowRoot, MutationObserver>();
-  private registrySubscription: Subscription | null = null;
+  private subscriptions: Subscription | null = null;
   private latest: ClrPageContext | null = null;
   private latestSerialized: string | null = null;
   /** Bumped by each scrape, `refresh` and `stop`, so a slower earlier scrape never overwrites a newer snapshot. */
@@ -75,6 +76,7 @@ export class ClrContextTrackerService implements OnDestroy {
   private readonly contextEngine = inject(ClrContextEngineService);
   private readonly contextRegistry = inject(ClrContextRegistryService);
   private readonly zone = inject(NgZone);
+  private readonly router = inject(Router, { optional: true });
 
   constructor() {
     // A completed ReplaySubject still replays: once destroyed, a new subscriber gets nothing.
@@ -104,7 +106,8 @@ export class ClrContextTrackerService implements OnDestroy {
 
   /**
    * Starts tracking with an immediate snapshot. Calling it again restarts with the new options. Tracking
-   * started here runs until `stop`, even after the last `track()` subscriber leaves.
+   * started here runs until `stop`, even after the last `track()` subscriber leaves. An open shadow root
+   * attached to an element already on the page is watched from the next snapshot; `refresh` takes one.
    */
   start(options: ClrContextTrackingOptions = {}): void {
     this.sharedStarted = false;
@@ -155,8 +158,8 @@ export class ClrContextTrackerService implements OnDestroy {
       observer.disconnect();
     }
     this.shadowObservers.clear();
-    this.registrySubscription?.unsubscribe();
-    this.registrySubscription = null;
+    this.subscriptions?.unsubscribe();
+    this.subscriptions = null;
     this.clearTimers();
   }
 
@@ -169,6 +172,7 @@ export class ClrContextTrackerService implements OnDestroy {
     this.scrapeRun++;
     const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
     this.emit(snapshot);
+    this.zone.runOutsideAngular(() => this.observeShadowRootsIn(this.document));
     const loading =
       snapshot.metadataState === 'loading' || snapshot.regions.some(region => region.type === CLR_CONTEXT_LOADING_TYPE);
     if (!loading) {
@@ -198,7 +202,11 @@ export class ClrContextTrackerService implements OnDestroy {
 
       this.stopListeningForValues = listenForValues(this.document.body, event => this.onValueChange(event));
 
-      this.registrySubscription = this.contextRegistry.changes$.subscribe(() => this.scheduleScrape());
+      this.subscriptions = this.contextRegistry.changes$.subscribe(() => this.scheduleScrape());
+      // A navigation that reuses the component may change nothing in the DOM, only the route.
+      this.subscriptions.add(
+        this.router?.events.pipe(filter(event => event instanceof NavigationEnd)).subscribe(() => this.scheduleScrape())
+      );
     });
     this.refresh();
   }
@@ -222,7 +230,11 @@ export class ClrContextTrackerService implements OnDestroy {
         }
       }
     }
-    if (records.every(record => isInsideIgnoredRegion(record.target) || isPlacementOnly(record))) {
+    // Ignoring a region changes what the snapshot holds, though the element is then inside it.
+    const unchanged = (record: MutationRecord) =>
+      (record.attributeName !== CLR_CONTEXT_IGNORE_ATTRIBUTE && isInsideIgnoredRegion(record.target)) ||
+      isPlacementOnly(record);
+    if (records.every(unchanged)) {
       return;
     }
     this.scheduleScrape();
@@ -282,6 +294,8 @@ export class ClrContextTrackerService implements OnDestroy {
       this.zone.runOutsideAngular(() => {
         this.observeFrames();
         this.forgetDetachedShadowRoots();
+        // Attaching a shadow root is no DOM mutation, so roots attached to hosts already on the page are found here.
+        this.observeShadowRootsIn(this.document);
         if (this.scrapeDirty) {
           this.scrapeDirty = false;
           // Untracked, only a `refresh` marks the page dirty, and it is still owed its answer.

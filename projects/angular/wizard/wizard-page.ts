@@ -5,7 +5,16 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ContentChild, EventEmitter, Input, OnInit, Output, TemplateRef } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ContentChild,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  TemplateRef,
+} from '@angular/core';
 
 import { ButtonHubService } from './providers/button-hub.service';
 import { PageCollectionService } from './providers/page-collection.service';
@@ -38,6 +47,7 @@ let wizardPageIndex = 0;
     '[class.clr-wizard-page]': 'true',
   },
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class ClrWizardPage implements OnInit {
   /**

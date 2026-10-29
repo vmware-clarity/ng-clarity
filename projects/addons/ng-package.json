@@ -3,5 +3,6 @@
   "dest": "../../dist/clr-addons",
   "lib": {
     "entryFile": "index.ts"
-  }
+  },
+  "allowedNonPeerDependencies": ["reflect-metadata"]
 }

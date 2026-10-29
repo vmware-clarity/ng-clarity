@@ -6,7 +6,7 @@
  */
 
 import { LiveAnnouncer } from '@angular/cdk/a11y';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { ClarityIcons, ClrIcon, copyIcon, downloadIcon } from '@clr/angular';
 
@@ -42,6 +42,7 @@ const AI_DOCS = RAW_AI_DOCS as Record<string, (typeof RAW_AI_DOCS)[keyof typeof 
     }
   `,
   imports: [ClrIcon, RouterLink, SafeHtmlPipe],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class AiSkillComponent {
   @Input({ required: true }) skillName: string | undefined;

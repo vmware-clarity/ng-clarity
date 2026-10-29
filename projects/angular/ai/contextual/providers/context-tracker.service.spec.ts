@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, ErrorHandler } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ErrorHandler } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { CLR_CONTEXT_IGNORE_ATTRIBUTE } from '@clr/angular/utils';
@@ -16,7 +16,7 @@ import { ClrContextEngineService } from './contextual-engine.service';
 import { ClrContextChange } from '../diff';
 import { ClrComponentContext, ClrPageContext } from '../interfaces/context.interface';
 
-@Component({ template: '' })
+@Component({ template: '', changeDetection: ChangeDetectionStrategy.Eager })
 class RoutedComponent {}
 
 /*
@@ -221,6 +221,17 @@ describe('ClrContextTrackerService', () => {
     expect(widgetLabels(tracker.currentContext)).toEqual([]);
   });
 
+  it('drops a region from the tracked context once it is marked ignored', async () => {
+    const widget = addWidget('Sensitive');
+    tracker.start({ debounceMs: 20 });
+    expect(widgetLabels(tracker.currentContext)).toEqual(['Sensitive']);
+
+    widget.setAttribute(CLR_CONTEXT_IGNORE_ATTRIBUTE, '');
+    await elapse(20);
+
+    expect(widgetLabels(tracker.currentContext)).toEqual([]);
+  });
+
   it('does not re-scrape when a style only moves or resizes something, and does when it hides it', async () => {
     const widget = addWidget('Popover');
     tracker.start({ debounceMs: 20 });
@@ -387,6 +398,26 @@ describe('ClrContextTrackerService', () => {
         await elapse(20);
 
         expect(routedTracker.currentContext?.route?.url).toBe('/inventory');
+      } finally {
+        routedTracker.stop();
+      }
+    });
+
+    it('tracks a navigation that changes only the route, with nothing in the DOM', async () => {
+      TestBed.resetTestingModule();
+      TestBed.configureTestingModule({
+        providers: [provideRouter([{ path: 'inventory', component: RoutedComponent }])],
+      });
+      const routedTracker = TestBed.inject(ClrContextTrackerService);
+      const router = TestBed.inject(Router);
+      await router.navigateByUrl('/inventory?a=1');
+      routedTracker.start({ debounceMs: 20 });
+
+      try {
+        await router.navigateByUrl('/inventory?a=2');
+        await elapse(20);
+
+        expect(routedTracker.currentContext?.route?.url).toBe('/inventory?a=2');
       } finally {
         routedTracker.stop();
       }
@@ -776,6 +807,27 @@ describe('ClrContextTrackerService, asynchronous providers and shadow roots', ()
       await elapse(10);
 
       expect(emitted.length).toBe(countAfterInsert + 1);
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+    } finally {
+      host.remove();
+    }
+  });
+
+  it('watches a shadow root attached to a host already on the page, from the next snapshot', async () => {
+    const host = document.createElement('late-root-host');
+    document.body.appendChild(host);
+    try {
+      tracker.start({ debounceMs: 10 });
+      const root = host.attachShadow({ mode: 'open' });
+      root.innerHTML = '<button>Before</button>';
+      tracker.refresh();
+      await elapse(10);
+      const countAfterRefresh = emitted.length;
+
+      (root.querySelector('button') as HTMLButtonElement).textContent = 'After';
+      await elapse(10);
+
+      expect(emitted.length).toBe(countAfterRefresh + 1);
       expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
     } finally {
       host.remove();
