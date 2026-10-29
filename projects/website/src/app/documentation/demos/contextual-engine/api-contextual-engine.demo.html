@@ -38,7 +38,8 @@
         <code cds-text="code">getSnapshotAsync(&#123; maxComponents: 50, timeoutMs: 500 &#125;)</code>. A provider that
         rejects or does not answer in time is reported as a region of type
         <code cds-text="code">'clr-unavailable'</code>. The page is read once the providers have answered; a provider
-        unregistered meanwhile is left out, and one registered meanwhile is asked by the next snapshot.
+        unregistered meanwhile is left out, and one registered meanwhile is asked by the next snapshot. When the view
+        changes meanwhile, the new view is described, waiting once more for its providers.
       </td>
     </tr>
     <tr>
