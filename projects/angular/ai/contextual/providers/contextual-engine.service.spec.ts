@@ -1028,6 +1028,37 @@ describe('ClrContextEngineService, a view that changes while providers answer', 
 
     expect((await snapshot).viewId).toBe('vms');
   });
+
+  it('awaits the new view’s providers after a navigation between routes without view ids', async () => {
+    TestBed.resetTestingModule();
+    TestBed.configureTestingModule({
+      providers: [
+        provideRouter([
+          { path: 'hosts', children: [] },
+          { path: 'vms', children: [] },
+        ]),
+      ],
+    });
+    const engine = TestBed.inject(ClrContextEngineService);
+    const router = TestBed.inject(Router);
+    const answers: ((context: ClrComponentContext) => void)[] = [];
+    TestBed.inject(ClrContextRegistryService).register({
+      getClrContext: () => new Promise(resolve => answers.push(resolve)),
+    });
+    await router.navigateByUrl('/hosts');
+
+    const snapshot = engine.getSnapshotAsync({ includeDomComponents: false });
+    await router.navigateByUrl('/vms');
+    answers[0]({ type: 'region', label: 'Hosts' });
+    for (let wait = 0; answers.length < 2 && wait < 50; wait++) {
+      await new Promise(resolve => setTimeout(resolve));
+    }
+    answers[1]?.({ type: 'region', label: 'VMs' });
+
+    const result = await snapshot;
+    expect(result.route?.url).toBe('/vms');
+    expect(result.regions).toEqual([{ type: 'region', label: 'VMs' }]);
+  });
 });
 
 describe('ClrContextEngineService, an unrecognised views setting', () => {

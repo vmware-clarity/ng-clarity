@@ -185,15 +185,18 @@ export class ClrContextEngineService implements OnDestroy {
     return this.describePage(snapshot, resolved, regions, untrusted);
   }
 
+  /** After a navigation, the new view's providers are awaited once more; then it settles for a synchronous snapshot. */
   private async snapshotAsync(
     asyncOptions: ClrContextAsyncSnapshotOptions | undefined,
-    untrusted: boolean
+    untrusted: boolean,
+    retries = 1
   ): Promise<ClrPageContext> {
     const { timeoutMs, ...options } = asyncOptions ?? {};
     const view = this.viewSnapshot();
     if (view.enabled === false) {
       return view;
     }
+    const address = this.address();
     const resolved = resolveSnapshotOptions(withCallOptions(this.applicationOptions, options));
     const regions = await this.contextRegistry.collectAsync({
       filter: this.regionFilter(resolved),
@@ -202,8 +205,9 @@ export class ClrContextEngineService implements OnDestroy {
       untrusted,
     });
     const snapshot = this.viewSnapshot();
-    if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled) {
-      return this.snapshot(options, untrusted);
+    // The answers are the old view's: a view id is optional, so the address is compared too.
+    if (snapshot.viewId !== view.viewId || snapshot.enabled !== view.enabled || this.address() !== address) {
+      return retries > 0 ? this.snapshotAsync(asyncOptions, untrusted, retries - 1) : this.snapshot(options, untrusted);
     }
     // The page is read once providers have answered, so a region redacted meanwhile is read as it is now.
     return this.describePage(snapshot, resolved, regions, untrusted);
@@ -290,6 +294,11 @@ export class ClrContextEngineService implements OnDestroy {
 
   private browserWindow(): Window | null {
     return isPlatformBrowser(this.platformId) ? this.document.defaultView : null;
+  }
+
+  /** Where the application is, as its router sees it. */
+  private address(): string | undefined {
+    return this.router?.url ?? this.currentUrl();
   }
 
   private currentUrl(): string | undefined {
