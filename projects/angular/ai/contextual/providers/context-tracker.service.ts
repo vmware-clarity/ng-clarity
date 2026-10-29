@@ -403,7 +403,8 @@ function isInsideIgnoredRegion(node: Node): boolean {
   return !!element?.closest(CLR_CONTEXT_IGNORE_SELECTOR);
 }
 
-const VISIBILITY_DECLARATIONS = /(?:^|;)\s*(?:display|visibility|opacity|content-visibility)\s*:[^;]*/gi;
+// A custom property can feed any of these, so a change to one counts too.
+const VISIBILITY_DECLARATIONS = /(?:^|;)\s*(?:display|visibility|opacity|content-visibility|--[\w-]+)\s*:[^;]*/gi;
 
 /** Whether a mutation only moved or resized something, e.g. a popover repositioning on scroll. */
 function isPlacementOnly(record: MutationRecord): boolean {

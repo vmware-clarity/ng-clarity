@@ -15,14 +15,21 @@ export interface NodeBudget {
 
 /**
  * `nodes` and their children, depth first, each charged to `budget` while it lasts; nodes of an
- * `excluded` type are dropped with their children. For trees that are not walked: published children
- * and provider regions.
+ * `excluded` type are dropped with their children, as are nodes more than `levels` deep. For trees that
+ * are not walked: published children and provider regions.
  */
 export function charged(
   nodes: ClrComponentContext[],
   budget: NodeBudget,
-  excluded: ReadonlySet<string> = new Set()
+  excluded: ReadonlySet<string> = new Set(),
+  levels = Infinity
 ): ClrComponentContext[] {
+  if (levels <= 0) {
+    if (nodes.length) {
+      budget.truncated = true;
+    }
+    return [];
+  }
   const kept: ClrComponentContext[] = [];
   for (const node of nodes) {
     if (excluded.has(node.type)) {
@@ -33,7 +40,7 @@ export function charged(
       break;
     }
     budget.remaining--;
-    kept.push(node.children ? { ...node, children: charged(node.children, budget, excluded) } : node);
+    kept.push(node.children ? { ...node, children: charged(node.children, budget, excluded, levels - 1) } : node);
   }
   return kept;
 }
