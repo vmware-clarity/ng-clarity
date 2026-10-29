@@ -21,7 +21,13 @@ import {
   ControlIdService,
   NgControlService,
 } from '@clr/angular/forms/common';
-import { ClrCommonStringsService, contextText, publishElementContext } from '@clr/angular/utils';
+import {
+  CLR_CONTEXT_WITHHELD_SELECTOR,
+  ClrCommonStringsService,
+  contextText,
+  publishElementContext,
+  usableSelectors,
+} from '@clr/angular/utils';
 
 import { ClrFileInput } from './file-input';
 import { selectFiles } from './file-input.helpers';
@@ -121,7 +127,7 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
   private readonly hostElement = inject<ElementRef<HTMLElement>>(ElementRef);
 
   // File names are user input, so only the count is published, under a withheld key.
-  private readonly teardownElementContext = publishElementContext(this.hostElement.nativeElement, () => {
+  private readonly teardownElementContext = publishElementContext(this.hostElement.nativeElement, options => {
     const state: Record<string, unknown> = {
       fileCount: this.fileInput?.elementRef.nativeElement.files?.length ?? 0,
       redacted: true,
@@ -130,10 +136,13 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
       state.disabled = true;
     }
     const label = this.hostElement.nativeElement.querySelector(':scope > label');
+    const excluded = usableSelectors(this.hostElement.nativeElement.ownerDocument, options?.excludeSelectors ?? []);
+    // A label kept from agents, or excluded from the snapshot, is not read; nor is excluded text inside it.
+    const shown = label && !label.matches(CLR_CONTEXT_WITHHELD_SELECTOR) && !(excluded && label.matches(excluded));
     return {
       type: 'group',
       element: 'clr-file-input-container',
-      label: label ? contextText(label) : '',
+      label: shown ? contextText(label, descendant => !!excluded && descendant.matches(excluded)) : '',
       state,
       publicKeys: ['disabled'],
     };

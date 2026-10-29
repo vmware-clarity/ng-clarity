@@ -237,6 +237,10 @@ function dataRows(rows: Element[]): Element[] {
 }
 
 function queryRole(element: Element, role: string, scope: SummaryScope): Element[] {
+  // Items of an excluded role are left out of the summary as the walk leaves them out.
+  if (scope.options.excludeRoles.includes(role)) {
+    return [];
+  }
   const container = ITEM_CONTAINER_SELECTORS[role];
   const judgesStyle = STYLE_JUDGED_ROLES.has(role);
   return queryRendered(element, ITEM_SELECTORS[role]).filter(

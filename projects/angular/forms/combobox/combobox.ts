@@ -43,6 +43,7 @@ import {
   CLR_CONTEXT_DEFAULT_MAX_ITEMS,
   CLR_CONTEXT_EDITING_HOST_SELECTOR,
   CLR_CONTEXT_HIDDEN_SELECTOR,
+  CLR_CONTEXT_IGNORE_SELECTOR,
   CLR_CONTEXT_REDACT_SELECTOR,
   CLR_CONTEXT_WITHHELD_SELECTOR,
   ClrCommonStringsService,
@@ -751,7 +752,8 @@ export class ClrCombobox<T>
     for (let current: Element | null = element; current; current = current.parentElement) {
       if (
         (excluded && current.matches(excluded)) ||
-        (current !== list && current.matches(CLR_CONTEXT_HIDDEN_SELECTOR))
+        // The list itself may be hidden while closed, but not kept from agents.
+        current.matches(current === list ? CLR_CONTEXT_IGNORE_SELECTOR : CLR_CONTEXT_HIDDEN_SELECTOR)
       ) {
         return 'excluded';
       }

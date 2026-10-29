@@ -8,6 +8,7 @@
 import { ChangeDetectionStrategy, Component, Type } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule } from '@angular/forms';
+import { By } from '@angular/platform-browser';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { ClrContextEngineService } from '@clr/angular/ai';
 import { publishedOn } from '@clr/angular/testing';
@@ -18,6 +19,7 @@ import {
   ClrLoadingModule,
 } from '@clr/angular/utils';
 
+import { ClrCombobox } from './combobox';
 import { ClrComboboxModule } from './combobox.module';
 
 /** Creates a fixture and lets its comboboxes settle. */
@@ -359,6 +361,15 @@ describe('ClrCombobox element context, options marked or excluded themselves', (
 
   it('leaves excluded text inside an option out of its label and out of the selection', () => {
     expect(JSON.stringify(published(fixture, 'clr-combobox', options))).not.toContain('ACC-42');
+  });
+
+  it('lists no options from a list kept from agents', () => {
+    // The list is not in the page while the popover is closed, so it is reached through the component.
+    const combobox: ClrCombobox<string> = fixture.debugElement.query(By.directive(ClrCombobox)).componentInstance;
+    const list: HTMLElement = combobox['options'].el.nativeElement;
+    list.setAttribute('data-clr-context-ignore', '');
+
+    expect(JSON.stringify(published(fixture, 'clr-combobox', options))).not.toMatch(/Checking|Savings/);
   });
 });
 

@@ -9,6 +9,7 @@ import { ChangeDetectionStrategy, Component, Type, ViewChild } from '@angular/co
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { FormsModule, NgModel } from '@angular/forms';
 import { ClrContextEngineService } from '@clr/angular/ai';
+import { publishedOn } from '@clr/angular/testing';
 import { ClrComponentContext } from '@clr/angular/utils';
 
 import { selectFiles } from './file-input.helpers';
@@ -110,6 +111,17 @@ describe('ClrFileInputContainer, as page-context tooling sees it', () => {
     expect(node?.label).toBe('Statement');
     expect(node?.state).toEqual(jasmine.objectContaining({ fileCount: 1, redacted: true }));
     expect(JSON.stringify(components)).not.toContain('4111');
+  });
+
+  it('takes no label from a label kept from agents, or excluded text inside it', async () => {
+    await create(SingleFileTest, []);
+    const host: HTMLElement = fixture.nativeElement.querySelector('clr-file-input-container');
+    const label = host.querySelector('label') as HTMLElement;
+    label.insertAdjacentHTML('beforeend', '<span class="secret"> ACC-42</span>');
+
+    expect(publishedOn(host, { excludeSelectors: ['.secret'] })?.label).toBe('Statement');
+    label.setAttribute('data-clr-context-redact', '');
+    expect(publishedOn(host)?.label).toBe('');
   });
 
   it('is described as a group named by its tag, as any role-less custom element is', async () => {
