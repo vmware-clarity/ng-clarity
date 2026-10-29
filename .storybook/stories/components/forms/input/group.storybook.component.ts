@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { ClrFormLayout } from '@clr/angular';
 
@@ -64,6 +64,7 @@ import { ClrFormLayout } from '@clr/angular';
     </form>
   `,
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class FormsStoryComponent {
   _isDisabled = false;

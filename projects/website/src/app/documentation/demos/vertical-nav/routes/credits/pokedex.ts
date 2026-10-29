@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrFocusOnViewInitModule } from '@clr/angular';
 
 import { CodeSnippetComponent } from '../../../../../shared/code-snippet/code-snippet.component';
@@ -30,6 +30,7 @@ and
     </p>
     <app-code-snippet [code]="htmlExample"></app-code-snippet>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrFocusOnViewInitModule, CodeSnippetComponent],
 })
 export class PokedexDemo {

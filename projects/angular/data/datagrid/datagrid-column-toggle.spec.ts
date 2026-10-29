@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, TemplateRef, ViewChild } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { delay, TestContext } from '@clr/angular/testing';
 
@@ -19,6 +19,7 @@ import { MOCK_COLUMN_SERVICE_PROVIDER, MockColumnsService } from './providers/co
     <!--The above ng-template is required/used as a hideable column template-->
     <clr-dg-column-toggle></clr-dg-column-toggle>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class ColumnToggleTest {

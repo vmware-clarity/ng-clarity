@@ -6,7 +6,7 @@
  */
 
 import { NgClass } from '@angular/common';
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { ProgBarExample } from './progbar-example';
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -33,6 +33,7 @@ const EXAMPLE = `
   selector: 'clr-progress-bar-examples-demo',
   styleUrl: 'progress-bars.demo.scss',
   templateUrl: './progress-bar-examples.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [NgClass, StackblitzExampleComponent],
 })
 export class ProgressBarExamplesDemo {

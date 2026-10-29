@@ -7,7 +7,7 @@
 
 import { InteractivityChecker } from '@angular/cdk/a11y';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, DebugElement, Input, NgModule } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, DebugElement, Input, NgModule } from '@angular/core';
 import { ComponentFixture, fakeAsync, TestBed, tick } from '@angular/core/testing';
 import { By } from '@angular/platform-browser';
 import { ZoomLevel, ZoomLevelService } from '@clr/addons/a11y';
@@ -112,6 +112,7 @@ class MockPage4Model implements StepModel {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'mock-page-1-component',
   standalone: false,
   template: `<div>Page 1 Content</div>`,
@@ -132,6 +133,7 @@ class MockPage1Component implements StepComponent {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'mock-page-2-component',
   standalone: false,
   template: `<div>Page 2 Content</div>`,
@@ -151,6 +153,7 @@ class MockPage2Component implements StepComponent {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'mock-page-3-component',
   standalone: false,
   template: `<div>Page 3 Content</div>`,
@@ -168,6 +171,7 @@ class MockPage3Component implements StepModelHolder {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'mock-page-4-component',
   standalone: false,
   template: `<div>Page 4 Content</div>`,
@@ -189,6 +193,7 @@ class MockPage4Component implements StepModelHolder {
 }
 
 @Component({
+  changeDetection: ChangeDetectionStrategy.Eager,
   selector: 'mock-footer-component',
   imports: [CommonModule],
   standalone: true,

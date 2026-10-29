@@ -6,7 +6,7 @@
  */
 
 import { NgClass } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { ClrIcon, ClrLabel } from '@clr/angular';
 import { RenderComponentStorybook } from '@storybook-helpers/render-component';
 
@@ -45,6 +45,7 @@ import { RenderComponentStorybook } from '@storybook-helpers/render-component';
   `,
   standalone: true,
   imports: [ClrIcon, ClrLabel, NgClass],
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class LabelStoryBookComponent extends RenderComponentStorybook {
   @Input() content = 'Hello World!';

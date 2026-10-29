@@ -6,7 +6,7 @@
  */
 
 import { ConnectedPosition } from '@angular/cdk/overlay';
-import { Component, ViewEncapsulation } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ViewEncapsulation } from '@angular/core';
 import {
   ClrPopoverPosition,
   ClrPopoverType,
@@ -20,6 +20,7 @@ import { uniqueIdFactory } from '@clr/angular/utils';
   styleUrls: ['./popovers.demo.scss'],
   templateUrl: './popovers.demo.html',
   encapsulation: ViewEncapsulation.None,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 export class PopoversDemo {

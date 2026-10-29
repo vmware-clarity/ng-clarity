@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrStackViewModule } from '@clr/angular';
 
 import { RemoveStackViewHeadingsDirective } from './remove-stack-view-headings.directive';
@@ -57,6 +57,7 @@ const EXAMPLE = `
   selector: 'clr-stack-view-angular-basic-demo',
   templateUrl: './stack-view-angular-basic.html',
   styleUrl: './stack-view.demo.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [ClrStackViewModule, RemoveStackViewHeadingsDirective, StackblitzExampleComponent],
 })
 export class StackViewAngularBasicDemo extends StackViewNgDemo {

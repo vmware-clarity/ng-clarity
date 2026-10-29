@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import {
   ActionDefinition,
   AppfxDatagridModule,
@@ -22,6 +22,7 @@ import { Inventory, VmItem } from '../inventory/inventory';
   imports: [AppfxDatagridModule, GridConfigFormComponent],
   standalone: true,
   templateUrl: 'client-side-grid-demo.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   providers: [ExportProviderService, Inventory],
 })
 export class ClientSideDatagridDemoComponent {

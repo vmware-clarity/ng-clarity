@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ClrIfActive, ClrPopoverHostDirective, ClrStopEscapePropagationDirective, ClrTabsModule } from '@clr/angular';
 
 import { StackblitzExampleComponent } from '../../../shared/stackblitz-example/stackblitz-example.component';
@@ -36,6 +36,7 @@ const EXAMPLE = `
 @Component({
   selector: 'tabs-angular-dynamic-selection',
   templateUrl: './tabs-angular-dynamic-selection.demo.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [
     ClrStopEscapePropagationDirective,
     ClrPopoverHostDirective,

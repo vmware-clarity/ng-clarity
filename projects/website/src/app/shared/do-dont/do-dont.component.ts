@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, Input } from '@angular/core';
 import { checkIcon, ClarityIcons, ClrIcon, timesIcon, warningStandardIcon } from '@clr/angular';
 
 const TYPE_DISPLAY_TEXT = {
@@ -19,6 +19,7 @@ const TYPE_DISPLAY_TEXT = {
   selector: 'app-do-dont',
   templateUrl: 'do-dont.component.html',
   styleUrl: './do-dont.component.scss',
+  changeDetection: ChangeDetectionStrategy.Eager,
   imports: [CommonModule, ClrIcon],
 })
 export class DoDontComponent {

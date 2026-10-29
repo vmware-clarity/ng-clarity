@@ -10,7 +10,7 @@ import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test';
 import { browser } from './tests/helpers/vrt';
 
 const storybookServer = {
-  command: 'npm run ts-node -- ./scripts/start-static-server.ts ./dist/docs 8080',
+  command: 'node --experimental-strip-types ./scripts/start-static-server.ts ./dist/docs 8080',
   port: 8080,
 };
 
@@ -35,7 +35,7 @@ const suites: Record<string, PlaywrightTestConfig> = {
     timeout: 600 * 1000,
     expect: { timeout: 10000 },
     webServer: {
-      command: 'npm run ts-node -- ./scripts/start-static-server.ts ./dist/website 8081 --spa',
+      command: 'node --experimental-strip-types ./scripts/start-static-server.ts ./dist/website 8081 --spa',
       port: 8081,
     },
   },

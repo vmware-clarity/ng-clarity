@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 import { Inventory } from '../inventory/inventory';
 import { User } from '../inventory/user';
@@ -16,6 +16,7 @@ import { User } from '../inventory/user';
   templateUrl: 'pinnable-columns.html',
   styleUrls: ['../datagrid.demo.scss'],
   standalone: false,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class DatagridPinnableColumnsDemo {
   users: User[];

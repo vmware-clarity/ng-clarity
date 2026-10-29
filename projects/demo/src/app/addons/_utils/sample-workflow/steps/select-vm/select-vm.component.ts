@@ -5,7 +5,7 @@
  * The full license information can be found in LICENSE in the root directory of this project.
  */
 
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { OnStepValidate, StepModelHolder } from '@clr/addons/var';
 import { ClarityIcons, ClarityModule, vmIcon } from '@clr/angular';
 import { Observable, of } from 'rxjs';
@@ -17,6 +17,7 @@ import { SelectVmModel } from './select-vm.model';
   standalone: true,
   imports: [ClarityModule],
   templateUrl: 'select-vm.component.html',
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class SelectVmComponent implements StepModelHolder, OnStepValidate {
   model: SelectVmModel;

@@ -6,7 +6,7 @@
  */
 
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ClrCheckboxModule } from '@clr/angular';
 import { createArray } from '@storybook-helpers/common';
@@ -129,6 +129,7 @@ export enum CheckboxType {
       }
     </ng-template>
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
 })
 export class CheckboxToggleStorybookComponent {
   createArray = createArray;

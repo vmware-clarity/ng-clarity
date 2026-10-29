@@ -7,7 +7,14 @@
 
 import { Directionality } from '@angular/cdk/bidi';
 import { ScrollDispatcher, ViewportRuler } from '@angular/cdk/scrolling';
-import { ChangeDetectorRef, Component, CUSTOM_ELEMENTS_SCHEMA, OnInit, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  CUSTOM_ELEMENTS_SCHEMA,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { delay, expectActiveElementToBe } from '@clr/angular/testing';
 import { Keys } from '@clr/angular/utils';
@@ -75,6 +82,7 @@ export interface Cells {
       </clr-datagrid>
     }
   `,
+  changeDetection: ChangeDetectionStrategy.Eager,
   standalone: false,
 })
 class FullTest implements OnInit {
