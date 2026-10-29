@@ -57,8 +57,10 @@ export interface WriteTarget {
 
 export type TargetResolution = { target: WriteTarget } | { refused: ClrMutationRefusal; detail: string };
 
+/** `bound` is what a select's accessor binds the chosen options to, when the engine can tell. */
 export type Coerced =
-  { value: unknown; display: unknown; refused?: never } | { refused: string; value?: never; display?: never };
+  | { value: unknown; display: unknown; bound?: unknown[]; refused?: never }
+  | { refused: string; value?: never; display?: never; bound?: never };
 
 export interface WriteOutcome {
   applied: boolean;
@@ -616,7 +618,17 @@ function coerceSelect(target: WriteTarget, proposed: unknown): Coerced {
     options.push(option);
   }
   const labels = options.map(optionLabel);
-  return { value: [...kept, ...options], display: select.multiple ? labels : labels[0] };
+  const bound = options.map(option => boundValueOf(target, option));
+  return { value: [...kept, ...options], display: select.multiple ? labels : labels[0], bound };
+}
+
+/**
+ * The value the select's accessor binds the option to: `ngValue` can change while the option element stays.
+ * Angular's select accessors look it up by the option's value with `_getOptionValue`; without one, the value is the text.
+ */
+function boundValueOf(target: WriteTarget, option: HTMLOptionElement): unknown {
+  const accessor = target.ngControl?.valueAccessor as { _getOptionValue?: (id: string) => unknown } | null | undefined;
+  return attempt(() => accessor?._getOptionValue?.(option.value), undefined) ?? option.value;
 }
 
 function coerceRadio(target: WriteTarget, proposed: unknown): Coerced {

@@ -303,7 +303,7 @@ export class ClrMutationEngineService {
       target,
       consequence: this.classify(target),
       write,
-      coerced: { value: coerced.value, display: coerced.display },
+      coerced: { value: coerced.value, display: coerced.display, bound: coerced.bound },
     };
   }
 
@@ -383,7 +383,7 @@ interface PreparedWrite {
   target: ClrMutationTarget;
   consequence: ClrMutationConsequence;
   write: WriteTarget;
-  coerced: { value: unknown; display: unknown };
+  coerced: { value: unknown; display: unknown; bound?: unknown[] };
 }
 
 interface PreparedNavigation {
@@ -420,8 +420,16 @@ function sameOperation(confirmed: Prepared, now: Prepared): boolean {
     confirmed.target.type === now.target.type &&
     confirmed.target.url === now.target.url &&
     JSON.stringify(confirmed.target.value ?? null) === JSON.stringify(now.target.value ?? null) &&
-    sameValue(coercedValue(confirmed), coercedValue(now))
+    sameValue(coercedValue(confirmed), coercedValue(now)) &&
+    sameBindings(confirmed, now)
   );
+}
+
+/** The same option elements can be bound to other values by the time the user confirms. */
+function sameBindings(confirmed: Prepared, now: Prepared): boolean {
+  const before = confirmed.kind === 'write' ? (confirmed.coerced.bound ?? []) : [];
+  const after = now.kind === 'write' ? (now.coerced.bound ?? []) : [];
+  return before.length === after.length && before.every((value, index) => Object.is(value, after[index]));
 }
 
 function coercedValue(prepared: Prepared): unknown {

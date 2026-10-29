@@ -172,7 +172,8 @@ export function isHiddenFromEngine(element: Element, excludeSelector = ''): bool
  */
 export function isOutsideSnapshot(element: Element, options: Required<ClrContextSnapshotOptions>): boolean {
   const excludeSelector = usableSelectors(element.ownerDocument, options.excludeSelectors);
-  if (excludeSelector && element.closest(excludeSelector)) {
+  // Along the rendered tree, so an excluded shadow host keeps what it renders out of reach too.
+  if (excludeSelector && closestAcrossShadow(element, excludeSelector)) {
     return true;
   }
   if (options.excludeRoles.length) {
@@ -184,7 +185,7 @@ export function isOutsideSnapshot(element: Element, options: Required<ClrContext
   }
   if (options.rootSelector) {
     const { roots } = engineScope(element.ownerDocument, { ...options, focus: 'page' });
-    if (roots && !roots.some(root => root.contains(element))) {
+    if (roots && !roots.some(root => containsAcrossShadow(root, element))) {
       return true;
     }
   }

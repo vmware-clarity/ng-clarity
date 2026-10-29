@@ -738,6 +738,23 @@ describe('ClrMutationEngineService', () => {
         expect(host.form.value.name).toBe('seed');
       });
 
+      it('refuses as stale a select write whose option was bound to another value while the person was asked', async () => {
+        classify.and.returnValue('consequential');
+        const ref = refOf(snapshot(), 'Item');
+        const replacement: Item = { id: 2, label: 'Two' };
+        confirm.and.callFake(() => {
+          // Tracked by id, the option element stays and only its ngValue changes.
+          host.items = [ITEMS[0], replacement];
+          fixture.detectChanges();
+          return true;
+        });
+
+        const result = await set(ref, 'Item', 'Two');
+
+        expect(result.refused).toBe('stale');
+        expect(host.form.value.item).not.toBe(replacement);
+      });
+
       it('treats a policy that throws as forbidding', async () => {
         classify.and.throwError('boom');
         expect((await set(refOf(snapshot(), 'Name'), 'Name', 'x')).refused).toBe('forbidden');
