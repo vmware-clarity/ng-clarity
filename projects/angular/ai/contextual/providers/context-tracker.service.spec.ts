@@ -248,6 +248,18 @@ describe('ClrContextTrackerService', () => {
     expect(widgetLabels(tracker.currentContext)).toEqual([]);
   });
 
+  it('re-scrapes when a custom property that may drive visibility changes', async () => {
+    const widget = addWidget('Panel') as HTMLElement;
+    widget.setAttribute('style', '--panel-display: block; display: var(--panel-display)');
+    tracker.start({ debounceMs: 20 });
+    expect(widgetLabels(tracker.currentContext)).toEqual(['Panel']);
+
+    widget.style.setProperty('--panel-display', 'none');
+    await elapse(20);
+
+    expect(widgetLabels(tracker.currentContext)).toEqual([]);
+  });
+
   it('still scrapes at the max-wait bound when the page never goes quiet', async () => {
     tracker.start({ debounceMs: 200, maxWaitMs: 500 });
     const countAfterStart = emitted.length;
