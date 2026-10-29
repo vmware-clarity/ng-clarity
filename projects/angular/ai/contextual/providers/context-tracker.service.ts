@@ -106,7 +106,8 @@ export class ClrContextTrackerService implements OnDestroy {
 
   /**
    * Starts tracking with an immediate snapshot. Calling it again restarts with the new options. Tracking
-   * started here runs until `stop`, even after the last `track()` subscriber leaves.
+   * started here runs until `stop`, even after the last `track()` subscriber leaves. An open shadow root
+   * attached to an element already on the page is watched from the next snapshot; `refresh` takes one.
    */
   start(options: ClrContextTrackingOptions = {}): void {
     this.sharedStarted = false;
@@ -171,6 +172,7 @@ export class ClrContextTrackerService implements OnDestroy {
     this.scrapeRun++;
     const snapshot = this.contextEngine.getSnapshot(this.trackingOptions.snapshot);
     this.emit(snapshot);
+    this.zone.runOutsideAngular(() => this.observeShadowRootsIn(this.document));
     if (!snapshot.regions.some(region => region.type === CLR_CONTEXT_LOADING_TYPE)) {
       return;
     }
@@ -290,6 +292,8 @@ export class ClrContextTrackerService implements OnDestroy {
       this.zone.runOutsideAngular(() => {
         this.observeFrames();
         this.forgetDetachedShadowRoots();
+        // Attaching a shadow root is no DOM mutation, so roots attached to hosts already on the page are found here.
+        this.observeShadowRootsIn(this.document);
         if (this.scrapeDirty) {
           this.scrapeDirty = false;
           // Untracked, only a `refresh` marks the page dirty, and it is still owed its answer.

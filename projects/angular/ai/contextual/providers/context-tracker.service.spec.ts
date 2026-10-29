@@ -813,6 +813,27 @@ describe('ClrContextTrackerService, asynchronous providers and shadow roots', ()
     }
   });
 
+  it('watches a shadow root attached to a host already on the page, from the next snapshot', async () => {
+    const host = document.createElement('late-root-host');
+    document.body.appendChild(host);
+    try {
+      tracker.start({ debounceMs: 10 });
+      const root = host.attachShadow({ mode: 'open' });
+      root.innerHTML = '<button>Before</button>';
+      tracker.refresh();
+      await elapse(10);
+      const countAfterRefresh = emitted.length;
+
+      (root.querySelector('button') as HTMLButtonElement).textContent = 'After';
+      await elapse(10);
+
+      expect(emitted.length).toBe(countAfterRefresh + 1);
+      expect(JSON.stringify(tracker.currentContext?.components)).toContain('After');
+    } finally {
+      host.remove();
+    }
+  });
+
   describe('with a slow provider', () => {
     let answers: ((context: ClrComponentContext) => void)[];
     let page: HTMLElement;
