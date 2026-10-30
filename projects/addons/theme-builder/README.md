@@ -18,7 +18,9 @@ result live, and exporting a CSS override file consumers can drop into their app
   variants: the base drives the computed tint/shade/dark variants, and a variant listed
   explicitly overrides the computed value.
 - `(generatedCSS)` — emits the generated CSS override text (a `string`) every time a color,
-  preset, reset, or the warning-text-override toggle changes.
+  preset, reset, or the warning-text-override toggle changes. The initial value is emitted after
+  the preview has rendered and its computed colors have been read. Color controls and output
+  update with either zoneless or Zone.js change detection.
 - Content projection — anything projected through `<ng-content>` renders above the built-in
   preview, which covers most Clarity components (buttons, forms, datagrid, alerts, navigation,
   etc.) so the color changes can be seen in context. Projected content renders inside the same
