@@ -81,9 +81,11 @@ export class DocTabsComponent implements AfterViewInit, OnDestroy {
     if (entries[0].contentRect.width <= 576 && !this.scrollTitle) {
       this.scrollParent = this.element.nativeElement.parentNode;
       this.scrollTitle = true;
+      this.cdr.markForCheck();
     } else if (entries[0].contentRect.width > 576 && (this.scrollTitle || this.scrollTitle === undefined)) {
       this.scrollParent = this.doxContent()?.nativeElement;
       this.scrollTitle = false;
+      this.cdr.markForCheck();
     }
   });
 

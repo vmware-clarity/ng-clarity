@@ -129,3 +129,19 @@ test('demo: wizard async validation reports failure and then advances', async ({
     dialog.getByText('Congratulations! Now you know the answer to life, the universe and everything!')
   ).toBeVisible();
 });
+
+test('demo: tree measurements finish after animation frames', async ({ page }) => {
+  await openZoneless(page, 'http://localhost:8082/demo/tree-view/expand-all-performance');
+  await expect(page.locator('table tbody tr')).toHaveCount(1);
+  const expand = page.getByRole('button', { name: 'Expand all', exact: true });
+  await expect(expand).toBeEnabled();
+  await expand.click();
+  await expect(page.locator('table tbody tr')).toHaveCount(2);
+  await expect(expand).toBeEnabled();
+});
+
+test('website: the resize observer initializes the table of contents', async ({ page }) => {
+  await openZoneless(page, 'http://localhost:8083/documentation/button/code');
+  await expect(page.locator('app-table-of-contents')).toBeVisible();
+  await expect(page.locator('app-table-of-contents a').first()).toBeVisible();
+});
