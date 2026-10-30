@@ -491,20 +491,26 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
     }
 
     this.pendingRender?.destroy();
-    this.pendingRender = afterNextRender(
+    const pendingRender = afterNextRender(
       () => {
-        this.pendingRender = null;
-        // Get Scrollable Parents
-        this.listenToScrollEvents();
+        // Parent focus traps also capture focus after rendering. Let those callbacks finish
+        // before an initially open child popover focuses its content.
+        queueMicrotask(() => {
+          if (this.pendingRender !== pendingRender) {
+            return;
+          }
+          this.pendingRender = null;
+          this.listenToScrollEvents();
+          this.popoverService.popoverVisibleEmit(true);
 
-        this.popoverService.popoverVisibleEmit(true);
-
-        if (this.elementRef?.nativeElement?.focus) {
-          this.elementRef.nativeElement.focus();
-        }
+          if (this.elementRef?.nativeElement?.focus) {
+            this.elementRef.nativeElement.focus();
+          }
+        });
       },
       { injector: this.injector }
     );
+    this.pendingRender = pendingRender;
   }
 
   private removeOverlay(): void {
