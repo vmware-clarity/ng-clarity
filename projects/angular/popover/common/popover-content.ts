@@ -23,6 +23,7 @@ import {
   Directive,
   ElementRef,
   EmbeddedViewRef,
+  ErrorHandler,
   Inject,
   inject,
   Injector,
@@ -77,7 +78,7 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   private intersectionObserver: IntersectionObserver;
   private readonly injector = inject(Injector);
   private pendingRender: AfterRenderRef;
-  private viewInitialized = false;
+  private readonly errorHandler = inject(ErrorHandler);
 
   constructor(
     element: ElementRef,
@@ -99,17 +100,11 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
       this.elementRef = element;
     }
 
-    // A structural popover can close again before its first view initialization.
-    // Subscribe now so that close also disposes the pending embedded view.
-    this.openCloseSubscription = popoverService.openChange.subscribe(change => {
-      if (change) {
-        if (this.viewInitialized) {
-          this.showOverlay();
-        }
-      } else if (!this.viewInitialized) {
+    // Before view init only cancel the structural view on an early close. Normal close
+    // handling is registered after the children so their close outputs fire first.
+    this.openCloseSubscription = popoverService.openChange.subscribe(open => {
+      if (!open) {
         popoverService.popoverVisibleEmit(false);
-      } else {
-        this.closePopover();
       }
     });
   }
@@ -204,7 +199,14 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
   }
 
   ngAfterViewInit() {
-    this.viewInitialized = true;
+    this.openCloseSubscription.unsubscribe();
+    this.openCloseSubscription = this.popoverService.openChange.subscribe(open => {
+      if (open) {
+        this.showOverlay();
+      } else {
+        this.closePopover();
+      }
+    });
     if (this.popoverService.open) {
       this.showOverlay();
     }
@@ -500,12 +502,17 @@ export class ClrPopoverContent implements OnDestroy, AfterViewInit {
             return;
           }
           this.pendingRender = null;
-          this.listenToScrollEvents();
-          this.popoverService.popoverVisibleEmit(true);
-
-          if (this.elementRef?.nativeElement?.focus) {
-            this.elementRef.nativeElement.focus();
-          }
+          // Render callbacks run outside NgZone. Preserve subscriber/focus context in
+          // Zone applications and route synchronous callback errors in either mode.
+          this.zone.run(() => {
+            try {
+              this.listenToScrollEvents();
+              this.popoverService.popoverVisibleEmit(true);
+              this.elementRef?.nativeElement?.focus?.();
+            } catch (error) {
+              this.errorHandler.handleError(error);
+            }
+          });
         });
       },
       { injector: this.injector }

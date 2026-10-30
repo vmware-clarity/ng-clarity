@@ -9,8 +9,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { Inject, Injectable, OnDestroy, PLATFORM_ID, Renderer2, RendererFactory2 } from '@angular/core';
 import { ClrPopoverService } from '@clr/angular/popover/common';
 import { ArrowKeyDirection, customFocusableItemProvider, Keys } from '@clr/angular/utils';
-import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { EMPTY, merge, Subject, Subscription, timer } from 'rxjs';
+import { map, switchMap, take } from 'rxjs/operators';
 
 import { OptionSelectionService } from './option-selection.service';
 import { PseudoFocusModel } from '../model/pseudo-focus.model';
@@ -21,6 +21,7 @@ export class ComboboxFocusHandler<T> implements OnDestroy {
   pseudoFocus: PseudoFocusModel<OptionData<T>> = new PseudoFocusModel<OptionData<T>>();
 
   private readonly subscriptions = new Subscription();
+  private readonly focusRequests = new Subject<void>();
   private readonly unlisteners: (() => void)[] = [];
   private renderer: Renderer2;
   private _trigger: HTMLElement;
@@ -35,6 +36,11 @@ export class ComboboxFocusHandler<T> implements OnDestroy {
     @Inject(PLATFORM_ID) private platformId: any
   ) {
     this.handleFocusSubscription();
+    this.subscriptions.add(
+      merge(this.focusRequests.pipe(map(() => true)), popoverService.openChange.pipe(map(() => false)))
+        .pipe(switchMap(requested => (requested ? timer(0) : EMPTY)))
+        .subscribe(() => this.focusFirstActive())
+    );
     // Direct renderer injection can be problematic and leads to failing tests at least
     this.renderer = rendererFactory.createRenderer(null, null);
   }
@@ -73,6 +79,10 @@ export class ComboboxFocusHandler<T> implements OnDestroy {
     if (this.textInput && isPlatformBrowser(this.platformId)) {
       this.textInput.focus({ preventScroll: true });
     }
+  }
+
+  scheduleFocusFirstActive() {
+    this.focusRequests.next();
   }
 
   focusFirstActive() {
