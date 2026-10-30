@@ -892,6 +892,9 @@ export const CLR_CONTEXT_REDACT_ATTRIBUTE = "data-clr-context-redact";
 // @public
 export const CLR_CONTEXT_REDACT_SELECTOR = "[data-clr-context-redact]";
 
+// @public
+export const CLR_CONTEXT_WITHHELD_SELECTOR = "[hidden], [aria-hidden=\"true\"], [inert], [data-clr-context-ignore], [data-clr-context-redact], [contenteditable]:not([contenteditable=\"false\" i])";
+
 // @public (undocumented)
 export const CLR_DATAGRID_DIRECTIVES: Type<any>[];
 
@@ -1938,7 +1941,7 @@ export class ClrCombobox<T> extends WrappedFormControl<ClrComboboxContainer> imp
     // (undocumented)
     writeValue(value: T | T[]): void;
     // (undocumented)
-    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "showSelectAll": { "alias": "showSelectAll"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "editableResolver": { "alias": "clrEditableResolverFn"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options"], ["*"], false, [{ directive: typeof i16.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
+    static ɵcmp: i0.ɵɵComponentDeclaration<ClrCombobox<any>, "clr-combobox", never, { "placeholder": { "alias": "placeholder"; "required": false; }; "showSelectAll": { "alias": "showSelectAll"; "required": false; }; "editable": { "alias": "clrEditable"; "required": false; }; "editableResolver": { "alias": "clrEditableResolverFn"; "required": false; }; "identityFn": { "alias": "clrComboboxIdentityFn"; "required": false; }; "multiSelect": { "alias": "clrMulti"; "required": false; }; }, { "clrInputChange": "clrInputChange"; "clrOpenChange": "clrOpenChange"; "clrSelectionChange": "clrSelectionChange"; }, ["optionSelected", "options", "optionItems"], ["*"], false, [{ directive: typeof i16.ClrPopoverHostDirective; inputs: {}; outputs: {}; }]>;
     // (undocumented)
     static ɵfac: i0.ɵɵFactoryDeclaration<ClrCombobox<any>, [null, null, { optional: true; self: true; }, null, null, null, null, null, { optional: true; }, null, null, null, null, { optional: true; host: true; }]>;
 }
@@ -3379,6 +3382,8 @@ export class ClrDateContainer extends ClrAbstractContainer implements AfterViewI
     // (undocumented)
     protected ngControlService: NgControlService;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     get open(): boolean;
     // (undocumented)
     get popoverPosition(): ClrPopoverPosition;
@@ -3845,6 +3850,8 @@ export class ClrFileInputContainer extends ClrAbstractContainer {
     focusBrowseButton(): void;
     // (undocumented)
     protected get multiple(): boolean;
+    // (undocumented)
+    ngOnDestroy(): void;
     // (undocumented)
     protected get successMessagePresent(): boolean;
     // (undocumented)
@@ -6268,9 +6275,9 @@ export class ClrTimelineModule {
 }
 
 // @public (undocumented)
-export class ClrTimelineStep {
+export class ClrTimelineStep implements OnDestroy {
     // Warning: (ae-forgotten-export) The symbol "TimelineIconAttributeService" needs to be exported by the entry point clr-angular.d.ts
-    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any);
+    constructor(iconAttributeService: TimelineIconAttributeService, platformId: any, hostElement?: ElementRef<HTMLElement>);
     // (undocumented)
     get iconAriaLabel(): string;
     // (undocumented)
@@ -6282,6 +6289,8 @@ export class ClrTimelineStep {
     // (undocumented)
     ngAfterContentInit(): void;
     // (undocumented)
+    ngOnDestroy(): void;
+    // (undocumented)
     state: ClrTimelineStepState;
     // (undocumented)
     stepTitle: ElementRef<HTMLElement>;
@@ -6290,7 +6299,7 @@ export class ClrTimelineStep {
     // (undocumented)
     static ɵcmp: i0.ɵɵComponentDeclaration<ClrTimelineStep, "clr-timeline-step", never, { "state": { "alias": "clrState"; "required": false; }; }, {}, ["stepTitle"], ["clr-timeline-step-header", "clr-timeline-step-title", "clr-timeline-step-description"], false, never>;
     // (undocumented)
-    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, never>;
+    static ɵfac: i0.ɵɵFactoryDeclaration<ClrTimelineStep, [null, null, { optional: true; }]>;
 }
 
 // @public (undocumented)
@@ -7298,6 +7307,9 @@ export const containerVolumeIcon: IconShapeTuple;
 
 // @public (undocumented)
 export const containerVolumeIconName = "container-volume";
+
+// @public
+export function contextText(element: Element, skip?: (descendant: Element) => boolean): string;
 
 // @public (undocumented)
 export const contractIcon: IconShapeTuple;
@@ -9079,6 +9091,9 @@ export const nodesIconName = "nodes";
 
 // @public
 export function noopAnimations(): boolean;
+
+// @public
+export function normalizeContextText(text: string, lowercase?: boolean): string;
 
 // @public (undocumented)
 export const noteIcon: IconShapeTuple;
