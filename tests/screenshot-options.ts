@@ -104,7 +104,7 @@ export const screenshotOptions: ScreenshotOptions = {
     fullPageScreenshot: true,
   },
   'components/data/datagrid/datagrid-column-actions--column-actions-opened': {
-    // The menu focuses its first item in a timeout after it opens; the screenshot occasionally settled with the focus
+    // The story's play function focuses the menu's first item; wait for it, so the screenshot never catches the focus
     // ring still on the toggle.
     waitForSelectors: ['.dropdown-item:focus'],
   },
